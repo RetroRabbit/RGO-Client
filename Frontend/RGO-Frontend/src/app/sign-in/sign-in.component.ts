@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-// import { take } from 'rxjs';
-// import { Users } from '../models/user.interface';
+import { take } from 'rxjs';
+import { Users } from '../models/user.interface';
 // import { UserService } from '../services/user.services';
 @Component({
   selector: 'app-sign-in',
@@ -16,33 +16,33 @@ export class SignInComponent {
   // private userService: UserService // saving the user
   ) {}
 
-  SignIn(){
+  // SignIn(){
 
-    this.router.navigate(['/home']);
-  }
-  // Login() {
-  //   var tempholder;
-  //   this.auth
-  //     .loginWithPopup()
-  //     .pipe(take(1))
-  //     .subscribe({
-  //       next: () => {
-  //         this.auth.user$.pipe(take(1)).subscribe((user) => {
-  //           this.auth.isAuthenticated$
-  //             .pipe(take(1))
-  //             .subscribe((isAuthenticated) => {
-  //               if (isAuthenticated) {
-  //                 this.router.navigateByUrl('ChatGPT');
-  //                 tempholder = user?.sub?.replace('google-oauth2|', '');
-  //                 var googleID: Users = {
-  //                   GoogleId: tempholder,
-  //                 };
-  //                 this.userService.saveUser(googleID).subscribe((x) => {});
-  //               }
-  //             });
-  //         });
-  //       },
-  //       error: () => {},
-  //     });
+  //   this.router.navigate(['/home']);
   // }
-}
+  Login() {
+    var tempholder;
+    this.auth
+      .loginWithPopup()
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.auth.user$.pipe(take(1)).subscribe((user) => {
+            this.auth.isAuthenticated$
+              .pipe(take(1))
+              .subscribe((isAuthenticated) => {
+                if (isAuthenticated) {
+                  this.router.navigateByUrl('home');
+                  tempholder = user?.sub?.replace('google-oauth2|', '');
+                  var googleID: Users = {
+                    GoogleId: tempholder,
+                  };
+                  // this.userService.saveUser(googleID).subscribe((x) => {});
+                }
+              });
+          });
+        },
+        error: () => {},
+      });
+  }
+ }
