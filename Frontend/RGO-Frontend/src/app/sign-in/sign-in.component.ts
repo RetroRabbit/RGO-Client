@@ -6,9 +6,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent {
-  constructor(private router :Router){}
+  constructor(private router : Router){}
   SignIn(){
-    console.log('Sign In');
-    // this.router.navigate[('/home')];
+    this.router.navigate(['/home']);
   }
 }
