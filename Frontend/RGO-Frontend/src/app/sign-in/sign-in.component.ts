@@ -31,14 +31,6 @@ export class SignInComponent {
               .subscribe((isAuthenticated) => {
                 if (isAuthenticated) {
                   this.authService.login(user?.email)
-                  .pipe(
-                    catchError(err => {
-                      if (err.status == 404) {
-                        window.alert("Contact admin to create your account")
-                      }
-                      return EMPTY
-                    })
-                  )
                   .subscribe(res => {
                     this.router.navigateByUrl('home');
                     tempholder = user?.sub?.replace('google-oauth2|', '');
