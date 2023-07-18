@@ -1,0 +1,13 @@
+<div class="header">
+  <div class="time">
+    <span class="clock">{{ currentTime | date : "HH:mm" }}</span>
+  </div>
+  <div class="text">
+    <span>Chat with Marvin</span>
+  </div>
+  <div class="logout">
+    <button class="logbtn" (click)="logOut()">
+      <img src="../../../../assets/images/Logout Final.png" alt="Logout" />
+    </button>
+  </div>
+</div>
