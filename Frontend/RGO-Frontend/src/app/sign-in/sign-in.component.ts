@@ -18,10 +18,6 @@ export class SignInComponent {
   private authService: AuthenticationService
   ) {}
 
-  // SignIn(){
-
-  //   this.router.navigate(['/home']);
-  // }
   Login() {
     var tempholder;
     this.auth
