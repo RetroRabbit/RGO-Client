@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
 import { HeaderComponent } from './header/header.component'
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { HeaderComponent } from './header/header.component'
       //   ],
       // },
     }),
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
