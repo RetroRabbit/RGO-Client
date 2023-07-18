@@ -25,18 +25,7 @@ import { HeaderComponent } from './header/header.component'
       authorizationParams: {
         redirect_uri: 'http://localhost:4200'//window.location.origin //env redirect uri
       }
-      // httpInterceptor: {
-      //   allowedList: [
-      //     {
-      //       uri: environment.Api_Url + '*',
-      //       tokenOptions: {
-      //         authorizationParams: {
-      //           audience: environment.Security_Audience,
-      //         },
-      //       },
-      //     },
-      //   ],
-      // },
+     
     }),
   ],
   providers: [],

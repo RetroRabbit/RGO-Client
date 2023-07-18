@@ -16,10 +16,6 @@ export class SignInComponent {
   // private userService: UserService // saving the user
   ) {}
 
-  // SignIn(){
-
-  //   this.router.navigate(['/home']);
-  // }
   Login() {
     var tempholder;
     this.auth
