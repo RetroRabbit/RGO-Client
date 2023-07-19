@@ -1,6 +1,4 @@
 import { createAction, props } from '@ngrx/store';
+import { Users } from "../models/user.interface";
 
-export const login = createAction(
-  '[sign-in] UserLogin',
-  props<{ payload: any }>()
-);
+export const GetLogin = createAction('[signin] UserLogin', props<{ payload: Users }>());

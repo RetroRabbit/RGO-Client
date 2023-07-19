@@ -4,7 +4,10 @@ import { AuthService } from '@auth0/auth0-angular';
 import { take } from 'rxjs';
 import { Users } from '../models/user.interface';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../store';
+import { GetLogin } from '../store/app.actions';
+import { AppState } from '@auth0/auth0-angular';
+
+
 // import { UserService } from '../services/user.services';
 @Component({
   selector: 'app-sign-in',
@@ -12,8 +15,11 @@ import * as fromApp from '../store';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent {
+
+  user: Users | undefined;
+
   constructor(
-  private store: Store<fromApp.AppState>,
+  private store: Store<AppState>,
   private auth: AuthService,
   private router: Router,
   // private userService: UserService // saving the user
@@ -33,7 +39,10 @@ export class SignInComponent {
                 if (isAuthenticated) {
                   this.router.navigateByUrl('home');
                   tempholder = user?.sub?.replace('google-oauth2|', '');
-                  this.store.dispatch(fromApp.login({ payload: tempholder }));
+                  this.user = {
+                    GoogleId: tempholder
+                  }
+                  this.store.dispatch(GetLogin({ payload: this.user }));
                 }
               });
           });

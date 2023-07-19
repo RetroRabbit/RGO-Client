@@ -8,7 +8,9 @@ import { FormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
 import { HeaderComponent } from './header/header.component'
 import { StoreModule } from '@ngrx/store';
-import { reducer } from './store/app.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { loginReducer } from './store/app.reducer';
+import { LoginEffects } from './store/app.effects';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { reducer } from './store/app.reducer';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot({ app: reducer }),
+    StoreModule.forRoot({ app: loginReducer }),
+    EffectsModule.forRoot([LoginEffects]),
     AuthModule.forRoot({
       domain: 'dev-lo44tfx8p4oswi5b.us.auth0.com',// domain
       clientId: '1MC0K3mWmgh3cFZ2ZNPjvJTAa0YVjXde',// clientId
