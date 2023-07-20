@@ -10,7 +10,6 @@ import { HeaderComponent } from './header/header.component'
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { loginReducer } from './store/app.reducer';
-import { LoginEffects } from './store/app.effects';
 
 @NgModule({
   declarations: [
@@ -24,7 +23,6 @@ import { LoginEffects } from './store/app.effects';
     AppRoutingModule,
     FormsModule,
     StoreModule.forRoot({ app: loginReducer }),
-    EffectsModule.forRoot([LoginEffects]),
     AuthModule.forRoot({
       domain: 'dev-lo44tfx8p4oswi5b.us.auth0.com',// domain
       clientId: '1MC0K3mWmgh3cFZ2ZNPjvJTAa0YVjXde',// clientId

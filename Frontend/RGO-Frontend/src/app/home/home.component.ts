@@ -3,6 +3,7 @@ import { HeaderComponent } from '../header/header.component';
 import { AuthService } from '@auth0/auth0-angular';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.state';
+import { Token } from '../models/token.interface';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ import { AppState } from '../store/app.state';
 
 export class HomeComponent {
 
-  constructor(private auth: AuthService,private store: Store<{ GoogleID: AppState}>) {}
+  constructor(private auth: AuthService,private store: Store<{ app: Token}>) {}
   // onstructor(private store: Store<{ book: Book }>
 
   ngOnDestroy() {
@@ -30,8 +31,9 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-    this.store.select('GoogleID').subscribe(state => {
+    this.store.select('app').subscribe(state => {
       console.log(state);
+      console.log(typeof state);
     });
   }
 

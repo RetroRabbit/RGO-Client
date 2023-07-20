@@ -1,14 +1,13 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { AppState } from './app.state';
-import { Users } from "../models/user.interface";
+import { Token } from "../models/token.interface";
 import { GetLogin } from './app.actions';
 
 // Define the initial state
-export const initialState: Users = {
+export const initialState: Token = {
   GoogleId: null,
 };
 
 export const loginReducer = createReducer(
   initialState,
-  on(GetLogin,(state, {payload}) => ({...state, payload, loading: false}))
+  on(GetLogin,(state, {payload}) => ({...state, GoogleId: payload.GoogleId , loading: true})),
 );
