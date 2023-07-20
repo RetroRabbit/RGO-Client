@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { take } from 'rxjs';
+import { EMPTY, catchError, take } from 'rxjs';
 import { Users } from '../models/user.interface';
+import { AuthenticationService } from '../services/auth.service';
 // import { UserService } from '../services/user.services';
 @Component({
   selector: 'app-sign-in',
@@ -14,6 +15,7 @@ export class SignInComponent {
   private auth: AuthService,
   private router: Router,
   // private userService: UserService // saving the user
+  private authService: AuthenticationService
   ) {}
 
   Login() {
@@ -28,11 +30,14 @@ export class SignInComponent {
               .pipe(take(1))
               .subscribe((isAuthenticated) => {
                 if (isAuthenticated) {
-                  this.router.navigateByUrl('home');
-                  tempholder = user?.sub?.replace('google-oauth2|', '');
-                  var googleID: Users = {
-                    GoogleId: tempholder,
-                  };
+                  this.authService.login(user?.email)
+                  .subscribe(res => {
+                    this.router.navigateByUrl('home');
+                    tempholder = user?.sub?.replace('google-oauth2|', '');
+                    var googleID: Users = {
+                      GoogleId: tempholder,
+                    };
+                  });
                   // this.userService.saveUser(googleID).subscribe((x) => {});
                 }
               });
