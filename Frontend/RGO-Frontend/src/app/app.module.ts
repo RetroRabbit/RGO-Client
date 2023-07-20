@@ -8,8 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
 import { HeaderComponent } from './header/header.component'
 import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
 import { loginReducer } from './store/app.reducer';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -30,6 +30,7 @@ import { loginReducer } from './store/app.reducer';
         redirect_uri: 'http://localhost:4200'//window.location.origin //env redirect uri
       }
     }),
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
