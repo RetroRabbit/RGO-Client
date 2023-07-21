@@ -4,13 +4,15 @@ import * as Auth0 from '@auth0/auth0-angular';
 import { Observable, firstValueFrom, take, EMPTY, catchError  } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API } from '../models/constants/urls.constants';
+import { Store } from '@ngrx/store';
+import { Token } from '../models/token.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private auth: Auth0.AuthService, private client: HttpClient) { }
+  constructor(private auth: Auth0.AuthService, private client: HttpClient, private store: Store<{app : Token}>) { }
 
   authenticateUser(): Observable<any>{
 
@@ -19,6 +21,7 @@ export class AuthService {
     return this.auth.user$.pipe(take(1));
     
   }
+  
 
   isAuthenticated(): Observable<boolean>{
     return this.auth.isAuthenticated$.pipe(take(1))
@@ -46,5 +49,9 @@ export class AuthService {
         return EMPTY
       })
     );
+  }
+
+  async getToken(){
+    return await firstValueFrom(this.store.select('app'))
   }
 }

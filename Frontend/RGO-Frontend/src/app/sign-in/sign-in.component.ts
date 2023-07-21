@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { GetLogin } from '../store/app.actions';
+import { GetLogin } from '../store/actions/app.actions';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../models/token.interface';
-import { take } from 'rxjs';
+import { firstValueFrom, take } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 // import { UserService } from '../services/user.services';
 @Component({
@@ -31,14 +31,17 @@ export class SignInComponent {
       .pipe(take(1))
       .subscribe({
         next: () => {
+
           
           this.auth.user$.pipe(take(1)).subscribe((user) => {
             this.authService.login(user?.email)
-            .subscribe(res => {
+            .subscribe(async (res) => {
               
-              tempholder = user?.sub?.replace('google-oauth2|', '');
+              var tempholder = user!.email;
+              var token =  await firstValueFrom(this.auth.getAccessTokenSilently());
               var googleID: Token = {
-                GoogleId: tempholder,
+                email: tempholder,
+                token: token,
               };
 
               this.store.dispatch(GetLogin({ payload: googleID }));
