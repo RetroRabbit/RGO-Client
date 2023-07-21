@@ -1,3 +1,4 @@
 export interface Token{
-  GoogleId : any; // has to stay any
+  email: any
+  token : any; // has to stay any
 }
