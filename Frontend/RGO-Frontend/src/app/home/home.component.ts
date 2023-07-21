@@ -30,6 +30,10 @@ export class HomeComponent {
   }
 
   ngOnInit() {
+    this.store.select('app').subscribe(state => {
+      console.log(state);
+      console.log(typeof state);
+    });
   }
 
 }
