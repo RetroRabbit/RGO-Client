@@ -1,9 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
-import { Token } from "../../models/token.interface";
 import { GetEvents, GetEventsSuccess } from '../actions/app.actions';
 import { Events } from "../../models/events.interface";
 
-// Define the initial state
 export interface EventState{
     events: Events[]
 }
