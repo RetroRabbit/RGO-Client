@@ -24,9 +24,9 @@ export class HomeComponent {
   }
 
   Logout() {
-    this.auth.logout({ logoutParams: { returnTo: document.location.origin
-
-    } });
+    this.auth.logout({
+      logoutParams: { returnTo: document.location.origin }
+    });
   }
 
   ngOnInit() {
