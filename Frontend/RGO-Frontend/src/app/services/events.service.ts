@@ -15,7 +15,6 @@ export class EventsService {
     let header: HttpHeaders = new HttpHeaders() 
     header = header.append('Authorization',`Bearer ${token}`)
     header = header.append('Content-Type','application/json')
-    console.log(header.getAll('Authorization'))
     return this.client.get<Events[]>(`${API.HttpsBaseURL}/Events/events`, {headers: header});
   }
 

@@ -2,7 +2,6 @@ import { createReducer, on } from '@ngrx/store';
 import { Token } from "../../models/token.interface";
 import { GetLogin } from '../actions/app.actions';
 
-// Define the initial state
 export const initialState: Token = {
   email: null,
   token: null
