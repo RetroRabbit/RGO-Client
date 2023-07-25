@@ -34,7 +34,11 @@ export class HomeComponent {
   ngOnInit() {
   }
 
-  GetUserType(user: any) {
-    return +user.type
+  GetUserType() {
+    let type = 0
+    this.type$.subscribe(data => {
+      type = +data.type;
+    });
+    return type
   }
 }

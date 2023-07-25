@@ -116,7 +116,7 @@
     <div class="container-fluid py-4">
       <div class="row mb-4 justify-content-center">
         <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
-          <div *ngIf="GetUserType(type$ | async) === 4">
+          <div *ngIf="GetUserType() === 4">
             ADMIN
             <div class="card">
               <div class="card-header">
@@ -128,7 +128,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="GetUserType(type$ | async) === 3">
+          <div *ngIf="GetUserType() === 3">
             MENTOR
             <div class="card">
               <div class="card-header">
@@ -140,10 +140,10 @@
               </div>
             </div>
           </div>
-          <div *ngIf="GetUserType(type$ | async) === 2">
+          <div *ngIf="GetUserType() === 2">
             PRESENTER
           </div>
-          <div *ngIf="GetUserType(type$ | async) === 1">
+          <div *ngIf="GetUserType() === 1">
             DEV GRAD
             <div class="card">
               <div class="card-header">
@@ -155,7 +155,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="GetUserType(type$ | async) === 0">
+          <div *ngIf="GetUserType() === 0">
             DESIGN GRAD
             <div class="card">
               <div class="card-header">
