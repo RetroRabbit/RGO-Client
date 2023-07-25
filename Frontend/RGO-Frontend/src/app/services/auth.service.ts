@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import * as Auth0 from '@auth0/auth0-angular';
-import { Observable, firstValueFrom, take, EMPTY, catchError  } from 'rxjs';
+import { Observable, firstValueFrom, take, EMPTY, catchError, map  } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API } from '../models/constants/urls.constants';
 import { Store } from '@ngrx/store';
@@ -26,6 +26,7 @@ export class AuthService {
     }
     return this.client.post(`${API.HttpsBaseURL}/Authentication/login`,user,{headers: header, responseType: 'text'})
     .pipe(
+      map(type => type),
       catchError(err => {
         console.log(err)
         if (err.status == 404) {

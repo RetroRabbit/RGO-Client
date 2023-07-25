@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
+import { Store } from '@ngrx/store';
+import { Token } from 'src/app/models/token.interface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -8,8 +11,12 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 
 export class HomeComponent {
+  type$: Observable<Token> = this.store.select('app')
 
-  constructor(private auth: AuthService) {}
+  constructor(
+    private store: Store<{app: Token}>,
+    private auth: AuthService
+    ) {}
 
   ngOnDestroy() {
     localStorage.removeItem('access_token');
@@ -27,4 +34,11 @@ export class HomeComponent {
   ngOnInit() {
   }
 
+  GetUserType() {
+    let type = 0
+    this.type$.subscribe(data => {
+      type = +data.type;
+    });
+    return type
+  }
 }

@@ -23,7 +23,6 @@ export class SignInComponent {
   ) {}
 
   Login() {
-    var tempholder;
     this.auth
       .loginWithPopup()
       .pipe(take(1))
@@ -40,6 +39,7 @@ export class SignInComponent {
               var googleID: Token = {
                 email: tempholder,
                 token: token,
+                type: res
               };
 
               this.store.dispatch(GetLogin({ payload: googleID }));
@@ -48,7 +48,9 @@ export class SignInComponent {
  
           });
         },
-        error: () => {},
+        error: (error) => {
+          console.log(typeof error);
+        },
       });
   }
  }
