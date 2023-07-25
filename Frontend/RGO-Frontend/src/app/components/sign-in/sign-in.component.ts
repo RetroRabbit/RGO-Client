@@ -23,7 +23,6 @@ export class SignInComponent {
   ) {}
 
   Login() {
-    var tempholder;
     this.auth
       .loginWithPopup()
       .pipe(take(1))
