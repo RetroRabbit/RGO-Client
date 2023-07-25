@@ -114,98 +114,57 @@
     <div class="container-fluid py-4">
       <div class="row mb-4 justify-content-center">
         <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
+          <div *ngIf="GetUserType(type$ | async) === 4">
+            ADMIN
             <div class="card">
-                <div class="card-header pb-0">
-                    <div class="row">
-                        <div class="col-lg-6 col-7">
-                            <h6>USERS</h6>
-                        </div>
-                        <div class="col-lg-6 col-5 my-auto text-end">
-                            <button type="button" class=" btn btn-success">ADD</button>
-                            <button type="button" class=" btn btn-info">EDIT</button>
-                            <button type="button" class=" btn btn-danger">DELETE</button>
-                        </div>
-                    </div>
-                    <div class="card-body px-0 pb-2">
-                        <div class="table-responsive">
-                            <table class="table align-items-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Firstname</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Lastname</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Group</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Type</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Joindate</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Kamogelo</td>
-                                        <td>Matsomela</td>
-                                        <td>kmatsomela@retrorabbit.co.za</td>
-                                        <td>Grad2023</td>
-                                        <td>Admin</td>
-                                        <td>Active</td>
-                                        <td>2023/07/24</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body px-0 pb-2"></div>
-            </div>
-            <div class="card">
-                <div class="card-header pb-0">
+              <div class="card-header">
                 <div class="row">
-                    <div class="col-lg-6 col-7">
-                    <h6>WORKSHOPS</h6>
-                    <p class="text-sm mb-0">
-                        ...
-                    </p>
-                    </div>
-                    <div class="col-lg-6 col-5 my-auto text-end"></div>
+                  <div class="col-lg-6 col-7">
+                    Users
+                  </div>
                 </div>
-                </div>
-                <div class="card-body px-0 pb-2">
-                <div class="table-responsive">
-                    <table class="table align-items-center mb-0">
-                    <thead>
-                        <tr>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Titles</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Presenter</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <td>
-                            <div class="d-flex px-2 py-1">
-                            <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm">Agile Intro</h6>
-                            </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="avatar-group mt-2">
-                            ...
-                            </div>
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                            <span class="text-xs font-weight-bold"> 2023/01/14 </span>
-                        </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-                </div>
+              </div>
             </div>
+          </div>
+          <div *ngIf="GetUserType(type$ | async) === 3">
+            MENTOR
             <div class="card">
-                <div class="card-header pb-0"></div>
-                <div class="card-body px-0 pb-2"></div>
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-lg-6 col-7">
+                    Mentees
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+          <div *ngIf="GetUserType(type$ | async) === 2">
+            PRESENTER
+          </div>
+          <div *ngIf="GetUserType(type$ | async) === 1">
+            DEV GRAD
+            <div class="card">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-lg-6 col-7">
+                    Personal Project
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="GetUserType(type$ | async) === 0">
+            DESIGN GRAD
+            <div class="card">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-lg-6 col-7">
+                    Personal Project
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <footer class="footer py-4  ">
