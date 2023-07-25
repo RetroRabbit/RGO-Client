@@ -34,4 +34,7 @@ export class HomeComponent {
   ngOnInit() {
   }
 
+  GetUserType(user: any) {
+    return +user.type
+  }
 }
