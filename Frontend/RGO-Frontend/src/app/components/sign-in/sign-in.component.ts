@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { GetLogin, GetType } from '../../store/actions/app.actions';
+import { GetLogin } from '../../store/actions/app.actions';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../../models/token.interface';
 import { firstValueFrom, take } from 'rxjs';
@@ -44,8 +44,6 @@ export class SignInComponent {
               };
 
               this.store.dispatch(GetLogin({ payload: googleID }));
-              this.store.dispatch(GetType());
-
               this.router.navigateByUrl('/home');
             });
  

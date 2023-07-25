@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { Token } from "../../models/token.interface";
-import { GetLogin, GetType } from '../actions/app.actions';
+import { GetLogin } from '../actions/app.actions';
 
 export const initialState: Token = {
   email: null,
@@ -11,5 +11,4 @@ export const initialState: Token = {
 export const loginReducer = createReducer(
   initialState,
   on(GetLogin,(state, {payload}) => ({...state, email: payload.email, token: payload.token, type: payload.type , loading: true})),
-  on(GetType, (state) => ({ ...state, type: state.type, })),
 );
