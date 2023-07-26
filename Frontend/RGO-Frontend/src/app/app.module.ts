@@ -14,6 +14,7 @@ import { GradTodoComponent } from './components/grad-todo/grad-todo.component';
 import { EventReducer } from './store/reducers/events.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { EventsEffects } from './store/effects/events.effects';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { EventsEffects } from './store/effects/events.effects';
     HomeComponent,
     HeaderComponent,
     GradTodoComponent,
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,
