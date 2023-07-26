@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 
 interface RouteInfo {
@@ -9,7 +9,7 @@ interface RouteInfo {
 
 export const ROUTES: RouteInfo[] = [
     { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard' },
-    { path: 'Workshops', title: 'Workshops', icon: 'home_repair_service'}
+    { path: '/Workshops', title: 'Workshops', icon: 'home_repair_service'}
 ];
 
 @Component({
@@ -20,10 +20,22 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: RouteInfo[] | undefined;
 
+ @Output() selectedItem = new EventEmitter<{selectedPage : string}>();
+
   constructor(private auth: AuthService) { }
 
   ngOnInit() {
     this.menuItems = ROUTES;
   }
+
+  CaptureEvent(event : any){
+    const target = event.target as HTMLAnchorElement;
+    this.selectedItem.emit({
+      selectedPage : target.innerText
+    });
+    // console.log(target.innerText);
+  }
 }
+
+
 
