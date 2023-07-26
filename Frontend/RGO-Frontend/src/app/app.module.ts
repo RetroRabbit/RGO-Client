@@ -15,6 +15,7 @@ import { EventReducer } from './store/reducers/events.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { EventsEffects } from './store/effects/events.effects';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { environment } from 'src/enviroment/env';
 
 @NgModule({
   declarations: [
@@ -32,8 +33,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     StoreModule.forRoot({ app: LoginReducer, event: EventReducer }),
     EffectsModule.forRoot([EventsEffects]),
     AuthModule.forRoot({
-      domain: 'dev-lo44tfx8p4oswi5b.us.auth0.com',// domain
-      clientId: '1MC0K3mWmgh3cFZ2ZNPjvJTAa0YVjXde',// clientId
+      domain: environment.AUTH0_Domain_key,// domain
+      clientId: environment.AUTH0_CLIENT_ID,// clientId
       authorizationParams: {
         redirect_uri: 'http://localhost:4200'//window.location.origin //env redirect uri
       }
