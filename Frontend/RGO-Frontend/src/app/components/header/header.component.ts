@@ -18,7 +18,9 @@ export class HeaderComponent implements OnDestroy {
     sessionStorage.removeItem('id_token');
   }
 
-  logOut() {
-    this.auth.logout({ logoutParams: { returnTo: document.location.origin } });
+  Logout() {
+    this.auth.logout({
+      logoutParams: { returnTo: document.location.origin }
+    });
   }
 }

@@ -8,7 +8,7 @@ export const initialState: Token = {
   type: null,
 };
 
-export const loginReducer = createReducer(
+export const LoginReducer = createReducer(
   initialState,
   on(GetLogin,(state, {payload}) => ({...state, email: payload.email, token: payload.token, type: payload.type , loading: true})),
 );
