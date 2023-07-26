@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
 import { HeaderComponent } from './components/header/header.component'
 import { StoreModule } from '@ngrx/store';
-import { loginReducer } from './store/reducers/app.reducer';
+import { LoginReducer } from './store/reducers/login.reducer';
 import { HttpClientModule } from '@angular/common/http';
 import { GradTodoComponent } from './components/grad-todo/grad-todo.component';
 import { EventReducer } from './store/reducers/events.reducer';
@@ -29,7 +29,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot({ app: loginReducer, event: EventReducer }),
+    StoreModule.forRoot({ app: LoginReducer, event: EventReducer }),
     EffectsModule.forRoot([EventsEffects]),
     AuthModule.forRoot({
       domain: 'dev-lo44tfx8p4oswi5b.us.auth0.com',// domain
