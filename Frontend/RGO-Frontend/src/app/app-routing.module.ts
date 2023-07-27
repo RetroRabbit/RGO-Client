@@ -8,8 +8,7 @@ import { WorkshopsPageComponent } from './components/workshops-page/workshops-pa
 const routes: Routes = [
   {path: '', component: SignInComponent},
   {path: 'home', component: HomeComponent},
-  {path: 'header', component: HeaderComponent},
-  {path: 'Workshops', component: WorkshopsPageComponent}
+  {path: 'header', component: HeaderComponent}
 ];
 
 @NgModule({
