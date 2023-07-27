@@ -12,7 +12,7 @@ import { WorkshopsPageComponent } from '../workshops-page/workshops-page.compone
 
 export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
-  selectedPage : string = "";
+  selectedPage : string = "Dashboard";
 
   constructor(
     private store: Store<{app: Token}>,

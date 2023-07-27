@@ -8,7 +8,8 @@ interface RouteInfo {
 
 export const ROUTES: RouteInfo[] = [
     { title: 'Dashboard',  icon: 'dashboard' },
-    { title: 'Workshops', icon: 'home_repair_service'}
+    { title: 'Workshops', icon: 'home_repair_service'},
+    { title: 'UserProfile', icon: 'home_repair_service'}
 ];
 
 @Component({
