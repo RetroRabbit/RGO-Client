@@ -6,12 +6,15 @@
   <div class="main-panel">
     <app-header></app-header>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ps ps--active-y">
-      <div *ngIf="selectedPage === 'Workshops'; else ShowDashBoard">
+      <div *ngIf="selectedPage === 'Workshops'">
         <app-workshops-page></app-workshops-page>
       </div>
-      <ng-template #ShowDashBoard>
+      <div *ngIf="selectedPage === 'Events'">
+        <app-events></app-events>
+      </div>
+      <div *ngIf="selectedPage === ''" #ShowDashBoard>
         <h1>You are on the dashboard</h1>
-      </ng-template>
+      </div>
     </main>
   </div>
 </div>
