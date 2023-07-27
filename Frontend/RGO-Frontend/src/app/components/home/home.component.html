@@ -15,6 +15,12 @@
       <div *ngIf="selectedPage === ''" #ShowDashBoard>
         <h1>You are on the dashboard</h1>
       </div>
+      <div *ngIf="selectedPage === 'Workshops';">
+        <app-workshops-page></app-workshops-page>
+      </div>
+      <div *ngIf="selectedPage === 'Personal Project';">
+        <app-personal-project></app-personal-project>
+      </div>
     </main>
   </div>
 </div>

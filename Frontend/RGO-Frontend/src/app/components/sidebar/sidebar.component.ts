@@ -1,15 +1,19 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Token } from 'src/app/models/token.interface';
 
 interface RouteInfo {
-    title: string;
-    icon: string;
+  title: string;
+  icon: string;
 }
 
 export const ROUTES: RouteInfo[] = [
     { title: 'Dashboard',  icon: 'dashboard' },
     { title: 'Workshops', icon: 'home_repair_service'},
-    { title: 'Events', icon: 'calendar_view_week'}
+    { title: 'Events', icon: 'calendar_view_week'},
+    { title: 'Personal Project', icon: 'assignment' },
 ];
 
 @Component({
@@ -19,22 +23,37 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   menuItems: RouteInfo[] | undefined;
+  type$: Observable<Token> = this.store.select('app');
+  userType: number | undefined ; 
 
- @Output() selectedItem = new EventEmitter<{selectedPage : string}>();
+  @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private store: Store<{ app: Token }>) { }
 
   ngOnInit() {
     this.menuItems = ROUTES;
+
+    this.type$.subscribe(data => {
+      this.userType = +data.type;
+    });
   }
 
-  CaptureEvent(event : any){
+  IsMenuItemVisible(menuItem: RouteInfo): boolean {
+    if (menuItem.title === 'Dashboard') {
+      return true;
+    } else if (menuItem.title === 'Workshops' && (this.userType === 0 || this.userType === 1)) {
+      return true;
+    } else if (menuItem.title === 'Personal Project' && (this.userType === 2 || this.userType === 0)) {
+      return true;
+    }
+  
+    return false;
+  }
+  
+  CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.selectedItem.emit({
-      selectedPage : target.innerText
+      selectedPage: target.innerText
     });
   }
 }
-
-
-
