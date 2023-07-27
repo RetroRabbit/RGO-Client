@@ -23,7 +23,7 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: RouteInfo[] | undefined;
   type$: Observable<Token> = this.store.select('app');
-  userType: number | undefined ; // Default user type, you can change this based on your application's logic
+  userType: number | undefined ; 
 
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
 
@@ -45,7 +45,7 @@ export class SidebarComponent implements OnInit {
     } else if (menuItem.title === 'Personal Project' && this.userType === 2) {
       return true;
     }
-    
+
     return false;
   }
 
