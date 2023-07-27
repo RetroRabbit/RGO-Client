@@ -17,7 +17,8 @@ import { EventsEffects } from './store/effects/events.effects';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { environment } from 'src/enviroment/env';
 import { WorkshopsPageComponent } from './components/workshops-page/workshops-page.component';
-import { MentorpersonalprojectPageComponent } from './components/mentorpersonalproject-page/mentorpersonalproject-page.component';
+import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
+
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { MentorpersonalprojectPageComponent } from './components/mentorpersonalp
     GradTodoComponent,
     SidebarComponent,
     WorkshopsPageComponent,
-    MentorpersonalprojectPageComponent,
+    PersonalProjectComponent,
   ],
   imports: [
     BrowserModule,

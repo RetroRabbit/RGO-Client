@@ -40,15 +40,15 @@ export class SidebarComponent implements OnInit {
   IsMenuItemVisible(menuItem: RouteInfo): boolean {
     if (menuItem.title === 'Dashboard') {
       return true;
-    } else if (menuItem.title === 'Workshops' && this.userType === 0) {
+    } else if (menuItem.title === 'Workshops' && (this.userType === 0 || this.userType === 1)) {
       return true;
-    } else if (menuItem.title === 'Personal Project' && this.userType === 2) {
+    } else if (menuItem.title === 'Personal Project' && (this.userType === 2 || this.userType === 0)) {
       return true;
     }
-
+  
     return false;
   }
-
+  
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.selectedItem.emit({
