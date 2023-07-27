@@ -12,7 +12,7 @@ interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
     { title: 'Dashboard',  icon: 'dashboard' },
     { title: 'Workshops', icon: 'home_repair_service'},
-    { title: 'UserProfile', icon: 'home_repair_service'}
+    { title: 'User Profile', icon: 'home_repair_service'},
     { title: 'Personal Project', icon: 'assignment' },
     { title: 'Events', icon: 'calendar_view_week'},
 
@@ -50,7 +50,10 @@ export class SidebarComponent implements OnInit {
       return true;
     } else if (menuItem.title === 'Events' && (this.userType === 0 )) {
       return true;
+    } else if (menuItem.title === 'User Profile' && (this.userType === 0 || this.userType === 1)) {
+      return true;
     }
+
 
 
     return false;
