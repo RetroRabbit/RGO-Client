@@ -18,6 +18,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { environment } from 'src/enviroment/env';
 import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
 import { WorkshopsPageComponent } from './components/workshops-page/workshops-page.component';
+import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
+
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { WorkshopsPageComponent } from './components/workshops-page/workshops-pa
     SidebarComponent,
     PersonalProjectComponent,
     WorkshopsPageComponent,
+    PersonalProjectComponent,
   ],
   imports: [
     BrowserModule,
