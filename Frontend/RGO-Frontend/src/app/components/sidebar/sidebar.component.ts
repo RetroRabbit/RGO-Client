@@ -12,8 +12,9 @@ interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
     { title: 'Dashboard',  icon: 'dashboard' },
     { title: 'Workshops', icon: 'home_repair_service'},
-    { title: 'Events', icon: 'calendar_view_week'},
     { title: 'Personal Project', icon: 'assignment' },
+    { title: 'Events', icon: 'calendar_view_week'},
+    
 ];
 
 @Component({
@@ -39,13 +40,17 @@ export class SidebarComponent implements OnInit {
   }
 
   IsMenuItemVisible(menuItem: RouteInfo): boolean {
+    
     if (menuItem.title === 'Dashboard') {
       return true;
     } else if (menuItem.title === 'Workshops' && (this.userType === 0 || this.userType === 1)) {
       return true;
     } else if (menuItem.title === 'Personal Project' && (this.userType === 2 || this.userType === 0)) {
       return true;
+    } else if (menuItem.title === 'Events' && (this.userType === 0 || this.userType === 1)) {
+      return true;
     }
+
   
     return false;
   }
