@@ -43,9 +43,6 @@ export class HomeComponent {
     return type
   }
 
-  CapturePageChange(event : any){
-       console.log(event);
-  }
   handleSelectedItem(eventData: { selectedPage: string }) {
     this.selectedPage = eventData.selectedPage;
   }
