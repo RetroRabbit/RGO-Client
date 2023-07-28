@@ -19,6 +19,7 @@ import { environment } from 'src/enviroment/env';
 import { WorkshopsPageComponent } from './components/workshops-page/workshops-page.component';
 import { EventsComponent } from './components/events/events.component';
 import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
+import { FormsComponent } from './component/forms/forms.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { PersonalProjectComponent } from './components/personal-project/personal
     WorkshopsPageComponent,
     EventsComponent,
     PersonalProjectComponent,
+    FormsComponent,
   ],
   imports: [
     BrowserModule,
