@@ -14,7 +14,9 @@ export const ROUTES: RouteInfo[] = [
     { title: 'Workshops', icon: 'home_repair_service'},
     { title: 'Personal Project', icon: 'assignment' },
     { title: 'Events', icon: 'calendar_view_week'},
-    
+    { title: 'Forms Builder', icon: 'calendar_view_week'},
+    { title: 'Forms', icon: 'calendar_view_week'},
+    { title: 'Settings', icon: 'calendar_view_week'},
 ];
 
 @Component({
@@ -47,7 +49,13 @@ export class SidebarComponent implements OnInit {
       return true;
     } else if (menuItem.title === 'Personal Project' && (this.userType === 2 || this.userType === 0)) {
       return true;
-    } else if (menuItem.title === 'Events' && (this.userType === 0 )) {
+    } else if (menuItem.title === 'Events' && (this.userType === 0)) {
+      return true;
+    } else if (menuItem.title === 'Forms' && (this.userType === 3)) {
+      return true;
+    } else if (menuItem.title === 'Forms Builder' && (this.userType === 3)) {
+      return true;
+    } else if (menuItem.title === 'Settings' && (this.userType === 3)) {
       return true;
     }
 
