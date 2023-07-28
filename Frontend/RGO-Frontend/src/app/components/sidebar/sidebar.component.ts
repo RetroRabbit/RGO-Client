@@ -51,7 +51,7 @@ export class SidebarComponent implements OnInit {
       return true;
     } else if (menuItem.title === 'Events' && (this.userType === 0)) {
       return true;
-    } else if (menuItem.title === 'Forms' && (this.userType === 3)) {
+    } else if (menuItem.title === 'Forms' && (this.userType === 3 || this.userType === 0)) {
       return true;
     } else if (menuItem.title === 'Forms Builder' && (this.userType === 3)) {
       return true;
