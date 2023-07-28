@@ -11,14 +11,14 @@ export class EventsEffects {
     private actions$: Actions,
     private eventsService: EventsService
   ) { }
-  // getEvents$ = createEffect(() =>
-    // this.actions$.pipe(
-    //   ofType(EventsActions.GetEvents),
-    //   mergeMap(({token}) =>
-    //     this.eventsService.getAllEvents(token).pipe(
-    //       map(event => EventsActions.GetEventsSuccess({events: event})),
-    //     )
-    //   )
-    // )
-  // );
+  getEvents$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EventsActions.GetEvents),
+      mergeMap(({token}) =>
+        this.eventsService.getAllEvents(token).pipe(
+          map(event => EventsActions.GetEventsSuccess({events: event})),
+        )
+      )
+    )
+  );
 }
