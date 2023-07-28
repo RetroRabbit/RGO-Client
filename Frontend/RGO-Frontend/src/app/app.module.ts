@@ -19,7 +19,8 @@ import { environment } from 'src/enviroment/env';
 import { WorkshopsPageComponent } from './components/workshops-page/workshops-page.component';
 import { EventsComponent } from './components/events/events.component';
 import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
-import { FormsComponent } from './component/forms/forms.component';
+import { WorkshopComponent } from './components/workshop/workshop.component';
+import { FormsComponent } from './components/forms/forms.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { FormsComponent } from './component/forms/forms.component';
     WorkshopsPageComponent,
     EventsComponent,
     PersonalProjectComponent,
+    WorkshopComponent,
     FormsComponent,
   ],
   imports: [
