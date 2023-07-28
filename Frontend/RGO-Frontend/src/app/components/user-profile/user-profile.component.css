@@ -1,0 +1,27 @@
+.skill-circle p {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 50px; /* Use a value greater than half of the height to make it circular */
+  background-color: blue; /* Replace 'blue' with your desired background color */
+  color: white; /* Add text color to make the text visible */
+  margin: 5px; /* Add some margin between the circles */
+}
+
+.cert-circle p {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 50px; /* Use a value greater than half of the height to make it circular */
+  background-color: green; /* Replace 'blue' with your desired background color */
+  color: white; /* Add text color to make the text visible */
+  margin: 5px; /* Add some margin between the circles */
+}
+
+.proj-circle p {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 50px; /* Use a value greater than half of the height to make it circular */
+  background-color: red; /* Replace 'blue' with your desired background color */
+  color: white; /* Add text color to make the text visible */
+  margin: 5px; /* Add some margin between the circles */
+}
+
