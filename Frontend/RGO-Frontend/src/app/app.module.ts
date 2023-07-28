@@ -20,7 +20,7 @@ import { WorkshopsPageComponent } from './components/workshops-page/workshops-pa
 import { EventsComponent } from './components/events/events.component';
 import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
 import { WorkshopComponent } from './components/workshop/workshop.component';
-import { FormsComponent } from './component/forms/forms.component';
+import { FormsComponent } from './components/forms/forms.component';
 
 
 @NgModule({
