@@ -14,9 +14,9 @@ export const ROUTES: RouteInfo[] = [
     { title: 'Workshops', icon: 'home_repair_service'},
     { title: 'Personal Project', icon: 'assignment' },
     { title: 'Events', icon: 'calendar_view_week'},
-    { title: 'Forms Builder', icon: 'calendar_view_week'},
-    { title: 'Forms', icon: 'calendar_view_week'},
-    { title: 'Settings', icon: 'calendar_view_week'},
+    { title: 'Forms Builder', icon: 'assignment_add'},
+    { title: 'Forms', icon: 'assignment'},
+    { title: 'Settings', icon: 'settings'},
 ];
 
 @Component({
