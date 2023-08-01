@@ -20,6 +20,8 @@ import { WorkshopsPageComponent } from './components/workshops-page/workshops-pa
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { EventsComponent } from './components/events/events.component';
 import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
+import { UserProfileReducer } from './store/reducers/userprofile.reducer';
+import { UserProfileEffects } from './store/effects/userprofile.effects';
 
 
 @NgModule({
@@ -39,8 +41,9 @@ import { PersonalProjectComponent } from './components/personal-project/personal
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot({ app: LoginReducer, event: EventReducer }),
-    EffectsModule.forRoot([EventsEffects]),
+    StoreModule.forRoot({ app: LoginReducer, event: EventReducer,user: UserProfileReducer}),
+
+    EffectsModule.forRoot([EventsEffects,UserProfileEffects]),
     AuthModule.forRoot({
       domain: environment.AUTH0_Domain_key,// domain
       clientId: environment.AUTH0_CLIENT_ID,// clientId

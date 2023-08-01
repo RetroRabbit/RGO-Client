@@ -53,9 +53,6 @@ export class SidebarComponent implements OnInit {
     } else if (menuItem.title === 'User Profile' && (this.userType === 0 || this.userType === 1)) {
       return true;
     }
-
-
-
     return false;
   }
 
