@@ -34,5 +34,5 @@ export const getTodaysWorkshop = createAction(
 
 export const getAllWorkshopSuccess = createAction(
     '[Workshops] Get All Workshops',
-    props<{ workshops: Workshop[] }>()
+    props<{ AllWorkshops: Workshop[] }>()
 )

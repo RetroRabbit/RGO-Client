@@ -15,7 +15,7 @@ export class WorkshopEffects {
       ofType(WorkshopActions.getAllWorkshops),
       mergeMap(({token}) =>
         this.workshopService.getAllWorkshops(token).pipe(
-          map(workshop => WorkshopActions.getAllWorkshopSuccess({workshops: workshop})),
+          map(workshop => WorkshopActions.getAllWorkshopSuccess({AllWorkshops: workshop})),
         )
       )
     )

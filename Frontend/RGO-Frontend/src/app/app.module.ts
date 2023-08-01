@@ -23,6 +23,7 @@ import { WorkshopComponent } from './components/workshop/workshop.component';
 import { FormsComponent } from './components/forms/forms.component';
 import { WorkshopReducer} from './store/reducers/workshop.reducer'
 import { WorkshopEffects } from './store/effects/workshop.effects';
+import { LoginEffects } from './store/effects/app.effects';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,7 @@ import { WorkshopEffects } from './store/effects/workshop.effects';
     AppRoutingModule,
     FormsModule,
     StoreModule.forRoot({ app: LoginReducer, event: EventReducer, workshop : WorkshopReducer }),
-    EffectsModule.forRoot([EventsEffects, WorkshopEffects]),
+    EffectsModule.forRoot([LoginEffects, EventsEffects, WorkshopEffects]),
     AuthModule.forRoot({
       domain: environment.AUTH0_Domain_key,// domain
       clientId: environment.AUTH0_CLIENT_ID,// clientId

@@ -22,7 +22,7 @@ export const WorkshopReducer = createReducer(
   
   
   on(WorkshopActions.getAllWorkshops, state  => ({ ...state , loading: true})),
-  on(WorkshopActions.getAllWorkshopSuccess, (state ,{ workshops }) => ({ ...state, workshops, loading: true }))
+  on(WorkshopActions.getAllWorkshopSuccess, (state ,{ AllWorkshops }) => ({ ...state, AllWorkshops, loading: true }))
 
 
 
