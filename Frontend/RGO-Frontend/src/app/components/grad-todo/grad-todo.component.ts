@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GetEvents } from '../../store/actions/app.actions';
+import { GetEvents } from '../../store/actions/events.actions';
 import { Store } from '@ngrx/store';
 import { EventState } from '../../store/reducers/events.reducer';
 import { Events } from '../../models/events.interface';

@@ -1,4 +1,5 @@
 export interface Events {
+    id : number
     groupid: number;
     title: string;
     description: string;

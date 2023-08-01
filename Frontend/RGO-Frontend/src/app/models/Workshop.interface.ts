@@ -1,4 +1,7 @@
+import { Events } from "./events.interface";
+
 export interface Workshop{
-    event : Event,
+    id : number,
+    eventid : Events,
     presenter : string
 }
