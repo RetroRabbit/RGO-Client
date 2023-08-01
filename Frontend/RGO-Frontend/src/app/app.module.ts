@@ -22,6 +22,8 @@ import { EventsComponent } from './components/events/events.component';
 import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
 import { UserProfileReducer } from './store/reducers/userprofile.reducer';
 import { UserProfileEffects } from './store/effects/userprofile.effects';
+import { WorkshopComponent } from './components/workshop/workshop.component';
+import { FormsComponent } from './components/forms/forms.component';
 
 
 @NgModule({
@@ -32,10 +34,13 @@ import { UserProfileEffects } from './store/effects/userprofile.effects';
     HeaderComponent,
     GradTodoComponent,
     SidebarComponent,
+    PersonalProjectComponent,
     WorkshopsPageComponent,
     UserProfileComponent,
     EventsComponent,
     PersonalProjectComponent,
+    WorkshopComponent,
+    FormsComponent,
   ],
   imports: [
     BrowserModule,
