@@ -1,19 +1,3 @@
-// import { createAction, props } from '@ngrx/store';
-// import { Workshop } from '../../models/Workshop.interface';
-
-// export const setSelectedWorkshop = createAction(
-//   '[Workshops] Set Selected Workshop',
-//   props<{ workshop: Workshop | null }>()
-// );
-
-// export const setAllWorkshops = createAction(
-//   '[Workshops] Set All Workshops',
-//   props<{ workshops: Workshop[] }>()
-// );
-
-// export const setTodaysWorkshops = createAction('[Workshops] Set Today\'s Workshops');
-
-
 import { createAction, props } from '@ngrx/store';
 import { Workshop } from '../../models/Workshop.interface';
 
@@ -28,8 +12,7 @@ export const getAllWorkshops = createAction(
 );
 
 export const getTodaysWorkshop = createAction(
-    '[Workshops] Get Todays Workshops',
-    props<{ workshops: Workshop[] }>() 
+    '[Workshops] Get Todays Workshops' 
 );
 
 export const getAllWorkshopSuccess = createAction(

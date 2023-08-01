@@ -9,22 +9,35 @@ import { Token } from '../../models/token.interface';
   templateUrl: './workshops-page.component.html',
   styleUrls: ['./workshops-page.component.css']
 })
-export class WorkshopsPageComponent implements OnInit{
+export class WorkshopsPageComponent implements OnInit {
 
-  allWorkshops : Workshop[] = [];
+  allWorkshops: Workshop[] = [];
+  todaysWorkshop: Workshop[] = [];
 
-  constructor(private store : Store<{workshop : WorkshopState}>, private appStore : Store<{app : Token}>){
+  constructor(private store: Store<{ workshop: WorkshopState }>, private appStore: Store<{ app: Token }>) {
 
   }
 
-  ngOnInit(): void{
-    this.appStore.select('app').subscribe( state => {
-      this.appStore.dispatch(getAllWorkshops({token: state.token}));
+  ngOnInit(): void {
+    this.appStore.select('app').subscribe(state => {
+      this.appStore.dispatch(getAllWorkshops({ token: state.token }));
     })
-
+    
     this.store.select('workshop').subscribe(state => {
+      this.StoreAllWorkshop(state.AllWorkshops)
       this.allWorkshops = state.AllWorkshops;
-      console.log(state.AllWorkshops);
     })
+  }
+
+  GetToday() {
+    console.log(this.allWorkshops);
+    this.store.dispatch(getTodaysWorkshop());
+    this.store.select('workshop').subscribe(state => {
+      this.todaysWorkshop = state.TodaysWorkshops;
+    })
+    console.log(this.todaysWorkshop);
+  }
+
+  StoreAllWorkshop(workshops: Workshop[]) {
   }
 }

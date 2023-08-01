@@ -2,8 +2,8 @@ import { createReducer, on } from '@ngrx/store';
 import { Workshop } from '../../models/Workshop.interface';
 import * as WorkshopActions from '../actions/workshop.actions';
 
-export interface WorkshopState{
-    selectedWorkshop: Workshop | null;
+export interface WorkshopState {
+  selectedWorkshop: Workshop | null;
   TodaysWorkshops: Workshop[];
   AllWorkshops: Workshop[];
 }
@@ -16,24 +16,31 @@ export const initialState: WorkshopState = {
 
 export const WorkshopReducer = createReducer(
   initialState,
-  // on(WorkshopActions.getSelectedWorkshop, (state , {workshops}) => ({ ...state, 
-  //       // filter through the the array to get the selected workshop
-  //   })),
+  on(WorkshopActions.getAllWorkshops, state => ({ ...state, loading: true })),
+  on(WorkshopActions.getAllWorkshopSuccess, (state, { AllWorkshops }) => ({ ...state, AllWorkshops, loading: true })),
+  on(WorkshopActions.getTodaysWorkshop, (state) => ({
+    ...state,
+    TodaysWorkshops: state.AllWorkshops.filter((workshop) => {
+      const eventId = workshop.eventId;
   
+      // Step 1: Parse the string into a Date object
+      const dateString = eventId.startDate;
+      const targetDate = new Date(dateString);
   
-  on(WorkshopActions.getAllWorkshops, state  => ({ ...state , loading: true})),
-  on(WorkshopActions.getAllWorkshopSuccess, (state ,{ AllWorkshops }) => ({ ...state, AllWorkshops, loading: true }))
-
-
-
-  // on(WorkshopActions.getTodaysWorkshop, (state) => ({
-  //   ...state,
-  //   TodaysWorkshops: state.AllWorkshops.filter((workshop) => 
-  //   //workshop === getCurrentDate()
-  //   // get the date here
-  //   console.log("hello")
-  //   ),
-  // })),
+      // Step 2: Get the current date
+      const currentDate = new Date();
+  
+      // Step 3: Compare the two dates (by comparing their year, month, and day)
+      const isSameDate =
+        targetDate.getFullYear() === currentDate.getFullYear() &&
+        targetDate.getMonth() === currentDate.getMonth() &&
+        targetDate.getDate() === currentDate.getDate();
+  
+      // Step 4: Return true if the workshop's date is the same as the current date
+      return isSameDate;
+    }),
+  }))
+  
 );
 
 function getCurrentDate(): string {
