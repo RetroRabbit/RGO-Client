@@ -4,20 +4,22 @@ import {
   GetUserProfileSuccess,
 } from '../actions/userprofile.actions';
 import { UserProfile } from 'src/app/models/userprofile.interface';
-
-export const initialState: UserProfile = {
-  fullName: null,
-  email: null,
-  phoneNumber: null,
-  level: null,
-  bio: null,
-  // discord: null,
-  // codeWars: null,
-  // github: null,
-  // linkedin: null,
-  // skills: [],
-  // certifications: [],
-  // projects: [],
+export interface UserProfileState{user:UserProfile | null}
+export const initialState: UserProfileState = {
+  // firstName: null,
+  // lastName:null,
+  // email: null,
+  // phoneNumber: null,
+  // level: null,
+  // bio: null,
+  // // discord: null,
+  // // codeWars: null,
+  // // github: null,
+  // // linkedin: null,
+  // // skills: [],
+  // // certifications: [],
+  // // projects: [],
+  user: null
 };
 
 export const UserProfileReducer = createReducer(
@@ -28,11 +30,13 @@ export const UserProfileReducer = createReducer(
   })),
   on(GetUserProfileSuccess, (state, { user }) => ({
     ...state,
-    fullName: user.fullName,
-    email: user.email,
-    phoneNumber: user.phoneNumber,
-    level: user.level,
-    bio: user.bio,
+    user,
+    // firstName: user.firstName,
+    // lastName:user.lastName,
+    // email: user.email,
+    // phoneNumber: user.phoneNumber,
+    // level: user.level,
+    // bio: user.bio,
     // discord: user.discord,
     // codeWars: user.codeWars,
     // github: user.github,

@@ -1,5 +1,6 @@
 export interface UserProfile{
-  fullName: null,
+  firstName: null,
+  lastName:null,
   email: null,
   phoneNumber: null,
   level: null,

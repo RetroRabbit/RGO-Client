@@ -11,19 +11,18 @@ import { UserProfile } from 'src/app/models/userprofile.interface';
 })
 export class UserProfileComponent {
 
-  constructor(private store: Store<{app: Token}>,private userStore:Store<{user:UserProfile}>) {}
+  GetUserProfile: UserProfile | null = null; // Initialize to null
+
+  constructor(private store: Store<{ app: Token }>, private userStore: Store<{ user: UserProfile }>) {}
 
   ngOnInit() {
-    this.store.select("app").subscribe(
-      state => {
-        this.store.dispatch(GetUserProfile({email: state.email, token: state.token}));
-      });
-      this.userStore.select("user").subscribe(
-        state => {
-         console.log(state)
-        });
+    this.store.select("app").subscribe((state: Token) => {
+      this.store.dispatch(GetUserProfile({ email: state.email, token: state.token }));
+    });
 
+    this.userStore.select("user").subscribe((state: UserProfile) => {
+      console.log(state);
+      this.GetUserProfile = state;
+    });
   }
-
 }
-

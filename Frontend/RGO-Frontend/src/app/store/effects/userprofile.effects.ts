@@ -3,14 +3,12 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap } from 'rxjs/operators';
 import { UserprofileService } from 'src/app/services/userprofile.service';
 import * as UserProfile from '../actions/userprofile.actions';
-import { Token } from '@angular/compiler';
 
 @Injectable()
 export class UserProfileEffects {
   constructor(
     private actions$: Actions,
     private userprofileService: UserprofileService,
-    private token: Token
   ) {}
 
   getUserProfile$ = createEffect(() =>
