@@ -1,6 +1,3 @@
-export const setTodaysWorkshops = createAction('[Workshops] Set Today\'s Workshops');
-
-
 import { createAction, props } from '@ngrx/store';
 import { Workshop } from '../../models/Workshop.interface';
 
