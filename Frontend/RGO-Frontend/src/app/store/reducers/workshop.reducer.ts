@@ -26,14 +26,6 @@ export const WorkshopReducer = createReducer(
 
 
 
-  // on(WorkshopActions.getTodaysWorkshop, (state) => ({
-  //   ...state,
-  //   TodaysWorkshops: state.AllWorkshops.filter((workshop) => 
-  //   //workshop === getCurrentDate()
-  //   // get the date here
-  //   console.log("hello")
-  //   ),
-  // })),
 );
 
 function getCurrentDate(): string {
