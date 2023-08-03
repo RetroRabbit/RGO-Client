@@ -13,18 +13,15 @@ export class WorkshopsPageComponent implements OnInit{
 
   allWorkshops : Workshop[] = [];
 
-  constructor(private store : Store<{workshop : WorkshopState}>, private appStore : Store<{app : Token}>){
+  constructor(private store : Store<{workshop : WorkshopState}>){
 
   }
 
   ngOnInit(): void{
-    this.appStore.select('app').subscribe( state => {
-      this.appStore.dispatch(getAllWorkshops({token: state.token}));
-    })
-
+    
+    this.store.dispatch(getAllWorkshops());
     this.store.select('workshop').subscribe(state => {
       this.allWorkshops = state.AllWorkshops;
-      console.log(state.AllWorkshops);
     })
   }
 }

@@ -24,7 +24,6 @@ export const getSelectedWorkshop = createAction(
 
 export const getAllWorkshops = createAction(
   '[Workshops] Get All Workshops',
-  props<{ token: string }>()
 );
 
 export const getTodaysWorkshop = createAction(

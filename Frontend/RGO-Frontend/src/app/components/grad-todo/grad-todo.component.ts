@@ -16,10 +16,7 @@ export class GradTodoComponent {
     constructor(private store: Store<{event : EventState}>,private appStore: Store<{app : Token}>){}
 
     ngOnInit(){
-      this.appStore.select('app').subscribe( state => {
-        this.store.dispatch(GetEvents({token: state.token}));
-      });
-      
+      this.store.dispatch(GetEvents());
       this.store.select('event').subscribe(state => {
         this.events = state.events;
       });
