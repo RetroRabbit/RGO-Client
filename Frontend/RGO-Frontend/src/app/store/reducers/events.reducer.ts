@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { GetEvents, GetEventsSuccess } from '../actions/app.actions';
+import { GetEvents, GetEventsSuccess } from '../actions/events.actions';
 import { Events } from "../../models/events.interface";
 
 export interface EventState{
