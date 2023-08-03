@@ -16,9 +16,6 @@ export const initialState: WorkshopState = {
 
 export const WorkshopReducer = createReducer(
   initialState,
-  // on(WorkshopActions.getSelectedWorkshop, (state , {workshops}) => ({ ...state, 
-  //       // filter through the the array to get the selected workshop
-  //   })),
   
   
   on(WorkshopActions.getAllWorkshops, state  => ({ ...state , loading: true})),
