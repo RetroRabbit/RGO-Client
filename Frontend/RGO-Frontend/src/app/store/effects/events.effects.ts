@@ -13,8 +13,8 @@ export class EventsEffects {
   getEvents$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EventsActions.GetEvents),
-      mergeMap(({token}) =>
-        this.eventsService.getAllEvents(token).pipe(
+      mergeMap(() =>
+        this.eventsService.getAllEvents().pipe(
           map(event => EventsActions.GetEventsSuccess({events: event})),
         )
       )

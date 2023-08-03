@@ -44,7 +44,6 @@ export const WorkshopReducer = createReducer(
 );
 
 function getCurrentDate(): string {
-  // Implement a function to get the current date in a specific format
   const today = new Date();
   return today.toISOString().split('T')[0]; // Assuming we only need the date part in 'YYYY-MM-DD' format
 }
