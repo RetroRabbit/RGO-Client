@@ -23,7 +23,7 @@ Runs on [this](http:/localhost:4200) location
 - @angular/core
 - @ngrx/store
 
-### FAQ(Idiots Edtion)
+### FAQ
 ```typescript
 // user type
 enum UserType {
