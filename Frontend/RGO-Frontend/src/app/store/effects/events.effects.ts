@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { EventsService } from 'src/app/services/events.service';
-import * as EventsActions from '../actions/app.actions';
+import * as EventsActions from '../actions/events.actions';
 
 @Injectable()
 export class EventsEffects {
@@ -14,8 +13,8 @@ export class EventsEffects {
   getEvents$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EventsActions.GetEvents),
-      mergeMap(({token}) =>
-        this.eventsService.getAllEvents(token).pipe(
+      mergeMap(() =>
+        this.eventsService.getAllEvents().pipe(
           map(event => EventsActions.GetEventsSuccess({events: event})),
         )
       )
