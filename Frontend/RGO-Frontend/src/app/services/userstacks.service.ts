@@ -26,13 +26,13 @@ export class UserstacksService {
 
   getToken(){
     this.store.select('app').subscribe( state => {
-      console.log(this.token = state.token);
+     this.token = state.token;
     })
   }
 
   getEmail(){
     this.store.select('app').subscribe( state => {
-      console.log(this.email = state.email);
+      this.email = state.email;
     })
   }
       

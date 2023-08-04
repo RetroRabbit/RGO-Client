@@ -39,7 +39,6 @@ export class SidebarComponent implements OnInit {
     this.type$.subscribe(data => {
       this.userType = (JSON.parse(data.type)).type;
     });
-    this.store.select('app').subscribe( state => console.log(state.type));
   }
 
   IsMenuItemVisible(menuItem: RouteInfo): boolean {

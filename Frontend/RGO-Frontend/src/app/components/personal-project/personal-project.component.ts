@@ -27,6 +27,5 @@ ngOnInit(): void {
 }
 
 StoreUserstacks(userstacks: Userstacks| null){
-  console.log(userstacks)
 }
 }
