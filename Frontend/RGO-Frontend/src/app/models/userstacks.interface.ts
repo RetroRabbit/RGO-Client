@@ -1,9 +1,9 @@
 export interface Userstacks{
-    userId: any;
-    backendId: any;
-    frontendId: any;
-    databaseId: any;
-    createDate: any;
-    description: any;
-    status: any;
+    userId: number;
+    backendId: number;
+    frontendId: number;
+    databaseId: number;
+    createDate: Date;
+    description: string;
+    status: number;
 }
