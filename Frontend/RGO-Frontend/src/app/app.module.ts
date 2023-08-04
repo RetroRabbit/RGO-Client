@@ -24,6 +24,7 @@ import { FormsComponent } from './components/forms/forms.component';
 import { WorkshopReducer} from './store/reducers/workshop.reducer'
 import { WorkshopEffects } from './store/effects/workshop.effects';
 import { LoginEffects } from './store/effects/app.effects';
+import { ViewableWorkshopPageComponent } from './components/viewable-workshop-page/viewable-workshop-page.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { LoginEffects } from './store/effects/app.effects';
     PersonalProjectComponent,
     WorkshopComponent,
     FormsComponent,
+    ViewableWorkshopPageComponent,
   ],
   imports: [
     BrowserModule,

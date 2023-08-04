@@ -3,7 +3,6 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Store } from '@ngrx/store';
 import { Token } from 'src/app/models/token.interface';
 import { Observable } from 'rxjs';
-import { WorkshopsPageComponent } from '../workshops-page/workshops-page.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

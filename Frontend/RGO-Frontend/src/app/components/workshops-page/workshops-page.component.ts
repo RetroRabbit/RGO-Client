@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Workshop } from 'src/app/models/Workshop.interface';
 import { getSelectedWorkshop, getAllWorkshops, getTodaysWorkshop } from 'src/app/store/actions/workshop.actions';
 import { WorkshopState } from 'src/app/store/reducers/workshop.reducer';
 import { Token } from '../../models/token.interface';
+import { WorkshopService } from 'src/app/services/workshop.service';
 @Component({
   selector: 'app-workshops-page',
   templateUrl: './workshops-page.component.html',
@@ -12,8 +13,11 @@ import { Token } from '../../models/token.interface';
 export class WorkshopsPageComponent implements OnInit{
 
   allWorkshops : Workshop[] = [];
+  selectedWorkshop !: Workshop;
 
-  constructor(private store : Store<{workshop : WorkshopState}>){
+  @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
+
+  constructor(private store : Store<{workshop : WorkshopState}>,public service: WorkshopService){
 
   }
 
@@ -24,4 +28,6 @@ export class WorkshopsPageComponent implements OnInit{
       this.allWorkshops = state.AllWorkshops;
     })
   }
+
+  
 }
