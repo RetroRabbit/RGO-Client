@@ -3,7 +3,7 @@ import { Workshop } from '../../models/Workshop.interface';
 
 export const getSelectedWorkshop = createAction(
   '[Workshops] Set Selected Workshop',
-  props<{ workshops: Workshop }>()
+  props<{ index: number, workshops : Workshop[] }>()
 );
 
 export const getAllWorkshops = createAction(
