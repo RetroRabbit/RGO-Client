@@ -1,4 +1,4 @@
-<!-- <div *ngIf="workshop$ | async as workshop">
+<div *ngIf="workshop$ | async as workshop">
     <div *ngIf="workshop.TodaysWorkshops[0]; else NoToday">
         <div *ngFor="let object of workshop.TodaysWorkshops; let i=index">
             <button (click)="GetTodaysWorkshop(i, workshop.TodaysWorkshops)">{{object.presenter}}</button>
@@ -19,4 +19,4 @@
         <h1>No Workshops for today</h1>
     </ng-template>
     <p>workshop</p>
-</div> -->
+</div>
