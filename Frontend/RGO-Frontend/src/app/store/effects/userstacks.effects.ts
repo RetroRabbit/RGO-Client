@@ -19,17 +19,5 @@ export class UserstacksEffects{
         ))
     )
         ) 
-
     );
-    // getUserstacks$ = createEffect(() =>
-    //     this.actions$.pipe(
-    //         ofType(UserstacksActions.GetUserstacks),
-    //         mergeMap(({ email, token }) => {
-    //             console.log('Fetching user stacks with email:', email);
-    //             return this.userstacksService.getUserstacks(email, token).pipe(
-    //                 map(userstack => UserstacksActions.GetUserstacksSuccess({ userstacks: userstack }))
-    //             );
-    //         })
-    //     )
-    // );
 }
