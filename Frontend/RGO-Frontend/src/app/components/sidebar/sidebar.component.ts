@@ -38,7 +38,7 @@ export class SidebarComponent implements OnInit {
     this.menuItems = ROUTES;
 
     this.type$.subscribe(data => {
-      this.userType = (JSON.parse(data.type)).type;
+      this.userType = +data.type;
     });
   }
 
