@@ -11,19 +11,9 @@ import { Store } from '@ngrx/store';
 })
 export class WorkshopService {
   token: string = '';
-  constructor(private client: HttpClient,private appStore : Store<{app : Token}>) { }
+  constructor(private client: HttpClient) { }
 
   getAllWorkshops(): Observable<Workshop[]>{
-    this.getToken();
-    let header: HttpHeaders = new HttpHeaders() 
-    header = header.append('Authorization',`Bearer ${this.token}`)
-    header = header.append('Content-Type','application/json')
-    return this.client.get<Workshop[]>(`${API.HttpsBaseURL}/Workshop/workshops`, {headers: header});
-  }
-
-  getToken(){
-    this.appStore.select('app').subscribe( state => {
-      this.token = state.token;
-    })
+    return this.client.get<Workshop[]>(`${API.HttpsBaseURL}/Workshop/workshops`);
   }
 }
