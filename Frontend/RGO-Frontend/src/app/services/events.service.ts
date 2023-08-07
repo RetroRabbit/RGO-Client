@@ -11,20 +11,10 @@ import { Store } from '@ngrx/store';
 })
 export class EventsService {
   token: string = '';
-  constructor(private client: HttpClient,private appStore : Store<{app : Token}>) { }
+  constructor(private client: HttpClient) { }
 
   getAllEvents(): Observable<Events[]>{
-    this.getToken();
-    let header: HttpHeaders = new HttpHeaders() 
-    header = header.append('Authorization',`Bearer ${this.token}`)
-    header = header.append('Content-Type','application/json')
-    return this.client.get<Events[]>(`${API.HttpsBaseURL}/Events/events`, {headers: header});
-  }
-
-  getToken(){
-    this.appStore.select('app').subscribe( state => {
-      this.token = state.token;
-    })
+    return this.client.get<Events[]>(`${API.HttpsBaseURL}/Events/events`);
   }
 
 }

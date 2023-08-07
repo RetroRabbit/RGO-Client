@@ -9,7 +9,7 @@ import { AuthModule } from '@auth0/auth0-angular';
 import { HeaderComponent } from './components/header/header.component'
 import { StoreModule } from '@ngrx/store';
 import { LoginReducer } from './store/reducers/login.reducer';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { GradTodoComponent } from './components/grad-todo/grad-todo.component';
 import { EventReducer } from './store/reducers/events.reducer';
 import { EffectsModule } from '@ngrx/effects';
@@ -26,6 +26,8 @@ import { WorkshopEffects } from './store/effects/workshop.effects';
 import { LoginEffects } from './store/effects/app.effects';
 import { UserstackReducer } from './store/reducers/userstacks.reducer';
 import { UserstacksEffects } from './store/effects/userstacks.effects';
+import { AuthService } from './services/auth.service';
+import { AuthInterceptor } from './interceptor/auth0.interceptor';
 
 
 
@@ -59,7 +61,10 @@ import { UserstacksEffects } from './store/effects/userstacks.effects';
     }),
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    AuthService, 
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -16,18 +16,8 @@ export class UserstacksService {
   constructor(private client: HttpClient, private store: Store<{app: Token}> ) { }
 
   getUserstacks(): Observable<Userstacks>{
-    this.getToken();
     this.getEmail();
-    let header: HttpHeaders = new HttpHeaders()
-    header = header.append('Authorization', `Bearer ${this.token}`)
-    header = header.append('Content-Type', 'application/json')
-    return this.client.get<Userstacks>(`${API.HttpsBaseURL}/UserStack/GetUserStack?email=${encodeURIComponent(this.email)}`,{headers: header});
-  }
-
-  getToken(){
-    this.store.select('app').subscribe( state => {
-     this.token = state.token;
-    })
+    return this.client.get<Userstacks>(`${API.HttpsBaseURL}/UserStack/GetUserStack?email=${encodeURIComponent(this.email)}`);
   }
 
   getEmail(){
