@@ -10,24 +10,52 @@ import { WorkshopService } from 'src/app/services/workshop.service';
   templateUrl: './workshops-page.component.html',
   styleUrls: ['./workshops-page.component.css']
 })
-export class WorkshopsPageComponent implements OnInit{
+export class WorkshopsPageComponent implements OnInit {
+  allWorkshops: Workshop[] = [];
+  todaysWorkshop: Workshop[] = [];
+  selectedWorkshop: Workshop = {
+    id: 0,
+    eventId: {
+      id: -1,
+      groupid: -1,
+      title: "",
+      description: "",
+      userType: -1,
+      startDate: new Date,
+      endDate: new Date,
+      eventType: -1
+    },
+    presenter: "",
+    viewable: true
+  };
 
-  allWorkshops : Workshop[] = [];
-  selectedWorkshop !: Workshop;
+
+  workshop$ = this.store.select("workshop");
+  //selectedWorkshop !: Workshop;
 
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
 
-  constructor(private store : Store<{workshop : WorkshopState}>,public service: WorkshopService){
+  constructor(private store : Store<{workshop : WorkshopState}>,public service: WorkshopService){}
 
-  }
-
-  ngOnInit(): void{
-    
+  ngOnInit(): void {
     this.store.dispatch(getAllWorkshops());
-    this.store.select('workshop').subscribe(state => {
-      this.allWorkshops = state.AllWorkshops;
-    })
+    setTimeout( ()=>{
+      this.store.dispatch(getTodaysWorkshop());
+    }, 500)
   }
 
-  
+  CaptureArrays(state : any){
+    
+    this.todaysWorkshop = state.TodaysWorkshops;
+    console.log(state.TodaysWorkshops);
+  }
+
+  GetTodaysWorkshop(index: number, todayArray: Workshop[]) {
+    this.store.dispatch(getSelectedWorkshop({ index: index, workshops: todayArray }));
+    this.store.select("workshop").subscribe(state => {
+      this.selectedWorkshop = state.selectedWorkshop;
+    });
+    console.log(this.selectedWorkshop.presenter)
+  }
+
 }

@@ -2,6 +2,7 @@ import { Events } from "./events.interface";
 
 export interface Workshop{
     id : number,
-    eventid : Events,
-    presenter : string
+    eventId : Events,
+    presenter : string,
+    viewable: boolean
 }

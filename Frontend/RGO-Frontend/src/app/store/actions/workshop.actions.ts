@@ -3,7 +3,7 @@ import { Workshop } from '../../models/Workshop.interface';
 
 export const getSelectedWorkshop = createAction(
   '[Workshops] Set Selected Workshop',
-  props<{ workshops: Workshop }>()
+  props<{ index: number, workshops : Workshop[] }>()
 );
 
 export const getAllWorkshops = createAction(
@@ -11,8 +11,7 @@ export const getAllWorkshops = createAction(
 );
 
 export const getTodaysWorkshop = createAction(
-    '[Workshops] Get Todays Workshops',
-    props<{ workshops: Workshop[] }>() 
+    '[Workshops] Get Todays Workshops' 
 );
 
 export const getAllWorkshopSuccess = createAction(
