@@ -31,7 +31,6 @@ export class WorkshopsPageComponent implements OnInit {
 
 
   workshop$ = this.store.select("workshop");
-  //selectedWorkshop !: Workshop;
 
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
 
@@ -52,10 +51,7 @@ export class WorkshopsPageComponent implements OnInit {
 
   GetTodaysWorkshop(index: number, todayArray: Workshop[]) {
     this.store.dispatch(getSelectedWorkshop({ index: index, workshops: todayArray }));
-    this.store.select("workshop").subscribe(state => {
-      this.selectedWorkshop = state.selectedWorkshop;
-    });
-    console.log(this.selectedWorkshop.presenter)
+    this.service.CaptureEvent('Viewable Workshop', this.selectedItem);
   }
 
 }

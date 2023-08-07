@@ -1,4 +1,4 @@
-<button (click)="service.CaptureEvent('Viewable Workshop', selectedItem)">view</button>
+<button>view</button>
 <div class="container-fluid py-4">
     <div class="row">
       <div class="col-12">
@@ -9,7 +9,7 @@
             </div>
           </div>
           <div class="card-body px-0 pb-2">
-            <ng-container *ngIf="workshop$ | async as workshop; else NoToday">
+            <ng-container *ngIf="workshop$ | async as workshopState; else NoToday">
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
                   <thead>
@@ -22,7 +22,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let workshop of workshop.TodaysWorkshops; let i=index">
+                    <tr *ngFor="let workshop of workshopState.TodaysWorkshops; let i=index">
                       <td class="text-xs font-weight-bold mb-0">{{workshop.eventId.startDate | date: 'shortTime'}}</td>
                       <td class="text-xs font-weight-bold mb-0">{{workshop.eventId.endDate | date: 'shortTime'}}</td>
                       <td class="text-xs font-weight-bold mb-0">{{workshop.eventId.title}}</td>
@@ -30,7 +30,7 @@
                      
                         <td class="align-middle">
                             <div *ngIf="workshop.viewable==true">
-                            <a href="workshop_info.html" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                            <a (click)="GetTodaysWorkshop(i,workshopState.TodaysWorkshops)" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                               View
                             </a>
                         </div>  
@@ -59,7 +59,7 @@
           </div>
         </div>
         <div class="card-body px-0 pb-2">
-        <ng-container *ngIf="workshop$ | async as workshop; else NoPast">
+        <ng-container *ngIf="workshop$ | async as workshopState; else NoPast">
           <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
               <thead>
@@ -72,14 +72,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let workshop of workshop.AllWorkshops; let i=index">
+                <tr *ngFor="let workshop of workshopState.AllWorkshops; let i=index">
                   <td class="text-xs font-weight-bold mb-0">{{workshop.eventId.startDate | date: 'shortTime'}}</td>
                   <td class="text-xs font-weight-bold mb-0">{{workshop.eventId.endDate | date: 'shortTime'}}</td>
                   <td class="text-xs font-weight-bold mb-0">{{workshop.eventId.title}}</td>
                   <td class="text-xs font-weight-bold mb-0">{{workshop.presenter}}</td>
                   <td class="align-middle">
                     <div *ngIf="workshop.viewable==true">
-                    <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                    <a (click)="GetTodaysWorkshop(i,workshopState.TodaysWorkshops)" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                       View
                     </a>
                     </div>

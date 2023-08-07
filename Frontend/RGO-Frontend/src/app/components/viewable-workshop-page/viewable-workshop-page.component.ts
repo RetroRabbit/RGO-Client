@@ -9,14 +9,14 @@ import { WorkshopService } from 'src/app/services/workshop.service';
   styleUrls: ['./viewable-workshop-page.component.css']
 })
 export class ViewableWorkshopPageComponent implements OnInit{
+
+  selectedWorkshop$ = this.store.select("workshop");
   
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   
   constructor(private store: Store<{workshop : WorkshopState}>, public service: WorkshopService){}
 
-  ngOnInit(){
-    this.store.select('workshop');
-  }
+  ngOnInit(){  }
 
 
 }
