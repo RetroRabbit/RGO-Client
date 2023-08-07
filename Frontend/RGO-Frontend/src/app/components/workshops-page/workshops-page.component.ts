@@ -42,8 +42,9 @@ export class WorkshopsPageComponent implements OnInit {
   }
 
   CaptureArrays(state : any){
-    console.log(state.TodaysWorkshops)
+    
     this.todaysWorkshop = state.TodaysWorkshops;
+    console.log(state.TodaysWorkshops);
   }
 
   GetTodaysWorkshop(index: number, todayArray: Workshop[]) {
