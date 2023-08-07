@@ -1,20 +1,76 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Introduction
+This platform is, somewhat for making the grad onboarding process simpler. Also for creating a central location for tracking changes to personal information, certification, skills,project and etc.
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+### Cloning the [repository](https://retro-rabbit@dev.azure.com/retro-rabbit/RetroGradOnboard/_git/RGO-Client)
+```powershell
+git clone 'https://retro-rabbit@dev.azure.com/retro-rabbit/RetroGradOnboard/_git/RGO-Client'
+```
+### Install dependencies for the project(frontend)
+```powershell
+#cd RGO-Client\Frontend\RGO-Frontend
+npm install
+```
+### Running
+```powershell
+#cd RGO-Client\Frontend\RGO-Frontend
+ng serve
+```
+Runs on [this](http:/localhost:4200) location
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+# Dependencies
+- @angular/cli
+- @angular/core
+- @ngrx/store
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+### FAQ
+```typescript
+// user type
+enum UserType {
+    GRAD = 0,
+    PRESENTER,
+    MENTOR,
+    ADMIN
+}
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+// user status
+enum UserStatus {
+    NEW = 1,
+    ACTIVE,
+    INACTIVE
+}
+
+// form status
+enum FormStatus {
+    NEW = 0,
+    ACTIVE,
+    INACTIVE
+}
+
+// field status
+enum FieldStatus {
+    SIGNATURE = 0,
+    FILEUPLOAD,
+    DROPDOWN,
+    TEXTAREA,
+    TEXTBOX
+}
+
+// stack type
+enum StackType {
+    DATABASE = 0,
+    FRONTEND,
+    BACKEND,
+}
+
+// event type
+enum EventType {
+    EVENTS = 0,
+    WORKSHOPS
+}
+
+// form type
+enum FormType {
+    
+}
+```
