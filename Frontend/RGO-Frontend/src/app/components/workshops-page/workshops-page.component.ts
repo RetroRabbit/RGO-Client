@@ -41,17 +41,11 @@ export class WorkshopsPageComponent implements OnInit {
     }, 500)
   }
 
-  CaptureArrays(state : any){
-    console.log(state.TodaysWorkshops)
-    this.todaysWorkshop = state.TodaysWorkshops;
-  }
-
   GetTodaysWorkshop(index: number, todayArray: Workshop[]) {
     this.store.dispatch(getSelectedWorkshop({ index: index, workshops: todayArray }));
     this.store.select("workshop").subscribe(state => {
       this.selectedWorkshop = state.selectedWorkshop;
     });
-    console.log(this.selectedWorkshop.presenter)
   }
 
 }
