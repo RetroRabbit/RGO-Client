@@ -3,25 +3,49 @@ import { Store } from '@ngrx/store';
 import { Workshop } from 'src/app/models/Workshop.interface';
 import { getSelectedWorkshop, getAllWorkshops, getTodaysWorkshop } from 'src/app/store/actions/workshop.actions';
 import { WorkshopState } from 'src/app/store/reducers/workshop.reducer';
-import { Token } from '../../models/token.interface';
+
 @Component({
   selector: 'app-workshops-page',
   templateUrl: './workshops-page.component.html',
   styleUrls: ['./workshops-page.component.css']
 })
-export class WorkshopsPageComponent implements OnInit{
+export class WorkshopsPageComponent implements OnInit {
 
-  allWorkshops : Workshop[] = [];
+  allWorkshops: Workshop[] = [];
+  todaysWorkshop: Workshop[] = [];
+  selectedWorkshop: Workshop = {
+    id: 0,
+    eventId: {
+      id: -1,
+      groupid: -1,
+      title: "",
+      description: "",
+      userType: -1,
+      startDate: new Date,
+      endDate: new Date,
+      eventType: -1
+    },
+    presenter: "",
+    viewable: true
+  };
 
-  constructor(private store : Store<{workshop : WorkshopState}>){
 
-  }
+  workshop$ = this.store.select("workshop");
 
-  ngOnInit(): void{
-    
+  constructor(private store: Store<{ workshop: WorkshopState }>) { }
+
+  ngOnInit(): void {
     this.store.dispatch(getAllWorkshops());
-    this.store.select('workshop').subscribe(state => {
-      this.allWorkshops = state.AllWorkshops;
-    })
+    setTimeout( ()=>{
+      this.store.dispatch(getTodaysWorkshop());
+    }, 500)
   }
+
+  getTodaysWorkshop(index: number, todayArray: Workshop[]) {
+    this.store.dispatch(getSelectedWorkshop({ index: index, workshops: todayArray }));
+    this.store.select("workshop").subscribe(state => {
+      this.selectedWorkshop = state.selectedWorkshop;
+    });
+  }
+
 }
