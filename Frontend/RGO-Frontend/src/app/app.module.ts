@@ -21,6 +21,7 @@ import { EventsComponent } from './components/events/events.component';
 import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
 import { WorkshopComponent } from './components/workshop/workshop.component';
 import { FormsComponent } from './components/forms/forms.component';
+import { AddUserComponent } from './components/add-user/add-user.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { FormsComponent } from './components/forms/forms.component';
     PersonalProjectComponent,
     WorkshopComponent,
     FormsComponent,
+    AddUserComponent,
   ],
   imports: [
     BrowserModule,
