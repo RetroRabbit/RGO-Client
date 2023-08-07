@@ -9,7 +9,7 @@ import { AuthModule } from '@auth0/auth0-angular';
 import { HeaderComponent } from './components/header/header.component'
 import { StoreModule } from '@ngrx/store';
 import { LoginReducer } from './store/reducers/login.reducer';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { GradTodoComponent } from './components/grad-todo/grad-todo.component';
 import { EventReducer } from './store/reducers/events.reducer';
 import { EffectsModule } from '@ngrx/effects';
@@ -22,6 +22,13 @@ import { PersonalProjectComponent } from './components/personal-project/personal
 import { WorkshopComponent } from './components/workshop/workshop.component';
 import { FormsComponent } from './components/forms/forms.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
+import { WorkshopReducer} from './store/reducers/workshop.reducer'
+import { WorkshopEffects } from './store/effects/workshop.effects';
+import { LoginEffects } from './store/effects/app.effects';
+import { UserstackReducer } from './store/reducers/userstacks.reducer';
+import { UserstacksEffects } from './store/effects/userstacks.effects';
+import { AuthService } from './services/auth.service';
+import { AuthInterceptor } from './interceptor/auth0.interceptor';
 
 
 @NgModule({
@@ -44,8 +51,8 @@ import { AddUserComponent } from './components/add-user/add-user.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot({ app: LoginReducer, event: EventReducer }),
-    EffectsModule.forRoot([EventsEffects]),
+    StoreModule.forRoot({ app: LoginReducer, event: EventReducer, workshop : WorkshopReducer, userstack: UserstackReducer }),
+    EffectsModule.forRoot([LoginEffects, EventsEffects, WorkshopEffects , UserstacksEffects]),
     AuthModule.forRoot({
       domain: environment.AUTH0_Domain_key,// domain
       clientId: environment.AUTH0_CLIENT_ID,// clientId
@@ -55,7 +62,10 @@ import { AddUserComponent } from './components/add-user/add-user.component';
     }),
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    AuthService, 
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

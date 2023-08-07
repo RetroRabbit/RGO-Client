@@ -1,18 +1,27 @@
-import {
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
-import { AuthService } from '@auth0/auth0-angular';
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs';
+import { HttpInterceptor, HttpHandler, HttpRequest, HttpHeaders } from '@angular/common/http';
+import { Store } from '@ngrx/store';
+import { Token } from '../models/token.interface';
+import { AuthService } from '@auth0/auth0-angular';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthService) {}
+  token: string = '';
+
+  constructor(private appStore: Store<{ app: Token }>, private auth: AuthService) {
+    this.getToken();
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    return next.handle(req).pipe(
+    const authReq = req.clone({
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`,
+        'Content-Type': 'application/json'
+      })
+    });
+
+    return next.handle(authReq).pipe(
       tap({
         error: (error: any) => {
           if (error.status === 403 || error.status === 401) {
@@ -24,4 +33,11 @@ export class AuthInterceptor implements HttpInterceptor {
       })
     );
   }
+
+  getToken() {
+    this.appStore.select('app').subscribe(state => {
+      this.token = state.token;
+    });
+  }
 }
+
