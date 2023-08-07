@@ -9,14 +9,15 @@ export class UserProfileEffects {
   constructor(
     private actions$: Actions,
     private userprofileService: UserprofileService,
+    
   ) {}
-
+  
   getUserProfile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserProfile.GetUserProfile),
       mergeMap(({ email, token }) =>
-      this.userprofileService.GetUserProfile(email, token).pipe(
-        map(user => UserProfile.GetUserProfileSuccess({user: user})),
+      this.userprofileService.GetUserProfile(email,token).pipe(
+        map(user => UserProfile.GetUserProfileSuccess({userProfile: user})),
         )
       )
     )

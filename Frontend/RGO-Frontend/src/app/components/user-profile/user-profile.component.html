@@ -4,7 +4,7 @@
     <div class="col-lg-6">
       <div class="card">
         <div class="table-responsive">
-          <table class="table align-items-center mb-0">
+          <!-- <table class="table align-items-center mb-0" *ngIf="| async as profile"> -->
             <thead>
               <tr>
                 <th
@@ -18,11 +18,11 @@
             <tbody>
               <tr>
                 <td class="align-middle">Full Name</td>
-                <td class="align-middle">{{ GetUserProfile?.firstName }} {{ GetUserProfile?.lastName }}</td>
+                <!-- <td class="align-middle">{{ profile?.userProfile?.firstName }} {{ profile?.userProfile?.lastName }}</td> -->
               </tr>
               <tr>
                 <td class="align-middle">E-Mail</td>
-                <td class="align-middle"></td>
+                <!-- <td class="align-middle">{{ profile?.userProfile?.email }}</td> -->
               </tr>
               <tr>
                 <td class="align-middle">Phone</td>
@@ -37,12 +37,12 @@
                 <td class="align-middle"></td>
               </tr>
             </tbody>
-          </table>
+          <!-- </table> -->
         </div>
       </div>
       <div class="card">
         <div class="table-responsive">
-          <table class="table align-items-center mb-0">
+          <!-- <table class="table align-items-center mb-0"*ngIf="GetUserProfile | async as profile"> -->
             <thead>
               <tr>
                 <th
@@ -55,11 +55,11 @@
             <tbody>
               <tr>
                 <td class="align-middle">Discord</td>
-                <td class="align-middle"></td>
+               
               </tr>
               <tr>
                 <td class="align-middle">CodeWars</td>
-                <td class="align-middle"></td>
+               
               </tr>
               <tr>
                 <td class="align-middle">GitHub</td>
@@ -70,7 +70,7 @@
                 <td class="align-middle"></td>
               </tr>
             </tbody>
-          </table>
+          <!-- </table> -->
         </div>
       </div>
     </div>
@@ -109,9 +109,5 @@
     <div class="col-lg-4">
 
     </div>
-
-    <!-- <div class="col-lg-4">
-
-    </div> -->
   </div>
 </div>

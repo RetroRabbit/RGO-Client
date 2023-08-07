@@ -54,8 +54,9 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot({ app: LoginReducer, event: EventReducer, workshop : WorkshopReducer, userstack: UserstackReducer, user: UserProfileReducer }),
-    EffectsModule.forRoot([LoginEffects, EventsEffects, WorkshopEffects , UserstacksEffects,UserProfileEffects]),
+    StoreModule.forRoot({ app: LoginReducer, event: EventReducer,workshop : WorkshopReducer, userstack: UserstackReducer,user: UserProfileReducer}),
+
+    EffectsModule.forRoot([LoginEffects,EventsEffects,WorkshopEffects,UserstacksEffects,UserProfileEffects]),
     AuthModule.forRoot({
       domain: environment.AUTH0_Domain_key,// domain
       clientId: environment.AUTH0_CLIENT_ID,// clientId
