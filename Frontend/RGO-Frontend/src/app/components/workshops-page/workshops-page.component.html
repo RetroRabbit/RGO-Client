@@ -22,7 +22,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let workshop of workshopState.TodaysWorkshops; let i=index">
+                    <tr *ngFor="let workshop of workshopState['TodaysWorkshops']; let i=index">
                       <td class="text-xs font-weight-bold mb-0">{{workshop.eventId.startDate | date: 'shortTime'}}</td>
                       <td class="text-xs font-weight-bold mb-0">{{workshop.eventId.endDate | date: 'shortTime'}}</td>
                       <td class="text-xs font-weight-bold mb-0">{{workshop.eventId.title}}</td>
@@ -30,7 +30,7 @@
                      
                         <td class="align-middle">
                             <div *ngIf="workshop.viewable==true">
-                            <a (click)="GetTodaysWorkshop(i,workshopState.TodaysWorkshops)" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                            <a (click)="GetTodaysWorkshop(i,workshopState['TodaysWorkshops'])" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                               View
                             </a>
                         </div>  

@@ -53,5 +53,4 @@ export class WorkshopsPageComponent implements OnInit {
     this.store.dispatch(getSelectedWorkshop({ index: index, workshops: todayArray }));
     this.service.CaptureEvent('Viewable Workshop', this.selectedItem);
   }
-
 }
