@@ -41,7 +41,7 @@ export class WorkshopsPageComponent implements OnInit {
     }, 500)
   }
 
-  GetTodaysWorkshop(index: number, todayArray: Workshop[]) {
+  getTodaysWorkshop(index: number, todayArray: Workshop[]) {
     this.store.dispatch(getSelectedWorkshop({ index: index, workshops: todayArray }));
     this.store.select("workshop").subscribe(state => {
       this.selectedWorkshop = state.selectedWorkshop;
