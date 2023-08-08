@@ -16,17 +16,7 @@ export class WorkshopService {
   constructor(private client: HttpClient,private appStore : Store<{app : Token}>) { }
 
   getAllWorkshops(): Observable<Workshop[]>{
-    this.getToken();
-    let header: HttpHeaders = new HttpHeaders() 
-    header = header.append('Authorization',`Bearer ${this.token}`)
-    header = header.append('Content-Type','application/json')
-    return this.client.get<Workshop[]>(`${API.HttpsBaseURL}/Workshop/workshops`, {headers: header});
-  }
-
-  getToken(){
-    this.appStore.select('app').subscribe( state => {
-      this.token = state.token;
-    })
+    return this.client.get<Workshop[]>(`${API.HttpsBaseURL}/Workshop/workshops`);
   }
 
   public CaptureEvent(page: string, selectedItem: EventEmitter<{ selectedPage: string }>) {

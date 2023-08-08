@@ -9,7 +9,7 @@ import { AuthModule } from '@auth0/auth0-angular';
 import { HeaderComponent } from './components/header/header.component'
 import { StoreModule } from '@ngrx/store';
 import { LoginReducer } from './store/reducers/login.reducer';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { GradTodoComponent } from './components/grad-todo/grad-todo.component';
 import { EventReducer } from './store/reducers/events.reducer';
 import { EffectsModule } from '@ngrx/effects';
@@ -25,6 +25,12 @@ import { WorkshopReducer} from './store/reducers/workshop.reducer'
 import { WorkshopEffects } from './store/effects/workshop.effects';
 import { LoginEffects } from './store/effects/app.effects';
 import { ViewableWorkshopPageComponent } from './components/viewable-workshop-page/viewable-workshop-page.component';
+import { UserstackReducer } from './store/reducers/userstacks.reducer';
+import { UserstacksEffects } from './store/effects/userstacks.effects';
+import { AuthService } from './services/auth.service';
+import { AuthInterceptor } from './interceptor/auth0.interceptor';
+
+
 
 @NgModule({
   declarations: [
@@ -46,8 +52,8 @@ import { ViewableWorkshopPageComponent } from './components/viewable-workshop-pa
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot({ app: LoginReducer, event: EventReducer, workshop : WorkshopReducer }),
-    EffectsModule.forRoot([LoginEffects, EventsEffects, WorkshopEffects]),
+    StoreModule.forRoot({ app: LoginReducer, event: EventReducer, workshop : WorkshopReducer, userstack: UserstackReducer }),
+    EffectsModule.forRoot([LoginEffects, EventsEffects, WorkshopEffects , UserstacksEffects]),
     AuthModule.forRoot({
       domain: environment.AUTH0_Domain_key,// domain
       clientId: environment.AUTH0_CLIENT_ID,// clientId
@@ -57,7 +63,10 @@ import { ViewableWorkshopPageComponent } from './components/viewable-workshop-pa
     }),
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    AuthService, 
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

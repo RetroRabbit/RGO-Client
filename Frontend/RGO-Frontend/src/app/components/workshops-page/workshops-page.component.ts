@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { Workshop } from 'src/app/models/Workshop.interface';
 import { getSelectedWorkshop, getAllWorkshops, getTodaysWorkshop } from 'src/app/store/actions/workshop.actions';
 import { WorkshopState } from 'src/app/store/reducers/workshop.reducer';
-import { Token } from '../../models/token.interface';
 import { WorkshopService } from 'src/app/services/workshop.service';
 @Component({
   selector: 'app-workshops-page',
@@ -38,19 +37,34 @@ export class WorkshopsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(getAllWorkshops());
-    setTimeout( ()=>{
+    setTimeout(() => {
       this.store.dispatch(getTodaysWorkshop());
-    }, 500)
+    }, 500);
+
+    this.workshop$.subscribe((state) => {
+      this.allWorkshops = state.AllWorkshops;
+      this.todaysWorkshop = state.TodaysWorkshops;
+    });
   }
 
-  CaptureArrays(state : any){
-    
-    this.todaysWorkshop = state.TodaysWorkshops;
-    console.log(state.TodaysWorkshops);
-  }
-
-  GetTodaysWorkshop(index: number, todayArray: Workshop[]) {
+  getTodaysWorkshop(index: number, todayArray: Workshop[]) {
     this.store.dispatch(getSelectedWorkshop({ index: index, workshops: todayArray }));
     this.service.CaptureEvent('Viewable Workshop', this.selectedItem);
   }
+
+  showPastWorkshops(): Workshop[] {
+    const currentDate = new Date().getTime();
+  
+    if (!this.allWorkshops || this.allWorkshops.length === 0) {
+      return [];
+    }
+  
+    return this.allWorkshops.filter((workshop) => {
+      const workshopEndDate = new Date(workshop.eventId.endDate).getTime();
+      return workshopEndDate < currentDate;
+    });
+  }
+  
 }
+
+
