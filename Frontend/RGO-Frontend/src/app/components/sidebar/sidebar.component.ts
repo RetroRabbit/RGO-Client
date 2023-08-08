@@ -35,30 +35,32 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.menuItems = ROUTES;
-
-    this.type$.subscribe(data => {
-      this.userType = +data.type;
-    });
   }
 
-  IsMenuItemVisible(menuItem: RouteInfo): boolean {
+  IsMenuItemVisible(menuItem: RouteInfo, type : Token): boolean {
+    console.log(type);
+    let isGrad: boolean = false;
+    let isPresenter: boolean = false;
+    let isMentor: boolean = false;
+    let isAdmin: boolean = false;
+    
+    let strRoles = type.type.replace('[', '').replace(']', '').split(',');
+    if (strRoles.length == 0) return false;
 
-    if (menuItem.title === 'Dashboard') {
-      return true;
-    } else if (menuItem.title === 'Workshops' && (this.userType === 0 || this.userType === 1)) {
-      return true;
-    } else if (menuItem.title === 'Personal Project' && (this.userType === 2 || this.userType === 0)) {
-      return true;
-    } else if (menuItem.title === 'Events' && (this.userType === 0)) {
-      return true;
-    } else if (menuItem.title === 'Forms' && (this.userType === 3 || this.userType === 0)) {
-      return true;
-    } else if (menuItem.title === 'Forms Builder' && (this.userType === 3)) {
-      return true;
-    } else if (menuItem.title === 'Settings' && (this.userType === 3)) {
-      return true;
-    }
+    let roles = type.type.replace('[', '').replace(']', '').split(',');
+    console.info('UserRole', roles);
+    if (roles.includes('0')) isGrad = true;
+    if (roles.includes('1')) isPresenter = true;
+    if (roles.includes('2')) isMentor = true;
+    if (roles.includes('3')) isAdmin = true;
 
+    if (menuItem.title === 'Dashboard') return true;
+    else if (menuItem.title === 'Workshops' && (isGrad || isPresenter)) return true;
+    else if (menuItem.title === 'Personal Project' && (isMentor || isGrad)) return true;
+    else if (menuItem.title === 'Events' && (isGrad)) return true;
+    else if (menuItem.title === 'Forms' && (isAdmin || isGrad)) return true;
+    else if (menuItem.title === 'Forms Builder' && (isAdmin)) return true;
+    else if (menuItem.title === 'Settings' && (isAdmin)) return true;
   
     return false;
   }
