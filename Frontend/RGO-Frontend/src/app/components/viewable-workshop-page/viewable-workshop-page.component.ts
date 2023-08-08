@@ -16,7 +16,8 @@ export class ViewableWorkshopPageComponent implements OnInit{
   
   constructor(private store: Store<{workshop : WorkshopState}>, public service: WorkshopService){}
 
-  ngOnInit(){  }
+  ngOnInit(){ 
+  }
 
 
 }
