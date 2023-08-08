@@ -36,9 +36,14 @@ export class WorkshopsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(getAllWorkshops());
-    setTimeout( ()=>{
+    setTimeout(() => {
       this.store.dispatch(getTodaysWorkshop());
-    }, 500)
+    }, 500);
+
+    this.workshop$.subscribe((state) => {
+      this.allWorkshops = state.AllWorkshops;
+      this.todaysWorkshop = state.TodaysWorkshops;
+    });
   }
 
   getTodaysWorkshop(index: number, todayArray: Workshop[]) {
@@ -48,4 +53,19 @@ export class WorkshopsPageComponent implements OnInit {
     });
   }
 
+  showPastWorkshops(): Workshop[] {
+    const currentDate = new Date().getTime();
+  
+    if (!this.allWorkshops || this.allWorkshops.length === 0) {
+      return [];
+    }
+  
+    return this.allWorkshops.filter((workshop) => {
+      const workshopEndDate = new Date(workshop.eventId.endDate).getTime();
+      return workshopEndDate < currentDate;
+    });
+  }
+  
 }
+
+
