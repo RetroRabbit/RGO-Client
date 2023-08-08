@@ -27,6 +27,7 @@ import { FormsComponent } from './components/forms/forms.component';
 import { WorkshopReducer} from './store/reducers/workshop.reducer'
 import { WorkshopEffects } from './store/effects/workshop.effects';
 import { LoginEffects } from './store/effects/app.effects';
+import { ViewableWorkshopPageComponent } from './components/viewable-workshop-page/viewable-workshop-page.component';
 import { UserstackReducer } from './store/reducers/userstacks.reducer';
 import { UserstacksEffects } from './store/effects/userstacks.effects';
 import { AuthService } from './services/auth.service';
@@ -49,6 +50,7 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
     PersonalProjectComponent,
     WorkshopComponent,
     FormsComponent,
+    ViewableWorkshopPageComponent,
   ],
   imports: [
     BrowserModule,

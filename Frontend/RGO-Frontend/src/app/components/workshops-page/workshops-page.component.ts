@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Workshop } from 'src/app/models/Workshop.interface';
 import { getSelectedWorkshop, getAllWorkshops, getTodaysWorkshop } from 'src/app/store/actions/workshop.actions';
 import { WorkshopState } from 'src/app/store/reducers/workshop.reducer';
-
+import { WorkshopService } from 'src/app/services/workshop.service';
 @Component({
   selector: 'app-workshops-page',
   templateUrl: './workshops-page.component.html',
   styleUrls: ['./workshops-page.component.css']
 })
 export class WorkshopsPageComponent implements OnInit {
-
   allWorkshops: Workshop[] = [];
   todaysWorkshop: Workshop[] = [];
   selectedWorkshop: Workshop = {
@@ -32,7 +31,9 @@ export class WorkshopsPageComponent implements OnInit {
 
   workshop$ = this.store.select("workshop");
 
-  constructor(private store: Store<{ workshop: WorkshopState }>) { }
+  @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
+
+  constructor(private store : Store<{workshop : WorkshopState}>,public service: WorkshopService){}
 
   ngOnInit(): void {
     this.store.dispatch(getAllWorkshops());
@@ -48,9 +49,7 @@ export class WorkshopsPageComponent implements OnInit {
 
   getTodaysWorkshop(index: number, todayArray: Workshop[]) {
     this.store.dispatch(getSelectedWorkshop({ index: index, workshops: todayArray }));
-    this.store.select("workshop").subscribe(state => {
-      this.selectedWorkshop = state.selectedWorkshop;
-    });
+    this.service.CaptureEvent('Viewable Workshop', this.selectedItem);
   }
 
   showPastWorkshops(): Workshop[] {
