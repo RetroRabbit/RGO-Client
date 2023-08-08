@@ -32,6 +32,8 @@ import { UserstackReducer } from './store/reducers/userstacks.reducer';
 import { UserstacksEffects } from './store/effects/userstacks.effects';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './interceptor/auth0.interceptor';
+import { AdminReducer } from './store/reducers/admin.reducer';
+import { AdminEffects } from './store/effects/admin.effects';
 
 
 
@@ -56,9 +58,9 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot({ app: LoginReducer, event: EventReducer,workshop : WorkshopReducer, userstack: UserstackReducer,user: UserProfileReducer}),
+    StoreModule.forRoot({ app: LoginReducer, event: EventReducer,workshop : WorkshopReducer, userstack: UserstackReducer,user: UserProfileReducer, admin : AdminReducer}),
 
-    EffectsModule.forRoot([LoginEffects,EventsEffects,WorkshopEffects,UserstacksEffects,UserProfileEffects]),
+    EffectsModule.forRoot([LoginEffects,EventsEffects,WorkshopEffects,UserstacksEffects,UserProfileEffects, AdminEffects]),
     AuthModule.forRoot({
       domain: environment.AUTH0_Domain_key,// domain
       clientId: environment.AUTH0_CLIENT_ID,// clientId
