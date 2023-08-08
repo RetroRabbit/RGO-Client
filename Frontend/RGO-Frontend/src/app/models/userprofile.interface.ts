@@ -3,7 +3,7 @@ import { Social } from "./social.interface"
 import { Skill } from "./skills.interface"
 import { Certifications } from "./certifications.interface"
 
-export interface User{
+export interface UserProfile{
   id : number,
   groupdid : number
   firstName: string,
