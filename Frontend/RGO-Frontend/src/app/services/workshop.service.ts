@@ -13,7 +13,7 @@ export class WorkshopService {
 
   token: string = '';
 
-  constructor(private client: HttpClient,private appStore : Store<{app : Token}>) { }
+  constructor(private client: HttpClient, private appStore : Store<{app : Token}>) { }
 
   getAllWorkshops(): Observable<Workshop[]>{
     return this.client.get<Workshop[]>(`${API.HttpsBaseURL}/Workshop/workshops`);
