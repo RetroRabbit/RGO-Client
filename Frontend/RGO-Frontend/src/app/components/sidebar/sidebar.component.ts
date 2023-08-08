@@ -12,6 +12,7 @@ interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
     { title: 'Dashboard',  icon: 'dashboard' },
     { title: 'Workshops', icon: 'home_repair_service'},
+    { title: 'User Profile', icon: 'person'},
     { title: 'Personal Project', icon: 'assignment' },
     { title: 'Events', icon: 'calendar_view_week'},
     { title: 'Forms Builder', icon: 'assignment_add'},
@@ -27,7 +28,7 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: RouteInfo[] | undefined;
   type$: Observable<Token> = this.store.select('app');
-  userType: number | undefined ; 
+  userType: number | undefined ;
 
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
 
@@ -35,7 +36,6 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.menuItems = ROUTES;
-
     this.type$.subscribe(data => {
       this.userType = +data.type;
     });
@@ -57,12 +57,12 @@ export class SidebarComponent implements OnInit {
       return true;
     } else if (menuItem.title === 'Settings' && (this.userType === 3)) {
       return true;
+    } else if (menuItem.title === 'User Profile' && (this.userType === 0 || this.userType === 1)) {
+      return true;
     }
-
-  
     return false;
   }
-  
+
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.selectedItem.emit({

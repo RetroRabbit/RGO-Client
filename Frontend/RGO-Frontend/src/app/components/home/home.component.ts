@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 
 export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
-  selectedPage : string = "";
+  selectedPage : string = "Dashboard";
 
   constructor(
     private store: Store<{app: Token}>,
@@ -32,7 +32,7 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-  }
+  }  
 
   GetUserType() {
     let type = 0
