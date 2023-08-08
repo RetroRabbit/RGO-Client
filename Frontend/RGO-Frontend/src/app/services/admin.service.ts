@@ -12,6 +12,6 @@ export class AdminService {
   constructor(private httpClient: HttpClient) { }
 
   getAllUsers(): Observable<User>{
-    return this.httpClient.get<User>(`{API.HttpBaseURL}`)
+    return this.httpClient.get<User>(`${API.HttpBaseURL}/users/allusers`);
   }
 }
