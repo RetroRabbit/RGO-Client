@@ -36,9 +36,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.menuItems = ROUTES;
-
     this.type$.subscribe(data => {
-      // this.userType = (JSON.parse(data.type)).type;
       this.userType = +data.type;
     });
   }
