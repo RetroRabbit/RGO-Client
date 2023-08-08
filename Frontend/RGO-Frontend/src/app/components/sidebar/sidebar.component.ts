@@ -12,7 +12,7 @@ interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
     { title: 'Dashboard',  icon: 'dashboard' },
     { title: 'Workshops', icon: 'home_repair_service'},
-    { title: 'User Profile', icon: 'home_repair_service'},
+    { title: 'User Profile', icon: 'person'},
     { title: 'Personal Project', icon: 'assignment' },
     { title: 'Events', icon: 'calendar_view_week'},
     { title: 'Forms Builder', icon: 'assignment_add'},
