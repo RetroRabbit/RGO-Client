@@ -4,7 +4,6 @@
     <div class="col-lg-6">
       <div class="card">
         <div class="table-responsive">
-          <!-- <table class="table align-items-center mb-0" *ngIf="| async as profile"> -->
             <thead>
               <tr>
                 <th
@@ -15,6 +14,7 @@
                 <th></th>
               </tr>
             </thead>
+            <table>
             <tbody>
               <tr>
                 <td class="align-middle">Full Name</td>
@@ -22,7 +22,6 @@
               </tr>
               <tr>
                 <td class="align-middle">E-Mail</td>
-                <!-- <td class="align-middle">{{ profile?.userProfile?.email }}</td> -->
               </tr>
               <tr>
                 <td class="align-middle">Phone</td>
@@ -37,12 +36,11 @@
                 <td class="align-middle"></td>
               </tr>
             </tbody>
-          <!-- </table> -->
+          </table>
         </div>
       </div>
       <div class="card">
         <div class="table-responsive">
-          <!-- <table class="table align-items-center mb-0"*ngIf="GetUserProfile | async as profile"> -->
             <thead>
               <tr>
                 <th
@@ -52,9 +50,10 @@
                 </th>
               </tr>
             </thead>
+            <table>
             <tbody>
               <tr>
-                <!-- <td class="align-middle">Discord</td> -->
+                <td class="align-middle">Discord</td>
                 <td class="align-middle">{{profile['userProfile'].social['Discord']}}</td>
               </tr>
               <tr>
@@ -70,7 +69,7 @@
                 <td class="align-middle"></td>
               </tr>
             </tbody>
-          <!-- </table> -->
+          </table>
         </div>
       </div>
     </div>
@@ -81,17 +80,11 @@
         <div class="skill-circle">
           <div *ngFor="let skill of profile['userProfile'].skills">
               <h1>{{skill}}</h1>
-          </div>div>
-          <p>Comunication</p>
-          <p>C#</p>
-        </div>
-
+          </div>
       </div>
       <div class="card">
         <h4 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Certifications</h4>
         <div class="cert-circle">
-          <p>AWS</p>
-          <p>Microsoft</p>
         </div>
       </div>
 
@@ -99,9 +92,6 @@
         <div class="table-responsive">
         <h4 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Projects</h4>
         <div class="proj-circle">
-          <p>Cortex</p>
-          <p>RetroBot</p>
-          <p>GOP</p>
         </div>
         </div>
       </div>
