@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 @Injectable({
   providedIn: 'root'
 })
-export class UserprofileService {
+export class UserProfileService {
   email: string ='';
   token: string = '';
   constructor(private client: HttpClient,private appStore:Store<{app:Token}>) { }
