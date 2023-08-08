@@ -33,7 +33,7 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-  }
+  }  
 
   GetUserType() {
     let type = 0

@@ -1,5 +1,5 @@
 <p>user-profile works!</p>
-<div class="container">
+<div class="container" *ngIf="UserProfile$ | async as profile">
   <div class="row">
     <div class="col-lg-6">
       <div class="card">
@@ -18,7 +18,7 @@
             <tbody>
               <tr>
                 <td class="align-middle">Full Name</td>
-                <!-- <td class="align-middle">{{ profile?.userProfile?.firstName }} {{ profile?.userProfile?.lastName }}</td> -->
+                 <td class="align-middle">{{profile['userProfile'].firstName}} {{profile['userProfile'].lastName}}</td> 
               </tr>
               <tr>
                 <td class="align-middle">E-Mail</td>
@@ -54,8 +54,8 @@
             </thead>
             <tbody>
               <tr>
-                <td class="align-middle">Discord</td>
-               
+                <!-- <td class="align-middle">Discord</td> -->
+                <td class="align-middle">{{profile['userProfile'].social['Discord']}}</td>
               </tr>
               <tr>
                 <td class="align-middle">CodeWars</td>
@@ -79,6 +79,9 @@
       <div class="card">
         <h4 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Skills</h4>
         <div class="skill-circle">
+          <div *ngFor="let skill of profile['userProfile'].skills">
+              <h1>{{skill}}</h1>
+          </div>div>
           <p>Comunication</p>
           <p>C#</p>
         </div>

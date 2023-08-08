@@ -1,8 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  GetUserProfile,
-  GetUserProfileSuccess,
-} from '../actions/userprofile.actions';
+import { GetUserProfile, GetUserProfileSuccess,} from '../actions/userprofile.actions';
 import { User } from 'src/app/models/userprofile.interface';
 
 export interface UserProfileState{
@@ -15,6 +12,6 @@ export const initialState: UserProfileState = {
 
 export const UserProfileReducer = createReducer(
   initialState,
-  on(GetUserProfile, (state, { email, token }) => ({...state,loading: true,})),
+  on(GetUserProfile, (state) => ({...state,loading: true,})),
   on(GetUserProfileSuccess, (state, { userProfile }) => ({...state,userProfile,loading: true}))
 );

@@ -1,8 +1,10 @@
 import { Token } from '@angular/compiler';
 import { Component } from '@angular/core';
+import { User } from '@auth0/auth0-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-
+import { GetUserProfile } from 'src/app/store/actions/userprofile.actions';
+import { UserProfileState } from 'src/app/store/reducers/userprofile.reducer';
 
 @Component({
   selector: 'app-user-profile',
@@ -11,13 +13,12 @@ import { Observable } from 'rxjs';
 })
 
 export class UserProfileComponent {
-type$: Observable<Token>=this.store.select('app')
+  UserProfile$: Observable<User> = this.store.select('user')
 
-constructor(private store: Store<{app:Token}>){}
+  constructor(private store: Store<{ user: UserProfileState }>) { }
 
-ngOnInit()
-{
-
+  ngOnInit()  {
+    this.store.dispatch(GetUserProfile());
+  }
 }
-}
- 
+
