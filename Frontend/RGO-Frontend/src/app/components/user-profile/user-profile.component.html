@@ -1,0 +1,106 @@
+<p>user-profile works!</p>
+<div class="container" *ngIf="UserProfile$ | async as profile">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="table-responsive">
+            <thead>
+              <tr>
+                <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  Personal Details
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <table>
+            <tbody>
+              <tr>
+                <td class="align-middle">Full Name</td>
+                 <td class="align-middle">{{profile['userProfile'].firstName}} {{profile['userProfile'].lastName}}</td> 
+              </tr>
+              <tr>
+                <td class="align-middle">E-Mail</td>
+              </tr>
+              <tr>
+                <td class="align-middle">Phone</td>
+                <td class="align-middle"></td>
+              </tr>
+              <tr>
+                <td class="align-middle">Level</td>
+                <td class="align-middle"></td>
+              </tr>
+              <tr>
+                <td class="align-middle">Bio</td>
+                <td class="align-middle"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="table-responsive">
+            <thead>
+              <tr>
+                <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >
+                  Socials
+                </th>
+              </tr>
+            </thead>
+            <table>
+            <tbody>
+              <tr>
+                <td class="align-middle">Discord</td>
+                <td class="align-middle">{{profile['userProfile'].social['Discord']}}</td>
+              </tr>
+              <tr>
+                <td class="align-middle">CodeWars</td>
+               
+              </tr>
+              <tr>
+                <td class="align-middle">GitHub</td>
+                <td class="align-middle"></td>
+              </tr>
+              <tr>
+                <td class="align-middle">Linkedin</td>
+                <td class="align-middle"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card">
+        <h4 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Skills</h4>
+        <div class="skill-circle">
+          <div *ngFor="let skill of profile['userProfile'].skills">
+              <h1>{{skill}}</h1>
+          </div>
+      </div>
+      <div class="card">
+        <h4 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Certifications</h4>
+        <div class="cert-circle">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="table-responsive">
+        <h4 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Projects</h4>
+        <div class="proj-circle">
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-4">
+
+    </div>
+  </div>
+</div>

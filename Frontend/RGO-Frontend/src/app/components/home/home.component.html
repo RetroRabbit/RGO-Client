@@ -6,6 +6,7 @@
   <div class="main-panel">
     <app-header></app-header>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ps ps--active-y">
+
       <div *ngIf="selectedPage === 'Workshops'">
         <app-workshops-page></app-workshops-page>
       </div>
@@ -21,6 +22,9 @@
       <div *ngIf="selectedPage === 'Forms'">
         <app-forms></app-forms>
       </div>
-    </main>
+      <div *ngIf="selectedPage === 'User Profile'">
+        <app-user-profile></app-user-profile>
+      </div>
+    </main> 
   </div>
 </div>

@@ -17,8 +17,11 @@ import { EventsEffects } from './store/effects/events.effects';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { environment } from 'src/enviroment/env';
 import { WorkshopsPageComponent } from './components/workshops-page/workshops-page.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { EventsComponent } from './components/events/events.component';
 import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
+import { UserProfileReducer } from './store/reducers/userprofile.reducer';
+import { UserProfileEffects } from './store/effects/userprofile.effects';
 import { WorkshopComponent } from './components/workshop/workshop.component';
 import { FormsComponent } from './components/forms/forms.component';
 import { WorkshopReducer} from './store/reducers/workshop.reducer'
@@ -41,6 +44,7 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
     SidebarComponent,
     PersonalProjectComponent,
     WorkshopsPageComponent,
+    UserProfileComponent,
     EventsComponent,
     PersonalProjectComponent,
     WorkshopComponent,
@@ -50,8 +54,9 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot({ app: LoginReducer, event: EventReducer, workshop : WorkshopReducer, userstack: UserstackReducer }),
-    EffectsModule.forRoot([LoginEffects, EventsEffects, WorkshopEffects , UserstacksEffects]),
+    StoreModule.forRoot({ app: LoginReducer, event: EventReducer,workshop : WorkshopReducer, userstack: UserstackReducer,user: UserProfileReducer}),
+
+    EffectsModule.forRoot([LoginEffects,EventsEffects,WorkshopEffects,UserstacksEffects,UserProfileEffects]),
     AuthModule.forRoot({
       domain: environment.AUTH0_Domain_key,// domain
       clientId: environment.AUTH0_CLIENT_ID,// clientId
