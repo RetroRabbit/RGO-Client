@@ -26,7 +26,7 @@
         <app-add-user></app-add-user>
       </div>
       <div *ngIf="selectedPage === 'Viewable Workshop'">
-        <!-- <app-viewable-workshop-page (selectedItem)="handleSelectedItem($event)"></app-viewable-workshop-page> -->
+        <app-viewable-workshop-page (selectedItem)="handleSelectedItem($event)"></app-viewable-workshop-page>
       </div>
       <div *ngIf="selectedPage === 'User Profile'">
         <app-user-profile></app-user-profile>

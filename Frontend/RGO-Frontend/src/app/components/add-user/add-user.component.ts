@@ -31,7 +31,6 @@ export class AddUserComponent {
       next: (data) => {
       },
       error: (error) => {
-
       }
     })
   }
