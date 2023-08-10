@@ -7,7 +7,7 @@ import { API } from '../models/constants/urls.constants';
 @Injectable({
   providedIn: 'root'
 })
-export class AdminService {
+export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
