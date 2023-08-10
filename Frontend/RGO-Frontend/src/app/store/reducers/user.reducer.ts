@@ -4,7 +4,7 @@ import { createReducer, on } from '@ngrx/store';
 
 
 export interface UserState{
-    user : User | null
+    user : any | null
   }
 
   export const initialState: UserState = {
