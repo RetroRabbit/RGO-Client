@@ -32,6 +32,7 @@ import { UserstackReducer } from './store/reducers/userstacks.reducer';
 import { UserstacksEffects } from './store/effects/userstacks.effects';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './interceptor/auth0.interceptor';
+import { ViewUsersPageComponent } from './components/view-users-page/view-users-page.component';
 
 
 
@@ -51,6 +52,7 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
     WorkshopComponent,
     FormsComponent,
     ViewableWorkshopPageComponent,
+    ViewUsersPageComponent
   ],
   imports: [
     BrowserModule,
