@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { getAllUsers } from 'src/app/store/actions/user.actions';
+import { UserState } from 'src/app/store/reducers/user.reducer';
 
 @Component({
   selector: 'app-view-users-page',
@@ -6,11 +9,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./view-users-page.component.css']
 })
 export class ViewUsersPageComponent implements OnInit {
-  
-  constructor(private store : Store<{workshop : WorkshopState}>){}
+  allUsers$ = this.store.select('users');
+  constructor(private store : Store<{users : UserState}>){}
 
   ngOnInit(): void {
-    
+    this.store.dispatch(getAllUsers());
   }
 
 }
