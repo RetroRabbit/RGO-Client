@@ -6,8 +6,9 @@
   <div class="main-panel">
     <app-header></app-header>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ps ps--active-y">
+
       <div *ngIf="selectedPage === 'Workshops'">
-        <app-workshops-page></app-workshops-page>
+        <app-workshops-page  (selectedItem)="handleSelectedItem($event)"></app-workshops-page>
       </div>
       <div *ngIf="selectedPage === 'Events'">
         <app-events></app-events>
@@ -21,9 +22,19 @@
       <div *ngIf="selectedPage === 'Forms'">
         <app-forms></app-forms>
       </div>
+<<<<<<< HEAD
       <div *ngIf="selectedPage === 'Add User'">
         <app-add-user></app-add-user>
       </div>
     </main>
+=======
+      <div *ngIf="selectedPage === 'Viewable Workshop'">
+        <app-viewable-workshop-page (selectedItem)="handleSelectedItem($event)"></app-viewable-workshop-page>
+      </div>
+      <div *ngIf="selectedPage === 'User Profile'">
+        <app-user-profile></app-user-profile>
+      </div>
+    </main> 
+>>>>>>> Dev
   </div>
 </div>

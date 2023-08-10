@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API } from '../models/constants/urls.constants';
 import { Workshop } from '../models/Workshop.interface';
@@ -10,10 +10,18 @@ import { Store } from '@ngrx/store';
   providedIn: 'root'
 })
 export class WorkshopService {
+
   token: string = '';
-  constructor(private client: HttpClient) { }
+
+  constructor(private client: HttpClient, private appStore : Store<{app : Token}>) { }
 
   getAllWorkshops(): Observable<Workshop[]>{
     return this.client.get<Workshop[]>(`${API.HttpsBaseURL}/Workshop/workshops`);
+  }
+
+  public CaptureEvent(page: string, selectedItem: EventEmitter<{ selectedPage: string }>) {
+    selectedItem.emit({
+      selectedPage: page
+    });
   }
 }

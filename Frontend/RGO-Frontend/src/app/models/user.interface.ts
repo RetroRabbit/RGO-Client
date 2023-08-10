@@ -1,7 +1,11 @@
 export interface User {
-    group: any;
-    firstName : any;
-    lastName: any;
-    email: any;
-    status: any;
-  }
+
+    id : number,
+    gradGroupId : number
+    firstName: string,
+    lastName:string,
+    email: string,
+    type: number,
+    joinDate : Date,
+    status: 1,
+}

@@ -17,14 +17,18 @@ import { EventsEffects } from './store/effects/events.effects';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { environment } from 'src/enviroment/env';
 import { WorkshopsPageComponent } from './components/workshops-page/workshops-page.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { EventsComponent } from './components/events/events.component';
 import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
+import { UserProfileReducer } from './store/reducers/userprofile.reducer';
+import { UserProfileEffects } from './store/effects/userprofile.effects';
 import { WorkshopComponent } from './components/workshop/workshop.component';
 import { FormsComponent } from './components/forms/forms.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { WorkshopReducer} from './store/reducers/workshop.reducer'
 import { WorkshopEffects } from './store/effects/workshop.effects';
 import { LoginEffects } from './store/effects/app.effects';
+import { ViewableWorkshopPageComponent } from './components/viewable-workshop-page/viewable-workshop-page.component';
 import { UserstackReducer } from './store/reducers/userstacks.reducer';
 import { UserstacksEffects } from './store/effects/userstacks.effects';
 import { AuthService } from './services/auth.service';
@@ -40,19 +44,30 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
     SidebarComponent,
     PersonalProjectComponent,
     WorkshopsPageComponent,
+    UserProfileComponent,
     EventsComponent,
     PersonalProjectComponent,
     WorkshopComponent,
     FormsComponent,
+<<<<<<< HEAD
     AddUserComponent,
+=======
+    ViewableWorkshopPageComponent,
+>>>>>>> Dev
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+<<<<<<< HEAD
     ReactiveFormsModule,
     StoreModule.forRoot({ app: LoginReducer, event: EventReducer, workshop : WorkshopReducer, userstack: UserstackReducer }),
     EffectsModule.forRoot([LoginEffects, EventsEffects, WorkshopEffects , UserstacksEffects]),
+=======
+    StoreModule.forRoot({ app: LoginReducer, event: EventReducer,workshop : WorkshopReducer, userstack: UserstackReducer,user: UserProfileReducer}),
+
+    EffectsModule.forRoot([LoginEffects,EventsEffects,WorkshopEffects,UserstacksEffects,UserProfileEffects]),
+>>>>>>> Dev
     AuthModule.forRoot({
       domain: environment.AUTH0_Domain_key,// domain
       clientId: environment.AUTH0_CLIENT_ID,// clientId
