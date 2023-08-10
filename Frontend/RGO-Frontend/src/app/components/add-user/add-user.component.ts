@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { User } from 'src/app/models/user.interface';
+import { GradGroups } from 'src/app/models/gradgroup.interface';
 import { UserService } from 'src/app/services/user.service';
 import { UserState } from 'src/app/store/reducers/user.reducer';
 
@@ -14,10 +14,10 @@ export class AddUserComponent {
 
   constructor(private store: Store<{ user: UserState }>, private userService: UserService){}
 
-  newUser!: User | null;
+  public gradGroups: GradGroups[] =[{id: 1, title: "2023"}];
 
   newUserForm = new FormGroup({
-    gradGroupId: new FormControl('', Validators.required),
+    gradGroupId: new FormControl(''),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required),
@@ -25,16 +25,14 @@ export class AddUserComponent {
     status: new FormControl('', Validators.required),
   });
 
+
   onSubmit(){
     this.userService.addUser(this.newUserForm.value).subscribe({
-      next: (data: any) => {
-        console.log(data);
+      next: (data) => {
+      },
+      error: (error) => {
+
       }
-    }
-      
-    )
+    })
   }
-
-
-
 }

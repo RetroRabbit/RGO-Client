@@ -1,6 +1,5 @@
 export interface User {
 
-
     id? : number;
     gradGroupId? : number;
     firstName?: string;
