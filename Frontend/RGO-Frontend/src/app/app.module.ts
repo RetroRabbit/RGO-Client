@@ -33,6 +33,8 @@ import { UserstackReducer } from './store/reducers/userstacks.reducer';
 import { UserstacksEffects } from './store/effects/userstacks.effects';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './interceptor/auth0.interceptor';
+import { UserReducer } from './store/reducers/user.reducer';
+import { UserEffects } from './store/effects/user.effects';
 
 @NgModule({
   declarations: [
@@ -49,25 +51,19 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
     PersonalProjectComponent,
     WorkshopComponent,
     FormsComponent,
-<<<<<<< HEAD
     AddUserComponent,
-=======
     ViewableWorkshopPageComponent,
->>>>>>> Dev
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-<<<<<<< HEAD
     ReactiveFormsModule,
-    StoreModule.forRoot({ app: LoginReducer, event: EventReducer, workshop : WorkshopReducer, userstack: UserstackReducer }),
-    EffectsModule.forRoot([LoginEffects, EventsEffects, WorkshopEffects , UserstacksEffects]),
-=======
-    StoreModule.forRoot({ app: LoginReducer, event: EventReducer,workshop : WorkshopReducer, userstack: UserstackReducer,user: UserProfileReducer}),
-
     EffectsModule.forRoot([LoginEffects,EventsEffects,WorkshopEffects,UserstacksEffects,UserProfileEffects]),
->>>>>>> Dev
+    StoreModule.forRoot({ app: LoginReducer, event: EventReducer, workshop: WorkshopReducer, userstack: UserstackReducer, user: UserProfileReducer, users: UserReducer }),
+
+    EffectsModule.forRoot([LoginEffects, EventsEffects, WorkshopEffects, UserstacksEffects, UserProfileEffects, UserEffects]),
     AuthModule.forRoot({
       domain: environment.AUTH0_Domain_key,// domain
       clientId: environment.AUTH0_CLIENT_ID,// clientId
@@ -78,7 +74,7 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
     HttpClientModule,
   ],
   providers: [
-    AuthService, 
+    AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

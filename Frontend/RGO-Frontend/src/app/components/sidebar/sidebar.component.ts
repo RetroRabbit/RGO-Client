@@ -29,11 +29,8 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: RouteInfo[] | undefined;
   type$: Observable<Token> = this.store.select('app');
-<<<<<<< HEAD
   userType: number | undefined; 
-=======
-  userType: number | undefined ;
->>>>>>> Dev
+
 
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
 
@@ -65,14 +62,9 @@ export class SidebarComponent implements OnInit {
     } else if (menuItem.title === 'User Profile' && (this.userType === 0 || this.userType === 1)) {
       return true;
     }
-<<<<<<< HEAD
     else if (menuItem.title === 'Add User' && (this.userType === 0)) {
       return true;
     }
-
-  
-=======
->>>>>>> Dev
     return false;
   }
 

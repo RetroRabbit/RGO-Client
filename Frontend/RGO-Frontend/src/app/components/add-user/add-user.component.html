@@ -3,13 +3,13 @@
         <h1 class="page-heading border-bottom">New User</h1>
         <div style="overflow: auto">
             <div class="container-fluid">
-                <form [formGroup]="newUserForm">
+                <form [formGroup]="newUserForm" (submit)="onSubmit()">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3 row">
                                 <div class="col-sm-12">
-                                  <label  class="col-form-label">Group</label>
-                                  <input type="text" class="form-control"  formControlName="group" />
+                                  <label  class="col-form-label">Grad Group</label>
+                                  <input type="text" class="form-control"  formControlName="gradGroupId" />
                                 </div>
                               </div>
                               <div class="mb-3 row">
@@ -40,6 +40,11 @@
                                 <div class="col-sm-12">
                                   <label  class="col-form-label">Status</label>
                                   <input type="text" class="form-control"  formControlName="status" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <div class="col-sm-12">
+                                  <button type="submit" class="form-control"  formControlName="group">Submit</button>
                                 </div>
                               </div>
                         </div>
