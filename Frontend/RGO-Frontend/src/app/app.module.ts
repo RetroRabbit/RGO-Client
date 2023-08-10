@@ -60,9 +60,7 @@ import { UserEffects } from './store/effects/user.effects';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    EffectsModule.forRoot([LoginEffects,EventsEffects,WorkshopEffects,UserstacksEffects,UserProfileEffects]),
     StoreModule.forRoot({ app: LoginReducer, event: EventReducer, workshop: WorkshopReducer, userstack: UserstackReducer, user: UserProfileReducer, users: UserReducer }),
-
     EffectsModule.forRoot([LoginEffects, EventsEffects, WorkshopEffects, UserstacksEffects, UserProfileEffects, UserEffects]),
     AuthModule.forRoot({
       domain: environment.AUTH0_Domain_key,// domain
