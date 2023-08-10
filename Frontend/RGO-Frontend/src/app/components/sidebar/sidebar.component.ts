@@ -18,7 +18,6 @@ export const ROUTES: RouteInfo[] = [
     { title: 'Forms Builder', icon: 'assignment_add'},
     { title: 'Forms', icon: 'assignment'},
     { title: 'Settings', icon: 'settings'},
-    { title: 'Users', icon: 'people'},
 ];
 
 @Component({
@@ -59,8 +58,6 @@ export class SidebarComponent implements OnInit {
     } else if (menuItem.title === 'Settings' && (this.userType === 3)) {
       return true;
     } else if (menuItem.title === 'User Profile' && (this.userType === 0 || this.userType === 1)) {
-      return true;
-    } else if (menuItem.title === 'Users' && (this.userType === 3)) {
       return true;
     }
     return false;
