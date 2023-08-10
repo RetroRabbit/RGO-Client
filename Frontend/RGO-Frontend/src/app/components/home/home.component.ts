@@ -45,5 +45,6 @@ export class HomeComponent {
 
   handleSelectedItem(eventData: { selectedPage: string }) {
     this.selectedPage = eventData.selectedPage;
+    console.log(this.selectedPage)
   }
 }

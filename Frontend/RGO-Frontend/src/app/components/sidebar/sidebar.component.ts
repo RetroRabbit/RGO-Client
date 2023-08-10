@@ -17,6 +17,7 @@ export const ROUTES: RouteInfo[] = [
     { title: 'Forms Builder', icon: 'assignment_add'},
     { title: 'Forms', icon: 'assignment'},
     { title: 'Settings', icon: 'settings'},
+    { title: 'Add User', icon: 'user'},
 ];
 
 @Component({
@@ -27,7 +28,7 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: RouteInfo[] | undefined;
   type$: Observable<Token> = this.store.select('app');
-  userType: number | undefined ; 
+  userType: number | undefined; 
 
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
 
@@ -56,6 +57,9 @@ export class SidebarComponent implements OnInit {
     } else if (menuItem.title === 'Forms Builder' && (this.userType === 3)) {
       return true;
     } else if (menuItem.title === 'Settings' && (this.userType === 3)) {
+      return true;
+    }
+    else if (menuItem.title === 'Add User' && (this.userType === 0)) {
       return true;
     }
 

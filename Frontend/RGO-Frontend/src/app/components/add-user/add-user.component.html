@@ -1,1 +1,51 @@
-<p>add-user works!</p>
+<div class="col-12">
+    <div class="m-3 border-bottom">
+        <h1 class="page-heading border-bottom">New User</h1>
+        <div style="overflow: auto">
+            <div class="container-fluid">
+                <form [formGroup]="newUserForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3 row">
+                                <div class="col-sm-12">
+                                  <label  class="col-form-label">Group</label>
+                                  <input type="text" class="form-control"  formControlName="group" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <div class="col-sm-12">
+                                  <label  class="col-form-label">First Name</label>
+                                  <input type="text" class="form-control"  formControlName="firstName" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <div class="col-sm-12">
+                                  <label  class="col-form-label">Last Name</label>
+                                  <input type="text" class="form-control"  formControlName="lastName" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <div class="col-sm-12">
+                                  <label  class="col-form-label">Email</label>
+                                  <input type="text" class="form-control"  formControlName="email" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <div class="col-sm-12">
+                                  <label  class="col-form-label">Type</label>
+                                  <input type="text" class="form-control"  formControlName="type" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <div class="col-sm-12">
+                                  <label  class="col-form-label">Status</label>
+                                  <input type="text" class="form-control"  formControlName="status" />
+                                </div>
+                              </div>
+                        </div>
+                    </div> 
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

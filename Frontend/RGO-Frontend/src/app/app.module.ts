@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { HomeComponent } from './components/home/home.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
 import { HeaderComponent } from './components/header/header.component'
 import { StoreModule } from '@ngrx/store';
@@ -30,7 +30,6 @@ import { UserstacksEffects } from './store/effects/userstacks.effects';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './interceptor/auth0.interceptor';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,6 +50,7 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     StoreModule.forRoot({ app: LoginReducer, event: EventReducer, workshop : WorkshopReducer, userstack: UserstackReducer }),
     EffectsModule.forRoot([LoginEffects, EventsEffects, WorkshopEffects , UserstacksEffects]),
     AuthModule.forRoot({
