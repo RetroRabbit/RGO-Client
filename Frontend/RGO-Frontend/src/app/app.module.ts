@@ -24,7 +24,7 @@ import { UserProfileReducer } from './store/reducers/userprofile.reducer';
 import { UserProfileEffects } from './store/effects/userprofile.effects';
 import { WorkshopComponent } from './components/workshop/workshop.component';
 import { FormsComponent } from './components/forms/forms.component';
-import { WorkshopReducer} from './store/reducers/workshop.reducer'
+import { WorkshopReducer } from './store/reducers/workshop.reducer'
 import { WorkshopEffects } from './store/effects/workshop.effects';
 import { LoginEffects } from './store/effects/app.effects';
 import { ViewableWorkshopPageComponent } from './components/viewable-workshop-page/viewable-workshop-page.component';
@@ -33,6 +33,8 @@ import { UserstacksEffects } from './store/effects/userstacks.effects';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './interceptor/auth0.interceptor';
 import { ViewUsersPageComponent } from './components/view-users-page/view-users-page.component';
+import { UserReducer } from './store/reducers/user.reducer';
+import { UserEffects } from './store/effects/user.effects';
 
 
 
@@ -58,9 +60,9 @@ import { ViewUsersPageComponent } from './components/view-users-page/view-users-
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    StoreModule.forRoot({ app: LoginReducer, event: EventReducer,workshop : WorkshopReducer, userstack: UserstackReducer,user: UserProfileReducer}),
+    StoreModule.forRoot({ app: LoginReducer, event: EventReducer, workshop: WorkshopReducer, userstack: UserstackReducer, user: UserProfileReducer, users: UserReducer }),
 
-    EffectsModule.forRoot([LoginEffects,EventsEffects,WorkshopEffects,UserstacksEffects,UserProfileEffects]),
+    EffectsModule.forRoot([LoginEffects, EventsEffects, WorkshopEffects, UserstacksEffects, UserProfileEffects, UserEffects]),
     AuthModule.forRoot({
       domain: environment.AUTH0_Domain_key,// domain
       clientId: environment.AUTH0_CLIENT_ID,// clientId
@@ -71,7 +73,7 @@ import { ViewUsersPageComponent } from './components/view-users-page/view-users-
     HttpClientModule,
   ],
   providers: [
-    AuthService, 
+    AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
