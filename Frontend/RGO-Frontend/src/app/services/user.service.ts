@@ -14,4 +14,8 @@ export class UserService {
   getAllUsers(): Observable<User>{
     return this.httpClient.get<User>(`${API.HttpBaseURL}/users/get`);
   }
+
+  addUser(): Observable<User>{
+    return this.httpClient.get<User>(`${API.HttpBaseURL}/users/add`);
+  }
 }
