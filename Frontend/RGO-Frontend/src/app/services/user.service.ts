@@ -6,11 +6,11 @@ import { User } from '../models/user.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class AdminService {
+export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
   getAllUsers(): Observable<User[]>{
-    return this.httpClient.get<User[]>(`{API.HttpBaseURL}`)
+    return this.httpClient.get<User[]>(`${API.HttpBaseURL}/users/get`);
   }
 }
