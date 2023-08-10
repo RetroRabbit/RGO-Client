@@ -12,8 +12,8 @@ export interface UserProfile{
   type: number,
   joinDate : Date,
   status: 1,
-  skill : Skill[],
+  skills : Skill[],
   certifications : Certifications[],
   project : Project[],
-  social : Social
+  socials : Social
 };
