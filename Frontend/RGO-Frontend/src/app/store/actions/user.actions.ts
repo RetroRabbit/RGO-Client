@@ -9,7 +9,3 @@ export const getAllUsersSuccess = createAction(
     '[AllUsers] Get All Users',
     props<{AllUsers : User[]}>()
 )
-
-export const createUser = createAction(
-    '[user] Create User', 
-    props<{ user: User }>());
