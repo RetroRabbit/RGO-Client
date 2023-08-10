@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewUsersPageComponent } from './view-users-page.component';
+import { ViewUsersComponent } from './view-users.component';
 
 describe('ViewUsersPageComponent', () => {
-  let component: ViewUsersPageComponent;
-  let fixture: ComponentFixture<ViewUsersPageComponent>;
+  let component: ViewUsersComponent;
+  let fixture: ComponentFixture<ViewUsersComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ViewUsersPageComponent]
+      declarations: [ViewUsersComponent]
     });
-    fixture = TestBed.createComponent(ViewUsersPageComponent);
+    fixture = TestBed.createComponent(ViewUsersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
