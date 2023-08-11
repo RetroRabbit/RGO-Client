@@ -30,7 +30,6 @@ export class UserstacksService {
     selectedItem.emit({
       selectedPage: page
     });
-    console.log(page)
   }
   getEmail(){
     this.store.select('app').subscribe( state => {

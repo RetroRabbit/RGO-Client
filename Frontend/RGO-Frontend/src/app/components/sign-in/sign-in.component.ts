@@ -41,7 +41,6 @@ export class SignInComponent {
                 token: token,
                 type: res
               };
-              console.log(token);
               this.store.dispatch(GetLogin({ payload: googleID }));
               this.router.navigateByUrl('/home');
             });
