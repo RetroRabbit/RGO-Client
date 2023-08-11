@@ -35,6 +35,5 @@ export class UserstacksService {
     this.store.select('app').subscribe( state => {
       this.email = state.email;
     })
-  }
-    
+  }     
 }
