@@ -18,6 +18,7 @@ export const ROUTES: RouteInfo[] = [
     { title: 'Forms Builder', icon: 'assignment_add'},
     { title: 'Forms', icon: 'assignment'},
     { title: 'Settings', icon: 'settings'},
+    { title: 'Stack', icon: 'settings'}
 ];
 
 @Component({
@@ -38,6 +39,7 @@ export class SidebarComponent implements OnInit {
     this.menuItems = ROUTES;
     this.type$.subscribe(data => {
       this.userType = +data.type;
+      // this.userType = JSON.parse(data.type).type;
     });
   }
 
@@ -58,6 +60,8 @@ export class SidebarComponent implements OnInit {
     } else if (menuItem.title === 'Settings' && (this.userType === 3)) {
       return true;
     } else if (menuItem.title === 'User Profile' && (this.userType === 0 || this.userType === 1)) {
+      return true;
+    } else if (menuItem.title === 'Stack' && (this.userType === 0 || this.userType === 1)) {
       return true;
     }
     return false;

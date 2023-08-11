@@ -1,15 +1,19 @@
-<div class="content" role="main">
-    <!-- Technology Stack -->
-    <h2>Tech Stack Generator</h2>
-    <p>Generate a technology stack for your personal project.</p>
+<!-- <div class="content" role="main">
+    Technology Stack -->
+    <!-- <h2>Tech Stack Generator</h2>
+    <p>Generate a technology stack for your personal project.</p> -->
     <!-- Randomizer -->
-    <button class="card">
+    <!-- <button class="card">
         <span>Randomize</span>
-    </button>
+    </button> -->
     <!-- Technology Stack -->
-    <div class="card-container">
+    <!-- <div class="card-container" *ngIf="userStacks$ | async as userStack">
         <a class="card" target="_blank" rel="noopener">
-            <span>Frontend</span>
+            <span>Frontend </span>
+            
+            <p class="text-sm">
+                {{userStack.userstacks?.frontend?.title}}
+            </p>
         </a>
         <a class="card" target="_blank" rel="noopener">
             <span>Backend</span>
@@ -17,18 +21,45 @@
         <a class="card" target="_blank" rel="noopener">
             <span>Database</span>
         </a>
-    </div>
+    </div> -->
     <!-- Next Steps -->
-    <h2>Next Steps</h2>
-    <p>Provide a description about you project idea...</p>
+    <!-- <h2>Next Steps</h2>
+    <p>Provide a description about you project idea...</p> -->
     <!-- From Input - Project Description -->
-    <div class="my-3">
+    <!-- <div class="my-3">
         <input type="text-area" class="form-control" />
-    </div>
+    </div> -->
     <!-- Status -->
-    <div class="card-container">
+    <!-- <div class="card-container">
         <p>Status: Pending</p>
-    </div>
+    </div> -->
     <!-- Footer -->
-    <footer></footer>
-</div>
+    <!-- <footer></footer>
+</div> -->
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ps">
+    <!-- Navbar -->
+    <!-- <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Projects</li>
+          </ol>
+        </nav>
+      </div>
+    </nav> -->
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12 mb-xl-0 mb-4" *ngIf="userStacks$ | async as userStacks">
+          <ng-container *ngIf="userStacks.userstacks === null">
+            <button (click)="onSetUserstackClick()" class="btn btn-primary btn-lg w-100" >Generate Stack</button>
+          </ng-container>
+          <ng-container *ngIf="userStacks.userstacks !== null">
+            <app-stack></app-stack>
+          </ng-container>
+        </div>
+
+        </div>
+      </div>
+  <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></main>
