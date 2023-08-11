@@ -33,5 +33,5 @@ export const initialState: UserProfileState = {
 export const UserProfileReducer = createReducer(
   initialState,
   on(GetUserProfile, (state) => ({...state,loading: true,})),
-  on(GetUserProfileSuccess, (state, { userProfile }) => ({...state,userProfile,loading: true}))
+  on(GetUserProfileSuccess, (state, { userProfile }) => ({...state,userProfile,loading: true})),
 );

@@ -6,9 +6,7 @@
         <div class="table-responsive">
           <thead>
             <tr>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                 Personal Details
               </th>
               <th></th>
@@ -29,38 +27,29 @@
                   {{ profile["userProfile"].email }}
                 </td>
                 <ng-template #EmailEdit>
-                  <input
-                    type="text"
-                    [value]="emailEdit"
-                    [(ngModel)]="emailEdit"
-                  />
+                  <input type="text" [value]="emailEdit" [(ngModel)]="emailEdit" />
                 </ng-template>
               </tr>
               <tr>
                 <td class="align-middle">Level</td>
-                <td class="align-middle">{{ profile["userProfile"].email }}</td>
+                <td class="align-middle">{{ profile["userProfile"].level }}</td>
               </tr>
               <tr>
                 <td class="align-middle">Phone</td>
                 <td *ngIf="!isEdit; else PhoneEdit" class="align-middle">
-                  {{ profile["userProfile"].email }}
+                  {{ profile["userProfile"].phone }}
                 </td>
                 <ng-template #PhoneEdit>
-                  <input
-                    type="text"
-                    [value]="PhoneEdit"
-                    [(ngModel)]="phoneEdit"
-                  />
+                  <input type="text" [value]="PhoneEdit" [(ngModel)]="phoneEdit" />
                 </ng-template>
               </tr>
               <tr>
                 <td class="align-middle">Bio</td>
                 <td *ngIf="!isEdit; else BioEdit" class="align-middle">
-                  {{ profile["userProfile"].email }}
+                  {{ profile["userProfile"].bio }}
                 </td>
                 <ng-template #BioEdit>
-                  <input type="text" [value]="bioEdit"
-                  [(ngModel)]="bioEdit" />
+                  <input type="text" [value]="bioEdit" [(ngModel)]="bioEdit" />
                 </ng-template>
               </tr>
             </tbody>
@@ -71,9 +60,7 @@
         <div class="table-responsive">
           <thead>
             <tr>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                 Socials
               </th>
             </tr>
@@ -124,12 +111,9 @@
 
     <div class="col-lg-4">
       <div class="card">
-        <h4
-          class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-        >
+        <h4 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
           Skills
         </h4>
-       <!--ADD not update -->
         <div class="skill-circle">
           <div *ngIf="!isEdit; else EditSkills">
             <div *ngFor="let skill of profile['userProfile'].skills">
@@ -143,12 +127,8 @@
               <input type="text" [(ngModel)]="editSkillTitle" />
               <label>Description</label>
               <input type="text" [(ngModel)]="editSkillDescription" />
-              <button
-                (click)="saveSkill(profile)"
-                [disabled]="!editSkillTitle || !editSkillDescription"
-              >
-                Add</button
-              ><button (click)="cancelSkill()">Cancel</button>
+              <button (click)="saveSkill(profile)" [disabled]="!editSkillTitle || !editSkillDescription">
+                Add</button><button (click)="cancelSkill()">Cancel</button>
             </div>
             <div *ngFor="let skill of editSkills; let i = index">
               <button (click)="removeSkill(skill, i)">Remove</button>
@@ -159,31 +139,17 @@
               </p>
               <ng-template #EditASkill>
                 <label>Title</label>
-                <input
-                  type="text"
-                  [value]="editASkillTitle"
-                  [(ngModel)]="editASkillTitle"
-                />
+                <input type="text" [value]="editASkillTitle" [(ngModel)]="editASkillTitle" />
                 <label>Description</label>
-                <input
-                  type="text"
-                  [value]="editASkillDescription"
-                  [(ngModel)]="editASkillDescription"
-                />
-                <button
-                  (click)="saveEditSkill(skill, i)"
-                  [disabled]="editSkillTitle && editSkillDescription"
-                >
-                  Save</button
-                ><button (click)="cancelEditSkill()">Cancel</button>
+                <input type="text" [value]="editASkillDescription" [(ngModel)]="editASkillDescription" />
+                <button (click)="saveEditSkill(skill, i)" [disabled]="editSkillTitle && editSkillDescription">
+                  Save</button><button (click)="cancelEditSkill()">Cancel</button>
               </ng-template>
             </div>
           </ng-template>
         </div>
         <div class="card">
-          <h4
-            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-          >
+          <h4 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
             Certifications
           </h4>
           <div class="cert-circle">
@@ -199,12 +165,8 @@
                 <input type="text" [(ngModel)]="editCertTitle" />
                 <label>Description</label>
                 <input type="text" [(ngModel)]="editCertDescription" />
-                <button
-                  (click)="saveCert(profile)"
-                  [disabled]="!editCertTitle || !editCertDescription"
-                >
-                  Add</button
-                ><button (click)="cancelCert()">Cancel</button>
+                <button (click)="saveCert(profile)" [disabled]="!editCertTitle || !editCertDescription">
+                  Add</button><button (click)="cancelCert()">Cancel</button>
               </div>
               <div *ngFor="let cert of editCertifications; let i = index">
                 <button (click)="removeCert(cert, i)">Remove</button>
@@ -218,8 +180,8 @@
                   <input type="text" [(ngModel)]="editACertTitle" />
                   <label>Description</label>
                   <input type="text" [(ngModel)]="editACertDescription" />
-                  <button (click)="saveEditCert(cert, i)">Save</button
-                  ><button (click)="cancelEditCert()">Cancel</button>
+                  <button (click)="saveEditCert(cert, i)">Save</button><button
+                    (click)="cancelEditCert()">Cancel</button>
                 </ng-template>
               </div>
             </ng-template>
@@ -228,9 +190,7 @@
 
         <div class="card">
           <div class="table-responsive">
-            <h4
-              class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-            >
+            <h4 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
               Projects
             </h4>
             <div class="proj-circle">
@@ -239,83 +199,59 @@
                   <p>{{ proj.name }}</p>
                 </div>
               </div>
-            <ng-template #EditProject>
-              <button (click)="addProject()">Add Project</button>
-              <div *ngIf="showNewProject">
-                <label>Name</label>
-                <input type="text" [(ngModel)]="editProjectName" />
-                <label>Role</label>
-                <input type="text" [(ngModel)]="editProjectRole" />
-                <label>Description</label>
-                <textarea
-                  type="text"
-                  [(ngModel)]="editProjectDescription"
-                ></textarea>
-                <button
-                  (click)="saveProject(profile)"
-                  [disabled]="
-                    !editProjectName ||
-                    !editProjectDescription ||
-                    !editProjectRole
-                  "
-                >
-                  Add</button
-                ><button (click)="cancelProject()">Cancel</button>
-              </div>
-              <div *ngFor="let project of editProjects; let i = index">
-                <button (click)="removeProject(project, i)">Remove</button>
-                <button (click)="editProject(project, i)">Edit</button>
-                <p *ngIf="i != editProjectIndex; else EditAProject">
-                  {{ project.name }} <br> {{ project.role }} <br> {{ project.description }}
-                </p>
-                <ng-template #EditAProject>
+              <ng-template #EditProject>
+                <button (click)="addProject()">Add Project</button>
+                <div *ngIf="showNewProject">
                   <label>Name</label>
-                  <input type="text" [(ngModel)]="editAProjectName" />
+                  <input type="text" [(ngModel)]="editProjectName" />
                   <label>Role</label>
-                  <input type="text" [(ngModel)]="editAProjectRole" />
+                  <input type="text" [(ngModel)]="editProjectRole" />
                   <label>Description</label>
-                  <textarea
-                    type="text"
-                    [(ngModel)]="editAProjectDescription"
-                  ></textarea>
-                  <button (click)="saveEditProject(project, i)">Save</button
-                  ><button (click)="cancelEditProject()">Cancel</button>
-                </ng-template>
-              </div>
-            </ng-template>
+                  <textarea type="text" [(ngModel)]="editProjectDescription"></textarea>
+                  <button (click)="saveProject(profile)" [disabled]="
+                      !editProjectName ||
+                      !editProjectDescription ||
+                      !editProjectRole
+                    ">
+                    Add</button><button (click)="cancelProject()">Cancel</button>
+                </div>
+                <div *ngFor="let project of editProjects; let i = index">
+                  <button (click)="removeProject(project, i)">Remove</button>
+                  <button (click)="editProject(project, i)">Edit</button>
+                  <p *ngIf="i != editProjectIndex; else EditAProject">
+                    {{ project.name }} <br />
+                    {{ project.role }} <br />
+                    {{ project.description }}
+                  </p>
+                  <ng-template #EditAProject>
+                    <label>Name</label>
+                    <input type="text" [(ngModel)]="editAProjectName" />
+                    <label>Role</label>
+                    <input type="text" [(ngModel)]="editAProjectRole" />
+                    <label>Description</label>
+                    <textarea type="text" [(ngModel)]="editAProjectDescription"></textarea>
+                    <button (click)="saveEditProject(project, i)">Save</button><button
+                      (click)="cancelEditProject()">Cancel</button>
+                  </ng-template>
+                </div>
+              </ng-template>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
     <div class="row">
       <div class="col-lg-4">
-        <button
-          *ngIf="!isEdit"
-          (click)="toggleEditMode(profile)"
-          type="button"
-          mat-raised-button
-          class="btn btn-primary"
-        >
+        <button *ngIf="!isEdit" (click)="toggleEditMode(profile)" type="button" mat-raised-button
+          class="btn btn-primary">
           Update My Profile
         </button>
-        <button
-          *ngIf="isEdit"
-          (click)="save()"
-          type="button"
-          mat-raised-button
-          class="btn btn-primary"
-        >
+        <button *ngIf="isEdit" (click)="SaveProfileChanges(profile)" type="button" mat-raised-button
+          class="btn btn-primary">
           Save Changes
         </button>
-        <button
-          *ngIf="isEdit"
-          (click)="cancel()"
-          type="button"
-          mat-raised-button
-          class="btn btn-primary"
-        >
+        <button *ngIf="isEdit" (click)="cancel()" type="button" mat-raised-button class="btn btn-primary">
           Cancel
         </button>
       </div>

@@ -1,8 +1,10 @@
+import { Stacks } from "./stacks.interface";
+
 export interface Userstacks{
     userId: number;
-    backendId: number;
-    frontendId: number;
-    databaseId: number;
+    backend: Stacks;
+    frontend: Stacks;
+    database: Stacks;
     createDate: Date;
     description: string;
     status: number;
