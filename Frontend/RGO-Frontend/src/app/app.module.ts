@@ -10,7 +10,6 @@ import { HeaderComponent } from './components/header/header.component'
 import { StoreModule } from '@ngrx/store';
 import { LoginReducer } from './store/reducers/login.reducer';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { GradTodoComponent } from './components/grad-todo/grad-todo.component';
 import { EventReducer } from './store/reducers/events.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { EventsEffects } from './store/effects/events.effects';
@@ -25,7 +24,7 @@ import { UserProfileEffects } from './store/effects/userprofile.effects';
 import { WorkshopComponent } from './components/workshop/workshop.component';
 import { FormsComponent } from './components/forms/forms.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
-import { WorkshopReducer} from './store/reducers/workshop.reducer'
+import { WorkshopReducer } from './store/reducers/workshop.reducer'
 import { WorkshopEffects } from './store/effects/workshop.effects';
 import { LoginEffects } from './store/effects/app.effects';
 import { ViewableWorkshopPageComponent } from './components/viewable-workshop-page/viewable-workshop-page.component';
@@ -46,7 +45,6 @@ import { StackComponent } from './components/stack/stack.component';
     SignInComponent,
     HomeComponent,
     HeaderComponent,
-    GradTodoComponent,
     SidebarComponent,
     PersonalProjectComponent,
     WorkshopsPageComponent,
