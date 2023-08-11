@@ -22,11 +22,17 @@
       <div *ngIf="selectedPage === 'Forms'">
         <app-forms></app-forms>
       </div>
+      <div *ngIf="selectedPage === 'Add User'">
+        <app-add-user></app-add-user>
+      </div>
       <div *ngIf="selectedPage === 'Viewable Workshop'">
         <app-viewable-workshop-page (selectedItem)="handleSelectedItem($event)"></app-viewable-workshop-page>
       </div>
       <div *ngIf="selectedPage === 'User Profile'">
         <app-user-profile></app-user-profile>
+      </div>
+      <div *ngIf="selectedPage === 'Settings'">
+        <app-view-users></app-view-users>
       </div>
     </main> 
   </div>
