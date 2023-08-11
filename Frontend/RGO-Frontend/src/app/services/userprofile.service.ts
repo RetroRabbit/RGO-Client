@@ -27,7 +27,7 @@ export class UserProfileService {
   getToken(){
     this.userStore.select('users').subscribe( state =>{
       if (state.selectedUser) {
-        this.email=state.selectedUser?.email;
+        this.email = state.selectedUser.email!;
       }
     });
 

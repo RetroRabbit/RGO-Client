@@ -74,6 +74,7 @@ export class UserProfileComponent {
   editAProjectDescription: string = '';
   editAProjectRole: string = '';
   editProjectIndex: number = -1;
+
   constructor(private store: Store<{ user: UserProfileState }>) { }
 
   ngOnInit() {
@@ -297,4 +298,5 @@ export class UserProfileComponent {
     this.editAProject = false;
     this.editProjectIndex = -1;
   }
+
 }
