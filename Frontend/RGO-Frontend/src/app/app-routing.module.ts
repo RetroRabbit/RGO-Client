@@ -5,7 +5,6 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { HeaderComponent } from './components/header/header.component';
 import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
 import { WorkshopsPageComponent } from './components/workshops-page/workshops-page.component';
-import { StackComponent } from './components/stack/stack.component';
 
 const routes: Routes = [
   {path: '', component: SignInComponent},
