@@ -8,12 +8,34 @@ import { UserProfileState } from 'src/app/store/reducers/userprofile.reducer';
 import { Skill } from 'src/app/models/skills.interface';
 import { Certifications } from 'src/app/models/certifications.interface';
 import { Project } from 'src/app/models/project.interface';
+import { UserProfile } from 'src/app/models/userprofile.interface';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css'],
 })
 export class UserProfileComponent {
+  editUserProfile: UserProfile = {
+    id: 0,
+    groupdid: 0,
+    firstName: '',
+    lastName: '',
+    email: '',
+    type: 0,
+    joinDate: new Date(),
+    status: 1,
+    skills: [],
+    certifications: [],
+    project: [],
+    socials: {
+      id: 0,
+      userid: 0,
+      discord: '',
+      codeWars: '',
+      gitHub : '',
+      linkedIn : ''
+    }
+  };
   UserProfile$: Observable<User> = this.store.select('user');
   isEdit: boolean = false;
   showNewSkill: boolean = false;
@@ -58,6 +80,32 @@ export class UserProfileComponent {
   ngOnInit() {
     this.store.dispatch(GetUserProfile());
   }
+
+  SaveProfileChanges(profile: User){
+    this.editUserProfile.id = profile['userProfile'].id;
+      this.editUserProfile.groupdid = profile['userProfile'].groupdid;
+      this.editUserProfile.firstName= profile['userProfile'].firstName;
+      this.editUserProfile.lastName= profile['userProfile'].lastName;
+      this.editUserProfile.email= this.emailEdit;
+      this.editUserProfile.type= profile['userProfile'].type;
+      this.editUserProfile.joinDate= profile['userProfile'].joinDate;
+      this.editUserProfile.status= profile['userProfile'].status;
+      this.editUserProfile.skills= this.editSkills;
+      this.editUserProfile.certifications= this.editCertifications;
+      this.editUserProfile.project= this.editProjects;
+      // this.editUserProfile.socials= {
+        this.editUserProfile.socials.id = profile['userProfile'].socials.id;
+        this.editUserProfile.socials.userid = profile['userProfile'].id;
+        this.editUserProfile.socials.discord= this.discordEdit;
+        this.editUserProfile.socials.codeWars= this.codewarsEdit;
+        this.editUserProfile.socials.gitHub= this.gitHubEdit;
+        this.editUserProfile.socials.linkedIn= this.linkedInEdit;
+      // }
+
+      console.log(this.editUserProfile)
+    };
+
+
 
   toggleEditMode(user: User) {
     this.isEdit = !this.isEdit;
@@ -197,8 +245,6 @@ export class UserProfileComponent {
     this.editACert = false;
     this.editCertIndex = -1;
   }
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   addProject() {
     this.showNewProject = true;
