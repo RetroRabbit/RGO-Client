@@ -23,5 +23,5 @@ export class WorkshopService {
     selectedItem.emit({
       selectedPage: page
     });
-    console.log(page)  }
+  }
 }
