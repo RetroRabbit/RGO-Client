@@ -63,11 +63,25 @@
               <div class="mb-3 row">
                 <div class="col-sm-12">
                   <label class="col-form-label">Status</label>
-                  <input type="text" class="form-control" formControlName="status" />
-                  <div
+                  <select type="text" class="form-control" formControlName="status">
+                    <option *ngFor="let status of statuses" [value]="status.id">
+                      {{status.title}}
+                    </option>
+                  </select>                  <div
                     *ngIf="newUserForm.controls['status'].invalid && (newUserForm.controls['status'].dirty || newUserForm.controls['status'].touched)"
                     class="alert">
                     Please enter status
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <div class="col-sm-12">
+                  <label class="col-form-label">Join Date</label>
+                  <input type="date" class="form-control" formControlName="joinDate" />
+                  <div
+                    *ngIf="newUserForm.controls['joinDate'].invalid && (newUserForm.controls['joinDate'].dirty || newUserForm.controls['joinDate'].touched)"
+                    class="alert">
+                    Please enter join date
                   </div>
                 </div>
               </div>
