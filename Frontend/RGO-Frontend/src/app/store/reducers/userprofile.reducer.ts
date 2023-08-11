@@ -3,11 +3,31 @@ import { GetUserProfile, GetUserProfileSuccess,} from '../actions/userprofile.ac
 import { UserProfile } from 'src/app/models/userprofile.interface';
 
 export interface UserProfileState{
-  userProfile : UserProfile | null
+  userProfile : UserProfile
 }
 
 export const initialState: UserProfileState = {
-  userProfile : null
+  userProfile : {
+    id : 0,
+    groupdid : 0,
+    firstName: '',
+    lastName:'',
+    email: '',
+    type: -1,
+    joinDate : new Date,
+    status: 1,
+    skills : [],
+    certifications : [],
+    project : [],
+    socials : {
+      id: 0,
+      userid:0,
+      discord : '',
+      codeWars : '',
+      gitHub : '',
+      linkedIn : ''
+    }
+  }
 };
 
 export const UserProfileReducer = createReducer(
