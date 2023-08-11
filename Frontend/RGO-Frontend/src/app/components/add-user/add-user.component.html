@@ -67,7 +67,8 @@
                     <option *ngFor="let status of statuses" [value]="status.id">
                       {{status.title}}
                     </option>
-                  </select>                  <div
+                  </select>
+                  <div
                     *ngIf="newUserForm.controls['status'].invalid && (newUserForm.controls['status'].dirty || newUserForm.controls['status'].touched)"
                     class="alert">
                     Please enter status
