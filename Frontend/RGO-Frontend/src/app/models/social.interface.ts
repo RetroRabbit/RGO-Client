@@ -4,5 +4,5 @@ export interface Social{
     discord : string,
     codeWars : string,
     gitHub : string,
-    linkedin : string
+    linkedIn : string
 }

@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Userstacks } from '../models/userstacks.interface';
 import { API } from '../models/constants/urls.constants';
 import { Observable } from 'rxjs';
@@ -17,9 +17,20 @@ export class UserstacksService {
 
   getUserstacks(): Observable<Userstacks>{
     this.getEmail();
-    return this.client.get<Userstacks>(`${API.HttpsBaseURL}/UserStack/GetUserStack?email=${encodeURIComponent(this.email)}`);
+    return this.client.get<Userstacks>(`${API.HttpsBaseURL}/userstacks/get?email=${encodeURIComponent(this.email)}`);
   }
 
+  setUserstacks(): Observable<Userstacks>{
+    let header: HttpHeaders = new HttpHeaders()
+    header.append('Content-Type', 'application/json')
+    this.getEmail()
+    return this.client.post<Userstacks>(`${API.HttpsBaseURL}/userstacks/add?email=${encodeURIComponent(this.email)}`, {headers: header, responseType: 'text'});
+  }
+  public CaptureEvent(page: string, selectedItem: EventEmitter<{ selectedPage: string }>) {
+    selectedItem.emit({
+      selectedPage: page
+    });
+  }
   getEmail(){
     this.store.select('app').subscribe( state => {
       this.email = state.email;
