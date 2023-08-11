@@ -17,7 +17,6 @@ export class UserstacksEffects{
       take(1),
       mergeMap(() => this.userstacksService.getUserstacks().pipe(
         take(1),
-        tap(userstack => console.log('Received data from service:', userstack)),
         map(userstack => UserstacksActions.GetUserstacksSuccess({ userstacks: userstack })),
       ))
     )

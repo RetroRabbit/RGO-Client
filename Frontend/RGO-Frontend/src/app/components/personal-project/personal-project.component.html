@@ -1,7 +1,7 @@
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ps">
     <div class="container-fluid py-4">
       <div class="row">
-        <div class="col-12 mb-xl-0 mb-4" *ngIf="userStacks$ | async as userStacks">
+        <div class="col-12 mb-xl-0 mb-4" *ngIf="userStack$ | async as userStacks">
           <ng-container *ngIf="userStacks.userstacks === null">
             <button (click)="onSetUserstackClick()" class="btn btn-primary btn-lg w-100" >Generate Stack</button>
           </ng-container>

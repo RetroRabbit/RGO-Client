@@ -15,7 +15,7 @@ import { UserstackState } from 'src/app/store/reducers/userstacks.reducer';
   styleUrls: ['./personal-project.component.css']
 })
 export class PersonalProjectComponent{
-  userStacks$  = this.userstackStore.select('userstack');
+  userStack$  = this.userstackStore.select('userstack');
  
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   
