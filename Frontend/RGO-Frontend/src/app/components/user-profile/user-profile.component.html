@@ -1,5 +1,5 @@
 <p>user-profile works!</p>
-<!-- <div class="container" *ngIf="UserProfile$ | async as profile; else NoUser">
+<div class="container" *ngIf="UserProfile$ | async as profile; else NoUser">
   <div class="row">
     <div class="col-lg-6">
       <div class="card">
@@ -129,7 +129,7 @@
         >
           Skills
         </h4>
-       ADD not update 
+       <!--ADD not update -->
         <div class="skill-circle">
           <div *ngIf="!isEdit; else EditSkills">
             <div *ngFor="let skill of profile['userProfile'].skills">
@@ -321,7 +321,7 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>
 
 <ng-template #NoUser>
   <h1>No Users in the database</h1>

@@ -57,9 +57,6 @@ export class UserProfileComponent {
 
   ngOnInit() {
     this.store.dispatch(GetUserProfile());
-    // this.UserProfile$.subscribe((data)=>{
-    //   console.log(data);
-    // })
   }
 
   toggleEditMode(user: User) {
