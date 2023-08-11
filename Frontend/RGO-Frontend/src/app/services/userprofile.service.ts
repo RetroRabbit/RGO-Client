@@ -5,6 +5,7 @@ import { API } from '../models/constants/urls.constants';
 import { UserProfile } from '../models/userprofile.interface';
 import { Token } from '../models/token.interface';
 import { Store } from '@ngrx/store';
+import { UserState } from '../store/reducers/user.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ import { Store } from '@ngrx/store';
 export class UserProfileService {
   email: string ='';
   token: string = '';
-  constructor(private client: HttpClient,private appStore:Store<{app:Token}>) { }
+  
+  constructor(private client: HttpClient,private appStore:Store<{app:Token}>, private userStore:Store<{user:UserState}>) { }
 
   GetUserProfile(): Observable<UserProfile>{
     this.getToken();
@@ -24,9 +26,18 @@ export class UserProfileService {
   }
 
   getToken(){
+    this.userStore.select('user').subscribe( state =>{
+      if (state.selectedUser.email != '') {
+        this.email=state.selectedUser.email;
+      }
+    });
+
     this.appStore.select('app').subscribe( state => {
       this.token = state.token;
-      this.email=state.email;
+      if(this.email==''){
+        this.email=state.email;
+      }
+      
     })
   }
 }
