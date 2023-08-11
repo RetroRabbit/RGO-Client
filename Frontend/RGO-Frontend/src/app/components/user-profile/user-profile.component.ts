@@ -93,16 +93,14 @@ export class UserProfileComponent {
       this.editUserProfile.skills= this.editSkills;
       this.editUserProfile.certifications= this.editCertifications;
       this.editUserProfile.project= this.editProjects;
-      // this.editUserProfile.socials= {
         this.editUserProfile.socials.id = profile['userProfile'].socials.id;
         this.editUserProfile.socials.userid = profile['userProfile'].id;
         this.editUserProfile.socials.discord= this.discordEdit;
         this.editUserProfile.socials.codeWars= this.codewarsEdit;
         this.editUserProfile.socials.gitHub= this.gitHubEdit;
         this.editUserProfile.socials.linkedIn= this.linkedInEdit;
-      // }
 
-      console.log(this.editUserProfile)
+      //TODO: Service call here when api is available. waiting for Kamo and Dewan
     };
 
 
@@ -123,8 +121,6 @@ export class UserProfileComponent {
     this.editProjects = this.editProjects.concat(user['userProfile'].projects);
     console.log(this.editProjects);
   }
-  // save user
-  save() {}
 
   cancel() {
     this.isEdit = !this.isEdit;
@@ -140,18 +136,13 @@ export class UserProfileComponent {
 
   saveSkill(profile: User) {
     this.showNewSkill = false;
-    // console.log(this.editSkillTitle, this.editSkillDescription);
     let newSkill: Skill = {
       id: profile['userProfile'].skills.length + 1,
       userid: profile['userProfile'].id,
       title: this.editSkillTitle,
       description: this.editSkillDescription,
     };
-    console.log(newSkill);
-    // const newSkillArray : Skill[] = [newSkill];
     this.editSkills.push(newSkill);
-    // this.editSkills = this.editSkills.concat(newSkillArray);
-    console.log(this.editSkills);
     this.showNewSkill = false;
   }
 
@@ -167,8 +158,8 @@ export class UserProfileComponent {
 
   removeSkill(skill: Skill, index: number) {
     this.editSkills.splice(index, 1);
-    console.log(this.editSkills);
   }
+
   editSkill(skill: Skill, index: number) {
     this.editASkill = true;
     this.editSkillIndex = index;
@@ -240,6 +231,7 @@ export class UserProfileComponent {
     this.editACertTitle = this.editACertDescription = '';
     this.editCertIndex = -1;
   }
+
   cancelEditCert() {
     this.editACertTitle = this.editACertDescription = '';
     this.editACert = false;
@@ -268,7 +260,6 @@ export class UserProfileComponent {
     };
     this.editProjects.push(newProject);
     this.showNewProject = false;
-
     this.editProjectName = '';
     this.editProjectDescription = '';
     this.editProjectRole = '';
@@ -301,6 +292,7 @@ export class UserProfileComponent {
         '';
     this.editProjectIndex = -1;
   }
+
   cancelEditProject() {
     this.editProjectName = '';
     this.editProjectDescription = '';
