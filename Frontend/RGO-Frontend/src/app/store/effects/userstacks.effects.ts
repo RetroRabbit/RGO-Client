@@ -3,7 +3,6 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { UserstacksService } from "src/app/services/userstacks.service";
 import * as UserstacksActions from "../actions/userstacks.action"
 import { map, mergeMap, take, tap } from "rxjs";
-import { User } from "@auth0/auth0-angular";
 
 @Injectable()
 export class UserstacksEffects{
