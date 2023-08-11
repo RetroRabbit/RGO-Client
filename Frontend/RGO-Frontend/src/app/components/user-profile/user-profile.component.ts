@@ -298,5 +298,4 @@ export class UserProfileComponent {
     this.editAProject = false;
     this.editProjectIndex = -1;
   }
-
 }
