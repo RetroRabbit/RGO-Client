@@ -1,5 +1,4 @@
-<p>user-profile works!</p>
-<div class="container" *ngIf="UserProfile$ | async as profile">
+<div class="container" *ngIf="UserProfile$ | async as profile; else NoUser">
   <div class="row">
     <div class="col-lg-6">
       <div class="card">
@@ -17,8 +16,8 @@
               <tr>
                 <td class="align-middle">Full Name</td>
                 <td class="align-middle">
-                  {{ profile["userProfile"].firstName }}
-                  {{ profile["userProfile"].lastName }}
+                  {{ profile["userProfile"]?.firstName }}
+                  {{ profile["userProfile"]?.lastName }}
                 </td>
               </tr>
               <tr>
@@ -29,12 +28,12 @@
               </tr>
               <tr>
                 <td class="align-middle">Level</td>
-                <td class="align-middle">{{ profile["userProfile"].level }}</td>
+                <td class="align-middle">{{ profile["userProfile"]?.level }}</td>
               </tr>
               <tr>
                 <td class="align-middle">Phone</td>
                 <td *ngIf="!isEdit; else PhoneEdit" class="align-middle">
-                  {{ profile["userProfile"].phone }}
+                  {{ profile["userProfile"]?.phone }}
                 </td>
                 <ng-template #PhoneEdit>
                   <input type="text" [value]="PhoneEdit" [(ngModel)]="phoneEdit" />
@@ -43,7 +42,7 @@
               <tr>
                 <td class="align-middle">Bio</td>
                 <td *ngIf="!isEdit; else BioEdit" class="align-middle">
-                  {{ profile["userProfile"].bio }}
+                  {{ profile["userProfile"]?.bio }}
                 </td>
                 <ng-template #BioEdit>
                   <input type="text" [value]="bioEdit" [(ngModel)]="bioEdit" />
@@ -67,7 +66,7 @@
               <tr>
                 <td class="align-middle">Discord</td>
                 <td *ngIf="!isEdit; else DiscordEdit" class="align-middle">
-                  {{ profile["userProfile"].socials[0].discord }}
+                  {{ profile["userProfile"]?.socials[0]?.discord }}
                 </td>
                 <ng-template #DiscordEdit>
                   <input type="text" [value]="discordEdit" [(ngModel)]="discordEdit" />
@@ -76,7 +75,7 @@
               <tr>
                 <td class="align-middle">CodeWars</td>
                 <td *ngIf="!isEdit; else CodewarsEdit" class="align-middle">
-                  {{ profile["userProfile"].socials[0].codeWars }}
+                  {{ profile["userProfile"]?.socials[0]?.codeWars }}
                 </td>
                 <ng-template #CodewarsEdit>
                   <input type="text" [value]="codewarsEdit" [(ngModel)]="codewarsEdit" />
@@ -85,7 +84,7 @@
               <tr>
                 <td class="align-middle">GitHub</td>
                 <td *ngIf="!isEdit; else GitHubEdit" class="align-middle">
-                  {{ profile["userProfile"].socials[0].gitHub }}
+                  {{ profile["userProfile"]?.socials[0]?.gitHub }}
                 </td>
                 <ng-template #GitHubEdit>
                   <input [value]="gitHubEdit" [(ngModel)]="gitHubEdit" type="text" />
@@ -94,7 +93,7 @@
               <tr>
                 <td class="align-middle">Linkedin</td>
                 <td *ngIf="!isEdit; else LinkedInEdit" class="align-middle">
-                  {{ profile["userProfile"].socials[0].linkedIn }}
+                  {{ profile["userProfile"]?.socials[0]?.linkedIn }}
                 </td>
                 <ng-template #LinkedInEdit>
                   <input [value]="linkedInEdit" [(ngModel)]="linkedInEdit" type="text" />
@@ -113,7 +112,7 @@
         </h4>
         <div class="skill-circle">
           <div *ngIf="!isEdit; else EditSkills">
-            <div *ngFor="let skill of profile['userProfile'].skills">
+            <div *ngFor="let skill of profile['userProfile']?.skills">
               <p>{{ skill.title }}</p>
             </div>
           </div>
@@ -151,7 +150,7 @@
           </h4>
           <div class="cert-circle">
             <div *ngIf="!isEdit; else EditCert">
-              <div *ngFor="let cert of profile['userProfile'].certifications">
+              <div *ngFor="let cert of profile['userProfile']?.certifications">
                 <p>{{ cert.title }}</p>
               </div>
             </div>
@@ -192,7 +191,7 @@
             </h4>
             <div class="proj-circle">
               <div *ngIf="!isEdit; else EditProject">
-                <div *ngFor="let proj of profile['userProfile'].projects">
+                <div *ngFor="let proj of profile['userProfile']?.projects">
                   <p>{{ proj.name }}</p>
                 </div>
               </div>
@@ -255,3 +254,7 @@
     </div>
   </div>
 </div>
+
+<ng-template #NoUser>
+  <h1>No Users in the database</h1>
+</ng-template>
