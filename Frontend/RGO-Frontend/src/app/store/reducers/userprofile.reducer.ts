@@ -9,7 +9,7 @@ export interface UserProfileState{
 export const initialState: UserProfileState = {
   userProfile : {
     id : 0,
-    groupdid : 0,
+    gradGroupId : 0,
     firstName: '',
     lastName:'',
     email: '',
@@ -18,15 +18,15 @@ export const initialState: UserProfileState = {
     status: 1,
     skills : [],
     certifications : [],
-    project : [],
-    socials : {
+    projects : [],
+    socials : [{
       id: 0,
       userid:0,
       discord : '',
       codeWars : '',
       gitHub : '',
       linkedIn : ''
-    }
+    }]
   }
 };
 
