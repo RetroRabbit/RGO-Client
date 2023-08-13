@@ -8,32 +8,38 @@ import { Skill } from 'src/app/models/skills.interface';
 import { Certifications } from 'src/app/models/certifications.interface';
 import { Project } from 'src/app/models/project.interface';
 import { UserProfile } from 'src/app/models/userprofile.interface';
+import { UserProfileService } from 'src/app/services/userprofile.service';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css'],
 })
 export class UserProfileComponent {
+
   editUserProfile: UserProfile = {
     id: 0,
-    groupdid: 0,
+    gradGroupId: 0,
     firstName: '',
     lastName: '',
     email: '',
     type: 0,
     joinDate: new Date(),
     status: 1,
+    bio: '',
+    level: 0,
+    phone: '',
     skills: [],
-    certifications: [],
-    project: [],
-    socials: {
+    socials: [{
       id: 0,
       userid: 0,
       discord: '',
       codeWars: '',
       gitHub: '',
       linkedIn: '',
-    },
+    }],
+    certifications: [],
+    projects: [],
+
   };
   UserProfile$: Observable<User> = this.store.select('user');
   isEdit: boolean = false;
@@ -44,7 +50,7 @@ export class UserProfileComponent {
   showNewProject: boolean = false;
   editAProject: boolean = false;
   // Profile Object
-  phoneEdit: number = 0;
+  phoneEdit: string = '';
   bioEdit: string = '';
   discordEdit: string = '';
   codewarsEdit: string = '';
@@ -74,38 +80,52 @@ export class UserProfileComponent {
   editAProjectDescription: string = '';
   editAProjectRole: string = '';
   editProjectIndex: number = -1;
-  constructor(private store: Store<{ user: UserProfileState }>) { }
+  constructor(private store: Store<{ user: UserProfileState }>,private userProfileService:UserProfileService) { }
 
   ngOnInit() {
     this.store.dispatch(GetUserProfile());
+
   }
 
   SaveProfileChanges(profile: User) {
+    console.log(profile['userProfile'].socials[0].id);
     this.editUserProfile.id = profile['userProfile'].id;
-    this.editUserProfile.groupdid = profile['userProfile'].groupdid;
+    this.editUserProfile.gradGroupId = profile['userProfile'].gradGroupId;
     this.editUserProfile.firstName = profile['userProfile'].firstName;
     this.editUserProfile.lastName = profile['userProfile'].lastName;
-    this.editUserProfile.email = this.emailEdit;
+    this.editUserProfile.email = profile['userProfile'].email;
     this.editUserProfile.type = profile['userProfile'].type;
     this.editUserProfile.joinDate = profile['userProfile'].joinDate;
     this.editUserProfile.status = profile['userProfile'].status;
+    this.editUserProfile.level = profile['userProfile'].level;
+    this.editUserProfile.bio = this.bioEdit;
+    this.editUserProfile.phone = this.phoneEdit;
+
     this.editUserProfile.skills = this.editSkills;
     this.editUserProfile.certifications = this.editCertifications;
-    this.editUserProfile.project = this.editProjects;
-    this.editUserProfile.socials.id = profile['userProfile'].socials.id;
-    this.editUserProfile.socials.userid = profile['userProfile'].id;
-    this.editUserProfile.socials.discord = this.discordEdit;
-    this.editUserProfile.socials.codeWars = this.codewarsEdit;
-    this.editUserProfile.socials.gitHub = this.gitHubEdit;
-    this.editUserProfile.socials.linkedIn = this.linkedInEdit;
+    this.editUserProfile.projects = this.editProjects;
+    this.editUserProfile.socials[0].id = profile['userProfile'].socials[0].id;
+    this.editUserProfile.socials[0].userid = profile['userProfile'].id;
+    this.editUserProfile.socials[0].discord = this.discordEdit;
+    this.editUserProfile.socials[0].codeWars = this.codewarsEdit;
+    this.editUserProfile.socials[0].gitHub = this.gitHubEdit;
+    this.editUserProfile.socials[0].linkedIn = this.linkedInEdit;
 
-    //TODO: Service call here when api is available. waiting for Kamo and Dewan
+    // console.log(this.editUserProfile);
+    // this.userProfileService.UpdateUserProfile(this.editUserProfile)
+    this.userProfileService.UpdateUserProfile(this.editUserProfile).subscribe( //todo achieve the same without using subscribe
+      response => console.log('Success', response),
+      error => console.error('Error', error)
+    );
+    this.cancel();
+    this.store.dispatch(GetUserProfile());
+
   }
 
   toggleEditMode(user: User) {
     this.isEdit = !this.isEdit;
     this.phoneEdit = user['userProfile'].phone;
-    this.bioEdit = user['userProfile'].bioEdit;
+    this.bioEdit = user['userProfile'].bio;
     this.discordEdit = user['userProfile'].socials[0].discord;
     this.codewarsEdit = user['userProfile'].socials[0].codeWars;
     this.gitHubEdit = user['userProfile'].socials[0].gitHub;
@@ -134,7 +154,7 @@ export class UserProfileComponent {
   saveSkill(profile: User) {
     this.showNewSkill = false;
     let newSkill: Skill = {
-      id: profile['userProfile'].skills.length + 1,
+      id: 0,
       userid: profile['userProfile'].id,
       title: this.editSkillTitle,
       description: this.editSkillDescription,
@@ -196,8 +216,8 @@ export class UserProfileComponent {
   saveCert(profile: User) {
     this.showNewCert = false;
     const newCert: Certifications = {
-      id: profile['userProfile'].certifications.length + 1,
-      userid: profile['userProfile'].userid,
+      id: 0,
+      userid: profile['userProfile'].id,
       title: this.editCertTitle,
       description: this.editCertDescription,
     };
@@ -249,8 +269,8 @@ export class UserProfileComponent {
   saveProject(profile: User) {
     this.showNewCert = false;
     const newProject: Project = {
-      id: profile['userProfile'].certifications.length + 1,
-      userid: profile['userProfile'].userid,
+      id: 0,
+      userid: profile['userProfile'].id,
       name: this.editProjectName,
       role: this.editProjectRole,
       description: this.editProjectDescription,

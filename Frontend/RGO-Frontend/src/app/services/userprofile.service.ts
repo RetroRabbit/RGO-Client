@@ -19,8 +19,8 @@ export class UserProfileService {
     let header: HttpHeaders = new HttpHeaders()
     header = header.append('Authorization',`Bearer ${this.token}`)
     header = header.append('Content-Type','application/json')
-    
-    return this.client.get<UserProfile>(`${API.HttpsBaseURL}/profile/get?email=${this.email}`, {headers : header})
+
+    return  this.client.get<UserProfile>(`${API.HttpsBaseURL}/profile/get?email=${this.email}`, {headers : header})
   }
 
   getToken(){
@@ -28,6 +28,55 @@ export class UserProfileService {
       this.token = state.token;
       this.email=state.email;
     })
+  }
+
+  // UpdateUserProfile(): Observable<UserProfile>{
+  //   this.getToken();
+  //   let header: HttpHeaders = new HttpHeaders()
+  //   header = header.append('Authorization',`Bearer ${this.token}`)
+  //   header = header.append('Content-Type','application/json')
+
+  //   return this.client.put<UserProfile>(`${API.HttpsBaseURL}/profile/get?email=${this.email}`, {headers : header})
+  // }
+
+  // UpdateUserProfile(profileUpdate: any): Observable<UserProfile> {
+  //   // this.getToken();
+  //   // let headers: HttpHeaders = new HttpHeaders()
+  //   //   .append('Authorization', `Bearer ${this.token}`)
+  //   //   .append('Content-Type', 'application/json');
+
+  //   let headers: HttpHeaders = new HttpHeaders({
+  //     'Authorization': `Bearer ${this.token}`,
+  //     'Content-Type': 'application/json'
+  //   });
+
+  //     console.log(this.token);
+  //     console.log(`${API.HttpsBaseURL}/user/update?email=${this.email}`);
+  //     console.log(profileUpdate);
+
+  //   // return this.client.put<UserProfile>(`${API.HttpsBaseURL}/user/update?email=${this.email}`, profileUpdate,{ headers: headers });
+
+  //   this.client.put<UserProfile>(
+  //     `${API.HttpsBaseURL}/user/update?email=${this.email}`,
+  //     profileUpdate,
+  //     { headers: headers }
+  //   ).subscribe(
+  //     response => console.log('Success', response),
+  //     error => console.error('Error', error)
+  //   );
+  // }
+
+  UpdateUserProfile(profileUpdate: any): Observable<UserProfile> {
+    let headers: HttpHeaders = new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.client.put<UserProfile>(
+      `${API.HttpsBaseURL}/user/update?email=${this.email}`,
+      profileUpdate,
+      { headers: headers }
+    );
   }
 }
 
