@@ -19,12 +19,11 @@ export class AuthService {
   }
 
   login(userEmail: string|undefined): Observable<string>{
-    let header: HttpHeaders = new HttpHeaders() 
-    header.append('Content-Type','application/json')
+
     let user ={
       email: userEmail,
     }
-    return this.client.post(`${API.HttpsBaseURL}/Authentication/login`,user,{headers: header, responseType: 'text'})
+    return this.client.post(`${API.HttpsBaseURL}/Authentication/login`,user,{ responseType: 'text'})
     .pipe(
       map(type => type),
       catchError(err => {
