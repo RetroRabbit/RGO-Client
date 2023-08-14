@@ -5,12 +5,13 @@ import { getSelectedWorkshop, getAllWorkshops, getTodaysWorkshop } from 'src/app
 import { WorkshopState } from 'src/app/store/reducers/workshop.reducer';
 import { WorkshopService } from 'src/app/services/workshop.service';
 @Component({
-  selector: 'app-workshops-page',
-  templateUrl: './workshops-page.component.html',
-  styleUrls: ['./workshops-page.component.css']
+  selector: 'app-workshops',
+  templateUrl: './workshops.component.html',
+  styleUrls: ['./workshops.component.css']
 })
-export class WorkshopsPageComponent implements OnInit {
+export class WorkshopsComponent implements OnInit {
   allWorkshops: Workshop[] = [];
+  pastWorkshops : Workshop[] = [];
   todaysWorkshop: Workshop[] = [];
   selectedWorkshop: Workshop = {
     id: 0,
@@ -39,32 +40,25 @@ export class WorkshopsPageComponent implements OnInit {
     this.store.dispatch(getAllWorkshops());
     setTimeout(() => {
       this.store.dispatch(getTodaysWorkshop());
+      this.workshop$.subscribe((state) => {
+        this.allWorkshops = state.AllWorkshops;
+      });
+      this.GetPastWorkshops();
     }, 500);
-
-    this.workshop$.subscribe((state) => {
-      this.allWorkshops = state.AllWorkshops;
-      this.todaysWorkshop = state.TodaysWorkshops;
-    });
   }
 
-  getTodaysWorkshop(index: number, todayArray: Workshop[]) {
+  getSelectedWorkshop(index: number, todayArray: Workshop[]) {
     this.store.dispatch(getSelectedWorkshop({ index: index, workshops: todayArray }));
     this.service.CaptureEvent('Viewable Workshop', this.selectedItem);
   }
 
-  showPastWorkshops(): Workshop[] {
+  GetPastWorkshops(){
     const currentDate = new Date().getTime();
-  
-    if (!this.allWorkshops || this.allWorkshops.length === 0) {
-      return [];
-    }
-  
-    return this.allWorkshops.filter((workshop) => {
-      const workshopEndDate = new Date(workshop.eventId.endDate).getTime();
+    this.pastWorkshops = this.allWorkshops.filter((workshop) => {
+      const workshopEndDate = new Date(workshop.eventId.startDate).getTime();
       return workshopEndDate < currentDate;
     });
   }
-  
 }
 
 
