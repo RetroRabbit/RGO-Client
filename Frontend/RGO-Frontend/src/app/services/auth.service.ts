@@ -23,7 +23,7 @@ export class AuthService {
     let user ={
       email: userEmail,
     }
-    return this.client.post(`${API.HttpsBaseURL}/Authentication/login`,user,{ responseType: 'text'})
+    return this.client.post(`${API.HttpsBaseURL}/auth/login`,user,{ responseType: 'text'})
     .pipe(
       map(type => type),
       catchError(err => {
