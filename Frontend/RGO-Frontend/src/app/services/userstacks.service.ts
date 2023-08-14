@@ -21,10 +21,8 @@ export class UserstacksService {
   }
 
   setUserstacks(): Observable<Userstacks>{
-    let header: HttpHeaders = new HttpHeaders()
-    header.append('Content-Type', 'application/json')
     this.getEmail()
-    return this.client.post<Userstacks>(`${API.HttpsBaseURL}/userstacks/add?email=${encodeURIComponent(this.email)}`, {headers: header, responseType: 'text'});
+    return this.client.post<Userstacks>(`${API.HttpsBaseURL}/userstacks/add?email=${encodeURIComponent(this.email)}`, {responseType: 'text'});
   }
   public CaptureEvent(page: string, selectedItem: EventEmitter<{ selectedPage: string }>) {
     selectedItem.emit({
@@ -35,5 +33,5 @@ export class UserstacksService {
     this.store.select('app').subscribe( state => {
       this.email = state.email;
     })
-  }     
+  }
 }
