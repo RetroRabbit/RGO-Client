@@ -36,7 +36,12 @@ import { ViewUsersComponent } from './components/view-users/view-users.component
 import { UserReducer } from './store/reducers/user.reducer';
 import { UserEffects } from './store/effects/user.effects';
 import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { PaginatorModule } from 'primeng/paginator';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StackComponent } from './components/stack/stack.component';
+
 
 
 
@@ -76,7 +81,11 @@ import { StackComponent } from './components/stack/stack.component';
       }
     }),
     HttpClientModule,
-    TableModule
+    TableModule,
+    ButtonModule,
+    PaginatorModule,
+    MultiSelectModule,
+    BrowserAnimationsModule
   ],
   providers: [
     AuthService,

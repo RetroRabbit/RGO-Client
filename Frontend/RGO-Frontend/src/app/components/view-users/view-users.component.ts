@@ -4,6 +4,7 @@ import { User } from 'src/app/models/user.interface';
 import { WorkshopService } from 'src/app/services/workshop.service';
 import { getAllUsers, getSelectedUser } from 'src/app/store/actions/user.actions';
 import { UserState } from 'src/app/store/reducers/user.reducer';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-view-users',
@@ -11,14 +12,30 @@ import { UserState } from 'src/app/store/reducers/user.reducer';
   styleUrls: ['./view-users.component.css']
 })
 export class ViewUsersComponent implements OnInit {
+
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
-  allUsers$ = this.store.select('users');
   
+  allUsers:User[]= [];
+  allUsers$ = this.store.select('users');
+
+  loading: boolean = true;
   constructor(private store : Store<{users : UserState}>, public service: WorkshopService){}
+
 
   ngOnInit(): void {
     this.store.dispatch(getAllUsers());
+    setTimeout(() => {
+      this.allUsers$.subscribe(userState => {
+        this.allUsers = userState.AllUsers; 
+        console.log(this.allUsers);
+      });
+    },500);
+    
   }
+
+  clear(table: Table) {
+    table.clear();
+}
 
   manageUser(index: number, users: User[]){
     this.store.dispatch(getSelectedUser({index: index,users: users}));
