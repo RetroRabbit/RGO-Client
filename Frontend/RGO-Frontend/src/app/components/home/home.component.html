@@ -8,7 +8,7 @@
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ps ps--active-y">
 
       <div *ngIf="selectedPage === 'Workshops'">
-        <app-workshops-page  (selectedItem)="handleSelectedItem($event)"></app-workshops-page>
+        <app-workshops  (selectedItem)="handleSelectedItem($event)"></app-workshops>
       </div>
       <div *ngIf="selectedPage === 'Events'">
         <app-events></app-events>
@@ -32,7 +32,7 @@
         <app-user-profile></app-user-profile>
       </div>
       <div *ngIf="selectedPage === 'Settings'">
-        <app-view-users></app-view-users>
+        <app-view-users (selectedItem)="handleSelectedItem($event)"></app-view-users>
       </div>
     </main> 
   </div>

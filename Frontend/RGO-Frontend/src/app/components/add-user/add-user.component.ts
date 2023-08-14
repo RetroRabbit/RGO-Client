@@ -15,6 +15,7 @@ export class AddUserComponent {
   constructor(private store: Store<{ user: UserState }>, private userService: UserService){}
 
   public gradGroups: GradGroups[] =[{id: 1, title: "2023"}];
+  public statuses: any[] =[{id: 1, title: "Active"}];
 
   newUserForm = new FormGroup({
     gradGroupId: new FormControl(''),
@@ -23,6 +24,7 @@ export class AddUserComponent {
     email: new FormControl('', Validators.required),
     type: new FormControl('', Validators.required),
     status: new FormControl('', Validators.required),
+    joinDate: new FormControl('', Validators.required),
   });
 
 

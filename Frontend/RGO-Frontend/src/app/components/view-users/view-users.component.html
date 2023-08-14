@@ -19,15 +19,17 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let user of userState['AllUsers']">
+                  <tr *ngFor="let user of userState['AllUsers']; let i=index">
                     <td class="text-xs font-weight-bold mb-0">{{user.firstName}}</td>
                     <td class="text-xs font-weight-bold mb-0">{{user.lastName}}</td>
                     <td class="text-xs font-weight-bold mb-0">{{user.email}}</td>
                     <td class="text-xs font-weight-bold mb-0"></td>
                     <td class="align-middle">
-                      <a href="user_manage.html" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                        Manage
-                      </a>
+                      <div>
+                        <a (click)="manageUser(i, userState.AllUsers)" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                          Manage
+                        </a>
+                      </div>
                     </td>
                   </tr>
                 </tbody>

@@ -1,6 +1,6 @@
-export interface Skill{
-id: number,
-userid: number,
-title: string,
-desctription: string
+export interface Skill {
+  id: number;
+  userid: number;
+  title: string;
+  description: string;
 }
