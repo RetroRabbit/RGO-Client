@@ -31,6 +31,7 @@ export class SignInComponent {
     this.userEmail = this.cookieService.get('userEmail');
   }
   Login() {
+    this.cookieService.deleteAll();
     this.auth
       .loginWithPopup()
       .pipe(take(1))
