@@ -5,11 +5,11 @@ import { getSelectedWorkshop, getAllWorkshops, getTodaysWorkshop } from 'src/app
 import { WorkshopState } from 'src/app/store/reducers/workshop.reducer';
 import { WorkshopService } from 'src/app/services/workshop.service';
 @Component({
-  selector: 'app-workshops-page',
-  templateUrl: './workshops-page.component.html',
-  styleUrls: ['./workshops-page.component.css']
+  selector: 'app-workshops',
+  templateUrl: './workshops.component.html',
+  styleUrls: ['./workshops.component.css']
 })
-export class WorkshopsPageComponent implements OnInit {
+export class WorkshopsComponent implements OnInit {
   allWorkshops: Workshop[] = [];
   pastWorkshops : Workshop[] = [];
   todaysWorkshop: Workshop[] = [];
