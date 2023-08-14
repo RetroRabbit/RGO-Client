@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { User } from '@auth0/auth0-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { GetUserProfile , UpdateUserProfile } from 'src/app/store/actions/userprofile.actions';
+import { GetUserProfile, UpdateUserProfile } from 'src/app/store/actions/userprofile.actions';
 import { UserProfileState } from 'src/app/store/reducers/userprofile.reducer';
 import { Skill } from 'src/app/models/skills.interface';
 import { Certifications } from 'src/app/models/certifications.interface';
@@ -80,7 +80,7 @@ export class UserProfileComponent {
   editAProjectDescription: string = '';
   editAProjectRole: string = '';
   editProjectIndex: number = -1;
-  constructor(private store: Store<{ user: UserProfileState }>,private userProfileService:UserProfileService) { }
+  constructor(private store: Store<{ user: UserProfileState }>, private userProfileService: UserProfileService) { }
 
   ngOnInit() {
     this.store.dispatch(GetUserProfile());
@@ -115,7 +115,7 @@ export class UserProfileComponent {
     }
 
 
-    this.store.dispatch(UpdateUserProfile({response : this.editUserProfile}));
+    this.store.dispatch(UpdateUserProfile({ response: this.editUserProfile }));
     this.cancel();
     this.store.dispatch(GetUserProfile());
   }
@@ -134,7 +134,7 @@ export class UserProfileComponent {
       user['userProfile'].certifications
     );
     this.editProjects = this.editProjects.concat(user['userProfile'].projects);
-    console.log(this.editProjects);
+
   }
 
   cancel() {
@@ -146,7 +146,6 @@ export class UserProfileComponent {
 
   addSkill() {
     this.showNewSkill = true;
-    console.log(this.editSkills);
   }
 
   saveSkill(profile: User) {
