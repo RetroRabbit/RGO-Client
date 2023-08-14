@@ -19,7 +19,6 @@ export class UserProfileService {
   GetUserProfile(): Observable<UserProfile> {
     this.getToken();
     let header: HttpHeaders = new HttpHeaders()
-    header = header.append('Content-Type', 'application/json')
 
     return this.client.get<UserProfile>(`${API.HttpsBaseURL}/profile/get?email=${this.email}`, { headers: header })
   }
@@ -42,9 +41,7 @@ export class UserProfileService {
 
 
   UpdateUserProfile(profileUpdate: any): Observable<any> {
-    let headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
+    let headers: HttpHeaders = new HttpHeaders();
 
     return this.client.put<any>(
       `${API.HttpsBaseURL}/user/update?email=${this.email}`,
