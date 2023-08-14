@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { UserService } from "src/app/services/user.service";
 import { getAllUsers, getAllUsersSuccess } from "../actions/user.actions";
-import { map, mergeMap } from "rxjs";
+import { map, exhaustMap } from "rxjs/operators";
 
 @Injectable()
 export class UserEffects{
@@ -11,7 +11,7 @@ export class UserEffects{
     getUsers$ = createEffect( () =>
         this.actions$.pipe(
             ofType(getAllUsers),
-            mergeMap(()=>
+            exhaustMap(()=>
                 this.userService.getAllUsers().pipe(
                     map(users => getAllUsersSuccess({AllUsers : users}))
                 )

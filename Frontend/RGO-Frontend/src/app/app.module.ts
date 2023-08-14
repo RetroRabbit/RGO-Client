@@ -15,7 +15,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { EventsEffects } from './store/effects/events.effects';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { environment } from 'src/enviroment/env';
-import { WorkshopsPageComponent } from './components/workshops-page/workshops-page.component';
+import { WorkshopsComponent } from './components/workshops-page/workshops.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { EventsComponent } from './components/events/events.component';
 import { PersonalProjectComponent } from './components/personal-project/personal-project.component';
@@ -47,7 +47,7 @@ import { StackComponent } from './components/stack/stack.component';
     HeaderComponent,
     SidebarComponent,
     PersonalProjectComponent,
-    WorkshopsPageComponent,
+    WorkshopsComponent,
     UserProfileComponent,
     EventsComponent,
     PersonalProjectComponent,
