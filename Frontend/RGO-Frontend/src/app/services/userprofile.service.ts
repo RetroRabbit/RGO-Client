@@ -19,7 +19,6 @@ export class UserProfileService {
   GetUserProfile(): Observable<UserProfile> {
     this.getToken();
     let header: HttpHeaders = new HttpHeaders()
-    header = header.append('Authorization', `Bearer ${this.token}`)
     header = header.append('Content-Type', 'application/json')
 
     return this.client.get<UserProfile>(`${API.HttpsBaseURL}/profile/get?email=${this.email}`, { headers: header })
@@ -44,7 +43,6 @@ export class UserProfileService {
 
   UpdateUserProfile(profileUpdate: any): Observable<any> {
     let headers: HttpHeaders = new HttpHeaders({
-      'Authorization': `Bearer ${this.token}`,
       'Content-Type': 'application/json'
     });
 
