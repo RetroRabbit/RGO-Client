@@ -52,26 +52,12 @@ export class WorkshopsPageComponent implements OnInit {
     this.service.CaptureEvent('Viewable Workshop', this.selectedItem);
   }
 
-  // showPastWorkshops(): Workshop[] {
-  //   const currentDate = new Date().getTime();
-  
-  //   if (!this.allWorkshops || this.allWorkshops.length === 0) {
-  //     return [];
-  //   }
-  
-  //   return this.allWorkshops.filter((workshop) => {
-  //     const workshopEndDate = new Date(workshop.eventId.endDate).getTime();
-  //     return workshopEndDate < currentDate;
-  //   });
-  // }
   GetPastWorkshops(){
     const currentDate = new Date().getTime();
-    console.log(this.allWorkshops)
     this.pastWorkshops = this.allWorkshops.filter((workshop) => {
       const workshopEndDate = new Date(workshop.eventId.startDate).getTime();
       return workshopEndDate < currentDate;
     });
-    console.log(this.pastWorkshops)
   }
 }
 
