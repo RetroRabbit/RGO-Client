@@ -20,8 +20,7 @@ export class UserstacksService {
   }
 
   setUserstacks(): Observable<Userstacks>{
-    let header: HttpHeaders = new HttpHeaders()
-    header.append('Content-Type', 'application/json');
+    let header: HttpHeaders = new HttpHeaders();
     return this.client.post<Userstacks>(`${API.HttpsBaseURL}/userstacks/add?email=${this.cookieService.get("userEmail")}`, {headers: header, responseType: 'text'});
   }
   public CaptureEvent(page: string, selectedItem: EventEmitter<{ selectedPage: string }>) {
