@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { User } from '@auth0/auth0-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { GetUserProfile } from 'src/app/store/actions/userprofile.actions';
+import { GetUserProfile , UpdateUserProfile } from 'src/app/store/actions/userprofile.actions';
 import { UserProfileState } from 'src/app/store/reducers/userprofile.reducer';
 import { Skill } from 'src/app/models/skills.interface';
 import { Certifications } from 'src/app/models/certifications.interface';
@@ -39,8 +39,8 @@ export class UserProfileComponent {
     }],
     certifications: [],
     projects: [],
-
   };
+
   UserProfile$: Observable<User> = this.store.select('user');
   isEdit: boolean = false;
   showNewSkill: boolean = false;
@@ -88,38 +88,36 @@ export class UserProfileComponent {
   }
 
   SaveProfileChanges(profile: User) {
-    console.log(profile['userProfile'].socials[0].id);
-    this.editUserProfile.id = profile['userProfile'].id;
-    this.editUserProfile.gradGroupId = profile['userProfile'].gradGroupId;
-    this.editUserProfile.firstName = profile['userProfile'].firstName;
-    this.editUserProfile.lastName = profile['userProfile'].lastName;
-    this.editUserProfile.email = profile['userProfile'].email;
-    this.editUserProfile.type = profile['userProfile'].type;
-    this.editUserProfile.joinDate = profile['userProfile'].joinDate;
-    this.editUserProfile.status = profile['userProfile'].status;
-    this.editUserProfile.level = profile['userProfile'].level;
-    this.editUserProfile.bio = this.bioEdit;
-    this.editUserProfile.phone = this.phoneEdit;
+    this.editUserProfile = {
+      ...this.editUserProfile, // Copy existing properties
+      id: profile['userProfile'].id,
+      gradGroupId: profile['userProfile'].gradGroupId,
+      firstName: profile['userProfile'].firstName,
+      lastName: profile['userProfile'].lastName,
+      email: profile['userProfile'].email,
+      type: profile['userProfile'].type,
+      joinDate: profile['userProfile'].joinDate,
+      status: profile['userProfile'].status,
+      bio: this.bioEdit,
+      level: profile['userProfile'].level,
+      phone: this.phoneEdit,
+      skills: this.editSkills,
+      socials: [{
+        id: profile['userProfile'].socials[0].id,
+        userid: profile['userProfile'].id,
+        discord: this.discordEdit,
+        codeWars: this.codewarsEdit,
+        gitHub: this.gitHubEdit,
+        linkedIn: this.linkedInEdit,
+      }],
+      certifications: this.editCertifications,
+      projects: this.editProjects,
+    }
 
-    this.editUserProfile.skills = this.editSkills;
-    this.editUserProfile.certifications = this.editCertifications;
-    this.editUserProfile.projects = this.editProjects;
-    this.editUserProfile.socials[0].id = profile['userProfile'].socials[0].id;
-    this.editUserProfile.socials[0].userid = profile['userProfile'].id;
-    this.editUserProfile.socials[0].discord = this.discordEdit;
-    this.editUserProfile.socials[0].codeWars = this.codewarsEdit;
-    this.editUserProfile.socials[0].gitHub = this.gitHubEdit;
-    this.editUserProfile.socials[0].linkedIn = this.linkedInEdit;
 
-    // console.log(this.editUserProfile);
-    // this.userProfileService.UpdateUserProfile(this.editUserProfile)
-    this.userProfileService.UpdateUserProfile(this.editUserProfile).subscribe( //todo achieve the same without using subscribe
-      response => console.log('Success', response),
-      error => console.error('Error', error)
-    );
+    this.store.dispatch(UpdateUserProfile({response : this.editUserProfile}));
     this.cancel();
     this.store.dispatch(GetUserProfile());
-
   }
 
   toggleEditMode(user: User) {
@@ -161,6 +159,8 @@ export class UserProfileComponent {
     };
     this.editSkills.push(newSkill);
     this.showNewSkill = false;
+    this.editSkillTitle = '';
+    this.editSkillDescription = '';
   }
 
   cancelSkill() {
@@ -195,12 +195,16 @@ export class UserProfileComponent {
     this.editASkillTitle = this.editASkillDescription = '';
     this.editSkillIndex = -1;
     this.editASkillTitle = this.editASkillDescription = '';
+
   }
 
   cancelEditSkill() {
+
     this.editASkill = false;
     this.editSkillIndex = -1;
     this.editASkillTitle = this.editASkillDescription = '';
+    this.editCertTitle = '';
+    this.editCertDescription = '';
   }
 
   addCert() {
@@ -224,6 +228,8 @@ export class UserProfileComponent {
     this.editCertifications.push(newCert);
     this.showNewCert = false;
     this.editACertTitle = this.editACertDescription = '';
+    this.editCertTitle = '';
+    this.editCertDescription = '';
   }
 
   removeCert(skill: Certifications, index: number) {

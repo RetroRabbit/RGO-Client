@@ -77,15 +77,17 @@ export class UserProfileService {
   //   );
   // }
 
-  UpdateUserProfile(profileUpdate: any): Observable<UserProfile> {
+  UpdateUserProfile(profileUpdate: any): Observable<any> {
     let headers: HttpHeaders = new HttpHeaders({
       'Authorization': `Bearer ${this.token}`,
       'Content-Type': 'application/json'
     });
 
-    return this.client.put<UserProfile>(
+    // console.log(profileUpdate.response);
+
+    return this.client.put<any>(
       `${API.HttpsBaseURL}/user/update?email=${this.email}`,
-      profileUpdate,
+      profileUpdate.response,
       { headers: headers }
     );
   }
