@@ -29,7 +29,7 @@
                      
                         <td class="align-middle">
                             <div *ngIf="workshop.viewable==true">
-                            <a (click)="getTodaysWorkshop(i,workshopState['TodaysWorkshops'])" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                            <a (click)="getSelectedWorkshop(i,workshopState['TodaysWorkshops'])" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                               View
                             </a>
                         </div>  
@@ -78,7 +78,7 @@
                     <td class="text-xs font-weight-bold mb-0">{{workshop.presenter}}</td>
                     <td class="align-middle">
                       <div *ngIf="workshop.viewable==true">
-                        <a (click)="getTodaysWorkshop(i,workshopState.AllWorkshops)" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                        <a (click)="getSelectedWorkshop(i,pastWorkshops)" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                           View
                         </a>
                       </div>
