@@ -36,6 +36,7 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
 import { ViewUsersComponent } from './components/view-users/view-users.component';
 import { UserReducer } from './store/reducers/user.reducer';
 import { UserEffects } from './store/effects/user.effects';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { UserEffects } from './store/effects/user.effects';
     FormsComponent,
     AddUserComponent,
     ViewableWorkshopPageComponent,
+   
 
     ViewUsersComponent
   ],
@@ -72,6 +74,7 @@ import { UserEffects } from './store/effects/user.effects';
       }
     }),
     HttpClientModule,
+    TableModule
   ],
   providers: [
     AuthService,
