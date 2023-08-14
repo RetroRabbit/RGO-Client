@@ -22,12 +22,9 @@
               </tr>
               <tr>
                 <td class="align-middle">E-Mail</td>
-                <td *ngIf="!isEdit; else EmailEdit" class="align-middle">
-                  {{ profile["userProfile"]?.email }}
+                <td class="align-middle">
+                  {{ profile["userProfile"].email }}
                 </td>
-                <ng-template #EmailEdit>
-                  <input type="text" [value]="emailEdit" [(ngModel)]="emailEdit" />
-                </ng-template>
               </tr>
               <tr>
                 <td class="align-middle">Level</td>
@@ -254,7 +251,7 @@
           Cancel
         </button>
       </div>
-    </div> 
+    </div>
   </div>
 </div>
 

@@ -11,33 +11,38 @@ import { UserState } from '../store/reducers/user.reducer';
   providedIn: 'root'
 })
 export class UserProfileService {
-  email: string ='';
+  email: string = '';
   token: string = '';
-  
-  constructor(private client: HttpClient,private appStore:Store<{app:Token}>, private userStore:Store<{users:UserState}>) { }
 
-  GetUserProfile(): Observable<UserProfile>{
+  constructor(private client: HttpClient, private appStore: Store<{ app: Token }>, private userStore: Store<{ users: UserState }>) { }
+
+  GetUserProfile(): Observable<UserProfile> {
     this.getToken();
-    let header: HttpHeaders = new HttpHeaders()
-    header = header.append('Authorization',`Bearer ${this.token}`)
-    header = header.append('Content-Type','application/json')
-    return this.client.get<UserProfile>(`${API.HttpsBaseURL}/profile/get?email=${this.email}`, {headers : header})
+    return this.client.get<UserProfile>(`${API.HttpsBaseURL}/profile/get?email=${this.email}`)
   }
 
-  getToken(){
-    this.userStore.select('users').subscribe( state => {
+  getToken() {
+    this.userStore.select('users').subscribe(state => {
       if (state.selectedUser) {
         this.email = state.selectedUser.email!;
       }
     });
 
-    this.appStore.select('app').subscribe( state => {
+    this.appStore.select('app').subscribe(state => {
       this.token = state.token;
-      if(this.email != '' || this.email  ){
+      if (this.email != '' || this.email) {
         return;
       }
-      this.email=state.email;
+      this.email = state.email;
     })
+  }
+
+
+  UpdateUserProfile(profileUpdate: any): Observable<any> {
+    return this.client.put<any>(
+      `${API.HttpsBaseURL}/user/update?email=${this.email}`,
+      profileUpdate.response
+    );
   }
 }
 

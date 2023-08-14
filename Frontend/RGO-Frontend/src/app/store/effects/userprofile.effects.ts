@@ -8,15 +8,26 @@ import * as UserProfile from '../actions/userprofile.actions';
 export class UserProfileEffects {
   constructor(
     private actions$: Actions,
-    private userProfileService: UserProfileService, 
-  ) {}
-  
+    private userProfileService: UserProfileService,
+  ) { }
+
   getUserProfile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserProfile.GetUserProfile),
-      exhaustMap(() =>
-      this.userProfileService.GetUserProfile().pipe(
-        map(user => UserProfile.GetUserProfileSuccess({userProfile:user})),
+      mergeMap(() =>
+        this.userProfileService.GetUserProfile().pipe(
+          map(user => UserProfile.GetUserProfileSuccess({ userProfile: user })),
+        )
+      )
+    )
+  );
+
+  updateUserProfile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserProfile.UpdateUserProfile),
+      exhaustMap((UpdatedProfile) =>
+        this.userProfileService.UpdateUserProfile(UpdatedProfile).pipe(
+          map(response => UserProfile.UpdateUserProfileSuccess({ response })),
         )
       )
     )
