@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Token } from 'src/app/models/token.interface';
 
+import { CookieService } from 'ngx-cookie-service';
 interface RouteInfo {
   title: string;
   icon: string;
@@ -34,7 +35,8 @@ export class SidebarComponent implements OnInit {
 
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
 
-  constructor(private auth: AuthService, private store: Store<{ app: Token }>) { }
+  constructor(private auth: AuthService, private store: Store<{ app: Token }>,
+    private cookieService: CookieService) { }
 
   ngOnInit() {
     this.menuItems = ROUTES;
@@ -44,22 +46,23 @@ export class SidebarComponent implements OnInit {
   }
 
   IsMenuItemVisible(menuItem: RouteInfo): boolean {
+    const type  = +this.cookieService.get("userType")
 
     if (menuItem.title === 'Dashboard') {
       return true;
-    } else if (menuItem.title === 'Workshops' && (this.userType === 0 || this.userType === 1)) {
+    } else if (menuItem.title === 'Workshops' && (type === 0 || type === 1)) {
       return true;
-    } else if (menuItem.title === 'Personal Project' && (this.userType === 2 || this.userType === 0)) {
+    } else if (menuItem.title === 'Personal Project' && (type === 2 || type === 0)) {
       return true;
-    } else if (menuItem.title === 'Events' && (this.userType === 0)) {
+    } else if (menuItem.title === 'Events' && (type === 0)) {
       return true;
-    } else if (menuItem.title === 'Forms' && (this.userType === 3 || this.userType === 0)) {
+    } else if (menuItem.title === 'Forms' && (type === 3 || type === 0)) {
       return true;
-    } else if (menuItem.title === 'Forms Builder' && (this.userType === 3)) {
+    } else if (menuItem.title === 'Forms Builder' && (type === 3)) {
       return true;
-    } else if (menuItem.title === 'Settings' && (this.userType === 3)) {
+    } else if (menuItem.title === 'Settings' && (type === 3)) {
       return true;
-    } else if (menuItem.title === 'User Profile' && (this.userType === 0 || this.userType === 1)) {
+    } else if (menuItem.title === 'User Profile' && (type === 0 || type === 1)) {
       return true;
     }
     else if (menuItem.title === 'Add User') {
@@ -70,6 +73,7 @@ export class SidebarComponent implements OnInit {
 
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('currentPage', target.innerText);
     this.selectedItem.emit({
       selectedPage: target.innerText
     });
