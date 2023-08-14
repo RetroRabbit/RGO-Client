@@ -6,6 +6,7 @@ import { UserProfile } from '../models/userprofile.interface';
 import { Token } from '../models/token.interface';
 import { Store } from '@ngrx/store';
 import { UserState } from '../store/reducers/user.reducer';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +14,15 @@ import { UserState } from '../store/reducers/user.reducer';
 export class UserProfileService {
   email: string ='';
   token: string = '';
-  
-  constructor(private client: HttpClient,private appStore:Store<{app:Token}>, private userStore:Store<{users:UserState}>) { }
+  cookieEmail = this.cookieService.get('userEmail');
+  constructor(private client: HttpClient,private appStore:Store<{app:Token}>, private userStore:Store<{users:UserState}>, private cookieService: CookieService) { }
 
   GetUserProfile(): Observable<UserProfile>{
     this.getToken();
     let header: HttpHeaders = new HttpHeaders()
     header = header.append('Authorization',`Bearer ${this.token}`)
     header = header.append('Content-Type','application/json')
-    return this.client.get<UserProfile>(`${API.HttpsBaseURL}/profile/get?email=${this.email}`, {headers : header})
+    return this.client.get<UserProfile>(`${API.HttpsBaseURL}/profile/get?email=${this.email??this.cookieEmail}`, {headers : header})
   }
 
   getToken(){
