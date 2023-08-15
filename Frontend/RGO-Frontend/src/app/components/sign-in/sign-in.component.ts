@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { GetLogin } from '../../store/actions/events.actions';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../../models/token.interface';
-import { firstValueFrom, take } from 'rxjs';
+import { take } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 @Component({
@@ -30,6 +30,7 @@ export class SignInComponent {
     this.token = this.cookieService.get('userToken');
     this.userEmail = this.cookieService.get('userEmail');
   }
+
   Login() {
     this.cookieService.deleteAll();
     this.auth
@@ -37,8 +38,6 @@ export class SignInComponent {
       .pipe(take(1))
       .subscribe({
         next: () => {
-
-          
           this.auth.user$.pipe(take(1)).subscribe((user) => {
             let roles: string = ""
             let token: string = ""
@@ -46,26 +45,29 @@ export class SignInComponent {
             this.authService.login(user?.email)
             .subscribe(async (res) => {
               token = res;
-              console.log(token);
+              this.cookieService.set('userToken', token);
             });
 
             this.authService.FetchRoles(user?.email)
             .subscribe(async (res) => {
               roles = res;
-              console.log(roles);
-            })
-
-            let tempholder = user?.email;
-            // var token =  await firstValueFrom(this.auth.getAccessTokenSilently());
-            var googleID: Token = {
+              this.cookieService.set('userType', roles);
+            });
+            
+            const tempholder = user?.email;
+            
+            const googleID: Token = {
               email: tempholder,
               token: token,
               roles: roles
             };
 
+            this.cookieService.set('userToken', token);
+            this.cookieService.set('userEmail', tempholder || '');
+            this.cookieService.set('userType', googleID.roles);
+
             this.store.dispatch(GetLogin({ payload: googleID }));
             this.router.navigateByUrl('/home');
- 
           });
         },
         error: (error) => {
@@ -73,4 +75,4 @@ export class SignInComponent {
         },
       });
   }
- }
+}
