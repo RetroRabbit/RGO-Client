@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { GetLogin } from '../../store/actions/events.actions';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../../models/token.interface';
-import { take } from 'rxjs';
+import { map, switchMap, take, tap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 @Component({
@@ -35,44 +35,36 @@ export class SignInComponent {
     this.cookieService.deleteAll();
     this.auth
       .loginWithPopup()
-      .pipe(take(1))
-      .subscribe({
-        next: () => {
-          this.auth.user$.pipe(take(1)).subscribe((user) => {
-            let roles: string = ""
-            let token: string = ""
-
-            this.authService.login(user?.email)
-            .subscribe(async (res) => {
-              token = res;
-              this.cookieService.set('userToken', token);
-            });
-
-            this.authService.FetchRoles(user?.email)
-            .subscribe(async (res) => {
-              roles = res;
-              this.cookieService.set('userType', roles);
-            });
-            
-            const tempholder = user?.email;
-            
-            const googleID: Token = {
-              email: tempholder,
-              token: token,
-              roles: roles
-            };
-
-            this.cookieService.set('userToken', token);
-            this.cookieService.set('userEmail', tempholder || '');
-            this.cookieService.set('userType', googleID.roles);
-
-            this.store.dispatch(GetLogin({ payload: googleID }));
-            this.router.navigateByUrl('/home');
-          });
-        },
-        error: (error) => {
-          console.log(typeof error);
-        },
-      });
+      .pipe(
+        take(1),
+        switchMap(() => this.auth.user$.pipe(take(1))),
+        switchMap((user) => {
+          this.cookieService.set('userEmail', user?.email || '');
+          return this.authService.login(user?.email).pipe(
+            tap((token) => this.cookieService.set('userToken', token)),
+            map((token) => ({ user, token }))
+          );
+        }),
+        switchMap(({ user, token }) => 
+          this.authService.FetchRoles(user?.email).pipe(
+            tap((roles) => this.cookieService.set('userType', roles)),
+            map((roles) => ({ user, token, roles }))
+          )
+        )
+      ).subscribe({
+        next: ({ user, token, roles }) => {
+        const googleID: Token = {
+          email: user?.email,
+          token: token,
+          roles: roles
+        };
+  
+        this.store.dispatch(GetLogin({ payload: googleID }));
+        this.router.navigateByUrl('/home');
+      },
+      error:(error) => {
+        console.log(typeof error);
+      }
+    })
   }
 }

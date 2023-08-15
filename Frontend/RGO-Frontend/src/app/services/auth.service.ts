@@ -24,7 +24,7 @@ export class AuthService {
     header.append('Content-Type','application/json')
     return this.client
     .post(
-      `${API.HttpsBaseURL}/Authentication/login?email=${encodeURIComponent(userEmail??"")}`,
+      `${API.HttpsBaseURL}/authentication/login?email=${encodeURIComponent(userEmail??"")}`,
       "",
       {headers: header, responseType: 'text'})
     .pipe(
@@ -44,14 +44,14 @@ export class AuthService {
     header.append('Content-Type','application/json')
     return this.client
     .get(
-      `${API.HttpsBaseURL}/Authentication/roles?email=${encodeURIComponent(userEmail??"")}`,
+      `${API.HttpsBaseURL}/authentication/roles?email=${encodeURIComponent(userEmail??"")}`,
       {headers: header, responseType: 'text'})
     .pipe(
       map(type => type),
       catchError(err => {
         console.log(err)
         if (err.status == 404) {
-          window.alert("Failed to get roles")
+          window.alert("Contact admin to create your account")
         }
         return EMPTY
       })
