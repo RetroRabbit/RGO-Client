@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GradTodoComponent } from './grad-todo.component';
+import { StackComponent } from './stack.component';
 
-describe('GradTodoComponent', () => {
-  let component: GradTodoComponent;
-  let fixture: ComponentFixture<GradTodoComponent>;
+describe('StackComponent', () => {
+  let component: StackComponent;
+  let fixture: ComponentFixture<StackComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [GradTodoComponent]
+      declarations: [StackComponent]
     });
-    fixture = TestBed.createComponent(GradTodoComponent);
+    fixture = TestBed.createComponent(StackComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

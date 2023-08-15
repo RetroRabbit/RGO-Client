@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { mergeMap } from 'rxjs/operators';
-import { EMPTY, Observable } from "rxjs";
+import { exhaustMap } from 'rxjs/operators';
+import { Observable } from "rxjs";
 import * as LoginActions from '../actions/events.actions';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class LoginEffects {
   GetLogin$ = createEffect(() =>
     this.actions$.pipe(
         ofType(LoginActions.GetLogin),
-        mergeMap(({payload}) => {
+        exhaustMap(({payload}) => {
             LoginActions.GetLogin({payload})
             return new Observable<any>();
         })
