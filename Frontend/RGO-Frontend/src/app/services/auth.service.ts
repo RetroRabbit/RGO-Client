@@ -19,17 +19,31 @@ export class AuthService {
   }
 
   login(userEmail: string|undefined): Observable<string>{
-
-    let user ={
-      email: userEmail,
-    }
-    return this.client.post(`${API.HttpsBaseURL}/Authentication/login`,user,{ responseType: 'text'})
+    let header: HttpHeaders = new HttpHeaders() 
+    header.append('Content-Type','application/json')
+    return this.client.post(`${API.HttpsBaseURL}/Authentication/login?email=${encodeURIComponent(userEmail??"")}`,"", {headers: header, responseType: 'text'})
     .pipe(
       map(type => type),
       catchError(err => {
         console.log(err)
         if (err.status == 404) {
           window.alert("Contact admin to create your account")
+        }
+        return EMPTY
+      })
+    );
+  }
+
+  FetchRoles(userEmail: string | undefined): Observable<string>{
+    let header: HttpHeaders = new HttpHeaders() 
+    header.append('Content-Type','application/json')
+    return this.client.get(`${API.HttpsBaseURL}/Authentication/roles?email=${encodeURIComponent(userEmail??"")}`,{headers: header, responseType: 'text'})
+    .pipe(
+      map(type => type),
+      catchError(err => {
+        console.log(err)
+        if (err.status == 404) {
+          window.alert("Failed to get roles")
         }
         return EMPTY
       })

@@ -40,24 +40,31 @@ export class SignInComponent {
 
           
           this.auth.user$.pipe(take(1)).subscribe((user) => {
+            let roles: string = ""
+            let token: string = ""
+
             this.authService.login(user?.email)
             .subscribe(async (res) => {
-              
-              var tempholder = user!.email;
-              var token =  await firstValueFrom(this.auth.getAccessTokenSilently());
-              var googleID: Token = {
-                email: tempholder,
-                token: token,
-                type: res
-              };
-              this.token = token;
-              this.userEmail = tempholder || null;
-              this.cookieService.set('userToken', token);
-              this.cookieService.set('userEmail', tempholder || '');
-              this.cookieService.set('userType', googleID.type);
-              this.store.dispatch(GetLogin({ payload: googleID }));
-              this.router.navigateByUrl('/home');
+              token = res;
+              console.log(token);
             });
+
+            this.authService.FetchRoles(user?.email)
+            .subscribe(async (res) => {
+              roles = res;
+              console.log(roles);
+            })
+
+            let tempholder = user?.email;
+            // var token =  await firstValueFrom(this.auth.getAccessTokenSilently());
+            var googleID: Token = {
+              email: tempholder,
+              token: token,
+              roles: roles
+            };
+
+            this.store.dispatch(GetLogin({ payload: googleID }));
+            this.router.navigateByUrl('/home');
  
           });
         },

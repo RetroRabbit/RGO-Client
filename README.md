@@ -26,7 +26,7 @@ Runs on [this](http:/localhost:4200) location
 ### FAQ
 ```typescript
 // user type
-enum UserType {
+enum UserRoles {
     GRAD = 0,
     PRESENTER,
     MENTOR,

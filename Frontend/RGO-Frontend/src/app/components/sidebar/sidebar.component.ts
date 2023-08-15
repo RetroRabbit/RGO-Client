@@ -45,29 +45,31 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  IsMenuItemVisible(menuItem: RouteInfo): boolean {
-    const type  = +this.cookieService.get("userType")
+  IsMenuItemVisible(menuItem: RouteInfo, type : Token): boolean {
+    console.log(`UserRoles: ${JSON.stringify(type)}`);
+    let isGrad: boolean = false;
+    let isPresenter: boolean = false;
+    let isMentor: boolean = false;
+    let isAdmin: boolean = false;
+    
+    let strRoles = type.roles.replace('[', '').replace(']', '').split(',');
+    if (strRoles.length == 0) return false;
 
-    if (menuItem.title === 'Dashboard') {
-      return true;
-    } else if (menuItem.title === 'Workshops' && (type === 0 || type === 1)) {
-      return true;
-    } else if (menuItem.title === 'Personal Project' && (type === 2 || type === 0)) {
-      return true;
-    } else if (menuItem.title === 'Events' && (type === 0)) {
-      return true;
-    } else if (menuItem.title === 'Forms' && (type === 3 || type === 0)) {
-      return true;
-    } else if (menuItem.title === 'Forms Builder' && (type === 3)) {
-      return true;
-    } else if (menuItem.title === 'Settings' && (type === 3)) {
-      return true;
-    } else if (menuItem.title === 'User Profile' && (type === 0 || type === 1)) {
-      return true;
-    }
-    else if (menuItem.title === 'Add User') {
-      return true;
-    }
+    let roles = type.roles.replace('[', '').replace(']', '').split(',');
+    console.info('UserRole', roles);
+    if (roles.includes('0')) isGrad = true;
+    if (roles.includes('1')) isPresenter = true;
+    if (roles.includes('2')) isMentor = true;
+    if (roles.includes('3')) isAdmin = true;
+
+    if (menuItem.title === 'Dashboard') return true;
+    else if (menuItem.title === 'Workshops' && (isGrad || isPresenter)) return true;
+    else if (menuItem.title === 'Personal Project' && (isMentor || isGrad)) return true;
+    else if (menuItem.title === 'Events' && (isGrad)) return true;
+    else if (menuItem.title === 'Forms' && (isAdmin || isGrad)) return true;
+    else if (menuItem.title === 'Forms Builder' && (isAdmin)) return true;
+    else if (menuItem.title === 'Settings' && (isAdmin)) return true;
+  
     return false;
   }
 
