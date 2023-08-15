@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Token } from '../models/token.interface';
 import { CookieService } from 'ngx-cookie-service';
-import { UserstackState } from '../store/reducers/userstacks.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +13,6 @@ import { UserstackState } from '../store/reducers/userstacks.reducer';
 export class UserstacksService {
   token: string = '';
   email: string = '';
-  // description?: string = '';
 
   constructor(private client: HttpClient, private store: Store<{app: Token}>, private cookieService: CookieService) { }
 

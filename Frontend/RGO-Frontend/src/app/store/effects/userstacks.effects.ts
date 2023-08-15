@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { UserstacksService } from "src/app/services/userstacks.service";
 import * as UserstacksActions from "../actions/userstacks.action"
-import { exhaustMap, map, mergeMap, switchMap, take, tap } from "rxjs/operators";
+import { exhaustMap, map, take } from "rxjs/operators";
 
 @Injectable()
 export class UserstacksEffects{
