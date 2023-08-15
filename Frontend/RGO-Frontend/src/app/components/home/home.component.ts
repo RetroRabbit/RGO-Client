@@ -3,6 +3,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Store } from '@ngrx/store';
 import { Token } from 'src/app/models/token.interface';
 import { Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -11,11 +12,12 @@ import { Observable } from 'rxjs';
 
 export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
-  selectedPage : string = "Dashboard";
+  selectedPage : string = this.cookieService.get("currentlPage") != "Dashboard" ?this.cookieService.get("currentlPage") :"Dashboard";
 
   constructor(
     private store: Store<{app: Token}>,
-    private auth: AuthService
+    private auth: AuthService,
+    private cookieService: CookieService
     ) {}
 
   ngOnDestroy() {
@@ -32,6 +34,7 @@ export class HomeComponent {
   }
 
   ngOnInit() {
+    this.selectedPage = this.cookieService.get('currentPage');
   }  
 
   GetUserType() {
@@ -43,6 +46,7 @@ export class HomeComponent {
   }
 
   handleSelectedItem(eventData: { selectedPage: string }) {
-    this.selectedPage = eventData.selectedPage;
+    
+    this.selectedPage = this.cookieService.get('currentPage');
   }
 }
