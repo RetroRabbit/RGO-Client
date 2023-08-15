@@ -13,7 +13,6 @@
         [rows]="10"
         [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 25, 50]"
-        [loading]="loading"
         [paginator]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [globalFilterFields]="['firstName', 'lastName', 'email', 'level']"
@@ -23,8 +22,7 @@
           <div class="flex">
               <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
               <span class="p-input-icon-left ml-auto">
-                  <i class="pi pi-search"></i>
-                  <input #firstName pInputText type="text" (input)="dt1.filterGlobal(firstName.value, 'contains')" placeholder="Search keyword" />
+                  <input #element pInputText type="text" (input)="dt1.filterGlobal(element.value, 'contains')" placeholder="Search keyword" />
               </span>
           </div>
       </ng-template>
@@ -55,6 +53,8 @@
                   <p-columnFilter type="numeric" field="level" display="menu"></p-columnFilter>
               </div>
               </th>
+              <th style="min-width:15rem "class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+              </th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-user>
@@ -71,12 +71,6 @@
               </td>
             </tr>
           </ng-template>
-          <!-- <ng-template pTemplate="paginatorleft">
-            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
-        </ng-template>
-        <ng-template pTemplate="paginatorright">
-            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
-        </ng-template> -->
         </p-table>
 
         <ng-template #NoUsers>

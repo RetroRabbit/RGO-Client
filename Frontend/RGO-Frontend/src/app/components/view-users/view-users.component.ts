@@ -18,7 +18,6 @@ export class ViewUsersComponent implements OnInit {
   allUsers:User[]= [];
   allUsers$ = this.store.select('users');
 
-  loading: boolean = true;
   constructor(private store : Store<{users : UserState}>, public service: WorkshopService){}
 
 
