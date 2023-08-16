@@ -49,5 +49,22 @@
           </div>
         </div>
       </div>
+      <div class="col-3 col-sm-6 mb-xl-0 mb-4">
+        
+          <div class="card" >
+            <div class="card-header p-3 pt-2 custom-textarea">
+              <div class="text-end pt-1">
+             <ng-template #DescriptionEdit></ng-template>
+              <textarea class="form-control" maxlength="350" style="overflow:hidden" rows="5" cols="50"  [value]="descriptionEdit" [(ngModel)]="descriptionEdit" [disabled]=" userStack.userstacks?.status === 1" placeholder="Please enter a description for your project"></textarea>
+            </div>
+           </div>
+          </div>
+          <div class="col-3">
+            <button class="btn btn-primary" (click)="updateDescription()" [disabled]=" userStack.userstacks?.status === 1">Submit</button>
+            <div *ngIf="userStack.userstacks?.status === 1">Status: Pending</div>
+          </div>
+          
     </div>
   </div>
+  
+  

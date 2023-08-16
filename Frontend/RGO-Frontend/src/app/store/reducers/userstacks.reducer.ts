@@ -14,5 +14,7 @@ export const UserstackReducer = createReducer(
     initialState, on(UserstacksActions.GetUserstacks, (state) => ({...state})),
     on(UserstacksActions.GetUserstacksSuccess, (state, {userstacks}) => ({...state, userstacks})),
     on(UserstacksActions.SetUserstack, (state) => ({... state})),
-    on(UserstacksActions.SetUserstackSuccess, (state, {userstacks}) => ({...state, userstacks}))
+    on(UserstacksActions.SetUserstackSuccess, (state, {userstacks}) => ({...state, userstacks})),
+    on(UserstacksActions.UpdateUserstack, (state, {userstacks}) => ({... state, userstacks})),
+    on(UserstacksActions.UpdateUserstackSuccess, (state, {userstacks}) => ({...state, userstacks})),
 );
