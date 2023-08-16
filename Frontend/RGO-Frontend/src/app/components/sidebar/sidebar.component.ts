@@ -43,6 +43,7 @@ export class SidebarComponent implements OnInit {
     this.type$.subscribe(data => {
       this.userType = +data.type;
     });
+    
   }
 
   IsMenuItemVisible(menuItem: RouteInfo): boolean {
