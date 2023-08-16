@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, exhaustMap } from 'rxjs/operators';
+import { map, exhaustMap } from 'rxjs/operators';
 import { UserProfileService } from 'src/app/services/userprofile.service';
 import * as UserProfile from '../actions/userprofile.actions';
 
@@ -14,7 +14,7 @@ export class UserProfileEffects {
   getUserProfile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserProfile.GetUserProfile),
-      mergeMap(() =>
+      exhaustMap(() =>
         this.userProfileService.GetUserProfile().pipe(
           map(user => UserProfile.GetUserProfileSuccess({ userProfile: user })),
         )
