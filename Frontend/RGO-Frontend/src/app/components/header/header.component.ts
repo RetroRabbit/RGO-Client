@@ -68,8 +68,6 @@ sidebarClose() {
     body.classList.remove('nav-open');
 };
 sidebarToggle() {
-    // const toggleButton = this.toggleButton;
-    // const body = document.getElementsByTagName('body')[0];
     var $toggle = document.getElementsByClassName('navbar-toggler')[0];
 
     if (this.sidebarVisible === false) {
@@ -109,7 +107,7 @@ sidebarToggle() {
             $layer.classList.add('visible');
         }, 100);
 
-        $layer.onclick = () => { //asign a function
+        $layer.onclick = () => {
           body.classList.remove('nav-open');
           this.mobile_menu_visible = 0;
           $layer.classList.remove('visible');
