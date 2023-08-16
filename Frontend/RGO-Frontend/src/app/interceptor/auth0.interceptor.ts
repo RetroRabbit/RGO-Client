@@ -4,19 +4,21 @@ import { Store } from '@ngrx/store';
 import { Token } from '../models/token.interface';
 import { AuthService } from '@auth0/auth0-angular';
 import { tap } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   token: string = '';
 
-  constructor(private appStore: Store<{ app: Token }>, private auth: AuthService) {
+  constructor(private appStore: Store<{ app: Token }>, private auth: AuthService, private cookieService: CookieService) {
     this.getToken();
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
+    const token = this.cookieService.get('userToken');
     const authReq = req.clone({
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${this.token}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       })
     });

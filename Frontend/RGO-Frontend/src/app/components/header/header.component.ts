@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import {Location} from '@angular/common';
 
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -18,7 +19,7 @@ export class HeaderComponent implements OnDestroy, OnInit {
     private sidebarVisible: boolean;
     $layer: any;
 
-  constructor(private auth: AuthService, location: Location,  private element: ElementRef, private router: Router) {
+  constructor(private auth: AuthService, location: Location,  private element: ElementRef, private router: Router, private cookieService: CookieService) {
     this.location = location;
           this.sidebarVisible = false;
   }
@@ -38,10 +39,7 @@ export class HeaderComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
-    sessionStorage.removeItem('access_token');
-    sessionStorage.removeItem('id_token');
+    this.cookieService.deleteAll();
   }
 
   Logout() {

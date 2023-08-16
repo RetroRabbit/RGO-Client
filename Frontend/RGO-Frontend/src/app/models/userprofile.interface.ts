@@ -5,7 +5,7 @@ import { Certifications } from "./certifications.interface"
 
 export interface UserProfile{
   id : number,
-  groupdid : number
+  gradGroupId : number
   firstName: string,
   lastName:string,
   email: string,
@@ -16,7 +16,7 @@ export interface UserProfile{
   bio?: string,
   phone?: string,
   skills : Skill[],
+  socials : Social[],
   certifications : Certifications[],
-  project : Project[],
-  socials : Social
+  projects : Project[]
 };
