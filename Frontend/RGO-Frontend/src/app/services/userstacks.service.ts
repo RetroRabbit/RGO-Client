@@ -17,12 +17,12 @@ export class UserstacksService {
   constructor(private client: HttpClient, private store: Store<{app: Token}>, private cookieService: CookieService) { }
 
   getUserstacks(): Observable<Userstacks>{
-    return this.client.get<Userstacks>(`${API.HttpsBaseURL}/userstacks/get?email=${this.cookieService.get("userEmail")}`);
+    return this.client.get<Userstacks>(`${API.HttpsBaseURL}/gradstacks/get?email=${this.cookieService.get("userEmail")}`);
   }
 
   setUserstacks(): Observable<Userstacks>{
     let header: HttpHeaders = new HttpHeaders();
-    return this.client.post<Userstacks>(`${API.HttpsBaseURL}/userstacks/add?email=${this.cookieService.get("userEmail")}`, {headers: header, responseType: 'text'});
+    return this.client.post<Userstacks>(`${API.HttpsBaseURL}/gradstacks/add?email=${this.cookieService.get("userEmail")}`, {headers: header, responseType: 'text'});
   }
 
   updateUserstacks(userstacks: Userstacks): Observable<Userstacks>{
@@ -30,7 +30,7 @@ export class UserstacksService {
     let update ={
       description: userstacks.description
     }
-    return this.client.put<Userstacks>(`${API.HttpsBaseURL}/userstacks/update?email=${this.cookieService.get("userEmail")}`,update, {headers: header});
+    return this.client.put<Userstacks>(`${API.HttpsBaseURL}/gradstacks/update?email=${this.cookieService.get("userEmail")}`,update, {headers: header});
   }
 
   public CaptureEvent(page: string, selectedItem: EventEmitter<{ selectedPage: string }>) {

@@ -14,7 +14,7 @@ export class EventsService {
   constructor(private client: HttpClient) { }
 
   getAllEvents(): Observable<Events[]>{
-    return this.client.get<Events[]>(`${API.HttpsBaseURL}/Events/events`);
+    return this.client.get<Events[]>(`${API.HttpsBaseURL}/event/events`);
   }
 
 }
