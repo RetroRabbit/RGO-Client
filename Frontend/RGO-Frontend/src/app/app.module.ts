@@ -46,9 +46,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
 import { StackComponent } from './components/stack/stack.component';
 
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,8 +62,6 @@ import { StackComponent } from './components/stack/stack.component';
     FormsComponent,
     AddUserComponent,
     ViewableWorkshopPageComponent,
-   
-
     StackComponent,
     ViewUsersComponent
   ],
