@@ -35,9 +35,16 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
 import { ViewUsersComponent } from './components/view-users/view-users.component';
 import { UserReducer } from './store/reducers/user.reducer';
 import { UserEffects } from './store/effects/user.effects';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { PaginatorModule } from 'primeng/paginator';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { MenuModule } from 'primeng/menu';
 import { StackComponent } from './components/stack/stack.component';
-
-
 
 @NgModule({
   declarations: [
@@ -73,6 +80,15 @@ import { StackComponent } from './components/stack/stack.component';
       }
     }),
     HttpClientModule,
+    TableModule,
+    ButtonModule,
+    PaginatorModule,
+    MultiSelectModule,
+    BrowserAnimationsModule,
+    DropdownModule,
+    InputNumberModule,
+    InputTextModule,
+    MenuModule
   ],
   providers: [
     AuthService,
