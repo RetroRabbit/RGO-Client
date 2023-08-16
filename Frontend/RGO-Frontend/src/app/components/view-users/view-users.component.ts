@@ -26,7 +26,6 @@ export class ViewUsersComponent implements OnInit {
     setTimeout(() => {
       this.allUsers$.subscribe(userState => {
         this.allUsers = userState.AllUsers; 
-        console.log(this.allUsers);
       });
     },500);
     
