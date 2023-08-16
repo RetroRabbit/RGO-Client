@@ -10,12 +10,13 @@
         [value]="allUsers" 
         [tableStyle]="{ 'min-width': '50rem' }"
         dataKey="id"
-        [rows]="5"
+        [rows]="10"
         [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[5, 10, 15]"
+        [rowsPerPageOptions]="[10, 15, 30]"
         [paginator]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [globalFilterFields]="['firstName', 'lastName', 'email', 'level']"
+        appendTo="body"
         >
 
         <ng-template pTemplate="caption">
