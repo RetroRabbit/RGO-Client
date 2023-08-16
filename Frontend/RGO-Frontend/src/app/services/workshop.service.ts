@@ -16,7 +16,7 @@ export class WorkshopService {
   constructor(private client: HttpClient, private appStore : Store<{app : Token}>, private cookieService : CookieService) { }
 
   getAllWorkshops(): Observable<Workshop[]>{
-    return this.client.get<Workshop[]>(`${API.HttpsBaseURL}/Workshop/workshops`);
+    return this.client.get<Workshop[]>(`${API.HttpsBaseURL}/workshop/workshops`);
   }
 
   public CaptureEvent(page: string, selectedItem: EventEmitter<{ selectedPage: string }>) {
