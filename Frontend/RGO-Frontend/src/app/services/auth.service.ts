@@ -24,7 +24,7 @@ export class AuthService {
     header.append('Content-Type','application/json')
     return this.client
     .post(
-      `${API.HttpsBaseURL}/authentication/login?email=${encodeURIComponent(userEmail??"")}`,
+      `${API.HttpsBaseURL}/auth/login?email=${encodeURIComponent(userEmail??"")}`,
       "",
       {headers: header, responseType: 'text'})
     .pipe(
@@ -44,7 +44,7 @@ export class AuthService {
     header.append('Content-Type','application/json')
     return this.client
     .get(
-      `${API.HttpsBaseURL}/authentication/roles?email=${encodeURIComponent(userEmail??"")}`,
+      `${API.HttpsBaseURL}/auth/roles?email=${encodeURIComponent(userEmail??"")}`,
       {headers: header, responseType: 'text'})
     .pipe(
       map(type => type),
