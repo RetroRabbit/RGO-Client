@@ -26,7 +26,7 @@
                   <input #element pInputText type="text" (input)="dt1.filterGlobal(element.value, 'contains')" placeholder="Search keyword" />
               </span>
           </div>
-      </ng-template>
+        </ng-template>
 
           <ng-template pTemplate="header">
             <tr>
@@ -58,6 +58,7 @@
               </th>
             </tr>
           </ng-template>
+          
           <ng-template pTemplate="body" let-user>
             <tr>
               <td class="text-xs font-weight-bold mb-0">{{ user.firstName }}</td>
@@ -65,15 +66,14 @@
               <td class="text-xs font-weight-bold mb-0">{{ user.email }}</td>
               <td class="text-xs font-weight-bold mb-0">{{ user.level }}</td>
               <td class="align-middle">
-                <a href="user_manage.html" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                  data-original-title="Edit user">
-                  Manage
+                <a (click)="manageUser(user)" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
+                   data-original-title="Edit user">
+                    Manage
                 </a>
               </td>
             </tr>
           </ng-template>
         </p-table>
-
         <ng-template #NoUsers>
           <h1>No Users in the database</h1>
         </ng-template>

@@ -1,6 +1,6 @@
 <div class="row ">
     <div class="col-12 right">
-    <button (click)="service.CaptureEvent('Workshops', selectedItem)" mat-raised-button class="btn btn-default">back</button>
+    <button (click)="backToWorkshop()" mat-raised-button class="btn btn-default">back</button>
     </div> 
 </div>
 <ng-container *ngIf="selectedWorkshop$ | async as workshop;">

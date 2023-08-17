@@ -37,8 +37,7 @@ export class HomeComponent {
     this.selectedPage = this.cookieService.get('currentPage');
   }  
 
-  handleSelectedItem(eventData: { selectedPage: string }) {
-    
+  handleSelectedItem() {
     this.selectedPage = this.cookieService.get('currentPage');
   }
 }

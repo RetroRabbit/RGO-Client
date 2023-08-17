@@ -93,6 +93,7 @@ import { StackComponent } from './components/stack/stack.component';
   providers: [
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    HomeComponent
   ],
   bootstrap: [AppComponent]
 })

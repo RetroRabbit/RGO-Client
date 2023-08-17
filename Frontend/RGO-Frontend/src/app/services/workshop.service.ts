@@ -6,6 +6,7 @@ import { Workshop } from '../models/Workshop.interface';
 import { Token } from '../models/token.interface';
 import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
+import { HomeComponent } from '../components/home/home.component';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,10 +20,7 @@ export class WorkshopService {
     return this.client.get<Workshop[]>(`${API.HttpsBaseURL}/workshop/workshops`);
   }
 
-  public CaptureEvent(page: string, selectedItem: EventEmitter<{ selectedPage: string }>) {
-    selectedItem.emit({
-      selectedPage: page
-    });
+  public CaptureEvent(page: string) {
     this.cookieService.set("currentPage", page)
   }
 }
