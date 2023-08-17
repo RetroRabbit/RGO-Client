@@ -3,8 +3,8 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Token } from 'src/app/models/token.interface';
-
 import { CookieService } from 'ngx-cookie-service';
+
 interface RouteInfo {
   title: string;
   icon: string;
@@ -30,7 +30,6 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: RouteInfo[] | undefined;
   type$: Observable<Token> = this.store.select('app');
-  userType: number | undefined; 
 
 
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
@@ -40,35 +39,34 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.menuItems = ROUTES;
-    this.type$.subscribe(data => {
-      this.userType = +data.type;
-    });
-    
   }
 
   IsMenuItemVisible(menuItem: RouteInfo): boolean {
-    const type  = +this.cookieService.get("userType")
+    const types = this.cookieService.get('userType');
 
-    if (menuItem.title === 'Dashboard') {
-      return true;
-    } else if (menuItem.title === 'Workshops' && (type === 0 || type === 1)) {
-      return true;
-    } else if (menuItem.title === 'Personal Project' && (type === 2 || type === 0)) {
-      return true;
-    } else if (menuItem.title === 'Events' && (type === 0)) {
-      return true;
-    } else if (menuItem.title === 'Forms' && (type === 3 || type === 0)) {
-      return true;
-    } else if (menuItem.title === 'Forms Builder' && (type === 3)) {
-      return true;
-    } else if (menuItem.title === 'Settings' && (type === 3)) {
-      return true;
-    } else if (menuItem.title === 'User Profile' && (type === 0 || type === 1)) {
-      return true;
-    }
-    else if (menuItem.title === 'Add User') {
-      return true;
-    }
+    let isGrad: boolean = false;
+    let isEmployee: boolean = false;
+    let isPresenter: boolean = false;
+    let isMentor: boolean = false;
+    let isAdmin: boolean = false;
+    
+    const roles: string[] = types.replace('[', '').replace(']', '').split(',');
+
+    if (roles.length == 0) return false;
+    if (roles.includes('0')) isGrad = true;
+    if (roles.includes('1')) isEmployee = true;
+    if (roles.includes('2')) isPresenter = true;
+    if (roles.includes('3')) isMentor = true;
+    if (roles.includes('4')) isAdmin = true;
+
+    if (menuItem.title === 'Dashboard') return true;
+    else if (menuItem.title === 'Workshops' && (isGrad || isPresenter)) return true;
+    else if (menuItem.title === 'Personal Project' && (isMentor || isGrad)) return true;
+    else if (menuItem.title === 'Events' && (isGrad)) return true;
+    else if (menuItem.title === 'Forms' && (isAdmin || isGrad)) return true;
+    else if (menuItem.title === 'Forms Builder' && (isAdmin)) return true;
+    else if (menuItem.title === 'Settings' && (isAdmin)) return true;
+  
     return false;
   }
 

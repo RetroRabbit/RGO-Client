@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import * as Auth0 from '@auth0/auth0-angular';
 import { Observable, firstValueFrom, take, EMPTY, catchError, map  } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -11,19 +10,42 @@ import { Token } from '../models/token.interface';
   providedIn: 'root'
 })
 export class AuthService {
-
-  constructor(private auth: Auth0.AuthService, private client: HttpClient, private store: Store<{app : Token}>) { }
+  constructor(
+    private auth: Auth0.AuthService,
+    private client: HttpClient,
+    private store: Store<{app : Token}>) { }
 
   isAuthenticated(): Observable<boolean>{
     return this.auth.isAuthenticated$.pipe(take(1))
   }
 
   login(userEmail: string|undefined): Observable<string>{
+    let header: HttpHeaders = new HttpHeaders() 
+    header.append('Content-Type','application/json')
+    return this.client
+    .post(
+      `${API.HttpsBaseURL}/auth/login?email=${encodeURIComponent(userEmail??"")}`,
+      "",
+      {headers: header, responseType: 'text'})
+    .pipe(
+      map(type => type),
+      catchError(err => {
+        console.log(err)
+        if (err.status == 404) {
+          window.alert("Contact admin to create your account")
+        }
+        return EMPTY
+      })
+    );
+  }
 
-    let user ={
-      email: userEmail,
-    }
-    return this.client.post(`${API.HttpsBaseURL}/auth/login`,user,{ responseType: 'text'})
+  FetchRoles(userEmail: string | undefined): Observable<string>{
+    let header: HttpHeaders = new HttpHeaders() 
+    header.append('Content-Type','application/json')
+    return this.client
+    .get(
+      `${API.HttpsBaseURL}/auth/roles?email=${encodeURIComponent(userEmail??"")}`,
+      {headers: header, responseType: 'text'})
     .pipe(
       map(type => type),
       catchError(err => {

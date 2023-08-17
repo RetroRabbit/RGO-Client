@@ -37,14 +37,6 @@ export class HomeComponent {
     this.selectedPage = this.cookieService.get('currentPage');
   }  
 
-  GetUserType() {
-    let type = 0
-    this.type$.subscribe(data => {
-      type = +data.type;
-    });
-    return type
-  }
-
   handleSelectedItem(eventData: { selectedPage: string }) {
     
     this.selectedPage = this.cookieService.get('currentPage');
