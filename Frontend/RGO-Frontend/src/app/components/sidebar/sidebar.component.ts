@@ -49,7 +49,7 @@ export class SidebarComponent implements OnInit {
     let isMentor: boolean = false;
     let isAdmin: boolean = false;
     
-    const roles = types.replace('[', '').replace(']', '').split(',');
+    const roles: string[] = types.replace('[', '').replace(']', '').split(',');
 
     if (roles.length == 0) return false;
     if (roles.includes('0')) isGrad = true;
