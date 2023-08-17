@@ -45,17 +45,19 @@ export class SidebarComponent implements OnInit {
     const types = this.cookieService.get('userType');
 
     let isGrad: boolean = false;
+    let isEmployee: boolean = false;
     let isPresenter: boolean = false;
     let isMentor: boolean = false;
     let isAdmin: boolean = false;
     
-    const roles = types.replace('[', '').replace(']', '').split(',');
+    const roles: string[] = types.replace('[', '').replace(']', '').split(',');
 
     if (roles.length == 0) return false;
     if (roles.includes('0')) isGrad = true;
-    if (roles.includes('1')) isPresenter = true;
-    if (roles.includes('2')) isMentor = true;
-    if (roles.includes('3')) isAdmin = true;
+    if (roles.includes('1')) isEmployee = true;
+    if (roles.includes('2')) isPresenter = true;
+    if (roles.includes('3')) isMentor = true;
+    if (roles.includes('4')) isAdmin = true;
 
     if (menuItem.title === 'Dashboard') return true;
     else if (menuItem.title === 'Workshops' && (isGrad || isPresenter)) return true;
