@@ -35,8 +35,16 @@ export class ViewUsersComponent implements OnInit {
     table.clear();
 }
 
-  manageUser(index: number, users: User[]){
-    this.store.dispatch(getSelectedUser({index: index,users: users}));
+  manageUser(users: User){
+    let index =-1;
+    for(let i =0; 1 < this.allUsers.length; i++){
+      if(this.allUsers[i].email === users.email)
+      {
+        index = i;
+        break;
+      }
+    }
+    this.store.dispatch(getSelectedUser({index: index,users: this.allUsers}));
     this.service.CaptureEvent('User Profile',this.selectedItem);
   }
 
