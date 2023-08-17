@@ -5,10 +5,10 @@ import { GetLogin } from '../actions/events.actions';
 export const initialState: Token = {
   email: null,
   token: null,
-  type: null,
+  roles: null,
 };
 
 export const LoginReducer = createReducer(
   initialState,
-  on(GetLogin,(state, {payload}) => ({...state, email: payload.email, token: payload.token, type: payload.type , loading: true})),
+  on(GetLogin,(state, {payload}) => ({...state, email: payload.email, token: payload.token, type: payload.roles , loading: true})),
 );
