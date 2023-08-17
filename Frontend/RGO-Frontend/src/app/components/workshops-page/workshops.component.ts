@@ -4,6 +4,7 @@ import { Workshop } from 'src/app/models/Workshop.interface';
 import { getSelectedWorkshop, getAllWorkshops, getTodaysWorkshop } from 'src/app/store/actions/workshop.actions';
 import { WorkshopState } from 'src/app/store/reducers/workshop.reducer';
 import { WorkshopService } from 'src/app/services/workshop.service';
+import { HomeComponent } from '../home/home.component';
 @Component({
   selector: 'app-workshops',
   templateUrl: './workshops.component.html',
@@ -32,9 +33,7 @@ export class WorkshopsComponent implements OnInit {
 
   workshop$ = this.store.select("workshop");
 
-  @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
-
-  constructor(private store : Store<{workshop : WorkshopState}>,public service: WorkshopService){}
+  constructor(private store : Store<{workshop : WorkshopState}>,public service: WorkshopService,private home: HomeComponent){}
 
   ngOnInit(): void {
     this.store.dispatch(getAllWorkshops());
@@ -49,7 +48,9 @@ export class WorkshopsComponent implements OnInit {
 
   getSelectedWorkshop(index: number, todayArray: Workshop[]) {
     this.store.dispatch(getSelectedWorkshop({ index: index, workshops: todayArray }));
-    this.service.CaptureEvent('Viewable Workshop', this.selectedItem);
+    this.service.CaptureEvent('Viewable Workshop');
+    this.home.handleSelectedItem();
+    
   }
 
   GetPastWorkshops(){

@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { WorkshopState } from 'src/app/store/reducers/workshop.reducer';
 import { WorkshopService } from 'src/app/services/workshop.service';
+import { HomeComponent } from '../home/home.component';
 
 @Component({
   selector: 'app-viewable-workshop-page',
@@ -12,11 +13,14 @@ export class ViewableWorkshopPageComponent implements OnInit{
 
   selectedWorkshop$ = this.store.select("workshop");
   
-  @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
-  
-  constructor(private store: Store<{workshop : WorkshopState}>, public service: WorkshopService){}
+  constructor(private store: Store<{workshop : WorkshopState}>, public service: WorkshopService,private home: HomeComponent){}
 
   ngOnInit(){ 
+  }
+
+  backToWorkshop(){
+    this.service.CaptureEvent('Workshops')
+    this.home.handleSelectedItem();
   }
 
 
