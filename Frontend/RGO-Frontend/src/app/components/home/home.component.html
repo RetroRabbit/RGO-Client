@@ -7,16 +7,11 @@
     <app-header></app-header>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ps ps--active-y">
       <div *ngIf="selectedPage === '' || selectedPage === 'Dashboard'" #ShowDashBoard>
-        <h1>You are on the dashboard</h1>
         <app-employee-profile></app-employee-profile>
       </div>
       <div *ngIf="selectedPage === 'Add User'">
         <app-add-user></app-add-user>
       </div>
-      <!-- THis will only show when an admin has signed in. This is to view all users -->
-      <!-- <div *ngIf="selectedPage === 'Settings'">
-        <app-view-users ></app-view-users>
-      </div> -->
     </main> 
   </div>
 </div>

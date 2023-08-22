@@ -11,10 +11,7 @@ export interface EmployeeProfile {
     countryOfBirth: string,
     nationality: string,
     level: number,
-    employeeType: {
-        id: string,
-        name: string
-    },
+    employeeType: string,
     title: string,
     name: string,
     initials: string,
@@ -28,7 +25,7 @@ export interface EmployeeProfile {
     gender: number,
     knownAs: string,
     pronouns: string,
-    retroEmail: string,
+    email: string,
     personalEmail: string,
     cellphoneNo: string,
     tshirtSize: number,

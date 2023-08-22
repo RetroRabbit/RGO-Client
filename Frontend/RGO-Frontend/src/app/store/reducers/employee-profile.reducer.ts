@@ -20,10 +20,7 @@ export const initialState: EmployeeProfileState = {
       countryOfBirth: '',
       nationality: '',
       level: 0,
-      employeeType: {
-          id:'',
-          name: ''
-      },
+      employeeType: '',
       title: '',
       name: '',
       initials: '',
@@ -37,7 +34,7 @@ export const initialState: EmployeeProfileState = {
       gender: 0,
       knownAs: '',
       pronouns: '',
-      retroEmail: '',
+      email: '',
       personalEmail: '',
       cellphoneNo: '',
       tshirtSize: 0,

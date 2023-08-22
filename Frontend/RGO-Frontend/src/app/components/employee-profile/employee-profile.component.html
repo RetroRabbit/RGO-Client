@@ -7,7 +7,6 @@
         <button (click)="CancelEdit()" class="edit-button">Cancel</button>
     </ng-template>
     <div *ngIf="!isEdit; else ShowInputs" class="profile-details">
-        <!-- <label>ID: </label> {{profile.id}} <br> -->
         <label>EmployeeNumber: </label>{{profile.employeeNumber}} <br>
         <label>Tax Number: </label>{{profile.taxNumber}} <br>
         <label>Engagement Date: </label>{{profile.engagementDate | date}} <br>
@@ -19,8 +18,7 @@
         <label>Country of Birth: </label>{{profile.countryOfBirth}} <br>
         <label>Nationality: </label>{{profile.nationality}} <br>
         <label>Level: </label>{{profile.level}} <br>
-        <label>Employee Type ID: </label>{{profile.employeeType.id}} <br>
-        <label>Employee Type: </label>{{profile.employeeType.name}} <br>
+        <label>Employee Type: </label>{{profile.employeeType}} <br>
         <label>Title: </label>{{profile.title}} <br>
         <label>Name: </label>{{profile.name}} <br>
         <label>Initilas: </label>{{profile.initials}} <br>
@@ -34,7 +32,7 @@
         <label>Gender: </label>{{profile.gender}} <br>
         <label>Known As: </label>{{profile.knownAs}} <br>
         <label>Pronouns: </label>{{profile.pronouns}} <br>
-        <label>Retro Email: </label>{{profile.retroEmail}} <br>
+        <label>Retro Email: </label>{{profile.email}} <br>
         <label>Personal Email: </label>{{profile.personalEmail}} <br>
         <label>Cellphone Number: </label>{{profile.cellphoneNo}} <br>
         <label>Tshirt Size: </label>{{profile.tshirtSize}} <br>
@@ -43,57 +41,39 @@
     <ng-template #ShowInputs>
         <div class="profile-details">
             <br>
-            <!-- <label>ID: </label>
-        <input [value]="editID" type="text" [(ngModel)]="editID"><br>
-         -->
-
-            <!-- <label>EmployeeNumber: </label>
-        <input [value]="editEmployeeNumber" type="text" [(ngModel)]="editEmployeeNumber"> <br> -->
             <label>EmployeeNumber: </label> {{profile.employeeNumber}} <br>
 
-            <!-- <label>Tax Number: </label>
-        <input [value]="editTaxNumber" type="text" [(ngModel)]="editTaxNumber"><br> -->
             <label>Tax Number: </label> {{profile.taxNumber}} <br>
 
-            <!-- <label>Engagment Date: </label>
-        <input [value]="editEngagementDate" type="text" [(ngModel)]="editEngagementDate"> <br> -->
             <label>Engagement Date: </label> {{profile.engagementDate | date}} <br>
 
-            <!-- <label>Ternimation Date: </label>
-        <input [value]="editTerminationDate" type="text" [(ngModel)]="editTerminationDate"><br> -->
             <label>Termination Date: </label> {{profile.terminationDate | date}} <br>
 
             <label>Reporting Line: </label> {{profile.reportingLine}} <br>
-            <!-- <input [value]="editReportingLine" type="text" [(ngModel)]="editReportingLine"> <br> -->
 
             <label>Highest Qualifications: </label>
             <input [value]="editHighestQualifications" type="text" [(ngModel)]="editHighestQualifications"> <br>
 
             <label>Disability: </label>
-            <input [value]="editDisability" type="text" [(ngModel)]="editDisability"><br>
-            <div *ngIf="editDisability">
+            <select [(ngModel)]="editDisability" id="editDisability" name="editDisability">
+                <option [value]=true>true</option>
+                <option [value]=false>false</option>
+            </select>
+
+            <div *ngIf="editDisability === true">
                 <label>Disability Notes: </label>
                 <input type="text" [(ngModel)]="editDisabilityNotes"> <br>
             </div>
 
-            <!-- <label>Country of Birth: </label>
-        <input [value]="editCountryofBirth" type="text" [(ngModel)]="editCountryofBirth"><br> -->
             <label>Country of Birth: </label> {{profile.countryOfBirth}} <br>
-
-            <!-- <label>Nationality: </label>
-        <input [value]="editNationality" type="text" [(ngModel)]="editNationality"><br> -->
             <label>Nationality: </label> {{profile.nationality}} <br>
 
             <label>Level: </label>
             <input [value]="editLevel" type="number" [(ngModel)]="editLevel"> <br>
 
-            <label>Employee Type ID: </label> {{profile.employeeType.id}} <br>
-            <!-- <input [value]="editEmployeeTypeID" type="text" [(ngModel)]="editEmployeeTypeID"><br> -->
+            <label>Employee Type: </label> {{profile.employeeType}} <br>
             
-            <label>Employee Type Name: </label> {{profile .employeeType.name}} <br>
-
-            <!-- <label>Employee Type: </label>
-        <input [value]="editEmployeeTypeName" type="text" [(ngModel)]="editEmployeeTypeName"><br> -->
+            <label>Employee Type: </label> {{profile.employeeType}} <br>
 
             <label>Title: </label>
             <input [value]="editTitle" type="text" [(ngModel)]="editTitle"> <br>
@@ -108,12 +88,10 @@
             <input [value]="editSurname" type="text" [(ngModel)]="editSurname"> <br>
 
             <label>Date of Birth: </label>
-            <input [value]="editDateOfBirth" type="text" [(ngModel)]="editDateOfBirth"> <br>
-            <!-- <label>Date of Birth: </label> {{profile.dateOfBirth | date}} <br> -->
+            <input [value]="editDateOfBirth" type="date" [(ngModel)]="editDateOfBirth"> <br>
 
-            <!-- <label>ID Number: </label>
-        <input [value]="editIDNumber" type="text" [(ngModel)]="editIDNumber"> <br> -->
-            <label>ID Number: </label> {{profile.idNumber}} <br>
+            <label>ID Number: </label>
+            <input [value]="editIDNumber" type="text" [(ngModel)]="editIDNumber"> <br>
 
             <label>Passport Number: </label>
             <input [value]="editPassportNumber" type="text" [(ngModel)]="editPassportNumber"><br>

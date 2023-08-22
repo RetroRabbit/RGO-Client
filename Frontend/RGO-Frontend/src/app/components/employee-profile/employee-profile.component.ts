@@ -26,8 +26,7 @@ export class EmployeeProfileComponent {
   editCountryofBirth !: string;
   editNationality !: string;
   editLevel !: number;
-  editEmployeeTypeID !: string; 
-  editEmployeeTypeName !: string;
+  editEmployeeType !: string; 
   editTitle !: string;
   editName !: string;
   editInitials !: string;
@@ -51,17 +50,14 @@ export class EmployeeProfileComponent {
   constructor(private employeeStore: Store<{ employee: EmployeeProfileState }>) { }
   ngOnInit() {
     this.employeeStore.dispatch(GetEmployeeProfile());
-    this.employeeStore.subscribe(data =>{
-      console.log(data.employee.employeeProfile);
-    })
   }
   EditEmployee(employee : EmployeeProfile){
     this.isEdit = !this.isEdit;
     this.editID = employee.id;
     this.editEmployeeNumber = employee.employeeNumber;
     this.editTaxNumber = employee.taxNumber;
-    this.editEngagementDate = new Date(employee.engagementDate);
-    this.editTerminationDate = new Date(employee.terminationDate);
+    this.editEngagementDate = employee.engagementDate;
+    this.editTerminationDate = employee.terminationDate;
     this.editReportingLine = employee.reportingLine;
     this.editHighestQualifications = employee.highestQualification;
     this.editDisabilityNotes = employee.disabilityNotes;
@@ -69,22 +65,21 @@ export class EmployeeProfileComponent {
     this.editCountryofBirth = employee.countryOfBirth;
     this.editNationality = employee.nationality;
     this.editLevel = employee.level;
-    this.editEmployeeTypeID = employee.employeeType.id; 
-    this.editEmployeeTypeName = employee.employeeType.name;
+    this.editEmployeeType = employee.employeeType; 
     this.editTitle = employee.title;
     this.editName = employee.name;
     this.editInitials = employee.initials;
     this.editSurname = employee.surname;
-    this.editDateOfBirth = new Date(employee.dateOfBirth);
+    this.editDateOfBirth = employee.dateOfBirth;
     this.editIDNumber = employee.idNumber;
     this.editPassportNumber = employee.passportNumber;
-    this.editpassportExpirationDate = new Date(employee.passportExpirationDate);
+    this.editpassportExpirationDate = employee.passportExpirationDate;
     this.editPassportCountryIssue = employee.passportCountryIssue;
     this.editRace = employee.race;
     this.editGender = employee.gender;
     this.editKnownAs = employee.knownAs;
     this.editPronouns = employee.pronouns;
-    this.editRetroEmail = employee.retroEmail;
+    this.editRetroEmail = employee.email;
     this.editPersonalEmail = employee.personalEmail;
     this.editCellphoneNo = employee.cellphoneNo;
     this.editTshirtSize = employee.tshirtSize;
@@ -92,7 +87,6 @@ export class EmployeeProfileComponent {
   }
   SaveChanges(){
     this.isEdit = !this.isEdit;
-
     const updatedEmployee : EmployeeProfile = {
       id: this.editID,
       employeeNumber: this.editEmployeeNumber,
@@ -106,10 +100,7 @@ export class EmployeeProfileComponent {
       countryOfBirth: this.editCountryofBirth,
       nationality: this.editNationality,
       level: this.editLevel,
-      employeeType: {
-        id: this.editEmployeeTypeID,
-        name: this.editEmployeeTypeID
-      },
+      employeeType: this.editEmployeeType,
       title: this.editTitle,
       name: this.editName,
       initials: this.editInitials,
@@ -123,13 +114,17 @@ export class EmployeeProfileComponent {
       gender: this.editGender,
       knownAs: this.editKnownAs,
       pronouns: this.editPronouns,
-      retroEmail: this.editRetroEmail,
+      email: this.editRetroEmail,
       personalEmail: this.editPersonalEmail,
       cellphoneNo: this.editCellphoneNo,
       tshirtSize: this.editTshirtSize,
       dietaryRestrictions: this.editDietaryRestrictions
     }
+    console.log(updatedEmployee)
     this.employeeStore.dispatch(UpdateEmployeeProfile({updatedProfile : updatedEmployee}));
+    setTimeout(()=>{
+      this.employeeStore.dispatch(GetEmployeeProfile());
+    }, 500);
   }
   CancelEdit(){
     this.isEdit = !this.isEdit
