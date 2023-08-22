@@ -119,8 +119,8 @@ export class EmployeeProfileComponent {
       cellphoneNo: this.editCellphoneNo,
       tshirtSize: this.editTshirtSize,
       dietaryRestrictions: this.editDietaryRestrictions
-    }
-    console.log(updatedEmployee)
+    };
+    
     this.employeeStore.dispatch(UpdateEmployeeProfile({updatedProfile : updatedEmployee}));
     setTimeout(()=>{
       this.employeeStore.dispatch(GetEmployeeProfile());
