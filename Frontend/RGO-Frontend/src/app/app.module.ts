@@ -17,7 +17,6 @@ import { AddUserComponent } from './components/add-user/add-user.component';
 import { LoginEffects } from './store/effects/app.effects';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './interceptor/auth0.interceptor';
-import { ViewUsersComponent } from './components/view-users/view-users.component';
 import { UserReducer } from './store/reducers/user.reducer';
 import { UserEffects } from './store/effects/user.effects';
 import { TableModule } from 'primeng/table';

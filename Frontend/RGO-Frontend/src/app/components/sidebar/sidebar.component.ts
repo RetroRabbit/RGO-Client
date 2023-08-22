@@ -1,5 +1,4 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Token } from 'src/app/models/token.interface';
@@ -12,7 +11,6 @@ interface RouteInfo {
 
 export const ROUTES: RouteInfo[] = [
     { title: 'Dashboard',  icon: 'dashboard' },
-    { title: 'Settings', icon: 'settings'},
     { title: 'Add User', icon: 'person'},
 ];
 
