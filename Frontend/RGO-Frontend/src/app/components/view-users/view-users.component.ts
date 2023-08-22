@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/models/user.interface';
-import { WorkshopService } from 'src/app/services/workshop.service';
+// import { WorkshopService } from 'src/app/services/workshop.service';
 import { getAllUsers, getSelectedUser } from 'src/app/store/actions/user.actions';
 import { UserState } from 'src/app/store/reducers/user.reducer';
 import { Table } from 'primeng/table';
@@ -17,7 +17,9 @@ export class ViewUsersComponent implements OnInit {
   allUsers:User[]= [];
   allUsers$ = this.store.select('users');
 
-  constructor(private store : Store<{users : UserState}>, public service: WorkshopService, private home: HomeComponent){}
+  constructor(private store : Store<{users : UserState}>, 
+    // public service: WorkshopService, 
+    private home: HomeComponent){}
 
 
   ngOnInit(): void {
@@ -44,7 +46,7 @@ export class ViewUsersComponent implements OnInit {
       }
     }
     this.store.dispatch(getSelectedUser({index: index,users: this.allUsers}));
-    this.service.CaptureEvent('User Profile');
+    // this.service.CaptureEvent('User Profile');
     this.home.handleSelectedItem();
   }
 

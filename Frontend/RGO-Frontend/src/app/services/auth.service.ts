@@ -19,12 +19,12 @@ export class AuthService {
     return this.auth.isAuthenticated$.pipe(take(1))
   }
 
-  login(userEmail: string|undefined): Observable<string>{
+  login(employeeEmail: string|undefined): Observable<string>{
     let header: HttpHeaders = new HttpHeaders() 
     header.append('Content-Type','application/json')
     return this.client
     .post(
-      `${API.HttpsBaseURL}/auth/login?email=${encodeURIComponent(userEmail??"")}`,
+      `${API.HttpsBaseURL}/auth/login?email=${encodeURIComponent(employeeEmail??"")}`,
       "",
       {headers: header, responseType: 'text'})
     .pipe(
@@ -39,12 +39,12 @@ export class AuthService {
     );
   }
 
-  FetchRoles(userEmail: string | undefined): Observable<string>{
+  FetchRoles(employeeEmail: string | undefined): Observable<string>{
     let header: HttpHeaders = new HttpHeaders() 
     header.append('Content-Type','application/json')
     return this.client
     .get(
-      `${API.HttpsBaseURL}/auth/roles?email=${encodeURIComponent(userEmail??"")}`,
+      `${API.HttpsBaseURL}/auth/roles?email=${encodeURIComponent(employeeEmail??"")}`,
       {headers: header, responseType: 'text'})
     .pipe(
       map(type => type),

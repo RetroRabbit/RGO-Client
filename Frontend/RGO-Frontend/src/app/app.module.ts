@@ -13,10 +13,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { environment } from 'src/enviroment/env';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
-import { UserProfileReducer } from './store/reducers/userprofile.reducer';
-import { UserProfileEffects } from './store/effects/userprofile.effects';
-import { FormsComponent } from './components/forms/forms.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { LoginEffects } from './store/effects/app.effects';
 import { AuthService } from './services/auth.service';
@@ -33,6 +29,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
+import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
+import { EmployeeProfileReducer } from './store/reducers/employee-profile.reducer';
+import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects';
 
 @NgModule({
   declarations: [
@@ -41,10 +40,8 @@ import { MenuModule } from 'primeng/menu';
     HomeComponent,
     HeaderComponent,
     SidebarComponent,
-    UserProfileComponent,
-    FormsComponent,
     AddUserComponent,
-    ViewUsersComponent,
+    EmployeeProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,10 +50,10 @@ import { MenuModule } from 'primeng/menu';
     ReactiveFormsModule,
     StoreModule.forRoot({
       app: LoginReducer,
-      user: UserProfileReducer,
+      employee : EmployeeProfileReducer,
       users: UserReducer,
     }),
-    EffectsModule.forRoot([LoginEffects, UserProfileEffects, UserEffects]),
+    EffectsModule.forRoot([LoginEffects, UserEffects, EmployeeProfileEffects]),
     AuthModule.forRoot({
       domain: environment.AUTH0_Domain_key, // domain
       clientId: environment.AUTH0_CLIENT_ID, // clientId

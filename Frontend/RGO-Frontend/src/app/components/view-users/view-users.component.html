@@ -5,7 +5,7 @@
         <h6 class="text-white text-capitalize ps-3">Users</h6>
       </div>
       <div class="card-body px-0 pb-2">
-        <p-table
+        <!-- <p-table
          #dt1
         [value]="allUsers" 
         [tableStyle]="{ 'min-width': '50rem' }"
@@ -17,42 +17,42 @@
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [globalFilterFields]="['firstName', 'lastName', 'email', 'level']"
         appendTo="body"
-        >
+        > -->
 
         <ng-template pTemplate="caption">
           <div class="flex">
-              <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
-              <span class="p-input-icon-left ml-auto">
+              <!-- <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button> -->
+              <!-- <span class="p-input-icon-left ml-auto">
                   <input #element pInputText type="text" (input)="dt1.filterGlobal(element.value, 'contains')" placeholder="Search keyword" />
-              </span>
+              </span> -->
           </div>
         </ng-template>
 
           <ng-template pTemplate="header">
             <tr>
               <th style="min-width:15rem" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                <div class="flex align-items-center">
+                <!-- <div class="flex align-items-center">
                   Name
                   <p-columnFilter type="text" field="firstName" display="menu"></p-columnFilter>
-              </div>
+              </div> -->
               </th>
               <th style="min-width:15rem" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                <div class="flex align-items-center">
+                <!-- <div class="flex align-items-center">
                   Surname
                   <p-columnFilter type="text" field="lastName" display="menu"></p-columnFilter>
-              </div>
+              </div> -->
               </th>
               <th style="min-width:15rem "class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                <div class="flex align-items-center">
+                <!-- <div class="flex align-items-center">
                   Email
                   <p-columnFilter type="text" field="email" display="menu"></p-columnFilter>
-              </div>
+              </div> -->
               </th>
               <th style="min-width:15rem"class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                <div class="flex align-items-center">
+                <!-- <div class="flex align-items-center">
                   Level
                   <p-columnFilter type="numeric" field="level" display="menu"></p-columnFilter>
-              </div>
+              </div> -->
               </th>
               <th style="min-width:15rem "class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
               </th>
@@ -73,7 +73,7 @@
               </td>
             </tr>
           </ng-template>
-        </p-table>
+        <!-- </p-table> -->
         <ng-template #NoUsers>
           <h1>No Users in the database</h1>
         </ng-template>

@@ -12,12 +12,6 @@ interface RouteInfo {
 
 export const ROUTES: RouteInfo[] = [
     { title: 'Dashboard',  icon: 'dashboard' },
-    { title: 'Workshops', icon: 'home_repair_service'},
-    { title: 'User Profile', icon: 'person'},
-    { title: 'Personal Project', icon: 'assignment' },
-    { title: 'Events', icon: 'calendar_view_week'},
-    { title: 'Forms Builder', icon: 'assignment_add'},
-    { title: 'Forms', icon: 'assignment'},
     { title: 'Settings', icon: 'settings'},
     { title: 'Add User', icon: 'person'},
 ];
@@ -60,14 +54,10 @@ export class SidebarComponent implements OnInit {
     if (roles.includes('4')) isAdmin = true;
 
     if (menuItem.title === 'Dashboard') return true;
-    else if (menuItem.title === 'Workshops' && (isGrad || isPresenter)) return true;
-    else if (menuItem.title === 'Personal Project' && (isMentor || isGrad)) return true;
-    else if (menuItem.title === 'Events' && (isGrad)) return true;
-    else if (menuItem.title === 'Forms' && (isAdmin || isGrad)) return true;
-    else if (menuItem.title === 'Forms Builder' && (isAdmin)) return true;
+    else if (menuItem.title === 'Employee Profile' && (isGrad)) return true;
     else if (menuItem.title === 'Settings' && (isAdmin)) return true;
   
-    return false;
+    return true;
   }
 
   CaptureEvent(event: any) {
