@@ -20,8 +20,7 @@ export class AuthService {
   }
 
   login(employeeEmail: string|undefined): Observable<string>{
-    let header: HttpHeaders = new HttpHeaders() 
-    header.append('Content-Type','application/json')
+    let header: HttpHeaders = new HttpHeaders();
     return this.client
     .post(
       `${API.HttpsBaseURL}/auth/login?email=${encodeURIComponent(employeeEmail??"")}`,
