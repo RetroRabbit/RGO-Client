@@ -6,16 +6,9 @@
   <div class="main-panel">
     <app-header></app-header>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ps ps--active-y">
-
-      <!-- <div *ngIf="selectedPage === 'Workshops'">
-        <app-workshops  (selectedItem)="handleSelectedItem()"></app-workshops>
-      </div> -->
       <div *ngIf="selectedPage === '' || selectedPage === 'Dashboard'" #ShowDashBoard>
         <h1>You are on the dashboard</h1>
         <app-employee-profile></app-employee-profile>
-      </div>
-      <div *ngIf="selectedPage === 'Forms'">
-        <app-forms></app-forms>
       </div>
       <div *ngIf="selectedPage === 'Add User'">
         <app-add-user></app-add-user>
