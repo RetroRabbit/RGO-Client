@@ -29,7 +29,6 @@ export class AuthService {
     .pipe(
       map(type => type),
       catchError(err => {
-        console.log(err)
         if (err.status == 404) {
           window.alert("Contact admin to create your account")
         }
@@ -48,7 +47,6 @@ export class AuthService {
     .pipe(
       map(type => type),
       catchError(err => {
-        console.log(err)
         if (err.status == 404) {
           window.alert("Contact admin to create your account")
         }
