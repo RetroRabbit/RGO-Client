@@ -16,7 +16,6 @@ export class AddUserComponent {
   public statuses: any[] =[{id: 1, title: "Active"}];
 
   newUserForm = new FormGroup({
-    gradGroupId: new FormControl(''),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required),
