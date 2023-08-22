@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { API } from '../models/constants/urls.constants';
 import { EmployeeProfile } from '../models/employee-profile.interface';
 import { Token } from '../models/token.interface';
