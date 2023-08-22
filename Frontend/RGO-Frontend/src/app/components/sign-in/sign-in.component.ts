@@ -58,7 +58,7 @@ export class SignInComponent {
           token: token,
           roles: roles
         };
-        console.log(googleID.roles)
+        
         this.store.dispatch(GetLogin({ payload: googleID }));
         this.router.navigateByUrl('/home');
       },
