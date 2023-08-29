@@ -10,7 +10,7 @@ import { ChartType, ChartOptions } from 'chart.js';
 })
 export class ChartComponent implements OnInit {
   selectedDataType: string = '';
-  selectedChartType: ChartType = 'bar';
+  selectedChartType: ChartType = 'pie';
   displayChart: boolean = false;
 
   chartData: any[] = [];
@@ -20,7 +20,7 @@ export class ChartComponent implements OnInit {
     scales: { y: { beginAtZero: true } }
   };
 
-  chartTypes: ChartType[] = ['bar', 'line', 'pie']; // Add more chart types as needed
+  chartTypes: ChartType[] = ['bar', 'line', 'pie']; 
 
   constructor(private ChartService: ChartService) {}
 
@@ -45,12 +45,13 @@ export class ChartComponent implements OnInit {
   processChartData(data: any[]): void {
     if (data.length > 0) {
       this.chartData = data.map(item => ({
-        data: item.Data,
-        label: item.Name,
+        data: item.data,
+        label: item.name,
   
       }));
-      this.chartLabels = data[0].Labels;
+      this.chartLabels = data[0].labels;
       this.displayChart = true;
+      this.selectedChartType= data[0].type;
       this.updateChartType(this.selectedChartType);
     } else {
       this.chartData = [];
