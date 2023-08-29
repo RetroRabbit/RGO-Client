@@ -31,6 +31,8 @@ import { MenuModule } from 'primeng/menu';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { EmployeeProfileReducer } from './store/reducers/employee-profile.reducer';
 import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects';
+import { NgChartsModule } from 'ng2-charts';
+
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects'
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    NgChartsModule,
     StoreModule.forRoot({
       app: LoginReducer,
       employee : EmployeeProfileReducer,
