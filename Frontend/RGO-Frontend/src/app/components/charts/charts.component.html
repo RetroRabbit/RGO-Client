@@ -1,1 +1,29 @@
-<div>Charta pageaaa</div>
+<div>
+  <select [(ngModel)]="selectedDataType">
+    <!-- Add options for data types -->
+    <option value="">Select Data Type</option>
+    <option value="data_type_1">Data Type 1</option>
+    <option value="data_type_2">Data Type 2</option>
+    <!-- Add more options as needed -->
+  </select>
+  
+  <select [(ngModel)]="selectedChartType">
+    <!-- Add options for chart types -->
+    <option value="bar">Bar Chart</option>
+    <option value="line">Line Chart</option>
+    <option value="pie">Pie Chart</option>
+  </select>
+  
+  <button (click)="createAndDisplayChart()">Create and Display Chart</button>
+</div>
+
+<div *ngIf="displayChart">
+  <div style="max-width: 600px;">
+    <canvas baseChart
+      [datasets]="chartData"
+      [labels]="chartLabels"
+      [options]="chartOptions"
+      [type]="selectedChartType"
+    ></canvas>
+  </div>
+</div>

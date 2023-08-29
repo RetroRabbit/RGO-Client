@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
 import { ChartType, ChartOptions } from 'chart.js';
 
+
 @Component({
   selector: 'app-chart',
   templateUrl: './charts.component.html',
@@ -23,22 +24,38 @@ export class ChartComponent implements OnInit {
 
   constructor(private ChartService: ChartService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+   this.createAndDisplayChart();
+
+  }
 
   createAndDisplayChart(): void {
-    if (this.selectedDataType) {
-      this.ChartService.getAllCharts().subscribe(
-        (data: any) => {
-          this.chartData = [{ data: data.data, label: data.label }];
-          this.chartLabels = data.labels;
-          this.displayChart = true;
-          console.log(this.chartData)
-          this.updateChartType(this.selectedChartType); // Call to update chart type
-        },
-        (error) => {
-          console.error('Error fetching data:', error);
-        }
-      );
+    this.ChartService.getAllCharts().subscribe(
+      (data: any[]) => {
+        console.log('Fetched data:', data);
+        this.processChartData(data);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
+  }
+
+  processChartData(data: any[]): void {
+    if (data.length > 0) {
+      this.chartData = data.map(item => ({
+        data: item.Data,
+        label: item.Name,
+  
+      }));
+      this.chartLabels = data[0].Labels;
+      this.displayChart = true;
+      this.updateChartType(this.selectedChartType);
+    } else {
+      this.chartData = [];
+      this.chartLabels = [];
+      this.displayChart = false;
     }
   }
 
@@ -46,4 +63,5 @@ export class ChartComponent implements OnInit {
     this.selectedChartType = chartType;
   }
 }
+
 
