@@ -13,7 +13,10 @@ export class ManageFieldCodeComponent {
 
   constructor(private store: Store<{ user: FieldCodeState }>, private fieldCodeService: FieldCodeService){}
 
-  public statuses: any[] = [{ id: 1, title: "Active" }];
+  public statuses: any[] = [
+    { id: 0, title: "Active" },
+    { id: 1, title: "Archive" },
+];
 
   newFieldCodeForm = new FormGroup({
     fieldCodeName: new FormControl('', Validators.required),

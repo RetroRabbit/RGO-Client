@@ -8,7 +8,7 @@ export const addFieldCode = createAction(
   props<{ fieldCode: FieldCode }>()
 );
 // TODO: deleteFieldCode, updateFieldCode, etc.
-export const addFieldCodeOption = createAction(
+export const addFieldCodeOptions = createAction(
   '[Field Code] Add FieldCodeOptions',
   props<{ option: FieldCodeOptions }>()
 );
