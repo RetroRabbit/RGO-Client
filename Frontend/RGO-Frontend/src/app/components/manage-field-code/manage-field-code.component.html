@@ -1,0 +1,49 @@
+<div class="col-12">
+  <div class="m-3 border-bottom">
+    <h1 class="page-heading border-bottom">New Field Code</h1>
+    <div style="overflow: auto">
+      <div class="container-fluid">
+        <form [formGroup]="newFieldCodeForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3">
+                <label for="fieldCodeName" class="form-label">Name</label>
+                <input id="fieldCodeName" type="text" class="form-control" formControlName="fieldCodeName" />
+              </div>
+              <div class="mb-3">
+                <label for="fieldCodeDescription" class="form-label">Description (optional)</label>
+                <input id="fieldCodeDescription" type="text" class="form-control"
+                  formControlName="fieldCodeDescription" />
+              </div>
+              <div class="mb-3">
+                <label for="fieldCodeRegEx" class="form-label">RegEx (optional)</label>
+                <input id="fieldCodeRegEx" type="text" class="form-control" formControlName="fieldCodeRegEx" />
+              </div>
+              <div class="mb-3">
+                <label for="fieldCodeStatus" class="form-label">Status</label>
+                <select id="fieldCodeStatus" class="form-select" formControlName="fieldCodeStatus">
+                  <option *ngFor="let status of statuses" [value]="status.id">
+                    {{ status.title }}
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="fieldCodeType" class="form-label">Type</label>
+                <select id="fieldCodeType" class="form-select" formControlName="fieldCodeType">
+                  <option value="">Select a Type</option>
+                  <option value="Date">Date</option>
+                  <option value="String">String</option>
+                  <option value="Int">Int</option>
+                  <option value="Float">Float</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
