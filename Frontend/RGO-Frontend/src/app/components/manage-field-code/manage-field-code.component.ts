@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { FieldCodeState } from 'src/app/store/reducers/field-code.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -11,20 +11,35 @@ import { FieldCodeState } from 'src/app/store/reducers/field-code.reducer';
 })
 export class ManageFieldCodeComponent {
 
-  constructor(private store: Store<{ user: FieldCodeState }>, private fieldCodeService: FieldCodeService){}
+  public statuses = [
+    { id: 0, title: 'Active' },
+    { id: 1, title: 'Archive' },
+  ];
 
-  public statuses: any[] = [
-    { id: 0, title: "Active" },
-    { id: 1, title: "Archive" },
-];
+  newFieldCodeForm!: FormGroup;
 
-  newFieldCodeForm = new FormGroup({
-    fieldCodeName: new FormControl('', Validators.required),
-    fieldCodeDescription: new FormControl('', Validators.required),
-    fieldCodeRegEx: new FormControl('', Validators.required),
-    fieldCodeType: new FormControl('', Validators.required),
-    fieldCodeStatus: new FormControl('', Validators.required),
-  });
+  constructor(
+    private store: Store<{ user: FieldCodeState }>,
+    private fieldCodeService: FieldCodeService,
+    private fb: FormBuilder
+  ) {
+    this.initializeForm();
+  }
+
+  private initializeForm() {
+    this.newFieldCodeForm = this.fb.group({
+      fieldCodeName: ['', 
+      Validators.compose([
+        Validators.required,
+        Validators.minLength(1),
+        Validators.maxLength(255),
+        Validators.pattern('^[a-zA-Z ]*$')])],
+      fieldCodeDescription: [''],
+      fieldCodeRegEx: [''],
+      fieldCodeType: ['', Validators.required],
+      fieldCodeStatus: [null, Validators.required],
+    });
+  }
 
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
