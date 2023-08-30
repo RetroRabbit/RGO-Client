@@ -1,0 +1,32 @@
+.charts-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+  }
+  
+  .chart-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .chart-item {
+    width: 300px;
+    height: 300px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    position: relative;
+    transition: transform 0.3s, z-index 0.3s;
+  }
+  
+  .chart-item.active {
+    transform: scale(1.05);
+    z-index: 1;
+  }
+  

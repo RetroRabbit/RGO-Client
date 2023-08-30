@@ -46,20 +46,21 @@ export class ChartComponent implements OnInit {
     if (data.length > 0) {
       this.chartData = data.map(item => ({
         data: item.data,
-        label: item.name,
-  
+        label: item.label,
+        type: item.type,
+        labels: item.labels // Include the labels property
       }));
-      this.chartLabels = data[0].labels;
       this.displayChart = true;
-      this.selectedChartType= data[0].type;
+      this.selectedChartType = this.chartData[0].type; // Set the type of the first chart
       this.updateChartType(this.selectedChartType);
     } else {
       this.chartData = [];
-      this.chartLabels = [];
       this.displayChart = false;
     }
   }
-
+  
+  
+  
   updateChartType(chartType: ChartType): void {
     this.selectedChartType = chartType;
   }
