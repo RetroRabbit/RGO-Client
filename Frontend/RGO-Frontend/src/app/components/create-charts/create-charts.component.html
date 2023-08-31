@@ -20,17 +20,22 @@
                 <option value="bar">Bar Chart</option>
                 <option value="line">Line Chart</option>
                 <option value="pie">Pie Chart</option>
-                <option value="doughnut">doughnut</option>
+                <option value="doughnut">Doughnut</option>
               </select>
             </div>
             <div class="chart-form">
-              <label for="chartData">Chart Data:</label>
-              <input type="text" id="chartData" [(ngModel)]="chartData" placeholder="e.g., 10, 20, 30, 40, 50">
+              <label for="chartType">Chart Data Item:</label>
+              <select id="chartType" [(ngModel)]="chartDataItem">
+                <option value="Gender">Gender</option>
+                <option value="Race">Race</option>
+                <option value="Level">Level</option>
+                <option value="Nationality">Nationality</option>
+              </select>
             </div>
 
             <div class="chart-container">
               <canvas baseChart
-                [datasets]="[{ data: chartData, label: 'Chart' }]"
+                [datasets]="[{ data: chartData, label: chartName }]"
                 [labels]="chartLabels"
                 [type]="chartType"
                 [options]="chartOptions">

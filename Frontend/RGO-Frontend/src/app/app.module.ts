@@ -34,6 +34,7 @@ import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects'
 import { NgChartsModule } from 'ng2-charts';
 import { ChartComponent } from './components/charts/charts.component';
 import { CreateChartsComponent } from './components/create-charts/create-charts.component';
+import { NgToastModule } from 'ng-angular-popup';
 
 
 @NgModule({
@@ -77,6 +78,8 @@ import { CreateChartsComponent } from './components/create-charts/create-charts.
     InputNumberModule,
     InputTextModule,
     MenuModule,
+    NgToastModule
+  
   ],
   providers: [
     AuthService,

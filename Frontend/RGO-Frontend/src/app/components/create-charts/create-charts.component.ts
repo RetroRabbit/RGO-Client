@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { ChartService } from 'src/app/services/charts.service';
+import { ChartType, ChartOptions } from 'chart.js';
+import { NgToastService } from 'ng-angular-popup';
+
 
 @Component({
   selector: 'app-create-charts',
@@ -7,6 +11,9 @@ import { Component } from '@angular/core';
 })
 export class CreateChartsComponent {
 
+ 
+  chartName: string='';
+  chartDataItem: string='Gender';
   chartType: any= 'bar';
   chartData: number[] = [10, 20, 30, 40, 50];
   chartLabels: string[] = ['Label 1', 'Label 2', 'Label 3', 'Label 4', 'Label 5'];
@@ -14,8 +21,19 @@ export class CreateChartsComponent {
     responsive: true,
     scales: { y: { beginAtZero: true } }
   };
-chartName: string='';
+
+  constructor(private ChartService: ChartService,private toast: NgToastService) {}
+
   createChart() {
-    // Logic to create and update the chart goes here.
+    this.ChartService.createChart(this.chartDataItem, this.chartName, this.chartType)
+      .subscribe(
+        (response) => {
+          this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
+        },
+        (error) => {
+          
+            this.toast.error({detail:"Error", summary:"Failed to create chart.",duration:5000, position:'topRight'});
+        }
+      );
   }
 }
