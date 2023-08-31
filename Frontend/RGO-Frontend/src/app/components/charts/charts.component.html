@@ -1,22 +1,29 @@
 <div class="charts-wrapper">
-  <div>
+  <!-- <div>
     <select [(ngModel)]="selectedChartType">
-      <!-- Add options for chart types -->
+    
       <option value="bar">Bar Chart</option>
       <option value="line">Line Chart</option>
       <option value="pie">Pie Chart</option>
     </select>
 
-    <button (click)="createAndDisplayChart()">Create and Display Charts</button>
-  </div>
+    <button class="btn-success" (click)="createAndDisplayChart()">Create and Display Charts</button>
+  </div> -->
+  <a href="/create-charts">
+    <button class="edit-button">Edit Dashboard</button>
+  </a>
 
+<div class="numberofempoyees">
+  <h5>Total number of employees: {{numberOfEmployees}}</h5>
+</div>
   <div *ngIf="displayChart" class="chart-container">
     <div *ngFor="let chart of chartData; let i = index" class="chart-item" [ngClass]="{'active': chart.active}">
+      {{chart.name}}
       <canvas
         baseChart
         [datasets]="[{ data: chart.data, label: chart.label }]"
         [labels]="chart.labels"
-        [options]="chartOptions"
+        [options]="chart.labels"
         [type]="chart.type"
         (mouseenter)="chart.active = true"
         (mouseleave)="chart.active = false"

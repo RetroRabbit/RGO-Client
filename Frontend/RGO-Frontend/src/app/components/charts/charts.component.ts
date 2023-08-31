@@ -12,6 +12,7 @@ export class ChartComponent implements OnInit {
   selectedDataType: string = '';
   selectedChartType: ChartType = 'pie';
   displayChart: boolean = false;
+  numberOfEmployees: number = 0;
 
   chartData: any[] = [];
   chartLabels: string[] = [];
@@ -27,14 +28,25 @@ export class ChartComponent implements OnInit {
   ngOnInit(): void {
 
    this.createAndDisplayChart();
+   this.getNumberOfEmployees();
 
   }
 
   createAndDisplayChart(): void {
     this.ChartService.getAllCharts().subscribe(
       (data: any[]) => {
-        console.log('Fetched data:', data);
         this.processChartData(data);
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
+  }
+
+  getNumberOfEmployees():void {
+    this.ChartService.getTotalEmployees().subscribe(
+      (data:any) =>{
+       this.numberOfEmployees =data
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -46,7 +58,7 @@ export class ChartComponent implements OnInit {
     if (data.length > 0) {
       this.chartData = data.map(item => ({
         data: item.data,
-        label: item.label,
+        label: item.name,
         type: item.type,
         labels: item.labels // Include the labels property
       }));

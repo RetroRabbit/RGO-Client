@@ -33,6 +33,7 @@ import { EmployeeProfileReducer } from './store/reducers/employee-profile.reduce
 import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects';
 import { NgChartsModule } from 'ng2-charts';
 import { ChartComponent } from './components/charts/charts.component';
+import { CreateChartsComponent } from './components/create-charts/create-charts.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { ChartComponent } from './components/charts/charts.component';
     SidebarComponent,
     AddUserComponent,
     EmployeeProfileComponent,
-    ChartComponent
+    ChartComponent,
+    CreateChartsComponent
   ],
   imports: [
     BrowserModule,
