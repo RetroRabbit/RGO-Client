@@ -42,7 +42,7 @@
     z-index: 1;
   }
   
-  .chart-item canvas {
+  .chart-container .chart.item canvas {
     max-width:fit-content ;
     height: fit-content;
   }

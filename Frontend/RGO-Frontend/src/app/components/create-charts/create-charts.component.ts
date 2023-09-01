@@ -12,8 +12,7 @@ import { Router } from '@angular/router';
 })
 export class CreateChartsComponent {
 
- 
-  chartName: string='';
+  chartName: string='Name';
   chartDataItem: string='Gender';
   chartType: any= 'bar';
   chartData: number[] = [];
@@ -23,7 +22,6 @@ export class CreateChartsComponent {
     scales: { y: { beginAtZero: true } }
   };
 
-  
   constructor(private ChartService: ChartService,private toast: NgToastService, private router: Router) {}
 
   ngOnInit() :void{
