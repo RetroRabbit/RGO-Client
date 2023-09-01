@@ -24,8 +24,10 @@ export class ChartService {
   }
 
   getChartDataByType(dataType: string): Observable<any> {
-    return this.httpClient.get<any>(`${API.HttpBaseURL}/chart/getByType/${dataType}`);
+    const queryParams = `?dataType=${dataType}`;
+    return this.httpClient.get<any>(`${API.HttpBaseURL}/chart/get/chartdata/${queryParams}`);
   }
+
 }
 
 

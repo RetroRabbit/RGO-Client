@@ -1,19 +1,18 @@
-/* chart.component.css */
 .chart-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
     padding: 20px;
     
   }
 
   .container {
-    background-color: #fff; /* Background color */
-    margin: 0 auto; /* Center horizontally */
-    padding: 20px; /* Padding around content */
-    border-radius: 8px; /* Rounded corners */
+    background-color: #fff; 
+    margin: 0 auto; 
+    padding: 20px; 
+    border-radius: 8px; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    width: min-content;/* Box shadow for a subtle lift */
+    width: min-content;
 }
 
   
@@ -82,7 +81,7 @@
 h2{
     margin-left: 25%;
 }
-  /* Responsive layout */
+
   @media screen and (min-width: 768px) {
     .chart-container {
       flex-direction: row;
@@ -97,7 +96,5 @@ h2{
       flex: 0 1 45%;
       height: 400px;
     }
-
-   
   }
   

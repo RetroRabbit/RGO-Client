@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
 import { ChartType, ChartOptions } from 'chart.js';
 import { NgToastService } from 'ng-angular-popup';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,25 +16,42 @@ export class CreateChartsComponent {
   chartName: string='';
   chartDataItem: string='Gender';
   chartType: any= 'bar';
-  chartData: number[] = [10, 20, 30, 40, 50];
-  chartLabels: string[] = ['Label 1', 'Label 2', 'Label 3', 'Label 4', 'Label 5'];
+  chartData: number[] = [];
+  chartLabels: string[] = [];
   chartOptions: any = {
     responsive: true,
     scales: { y: { beginAtZero: true } }
   };
 
-  constructor(private ChartService: ChartService,private toast: NgToastService) {}
+  
+  constructor(private ChartService: ChartService,private toast: NgToastService, private router: Router) {}
+
+  ngOnInit() :void{
+    this.getChartData();
+  }
 
   createChart() {
     this.ChartService.createChart(this.chartDataItem, this.chartName, this.chartType)
       .subscribe(
         (response) => {
           this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
+          this.router.navigateByUrl('/charts');
         },
         (error) => {
-          
             this.toast.error({detail:"Error", summary:"Failed to create chart.",duration:5000, position:'topRight'});
         }
       );
+  }
+
+  getChartData() {
+    this.ChartService.getChartDataByType(this.chartDataItem).subscribe(
+      (data:any) =>{
+        this.chartData =data.data;
+        this.chartLabels=data.labels;
+       },
+       (error) => {
+        this.toast.error({detail:"Error", summary:"Failed to get chartData.",duration:5000, position:'topRight'});
+       }
+     );
   }
 }
