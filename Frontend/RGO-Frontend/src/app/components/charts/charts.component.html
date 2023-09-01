@@ -9,7 +9,6 @@
 </div>
   <div class="chart-container">
     <div *ngFor="let chart of chartData;" class="chart-item">
-      {{chart.name}}
       <canvas
         baseChart
         [datasets]="[{ data: chart.data, label: chart.label }]"

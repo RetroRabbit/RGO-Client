@@ -25,7 +25,7 @@
             </div>
             <div class="chart-form">
               <label for="chartType">Chart Data Item:</label>
-              <select id="chartType" [(ngModel)]="chartDataItem">
+              <select id="chartType" [(ngModel)]="chartDataItem" (change)="onDropDownChange()">
                 <option value="Gender">Gender</option>
                 <option value="Race">Race</option>
                 <option value="Level">Level</option>

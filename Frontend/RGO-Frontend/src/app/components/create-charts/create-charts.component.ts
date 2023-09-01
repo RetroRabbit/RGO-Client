@@ -54,4 +54,16 @@ export class CreateChartsComponent {
        }
      );
   }
+
+  onDropDownChange() {
+    this.ChartService.getChartDataByType(this.chartDataItem).subscribe(
+      (data:any) =>{
+        this.chartData =data.data;
+        this.chartLabels=data.labels;
+       },
+       (error) => {
+        this.toast.error({detail:"Error", summary:"Failed to get chartData.",duration:5000, position:'topRight'});
+       }
+     );
+  }
 }

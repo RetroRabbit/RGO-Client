@@ -46,7 +46,7 @@ export class ChartComponent implements OnInit {
   getNumberOfEmployees():void {
     this.ChartService.getTotalEmployees().subscribe(
       (data:any) =>{
-       this.numberOfEmployees =data
+       this.numberOfEmployees = data
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -60,10 +60,10 @@ export class ChartComponent implements OnInit {
         data: item.data,
         label: item.name,
         type: item.type,
-        labels: item.labels // Include the labels property
+        labels: item.labels 
       }));
       this.displayChart = true;
-      this.selectedChartType = this.chartData[0].type; // Set the type of the first chart
+      this.selectedChartType = this.chartData[0].type; 
       this.updateChartType(this.selectedChartType);
     } else {
       this.chartData = [];
