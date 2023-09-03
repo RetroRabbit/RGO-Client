@@ -1,0 +1,38 @@
+<p>role-manager works!</p>
+<div class="roleManagerBody">
+    <header class="roleManagerHeader">
+        <form [formGroup]="newRoleForm" *ngIf="rawRoles$ | async as raw">
+            <input list="rolesList" name="role" id="roleIn" formControlName="role">
+            <datalist id="rolesList">
+                <option *ngFor="let role of getRoles(raw)" [value]="role">
+                    {{ role }}
+                </option>
+            </datalist>
+            <label for="roles" class="col-form-label">Roles:</label>
+            <select type="text" name="selectedRole" id="roles" formControlName="role" [selectedIndex]="0">
+                <option *ngFor="let role of getRoles(raw)" [value]="role">
+                    {{ role }}
+                </option>
+            </select>
+            <div
+              *ngIf="newRoleForm.controls.role.invalid &&
+                (newRoleForm.controls.role.dirty || newRoleForm.controls.role.touched)"
+              class="alert">
+              Please enter a role
+            </div>
+            <hr>
+            <label for="permission" class="col-form-label">Permission:</label>
+            <select type="text" name="selectedPermission" id="permission" formControlName="permission">
+                <option *ngFor="let permission of getPermissions(raw)" [value]="permission">
+                    {{ permission }}
+                </option>
+            </select>
+            <div
+              *ngIf="newRoleForm.controls.permission.invalid &&
+                (newRoleForm.controls.permission.dirty || newRoleForm.controls.permission.touched)"
+              class="alert">
+                Please permission is valid
+            </div>
+        </form>
+    </header>
+</div>

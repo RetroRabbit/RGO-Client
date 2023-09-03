@@ -31,6 +31,7 @@ import { MenuModule } from 'primeng/menu';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { EmployeeProfileReducer } from './store/reducers/employee-profile.reducer';
 import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects';
+import { RoleManagerComponent } from './components/role-manager/role-manager.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects'
     SidebarComponent,
     AddUserComponent,
     EmployeeProfileComponent,
+    RoleManagerComponent,
   ],
   imports: [
     BrowserModule,
