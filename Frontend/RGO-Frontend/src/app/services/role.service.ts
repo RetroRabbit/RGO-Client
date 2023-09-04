@@ -15,6 +15,14 @@ export class RoleService {
   }
 
   getRole(email: string): Observable<any>{
-    return this.httpClient.get<any>(`${API.HttpBaseURL}/rolemanage/get?email=${email}`);
+    return this.httpClient.get<any>(`${API.HttpBaseURL}/rolemanage/get?email=${encodeURIComponent(email)}`);
+  }
+
+  addRole(email: string, role: any): Observable<any>{
+    return this.httpClient.post<any>(`${API.HttpBaseURL}/rolemanage/add?email=${encodeURIComponent(email)}`, role);
+  }
+
+  deleteRole(role: string, access: string): Observable<any> {
+    return this.httpClient.delete<any>(`${API.HttpBaseURL}/rolemanage/delete?role=${encodeURIComponent(role)}&access=${encodeURIComponent(access)}`);
   }
 }
