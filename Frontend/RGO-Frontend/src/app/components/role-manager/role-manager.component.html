@@ -56,11 +56,11 @@
             <button type="submit" class="btn btn-primary" [disabled]="!newRoleForm.valid" (click)="onAdd()">Add</button>
             <button type="submit" class="btn btn-danger" [disabled]="!newRoleForm.valid" (click)="onDelete()">Delete</button>
             <br>
-            <div *ngIf="saved || deleted">
+            <div class="alert alert-info" *ngIf="saved || deleted">
                 operation succeded
             </div>
             <br>
-            <div *ngIf="failed">
+            <div class="alert alert-warning" *ngIf="failed">
                 operation failed
             </div>
             <br>
