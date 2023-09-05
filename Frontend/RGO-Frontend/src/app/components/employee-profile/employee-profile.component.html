@@ -1,6 +1,6 @@
-<div *ngIf="!isEdit;else IsEditing">
+<!-- <div *ngIf="!isEdit;else IsEditing">
     <div>
-        <button (click)=toggleEdit()>Edit</button>
+        <button class="btn btn-success" (click)=toggleEdit()>Edit</button>
     </div>
     <div *ngFor="let field of EmployeeFields;">
         <div>
@@ -10,8 +10,8 @@
 </div>
 <ng-template #IsEditing>
     <div>
-        <button (click)="saveChanges()">Save</button>
-        <button (click)=toggleEdit()>Cancel</button>
+        <button class="btn btn-success" (click)="saveChanges()">Save</button>
+        <button class="btn btn-danger" (click)=toggleEdit()>Cancel</button>
     </div>
     <div *ngFor="let field of EmployeeFields; index as index">
         <div *ngIf="field.condition == 1;else Editable">
@@ -32,4 +32,4 @@
         </ng-template>
         <br/>
     </div>
-</ng-template>
+</ng-template> -->
