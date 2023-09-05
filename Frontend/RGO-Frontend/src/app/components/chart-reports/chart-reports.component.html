@@ -1,0 +1,22 @@
+<div class="report-wrapper">
+    <!-- Display the report content -->
+    <div class="report-content" [innerHTML]="generateHTMLReport()"></div>
+  
+    <div class="report">
+        <h1>{{ chartData.Name }}</h1>
+        <p>This report provides information about the chartData chart data:</p>
+        <ul>
+          <li><strong>Name:</strong> {{ chartData.Name }}</li>
+          <li><strong>Type:</strong> {{ chartData.type }}</li>
+          <li><strong>Total Employees:</strong> {{ getTotalEmployees() }} employees</li>
+          <li><strong>Data:</strong></li>
+          <ul>
+            <!-- Iterate over the chartData.labels and display labels with corresponding data -->
+            <li *ngFor="let label of chartData.labels; let i = index">
+              {{ label }}: {{ chartData.data[i] }} employees
+              ({{ calculatePercentage(chartData.data[i]) }}% of total)
+            </li>
+          </ul>
+        </ul>
+    </div>
+</div>

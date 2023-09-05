@@ -35,6 +35,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { ChartComponent } from './components/charts/charts.component';
 import { CreateChartsComponent } from './components/create-charts/create-charts.component';
 import { NgToastModule } from 'ng-angular-popup';
+import { ReportComponent } from './components/chart-reports/chart-reports.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { NgToastModule } from 'ng-angular-popup';
     AddUserComponent,
     EmployeeProfileComponent,
     ChartComponent,
-    CreateChartsComponent
+    CreateChartsComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,

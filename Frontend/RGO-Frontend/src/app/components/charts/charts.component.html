@@ -1,16 +1,35 @@
-
 <app-header></app-header>
 <div class="charts-wrapper">
-
   <a href="/create-charts">
     <button class="edit-button">Edit Dashboard</button>
   </a>
-
-<div class="numberofempoyees">
-  <h5>Total number of employees: {{numberOfEmployees}}</h5>
+  <div class="numberofempoyees">
+    <h5>Total number of employees: {{ numberOfEmployees }}</h5>
+  </div>
+  
+ <!-- Conditionally show only the selected chart -->
+<div *ngIf="activeChart" class="chart-wrapper">
+  <div class="chart-item">
+    <canvas
+      baseChart
+      [datasets]="[{ data: activeChart.data, label: activeChart.label }]"
+      [labels]="activeChart.labels"
+      [options]="activeChart.labels"
+      [type]="activeChart.type"
+    ></canvas>
+  </div>
+  <div class="report-controls">
+    <button class="back-button" (click)="clearActiveChart()">Back to Dashboard</button>
+    <button class="generate-report-button" (click)="generateReport()">Generate Report</button>
+  </div>
 </div>
-  <div class="chart-container">
-    <div *ngFor="let chart of chartData;" class="chart-item">
+
+<!-- Display the report component beneath the chart when showReport is true -->
+<app-report *ngIf="showReport" [chartData]="activeChart"></app-report>
+  
+  <!-- Conditionally show all charts when no chart is selected -->
+  <div *ngIf="!activeChart" class="chart-container">
+    <div *ngFor="let chart of chartData;" class="chart-item" (click)="onChartClick(chart)">
       <canvas
         baseChart
         [datasets]="[{ data: chart.data, label: chart.label }]"
@@ -21,3 +40,4 @@
     </div>
   </div>
 </div>
+
