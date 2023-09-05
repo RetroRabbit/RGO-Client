@@ -5,5 +5,4 @@ export interface FieldCode {
   regex?: string;
   type?: string;
   status?: string;
-  // customFieldOptions?: { [key: string]: string };
 }

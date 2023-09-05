@@ -25,40 +25,47 @@ export class ManageFieldCodeComponent {
 
   private initializeForm() {
     this.newFieldCodeForm = this.fb.group({
-      name: ['', 
+      name: ['',
         [Validators.required,
-         Validators.minLength(1),
-         Validators.maxLength(255),
-         Validators.pattern('^[a-zA-Z ]*$')]],
+        Validators.minLength(1),
+        Validators.maxLength(255),
+        Validators.pattern('^[a-zA-Z ]*$')]],
       description: [''],
       regex: [''],
       type: ['', Validators.required],
-      status: [null, Validators.required],
+      status: ['', Validators.required],
     });
   }
 
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
-      this.submitFieldCode();
+      console.log('Submitting the following object:', this.newFieldCodeForm.value);  // This line logs the form's value to the console
+      this.fieldCodeService.saveFieldCode(this.newFieldCodeForm.value).subscribe({
+        next: (data) => {
+          console.log("submitting form values!!")
+          console.log(this.newFieldCodeForm.value)
+        },
+        
+        error: (error) => {
+          console.log("error with form values")
+        }
+      })
+      // this.submitFieldCode();
     } else {
       this.showValidationErrors();
     }
   }
 
-  private submitFieldCode() {
-    this.fieldCodeService.saveFieldCode(this.newFieldCodeForm.value).subscribe(
-      (data: any) => this.handleSuccess(data),
-      (error: any) => this.handleError(error)
-    );
-  }
-
-  private handleSuccess(data: any) {
-    console.log('Field code added successfully:', data);
-  }
-
-  private handleError(error: any) {
-    console.error('An error occurred while adding the field code:', error.message || error);
-  }
+  // private submitFieldCode() {
+  //   this.fieldCodeService.saveFieldCode(this.newFieldCodeForm.value).subscribe({
+  //     next: (data) => {
+  //       console.log("submitting form values!!")
+  //       console.log(this.newFieldCodeForm.value)
+  //     },
+  //     error: (error) => {
+  //     }
+  //   })
+  // }
 
   private showValidationErrors() {
     this.newFieldCodeForm.markAllAsTouched();
