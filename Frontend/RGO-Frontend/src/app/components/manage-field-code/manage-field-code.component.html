@@ -7,29 +7,29 @@
           <div class="row">
             <div class="col-sm-6">
               <div class="mb-3">
-                <label for="fieldCodeName" class="form-label">Name</label>
-                <input id="fieldCodeName" type="text" class="form-control" formControlName="fieldCodeName" />
+                <label for="name" class="form-label">Name</label>
+                <input id="name" type="text" class="form-control" formControlName="name" />
               </div>
               <div class="mb-3">
-                <label for="fieldCodeDescription" class="form-label">Description (optional)</label>
-                <input id="fieldCodeDescription" type="text" class="form-control"
-                  formControlName="fieldCodeDescription" />
+                <label for="description" class="form-label">Description (optional)</label>
+                <input id="description" type="text" class="form-control"
+                  formControlName="description" />
               </div>
               <div class="mb-3">
-                <label for="fieldCodeRegEx" class="form-label">RegEx (optional)</label>
-                <input id="fieldCodeRegEx" type="text" class="form-control" formControlName="fieldCodeRegEx" />
+                <label for="regex" class="form-label">RegEx (optional)</label>
+                <input id="regex" type="text" class="form-control" formControlName="regex" />
               </div>
               <div class="mb-3">
-                <label for="fieldCodeStatus" class="form-label">Status</label>
-                <select id="fieldCodeStatus" class="form-select" formControlName="fieldCodeStatus">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" class="form-select" formControlName="status">
                   <option *ngFor="let status of statuses" [value]="status.id">
                     {{ status.title }}
                   </option>
                 </select>
               </div>
               <div class="mb-3">
-                <label for="fieldCodeType" class="form-label">Type</label>
-                <select id="fieldCodeType" class="form-select" formControlName="fieldCodeType">
+                <label for="type" class="form-label">Type</label>
+                <select id="type" class="form-select" formControlName="type">
                   <option value="">Select a Type</option>
                   <option value="Date">Date</option>
                   <option value="String">String</option>

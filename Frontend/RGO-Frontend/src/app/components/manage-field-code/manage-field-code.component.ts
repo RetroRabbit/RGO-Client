@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldCodeService } from 'src/app/services/field-code.service';
-import { FieldCodeState } from 'src/app/store/reducers/field-code.reducer';
-import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -19,7 +17,6 @@ export class ManageFieldCodeComponent {
   newFieldCodeForm!: FormGroup;
 
   constructor(
-    private store: Store<{ user: FieldCodeState }>,
     private fieldCodeService: FieldCodeService,
     private fb: FormBuilder
   ) {
@@ -28,16 +25,15 @@ export class ManageFieldCodeComponent {
 
   private initializeForm() {
     this.newFieldCodeForm = this.fb.group({
-      fieldCodeName: ['', 
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(255),
-        Validators.pattern('^[a-zA-Z ]*$')])],
-      fieldCodeDescription: [''],
-      fieldCodeRegEx: [''],
-      fieldCodeType: ['', Validators.required],
-      fieldCodeStatus: [null, Validators.required],
+      name: ['', 
+        [Validators.required,
+         Validators.minLength(1),
+         Validators.maxLength(255),
+         Validators.pattern('^[a-zA-Z ]*$')]],
+      description: [''],
+      regex: [''],
+      type: ['', Validators.required],
+      status: [null, Validators.required],
     });
   }
 
@@ -50,13 +46,9 @@ export class ManageFieldCodeComponent {
   }
 
   private submitFieldCode() {
-    this.fieldCodeService.addFieldCode(this.newFieldCodeForm.value).subscribe(
-      (data) => {
-        this.handleSuccess(data);
-      },
-      (error) => {
-        this.handleError(error);
-      }
+    this.fieldCodeService.saveFieldCode(this.newFieldCodeForm.value).subscribe(
+      (data: any) => this.handleSuccess(data),
+      (error: any) => this.handleError(error)
     );
   }
 
@@ -65,7 +57,7 @@ export class ManageFieldCodeComponent {
   }
 
   private handleError(error: any) {
-    console.error('An error occurred while adding the field code:', error);
+    console.error('An error occurred while adding the field code:', error.message || error);
   }
 
   private showValidationErrors() {
