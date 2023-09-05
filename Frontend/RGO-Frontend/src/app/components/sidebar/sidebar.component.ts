@@ -11,7 +11,7 @@ interface RouteInfo {
 
 export const ROUTES: RouteInfo[] = [
     { title: 'Dashboard',  icon: 'dashboard' },
-    { title: 'Add User', icon: 'person'},
+    { title: 'New Employee', icon: 'person'},
 ];
 
 @Component({
