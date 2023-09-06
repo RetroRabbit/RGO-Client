@@ -23,49 +23,57 @@ export class ManageFieldCodeComponent {
     this.initializeForm();
   }
 
+  // private initializeForm() {
+  //   this.newFieldCodeForm = this.fb.group({
+  //     name: ['',
+  //       [Validators.required,
+  //       Validators.minLength(1),
+  //       Validators.maxLength(255),
+  //       Validators.pattern('^[a-zA-Z ]*$')]],
+  //     description: [''],
+  //     regex: [''],
+  //     type: ['', Validators.required],
+  //     status: ['', Validators.required],
+  //   });
+  // }
+
   private initializeForm() {
     this.newFieldCodeForm = this.fb.group({
-      name: ['',
-        [Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(255),
-        Validators.pattern('^[a-zA-Z ]*$')]],
-      description: [''],
-      regex: [''],
-      type: ['', Validators.required],
-      status: ['', Validators.required],
+      id: [''],  // for FieldCodeOptions.id
+      option: [''], // for FieldCodeOptions.option
+      fieldCode: this.fb.group({ // for FieldCodeOptions.fieldCode
+        code: [''], // for FieldCode.code
+        name: ['', [
+            Validators.required,
+            Validators.minLength(1),
+            Validators.maxLength(255),
+            Validators.pattern('^[a-zA-Z ]*$')
+        ]], // for FieldCode.name
+        description: [''], // for FieldCode.description
+        regex: [''], // for FieldCode.regex
+        type: ['', Validators.required], // for FieldCode.type
+        status: ['', Validators.required] // for FieldCode.status
+      })
     });
-  }
+}
 
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
-      console.log('Submitting the following object:', this.newFieldCodeForm.value);  // This line logs the form's value to the console
-      this.fieldCodeService.saveFieldCode(this.newFieldCodeForm.value).subscribe({
+      const formData = this.newFieldCodeForm.value;
+      console.log('Submitting the following object:', formData);
+      
+      this.fieldCodeService.saveFieldCode(formData).subscribe({
         next: (data) => {
-          console.log("submitting form values!!")
-          console.log(this.newFieldCodeForm.value)
+          console.log("Form submitted successfully!", data);
         },
-        
         error: (error) => {
-          console.log("error with form values")
+          console.error("Error occurred while submitting form!", error);
         }
-      })
-      // this.submitFieldCode();
+      });
     } else {
       this.showValidationErrors();
     }
   }
-
-  // private submitFieldCode() {
-  //   this.fieldCodeService.saveFieldCode(this.newFieldCodeForm.value).subscribe({
-  //     next: (data) => {
-  //       console.log("submitting form values!!")
-  //       console.log(this.newFieldCodeForm.value)
-  //     },
-  //     error: (error) => {
-  //     }
-  //   })
-  // }
 
   private showValidationErrors() {
     this.newFieldCodeForm.markAllAsTouched();
