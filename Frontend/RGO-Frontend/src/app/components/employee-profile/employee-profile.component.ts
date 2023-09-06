@@ -14,10 +14,13 @@ export class EmployeeProfileComponent {
 
   constructor(private accessPropertyService: AccessPropertiesService) { }
   ngOnInit() {
+    this.getEmployeeFields();
+  }
+  
+  getEmployeeFields(){
     this.accessPropertyService.GetAccessProperties('mschoeman@retrorabbit.co.za').subscribe(
       data => {
         this.EmployeeFields = data;
-        console.log("Data received: ", data)
       }
     );
   }
@@ -35,15 +38,14 @@ export class EmployeeProfileComponent {
     this.EditFields.forEach((field, index) =>{
       if(field.value !== this.EmployeeFields[index].value){
         payload.push({
-          FieldId: field.id,
-          Value: field.value
+          fieldId: field.id,
+          value: field.value
         })
       }
     });
-    console.log(payload)
-    this.accessPropertyService.UpdateProperties('mschoeman@retrorabbit.co.za', payload).subscribe( (data: any) => {
-      console.log(data);
-    })
-    this.toggleEdit();
+    this.accessPropertyService.UpdateProperties('mschoeman@retrorabbit.co.za', payload).subscribe(() => {
+      this.toggleEdit();
+      this.getEmployeeFields();
+    });
   }
 }

@@ -27,7 +27,7 @@
                 </select>
             </div>
             <ng-template #NoOptions>
-                <input class="form-control" type={{field.type}} (change)="captureChange($event, index)">
+                <input class="form-control" type={{field.type}} (change)="captureChange($event, index)" [value]=field.value>
             </ng-template>
         </ng-template>
         <br/>
