@@ -18,9 +18,9 @@ export class AccessPropertiesService{
       );
     }
 
-    UpdateProperties(email : string, payload : any){
-        return this.client.put<string>(
+    UpdateProperties(email : string, payload : any): any{
+        return this.client.put<any>(
             `${API.HttpBaseURL}/access/update?email=${email}`, payload
-        )
+        );
     }
 }

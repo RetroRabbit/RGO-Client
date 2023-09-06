@@ -17,12 +17,13 @@ export class EmployeeProfileComponent {
     this.accessPropertyService.GetAccessProperties('mschoeman@retrorabbit.co.za').subscribe(
       data => {
         this.EmployeeFields = data;
+        console.log("Data received: ", data)
       }
     );
   }
   toggleEdit() {
     this.isEdit = !this.isEdit;
-    this.EditFields = this.EmployeeFields;
+    this.EditFields = JSON.parse(JSON.stringify(this.EmployeeFields));
   }
   captureChange(htmlValue: any, index: number) {
     this.EditFields[index].value = htmlValue.target.value;
@@ -30,15 +31,17 @@ export class EmployeeProfileComponent {
   
   saveChanges(){
     let payload : any[] = [];
-    this.EditFields.forEach((field) =>{
-      if(field.value !== undefined) {
+
+    this.EditFields.forEach((field, index) =>{
+      if(field.value !== this.EmployeeFields[index].value){
         payload.push({
-          id: field.id,
-          value: field.value
+          FieldId: field.id,
+          Value: field.value
         })
       }
-    })
-    this.accessPropertyService.UpdateProperties('matthewschoeman@retrorabbit.co.za', payload).subscribe( data => {
+    });
+    console.log(payload)
+    this.accessPropertyService.UpdateProperties('mschoeman@retrorabbit.co.za', payload).subscribe( (data: any) => {
       console.log(data);
     })
     this.toggleEdit();
