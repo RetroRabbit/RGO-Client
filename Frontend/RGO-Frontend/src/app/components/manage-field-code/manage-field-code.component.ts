@@ -23,45 +23,56 @@ export class ManageFieldCodeComponent {
     this.initializeForm();
   }
 
-  // private initializeForm() {
-  //   this.newFieldCodeForm = this.fb.group({
-  //     name: ['',
-  //       [Validators.required,
-  //       Validators.minLength(1),
-  //       Validators.maxLength(255),
-  //       Validators.pattern('^[a-zA-Z ]*$')]],
-  //     description: [''],
-  //     regex: [''],
-  //     type: ['', Validators.required],
-  //     status: ['', Validators.required],
-  //   });
-  // }
-
   private initializeForm() {
     this.newFieldCodeForm = this.fb.group({
-      id: [''],  // for FieldCodeOptions.id
-      option: [''], // for FieldCodeOptions.option
-      fieldCode: this.fb.group({ // for FieldCodeOptions.fieldCode
-        code: [''], // for FieldCode.code
+      fieldCode: this.fb.group({
+        code: ['', [Validators.required]],
         name: ['', [
-            Validators.required,
-            Validators.minLength(1),
-            Validators.maxLength(255),
-            Validators.pattern('^[a-zA-Z ]*$')
-        ]], // for FieldCode.name
-        description: [''], // for FieldCode.description
-        regex: [''], // for FieldCode.regex
-        type: ['', Validators.required], // for FieldCode.type
-        status: ['', Validators.required] // for FieldCode.status
-      })
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(255),
+          Validators.pattern('^[a-zA-Z ]*$')
+        ]],
+        description: [''],
+        regex: [''],
+        type: ['', Validators.required],
+        status: ['', Validators.required]
+      }),
+      id: [''],
+      option: [''],
+      internal: [false]
     });
-}
+  }
 
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
-      const formData = this.newFieldCodeForm.value;
-      console.log('Submitting the following object:', formData);
+      const { fieldCode, option, internal } = this.newFieldCodeForm.value;
       
+      const formData = {
+        fieldCode: [
+          {
+            id: 0,
+            ...fieldCode,
+            type: parseInt(fieldCode.type, 10),
+            status: parseInt(fieldCode.status, 10),
+            internal
+          }
+        ],
+        fieldCodeOptions: [
+          {
+            id: 0,
+            fieldCode: {
+              id: 0,
+              ...fieldCode,
+              type: parseInt(fieldCode.type, 10),
+              status: parseInt(fieldCode.status, 10),
+              internal
+            },
+            option
+          }
+        ]
+      };
+
       this.fieldCodeService.saveFieldCode(formData).subscribe({
         next: (data) => {
           console.log("Form submitted successfully!", data);

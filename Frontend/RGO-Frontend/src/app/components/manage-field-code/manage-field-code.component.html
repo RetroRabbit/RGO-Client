@@ -3,50 +3,81 @@
     <h1 class="page-heading border-bottom">New Field Code</h1>
     <div style="overflow: auto">
       <div class="container-fluid">
-        <form [formGroup]="newFieldCodeForm" (submit)="onSubmit()">
+        <form [formGroup]="newFieldCodeForm" (submit)="onSubmit(); $event.preventDefault()">
+
           <div class="row">
             <div class="col-sm-6">
-              <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input id="name" type="text" class="form-control" formControlName="name" />
-              </div>
-              <div class="mb-3">
-                <label for="description" class="form-label">Description (optional)</label>
-                <input id="description" type="text" class="form-control"
-                  formControlName="description" />
-              </div>
-              <div class="mb-3">
-                <label for="regex" class="form-label">RegEx (optional)</label>
-                <input id="regex" type="text" class="form-control" formControlName="regex" />
-              </div>
-              <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select id="status" class="form-select" formControlName="status">
-                  <option *ngFor="let status of statuses" [value]="status.id">
-                    {{ status.title }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="type" class="form-label">Type</label>
-                <select id="type" class="form-select" formControlName="type">
-                  <option value="">Select a Type</option>
-                  <option value="Date">Date</option>
-                  <option value="String">String</option>
-                  <option value="Int">Int</option>
-                  <option value="Float">Float</option>
-                </select>
-              </div>
+              
+              <div formGroupName="fieldCode">
+                <!-- Name field -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input id="name" type="text" class="form-control" formControlName="name" />
+                    <div *ngIf="newFieldCodeForm?.get('fieldCode.name')?.hasError('required') && newFieldCodeForm?.get('fieldCode.name')?.touched" class="text-danger">
+
+                </div>
+            
+                <!-- Code field -->
+                <div class="mb-3">
+                    <label for="code" class="form-label">Code</label>
+                    <input id="code" type="text" class="form-control" formControlName="code" />
+                    <div *ngIf="newFieldCodeForm?.get('fieldCode.code')?.hasError('required') && newFieldCodeForm.get('fieldCode.code')?.touched" class="text-danger">
+                        Code is required.
+                    </div>
+                </div>
+            
+                <!-- Description field -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description (optional)</label>
+                    <input id="description" type="text" class="form-control" formControlName="description" />
+                </div>
+            
+                <!-- Regex field -->
+                <div class="mb-3">
+                    <label for="regex" class="form-label">RegEx (optional)</label>
+                    <input id="regex" type="text" class="form-control" formControlName="regex" />
+                </div>
+            
+                <!-- Status dropdown -->
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select id="status" class="form-select" formControlName="status">
+                        <option *ngFor="let status of statuses" [value]="status.id">
+                            {{ status.title }}
+                        </option>
+                    </select>
+                </div>
+            
+                <!-- Type dropdown -->
+                <div class="mb-3">
+                    <label for="type" class="form-label">Type</label>
+                    <select id="type" class="form-select" formControlName="type">
+                        <option value="">Select a Type</option>
+                        <option value="Date">Date</option>
+                        <option value="String">String</option>
+                        <option value="Int">Int</option>
+                        <option value="Float">Float</option>
+                    </select>
+                </div>
+            </div>            
+
               <!-- Option input -->
               <div class="mb-3">
                 <label for="option" class="form-label">Option</label>
                 <input id="option" type="text" class="form-control" formControlName="option" />
               </div>
+
               <div class="mb-3">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <input id="internal" type="checkbox" class="form-check-input" formControlName="internal">
+                <label for="internal" class="form-check-label">Internal</label>
+              </div>
+              
+              <div class="mb-3">
+                <button type="submit" class="btn btn-primary" [disabled]="!newFieldCodeForm.valid">Submit</button>
               </div>
             </div>
           </div>
+        </div>
         </form>
       </div>
     </div>
