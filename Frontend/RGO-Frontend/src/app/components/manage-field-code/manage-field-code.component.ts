@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { dataTypes } from 'src/app/models/constants/types.constants';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 
 @Component({
@@ -13,6 +14,8 @@ export class ManageFieldCodeComponent {
     { id: 0, title: 'Active' },
     { id: 1, title: 'Archive' },
   ];
+
+  public dataTypes = dataTypes;
 
   newFieldCodeForm!: FormGroup;
 
@@ -49,7 +52,7 @@ export class ManageFieldCodeComponent {
       const { fieldCode, option, internal } = this.newFieldCodeForm.value;
       
       const formData = {
-        fieldCode: [
+        newFieldCode: [
           {
             id: 0,
             ...fieldCode,
@@ -73,6 +76,9 @@ export class ManageFieldCodeComponent {
         ]
       };
 
+      console.log("=======FORM DATA===========")
+      console.log(formData)
+      
       this.fieldCodeService.saveFieldCode(formData).subscribe({
         next: (data) => {
           console.log("Form submitted successfully!", data);
