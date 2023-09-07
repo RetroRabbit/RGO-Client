@@ -43,7 +43,7 @@
                     <label for="status" class="form-label">Status</label>
                     <select id="status" class="form-select" formControlName="status">
                         <option *ngFor="let status of statuses" [value]="status.id">
-                            {{ status.title }}
+                            {{ status.value}}
                         </option>
                     </select>
                 </div>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { dataTypes } from 'src/app/models/constants/types.constants';
+import { statuses } from 'src/app/models/constants/statuses.constants';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 
 @Component({
@@ -10,11 +11,7 @@ import { FieldCodeService } from 'src/app/services/field-code.service';
 })
 export class ManageFieldCodeComponent {
 
-  public statuses = [
-    { id: 0, title: 'Active' },
-    { id: 1, title: 'Archive' },
-  ];
-
+  public statuses = statuses;
   public dataTypes = dataTypes;
 
   newFieldCodeForm!: FormGroup;
