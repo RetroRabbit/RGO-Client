@@ -36,7 +36,7 @@ import { ChartComponent } from './components/charts/charts.component';
 import { CreateChartsComponent } from './components/create-charts/create-charts.component';
 import { NgToastModule } from 'ng-angular-popup';
 import { ReportComponent } from './components/chart-reports/chart-reports.component';
-
+import { RoleManagerComponent } from './components/role-manager/role-manager.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +49,8 @@ import { ReportComponent } from './components/chart-reports/chart-reports.compon
     EmployeeProfileComponent,
     ChartComponent,
     CreateChartsComponent,
-    ReportComponent
+    ReportComponent,
+    RoleManagerComponent
   ],
   imports: [
     BrowserModule,
