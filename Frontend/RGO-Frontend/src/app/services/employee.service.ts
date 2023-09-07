@@ -14,10 +14,6 @@ export class EmployeeService {
     return this.httpClient.get<Employee[]>(`${API.HttpBaseURL}/employee/employees/get`);
   }
 
-  getAll(): Observable<Employee[]>{
-    return this.httpClient.get<Employee[]>(`${API.HttpBaseURL}/employee/employees`);
-  }
-
   addEmployee(newEmployee: any): Observable<any>{
     return this.httpClient.post<any>(`${API.HttpBaseURL}/employee/add`, newEmployee);
   }
