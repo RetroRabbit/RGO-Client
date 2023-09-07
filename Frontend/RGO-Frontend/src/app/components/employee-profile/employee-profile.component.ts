@@ -44,8 +44,10 @@ export class EmployeeProfileComponent {
       }
     });
     this.accessPropertyService.UpdateProperties('mschoeman@retrorabbit.co.za', payload).subscribe(() => {
-      this.toggleEdit();
-      this.getEmployeeFields();
     });
+    setTimeout(()=>{
+      this.getEmployeeFields();
+    },500)
+    this.toggleEdit();
   }
 }
