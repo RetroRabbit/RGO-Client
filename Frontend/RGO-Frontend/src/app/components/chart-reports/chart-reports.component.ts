@@ -6,15 +6,14 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./chart-reports.component.css']
 })
 export class ReportComponent {
-  @Input() chartData: any; // Input property to receive chart data
-
+  @Input() chartData: any; 
+activeChart: any = null;
+showReport: boolean = false; 
+clearActiveChart: () => void = () => {};
   
-  generateReport(): void {
-    // Generate an HTML report using the chart data
-    const reportHTML = this.generateHTMLReport();
-
-    // Open the report in a new window if newWindow is not null
-    const newWindow = window.open();
+generateReport(): void {
+   const reportHTML = this.generateHTMLReport();
+   const newWindow = window.open();
     if (newWindow) {
       newWindow.document.open();
       newWindow.document.write(reportHTML);
@@ -23,26 +22,19 @@ export class ReportComponent {
       console.error('Failed to open a new window for the report.');
     }
   }
-
-  generateHTMLReport(): string {
-    // Customize this function to generate HTML content for your report
-    // You can format and structure the report as needed
+generateHTMLReport(): string {
     const chartHTML = `<h1>${this.chartData.label}</h1>`;
     const dataHTML = `<p>Data: ${JSON.stringify(this.chartData.data)}</p>`;
-
-    // Combine chart and data information into the report
     return `<html><body>${chartHTML}${dataHTML}</body></html>`;
   }
 
-  getTotalEmployees(): number {
-    // Calculate the total number of employees
+getTotalEmployees(): number {
     return this.chartData.data.reduce((total: number, value: number) => total + value, 0);
   }
 
-  calculatePercentage(value: number): string {
-    // Calculate the percentage of employees for a label
+calculatePercentage(value: number): string {
     const total: number = this.getTotalEmployees();
     const percentage: number = (value / total) * 100;
-    return percentage.toFixed(2); // Display percentage with two decimal places
+    return percentage.toFixed(2); 
   }
 }
