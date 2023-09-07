@@ -7,12 +7,15 @@ import { CookieService } from 'ngx-cookie-service';
 interface RouteInfo {
   title: string;
   icon: string;
+  requiredRole: string[];
 }
 
 export const ROUTES: RouteInfo[] = [
-    { title: 'Dashboard',  icon: 'dashboard' },
-    { title: 'Add User', icon: 'person'},
-    { title: 'Charts', icon: 'analytics'}
+   
+    { title: 'Charts', icon: 'analytics', requiredRole:[]},
+    { title: 'Dashboard',  icon: 'dashboard', requiredRole: [ ] },
+    { title: 'Add User', icon: 'person', requiredRole: [ 'Admin', 'SuperAdmin' ] },
+    { title: 'Role Manager', icon: 'event_seat', requiredRole: [ 'Admin', 'SuperAdmin' ] },
 ];
 
 @Component({
@@ -21,11 +24,10 @@ export const ROUTES: RouteInfo[] = [
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  menuItems: RouteInfo[] | undefined;
-  type$: Observable<Token> = this.store.select('app');
-
-
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
+
+  menuItems: RouteInfo[] = [];
+  type$: Observable<Token> = this.store.select('app');
 
   constructor(private store: Store<{ app: Token }>,
     private cookieService: CookieService) { }
@@ -35,10 +37,16 @@ export class SidebarComponent implements OnInit {
   }
 
   IsMenuItemVisible(menuItem: RouteInfo): boolean {
-    const types = this.cookieService.get('userType');
+    const types: string = this.cookieService.get('userType');
+    const roles: string[] = Object.keys(JSON.parse(types));
 
-   // Todo when we have roles
-    return true;
+   const hasRequiredRoles : boolean = menuItem.requiredRole
+   .filter((role: string) => roles.includes(role))
+   .length > 0;
+   
+   if (hasRequiredRoles || menuItem.requiredRole.length === 0) return true;
+
+   return false;
   }
 
   CaptureEvent(event: any) {
