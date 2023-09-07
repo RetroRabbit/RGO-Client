@@ -31,7 +31,6 @@ import { MenuModule } from 'primeng/menu';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { EmployeeProfileReducer } from './store/reducers/employee-profile.reducer';
 import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects';
-import { ManageFieldCodeComponent } from './components/manage-field-code/manage-field-code.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +41,6 @@ import { ManageFieldCodeComponent } from './components/manage-field-code/manage-
     SidebarComponent,
     AddUserComponent,
     EmployeeProfileComponent,
-    ManageFieldCodeComponent,
   ],
   imports: [
     BrowserModule,
