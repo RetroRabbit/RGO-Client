@@ -47,7 +47,7 @@ export class ManageFieldCodeComponent {
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode, option, internal } = this.newFieldCodeForm.value;
-      
+
       const formData = {
         newFieldCode: [
           {
@@ -73,9 +73,6 @@ export class ManageFieldCodeComponent {
         ]
       };
 
-      console.log("=======FORM DATA===========")
-      console.log(formData)
-      
       this.fieldCodeService.saveFieldCode(formData).subscribe({
         next: (data) => {
           console.log("Form submitted successfully!", data);
