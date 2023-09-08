@@ -31,6 +31,12 @@ import { MenuModule } from 'primeng/menu';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { EmployeeProfileReducer } from './store/reducers/employee-profile.reducer';
 import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects';
+import { NgChartsModule } from 'ng2-charts';
+import { ChartComponent } from './components/charts/charts.component';
+import { CreateChartsComponent } from './components/create-charts/create-charts.component';
+import { NgToastModule } from 'ng-angular-popup';
+import { ReportComponent } from './components/chart-reports/chart-reports.component';
+import { RoleManagerComponent } from './components/role-manager/role-manager.component';
 
 @NgModule({
   declarations: [
@@ -41,12 +47,17 @@ import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects'
     SidebarComponent,
     AddUserComponent,
     EmployeeProfileComponent,
+    ChartComponent,
+    CreateChartsComponent,
+    ReportComponent,
+    RoleManagerComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    NgChartsModule,
     StoreModule.forRoot({
       app: LoginReducer,
       employee : EmployeeProfileReducer,
@@ -70,6 +81,8 @@ import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects'
     InputNumberModule,
     InputTextModule,
     MenuModule,
+    NgToastModule
+  
   ],
   providers: [
     AuthService,
