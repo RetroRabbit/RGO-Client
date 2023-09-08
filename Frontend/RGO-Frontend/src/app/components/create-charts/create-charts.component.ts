@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
-import { ChartType, ChartOptions } from 'chart.js';
 import { NgToastService } from 'ng-angular-popup';
 import { Router } from '@angular/router';
 
@@ -12,9 +11,9 @@ import { Router } from '@angular/router';
 })
 export class CreateChartsComponent {
 
-  chartName: string='Name';
-  chartDataItem: string='Gender';
-  chartType: any= 'bar';
+  chartName: string = 'Name';
+  chartDataItem: string = 'Gender';
+  chartType: any = 'bar';
   chartData: number[] = [];
   chartLabels: string[] = [];
   chartOptions: any = {
@@ -44,8 +43,8 @@ export class CreateChartsComponent {
   getChartData() {
     this.ChartService.getChartDataByType(this.chartDataItem).subscribe(
       (data:any) =>{
-        this.chartData =data.data;
-        this.chartLabels=data.labels;
+        this.chartData = data.data;
+        this.chartLabels = data.labels;
        },
        (error) => {
         this.toast.error({detail:"Error", summary:"Failed to get chartData.",duration:5000, position:'topRight'});
@@ -56,8 +55,8 @@ export class CreateChartsComponent {
   onDropDownChange() {
     this.ChartService.getChartDataByType(this.chartDataItem).subscribe(
       (data:any) =>{
-        this.chartData =data.data;
-        this.chartLabels=data.labels;
+        this.chartData = data.data;
+        this.chartLabels = data.labels;
        },
        (error) => {
         this.toast.error({detail:"Error", summary:"Failed to get chartData.",duration:5000, position:'topRight'});

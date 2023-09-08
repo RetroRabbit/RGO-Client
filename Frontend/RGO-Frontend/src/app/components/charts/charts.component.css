@@ -10,8 +10,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    /* justify-content: center;
-    align-items: center; */
     margin-top: 20px;
     margin-left: 20px;
     padding-left: 20px;
@@ -61,6 +59,6 @@
     background-color: #397f39;
 }
 
-h5{
+h5 {
   margin-top: 20px;
 }
