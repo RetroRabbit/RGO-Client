@@ -46,7 +46,6 @@ export class NewEmployeeComponent implements OnInit {
 
 
   onSubmit(){
-    console.log(this.newEmployeeForm.getRawValue().employeeType);
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: (data) => {
       },
