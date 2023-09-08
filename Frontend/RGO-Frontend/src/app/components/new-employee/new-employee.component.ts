@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { EmployeeType } from 'src/app/models/employee-type.model';
+import { NewEmployee } from 'src/app/models/new-employee.model';
+import { EmployeeTypeService } from 'src/app/services/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
@@ -7,9 +10,22 @@ import { EmployeeService } from 'src/app/services/employee.service';
   templateUrl: './new-employee.component.html',
   styleUrls: ['./new-employee.component.css']
 })
-export class NewEmployeeComponent {
+export class NewEmployeeComponent implements OnInit {
 
-  constructor(private employeeService: EmployeeService){}
+  constructor(private employeeService: EmployeeService, 
+    private employeeTypeService: EmployeeTypeService){}
+
+    employeeTypes: EmployeeType[] = [];
+    newEmployee: NewEmployee = new NewEmployee();
+    selectedEmployeeType = null;
+
+  ngOnInit(): void {
+    this.employeeTypeService.getAllEmployeeTypes().subscribe({
+      next: data => {
+        this.employeeTypes = data;
+      }
+    })
+  }
 
   newEmployeeForm = new FormGroup({
     title: new FormControl('', Validators.required),
@@ -21,13 +37,21 @@ export class NewEmployeeComponent {
     countryOfBirth: new FormControl('', Validators.required),
     nationality: new FormControl('', Validators.required),
     engagementDate: new FormControl('', Validators.required),
-    employeeNumber: new FormControl('', Validators.required),
     employeeType: new FormControl('', Validators.required),
-    taxNumber: new FormControl('', Validators.required),
-    cellphoneNo: new FormControl('', Validators.required)
+    cellphoneNo: new FormControl('', Validators.required),
+    employeeNumber: new FormControl(''),
+    taxNumber: new FormControl(''),
+    disabilityNotes: new FormControl(''),
+    notes: new FormControl(''),
+    photo: new FormControl(''),
   });
 
+
+
   onSubmit(){
+    console.log(this.newEmployeeForm.getRawValue().employeeType);
+    console.log(JSON.stringify(this.selectedEmployeeType));
+    this.newEmployeeForm.value.employeeType = this.selectedEmployeeType;
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: (data) => {
       },

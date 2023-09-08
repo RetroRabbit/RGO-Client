@@ -8,17 +8,6 @@
               <div class="col-sm-6">
                 <div class="mb-3 row">
                   <div class="col-sm-12">
-                    <label class="col-form-label">Title</label>
-                    <input type="text" class="form-control" formControlName="title" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['title'].invalid && (newEmployeeForm.controls['title'].dirty || newEmployeeForm.controls['title'].touched)"
-                      class="alert">
-                      Please enter title
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
                     <label class="col-form-label">First Name</label>
                     <input type="text" class="form-control" formControlName="name" />
                     <div
@@ -53,7 +42,7 @@
                 <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Personal Email</label>
-                      <input type="text" class="form-control" formControlName="personalEmail" />
+                      <input type="email" class="form-control" formControlName="personalEmail" />
                       <div
                         *ngIf="newEmployeeForm.controls['personalEmail'].invalid && (newEmployeeForm.controls['personalEmail'].dirty || newEmployeeForm.controls['personalEmail'].touched)"
                         class="alert">
@@ -61,21 +50,19 @@
                       </div>
                     </div>
                   </div>
-                  <div class="mb-3 row">
-                    <div class="col-sm-12">
-                      <label class="col-form-label">Cellphone number</label>
-                      <input type="text" class="form-control" formControlName="cellphoneNo" />
-                      <div
-                        *ngIf="newEmployeeForm.controls['cellphoneNo'].invalid && (newEmployeeForm.controls['cellphoneNo'].dirty || newEmployeeForm.controls['cellphoneNo'].touched)"
-                        class="alert">
-                        Please enter an email address
-                      </div>
-                    </div>
-                  </div>
-                
-              
               </div>
               <div class="col-sm-6">
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Cellphone number</label>
+                    <input type="text" class="form-control" formControlName="cellphoneNo" />
+                    <div
+                      *ngIf="newEmployeeForm.controls['cellphoneNo'].invalid && (newEmployeeForm.controls['cellphoneNo'].dirty || newEmployeeForm.controls['cellphoneNo'].touched)"
+                      class="alert">
+                      Please enter an email address
+                    </div>
+                  </div>
+                </div>
                 <div class="mb-3 row">
                   <div class="col-sm-12">
                     <label class="col-form-label">Email</label>
@@ -89,34 +76,16 @@
                 </div>
                 <div class="mb-3 row">
                   <div class="col-sm-12">
-                    <label class="col-form-label">Employee Number</label>
-                    <input type="text" class="form-control" formControlName="employeeNumber" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['employeeNumber'].invalid && (newEmployeeForm.controls['employeeNumber'].dirty || newEmployeeForm.controls['employeeNumber'].touched)"
-                      class="alert">
-                      Please enter employee number
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
                     <label class="col-form-label">Employee Type</label> 
-                    <input type="text" class="form-control" formControlName="employeeType" />
+                    <select class="form-control" formControlName="employeeType" [(ngModel)]="selectedEmployeeType">
+                      <option *ngFor="let type of employeeTypes" [ngValue]="type">
+                        {{type.name}}
+                      </option>
+                    </select>
                     <div
                       *ngIf="newEmployeeForm.controls['employeeType'].invalid && (newEmployeeForm.controls['employeeType'].dirty || newEmployeeForm.controls['employeeType'].touched)"
                       class="alert">
                       Please enter employee type
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Tax Number</label>
-                    <input type="text" class="form-control" formControlName="taxNumber" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['taxNumber'].invalid && (newEmployeeForm.controls['taxNumber'].dirty || newEmployeeForm.controls['taxNumber'].touched)"
-                      class="alert">
-                      Please enter tax number
                     </div>
                   </div>
                 </div>
@@ -134,6 +103,7 @@
               </div>
               <div class="mb-3 row">
                 <div class="col-sm-12">
+                <br><br>
                   <button type="submit" class="form-control">Submit</button>
                 </div>
               </div>
