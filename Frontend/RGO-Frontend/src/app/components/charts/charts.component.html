@@ -1,0 +1,36 @@
+<div class="charts-wrapper">
+  <a href="/create-charts">
+    <button class="edit-button">Edit Dashboard</button>
+  </a>
+  <div class="numberofempoyees">
+    <h5>Total number of employees: {{ numberOfEmployees }}</h5>
+  </div>
+<div *ngIf="activeChart" class="chart-wrapper">
+  <div class="chart-item">
+    <canvas
+      baseChart
+      [datasets]="[{ data: activeChart.data, label: activeChart.label }]"
+      [labels]="activeChart.labels"
+      [options]="activeChart.labels"
+      [type]="activeChart.type"
+    ></canvas>
+  </div>
+    <div class="report-controls">
+    <button class="back-button" (click)="clearActiveChart()">Back to Dashboard</button>
+    <button class="generate-report-button" (click)="generateReport()" *ngIf="!showReport">Generate Report</button>
+  </div>
+</div>
+<app-report *ngIf="showReport" [chartData]="activeChart"></app-report>
+  <div *ngIf="!activeChart" class="chart-container">
+    <div *ngFor="let chart of chartData;" class="chart-item" (click)="onChartClick(chart)">
+      <canvas
+        baseChart
+        [datasets]="[{ data: chart.data, label: chart.label }]"
+        [labels]="chart.labels"
+        [options]="chart.labels"
+        [type]="chart.type"
+      ></canvas>
+    </div>
+  </div>
+</div>
+
