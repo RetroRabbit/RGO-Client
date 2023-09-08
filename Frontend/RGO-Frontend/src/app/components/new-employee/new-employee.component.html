@@ -77,7 +77,7 @@
                 <div class="mb-3 row">
                   <div class="col-sm-12">
                     <label class="col-form-label">Employee Type</label> 
-                    <select class="form-control" formControlName="employeeType" [(ngModel)]="selectedEmployeeType">
+                    <select class="form-control" formControlName="employeeType">
                       <option *ngFor="let type of employeeTypes" [ngValue]="type">
                         {{type.name}}
                       </option>
