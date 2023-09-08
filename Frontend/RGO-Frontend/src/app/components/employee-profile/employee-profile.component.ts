@@ -24,10 +24,16 @@ export class EmployeeProfileComponent {
       }
     );
   }
+
   toggleEdit() {
     this.isEdit = !this.isEdit;
     this.EditFields = JSON.parse(JSON.stringify(this.EmployeeFields));
   }
+
+  canEdit(field: Properties): boolean{
+    return this.isEdit && field.condition == 2;
+  }
+
   captureChange(htmlValue: any, index: number) {
     this.EditFields[index].value = htmlValue.target.value;
   }

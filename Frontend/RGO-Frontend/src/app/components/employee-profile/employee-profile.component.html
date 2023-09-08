@@ -1,35 +1,34 @@
-<div *ngIf="!isEdit;else IsEditing">
-    <div>
-        <button class="btn btn-success" (click)=toggleEdit()>Edit</button>
+<div class="row">
+    <div *ngIf="!isEdit;else IsEditing">
+        <button class="btn btn-primary" (click)="toggleEdit()">Edit</button>
     </div>
-    <div *ngFor="let field of EmployeeFields;">
-        <div>
-            <label for={{field.propName}}>{{field.label}}</label> <span>{{field.value ?? 'No information provided'}}</span>
+    <ng-template #IsEditing>
+        <div class="row">
+            <div class="col-auto">
+                <button class="btn btn-success" (click)="saveChanges()">Save</button>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-danger" (click)="toggleEdit()">Cancel</button>
+            </div>
+        </div>
+    </ng-template>
+</div>
+<div class="row">
+    <div *ngFor="let field of EmployeeFields; index as index" class="col-6">
+        <div class="row">
+            <div class="col-5">
+                <label for={{field.label}}>{{field.label}}</label>
+            </div>
+            <div class="col-6">
+                <div *ngIf="field.options.length > 0; else NoOptions">
+                    <select (change)="captureChange($event, index)" [disabled]="!canEdit(field)">
+                        <option class="form-select" value={{option}} *ngFor="let option of field.options">{{option}}</option>
+                    </select>
+                </div>
+                <ng-template #NoOptions>
+                    <input [id]=field.label [readOnly]="!canEdit(field)" class="form-control" type={{field.type}} (change)="captureChange($event, index)" [value]=field.value>                
+                </ng-template>
+            </div>
         </div>
     </div>
 </div>
-<ng-template #IsEditing>
-    <div>
-        <button class="btn btn-success" (click)="saveChanges()">Save</button>
-        <button class="btn btn-danger" (click)=toggleEdit()>Cancel</button>
-    </div>
-    <div *ngFor="let field of EmployeeFields; index as index">
-        <div *ngIf="field.condition == 1;else Editable">
-            <div>
-                <label for={{field.propName}}>{{field.label}}</label> <span>{{field.value ?? 'No information provided'}}</span>
-            </div>
-        </div>
-        <ng-template #Editable>
-            <label class="form-lable">{{field.label}}</label> 
-            <div *ngIf="field.options[0];else NoOptions">
-                <select (change)="captureChange($event, index)">
-                    <option class="form-select" value={{option}} *ngFor="let option of field.options">{{option}}</option>
-                </select>
-            </div>
-            <ng-template #NoOptions>
-                <input class="form-control" type={{field.type}} (change)="captureChange($event, index)" [value]=field.value>
-            </ng-template>
-        </ng-template>
-        <br/>
-    </div>
-</ng-template>
