@@ -21,7 +21,6 @@ export class RoleManagerComponent {
   currRole!: Map<string, string[]>
 
   newRoleForm = new FormGroup({
-    employee: new FormControl('', Validators.required),
     role: new FormControl('', Validators.required),
     permission: new FormControl('', Validators.required),
   })
@@ -58,15 +57,6 @@ export class RoleManagerComponent {
         permission: this.newRoleForm.value.permission!
       }
     }
-    
-    this.roleService.addRole(this.newRoleForm.value.employee!, role).subscribe({
-      next: (data) => {
-        this.saved = true
-      },
-      error: (error) => {
-        this.failed = true
-      }
-    })
   }
 
   onDelete(): void {

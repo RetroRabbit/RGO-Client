@@ -3,22 +3,6 @@
         <form [formGroup]="newRoleForm" class="container">
             <section>
                 <div>
-                    <div>
-                        <label for="employees" class="col-form-label">Employee:</label>
-                        <input class="form-control" list="employeeList" name="selectedEmployee" id="employees" formControlName="employee">
-                        <datalist id="employeeList">
-                            <option value="" selected>None</option>
-                            <option *ngFor="let employee of employees$ | async" [value]="employee['email']">
-                                {{ employee["email"] }}
-                            </option>
-                        </datalist>
-                        <div
-                          *ngIf="newRoleForm.controls.employee.invalid &&
-                            (newRoleForm.controls.employee.dirty || newRoleForm.controls.employee.touched)"
-                          class="alert alert-danger mt-2">
-                          Please enter a email
-                        </div>
-                    </div>
                     <div *ngIf="rawRoles$ | async as raw">
                         <label for="roles" class="col-form-label">Roles:</label>
                         <input class="form-control" list="roleList" name="selectedRole" id="roles" formControlName="role">
@@ -62,14 +46,6 @@
             <br>
             <div class="alert alert-warning" *ngIf="failed">
                 operation failed
-            </div>
-            <br>
-            <div class="figure" *ngIf="this.newRoleForm.value.employee != null && this.newRoleForm.value.employee != undefined && this.newRoleForm.value.employee != ''">
-                <button type="button" class="btn" (click)="getRole(this.newRoleForm.value.employee!)">Load current access:</button>
-                <br>
-                <pre>
-                    <code class="figure-caption">{{ currRole | json }}</code>
-                </pre>
             </div>
         </form>
     </header>
