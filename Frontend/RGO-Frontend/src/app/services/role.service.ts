@@ -14,15 +14,15 @@ export class RoleService {
     return this.httpClient.get<Map<string, string[]>>(`${API.HttpBaseURL}/rolemanage/getall`);
   }
 
-  getRole(email: string): Observable<Map<string, string[]>>{
-    return this.httpClient.get<Map<string, string[]>>(`${API.HttpBaseURL}/rolemanage/get?email=${encodeURIComponent(email)}`);
+  getRole(role: string): Observable<Map<string, string[]>>{
+    return this.httpClient.get<Map<string, string[]>>(`${API.HttpBaseURL}/rolemanage/get?role=${encodeURIComponent(role)}`);
   }
 
-  addRole(email: string, role: any): Observable<any>{
-    return this.httpClient.post<any>(`${API.HttpBaseURL}/rolemanage/add?email=${encodeURIComponent(email)}`, role);
+  addRole(role: string, permission: any): Observable<any>{
+    return this.httpClient.post<any>(`${API.HttpBaseURL}/rolemanage/add?role=${encodeURIComponent(role)}&permission=${encodeURIComponent(permission)}`, {});
   }
 
-  deleteRole(role: string, access: string): Observable<any> {
-    return this.httpClient.delete<any>(`${API.HttpBaseURL}/rolemanage/delete?role=${encodeURIComponent(role)}&access=${encodeURIComponent(access)}`);
+  deleteRole(role: string, permission: string): Observable<any> {
+    return this.httpClient.delete<any>(`${API.HttpBaseURL}/rolemanage/delete?role=${encodeURIComponent(role)}&permission=${encodeURIComponent(permission)}`);
   }
 }
