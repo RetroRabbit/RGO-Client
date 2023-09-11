@@ -7,6 +7,7 @@ import { AddUserComponent } from './components/add-user/add-user.component';
 import { ManageFieldCodeComponent } from './components/manage-field-code/manage-field-code.component';
 import { ChartComponent } from './components/charts/charts.component';
 import { CreateChartsComponent } from './components/create-charts/create-charts.component';
+import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 
 const routes: Routes = [
   {path: '', component: SignInComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'manage-field', component: ManageFieldCodeComponent},
   {path: 'charts', component: ChartComponent},
   {path: 'create-charts', component: CreateChartsComponent},
+  {path: 'new-employee', component: NewEmployeeComponent}
 ];
 
 @NgModule({
