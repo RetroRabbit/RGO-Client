@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { HeaderComponent } from './components/header/header.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
+import { ManageFieldCodeComponent } from './components/manage-field-code/manage-field-code.component';
 import { ChartComponent } from './components/charts/charts.component';
 import { CreateChartsComponent } from './components/create-charts/create-charts.component';
 
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'header', component: HeaderComponent},
   {path: 'add-user', component: AddUserComponent},
+  {path: 'manage-field', component: ManageFieldCodeComponent},
   {path: 'charts', component: ChartComponent},
   {path: 'create-charts', component: CreateChartsComponent},
 ];
