@@ -54,7 +54,7 @@ import { ManageFieldCodeComponent } from './components/manage-field-code/manage-
     CreateChartsComponent,
     ReportComponent,
     RoleManagerComponent,
-    EmployeeRoleManagerComponent
+    EmployeeRoleManagerComponent,
     NewEmployeeComponent,
     ManageFieldCodeComponent
   ],
