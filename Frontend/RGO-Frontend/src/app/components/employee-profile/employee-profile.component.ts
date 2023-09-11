@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AccessPropertiesService } from 'src/app/services/access-properties.service';
 import { Properties } from 'src/app/models/properties.interface';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -12,13 +13,13 @@ export class EmployeeProfileComponent {
 
   isEdit: boolean = false;
 
-  constructor(private accessPropertyService: AccessPropertiesService) { }
+  constructor(private accessPropertyService: AccessPropertiesService, private cookieService : CookieService) { }
   ngOnInit() {
     this.getEmployeeFields();
   }
   
   getEmployeeFields(){
-    this.accessPropertyService.GetAccessProperties('mschoeman@retrorabbit.co.za').subscribe(
+    this.accessPropertyService.GetAccessProperties(this.cookieService.get('userEmail')).subscribe(
       data => {
         this.EmployeeFields = data;
       }
@@ -49,7 +50,7 @@ export class EmployeeProfileComponent {
         })
       }
     });
-    this.accessPropertyService.UpdateProperties('mschoeman@retrorabbit.co.za', payload).subscribe(() => {
+    this.accessPropertyService.UpdateProperties(this.cookieService.get('userEmail'), payload).subscribe(() => {
     });
     setTimeout(()=>{
       this.getEmployeeFields();
