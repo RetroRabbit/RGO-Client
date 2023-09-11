@@ -17,7 +17,10 @@
       </div>
       <div *ngIf="selectedPage === 'create-charts'">
         <app-create-charts></app-create-charts>
-        </div>
+      </div>
+      <div *ngIf="selectedPage === 'Employee Manager'">
+        <app-employee-role-manager></app-employee-role-manager>
+      </div>
       <div *ngIf="selectedPage === 'Role Manager'">
         <app-role-manager></app-role-manager>
       </div>

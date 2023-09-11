@@ -15,6 +15,7 @@ export const ROUTES: RouteInfo[] = [
     { title: 'Charts', icon: 'analytics', requiredRole: [ ] },
     { title: 'Dashboard',  icon: 'dashboard', requiredRole: [ ] },
     { title: 'Add User', icon: 'person', requiredRole: [ 'Admin', 'SuperAdmin' ] },
+    { title: 'Employee Manager', icon: 'people', requiredRole: [ 'Admin', 'SuperAdmin' ] },
     { title: 'Role Manager', icon: 'event_seat', requiredRole: [ 'Admin', 'SuperAdmin' ] },
 ];
 
