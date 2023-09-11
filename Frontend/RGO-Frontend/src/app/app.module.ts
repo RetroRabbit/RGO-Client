@@ -38,6 +38,7 @@ import { NgToastModule } from 'ng-angular-popup';
 import { ReportComponent } from './components/chart-reports/chart-reports.component';
 import { RoleManagerComponent } from './components/role-manager/role-manager.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
+import { ManageFieldCodeComponent } from './components/manage-field-code/manage-field-code.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { NewEmployeeComponent } from './components/new-employee/new-employee.com
     ReportComponent,
     RoleManagerComponent,
     NewEmployeeComponent,
+    ManageFieldCodeComponent
   ],
   imports: [
     BrowserModule,
