@@ -1,0 +1,57 @@
+<form [formGroup]="newEmployeeForm" class="container">
+    <div class="d-flex">
+        <label><Em>Employees:</Em></label>
+        <button
+            class="card"
+            type="button"
+            *ngFor="let employee of employees$ | async"
+            (click)="changeEmail(employee['email']!)"
+            formControlName="email">
+            <span class="selected" *ngIf="employee['email'] === newEmployeeForm.value.email">{{employee['email']}}</span>
+            <span *ngIf="employee['email'] != newEmployeeForm.value.email">{{employee['email']}}</span>
+        </button>
+        <div
+            *ngIf="newEmployeeForm.controls.email.invalid &&
+                (newEmployeeForm.controls.email.dirty || newEmployeeForm.controls.email.touched)"
+            class="alert alert-danger mt-2">
+            Please select an email
+        </div>
+    </div>
+    <br>
+    <div class="d-flex">
+        <label><Em>Roles:</Em></label>
+        <button
+            class="card"
+            type="button"
+            *ngFor="let role of roles$ | async"
+            (click)="changeRole(role)"
+            formControlName="role">
+            <span class="selected" *ngIf="role === newEmployeeForm.value.role">{{role}}</span>
+            <span *ngIf="role != newEmployeeForm.value.role">{{role}}</span>
+        </button>
+        <div
+            *ngIf="newEmployeeForm.controls.email.invalid &&
+                (newEmployeeForm.controls.email.dirty || newEmployeeForm.controls.email.touched)"
+            class="alert alert-danger mt-2">
+            Please select an email
+        </div>
+    </div>
+    <div>
+        <label for="email">email</label>
+        <input class="btn btn-primary" type="text" disabled [value]="newEmployeeForm.value.email">
+        <br>
+        <label for="role">role</label>
+        <input class="btn btn-primary" type="text" disabled [value]="newEmployeeForm.value.role">
+        <br>
+        <button type="submit" class="btn btn-primary" [disabled]="!newEmployeeForm.valid" (click)="assignRole()">Assign Role</button>
+        <button type="submit" class="btn btn-danger" [disabled]="!newEmployeeForm.valid" (click)="unassignRole()">Unassign Role</button>
+        <br>
+        <div class="alert alert-info" *ngIf="saved || deleted">
+            operation succeded
+        </div>
+        <br>
+        <div class="alert alert-warning" *ngIf="failed">
+            operation failed
+        </div>
+    </div>
+</form>

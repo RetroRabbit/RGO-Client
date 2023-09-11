@@ -1,0 +1,12 @@
+.card {
+    width: min-content;
+    height: min-content;
+    margin: 0 0.1rem;
+    padding: 0.5rem 0.5rem;
+    font-size: large;
+    font-weight: 700;
+}
+
+.selected {
+    box-shadow: inset 0 0 0 0.2rem #000;
+}
