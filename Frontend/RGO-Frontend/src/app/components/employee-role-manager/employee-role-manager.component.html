@@ -2,7 +2,7 @@
     <div class="d-flex" *ngIf="employees$ | async as employees">
         <label>Employees:</label>
         <br>
-        <input class="form-control" list="email-list" formControlName="email">
+        <input class="form-control" list="email-list" formControlName="email" (input)="getRoles(newEmployeeForm.value.email!)">
         <datalist id="email-list">
             <option *ngFor="let employee of employees" [value]="employee['email']">
                 {{ employee['email'] }}
@@ -36,12 +36,6 @@
         </div>
     </div>
     <div>
-        <label for="email">email</label>
-        <input class="btn btn-primary" type="text" disabled [value]="newEmployeeForm.value.email">
-        <br>
-        <label for="role">role</label>
-        <input class="btn btn-primary" type="text" disabled [value]="newEmployeeForm.value.role">
-        <br>
         <button type="submit" class="btn btn-primary" [disabled]="!newEmployeeForm.valid" (click)="assignRole()">Assign Role</button>
         <button type="submit" class="btn btn-danger" [disabled]="!newEmployeeForm.valid" (click)="unassignRole()">Unassign Role</button>
         <br>
@@ -59,7 +53,7 @@
             </div>
             <div class="card-body">
                 <button type="button" (click)="getRoles(newEmployeeForm.value.email!)">
-                    View Roles of {{ newEmployeeForm.value.email! }}:
+                    Reload
                 </button>
                 <code>
                     <pre>

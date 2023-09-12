@@ -43,6 +43,7 @@ export class RoleManagerComponent {
 
   changeRole(role: string): void {
     this.newRoleForm.setValue({ role: role, permission: this.newRoleForm.value.permission ?? '' })
+    this.getRole(role)
   }
 
   getPermissions(roleAccess: Map<string, string[]>): string[] {

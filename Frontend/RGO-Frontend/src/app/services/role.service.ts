@@ -23,6 +23,6 @@ export class RoleService {
   }
 
   deleteRole(role: string, permission: string): Observable<any> {
-    return this.httpClient.delete<any>(`${API.HttpBaseURL}/rolemanage/delete?role=${encodeURIComponent(role)}&permission=${encodeURIComponent(permission)}`);
+    return this.httpClient.delete<any>(`${API.HttpBaseURL}/rolemanage/remove?role=${encodeURIComponent(role)}&permission=${encodeURIComponent(permission)}`);
   }
 }

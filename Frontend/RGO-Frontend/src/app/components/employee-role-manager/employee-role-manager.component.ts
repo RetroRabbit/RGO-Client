@@ -32,6 +32,10 @@ export class EmployeeRoleManagerComponent {
     private employeeRoleService: EmployeeRoleService
   ) {}
 
+  isInCurrent(role: string): boolean {
+    return this.currRoles.includes(role)
+  }
+
   getRoles(selectedEmail: string): void {
     this.employeeRoleService.getRoles(selectedEmail).subscribe(val =>
       this.currRoles = val)
