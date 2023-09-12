@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Employee } from 'src/app/models/employee.interface';
+import { EmployeeRoleService } from 'src/app/services/employee-role.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { RoleService } from 'src/app/services/role.service';
 
@@ -11,8 +12,9 @@ import { RoleService } from 'src/app/services/role.service';
   styleUrls: ['./role-manager.component.css']
 })
 export class RoleManagerComponent {
-  rawRoles$: Observable<Map<string, string[]>> = this.roleService.getAllRoles()
+  roles$: Observable<string[]> = this.employeeRoleService.getAllRoles()
   employees$: Observable<Employee[]> = this.employeeService.getAll()
+  roleAccesses$: Observable<Map<string, string[]>> = this.roleService.getAllRoles();
 
   saved: boolean = false
   deleted: boolean = false
@@ -27,36 +29,43 @@ export class RoleManagerComponent {
 
   constructor(
     private roleService: RoleService,
-    private employeeService: EmployeeService) { }
+    private employeeService: EmployeeService,
+    private employeeRoleService: EmployeeRoleService
+  ) { }
 
   getRoles(raw: Map<string, string[]>): string[] {
     return Object.keys(raw)
   }
 
-  getPermissions(raw: Map<string, string[]>): string[] {
-    return Object.values(raw)
+  changePermission(permission: string): void {
+    this.newRoleForm.setValue({ role: this.newRoleForm.value.role ?? '', permission: permission })
+  }
+
+  changeRole(role: string): void {
+    this.newRoleForm.setValue({ role: role, permission: this.newRoleForm.value.permission ?? '' })
+  }
+
+  getPermissions(roleAccess: Map<string, string[]>): string[] {
+    return Object.values(roleAccess)
       .join(',')
       .split(',')
       .filter((value, index, self) => self.indexOf(value) === index)
   }
 
-  getRole(email: string): void {
-    this.roleService.getRole(email).subscribe(role =>
+  getRole(selectedRole: string): void {
+    this.roleService.getRole(selectedRole).subscribe(role =>
       this.currRole = role)
   }
 
   onAdd(): void {
-    const role = {
-      id: 0,
-      role: {
-        id: 0,
-        description: this.newRoleForm.value.role!
+    this.roleService.addRole(this.newRoleForm.value.role!, this.newRoleForm.value.permission!).subscribe({
+      next: (data) => {
+        this.saved = true
       },
-      roleAccess: {
-        id: 0,
-        permission: this.newRoleForm.value.permission!
+      error: (error) => {
+        this.failed = true
       }
-    }
+    })
   }
 
   onDelete(): void {
