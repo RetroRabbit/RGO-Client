@@ -1,147 +1,34 @@
-<div *ngIf="EmployeeProfile$ | async as profile" class="profile-container">
-    <div *ngIf="!isEdit; else BusyEdit" class="button-container">
-        <button (click)="EditEmployee(profile)" class="edit-button">Edit</button>
+<div class="row">
+    <div *ngIf="!isEdit;else IsEditing">
+        <button class="btn btn-primary" (click)="toggleEdit()">Edit</button>
     </div>
-    <ng-template #BusyEdit>
-        <button (click)=SaveChanges() class="edit-button">Save</button>
-        <button (click)="CancelEdit()" class="edit-button">Cancel</button>
-    </ng-template>
-    <div *ngIf="!isEdit; else ShowInputs" class="profile-details">
-        <label>EmployeeNumber: </label>{{profile.employeeNumber}} <br>
-        <label>Tax Number: </label>{{profile.taxNumber}} <br>
-        <label>Engagement Date: </label>{{profile.engagementDate | date}} <br>
-        <label>Termination Date: </label>{{(profile.terminationDate | date)??"N/A"}} <br>
-        <label>Reporting Line: </label>{{profile.reportingLine}} <br>
-        <label>Highest Qualifications: </label>{{profile.highestQualification}} <br>
-        <label>Disability: </label>{{profile.disability}} <br>
-        <label>Disability Notes: </label>{{profile.disabilityNotes}} <br>
-        <label>Country of Birth: </label>{{profile.countryOfBirth}} <br>
-        <label>Nationality: </label>{{profile.nationality}} <br>
-        <label>Level: </label>{{profile.level}} <br>
-        <label>Employee Type: </label>{{profile.employeeType}} <br>
-        <label>Title: </label>{{profile.title}} <br>
-        <label>Name: </label>{{profile.name}} <br>
-        <label>Initials: </label>{{profile.initials}} <br>
-        <label>Surname: </label>{{profile.surname}} <br>
-        <label>Date of Birth: </label>{{profile.dateOfBirth | date}} <br>
-        <label>ID Number: </label>{{profile.idNumber}} <br>
-        <label>Passport Number: </label>{{profile.passportNumber}} <br>
-        <label>Passport Expiration Date: </label>{{profile.passportExpirationDate | date}} <br>
-        <label>Passport Country Issue: </label>{{profile.passportCountryIssue}} <br>
-        <label>Race: </label>{{profile.race}} <br>
-        <label>Gender: </label>{{profile.gender}} <br>
-        <label>Known As: </label>{{profile.knownAs}} <br>
-        <label>Pronouns: </label>{{profile.pronouns}} <br>
-        <label>Retro Email: </label>{{profile.email}} <br>
-        <label>Personal Email: </label>{{profile.personalEmail}} <br>
-        <label>Cellphone Number: </label>{{profile.cellphoneNo}} <br>
-        <label>Tshirt Size: </label>{{profile.tshirtSize}} <br>
-        <label>Dietary Restrictions: </label>{{profile.dietaryRestrictions}}
-    </div>
-    <ng-template #ShowInputs>
-        <div class="profile-details">
-            <br>
-            <label>EmployeeNumber: </label> {{profile.employeeNumber}} <br>
-
-            <label>Tax Number: </label> {{profile.taxNumber}} <br>
-
-            <label>Engagement Date: </label> {{profile.engagementDate | date}} <br>
-
-            <label>Termination Date: </label> {{profile.terminationDate | date}} <br>
-
-            <label>Reporting Line: </label> {{profile.reportingLine}} <br>
-
-            <label>Highest Qualifications: </label>
-            <input [value]="editHighestQualifications" type="text" [(ngModel)]="editHighestQualifications"> <br>
-
-            <label>Disability: </label>
-            <select [(ngModel)]="editDisability" id="editDisability" name="editDisability">
-                <option [value]=true>true</option>
-                <option [value]=false>false</option>
-            </select>
-
-            <div *ngIf="editDisability === true">
-                <label>Disability Notes: </label>
-                <input type="text" [(ngModel)]="editDisabilityNotes"> <br>
+    <ng-template #IsEditing>
+        <div class="row">
+            <div class="col-auto">
+                <button class="btn btn-success" (click)="saveChanges()">Save</button>
             </div>
-
-            <label>Country of Birth: </label> {{profile.countryOfBirth}} <br>
-            <label>Nationality: </label> {{profile.nationality}} <br>
-
-            <label>Level: </label>
-            <input [value]="editLevel" type="number" [(ngModel)]="editLevel"> <br>
-
-            <label>Employee Type: </label> {{profile.employeeType}} <br>
-
-            <label>Title: </label>
-            <input [value]="editTitle" type="text" [(ngModel)]="editTitle"> <br>
-
-            <label>Name: </label>
-            <input [value]="editName" type="text" [(ngModel)]="editName"> <br>
-
-            <label>Initials: </label>
-            <input [value]="editInitials" type="text" [(ngModel)]="editInitials"> <br>
-
-            <label>Surname: </label>
-            <input [value]="editSurname" type="text" [(ngModel)]="editSurname"> <br>
-
-            <label>Date of Birth: </label>
-            <input [value]="editDateOfBirth" type="date" [(ngModel)]="editDateOfBirth"> <br>
-
-            <label>ID Number: </label>
-            <input [value]="editIDNumber" type="text" [(ngModel)]="editIDNumber"> <br>
-
-            <label>Passport Number: </label>
-            <input [value]="editPassportNumber" type="text" [(ngModel)]="editPassportNumber"><br>
-
-            <label>Passport Expiration Date: </label>
-            <input [value]="editpassportExpirationDate" type="text" [(ngModel)]="editpassportExpirationDate"><br>
-
-            <label>Passport Country Issue: </label>
-            <input [value]="editPassportCountryIssue" type="text" [(ngModel)]="editPassportCountryIssue"><br>
-
-            <label>Race: </label>
-            <select [(ngModel)]="editTshirtSize" id="editTshirtSize" name="editTshirtSize">
-                <option [value]=0>Caucasian</option>
-                <option [value]=1>Black</option>
-                <option [value]=2>Other</option>
-            </select> <br />
-
-            <label for="editGender">Gender:</label>
-            <select [(ngModel)]="editGender" id="editGender" name="editGender">
-                <option [value]=0>Male</option>
-                <option [value]=1>Female</option>
-                <option [value]=2>Other</option>
-            </select>
-
-            <br>
-            <label>Known As: </label>
-            <input [value]="editKnownAs" type="text" [(ngModel)]="editKnownAs"><br>
-
-            <label>Pronouns: </label>
-            <input [value]="editPronouns" type="text" [(ngModel)]="editPronouns"><br>
-
-            <label>Retro Email: </label>
-            <input [value]="editRetroEmail" type="text" [(ngModel)]="editRetroEmail"><br>
-
-            <label>Personal Email: </label>
-            <input [value]="editPersonalEmail" type="text" [(ngModel)]="editPersonalEmail"><br>
-
-            <label>Cellphone Number: </label>
-            <input [value]="editCellphoneNo" type="text" [(ngModel)]="editCellphoneNo"><br>
-
-            <label>Tshirt Size: </label>
-            <select [(ngModel)]="editTshirtSize" id="editTshirtSize" name="editTshirtSize">
-                <option [value]=0>Extra Small</option>
-                <option [value]=1>Small</option>
-                <option [value]=2>Meduim</option>
-                <option [value]=3>Large</option>
-                <option [value]=4>Extra Large</option>
-                <option [value]=5>Extra Extra Large</option>
-            </select> <br>
-
-            <label>Dietary Restrictions: </label>
-            <input [value]="editDietaryRestrictions" type="text" [(ngModel)]="editDietaryRestrictions">
+            <div class="col-auto">
+                <button class="btn btn-danger" (click)="toggleEdit()">Cancel</button>
+            </div>
         </div>
     </ng-template>
+</div>
+<div class="row">
+    <div *ngFor="let field of EmployeeFields; index as index" class="col-6">
+        <div class="row">
+            <div class="col-5">
+                <label for={{field.label}}>{{field.label}}</label>
+            </div>
+            <div class="col-6">
+                <div *ngIf="field.options.length > 0; else NoOptions">
+                    <select (change)="captureChange($event, index)" [disabled]="!canEdit(field)">
+                        <option class="form-select" value={{option}} *ngFor="let option of field.options">{{option}}</option>
+                    </select>
+                </div>
+                <ng-template #NoOptions>
+                    <input [id]=field.label [readOnly]="!canEdit(field)" class="form-control" type={{field.type}} (change)="captureChange($event, index)" [value]=field.value>                
+                </ng-template>
+            </div>
+        </div>
+    </div>
 </div>

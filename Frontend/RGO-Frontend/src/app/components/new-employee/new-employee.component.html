@@ -1,0 +1,115 @@
+<div class="col-12">
+    <div class="m-3 border-bottom">
+      <h2 class="page-heading border-bottom">New Employee</h2>
+      <div style="overflow: auto">
+        <div class="container-fluid">
+          <form [formGroup]="newEmployeeForm" (submit)="onSubmit()">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">First Name</label>
+                    <input type="text" class="form-control" formControlName="name" />
+                    <div
+                      *ngIf="newEmployeeForm.controls['name'].invalid && (newEmployeeForm.controls['name'].dirty || newEmployeeForm.controls['name'].touched)"
+                      class="alert">
+                      Please enter first name
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Initials</label>
+                    <input type="text" class="form-control" formControlName="initials" />
+                    <div
+                      *ngIf="newEmployeeForm.controls['initials'].invalid && (newEmployeeForm.controls['initials'].dirty || newEmployeeForm.controls['initials'].touched)"
+                      class="alert">
+                      Please enter initials
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Surname</label>
+                    <input type="text" class="form-control" formControlName="surname" />
+                    <div
+                      *ngIf="newEmployeeForm.controls['surname'].invalid && (newEmployeeForm.controls['surname'].dirty || newEmployeeForm.controls['surname'].touched)"
+                      class="alert">
+                      Please enter surname
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Personal Email</label>
+                      <input type="email" class="form-control" formControlName="personalEmail" />
+                      <div
+                        *ngIf="newEmployeeForm.controls['personalEmail'].invalid && (newEmployeeForm.controls['personalEmail'].dirty || newEmployeeForm.controls['personalEmail'].touched)"
+                        class="alert">
+                        Please enter an email address
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Cellphone number</label>
+                    <input type="text" class="form-control" formControlName="cellphoneNo" />
+                    <div
+                      *ngIf="newEmployeeForm.controls['cellphoneNo'].invalid && (newEmployeeForm.controls['cellphoneNo'].dirty || newEmployeeForm.controls['cellphoneNo'].touched)"
+                      class="alert">
+                      Please enter an email address
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Email</label>
+                    <input type="text" class="form-control" formControlName="email" />
+                    <div
+                      *ngIf="newEmployeeForm.controls['email'].invalid && (newEmployeeForm.controls['email'].dirty || newEmployeeForm.controls['email'].touched)"
+                      class="alert">
+                      Please enter an email address
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Employee Type</label> 
+                    <select class="form-control" formControlName="employeeType">
+                      <option *ngFor="let type of employeeTypes" [ngValue]="type">
+                        {{type.name}}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="newEmployeeForm.controls['employeeType'].invalid && (newEmployeeForm.controls['employeeType'].dirty || newEmployeeForm.controls['employeeType'].touched)"
+                      class="alert">
+                      Please enter employee type
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Engagement Date</label>
+                    <input type="date" class="form-control" formControlName="engagementDate" />
+                    <div
+                      *ngIf="newEmployeeForm.controls['engagementDate'].invalid && (newEmployeeForm.controls['engagementDate'].dirty || newEmployeeForm.controls['engagementDate'].touched)"
+                      class="alert">
+                      Please enter engagement date
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <div class="col-sm-12">
+                <br><br>
+                  <button type="submit" class="form-control">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
