@@ -22,11 +22,11 @@
             <div class="col-6">
                 <div *ngIf="field.options.length > 0; else NoOptions">
                     <select (change)="captureChange($event, index)" [disabled]="!canEdit(field)">
-                        <option class="form-select" value={{option}} *ngFor="let option of field.options">{{option}}</option>
+                        <option [selected]="option == field.value" class="form-select" value={{option}} *ngFor="let option of field.options">{{option}}</option>
                     </select>
                 </div>
                 <ng-template #NoOptions>
-                    <input [id]=field.label [readOnly]="!canEdit(field)" class="form-control" type={{field.type}} (change)="captureChange($event, index)" [value]=field.value>                
+                    <input [id]=field.label [readOnly]="!canEdit(field)" class="form-control" type={{field.type}} (change)="captureChange($event, index)" [value]=field.value>
                 </ng-template>
             </div>
         </div>
