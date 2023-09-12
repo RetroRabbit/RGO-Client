@@ -13,7 +13,6 @@ interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
    
     { title: 'Dashboard',  icon: 'dashboard', requiredRole: [ ] },
-    { title: 'Add User', icon: 'person', requiredRole: [ 'Admin', 'SuperAdmin' ] },
     { title: 'Employee Manager', icon: 'people', requiredRole: [ 'Admin', 'SuperAdmin' ] },
     { title: 'Charts', icon: 'analytics', requiredRole: [ ] },
     { title: 'New Employee', icon: 'person', requiredRole: [ 'Admin', 'SuperAdmin' ] },
