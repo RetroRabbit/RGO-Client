@@ -1,7 +1,6 @@
-.card {
-    width: min-content;
-    height: min-content;
-    margin: 0 0.1rem;
+.card, .form-control {
+    width: fit-content;
+    margin: 0.rem 0.1rem;
     padding: 0.5rem 0.5rem;
     font-size: large;
     font-weight: 700;

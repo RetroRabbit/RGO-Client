@@ -1,15 +1,13 @@
 <form [formGroup]="newEmployeeForm" class="container">
-    <div class="d-flex">
-        <label><Em>Employees:</Em></label>
-        <button
-            class="card"
-            type="button"
-            *ngFor="let employee of employees$ | async"
-            (click)="changeEmail(employee['email']!)"
-            formControlName="email">
-            <span class="selected" *ngIf="employee['email'] === newEmployeeForm.value.email">{{employee['email']}}</span>
-            <span *ngIf="employee['email'] != newEmployeeForm.value.email">{{employee['email']}}</span>
-        </button>
+    <div class="d-flex" *ngIf="employees$ | async as employees">
+        <label>Employees:</label>
+        <br>
+        <input class="form-control" list="email-list" formControlName="email">
+        <datalist id="email-list">
+            <option *ngFor="let employee of employees" [value]="employee['email']">
+                {{ employee['email'] }}
+            </option>
+        </datalist>
         <div
             *ngIf="newEmployeeForm.controls.email.invalid &&
                 (newEmployeeForm.controls.email.dirty || newEmployeeForm.controls.email.touched)"
@@ -18,20 +16,21 @@
         </div>
     </div>
     <br>
-    <div class="d-flex">
+    <div class="d-flex" *ngIf="roles$ | async as roles">
         <label><Em>Roles:</Em></label>
+        <br>
         <button
             class="card"
             type="button"
-            *ngFor="let role of roles$ | async"
+            *ngFor="let role of roles"
             (click)="changeRole(role)"
             formControlName="role">
             <span class="selected" *ngIf="role === newEmployeeForm.value.role">{{role}}</span>
             <span *ngIf="role != newEmployeeForm.value.role">{{role}}</span>
         </button>
         <div
-            *ngIf="newEmployeeForm.controls.email.invalid &&
-                (newEmployeeForm.controls.email.dirty || newEmployeeForm.controls.email.touched)"
+            *ngIf="newEmployeeForm.controls.role.invalid &&
+                (newEmployeeForm.controls.role.dirty || newEmployeeForm.controls.role.touched)"
             class="alert alert-danger mt-2">
             Please select an email
         </div>
@@ -52,6 +51,22 @@
         <br>
         <div class="alert alert-warning" *ngIf="failed">
             operation failed
+        </div>
+        <br>
+        <div class="card container" *ngIf="newEmployeeForm.controls.email.valid">
+            <div class="card-header">
+                Roles of {{ newEmployeeForm.value.email }}
+            </div>
+            <div class="card-body">
+                <button type="button" (click)="getRoles(newEmployeeForm.value.email!)">
+                    View Roles of {{ newEmployeeForm.value.email! }}:
+                </button>
+                <code>
+                    <pre>
+                        {{ currRoles | json }}
+                    </pre>
+                </code>
+            </div>
         </div>
     </div>
 </form>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeRoleService } from 'src/app/services/employee-role.service';
 import { EmployeeService } from 'src/app/services/employee.service';
@@ -14,24 +14,27 @@ import { RoleService } from 'src/app/services/role.service';
 export class EmployeeRoleManagerComponent {
   roles$: Observable<string[]> = this.employeeRoleService.getAllRoles()
   employees$: Observable<Employee[]> = this.empoloyeeService.getAll()
-  currRole!: Map<string, string[]>
+  
   saved: boolean = false
   deleted: boolean = false
   failed: boolean = false
-
+  
   newEmployeeForm = new FormGroup({
     email: new FormControl<string>('', Validators.required),
     role: new FormControl<string>('', Validators.required),
   })
-
+  
+  currRoles!: string[]
+  
   constructor(
     private roleService: RoleService,
     private empoloyeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService
   ) {}
 
-  getRoles(raw: Map<string, string[]>): string[] {
-    return Object.keys(raw)
+  getRoles(selectedEmail: string): void {
+    this.employeeRoleService.getRoles(selectedEmail).subscribe(val =>
+      this.currRoles = val)
   }
 
   changeEmail(email: string): void {
