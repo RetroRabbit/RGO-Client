@@ -6,7 +6,7 @@ pre {
 
 .card, .form-control {
     width: fit-content;
-    margin: 0.1rem 0.1rem;
+    margin: 0.rem 0.1rem;
     padding: 0.5rem 0.5rem;
     font-size: large;
     font-weight: 700;
