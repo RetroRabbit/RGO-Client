@@ -86,7 +86,6 @@ import { ManageFieldCodeComponent } from './components/manage-field-code/manage-
     InputTextModule,
     MenuModule,
     NgToastModule
-  
   ],
   providers: [
     AuthService,
