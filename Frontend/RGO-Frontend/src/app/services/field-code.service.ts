@@ -14,8 +14,8 @@ export class FieldCodeService {
         return this.httpClient.get<FieldCode[]>(`${API.HttpBaseURL}/fieldcode/get`);
     }
 
-    saveFieldCode(fieldCodeData: any): Observable<any> {
-        return this.httpClient.post<any>(`${API.HttpBaseURL}/fieldcode/save`, fieldCodeData);
+    saveFieldCode(fieldCodeDto:FieldCode): Observable<any> {
+        return this.httpClient.post<any>(`${API.HttpBaseURL}/fieldcode/save`, fieldCodeDto);
     }
 
     updateFieldCode(fieldCodeData: FieldCode): Observable<any> {

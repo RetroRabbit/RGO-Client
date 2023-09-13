@@ -26,58 +26,51 @@ export class ManageFieldCodeComponent {
   private initializeForm() {
     this.newFieldCodeForm = this.fb.group({
       fieldCode: this.fb.group({
-        code: ['', [Validators.required]],
-        name: ['', [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(255),
-          Validators.pattern('^[a-zA-Z ]*$')
-        ]],
+        code: [''],
+        name: [''],
         description: [''],
         regex: [''],
-        type: ['', Validators.required],
-        status: ['', Validators.required]
+        type: [''],
+        status: [''],
+        option: [''],
+        internal: [false],
+        internalTable: [''],
+        options: this.fb.array([]) 
       }),
-      id: [''],
-      option: [''],
-      internal: [false]
     });
   }
 
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
-      const { fieldCode, option, internal } = this.newFieldCodeForm.value;
-
-      const formData = {
-        newFieldCode: [
+      const { fieldCode } = this.newFieldCodeForm.value;
+  
+      const optionValue = fieldCode.option;
+  
+      const fieldCodeDto = {
+        id: 0,
+        code: fieldCode.code,
+        name: fieldCode.name,
+        description: fieldCode.description,
+        regex: fieldCode.regex,
+        type: parseInt(fieldCode.type),
+        status: parseInt(fieldCode.status),
+        internal: fieldCode.internal,
+        internalTable: fieldCode.internalTable,
+        options: [
           {
             id: 0,
-            ...fieldCode,
-            type: parseInt(fieldCode.type, 10),
-            status: parseInt(fieldCode.status, 10),
-            internal
-          }
-        ],
-        fieldCodeOptions: [
-          {
-            id: 0,
-            fieldCode: {
-              id: 0,
-              ...fieldCode,
-              type: parseInt(fieldCode.type, 10),
-              status: parseInt(fieldCode.status, 10),
-              internal
-            },
-            option
+            fieldCodeId: 0,
+            option: optionValue
           }
         ]
       };
-
-      this.fieldCodeService.saveFieldCode(formData).subscribe({
+  
+      this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
           console.log("Form submitted successfully!", data);
         },
         error: (error) => {
+          console.log(fieldCodeDto);
           console.error("Error occurred while submitting form!", error);
         }
       });
