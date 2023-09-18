@@ -1,26 +1,32 @@
 <div class="charts-wrapper">
+  <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
+    <app-sidebar></app-sidebar>
+    <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
+  </div>
   <a href="/create-charts">
     <button class="edit-button">Edit Dashboard</button>
   </a>
   <div class="numberofempoyees">
     <h5>Total number of employees: {{ numberOfEmployees }}</h5>
   </div>
-<div *ngIf="activeChart" class="chart-wrapper">
-  <div class="chart-item">
-    <canvas
-      baseChart
-      [datasets]="[{ data: activeChart.data, label: activeChart.label }]"
-      [labels]="activeChart.labels"
-      [options]="activeChart.labels"
-      [type]="activeChart.type"
-    ></canvas>
-  </div>
+  <div *ngIf="activeChart" class="chart-wrapper">
+    <div class="chart-item">
+      <canvas
+        baseChart
+        [datasets]="[{ data: activeChart.data, label: activeChart.label }]"
+        [labels]="activeChart.labels"
+        [options]="activeChart.labels"
+        [type]="activeChart.type"
+      ></canvas>
+    </div>
     <div class="report-controls">
-    <button class="back-button" (click)="clearActiveChart()">Back to Dashboard</button>
-    <button class="generate-report-button" (click)="generateReport()" *ngIf="!showReport">Generate Report</button>
+      <button class="back-button" (click)="clearActiveChart()">Back to Dashboard</button>
+      <button class="generate-report-button" (click)="generateReport()" *ngIf="!showReport">Generate Report</button>
+      <button class="update-button" (click)="openUpdateForm()">Update</button>
+      <button class="delete-button" (click)="deleteChart(activeChart.id)">Delete</button>
+    </div>
   </div>
-</div>
-<app-report *ngIf="showReport" [chartData]="activeChart"></app-report>
+  <app-report *ngIf="showReport" [chartData]="activeChart"></app-report>
   <div *ngIf="!activeChart" class="chart-container">
     <div *ngFor="let chart of chartData;" class="chart-item" (click)="onChartClick(chart)">
       <canvas
@@ -31,6 +37,28 @@
         [type]="chart.type"
       ></canvas>
     </div>
+  </div>
+  <div *ngIf="showUpdateForm" class="update-form">
+    <h3>Update Chart</h3>
+    <form (submit)="updateChart()">
+      <label for="Name">Chart Name:</label>
+      <input type="text" id="Name" name="Name" [(ngModel)]="updateFormData.Name">
+     
+    
+      <div class="report-controls">
+        <label for="chartType">Chart Type:</label>
+        <select id="chartType" name="chartType" [(ngModel)]="updateFormData.Type">
+          <option value="bar">Bar</option>
+          <option value="line">Line</option>
+          <option value="pie">Pie</option>
+          <option value="doughnut">Doughnut</option>
+        </select>
+        
+        <!-- Update button -->
+        <button type="submit" class="update-button">Update Chart</button>
+        <button type="button" class="cancel-button" (click)="showUpdateForm = false">Cancel</button>
+      </div>
+    </form>
   </div>
 </div>
 
