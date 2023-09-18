@@ -11,7 +11,10 @@ export interface EmployeeProfile {
     countryOfBirth: string,
     nationality: string,
     level: number,
-    employeeType: string,
+    employeeType: {
+      id: number,
+      name: string,
+    },
     title: string,
     name: string,
     initials: string,

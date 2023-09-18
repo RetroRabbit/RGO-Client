@@ -14,10 +14,11 @@ export class EmployeeProfileComponent {
   isEdit: boolean = false;
 
   constructor(private accessPropertyService: AccessPropertiesService, private cookieService : CookieService) { }
+
   ngOnInit() {
     this.getEmployeeFields();
   }
-  
+
   getEmployeeFields(){
     this.accessPropertyService.GetAccessProperties(this.cookieService.get('userEmail')).subscribe(
       data => {
@@ -38,7 +39,7 @@ export class EmployeeProfileComponent {
   captureChange(htmlValue: any, index: number) {
     this.EditFields[index].value = htmlValue.target.value;
   }
-  
+
   saveChanges(){
     let payload : any[] = [];
 

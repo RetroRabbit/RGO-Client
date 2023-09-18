@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Employee } from '../models/employee.interface';
+import { EmployeeProfile } from '../models/employee-profile.interface';
 import { API } from '../models/constants/urls.constants';
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,10 @@ export class EmployeeService {
 
   getAll(): Observable<Employee[]>{
     return this.httpClient.get<Employee[]>(`${API.HttpBaseURL}/employee/employees`);
+  }
+
+  getAllProfiles(): Observable<EmployeeProfile[]>{
+    return this.httpClient.get<EmployeeProfile[]>(`${API.HttpBaseURL}/employee/employees`);
   }
 
   addEmployee(newEmployee: any): Observable<any>{
