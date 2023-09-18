@@ -37,6 +37,7 @@ import { CreateChartsComponent } from './components/create-charts/create-charts.
 import { NgToastModule } from 'ng-angular-popup';
 import { ReportComponent } from './components/chart-reports/chart-reports.component';
 import { RoleManagerComponent } from './components/role-manager/role-manager.component';
+import { EmployeeRoleManagerComponent } from './components/employee-role-manager/employee-role-manager.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 import { ManageFieldCodeComponent } from './components/manage-field-code/manage-field-code.component';
 
@@ -53,6 +54,7 @@ import { ManageFieldCodeComponent } from './components/manage-field-code/manage-
     CreateChartsComponent,
     ReportComponent,
     RoleManagerComponent,
+    EmployeeRoleManagerComponent,
     NewEmployeeComponent,
     ManageFieldCodeComponent
   ],
@@ -86,7 +88,6 @@ import { ManageFieldCodeComponent } from './components/manage-field-code/manage-
     InputTextModule,
     MenuModule,
     NgToastModule
-  
   ],
   providers: [
     AuthService,

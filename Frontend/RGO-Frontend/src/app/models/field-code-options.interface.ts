@@ -1,7 +1,5 @@
-import { FieldCode } from "./field-code.interface";
-
 export interface FieldCodeOptions {
   id?: number;
-  fieldCode?: FieldCode;
+  fieldCode?: number;
   option?: string;
 }
