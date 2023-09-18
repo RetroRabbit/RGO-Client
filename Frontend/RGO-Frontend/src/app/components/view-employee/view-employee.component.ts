@@ -35,4 +35,7 @@ export class ViewEmployeeComponent{
     this.cookieService.set('currentPage', target.innerText);
   }
 
+  ViewUser(email: string){
+    this.cookieService.set('selectedUser',email)
+  }
 }
