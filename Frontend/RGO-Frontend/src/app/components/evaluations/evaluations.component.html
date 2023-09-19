@@ -1,26 +1,32 @@
 <p>evaluations works!</p>
 <section>
-    <form>
+    <form [formGroup]="EvaluationForm">
         <header class="d-flex">
             <div class="d-flex">
                 <label for="owner">Owner:</label>
-                <input class="form-control" type="text" id="owner" name="owner" placeholder="Owner" [disabled]="true" formControlName="owner">
+                <input class="form-control" list="email-list" id="owner" name="owner" placeholder="Owner" formControlName="owner">
             </div>
             <div class="d-flex">
                 <label for="employee">Employee:</label>
                 <input class="form-control" list="email-list" id="employee" name="employee" placeholder="Employee" formControlName="employee">
                 <datalist id="email-list">
-                    <option value="kmatsomela@retrorabbit.co.za">Kamogelo Matsomela</option>
-                    <option value="mschoeman@retrorabbit.co.za">Matthew Schoeman</option>
-                    <option value="cwhel@retrorabbit.co.za">Carl Wehl</option>
+                    <option *ngFor="let employee of employees$ | async" [value]="employee['email']">
+                        {{ employee['name'] + ' ' + employee['surname'] }}
+                    </option>
                 </datalist>
             </div>
             <div class="d-flex">
                 <label for="subject">Subject</label>
                 <input class="form-control" list="subjects" id="subject" name="subject" placeholder="Subject" formControlName="subject">
                 <datalist id="subjects">
-                    <option value="PIP">PIP</option>
                     <option value="PCCheckIn">PC Checkin</option>
+                </datalist>
+            </div>
+            <div class="d-flex">
+                <label for="template">Template</label>
+                <input class="form-control" list="templates" id="template" name="template" placeholder="Template" formControlName="template">
+                <datalist id="templates">
+                    <option *ngFor="let template of templates$ | async" [value]="template">{{template}}</option>
                 </datalist>
             </div>
         </header>
@@ -32,7 +38,7 @@
             </div>
             <div>
                 <span>50 %</span>
-                <input class="btn btn-primary" type="button" value="Save">
+                <input class="btn btn-primary" type="button" (click)="createEvaluation()" value="Save">
                 <input class="btn btn-danger" type="button" value="Delete">
             </div>
             <div>
