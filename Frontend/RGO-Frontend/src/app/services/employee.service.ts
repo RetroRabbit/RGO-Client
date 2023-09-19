@@ -21,4 +21,8 @@ export class EmployeeService {
   addEmployee(newEmployee: any): Observable<any>{
     return this.httpClient.post<any>(`${API.HttpBaseURL}/employee/add`, newEmployee);
   }
+
+  get(email: string): Observable<Employee> {
+    return this.httpClient.get<Employee>(`${API.HttpBaseURL}/employee/get?email=${encodeURIComponent(email)}`);
+  }
 }

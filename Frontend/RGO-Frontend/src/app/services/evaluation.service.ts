@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { API } from '../models/constants/urls.constants';
+import { Evaluation } from '../models/evaluation.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -9,25 +11,15 @@ export class EvaluationService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAll(): Observable<any[]> {
-    return of([
-      {
-        owner: 'jdoe@retrorabbit.co.za',
-        subject: 'tsubject@retrorabbit.co.za',
-        description: 'This is a description',
-        rating: 50,
-        comments: 'This is a comment',
-      }
-    ])
+  get(): Observable<Evaluation[]> {
+    return this.httpClient.get<Evaluation[]>(`${API.HttpBaseURL}/employeeevaluation/get`)
   }
 
-  get(email: string): Observable<any> {
-    return of({
-      owner: '',
-      subject: '',
-      description: '',
-      rating: 0,
-      comments: '',
-    })
+  save(evaluation: any): Observable<Evaluation> {
+    return this.httpClient.post<Evaluation>(`${API.HttpBaseURL}/employeeevaluation/save`, evaluation)
+  }
+
+  delete(evaluation: Evaluation): Observable<any> {
+    return this.httpClient.delete<any>(`${API.HttpBaseURL}/employeeevaluation/delete`, { body: evaluation})
   }
 }
