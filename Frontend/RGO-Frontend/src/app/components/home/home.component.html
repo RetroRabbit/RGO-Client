@@ -30,8 +30,11 @@
       <div *ngIf="selectedPage === 'New Employee'">
         <app-new-employee></app-new-employee>
       </div>
-      <div *ngIf="selectedPage == 'Evaluation'">
-        <app-evaluations></app-evaluations>
+      <div *ngIf="cookieService.get('currentPage') == 'Evaluations'">
+        <app-employee-evaluations (selectedEvaluation)="handleSelectedEval($event)"></app-employee-evaluations>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') == 'Evaluation Form'">
+        <app-evaluations [selectedEvaluation]="selectedEvaluation"></app-evaluations>
       </div>
     </main> 
   </div>

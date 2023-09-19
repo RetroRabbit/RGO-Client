@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Token } from 'src/app/models/token.interface';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { Eval } from '../employee-evaluations/employee-evaluations.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -13,11 +14,12 @@ import { CookieService } from 'ngx-cookie-service';
 export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
   selectedPage : string = this.cookieService.get("currentlPage") != "Dashboard" ?this.cookieService.get("currentlPage") :"Dashboard";
+  selectedEvaluation!: Eval 
 
   constructor(
     private store: Store<{app: Token}>,
     private auth: AuthService,
-    private cookieService: CookieService
+    public cookieService: CookieService
     ) {}
 
   ngOnDestroy() {
@@ -39,5 +41,12 @@ export class HomeComponent {
 
   handleSelectedItem() {
     this.selectedPage = this.cookieService.get('currentPage');
+  }
+
+  handleSelectedEval(item: any){
+    this.selectedEvaluation = item as Eval
+
+    console.table(item)
+    console.table(this.selectedEvaluation)
   }
 }

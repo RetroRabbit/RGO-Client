@@ -41,6 +41,7 @@ import { EmployeeRoleManagerComponent } from './components/employee-role-manager
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 import { ManageFieldCodeComponent } from './components/manage-field-code/manage-field-code.component';
 import { EvaluationsComponent } from './components/evaluations/evaluations.component';
+import { EmployeeEvaluationsComponent } from './components/employee-evaluations/employee-evaluations.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { EvaluationsComponent } from './components/evaluations/evaluations.compo
     EmployeeRoleManagerComponent,
     NewEmployeeComponent,
     ManageFieldCodeComponent,
-    EvaluationsComponent
+    EvaluationsComponent,
+    EmployeeEvaluationsComponent
   ],
   imports: [
     BrowserModule,
