@@ -3,6 +3,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Observable, of } from 'rxjs';
 import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { EvaluationService } from 'src/app/services/evaluation.service';
 
 export interface Eval {
   ownerEmail: string,
@@ -28,34 +29,22 @@ export class EmployeeEvaluationsComponent {
   @Output() selectedEvaluation = new EventEmitter<Eval>()
 
   employees$: Observable<Employee[]> = this.empoloyeeService.getAll()
-  evaluations$: Observable<Eval[]> = of([
-    {
-      ownerEmail: 'kmatsomela@retrorabbit.co.za',
-      employeeEmail: 'mschoeman@retrorabbit.co.za',
-      subject: 'Check in',
-      template: 'Mental Health - Check in',
-      startDate: new Date(Date.now()),
-      endDate: null,
-      description: null,
-      rating: [{
-        by: null,
-        comment: "Your dumb",
-        score: 2
-      }]
-    }
-  ])
-
+  evaluations$: Observable<any[]> = this.evaluationService.get(decodeURIComponent(this.cookieService.get('userEmail')))
   selectedEval!: Eval | null
   
   constructor(
     private empoloyeeService: EmployeeService,
+    private evaluationService: EvaluationService,
     private cookieService: CookieService
   ) { }
 
-  selectEvaluation(evaluation: Eval): void {
+  goToEvaluationForm() {
+    this.cookieService.set('currentPage', 'Evaluation Form')
+  }
+
+  selectEvaluation(evaluation: any): void {
     this.selectedEval = evaluation
     this.selectedEvaluation.emit(evaluation)
-    console.table(evaluation)
-    this.cookieService.set('currentPage', 'Evaluation Form')
+    this.goToEvaluationForm()
   }
 }
