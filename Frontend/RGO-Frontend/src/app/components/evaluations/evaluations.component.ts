@@ -30,7 +30,7 @@ export class EvaluationsComponent {
     ratings: new FormControl<any[]>([], Validators.required),
   })
   rating$: Observable<any[]> = this.evaluationRatingService.getall(this.selectedEvaluation)
-  templateItems$: Observable<any[]> = this.evaluationTemplateItemService.getAll(this.EvaluationForm.value.template)
+  templateItems$!: Observable<any[]>
 
   constructor(
     private empoloyeeService: EmployeeService,
@@ -42,14 +42,18 @@ export class EvaluationsComponent {
   ) {}
 
   ngOnInit() {
-    
+
   }
 
   templateChange() {
-    console.table(this.EvaluationForm.value)
-    this.templateItems$ = this.evaluationTemplateItemService.getAll(this.EvaluationForm.value.template)
+    if(this.EvaluationForm.value.template !== null && this.EvaluationForm.value.template !== ""){
+      this.templateItems$ = this.evaluationTemplateItemService.getAll(this.EvaluationForm.value.template);
+    }
   }
 
+  tempChange(htmlValue : any){
+    this.EvaluationForm.value.template = htmlValue.target.value;
+  }
   save() {
 
   }
