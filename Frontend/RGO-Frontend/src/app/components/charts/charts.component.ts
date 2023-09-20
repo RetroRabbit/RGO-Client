@@ -87,6 +87,7 @@ export class ChartComponent implements OnInit {
   }
 
   // Function to submit the update form
+ 
   updateChart(): void {
     if (this.activeChart) {
       
@@ -110,8 +111,10 @@ export class ChartComponent implements OnInit {
   
           // Display a success message
           console.log('Chart updated successfully.');
-          this.chartService.getAllCharts();
-          this.chartData
+  
+          // Fetch the updated chart data and refresh the display
+          this.createAndDisplayChart();
+  
           // Update the selectedChartType if necessary
           if (this.selectedChartType !== updatedData.Type) {
             this.selectedChartType = updatedData.Type;

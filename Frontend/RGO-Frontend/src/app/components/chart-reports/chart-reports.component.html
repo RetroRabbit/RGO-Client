@@ -1,4 +1,13 @@
-<div class="report-wrapper">
+  
+ <!-- Add jQuery (required by html2canvas) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Add html2canvas and jsPDF libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script> 
+  
+  
+  <div class="report-wrapper">
     <div class="report-container">
       <h1>{{ chartData.name }}</h1>
       <p class="report-description">This report provides information about the {{chartData.name}} chart:</p>
@@ -17,5 +26,7 @@
         </ul>
       </div>
     </div>
+    <button (click)="downloadPDF()">Download PDF</button>
+    <button (click)="convertToCSV()">Download CSV</button>
 </div>
   
