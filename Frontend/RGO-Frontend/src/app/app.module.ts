@@ -60,7 +60,7 @@ import { EmployeeEvaluationsComponent } from './components/employee-evaluations/
     EmployeeRoleManagerComponent,
     NewEmployeeComponent,
     ManageFieldCodeComponent,
-    ViewEmployeeComponent
+    ViewEmployeeComponent,
     EvaluationsComponent,
     EmployeeEvaluationsComponent
   ],
