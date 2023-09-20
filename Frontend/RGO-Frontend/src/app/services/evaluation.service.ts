@@ -11,16 +11,20 @@ export class EvaluationService {
 
   constructor(private httpClient: HttpClient) { }
 
-  get(email: string): Observable<any[]> {
+  getAll(email: string): Observable<any[]> {
     return this.httpClient.get<any[]>(`${API.HttpBaseURL}/employeeevaluation/getall?email=${encodeURIComponent(email)}`)
   }
 
-  save(evaluation: any): Observable<any> {
-    return this.httpClient.post<any>(`${API.HttpBaseURL}/employeeevaluation/save`, evaluation)
+  get(employeeEmail: string, ownerEmail: string, template: string, subject: string): Observable<any> {
+    return this.httpClient.get<any>(`${API.HttpBaseURL}/employeeevaluation/get?employeeEmail=${encodeURIComponent(employeeEmail)}&ownerEmail=${encodeURIComponent(ownerEmail)}&template=${encodeURIComponent(template)}&subject=${encodeURIComponent(subject)}`)
   }
 
-  delete(evaluation: any): Observable<any> {
-    return this.httpClient.delete<any>(`${API.HttpBaseURL}/employeeevaluation/delete`, { body: evaluation})
+  save(employeeEmail: string, ownerEmail: string, template: string, subject: string): Observable<any> {
+    return this.httpClient.post<any>(`${API.HttpBaseURL}/employeeevaluation/save?employeeEmail=${encodeURIComponent(employeeEmail)}&ownerEmail=${encodeURIComponent(ownerEmail)}&template=${encodeURIComponent(template)}&subject=${encodeURIComponent(subject)}`, {})
+  }
+
+  delete(employeeEmail: string, ownerEmail: string, template: string, subject: string): Observable<any> {
+    return this.httpClient.delete<any>(`${API.HttpBaseURL}/employeeevaluation/delete?employeeEmail=${encodeURIComponent(employeeEmail)}&ownerEmail=${encodeURIComponent(ownerEmail)}&template=${encodeURIComponent(template)}&subject=${encodeURIComponent(subject)}`, {})
   }
 
   update(evaluation: any): Observable<any> {
