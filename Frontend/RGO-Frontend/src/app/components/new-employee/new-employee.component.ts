@@ -48,9 +48,7 @@ export class NewEmployeeComponent implements OnInit {
   onSubmit(){
     this.newEmployeeForm.value.cellphoneNo = this.newEmployeeForm.value.cellphoneNo?.toString();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
-      next: (data) => {
-        console.table(data);
-      },
+      next: (data) => { },
       error: (error) => {
         console.table(error);
       }
