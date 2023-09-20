@@ -5,8 +5,6 @@ import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeRoleService } from 'src/app/services/employee-role.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { RoleService } from 'src/app/services/role.service';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { forwardRef } from '@angular/core';
 
 @Component({
   selector: 'app-role-manager',
