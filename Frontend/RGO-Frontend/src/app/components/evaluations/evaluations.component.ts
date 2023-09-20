@@ -30,6 +30,7 @@ export class EvaluationsComponent {
   rating$: Observable<any[]> = this.evaluationRatingService.getall(this.selectedEvaluation)
   templateItems$!: Observable<any[]>
 
+  stars: string[] = ['star', 'star', 'star', 'star', 'star'];
   templateItems: { [description: string]: { [section: string]: string[] }} = {} 
 
   constructor(
@@ -156,5 +157,13 @@ export class EvaluationsComponent {
         })
       }
     )
+  }
+
+
+  rate(selectedStar: string, index : number) {
+    ++index;
+    for (let i = 0; i < this.stars.length; i++) {
+      this.stars[i] = i < index ? this.stars[i] = "star-filled" : "star";
+    }
   }
 }
