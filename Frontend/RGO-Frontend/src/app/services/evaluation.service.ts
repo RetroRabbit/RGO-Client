@@ -11,15 +11,19 @@ export class EvaluationService {
 
   constructor(private httpClient: HttpClient) { }
 
-  get(): Observable<Evaluation[]> {
-    return this.httpClient.get<Evaluation[]>(`${API.HttpBaseURL}/employeeevaluation/get`)
+  get(email: string): Observable<any[]> {
+    return this.httpClient.get<any[]>(`${API.HttpBaseURL}/employeeevaluation/getall?email=${encodeURIComponent(email)}`)
   }
 
-  save(evaluation: any): Observable<Evaluation> {
-    return this.httpClient.post<Evaluation>(`${API.HttpBaseURL}/employeeevaluation/save`, evaluation)
+  save(evaluation: any): Observable<any> {
+    return this.httpClient.post<any>(`${API.HttpBaseURL}/employeeevaluation/save`, evaluation)
   }
 
-  delete(evaluation: Evaluation): Observable<any> {
+  delete(evaluation: any): Observable<any> {
     return this.httpClient.delete<any>(`${API.HttpBaseURL}/employeeevaluation/delete`, { body: evaluation})
+  }
+
+  update(evaluation: any): Observable<any> {
+    return this.httpClient.put<any>(`${API.HttpBaseURL}/employeeevaluation/update`, evaluation)
   }
 }
