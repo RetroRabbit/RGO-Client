@@ -1,11 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, tap } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { EvaluationService } from 'src/app/services/evaluation.service';
-import { Evaluation } from 'src/app/models/evaluation.interface';
-import { Eval } from '../employee-evaluations/employee-evaluations.component';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeEvaluationsRatingService } from 'src/app/services/employee-evaluations-rating.service';
 import { EvaluationTemplateService } from 'src/app/services/evaluation-template.service';
@@ -32,6 +30,8 @@ export class EvaluationsComponent {
   rating$: Observable<any[]> = this.evaluationRatingService.getall(this.selectedEvaluation)
   templateItems$!: Observable<any[]>
 
+  templateItems: { [description: string]: { [section: string]: string[] }} = {} 
+
   constructor(
     private empoloyeeService: EmployeeService,
     private evaluationService: EvaluationService,
@@ -43,24 +43,49 @@ export class EvaluationsComponent {
 
   ngOnInit() {
     this.EvaluationForm.setValue({
-      ownerEmail: this.selectedEvaluation?.ownerEmail,
-      employeeEmail: this.selectedEvaluation?.employeeEmail,
-      template: this.selectedEvaluation?.template,
-      subject: this.selectedEvaluation?.subject,
+      ownerEmail: this.selectedEvaluation.owner.email,
+      employeeEmail: this.selectedEvaluation.employee.email,
+      template: this.selectedEvaluation.template.description,
+      subject: this.selectedEvaluation.subject,
       startDate: new Date(Date.now()),
       ratings: [],
     })
+    this.templateChange()
   }
 
   templateChange() {
-    if(this.EvaluationForm.value.template !== null && this.EvaluationForm.value.template !== ""){
-      this.templateItems$ = this.evaluationTemplateItemService.getAllByTemplate(this.EvaluationForm.value.template);
-    }
+    if(this.EvaluationForm.value.template !== null && this.EvaluationForm.value.template !== "")
+      this.templateItems$ = this.evaluationTemplateItemService.getAll(this.EvaluationForm.value.template)
+
+    this.templateItems$.pipe(
+      map(items => {
+        const grouped: { [description: string]: { [section: string]: string[] }} = {}
+        items.forEach(item => {
+          const templateDesc: string = item?.template?.description
+          const section: string = item?.section
+
+          if(!grouped[templateDesc]) grouped[templateDesc] = {}
+
+          if(!grouped[templateDesc][section]) grouped[templateDesc][section] = []
+
+          grouped[templateDesc][section].push(item?.question)
+        })
+
+        return grouped
+      }),
+      catchError(error => {
+        console.error(`Error: ${error}`)
+        return of({})
+      })
+    ).subscribe(grouped => {
+      this.templateItems = grouped
+    })
   }
 
   tempChange(htmlValue : any){
     this.EvaluationForm.value.template = htmlValue.target.value;
   }
+
   save() {
     this.evaluationService.save(
       this.EvaluationForm.value.employeeEmail!,
@@ -70,6 +95,7 @@ export class EvaluationsComponent {
       .subscribe(
         () => {
           this.EvaluationForm.reset()
+          this.backToEvaluations()
         },
         () => {
           this.EvaluationForm.reset()
@@ -90,6 +116,7 @@ export class EvaluationsComponent {
       .subscribe(
         () => {
           this.EvaluationForm.reset()
+          this.backToEvaluations()
         },
         () => {
           this.EvaluationForm.reset()

@@ -30,7 +30,7 @@ export class EmployeeEvaluationsComponent {
 
   employees$: Observable<Employee[]> = this.empoloyeeService.getAll()
   evaluations$: Observable<any[]> = this.evaluationService.getAll(decodeURIComponent(this.cookieService.get('userEmail')))
-  selectedEval!: Eval | null
+  selectedEval!: any | null
   
   constructor(
     private empoloyeeService: EmployeeService,
@@ -49,7 +49,7 @@ export class EmployeeEvaluationsComponent {
 
   selectEvaluation(evaluation: any): void {
     this.selectedEval = evaluation
-    this.selectedEvaluation.emit(evaluation)
+    this.selectedEvaluation.emit(this.selectedEval)
     this.goToEvaluationForm()
   }
 }
