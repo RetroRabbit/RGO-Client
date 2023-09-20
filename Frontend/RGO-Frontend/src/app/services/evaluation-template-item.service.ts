@@ -10,6 +10,6 @@ export class EvaluationTemplateItemService {
   constructor(private httpClient: HttpClient) { }
 
   getAll(template: string) {
-    return this.httpClient.get<any[]>(`${API.HttpBaseURL}/employeeevaluationtemplateitem/getall?template=${encodeURIComponent(template)}`)
+    return this.httpClient.get<any[]>(`${API.HttpBaseURL}/employeeevaluationitem/getall?template=${template}`)
   }
 }
