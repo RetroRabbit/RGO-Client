@@ -15,24 +15,29 @@
             </datalist>
             <div class="row g2">
                 <div class="form-floating mb-3 col-md">
-                    <input list="email-list" class="form-control form-control-sm col-auto border-bottom border-success" id="owner" aria-describedby="owner-email" formControlName="ownerEmail">
+                    <input list="email-list" class="form-control form-control-sm col-auto border-bottom border-success"
+                        id="owner" aria-describedby="owner-email" formControlName="ownerEmail">
                     <label for="owner" class="p-3">Email Address(Owner)</label>
                 </div>
                 <div class="form-floating mb-3 col-md">
-                    <input list="email-list" class="form-control form-control-sm col-auto border-bottom border-success" id="employee" aria-describedby="employee-email" formControlName="employeeEmail">
+                    <input list="email-list" class="form-control form-control-sm col-auto border-bottom border-success"
+                        id="employee" aria-describedby="employee-email" formControlName="employeeEmail">
                     <label for="employee" class="p-3">Email Address(Employee)</label>
                 </div>
                 <div class="form-floating mb-3 col-md">
-                    <input class="form-control form-control-sm col-auto border-bottom border-success" id="subject" aria-describedby="subject" formControlName="subject">
+                    <input class="form-control form-control-sm col-auto border-bottom border-success" id="subject"
+                        aria-describedby="subject" formControlName="subject">
                     <label for="subject" class="p-3">Subject</label>
                 </div>
                 <div class="form-floating mb-3 col-md">
                     <datalist id="template-list" (change)="tempChange($event)">
-                        <option  *ngFor="let template of templates$ | async" [value]=template.description>
+                        <option *ngFor="let template of templates$ | async" [value]=template.description>
                             {{ template['description'] }}
                         </option>
                     </datalist>
-                   <input (input)="templateChange()" list="template-list" class="form-control form-control-sm col-auto border-bottom border-success" id="description" aria-describedby="template" formControlName="template">
+                    <input (input)="templateChange()" list="template-list"
+                        class="form-control form-control-sm col-auto border-bottom border-success" id="description"
+                        aria-describedby="template" formControlName="template">
                     <label for="description" class="p-3">Template</label>
                 </div>
             </div>
@@ -45,7 +50,8 @@
         </div>
         <div class="fluid-container p-3 bg-secondary bg-opacity-10 border border-secondary border-start-0 rounded-end">
             <div class="form-floating mb-3 col-md">
-                <textarea id="description" cols="30" rows="10" class="form-control form-control-sm col-auto border-bottom border-success"></textarea>
+                <textarea id="description" cols="30" rows="10"
+                    class="form-control form-control-sm col-auto border-bottom border-success"></textarea>
                 <label for="description">Description</label>
             </div>
             <div *ngFor="let ratings of EvaluationForm.value.rating">
@@ -69,10 +75,14 @@
                     </i>
                 </div><br>
                 <div class="form-floating mb-3 col-md">
-                    <textarea id="comments" cols="30" rows="10" class="form-control form-control-sm col-auto border-bottom border-success">{{ratings.comments}}</textarea>
+                    <textarea id="comments" cols="30" rows="10"
+                        class="form-control form-control-sm col-auto border-bottom border-success">{{ratings.comments}}</textarea>
                     <label for="comments">Comments</label>
                 </div>
             </div>
+        </div>
+        <div class="star-rating">
+            <span *ngFor="let star of stars; index as i" [class]="star" (click)="rate(star, i)">&#9733;</span>
         </div>
     </form>
 </section>
