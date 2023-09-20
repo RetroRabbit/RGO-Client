@@ -37,11 +37,18 @@
                 </div>
             </div>
         </header>
-        {{ EvaluationForm.value | json}}
-        <div *ngIf="!(EvaluationForm.controls['template'].invalid &&
-            (EvaluationForm.controls['template'].dirty || EvaluationForm.controls['template'].touched))">
-            Template Items
-            {{ templateItems$ | async | json }}
+        <div *ngIf="EvaluationForm.controls['template'].valid">
+            <section class="card" *ngFor="let templateDesc of templateItems | keyvalue">
+                <div class="card-header">
+                    <h4>Template: <b>{{ templateDesc.key }}</b></h4>
+                </div>
+                <div class="card-body">
+                    <div class="border-bottom border-secondary" *ngFor="let section of templateDesc.value | keyvalue">
+                        <h5 class="card-title"><b>{{ section.key }}</b></h5>
+                        <span class="card-text" *ngFor="let item of section.value">{{ item }} <br> </span>
+                    </div>
+                </div>
+            </section>
         </div>
         <div class="fluid-container p-3 bg-secondary bg-opacity-10 border border-secondary border-start-0 rounded-end">
             <div class="form-floating mb-3 col-md">
