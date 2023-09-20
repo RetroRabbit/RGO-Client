@@ -20,7 +20,10 @@ export const initialState: EmployeeProfileState = {
       countryOfBirth: '',
       nationality: '',
       level: 0,
-      employeeType: '',
+      employeeType: {
+        id: 0,
+        name: '',
+      },
       title: '',
       name: '',
       initials: '',

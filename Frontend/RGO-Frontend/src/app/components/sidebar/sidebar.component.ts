@@ -11,13 +11,13 @@ interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-   
+
     { title: 'Dashboard',  icon: 'dashboard', requiredRole: [ ] },
     { title: 'Employee Manager', icon: 'people', requiredRole: [ 'Admin', 'SuperAdmin' ] },
     { title: 'Charts', icon: 'analytics', requiredRole: [ ] },
-    { title: 'New Employee', icon: 'person', requiredRole: [ 'Admin', 'SuperAdmin' ] },
     { title: 'Role Manager', icon: 'event_seat', requiredRole: [ 'Admin', 'SuperAdmin' ] },
     { title: 'Manage Field', icon: 'edit_note', requiredRole: [ ]},
+    { title: 'View Employee', icon: 'people', requiredRole: [ 'Admin', 'SuperAdmin' ]}
     { title: 'Evaluations', icon: 'assignment', requiredRole: [ ] },
 ];
 
@@ -46,7 +46,7 @@ export class SidebarComponent implements OnInit {
    const hasRequiredRoles : boolean = menuItem.requiredRole
    .filter((role: string) => roles.includes(role))
    .length > 0;
-   
+
    if (hasRequiredRoles || menuItem.requiredRole.length === 0) return true;
 
    return false;
@@ -55,8 +55,5 @@ export class SidebarComponent implements OnInit {
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
-    this.selectedItem.emit({
-      selectedPage: target.innerText
-    });
   }
 }

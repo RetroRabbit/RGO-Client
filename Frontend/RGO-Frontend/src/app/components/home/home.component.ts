@@ -37,7 +37,7 @@ export class HomeComponent {
 
   ngOnInit() {
     this.selectedPage = this.cookieService.get('currentPage');
-  }  
+  }
 
   handleSelectedItem() {
     this.selectedPage = this.cookieService.get('currentPage');
