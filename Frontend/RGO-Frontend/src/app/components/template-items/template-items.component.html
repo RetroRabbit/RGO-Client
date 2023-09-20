@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="card">
+<div *ngIf="templateItems$ | async as items" class="table-responsive">
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Template
+            </th>
+            <th>
+                Section
+            </th>
+            <th>
+                Question
+            </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items" class="table table-light">
+          <td>{{ item.id }}</td>
+          <td>{{ item.template.id }} - {{ item.template.description }}</td>
+          <td>{{ item.section }}</td>
+          <td>{{ item.question }}</td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+</div>

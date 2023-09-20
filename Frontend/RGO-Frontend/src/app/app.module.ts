@@ -43,6 +43,7 @@ import { ManageFieldCodeComponent } from './components/manage-field-code/manage-
 import { ViewEmployeeComponent } from './components/view-employee/view-employee.component';
 import { EvaluationsComponent } from './components/evaluations/evaluations.component';
 import { EmployeeEvaluationsComponent } from './components/employee-evaluations/employee-evaluations.component';
+import { TemplateItemsComponent } from './components/template-items/template-items.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { EmployeeEvaluationsComponent } from './components/employee-evaluations/
     ManageFieldCodeComponent,
     ViewEmployeeComponent,
     EvaluationsComponent,
-    EmployeeEvaluationsComponent
+    EmployeeEvaluationsComponent,
+    TemplateItemsComponent
   ],
   imports: [
     BrowserModule,

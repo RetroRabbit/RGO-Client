@@ -54,7 +54,7 @@ export class EvaluationsComponent {
 
   templateChange() {
     if(this.EvaluationForm.value.template !== null && this.EvaluationForm.value.template !== ""){
-      this.templateItems$ = this.evaluationTemplateItemService.getAll(this.EvaluationForm.value.template);
+      this.templateItems$ = this.evaluationTemplateItemService.getAllByTemplate(this.EvaluationForm.value.template);
     }
   }
 
