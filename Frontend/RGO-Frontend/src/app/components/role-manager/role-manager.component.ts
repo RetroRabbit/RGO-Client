@@ -5,11 +5,18 @@ import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeRoleService } from 'src/app/services/employee-role.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { RoleService } from 'src/app/services/role.service';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { forwardRef } from '@angular/core';
 
 @Component({
   selector: 'app-role-manager',
   templateUrl: './role-manager.component.html',
-  styleUrls: ['./role-manager.component.css']
+  styleUrls: ['./role-manager.component.css'],
+  // providers: [{
+  //   provide: NG_VALUE_ACCESSOR,
+  //   useExisting: forwardRef(() => RoleManagerComponent),
+  //   multi: true
+  // }]
 })
 export class RoleManagerComponent {
   roles$: Observable<string[]> = this.employeeRoleService.getAllRoles()
