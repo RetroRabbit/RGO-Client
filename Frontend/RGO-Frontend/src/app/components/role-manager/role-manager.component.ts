@@ -10,11 +10,6 @@ import { RoleService } from 'src/app/services/role.service';
   selector: 'app-role-manager',
   templateUrl: './role-manager.component.html',
   styleUrls: ['./role-manager.component.css'],
-  // providers: [{
-  //   provide: NG_VALUE_ACCESSOR,
-  //   useExisting: forwardRef(() => RoleManagerComponent),
-  //   multi: true
-  // }]
 })
 export class RoleManagerComponent {
   roles$: Observable<string[]> = this.employeeRoleService.getAllRoles()
