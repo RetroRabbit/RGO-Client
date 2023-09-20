@@ -15,7 +15,7 @@ export class NewEmployeeComponent implements OnInit {
     private employeeTypeService: EmployeeTypeService){}
 
     employeeTypes: EmployeeType[] = [];
-
+    emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   ngOnInit(): void {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: data => {
@@ -29,13 +29,13 @@ export class NewEmployeeComponent implements OnInit {
     name: new FormControl('', Validators.required),
     initials: new FormControl('', Validators.required),
     surname: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.required),
-    personalEmail: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern) ]),
+    personalEmail: new FormControl('', [Validators.required, Validators.email]),
     countryOfBirth: new FormControl('', Validators.required),
     nationality: new FormControl('', Validators.required),
     engagementDate: new FormControl('', Validators.required),
     employeeType: new FormControl('', Validators.required),
-    cellphoneNo: new FormControl('', Validators.required),
+    cellphoneNo: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]*$/)]),
     employeeNumber: new FormControl(''),
     taxNumber: new FormControl(''),
     disabilityNotes: new FormControl(''),
@@ -46,10 +46,13 @@ export class NewEmployeeComponent implements OnInit {
 
 
   onSubmit(){
+    this.newEmployeeForm.value.cellphoneNo = this.newEmployeeForm.value.cellphoneNo?.toString();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: (data) => {
+        console.table(data);
       },
       error: (error) => {
+        console.table(error);
       }
     })
   }
