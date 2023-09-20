@@ -26,10 +26,10 @@ export interface Eval {
   styleUrls: ['./employee-evaluations.component.css']
 })
 export class EmployeeEvaluationsComponent {
-  @Output() selectedEvaluation = new EventEmitter<any | null>()
+  @Output() selectedEvaluation = new EventEmitter<any>()
 
   employees$: Observable<Employee[]> = this.empoloyeeService.getAll()
-  evaluations$: Observable<any[]> = this.evaluationService.get(decodeURIComponent(this.cookieService.get('userEmail')))
+  evaluations$: Observable<any[]> = this.evaluationService.getAll(decodeURIComponent(this.cookieService.get('userEmail')))
   selectedEval!: Eval | null
   
   constructor(
