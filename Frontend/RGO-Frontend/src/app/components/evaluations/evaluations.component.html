@@ -27,7 +27,12 @@
                     <label for="subject" class="p-3">Subject</label>
                 </div>
                 <div class="form-floating mb-3 col-md">
-                    <input class="form-control form-control-sm col-auto border-bottom border-success" id="template" aria-describedby="template" formControlName="template">
+                    <datalist id="template-list">
+                        <option *ngFor="let template of templates$ | async" [value]="template['description']">
+                            {{ template['description'] }}
+                        </option>
+                    </datalist>
+                    <input list="template-list" class="form-control form-control-sm col-auto border-bottom border-success" id="template" aria-describedby="template" formControlName="template">
                     <label for="template" class="p-3">Template</label>
                 </div>
             </div>

@@ -1,12 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { EvaluationService } from 'src/app/services/evaluation.service';
 import { Evaluation } from 'src/app/models/evaluation.interface';
 import { Eval } from '../employee-evaluations/employee-evaluations.component';
 import { CookieService } from 'ngx-cookie-service';
+import { EmployeeEvaluationsRatingService } from 'src/app/services/employee-evaluations-rating.service';
+import { EvaluationTemplateService } from 'src/app/services/evaluation-template.service';
 
 @Component({
   selector: 'app-evaluations',
@@ -14,29 +16,30 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./evaluations.component.css']
 })
 export class EvaluationsComponent {
-  @Input() selectedEvaluation!: Eval | null
+  @Input() selectedEvaluation!: any | null
 
   employees$: Observable<Employee[]> = this.empoloyeeService.getAll()
-  templates$!: Observable<any[]>
-
+  templates$: Observable<any[]> = this.evaluationtemplate.getAll()
   EvaluationForm!: FormGroup
+  rating$: Observable<any[]> = this.evaluationRatingService.getall(this.selectedEvaluation)
 
   constructor(
     private empoloyeeService: EmployeeService,
     private evaluationService: EvaluationService,
+    private evaluationRatingService: EmployeeEvaluationsRatingService,
+    private evaluationtemplate: EvaluationTemplateService,
     private cookieService: CookieService
   ) {}
 
   ngOnInit() {
     this.EvaluationForm = new FormGroup({
-      ownerEmail: new FormControl(this.selectedEvaluation?.ownerEmail, Validators.required),
-      employeeEmail: new FormControl(this.selectedEvaluation?.employeeEmail, Validators.required),
-      template: new FormControl(this.selectedEvaluation?.template, Validators.required),
-      subject: new FormControl(this.selectedEvaluation?.subject, Validators.required),
-      startDate: new FormControl(this.selectedEvaluation?.startDate, Validators.required),
-      description: new FormControl(this.selectedEvaluation?.description, Validators.required),
-      rating: new FormControl(this.selectedEvaluation?.rating, Validators.required),
-    })
+        ownerEmail: new FormControl(this.selectedEvaluation?.owner.email, Validators.required),
+        employeeEmail: new FormControl(this.selectedEvaluation?.employee.email, Validators.required),
+        template: new FormControl(this.selectedEvaluation?.template.description, Validators.required),
+        subject: new FormControl(this.selectedEvaluation?.subject, Validators.required),
+        startDate: new FormControl(this.selectedEvaluation?.startDate, Validators.required),
+        ratings: new FormControl<any[]>([], Validators.required),
+      })
   }
 
   save() {
