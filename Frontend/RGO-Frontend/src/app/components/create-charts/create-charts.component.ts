@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component,Output, EventEmitter } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
 import { NgToastService } from 'ng-angular-popup';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -11,6 +12,8 @@ import { Router } from '@angular/router';
 })
 export class CreateChartsComponent {
 
+  @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
+  
   chartName: string = 'Name';
   chartDataItem: string = 'Gender';
   chartType: any = 'bar';
@@ -21,7 +24,7 @@ export class CreateChartsComponent {
     scales: { y: { beginAtZero: true } }
   };
 
-  constructor(private ChartService: ChartService,private toast: NgToastService, private router: Router) {}
+  constructor(private ChartService: ChartService,private toast: NgToastService, private router: Router,private cookieService: CookieService) {}
 
   ngOnInit() :void{
     this.getChartData();
@@ -32,7 +35,7 @@ export class CreateChartsComponent {
       .subscribe(
         (response) => {
           this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
-          this.router.navigateByUrl('/charts');
+          this.CaptureEvent('Charts')
         },
         (error) => {
             this.toast.error({detail:"Error", summary:"Failed to create chart.",duration:5000, position:'topRight'});
@@ -62,5 +65,10 @@ export class CreateChartsComponent {
         this.toast.error({detail:"Error", summary:"Failed to get chartData.",duration:5000, position:'topRight'});
        }
      );
+  }
+
+  CaptureEvent(event: any) {
+    const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('currentPage', target.innerText);
   }
 }

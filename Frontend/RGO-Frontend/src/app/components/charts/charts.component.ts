@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
 import { ChartType } from 'chart.js';
 import { Chart } from 'src/app/models/charts.interface';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-chart',
@@ -9,6 +10,8 @@ import { Chart } from 'src/app/models/charts.interface';
   styleUrls: ['./charts.component.css'],
 })
 export class ChartComponent implements OnInit {
+  @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
+  
   selectedChartType: ChartType ='bar';
   displayChart: boolean = false;
   numberOfEmployees: number = 0;
@@ -20,7 +23,7 @@ export class ChartComponent implements OnInit {
   Name: '',
   Type:'',}
 
-  constructor(private chartService: ChartService) {}
+  constructor(private chartService: ChartService,private cookieService: CookieService) {}
 
   ngOnInit(): void {
     this.createAndDisplayChart();
@@ -150,6 +153,11 @@ export class ChartComponent implements OnInit {
         }
       );
     }
+  }
+
+  CaptureEvent(event: any) {
+    const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('currentPage', target.innerText);
   }
 }
 

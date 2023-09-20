@@ -3,9 +3,9 @@
     <app-sidebar></app-sidebar>
     <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
   </div>
-  <a href="/create-charts">
-    <button class="edit-button">Edit Dashboard</button>
-  </a>
+  
+    <button (click)="CaptureEvent($event)" type="button" class="edit-button">Edit Dashboard</button>
+  
   <div class="numberofempoyees">
     <h5>Total number of employees: {{ numberOfEmployees }}</h5>
   </div>
