@@ -17,7 +17,7 @@ export class HomeComponent {
   constructor(
     private store: Store<{app: Token}>,
     private auth: AuthService,
-    private cookieService: CookieService
+    public cookieService: CookieService
     ) {}
 
   ngOnDestroy() {
@@ -35,7 +35,7 @@ export class HomeComponent {
 
   ngOnInit() {
     this.selectedPage = this.cookieService.get('currentPage');
-  }  
+  }
 
   handleSelectedItem() {
     this.selectedPage = this.cookieService.get('currentPage');
