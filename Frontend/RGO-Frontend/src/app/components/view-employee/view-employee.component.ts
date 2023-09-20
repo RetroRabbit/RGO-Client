@@ -24,8 +24,7 @@ export class ViewEmployeeComponent{
   getEmployees(){
     this.employeeService.getAllProfiles().subscribe(
       data => {
-        this.Employees = data
-        console.log(this.Employees);
+        this.Employees = data;
       }
     );
   }

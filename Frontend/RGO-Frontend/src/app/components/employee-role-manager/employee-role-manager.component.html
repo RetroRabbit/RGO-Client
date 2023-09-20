@@ -19,14 +19,8 @@
     <div class="d-flex" *ngIf="roles$ | async as roles">
         <label><Em>Roles:</Em></label>
         <br>
-        <button
-            class="card"
-            type="button"
-            *ngFor="let role of roles"
-            (click)="changeRole(role)"
-            formControlName="role">
-            <span class="selected" *ngIf="role === newEmployeeForm.value.role">{{role}}</span>
-            <span *ngIf="role != newEmployeeForm.value.role">{{role}}</span>
+        <button type="button" class="btn" *ngFor="let role of roles" (click)="changeRole(role)">
+            <span [ngClass]="role == newEmployeeForm.value.role ? 'selected' : ''">{{role}}</span>
         </button>
         <div
             *ngIf="newEmployeeForm.controls.role.invalid &&
