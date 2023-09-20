@@ -14,7 +14,7 @@ import { Eval } from '../employee-evaluations/employee-evaluations.component';
 export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
   selectedPage : string = this.cookieService.get("currentlPage") != "Dashboard" ?this.cookieService.get("currentlPage") :"Dashboard";
-  selectedEvaluation!: any 
+  selectedEvaluation: any  | null = null
 
   constructor(
     private store: Store<{app: Token}>,

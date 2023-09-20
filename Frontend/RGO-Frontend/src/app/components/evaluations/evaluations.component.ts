@@ -22,11 +22,11 @@ export class EvaluationsComponent {
   employees$: Observable<Employee[]> = this.empoloyeeService.getAll()
   templates$: Observable<any[]> = this.evaluationtemplate.getAll()
   EvaluationForm: FormGroup = new FormGroup({
-    ownerEmail: new FormControl(this.selectedEvaluation?.owner.email, Validators.required),
-    employeeEmail: new FormControl(this.selectedEvaluation?.employee.email, Validators.required),
-    template: new FormControl(this.selectedEvaluation?.template.description, Validators.required),
-    subject: new FormControl(this.selectedEvaluation?.subject, Validators.required),
-    startDate: new FormControl(this.selectedEvaluation?.startDate, Validators.required),
+    ownerEmail: new FormControl('', Validators.required),
+    employeeEmail: new FormControl('', Validators.required),
+    template: new FormControl('', Validators.required),
+    subject: new FormControl('', Validators.required),
+    startDate: new FormControl(Date.now(), Validators.required),
     ratings: new FormControl<any[]>([], Validators.required),
   })
   rating$: Observable<any[]> = this.evaluationRatingService.getall(this.selectedEvaluation)
@@ -42,7 +42,14 @@ export class EvaluationsComponent {
   ) {}
 
   ngOnInit() {
-    
+    this.EvaluationForm.setValue({
+      ownerEmail: this.selectedEvaluation?.ownerEmail,
+      employeeEmail: this.selectedEvaluation?.employeeEmail,
+      template: this.selectedEvaluation?.template,
+      subject: this.selectedEvaluation?.subject,
+      startDate: new Date(Date.now()),
+      ratings: [],
+    })
   }
 
   templateChange() {
@@ -51,7 +58,19 @@ export class EvaluationsComponent {
   }
 
   save() {
-
+    this.evaluationService.save(
+      this.EvaluationForm.value.employeeEmail!,
+      this.EvaluationForm.value.ownerEmail!,
+      this.EvaluationForm.value.template!,
+      this.EvaluationForm.value.subject!)
+      .subscribe(
+        () => {
+          this.EvaluationForm.reset()
+        },
+        () => {
+          this.EvaluationForm.reset()
+        }
+      )
   }
 
   update() {
@@ -59,7 +78,19 @@ export class EvaluationsComponent {
   }
 
   remove() {
-
+    this.evaluationService.delete(
+      this.EvaluationForm.value.employeeEmail!,
+      this.EvaluationForm.value.ownerEmail!,
+      this.EvaluationForm.value.template!,
+      this.EvaluationForm.value.subject!)
+      .subscribe(
+        () => {
+          this.EvaluationForm.reset()
+        },
+        () => {
+          this.EvaluationForm.reset()
+        }
+      )
   }
 
   backToEvaluations() {
@@ -67,33 +98,8 @@ export class EvaluationsComponent {
     this.selectedEvaluation = null
   }
 
-  getEmployee(email: string) {
-    let employeeId: number = 0
-    this.employees$.subscribe(employees => {
-      employees.forEach(employee => {
-        if (employee.email === email) {
-          employeeId = employee.id!
-        }
-      })
-    })
-    return employeeId
-  }
-
   createEvaluation(): void {
-    const employeeId = this.getEmployee(this.EvaluationForm.value.employeeEmail!)
-    const ownerId = this.getEmployee(this.EvaluationForm.value.ownerEmail!)
-
-    const evaluation: Evaluation = {
-      id: 0,
-      employeeId: employeeId,
-      templateId: 1,
-      ownerId: ownerId,
-      subject: this.EvaluationForm.value.subject!,
-      startDate: this.EvaluationForm.value.startDate!,
-      endDate: null,
-    }
-
-    this.evaluationService.save(evaluation).subscribe(
+    this.evaluationService.save(this.EvaluationForm.value.employeeEmail!, this.EvaluationForm.value.ownerEmail!, this.EvaluationForm.value.template!, this.EvaluationForm.value.subject!).subscribe(
       () => {
         this.EvaluationForm.reset()
         this.EvaluationForm.setValue({
