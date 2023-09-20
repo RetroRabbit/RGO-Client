@@ -26,7 +26,7 @@ export interface Eval {
   styleUrls: ['./employee-evaluations.component.css']
 })
 export class EmployeeEvaluationsComponent {
-  @Output() selectedEvaluation = new EventEmitter<Eval>()
+  @Output() selectedEvaluation = new EventEmitter<any | null>()
 
   employees$: Observable<Employee[]> = this.empoloyeeService.getAll()
   evaluations$: Observable<any[]> = this.evaluationService.get(decodeURIComponent(this.cookieService.get('userEmail')))
@@ -40,6 +40,11 @@ export class EmployeeEvaluationsComponent {
 
   goToEvaluationForm() {
     this.cookieService.set('currentPage', 'Evaluation Form')
+  }
+
+  goToEvaluationsWithoutSelection() {
+    this.selectedEvaluation.emit(null)
+    this.goToEvaluationForm()
   }
 
   selectEvaluation(evaluation: any): void {
