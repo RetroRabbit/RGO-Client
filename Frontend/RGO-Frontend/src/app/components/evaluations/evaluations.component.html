@@ -20,7 +20,8 @@
                         class="form-control form-control-sm col-auto border-bottom border-success"
                         id="owner"
                         aria-describedby="owner-email"
-                        formControlName="ownerEmail">
+                        formControlName="ownerEmail"
+                        [value]="selectedEvaluation.owner.email">
                     <label for="owner" class="p-3">Email Address(Owner)</label>
                 </div>
                 <div class="form-floating mb-3 col-md">

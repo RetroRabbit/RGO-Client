@@ -27,7 +27,7 @@ export class EvaluationService {
     return this.httpClient.delete<any>(`${API.HttpBaseURL}/employeeevaluation/delete?employeeEmail=${encodeURIComponent(employeeEmail)}&ownerEmail=${encodeURIComponent(ownerEmail)}&template=${encodeURIComponent(template)}&subject=${encodeURIComponent(subject)}`, {})
   }
 
-  update(evaluation: any): Observable<any> {
-    return this.httpClient.put<any>(`${API.HttpBaseURL}/employeeevaluation/update`, evaluation)
+  update(employeeEmail: string, ownerEmail: string, template: string, subject: string): Observable<any> {
+    return this.httpClient.put<any>(`${API.HttpBaseURL}/employeeevaluation/update?employeeEmail=${encodeURIComponent(employeeEmail)}&ownerEmail=${encodeURIComponent(ownerEmail)}&template=${encodeURIComponent(template)}&subject=${encodeURIComponent(subject)}`, {})
   }
 }

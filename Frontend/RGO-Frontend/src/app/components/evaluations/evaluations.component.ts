@@ -53,12 +53,19 @@ export class EvaluationsComponent {
   ) {}
 
   ngOnInit() {
+    console.table({
+      ownerEmail: this.selectedEvaluation.owner.email,
+      employeeEmail: this.selectedEvaluation.employee.email,
+      template: this.selectedEvaluation.template.description,
+      subject: this.selectedEvaluation.subject
+    })
     this.EvaluationForm.setValue({
       ownerEmail: this.selectedEvaluation.owner.email,
       employeeEmail: this.selectedEvaluation.employee.email,
       template: this.selectedEvaluation.template.description,
       subject: this.selectedEvaluation.subject,
       startDate: new Date(Date.now()),
+      audience: [],
       ratings: [],
     })
     this.templateChange()
@@ -115,7 +122,19 @@ export class EvaluationsComponent {
   }
 
   update() {
-
+    this.evaluationService.update(
+      this.EvaluationForm.value.employeeEmail!,
+      this.EvaluationForm.value.ownerEmail!,
+      this.EvaluationForm.value.template!,
+      this.EvaluationForm.value.subject!)
+      .subscribe(
+        () => {
+          this.EvaluationForm.reset()
+          this.backToEvaluations()
+        },
+        () => {
+        }
+      )
   }
 
   remove() {
