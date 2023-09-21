@@ -56,13 +56,13 @@ export class NewFieldCodeComponent {
         status: parseInt(fieldCode.status),
         internal: fieldCode.internal,
         internalTable: fieldCode.internalTable,
-        options: [
+        options:optionValue != "" ? [ 
           {
             id: 0,
             fieldCodeId: 0,
             option: optionValue
           }
-        ]
+        ] : []
       };
   
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({

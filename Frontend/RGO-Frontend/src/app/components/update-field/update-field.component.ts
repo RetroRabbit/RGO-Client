@@ -68,17 +68,17 @@ export class UpdateFieldComponent {
         name: fieldCode.name,
         description: fieldCode.description,
         regex: fieldCode.regex,
-        type: parseInt(fieldCode.type),
+        type: parseInt(this.selectedType),
         status: parseInt(fieldCode.status),
         internal: fieldCode.internal,
         internalTable: fieldCode.internalTable,
-        options: [
+        options: optionValue != "" ? [ 
           {
             id: 0,
             fieldCodeId: this.selectedFieldCode?.id,
             option: optionValue
           }
-        ]
+        ] : []
       }
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
@@ -86,6 +86,7 @@ export class UpdateFieldComponent {
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
+          console.log(fieldCodeDto);
           console.error("Error occurred while submitting form!", error);
           this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
         }
@@ -104,6 +105,7 @@ export class UpdateFieldComponent {
     if (this.selectedFieldCode) {
       this.fieldCodeService.deleteFieldCode(this.selectedFieldCode).subscribe(
         (response) => {
+          console.log(response)
           this.toast.success({ detail: "Field Details archived!", position: 'topRight' })
           this.isArchiveClicked = true;
         },
