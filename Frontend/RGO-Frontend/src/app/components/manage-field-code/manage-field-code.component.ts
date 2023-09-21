@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { statuses } from 'src/app/models/constants/statuses.constants';
 import { FieldCodeService } from 'src/app/services/field-code.service';
@@ -38,6 +38,18 @@ export class ManageFieldCodeComponent {
         options: this.fb.array([]) 
       }),
     });
+  }
+
+  get options() {
+    return (this.newFieldCodeForm.get('fieldCode.options') as FormArray);
+  }
+
+  addOption() {
+    this.options.push(this.fb.control(''));
+  }
+
+  removeOption(index: number) {
+    this.options.removeAt(index);
   }
 
   onSubmit() {
