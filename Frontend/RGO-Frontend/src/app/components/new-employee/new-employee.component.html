@@ -55,11 +55,11 @@
                 <div class="mb-3 row">
                   <div class="col-sm-12">
                     <label class="col-form-label">Cellphone number</label>
-                    <input type="text" class="form-control" formControlName="cellphoneNo" />
+                    <input type="number" class="form-control" formControlName="cellphoneNo" />
                     <div
                       *ngIf="newEmployeeForm.controls['cellphoneNo'].invalid && (newEmployeeForm.controls['cellphoneNo'].dirty || newEmployeeForm.controls['cellphoneNo'].touched)"
                       class="alert">
-                      Please enter an email address
+                      Please enter cellphone number
                     </div>
                   </div>
                 </div>
@@ -70,7 +70,7 @@
                     <div
                       *ngIf="newEmployeeForm.controls['email'].invalid && (newEmployeeForm.controls['email'].dirty || newEmployeeForm.controls['email'].touched)"
                       class="alert">
-                      Please enter an email address
+                      Email must end with @retrorabbit.co.za
                     </div>
                   </div>
                 </div>
