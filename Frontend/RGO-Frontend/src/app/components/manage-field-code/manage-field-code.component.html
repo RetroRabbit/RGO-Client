@@ -1,74 +1,35 @@
-<div class="col-12">
-  <div class="m-3 border-bottom">
-    <h1 class="page-heading border-bottom"> New Field Code</h1>
+<div class="wrapper">
+  <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
+    <app-sidebar></app-sidebar>
+    <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
+  </div>
+  <div class="main-panel">
+    <div class="m-3 border-bottom">
+      <h1 class="page-heading ">Manage Field Code</h1>
+
+    </div>
     <div style="overflow: auto">
       <div class="container-fluid">
-        <form [formGroup]="newFieldCodeForm" (submit)="onSubmit(); $event.preventDefault()">
-          <div class="row">
-            <div class="col-sm-6">
-              <div formGroupName="fieldCode">
-                 <!-- Name field -->
-                 <div class="mb-3">
-                  <label for="name" class="form-label">Name</label>
-                    <input id="name" type="text" class="form-control" formControlName="name" />
-                    <div *ngIf="newFieldCodeForm?.get('fieldCode.name')?.hasError('required') && newFieldCodeForm?.get('fieldCode.name')?.touched" class="text-danger"></div>
-                 </div>
-                 <!-- Code field -->
-                <div class="mb-3">
-                  <label for="code" class="form-label">Code</label>
-                  <input id="code" type="text" class="form-control" formControlName="code" />
-                  <div
-                    *ngIf="newFieldCodeForm?.get('fieldCode.code')?.hasError('required') && newFieldCodeForm.get('fieldCode.code')?.touched"
-                    class="text-danger">
-                    Code is required.
-                  </div>
-                </div>
-                <!-- Description field -->
-                <div class="mb-3">
-                  <label for="description" class="form-label">Description (optional)</label>
-                  <input id="description" type="text" class="form-control" formControlName="description" />
-              </div>
-              <!-- Regex field -->
-              <div class="mb-3">
-                <label for="regex" class="form-label">RegEx (optional)</label>
-                <input id="regex" type="text" class="form-control" formControlName="regex" />
-              </div>
-              <!-- Status dropdown -->
-              <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select id="status" class="form-select" formControlName="status">
-                  <option *ngFor="let status of statuses" [value]="status.id">
-                    {{ status.value}}
-                  </option>
-                </select>
-              </div>
-                <!-- Type dropdown -->
-                <div class="mb-3">
-                  <label for="type" class="form-label">Type</label>
-                  <select type="text" class="form-control" formControlName="type">
-                    <option *ngFor="let type of dataTypes" [value]="type.id">
-                      {{type.value}}
-                    </option>
-                  </select>
-                </div>
-              
-               <!-- Option input -->
-               <div class="mb-3">
-                <label for="option" class="form-label">Option</label>
-                <input id="option" type="text" class="form-control" formControlName="option" />
-              </div>
-              <div class="mb-3">
-                <input id="internal" type="checkbox" class="form-check-input" formControlName="internal">
-                <label for="internal" class="form-check-label">Internal</label>
-              </div>
-           
-              <div class="mb-3">
-                <button type="submit" class="btn btn-primary" [disabled]="!newFieldCodeForm.valid">Submit</button>
-              </div>
-            </div>
-            </div>
-          </div>
-        </form>
+        <a href="/new-fieldcode">
+          <button style="background-color: #48a648;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;">Add new field code</button>
+        </a>
+      </div>
+    </div>
+    <div style="padding-top: 30px;"></div>
+    <div class="custom-dropdown">
+      <select id="fieldCodeSelect" [(ngModel)]="selectedFieldCode">
+        <option value="" disabled selected>Choose a field code</option>
+        <option *ngFor="let fieldCode of fieldCodes" [ngValue]="fieldCode">{{ fieldCode.name }}</option>
+      </select>
+      <div *ngIf="selectedFieldCode" class="button-container">
+        <button (click)="updateFieldCode()">Update</button>
+        <button (click)="archiveFieldCode()">Archive</button>
       </div>
     </div>
   </div>
