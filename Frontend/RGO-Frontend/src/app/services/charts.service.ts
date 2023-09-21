@@ -37,6 +37,10 @@ export class ChartService {
     return this.httpClient.delete<any>(`${API.HttpBaseURL}/chart/delete${queryParams}`);
   }
 
+  getColumns(): Observable<string[]> {
+    return this.httpClient.get<string[]>(`${API.HttpBaseURL}/chart/column`);
+  }
+
 }
 
 

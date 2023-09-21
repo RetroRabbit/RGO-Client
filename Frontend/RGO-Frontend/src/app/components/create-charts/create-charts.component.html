@@ -20,10 +20,7 @@
           <div class="chart-form">
               <label for="chartData">Chart Data Item:</label>
               <select id="chartData" [(ngModel)]="chartDataItem" (change)="onDropDownChange()">
-                  <option value="Gender">Gender</option>
-                  <option value="Race">Race</option>
-                  <option value="Level">Level</option>
-                  <option value="Nationality">Nationality</option>
+                <option *ngFor="let option of columns" [value]="option">{{ option }}</option>
               </select>
           </div>
       

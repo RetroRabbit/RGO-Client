@@ -83,14 +83,11 @@ export class ChartComponent implements OnInit {
   }
   openUpdateForm(): void {
     if (this.activeChart) {
-      // Copy activeChart data to the updateFormData object
       this.updateFormData = { ...this.activeChart };
       this.showUpdateForm = true;
     }
   }
 
-  // Function to submit the update form
- 
   updateChart(): void {
     if (this.activeChart) {
       

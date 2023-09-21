@@ -23,11 +23,15 @@ export class CreateChartsComponent {
     responsive: true,
     scales: { y: { beginAtZero: true } }
   };
+  columns: string[] = [];
 
   constructor(private ChartService: ChartService,private toast: NgToastService, private router: Router,private cookieService: CookieService) {}
 
   ngOnInit() :void{
     this.getChartData();
+    this.ChartService.getColumns().subscribe(options => {
+      this.columns = options;
+    });
   }
 
   createChart() {
@@ -35,7 +39,7 @@ export class CreateChartsComponent {
       .subscribe(
         (response) => {
           this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
-          this.CaptureEvent('Charts')
+          this.cookieService.set('currentPage', "Charts");
         },
         (error) => {
             this.toast.error({detail:"Error", summary:"Failed to create chart.",duration:5000, position:'topRight'});
@@ -54,6 +58,8 @@ export class CreateChartsComponent {
        }
      );
   }
+
+ 
 
   onDropDownChange() {
     this.ChartService.getChartDataByType(this.chartDataItem).subscribe(
