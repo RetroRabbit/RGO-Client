@@ -6,13 +6,11 @@
     border-left: 5px solid #a94442;
 }
 
-
 .custom-dropdown {
     position: relative;
     width: 200px; 
   }
   
-
   .custom-dropdown select {
     width: 100%;
     padding: 8px;
@@ -22,12 +20,10 @@
     font-size: 14px;
   }
   
-
   .custom-dropdown select option {
     font-size: 14px;
   }
   
-
   .custom-dropdown select:focus {
     outline: none;
     border-color: #007bff; 
