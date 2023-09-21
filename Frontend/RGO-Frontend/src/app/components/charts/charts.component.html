@@ -13,7 +13,7 @@
     <div class="chart-item">
       <canvas
         baseChart
-        [datasets]="[{ data: activeChart.data, label: activeChart.label }]"
+        [datasets]="[{ data: activeChart.data, label: activeChart.name }]"
         [labels]="activeChart.labels"
         [options]="activeChart.labels"
         [type]="activeChart.type"
@@ -31,7 +31,7 @@
     <div *ngFor="let chart of chartData;" class="chart-item" (click)="onChartClick(chart)">
       <canvas
         baseChart
-        [datasets]="[{ data: chart.data, label: chart.label }]"
+        [datasets]="[{ data: chart.data, label: chart.name }]"
         [labels]="chart.labels"
         [options]="chart.labels"
         [type]="chart.type"
