@@ -35,7 +35,7 @@ export class ManageFieldCodeComponent {
         option: [''],
         internal: [false],
         internalTable: [''],
-        options: this.fb.array([]) 
+        options: this.fb.array([])
       }),
     });
   }
@@ -55,9 +55,15 @@ export class ManageFieldCodeComponent {
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode } = this.newFieldCodeForm.value;
-  
-      const optionValue = fieldCode.option;
-  
+
+      const optionsArray = this.options.value.map((optionValue: any, index: number) => {
+        return {
+          id: index,
+          fieldCodeId: 0,
+          option: optionValue
+        };
+      });
+
       const fieldCodeDto = {
         id: 0,
         code: fieldCode.code,
@@ -68,15 +74,9 @@ export class ManageFieldCodeComponent {
         status: parseInt(fieldCode.status),
         internal: fieldCode.internal,
         internalTable: fieldCode.internalTable,
-        options: [
-          {
-            id: 0,
-            fieldCodeId: 0,
-            option: optionValue
-          }
-        ]
+        options: optionsArray
       };
-  
+
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
           console.log("Form submitted successfully!", data);

@@ -7,8 +7,6 @@
 }
 
 #btnAddOption {
-    /*border: 1px outset blue;
-    background-color: lightBlue;*/
     border: 1px outset lightgray;
     height:30px;
     width:30px;
@@ -19,8 +17,6 @@
 }
 
 #btnRemoveOption {
-    /*border: 1px outset blue;
-    background-color: lightBlue;*/
     border: 1px outset;
     height:30px;
     width:30px;
