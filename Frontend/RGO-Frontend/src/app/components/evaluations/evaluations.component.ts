@@ -8,6 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { EmployeeEvaluationsRatingService } from 'src/app/services/employee-evaluations-rating.service';
 import { EvaluationTemplateService } from 'src/app/services/evaluation-template.service';
 import { EvaluationTemplateItemService } from 'src/app/services/evaluation-template-item.service';
+import { EvaluationInput } from 'src/app/models/evaluation-input.interface';
 
 @Component({
   selector: 'app-evaluations',
@@ -54,16 +55,16 @@ export class EvaluationsComponent {
 
   ngOnInit() {
     console.table({
-      ownerEmail: this.selectedEvaluation.owner.email,
-      employeeEmail: this.selectedEvaluation.employee.email,
-      template: this.selectedEvaluation.template.description,
-      subject: this.selectedEvaluation.subject
+      ownerEmail: this.selectedEvaluation?.owner.email,
+      employeeEmail: this.selectedEvaluation?.employee.email,
+      template: this.selectedEvaluation?.template.description,
+      subject: this.selectedEvaluation?.subject
     })
     this.EvaluationForm.setValue({
-      ownerEmail: this.selectedEvaluation.owner.email,
-      employeeEmail: this.selectedEvaluation.employee.email,
-      template: this.selectedEvaluation.template.description,
-      subject: this.selectedEvaluation.subject,
+      ownerEmail: this.selectedEvaluation ? this.selectedEvaluation?.owner.email : '',
+      employeeEmail: this.selectedEvaluation ? this.selectedEvaluation?.employee.email : '',
+      template: this.selectedEvaluation ? this.selectedEvaluation?.template.description : '',
+      subject: this.selectedEvaluation ? this.selectedEvaluation?.subject : '',
       startDate: new Date(Date.now()),
       audience: [],
       ratings: [],
@@ -72,10 +73,12 @@ export class EvaluationsComponent {
   }
 
   templateChange() {
-    if(this.EvaluationForm.value.template !== null && this.EvaluationForm.value.template !== "")
-      this.templateItems$ = this.evaluationTemplateItemService.getAll(this.EvaluationForm.value.template)
+    if(this.EvaluationForm.value.template !== null
+      && this.EvaluationForm.value.template !== "")
+      this.templateItems$ = this.evaluationTemplateItemService
+      .getAll(this.EvaluationForm.value.template)
 
-    this.templateItems$.pipe(
+    this.templateItems$?.pipe(
       map(items => {
         const grouped: { [description: string]: { [section: string]: string[] }} = {}
         items.forEach(item => {
@@ -105,29 +108,42 @@ export class EvaluationsComponent {
   }
 
   save() {
-    this.evaluationService.save(
-      this.EvaluationForm.value.employeeEmail!,
-      this.EvaluationForm.value.ownerEmail!,
-      this.EvaluationForm.value.template!,
-      this.EvaluationForm.value.subject!)
-      .subscribe(
+    const evaluationInput: EvaluationInput = {
+      id: null,
+      ownerEmail: this.EvaluationForm.value.ownerEmail!,
+      employeeEmail: this.EvaluationForm.value.employeeEmail!,
+      template: this.EvaluationForm.value.template!,
+      subject: this.EvaluationForm.value.subject!
+    }
+
+    this.evaluationService.save(evaluationInput).subscribe(
         () => {
           this.EvaluationForm.reset()
           this.backToEvaluations()
         },
         () => {
-          this.EvaluationForm.reset()
         }
       )
   }
 
   update() {
-    this.evaluationService.update(
-      this.EvaluationForm.value.employeeEmail!,
-      this.EvaluationForm.value.ownerEmail!,
-      this.EvaluationForm.value.template!,
-      this.EvaluationForm.value.subject!)
-      .subscribe(
+    const evaluationInputs: EvaluationInput[] = [
+      {
+        id: this.selectedEvaluation?.id,
+        ownerEmail: this.selectedEvaluation?.owner.email,
+        employeeEmail: this.selectedEvaluation?.employee.email,
+        template: this.selectedEvaluation?.template.description,
+        subject: this.selectedEvaluation?.subject
+      },
+      {
+        id: null,
+        ownerEmail: this.EvaluationForm.value.ownerEmail!,
+        employeeEmail: this.EvaluationForm.value.employeeEmail!,
+        template: this.EvaluationForm.value.template!,
+        subject: this.EvaluationForm.value.subject!
+      }
+    ]
+    this.evaluationService.update(evaluationInputs).subscribe(
         () => {
           this.EvaluationForm.reset()
           this.backToEvaluations()
@@ -138,12 +154,15 @@ export class EvaluationsComponent {
   }
 
   remove() {
-    this.evaluationService.delete(
-      this.EvaluationForm.value.employeeEmail!,
-      this.EvaluationForm.value.ownerEmail!,
-      this.EvaluationForm.value.template!,
-      this.EvaluationForm.value.subject!)
-      .subscribe(
+    const evaluationInput: EvaluationInput = {
+      id: this.selectedEvaluation?.id,
+      ownerEmail: this.selectedEvaluation?.owner.email,
+      employeeEmail: this.selectedEvaluation?.employee.email,
+      template: this.selectedEvaluation?.template.description,
+      subject: this.selectedEvaluation?.subject
+    }
+
+    this.evaluationService.delete(evaluationInput).subscribe(
         () => {
           this.EvaluationForm.reset()
           this.backToEvaluations()

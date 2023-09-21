@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { API } from '../models/constants/urls.constants';
-import { Evaluation } from '../models/evaluation.interface';
+import { EvaluationInput } from '../models/evaluation-input.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -19,15 +19,15 @@ export class EvaluationService {
     return this.httpClient.get<any>(`${API.HttpBaseURL}/employeeevaluation/get?employeeEmail=${encodeURIComponent(employeeEmail)}&ownerEmail=${encodeURIComponent(ownerEmail)}&template=${encodeURIComponent(template)}&subject=${encodeURIComponent(subject)}`)
   }
 
-  save(employeeEmail: string, ownerEmail: string, template: string, subject: string): Observable<any> {
-    return this.httpClient.post<any>(`${API.HttpBaseURL}/employeeevaluation/save?employeeEmail=${encodeURIComponent(employeeEmail)}&ownerEmail=${encodeURIComponent(ownerEmail)}&template=${encodeURIComponent(template)}&subject=${encodeURIComponent(subject)}`, {})
+  save(evaluationInput: EvaluationInput): Observable<any> {
+    return this.httpClient.post<any>(`${API.HttpBaseURL}/employeeevaluation/save`, evaluationInput)
   }
 
-  delete(employeeEmail: string, ownerEmail: string, template: string, subject: string): Observable<any> {
-    return this.httpClient.delete<any>(`${API.HttpBaseURL}/employeeevaluation/delete?employeeEmail=${encodeURIComponent(employeeEmail)}&ownerEmail=${encodeURIComponent(ownerEmail)}&template=${encodeURIComponent(template)}&subject=${encodeURIComponent(subject)}`, {})
+  delete(evaluationInput: EvaluationInput): Observable<any> {
+    return this.httpClient.delete<any>(`${API.HttpBaseURL}/employeeevaluation/delete`, { body: evaluationInput })
   }
 
-  update(employeeEmail: string, ownerEmail: string, template: string, subject: string): Observable<any> {
-    return this.httpClient.put<any>(`${API.HttpBaseURL}/employeeevaluation/update?employeeEmail=${encodeURIComponent(employeeEmail)}&ownerEmail=${encodeURIComponent(ownerEmail)}&template=${encodeURIComponent(template)}&subject=${encodeURIComponent(subject)}`, {})
+  update(evaluationInputs: EvaluationInput[]): Observable<any> {
+    return this.httpClient.put<any>(`${API.HttpBaseURL}/employeeevaluation/update`, evaluationInputs)
   }
 }
