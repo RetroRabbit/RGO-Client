@@ -33,7 +33,8 @@ export class SidebarComponent implements OnInit {
   menuItems: RouteInfo[] = [];
   type$: Observable<Token> = this.store.select('app');
 
-  constructor(private store: Store<{ app: Token }>,
+  constructor(
+    private store: Store<{ app: Token }>,
     private cookieService: CookieService) { }
 
   ngOnInit() {

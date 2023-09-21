@@ -19,16 +19,26 @@ export class EvaluationsComponent {
 
   employees$: Observable<Employee[]> = this.empoloyeeService.getAll()
   templates$: Observable<any[]> = this.evaluationtemplate.getAll()
+  rating$: Observable<any[]> = this.evaluationRatingService.getall(this.selectedEvaluation)
+  templateItems$!: Observable<any[]>
+
   EvaluationForm: FormGroup = new FormGroup({
     ownerEmail: new FormControl('', Validators.required),
     employeeEmail: new FormControl('', Validators.required),
     template: new FormControl('', Validators.required),
     subject: new FormControl('', Validators.required),
     startDate: new FormControl(Date.now(), Validators.required),
+    audience: new FormControl<string[]>([], Validators.required),
     ratings: new FormControl<any[]>([], Validators.required),
   })
-  rating$: Observable<any[]> = this.evaluationRatingService.getall(this.selectedEvaluation)
-  templateItems$!: Observable<any[]>
+
+  increaseAudience() {
+    this.EvaluationForm.value.audience.push('')
+  }
+
+  decreaseAudience() {
+    this.EvaluationForm.value.audience.pop()
+  }
 
   stars: string[] = ['star', 'star', 'star', 'star', 'star'];
   templateItems: { [description: string]: { [section: string]: string[] }} = {} 
@@ -129,36 +139,6 @@ export class EvaluationsComponent {
     this.cookieService.set('currentPage', 'Evaluations')
     this.selectedEvaluation = null
   }
-
-  createEvaluation(): void {
-    this.evaluationService.save(this.EvaluationForm.value.employeeEmail!, this.EvaluationForm.value.ownerEmail!, this.EvaluationForm.value.template!, this.EvaluationForm.value.subject!).subscribe(
-      () => {
-        this.EvaluationForm.reset()
-        this.EvaluationForm.setValue({
-          ownerEmail: '',
-          employeeEmail: '',
-          template: '',
-          subject: '',
-          startDate: new Date(Date.now()),
-          description: '',
-          comments: '',
-        })
-      },
-      () => {
-        this.EvaluationForm.reset()
-        this.EvaluationForm.setValue({
-          ownerEmail: '',
-          employeeEmail: '',
-          template: '',
-          subject: '',
-          startDate: new Date(Date.now()),
-          description: '',
-          comments: '',
-        })
-      }
-    )
-  }
-
 
   rate(selectedStar: string, index : number) {
     ++index;
