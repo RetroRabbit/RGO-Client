@@ -1,36 +1,29 @@
 <div class="wrapper">
-  <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
-    <app-sidebar></app-sidebar>
-    <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
-  </div>
-  <div class="main-panel">
+  <div>
     <div class="m-3 border-bottom">
-      <h1 class="page-heading ">Manage Field Code</h1>
-
+      <h1 class="page-heading">Manage Field Code</h1>
     </div>
     <div style="overflow: auto">
       <div class="container-fluid">
         <a href="/new-fieldcode">
-          <button style="background-color: #48a648;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;">Add new field code</button>
+          <button class="btn btn-primary">Add new field code</button>
         </a>
+        <div style="padding-top: 30px;"></div>
+
+        <div class="custom-dropdown">
+          <label for="fieldCodeSelect">Existing Custom Fields:</label>
+          <select id="fieldCodeSelect" [(ngModel)]="selectedFieldCode" (change)="onTypeChange()">
+            <option value="" disabled selected>Choose a field code</option>
+            <option *ngFor="let fieldCode of fieldCodes" [ngValue]="fieldCode">{{ fieldCode.name }}</option>
+          </select>
+        </div>
       </div>
     </div>
     <div style="padding-top: 30px;"></div>
-    <div class="custom-dropdown">
-      <select id="fieldCodeSelect" [(ngModel)]="selectedFieldCode">
-        <option value="" disabled selected>Choose a field code</option>
-        <option *ngFor="let fieldCode of fieldCodes" [ngValue]="fieldCode">{{ fieldCode.name }}</option>
-      </select>
-      <div *ngIf="selectedFieldCode" class="button-container">
-        <button (click)="updateFieldCode()">Update</button>
-        <button (click)="archiveFieldCode()">Archive</button>
-      </div>
+    <div *ngIf="selectedFieldCode != null" class="update-form">
+      <app-update-field [selectedFieldCode]="selectedFieldCode"></app-update-field>
     </div>
   </div>
 </div>
+
+

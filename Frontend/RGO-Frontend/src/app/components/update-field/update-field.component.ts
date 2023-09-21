@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { statuses } from 'src/app/models/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
@@ -13,35 +13,35 @@ import { FieldCodeService } from 'src/app/services/field-code.service';
   styleUrls: ['./update-field.component.css']
 })
 export class UpdateFieldComponent {
+
   @Input() selectedFieldCode?: FieldCode;
   public statuses = statuses;
   public dataTypes = dataTypes;
-
+  selectedType: any;
+  isUpdateClicked: boolean = false;
+  isArchiveClicked: boolean = false;
   newFieldCodeForm!: FormGroup;
 
 
   constructor(public router: Router, private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
     private toast: NgToastService) {
-    const state = this.router.getCurrentNavigation()?.extras.state;
-    if (state) {
-      console.log('Selected Field Code in FieldCodeUpdateFormComponent:', state['selectedFieldCode']);
-      this.selectedFieldCode = state['selectedFieldCode'];
-    }
-    console.log(this.selectedFieldCode
-    )
     this.initializeForm();
   }
 
+  ngOnInit(): void {
+    this.newFieldCodeForm.disable();
+  }
+
   private initializeForm() {
-    console.log(this.selectedFieldCode?.code)
+    this.selectedType = this.selectedFieldCode?.type;
     this.newFieldCodeForm = this.fb.group({
       fieldCode: this.fb.group({
         code: [this.selectedFieldCode?.code],
         name: [this.selectedFieldCode?.name],
         description: [this.selectedFieldCode?.description],
         regex: [this.selectedFieldCode?.regex],
-        type: [this.selectedFieldCode?.type],
+        type: [this.selectedType],
         status: [this.selectedFieldCode?.status],
         option: [this.selectedFieldCode?.options ? this.selectedFieldCode.options.map(option => option.option) : []],
         internal: [false],
@@ -51,13 +51,15 @@ export class UpdateFieldComponent {
     });
   }
 
-  ngOnInit(): void {
+
+  onClick() {
+    this.isUpdateClicked = true;
+    this.newFieldCodeForm.enable();
   }
 
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode } = this.newFieldCodeForm.value;
-
       const optionValue = fieldCode.option;
 
       const fieldCodeDto = {
@@ -77,19 +79,55 @@ export class UpdateFieldComponent {
             option: optionValue
           }
         ]
-          
       }
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
-          console.log("Form submitted successfully!", data);
-          this.toast.success({detail:"Field Details updated!", position:'topRight'})
+          this.toast.success({ detail: "Field Details updated!", position: 'topRight' })
+          this.newFieldCodeForm.disable();
         },
         error: (error) => {
           console.error("Error occurred while submitting form!", error);
-          this.toast.error({detail:"Error", summary: error, duration:5000, position:'topRight'});
+          this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
         }
       });
+    }
+  }
 
+  onCancel() {
+    this.isUpdateClicked = false;
+    this.newFieldCodeForm.reset();
+    this.initializeForm();
+    this.newFieldCodeForm.disable();
+  }
+
+  archiveFieldCode() {
+    if (this.selectedFieldCode) {
+      this.fieldCodeService.deleteFieldCode(this.selectedFieldCode).subscribe(
+        (response) => {
+          this.toast.success({ detail: "Field Details archived!", position: 'topRight' })
+          this.isArchiveClicked = true;
+        },
+        (error) => {
+          console.error('Error deleting field code', error);
+          this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+        }
+      );
+    }
+  }
+
+  confirmArchive(event: Event) {
+    const confirmation = window.confirm('Are you sure you want to archive this field code?');
+    if (confirmation) {
+      this.archiveFieldCode();
+    } else {
+      event.preventDefault();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['selectedFieldCode']) {
+      this.newFieldCodeForm.reset();
+      this.initializeForm();
     }
   }
 }

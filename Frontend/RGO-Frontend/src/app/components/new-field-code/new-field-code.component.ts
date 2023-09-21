@@ -11,6 +11,7 @@ import { FieldCodeService } from 'src/app/services/field-code.service';
   styleUrls: ['./new-field-code.component.css']
 })
 export class NewFieldCodeComponent {
+
   public statuses = statuses;
   public dataTypes = dataTypes;
   selectedType: any;
@@ -19,10 +20,8 @@ export class NewFieldCodeComponent {
   constructor(
     private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
-    private toast: NgToastService
-  ) {
+    private toast: NgToastService) {
     this.initializeForm();
-    console.log(this.selectedType)
   }
 
   private initializeForm() {
@@ -41,14 +40,10 @@ export class NewFieldCodeComponent {
       }),
     });
   }
-  onTypeChange() {
-    console.log('Selected Type:', this.selectedType);
-  }
 
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode } = this.newFieldCodeForm.value;
-  
       const optionValue = fieldCode.option;
   
       const fieldCodeDto = {
@@ -57,7 +52,7 @@ export class NewFieldCodeComponent {
         name: fieldCode.name,
         description: fieldCode.description,
         regex: fieldCode.regex,
-        type: parseInt(fieldCode.type) == 4 ? undefined : parseInt(fieldCode.type),
+        type: parseInt(fieldCode.type),
         status: parseInt(fieldCode.status),
         internal: fieldCode.internal,
         internalTable: fieldCode.internalTable,
@@ -72,8 +67,8 @@ export class NewFieldCodeComponent {
   
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
-          console.log("Form submitted successfully!", data);
           this.toast.success({detail:"Field Code saved!", position:'topRight'})
+          this.newFieldCodeForm.disable();
         },
         error: (error) => {
           console.error("Error occurred while submitting form!", error);

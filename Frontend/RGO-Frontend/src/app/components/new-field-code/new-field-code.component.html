@@ -52,7 +52,8 @@
                                     <!-- Type dropdown -->
                                     <div class="mb-3">
                                         <label for="type" class="form-label">Type</label>
-                                        <select type="text" class="form-control" formControlName="type" [(ngModel)]="selectedType" (change)="onTypeChange()">
+                                        <select type="text" class="form-control" formControlName="type"
+                                            [(ngModel)]="selectedType">
                                             <option *ngFor="let type of dataTypes" [value]="type.id">
                                                 {{type.value}}
                                             </option>
@@ -75,21 +76,15 @@
                                             [disabled]="!newFieldCodeForm.valid">Submit</button>
                                     </div>
                                 </div>
-                            
+
                             </div>
                         </div>
                     </form>
                     <div class="mb-3">
                         <a href="/home">
-                            <button style="background-color: #48a648;
-                            color: white;
-                            border: none;
-                            padding: 8px 16px;
-                            border-radius: 4px;
-                            cursor: pointer;
-                            transition: background-color 0.3s;">Back</button>
-                          </a>
-                </div>
+                            <button class="btn btn-primary">Back</button>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
