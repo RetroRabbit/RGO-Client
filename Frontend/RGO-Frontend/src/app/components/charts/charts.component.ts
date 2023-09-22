@@ -99,32 +99,23 @@ export class ChartComponent implements OnInit {
   
       this.chartService.updateChart(updatedChart).subscribe(
         (updatedData: any) => {
-          // Update the chart in the chartData array with the updated data
           const index = this.chartData.findIndex((c) => c.id === updatedData.Id);
           if (index !== -1) {
             this.chartData[index] = updatedData;
           }
   
-          // Hide the update form and reset the activeChart
           this.showUpdateForm = false;
           this.activeChart = null;
-  
-          // Display a success message
           console.log('Chart updated successfully.');
   
-          // Fetch the updated chart data and refresh the display
           this.createAndDisplayChart();
   
-          // Update the selectedChartType if necessary
           if (this.selectedChartType !== updatedData.Type) {
             this.selectedChartType = updatedData.Type;
           }
         },
         (error) => {
           console.error('Error updating chart:', error);
-  
-          // Display an error message
-          console.error('Failed to update the chart.');
         }
       );
     }
@@ -134,19 +125,15 @@ export class ChartComponent implements OnInit {
     if (this.activeChart) {
       this.chartService.deleteChart(chartId).subscribe(
         () => {
-          // Remove the chart from the chartData array
           const index = this.chartData.findIndex((c) => c.id === chartId);
           if (index !== -1) {
             this.chartData.splice(index, 1);
           }
           this.clearActiveChart();
-          // Display a success message
           console.log('Chart deleted successfully.');
         },
         (error) => {
           console.error('Error deleting chart:', error);
-          // Display an error message
-          console.error('Failed to delete the chart.');
         }
       );
     }
