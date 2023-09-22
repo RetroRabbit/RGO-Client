@@ -56,8 +56,8 @@ export class UpdateFieldComponent {
 
   addOption() {
     this.options.push(this.fb.control(''));
-  }
-
+  }  
+  
   removeOption(index: number) {
     this.options.removeAt(index);
   }
@@ -136,6 +136,15 @@ export class UpdateFieldComponent {
     if (changes['selectedFieldCode']) {
       this.newFieldCodeForm.reset();
       this.initializeForm();
+  
+      const optionsArray = this.newFieldCodeForm.get('fieldCode.options') as FormArray;
+      
+  
+      if (this.selectedFieldCode?.options) {
+        this.selectedFieldCode.options.forEach(option => {
+          optionsArray.push(this.fb.control(option.option));
+        });
+      }
     }
-  }
+  }  
 }

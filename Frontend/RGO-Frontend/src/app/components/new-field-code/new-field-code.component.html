@@ -67,21 +67,15 @@
                                     <small *ngIf="newFieldCodeForm.get('fieldCode.type')?.touched && newFieldCodeForm.hasError('required', 'fieldCode.type')" class="text-danger">Type is required</small>
                                     
                                     <!-- Add Option -->
-                                    <div class="mb-3">
+                                    <div class="mb-3" *ngIf="selectedType == 4">
                                         <label for="option" class="form-label">Add Option</label>
                                         <button id="btnAddOption" class="btn btn-secondary" type="button" (click)="addOption()">
                                             +
                                         </button>
                                     </div>
                                     
-                                    <!-- Option input -->
-                                    <div class="mb-3" *ngIf="selectedType == 4">
-                                        <label for="option" class="form-label">Option</label>
-                                        <input id="option" type="text" class="form-control" formControlName="option" />
-                                    </div>
-                                    
                                     <!-- Option inputs -->
-                                    <div formArrayName="options">
+                                    <div formArrayName="options" *ngIf="selectedType == 4">
                                         <div *ngFor="let option of options.controls; let i = index">
                                             <div class="input-group">
                                                 <label id="lblOption" for="option{{ i }}" class="form-label">Option {{ i + 1 }}</label>

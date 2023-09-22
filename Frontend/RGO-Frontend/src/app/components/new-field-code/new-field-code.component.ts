@@ -71,6 +71,13 @@ export class NewFieldCodeComponent {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode } = this.newFieldCodeForm.value;
       const optionValue = fieldCode.option;
+      const optionsArray = this.options.value.map((optionValue: any, index: number) => {
+        return {
+          id: index,
+          fieldCodeId: 0,
+          option: optionValue
+        };
+      });
       const fieldCodeDto = {
         id: 0,
         code: fieldCode.code,
@@ -81,14 +88,9 @@ export class NewFieldCodeComponent {
         status: parseInt(fieldCode.status),
         internal: fieldCode.internal,
         internalTable: fieldCode.internalTable,
-        options:optionValue != "" ? [ 
-          {
-            id: 0,
-            fieldCodeId: 0,
-            option: optionValue
-          }
-        ] : []
+        options:optionsArray
       };
+      console.log(optionsArray)
   
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
               next: (data) => {
