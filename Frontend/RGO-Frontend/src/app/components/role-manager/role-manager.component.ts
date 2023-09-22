@@ -9,7 +9,7 @@ import { RoleService } from 'src/app/services/role.service';
 @Component({
   selector: 'app-role-manager',
   templateUrl: './role-manager.component.html',
-  styleUrls: ['./role-manager.component.css']
+  styleUrls: ['./role-manager.component.css'],
 })
 export class RoleManagerComponent {
   roles$: Observable<string[]> = this.employeeRoleService.getAllRoles()
