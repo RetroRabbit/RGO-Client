@@ -71,7 +71,6 @@ export class NewFieldCodeComponent {
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
-          console.error("Error occurred while submitting form!", error);
           this.toast.error({detail:"Error", summary:error, duration:5000, position:'topRight'});
         }
       });
