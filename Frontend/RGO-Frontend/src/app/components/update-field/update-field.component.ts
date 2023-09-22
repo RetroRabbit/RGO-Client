@@ -1,5 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { statuses } from 'src/app/models/constants/statuses.constants';
@@ -22,7 +22,6 @@ export class UpdateFieldComponent {
   isArchiveClicked: boolean = false;
   newFieldCodeForm!: FormGroup;
 
-
   constructor(public router: Router, private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
     private toast: NgToastService) {
@@ -37,8 +36,8 @@ export class UpdateFieldComponent {
     this.selectedType = this.selectedFieldCode?.type;
     this.newFieldCodeForm = this.fb.group({
       fieldCode: this.fb.group({
-        code: [this.selectedFieldCode?.code],
-        name: [this.selectedFieldCode?.name],
+        code: [this.selectedFieldCode?.code, Validators.required],
+        name: [this.selectedFieldCode?.name, Validators.required],
         description: [this.selectedFieldCode?.description],
         regex: [this.selectedFieldCode?.regex],
         type: [this.selectedType],
@@ -72,7 +71,13 @@ export class UpdateFieldComponent {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode } = this.newFieldCodeForm.value;
       const optionValue = fieldCode.option;
-
+      const optionsArray = this.options.value.map((optionValue: any, index: number) => {
+        return {
+          id: index,
+          fieldCodeId: 0,
+          option: optionValue
+        };
+      });
       const fieldCodeDto = {
         id: this.selectedFieldCode?.id,
         code: fieldCode.code,
@@ -83,13 +88,7 @@ export class UpdateFieldComponent {
         status: parseInt(fieldCode.status),
         internal: fieldCode.internal,
         internalTable: fieldCode.internalTable,
-        options: optionValue != "" ? [ 
-          {
-            id: 0,
-            fieldCodeId: this.selectedFieldCode?.id,
-            option: optionValue
-          }
-        ] : []
+        options: optionsArray
       }
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
@@ -112,16 +111,15 @@ export class UpdateFieldComponent {
 
   archiveFieldCode() {
     if (this.selectedFieldCode) {
-      this.fieldCodeService.deleteFieldCode(this.selectedFieldCode).subscribe(
-        (response) => {
-          console.log(response)
-          this.toast.success({ detail: "Field Details archived!", position: 'topRight' })
-          this.isArchiveClicked = true;
+      this.fieldCodeService.deleteFieldCode(this.selectedFieldCode).subscribe({
+        next: (data) => {
+          this.toast.success({detail: "Field Code Archived!", position: 'topRight'})
+          this.newFieldCodeForm.disable();
         },
-        (error) => {
-          this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+        error: (error) => {
+          this.toast.error({detail: "Error", summary: error, duration: 5000, position: 'topRight'})
         }
-      );
+      });
     }
   }
 
