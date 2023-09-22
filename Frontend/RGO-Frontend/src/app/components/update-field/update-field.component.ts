@@ -86,8 +86,6 @@ export class UpdateFieldComponent {
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
-          console.log(fieldCodeDto);
-          console.error("Error occurred while submitting form!", error);
           this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
         }
       });
