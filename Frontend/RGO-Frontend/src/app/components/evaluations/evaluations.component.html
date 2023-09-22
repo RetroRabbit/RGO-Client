@@ -1,52 +1,56 @@
 <section class="fluid-container">
     <form [formGroup]="EvaluationForm">
         <header class="fluid-container p-3 bg-info bg-opacity-10 border border-info border-start-0 rounded-end">
-            <button type="button" class="btn btn-danger" (click)="backToEvaluations()">Back</button>
+            <button type="button" class="btn btn-danger" (click)="backToEvaluations()">
+                Back
+            </button>
             <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-primary" (click)="save()">Save</button>
-                <button type="submit" class="btn btn-warning" (click)="update()">Update</button>
-                <button type="button" class="btn btn-danger" (click)="remove()">Delete</button>
+                <button type="submit" class="btn btn-primary" (click)="save()">
+                    Save
+                </button>
+                <button type="submit" class="btn btn-warning" (click)="update()">
+                    Update
+                </button>
+                <button type="button" class="btn btn-danger" (click)="remove()">
+                    Delete
+                </button>
             </div>
-            <hr>
+            <hr />
             <datalist id="email-list">
                 <option *ngFor="let employee of employees$ | async" [value]="employee['email']">
-                    {{ employee['name'] + ' ' + employee['surname'] }}
+                    {{ employee["name"] + " " + employee["surname"] }}
                 </option>
             </datalist>
             <div class="row g2">
                 <div class="form-floating mb-3 col-md">
-                    <input
-                        list="email-list"
-                        class="form-control form-control-sm col-auto border-bottom border-success"
-                        id="owner"
-                        aria-describedby="owner-email"
-                        formControlName="ownerEmail"
-                        [value]="selectedEvaluation?.owner?.email">
+                    <input list="email-list" class="form-control form-control-sm col-auto border-bottom border-success"
+                        id="owner" aria-describedby="owner-email" formControlName="ownerEmail"
+                        [value]="selectedEvaluation?.owner?.email" />
                     <label for="owner" class="p-3">Email Address(Owner)</label>
                 </div>
                 <div class="form-floating mb-3 col-md">
                     <input list="email-list" class="form-control form-control-sm col-auto border-bottom border-success"
-                        id="employee" aria-describedby="employee-email" formControlName="employeeEmail">
+                        id="employee" aria-describedby="employee-email" formControlName="employeeEmail" />
                     <label for="employee" class="p-3">Email Address(Employee)</label>
                 </div>
                 <div class="form-floating mb-3 col-md">
                     <input class="form-control form-control-sm col-auto border-bottom border-success" id="subject"
-                        aria-describedby="subject" formControlName="subject">
+                        aria-describedby="subject" formControlName="subject" />
                     <label for="subject" class="p-3">Subject</label>
                 </div>
                 <div class="form-floating mb-3 col-md">
                     <datalist id="template-list" (change)="tempChange($event)">
-                        <option *ngFor="let template of templates$ | async" [value]=template.description>
-                            {{ template['description'] }}
+                        <option *ngFor="let template of templates$ | async" [value]="template.description">
+                            {{ template["description"] }}
                         </option>
                     </datalist>
                     <input (input)="templateChange()" list="template-list"
                         class="form-control form-control-sm col-auto border-bottom border-success" id="description"
-                        aria-describedby="template" formControlName="template">
+                        aria-describedby="template" formControlName="template" />
                     <label for="description" class="p-3">Template</label>
                 </div>
             </div>
-            <hr>
+            <hr />
             <div class="row g2">
                 <div class="btn-toolbar" role="toolbar">
                     <button type="button" class="btn btn-primary" (click)="increaseAudience()">
@@ -56,15 +60,10 @@
                         <i class="material-icons">remove_circle</i>
                     </button>
                 </div>
-                <div
-                    class="form-floating mb-3 col-md btn-group-vertical"
-                    role="group"
+                <div class="form-floating mb-3 col-md btn-group-vertical" role="group"
                     *ngFor="let member of EvaluationForm.value.audience">
-                    <input
-                        type="email"
-                        list="email-list"
-                        class="form-control form-control-sm col-auto border-bottom border-success"
-                        id="audience">
+                    <input type="email" list="email-list"
+                        class="form-control form-control-sm col-auto border-bottom border-success" id="audience" />
                     <label for="audience">Audience</label>
                 </div>
             </div>
@@ -72,18 +71,29 @@
         <div *ngIf="EvaluationForm.controls['template'].valid">
             <section class="card" *ngFor="let templateDesc of templateItems | keyvalue">
                 <div class="card-header">
-                    <h4>Template: <b>{{ templateDesc.key }}</b></h4>
+                    <h4>
+                        Template: <b>{{ templateDesc.key }}</b>
+                    </h4>
                 </div>
                 <div class="card-body">
                     <div class="border-bottom border-secondary" *ngFor="let section of templateDesc.value | keyvalue">
-                        <h5 class="card-title"><b>{{ section.key }}</b></h5>
-                        <span class="card-text" *ngFor="let item of section.value">{{ item }} <br> </span>
+                        <h5 class="card-title">
+                            <b>{{ section.key }}</b>
+                        </h5>
+                        <span class="card-text" *ngFor="let item of section.value">{{ item }} <br />
+                        </span>
                     </div>
                 </div>
             </section>
         </div>
         <div class="star-rating">
             <span *ngFor="let star of stars; index as i" [class]="star" (click)="rate(star, i)">&#9733;</span>
+        </div>
+
+        <!-- Comments -->
+        <div class="comments-section mt-3">
+            <label for="comments">Comments:</label>
+            <textarea id="comments" class="form-control" rows="4" placeholder="Add your comments here..."></textarea>
         </div>
     </form>
 </section>

@@ -1,12 +1,32 @@
 .star-rating {
-    font-size: 24px;
-  }
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
 
-  .star {
-    color: gray;
-    cursor: pointer;
-  }
+.star {
+  color: gray;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: color 0.2s;
+}
 
-  .star-filled {
-    color: gold;
-  }
+.star-filled {
+  color: gold;
+}
+
+.comments-section {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.comments-section textarea {
+  width: 100%;
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}

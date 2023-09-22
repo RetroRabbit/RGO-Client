@@ -21,6 +21,7 @@ export class EvaluationsComponent {
   employees$: Observable<Employee[]> = this.empoloyeeService.getAll()
   templates$: Observable<any[]> = this.evaluationtemplate.getAll()
   rating$: Observable<any[]> = this.evaluationRatingService.getall(this.selectedEvaluation)
+  comment$: Observable<any[]> = this.evaluationRatingService.getall(this.selectedEvaluation)
   templateItems$!: Observable<any[]>
 
   EvaluationForm: FormGroup = new FormGroup({
@@ -31,6 +32,7 @@ export class EvaluationsComponent {
     startDate: new FormControl(Date.now(), Validators.required),
     audience: new FormControl<string[]>([], Validators.required),
     ratings: new FormControl<any[]>([], Validators.required),
+    comments: new FormControl<string>('', Validators.required)
   })
 
   increaseAudience() {
@@ -58,7 +60,8 @@ export class EvaluationsComponent {
       ownerEmail: this.selectedEvaluation?.owner.email,
       employeeEmail: this.selectedEvaluation?.employee.email,
       template: this.selectedEvaluation?.template.description,
-      subject: this.selectedEvaluation?.subject
+      subject: this.selectedEvaluation?.subject,
+      comment: this.selectedEvaluation?.comment
     })
     this.EvaluationForm.setValue({
       ownerEmail: this.selectedEvaluation ? this.selectedEvaluation?.owner.email : '',
@@ -66,6 +69,8 @@ export class EvaluationsComponent {
       template: this.selectedEvaluation ? this.selectedEvaluation?.template.description : '',
       subject: this.selectedEvaluation ? this.selectedEvaluation?.subject : '',
       startDate: new Date(Date.now()),
+      comments: this.selectedEvaluation ? this.selectedEvaluation?.comments : '',
+      
       audience: [],
       ratings: [],
     })
@@ -113,7 +118,8 @@ export class EvaluationsComponent {
       ownerEmail: this.EvaluationForm.value.ownerEmail!,
       employeeEmail: this.EvaluationForm.value.employeeEmail!,
       template: this.EvaluationForm.value.template!,
-      subject: this.EvaluationForm.value.subject!
+      subject: this.EvaluationForm.value.subject!,
+      comment: this.EvaluationForm.value.subject!
     }
 
     this.evaluationService.save(evaluationInput).subscribe(
@@ -133,14 +139,16 @@ export class EvaluationsComponent {
         ownerEmail: this.selectedEvaluation?.owner.email,
         employeeEmail: this.selectedEvaluation?.employee.email,
         template: this.selectedEvaluation?.template.description,
-        subject: this.selectedEvaluation?.subject
+        subject: this.selectedEvaluation?.subject,
+        comment: this.selectedEvaluation?.comment
       },
       {
         id: null,
         ownerEmail: this.EvaluationForm.value.ownerEmail!,
         employeeEmail: this.EvaluationForm.value.employeeEmail!,
         template: this.EvaluationForm.value.template!,
-        subject: this.EvaluationForm.value.subject!
+        subject: this.EvaluationForm.value.subject!,
+        comment: this.EvaluationForm.value.comment!
       }
     ]
     this.evaluationService.update(evaluationInputs).subscribe(
@@ -159,7 +167,8 @@ export class EvaluationsComponent {
       ownerEmail: this.selectedEvaluation?.owner.email,
       employeeEmail: this.selectedEvaluation?.employee.email,
       template: this.selectedEvaluation?.template.description,
-      subject: this.selectedEvaluation?.subject
+      subject: this.selectedEvaluation?.subject,
+      comment: this.selectedEvaluation?.comment
     }
 
     this.evaluationService.delete(evaluationInput).subscribe(

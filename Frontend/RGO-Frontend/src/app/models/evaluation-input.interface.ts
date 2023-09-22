@@ -3,5 +3,6 @@ export interface EvaluationInput {
     ownerEmail: string,
     employeeEmail: string,
     template: string,
-    subject: string
+    subject: string,
+    comment: string,
 }
