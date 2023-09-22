@@ -106,8 +106,6 @@ export class ChartComponent implements OnInit {
   
           this.showUpdateForm = false;
           this.activeChart = null;
-          console.log('Chart updated successfully.');
-  
           this.createAndDisplayChart();
   
           if (this.selectedChartType !== updatedData.Type) {
@@ -130,7 +128,6 @@ export class ChartComponent implements OnInit {
             this.chartData.splice(index, 1);
           }
           this.clearActiveChart();
-          console.log('Chart deleted successfully.');
         },
         (error) => {
           console.error('Error deleting chart:', error);
