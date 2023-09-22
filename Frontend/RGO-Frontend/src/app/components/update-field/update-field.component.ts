@@ -1,5 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { statuses } from 'src/app/models/constants/statuses.constants';
@@ -37,8 +37,8 @@ export class UpdateFieldComponent {
     this.selectedType = this.selectedFieldCode?.type;
     this.newFieldCodeForm = this.fb.group({
       fieldCode: this.fb.group({
-        code: [this.selectedFieldCode?.code],
-        name: [this.selectedFieldCode?.name],
+        code: [this.selectedFieldCode?.code, Validators.required],
+        name: [this.selectedFieldCode?.name, Validators.required],
         description: [this.selectedFieldCode?.description],
         regex: [this.selectedFieldCode?.regex],
         type: [this.selectedType],
@@ -86,6 +86,8 @@ export class UpdateFieldComponent {
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
+          console.log(fieldCodeDto);
+          console.error("Error occurred while submitting form!", error);
           this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
         }
       });
@@ -101,22 +103,24 @@ export class UpdateFieldComponent {
 
   archiveFieldCode() {
     if (this.selectedFieldCode) {
-      this.fieldCodeService.deleteFieldCode(this.selectedFieldCode).subscribe(
-        (response) => {
-          console.log(response)
-          this.toast.success({ detail: "Field Details archived!", position: 'topRight' })
-          this.isArchiveClicked = true;
+      this.fieldCodeService.deleteFieldCode(this.selectedFieldCode).subscribe({
+        next: (data) => {
+          this.toast.success({detail: "Field Code Archived!", position: 'topRight'})
+          this.newFieldCodeForm.disable();
         },
-        (error) => {
-          this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+        error: (error) => {
+          this.toast.error({detail: "Error", summary: error, duration: 5000, position: 'topRight'})
         }
-      );
+
+      });
     }
   }
 
   confirmArchive(event: Event) {
+    console.log("here first");
     const confirmation = window.confirm('Are you sure you want to archive this field code?');
     if (confirmation) {
+      console.log("here second");
       this.archiveFieldCode();
     } else {
       event.preventDefault();

@@ -1,9 +1,13 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
 import { statuses } from 'src/app/models/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
+import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
+
+
 
 @Component({
   selector: 'app-new-field-code',
@@ -16,6 +20,8 @@ export class NewFieldCodeComponent {
   public dataTypes = dataTypes;
   selectedType: any;
   newFieldCodeForm!: FormGroup;
+  fieldCodes?: FieldCode[];
+  isUnique?: boolean = true;
 
   constructor(
     private fieldCodeService: FieldCodeService,
@@ -24,28 +30,38 @@ export class NewFieldCodeComponent {
     this.initializeForm();
   }
 
+  ngOnInit(): void {
+    this.fieldCodeService.getAllFieldCodes().subscribe({
+      next: fieldCodes => {
+        this.fieldCodes = fieldCodes;
+      },
+      error: error => {
+      }
+    });
+  }
+
   private initializeForm() {
     this.newFieldCodeForm = this.fb.group({
       fieldCode: this.fb.group({
-        code: [''],
-        name: [''],
+        code: ['', Validators.required],
+        name: ['', [Validators.required]],
         description: [''],
         regex: [''],
-        type: [''],
-        status: [''],
+        type: ['', Validators.required],
+        status: ['', Validators.required],
         option: [''],
         internal: [false],
         internalTable: [''],
         options: this.fb.array([]) 
       }),
     });
+    this.isUnique = true;
   }
 
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode } = this.newFieldCodeForm.value;
       const optionValue = fieldCode.option;
-  
       const fieldCodeDto = {
         id: 0,
         code: fieldCode.code,
@@ -66,20 +82,20 @@ export class NewFieldCodeComponent {
       };
   
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
-        next: (data) => {
-          this.toast.success({detail:"Field Code saved!", position:'topRight'})
-          this.newFieldCodeForm.disable();
-        },
-        error: (error) => {
-          this.toast.error({detail:"Error", summary:error, duration:5000, position:'topRight'});
-        }
-      });
-    } else {
-      this.showValidationErrors();
+              next: (data) => {
+                this.toast.success({detail:"Field Code saved!", position:'topRight'})
+                this.newFieldCodeForm.disable();
+              },
+              error: (error) => {
+                if(error.error === "Field with that name found"){
+                  console.log("Field with that name found");
+                  this.isUnique = false;
+                }
+                else {
+                  this.toast.error({detail:"Error", summary:error, duration:5000, position:'topRight'});
+                }
+              }
+            });
     }
-  }
-
-  private showValidationErrors() {
-    this.newFieldCodeForm.markAllAsTouched();
   }
 }
