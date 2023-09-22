@@ -108,7 +108,6 @@ export class UpdateFieldComponent {
           this.isArchiveClicked = true;
         },
         (error) => {
-          console.error('Error deleting field code', error);
           this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
         }
       );
