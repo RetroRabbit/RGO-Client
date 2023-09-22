@@ -22,7 +22,6 @@ export class UpdateFieldComponent {
   isArchiveClicked: boolean = false;
   newFieldCodeForm!: FormGroup;
 
-
   constructor(public router: Router, private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
     private toast: NgToastService) {
@@ -50,7 +49,6 @@ export class UpdateFieldComponent {
       }),
     });
   }
-
 
   onClick() {
     this.isUpdateClicked = true;
@@ -86,8 +84,6 @@ export class UpdateFieldComponent {
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
-          console.log(fieldCodeDto);
-          console.error("Error occurred while submitting form!", error);
           this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
         }
       });
@@ -111,16 +107,13 @@ export class UpdateFieldComponent {
         error: (error) => {
           this.toast.error({detail: "Error", summary: error, duration: 5000, position: 'topRight'})
         }
-
       });
     }
   }
 
   confirmArchive(event: Event) {
-    console.log("here first");
     const confirmation = window.confirm('Are you sure you want to archive this field code?');
     if (confirmation) {
-      console.log("here second");
       this.archiveFieldCode();
     } else {
       event.preventDefault();

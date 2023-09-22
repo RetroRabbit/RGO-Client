@@ -1,4 +1,3 @@
-import { HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
@@ -6,8 +5,6 @@ import { statuses } from 'src/app/models/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
-
-
 
 @Component({
   selector: 'app-new-field-code',
@@ -88,7 +85,6 @@ export class NewFieldCodeComponent {
               },
               error: (error) => {
                 if(error.error === "Field with that name found"){
-                  console.log("Field with that name found");
                   this.isUnique = false;
                 }
                 else {
