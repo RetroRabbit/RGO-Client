@@ -35,9 +35,7 @@ export class ChartComponent implements OnInit {
       (data: any[]) => {
         this.processChartData(data);
       },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
+      (error) => { }
     );
   }
 
@@ -46,9 +44,7 @@ export class ChartComponent implements OnInit {
       (data: any) => {
         this.numberOfEmployees = data;
       },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
+      (error) => {  }
     );
   }
 
@@ -106,15 +102,14 @@ export class ChartComponent implements OnInit {
   
           this.showUpdateForm = false;
           this.activeChart = null;
+  
           this.createAndDisplayChart();
   
           if (this.selectedChartType !== updatedData.Type) {
             this.selectedChartType = updatedData.Type;
           }
         },
-        (error) => {
-          console.error('Error updating chart:', error);
-        }
+        (error) => { }
       );
     }
   }
@@ -129,9 +124,7 @@ export class ChartComponent implements OnInit {
           }
           this.clearActiveChart();
         },
-        (error) => {
-          console.error('Error deleting chart:', error);
-        }
+        (error) => { }
       );
     }
   }
