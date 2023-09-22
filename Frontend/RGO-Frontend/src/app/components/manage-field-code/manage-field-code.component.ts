@@ -22,7 +22,6 @@ ngOnInit(): void {
       this.fieldCodes = fieldCodes;
     },
     error: error => {
-      console.error('Error fetching field codes:', error);
     }
   });
 }
