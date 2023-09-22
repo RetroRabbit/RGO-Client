@@ -96,6 +96,30 @@
             </div>
           </div>
         </form>
+  <div class="wrapper">
+    <div>
+      <div class="m-3 border-bottom">
+        <h1 class="page-heading">Manage Field Code</h1>
+      </div>
+      <div style="overflow: auto">
+        <div class="container-fluid">
+          <a href="/new-fieldcode">
+            <button class="btn btn-primary">Add new field code</button>
+          </a>
+          <div style="padding-top: 30px;"></div>
+
+          <div class="custom-dropdown">
+            <label for="fieldCodeSelect">Existing Custom Fields:</label>
+            <select id="fieldCodeSelect" [(ngModel)]="selectedFieldCode" (change)="onTypeChange()">
+              <option value="" disabled selected>Choose a field code</option>
+              <option *ngFor="let fieldCode of fieldCodes" [ngValue]="fieldCode">{{ fieldCode.name }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div style="padding-top: 30px;"></div>
+      <div *ngIf="selectedFieldCode != null" class="update-form">
+        <app-update-field [selectedFieldCode]="selectedFieldCode"></app-update-field>
       </div>
     </div>
   </div>

@@ -3,6 +3,8 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { statuses } from 'src/app/models/constants/statuses.constants';
 import { FieldCodeService } from 'src/app/services/field-code.service';
+import { Router } from '@angular/router';
+import { FieldCode } from 'src/app/models/field-code.interface';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -11,8 +13,11 @@ import { FieldCodeService } from 'src/app/services/field-code.service';
 })
 export class ManageFieldCodeComponent {
 
-  public statuses = statuses;
-  public dataTypes = dataTypes;
+  fieldCodes?: FieldCode[];
+  selectedFieldCode?: FieldCode;
+  isClicked: boolean = false;
+ 
+constructor(public router: Router, private fieldCodeService: FieldCodeService){}
 
   newFieldCodeForm!: FormGroup;
 
@@ -95,3 +100,18 @@ export class ManageFieldCodeComponent {
     this.newFieldCodeForm.markAllAsTouched();
   }
 }
+ngOnInit(): void {
+  this.fieldCodeService.getAllFieldCodes().subscribe({
+    next: fieldCodes => {
+      this.fieldCodes = fieldCodes;
+    },
+    error: error => {
+    }
+  });
+}
+
+onTypeChange(){
+  this.isClicked = true;
+  this.selectedFieldCode = this.selectedFieldCode;
+}
+
