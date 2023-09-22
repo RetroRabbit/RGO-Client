@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
 import { statuses } from 'src/app/models/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
@@ -39,6 +39,18 @@ export class NewFieldCodeComponent {
         options: this.fb.array([]) 
       }),
     });
+  }
+
+  get options() {
+    return (this.newFieldCodeForm.get('fieldCode.options') as FormArray);
+  }
+
+  addOption() {
+    this.options.push(this.fb.control(''));
+  }
+
+  removeOption(index: number) {
+    this.options.removeAt(index);
   }
 
   onSubmit() {

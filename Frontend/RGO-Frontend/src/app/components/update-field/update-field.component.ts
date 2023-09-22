@@ -1,5 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { statuses } from 'src/app/models/constants/statuses.constants';
@@ -51,6 +51,17 @@ export class UpdateFieldComponent {
     });
   }
 
+  get options() {
+    return (this.newFieldCodeForm.get('fieldCode.options') as FormArray);
+  }
+
+  addOption() {
+    this.options.push(this.fb.control(''));
+  }
+
+  removeOption(index: number) {
+    this.options.removeAt(index);
+  }
 
   onClick() {
     this.isUpdateClicked = true;

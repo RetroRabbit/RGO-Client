@@ -48,11 +48,27 @@
                                 </option>
                             </select>
                         </div>
-                        <!-- Option input -->
-                        <div class="mb-3" *ngIf="selectedType == 4">
-                            <label for="option" class="form-label">Option</label>
-                            <input id="option" type="text" class="form-control" formControlName="option" />
+                        <!-- Add Option -->
+                        <div class="mb-3">
+                            <label for="option" class="form-label">Add Option</label>
+                            <button id="btnAddOption" class="btn btn-secondary" type="button" (click)="addOption()">
+                            +
+                            </button>
                         </div>
+        
+                        <!-- Option inputs -->
+                        <div formArrayName="options">
+                            <div *ngFor="let option of options.controls; let i = index">
+                                <div class="input-group">
+                                    <label id="lblOption" for="option{{ i }}" class="form-label">Option {{ i + 1 }}</label>
+                                    <input id="option{{ i }}" type="text" class="form-control" [formControlName]="i" />
+                                    <button id="btnRemoveOption" class="btn btn-danger" type="button" (click)="removeOption(i)">
+                                    -
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="mb-3">
                             <input id="internal" type="checkbox" class="form-check-input" formControlName="internal">
                             <label for="internal" class="form-check-label">Internal</label>
