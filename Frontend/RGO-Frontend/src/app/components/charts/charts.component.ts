@@ -1,21 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
-import { ChartType, ChartOptions } from 'chart.js';
+import { ChartType } from 'chart.js';
+import { Chart } from 'src/app/models/charts.interface';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-chart',
   templateUrl: './charts.component.html',
-  styleUrls: ['./charts.component.css']
+  styleUrls: ['./charts.component.css'],
 })
 export class ChartComponent implements OnInit {
-  selectedChartType: ChartType = 'pie';
+  @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
+  
+  selectedChartType: ChartType ='bar';
   displayChart: boolean = false;
   numberOfEmployees: number = 0;
   chartData: any[] = [];
   activeChart: any = null;
   showReport: boolean = false;
+  showUpdateForm:boolean=false;
+  updateFormData: any = {
+  Name: '',
+  Type:'',}
 
-  constructor(private chartService: ChartService) {}
+  constructor(private chartService: ChartService,private cookieService: CookieService) {}
 
   ngOnInit(): void {
     this.createAndDisplayChart();
@@ -27,9 +35,7 @@ export class ChartComponent implements OnInit {
       (data: any[]) => {
         this.processChartData(data);
       },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
+      (error) => { }
     );
   }
 
@@ -38,9 +44,7 @@ export class ChartComponent implements OnInit {
       (data: any) => {
         this.numberOfEmployees = data;
       },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
+      (error) => {  }
     );
   }
 
@@ -65,13 +69,69 @@ export class ChartComponent implements OnInit {
 
   clearActiveChart(): void {
     this.activeChart = null;
-    this.showReport = false; 
+    this.showReport = false;
   }
 
   generateReport(): void {
     if (this.activeChart) {
-      this.showReport = true; 
+      this.showReport = true;
     }
+  }
+  openUpdateForm(): void {
+    if (this.activeChart) {
+      this.updateFormData = { ...this.activeChart };
+      this.showUpdateForm = true;
+    }
+  }
+
+  updateChart(): void {
+    if (this.activeChart) {
+      
+      const updatedChart: Chart = {
+        ...this.activeChart,
+        Name: this.updateFormData.Name,
+        Type: this.updateFormData.Type,
+      };
+  
+      this.chartService.updateChart(updatedChart).subscribe(
+        (updatedData: any) => {
+          const index = this.chartData.findIndex((c) => c.id === updatedData.Id);
+          if (index !== -1) {
+            this.chartData[index] = updatedData;
+          }
+  
+          this.showUpdateForm = false;
+          this.activeChart = null;
+  
+          this.createAndDisplayChart();
+  
+          if (this.selectedChartType !== updatedData.Type) {
+            this.selectedChartType = updatedData.Type;
+          }
+        },
+        (error) => { }
+      );
+    }
+  }
+  
+  deleteChart(chartId: number): void {
+    if (this.activeChart) {
+      this.chartService.deleteChart(chartId).subscribe(
+        () => {
+          const index = this.chartData.findIndex((c) => c.id === chartId);
+          if (index !== -1) {
+            this.chartData.splice(index, 1);
+          }
+          this.clearActiveChart();
+        },
+        (error) => { }
+      );
+    }
+  }
+
+  CaptureEvent(event: any) {
+    const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('currentPage', target.innerText);
   }
 }
 

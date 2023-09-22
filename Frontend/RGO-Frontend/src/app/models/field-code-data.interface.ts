@@ -5,7 +5,7 @@ export interface FieldCodeData {
       name: string;
       description?: string;
       regex?: string;
-      type?: string;
+      type?: string | null;
       status?: string;
       internal?: boolean;
       internalTable?: string;

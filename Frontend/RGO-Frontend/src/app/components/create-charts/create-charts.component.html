@@ -1,52 +1,33 @@
-
-<div class="wrapper">
-    <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
-      <app-sidebar></app-sidebar>
-      <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
+<div class="container">
+    <h2>Create a Chart</h2>
+    
+    <div class="chart-form">
+        <label for="chartType">Chart Type:</label>
+        <select id="chartType" [(ngModel)]="chartType">
+            <option value="bar">Bar Chart</option>
+            <option value="line">Line Chart</option>
+            <option value="pie">Pie Chart</option>
+            <option value="doughnut">Doughnut</option>
+        </select>
     </div>
-    <div class="main-panel">
-      <app-header></app-header>
-      <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ps ps--active-y">
-        <div class="container">
-          <h2>Create a Chart</h2>
 
-          <div class="chart-form">
-             <label for="chartType">Chart Type:</label>
-              <select id="chartType" [(ngModel)]="chartType">
-                  <option value="bar">Bar Chart</option>
-                  <option value="line">Line Chart</option>
-                  <option value="pie">Pie Chart</option>
-                  <option value="doughnut">Doughnut</option>
-              </select>
-          </div>
-      
-          <div class="chart-form">
-              <label for="chartData">Chart Name:</label>
-              <input type="text" id="chartData" [(ngModel)]="chartName">
-          </div>
-      
-          <div class="chart-form">
-              <label for="chartData">Chart Data Item:</label>
-              <select id="chartData" [(ngModel)]="chartDataItem" (change)="onDropDownChange()">
-                  <option value="Gender">Gender</option>
-                  <option value="Race">Race</option>
-                  <option value="Level">Level</option>
-                  <option value="Nationality">Nationality</option>
-              </select>
-          </div>
-      
-          <div class="chart-container">
-              <canvas baseChart
-                  [datasets]="[{ data: chartData, label: chartName }]"
-                  [labels]="chartLabels"
-                  [type]="chartType"
-                  [options]="chartOptions">
-              </canvas>
-          </div>
-      
-          <button class="create-button" (click)="createChart()">Create Chart</button>
-      </div>      
-      </main> 
+    <div class="chart-form">
+        <label for="chartData">Chart Name:</label>
+        <input type="text" id="chartData" [(ngModel)]="chartName">
     </div>
-  </div>
-  
+
+    <div class="chart-form">
+        <label for="chartData">Chart Data Item:</label>
+        <select id="chartData" [(ngModel)]="chartDataItem" (change)="onDropDownChange()">
+            <option *ngFor="let option of columns" [value]="option">{{ option }}</option>
+        </select>
+    </div>
+
+    <div class="chart-container">
+        <canvas baseChart [datasets]="[{ data: chartData, label: chartName }]" [labels]="chartLabels" [type]="chartType"
+            [options]="chartOptions">
+        </canvas>
+    </div>
+
+    <button class="create-button" (click)="createChart()">Create Chart</button>
+</div>

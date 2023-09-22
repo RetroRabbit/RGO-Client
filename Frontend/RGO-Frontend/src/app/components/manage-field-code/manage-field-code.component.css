@@ -5,3 +5,44 @@
 .ng-invalid:not(form)  {
     border-left: 5px solid #a94442;
 }
+
+.custom-dropdown {
+    position: relative;
+    width: 200px; 
+  }
+  
+  .custom-dropdown select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+  }
+  
+  .custom-dropdown select option {
+    font-size: 14px;
+  }
+  
+  .custom-dropdown select:focus {
+    outline: none;
+    border-color: #007bff; 
+  }
+  
+  .button-container {
+    margin-top: 10px;
+  }
+  
+  .button-container button {
+    margin-right: 10px;
+    padding: 8px 16px;
+    background-color: #42A948;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .button-container button:hover {
+    background-color: lightgreen;
+  }

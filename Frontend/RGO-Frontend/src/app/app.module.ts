@@ -44,6 +44,8 @@ import { ViewEmployeeComponent } from './components/view-employee/view-employee.
 import { EvaluationsComponent } from './components/evaluations/evaluations.component';
 import { EmployeeEvaluationsComponent } from './components/employee-evaluations/employee-evaluations.component';
 import { TemplateItemsComponent } from './components/template-items/template-items.component';
+import { NewFieldCodeComponent } from './components/new-field-code/new-field-code.component';
+import { UpdateFieldComponent } from './components/update-field/update-field.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,9 @@ import { TemplateItemsComponent } from './components/template-items/template-ite
     ViewEmployeeComponent,
     EvaluationsComponent,
     EmployeeEvaluationsComponent,
-    TemplateItemsComponent
+    TemplateItemsComponent,
+    NewFieldCodeComponent,
+    UpdateFieldComponent
   ],
   imports: [
     BrowserModule,

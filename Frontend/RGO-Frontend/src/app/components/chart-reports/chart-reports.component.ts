@@ -37,4 +37,4 @@ calculatePercentage(value: number): string {
     const percentage: number = (value / total) * 100;
     return percentage.toFixed(2); 
   }
-}
+} 
