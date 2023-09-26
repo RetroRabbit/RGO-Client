@@ -17,18 +17,15 @@
                                     <div class="mb-3">
                                         <label for="name" class="form-label">Name</label>
                                         <input id="name" type="text" class="form-control" formControlName="name" />
-                                        <div *ngIf="newFieldCodeForm?.get('fieldCode.name')?.hasError('required') && newFieldCodeForm?.get('fieldCode.name')?.touched"
-                                            class="text-danger"></div>
                                     </div>
+                                    <small *ngIf="newFieldCodeForm?.get('fieldCode.name')?.dirty && newFieldCodeForm.hasError('required', 'fieldCode.name')" class="text-danger">Name is required</small>
+                                    <small *ngIf="!isUnique && !newFieldCodeForm.hasError('required', 'fieldCode.name') && newFieldCodeForm?.get('fieldCode.name')?.dirty" class="text-danger">Field with this name already exists</small>
                                     <!-- Code field -->
                                     <div class="mb-3">
                                         <label for="code" class="form-label">Code</label>
                                         <input id="code" type="text" class="form-control" formControlName="code" />
-                                        <div *ngIf="newFieldCodeForm?.get('fieldCode.code')?.hasError('required') && newFieldCodeForm.get('fieldCode.code')?.touched"
-                                            class="text-danger">
-                                            Code is required.
-                                        </div>
                                     </div>
+                                    <small *ngIf="newFieldCodeForm?.get('fieldCode.code')?.dirty && newFieldCodeForm.hasError('required', 'fieldCode.code')"  class="text-danger">Code is required</small>
                                     <!-- Description field -->
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Description (optional)</label>
@@ -49,6 +46,7 @@
                                             </option>
                                         </select>
                                     </div>
+                                    <small *ngIf="newFieldCodeForm?.get('fieldCode.status')?.touched && newFieldCodeForm.hasError('required', 'fieldCode.status')"  class="text-danger">Status is required</small>
                                     <!-- Type dropdown -->
                                     <div class="mb-3">
                                         <label for="type" class="form-label">Type</label>
@@ -59,7 +57,7 @@
                                             </option>
                                         </select>
                                     </div>
-
+                                    <small *ngIf="newFieldCodeForm?.get('fieldCode.type')?.touched && newFieldCodeForm.hasError('required', 'fieldCode.type')" class="text-danger">Type is required</small>
                                     <!-- Option input -->
                                     <div class="mb-3" *ngIf="selectedType == 4">
                                         <label for="option" class="form-label">Option</label>
@@ -70,7 +68,6 @@
                                             formControlName="internal">
                                         <label for="internal" class="form-check-label">Internal</label>
                                     </div>
-
                                     <div class="mb-3">
                                         <button type="submit" class="btn btn-primary"
                                             [disabled]="!newFieldCodeForm.valid">Submit</button>
