@@ -1,8 +1,23 @@
 <div class="col-12">
     <div class="m-3 border-bottom">
-      <h2 class="page-heading border-bottom">New Employee</h2>
+      <div class="row">
+        <div class="col-4">
+          <h2 class="page-heading border-bottom">New Employee</h2>
+        </div>
+        <div class="col-8">
+          <div>
+            <button type="button" (click)="toggleAdditional = !toggleAdditional" *ngIf="!toggleAdditional; else HideAdditional">Show</button>
+            <ng-template #HideAdditional>
+              <button type="button" (click)="toggleAdditional = !toggleAdditional" *ngIf="toggleAdditional">Hide</button>
+            </ng-template>
+          </div>
+        </div>
+      </div>
       <div style="overflow: auto">
         <div class="container-fluid">
+          <div>
+            <h5>Requiered Information</h5>
+          </div>
           <form [formGroup]="newEmployeeForm" (submit)="onSubmit()">
             <div class="row">
               <div class="col-sm-6">
@@ -77,7 +92,7 @@
                 <div class="mb-3 row">
                   <div class="col-sm-12">
                     <label class="col-form-label">Employee Type</label> 
-                    <select class="form-control" formControlName="employeeType">
+                    <select class="form-select" formControlName="employeeType">
                       <option *ngFor="let type of employeeTypes" [ngValue]="type">
                         {{type.name}}
                       </option>
@@ -99,6 +114,264 @@
                       Please enter engagement date
                     </div>
                   </div>
+                </div>
+              </div>
+              <hr>
+              <div *ngIf="toggleAdditional">
+                <div>
+                  <h5>Additional Information</h5>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="employeeNumber">Employee Number</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="number" class="form-control" formControlName="employeeNumber">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="taxNumber">Tax Number</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="number" class="form-control" formControlName="taxNumber">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="passportExpirationDate">Passport Expiration Date</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="date" class="form-control" formControlName="passportExpirationDate">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="passportCountryIssue">Passport Country Issue</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="text" class="form-control" formControlName="passportCountryIssue">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="terminationDate">Termination Date</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="date" class="form-control" formControlName="terminationDate">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="reportingLine">Reporting Line</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="text" class="form-control" formControlName="reportingLine">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="disability">Disability</label>
+                        </div>
+                        <div class="col-12">
+                          <label>True</label>
+                          <input type="radio" formControlName="disability" value="True">
+                          <label>False</label>
+                          <input type="radio" formControlName="disability" value="False">
+                          <label>None</label>
+                          <input type="radio" formControlName="disability" value="">
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="newEmployeeForm.value.disability === 'True'">
+                      
+                      <div class="col-6">
+                        <div class="row">
+                        <div class="col-3">
+                          <label for="disabilityNotes">Disability Notes</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="textarea" class="form-control" formControlName="disabilityNotes">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="level">Level</label>
+                        </div>
+                        <!-- Needs to be a drop down -->
+                        <div class="col-12">
+                          <input type="number" class="form-control" formControlName="level">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="notes">Notes</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="textarea" class="form-control" formControlName="notes">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="leaveInterval">Leave Interval</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="number" class="form-control" formControlName="leaveInterval">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="salaryInterval">Salary Interval</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="number" class="form-control" formControlName="salaryInterval">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="payRate">Pay Rate</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="number" class="form-control" formControlName="payRate">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="salary">Salary</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="number" class="form-control" formControlName="salary">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="title">Title</label>
+                        </div>
+                        <!-- Needs to be a dropdown -->
+                        <div class="col-12">
+                          <input type="text" class="form-control" formControlName="title">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="dateOfBirth">Date Of Birth</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="date" class="form-control" formControlName="dateOfBirth">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="countryOfBirth">Country Of Birth</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="text" class="form-control" formControlName="countryOfBirth">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="nationality">Nationality</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="text" class="form-control" formControlName="nationality">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="idNumber">Id Number</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="number" class="form-control" formControlName="idNumber">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="passportNumber">Passport Number</label>
+                        </div>
+                        <div class="col-12">
+                          <input type="number" class="form-control" formControlName="passportNumber">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="race">Race</label>
+                        </div>
+                        <!-- Needs to be a dropdown -->
+                        <div class="col-12">
+                          <select class="form-select" formControleName="race">
+                            <option value="select"></option><option
+                             *ngFor="let race of races" [value]="race">{{race}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="gender">Gender</label>
+                        </div>
+                        <!-- Needs to be a dropdown -->
+                        <div class="col-12">
+                          <!-- <input type="number" class="form-control" formControlName="gender"> -->
+                          <select class="form-select" formControleName="gender">
+                            <option value="select"></option>
+                            <option *ngFor="let gender of genders" [value]="gender">{{gender}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-3">
+                          <label for="photo">Photo</label>
+                        </div>
+                        <!-- Needs to be an upload -->
+                        <div class="col-12">
+                          <input type="text" class="form-control" formControlName="photo">
+                        </div>
+                      </div>
+                    </div>
                 </div>
               </div>
               <div class="mb-3 row">
