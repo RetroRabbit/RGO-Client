@@ -1,0 +1,9 @@
+.custom-button {
+    background-color: rgb(244, 55, 55);
+    transition: background-color 0.3s, box-shadow 0.3s;
+
+    &:hover {
+        background-color: red;
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.1);
+    }
+}

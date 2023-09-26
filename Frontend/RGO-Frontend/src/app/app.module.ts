@@ -41,6 +41,8 @@ import { EmployeeRoleManagerComponent } from './components/employee-role-manager
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 import { ManageFieldCodeComponent } from './components/manage-field-code/manage-field-code.component';
 import { ViewEmployeeComponent } from './components/view-employee/view-employee.component';
+import { NewFieldCodeComponent } from './components/new-field-code/new-field-code.component';
+import { UpdateFieldComponent } from './components/update-field/update-field.component';
 import { EvaluationsComponent } from './components/evaluations/evaluations.component';
 import { EmployeeEvaluationsComponent } from './components/employee-evaluations/employee-evaluations.component';
 import { TemplateItemsComponent } from './components/template-items/template-items.component';
@@ -65,6 +67,8 @@ import { TemplateItemsComponent } from './components/template-items/template-ite
     EvaluationsComponent,
     EmployeeEvaluationsComponent,
     TemplateItemsComponent
+    NewFieldCodeComponent,
+    UpdateFieldComponent
   ],
   imports: [
     BrowserModule,

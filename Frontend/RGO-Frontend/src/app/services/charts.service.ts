@@ -25,7 +25,20 @@ export class ChartService {
 
   getChartDataByType(dataType: string): Observable<any> {
     const queryParams = `?dataType=${dataType}`;
-    return this.httpClient.get<any>(`${API.HttpBaseURL}/chart/get/chartdata/${queryParams}`);
+    return this.httpClient.get<any>(`${API.HttpBaseURL}/chart/data/${queryParams}`);
+  }
+
+  updateChart(dataType: Chart): Observable<Chart> {
+  return this.httpClient.put<Chart>(`${API.HttpBaseURL}/chart/update`, dataType);
+  }
+ 
+  deleteChart(chartId: number): Observable<any> {
+    const queryParams = `?Id=${chartId}`;
+    return this.httpClient.delete<any>(`${API.HttpBaseURL}/chart/delete${queryParams}`);
+  }
+
+  getColumns(): Observable<string[]> {
+    return this.httpClient.get<string[]>(`${API.HttpBaseURL}/chart/column`);
   }
 
 }

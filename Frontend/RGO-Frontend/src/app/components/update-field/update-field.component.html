@@ -1,0 +1,85 @@
+<div>
+    <div class="container-fluid">
+        <form [formGroup]="newFieldCodeForm" (submit)="onSubmit(); $event.preventDefault()">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div formGroupName="fieldCode">
+                        <!-- Name field -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input id="name" type="text" class="form-control" formControlName="name" />
+                        </div>
+                        <small *ngIf="newFieldCodeForm?.get('fieldCode.name')?.dirty || newFieldCodeForm.hasError('required', 'fieldCode.name')" class="text-danger">Name is required</small>
+
+                        <!-- Code field -->
+                        <div class="mb-3">
+                            <label for="code" class="form-label">Code</label>
+                            <input id="code" type="text" class="form-control" formControlName="code" />
+                        </div>
+                        <small *ngIf="newFieldCodeForm?.get('fieldCode.code')?.dirty || newFieldCodeForm.hasError('required', 'fieldCode.code')" class="text-danger">Code is required</small>
+                        <!-- Description field -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description (optional)</label>
+                            <input id="description" type="text" class="form-control" formControlName="description" />
+                        </div>
+                        <!-- Regex field -->
+                        <div class="mb-3">
+                            <label for="regex" class="form-label">RegEx (optional)</label>
+                            <input id="regex" type="text" class="form-control" formControlName="regex" />
+                        </div>
+                        <!-- Status dropdown -->
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select id="status" class="form-control" formControlName="status">
+                                <option *ngFor="let status of statuses" [value]="status.id">
+                                    {{ status.value}}
+                                </option>
+                            </select>
+                        </div>
+                        <!-- Type dropdown -->
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Type</label>
+                            <select type="text" class="form-control" formControlName="type" [(ngModel)]="selectedType">
+                                <option *ngFor="let type of dataTypes" [value]="type.id">
+                                    {{type.value}}
+                                </option>
+                            </select>
+                        </div>
+                        <!-- Option input -->
+                        <div class="mb-3" *ngIf="selectedType == 4">
+                            <label for="option" class="form-label">Option</label>
+                            <input id="option" type="text" class="form-control" formControlName="option" />
+                        </div>
+                        <div class="mb-3">
+                            <input id="internal" type="checkbox" class="form-check-input" formControlName="internal">
+                            <label for="internal" class="form-check-label">Internal</label>
+                        </div>
+                        <div class="mb-3" *ngIf="isUpdateClicked == false && !isArchiveClicked">
+                            <div class="d-flex">
+                                <div class="mr-2">
+                                    <button type="button" (click)="onClick()" class="btn btn-primary">Update</button>
+                                </div>
+                                <div>
+                                    <a href="/home" (click)="confirmArchive($event)">
+                                        <button type="button" class="btn btn-primary custom-button">Archive</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 d-flex" *ngIf="isUpdateClicked == true">
+                            <button type="submit" class="btn btn-primary"
+                              [disabled]="!newFieldCodeForm.valid" >Submit</button>
+                            <button type="button" (click)="onCancel()"
+                             class="btn btn-primary custom-button">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="mb-3">
+            <a href="/home">
+                <button class="btn btn-primary">Back</button>
+            </a>
+        </div>
+    </div>
+</div>
