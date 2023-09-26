@@ -70,7 +70,6 @@ export class UpdateFieldComponent {
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode } = this.newFieldCodeForm.value;
-      const optionValue = fieldCode.option;
       const optionsArray = this.options.value.map((optionValue: any, index: number) => {
         return {
           id: index,
@@ -78,21 +77,28 @@ export class UpdateFieldComponent {
           option: optionValue
         };
       });
+  
+      const existingOptions = this.selectedFieldCode?.options?.map(option => option.option) || [];
+      const optionsToRemove = existingOptions.filter(option => !optionsArray.some((opt: any) => opt.option === option));
+      const updatedOptions = optionsArray.filter((option: any) => !optionsToRemove.includes(option.option));
+  
       const fieldCodeDto = {
-        id: this.selectedFieldCode?.id,
+        id: this.selectedFieldCode?.id || 0,
         code: fieldCode.code,
         name: fieldCode.name,
         description: fieldCode.description,
         regex: fieldCode.regex,
-        type: parseInt(this.selectedType),
-        status: parseInt(fieldCode.status),
+        type: parseInt(this.selectedType, 10),
+        status: parseInt(fieldCode.status, 10),
         internal: fieldCode.internal,
-        internalTable: fieldCode.internalTable,
-        options: optionsArray
+        internalTable: fieldCode.internalTable || '',
+        options: updatedOptions.map((opt: any) => opt.option)
       }
+  
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
           this.toast.success({ detail: "Field Details updated!", position: 'topRight' })
+          this.selectedFieldCode = data;
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
@@ -100,7 +106,7 @@ export class UpdateFieldComponent {
         }
       });
     }
-  }
+  } 
 
   onCancel() {
     this.isUpdateClicked = false;
@@ -138,7 +144,6 @@ export class UpdateFieldComponent {
       this.initializeForm();
   
       const optionsArray = this.newFieldCodeForm.get('fieldCode.options') as FormArray;
-      
   
       if (this.selectedFieldCode?.options) {
         this.selectedFieldCode.options.forEach(option => {
