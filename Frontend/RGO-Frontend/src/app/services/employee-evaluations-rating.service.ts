@@ -11,6 +11,6 @@ export class EmployeeEvaluationsRatingService {
   constructor(private httpClient: HttpClient) { }
 
   getall(evaluation: any): Observable<any[]> {
-    return this.httpClient.post<any[]>(`${API.HttpBaseURL}/employeeevaluationrating/getall`, evaluation)
+    return this.httpClient.post<any[]>(`${API.HttpBaseURL}/evaluationrating/getall`, evaluation)
   }
 }

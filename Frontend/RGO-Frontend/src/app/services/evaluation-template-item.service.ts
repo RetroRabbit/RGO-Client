@@ -12,15 +12,15 @@ export class EvaluationTemplateItemService {
 
   getAll(template: string | null = null): Observable<any[]> {
     return template !== null
-    ? this.httpClient.get<any[]>(`${API.HttpBaseURL}/employeeevaluationitem/getall?template=${encodeURIComponent(template)}`)
-    : this.httpClient.get<any[]>(`${API.HttpBaseURL}/employeeevaluationitem/getall`)
+    ? this.httpClient.get<any[]>(`${API.HttpBaseURL}/templateitem/getall?template=${encodeURIComponent(template)}`)
+    : this.httpClient.get<any[]>(`${API.HttpBaseURL}/templateitem/getall`)
   }
   
   save(template: string, section: string, question: string): Observable<any> {
-    return this.httpClient.post<any>(`${API.HttpBaseURL}/employeeevaluationitem/save?template=${encodeURIComponent(template)}&section=${encodeURIComponent(section)}&question=${encodeURIComponent(question)}`, { })
+    return this.httpClient.post<any>(`${API.HttpBaseURL}/templateitem/save?template=${encodeURIComponent(template)}&section=${encodeURIComponent(section)}&question=${encodeURIComponent(question)}`, { })
   }
 
   delete(template: string, section: string, question: string): Observable<any> {
-    return this.httpClient.delete<any>(`${API.HttpBaseURL}/employeeevaluationitem/delete?template=${encodeURIComponent(template)}&section=${encodeURIComponent(section)}&question=${encodeURIComponent(question)}`)
+    return this.httpClient.delete<any>(`${API.HttpBaseURL}/templateitem/delete?template=${encodeURIComponent(template)}&section=${encodeURIComponent(section)}&question=${encodeURIComponent(question)}`)
   }
 }

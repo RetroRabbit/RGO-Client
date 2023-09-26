@@ -10,6 +10,6 @@ export class EvaluationTemplateService {
   constructor(private httpClient: HttpClient) { }
 
   getAll() {
-    return this.httpClient.get<any[]>(`${API.HttpBaseURL}/employeeevaluationtemplate/getall`)
+    return this.httpClient.get<any[]>(`${API.HttpBaseURL}/evaluationtemplate/getall`)
   }
 }
