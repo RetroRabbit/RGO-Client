@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { statuses } from 'src/app/models/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
+import { FieldCodeOptions } from 'src/app/models/field-code-options.interface';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 
@@ -70,10 +71,10 @@ export class UpdateFieldComponent {
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode } = this.newFieldCodeForm.value;
-      const optionsArray = this.options.value.map((optionValue: any, index: number) => {
+      const optionsArray = this.options.value.map((optionValue: any, index : number) => {
         return {
-          id: index,
-          fieldCodeId: 0,
+          id: optionValue.id,
+          fieldCodeId: this.selectedFieldCode?.id,
           option: optionValue
         };
       });
@@ -83,23 +84,17 @@ export class UpdateFieldComponent {
       const updatedOptions = optionsArray.filter((option: any) => !optionsToRemove.includes(option.option));
   
       const fieldCodeDto = {
-        id: this.selectedFieldCode?.id || 0,
+        id: this.selectedFieldCode?.id,
         code: fieldCode.code,
         name: fieldCode.name,
         description: fieldCode.description,
         regex: fieldCode.regex,
-        type: parseInt(this.selectedType, 10),
-        status: parseInt(fieldCode.status, 10),
+        type: parseInt(this.selectedType),
+        status: parseInt(fieldCode.status),
         internal: fieldCode.internal,
         internalTable: fieldCode.internalTable || '',
-        options: updatedOptions.map((opt: any) => opt.option)
+        options: updatedOptions.map((opt: any) => opt)
       }
-      console.log(optionsArray)
-      console.log(existingOptions)//remove before PR
-      console.log(optionsToRemove)//remove before PR
-      console.log(updatedOptions)//remove before PR
-      console.log(fieldCodeDto);//remove before PR
-
   
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
@@ -108,6 +103,7 @@ export class UpdateFieldComponent {
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
+          console.log(error);
           this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
         }
       });
