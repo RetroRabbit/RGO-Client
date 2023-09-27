@@ -94,6 +94,12 @@ export class UpdateFieldComponent {
         internalTable: fieldCode.internalTable || '',
         options: updatedOptions.map((opt: any) => opt.option)
       }
+      console.log(optionsArray)
+      console.log(existingOptions)//remove before PR
+      console.log(optionsToRemove)//remove before PR
+      console.log(updatedOptions)//remove before PR
+      console.log(fieldCodeDto);//remove before PR
+
   
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
