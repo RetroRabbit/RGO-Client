@@ -71,11 +71,12 @@ export class UpdateFieldComponent {
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode } = this.newFieldCodeForm.value;
-      const optionsArray = this.options.value.map((optionValue: any, index : number) => {
+      
+      const optionsArray = this.options.value.map((optionValue: any) => {
         return {
-          id: optionValue.id,
+          id: 0,
           fieldCodeId: this.selectedFieldCode?.id,
-          option: optionValue
+          option: optionValue,
         };
       });
   
