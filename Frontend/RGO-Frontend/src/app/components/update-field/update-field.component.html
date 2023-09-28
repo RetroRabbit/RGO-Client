@@ -45,7 +45,7 @@
                                 </option>
                             </select>
                         </div>
-                        <!-- Add Option -->
+
                         <div class="mb-3" *ngIf="selectedType == 4">
                             <label for="option" class="form-label">Add Option</label>
                             <button id="btnAddOption" class="btn btn-secondary" type="button" (click)="addOption()">
@@ -53,7 +53,7 @@
                             </button>
                         </div>
         
-                        <!-- Option inputs -->
+                        
                         <div formArrayName="options" *ngIf="selectedType == 4">
                             <div *ngFor="let option of options.controls; let i = index">
                                 <div class="input-group">

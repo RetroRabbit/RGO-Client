@@ -77,11 +77,9 @@ export class ManageFieldCodeComponent {
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
-          console.log("Form submitted successfully!", data);
         },
         error: (error) => {
-          console.log(fieldCodeDto);
-          console.error("Error occurred while submitting form!", error);
+          
         }
       });
     } else {

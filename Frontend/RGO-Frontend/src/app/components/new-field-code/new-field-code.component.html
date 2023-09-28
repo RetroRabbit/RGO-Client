@@ -18,7 +18,6 @@
                                         <label for="name" class="form-label">Name</label>
                                         <input id="name" type="text" class="form-control" formControlName="name" />
                                     </div>
-                                    <!-- Name error messages -->
                                     <small *ngIf="newFieldCodeForm.get('fieldCode.name')?.dirty && newFieldCodeForm.hasError('required', 'fieldCode.name')" class="text-danger">Name is required</small>
                                     <small *ngIf="!isUnique && !newFieldCodeForm.hasError('required', 'fieldCode.name') && newFieldCodeForm.get('fieldCode.name')?.dirty" class="text-danger">Field with this name already exists</small>
 
@@ -27,16 +26,13 @@
                                         <label for="code" class="form-label">Code</label>
                                         <input id="code" type="text" class="form-control" formControlName="code" />
                                     </div>
-                                    <!-- Code error messages -->
                                     <small *ngIf="newFieldCodeForm.get('fieldCode.code')?.dirty && newFieldCodeForm.hasError('required', 'fieldCode.code')"  class="text-danger">Code is required</small>
 
-                                    <!-- Description field -->
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Description (optional)</label>
                                         <input id="description" type="text" class="form-control" formControlName="description" />
                                     </div>
                                     
-                                    <!-- Regex field -->
                                     <div class="mb-3">
                                         <label for="regex" class="form-label">RegEx (optional)</label>
                                         <input id="regex" type="text" class="form-control" formControlName="regex" />
@@ -51,10 +47,8 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <!-- Status error messages -->
                                     <small *ngIf="newFieldCodeForm.get('fieldCode.status')?.touched && newFieldCodeForm.hasError('required', 'fieldCode.status')"  class="text-danger">Status is required</small>
                                     
-                                    <!-- Type dropdown -->
                                     <div class="mb-3">
                                         <label for="type" class="form-label">Type</label>
                                         <select type="text" class="form-control" formControlName="type" [(ngModel)]="selectedType">
@@ -63,10 +57,10 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <!-- Type error messages -->
+
                                     <small *ngIf="newFieldCodeForm.get('fieldCode.type')?.touched && newFieldCodeForm.hasError('required', 'fieldCode.type')" class="text-danger">Type is required</small>
                                     
-                                    <!-- Add Option -->
+
                                     <div class="mb-3" *ngIf="selectedType == 4">
                                         <label for="option" class="form-label">Add Option</label>
                                         <button id="btnAddOption" class="btn btn-secondary" type="button" (click)="addOption()">
@@ -74,7 +68,7 @@
                                         </button>
                                     </div>
                                     
-                                    <!-- Option inputs -->
+                                    
                                     <div formArrayName="options" *ngIf="selectedType == 4">
                                         <div *ngFor="let option of options.controls; let i = index">
                                             <div class="input-group">

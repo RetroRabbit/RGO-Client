@@ -90,7 +90,7 @@ export class NewFieldCodeComponent {
         internalTable: fieldCode.internalTable,
         options:optionsArray
       };
-      console.log(optionsArray)
+      
   
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
               next: (data) => {

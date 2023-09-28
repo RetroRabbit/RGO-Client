@@ -104,7 +104,7 @@ export class UpdateFieldComponent {
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
-          console.log(error);
+          
           this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
         }
       });
