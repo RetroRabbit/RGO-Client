@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
 import { statuses } from 'src/app/models/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
@@ -55,10 +55,29 @@ export class NewFieldCodeComponent {
     this.isUnique = true;
   }
 
+  get options() {
+    return (this.newFieldCodeForm.get('fieldCode.options') as FormArray);
+  }
+
+  addOption() {
+    this.options.push(this.fb.control(''));
+  }
+
+  removeOption(index: number) {
+    this.options.removeAt(index);
+  }
+
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode } = this.newFieldCodeForm.value;
       const optionValue = fieldCode.option;
+      const optionsArray = this.options.value.map((optionValue: any, index: number) => {
+        return {
+          id: index,
+          fieldCodeId: 0,
+          option: optionValue
+        };
+      });
       const fieldCodeDto = {
         id: 0,
         code: fieldCode.code,
@@ -69,14 +88,9 @@ export class NewFieldCodeComponent {
         status: parseInt(fieldCode.status),
         internal: fieldCode.internal,
         internalTable: fieldCode.internalTable,
-        options:optionValue != "" ? [ 
-          {
-            id: 0,
-            fieldCodeId: 0,
-            option: optionValue
-          }
-        ] : []
+        options:optionsArray
       };
+      
   
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
               next: (data) => {
