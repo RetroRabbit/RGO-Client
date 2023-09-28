@@ -4,5 +4,4 @@ export interface EvaluationInput {
     employeeEmail: string,
     template: string,
     subject: string,
-    comment: string,
 }
