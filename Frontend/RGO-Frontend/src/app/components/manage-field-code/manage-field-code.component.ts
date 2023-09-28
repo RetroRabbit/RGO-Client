@@ -97,7 +97,7 @@ export class ManageFieldCodeComponent {
         this.fieldCodes = fieldCodes;
       },
       error: error => {
-        console.error(error);
+        
       }
     });
   }
