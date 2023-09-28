@@ -13,6 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
   selectedPage : string = this.cookieService.get("currentlPage") != "Dashboard" ?this.cookieService.get("currentlPage") :"Dashboard";
+  selectedEvaluation: any  | null = null
 
   constructor(
     private store: Store<{app: Token}>,
@@ -39,5 +40,9 @@ export class HomeComponent {
 
   handleSelectedItem() {
     this.selectedPage = this.cookieService.get('currentPage');
+  }
+
+  handleSelectedEval(item: any){
+    this.selectedEvaluation = item
   }
 }

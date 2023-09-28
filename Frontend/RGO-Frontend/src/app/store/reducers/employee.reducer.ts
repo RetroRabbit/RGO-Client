@@ -12,8 +12,8 @@ export const initialState: EmployeeState = {
     AllEmployees: [],
     selectedEmployee: {
         id: 0,
-        firstName: "",
-        lastName: "",
+        name: "",
+        surname: "",
         email: "",
         joinDate: new Date,
     }
