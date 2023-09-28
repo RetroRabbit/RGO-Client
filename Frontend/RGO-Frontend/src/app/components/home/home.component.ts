@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { Token } from 'src/app/models/token.interface';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { Eval } from '../employee-evaluations/employee-evaluations.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
