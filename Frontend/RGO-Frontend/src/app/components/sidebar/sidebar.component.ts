@@ -17,7 +17,9 @@ export const ROUTES: RouteInfo[] = [
     { title: 'Charts', icon: 'analytics', requiredRole: [ ] },
     { title: 'Role Manager', icon: 'event_seat', requiredRole: [ 'Admin', 'SuperAdmin' ] },
     { title: 'Manage Field', icon: 'edit_note', requiredRole: [ ]},
-    { title: 'View Employee', icon: 'people', requiredRole: [ 'Admin', 'SuperAdmin' ]}
+    { title: 'View Employee', icon: 'people', requiredRole: [ 'Admin', 'SuperAdmin' ]},
+    { title: 'Evaluations', icon: 'assignment', requiredRole: [ ] },
+    { title: 'Evaluation Items', icon: 'assignment', requiredRole: [ ] },
 ];
 
 @Component({
@@ -31,7 +33,8 @@ export class SidebarComponent implements OnInit {
   menuItems: RouteInfo[] = [];
   type$: Observable<Token> = this.store.select('app');
 
-  constructor(private store: Store<{ app: Token }>,
+  constructor(
+    private store: Store<{ app: Token }>,
     private cookieService: CookieService) { }
 
   ngOnInit() {

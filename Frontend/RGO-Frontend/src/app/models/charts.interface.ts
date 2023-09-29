@@ -1,7 +1,8 @@
 export interface Chart {
-    Id: number;
-    Name: string;
-    Type: string;
-    Labels: string[];
-    Data: number[];
+    id: number;
+    name: string;
+    type: string;
+    dataType:string;
+    labels: string[];
+    data: number[];
   }

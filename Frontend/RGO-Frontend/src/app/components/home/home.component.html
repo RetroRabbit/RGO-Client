@@ -33,6 +33,15 @@
       <div *ngIf="cookieService.get('currentPage') === 'View Employee'">
         <app-view-employee></app-view-employee>
       </div>
+      <div *ngIf="cookieService.get('currentPage') == 'Evaluations'">
+        <app-employee-evaluations (selectedEvaluation)="handleSelectedEval($event)"></app-employee-evaluations>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') == 'Evaluation Form'">
+        <app-evaluations [selectedEvaluation]="selectedEvaluation"></app-evaluations>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') == 'Evaluation Items'">
+        <app-template-items></app-template-items>
+      </div>
     </main>
   </div>
 </div>

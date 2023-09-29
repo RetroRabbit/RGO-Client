@@ -19,7 +19,7 @@ export class EmployeeRoleService {
   }
 
   addRole(email: string, role: string): Observable<any> {
-    return this.httpClient.post<any>(`${API.HttpBaseURL}/employeerolemanager/add?email=${encodeURIComponent(email)}&newRole=${encodeURIComponent(role)}`, {});
+    return this.httpClient.post<any>(`${API.HttpBaseURL}/employeerolemanager/add?email=${encodeURIComponent(email)}&role=${encodeURIComponent(role)}`, {});
   }
 
   removeRole(email: string, role: string): Observable<any> {

@@ -63,7 +63,6 @@ export class SignInComponent {
         this.router.navigateByUrl('/home');
       },
       error:(error) => {
-        console.log(typeof error);
       }
     })
   }
