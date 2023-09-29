@@ -11,7 +11,7 @@ import { EmployeeService } from 'src/app/services/employee.service';
 })
 export class NewEmployeeComponent implements OnInit {
 
-  constructor(private employeeService: EmployeeService, 
+  constructor(private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService){}
 
     employeeTypes: EmployeeType[] = [];

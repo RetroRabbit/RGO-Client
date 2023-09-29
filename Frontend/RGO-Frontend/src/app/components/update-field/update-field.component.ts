@@ -1,9 +1,10 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { statuses } from 'src/app/models/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
+import { FieldCodeOptions } from 'src/app/models/field-code-options.interface';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 
@@ -50,6 +51,18 @@ export class UpdateFieldComponent {
     });
   }
 
+  get options() {
+    return (this.newFieldCodeForm.get('fieldCode.options') as FormArray);
+  }
+
+  addOption() {
+    this.options.push(this.fb.control(''));
+  }  
+  
+  removeOption(index: number) {
+    this.options.removeAt(index);
+  }
+
   onClick() {
     this.isUpdateClicked = true;
     this.newFieldCodeForm.enable();
@@ -58,8 +71,19 @@ export class UpdateFieldComponent {
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode } = this.newFieldCodeForm.value;
-      const optionValue = fieldCode.option;
-
+      
+      const optionsArray = this.options.value.map((optionValue: any) => {
+        return {
+          id: 0,
+          fieldCodeId: this.selectedFieldCode?.id,
+          option: optionValue,
+        };
+      });
+  
+      const existingOptions = this.selectedFieldCode?.options?.map(option => option.option) || [];
+      const optionsToRemove = existingOptions.filter(option => !optionsArray.some((opt: any) => opt.option === option));
+      const updatedOptions = optionsArray.filter((option: any) => !optionsToRemove.includes(option.option));
+  
       const fieldCodeDto = {
         id: this.selectedFieldCode?.id,
         code: fieldCode.code,
@@ -69,26 +93,23 @@ export class UpdateFieldComponent {
         type: parseInt(this.selectedType),
         status: parseInt(fieldCode.status),
         internal: fieldCode.internal,
-        internalTable: fieldCode.internalTable,
-        options: optionValue != "" ? [ 
-          {
-            id: 0,
-            fieldCodeId: this.selectedFieldCode?.id,
-            option: optionValue
-          }
-        ] : []
+        internalTable: fieldCode.internalTable || '',
+        options: updatedOptions.map((opt: any) => opt)
       }
+  
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
           this.toast.success({ detail: "Field Details updated!", position: 'topRight' })
+          this.selectedFieldCode = data;
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
+          
           this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
         }
       });
     }
-  }
+  } 
 
   onCancel() {
     this.isUpdateClicked = false;
@@ -124,6 +145,14 @@ export class UpdateFieldComponent {
     if (changes['selectedFieldCode']) {
       this.newFieldCodeForm.reset();
       this.initializeForm();
+  
+      const optionsArray = this.newFieldCodeForm.get('fieldCode.options') as FormArray;
+  
+      if (this.selectedFieldCode?.options) {
+        this.selectedFieldCode.options.forEach(option => {
+          optionsArray.push(this.fb.control(option.option));
+        });
+      }
     }
-  }
+  }  
 }
