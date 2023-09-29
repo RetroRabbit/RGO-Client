@@ -1,388 +1,399 @@
 <div class="col-12">
-    <div class="m-3 border-bottom">
-      <div class="row">
-        <div class="col-4">
-          <h2 class="page-heading border-bottom">New Employee</h2>
-        </div>
-        <div class="col-8">
-          <div>
-            <button type="button" (click)="toggleAdditional = !toggleAdditional" *ngIf="!toggleAdditional; else HideAdditional">Show</button>
-            <ng-template #HideAdditional>
-              <button type="button" (click)="toggleAdditional = !toggleAdditional" *ngIf="toggleAdditional">Hide</button>
-            </ng-template>
-          </div>
-        </div>
+  <div class="m-3 border-bottom">
+    <div class="row">
+      <div class="col-4">
+        <h2 class="page-heading border-bottom">New Employee</h2>
       </div>
-      <div style="overflow: auto">
-        <div class="container-fluid">
-          <div>
-            <h5>Requiered Information</h5>
-          </div>
-          <form [formGroup]="newEmployeeForm" (submit)="onSubmit()">
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">First Name</label>
-                    <input type="text" class="form-control" formControlName="name" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['name'].invalid && (newEmployeeForm.controls['name'].dirty || newEmployeeForm.controls['name'].touched)"
-                      class="alert">
-                      Please enter first name
-                    </div>
+      <div class="col-8">
+        
+      </div>
+    </div>
+    <div style="overflow: auto">
+      <div class="container-fluid">
+        <div>
+          <h5>Requiered Information</h5>
+        </div>
+        <form [formGroup]="newEmployeeForm" (submit)="onSubmit()">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="mb-3 row">
+                <div class="col-sm-12">
+                  <label class="col-form-label">First Name</label>
+                  <input type="text" class="form-control" formControlName="name" />
+                  <div
+                    *ngIf="newEmployeeForm.controls['name'].invalid && (newEmployeeForm.controls['name'].dirty || newEmployeeForm.controls['name'].touched)"
+                    class="alert">
+                    Please enter first name
                   </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Initials</label>
-                    <input type="text" class="form-control" formControlName="initials" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['initials'].invalid && (newEmployeeForm.controls['initials'].dirty || newEmployeeForm.controls['initials'].touched)"
-                      class="alert">
-                      Please enter initials
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Surname</label>
-                    <input type="text" class="form-control" formControlName="surname" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['surname'].invalid && (newEmployeeForm.controls['surname'].dirty || newEmployeeForm.controls['surname'].touched)"
-                      class="alert">
-                      Please enter surname
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                    <div class="col-sm-12">
-                      <label class="col-form-label">Personal Email</label>
-                      <input type="email" class="form-control" formControlName="personalEmail" />
-                      <div
-                        *ngIf="newEmployeeForm.controls['personalEmail'].invalid && (newEmployeeForm.controls['personalEmail'].dirty || newEmployeeForm.controls['personalEmail'].touched)"
-                        class="alert">
-                        Please enter an email address
-                      </div>
-                    </div>
-                  </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Cellphone number</label>
-                    <input type="number" class="form-control" formControlName="cellphoneNo" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['cellphoneNo'].invalid && (newEmployeeForm.controls['cellphoneNo'].dirty || newEmployeeForm.controls['cellphoneNo'].touched)"
-                      class="alert">
-                      Please enter cellphone number
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Email</label>
-                    <input type="text" class="form-control" formControlName="email" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['email'].invalid && (newEmployeeForm.controls['email'].dirty || newEmployeeForm.controls['email'].touched)"
-                      class="alert">
-                      Email must end with @retrorabbit.co.za
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Employee Type</label> 
-                    <select class="form-select" formControlName="employeeType">
-                      <option *ngFor="let type of employeeTypes" [ngValue]="type">
-                        {{type.name}}
-                      </option>
-                    </select>
-                    <div
-                      *ngIf="newEmployeeForm.controls['employeeType'].invalid && (newEmployeeForm.controls['employeeType'].dirty || newEmployeeForm.controls['employeeType'].touched)"
-                      class="alert">
-                      Please enter employee type
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Engagement Date</label>
-                    <input type="date" class="form-control" formControlName="engagementDate" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['engagementDate'].invalid && (newEmployeeForm.controls['engagementDate'].dirty || newEmployeeForm.controls['engagementDate'].touched)"
-                      class="alert">
-                      Please enter engagement date
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <hr>
-              <div *ngIf="toggleAdditional">
-                <div>
-                  <h5>Additional Information</h5>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="employeeNumber">Employee Number</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="number" class="form-control" formControlName="employeeNumber">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="taxNumber">Tax Number</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="number" class="form-control" formControlName="taxNumber">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="passportExpirationDate">Passport Expiration Date</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="date" class="form-control" formControlName="passportExpirationDate">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="passportCountryIssue">Passport Country Issue</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="text" class="form-control" formControlName="passportCountryIssue">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="terminationDate">Termination Date</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="date" class="form-control" formControlName="terminationDate">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="reportingLine">Reporting Line</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="text" class="form-control" formControlName="reportingLine">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="disability">Disability</label>
-                        </div>
-                        <div class="col-12">
-                          <label>True</label>
-                          <input type="radio" formControlName="disability" value="True">
-                          <label>False</label>
-                          <input type="radio" formControlName="disability" value="False">
-                          <label>None</label>
-                          <input type="radio" formControlName="disability" value="">
-                        </div>
-                      </div>
-                    </div>
-                    <div *ngIf="newEmployeeForm.value.disability === 'True'">
-                      
-                      <div class="col-6">
-                        <div class="row">
-                        <div class="col-3">
-                          <label for="disabilityNotes">Disability Notes</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="textarea" class="form-control" formControlName="disabilityNotes">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="level">Level</label>
-                        </div>
-                        <!-- Needs to be a drop down -->
-                        <div class="col-12">
-                          <input type="number" class="form-control" formControlName="level">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="notes">Notes</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="textarea" class="form-control" formControlName="notes">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="leaveInterval">Leave Interval</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="number" class="form-control" formControlName="leaveInterval">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="salaryInterval">Salary Interval</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="number" class="form-control" formControlName="salaryInterval">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="payRate">Pay Rate</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="number" class="form-control" formControlName="payRate">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="salary">Salary</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="number" class="form-control" formControlName="salary">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="title">Title</label>
-                        </div>
-                        <!-- Needs to be a dropdown -->
-                        <div class="col-12">
-                          <input type="text" class="form-control" formControlName="title">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="dateOfBirth">Date Of Birth</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="date" class="form-control" formControlName="dateOfBirth">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="countryOfBirth">Country Of Birth</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="text" class="form-control" formControlName="countryOfBirth">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="nationality">Nationality</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="text" class="form-control" formControlName="nationality">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="idNumber">Id Number</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="number" class="form-control" formControlName="idNumber">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="passportNumber">Passport Number</label>
-                        </div>
-                        <div class="col-12">
-                          <input type="number" class="form-control" formControlName="passportNumber">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="race">Race</label>
-                        </div>
-                        <!-- Needs to be a dropdown -->
-                        <div class="col-12">
-                          <select class="form-select" formControleName="race">
-                            <option value="select"></option><option
-                             *ngFor="let race of races" [value]="race">{{race}}</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="gender">Gender</label>
-                        </div>
-                        <!-- Needs to be a dropdown -->
-                        <div class="col-12">
-                          <!-- <input type="number" class="form-control" formControlName="gender"> -->
-                          <select class="form-select" formControleName="gender">
-                            <option value="select"></option>
-                            <option *ngFor="let gender of genders" [value]="gender">{{gender}}</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="photo">Photo</label>
-                        </div>
-                        <!-- Needs to be an upload -->
-                        <div class="col-12">
-                          <input type="text" class="form-control" formControlName="photo">
-                        </div>
-                      </div>
-                    </div>
                 </div>
               </div>
               <div class="mb-3 row">
                 <div class="col-sm-12">
-                <br><br>
-                  <button type="submit" class="form-control">Submit</button>
+                  <label class="col-form-label">Initials</label>
+                  <input type="text" class="form-control" formControlName="initials" />
+                  <div
+                    *ngIf="newEmployeeForm.controls['initials'].invalid && (newEmployeeForm.controls['initials'].dirty || newEmployeeForm.controls['initials'].touched)"
+                    class="alert">
+                    Please enter initials
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <div class="col-sm-12">
+                  <label class="col-form-label">Surname</label>
+                  <input type="text" class="form-control" formControlName="surname" />
+                  <div
+                    *ngIf="newEmployeeForm.controls['surname'].invalid && (newEmployeeForm.controls['surname'].dirty || newEmployeeForm.controls['surname'].touched)"
+                    class="alert">
+                    Please enter surname
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <div class="col-sm-12">
+                  <label class="col-form-label">Personal Email</label>
+                  <input type="email" class="form-control" formControlName="personalEmail" />
+                  <div
+                    *ngIf="newEmployeeForm.controls['personalEmail'].invalid && (newEmployeeForm.controls['personalEmail'].dirty || newEmployeeForm.controls['personalEmail'].touched)"
+                    class="alert">
+                    Please enter an email address
+                  </div>
                 </div>
               </div>
             </div>
-          </form>
-        </div>
+            <div class="col-sm-6">
+              <div class="mb-3 row">
+                <div class="col-sm-12">
+                  <label class="col-form-label">Cellphone number</label>
+                  <input type="number" class="form-control" formControlName="cellphoneNo" />
+                  <div
+                    *ngIf="newEmployeeForm.controls['cellphoneNo'].invalid && (newEmployeeForm.controls['cellphoneNo'].dirty || newEmployeeForm.controls['cellphoneNo'].touched)"
+                    class="alert">
+                    Please enter cellphone number
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <div class="col-sm-12">
+                  <label class="col-form-label">Email</label>
+                  <input type="text" class="form-control" formControlName="email" />
+                  <div
+                    *ngIf="newEmployeeForm.controls['email'].invalid && (newEmployeeForm.controls['email'].dirty || newEmployeeForm.controls['email'].touched)"
+                    class="alert">
+                    Email must end with @retrorabbit.co.za
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <div class="col-sm-12">
+                  <label class="col-form-label">Employee Type</label>
+                  <select class="form-select" formControlName="employeeType">
+                    <option *ngFor="let type of employeeTypes" [ngValue]="type">
+                      {{type.name}}
+                    </option>
+                  </select>
+                  <div
+                    *ngIf="newEmployeeForm.controls['employeeType'].invalid && (newEmployeeForm.controls['employeeType'].dirty || newEmployeeForm.controls['employeeType'].touched)"
+                    class="alert">
+                    Please enter employee type
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <div class="col-sm-12">
+                  <label class="col-form-label">Engagement Date</label>
+                  <input type="date" class="form-control" formControlName="engagementDate" />
+                  <div
+                    *ngIf="newEmployeeForm.controls['engagementDate'].invalid && (newEmployeeForm.controls['engagementDate'].dirty || newEmployeeForm.controls['engagementDate'].touched)"
+                    class="alert">
+                    Please enter engagement date
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div>
+              <h5>Additional Information</h5>
+              <div>
+                <button type="button" class="btn" (click)="toggleAdditional = !toggleAdditional"
+                  *ngIf="!toggleAdditional; else HideAdditional">Show</button>
+                <ng-template #HideAdditional>
+                  <button type="button" class="btn" (click)="toggleAdditional = !toggleAdditional"
+                    *ngIf="toggleAdditional">Hide</button>
+                </ng-template>
+              </div>
+            </div>
+            <div *ngIf="toggleAdditional">
+              <div class="row">
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="employeeNumber">Employee Number</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="number" class="form-control" formControlName="employeeNumber">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="taxNumber">Tax Number</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="number" class="form-control" formControlName="taxNumber">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="passportExpirationDate">Passport Expiration Date</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="date" class="form-control" formControlName="passportExpirationDate">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="passportCountryIssue">Passport Country Issue</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="text" class="form-control" formControlName="passportCountryIssue">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="terminationDate">Termination Date</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="date" class="form-control" formControlName="terminationDate">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="reportingLine">Reporting Line</label>
+                    </div>
+                    <select (change)="setSelectedEmployee($event)">
+                      <option *ngFor="let employee of Employees; index as i" [value]="i">{{employee.name}} {{employee.surname}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label class="form-control" for="disability">Disability</label>
+                    </div>
+                    <div class="col-12">
+                      <label>True</label>
+                      <input type="radio" formControlName="disability" value=True>
+                      <label>False</label>
+                      <input type="radio" formControlName="disability" value=False>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf=newEmployeeForm.value.disability>
+
+                  <div class="col-6">
+                    <div class="row">
+                      <div class="col-3">
+                        <label for="disabilityNotes">Disability Notes</label>
+                      </div>
+                      <div class="col-12">
+                        <input type="textarea" class="form-control" formControlName="disabilityNotes">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="level">Level</label>
+                    </div>
+                    <!-- Needs to be a drop down -->
+                    <div class="col-12">
+                      <!-- <input type="number" class="form-control" formControlName="level"> -->
+                      <select class="form-select" formControlName="level">
+                        <option [value]=level *ngFor="let level of levels">{{level}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="notes">Notes</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="textarea" class="form-control" formControlName="notes">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="leaveInterval">Leave Interval</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="number" class="form-control" formControlName="leaveInterval">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="salaryDays">Salary Days</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="number" class="form-control" formControlName="salaryDays">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="payRate">Pay Rate</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="number" class="form-control" formControlName="payRate">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="salary">Salary</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="number" class="form-control" formControlName="salary">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="title">Title</label>
+                    </div>
+                    <!-- Needs to be a dropdown -->
+                    <div class="col-12">
+                      <select class="form-select" formControlName="title">
+                        <option *ngFor="let title of titles" [value]=title>{{title}}</option>
+                      </select>
+                      <!-- <input type="text" class="form-control" formControlName="title"> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="dateOfBirth">Date Of Birth</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="date" class="form-control" formControlName="dateOfBirth">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="countryOfBirth">Country Of Birth</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="text" class="form-control" formControlName="countryOfBirth">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="nationality">Nationality</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="text" class="form-control" formControlName="nationality">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="idNumber">Id Number</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="number" class="form-control" formControlName="idNumber">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="passportNumber">Passport Number</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="number" class="form-control" formControlName="passportNumber">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="race">Race</label>
+                    </div>
+                    <!-- Waiting for Enum change -->
+                    <!-- <div class="col-12">
+                      <select class="form-select" formControleName="race">
+                        <option value="select"></option>
+                        <option *ngFor="let race of races" [value]="race">{{race}}</option>
+                      </select>
+                    </div> -->
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="gender">Gender</label>
+                    </div>
+                    <!-- Waiting for Enum change -->
+                    <!-- <div class="col-12">
+                      <select class="form-select" formControleName="gender">
+                        <option value="select"></option>
+                        <option *ngFor="let gender of genders" [value]="gender">{{gender}}</option>
+                      </select>
+                    </div> -->
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="row">
+                    <div class="col-3">
+                      <label for="photo">Photo</label>
+                    </div>
+                    <div class="col-12">
+                      <input type="file" id="imageUpload" id="file" accept="image/png, image/jpeg" (change)="imageHandler($event)" />
+                      <div *ngIf="!validImage">
+                        <p>Image file too large or invalid type</p>
+                      </div>
+                      <div id="picture" *ngIf="validImage">
+                        <img [src]="imageUrl" alt="" id="previewProfilePicture" accept="image/png, image/jpeg">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <div class="col-sm-12">
+                <br><br>
+                <button type="submit" class="form-control">Submit</button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
+</div>
