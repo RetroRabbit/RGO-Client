@@ -49,6 +49,3 @@ export class ChartService {
   }
   
 }
-
-
-
