@@ -14,8 +14,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 
 export class TemplateItemsComponent {
+  currentTab = 'Template'
   templates$: Observable<any[]> = this.evaluationtemplate.getAll()
   templateItems$: Observable<TemplateItem[]> = this.evaluationTemplateItemService.getAll()
+
+  templateForm: FormGroup = new FormGroup({
+    template: new FormControl<string>('', Validators.required)
+  })
 
   templateItemForm: FormGroup = new FormGroup({
     template: new FormControl('', Validators.required),
@@ -31,18 +36,44 @@ export class TemplateItemsComponent {
   clearForm(): void {
     this.templateItemForm.reset()
   }
+
+  saveTemplate(): void {
+    const { template } = this.templateForm.value
+    this.evaluationtemplate.save(template).subscribe(
+      () => {
+      this.templateForm.reset()
+      this.templates$ = this.evaluationtemplate.getAll()
+    },
+    (error) => console.log(error))
+  }
+
+  deleteTemplate(template: string): void {
+    this.evaluationtemplate.delete(template).subscribe(
+      () => {
+      this.templateForm.reset()
+      this.templates$ = this.evaluationtemplate.getAll()
+    },
+    (error) => console.log(error))
+  }
+
+  editTemplateItems(template: string): void {
+    this.currentTab = 'Template Items'
+    this.templateItems$ = this.evaluationTemplateItemService.getAll(template)
+    this.templateItemForm.patchValue({ template: template })
+  }
   
   save(): void {
     const { template, section, question } = this.templateItemForm.value
     this.evaluationTemplateItemService.save(template, section, question).subscribe(() => {
       this.templateItemForm.reset()
-      this.templateItems$ = this.evaluationTemplateItemService.getAll()
+      this.templateItems$ = this.evaluationTemplateItemService.getAll(template)
     })
   }
 
-  delete(template: string, section: string, question: string): void {
+  delete(section: string, question: string): void {
+    const template = this.templateItemForm.value.template
     this.evaluationTemplateItemService.delete(template, section, question).subscribe(() => {
-      this.templateItems$ = this.evaluationTemplateItemService.getAll()
+      this.templateItems$ = this.evaluationTemplateItemService.getAll(template)
     })
   }
 }

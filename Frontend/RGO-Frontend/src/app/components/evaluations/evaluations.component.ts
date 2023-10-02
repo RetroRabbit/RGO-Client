@@ -26,11 +26,15 @@ export class EvaluationsComponent {
   currentTab: string = 'Template';
 
   EvaluationForm: FormGroup = new FormGroup({
-    ownerEmail: new FormControl('', Validators.required),
-    employeeEmail: new FormControl('', Validators.required),
-    template: new FormControl('', Validators.required),
-    subject: new FormControl('', Validators.required),
-    startDate: new FormControl('', Validators.required),
+    ownerEmail: new FormControl(this.selectedEvaluation ? this.selectedEvaluation?.owner.email : '', Validators.required),
+    employeeEmail: new FormControl(this.selectedEvaluation
+      ? this.selectedEvaluation?.employee.email
+      : '', Validators.required),
+    template: new FormControl(this.selectedEvaluation
+      ? this.selectedEvaluation?.template.description
+      : '', Validators.required),
+    subject: new FormControl(this.selectedEvaluation ? this.selectedEvaluation?.subject : '', Validators.required),
+    startDate: new FormControl(new Date(Date.now()), Validators.required),
   });
 
   AudienceForm: FormGroup = new FormGroup({
@@ -38,10 +42,25 @@ export class EvaluationsComponent {
   });
 
   RatingForm: FormGroup = new FormGroup({
+    id: new FormControl<number>(0, Validators.required),
+    employeeEmail: new FormControl<string>(
+      this.cookieService.get('userEmail'),
+      Validators.required
+    ),
+    evaluation: new FormControl<EvaluationInput>(this.evaluationInput, Validators.required),
     description: new FormControl<string>('', Validators.required),
     score: new FormControl<number>(0, Validators.required),
     comment: new FormControl<string>('', Validators.required),
   });
+
+  // return {
+  //   id: 0,
+  //   employeeEmail: this.cookieService.get('userEmail'),
+  //   evaluation: this.evaluationInput,
+  //   description: this.RatingForm.value.description,
+  //   score: this.RatingForm.value.score,
+  //   comment: this.RatingForm.value.comment,
+  // };
 
   employees$!: Observable<Employee[]>
   templates$!: Observable<any[]>
@@ -259,8 +278,21 @@ export class EvaluationsComponent {
     };
   }
 
-  saveEvaluationRating() {
-    this.evaluationRatingService.save(this.evaluationRating).subscribe(
+  saveEvaluationRating(question: string | null = null) {
+    if (question) this.RatingForm.patchValue({ description: question });
+
+    const evaluationInput: EvaluationInput = {
+      id: 0,
+      ownerEmail: this.EvaluationForm.value.ownerEmail!,
+      employeeEmail: this.EvaluationForm.value.employeeEmail!,
+      template: this.EvaluationForm.value.template!,
+      subject: this.EvaluationForm.value.subject!,
+    }
+    this.RatingForm.patchValue({ evalaution: evaluationInput })
+
+    const formData = this.evaluationRating;
+
+    this.evaluationRatingService.save(formData).subscribe(
       () => {
         console.info('Evaluation rating saved');
         this.rating$ = this.evaluationRatingService.getall({

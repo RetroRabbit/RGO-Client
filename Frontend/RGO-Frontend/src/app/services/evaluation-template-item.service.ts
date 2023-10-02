@@ -11,9 +11,10 @@ export class EvaluationTemplateItemService {
   constructor(private httpClient: HttpClient) { }
 
   getAll(template: string | null = null): Observable<any[]> {
-    return template !== null
-    ? this.httpClient.get<any[]>(`${API.HttpBaseURL}/templateitem/getall?template=${encodeURIComponent(template)}`)
-    : this.httpClient.get<any[]>(`${API.HttpBaseURL}/templateitem/getall`)
+    if (template!== null)
+      return this.httpClient.get<any[]>(`${API.HttpBaseURL}/templateitem/getall?template=${encodeURIComponent(template)}`)
+
+    return this.httpClient.get<any[]>(`${API.HttpBaseURL}/templateitem/getall`)
   }
   
   save(template: string, section: string, question: string): Observable<any> {

@@ -13,6 +13,8 @@ import { EvaluationService } from 'src/app/services/evaluation.service';
 export class EmployeeEvaluationsComponent {
   @Output() selectedEvaluation = new EventEmitter<any>()
 
+  currentTab: string = "Evaluations"
+
   employees$: Observable<Employee[]> = this.empoloyeeService.getAll()
   evaluations$: Observable<any[]> = this.evaluationService.getAll(decodeURIComponent(this.cookieService.get('userEmail')))
   selectedEval!: any | null
