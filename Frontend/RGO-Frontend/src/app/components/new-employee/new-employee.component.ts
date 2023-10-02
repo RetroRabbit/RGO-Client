@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { NgToastService } from 'ng-angular-popup';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-new-employee',
@@ -15,14 +15,15 @@ export class NewEmployeeComponent implements OnInit {
 
   constructor(private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
-    private messageService: MessageService) { }
+    private toast: NgToastService
+) { }
 
   employeeTypes: EmployeeType[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   toggleAdditional: boolean = false;
 
-  genders: string[] = ["Male", "Female", "Other"];
-  races: string[] = ["Black", "White", "American Indian or Alaska Native", "Latino or Hispanic", "Asian", "Pacific Islander or Hawaiian"];
+  genders: string[] = ["Prefer not to say", "Male", "Female"];
+  races: string[] = ["Black", "White", "Indian", "Coloured", "Asian"];
   levels: number[] = [2, 3, 4, 5, 6];
   titles: string[] = ["Mr", "Mrs", "Miss", "Ms", "Sir"];
 
@@ -69,49 +70,50 @@ export class NewEmployeeComponent implements OnInit {
     salaryDays: new FormControl(0, Validators.pattern(/^[0-9]*$/)),
     payRate: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
     salary: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
-    // // optional
     reportingLine: new FormControl(),
     passportNumber: new FormControl('0',Validators.pattern(/^[0-9]*$/)),
     idNumber: new FormControl( '0',Validators.pattern(/^[0-9]*$/)),
     passportExpirationDate: new FormControl(),
     passportCountryIssue: new FormControl(),
     terminationDate: new FormControl(),
-    // // ToDo: Make number when enum is updated
-    race: new FormControl(1),
-    gender: new FormControl(1),
+    race: new FormControl(0),
+    gender: new FormControl(0),
   });
 
 
 
   onSubmit() {
-    // console.log(this.newEmployeeForm.value.level)
-    this.newEmployeeForm.value.cellphoneNo = this.newEmployeeForm.value.cellphoneNo?.toString();
+    this.newEmployeeForm.value.cellphoneNo = this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.checkBlankRequiredFields();
-    console.table(this.newEmployeeForm.value);
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: (data) => { 
-        this.messageService.add({ key: 'toast1', severity: 'success', summary: 'Success', detail: `${this.newEmployeeForm.value.name}, has successfully been added to the database.` });
+        this.toast.success({detail:"Success",summary:`${this.newEmployeeForm.value.name} has been added`,duration:5000, position:'topRight'});
       },
       error: (error) => {
-        // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Content' });
-        this.messageService.add({ key: 'toast2', severity: 'error', summary: 'Error', detail: `${this.newEmployeeForm.value.name}, was not added to database` });
+        let message  = ""
+        if (error.status === 400) {
+          message = "Incorrect form values"
+          } else if (error.status === 406) {
+          message = "User already exists"
+        } 
+        this.toast.error({detail:"Error", summary:`Error: ${message}`,duration:5000, position:'topRight'});
         console.error(error)
       }
     })
   }
 
   checkBlankRequiredFields() {
-    this.newEmployeeForm.value.dateOfBirth = this.newEmployeeForm.value.dateOfBirth === '' ? this.newEmployeeForm.value.engagementDate : this.newEmployeeForm.value.dateOfBirth;
-    this.newEmployeeForm.value.title = this.newEmployeeForm.value.title === '' ? 'TBA' : this.newEmployeeForm.value.title;
-    this.newEmployeeForm.value.countryOfBirth = this.newEmployeeForm.value.countryOfBirth === '' ? 'TBA' : this.newEmployeeForm.value.countryOfBirth;
-    this.newEmployeeForm.value.nationality = this.newEmployeeForm.value.nationality === '' ? 'TBA' : this.newEmployeeForm.value.nationality;
-    this.newEmployeeForm.value.employeeNumber = this.newEmployeeForm.value.employeeNumber === '' ? 'TBA' : this.newEmployeeForm.value.employeeNumber?.toString();
-    this.newEmployeeForm.value.taxNumber = this.newEmployeeForm.value.taxNumber === '' ? 'TBA' : this.newEmployeeForm.value.taxNumber?.toString();
-    this.newEmployeeForm.value.passportNumber = this.newEmployeeForm.value.passportNumber === '0' ? 'TBA' : this.newEmployeeForm.value.passportNumber?.toString();
-    this.newEmployeeForm.value.idNumber = this.newEmployeeForm.value.idNumber === '0' ? 'TBA' : this.newEmployeeForm.value.idNumber?.toString();
-    this.newEmployeeForm.value.disabilityNotes = this.newEmployeeForm.value.disabilityNotes === '' ? 'TBA' : this.newEmployeeForm.value.disabilityNotes;
-    this.newEmployeeForm.value.notes = this.newEmployeeForm.value.notes === '' ? 'TBA' : this.newEmployeeForm.value.notes;
-    this.newEmployeeForm.value.photo = this.newEmployeeForm.value.photo === '' ? 'TBA' : this.newEmployeeForm.value.photo;
+    this.newEmployeeForm.value.dateOfBirth = this.newEmployeeForm.value.dateOfBirth === '' ? this.newEmployeeForm.value.engagementDate : this.newEmployeeForm.value.dateOfBirth?.trim();
+    this.newEmployeeForm.value.title = this.newEmployeeForm.value.title === '' ? 'TBA' : this.newEmployeeForm.value.title?.trim();
+    this.newEmployeeForm.value.countryOfBirth = this.newEmployeeForm.value.countryOfBirth === '' ? 'TBA' : this.newEmployeeForm.value.countryOfBirth?.trim();
+    this.newEmployeeForm.value.nationality = this.newEmployeeForm.value.nationality === '' ? 'TBA' : this.newEmployeeForm.value.nationality?.trim();
+    this.newEmployeeForm.value.employeeNumber = this.newEmployeeForm.value.employeeNumber === '' ? 'TBA' : this.newEmployeeForm.value.employeeNumber?.toString().trim();
+    this.newEmployeeForm.value.taxNumber = this.newEmployeeForm.value.taxNumber === '' ? 'TBA' : this.newEmployeeForm.value.taxNumber?.toString().trim();
+    this.newEmployeeForm.value.passportNumber = this.newEmployeeForm.value.passportNumber === '0' ? 'TBA' : this.newEmployeeForm.value.passportNumber?.toString().trim();
+    this.newEmployeeForm.value.idNumber = this.newEmployeeForm.value.idNumber === '0' ? 'TBA' : this.newEmployeeForm.value.idNumber?.toString().trim();
+    this.newEmployeeForm.value.disabilityNotes = this.newEmployeeForm.value.disabilityNotes === '' ? 'TBA' : this.newEmployeeForm.value.disabilityNotes?.trim();
+    this.newEmployeeForm.value.notes = this.newEmployeeForm.value.notes === '' ? 'TBA' : this.newEmployeeForm.value.notes?.trim();
+    this.newEmployeeForm.value.photo = this.newEmployeeForm.value.photo === '' ? 'TBA' : this.newEmployeeForm.value.photo?.trim();
   }
 
   imageHandler(event: Event) {
@@ -129,7 +131,6 @@ export class NewEmployeeComponent implements OnInit {
       }
     }
     else {
-      // cannot read file
       this.validImage = false;
     }
   }
@@ -181,5 +182,17 @@ export class NewEmployeeComponent implements OnInit {
   setSelectedEmployee(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
     this.newEmployeeForm.patchValue({'reportingLine': this.Employees[+selectedValue]});
+  }
+
+  setSelectedRace(event : Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    console.log(selectedValue);
+    this.newEmployeeForm.patchValue({'race': +selectedValue});
+  }
+
+  setSelectedGender(event : Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    console.log(selectedValue);
+    this.newEmployeeForm.patchValue({'gender': +selectedValue});
   }
 }

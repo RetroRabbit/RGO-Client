@@ -180,7 +180,7 @@
                     <div class="col-3">
                       <label for="reportingLine">Reporting Line</label>
                     </div>
-                    <select (change)="setSelectedEmployee($event)">
+                    <select class="form-select" (change)="setSelectedEmployee($event)">
                       <option *ngFor="let employee of Employees; index as i" [value]="i">{{employee.name}} {{employee.surname}}</option>
                     </select>
                   </div>
@@ -216,9 +216,7 @@
                     <div class="col-3">
                       <label for="level">Level</label>
                     </div>
-                    <!-- Needs to be a drop down -->
                     <div class="col-12">
-                      <!-- <input type="number" class="form-control" formControlName="level"> -->
                       <select class="form-select" formControlName="level">
                         <option [value]=level *ngFor="let level of levels">{{level}}</option>
                       </select>
@@ -280,12 +278,10 @@
                     <div class="col-3">
                       <label for="title">Title</label>
                     </div>
-                    <!-- Needs to be a dropdown -->
                     <div class="col-12">
                       <select class="form-select" formControlName="title">
                         <option *ngFor="let title of titles" [value]=title>{{title}}</option>
                       </select>
-                      <!-- <input type="text" class="form-control" formControlName="title"> -->
                     </div>
                   </div>
                 </div>
@@ -344,13 +340,11 @@
                     <div class="col-3">
                       <label for="race">Race</label>
                     </div>
-                    <!-- Waiting for Enum change -->
-                    <!-- <div class="col-12">
-                      <select class="form-select" formControleName="race">
-                        <option value="select"></option>
-                        <option *ngFor="let race of races" [value]="race">{{race}}</option>
+                    <div class="col-12">
+                      <select class="form-select" formControleName="race"  (change)="setSelectedRace($event)">
+                        <option *ngFor="let race of races;index as i" [value]=i>{{race}}</option>
                       </select>
-                    </div> -->
+                    </div>
                   </div>
                 </div>
                 <div class="col-6">
@@ -358,13 +352,11 @@
                     <div class="col-3">
                       <label for="gender">Gender</label>
                     </div>
-                    <!-- Waiting for Enum change -->
-                    <!-- <div class="col-12">
-                      <select class="form-select" formControleName="gender">
-                        <option value="select"></option>
-                        <option *ngFor="let gender of genders" [value]="gender">{{gender}}</option>
+                    <div class="col-12">
+                      <select class="form-select" formControleName="gender"  (change)="setSelectedGender($event)">
+                        <option *ngFor="let gender of genders;index as i" [value]="i">{{gender}}</option>
                       </select>
-                    </div> -->
+                    </div>
                   </div>
                 </div>
                 <div class="col-6">
