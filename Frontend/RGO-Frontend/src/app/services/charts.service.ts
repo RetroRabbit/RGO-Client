@@ -41,7 +41,11 @@ export class ChartService {
     return this.httpClient.get<string[]>(`${API.HttpBaseURL}/chart/column`);
   }
 
+  downloadCSV(dataType: string): Observable<ArrayBuffer> {
+    const queryParams = `?dataType=${dataType}`;
+    return this.httpClient.get(`${API.HttpBaseURL}/chart/report/export${queryParams}`, {
+      responseType: 'arraybuffer'
+    });
+  }
+  
 }
-
-
-
