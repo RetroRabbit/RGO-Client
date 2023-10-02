@@ -16,7 +16,7 @@
   color: gold;
 }
 
-/* .comments-section {
+.comments-section {
   display: flex;
   flex-direction: column;
   max-width: 400px;
@@ -29,4 +29,4 @@
   padding: 10px;
   border: 1px solid #ccc;
   resize: vertical;
-} */
+}
