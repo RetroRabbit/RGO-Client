@@ -67,7 +67,7 @@ export class EvaluationsComponent {
   audience: { email: string; name: string }[] = [];
   rating$!: Observable<any[]>;
 
-  stars: string[] = ['star', 'star', 'star', 'star', 'star'];
+  stars: string[] = ['star', 'star', 'star', 'star'];
   templateItems: { [description: string]: { [section: string]: string[] } } =
     {};
 

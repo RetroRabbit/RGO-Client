@@ -89,7 +89,7 @@
                         </h5>
                         <span class="card-text" *ngFor="let item of section.value">
                             {{ item }}
-                            <div class="border border-secondary">
+                            <div class="border border-secondary" *ngIf="selectedEvaluation !== null">
                                 <form [formGroup]="RatingForm">
                                     <div class="btn-group" role="group">
                                         <input type="submit" class="btn btn-primary" value="Save" (click)="saveEvaluationRating(item)" />
@@ -104,14 +104,13 @@
                                       }">&#9733;</span>
                                         </label>
                                         <br />
-                                        <input type="range" list="markers" min="0" max="5" step="1" id="score" formControlName="score" />
+                                        <input type="range" list="markers" min="0" max="4" step="1" id="score" formControlName="score" />
                                         <datalist id="markers">
                                             <option value="0" label="0"></option>
                                             <option value="1" label="1"></option>
                                             <option value="2" label="2"></option>
                                             <option value="3" label="3"></option>
                                             <option value="4" label="4"></option>
-                                            <option value="5" label="5"></option>
                                         </datalist>
                                     </div>
                                     <hr />
@@ -178,14 +177,13 @@
           }">&#9733;</span>
             </label>
             <br />
-            <input type="range" list="markers" min="0" max="5" step="1" id="score" formControlName="score" />
+            <input type="range" list="markers" min="0" max="4" step="1" id="score" formControlName="score" />
             <datalist id="markers">
                 <option value="0" label="0"></option>
                 <option value="1" label="1"></option>
                 <option value="2" label="2"></option>
                 <option value="3" label="3"></option>
                 <option value="4" label="4"></option>
-                <option value="5" label="5"></option>
             </datalist>
         </div>
         <hr />
