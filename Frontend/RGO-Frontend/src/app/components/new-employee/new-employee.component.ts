@@ -137,7 +137,6 @@ export class NewEmployeeComponent implements OnInit {
 
   validateFile(file: File): boolean {
     if (file.size > 4194304) {
-      console.log('Too big')
       return false;
     }
     return true;
@@ -186,13 +185,11 @@ export class NewEmployeeComponent implements OnInit {
 
   setSelectedRace(event : Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    console.log(selectedValue);
     this.newEmployeeForm.patchValue({'race': +selectedValue});
   }
 
   setSelectedGender(event : Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    console.log(selectedValue);
     this.newEmployeeForm.patchValue({'gender': +selectedValue});
   }
 }
