@@ -39,9 +39,6 @@
       <div *ngIf="cookieService.get('currentPage') == 'Evaluation Form'">
         <app-evaluations [selectedEvaluation]="selectedEvaluation"></app-evaluations>
       </div>
-      <div *ngIf="cookieService.get('currentPage') == 'Evaluation Items'">
-        <app-template-items></app-template-items>
-      </div>
     </main>
   </div>
 </div>
