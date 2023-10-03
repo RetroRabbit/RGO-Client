@@ -1,0 +1,16 @@
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948;
+}
+
+#btnRemoveOption, #btnAddOption {
+    border: 1px outset;
+    height:30px;
+    width:30px;
+    border-radius: 20px;
+    padding: 0;
+    margin-left: 20px;
+}
+
+#lblOption{
+    margin-right: 15px;
+}
