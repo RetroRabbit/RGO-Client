@@ -19,7 +19,6 @@ export const ROUTES: RouteInfo[] = [
     { title: 'Manage Field', icon: 'edit_note', requiredRole: [ ]},
     { title: 'View Employee', icon: 'people', requiredRole: [ 'Admin', 'SuperAdmin' ]},
     { title: 'Evaluations', icon: 'assignment', requiredRole: [ ] },
-    { title: 'Evaluation Items', icon: 'assignment', requiredRole: [ ] },
 ];
 
 @Component({

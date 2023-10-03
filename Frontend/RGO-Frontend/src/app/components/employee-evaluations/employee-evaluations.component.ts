@@ -8,33 +8,37 @@ import { EvaluationService } from 'src/app/services/evaluation.service';
 @Component({
   selector: 'app-employee-evaluations',
   templateUrl: './employee-evaluations.component.html',
-  styleUrls: ['./employee-evaluations.component.css']
+  styleUrls: ['./employee-evaluations.component.css'],
 })
 export class EmployeeEvaluationsComponent {
-  @Output() selectedEvaluation = new EventEmitter<any>()
+  @Output() selectedEvaluation = new EventEmitter<any>();
 
-  employees$: Observable<Employee[]> = this.empoloyeeService.getAll()
-  evaluations$: Observable<any[]> = this.evaluationService.getAll(decodeURIComponent(this.cookieService.get('userEmail')))
-  selectedEval!: any | null
-  
+  currentTab: string = 'Evaluations';
+
+  employees$: Observable<Employee[]> = this.empoloyeeService.getAll();
+  evaluations$: Observable<any[]> = this.evaluationService.getAll(
+    decodeURIComponent(this.cookieService.get('userEmail'))
+  );
+  selectedEval!: any | null;
+
   constructor(
     private empoloyeeService: EmployeeService,
     private evaluationService: EvaluationService,
     private cookieService: CookieService
-  ) { }
+  ) {}
 
   goToEvaluationForm() {
-    this.cookieService.set('currentPage', 'Evaluation Form')
+    this.cookieService.set('currentPage', 'Evaluation Form');
   }
 
   goToEvaluationsWithoutSelection() {
-    this.selectedEvaluation.emit(null)
-    this.goToEvaluationForm()
+    this.selectedEvaluation.emit(null);
+    this.goToEvaluationForm();
   }
 
   selectEvaluation(evaluation: any): void {
-    this.selectedEval = evaluation
-    this.selectedEvaluation.emit(this.selectedEval)
-    this.goToEvaluationForm()
+    this.selectedEval = evaluation;
+    this.selectedEvaluation.emit(this.selectedEval);
+    this.goToEvaluationForm();
   }
 }
