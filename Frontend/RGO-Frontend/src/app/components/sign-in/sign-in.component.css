@@ -1,9 +1,32 @@
-.card{
-  background-color: #424242;
-  height: 18rem;
-
+.google-logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
 }
 
-.login-p{
-  color: white;
+.right-side {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  height: 100vh;
+}
+
+.right-side img {
+  height: 100%;
+  width: auto;
+}
+
+button:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.signin-btn {
+  border: 1px solid #17a2b8;
+  border-radius: 0.25rem;
+  padding: 0.5rem 0;
+  text-transform: uppercase;
+  width: 75%;
+  background-color: white;
 }
