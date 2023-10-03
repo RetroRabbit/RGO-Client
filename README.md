@@ -1,27 +1,88 @@
-# RGOClient
+# Introduction
+This platform is, somewhat for making the grad onboarding process simpler. Also for creating a central location for tracking changes to personal information, certification, skills,project and etc.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.1.
+# Getting Started
+### Install software for the project
+- Microsoft Visual Studio 2022 (Select 'ASP.NET and Web development' and '.NET
+desktop development' workloads.)
+- Node.js v18.17.1
 
-## Development server
+### Cloning the [repository](https://retro-rabbit@dev.azure.com/retro-rabbit/RetroGradOnboard/_git/RGO-Client)
+```powershell
+git clone 'https://retro-rabbit@dev.azure.com/retro-rabbit/RetroGradOnboard/_git/RGO-Client'
+```
+### Install dependencies for the project(frontend)
+```powershell
+#cd RGO-Client\Frontend\RGO-Frontend
+npm install
+```
+### Running
+```powershell
+#cd RGO-Client\Frontend\RGO-Frontend
+ng serve (run 'npm start' if the command does not work.)
+```
+Runs on [this](http:/localhost:4200) location
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### Change to the Dev branch
+Make sure to have Git installed to run any Git command lines.
+```powershell
+#cd RGO-client\Frontend\RGO-Frontend
+git checkout Dev
+```
 
-## Code scaffolding
+# Dependencies
+- @angular/cli
+- @angular/core
+- @ngrx/store
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### FAQ
+```typescript
+// user type
+enum UserRoles {
+    GRAD = 0,
+    PRESENTER,
+    MENTOR,
+    ADMIN
+}
 
-## Build
+// user status
+enum UserStatus {
+    NEW = 1,
+    ACTIVE,
+    INACTIVE
+}
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+// form status
+enum FormStatus {
+    NEW = 0,
+    ACTIVE,
+    INACTIVE
+}
 
-## Running unit tests
+// field status
+enum FieldStatus {
+    SIGNATURE = 0,
+    FILEUPLOAD,
+    DROPDOWN,
+    TEXTAREA,
+    TEXTBOX
+}
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+// stack type
+enum StackType {
+    DATABASE = 0,
+    FRONTEND,
+    BACKEND,
+}
 
-## Running end-to-end tests
+// event type
+enum EventType {
+    EVENTS = 0,
+    WORKSHOPS
+}
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+// form type
+enum FormType {
+    
+}
+```
