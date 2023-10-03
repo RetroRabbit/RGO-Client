@@ -39,6 +39,8 @@ testem.log
 .angular/
 .vscode
 Frontend/RGO-Frontend/.angular/
+Frontend/RGO-Frontend/node_modules/
+Frontend/RGO-Frontend/.vscode/*
 
 # System files
 .DS_Store
