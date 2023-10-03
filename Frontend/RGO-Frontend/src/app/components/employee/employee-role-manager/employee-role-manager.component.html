@@ -1,0 +1,60 @@
+<form [formGroup]="newEmployeeForm" class="container">
+    <div class="d-flex" *ngIf="employees$ | async as employees">
+        <label>Employees:</label>
+        <br>
+        <input class="form-control" list="email-list" formControlName="email" (input)="getRoles(newEmployeeForm.value.email!)">
+        <datalist id="email-list">
+            <option *ngFor="let employee of employees" [value]="employee['email']">
+                {{ employee['email'] }}
+            </option>
+        </datalist>
+        <div
+            *ngIf="newEmployeeForm.controls.email.invalid &&
+                (newEmployeeForm.controls.email.dirty || newEmployeeForm.controls.email.touched)"
+            class="alert alert-danger mt-2">
+            Please select an email
+        </div>
+    </div>
+    <br>
+    <div class="d-flex" *ngIf="roles$ | async as roles">
+        <label><Em>Roles:</Em></label>
+        <br>
+        <button type="button" class="btn" *ngFor="let role of roles" (click)="changeRole(role)">
+            <span [ngClass]="role == newEmployeeForm.value.role ? 'selected' : ''">{{role}}</span>
+        </button>
+        <div
+            *ngIf="newEmployeeForm.controls.role.invalid &&
+                (newEmployeeForm.controls.role.dirty || newEmployeeForm.controls.role.touched)"
+            class="alert alert-danger mt-2">
+            Please select an email
+        </div>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary" [disabled]="!newEmployeeForm.valid" (click)="assignRole()">Assign Role</button>
+        <button type="submit" class="btn btn-danger" [disabled]="!newEmployeeForm.valid" (click)="unassignRole()">Unassign Role</button>
+        <br>
+        <div class="alert alert-info" *ngIf="saved || deleted">
+            operation succeded
+        </div>
+        <br>
+        <div class="alert alert-warning" *ngIf="failed">
+            operation failed
+        </div>
+        <br>
+        <div class="card container" *ngIf="newEmployeeForm.controls.email.valid">
+            <div class="card-header">
+                Roles of {{ newEmployeeForm.value.email }}
+            </div>
+            <div class="card-body">
+                <button type="button" (click)="getRoles(newEmployeeForm.value.email!)">
+                    Reload
+                </button>
+                <code>
+                    <pre>
+                        {{ currRoles | json }}
+                    </pre>
+                </code>
+            </div>
+        </div>
+    </div>
+</form>

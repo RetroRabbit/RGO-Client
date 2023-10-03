@@ -1,0 +1,66 @@
+<section class="fluid-container">
+    <datalist id="email-list">
+        <option *ngFor="let employee of employees$ | async" [value]="employee['email']">
+            {{ employee['name'] + ' ' + employee['surname'] }}
+        </option>
+    </datalist>
+    <header class="fluid-container p-3 bg-shadow bg-info bg-opacity-10 border border-info border-start-0 rounded-end">
+        <h3 class="form-label">Evaluations</h3>
+        <hr>
+        <form>
+            <div class="row g-2">
+                <div class="form-floating mb-3 col-md">
+                    <input list="email-list" class="form-control form-control-sm col-auto border-bottom border-success" id="owner" aria-describedby="owner-email" placeholder="Owner Email">
+                    <label for="owner">Email address(Owner)</label>
+                </div>
+                <div class="form-floating mb-3 col-md">
+                    <input list="email-list" class="form-control form-control-sm col-auto border-bottom border-success" id="employee" aria-describedby="employee-email" placeholder="Employee Email">
+                    <label for="employee">Email address(Employee)</label>
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <button class="btn btn-primary mb-3" type="submit">Search</button>
+                <button class="btn btn-danger mb-3" type="reset">Reset</button>
+            </div>
+        </form>
+    </header>
+    <br>
+    <div class="fluid-container">
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Owner</th>
+                    <th scope="col">Employee</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Template</th>
+                    <th scope="col">Start-Date</th>
+                    <th scope="col">End-Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr (click)="goToEvaluationsWithoutSelection()">
+                    <td>
+                        <span class="material-icons">
+                            add_circle
+                        </span>
+                    </td>
+                    <td>
+                        Add Evaluation
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr *ngFor="let evaluation of evaluations$ | async" (click)="selectEvaluation(evaluation)">
+                    <td>{{ evaluation.owner.email }}</td>
+                    <td>{{ evaluation.employee.email }}</td>
+                    <td>{{ evaluation.subject }}</td>
+                    <td>{{ evaluation.template.description }}</td>
+                    <td>{{ evaluation.startDate }}</td>
+                    <td>{{ evaluation.endDate }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

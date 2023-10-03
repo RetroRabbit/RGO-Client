@@ -1,0 +1,1 @@
+{"version":3,"file":"bounds.d.ts","sourceRoot":"","sources":["../../../src/core/data/bounds.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,MAAM,EAAE,MAAM,UAAU,CAAC;AASvC;;;;;;;GAOG;AACH,wBAAgB,SAAS,CACvB,UAAU,EAAE,MAAM,EAClB,OAAO,EAAE;IAAE,IAAI,EAAE,MAAM,CAAC;IAAC,GAAG,EAAE,MAAM,CAAA;CAAE,EACtC,aAAa,EAAE,MAAM,EACrB,WAAW,UAAQ,UAuGpB"}

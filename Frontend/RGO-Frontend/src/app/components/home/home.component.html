@@ -1,0 +1,47 @@
+<div class="wrapper">
+  <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
+    <app-sidebar ></app-sidebar>
+    <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
+  </div>
+  <div class="main-panel">
+    <app-header></app-header>
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ps ps--active-y">
+      <div *ngIf="cookieService.get('currentPage') === '' || cookieService.get('currentPage') === 'Dashboard'" #ShowDashBoard>
+        <app-employee-profile></app-employee-profile>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') === 'Add User'">
+        <app-add-user></app-add-user>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') === 'Charts'">
+        <app-chart></app-chart>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') === 'Edit Dashboard'">
+        <app-create-charts></app-create-charts>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') === 'Employee Manager'">
+        <app-employee-role-manager></app-employee-role-manager>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') === 'Role Manager'">
+        <app-role-manager></app-role-manager>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') === 'Manage Field'">
+        <app-manage-field-code></app-manage-field-code>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') === 'New Employee'">
+        <app-new-employee></app-new-employee>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') === 'View Employee'">
+        <app-view-employee></app-view-employee>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') == 'Evaluations'">
+        <app-employee-evaluations (selectedEvaluation)="handleSelectedEval($event)"></app-employee-evaluations>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') == 'Evaluation Form'">
+        <app-evaluations [selectedEvaluation]="selectedEvaluation"></app-evaluations>
+      </div>
+      <div *ngIf="cookieService.get('currentPage') == 'Evaluation Items'">
+        <app-template-items></app-template-items>
+      </div>
+    </main>
+  </div>
+</div>
