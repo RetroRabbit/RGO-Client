@@ -1,0 +1,44 @@
+<form [formGroup]="newRoleForm" class="container">
+    <div class="d-flex" *ngIf="roles$ | async as roles">
+        <label><em>Roles:</em></label>
+        <br>
+        <button class="card btn" type="button" (click)="changeRole(role)" *ngFor="let role of roles">
+            <span [ngClass]="role == newRoleForm.value.role ? 'selected' : ''">{{role}}</span>
+        </button>
+    </div>
+    <div *ngIf="roleAccesses$ | async as roleAccesses">
+        <div class="d-flex" *ngIf="getPermissions(roleAccesses) as permissions">
+            <label><em>Permissions:</em></label>
+            <br>
+            <button class="card btn" type="button" (click)="changePermission(permission)" *ngFor="let permission of permissions">
+                <span [ngClass]="permission == newRoleForm.value.permission? 'selected' : ''">{{permission}}</span>
+            </button>
+        </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary" [disabled]="!newRoleForm.valid" (click)="onAdd()">Add</button>
+    <button type="submit" class="btn btn-danger" [disabled]="!newRoleForm.valid" (click)="onDelete()">Delete</button>
+    <br>
+    <div class="alert alert-info" *ngIf="saved || deleted">
+        operation succeded
+    </div>
+    <br>
+    <div class="alert alert-warning" *ngIf="failed">
+        operation failed
+    </div>
+    <div class="card container" *ngIf="newRoleForm.controls.role.valid">
+        <div class="card-header">
+            Permissions of {{ newRoleForm.value.role }}
+        </div>
+        <div class="card-body">
+            <button type="button" (click)="getRole(newRoleForm.value.role!)">
+                Reload
+            </button>
+            <code>
+                <pre>
+                    {{ currRole | json}}
+                </pre>
+            </code>
+        </div>
+    </div>
+</form>

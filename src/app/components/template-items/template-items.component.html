@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="card">
+    <div *ngIf="templateItems$ | async as items" class="table-responsive">
+      <form [formGroup]="templateItemForm">
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Id</th>
+              <th>Template</th>
+              <th>Section</th>
+              <th>Question</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table table-light">
+              <td>
+                <div class="btn-toolbar" role="toolbar">
+                  <button type="submit" class="btn btn-primary" (click)="save()">
+                      <i class="material-icons">add_circle</i>
+                  </button>
+                  <button type="submit" class="btn btn-danger" (click)="clearForm()">
+                      <i class="material-icons">remove_circle</i>
+                  </button>
+                </div>
+              </td>
+              <td></td>
+              <datalist id="templates">
+                <option *ngFor="let template of templates$ | async" [value]=template.description>
+                  {{ template['description'] }}
+                </option>
+              </datalist>
+              <td class="form-floating mb-3 col-md">
+                <input type="text" list="templates" id="template" class="form-control form-control-sm col-auto" formControlName="template">
+                <label for="template" class="p-3">Template</label>
+              </td>
+              <td class="form-floating mb-3 col-md">
+                <input type="text" id="section" class="form-control form-control-sm col-auto" formControlName="section">
+                <label for="template" class="p-3">Section</label>
+              </td>
+              <td class="form-floating mb-3 col-md">
+                <input type="text" id="question" class="form-control form-control-sm col-auto" formControlName="question">
+                <label for="template" class="p-3">Question</label>
+              </td>
+            </tr>
+            <tr *ngFor="let item of items" class="table table-light">
+              <td>
+                <button type="submit" class="btn btn-danger" (click)="delete(item.template.description, item.section, item.question)">
+                  <i class="material-icons">remove_circle</i>
+                </button>
+              </td>
+              <td>
+                <b>{{ item.id }}</b>
+              </td>
+              <td>{{ item.template.description }}</td>
+              <td>{{ item.section }}</td>
+              <td>{{ item.question }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
