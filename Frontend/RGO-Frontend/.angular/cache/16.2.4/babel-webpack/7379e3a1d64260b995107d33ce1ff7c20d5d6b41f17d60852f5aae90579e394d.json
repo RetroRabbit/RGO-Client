@@ -1,1 +1,0 @@
-{"ast":null,"code":"export const statuses = [{\n  id: 0,\n  value: 'Active'\n}, {\n  id: 1,\n  value: 'Archive'\n}];","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
