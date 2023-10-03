@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const dataTypes = [{\n  id: 0,\n  value: 'Date'\n}, {\n  id: 1,\n  value: 'String'\n}, {\n  id: 2,\n  value: 'Int'\n}, {\n  id: 3,\n  value: 'Bool'\n}, {\n  id: 4,\n  value: 'Options'\n}];","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

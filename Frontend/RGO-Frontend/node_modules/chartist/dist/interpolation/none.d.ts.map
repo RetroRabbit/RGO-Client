@@ -1,0 +1,1 @@
+{"version":3,"file":"none.d.ts","sourceRoot":"","sources":["../../src/interpolation/none.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,SAAS,CAAC;AAE3C,OAAO,EAAE,OAAO,EAAE,MAAM,QAAQ,CAAC;AAEjC,MAAM,WAAW,wBAAwB;IACvC,SAAS,CAAC,EAAE,OAAO,CAAC;CACrB;AAED;;;;;;;;;;;;;;GAcG;AACH,wBAAgB,IAAI,CAAC,OAAO,CAAC,EAAE,wBAAwB,qBAOlC,MAAM,EAAE,aACd,WAAW,EAAE,aAyB3B"}

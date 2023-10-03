@@ -1,0 +1,1 @@
+{"ast":null,"code":"export let API = /*#__PURE__*/(() => {\n  class API {\n    static #_ = this.HttpsBaseURL = \"https://localhost:7026\";\n    static #_2 = this.HttpBaseURL = \"http://localhost:5193\";\n  }\n  return API;\n})();","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
