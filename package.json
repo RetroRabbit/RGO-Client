@@ -23,6 +23,7 @@
     "@auth0/auth0-angular": "^2.2.1",
     "@ngrx/effects": "^16.2.0",
     "@ngrx/store": "^16.2.0",
+    "bootstrap": "^5.3.2",
     "chart.js": "^4.4.0",
     "ng-angular-popup": "^0.4.7",
     "ng2-charts": "^5.0.3",
