@@ -19,7 +19,7 @@ import { AuthInterceptor } from './interceptor/auth0.interceptor';
 import { UserReducer } from './store/reducers/user.reducer';
 import { UserEffects } from './store/effects/user.effects';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
+import { EmployeeProfileComponent } from './components/employee/employee-profile/employee-profile.component';
 import { EmployeeProfileReducer } from './store/reducers/employee-profile.reducer';
 import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects';
 import { NgChartsModule } from 'ng2-charts';
@@ -28,16 +28,22 @@ import { CreateChartsComponent } from './components/create-charts/create-charts.
 import { NgToastModule } from 'ng-angular-popup';
 import { ReportComponent } from './components/chart-reports/chart-reports.component';
 import { RoleManagerComponent } from './components/role-manager/role-manager.component';
-import { EmployeeRoleManagerComponent } from './components/employee-role-manager/employee-role-manager.component';
+import { EmployeeRoleManagerComponent } from './components/employee/employee-role-manager/employee-role-manager.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 import { ManageFieldCodeComponent } from './components/manage-field-code/manage-field-code.component';
-import { ViewEmployeeComponent } from './components/view-employee/view-employee.component';
+import { ViewEmployeeComponent } from './components/employee/view-employee/view-employee.component';
 import { NewFieldCodeComponent } from './components/new-field-code/new-field-code.component';
 import { UpdateFieldComponent } from './components/update-field/update-field.component';
-import { EvaluationsComponent } from './components/evaluations/evaluations.component';
-import { EmployeeEvaluationsComponent } from './components/employee-evaluations/employee-evaluations.component';
+import { EvaluationsComponent } from './components/employee/evaluations/evaluations.component';
+import { EmployeeEvaluationsComponent } from './components/employee/employee-evaluations/employee-evaluations.component';
 import { TemplateItemsComponent } from './components/template-items/template-items.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav'; 
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +64,8 @@ import { TemplateItemsComponent } from './components/template-items/template-ite
     EmployeeEvaluationsComponent,
     TemplateItemsComponent,
     NewFieldCodeComponent,
-    UpdateFieldComponent
+    UpdateFieldComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +88,11 @@ import { TemplateItemsComponent } from './components/template-items/template-ite
     }),
     HttpClientModule,
     BrowserAnimationsModule,
-    NgToastModule
+    NgToastModule,
+    MatButtonModule, 
+    MatMenuModule,
+    MatIconModule,
+    MatToolbarModule
   ],
   providers: [
     AuthService,
