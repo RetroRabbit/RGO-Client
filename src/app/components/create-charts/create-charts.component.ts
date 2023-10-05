@@ -15,7 +15,7 @@ export class CreateChartsComponent {
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   
   chartName: string = 'Name';
-  chartDataItem: string = 'Gender';
+  selectedDataItems: string[] = [];
   chartType: any = 'bar';
   chartData: number[] = [];
   chartLabels: string[] = [];
@@ -35,7 +35,7 @@ export class CreateChartsComponent {
   }
 
   createChart() {
-    this.ChartService.createChart(this.chartDataItem, this.chartName, this.chartType)
+    this.ChartService.createChart(this.selectedDataItems, this.chartName, this.chartType)
       .subscribe(
         (response) => {
           this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
@@ -48,31 +48,66 @@ export class CreateChartsComponent {
   }
 
   getChartData() {
-    this.ChartService.getChartDataByType(this.chartDataItem).subscribe(
-      (data:any) =>{
-        this.chartData = data.data;
-        this.chartLabels = data.labels;
-       },
-       (error) => {
-        this.toast.error({detail:"Error", summary:"Failed to get chartData.",duration:5000, position:'topRight'});
-       }
-     );
+    if (this.selectedDataItems && this.selectedDataItems.length > 0) {
+      this.ChartService.getChartDataByType(this.selectedDataItems).subscribe(
+        (data: any) => {
+          this.chartData = data.data;
+          this.chartLabels = data.labels;
+        },
+        (error) => {
+          this.toast.error({
+            detail: "Error",
+            summary: "Failed to get chartData.",
+            duration: 5000,
+            position: 'topRight'
+          });
+        }
+      );
+    } else {
+      this.toast.info({
+        detail: "No data selected.",
+        summary: "Please select data items.",
+        duration: 5000,
+        position: 'topRight'
+      });
+    }
   }
+  
 
- 
+  dropdownSettings = {
+    singleSelection: false, 
+    text: 'Select Data Items',
+    selectAllText: 'Select All',
+    unSelectAllText: 'Unselect All',
+    enableSearchFilter: true,
+  };
 
   onDropDownChange() {
-    this.ChartService.getChartDataByType(this.chartDataItem).subscribe(
-      (data:any) =>{
-        this.chartData = data.data;
-        this.chartLabels = data.labels;
-       },
-       (error) => {
-        this.toast.error({detail:"Error", summary:"Failed to get chartData.",duration:5000, position:'topRight'});
-       }
-     );
+    if (this.selectedDataItems && this.selectedDataItems.length > 0) {
+      this.ChartService.getChartDataByType(this.selectedDataItems).subscribe(
+        (data: any) => {
+          this.chartData = data.data;
+          this.chartLabels = data.labels;
+        },
+        (error) => {
+          this.toast.error({
+            detail: "Error",
+            summary: "Failed to get chartData.",
+            duration: 5000,
+            position: 'topRight'
+          });
+        }
+      );
+    } else {
+      this.toast.info({
+        detail: "No data selected.",
+        summary: "Please select data items.",
+        duration: 5000,
+        position: 'topRight'
+      });
+    }
   }
-
+  
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
