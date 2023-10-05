@@ -108,8 +108,6 @@ export class CreateChartsComponent {
     }
   }
   
-
-
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
