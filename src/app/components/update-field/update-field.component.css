@@ -1,0 +1,22 @@
+.custom-button {
+    background-color: rgb(244, 55, 55);
+    transition: background-color 0.3s, box-shadow 0.3s;
+
+    &:hover {
+        background-color: red;
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+#btnRemoveOption, #btnAddOption {
+    border: 1px outset;
+    height:30px;
+    width:30px;
+    border-radius: 20px;
+    padding: 0;
+    margin-left: 20px;
+}
+
+#lblOption{
+    margin-right: 15px;
+}
