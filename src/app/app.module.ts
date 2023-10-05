@@ -37,6 +37,7 @@ import { UpdateFieldComponent } from './components/update-field/update-field.com
 import { EvaluationsComponent } from './components/evaluations/evaluations.component';
 import { EmployeeEvaluationsComponent } from './components/employee-evaluations/employee-evaluations.component';
 import { TemplateItemsComponent } from './components/template-items/template-items.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { TemplateItemsComponent } from './components/template-items/template-ite
     }),
     HttpClientModule,
     BrowserAnimationsModule,
-    NgToastModule
+    NgToastModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
     AuthService,
