@@ -2,7 +2,7 @@ export interface Chart {
     id: number;
     name: string;
     type: string;
-    dataType:string;
+    dataTypes: string[];
     labels: string[];
     data: number[];
   }
