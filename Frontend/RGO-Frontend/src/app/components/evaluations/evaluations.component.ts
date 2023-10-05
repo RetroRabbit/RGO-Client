@@ -1,9 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, catchError, map, of } from 'rxjs';
 import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeService } from 'src/app/services/employee.service';
@@ -26,11 +22,25 @@ export class EvaluationsComponent {
   currentTab: string = 'Template';
 
   EvaluationForm: FormGroup = new FormGroup({
-    ownerEmail: new FormControl('', Validators.required),
-    employeeEmail: new FormControl('', Validators.required),
-    template: new FormControl('', Validators.required),
-    subject: new FormControl('', Validators.required),
-    startDate: new FormControl('', Validators.required),
+    ownerEmail: new FormControl<string>(
+      this.selectedEvaluation ? this.selectedEvaluation?.owner.email : '',
+      Validators.required
+    ),
+    employeeEmail: new FormControl<string>(
+      this.selectedEvaluation ? this.selectedEvaluation?.employee.email : '',
+      Validators.required
+    ),
+    template: new FormControl<string>(
+      this.selectedEvaluation
+        ? this.selectedEvaluation?.template.description
+        : '',
+      Validators.required
+    ),
+    subject: new FormControl<string>(
+      this.selectedEvaluation ? this.selectedEvaluation?.subject : '',
+      Validators.required
+    ),
+    startDate: new FormControl<Date>(new Date(Date.now()), Validators.required),
   });
 
   AudienceForm: FormGroup = new FormGroup({
@@ -38,17 +48,26 @@ export class EvaluationsComponent {
   });
 
   RatingForm: FormGroup = new FormGroup({
+    id: new FormControl<number>(0, Validators.required),
+    employeeEmail: new FormControl<string>(
+      this.cookieService.get('userEmail'),
+      Validators.required
+    ),
+    evaluation: new FormControl<EvaluationInput>(
+      this.evaluationInput,
+      Validators.required
+    ),
     description: new FormControl<string>('', Validators.required),
     score: new FormControl<number>(0, Validators.required),
     comment: new FormControl<string>('', Validators.required),
   });
 
-  employees$!: Observable<Employee[]>
-  templates$!: Observable<any[]>
-  audience: { email: string; name: string }[] = []
+  employees$!: Observable<Employee[]>;
+  templates$!: Observable<any[]>;
+  audience: { email: string; name: string }[] = [];
   rating$!: Observable<any[]>;
 
-  stars: string[] = ['star', 'star', 'star', 'star', 'star'];
+  stars: string[] = ['star', 'star', 'star', 'star'];
   templateItems: { [description: string]: { [section: string]: string[] } } =
     {};
 
@@ -60,7 +79,7 @@ export class EvaluationsComponent {
     private evaluationTemplateItemService: EvaluationTemplateItemService,
     private evaluationAudienceService: EvaluationAudienceService,
     private cookieService: CookieService
-  ) { }
+  ) {}
 
   fetchAudience(): void {
     const evaluationInput: EvaluationInput = {
@@ -69,19 +88,20 @@ export class EvaluationsComponent {
       employeeEmail: this.selectedEvaluation?.employee.email,
       template: this.selectedEvaluation?.template.description,
       subject: this.selectedEvaluation?.subject,
-    }
+    };
 
     this.evaluationAudienceService
-    .getAll(evaluationInput)
-    .pipe(
-      map(data => data.map(member => ({
-        email: member?.employee?.email,
-        name: `${member?.employee?.name} ${member?.employee?.surname}`
-      }))),
-      catchError(() => {
-        return of([]);
-      })
-    ).subscribe(audience => this.audience = audience);
+      .getAll(evaluationInput)
+      .pipe(
+        map((data) =>
+          data.map((member) => ({
+            email: member?.employee?.email,
+            name: `${member?.employee?.name} ${member?.employee?.surname}`,
+          }))
+        ),
+        catchError(() => of([]))
+      )
+      .subscribe((audience) => (this.audience = audience));
   }
 
   updateRatings(): void {
@@ -91,7 +111,7 @@ export class EvaluationsComponent {
       employeeEmail: this.selectedEvaluation?.employee.email,
       template: this.selectedEvaluation?.template.description,
       subject: this.selectedEvaluation?.subject,
-    }
+    };
 
     this.rating$ = this.evaluationRatingService.getall(evaluationInput);
   }
@@ -111,7 +131,7 @@ export class EvaluationsComponent {
       startDate: new Date(Date.now()),
     });
 
-    this.templateChange()
+    this.templateChange();
   }
 
   ngOnInit() {
@@ -123,7 +143,7 @@ export class EvaluationsComponent {
       this.updateRatings();
       this.setFormValues();
     } else {
-      this.templateChange()
+      this.templateChange();
     }
   }
 
@@ -158,10 +178,7 @@ export class EvaluationsComponent {
 
           return grouped;
         }),
-        catchError((error) => {
-          console.error(`Error: ${error}`);
-          return of({});
-        })
+        catchError(() => of({}))
       )
       .subscribe((grouped) => {
         this.templateItems = grouped;
@@ -173,15 +190,14 @@ export class EvaluationsComponent {
   }
 
   saveEvaluation() {
-    console.table(this.EvaluationForm.value);
-    const evaluation: EvaluationInput = this.evaluationInput
+    const evaluation: EvaluationInput = this.evaluationInput;
 
     this.evaluationService.save(evaluation).subscribe(
       () => {
         this.EvaluationForm.reset();
         this.backToEvaluations();
       },
-      () => { }
+      () => {}
     );
   }
 
@@ -192,60 +208,52 @@ export class EvaluationsComponent {
       .save(this.AudienceForm.value.email, evaluation)
       .subscribe(
         () => {
-          this.fetchAudience()
-          this.updateRatings()
+          this.fetchAudience();
+          this.updateRatings();
         },
-        () => { }
+        () => {}
       );
   }
 
   deleteEvaluationAudience(email: string) {
     const evaluation: EvaluationInput = this.evaluationInput;
 
-    this.evaluationAudienceService
-      .delete(email, evaluation)
-      .subscribe(
-        () => {
-          console.info('Evaluation audience deleted');
-          this.evaluationAudienceService
-            .getAll({
-              id: 0,
-              ownerEmail: this.selectedEvaluation?.owner.email,
-              employeeEmail: this.selectedEvaluation?.employee.email,
-              template: this.selectedEvaluation?.template.description,
-              subject: this.selectedEvaluation?.subject,
-            })
-            .pipe(
-              map((data) => {
-                const audience: { email: string; name: string }[] = [];
-                data.forEach((member) => {
-                  const employee = member?.employee as Employee;
-                  audience.push({
-                    email: employee.email as string,
-                    name: employee.name + ' ' + employee.surname,
-                  });
-                });
-                return audience;
-              }),
-              catchError((error) => {
-                console.error(`Error: ${error}`);
-                return of([]);
-              })
-            )
-            .subscribe(x => this.audience = x)
-
-          this.rating$ = this.evaluationRatingService.getall({
+    this.evaluationAudienceService.delete(email, evaluation).subscribe(
+      () => {
+        this.evaluationAudienceService
+          .getAll({
             id: 0,
             ownerEmail: this.selectedEvaluation?.owner.email,
             employeeEmail: this.selectedEvaluation?.employee.email,
             template: this.selectedEvaluation?.template.description,
             subject: this.selectedEvaluation?.subject,
-          });
-        },
-        () => {
-          console.error('Error deleting evaluation audience');
-        }
-      );
+          })
+          .pipe(
+            map((data) => {
+              const audience: { email: string; name: string }[] = [];
+              data.forEach((member) => {
+                const employee = member?.employee as Employee;
+                audience.push({
+                  email: employee.email as string,
+                  name: employee.name + ' ' + employee.surname,
+                });
+              });
+              return audience;
+            }),
+            catchError(() => of([]))
+          )
+          .subscribe((x) => (this.audience = x));
+
+        this.rating$ = this.evaluationRatingService.getall({
+          id: 0,
+          ownerEmail: this.selectedEvaluation?.owner.email,
+          employeeEmail: this.selectedEvaluation?.employee.email,
+          template: this.selectedEvaluation?.template.description,
+          subject: this.selectedEvaluation?.subject,
+        });
+      },
+      () => {}
+    );
   }
 
   get evaluationRating(): EvaluationRatingInput {
@@ -259,10 +267,32 @@ export class EvaluationsComponent {
     };
   }
 
-  saveEvaluationRating() {
-    this.evaluationRatingService.save(this.evaluationRating).subscribe(
+  get evaluationInput(): EvaluationInput {
+    return {
+      id: 0,
+      ownerEmail: this.EvaluationForm.value.ownerEmail!,
+      employeeEmail: this.EvaluationForm.value.employeeEmail!,
+      template: this.EvaluationForm.value.template!,
+      subject: this.EvaluationForm.value.subject!,
+    };
+  }
+
+  saveEvaluationRating(question: string | null = null) {
+    if (question) this.RatingForm.patchValue({ description: question });
+
+    const evaluationInput: EvaluationInput = {
+      id: 0,
+      ownerEmail: this.EvaluationForm.value.ownerEmail!,
+      employeeEmail: this.EvaluationForm.value.employeeEmail!,
+      template: this.EvaluationForm.value.template!,
+      subject: this.EvaluationForm.value.subject!,
+    };
+    this.RatingForm.patchValue({ evalaution: evaluationInput });
+
+    const formData = this.evaluationRating;
+
+    this.evaluationRatingService.save(formData).subscribe(
       () => {
-        console.info('Evaluation rating saved');
         this.rating$ = this.evaluationRatingService.getall({
           id: 0,
           ownerEmail: this.selectedEvaluation?.owner.email,
@@ -271,9 +301,7 @@ export class EvaluationsComponent {
           subject: this.selectedEvaluation?.subject,
         });
       },
-      () => {
-        console.error('Error saving evaluation rating');
-      }
+      () => { }
     );
   }
 
@@ -289,7 +317,6 @@ export class EvaluationsComponent {
 
     this.evaluationRatingService.delete(evaluationRating).subscribe(
       () => {
-        console.info('Evaluation rating deleted');
         this.rating$ = this.evaluationRatingService.getall({
           id: 0,
           ownerEmail: this.selectedEvaluation?.owner.email,
@@ -298,9 +325,7 @@ export class EvaluationsComponent {
           subject: this.selectedEvaluation?.subject,
         });
       },
-      () => {
-        console.error('Error deleting evaluation rating');
-      }
+      () => { }
     );
   }
 
@@ -325,18 +350,8 @@ export class EvaluationsComponent {
         this.EvaluationForm.reset();
         this.backToEvaluations();
       },
-      () => { }
+      () => {}
     );
-  }
-
-  get evaluationInput(): EvaluationInput {
-    return {
-      id: 0,
-      ownerEmail: this.EvaluationForm.value.ownerEmail!,
-      employeeEmail: this.EvaluationForm.value.employeeEmail!,
-      template: this.EvaluationForm.value.template!,
-      subject: this.EvaluationForm.value.subject!,
-    };
   }
 
   removeEvaluation() {

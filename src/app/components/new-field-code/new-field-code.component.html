@@ -1,0 +1,105 @@
+<div class="wrapper">
+    <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
+        <app-sidebar></app-sidebar>
+        <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
+    </div>
+    <div class="main-panel">
+        <app-header></app-header>
+        <div class="m-3 border-bottom">
+            <h1 class="page-heading border-bottom"> New Field Code</h1>
+            <div style="overflow: auto">
+                <div class="container-fluid">
+                    <form [formGroup]="newFieldCodeForm" (submit)="onSubmit(); $event.preventDefault()">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div formGroupName="fieldCode">
+                                    <!-- Name field -->
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input id="name" type="text" class="form-control" formControlName="name" />
+                                    </div>
+                                    <small *ngIf="newFieldCodeForm.get('fieldCode.name')?.dirty && newFieldCodeForm.hasError('required', 'fieldCode.name')" class="text-danger">Name is required</small>
+                                    <small *ngIf="!isUnique && !newFieldCodeForm.hasError('required', 'fieldCode.name') && newFieldCodeForm.get('fieldCode.name')?.dirty" class="text-danger">Field with this name already exists</small>
+
+                                    <!-- Code field -->
+                                    <div class="mb-3">
+                                        <label for="code" class="form-label">Code</label>
+                                        <input id="code" type="text" class="form-control" formControlName="code" />
+                                    </div>
+                                    <small *ngIf="newFieldCodeForm.get('fieldCode.code')?.dirty && newFieldCodeForm.hasError('required', 'fieldCode.code')"  class="text-danger">Code is required</small>
+
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Description (optional)</label>
+                                        <input id="description" type="text" class="form-control" formControlName="description" />
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="regex" class="form-label">RegEx (optional)</label>
+                                        <input id="regex" type="text" class="form-control" formControlName="regex" />
+                                    </div>
+                                    
+                                    
+                                    <div class="mb-3">
+                                        <label for="status" class="form-label">Status</label>
+                                        <select id="status" class="form-select" formControlName="status">
+                                            <option *ngFor="let status of statuses" [value]="status.id">
+                                                {{ status.value}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <small *ngIf="newFieldCodeForm.get('fieldCode.status')?.touched && newFieldCodeForm.hasError('required', 'fieldCode.status')"  class="text-danger">Status is required</small>
+                                    
+                                    <div class="mb-3">
+                                        <label for="type" class="form-label">Type</label>
+                                        <select type="text" class="form-control" formControlName="type" [(ngModel)]="selectedType">
+                                            <option *ngFor="let type of dataTypes" [value]="type.id">
+                                                {{type.value}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <small *ngIf="newFieldCodeForm.get('fieldCode.type')?.touched && newFieldCodeForm.hasError('required', 'fieldCode.type')" class="text-danger">Type is required</small>
+                                    
+
+                                    <div class="mb-3" *ngIf="selectedType == 4">
+                                        <label for="option" class="form-label">Add Option</label>
+                                        <button id="btnAddOption" class="btn btn-secondary" type="button" (click)="addOption()">
+                                            +
+                                        </button>
+                                    </div>
+                                    
+                                    
+                                    <div formArrayName="options" *ngIf="selectedType == 4">
+                                        <div *ngFor="let option of options.controls; let i = index">
+                                            <div class="input-group">
+                                                <label id="lblOption" for="option{{ i }}" class="form-label">Option {{ i + 1 }}</label>
+                                                <input id="option{{ i }}" type="text" class="form-control" [formControlName]="i" />
+                                                <button id="btnRemoveOption" class="btn btn-danger" type="button" (click)="removeOption(i)">
+                                                    -
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <input id="internal" type="checkbox" class="form-check-input" formControlName="internal">
+                                        <label for="internal" class="form-check-label">Internal</label>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-primary" [disabled]="!newFieldCodeForm.valid">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="mb-3">
+                        <a href="/home">
+                            <button class="btn btn-primary">Back</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
