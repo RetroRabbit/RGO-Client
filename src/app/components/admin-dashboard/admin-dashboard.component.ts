@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { EmployeeProfileService } from 'src/app/services/employee-profile.service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { Chart } from 'src/app/models/charts.interface';
+import { ChartService } from 'src/app/services/charts.service';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -14,17 +15,17 @@ export class AdminDashboardComponent {
   admin !: EmployeeProfile;
   profileImage : string = '';
   charts: Chart[] = [];
-  constructor(private employeeProfileService: EmployeeProfileService) { }
+  employeeType : { id:number, name:string} ={
+    id: 0,
+    name: ''
+  };
+  constructor(private employeeProfileService: EmployeeProfileService, private chartService : ChartService) { }
   ngOnInit() {
     this.employeeProfileService.GetEmployeeProfile().subscribe(data => {
       this.admin = data;
       this.profileImage = this.admin.photo;
-      this.getPhoto();
+      this.employeeType = this.admin.employeeType;
     });
-   // this.chartService.getAllCharts().subscribe(data => this.charts = data);
-  }
-
-  getPhoto() {
-      
+    this.chartService.getAllCharts().subscribe(data => this.charts = data);
   }
 }
