@@ -5,8 +5,8 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ManageFieldCodeComponent } from './components/manage-field-code/manage-field-code.component';
 import { ChartComponent } from './components/charts/charts.component';
-import { CreateChartsComponent } from './components/create-charts/create-charts.component';
-import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
+import { CreateChartsComponent } from './components/charts/create-charts/create-charts.component';
+import { NewEmployeeComponent } from './components/employee/new-employee/new-employee.component';
 import { NewFieldCodeComponent } from './components/new-field-code/new-field-code.component';
 import { UpdateFieldComponent } from './components/update-field/update-field.component';
 
