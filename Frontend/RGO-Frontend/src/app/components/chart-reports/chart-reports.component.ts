@@ -41,8 +41,9 @@ calculatePercentage(value: number): string {
     return percentage.toFixed(2); 
   }
 
-  downloadReportAsCSV(dataType: string) {
-    this.chartService.downloadCSV(dataType).subscribe(data => {
+  downloadReportAsCSV(dataTypes: string[]) {
+
+    this.chartService.downloadCSV(dataTypes).subscribe(data => {
   
       const blob = new Blob([data], { type: 'text/csv' }); 
 

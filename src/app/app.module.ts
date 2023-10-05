@@ -38,6 +38,7 @@ import { EvaluationsComponent } from './components/employee/evaluations/evaluati
 import { EmployeeEvaluationsComponent } from './components/employee/employee-evaluations/employee-evaluations.component';
 import { TemplateItemsComponent } from './components/template-items/template-items.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
@@ -93,6 +94,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatMenuModule,
     MatIconModule,
     MatToolbarModule
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
     AuthService,
