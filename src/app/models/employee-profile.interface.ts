@@ -32,5 +32,6 @@ export interface EmployeeProfile {
     personalEmail: string,
     cellphoneNo: string,
     tshirtSize: number,
-    dietaryRestrictions: string
+    dietaryRestrictions: string,
+    photo : string
 }
