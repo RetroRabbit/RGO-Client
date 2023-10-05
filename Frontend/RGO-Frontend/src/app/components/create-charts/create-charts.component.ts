@@ -15,7 +15,7 @@ export class CreateChartsComponent {
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   
   chartName: string = 'Name';
-  chartDataItem: string = 'Gender';
+  selectedDataItems: string[] = [];
   chartType: any = 'bar';
   chartData: number[] = [];
   chartLabels: string[] = [];
@@ -35,7 +35,7 @@ export class CreateChartsComponent {
   }
 
   createChart() {
-    this.ChartService.createChart(this.chartDataItem, this.chartName, this.chartType)
+    this.ChartService.createChart(this.selectedDataItems, this.chartName, this.chartType)
       .subscribe(
         (response) => {
           this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
@@ -48,10 +48,11 @@ export class CreateChartsComponent {
   }
 
   getChartData() {
-    this.ChartService.getChartDataByType(this.chartDataItem).subscribe(
+    this.ChartService.getChartDataByType(this.selectedDataItems).subscribe(
       (data:any) =>{
         this.chartData = data.data;
         this.chartLabels = data.labels;
+        console.log(this.selectedDataItems);
        },
        (error) => {
         this.toast.error({detail:"Error", summary:"Failed to get chartData.",duration:5000, position:'topRight'});
@@ -59,10 +60,16 @@ export class CreateChartsComponent {
      );
   }
 
- 
+  dropdownSettings = {
+    singleSelection: false, 
+    text: 'Select Data Items',
+    selectAllText: 'Select All',
+    unSelectAllText: 'Unselect All',
+    enableSearchFilter: true,
+  };
 
   onDropDownChange() {
-    this.ChartService.getChartDataByType(this.chartDataItem).subscribe(
+    this.ChartService.getChartDataByType(this.selectedDataItems).subscribe(
       (data:any) =>{
         this.chartData = data.data;
         this.chartLabels = data.labels;
