@@ -24,6 +24,7 @@
           [data]="columns"
           [(ngModel)]="selectedDataItems"
           (onSelect)="onDropDownChange()"
+          (onDeSelect)="onDropDownChange()"
           [settings]="dropdownSettings"
         >
         </ng-multiselect-dropdown>
