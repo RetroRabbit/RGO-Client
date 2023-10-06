@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Employee } from 'src/app/models/employee.interface';
-import { EmployeeRoleService } from 'src/app/services/employee-role.service';
-import { EmployeeService } from 'src/app/services/employee.service';
+import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { RoleService } from 'src/app/services/role.service';
 
 @Component({
@@ -54,8 +54,10 @@ export class RoleManagerComponent {
   }
 
   getRole(selectedRole: string): void {
-    this.roleService.getRole(selectedRole).subscribe(role =>
-      this.currRole = role)
+    this.roleService.getRole(selectedRole).subscribe({
+      next: role =>
+      this.currRole = role
+    })
   }
 
   onAdd(): void {

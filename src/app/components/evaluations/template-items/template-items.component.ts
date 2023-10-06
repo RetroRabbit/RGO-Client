@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { TemplateItem } from 'src/app/models/templateItem.interface';
 import { Observable } from 'rxjs';
-import { EvaluationTemplateItemService } from 'src/app/services/evaluation-template-item.service';
-import { EvaluationTemplateService } from 'src/app/services/evaluation-template.service';
+import { EvaluationTemplateItemService } from 'src/app/services/evaluations/evaluation-template-item.service';
+import { EvaluationTemplateService } from 'src/app/services/evaluations/evaluation-template.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -30,27 +30,27 @@ export class TemplateItemsComponent {
   constructor(
     private evaluationtemplate: EvaluationTemplateService,
     private evaluationTemplateItemService: EvaluationTemplateItemService
-  ) {}
+  ) { }
 
   saveTemplate(): void {
     const { template } = this.templateForm.value;
-    this.evaluationtemplate.save(template).subscribe(
-      () => {
+    this.evaluationtemplate.save(template).subscribe({
+      next: data => {
         this.templateForm.reset();
         this.templates$ = this.evaluationtemplate.getAll();
       },
-      () => {}
-    );
+      error: error => { }
+    });
   }
 
   deleteTemplate(template: string): void {
-    this.evaluationtemplate.delete(template).subscribe(
-      () => {
+    this.evaluationtemplate.delete(template).subscribe({
+      next: data => {
         this.templateForm.reset();
         this.templates$ = this.evaluationtemplate.getAll();
       },
-      () => {}
-    );
+      error: error => { }
+    });
   }
 
   editTemplateItems(template: string): void {

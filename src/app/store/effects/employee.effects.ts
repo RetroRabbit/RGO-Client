@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { EmployeeService } from "src/app/services/employee.service";
+import { EmployeeService } from "src/app/services/employee/employee.service";
 import { getAllEmployees, getAllEmployeesSuccess } from "../actions/employee.actions";
 import { map, exhaustMap } from "rxjs/operators";
 

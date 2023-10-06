@@ -20,11 +20,11 @@ export class EmployeeProfileComponent {
   }
 
   getEmployeeFields(){
-    this.accessPropertyService.GetAccessProperties(this.cookieService.get('userEmail')).subscribe(
-      data => {
+    this.accessPropertyService.GetAccessProperties(this.cookieService.get('userEmail')).subscribe({
+      next: data => {
         this.EmployeeFields = data;
       }
-    );
+  });
   }
 
   toggleEdit() {
@@ -51,7 +51,8 @@ export class EmployeeProfileComponent {
         })
       }
     });
-    this.accessPropertyService.UpdateProperties(this.cookieService.get('userEmail'), payload).subscribe(() => {
+    this.accessPropertyService.UpdateProperties(this.cookieService.get('userEmail'), payload).subscribe(
+      () => {
     });
     setTimeout(()=>{
       this.getEmployeeFields();

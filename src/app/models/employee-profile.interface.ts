@@ -1,21 +1,18 @@
 export interface EmployeeProfile {
+  id: number,
+  employeeNumber: string,
+  taxNumber: string,
+  engagementDate: Date,
+  terminationDate: Date,
+  reportingLine: number,
+  highestQualification: string,
+  disability: boolean,
+  disabilityNotes: string,
+  countryOfBirth: string,
+  nationality: string,
+  level: number,
+  employeeType: {
     id: number,
-    employeeNumber: string,
-    taxNumber: string,
-    engagementDate: Date,
-    terminationDate: Date,
-    reportingLine: number,
-    highestQualification: string,
-    disability: boolean,
-    disabilityNotes: string,
-    countryOfBirth: string,
-    nationality: string,
-    level: number,
-    employeeType: {
-      id: number,
-      name: string,
-    },
-    title: string,
     name: string,
     initials: string,
     surname: string,
@@ -34,4 +31,5 @@ export interface EmployeeProfile {
     tshirtSize: number,
     dietaryRestrictions: string,
     photo : string
+  }
 }
