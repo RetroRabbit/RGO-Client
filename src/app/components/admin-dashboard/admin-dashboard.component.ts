@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { EmployeeProfileService } from 'src/app/services/employee-profile.service';
+import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { Chart } from 'src/app/models/charts.interface';
 import { ChartService } from 'src/app/services/charts.service';
