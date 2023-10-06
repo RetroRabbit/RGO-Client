@@ -3,8 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeType } from 'src/app/models/employee-type.model';
-import { EmployeeTypeService } from 'src/app/services/employee-type.service';
-import { EmployeeService } from 'src/app/services/employee.service';
+import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
 
 @Component({
   selector: 'app-new-employee',
