@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { EmployeeProfileService } from 'src/app/services/employee-profile.service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { Chart } from 'src/app/models/charts.interface';
@@ -16,13 +16,17 @@ export class AdminDashboardComponent {
   admin !: EmployeeProfile;
   profileImage: string = '';
   charts: Chart[] = [];
+  screenWidth !: number;
+
   employeeType: { id: number, name: string } = {
     id: 0,
     name: ''
   };
   constructor(private employeeProfileService: EmployeeProfileService, 
     private chartService: ChartService,
-    private auth: AuthService) { }
+    private auth: AuthService) {
+      this.screenWidth = window.innerWidth;
+     }
   ngOnInit() {
     this.employeeProfileService.GetEmployeeProfile().subscribe(data => {
       this.admin = data;
@@ -36,5 +40,10 @@ export class AdminDashboardComponent {
     this.auth.logout({
       logoutParams: { returnTo: document.location.origin }
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event : any) {
+    this.screenWidth = event.target.innerWidth;
   }
 }
