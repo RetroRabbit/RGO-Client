@@ -25,36 +25,44 @@ export class CreateChartsComponent {
   };
   columns: string[] = [];
 
+  dropdownSettings = {
+    singleSelection: false, 
+    text: 'Select Data Items',
+    selectAllText: 'Select All',
+    unSelectAllText: 'Unselect All',
+    enableSearchFilter: true,
+  };
+
   constructor(private ChartService: ChartService,private toast: NgToastService, private router: Router,private cookieService: CookieService) {}
 
-  ngOnInit() :void{
+  ngOnInit() : void {
     this.getChartData();
-    this.ChartService.getColumns().subscribe(options => {
-      this.columns = options;
+    this.ChartService.getColumns().subscribe({
+      next: options => { this.columns = options; }
     });
   }
 
   createChart() {
     this.ChartService.createChart(this.selectedDataItems, this.chartName, this.chartType)
-      .subscribe(
-        (response) => {
+      .subscribe({
+        next : response => {
           this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
           this.cookieService.set('currentPage', "Charts");
         },
-        (error) => {
+        error: error => {
             this.toast.error({detail:"Error", summary:"Failed to create chart.",duration:5000, position:'topRight'});
-        }
+        }}
       );
   }
 
   getChartData() {
     if (this.selectedDataItems && this.selectedDataItems.length > 0) {
-      this.ChartService.getChartDataByType(this.selectedDataItems).subscribe(
-        (data: any) => {
+      this.ChartService.getChartDataByType(this.selectedDataItems).subscribe({
+        next: data => {
           this.chartData = data.data;
           this.chartLabels = data.labels;
         },
-        (error) => {
+        error: error => {
           this.toast.error({
             detail: "Error",
             summary: "Failed to get chartData.",
@@ -62,7 +70,7 @@ export class CreateChartsComponent {
             position: 'topRight'
           });
         }
-      );
+    });
     } else {
       this.toast.info({
         detail: "No data selected.",
@@ -72,24 +80,15 @@ export class CreateChartsComponent {
       });
     }
   }
-  
-
-  dropdownSettings = {
-    singleSelection: false, 
-    text: 'Select Data Items',
-    selectAllText: 'Select All',
-    unSelectAllText: 'Unselect All',
-    enableSearchFilter: true,
-  };
 
   onDropDownChange() {
     if (this.selectedDataItems && this.selectedDataItems.length > 0) {
-      this.ChartService.getChartDataByType(this.selectedDataItems).subscribe(
-        (data: any) => {
+      this.ChartService.getChartDataByType(this.selectedDataItems).subscribe({
+        next: data => {
           this.chartData = data.data;
           this.chartLabels = data.labels;
         },
-        (error) => {
+        error: error => {
           this.toast.error({
             detail: "Error",
             summary: "Failed to get chartData.",
@@ -97,7 +96,7 @@ export class CreateChartsComponent {
             position: 'topRight'
           });
         }
-      );
+    });
     } else {
       this.toast.info({
         detail: "No data selected.",

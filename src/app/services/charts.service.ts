@@ -8,7 +8,7 @@ import { API } from '../models/constants/urls.constants';
   providedIn: 'root'
 })
 export class ChartService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   getAllCharts(): Observable<Chart[]> {
     return this.httpClient.get<Chart[]>(`${API.HttpBaseURL}/chart/get`);
@@ -24,19 +24,19 @@ export class ChartService {
   }
 
   getChartDataByType(dataType: string[]): Observable<any> {
-    
+
     const dataTypeString = dataType.join(',');
-  
+
     const queryParams = `?dataTypes=${dataTypeString}`;
-  
+
     return this.httpClient.get<any>(`${API.HttpBaseURL}/chart/data/${queryParams}`);
   }
-  
+
 
   updateChart(dataType: Chart): Observable<Chart> {
-  return this.httpClient.put<Chart>(`${API.HttpBaseURL}/chart/update`, dataType);
+    return this.httpClient.put<Chart>(`${API.HttpBaseURL}/chart/update`, dataType);
   }
- 
+
   deleteChart(chartId: number): Observable<any> {
     const queryParams = `?Id=${chartId}`;
     return this.httpClient.delete<any>(`${API.HttpBaseURL}/chart/delete${queryParams}`);
@@ -52,5 +52,5 @@ export class ChartService {
       responseType: 'arraybuffer'
     });
   }
-  
+
 }
