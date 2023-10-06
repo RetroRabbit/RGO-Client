@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
-import { EmployeeService } from 'src/app/services/employee.service';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { CookieService } from 'ngx-cookie-service';
 
 
@@ -22,11 +22,11 @@ export class ViewEmployeeComponent{
   }
 
   getEmployees(){
-    this.employeeService.getAllProfiles().subscribe(
-      data => {
+    this.employeeService.getAllProfiles().subscribe({
+      next: data => {
         this.Employees = data;
       }
-    );
+  });
   }
 
   CaptureEvent(event: any) {

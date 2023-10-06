@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { API } from '../models/constants/urls.constants';
-import { EmployeeProfile } from '../models/employee-profile.interface';
-import { Token } from '../models/token.interface';
+import { API } from '../../models/constants/urls.constants';
+import { EmployeeProfile } from '../../models/employee-profile.interface';
+import { Token } from '../../models/token.interface';
 import { Store } from '@ngrx/store';
-import { EmployeeState } from '../store/reducers/employee.reducer';
+import { EmployeeState } from '../../store/reducers/employee.reducer';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({

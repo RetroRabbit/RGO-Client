@@ -16,7 +16,6 @@ import { environment } from 'src/enviroment/env';
 import { LoginEffects } from './store/effects/app.effects';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './interceptor/auth0.interceptor';
-import { UserReducer } from './store/reducers/user.reducer';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EmployeeProfileComponent } from './components/employees/employee-profile/employee-profile.component';
 import { EmployeeProfileReducer } from './store/reducers/employee-profile.reducer';
@@ -76,7 +75,6 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     StoreModule.forRoot({
       app: LoginReducer,
       employee : EmployeeProfileReducer,
-      users: UserReducer,
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),
     AuthModule.forRoot({
