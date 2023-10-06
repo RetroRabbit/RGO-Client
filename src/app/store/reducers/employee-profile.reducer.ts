@@ -41,7 +41,6 @@ export const initialState: EmployeeProfileState = {
       personalEmail: '',
       cellphoneNo: '',
       tshirtSize: 0,
-      dietaryRestrictions: '',
       photo: ''
   }
 };
