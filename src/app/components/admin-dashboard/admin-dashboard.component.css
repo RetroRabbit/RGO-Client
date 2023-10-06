@@ -4,21 +4,9 @@
 
 #header{
   height: 10vh;
-  position: relative; /* Ensure the parent div is a positioned container */
-  /* height: 100%; */
+  position: relative;
 }
 
-#header > div{
-  /* position: absolute;
-    bottom: 0; */
-}
-
-#left-column{
-  /* background-color: #ffc2b9; */
-}
-
-#retro-logo{
-}
 #navigation{
   padding-bottom: 0;
   bottom: 0;
