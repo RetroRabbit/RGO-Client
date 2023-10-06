@@ -2,15 +2,15 @@ import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, catchError, map, of } from 'rxjs';
 import { Employee } from 'src/app/models/employee.interface';
-import { EmployeeService } from 'src/app/services/employee.service';
-import { EvaluationService } from 'src/app/services/evaluation.service';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
+import { EvaluationService } from 'src/app/services/evaluations/evaluation.service';
 import { CookieService } from 'ngx-cookie-service';
-import { EmployeeEvaluationsRatingService } from 'src/app/services/employee-evaluations-rating.service';
-import { EvaluationTemplateService } from 'src/app/services/evaluation-template.service';
-import { EvaluationTemplateItemService } from 'src/app/services/evaluation-template-item.service';
+import { EvaluationTemplateService } from 'src/app/services/evaluations/evaluation-template.service';
+import { EvaluationTemplateItemService } from 'src/app/services/evaluations/evaluation-template-item.service';
 import { EvaluationInput } from 'src/app/models/evaluation-input.interface';
 import { EvaluationRatingInput } from 'src/app/models/evaluation-rating-input.interface';
-import { EvaluationAudienceService } from 'src/app/services/evaluation-audience.service';
+import { EvaluationAudienceService } from 'src/app/services/evaluations/evaluation-audience.service';
+import { EmployeeEvaluationsRatingService } from 'src/app/services/evaluations/employee-evaluations-rating.service';
 
 @Component({
   selector: 'app-evaluations',
@@ -192,13 +192,13 @@ export class EvaluationsComponent {
   saveEvaluation() {
     const evaluation: EvaluationInput = this.evaluationInput;
 
-    this.evaluationService.save(evaluation).subscribe(
-      () => {
+    this.evaluationService.save(evaluation).subscribe({
+      next: data => {
         this.EvaluationForm.reset();
         this.backToEvaluations();
       },
-      () => {}
-    );
+      error: error => {}
+  });
   }
 
   saveEvaluationAudience() {
@@ -206,20 +206,20 @@ export class EvaluationsComponent {
 
     this.evaluationAudienceService
       .save(this.AudienceForm.value.email, evaluation)
-      .subscribe(
-        () => {
+      .subscribe({
+        next: data => {
           this.fetchAudience();
           this.updateRatings();
         },
-        () => {}
-      );
+        error: error => {}
+  });
   }
 
   deleteEvaluationAudience(email: string) {
     const evaluation: EvaluationInput = this.evaluationInput;
 
-    this.evaluationAudienceService.delete(email, evaluation).subscribe(
-      () => {
+    this.evaluationAudienceService.delete(email, evaluation).subscribe({
+      next: data => {
         this.evaluationAudienceService
           .getAll({
             id: 0,
@@ -252,8 +252,8 @@ export class EvaluationsComponent {
           subject: this.selectedEvaluation?.subject,
         });
       },
-      () => {}
-    );
+      error: error => {}
+  });
   }
 
   get evaluationRating(): EvaluationRatingInput {
@@ -291,8 +291,8 @@ export class EvaluationsComponent {
 
     const formData = this.evaluationRating;
 
-    this.evaluationRatingService.save(formData).subscribe(
-      () => {
+    this.evaluationRatingService.save(formData).subscribe({
+      next: data => {
         this.rating$ = this.evaluationRatingService.getall({
           id: 0,
           ownerEmail: this.selectedEvaluation?.owner.email,
@@ -301,8 +301,8 @@ export class EvaluationsComponent {
           subject: this.selectedEvaluation?.subject,
         });
       },
-      () => { }
-    );
+      error: error => { }
+  });
   }
 
   deleteEvaluationRating(rating: any) {
@@ -315,8 +315,8 @@ export class EvaluationsComponent {
       comment: rating.comment,
     };
 
-    this.evaluationRatingService.delete(evaluationRating).subscribe(
-      () => {
+    this.evaluationRatingService.delete(evaluationRating).subscribe({
+      next: data => {
         this.rating$ = this.evaluationRatingService.getall({
           id: 0,
           ownerEmail: this.selectedEvaluation?.owner.email,
@@ -325,8 +325,8 @@ export class EvaluationsComponent {
           subject: this.selectedEvaluation?.subject,
         });
       },
-      () => { }
-    );
+      error: error => { }
+  });
   }
 
   clearRatingForm() {
@@ -345,27 +345,27 @@ export class EvaluationsComponent {
         subject: this.EvaluationForm.value.subject!,
       },
     ];
-    this.evaluationService.update(evaluationInputs).subscribe(
-      () => {
+    this.evaluationService.update(evaluationInputs).subscribe({
+      next: data => {
         this.EvaluationForm.reset();
         this.backToEvaluations();
       },
-      () => {}
-    );
+      error: error => {}
+  });
   }
 
   removeEvaluation() {
     const evaluationInput: EvaluationInput = this.evaluationInput;
 
-    this.evaluationService.delete(evaluationInput).subscribe(
-      () => {
+    this.evaluationService.delete(evaluationInput).subscribe({
+      next: data => {
         this.EvaluationForm.reset();
         this.backToEvaluations();
       },
-      () => {
+      error: error => {
         this.EvaluationForm.reset();
       }
-    );
+  });
   }
 
   backToEvaluations() {

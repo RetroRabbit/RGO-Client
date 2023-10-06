@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EvaluationInput } from '../models/evaluation-input.interface';
+import { EvaluationInput } from '../../models/evaluation-input.interface';
 import { Observable } from 'rxjs';
-import { API } from '../models/constants/urls.constants';
+import { API } from '../../models/constants/urls.constants';
 
 @Injectable({
   providedIn: 'root'
