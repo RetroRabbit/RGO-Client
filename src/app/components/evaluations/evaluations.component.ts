@@ -14,8 +14,7 @@ import { EvaluationAudienceService } from 'src/app/services/evaluation-audience.
 
 @Component({
   selector: 'app-evaluations',
-  templateUrl: './evaluations.component.html',
-  styleUrls: ['./evaluations.component.css'],
+  templateUrl: './evaluations.component.html'
 })
 export class EvaluationsComponent {
   @Input() selectedEvaluation!: any | null;
