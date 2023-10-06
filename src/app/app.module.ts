@@ -93,7 +93,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatButtonModule, 
     MatMenuModule,
     MatIconModule,
-    MatToolbarModule
+    MatToolbarModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
