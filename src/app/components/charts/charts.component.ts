@@ -31,21 +31,21 @@ export class ChartComponent implements OnInit {
   }
 
   createAndDisplayChart(): void {
-    this.chartService.getAllCharts().subscribe(
-      (data: any[]) => {
+    this.chartService.getAllCharts().subscribe({
+      next: data => {
         this.processChartData(data);
       },
-      (error) => { }
-    );
+      error: error => { }
+  });
   }
 
   getNumberOfEmployees(): void {
-    this.chartService.getTotalEmployees().subscribe(
-      (data: any) => {
+    this.chartService.getTotalEmployees().subscribe({
+      next: data => {
         this.numberOfEmployees = data;
       },
-      (error) => {  }
-    );
+      error: error => {  }
+  });
   }
 
   processChartData(data: any[]): void {
@@ -93,8 +93,8 @@ export class ChartComponent implements OnInit {
         Type: this.updateFormData.Type,
       };
   
-      this.chartService.updateChart(updatedChart).subscribe(
-        (updatedData: any) => {
+      this.chartService.updateChart(updatedChart).subscribe({
+        next: (updatedData: any) => {
           const index = this.chartData.findIndex((c) => c.id === updatedData.Id);
           if (index !== -1) {
             this.chartData[index] = updatedData;
@@ -109,23 +109,23 @@ export class ChartComponent implements OnInit {
             this.selectedChartType = updatedData.Type;
           }
         },
-        (error) => { }
-      );
+        error: error => { }
+    });
     }
   }
   
   deleteChart(chartId: number): void {
     if (this.activeChart) {
-      this.chartService.deleteChart(chartId).subscribe(
-        () => {
+      this.chartService.deleteChart(chartId).subscribe({
+        next: () => {
           const index = this.chartData.findIndex((c) => c.id === chartId);
           if (index !== -1) {
             this.chartData.splice(index, 1);
           }
           this.clearActiveChart();
         },
-        (error) => { }
-      );
+        error: error => { }
+    });
     }
   }
 

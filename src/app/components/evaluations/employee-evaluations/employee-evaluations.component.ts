@@ -2,8 +2,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { Employee } from 'src/app/models/employee.interface';
-import { EmployeeService } from 'src/app/services/employee.service';
-import { EvaluationService } from 'src/app/services/evaluation.service';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
+import { EvaluationService } from 'src/app/services/evaluations/evaluation.service';
 
 @Component({
   selector: 'app-employee-evaluations',
@@ -25,7 +25,7 @@ export class EmployeeEvaluationsComponent {
     private empoloyeeService: EmployeeService,
     private evaluationService: EvaluationService,
     private cookieService: CookieService
-  ) {}
+  ) { }
 
   goToEvaluationForm() {
     this.cookieService.set('currentPage', 'Evaluation Form');

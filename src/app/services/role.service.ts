@@ -10,15 +10,15 @@ export class RoleService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllRoles(): Observable<Map<string, string[]>>{
+  getAllRoles(): Observable<Map<string, string[]>> {
     return this.httpClient.get<Map<string, string[]>>(`${API.HttpBaseURL}/rolemanage/getall`);
   }
 
-  getRole(role: string): Observable<Map<string, string[]>>{
+  getRole(role: string): Observable<Map<string, string[]>> {
     return this.httpClient.get<Map<string, string[]>>(`${API.HttpBaseURL}/rolemanage/get?role=${encodeURIComponent(role)}`);
   }
 
-  addRole(role: string, permission: any): Observable<any>{
+  addRole(role: string, permission: any): Observable<any> {
     return this.httpClient.post<any>(`${API.HttpBaseURL}/rolemanage/add?role=${encodeURIComponent(role)}&permission=${encodeURIComponent(permission)}`, {});
   }
 
