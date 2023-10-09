@@ -26,6 +26,7 @@ import { CreateChartsComponent } from './components/charts/create-charts/create-
 import { NgToastModule } from 'ng-angular-popup';
 import { ReportComponent } from './components/charts/chart-reports/chart-reports.component';
 import { RoleManagerComponent } from './components/role-manager/role-manager.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
 import { NewEmployeeComponent } from './components/employees/new-employee/new-employee.component';
 import { ManageFieldCodeComponent } from './components/custom-fields/manage-field-code/manage-field-code.component';
@@ -37,6 +38,11 @@ import { EmployeeEvaluationsComponent } from './components/evaluations/employee-
 import { TemplateItemsComponent } from './components/evaluations/template-items/template-items.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav'; 
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +63,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     EmployeeEvaluationsComponent,
     TemplateItemsComponent,
     NewFieldCodeComponent,
-    UpdateFieldComponent
+    UpdateFieldComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +87,10 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     HttpClientModule,
     BrowserAnimationsModule,
     NgToastModule,
+    MatButtonModule, 
+    MatMenuModule,
+    MatIconModule,
+    MatToolbarModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [

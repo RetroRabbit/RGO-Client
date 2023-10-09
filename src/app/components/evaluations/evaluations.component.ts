@@ -14,8 +14,7 @@ import { EmployeeEvaluationsRatingService } from 'src/app/services/evaluations/e
 
 @Component({
   selector: 'app-evaluations',
-  templateUrl: './evaluations.component.html',
-  styleUrls: ['./evaluations.component.css'],
+  templateUrl: './evaluations.component.html'
 })
 export class EvaluationsComponent {
   @Input() selectedEvaluation!: any | null;
