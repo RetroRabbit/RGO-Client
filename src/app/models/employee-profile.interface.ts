@@ -3,7 +3,7 @@ export interface EmployeeProfile {
     employeeNumber: string,
     taxNumber: string,
     engagementDate: Date,
-    terminationDate: Date,
+    terminationDate: Date | null,
     reportingLine: number,
     highestQualification: string,
     disability: boolean,
