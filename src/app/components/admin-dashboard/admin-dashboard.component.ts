@@ -15,7 +15,7 @@ export class AdminDashboardComponent {
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
   admin!: EmployeeProfile;
-  profileImage: string = '';
+  profileImage: string | null = null;
   charts: Chart[] = [];
   screenWidth!: number;
 
@@ -35,7 +35,11 @@ export class AdminDashboardComponent {
   ngOnInit() {
     this.employeeProfileService.GetEmployeeProfile().subscribe((data) => {
       this.admin = data;
-      this.profileImage = this.admin.photo;
+
+      if (this.admin.photo &&
+        (this.admin.photo.startsWith('http') || this.admin.photo.startsWith('data:image'))) {
+        this.profileImage = this.admin.photo;
+      }
       this.employeeType = this.admin.employeeType;
     });
     this.chartService.getAllCharts().subscribe((data) => (this.charts = data));

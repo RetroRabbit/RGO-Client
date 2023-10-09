@@ -129,14 +129,14 @@
                     <mat-menu #menu="matMenu">
                         <button mat-menu-item id="menu-info" *ngIf="screenWidth < 993">
                             <div id="menu-image-container">
-                                <img *ngIf="profileImage !== '';else NoProfile" [src]="profileImage" alt="">
+                                <img *ngIf="profileImage;else NoProfile" [src]="profileImage" alt="">
                                 <ng-template #NoProfile>
-                                    <img src="../../../assets/img/faces/marc.jpg" alt="Employee Profile Photo">
+                                    <i class="material-icons">account_circle</i>
                                 </ng-template>
                             </div>
                             <div id="menu-quick-info">
-                                <div>{{admin.name}}</div>
-                                <div>{{employeeType.name}}</div>
+                                <div>{{admin?.name}}</div>
+                                <div>{{employeeType?.name}}</div>
                             </div>
                             <hr>
                         </button>
@@ -145,14 +145,14 @@
                     </mat-menu>
                 </div>
                 <div class="col-auto ms-4" id="employee-info">
-                    <div>{{admin.name}} {{admin.surname}}</div>
-                    <div>{{employeeType.name}}</div>
+                    <div>{{admin?.name}} {{admin?.surname}}</div>
+                    <div>{{employeeType?.name}}</div>
                 </div>
                 <div class="col-auto" id="employee-photo">
                     <div id="image-container">
-                        <img *ngIf="profileImage !== '';else NoProfile" [src]="profileImage" alt="">
+                        <img *ngIf="profileImage;else NoProfile" [src]="profileImage" alt="">
                         <ng-template #NoProfile>
-                            <img src="../../../assets/img/faces/marc.jpg" alt="Employee Profile Photo">
+                            <i class="material-icons">account_circle</i>
                         </ng-template>
                     </div>
                 </div>
