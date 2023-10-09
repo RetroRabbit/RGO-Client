@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 })
 
 export class ViewEmployeeComponent{
-  // @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   @Output() selectedEmployee = new EventEmitter<any>()
   Employees: EmployeeProfile[] = [];
   selectedEmp: any;
@@ -47,6 +46,4 @@ export class ViewEmployeeComponent{
     this.selectedEmployee.emit(this.selectedEmp)
     this.cookieService.set('currentPage', 'Employee Details');
   }
-  
-
 }
