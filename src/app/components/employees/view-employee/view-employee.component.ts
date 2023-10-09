@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,11 +12,12 @@ import { CookieService } from 'ngx-cookie-service';
 })
 
 export class ViewEmployeeComponent{
-  @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
+  @Output() selectedEmployee = new EventEmitter<any>()
   Employees: EmployeeProfile[] = [];
+  selectedEmp: any;
 
   constructor(private employeeService: EmployeeService,
-    private cookieService: CookieService) { }
+    private cookieService: CookieService, private router: Router) { }
 
   ngOnInit() {
     this.getEmployees();
@@ -36,5 +38,11 @@ export class ViewEmployeeComponent{
 
   ViewUser(email: string){
     this.cookieService.set('selectedUser',email)
+  }
+
+  employeeClickEvent(event: any, employee: EmployeeProfile): void{
+    this.selectedEmp = employee
+    this.selectedEmployee.emit(this.selectedEmp)
+    this.cookieService.set('currentPage', 'Employee Details');
   }
 }
