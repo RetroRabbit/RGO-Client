@@ -33,8 +33,7 @@ export class EmployeeDetailsComponent implements OnInit {
 
   constructor(private router: Router, private fb: FormBuilder, private employeeTypeService: EmployeeTypeService,
     private employeeDataService: EmployeeDataService, private fieldcodeService: FieldCodeService
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     this.callService();
