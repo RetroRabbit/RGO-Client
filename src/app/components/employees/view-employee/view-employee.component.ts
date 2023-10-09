@@ -33,7 +33,6 @@ export class ViewEmployeeComponent{
 
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
-    console.log(target.innerText);
     this.cookieService.set('currentPage', target.innerText);
   }
 
