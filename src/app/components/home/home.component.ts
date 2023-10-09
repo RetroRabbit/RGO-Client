@@ -8,6 +8,7 @@ import { Chart } from 'chart.js';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -16,24 +17,14 @@ import { EmployeeProfileService } from 'src/app/services/employee/employee-profi
 
 export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
-  selectedPage: string = this.cookieService.get("currentlPage") != "Dashboard" ? this.cookieService.get("currentlPage") : "Dashboard";
   selectedEvaluation: any | null = null
-  roles : string[] = [];  
   selectedEmployee: any | null = null;
-
-  constructor(
-    private employeeProfileService: EmployeeProfileService,
-    private chartService: ChartService,
-    private store: Store<{ app: Token }>,
-    private auth: AuthService,
-    public cookieService: CookieService
-  ) { }
-
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
-  admin !: EmployeeProfile;
+  admin!: EmployeeProfile;
   profileImage: string = '';
   charts: Chart[] = [];
+  roles : string[] = []; 
   screenWidth !: number;
 
   employeeType: { id: number, name: string } = {
@@ -41,8 +32,17 @@ export class HomeComponent {
     name: ''
   };
 
+  constructor(
+    private employeeProfileService: EmployeeProfileService,
+    private chartService: ChartService,
+    private store: Store<{ app: Token }>,
+    private auth: AuthService,
+    public cookieService: CookieService) { 
+    this.screenWidth = window.innerWidth;
+  }
+
+
   ngOnInit() {
-    this.selectedPage = this.cookieService.get('currentPage');
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
 
@@ -71,10 +71,6 @@ export class HomeComponent {
     this.auth.logout({
       logoutParams: { returnTo: document.location.origin }
     });
-  }
-
-  handleSelectedItem() {
-    this.selectedPage = this.cookieService.get('currentPage');
   }
 
   handleSelectedEval(item: any) {
