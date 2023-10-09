@@ -1,0 +1,50 @@
+.report-wrapper {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.report-container {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px #ccc;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.report-description {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.chart-info {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.chart-data h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.data-label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.data-value {
+  margin-right: 10px;
+}
+
+.data-percentage {
+  color: #555;
+}

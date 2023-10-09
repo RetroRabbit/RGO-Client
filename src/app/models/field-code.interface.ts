@@ -10,5 +10,5 @@ export interface FieldCode {
   status?: number;
   internal?: boolean;
   internalTable?: string;
-  options? : FieldCodeOptions[];
+  options?: FieldCodeOptions[];
 }
