@@ -18,7 +18,8 @@ export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
   selectedPage: string = this.cookieService.get("currentlPage") != "Dashboard" ? this.cookieService.get("currentlPage") : "Dashboard";
   selectedEvaluation: any | null = null
-  roles: string[] = [];
+  roles : string[] = [];  
+  selectedEmployee: any | null = null;
 
   constructor(
     private employeeProfileService: EmployeeProfileService,
@@ -84,9 +85,14 @@ export class HomeComponent {
     return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
 
+  handleSelectedEmp(item: any){
+    this.selectedEmployee = item
+  }
+
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
     this.selectedItem = target.innerText;
   }
+
 }
