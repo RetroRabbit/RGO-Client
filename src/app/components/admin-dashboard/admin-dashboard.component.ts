@@ -4,6 +4,7 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { Chart } from 'src/app/models/charts.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { AuthService } from '@auth0/auth0-angular';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -11,7 +12,6 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 
 export class AdminDashboardComponent {
-  selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
   admin !: EmployeeProfile;
   profileImage: string = '';
@@ -24,7 +24,8 @@ export class AdminDashboardComponent {
   };
   constructor(private employeeProfileService: EmployeeProfileService, 
     private chartService: ChartService,
-    private auth: AuthService) {
+    private auth: AuthService,
+    public cookieService: CookieService) {
       this.screenWidth = window.innerWidth;
      }
   ngOnInit() {
@@ -40,6 +41,13 @@ export class AdminDashboardComponent {
     this.auth.logout({
       logoutParams: { returnTo: document.location.origin }
     });
+  }
+
+  CaptureEvent(event: any) {
+    const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('currentPage', target.innerText);
+    // this.selectedItem = target.innerText;
+    console.log(target.innerText)
   }
 
   @HostListener('window:resize', ['$event'])

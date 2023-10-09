@@ -42,7 +42,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatSidenavModule} from '@angular/material/sidenav'; 
+import {MatSidenavModule} from '@angular/material/sidenav';
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,7 +65,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     NewFieldCodeComponent,
     UpdateFieldComponent,
     AdminDashboardComponent
-  ],
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

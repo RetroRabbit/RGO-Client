@@ -1,50 +1,236 @@
-<div *ngIf="isAdmin();else NotAdmin">
-  <app-admin-dashboard></app-admin-dashboard>
-</div>
-<ng-template #NotAdmin>
-  <div class="wrapper">
-    <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
-      <app-sidebar></app-sidebar>
-      <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
+<div class="row" id="container">
+  <div class="col-12 row px-4" id="header">
+    <div class="col-11 col-md-9 col-lg-8 mt-auto">
+      <div class="row" id="left-column">
+        <div class="col-md-12" id="retro-logo">
+          <svg width="162" height="21" viewBox="0 0 162 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M103.781 14.4813H107.956L105.859 9.72475L103.781 14.4813ZM108.291 15.2449H103.439L102.581 17.1771H101.699L105.443 8.82617H106.287L110.033 17.1771H109.152L108.291 15.2449Z"
+              fill="black" />
+            <path
+              d="M118.232 16.3903H120.953C121.908 16.3903 123.161 16.0929 123.161 14.9137C123.161 13.7346 122.014 13.2895 121.012 13.2895H118.232V16.3903ZM118.232 12.526H121.012C122.014 12.526 122.91 12.1189 122.91 11.1043C122.91 9.9842 121.978 9.60241 120.953 9.60241H118.232V12.526ZM120.953 8.82617C122.429 8.82617 123.743 9.47163 123.743 11.1169C123.743 11.9311 123.21 12.6504 122.431 12.8888C123.349 13.1356 123.99 13.9645 123.994 14.9158C123.994 16.6455 122.457 17.1707 120.953 17.1707H117.398V8.82617H120.953Z"
+              fill="black" />
+            <path
+              d="M132.597 16.3903H135.318C136.271 16.3903 137.524 16.0929 137.524 14.9137C137.524 13.7346 136.379 13.2895 135.377 13.2895H132.597V16.3903ZM132.597 12.526H135.377C136.379 12.526 137.276 12.1189 137.276 11.1043C137.276 9.9842 136.345 9.60241 135.32 9.60241H132.597V12.526ZM135.318 8.82617C136.795 8.82617 138.109 9.47163 138.109 11.1169C138.109 11.9311 137.575 12.6504 136.797 12.8888C137.714 13.1356 138.356 13.9645 138.36 14.9158C138.36 16.6455 136.82 17.1707 135.318 17.1707H131.762V8.82617H135.318Z"
+              fill="black" />
+            <path d="M146.96 8.82617H146.125V17.1771H146.96V8.82617Z" fill="black" />
+            <path d="M154.273 8.82617V9.61296H157.22V17.1771H158.055V9.61296H161.002V8.82617H154.273Z" fill="black" />
+            <path
+              d="M89.0162 14.8019V14.0194H92.4164C94.0195 13.8464 94.7114 12.7158 94.7114 11.4755C94.6987 10.0665 93.8044 8.82617 91.9439 8.82617H88.1914V17.1771H89.0351V14.8019H89.0162ZM89.0162 9.61296H91.9271C93.2159 9.61296 93.8592 10.4251 93.8592 11.4755C93.8592 12.526 93.2348 13.3106 91.8891 13.3106H89.0267L89.0162 9.61296Z"
+              fill="black" />
+            <path d="M92.8795 14.8027H91.8164L93.9532 17.1779H95.0395L92.8795 14.8027Z" fill="black" />
+            <path
+              d="M20.4025 16.8665H14.4141V8.51562H20.2949V9.30241H15.2494V12.2977H20.0692V13.0739H15.2494V16.0797H20.4025V16.8665Z"
+              fill="black" />
+            <path d="M30.1733 9.30241H27.2266V8.51562H33.9554V9.30241H31.0086V16.8665H30.1733V9.30241Z" fill="black" />
+            <path
+              d="M59.3801 16.2346C61.6582 16.2346 62.755 14.5049 62.7677 12.7162C62.7677 10.8431 61.6582 9.17249 59.3801 9.16194C57.1358 9.16194 55.9566 10.7482 55.9798 12.7162C56.003 14.5408 57.102 16.2346 59.3801 16.2346ZM63.5988 12.7162C63.5861 14.8994 62.2024 17.0235 59.3801 17.0235C56.5578 17.0235 55.1445 14.8994 55.1445 12.7035C55.1445 10.3537 56.6717 8.37305 59.3801 8.37305C62.2066 8.3857 63.6157 10.4824 63.5988 12.7162Z"
+              fill="black" />
+            <path
+              d="M42.1175 13.7088H45.4924C47.0913 13.5359 47.7895 12.4053 47.7769 11.165C47.7769 9.75592 46.8698 8.51562 45.0094 8.51562H41.2695V16.8665H42.1133V13.789H42.1259L42.1175 13.7088ZM42.1048 9.30241H45.0157C46.3045 9.30241 46.9479 10.1145 46.9479 11.165C46.9479 12.2154 46.3151 13.0022 44.9672 13.0022H42.1048V9.30241Z"
+              fill="black" />
+            <path d="M45.9576 14.4922H44.8945L47.0313 16.8673H48.1176L45.9576 14.4922Z" fill="black" />
+            <path
+              d="M0.843738 14.4914V13.7088H4.23978C5.83867 13.5359 6.53686 12.4053 6.5242 11.165C6.5242 9.75592 5.61929 8.51562 3.75674 8.51562H0V16.8665H0.843738V14.4914ZM0.843738 9.30241H3.75463C5.04344 9.30241 5.6889 10.1145 5.6889 11.165C5.6889 12.2154 5.04344 13.0022 3.70823 13.0022H0.843738V9.30241Z"
+              fill="black" />
+            <path d="M4.69202 14.4922H3.62891L5.76567 16.8673H6.85198L4.69202 14.4922Z" fill="black" />
+            <path
+              d="M83.7934 0.86515L83.6415 0.417969L83.2576 0.692184C82.3653 1.33131 81.4246 1.89873 80.4458 2.39232L80.3404 2.44505C78.7457 3.28457 77.054 3.92159 75.3032 4.34557C73.8056 4.70838 72.7298 6.01828 72.6666 7.5581V7.67622L72.7341 7.77536C72.983 8.14239 73.2804 8.47356 73.6158 8.76254C73.6348 8.77941 73.658 8.79418 73.6791 8.81105L74.2992 8.40817C74.2212 8.35121 74.1452 8.29004 74.0714 8.22676C73.8119 8.00528 73.5799 7.75427 73.3774 7.47795C73.4702 6.2946 74.314 5.30743 75.4678 5.029C77.2755 4.59025 79.0199 3.93003 80.6652 3.06309L80.7707 3.01035C81.6271 2.57794 82.4539 2.09068 83.247 1.5528C83.2787 1.76795 83.2787 1.98521 83.247 2.20036C83.1078 3.05465 82.4603 3.59042 82.2177 3.79292C81.7304 4.19159 81.1377 4.43838 80.5112 4.50166C79.9438 4.6008 79.3574 4.71259 78.8786 5.3454C78.8027 5.44876 78.7141 5.58586 78.6107 5.74617C78.3955 6.10476 78.1466 6.44015 77.8682 6.75022C77.6931 6.92741 77.5096 7.09615 77.3156 7.25435C77.2755 7.28599 77.1785 7.36193 77.0561 7.46529L76.881 7.61083C76.6174 7.82177 75.8749 8.32801 75.0628 8.85746L74.3667 9.30253C73.3015 9.98596 72.3122 10.6061 72.2932 10.6188C71.8545 10.874 71.4558 11.1925 71.112 11.5659C70.7703 11.9434 70.4897 12.3695 70.2788 12.8315C69.7261 14.0211 69.3823 15.2973 69.2642 16.603C68.1357 17.0122 67.5493 18.2588 67.9585 19.3873C68.3677 20.5158 69.6143 21.1022 70.7428 20.693C70.8905 20.6403 71.0297 20.5706 71.1626 20.4884C71.8334 20.8301 72.578 21.0052 73.331 20.9988C74.1452 20.9778 74.9531 20.8364 75.7251 20.577C76.2461 20.4188 76.6427 20.2353 76.8853 19.8598C77.111 19.5075 77.2544 19.1089 77.3071 18.6933L77.3219 18.6174C77.3282 18.5836 77.3514 18.5562 77.3831 18.5436C77.4738 18.4951 77.5813 18.4824 77.6805 18.5077C77.7986 18.5478 77.9779 18.609 77.9568 19.0667C77.9209 19.7227 78.3154 20.326 78.9313 20.5559C79.446 20.7394 80.1801 20.6381 80.5239 20.1488C80.758 19.8155 81.741 14.0169 81.3318 9.27089C81.1946 7.89138 80.8382 6.54351 80.2771 5.27579C80.3804 5.25259 80.488 5.2336 80.6167 5.21251C81.3634 5.12603 82.07 4.8265 82.6501 4.34979C82.9496 4.10299 83.7448 3.44277 83.9263 2.32904C84.0022 1.83756 83.9558 1.33553 83.7934 0.86515ZM70.0088 20.2205C69.1334 20.2205 68.4205 19.5118 68.4205 18.6364C68.4205 18.05 68.7411 17.5121 69.2579 17.2358C69.2579 18.0943 69.549 18.9296 70.0805 19.6046C70.2366 19.7881 70.4096 19.9568 70.5994 20.1066C70.4117 20.1804 70.2113 20.2205 70.0088 20.2205ZM71.2006 19.6805C70.9854 19.5286 70.7893 19.3514 70.6184 19.1511C70.1354 18.5794 69.9624 17.8264 69.9561 17.0417H70.0088C70.8842 17.0417 71.595 17.7505 71.5971 18.6258C71.5971 19.0118 71.4558 19.3852 71.2006 19.6763V19.6805ZM80.6336 9.31518C81.0259 13.8587 80.0978 19.2291 79.9312 19.7522C79.716 19.9252 79.427 19.9716 79.1697 19.8767C78.8448 19.7522 78.6381 19.4316 78.6592 19.0836C78.6824 18.6322 78.5685 18.0458 77.9041 17.818C77.613 17.7272 77.2987 17.7631 77.0329 17.9129C76.8283 18.0289 76.6828 18.2272 76.6342 18.4571L76.6195 18.5351C76.5857 18.8621 76.476 19.1785 76.2967 19.4548C76.2018 19.6025 76.0394 19.7248 75.5247 19.8767C74.681 20.1298 73.1855 20.5833 71.7279 19.9547C72.4662 19.0097 72.2995 17.6429 71.3524 16.9046C70.9685 16.6051 70.4961 16.4427 70.0088 16.4448H69.9793C70.1164 15.291 70.4307 14.1646 70.9137 13.1057C71.0972 12.7091 71.3377 12.3442 71.6309 12.0215C71.9325 11.6987 72.2806 11.4224 72.6624 11.2009C72.8248 11.0997 76.6005 8.73933 77.3219 8.13395L77.4843 8.00106C77.6024 7.90403 77.6952 7.83021 77.7522 7.79013C77.961 7.61927 78.1593 7.43787 78.3491 7.24592C78.6655 6.89998 78.9482 6.52452 79.1929 6.12375C79.2857 5.98031 79.368 5.85164 79.4355 5.76094C79.4987 5.68289 79.5683 5.61328 79.6464 5.55C80.1716 6.746 80.5049 8.01583 80.6336 9.31518Z"
+              fill="black" />
+            <path
+              d="M75.2115 6.86632C75.434 6.86632 75.6144 6.68594 75.6144 6.46343C75.6144 6.24092 75.434 6.06055 75.2115 6.06055C74.989 6.06055 74.8086 6.24092 74.8086 6.46343C74.8086 6.68594 74.989 6.86632 75.2115 6.86632Z"
+              fill="black" />
+          </svg>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-10" id="navigation">
+          <div class="row">
+            <div class="col-1">
+              <div id="nav-item-container" class="col-auto">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Dashboard' ? 'active' : 'idle'">
+                    Dashboard
+                  </div>
+                  <div *ngIf="selectedItem == 'Dashboard'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-1">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Profile' ? 'active' : 'idle'">
+                    Profile
+                  </div>
+                  <div *ngIf="selectedItem == 'Profile'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-1">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'People' ? 'active' : 'idle'">
+                    People
+                  </div>
+                  <div *ngIf="selectedItem == 'People'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-1">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Evaluations' ? 'active' : 'idle'">
+                    Evaluations
+                  </div>
+                  <div *ngIf="selectedItem == 'Evaluations'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Manage Field' ? 'active' : 'idle'">
+                    Manage Field
+                  </div>
+                  <div *ngIf="selectedItem == 'Manage Field'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Manage Roles' ? 'active' : 'idle'">
+                    Manage Roles
+                  </div>
+                  <div *ngIf="selectedItem == 'Manage Roles'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)"
+                    [ngClass]="selectedItem == 'Manage Employee Roles' ? 'active' : 'idle'">
+                    Manage Employee Roles
+                  </div>
+                  <div *ngIf="selectedItem == 'Manage Employee Roles'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="main-panel">
-      <app-header></app-header>
-      <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ps ps--active-y">
-        <div *ngIf="cookieService.get('currentPage') === '' || cookieService.get('currentPage') === 'Dashboard'"
-          #ShowDashBoard>
-          <app-employee-profile></app-employee-profile>
+    <div class="col-1 col-md-3 col-lg-4 mt-4" id="right-column">
+      <div class="row justify-content-end">
+        <div class="col-1" id="info-menu">
+          <button mat-button [matMenuTriggerFor]="menu" id="options-trigger">
+            <mat-icon id="menu-icon">play_arrow</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item id="menu-info" *ngIf="screenWidth < 993">
+              <div id="menu-image-container">
+                <img *ngIf="profileImage !== '';else NoProfile" [src]="profileImage" alt="">
+                <ng-template #NoProfile>
+                  <img src="../../../assets/img/profile.png" alt="Employee Profile Photo">
+                </ng-template>
+              </div>
+              <div id="menu-quick-info">
+                <div>{{admin?.name}}</div>
+                <div>{{employeeType.name}}</div>
+              </div>
+              <hr>
+            </button>
+            <button mat-menu-item>Help</button>
+            <button mat-menu-item (click)="logout()">Logout</button>
+          </mat-menu>
         </div>
-        <div *ngIf="cookieService.get('currentPage') === 'Charts'">
-          <app-chart></app-chart>
+        <div class="col-auto ms-4" id="employee-info">
+          <div>{{admin?.name}} {{admin?.surname}}</div>
+          <div>{{employeeType.name}}</div>
         </div>
-        <div *ngIf="cookieService.get('currentPage') === 'Edit Dashboard'">
-          <app-create-charts></app-create-charts>
+        <div class="col-auto" id="employee-photo">
+          <div id="image-container">
+            <img *ngIf="profileImage !== '';else NoProfile" [src]="profileImage" alt="">
+            <ng-template #NoProfile>
+              <img src="../../../assets/img/profile.png" alt="Employee Profile Photo">
+            </ng-template>
+          </div>
         </div>
-        <div *ngIf="cookieService.get('currentPage') === 'Employee Manager'">
-          <app-employee-role-manager></app-employee-role-manager>
-        </div>
-        <div *ngIf="cookieService.get('currentPage') === 'Role Manager'">
-          <app-role-manager></app-role-manager>
-        </div>
-        <div *ngIf="cookieService.get('currentPage') === 'Manage Field'">
-          <app-manage-field-code></app-manage-field-code>
-        </div>
-        <div *ngIf="cookieService.get('currentPage') === 'New Employee'">
-          <app-new-employee></app-new-employee>
-        </div>
-        <div *ngIf="cookieService.get('currentPage') === 'View Employee'">
-          <app-view-employee></app-view-employee>
-        </div>
-        <div *ngIf="cookieService.get('currentPage') == 'Evaluations'">
-          <app-employee-evaluations (selectedEvaluation)="handleSelectedEval($event)"></app-employee-evaluations>
-        </div>
-        <div *ngIf="cookieService.get('currentPage') == 'Evaluation Form'">
-          <app-evaluations [selectedEvaluation]="selectedEvaluation"></app-evaluations>
-        </div>
-        <div *ngIf="cookieService.get('currentPage') == 'Evaluation Items'">
-          <app-template-items></app-template-items>
-        </div>
-      </main>
+      </div>
     </div>
   </div>
-</ng-template>
+  <!-- Content -->
+  <div class="col-12 pt-3" id="content">
+    <div *ngIf="cookieService.get('currentPage') === '' || cookieService.get('currentPage') === 'Dashboard'"
+      #ShowDashBoard>
+      <div *ngIf="isAdmin()">
+        <app-admin-dashboard></app-admin-dashboard>      
+      </div>
+      <div *ngIf="!isAdmin()">
+        <app-employee-profile></app-employee-profile>   
+      </div>
+    </div>
+    <div *ngIf="selectedItem == 'People'">
+      <app-view-employee></app-view-employee>
+    </div>
+    <div *ngIf="cookieService.get('currentPage') == 'Evaluations'">
+      <app-employee-evaluations (selectedEvaluation)="handleSelectedEval($event)"></app-employee-evaluations>
+    </div>
+    <div *ngIf="selectedItem == 'Profile'">
+      <app-employee-profile></app-employee-profile>
+    </div>
+    <div *ngIf="cookieService.get('currentPage') === 'Manage Field'">
+      <app-manage-field-code></app-manage-field-code>
+    </div>
+
+    <div *ngIf="cookieService.get('currentPage') === 'Manage Roles'">
+      <app-role-manager></app-role-manager>
+    </div>
+    <div *ngIf="cookieService.get('currentPage') === 'Manage Employee Roles'">
+      <app-employee-role-manager></app-employee-role-manager>
+    </div>
+    <div *ngIf="cookieService.get('currentPage') === 'Edit Dashboard'">
+      <app-create-charts></app-create-charts>
+    </div>
+
+    <div *ngIf="cookieService.get('currentPage') === 'New Employee'">
+      <app-new-employee></app-new-employee>
+    </div>
+    <div *ngIf="cookieService.get('currentPage') === 'View Employee'">
+      <app-view-employee></app-view-employee>
+    </div>
+
+    <div *ngIf="cookieService.get('currentPage') == 'Evaluation Form'">
+      <app-evaluations [selectedEvaluation]="selectedEvaluation"></app-evaluations>
+    </div>
+    <div *ngIf="cookieService.get('currentPage') == 'Evaluation Items'">
+      <app-template-items></app-template-items>
+    </div>
+
+    <div *ngIf="cookieService.get('currentPage') == '+ Add Graph'">
+      <app-create-charts></app-create-charts>
+    </div>
+
+    
+  </div>
+</div>
