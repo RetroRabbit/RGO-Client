@@ -1,0 +1,212 @@
+<div class="col-12">
+    <div class="m-3 border-bottom">
+      <h2 class="page-heading border-bottom">Employee</h2>
+      <div style="overflow: auto">
+        <div class="container-fluid">
+          <form [formGroup]="employeeForm" (submit)="onSubmit()">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">First Name</label>
+                    <input type="text" class="form-control" formControlName="name" />
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Initials</label>
+                    <input type="text" class="form-control" formControlName="initials" />
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Surname</label>
+                    <input type="text" class="form-control" formControlName="surname" />
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-12">
+                        <label class="col-form-label">Race</label> 
+                        <select class="form-control" formControlName="race">
+                      <option *ngFor="let race of raceTypes" [ngValue]="race.id">
+                        {{race.value}}
+                      </option>
+                    </select>
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Employee Type</label> 
+                      <select class="form-control" formControlName="employeeType">
+                        <option *ngFor="let type of employeeTypes" [ngValue]="type.name">
+                          {{type.name}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Personal Email</label>
+                      <input type="email" class="form-control" formControlName="personalEmail" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Termination Date</label>
+                      <input type="date" class="form-control" formControlName="terminationDate" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Nationality</label>
+                      <input type="text" class="form-control" formControlName="nationality" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Identity Number</label>
+                      <input type="text" class="form-control" formControlName="idNumber" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Passport Expiration Date</label>
+                      <input type="text" class="form-control" formControlName="passportExpirationDate" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Payrate</label>
+                      <input type="text" class="form-control" formControlName="payrate" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Salary Days</label>
+                      <input type="text" class="form-control" formControlName="salaryDays" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Disability Notes</label>
+                      <input type="text" class="form-control" formControlName="disabilityNotes" />
+                    </div>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Email</label>
+                    <input type="text" class="form-control" formControlName="email" />
+                  </div>
+                </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Employee Number</label>
+                      <input type="text" class="form-control" formControlName="employeeNumber" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Level</label> 
+                      <select class="form-control" formControlName="level">
+                    <option *ngFor="let level of levelTypes" [ngValue]="level.value">
+                      {{level.value}}
+                    </option>
+                  </select>
+                  </div>
+                  </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Engagement Date</label>
+                    <input type="date" class="form-control" formControlName="engagementDate" />
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Reporting Line</label>
+                      <input type="text" class="form-control" formControlName="reportingLine" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Country of Birth</label>
+                      <input type="text" class="form-control" formControlName="countryOfBirth" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Passport Country Issue</label>
+                      <input type="text" class="form-control" formControlName="passportCountryIssue" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Passport Number</label>
+                      <input type="text" class="form-control" formControlName="passportNumber" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Tax Number</label>
+                      <input type="text" class="form-control" formControlName="taxNumber" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Salary</label>
+                      <input type="text" class="form-control" formControlName="salary" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Leave Interval</label>
+                      <input type="text" class="form-control" formControlName="leaveInterval" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Disability</label> 
+                        <select class="form-control" formControlName="disability">
+                      <option *ngFor="let response of generalTypes" [ngValue]="response.id">
+                        {{response.value}}
+                      </option>
+                    </select>
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Photo</label>
+                      <input type="text" class="form-control" formControlName="photo" />
+                    </div>
+                  </div>
+              </div>
+              <div class="mb-3 row" *ngIf="!viewMoreInfo">
+                <div class="col-sm-12">
+                <br><br>
+                  <button type="button" (click) = "viewMore()" class="form-control">View more info</button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <form [formGroup]="employeeCustomForm" (submit)="onSubmit()">
+            <ng-container *ngIf="viewMoreInfo">
+              <div class="row">
+                <ng-container *ngFor="let fieldcode of fieldcodes; let i = index">
+                  <div class="col-sm-6">
+                    <div class="mb-3 row">
+                      <div class="col-sm-12">
+                        <label class="col-form-label">{{ fieldcode.name }}</label>
+                        <input type="text" class="form-control" formControlName="{{formatString(fieldcode.name)}}" />
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+          </form>          
+        </div>
+      </div>
+    </div>
+  </div>
+  

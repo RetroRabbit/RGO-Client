@@ -14,7 +14,9 @@ export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
   selectedPage: string = this.cookieService.get("currentlPage") != "Dashboard" ? this.cookieService.get("currentlPage") : "Dashboard";
   selectedEvaluation: any | null = null
-  roles : string[] = [];
+  roles : string[] = [];  
+  selectedEmployee: any | null = null;
+
   constructor(
     private store: Store<{ app: Token }>,
     private auth: AuthService,
@@ -25,7 +27,6 @@ export class HomeComponent {
     this.selectedPage = this.cookieService.get('currentPage');
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
-    console.log(this.roles);
   }
   ngOnDestroy() {
     localStorage.removeItem('access_token');
@@ -50,6 +51,10 @@ export class HomeComponent {
   }
 
   isAdmin(): boolean {
-    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
+    return this.roles.includes('Admin')||  this.roles.includes('SuperAdmin');
+  }
+
+  handleSelectedEmp(item: any){
+    this.selectedEmployee = item
   }
 }

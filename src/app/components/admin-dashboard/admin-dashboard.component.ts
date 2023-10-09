@@ -17,6 +17,7 @@ export class AdminDashboardComponent {
   profileImage: string = '';
   charts: Chart[] = [];
   screenWidth !: number;
+  selectedEmployee: any | null = null;
 
   employeeType: { id: number, name: string } = {
     id: 0,
@@ -45,5 +46,9 @@ export class AdminDashboardComponent {
   @HostListener('window:resize', ['$event'])
   onResize(event : any) {
     this.screenWidth = event.target.innerWidth;
+  }
+
+  handleSelectedEmp(item: any){
+    this.selectedEmployee = item
   }
 }
