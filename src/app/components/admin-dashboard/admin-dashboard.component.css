@@ -126,10 +126,11 @@
   border-radius: 50%;
 }
 
-#image-container > img {
+#image-container img, #menu-image-container img {
   border-radius: 50%;
   height: 100%;
   width: 100%;
+  object-fit: cover;
 }
 
 #new-hire {
@@ -166,4 +167,10 @@
   color: white;
   padding: 0.5rem;
   width: 12rem;
+}
+
+#menu-image-container .material-icons, #image-container .material-icons {
+  font-size: 40px;
+  line-height: 40px;
+  color: #6d6d6d;
 }
