@@ -18,7 +18,6 @@ import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './interceptor/auth0.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EmployeeProfileComponent } from './components/employees/employee-profile/employee-profile.component';
-import { EmployeeProfileComponent } from './components/employee/employee-profile/employee-profile.component';
 import { EmployeeProfileReducer } from './store/reducers/employee-profile.reducer';
 import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects';
 import { NgChartsModule } from 'ng2-charts';
@@ -38,21 +37,12 @@ import { EvaluationsComponent } from './components/evaluations/evaluations.compo
 import { EmployeeEvaluationsComponent } from './components/evaluations/employee-evaluations/employee-evaluations.component';
 import { TemplateItemsComponent } from './components/evaluations/template-items/template-items.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { EmployeeRoleManagerComponent } from './components/employee/employee-role-manager/employee-role-manager.component';
-import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
-import { ManageFieldCodeComponent } from './components/manage-field-code/manage-field-code.component';
-import { ViewEmployeeComponent } from './components/employee/view-employee/view-employee.component';
-import { NewFieldCodeComponent } from './components/new-field-code/new-field-code.component';
-import { UpdateFieldComponent } from './components/update-field/update-field.component';
-import { EvaluationsComponent } from './components/employee/evaluations/evaluations.component';
-import { EmployeeEvaluationsComponent } from './components/employee/employee-evaluations/employee-evaluations.component';
-import { TemplateItemsComponent } from './components/template-items/template-items.component';
 
-import {MatMenuModule} from '@angular/material/menu';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatSidenavModule} from '@angular/material/sidenav'; 
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
 @NgModule({
   declarations: [
     AppComponent,
@@ -84,7 +74,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     NgChartsModule,
     StoreModule.forRoot({
       app: LoginReducer,
-      employee : EmployeeProfileReducer,
+      employee: EmployeeProfileReducer,
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),
     AuthModule.forRoot({
@@ -97,7 +87,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     HttpClientModule,
     BrowserAnimationsModule,
     NgToastModule,
-    MatButtonModule, 
+    MatButtonModule,
     MatMenuModule,
     MatIconModule,
     MatToolbarModule,
