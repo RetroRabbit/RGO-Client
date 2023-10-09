@@ -12,15 +12,21 @@ import { CookieService } from 'ngx-cookie-service';
 
 export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
-  selectedPage : string = this.cookieService.get("currentlPage") != "Dashboard" ?this.cookieService.get("currentlPage") :"Dashboard";
-  selectedEvaluation: any  | null = null
-
+  selectedPage: string = this.cookieService.get("currentlPage") != "Dashboard" ? this.cookieService.get("currentlPage") : "Dashboard";
+  selectedEvaluation: any | null = null
+  roles : string[] = [];
   constructor(
-    private store: Store<{app: Token}>,
+    private store: Store<{ app: Token }>,
     private auth: AuthService,
     public cookieService: CookieService
-    ) {}
+  ) { }
 
+  ngOnInit() {
+    this.selectedPage = this.cookieService.get('currentPage');
+    const types: string = this.cookieService.get('userType');
+    this.roles = Object.keys(JSON.parse(types));
+    console.log(this.roles);
+  }
   ngOnDestroy() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
@@ -34,15 +40,16 @@ export class HomeComponent {
     });
   }
 
-  ngOnInit() {
-    this.selectedPage = this.cookieService.get('currentPage');
-  }
 
   handleSelectedItem() {
     this.selectedPage = this.cookieService.get('currentPage');
   }
 
-  handleSelectedEval(item: any){
+  handleSelectedEval(item: any) {
     this.selectedEvaluation = item
+  }
+
+  isAdmin(): boolean {
+    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
 }

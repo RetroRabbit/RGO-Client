@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, exhaustMap } from 'rxjs/operators';
-import { EmployeeProfileService } from 'src/app/services/employee-profile.service';
+import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import * as EmployeeProfile from '../actions/employee-profile.actions';
 
 @Injectable()
