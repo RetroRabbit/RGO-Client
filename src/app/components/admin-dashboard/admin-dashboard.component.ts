@@ -4,46 +4,55 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { Chart } from 'src/app/models/charts.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { AuthService } from '@auth0/auth0-angular';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.css']
+  styleUrls: ['./admin-dashboard.component.css'],
 })
-
 export class AdminDashboardComponent {
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
-  admin !: EmployeeProfile;
+  admin!: EmployeeProfile;
   profileImage: string = '';
   charts: Chart[] = [];
-  screenWidth !: number;
+  screenWidth!: number;
 
-  employeeType: { id: number, name: string } = {
+  employeeType: { id: number; name: string } = {
     id: 0,
-    name: ''
+    name: '',
   };
-  constructor(private employeeProfileService: EmployeeProfileService, 
+  constructor(
+    private employeeProfileService: EmployeeProfileService,
     private chartService: ChartService,
-    private auth: AuthService) {
-      this.screenWidth = window.innerWidth;
-     }
+    private auth: AuthService,
+    private cookieService: CookieService,
+    private router: Router,
+  ) {
+    this.screenWidth = window.innerWidth;
+  }
   ngOnInit() {
-    this.employeeProfileService.GetEmployeeProfile().subscribe(data => {
+    this.employeeProfileService.GetEmployeeProfile().subscribe((data) => {
       this.admin = data;
       this.profileImage = this.admin.photo;
       this.employeeType = this.admin.employeeType;
     });
-    this.chartService.getAllCharts().subscribe(data => this.charts = data);
+    this.chartService.getAllCharts().subscribe((data) => (this.charts = data));
+  }
+
+  goToAddNewHire() {
+    this.router.navigateByUrl('/new-employee');
   }
 
   logout() {
     this.auth.logout({
-      logoutParams: { returnTo: document.location.origin }
+      logoutParams: { returnTo: document.location.origin },
     });
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event : any) {
+  onResize(event: any) {
     this.screenWidth = event.target.innerWidth;
   }
 }

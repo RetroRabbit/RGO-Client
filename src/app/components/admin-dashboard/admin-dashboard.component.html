@@ -135,7 +135,7 @@
                                 </ng-template>
                             </div>
                             <div id="menu-quick-info">
-                                <div>{{admin?.name}}</div>
+                                <div>{{admin.name}}</div>
                                 <div>{{employeeType.name}}</div>
                             </div>
                             <hr>
@@ -145,7 +145,7 @@
                     </mat-menu>
                 </div>
                 <div class="col-auto ms-4" id="employee-info">
-                    <div>{{admin?.name}} {{admin?.surname}}</div>
+                    <div>{{admin.name}} {{admin.surname}}</div>
                     <div>{{employeeType.name}}</div>
                 </div>
                 <div class="col-auto" id="employee-photo">
@@ -161,7 +161,7 @@
     </div>
     <div class="col-12 pt-3" id="dashboard">
         <div id="new-hire">
-            <button class="my-4">+ Add New Hire</button>
+            <button class="my-4" (click)="goToAddNewHire()">+ Add New Hire</button>
         </div>
         <div class="container-fluid" id="graph-container">
             <div id="graphs">
