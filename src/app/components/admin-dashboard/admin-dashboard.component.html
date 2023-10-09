@@ -63,13 +63,12 @@
                         <div class="col-2">
                             <div id="nav-item-container">
                                 <div id="nav-item">
-                                    <div (click)="selectedItem = 'View Employee'"
+                                    <div (click)="selectedItem = 'Profile'"
                                         [ngClass]="selectedItem == 'Profile' ? 'active' : 'idle'">
                                         Profile
                                     </div>
                                     <div *ngIf="selectedItem == 'Profile'" id="selected-line-box">
                                         <div id="selected-line">
-                                            <app-view-employee (selectedEmployee)="handleSelectedEmp($event)"></app-view-employee>
                                         </div>
                                     </div>
                                 </div>
