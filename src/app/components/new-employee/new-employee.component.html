@@ -1,115 +1,257 @@
-<div class="col-12">
-    <div class="m-3 border-bottom">
-      <h2 class="page-heading border-bottom">New Employee</h2>
-      <div style="overflow: auto">
-        <div class="container-fluid">
-          <form [formGroup]="newEmployeeForm" (submit)="onSubmit()">
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">First Name</label>
-                    <input type="text" class="form-control" formControlName="name" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['name'].invalid && (newEmployeeForm.controls['name'].dirty || newEmployeeForm.controls['name'].touched)"
-                      class="alert">
-                      Please enter first name
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Initials</label>
-                    <input type="text" class="form-control" formControlName="initials" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['initials'].invalid && (newEmployeeForm.controls['initials'].dirty || newEmployeeForm.controls['initials'].touched)"
-                      class="alert">
-                      Please enter initials
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Surname</label>
-                    <input type="text" class="form-control" formControlName="surname" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['surname'].invalid && (newEmployeeForm.controls['surname'].dirty || newEmployeeForm.controls['surname'].touched)"
-                      class="alert">
-                      Please enter surname
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                    <div class="col-sm-12">
-                      <label class="col-form-label">Personal Email</label>
-                      <input type="email" class="form-control" formControlName="personalEmail" />
-                      <div
-                        *ngIf="newEmployeeForm.controls['personalEmail'].invalid && (newEmployeeForm.controls['personalEmail'].dirty || newEmployeeForm.controls['personalEmail'].touched)"
-                        class="alert">
-                        Please enter an email address
-                      </div>
-                    </div>
-                  </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Cellphone number</label>
-                    <input type="number" class="form-control" formControlName="cellphoneNo" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['cellphoneNo'].invalid && (newEmployeeForm.controls['cellphoneNo'].dirty || newEmployeeForm.controls['cellphoneNo'].touched)"
-                      class="alert">
-                      Please enter cellphone number
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Email</label>
-                    <input type="text" class="form-control" formControlName="email" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['email'].invalid && (newEmployeeForm.controls['email'].dirty || newEmployeeForm.controls['email'].touched)"
-                      class="alert">
-                      Email must end with @retrorabbit.co.za
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Employee Type</label> 
-                    <select class="form-control" formControlName="employeeType">
-                      <option *ngFor="let type of employeeTypes" [ngValue]="type">
-                        {{type.name}}
-                      </option>
-                    </select>
-                    <div
-                      *ngIf="newEmployeeForm.controls['employeeType'].invalid && (newEmployeeForm.controls['employeeType'].dirty || newEmployeeForm.controls['employeeType'].touched)"
-                      class="alert">
-                      Please enter employee type
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <div class="col-sm-12">
-                    <label class="col-form-label">Engagement Date</label>
-                    <input type="date" class="form-control" formControlName="engagementDate" />
-                    <div
-                      *ngIf="newEmployeeForm.controls['engagementDate'].invalid && (newEmployeeForm.controls['engagementDate'].dirty || newEmployeeForm.controls['engagementDate'].touched)"
-                      class="alert">
-                      Please enter engagement date
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="mb-3 row">
-                <div class="col-sm-12">
-                <br><br>
-                  <button type="submit" class="form-control">Submit</button>
-                </div>
-              </div>
+<main class="d-flex justify-content-center pt-3 pb-3 px-5">
+  <form [formGroup]="newEmployeeForm"
+    class="d-flex flex-column justify-content-center align-items-center bg-white text-align-center"
+    [ngClass]="{'form-styling': !toggleAdditional}">
+    <div class="d-flex flex-column justify-content-center align-items-center" style="width: 100%; gap: 40px">
+      <h2 class="heading">Create new employee profile</h2>
+      <p class="heading-text">Please enter the new employee’s information in order to create a new profile for them.</p>
+      <div class="d-flex flex-row">
+        <label for="toggleAllFields">Toggle All Fields</label>
+        <input type="checkbox" id="toggleAllFields" (change)="toggleAdditional = !toggleAdditional">
+      </div>
+    </div>
+    <br>
+    <div *ngIf="toggleAdditional" class="container-fluid">
+      <div>
+        <div class="row justify-content-center custom-row-content">
+          <div class="col-md-4 col-sm-12 form-floating p-2">
+            <input type="text" [ngClass]="{'border-danger': checkFieldUpdated('name')}" class="form-control" id="floatingFirstName" formControlName="name">
+            <label [ngClass]="{'text-danger': checkFieldUpdated('name')}" for="floatingFirstName">Full name</label>
+            <div *ngIf="checkFieldUpdated('name')" class="text-danger">
+              Please enter full name
             </div>
-          </form>
+          </div>
+          <div class="col-md-4 col-sm-12 form-floating p-2">
+            <input type="text" [ngClass]="{'border-danger': checkFieldUpdated('surname')}" class="form-control" id="floatingLastName" formControlName="surname">
+            <label [ngClass]="{'text-danger': checkFieldUpdated('surname')}" for="floatingLastName">Last name *</label>
+            <div *ngIf="checkFieldUpdated('surname')" class="text-danger">
+              Please enter last name
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12 form-floating p-2">
+            <input [ngClass]="{'border-danger': checkFieldUpdated('email')}" type="email" class="form-control" id="floatingWorkEmail" formControlName="email">
+            <label [ngClass]="{'text-danger': checkFieldUpdated('email')}" for="floatingWorkEmail">Work Email *</label>
+            <div *ngIf="checkFieldUpdated('email')" class="text-danger">
+              Please enter work email
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center custom-row-content">
+          <div class="col-md-4 col-sm-12 form-floating p-2">
+            <input [ngClass]="{'border-danger': checkFieldUpdated('initials')}" type="text" class="form-control" id="floatingInitials"
+              formControlName="initials">
+              <label [ngClass]="{'text-danger': checkFieldUpdated('initials')}" for="floatingInitials">Initials *</label>
+              <div *ngIf="checkFieldUpdated('initials')" class="text-danger">
+                Please enter initials
+              </div>
+          </div>
+          <div class="col-md-4 col-sm-12 form-floating p-2">
+            <input [ngClass]="{'border-danger': checkFieldUpdated('cellphoneNo')}" type="text" class="form-control" id="floatingCellphoneNo"
+              formControlName="cellphoneNo">
+              <label [ngClass]="{'text-danger': checkFieldUpdated('cellphoneNo')}" for="floatingCellphoneNo">CellphoneNo *</label>
+              <div *ngIf="checkFieldUpdated('cellphoneNo')" class="text-danger">
+                Please enter CellphoneNo
+              </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center custom-row-content">
+          <div class="col-md-4 col-sm-12 form-floating p-2">
+            <select [ngClass]="{'border-danger': checkFieldUpdated('employeeType')}" class="form-control" id="floatingRole" formControlName="employeeType">
+              <option *ngFor="let type of employeeTypes" [ngValue]="type">
+                {{type.name}}
+              </option>
+            </select>
+            <label [ngClass]="{'text-danger': checkFieldUpdated('employeeType')}" for="floatingRole">Select role</label>
+            <div *ngIf="checkFieldUpdated('employeeType')" class="text-danger">
+              Please select role
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12 form-floating p-2">
+            <select [ngClass]="{'border-danger': checkFieldUpdated('level')}" class="form-control" id="floatingLevel" formControlName="level">
+              <option *ngFor="let level of levels" [value]="level">{{level}}</option>
+            </select>
+            <label [ngClass]="{'text-danger': checkFieldUpdated('level')}" for="floatingLevel">Select Level</label>
+            <div *ngIf="checkFieldUpdated('level')" class="text-danger">
+              Please select level
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12 form-floating p-2">
+            <input [ngClass]="{'border-danger': checkFieldUpdated('personalEmail')}" type="email" class="form-control" id="floatingPersonalEmail"
+              formControlName="personalEmail">
+            <label [ngClass]="{'text-danger': checkFieldUpdated('personalEmail')}" for="floatingPersonalEmail">Personal Email *</label>
+            <div *ngIf="checkFieldUpdated('personalEmail')" class="text-danger">
+              Please enter personal email
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="row justify-content-center custom-row-content">
+          <div class="col-md-4 col-sm-12 form-floating p-2">
+            <input [ngClass]="{'border-danger': checkFieldUpdated('highestQualification')}" type="text" class="form-control" id="floatingHighestQualification"
+              formControlName="highestQualification">
+            <label [ngClass]="{'text-danger' : checkFieldUpdated('highestQualification')}" for="floatingHighestQualification">Highest Qualification *</label>
+            <div *ngIf="checkFieldUpdated('highestQualification')" class="text-danger">
+              Please enter highest qualification
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12 form-floating p-2">
+            <input [ngClass]="{'border-danger' : checkFieldUpdated('dateOfBirth')}" type="date" class="form-control"  id="floatingDateOfBirth"
+              formControlName="dateOfBirth">
+            <label [ngClass]="{'text-danger' : checkFieldUpdated('dateOfBirth')}" for="floatingDateOfBirth">Date Of Birth</label>
+            <div *ngIf="checkFieldUpdated('dateOfBirth')" class="text-danger">
+              Please enter date of birth
+            </div>
+          </div>
+          <label for="floatingPhoto" class="col-md-4 col-sm-12 form-floating p-2 d-flex justify-content-center align-items-center">
+            <div class="text-white rounded-pill bg-primary px-5 pt-2 pb-2 fs-5">Select Photo</div>
+            <input type="file" id="floatingPhoto" class="d-none" accept="image/*" (change)="saveImageAsBase64($event)">
+            <img *ngIf="this.newEmployeeForm.value.photo!" [src]="getImageFromBase64" alt="">
+          </label>
+        </div>
+        <div class="row justify-content-center custom-row-content">
+          <div class="col-md-4 col-sm-12 form-floating p-2">
+            <select [ngClass]="{'border-danger': checkFieldUpdated('race')}" id="floatingRace" class="form-control" formControlName="race">
+              <option *ngFor="let race of races; index as i" [value]="i">{{race}}</option>
+            </select>
+            <label [ngClass]="{'text-danger': checkFieldUpdated('race')}" for="floatingRace">Select race</label>
+            <div *ngIf="checkFieldUpdated('race')" class="text-danger">
+              Please select race
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12 form-floating p-2">
+            <select [ngClass]="{'border-danger': checkFieldUpdated('gender')}" id="floatingGender" class="form-control" formControlName="gender">
+              <option *ngFor="let gender of genders; index as i" [value]="i">{{gender}}</option>
+            </select>
+            <label [ngClass]="{'text-danger': checkFieldUpdated('gender')}" for="floatingGender">Select gender</label>
+            <div *ngIf="checkFieldUpdated('gender')" class="text-danger">
+              Please select gender
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+    <div *ngIf="!toggleAdditional" class="d-flex flex-column justify-content-center align-items-center" style="width: 100%; gap: 30px">
+      <div class="form-floating form-floating-width">
+        <input type="text" [ngClass]="{'border-danger': checkFieldUpdated('name')}" class="form-control" id="floatingFirstName" formControlName="name">
+        <label [ngClass]="{'text-danger': checkFieldUpdated('name')}" for="floatingFirstName">First name *</label>
+        <div *ngIf="checkFieldUpdated('name')" class="text-danger">
+          Please enter first name
+        </div>
+      </div>
+      <div class="form-floating form-floating-width">
+        <input type="text" [ngClass]="{'border-danger': checkFieldUpdated('surname')}" class="form-control" id="floatingLastName" formControlName="surname">
+        <label [ngClass]="{'text-danger': checkFieldUpdated('surname')}" for="floatingLastName">Last name *</label>
+        <div *ngIf="checkFieldUpdated('surname')" class="text-danger">
+          Please enter last name
+        </div>
+      </div>
+      <div class="form-floating form-floating-width">
+        <select [ngClass]="{'border-danger': checkFieldUpdated('employeeType')}" class="form-control" id="floatingRole" formControlName="employeeType">
+          <option *ngFor="let type of employeeTypes" [ngValue]="type">
+            {{type.name}}
+          </option>
+        </select>
+        <label [ngClass]="{'text-danger': checkFieldUpdated('employeeType')}" for="floatingRole">Select role</label>
+        <div *ngIf="checkFieldUpdated('employeeType')" class="text-danger">
+          Please select role
+        </div>
+      </div>
+      <div class="form-floating form-floating-width">
+        <select [ngClass]="{'border-danger': checkFieldUpdated('level')}" class="form-control" id="floatingLevel" formControlName="level">
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+        </select>
+        <label [ngClass]="{'text-danger': checkFieldUpdated('level')}" for="floatingLevel">Select Level</label>
+        <div *ngIf="checkFieldUpdated('level')" class="text-danger">
+          Please select level
+        </div>
+      </div>
+      <div class="form-floating form-floating-width">
+        <input [ngClass]="{'border-danger': checkFieldUpdated('email')}" type="email" class="form-control" id="floatingWorkEmail" formControlName="email">
+        <label [ngClass]="{'text-danger': checkFieldUpdated('email')}" for="floatingWorkEmail">Work Email *</label>
+        <div *ngIf="checkFieldUpdated('email')" class="text-danger">
+          Please enter work email
+        </div>
+      </div>
+      <div class="form-floating form-floating-width">
+        <input [ngClass]="{'border-danger': checkFieldUpdated('personalEmail')}" type="email" class="form-control" id="floatingPersonalEmail"
+          formControlName="personalEmail">
+        <label [ngClass]="{'text-danger': checkFieldUpdated('personalEmail')}" for="floatingPersonalEmail">Personal Email *</label>
+        <div *ngIf="checkFieldUpdated('personalEmail')" class="text-danger">
+          Please enter personal email
+        </div>
+      </div>
+      <div class="form-floating form-floating-width">
+        <input [ngClass]="{'border-danger': checkFieldUpdated('engagementDate')}" type="date" class="form-control" id="floatingEngagementDate"
+          formControlName="engagementDate">
+        <label [ngClass]="{'text-danger': checkFieldUpdated('engagementDate')}" for="floatingEngagementDate">Engagement Date *</label>
+        <div *ngIf="checkFieldUpdated('engagementDate')" class="text-danger">
+          Please enter engagement date
+        </div>
+      </div>
+      <div class="form-floating form-floating-width">
+        <input [ngClass]="{'border-danger': checkFieldUpdated('initials')}" type="text" class="form-control" id="floatingInitials"
+          formControlName="initials">
+          <label [ngClass]="{'text-danger': checkFieldUpdated('initials')}" for="floatingInitials">Initials *</label>
+          <div *ngIf="checkFieldUpdated('initials')" class="text-danger">
+            Please enter initials
+          </div>
+      </div>
+      <div class="form-floating form-floating-width">
+        <input [ngClass]="{'border-danger': checkFieldUpdated('cellphoneNo')}" type="text" class="form-control" id="floatingCellphoneNo"
+          formControlName="cellphoneNo">
+          <label [ngClass]="{'text-danger': checkFieldUpdated('cellphoneNo')}" for="floatingCellphoneNo">CellphoneNo *</label>
+          <div *ngIf="checkFieldUpdated('cellphoneNo')" class="text-danger">
+            Please enter CellphoneNo
+          </div>
+      </div>
+    </div>
+    <br>
+    <div class="row d-flex flex-column justify-content-center align-items-center" style="gap: 40px">
+      <h2 class="heading">Starter kit documents</h2>
+      <p class="heading-text">Please upload employee’s starter kit documents below</p>
+    </div>
+    <br>
+    <div class="rounded-5" id="import-files">
+      <div class="d-flex flex-column justify-content-center align-items-center bg-white border rounded-5">
+        <h2 class="text-primary">Drop your files here!</h2>
+        <i class="material-icons">file_upload</i>
+        <br>
+        <label for="selectFile">
+          <div class="text-white rounded-pill bg-primary px-5 pt-2 pb-2 fs-5">Select file</div>
+          <input type="file" id="selectFile" class="d-none" (change)="onSelect($event)"
+            [accept]="supportedExtensionsAsString">
+        </label>
+        <br>
+        <p class="upload_description text-primary">PDF,PPT, PPTX,Doc,Docx are supported</p>
+      </div>
+      <br>
+      <div class="d-flex flex-row">
+        <button class="d-flex flex-row justify-content-center align-middle rounded-5" type="button"
+          *ngFor="let file of files" (click)="removeSelect(file.name)"
+          style="border: 1px solid transparent; border-radius: 1px; align-items: center; justify-content: center; display: flex; box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;">
+          <p class="text-black">{{file.name}}</p>
+          <i class="material-icons text-danger">cancel</i>
+        </button>
+      </div>
+    </div>
+    <div class="row d-flex flex-column justify-content-center align-items form-buttons">
+      <br>
+      <button class="text-white rounded-pill border-primary bg-primary px-5 pt-2 pb-2 fs-5"
+        (click)="onSubmit()">Save</button>
+      <br>
+      <button class="text-primary rounded-pill border-primary bg-white px-5 pt-2 pb-2 fs-5"
+        (click)="onSubmit(true)">Save & add another</button>
+      <br>
+      <button class="text-primary bg-white fs-5 no-border" (click)="onCancel()">Cancel</button>
+      <br>
+    </div>
+  </form>
+</main>
