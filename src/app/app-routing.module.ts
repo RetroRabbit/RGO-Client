@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -9,6 +8,11 @@ import { CreateChartsComponent } from './components/charts/create-charts/create-
 import { NewEmployeeComponent } from './components/employees/new-employee/new-employee.component';
 import { NewFieldCodeComponent } from './components/custom-fields/new-field-code/new-field-code.component';
 import { UpdateFieldComponent } from './components/custom-fields/update-field/update-field.component';
+import { RouterModule, Routes } from '@angular/router';
+import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
+
+
+
 
 const routes: Routes = [
   {path: '', component: SignInComponent},
@@ -19,7 +23,8 @@ const routes: Routes = [
   {path: 'create-charts', component: CreateChartsComponent},
   {path: 'new-employee', component: NewEmployeeComponent},
   {path: 'new-fieldcode', component: NewFieldCodeComponent},
-  {path: 'update-fieldcode', component: UpdateFieldComponent}
+  {path: 'update-fieldcode', component: UpdateFieldComponent},
+  {path: 'employee-details', component: EmployeeDetailsComponent},
 ];
 
 @NgModule({
