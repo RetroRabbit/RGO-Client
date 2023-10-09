@@ -1,7 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { HomeComponent } from './components/home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -27,7 +24,6 @@ import { NgToastModule } from 'ng-angular-popup';
 import { ReportComponent } from './components/charts/chart-reports/chart-reports.component';
 import { RoleManagerComponent } from './components/role-manager/role-manager.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
-import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
 import { NewEmployeeComponent } from './components/employees/new-employee/new-employee.component';
 import { ManageFieldCodeComponent } from './components/custom-fields/manage-field-code/manage-field-code.component';
 import { ViewEmployeeComponent } from './components/employees/view-employee/view-employee.component';
@@ -36,6 +32,9 @@ import { UpdateFieldComponent } from './components/custom-fields/update-field/up
 import { EvaluationsComponent } from './components/evaluations/evaluations.component';
 import { EmployeeEvaluationsComponent } from './components/evaluations/employee-evaluations/employee-evaluations.component';
 import { TemplateItemsComponent } from './components/evaluations/template-items/template-items.component';
+import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppRoutingModule } from './app-routing.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import {MatMenuModule} from '@angular/material/menu';
@@ -43,6 +42,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
+import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,8 +66,9 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     TemplateItemsComponent,
     NewFieldCodeComponent,
     UpdateFieldComponent,
-    AdminDashboardComponent
-    ],
+    AdminDashboardComponent,
+    EmployeeDetailsComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

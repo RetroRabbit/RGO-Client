@@ -16,11 +16,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let employee of Employees">
+          <tr *ngFor="let employee of Employees" (click)="employeeClickEvent($event,employee)">
             <td>{{ employee.name }}</td>
-            <td>{{ employee.surname }}</td>
-            <td>{{ employee.cellphoneNo }}</td>
-            <td>{{ employee.employeeType.name }}</td>
+              <td>{{ employee.surname }}</td>
+              <td>{{ employee.cellphoneNo }}</td>
+              <td>{{ employee.employeeType.name }}</td>
           </tr>
         </tbody>
       </table>
