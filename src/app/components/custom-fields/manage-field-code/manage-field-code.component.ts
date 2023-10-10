@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { Router } from '@angular/router';
 import { FieldCode } from 'src/app/models/field-code.interface';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -17,7 +18,11 @@ export class ManageFieldCodeComponent {
   dataTypes: any[] = []; 
   newFieldCodeForm!: FormGroup;
 
-  constructor(public router: Router, private fieldCodeService: FieldCodeService, private fb: FormBuilder) {
+  constructor(public router: Router, 
+    private fieldCodeService: FieldCodeService, 
+    private fb: FormBuilder,
+    public cookieService: CookieService) {
+
     this.initializeForm();
   }
 
@@ -105,5 +110,11 @@ export class ManageFieldCodeComponent {
   onTypeChange() {
     this.isClicked = true;
     this.selectedFieldCode = this.selectedFieldCode;
+  }
+
+  CaptureEvent(event: any) {
+    const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('currentPage', target.innerText);
+    console.log(this.cookieService.get('currentPage'));
   }
 }
