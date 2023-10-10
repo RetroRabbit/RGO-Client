@@ -229,7 +229,9 @@
     <div *ngIf="cookieService.get('currentPage') == '+ Add Graph'">
       <app-create-charts></app-create-charts>
     </div>
-
+    <div *ngIf="cookieService.get('currentPage') == '+ Add New Hire'">
+      <app-new-employee></app-new-employee>
+    </div>
     
   </div>
 </div>
