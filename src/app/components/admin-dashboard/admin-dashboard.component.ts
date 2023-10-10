@@ -18,7 +18,6 @@ export class AdminDashboardComponent {
   menuClicked: boolean = false;
   admin!: EmployeeProfile;
   profileImage: string | null = null;
-  screenWidth!: number;
 
   employeeType: { id: number; name: string } = {
     id: 0,
@@ -30,9 +29,7 @@ export class AdminDashboardComponent {
     private chartService: ChartService,
     private auth: AuthService,
     private cookieService: CookieService
-  ) {
-    this.screenWidth = window.innerWidth;
-  }
+  ) { }
 
   ngOnInit() {
     this.employeeProfileService.GetEmployeeProfile().subscribe((data) => {
