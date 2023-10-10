@@ -20,7 +20,7 @@ export class ManageFieldCodeComponent {
   dataTypes: any[] = []; 
   newFieldCodeForm!: FormGroup;
   searchTerm: string = '';
-  @ViewChild('dt1') dt1: Table | undefined = undefined;
+  @ViewChild('dataTable') dataTable: Table | undefined = undefined;
   filterText: string = '';
 
 
@@ -134,8 +134,8 @@ export class ManageFieldCodeComponent {
   onSearch(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
   
-    if (this.dt1) {
-      this.dt1.filterGlobal(searchTerm, 'contains');
+    if (this.dataTable) {
+      this.dataTable.filterGlobal(searchTerm, 'contains');
     }
 
     if (this.filteredFieldCodes) {
