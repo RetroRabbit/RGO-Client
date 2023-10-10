@@ -44,6 +44,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
+import { PendingBankStatementsComponent } from './components/employees/pending-bank-statements/pending-bank-statements.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { EmployeeDetailsComponent } from './components/employees/employee-detail
     NewFieldCodeComponent,
     UpdateFieldComponent,
     AdminDashboardComponent,
-    EmployeeDetailsComponent
+    EmployeeDetailsComponent,
+    PendingBankStatementsComponent
   ],
   imports: [
     BrowserModule,
