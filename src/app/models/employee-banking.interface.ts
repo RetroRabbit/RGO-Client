@@ -1,7 +1,7 @@
-import { Employee } from "./employee.interface"
+import { EmployeeProfile } from "./employee-profile.interface"
 export interface EmployeeBanking{
     id: number,
-    employee: any,
+    employee: EmployeeProfile,
     bankName: string,
     branch: string,
     accountNo: string,
