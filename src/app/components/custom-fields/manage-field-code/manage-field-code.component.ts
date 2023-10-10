@@ -4,6 +4,7 @@ import { FieldCodeService } from 'src/app/services/field-code.service';
 import { Router } from '@angular/router';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { Table } from 'primeng/table';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -22,6 +23,7 @@ export class ManageFieldCodeComponent {
   searchTerm: string = '';
   @ViewChild('dataTable') dataTable: Table | undefined = undefined;
   filterText: string = '';
+  isUnique?: boolean = true;
 
 
   onRowSelect(fieldCode: FieldCode) {
@@ -29,7 +31,7 @@ export class ManageFieldCodeComponent {
     this.isClicked = true;
   }
  
-  constructor(public router: Router, private fieldCodeService: FieldCodeService, private fb: FormBuilder) {
+  constructor(public router: Router, private fieldCodeService: FieldCodeService, private fb: FormBuilder, private toast: NgToastService) {
     this.initializeForm();
   }
 
@@ -89,9 +91,16 @@ export class ManageFieldCodeComponent {
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
+          this.toast.success({detail:"Field Code saved!", position:'topRight'})
+          this.newFieldCodeForm.disable();
         },
         error: (error) => {
-          
+          if(error.error === "Field with that name found"){
+            this.isUnique = false;
+          }
+          else {
+            this.toast.error({detail:"Error", summary:error, duration:5000, position:'topRight'});
+          }
         }
       });
     } else {
