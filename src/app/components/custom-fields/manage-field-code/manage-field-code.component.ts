@@ -119,6 +119,7 @@ export class ManageFieldCodeComponent {
         this.filteredFieldCodes = this.fieldCodes;
       },
       error: error => {
+        this.toast.error({detail: 'Error loading Field Codes', summary: error, duration: 5000, position: 'topRight'});
       }
     });
   }
