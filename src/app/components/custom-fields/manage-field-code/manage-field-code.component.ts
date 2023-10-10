@@ -1,22 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { Router } from '@angular/router';
 import { FieldCode } from 'src/app/models/field-code.interface';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-manage-field-code',
   templateUrl: './manage-field-code.component.html',
   styleUrls: ['./manage-field-code.component.css']
 })
+
 export class ManageFieldCodeComponent {
-  fieldCodes?: FieldCode[];
+  fieldCodes: FieldCode[] = [];
+  filteredFieldCodes: FieldCode[] = [];
   selectedFieldCode?: FieldCode;
   isClicked: boolean = false;
   statuses: any[] = [];
   dataTypes: any[] = []; 
   newFieldCodeForm!: FormGroup;
+  searchTerm: string = '';
+  @ViewChild('dt1') dt1: Table | undefined = undefined;
+  filterText: string = '';
 
+
+  onRowSelect(fieldCode: FieldCode) {
+    this.selectedFieldCode = fieldCode;
+    this.isClicked = true;
+  }
+ 
   constructor(public router: Router, private fieldCodeService: FieldCodeService, private fb: FormBuilder) {
     this.initializeForm();
   }
@@ -86,7 +98,7 @@ export class ManageFieldCodeComponent {
       this.showValidationErrors();
     }
   }
-
+  
   private showValidationErrors() {
     this.newFieldCodeForm.markAllAsTouched();
   }
@@ -95,9 +107,9 @@ export class ManageFieldCodeComponent {
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: fieldCodes => {
         this.fieldCodes = fieldCodes;
+        this.filteredFieldCodes = this.fieldCodes;
       },
       error: error => {
-        
       }
     });
   }
@@ -105,5 +117,30 @@ export class ManageFieldCodeComponent {
   onTypeChange() {
     this.isClicked = true;
     this.selectedFieldCode = this.selectedFieldCode;
+  }
+  clear(table: Table) {
+    table.clear();
+  }
+
+  filterData() {
+    this.filteredFieldCodes = this.fieldCodes.filter(fieldCode =>
+      fieldCode.name &&fieldCode.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
+      fieldCode.code &&fieldCode.code.toLowerCase().includes(this.filterText.toLowerCase())
+    );
+  }
+  
+
+  onSearch(event: Event) {
+    const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
+  
+    if (this.dt1) {
+      this.dt1.filterGlobal(searchTerm, 'contains');
+    }
+
+    if (this.filteredFieldCodes) {
+      this.filteredFieldCodes = this.fieldCodes.filter(fieldCode =>
+        fieldCode.name && fieldCode.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
   }
 }
