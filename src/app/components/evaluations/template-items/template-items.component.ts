@@ -35,21 +35,15 @@ export class TemplateItemsComponent {
   saveTemplate(): void {
     const { template } = this.templateForm.value;
     this.evaluationtemplate.save(template).subscribe({
-      next: data => {
-        this.templateForm.reset();
-        this.templates$ = this.evaluationtemplate.getAll();
-      },
-      error: error => { }
+      next: () => this.templates$ = this.evaluationtemplate.getAll(),
+      error: () => { }
     });
   }
 
   deleteTemplate(template: string): void {
     this.evaluationtemplate.delete(template).subscribe({
-      next: data => {
-        this.templateForm.reset();
-        this.templates$ = this.evaluationtemplate.getAll();
-      },
-      error: error => { }
+      next: () => this.templates$ = this.evaluationtemplate.getAll(),
+      error: () => { }
     });
   }
 
@@ -64,7 +58,6 @@ export class TemplateItemsComponent {
     this.evaluationTemplateItemService
       .save(template, section, question)
       .subscribe(() => {
-        this.templateItemForm.reset();
         this.templateItems$ =
           this.evaluationTemplateItemService.getAll(template);
       });
