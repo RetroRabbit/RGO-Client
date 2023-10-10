@@ -77,7 +77,7 @@ import { EmployeeDetailsComponent } from './components/employees/employee-detail
     NgChartsModule,
     StoreModule.forRoot({
       app: LoginReducer,
-      employee : EmployeeProfileReducer,
+      employee: EmployeeProfileReducer,
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),
     AuthModule.forRoot({
@@ -90,7 +90,7 @@ import { EmployeeDetailsComponent } from './components/employees/employee-detail
     HttpClientModule,
     BrowserAnimationsModule,
     NgToastModule,
-    MatButtonModule, 
+    MatButtonModule,
     MatMenuModule,
     MatIconModule,
     MatToolbarModule,
