@@ -45,4 +45,8 @@ export class ViewEmployeeComponent{
     this.selectedEmployee.emit(this.selectedEmp)
     this.cookieService.set('currentPage', 'Employee Details');
   }
+
+  goToAddNewHire() {
+    this.router.navigateByUrl('/new-employee');
+  }
 }
