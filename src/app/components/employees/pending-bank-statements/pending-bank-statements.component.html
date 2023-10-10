@@ -1,24 +1,26 @@
-<p-table [value]="pendingBankStatements" [tableStyle]="{ 'min-width': '50rem' }">
-    <ng-template pTemplate="header">
+<div class="container">
+    <p-table [value]="pendingBankStatements" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
         <tr>
             <th>Employee</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Quantity</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Quantity</th>
+            <th>Bank Name</th>
+            <th>Account Type</th>
+            <th>Status</th>
+            <th>Edit</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-entry>
         <tr>
-            <td>{{ entry.code }}</td>
+            <td>{{ entry.employee.name }} {{ entry.employee.name }}</td>
             <td>{{ entry.bankName }}</td>
-            <td>{{ entry.branch }}</td>
-            <td>{{ entry.accountNo }}</td>
             <td>{{ entry.accountType }}</td>
-            <td>{{ entry.accountHolderName }}</td>
             <td>{{ entry.status == 1 ? 'Pending' : 'Approved' }}</td>
+            <td>
+                 <button>
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </td>
         </tr>
     </ng-template>
 </p-table>
+</div>
