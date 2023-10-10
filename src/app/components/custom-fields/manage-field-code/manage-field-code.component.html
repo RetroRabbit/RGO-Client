@@ -9,7 +9,7 @@
           <button class="btn btn-primary">Add new field code</button>
         </a>
         <div style="padding-top: 30px;"></div>
-        <label>Existing Custom Fields:</label><br>
+        <label>Custom Fields:</label><br>
         <label>Search:</label>
         <input pInputText type="text" [(ngModel)]="filterText" (input)="filterData()" /><br>
          <div *ngIf="filteredFieldCodes" class="custom-table" style="overflow: auto">
