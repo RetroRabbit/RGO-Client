@@ -3,9 +3,9 @@ import { Chart } from 'src/app/models/charts.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { AuthService } from '@auth0/auth0-angular';
 import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
+
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -18,7 +18,6 @@ export class AdminDashboardComponent {
   menuClicked: boolean = false;
   admin!: EmployeeProfile;
   profileImage: string | null = null;
-  screenWidth!: number;
 
   employeeType: { id: number; name: string } = {
     id: 0,
@@ -29,11 +28,8 @@ export class AdminDashboardComponent {
     private employeeProfileService: EmployeeProfileService,
     private chartService: ChartService,
     private auth: AuthService,
-    private cookieService: CookieService,
-    private router: Router
-  ) {
-    this.screenWidth = window.innerWidth;
-  }
+    private cookieService: CookieService
+  ) { }
 
   ngOnInit() {
     this.employeeProfileService.GetEmployeeProfile().subscribe((data) => {
@@ -54,19 +50,10 @@ export class AdminDashboardComponent {
     });
   }
 
-  goToAddNewHire() {
-    this.router.navigateByUrl('/new-employee');
-  }
-
   logout() {
     this.auth.logout({
       logoutParams: { returnTo: document.location.origin },
     });
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.screenWidth = event.target.innerWidth;
   }
 
   CaptureEvent(event: any) {

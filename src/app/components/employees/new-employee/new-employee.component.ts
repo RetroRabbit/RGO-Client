@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
@@ -18,8 +17,7 @@ export class NewEmployeeComponent implements OnInit {
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
     private cookieService: CookieService,
-    private toast: NgToastService,
-    private router: Router
+    private toast: NgToastService
   ) {}
 
   employeeTypes: EmployeeType[] = [];
@@ -183,8 +181,8 @@ export class NewEmployeeComponent implements OnInit {
     });
   }
 
-  onCancel() {
-    this.router.navigateByUrl('/home');
+  CaptureEvent() {
+    this.cookieService.set('currentPage', 'Dashboard');
   }
 
   checkBlankRequiredFields() {
