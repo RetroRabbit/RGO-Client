@@ -234,6 +234,9 @@
       <app-new-field-code></app-new-field-code>
     </div>
    
+    <div *ngIf="cookieService.get('currentPage') == '+ Add New Hire'">
+      <app-new-employee></app-new-employee>
+    </div>
     
   </div>
 </div>
