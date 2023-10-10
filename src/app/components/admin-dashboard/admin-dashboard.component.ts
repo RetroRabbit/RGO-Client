@@ -14,44 +14,49 @@ import { EmployeeProfileService } from 'src/app/services/employee/employee-profi
 export class AdminDashboardComponent {
   charts: Chart[] = [];
 
-    selectedItem: string = 'Dashboard';
-    menuClicked: boolean = false;
-    admin!: EmployeeProfile;
-    profileImage: string | null = null;
-    screenWidth!: number;
-    
-    employeeType: { id: number; name: string } = {
-      id: 0,
+  selectedItem: string = 'Dashboard';
+  menuClicked: boolean = false;
+  admin!: EmployeeProfile;
+  profileImage: string | null = null;
+  screenWidth!: number;
+
+  employeeType: { id: number; name: string } = {
+    id: 0,
     name: '',
   };
+  
   constructor(
     private employeeProfileService: EmployeeProfileService,
     private chartService: ChartService,
     private auth: AuthService,
     private cookieService: CookieService,
-    private router: Router,
-    ) {
-      this.screenWidth = window.innerWidth;
-    }
-    ngOnInit() {
-      this.employeeProfileService.GetEmployeeProfile().subscribe((data) => {
-        this.admin = data;
-        
-        if (this.admin.photo &&
-          (this.admin.photo.startsWith('http') || this.admin.photo.startsWith('data:image'))) {
-            this.profileImage = this.admin.photo;
-          }
-          this.employeeType = this.admin.employeeType;
-        });
-        
-        this.chartService.getAllCharts().subscribe({
-          next: data => this.charts = data
-        });
+    private router: Router
+  ) {
+    this.screenWidth = window.innerWidth;
+  }
+
+  ngOnInit() {
+    this.employeeProfileService.GetEmployeeProfile().subscribe((data) => {
+      this.admin = data;
+
+      if (
+        this.admin.photo &&
+        (this.admin.photo.startsWith('http') ||
+          this.admin.photo.startsWith('data:image'))
+      ) {
+        this.profileImage = this.admin.photo;
       }
-      
-      goToAddNewHire() {
-        this.router.navigateByUrl('/new-employee');
-      }
+      this.employeeType = this.admin.employeeType;
+    });
+
+    this.chartService.getAllCharts().subscribe({
+      next: (data) => (this.charts = data),
+    });
+  }
+
+  goToAddNewHire() {
+    this.router.navigateByUrl('/new-employee');
+  }
 
   logout() {
     this.auth.logout({
@@ -63,7 +68,7 @@ export class AdminDashboardComponent {
   onResize(event: any) {
     this.screenWidth = event.target.innerWidth;
   }
-  
+
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
