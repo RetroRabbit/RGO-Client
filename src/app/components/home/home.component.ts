@@ -4,6 +4,11 @@ import { Store } from '@ngrx/store';
 import { Token } from 'src/app/models/token.interface';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { Chart } from 'chart.js';
+import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { ChartService } from 'src/app/services/charts.service';
+import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,22 +17,49 @@ import { CookieService } from 'ngx-cookie-service';
 
 export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
-  selectedPage: string = this.cookieService.get("currentlPage") != "Dashboard" ? this.cookieService.get("currentlPage") : "Dashboard";
   selectedEvaluation: any | null = null
-  roles : string[] = [];  
   selectedEmployee: any | null = null;
+  selectedItem: string = 'Dashboard';
+  menuClicked: boolean = false;
+  admin!: EmployeeProfile;
+  profileImage: string = '';
+  charts: Chart[] = [];
+  roles : string[] = []; 
+  screenWidth !: number;
+
+  employeeType: { id: number, name: string } = {
+    id: 0,
+    name: ''
+  };
 
   constructor(
+    private employeeProfileService: EmployeeProfileService,
+    private chartService: ChartService,
     private store: Store<{ app: Token }>,
     private auth: AuthService,
-    public cookieService: CookieService
-  ) { }
+    public cookieService: CookieService) { 
+    this.screenWidth = window.innerWidth;
+  }
+
 
   ngOnInit() {
-    this.selectedPage = this.cookieService.get('currentPage');
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
+
+    this.employeeProfileService.GetEmployeeProfile().subscribe({
+      next: data => {
+        this.admin = data;
+        this.profileImage = this.admin.photo;
+        this.employeeType = this.admin.employeeType;
+      }
+    });
+
+    this.chartService.getAllCharts().subscribe({
+      next: (data: any) => this.charts = data
+    });
+
   }
+
   ngOnDestroy() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
@@ -35,15 +67,10 @@ export class HomeComponent {
     sessionStorage.removeItem('id_token');
   }
 
-  Logout() {
+  logout() {
     this.auth.logout({
       logoutParams: { returnTo: document.location.origin }
     });
-  }
-
-
-  handleSelectedItem() {
-    this.selectedPage = this.cookieService.get('currentPage');
   }
 
   handleSelectedEval(item: any) {
@@ -51,10 +78,17 @@ export class HomeComponent {
   }
 
   isAdmin(): boolean {
-    return this.roles.includes('Admin')||  this.roles.includes('SuperAdmin');
+    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
 
   handleSelectedEmp(item: any){
     this.selectedEmployee = item
   }
+
+  CaptureEvent(event: any) {
+    const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('currentPage', target.innerText);
+    this.selectedItem = target.innerText;
+  }
+
 }
