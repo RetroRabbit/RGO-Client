@@ -1,26 +1,61 @@
 <div class="container">
-    <p-table [value]="pendingBankStatements" [tableStyle]="{ 'min-width': '50rem' }">
-        <ng-template pTemplate="header">
-        <tr>
-            <th>Employee</th>
-            <th>Bank Name</th>
-            <th>Account Type</th>
-            <th>Status</th>
-            <th>Edit</th>
-        </tr>
+    <div *ngIf="!showDetailedEntry;else ShowDetails">
+        <p-table [value]="pendingBankStatements" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Employee</th>
+                    <th>Bank Name</th>
+                    <th>Account Type</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-entry>
+                <tr>
+                    <td>{{ entry.employee.name }} ({{entry.employee.initials}}) {{ entry.employee.surname }}</td>
+                    <td>{{ entry.bankName }}</td>
+                    <td>{{ entry.accountType == 1 ? 'Savings' : 'Cheque' }}</td>
+                    <td>{{ entry.status == 1 ? 'Pending' : 'Approved' }}</td>
+                    <td>
+                        <button mat-raised-button (click)="viewEntry(entry)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <ng-template #ShowDetails>
+        <button mat-raised-button color="warn" (click)="showTable()">Back</button>
+        <div class="row p-4">
+            <div class="py-2 col-md-3">
+                <label class="form-label">Account Holder</label>
+                <input readonly class="form-control" type="text" [value]="selectedEntry?.accountHolderName">
+            </div>
+            <div class="py-2 col-md-3">
+                <label class="form-label">Bank Name</label>
+                <input readonly class="form-control" type="text" [value]="selectedEntry?.bankName">
+            </div>
+            <div class="py-2 col-md-3">
+                <label class="form-label">Branch</label>
+                <input readonly class="form-control" type="text" [value]="selectedEntry?.branch">
+            </div>
+            <div class="py-2 col-md-3">
+                <label class="form-label">Account Number</label>
+                <input readonly class="form-control" type="text" [value]="selectedEntry?.accountNo">
+            </div>
+            <div class="py-2 col-md-3">
+                <label class="form-label">Account Type</label>
+                <input readonly class="form-control" type="text" [value]="selectedEntry?.accountType == 1 ? 'Savings' : 'Cheque'">
+            </div>
+            <div class="py-2 col-md-3">
+                <label class="form-label">Status</label>
+                <input readonly class="form-control" type="text" [value]="selectedEntry?.status == 1 ? 'Pending' : 'Approved'">
+            </div>
+            <div class="py-2 col-md-3">
+                <label class="form-label">Proof of Account</label> <br>
+                <button mat-button color="primary" (click)="convertFileToBase64()">Download</button>
+            </div>
+        </div>
     </ng-template>
-    <ng-template pTemplate="body" let-entry>
-        <tr>
-            <td>{{ entry.employee.name }} {{ entry.employee.name }}</td>
-            <td>{{ entry.bankName }}</td>
-            <td>{{ entry.accountType }}</td>
-            <td>{{ entry.status == 1 ? 'Pending' : 'Approved' }}</td>
-            <td>
-                 <button>
-                    <mat-icon>edit</mat-icon>
-                </button>
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
 </div>
