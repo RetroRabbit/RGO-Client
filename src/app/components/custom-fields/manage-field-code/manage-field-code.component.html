@@ -9,19 +9,17 @@
           <button class="btn btn-primary">Add new field code</button>
         </a>
         <div style="padding-top: 30px;"></div>
-
         <label>Existing Custom Fields:</label><br>
         <label>Search:</label>
-        <input pInputText type="text" [(ngModel)]="filterText" (input)="filterData()" />
-        <br>
+        <input pInputText type="text" [(ngModel)]="filterText" (input)="filterData()" /><br>
          <div *ngIf="filteredFieldCodes" class="custom-table" style="overflow: auto">
           <p-table [value]="filteredFieldCodes" [paginator]="true" [rows]="10">
              <ng-template pTemplate="header">
                <tr>
-                 <th>ID</th>
-                 <th>Name</th>
-                 <th>Description</th>
-                 <th>Status</th>
+                <th pSortableColumn="id">ID</th>
+                 <th pSortableColumn="name">Name</th>
+                 <th pSortableColumn="description" >Description</th>
+                 <th pSortableColumn="status" >Status</th>
                </tr>
              </ng-template>
              <ng-template pTemplate="body" let-fieldCode>

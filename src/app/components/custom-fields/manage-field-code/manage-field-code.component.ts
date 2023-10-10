@@ -124,12 +124,13 @@ export class ManageFieldCodeComponent {
 
   filterData() {
     this.filteredFieldCodes = this.fieldCodes.filter(fieldCode =>
-      fieldCode.name &&fieldCode.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
-      fieldCode.code &&fieldCode.code.toLowerCase().includes(this.filterText.toLowerCase())
+      fieldCode.name && fieldCode.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
+      fieldCode.code && fieldCode.code.toLowerCase().includes(this.filterText.toLowerCase()) ||
+      fieldCode.id && fieldCode.id.toString().toLowerCase().includes(this.filterText.toLowerCase()) ||
+      fieldCode.status && (fieldCode.status === 0 ? 'Active' : 'Archived').toLowerCase().includes(this.filterText.toLowerCase())
     );
   }
   
-
   onSearch(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
   
