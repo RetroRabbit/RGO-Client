@@ -54,10 +54,6 @@ export class AdminDashboardComponent {
     });
   }
 
-  goToAddNewHire() {
-    this.router.navigateByUrl('/new-employee');
-  }
-
   logout() {
     this.auth.logout({
       logoutParams: { returnTo: document.location.origin },
