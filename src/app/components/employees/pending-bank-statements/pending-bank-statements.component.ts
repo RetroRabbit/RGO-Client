@@ -15,6 +15,7 @@ export class PendingBankStatementsComponent {
 
   ngOnInit() {
     this.employeeBankingService.getPending().subscribe( dataArray =>{
+      console.log(dataArray);
       this.pendingBankStatements = dataArray;
     })
   }

@@ -41,10 +41,10 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatSidenavModule} from '@angular/material/sidenav';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
 import { PendingBankStatementsComponent } from './components/employees/pending-bank-statements/pending-bank-statements.component';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -96,6 +96,7 @@ import { PendingBankStatementsComponent } from './components/employees/pending-b
     MatMenuModule,
     MatIconModule,
     MatToolbarModule,
+    TableModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
