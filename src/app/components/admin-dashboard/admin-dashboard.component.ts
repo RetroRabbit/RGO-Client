@@ -1,6 +1,4 @@
 import { Component, HostListener } from '@angular/core';
-import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
-import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { Chart } from 'src/app/models/charts.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { AuthService } from '@auth0/auth0-angular';
@@ -12,6 +10,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin-dashboard.component.css'],
 })
 export class AdminDashboardComponent {
+  charts: Chart[] = [];
+
+  constructor(
+    private chartService: ChartService,
+    private auth: AuthService,
+    public cookieService: CookieService) {}
+
+  ngOnInit() {
+    this.chartService.getAllCharts().subscribe({
+      next: data => this.charts = data
+    });
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
   admin!: EmployeeProfile;
@@ -58,5 +67,8 @@ export class AdminDashboardComponent {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenWidth = event.target.innerWidth;
+  CaptureEvent(event: any) {
+    const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('currentPage', target.innerText);
   }
 }
