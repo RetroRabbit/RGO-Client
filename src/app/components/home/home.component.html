@@ -136,6 +136,20 @@
                 </div>
               </div>
             </div>
+            <div class="col-2">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)"
+                    [ngClass]="selectedItem == 'Employee Banking' ? 'active' : 'idle'">
+                    Employee Banking
+                  </div>
+                  <div *ngIf="selectedItem == 'Employee Banking'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -225,7 +239,9 @@
     <div *ngIf="cookieService.get('currentPage') == 'Evaluation Items'">
       <app-template-items></app-template-items>
     </div>
-
+    <div *ngIf="cookieService.get('currentPage') == 'Employee Banking'">
+      <app-pending-bank-statements></app-pending-bank-statements>
+    </div>
     <div *ngIf="cookieService.get('currentPage') == '+ Add Graph'">
       <app-create-charts></app-create-charts>
     </div>
