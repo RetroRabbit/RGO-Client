@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { Router } from '@angular/router';
 import { FieldCode } from 'src/app/models/field-code.interface';
