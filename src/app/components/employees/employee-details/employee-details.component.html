@@ -3,7 +3,7 @@
       <h2 class="page-heading border-bottom">Employee</h2>
       <div style="overflow: auto">
         <div class="container-fluid">
-          <form [formGroup]="employeeForm" (submit)="onSubmit()">
+          <form [formGroup]="employeeForm" (submit)="onSubmit();  $event.preventDefault()">
             <div class="row">
               <div class="col-sm-6">
                 <div class="mb-3 row">
@@ -23,6 +23,16 @@
                     <label class="col-form-label">Surname</label>
                     <input type="text" class="form-control" formControlName="surname" />
                   </div>
+                </div>
+                <div class="mb-3 row">
+                <div class="col-sm-12">
+                  <label class="col-form-label">Gender</label> 
+                    <select class="form-control" formControlName="gender">
+                  <option *ngFor="let gender of genderTypes" [ngValue]="gender.id">
+                    {{gender.value}}
+                  </option>
+                </select>
+                </div>
                 </div>
                 <div class="mb-3 row">
                     <div class="col-sm-12">
@@ -71,13 +81,13 @@
                   <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Passport Expiration Date</label>
-                      <input type="text" class="form-control" formControlName="passportExpirationDate" />
+                      <input type="date" class="form-control" formControlName="passportExpirationDate" />
                     </div>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Payrate</label>
-                      <input type="text" class="form-control" formControlName="payrate" />
+                      <input type="text" class="form-control" formControlName="payRate" />
                     </div>
                   </div>
                   <div class="mb-3 row">
@@ -92,6 +102,12 @@
                       <input type="text" class="form-control" formControlName="disabilityNotes" />
                     </div>
                   </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Photo</label>
+                      <input type="text" class="form-control" formControlName="photo" />
+                    </div>
+                  </div>
               </div>
               <div class="col-sm-6">
                 <div class="mb-3 row">
@@ -100,10 +116,22 @@
                     <input type="text" class="form-control" formControlName="email" />
                   </div>
                 </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Cellphone Number</label>
+                    <input type="text" class="form-control" formControlName="cellphoneNo" />
+                  </div>
+                </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Employee Number</label>
                       <input type="text" class="form-control" formControlName="employeeNumber" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Date of Birth</label>
+                      <input type="date" class="form-control" formControlName="dateOfBirth" />
                     </div>
                   </div>
                   <div class="mb-3 row">
@@ -174,37 +202,54 @@
                     </select>
                     </div>
                   </div>
-                  <div class="mb-3 row">
-                    <div class="col-sm-12">
-                      <label class="col-form-label">Photo</label>
-                      <input type="text" class="form-control" formControlName="photo" />
-                    </div>
-                  </div>
               </div>
+            <div class="col-sm-12">
               <div class="mb-3 row" *ngIf="!viewMoreInfo">
                 <div class="col-sm-12">
                 <br><br>
                   <button type="button" (click) = "viewMore()" class="form-control">View more info</button>
                 </div>
               </div>
-            </div>
-          </form>
-          <form [formGroup]="employeeCustomForm" (submit)="onSubmit()">
-            <ng-container *ngIf="viewMoreInfo">
-              <div class="row">
-                <ng-container *ngFor="let fieldcode of fieldcodes; let i = index">
-                  <div class="col-sm-6">
-                    <div class="mb-3 row">
-                      <div class="col-sm-12">
-                        <label class="col-form-label">{{ fieldcode.name }}</label>
-                        <input type="text" class="form-control" formControlName="{{formatString(fieldcode.name)}}" />
+              <ng-container *ngIf="viewMoreInfo">
+                <div class="row">
+                  <ng-container *ngFor="let fieldcode of fieldcodes; let i = index">
+                    <div class="col-sm-6">
+                      <div class="mb-3 row">
+                        <div class="col-sm-12" *ngIf="fieldcode.options?.length === 0">
+                          <label class="col-form-label">{{ fieldcode.name }}</label>
+                          <input type="text" class="form-control" formControlName="{{formatString(fieldcode.name)}}" />
+                        </div>
+                        <div class="col-sm-12" *ngIf="fieldcode.options && fieldcode.options.length > 0">
+                          <label class="col-form-label">{{ fieldcode.name }}</label>
+                          <select class="form-control" formControlName="{{formatString(fieldcode.name)}}">
+                            <option *ngFor="let option of fieldcode.options" [ngValue]="option.option">
+                              {{option.option}}
+                            </option>
+                          </select>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </ng-container>
+                  </ng-container>
+                </div>
+              </ng-container>
+              <div class="mb-3 row" *ngIf="viewMoreInfo && !toEdit">
+                <div class="col-sm-12">
+                <br><br>
+                <button type="button" (click)="editDetails()" class="form-control">Edit</button>
+                </div>
               </div>
-            </ng-container>
-          </form>          
+              <div class="mb-3 row" *ngIf="viewMoreInfo && toEdit ">
+                <div class="col-sm-12">
+                <br><br>
+                <button type="submit" class="form-control">Submit</button>
+                </div>
+              </div>
+            </div>
+            </div>
+          </form>
+          <br>
+          <button type="button" (click)="cancelAction()" class="form-control">Cancel</button>
+          <br>
         </div>
       </div>
     </div>

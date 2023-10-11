@@ -75,6 +75,7 @@ export class HomeComponent {
 
   handleSelectedEval(item: any) {
     this.selectedEvaluation = item
+    
   }
 
   isAdmin(): boolean {
@@ -83,6 +84,7 @@ export class HomeComponent {
 
   handleSelectedEmp(item: any){
     this.selectedEmployee = item
+    console.log(this.selectedEmployee);
   }
 
   CaptureEvent(event: any) {
