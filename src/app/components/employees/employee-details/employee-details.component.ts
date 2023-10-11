@@ -21,13 +21,10 @@ import { FieldCodeService } from 'src/app/services/field-code.service';
 })
 export class EmployeeDetailsComponent implements OnInit {
   @Input() selectedEmployee!: any | null;
-  employeeForm!: FormGroup;
   employeeCustomForm!: FormGroup;
+  employeeForm!: FormGroup;
+
   employeeTypes: EmployeeType[] = [];
-  public genderTypes = gender;
-  public raceTypes = race;
-  public generalTypes = general;
-  public levelTypes = level;
   employeeData: EmployeeData[] = [];
   fieldcodes: FieldCode[] = [];
   employeeFieldcodes: any = [];

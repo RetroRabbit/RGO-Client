@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
@@ -27,7 +27,6 @@ export class EmployeeRoleManagerComponent {
   currRoles!: string[]
 
   constructor(
-    private roleService: RoleService,
     private empoloyeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService
   ) { }

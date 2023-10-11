@@ -21,7 +21,7 @@ export class HomeComponent {
   selectedEmployee: any | null = null;
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
-  admin!: EmployeeProfile;
+  employeeProfile!: EmployeeProfile;
   profileImage: string = '';
   charts: Chart[] = [];
   roles : string[] = []; 
@@ -48,9 +48,9 @@ export class HomeComponent {
 
     this.employeeProfileService.GetEmployeeProfile().subscribe({
       next: data => {
-        this.admin = data;
-        this.profileImage = this.admin.photo;
-        this.employeeType = this.admin.employeeType;
+        this.employeeProfile = data;
+        this.profileImage = this.employeeProfile.photo;
+        this.employeeType = this.employeeProfile.employeeType;
       }
     });
 
@@ -80,6 +80,10 @@ export class HomeComponent {
 
   isAdmin(): boolean {
     return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
+  }
+
+  isEmployee(): boolean {
+    return this.roles.includes('Employee');
   }
 
   handleSelectedEmp(item: any){
