@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { Table } from 'primeng/table';
 import { NgToastService } from 'ng-angular-popup';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -31,7 +32,12 @@ export class ManageFieldCodeComponent {
     this.isClicked = true;
   }
  
-  constructor(public router: Router, private fieldCodeService: FieldCodeService, private fb: FormBuilder, private toast: NgToastService) {
+  constructor(
+    public router: Router,
+    private fieldCodeService: FieldCodeService,
+    private fb: FormBuilder,
+    private toast: NgToastService,
+    public cookieService: CookieService) {
     this.initializeForm();
   }
 
@@ -128,6 +134,7 @@ export class ManageFieldCodeComponent {
     this.isClicked = true;
     this.selectedFieldCode = this.selectedFieldCode;
   }
+
   clear(table: Table) {
     table.clear();
   }
@@ -153,5 +160,10 @@ export class ManageFieldCodeComponent {
         fieldCode.name && fieldCode.name.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
+  }
+  CaptureEvent(event: any) {
+    const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('currentPage', target.innerText);
+    console.log(this.cookieService.get('currentPage'));
   }
 }
