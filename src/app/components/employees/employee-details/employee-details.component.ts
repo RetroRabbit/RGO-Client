@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { gender } from 'src/app/models/constants/gender.constants';
 import { general } from 'src/app/models/constants/general.constants';
 import { level } from 'src/app/models/constants/level.constants';
@@ -10,6 +11,7 @@ import { EmployeeType } from 'src/app/models/employee-type.model';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 
 @Component({
@@ -30,9 +32,11 @@ export class EmployeeDetailsComponent implements OnInit {
   fieldcodes: FieldCode[] = [];
   employeeFieldcodes: any = [];
   viewMoreInfo: boolean = false;
+  toEdit: boolean = false;
 
-  constructor(private router: Router, private fb: FormBuilder, private employeeTypeService: EmployeeTypeService,
-    private employeeDataService: EmployeeDataService, private fieldcodeService: FieldCodeService
+  constructor(private fb: FormBuilder, private employeeTypeService: EmployeeTypeService,
+    private employeeDataService: EmployeeDataService, private fieldcodeService: FieldCodeService, 
+    private employeeService: EmployeeService, private cookieService: CookieService
   ) { }
 
   ngOnInit(): void {
@@ -83,47 +87,166 @@ export class EmployeeDetailsComponent implements OnInit {
       passportCountryIssue: this.selectedEmployee.passportCountryIssue,
       passportExpirationDate: this.selectedEmployee.passportExpirationDate,
       passportNumber: this.selectedEmployee.passportNumber,
-      payrate: this.selectedEmployee.payrate,
+      payRate: this.selectedEmployee.payRate,
       photo: this.selectedEmployee.photo,
       race: this.selectedEmployee.race,
       reportingLine: this.selectedEmployee.reportingLine,
       salary: this.selectedEmployee.salary,
       salaryDays: this.selectedEmployee.salaryDays,
-      terminationDate: this.selectedEmployee.terminationDate
+      terminationDate: this.selectedEmployee.terminationDate,
+      dateOfBirth: this.selectedEmployee.dateOfBirth
     });
   }
 
+  // checkEmployeeFieldCode() {
+  //   const formGroupConfig: { [key: string]: any } = {};
+  //   for (const employee of this.employeeData) {
+  //     const found = this.fieldcodes.find((fieldcode) => {
+  //       return fieldcode.id == employee.fieldCodeId
+  //     });
+  //     if (found) {
+  //       const existingRecord = this.employeeFieldcodes.find((value: { name: string }) => value.name === found.name);
+  //       if (!existingRecord) {
+  //         this.employeeFieldcodes.push({ name: found.name, value: employee.value });
+  //       }
+  //     }
+  //   }
+  //   for (const fieldcode of this.fieldcodes) {
+  //     const name = this.formatString(fieldcode.name)
+  //     const fc = this.employeeFieldcodes.find((data: any) => {
+  //       return data.name == fieldcode.name
+  //     });
+  //     if (fc != null) {
+  //       formGroupConfig[name] = fc.value;
+  //     }
+  //     else if (fc == null) {
+  //       formGroupConfig[name] = '';
+  //     }
+  //   }
+  //   this.employeeCustomForm = this.fb.group(formGroupConfig);
+  //   this.employeeCustomForm.disable();
+  // }
+
   checkEmployeeFieldCode() {
-    const formGroupConfig: { [key: string]: any } = {};
-    for (const employee of this.employeeData) {
-      const found = this.fieldcodes.find((fieldcode) => {
-        return fieldcode.id == employee.fieldCodeId
-      });
-      if (found) {
-        const existingRecord = this.employeeFieldcodes.find((value: { name: string }) => value.name === found.name);
-        if (!existingRecord) {
-          this.employeeFieldcodes.push({ name: found.name, value: employee.value });
-        }
-      }
-    }
     for (const fieldcode of this.fieldcodes) {
       const name = this.formatString(fieldcode.name)
-      const fc = this.employeeFieldcodes.find((data: any) => {
-        return data.name == fieldcode.name
+      const fc = this.employeeData.find((data) => {
+        return data.fieldCodeId == fieldcode.id
       });
-      if (fc != null) {
-        formGroupConfig[name] = fc.value;
-      }
-      else if (fc == null) {
-        formGroupConfig[name] = '';
-      }
+      this.employeeForm.addControl(name, this.fb.control(fc ? fc.value : ''));
     }
-    this.employeeCustomForm = this.fb.group(formGroupConfig);
-    this.employeeCustomForm.disable();
+    this.employeeForm.disable();
   }
 
   onSubmit() {
+    if (this.employeeForm.valid) {
+      const employeeForm = this.employeeForm.value;
+
+      const employeeProfileDto = {
+        id: this.selectedEmployee.id,
+        employeeNumber: employeeForm.employeeNumber,
+        taxNumber: employeeForm.taxNumber,
+        engagementDate: employeeForm.engagementDate,
+        terminationDate: employeeForm.terminationDate,
+        reportingLine: employeeForm.reportingLine,
+        disability: parseInt(employeeForm.disability) == 0 ? false : true,
+        disabilityNotes: employeeForm.disabilityNotes,
+        countryOfBirth: employeeForm.countryOfBirth,
+        nationality: employeeForm.nationality,
+        level: parseInt(employeeForm.level),
+        employeeType: {
+          id: this.selectedEmployee.employeeType.id,
+          name: employeeForm.employeeType,
+        },
+        title: employeeForm.title,
+        name: employeeForm.name,
+        initials: employeeForm.initials,
+        surname: employeeForm.surname,
+        dateOfBirth: employeeForm.dateOfBirth,
+        idNumber: employeeForm.idNumber,
+        passportNumber: employeeForm.passportNumber,
+        passportExpirationDate: employeeForm.passportExpirationDate,
+        passportCountryIssue: employeeForm.passportCountryIssue,
+        race: parseInt(employeeForm.race),
+        gender: parseInt(employeeForm.gender),
+        email: employeeForm.email,
+        personalEmail: employeeForm.personalEmail,
+        cellphoneNo: employeeForm.cellphoneNo,
+        photo: employeeForm.photo,
+        notes: '',
+        leaveInterval: employeeForm.leaveInterval,
+        salary: employeeForm.salary,
+        salaryDays: employeeForm.salaryDays,
+        payRate: employeeForm.payrate
+      }
+      console.log(employeeProfileDto)
+      this.employeeService.updateEmployee(employeeProfileDto).subscribe({
+        next: (data) => {
+          console.log("this works")
+        },
+        error: (error) => {
+          console.log(error)
+          console.log("this does not work")
+        }
+      });
+      this.saveEmployeeCustomData();
+    }
+    this.cookieService.set('currentPage', 'People');
+  }
+
+  saveEmployeeCustomData() {
+    for (const fieldcode of this.fieldcodes) {
+      const found = this.employeeData.find((data) => {
+        return fieldcode.id == data.fieldCodeId
+      });
+
+      if (found != null) {
+        const formatFound = this.formatString(fieldcode?.name)
+        const employeeDataDto = {
+          id: found.id,
+          employeeId: found.employeeId,
+          fieldcodeId: found.fieldCodeId,
+          value: this.employeeForm.get(formatFound)?.value
+        }
+        console.log(employeeDataDto)
+        this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
+          next: (data) => {
+            console.log("employee data updated")
+          },
+          error: (error) => {
+            console.log(error)
+            console.log("employee data not updated")
+          }
+        });
+      }
+      else if (found == null) {
+        const formatFound = this.formatString(fieldcode?.name)
+        const employeeDataDto = {
+          id: 0,
+          employeeId: this.selectedEmployee.id,
+          fieldcodeId: fieldcode.id,
+          value: this.employeeForm.get(formatFound)?.value
+        }
+        if (employeeDataDto.value != '') {
+          console.log(employeeDataDto)
+          this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
+            next: (data) => {
+              console.log("employee data saved")
+            },
+            error: (error) => {
+              console.log(error)
+              console.log("employee data not saved")
+            }
+          });
+        }
+
+      }
+    }
+  }
+
+  editDetails() {
     this.employeeForm.enable();
+    this.toEdit = true;
   }
 
   viewMore() {
@@ -143,5 +266,9 @@ export class EmployeeDetailsComponent implements OnInit {
       return words.join('');
     }
     else return '';
+  }
+
+  cancelAction(){
+    this.cookieService.set('currentPage', 'People');
   }
 }
