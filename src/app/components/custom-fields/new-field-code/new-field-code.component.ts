@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
+import { CookieService } from 'ngx-cookie-service';
 import { statuses } from 'src/app/models/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { FieldCode } from 'src/app/models/field-code.interface';
@@ -23,7 +24,9 @@ export class NewFieldCodeComponent {
   constructor(
     private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
-    private toast: NgToastService) {
+    private toast: NgToastService,
+    public cookieService: CookieService) {
+
     this.initializeForm();
   }
 
@@ -107,5 +110,10 @@ export class NewFieldCodeComponent {
               }
             });
     }
+  }
+
+  back(event: any) {
+    const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('currentPage', 'Manage Field');
   }
 }

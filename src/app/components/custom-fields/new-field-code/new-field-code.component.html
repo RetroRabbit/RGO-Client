@@ -1,10 +1,5 @@
 <div class="wrapper">
-    <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
-        <app-sidebar></app-sidebar>
-        <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
-    </div>
     <div class="main-panel">
-        <app-header></app-header>
         <div class="m-3 border-bottom">
             <h1 class="page-heading border-bottom"> New Field Code</h1>
             <div style="overflow: auto">
@@ -93,9 +88,7 @@
                         </div>
                     </form>
                     <div class="mb-3">
-                        <a href="/home">
-                            <button class="btn btn-primary">Back</button>
-                        </a>
+                            <button class="btn btn-primary" (click)="back($event)">Back</button>
                     </div>
                 </div>
             </div>
