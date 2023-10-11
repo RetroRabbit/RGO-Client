@@ -96,7 +96,7 @@ export class ManageFieldCodeComponent {
       };
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
-        next: (data) => {
+        next: () => {
           this.toast.success({detail:"Field Code saved!", position:'topRight'})
           this.newFieldCodeForm.disable();
         },
