@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './components/home/home.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
-import { HeaderComponent } from './components/header/header.component';
 import { ManageFieldCodeComponent } from './components/custom-fields/manage-field-code/manage-field-code.component';
 import { ChartComponent } from './components/charts/charts.component';
 import { CreateChartsComponent } from './components/charts/create-charts/create-charts.component';
@@ -17,7 +16,6 @@ import { EmployeeDetailsComponent } from './components/employees/employee-detail
 const routes: Routes = [
   {path: '', component: SignInComponent},
   {path: 'home', component: HomeComponent},
-  {path: 'header', component: HeaderComponent},
   {path: 'manage-field', component: ManageFieldCodeComponent},
   {path: 'charts', component: ChartComponent},
   {path: 'create-charts', component: CreateChartsComponent},

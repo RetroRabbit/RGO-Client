@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { Router } from '@angular/router';
 import { FieldCode } from 'src/app/models/field-code.interface';
@@ -96,7 +96,7 @@ export class ManageFieldCodeComponent {
       };
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
-        next: (data) => {
+        next: () => {
           this.toast.success({detail:"Field Code saved!", position:'topRight'})
           this.newFieldCodeForm.disable();
         },
@@ -161,9 +161,9 @@ export class ManageFieldCodeComponent {
       );
     }
   }
+
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
-    console.log(this.cookieService.get('currentPage'));
   }
 }
