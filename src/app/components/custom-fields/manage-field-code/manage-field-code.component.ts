@@ -161,9 +161,9 @@ export class ManageFieldCodeComponent {
       );
     }
   }
+
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
-    console.log(this.cookieService.get('currentPage'));
   }
 }
