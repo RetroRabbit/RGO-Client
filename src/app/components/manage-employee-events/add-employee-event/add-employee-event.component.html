@@ -1,0 +1,63 @@
+<main class="container bg-white p-3 rounded">
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+        <div class="row bg-info p-3 rounded">
+            <div class="col-md-4">
+                <mat-form-field class="w-100">
+                    <mat-label>Employee Email</mat-label>
+                    <input type="text" matInput formControlName="email" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let employee of employees$ | async" [value]="employee.email">
+                            {{employee.name + ' ' + employee.surname}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="eventForm.controls['email'].hasError('required')">
+                        Email is required.
+                    </mat-error>
+                    <mat-error *ngIf="eventForm.controls['email'].hasError('email')">
+                        Please enter a valid email address.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field class="w-100">
+                    <mat-label>Subject</mat-label>
+                    <input matInput formControlName="subject">
+                    <mat-error *ngIf="eventForm.controls['subject'].hasError('required')">
+                        Subject is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field class="w-100">
+                    <mat-label>Date</mat-label>
+                    <input matInput formControlName="date" [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="eventForm.controls['date'].hasError('required')">
+                        Date is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-12">
+                <mat-form-field class="w-100">
+                    <mat-label>Note</mat-label>
+                    <textarea matInput formControlName="note"></textarea>
+                    <mat-error *ngIf="eventForm.controls['note'].hasError('required')">
+                        Note is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-6">
+                <button mat-raised-button type="button" (click)="onClear()" class="w-100 btn">Clear</button>
+            </div>
+            <div class="col-md-6">
+                <button mat-raised-button type="submit" class="w-100">Save</button>
+            </div>
+        </div>
+        <div class="row mt-2 justify-content-center align-items-center">
+            <div class="col-md-6">
+                <button mat-raised-button type="button" class="w-100" (click)="CaptureEvent()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</main>
