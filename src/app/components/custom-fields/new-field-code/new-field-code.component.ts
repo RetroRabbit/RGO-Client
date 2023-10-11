@@ -48,7 +48,7 @@ export class NewFieldCodeComponent {
         description: [''],
         regex: [''],
         type: ['', Validators.required],
-        status: ['', Validators.required],
+        status: ['0', Validators.required],
         option: [''],
         internal: [false],
         internalTable: [''],
