@@ -13,7 +13,8 @@ export class EmployeeProfileComponent {
 
   isEdit: boolean = false;
 
-  constructor(private accessPropertyService: AccessPropertiesService, private cookieService : CookieService) { }
+  constructor(private accessPropertyService: AccessPropertiesService, 
+    private cookieService : CookieService) { }
 
   ngOnInit() {
     this.getEmployeeFields();
