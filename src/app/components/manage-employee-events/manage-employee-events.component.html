@@ -1,0 +1,69 @@
+<main class="container bg-white rounded p-3">
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+        <div class="row bg-info p-3 rounded">
+            <div class="col-md-4">
+                <mat-form-field class="w-100">
+                    <mat-label>Employee Email</mat-label>
+                    <input matInput formControlName="email" (change)="updateEventsbyCriteria('email')">
+                    <mat-error *ngIf="eventForm.controls['email'].hasError('required')">
+                        Email is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field class="w-100">
+                    <mat-label>Subject</mat-label>
+                    <input matInput formControlName="subject" (change)="updateEventsbyCriteria('subject')">
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field class="w-100">
+                    <mat-label>Date</mat-label>
+                    <input matInput formControlName="date" [matDatepicker]="picker" (change)="updateEventsbyCriteria('date')">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+                <button mat-raised-button type="button" (click)="onClear()" class="col-md-6">Clear</button>
+            </div>
+        </div>
+        <div class="row mt-2 justify-content-center align-items-center">
+            <div class="col-md-6">
+                <button mat-raised-button type="submit" class="w-100" (click)="CaptureEvent($event)">New Event</button>
+            </div>
+        </div>
+    </form>
+    <mat-table *ngIf="employeeEvents$ | async as dataSource; else noEvents" [dataSource]="dataSource">
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
+        <ng-container matColumnDef="operation">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let event">
+                <button aria-label="Delete Event" class="border-white bg-white" (click)="deleteEvent(event)">
+                    <mat-icon class="text-danger" matTooltip="Delete Event">remove_circle</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="employee">
+            <mat-header-cell *matHeaderCellDef>Employee</mat-header-cell>
+            <mat-cell *matCellDef="let event">{{ event.employee.name + ' ' + event.employee.surname }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="subject">
+            <mat-header-cell *matHeaderCellDef>Subject</mat-header-cell>
+            <mat-cell *matCellDef="let event">{{ event.subject }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+            <mat-cell *matCellDef="let event">{{ event.date }}</mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <ng-template #noEvents>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-6">
+                <h3 class="text-center">No events found</h3>
+            </div>
+        </div>
+    </ng-template>
+</main>
