@@ -3,7 +3,6 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { HomeComponent } from './components/home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
-import { HeaderComponent } from './components/header/header.component';
 import { StoreModule } from '@ngrx/store';
 import { LoginReducer } from './store/reducers/login.reducer';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -62,7 +61,6 @@ import { AddEmployeeEventComponent } from './components/manage-employee-events/a
     AppComponent,
     SignInComponent,
     HomeComponent,
-    HeaderComponent,
     SidebarComponent,
     EmployeeProfileComponent,
     ChartComponent,

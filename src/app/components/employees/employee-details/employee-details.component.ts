@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { gender } from 'src/app/models/constants/gender.constants';
 import { general } from 'src/app/models/constants/general.constants';
 import { level } from 'src/app/models/constants/level.constants';
@@ -19,20 +18,24 @@ import { FieldCodeService } from 'src/app/services/field-code.service';
 })
 export class EmployeeDetailsComponent implements OnInit {
   @Input() selectedEmployee!: any | null;
-  employeeForm!: FormGroup;
   employeeCustomForm!: FormGroup;
+  employeeForm!: FormGroup;
+
   employeeTypes: EmployeeType[] = [];
-  public genderTypes = gender;
-  public raceTypes = race;
-  public generalTypes = general;
-  public levelTypes = level;
   employeeData: EmployeeData[] = [];
   fieldcodes: FieldCode[] = [];
   employeeFieldcodes: any = [];
   viewMoreInfo: boolean = false;
 
-  constructor(private router: Router, private fb: FormBuilder, private employeeTypeService: EmployeeTypeService,
-    private employeeDataService: EmployeeDataService, private fieldcodeService: FieldCodeService
+  public genderTypes = gender;
+  public raceTypes = race;
+  public generalTypes = general;
+  public levelTypes = level;
+
+  constructor(private fb: FormBuilder, 
+    private employeeTypeService: EmployeeTypeService,
+    private employeeDataService: EmployeeDataService, 
+    private fieldcodeService: FieldCodeService
   ) { }
 
   ngOnInit(): void {
