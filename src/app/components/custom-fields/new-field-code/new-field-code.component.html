@@ -1,10 +1,5 @@
 <div class="wrapper">
-    <div class="sidebar" data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-1.jpg">
-        <app-sidebar></app-sidebar>
-        <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
-    </div>
     <div class="main-panel">
-        <app-header></app-header>
         <div class="m-3 border-bottom">
             <h1 class="page-heading border-bottom"> New Field Code</h1>
             <div style="overflow: auto">
@@ -13,7 +8,6 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div formGroupName="fieldCode">
-                                    <!-- Name field -->
                                     <div class="mb-3">
                                         <label for="name" class="form-label">Name</label>
                                         <input id="name" type="text" class="form-control" formControlName="name" />
@@ -21,7 +15,6 @@
                                     <small *ngIf="newFieldCodeForm.get('fieldCode.name')?.dirty && newFieldCodeForm.hasError('required', 'fieldCode.name')" class="text-danger">Name is required</small>
                                     <small *ngIf="!isUnique && !newFieldCodeForm.hasError('required', 'fieldCode.name') && newFieldCodeForm.get('fieldCode.name')?.dirty" class="text-danger">Field with this name already exists</small>
 
-                                    <!-- Code field -->
                                     <div class="mb-3">
                                         <label for="code" class="form-label">Code</label>
                                         <input id="code" type="text" class="form-control" formControlName="code" />
@@ -55,6 +48,7 @@
                                             <option *ngFor="let type of dataTypes" [value]="type.id">
                                                 {{type.value}}
                                             </option>
+                                            
                                         </select>
                                     </div>
 
@@ -94,9 +88,7 @@
                         </div>
                     </form>
                     <div class="mb-3">
-                        <a href="/home">
-                            <button class="btn btn-primary">Back</button>
-                        </a>
+                            <button class="btn btn-primary" (click)="back($event)">Back</button>
                     </div>
                 </div>
             </div>
