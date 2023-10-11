@@ -23,7 +23,6 @@ export class AdminDashboardComponent {
   
   constructor(
     private chartService: ChartService,
-    private auth: AuthService,
     private cookieService: CookieService
   ) { }
 
