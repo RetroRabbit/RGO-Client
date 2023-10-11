@@ -36,7 +36,7 @@ import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-
+import { TableModule } from 'primeng/table';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -94,6 +94,7 @@ import { EmployeeDetailsComponent } from './components/employees/employee-detail
     MatMenuModule,
     MatIconModule,
     MatToolbarModule,
+    TableModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [

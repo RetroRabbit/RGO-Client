@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { Router } from '@angular/router';
 import { FieldCode } from 'src/app/models/field-code.interface';
+import { Table } from 'primeng/table';
+import { NgToastService } from 'ng-angular-popup';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
@@ -10,19 +12,32 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './manage-field-code.component.html',
   styleUrls: ['./manage-field-code.component.css']
 })
+
 export class ManageFieldCodeComponent {
-  fieldCodes?: FieldCode[];
+  fieldCodes: FieldCode[] = [];
+  filteredFieldCodes: FieldCode[] = [];
   selectedFieldCode?: FieldCode;
   isClicked: boolean = false;
   statuses: any[] = [];
   dataTypes: any[] = []; 
   newFieldCodeForm!: FormGroup;
+  searchTerm: string = '';
+  @ViewChild('dataTable') dataTable: Table | undefined = undefined;
+  filterText: string = '';
+  isUnique?: boolean = true;
 
-  constructor(public router: Router, 
-    private fieldCodeService: FieldCodeService, 
+
+  onRowSelect(fieldCode: FieldCode) {
+    this.selectedFieldCode = fieldCode;
+    this.isClicked = true;
+  }
+ 
+  constructor(
+    public router: Router,
+    private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
+    private toast: NgToastService,
     public cookieService: CookieService) {
-
     this.initializeForm();
   }
 
@@ -82,16 +97,23 @@ export class ManageFieldCodeComponent {
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
+          this.toast.success({detail:"Field Code saved!", position:'topRight'})
+          this.newFieldCodeForm.disable();
         },
         error: (error) => {
-          
+          if(error.error === "Field with that name found"){
+            this.isUnique = false;
+          }
+          else {
+            this.toast.error({detail:"Error", summary:error, duration:5000, position:'topRight'});
+          }
         }
       });
     } else {
       this.showValidationErrors();
     }
   }
-
+  
   private showValidationErrors() {
     this.newFieldCodeForm.markAllAsTouched();
   }
@@ -100,9 +122,10 @@ export class ManageFieldCodeComponent {
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: fieldCodes => {
         this.fieldCodes = fieldCodes;
+        this.filteredFieldCodes = this.fieldCodes;
       },
       error: error => {
-        
+        this.toast.error({detail: 'Error loading Field Codes', summary: error, duration: 5000, position: 'topRight'});
       }
     });
   }
@@ -112,6 +135,32 @@ export class ManageFieldCodeComponent {
     this.selectedFieldCode = this.selectedFieldCode;
   }
 
+  clear(table: Table) {
+    table.clear();
+  }
+
+  filterData() {
+    this.filteredFieldCodes = this.fieldCodes.filter(fieldCode =>
+      fieldCode.name && fieldCode.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
+      fieldCode.code && fieldCode.code.toLowerCase().includes(this.filterText.toLowerCase()) ||
+      fieldCode.id && fieldCode.id.toString().toLowerCase().includes(this.filterText.toLowerCase()) ||
+      fieldCode.status && (fieldCode.status === 0 ? 'Active' : 'Archived').toLowerCase().includes(this.filterText.toLowerCase())
+    );
+  }
+  
+  onSearch(event: Event) {
+    const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
+  
+    if (this.dataTable) {
+      this.dataTable.filterGlobal(searchTerm, 'contains');
+    }
+
+    if (this.filteredFieldCodes) {
+      this.filteredFieldCodes = this.fieldCodes.filter(fieldCode =>
+        fieldCode.name && fieldCode.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+  }
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
