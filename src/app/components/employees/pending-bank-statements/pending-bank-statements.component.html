@@ -1,6 +1,6 @@
 <div class="container">
     <div *ngIf="!showDetailedEntry;else ShowDetails">
-        <p-table [value]="pendingBankStatements" [tableStyle]="{ 'min-width': '50rem' }">
+        <p-table *ngIf="pendingBankStatements.length > 0;else NoStatements" [value]="pendingBankStatements" [tableStyle]="{ 'min-width': '50rem' }">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Employee</th>
@@ -24,6 +24,11 @@
                 </tr>
             </ng-template>
         </p-table>
+        <ng-template #NoStatements>
+            <div style="text-align: center;">
+                <h1>No pending statements</h1>
+            </div>
+        </ng-template>
     </div>
     <ng-template #ShowDetails>
         <button mat-raised-button color="warn" (click)="showTable()">Back</button>
@@ -46,16 +51,48 @@
             </div>
             <div class="py-2 col-md-3">
                 <label class="form-label">Account Type</label>
-                <input readonly class="form-control" type="text" [value]="selectedEntry?.accountType == 1 ? 'Savings' : 'Cheque'">
+                <input readonly class="form-control" type="text"
+                    [value]="selectedEntry?.accountType == 1 ? 'Savings' : 'Cheque'">
             </div>
             <div class="py-2 col-md-3">
                 <label class="form-label">Status</label>
-                <input readonly class="form-control" type="text" [value]="selectedEntry?.status == 1 ? 'Pending' : 'Approved'">
+                <input readonly class="form-control" type="text"
+                    [value]="selectedEntry?.status == 1 ? 'Pending' : 'Approved'">
             </div>
             <div class="py-2 col-md-3">
                 <label class="form-label">Proof of Account</label> <br>
                 <button mat-button color="primary" (click)="convertFileToBase64()">Download</button>
             </div>
+
+            <div class="col-12" id="acceptance-container">
+                <h3>Accept or Reject Application</h3>
+                <div class="row">
+                    <div class="col-2 mx-2">
+                        <mat-form-field>
+                            <mat-label>Select Reponse</mat-label>
+                            <mat-select (valueChange)="setSelectedResponse($event)">
+                                <mat-option [value]=0>Approve</mat-option>
+                                <mat-option [value]=2>Reject</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-9 mx-2">
+                        <!-- Only hsow if reject is shown -->
+                        <md-outlined-text-field label="Title" value="Short" maxlength="10">
+                        </md-outlined-text-field>
+                        <mat-form-field style="width: 100%;">
+                            <mat-label>Reason for response</mat-label>
+                            <input matInput placeholder="(optional)" [(ngModel)]="reason">
+                          </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3"> 
+                        <button mat-button (click)="updateEntry()">Submit</button>
+                    </div>
+                </div>
+            </div>
         </div>
+
     </ng-template>
 </div>

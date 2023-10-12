@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
 import { EmployeeBankingService } from 'src/app/services/employee/employee-banking.service';
-
+import { NgToastService } from 'ng-angular-popup';
 @Component({
   selector: 'app-pending-bank-statements',
   templateUrl: './pending-bank-statements.component.html',
@@ -15,9 +15,19 @@ export class PendingBankStatementsComponent {
   proofOfAccount_64: string = "";
   base64String: string = '';
   fileToUpload: File | null = null;
-  constructor(private employeeBankingService: EmployeeBankingService) { }
+  copyOfSelected: EmployeeBanking | null = null;
+  reason : string = "";
+
+  constructor(
+    private employeeBankingService: EmployeeBankingService,
+    private toast: NgToastService) { }
 
   ngOnInit() {
+    this.fetchPending();
+    
+  }
+  
+  fetchPending(){
     this.employeeBankingService.getPending().subscribe(dataArray => {
       this.pendingBankStatements = dataArray;
       console.log(this.pendingBankStatements)
@@ -26,23 +36,19 @@ export class PendingBankStatementsComponent {
 
   viewEntry(entry: EmployeeBanking) {
     this.selectedEntry = entry;
+    this.copyOfSelected = JSON.parse(JSON.stringify(this.selectedEntry));
     this.showDetailedEntry = true;
   }
 
   showTable() {
     this.selectedEntry = null;
+    this.copyOfSelected = null;
     this.showDetailedEntry = false;
   }
 
-
-  onFileSelected(event: any) {
-    console.log(event.target.files[0]);
-    this.fileToUpload = event.target.files[0] as File;
-  }
-
   convertFileToBase64() {
-    if(this.selectedEntry?.file)
-    this.downloadFile(this.selectedEntry?.file, `${this.selectedEntry?.employee.name} ${this.selectedEntry?.employee.surname}_Proof_of_Account.pdf`);
+    if (this.selectedEntry?.file)
+      this.downloadFile(this.selectedEntry?.file, `${this.selectedEntry?.employee.name} ${this.selectedEntry?.employee.surname}_Proof_of_Account.pdf`);
   }
 
   downloadFile(base64String: string, fileName: string) {
@@ -58,5 +64,28 @@ export class PendingBankStatementsComponent {
     link.href = window.URL.createObjectURL(blob);
     link.download = fileName;
     link.click();
+  }
+
+
+  setSelectedResponse(event: Event) {
+    if (this.copyOfSelected) {
+      this.copyOfSelected.status = +event;
+    }
+  }
+
+  updateEntry() {
+    if (this.copyOfSelected) {
+      this.copyOfSelected.reason = this.reason;
+    }
+    const updateData = { ...this.copyOfSelected };
+    delete updateData.employee;
+    this.employeeBankingService.updatePending(updateData).subscribe( (data) => {
+      this.toast.success({detail:"Success",summary:`${this.copyOfSelected?.accountHolderName} has been updated`,duration:5000, position:'topRight'});
+      this.showTable();
+      this.ngOnInit();
+    },
+    (error) => {
+      this.toast.error({detail:"Error",summary: error,duration:5000, position:'topRight'});
+    });
   }
 }
