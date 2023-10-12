@@ -43,6 +43,7 @@ export class PendingBankStatementsComponent {
     this.selectedEntry = null;
     this.copyOfSelected = null;
     this.showDetailedEntry = false;
+    this.reason = "";
   }
 
   convertFileToBase64() {
