@@ -1,5 +1,5 @@
 <main class="container bg-white rounded p-3">
-    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="eventForm">
         <div class="row bg-info p-3 rounded">
             <div class="col-md-4">
                 <mat-form-field class="w-100">
@@ -57,7 +57,7 @@
             <mat-cell *matCellDef="let event">{{ event.date }}</mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="viewEvent(row)"></mat-row>
     </mat-table>
     <ng-template #noEvents>
         <div class="row justify-content-center align-items-center">

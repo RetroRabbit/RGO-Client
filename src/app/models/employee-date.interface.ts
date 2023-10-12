@@ -3,5 +3,5 @@ export interface EmployeeDate {
     employee: any,
     subject: string,
     note: string,
-    date: Date
+    date: Date | string
   }

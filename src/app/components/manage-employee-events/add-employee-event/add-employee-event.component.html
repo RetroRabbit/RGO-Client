@@ -51,7 +51,8 @@
                 <button mat-raised-button type="button" (click)="onClear()" class="w-100 btn">Clear</button>
             </div>
             <div class="col-md-6">
-                <button mat-raised-button type="submit" class="w-100">Save</button>
+                <button *ngIf="!isEditing" mat-raised-button type="submit" class="w-100">Save</button>
+                <button *ngIf="isEditing" mat-raised-button type="submit" class="w-100">Update</button>
             </div>
         </div>
         <div class="row mt-2 justify-content-center align-items-center">

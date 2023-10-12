@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, map, startWith } from 'rxjs';
@@ -13,6 +13,7 @@ import { NotificationService } from 'src/app/services/notification.service';
   styleUrls: ['./manage-employee-events.component.css']
 })
 export class ManageEmployeeEventsComponent {
+  @Output() event = new EventEmitter<EmployeeDate>()
   employeeEvents$!: Observable<EmployeeDate[]>
   displayedColumns: string[] = ['operation', 'employee', 'subject', 'date'];
 
@@ -76,41 +77,6 @@ export class ManageEmployeeEventsComponent {
     );
   }
 
-  saveEvent(event: EmployeeDateInput): void {
-    this.isLoading = true
-    this.employeeDateService.saveEmployeeDate(event).subscribe(
-      () => {
-        this.updateEvents({})
-        this.isLoading = false
-        this.notificationService.showToast('Event saved successfully', 'success')
-      },
-      () => {
-        this.isLoading = false
-        this.notificationService.showToast('Failed to save event', 'error')
-      }
-    );
-  }
-
-  updateEvent(event: EmployeeDateInput): void {
-    this.isLoading = true
-    this.employeeDateService.updateEmployeeDate(event).subscribe(
-      () => {
-        this.updateEvents({})
-        this.isLoading = false
-        this.notificationService.showToast('Event updated successfully', 'success')
-      },
-      () => {
-        this.isLoading = false
-        this.notificationService.showToast('Failed to update event', 'error')
-      }
-    );
-  }
-
-  onSubmit(): void {
-    if (this.eventForm.valid) this.saveEvent(this.eventForm.value);
-    else this.notificationService.showToast('Please fill in the required fields.', 'error');
-  }
-
   onClear(): void {
     this.eventForm.reset();
     this.updateEvents({});
@@ -119,5 +85,11 @@ export class ManageEmployeeEventsComponent {
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
+  }
+
+  viewEvent(event: EmployeeDate): void {
+    this.event.emit(event)
+    console.info(event)
+    this.cookieService.set('currentPage', 'New Event');
   }
 }

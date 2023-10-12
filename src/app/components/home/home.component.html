@@ -226,7 +226,7 @@
       <app-create-charts></app-create-charts>
     </div>
     <div *ngIf="cookieService.get('currentPage') === 'Manage Employee Events'">
-      <app-manage-employee-events></app-manage-employee-events>
+      <app-manage-employee-events (event)="populateAddEmployeeForm($event)"></app-manage-employee-events>
     </div>
 
     <div *ngIf="cookieService.get('currentPage') === 'New Employee'">
@@ -243,7 +243,7 @@
       <app-template-items></app-template-items>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'New Event'">
-      <app-add-employee-event></app-add-employee-event>
+      <app-add-employee-event [selectedEvent]="selectedEvent"></app-add-employee-event>
     </div>
 
     <div *ngIf="cookieService.get('currentPage') == '+ Add Graph'">
