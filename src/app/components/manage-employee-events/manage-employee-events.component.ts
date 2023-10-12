@@ -2,7 +2,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, map, startWith } from 'rxjs';
-import { EmployeeDateInput } from 'src/app/models/employe-date.interface';
 import { EmployeeDate } from 'src/app/models/employee-date.interface';
 import { EmployeeDateService } from 'src/app/services/employee-date.service';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -13,7 +12,7 @@ import { NotificationService } from 'src/app/services/notification.service';
   styleUrls: ['./manage-employee-events.component.css']
 })
 export class ManageEmployeeEventsComponent {
-  @Output() event = new EventEmitter<EmployeeDate>()
+  @Output() event = new EventEmitter<EmployeeDate | null>()
   employeeEvents$!: Observable<EmployeeDate[]>
   displayedColumns: string[] = ['operation', 'employee', 'subject', 'date'];
 
@@ -84,6 +83,7 @@ export class ManageEmployeeEventsComponent {
 
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
+    this.event.emit(null)
     this.cookieService.set('currentPage', target.innerText);
   }
 
