@@ -20,8 +20,8 @@ export class EmployeeDateService {
     return this.httpClient.delete<any>(`${API.HttpBaseURL}/employeedate/delete`, { body: employeeDateInput });
   }
 
-  updateEmployeeDate(employeeDateInput: EmployeeDateInput): Observable<any> {
-    return this.httpClient.put<any>(`${API.HttpBaseURL}/employeedate/update`, employeeDateInput);
+  updateEmployeeDate(employeeDate: EmployeeDate): Observable<any> {
+    return this.httpClient.put<any>(`${API.HttpBaseURL}/employeedate/update`, employeeDate);
   }
 
   getall(email: string | null = null, subject: string | null = null, date: Date | null = null): Observable<EmployeeDate[]> {

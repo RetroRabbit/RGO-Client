@@ -1,3 +1,13 @@
 main {
     width: 100%;
 }
+
+mar-row {
+    cursor: pointer;
+}
+
+mat-row:hover {
+    background-color: #e6f7ff;
+    border: 1px solid #a1c4d6;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+}
