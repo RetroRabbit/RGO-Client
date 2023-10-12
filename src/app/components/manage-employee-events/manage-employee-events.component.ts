@@ -89,7 +89,6 @@ export class ManageEmployeeEventsComponent {
 
   viewEvent(event: EmployeeDate): void {
     this.event.emit(event)
-    console.info(event)
     this.cookieService.set('currentPage', 'New Event');
   }
 }
