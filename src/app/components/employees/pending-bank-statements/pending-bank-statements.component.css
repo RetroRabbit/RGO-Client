@@ -20,3 +20,8 @@
 h3{
     text-align: center;
 }
+
+#edit-icon{
+    display: inline-block;
+    margin: 0 auto;
+}

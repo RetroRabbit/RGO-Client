@@ -30,7 +30,6 @@ export class PendingBankStatementsComponent {
   fetchPending(){
     this.employeeBankingService.getPending().subscribe(dataArray => {
       this.pendingBankStatements = dataArray;
-      console.log(this.pendingBankStatements)
     })
   }
 
@@ -67,9 +66,9 @@ export class PendingBankStatementsComponent {
   }
 
 
-  setSelectedResponse(event: Event) {
+  setSelectedResponse(event: any) {
     if (this.copyOfSelected) {
-      this.copyOfSelected.status = +event;
+      this.copyOfSelected.status = +event.value;
     }
   }
 
