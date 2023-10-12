@@ -44,6 +44,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatRadioModule} from '@angular/material/radio';
 
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
@@ -103,6 +104,7 @@ import { TableModule } from 'primeng/table';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
+    MatRadioModule,
     TableModule,
     NgMultiSelectDropDownModule.forRoot()
   ],

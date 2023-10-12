@@ -17,8 +17,8 @@
                     <td>{{ entry.accountType == 1 ? 'Savings' : 'Cheque' }}</td>
                     <td>{{ entry.status == 1 ? 'Pending' : 'Approved' }}</td>
                     <td>
-                        <button mat-raised-button (click)="viewEntry(entry)">
-                            <mat-icon>edit</mat-icon>
+                        <button mat-raised-button (click)="viewEntry(entry)" id="edit-icon-button">
+                            <mat-icon matSuffix id="edit-icon">edit</mat-icon>
                         </button>
                     </td>
                 </tr>
@@ -67,22 +67,18 @@
             <div class="col-12" id="acceptance-container">
                 <h3>Accept or Reject Application</h3>
                 <div class="row">
-                    <div class="col-2 mx-2">
-                        <mat-form-field>
-                            <mat-label>Select Reponse</mat-label>
-                            <mat-select (valueChange)="setSelectedResponse($event)">
-                                <mat-option [value]=0>Approve</mat-option>
-                                <mat-option [value]=2>Reject</mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                    <div class="col-12 mx-2">
+                        <mat-radio-group aria-label="Select status" (change)="setSelectedResponse($event)">
+                            <mat-radio-button [value]=0>Approve</mat-radio-button>
+                            <mat-radio-button [value]=2>Reject</mat-radio-button>
+                          </mat-radio-group>
                     </div>
-                    <div class="col-9 mx-2">
-                        <!-- Only hsow if reject is shown -->
-                        <md-outlined-text-field label="Title" value="Short" maxlength="10">
-                        </md-outlined-text-field>
-                        <mat-form-field style="width: 100%;">
-                            <mat-label>Reason for response</mat-label>
-                            <input matInput placeholder="(optional)" [(ngModel)]="reason">
+                    <div *ngIf="copyOfSelected?.status == 2" class="col-12 mx-2">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Outline form field</mat-label>
+                            <input matInput placeholder="Placeholder">
+                            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                            <mat-hint>Please provide a reason</mat-hint>
                           </mat-form-field>
                     </div>
                 </div>
