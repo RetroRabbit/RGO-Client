@@ -30,6 +30,7 @@ export class EmployeeDetailsComponent implements OnInit {
   employeeFieldcodes: any = [];
   viewMoreInfo: boolean = false;
   toEdit: boolean = false;
+
   public genderTypes = gender;
   public raceTypes = race;
   public generalTypes = general;
@@ -198,7 +199,7 @@ export class EmployeeDetailsComponent implements OnInit {
           console.log(employeeDataDto)
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
-              this.toast.success({ detail: "Field Details updated!", position: 'topRight' })
+              this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
             },
             error: (error) => {
               this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
