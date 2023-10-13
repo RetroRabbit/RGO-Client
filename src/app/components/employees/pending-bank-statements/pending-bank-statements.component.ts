@@ -79,13 +79,18 @@ export class PendingBankStatementsComponent {
     }
     const updateData = { ...this.copyOfSelected };
     delete updateData.employee;
+
+    if(updateData.status == 2 && this.reason == ''){
+      this.toast.error({detail:"Error",summary: "You must provide a reason for rejecting an application",duration:5000, position:'topRight'});
+      return;
+    }
     this.employeeBankingService.updatePending(updateData).subscribe( (data) => {
       this.toast.success({detail:"Success",summary:`${this.copyOfSelected?.accountHolderName} has been updated`,duration:5000, position:'topRight'});
       this.showTable();
       this.ngOnInit();
     },
     (error) => {
-      this.toast.error({detail:"Error",summary: error,duration:5000, position:'topRight'});
+      this.toast.error({detail:"Error",summary: "Please try again later",duration:5000, position:'topRight'});
     });
   }
 }
