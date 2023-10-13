@@ -3,7 +3,6 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { HomeComponent } from './components/home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
-import { HeaderComponent } from './components/header/header.component';
 import { StoreModule } from '@ngrx/store';
 import { LoginReducer } from './store/reducers/login.reducer';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -36,27 +35,36 @@ import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { TableModule } from 'primeng/table';
 
-import {MatMenuModule} from '@angular/material/menu';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
 import {MatRadioModule} from '@angular/material/radio';
 
+import { PendingBankStatementsComponent } from './components/employees/pending-bank-statements/pending-bank-statements.component';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
-import { PendingBankStatementsComponent } from './components/employees/pending-bank-statements/pending-bank-statements.component';
-import { TableModule } from 'primeng/table';
+import { ManageEmployeeEventsComponent } from './components/manage-employee-events/manage-employee-events.component';
+import { AddEmployeeEventComponent } from './components/manage-employee-events/add-employee-event/add-employee-event.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignInComponent,
     HomeComponent,
-    HeaderComponent,
     SidebarComponent,
     EmployeeProfileComponent,
     ChartComponent,
@@ -74,7 +82,9 @@ import { TableModule } from 'primeng/table';
     UpdateFieldComponent,
     AdminDashboardComponent,
     EmployeeDetailsComponent,
-    PendingBankStatementsComponent
+    PendingBankStatementsComponent,
+    ManageEmployeeEventsComponent,
+    AddEmployeeEventComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +94,7 @@ import { TableModule } from 'primeng/table';
     NgChartsModule,
     StoreModule.forRoot({
       app: LoginReducer,
-      employee : EmployeeProfileReducer,
+      employee: EmployeeProfileReducer,
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),
     AuthModule.forRoot({
@@ -97,7 +107,7 @@ import { TableModule } from 'primeng/table';
     HttpClientModule,
     BrowserAnimationsModule,
     NgToastModule,
-    MatButtonModule, 
+    MatButtonModule,
     MatMenuModule,
     MatIconModule,
     MatToolbarModule,
@@ -105,6 +115,14 @@ import { TableModule } from 'primeng/table';
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,
+    MatTableModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatAutocompleteModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
     TableModule,
     NgMultiSelectDropDownModule.forRoot()
   ],

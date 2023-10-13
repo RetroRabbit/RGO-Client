@@ -5,18 +5,34 @@
     </div>
     <div style="overflow: auto">
       <div class="container-fluid">
-        <a href="/new-fieldcode">
-          <button class="btn btn-primary">Add new field code</button>
-        </a>
+          <button class="btn btn-primary" (click)="CaptureEvent($event)">Add new field code</button>
         <div style="padding-top: 30px;"></div>
-
-        <div class="custom-dropdown">
-          <label for="fieldCodeSelect">Existing Custom Fields:</label>
-          <select id="fieldCodeSelect" [(ngModel)]="selectedFieldCode" (change)="onTypeChange()">
-            <option value="" disabled selected>Choose a field code</option>
-            <option *ngFor="let fieldCode of fieldCodes" [ngValue]="fieldCode">{{ fieldCode.name }}</option>
-          </select>
-        </div>
+        <label>Custom Fields:</label><br>
+        <label>Search:</label>
+        <input pInputText type="text" [(ngModel)]="filterText" (input)="filterData()" /><br>
+         <div *ngIf="filteredFieldCodes" class="custom-table" style="overflow: auto">
+          <p-table [value]="filteredFieldCodes" [paginator]="true" [rows]="10">
+             <ng-template pTemplate="header">
+               <tr>
+                <th pSortableColumn="id">ID</th>
+                 <th pSortableColumn="name">Name</th>
+                 <th pSortableColumn="description" >Description</th>
+                 <th pSortableColumn="status" >Status</th>
+               </tr>
+             </ng-template>
+             <ng-template pTemplate="body" let-fieldCode>
+               <tr [ngClass]="{'selected-row': selectedFieldCode === fieldCode}" (click)="onRowSelect(fieldCode)">
+                 <td>{{ fieldCode.id }}</td>
+                 <td>{{ fieldCode.code }}</td>
+                 <td>{{ fieldCode.name }}</td>
+                 <td>
+                   <ng-container *ngIf="fieldCode.status === 0; else archived">{{ 'Active' }}</ng-container>
+                   <ng-template #archived>Archived</ng-template>
+                 </td>
+               </tr>
+             </ng-template>
+           </p-table>
+         </div>
       </div>
     </div>
     <div style="padding-top: 30px;"></div>
