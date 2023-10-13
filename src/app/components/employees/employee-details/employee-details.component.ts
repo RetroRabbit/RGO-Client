@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgToastService } from 'ng-angular-popup';
 import { CookieService } from 'ngx-cookie-service';
 import { gender } from 'src/app/models/constants/gender.constants';
 import { general } from 'src/app/models/constants/general.constants';
@@ -30,10 +30,18 @@ export class EmployeeDetailsComponent implements OnInit {
   employeeFieldcodes: any = [];
   viewMoreInfo: boolean = false;
   toEdit: boolean = false;
+  public genderTypes = gender;
+  public raceTypes = race;
+  public generalTypes = general;
+  public levelTypes = level;
 
-  constructor(private fb: FormBuilder, private employeeTypeService: EmployeeTypeService,
-    private employeeDataService: EmployeeDataService, private fieldcodeService: FieldCodeService, 
-    private employeeService: EmployeeService, private cookieService: CookieService
+  constructor(private fb: FormBuilder, 
+    private employeeTypeService: EmployeeTypeService,
+    private employeeDataService: EmployeeDataService, 
+    private fieldcodeService: FieldCodeService, 
+    private employeeService: EmployeeService,
+    private cookieService: CookieService,
+    private toast: NgToastService
   ) { }
 
   ngOnInit(): void {
@@ -62,67 +70,38 @@ export class EmployeeDetailsComponent implements OnInit {
 
   private initializeForm() {
     this.employeeForm = this.fb.group({
-      title: this.selectedEmployee?.title,
-      name: this.selectedEmployee?.name,
-      initials: this.selectedEmployee?.initials,
-      surname: this.selectedEmployee?.surname,
-      email: this.selectedEmployee?.email,
-      personalEmail: this.selectedEmployee?.personalEmail,
-      countryOfBirth: this.selectedEmployee?.countryOfBirth,
-      nationality: this.selectedEmployee?.nationality,
-      engagementDate: this.selectedEmployee?.engagementDate,
-      employeeType: this.selectedEmployee?.employeeType.name,
-      cellphoneNo: this.selectedEmployee?.cellphoneNo,
-      employeeNumber: this.selectedEmployee?.employeeNumber,
-      taxNumber: this.selectedEmployee?.taxNumber,
-      disabilityNotes: this.selectedEmployee?.disabilityNotes,
-      disability: this.selectedEmployee.disability == true ? 1 : 0,
-      gender: this.selectedEmployee.gender,
-      idNumber: this.selectedEmployee.idNumber,
-      leaveInterval: this.selectedEmployee.leaveInterval,
-      level: this.selectedEmployee.level,
-      passportCountryIssue: this.selectedEmployee.passportCountryIssue,
-      passportExpirationDate: this.selectedEmployee.passportExpirationDate,
-      passportNumber: this.selectedEmployee.passportNumber,
-      payRate: this.selectedEmployee.payRate,
-      photo: this.selectedEmployee.photo,
-      race: this.selectedEmployee.race,
-      reportingLine: this.selectedEmployee.reportingLine,
-      salary: this.selectedEmployee.salary,
-      salaryDays: this.selectedEmployee.salaryDays,
-      terminationDate: this.selectedEmployee.terminationDate,
-      dateOfBirth: this.selectedEmployee.dateOfBirth
+      title: [this.selectedEmployee?.title, Validators.required],
+      name: [this.selectedEmployee?.name, Validators.required],
+      initials: [this.selectedEmployee?.initials, Validators.required],
+      surname: [this.selectedEmployee?.surname, Validators.required],
+      email: [this.selectedEmployee?.email, Validators.required],
+      personalEmail: [this.selectedEmployee?.personalEmail, Validators.required],
+      countryOfBirth: [this.selectedEmployee?.countryOfBirth, Validators.required],
+      nationality: [this.selectedEmployee?.nationality, Validators.required],
+      engagementDate: [this.selectedEmployee?.engagementDate, Validators.required],
+      employeeType: [this.selectedEmployee?.employeeType.name, Validators.required],
+      cellphoneNo: [this.selectedEmployee?.cellphoneNo, Validators.required],
+      employeeNumber: [this.selectedEmployee?.employeeNumber, Validators.required],
+      taxNumber: [this.selectedEmployee?.taxNumber, Validators.required],
+      disabilityNotes: [this.selectedEmployee?.disabilityNotes, Validators.required],
+      disability: [this.selectedEmployee.disability == true ? 1 : 0, Validators.required],
+      gender: [this.selectedEmployee.gender, Validators.required],
+      idNumber: [this.selectedEmployee.idNumber, Validators.required], 
+      leaveInterval: [this.selectedEmployee.leaveInterval, Validators.required],
+      level: [this.selectedEmployee.level, Validators.required],
+      passportCountryIssue: this.selectedEmployee.passportCountryIssue, 
+      passportExpirationDate: this.selectedEmployee.passportExpirationDate, 
+      passportNumber: this.selectedEmployee.passportNumber, 
+      payRate: [this.selectedEmployee.payRate, Validators.required],
+      photo: [this.selectedEmployee.photo, Validators.required],
+      race: [this.selectedEmployee.race,Validators.required],
+      reportingLine: this.selectedEmployee.reportingLine, 
+      salary: [this.selectedEmployee.salary,Validators.required],
+      salaryDays: [this.selectedEmployee.salaryDays,Validators.required],
+      terminationDate: this.selectedEmployee.terminationDate, 
+      dateOfBirth: [this.selectedEmployee.dateOfBirth, Validators.required]
     });
   }
-
-  // checkEmployeeFieldCode() {
-  //   const formGroupConfig: { [key: string]: any } = {};
-  //   for (const employee of this.employeeData) {
-  //     const found = this.fieldcodes.find((fieldcode) => {
-  //       return fieldcode.id == employee.fieldCodeId
-  //     });
-  //     if (found) {
-  //       const existingRecord = this.employeeFieldcodes.find((value: { name: string }) => value.name === found.name);
-  //       if (!existingRecord) {
-  //         this.employeeFieldcodes.push({ name: found.name, value: employee.value });
-  //       }
-  //     }
-  //   }
-  //   for (const fieldcode of this.fieldcodes) {
-  //     const name = this.formatString(fieldcode.name)
-  //     const fc = this.employeeFieldcodes.find((data: any) => {
-  //       return data.name == fieldcode.name
-  //     });
-  //     if (fc != null) {
-  //       formGroupConfig[name] = fc.value;
-  //     }
-  //     else if (fc == null) {
-  //       formGroupConfig[name] = '';
-  //     }
-  //   }
-  //   this.employeeCustomForm = this.fb.group(formGroupConfig);
-  //   this.employeeCustomForm.disable();
-  // }
 
   checkEmployeeFieldCode() {
     for (const fieldcode of this.fieldcodes) {
@@ -176,15 +155,10 @@ export class EmployeeDetailsComponent implements OnInit {
         salaryDays: employeeForm.salaryDays,
         payRate: employeeForm.payrate
       }
-      console.log(employeeProfileDto)
+
       this.employeeService.updateEmployee(employeeProfileDto).subscribe({
-        next: (data) => {
-          console.log("this works")
-        },
-        error: (error) => {
-          console.log(error)
-          console.log("this does not work")
-        }
+        next: (data) => { },
+        error: (error) => { },
       });
       this.saveEmployeeCustomData();
     }
@@ -205,15 +179,10 @@ export class EmployeeDetailsComponent implements OnInit {
           fieldcodeId: found.fieldCodeId,
           value: this.employeeForm.get(formatFound)?.value
         }
-        console.log(employeeDataDto)
+
         this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
-          next: (data) => {
-            console.log("employee data updated")
-          },
-          error: (error) => {
-            console.log(error)
-            console.log("employee data not updated")
-          }
+          next: (data) => { },
+          error: (error) => { },
         });
       }
       else if (found == null) {
@@ -224,19 +193,18 @@ export class EmployeeDetailsComponent implements OnInit {
           fieldcodeId: fieldcode.id,
           value: this.employeeForm.get(formatFound)?.value
         }
+
         if (employeeDataDto.value != '') {
           console.log(employeeDataDto)
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
-              console.log("employee data saved")
+              this.toast.success({ detail: "Field Details updated!", position: 'topRight' })
             },
             error: (error) => {
-              console.log(error)
-              console.log("employee data not saved")
+              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
             }
           });
         }
-
       }
     }
   }

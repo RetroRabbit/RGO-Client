@@ -11,18 +11,21 @@
                     <label class="col-form-label">First Name</label>
                     <input type="text" class="form-control" formControlName="name" />
                   </div>
+                  <small *ngIf="employeeForm?.get('name')?.dirty || employeeForm.hasError('required', 'employeeForm.name')" class="text-danger">Name is required</small>
                 </div>
                 <div class="mb-3 row">
                   <div class="col-sm-12">
                     <label class="col-form-label">Initials</label>
                     <input type="text" class="form-control" formControlName="initials" />
                   </div>
+                  <small *ngIf="employeeForm?.get('initials')?.dirty || employeeForm.hasError('required', 'employeeForm.initials')" class="text-danger">Initials are required</small>
                 </div>
                 <div class="mb-3 row">
                   <div class="col-sm-12">
                     <label class="col-form-label">Surname</label>
                     <input type="text" class="form-control" formControlName="surname" />
                   </div>
+                  <small *ngIf="employeeForm?.get('surname')?.dirty || employeeForm.hasError('required', 'employeeForm.surname')" class="text-danger">Surname is required</small>
                 </div>
                 <div class="mb-3 row">
                 <div class="col-sm-12">
@@ -33,6 +36,7 @@
                   </option>
                 </select>
                 </div>
+                <small *ngIf="employeeForm?.get('gender')?.touched || employeeForm.hasError('required', 'employeeForm.gender')" class="text-danger">Gender is required</small>
                 </div>
                 <div class="mb-3 row">
                     <div class="col-sm-12">
@@ -43,6 +47,7 @@
                       </option>
                     </select>
                     </div>
+                    <small *ngIf="employeeForm?.get('race')?.touched || employeeForm.hasError('required', 'employeeForm.race')" class="text-danger">Race is required</small>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
@@ -53,12 +58,14 @@
                         </option>
                       </select>
                     </div>
+                    <small *ngIf="employeeForm?.get('employeeType')?.touched || employeeForm.hasError('required', 'employeeForm.employeeType')" class="text-danger">Employee Type is required</small>
                   </div>
                 <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Personal Email</label>
                       <input type="email" class="form-control" formControlName="personalEmail" />
                     </div>
+                    <small *ngIf="employeeForm?.get('personalEmail')?.dirty || employeeForm.hasError('required', 'employeeForm.personalEmail')" class="text-danger">Personal Email is required</small>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
@@ -71,12 +78,14 @@
                       <label class="col-form-label">Nationality</label>
                       <input type="text" class="form-control" formControlName="nationality" />
                     </div>
+                    <small *ngIf="employeeForm?.get('nationality')?.dirty || employeeForm.hasError('required', 'employeeForm.nationality')" class="text-danger">Nationality is required</small>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Identity Number</label>
                       <input type="text" class="form-control" formControlName="idNumber" />
                     </div>
+                    <small *ngIf="employeeForm?.get('idNumber')?.dirty || employeeForm.hasError('required', 'employeeForm.idNumber')" class="text-danger">ID number is required</small>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
@@ -89,24 +98,28 @@
                       <label class="col-form-label">Payrate</label>
                       <input type="text" class="form-control" formControlName="payRate" />
                     </div>
+                    <small *ngIf="employeeForm?.get('payRate')?.dirty || employeeForm.hasError('required', 'employeeForm.payRate')" class="text-danger">Payrate is required</small>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Salary Days</label>
                       <input type="text" class="form-control" formControlName="salaryDays" />
                     </div>
+                    <small *ngIf="employeeForm?.get('salaryDays')?.dirty || employeeForm.hasError('required', 'employeeForm.salaryDays')" class="text-danger">Salary Days is required</small>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Disability Notes</label>
                       <input type="text" class="form-control" formControlName="disabilityNotes" />
                     </div>
+                    <small *ngIf="employeeForm?.get('disabilityNotes')?.dirty || employeeForm.hasError('required', 'employeeForm.disabilityNotes')" class="text-danger">Disability notes is required</small>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Photo</label>
                       <input type="text" class="form-control" formControlName="photo" />
                     </div>
+                    <small *ngIf="employeeForm?.get('photo')?.dirty || employeeForm.hasError('required', 'employeeForm.photo')" class="text-danger">Photo is required</small>
                   </div>
               </div>
               <div class="col-sm-6">
@@ -115,24 +128,28 @@
                     <label class="col-form-label">Email</label>
                     <input type="text" class="form-control" formControlName="email" />
                   </div>
+                  <small *ngIf="employeeForm?.get('email')?.dirty || employeeForm.hasError('required', 'employeeForm.email')" class="text-danger">Email is required</small>
                 </div>
                 <div class="mb-3 row">
                   <div class="col-sm-12">
                     <label class="col-form-label">Cellphone Number</label>
                     <input type="text" class="form-control" formControlName="cellphoneNo" />
                   </div>
+                  <small *ngIf="employeeForm?.get('cellphoneNo')?.dirty || employeeForm.hasError('required', 'employeeForm.cellphoneNo')" class="text-danger">Cellphone number is required</small>
                 </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Employee Number</label>
                       <input type="text" class="form-control" formControlName="employeeNumber" />
                     </div>
+                    <small *ngIf="employeeForm?.get('employeeNumber')?.dirty || employeeForm.hasError('required', 'employeeForm.employeeNumber')" class="text-danger">Employee number is required</small>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Date of Birth</label>
                       <input type="date" class="form-control" formControlName="dateOfBirth" />
                     </div>
+                    <small *ngIf="employeeForm?.get('dateOfBirth')?.dirty || employeeForm.hasError('required', 'employeeForm.dateOfBirth')" class="text-danger">Date of Birth is required</small>
                   </div>
                   <div class="mb-3 row">
                   <div class="col-sm-12">
@@ -143,12 +160,14 @@
                     </option>
                   </select>
                   </div>
+                  <small *ngIf="employeeForm?.get('level')?.touched || employeeForm.hasError('required', 'employeeForm.level')" class="text-danger">Level is required</small>
                   </div>
                 <div class="mb-3 row">
                   <div class="col-sm-12">
                     <label class="col-form-label">Engagement Date</label>
                     <input type="date" class="form-control" formControlName="engagementDate" />
                   </div>
+                  <small *ngIf="employeeForm?.get('engagementDate')?.dirty || employeeForm.hasError('required', 'employeeForm.engagementDate')" class="text-danger">Engagement Date is required</small>
                 </div>
                 <div class="mb-3 row">
                     <div class="col-sm-12">
@@ -161,6 +180,7 @@
                       <label class="col-form-label">Country of Birth</label>
                       <input type="text" class="form-control" formControlName="countryOfBirth" />
                     </div>
+                    <small *ngIf="employeeForm?.get('countryOfBirth')?.dirty || employeeForm.hasError('required', 'employeeForm.countryOfBirth')" class="text-danger">Country of Birth is required</small>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
@@ -179,18 +199,21 @@
                       <label class="col-form-label">Tax Number</label>
                       <input type="text" class="form-control" formControlName="taxNumber" />
                     </div>
+                    <small *ngIf="employeeForm?.get('taxNumber')?.dirty || employeeForm.hasError('required', 'employeeForm.taxNumber')" class="text-danger">Tax number is required</small>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Salary</label>
                       <input type="text" class="form-control" formControlName="salary" />
                     </div>
+                    <small *ngIf="employeeForm?.get('salary')?.dirty || employeeForm.hasError('required', 'employeeForm.salary')" class="text-danger">Salary is required</small>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
                       <label class="col-form-label">Leave Interval</label>
                       <input type="text" class="form-control" formControlName="leaveInterval" />
                     </div>
+                    <small *ngIf="employeeForm?.get('leaveInterval')?.dirty || employeeForm.hasError('required', 'employeeForm.leaveInterval')" class="text-danger">Leave interval is required</small>
                   </div>
                   <div class="mb-3 row">
                     <div class="col-sm-12">
@@ -201,6 +224,7 @@
                       </option>
                     </select>
                     </div>
+                    <small *ngIf="employeeForm?.get('disability')?.touched || employeeForm.hasError('required', 'employeeForm.disability')" class="text-danger">Disability is required</small>
                   </div>
               </div>
             <div class="col-sm-12">
@@ -241,7 +265,7 @@
               <div class="mb-3 row" *ngIf="viewMoreInfo && toEdit ">
                 <div class="col-sm-12">
                 <br><br>
-                <button type="submit" class="form-control">Submit</button>
+                <button type="submit" class="form-control" [disabled]="!employeeForm.valid">Submit</button>
                 </div>
               </div>
             </div>
