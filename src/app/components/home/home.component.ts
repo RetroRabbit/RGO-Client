@@ -77,6 +77,7 @@ export class HomeComponent {
 
   handleSelectedEval(item: any) {
     this.selectedEvaluation = item
+    
   }
 
   populateAddEmployeeForm(event: any) {
@@ -93,6 +94,7 @@ export class HomeComponent {
 
   handleSelectedEmp(item: any){
     this.selectedEmployee = item
+
   }
 
   CaptureEvent(event: any) {

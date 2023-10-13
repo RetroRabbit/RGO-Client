@@ -203,8 +203,8 @@
         <app-employee-profile></app-employee-profile>   
       </div>
     </div>
-    <div *ngIf="selectedItem == 'People'">
-      <app-view-employee></app-view-employee>
+    <div *ngIf="cookieService.get('currentPage') == 'People'">
+      <app-view-employee (selectedEmployee)="handleSelectedEmp($event)"></app-view-employee>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Evaluations'">
       <app-employee-evaluations (selectedEvaluation)="handleSelectedEval($event)"></app-employee-evaluations>
@@ -258,5 +258,8 @@
       <app-new-employee></app-new-employee>
     </div>
     
+    <div *ngIf="cookieService.get('currentPage') == 'Employee Details'">
+      <app-employee-details [selectedEmployee]="selectedEmployee"></app-employee-details>
+     </div>
   </div>
 </div>
