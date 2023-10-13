@@ -136,6 +136,20 @@
                 </div>
               </div>
             </div>
+            <div class="col-2">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)"
+                    [ngClass]="selectedItem == 'Manage Employee Events' ? 'active' : 'idle'">
+                    Manage Employee Events
+                  </div>
+                  <div *ngIf="selectedItem == 'Manage Employee Events'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="col-2" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
@@ -144,17 +158,6 @@
                     Employee Banking
                   </div>
                   <div *ngIf="selectedItem == 'Employee Banking'" id="selected-line-box">
-                    [ngClass]="selectedItem == 'Manage Employee Events' ? 'active' : 'idle'">
-                    Manage Employee Events
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-2">
-              <div id="nav-item-container">
-                <div id="nav-item">
-                  
-                  <div *ngIf="selectedItem == 'Manage Employee Events'" id="selected-line-box">
                     <div id="selected-line">
                     </div>
                   </div>
