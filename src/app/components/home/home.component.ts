@@ -8,6 +8,7 @@ import { Chart } from 'chart.js';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
+import { EmployeeDate } from 'src/app/models/employee-date.interface';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +19,7 @@ import { EmployeeProfileService } from 'src/app/services/employee/employee-profi
 export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
   selectedEvaluation: any | null = null
+  selectedEvent: EmployeeDate | null = null;
   selectedEmployee: any | null = null;
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
@@ -75,6 +77,10 @@ export class HomeComponent {
 
   handleSelectedEval(item: any) {
     this.selectedEvaluation = item
+  }
+
+  populateAddEmployeeForm(event: any) {
+    this.selectedEvent = event;
   }
 
   isAdmin(): boolean {
