@@ -15,4 +15,12 @@ export class EmployeeDataService {
     const queryParams = `?id=${employeeId}`;
     return this.httpClient.get<EmployeeData[]>(`${API.HttpBaseURL}/employeedata/get${queryParams}`);
   }
+
+  updateEmployeeData(employeeData: EmployeeData): Observable<EmployeeData>{
+    return this.httpClient.put<EmployeeData>(`${API.HttpBaseURL}/employeedata/update`, employeeData)
+  }
+
+  saveEmployeeData(employeeData: any): Observable<EmployeeData>{
+    return this.httpClient.post<EmployeeData>(`${API.HttpBaseURL}/employeedata/save`, employeeData)
+  }
 }

@@ -30,4 +30,8 @@ export class EmployeeService {
   get(email: string): Observable<Employee> {
     return this.httpClient.get<Employee>(`${API.HttpBaseURL}/employee/get?email=${encodeURIComponent(email)}`);
   }
+
+  updateEmployee(employee: any): Observable<any>{
+    return this.httpClient.put<any>(`${API.HttpBaseURL}/employee/update`, employee)
+  }
 }
