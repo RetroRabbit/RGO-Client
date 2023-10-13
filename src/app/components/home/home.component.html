@@ -44,7 +44,7 @@
         </div>
         <div class="col-sm-12 col-md-12 col-lg-10" id="navigation">
           <div class="row">
-            <div class="col-1">
+            <div class="col-1" *ngIf="isAdmin()">
               <div id="nav-item-container" class="col-auto">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Dashboard' ? 'active' : 'idle'">
@@ -70,7 +70,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-1">
+            <div class="col-1" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'People' ? 'active' : 'idle'">
@@ -83,7 +83,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-1">
+            <div class="col-1" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Evaluations' ? 'active' : 'idle'">
@@ -96,7 +96,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-2" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Manage Field' ? 'active' : 'idle'">
@@ -109,7 +109,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-2" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Manage Roles' ? 'active' : 'idle'">
@@ -122,7 +122,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-2" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)"
@@ -136,7 +136,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-2" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)"
@@ -144,6 +144,17 @@
                     Employee Banking
                   </div>
                   <div *ngIf="selectedItem == 'Employee Banking'" id="selected-line-box">
+                    [ngClass]="selectedItem == 'Manage Employee Events' ? 'active' : 'idle'">
+                    Manage Employee Events
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  
+                  <div *ngIf="selectedItem == 'Manage Employee Events'" id="selected-line-box">
                     <div id="selected-line">
                     </div>
                   </div>
@@ -169,7 +180,7 @@
                 </ng-template>
               </div>
               <div id="menu-quick-info">
-                <div>{{admin.name}}</div>
+                <div>{{employeeProfile.name}}</div>
                 <div>{{employeeType.name}}</div>
               </div>
               <hr>
@@ -179,7 +190,7 @@
           </mat-menu>
         </div>
         <div class="col-auto ms-4" id="employee-info">
-          <div>{{admin?.name}} {{admin?.surname}}</div>
+          <div>{{employeeProfile.name}} {{employeeProfile.surname}}</div>
           <div>{{employeeType.name}}</div>
         </div>
         <div class="col-auto" id="employee-photo">
@@ -203,8 +214,8 @@
         <app-employee-profile></app-employee-profile>   
       </div>
     </div>
-    <div *ngIf="selectedItem == 'People'">
-      <app-view-employee></app-view-employee>
+    <div *ngIf="cookieService.get('currentPage') == 'People'">
+      <app-view-employee (selectedEmployee)="handleSelectedEmp($event)"></app-view-employee>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Evaluations'">
       <app-employee-evaluations (selectedEvaluation)="handleSelectedEval($event)"></app-employee-evaluations>
@@ -225,6 +236,9 @@
     <div *ngIf="cookieService.get('currentPage') === 'Edit Dashboard'">
       <app-create-charts></app-create-charts>
     </div>
+    <div *ngIf="cookieService.get('currentPage') === 'Manage Employee Events'">
+      <app-manage-employee-events (event)="populateAddEmployeeForm($event)"></app-manage-employee-events>
+    </div>
 
     <div *ngIf="cookieService.get('currentPage') === 'New Employee'">
       <app-new-employee></app-new-employee>
@@ -242,10 +256,24 @@
     <div *ngIf="cookieService.get('currentPage') == 'Employee Banking'">
       <app-pending-bank-statements></app-pending-bank-statements>
     </div>
+    <div *ngIf="cookieService.get('currentPage') == 'New Event'">
+      <app-add-employee-event [selectedEvent]="selectedEvent"></app-add-employee-event>
+    </div>
+
     <div *ngIf="cookieService.get('currentPage') == '+ Add Graph'">
       <app-create-charts></app-create-charts>
     </div>
 
+    <div *ngIf="cookieService.get('currentPage') == 'Add new field code'">
+      <app-new-field-code></app-new-field-code>
+    </div>
+   
+    <div *ngIf="cookieService.get('currentPage') == '+ Add New Hire'">
+      <app-new-employee></app-new-employee>
+    </div>
     
+    <div *ngIf="cookieService.get('currentPage') == 'Employee Details'">
+      <app-employee-details [selectedEmployee]="selectedEmployee"></app-employee-details>
+     </div>
   </div>
 </div>
