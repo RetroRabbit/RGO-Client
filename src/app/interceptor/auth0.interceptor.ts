@@ -29,7 +29,6 @@ export class AuthInterceptor implements HttpInterceptor {
       tap({
         error: (error: any) => {
           if (error.status === 403 || error.status === 401) {
-            console.log(error)
             this.toast.error({ detail: "Error", summary: "Unauthorized action atempted", duration: 5000, position: 'topRight' });
           }
         },
