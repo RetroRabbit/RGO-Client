@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { Token } from '../models/token.interface';
-import { AuthService } from '@auth0/auth0-angular';
 import { tap } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
+import { NgToastService } from 'ng-angular-popup';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   token: string = '';
 
-  constructor(private appStore: Store<{ app: Token }>, private auth: AuthService, private cookieService: CookieService) {
+  constructor(private appStore: Store<{ app: Token }>,
+     private cookieService: CookieService,
+     private toast: NgToastService) {
     this.getToken();
   }
 
@@ -27,9 +29,8 @@ export class AuthInterceptor implements HttpInterceptor {
       tap({
         error: (error: any) => {
           if (error.status === 403 || error.status === 401) {
-            this.auth.logout({
-              logoutParams: { returnTo: document.location.origin },
-            });
+            console.log(error)
+            this.toast.error({ detail: "Error", summary: "Unauthorized action atempted", duration: 5000, position: 'topRight' });
           }
         },
       })
