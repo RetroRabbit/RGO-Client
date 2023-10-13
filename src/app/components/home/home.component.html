@@ -136,6 +136,20 @@
                 </div>
               </div>
             </div>
+            <div class="col-2">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)"
+                    [ngClass]="selectedItem == 'Manage Employee Events' ? 'active' : 'idle'">
+                    Manage Employee Events
+                  </div>
+                  <div *ngIf="selectedItem == 'Manage Employee Events'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -211,6 +225,9 @@
     <div *ngIf="cookieService.get('currentPage') === 'Edit Dashboard'">
       <app-create-charts></app-create-charts>
     </div>
+    <div *ngIf="cookieService.get('currentPage') === 'Manage Employee Events'">
+      <app-manage-employee-events (event)="populateAddEmployeeForm($event)"></app-manage-employee-events>
+    </div>
 
     <div *ngIf="cookieService.get('currentPage') === 'New Employee'">
       <app-new-employee></app-new-employee>
@@ -224,6 +241,9 @@
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Evaluation Items'">
       <app-template-items></app-template-items>
+    </div>
+    <div *ngIf="cookieService.get('currentPage') == 'New Event'">
+      <app-add-employee-event [selectedEvent]="selectedEvent"></app-add-employee-event>
     </div>
 
     <div *ngIf="cookieService.get('currentPage') == '+ Add Graph'">
