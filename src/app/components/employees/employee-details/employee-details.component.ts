@@ -196,7 +196,6 @@ export class EmployeeDetailsComponent implements OnInit {
         }
 
         if (employeeDataDto.value != '') {
-          console.log(employeeDataDto)
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
               this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
