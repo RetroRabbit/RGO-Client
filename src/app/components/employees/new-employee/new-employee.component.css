@@ -50,3 +50,10 @@ main {
     font-weight: 400;
     line-height: 52px;
 }
+
+#heading {
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 44px;
+    word-wrap: break-word;
+}
