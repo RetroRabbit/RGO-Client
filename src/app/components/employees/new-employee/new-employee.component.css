@@ -3,24 +3,12 @@ main {
     background: #E8EFFF;
 }
 
-form {
+#newEmployeeForm {
     min-width: 70%;
 }
 
-.form-styling {
-    width: 70%;
-    position: relative;
-    background: white;
-    border-radius: 20px;
-}
-
-
-.heading {
-    padding-top: 1rem;
-    font-size: 2rem;
-    font-weight: 400;
-    line-height: 52px;
-    word-wrap: break-word;
+.roboto-font {
+    font-family: 'Roboto', sans-serif;
 }
 
 .heading-text {
@@ -34,32 +22,6 @@ form {
     word-wrap: break-word;
 }
 
-.text-input {
-    color: #49454F;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0.50px;
-    word-wrap: break-word;
-}
-
-.upload_description {
-    color: #fff;
-    font-weight: 500;
-    background-color: #f3f7fe;
-    border-radius: 20px;
-    padding: 0 1rem;
-}
-
-#import-files {
-    width: 80%;
-    background-color: #f3f7fe;
-    padding-left: 10%;
-    padding-right: 10%;
-    padding-top: 5%;
-    padding-bottom: 10%;
-}
-
 .no-border {
     border: none;
 }
@@ -68,23 +30,33 @@ form {
     width: 100%;
 }
 
-.form-floating-width {
-    width: 60%;
+#fileUploadCursor {
+    cursor: pointer;
+    color: #0029C6;
+    background-color: #D7DFFF;
+    border-radius: 100px;
 }
 
-.file {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid transparent;
-    border-radius: 20px;
-    padding: 0 0.5rem;
-    background-color: #fff;
-    color: #000;
+.additional-fields-label {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 28px;
+    word-wrap: break-word;
 }
 
-.custom-row-content {
-    max-width: 70%;
-    margin: auto;
+.title-line-height {
+    line-height: .5rem;
+}
+
+#createEmployee {
+    font-size: 45px;
+    font-weight: 400;
+    line-height: 52px;
+}
+
+#heading {
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 44px;
+    word-wrap: break-word;
 }
