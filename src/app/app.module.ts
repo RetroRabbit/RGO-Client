@@ -36,10 +36,21 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { TableModule } from 'primeng/table';
+
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule} from '@angular/material/select';
@@ -51,6 +62,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
+import { ManageEmployeeEventsComponent } from './components/manage-employee-events/manage-employee-events.component';
+import { AddEmployeeEventComponent } from './components/manage-employee-events/add-employee-event/add-employee-event.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +86,9 @@ import { EmployeeDetailsComponent } from './components/employees/employee-detail
     NewFieldCodeComponent,
     UpdateFieldComponent,
     AdminDashboardComponent,
-    EmployeeDetailsComponent
+    EmployeeDetailsComponent,
+    ManageEmployeeEventsComponent,
+    AddEmployeeEventComponent
   ],
   imports: [
     BrowserModule,
@@ -100,6 +115,14 @@ import { EmployeeDetailsComponent } from './components/employees/employee-detail
     MatMenuModule,
     MatIconModule,
     MatToolbarModule,
+    MatTableModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatAutocompleteModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
