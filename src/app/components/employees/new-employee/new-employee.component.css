@@ -44,3 +44,9 @@ main {
 .title-line-height {
     line-height: .5rem;
 }
+
+#createEmployee {
+    font-size: 45px;
+    font-weight: 400;
+    line-height: 52px;
+}
