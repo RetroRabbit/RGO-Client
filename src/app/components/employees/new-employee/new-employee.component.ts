@@ -94,7 +94,6 @@ export class NewEmployeeComponent implements OnInit {
     race: new FormControl<number>(0),
     gender: new FormControl<number>(0, Validators.required),
     knownAs: new FormControl<string>('', Validators.required),
-    pronouns: new FormControl<string>('', Validators.required),
     email: new FormControl<string>('', [
       Validators.required,
       Validators.email,
