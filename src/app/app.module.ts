@@ -54,7 +54,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatSelectModule} from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
 
-import { PendingBankStatementsComponent } from './components/employees/pending-bank-statements/pending-bank-statements.component';
+import { PendingBankDetailsComponent } from './components/employees/pending-bank-details/pending-bank-details.component';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
 import { ManageEmployeeEventsComponent } from './components/manage-employee-events/manage-employee-events.component';
@@ -82,7 +82,7 @@ import { AddEmployeeEventComponent } from './components/manage-employee-events/a
     UpdateFieldComponent,
     AdminDashboardComponent,
     EmployeeDetailsComponent,
-    PendingBankStatementsComponent,
+    PendingBankDetailsComponent,
     ManageEmployeeEventsComponent,
     AddEmployeeEventComponent
   ],
