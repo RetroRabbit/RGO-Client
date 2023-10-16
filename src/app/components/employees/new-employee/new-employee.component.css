@@ -36,3 +36,7 @@ form {
     background-color: #D7DFFF;
     border-radius: 100px;
 }
+
+.custom-label {
+    font-size: 18px;
+}
