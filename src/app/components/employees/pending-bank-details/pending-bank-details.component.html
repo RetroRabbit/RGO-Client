@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mt-4">
     <div *ngIf="!showDetailedEntry;else ShowDetails">
         <p-table *ngIf="pendingBankApplications.length > 0;else NoBankApplications" [value]="pendingBankApplications" [tableStyle]="{ 'min-width': '50rem' }">
             <ng-template pTemplate="header">
