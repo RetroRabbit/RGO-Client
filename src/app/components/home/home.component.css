@@ -137,10 +137,11 @@
   }
   
   #content {
-    background-color: #b9c8ff;
+    background-color: #D7DFFF;
     min-height: 90vh;
     max-height: auto;
     margin: 0;
+    padding: 0;
   }
   
   #new-hire > button {
