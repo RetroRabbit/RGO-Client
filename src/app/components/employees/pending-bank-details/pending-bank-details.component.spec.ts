@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PendingBankStatementsComponent } from './pending-bank-statements.component';
+import { PendingBankDetailsComponent } from './pending-bank-details.component';
 
 describe('PendingBankStatementsComponent', () => {
-  let component: PendingBankStatementsComponent;
-  let fixture: ComponentFixture<PendingBankStatementsComponent>;
+  let component: PendingBankDetailsComponent;
+  let fixture: ComponentFixture<PendingBankDetailsComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PendingBankStatementsComponent]
+      declarations: [PendingBankDetailsComponent]
     });
-    fixture = TestBed.createComponent(PendingBankStatementsComponent);
+    fixture = TestBed.createComponent(PendingBankDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

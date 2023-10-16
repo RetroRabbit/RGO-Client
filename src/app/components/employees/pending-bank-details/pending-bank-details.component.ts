@@ -4,10 +4,10 @@ import { EmployeeBankingService } from 'src/app/services/employee/employee-banki
 import { NgToastService } from 'ng-angular-popup';
 @Component({
   selector: 'app-pending-bank-statements',
-  templateUrl: './pending-bank-statements.component.html',
-  styleUrls: ['./pending-bank-statements.component.css']
+  templateUrl: './pending-bank-details.component.html',
+  styleUrls: ['./pending-bank-details.component.css']
 })
-export class PendingBankStatementsComponent {
+export class PendingBankDetailsComponent {
 
   pendingBankStatements: EmployeeBanking[] = [];
   showDetailedEntry: boolean = false;
