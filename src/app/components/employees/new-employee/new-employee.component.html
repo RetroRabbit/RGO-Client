@@ -1,302 +1,334 @@
-<main class="d-flex justify-content-center pt-3 pb-3 px-5">
-  <form [formGroup]="newEmployeeForm"
-    class="d-flex flex-column justify-content-center align-items-center bg-white text-align-center"
-    [ngClass]="{'form-styling': !toggleAdditional}">
-    <div class="d-flex flex-column justify-content-center align-items-center" style="width: 100%; gap: 40px">
-      <h2 class="heading">Create new employee profile</h2>
-      <p class="heading-text">Please enter the new employee’s information in order to create a new profile for them.</p>
-      <div class="d-flex flex-row">
-        <label for="toggleAllFields">Toggle All Fields</label>
-        <input type="checkbox" id="toggleAllFields" (change)="toggleAdditional = !toggleAdditional">
-      </div>
-    </div>
-    <br>
-    <div *ngIf="toggleAdditional" class="container-fluid">
+<form [formGroup]="newEmployeeForm" (ngSubmit)="onSubmit(false)">
+  <main class="d-flex flex-column align-items-center p-4">
+    <div class="p-5 rounded-4 w-75 bg-white">
       <div>
-        <div class="row justify-content-center custom-row-content">
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <input type="text" [ngClass]="{'border-danger': checkFieldUpdated('name')}" class="form-control"
-              id="floatingFirstName" formControlName="name">
-            <label [ngClass]="{'text-danger': checkFieldUpdated('name')}" for="floatingFirstName">Full name</label>
-            <div *ngIf="checkFieldUpdated('name')" class="text-danger">
-              Please enter full name
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <input type="text" [ngClass]="{'border-danger': checkFieldUpdated('surname')}" class="form-control"
-              id="floatingLastName" formControlName="surname">
-            <label [ngClass]="{'text-danger': checkFieldUpdated('surname')}" for="floatingLastName">Last name *</label>
-            <div *ngIf="checkFieldUpdated('surname')" class="text-danger">
-              Please enter last name
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <input [ngClass]="{'border-danger': checkFieldUpdated('email')}" type="email" class="form-control"
-              id="floatingWorkEmail" formControlName="email">
-            <label [ngClass]="{'text-danger': checkFieldUpdated('email')}" for="floatingWorkEmail">Work Email *</label>
-            <div *ngIf="checkFieldUpdated('email')" class="text-danger">
-              Please enter work email
-            </div>
-          </div>
+        <h1 class="text-center fs-1 lh-base mt-3">Create employee profile</h1>
+        <span class="text-center lh-1 roboto-font" style="color: #0029C6;">
+          <p class="lh-1">Please enter the employee’s information in</p>
+          <p class="lh-1">order to create a profile for them.</p>
+        </span>
+      </div>
+      <br>
+      <div class="text-center col-md-12">
+        <div>
+          <h3 class="fs-1 lh-base roboto-font">Employee Details</h3>
+          <p class="lh-1 roboto-font">Note: *The asterisk indicates required fields</p>
         </div>
-
-        <div class="row justify-content-center custom-row-content">
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <input [ngClass]="{'border-danger': checkFieldUpdated('initials')}" type="text" class="form-control"
-              id="floatingInitials" formControlName="initials">
-            <label [ngClass]="{'text-danger': checkFieldUpdated('initials')}" for="floatingInitials">Initials *</label>
-            <div *ngIf="checkFieldUpdated('initials')" class="text-danger">
-              Please enter initials
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <input [ngClass]="{'border-danger': checkFieldUpdated('cellphoneNo')}" type="text" class="form-control"
-              id="floatingCellphoneNo" formControlName="cellphoneNo">
-            <label [ngClass]="{'text-danger': checkFieldUpdated('cellphoneNo')}" for="floatingCellphoneNo">CellphoneNo
-              *</label>
-            <div *ngIf="checkFieldUpdated('cellphoneNo')" class="text-danger">
-              Please enter CellphoneNo
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <select [ngClass]="{'border-danger': checkFieldUpdated('reportingLine')}" class="form-control"
-              id="floatingReportingLine" formControlName="reportingLine">
-              <option *ngFor="let employee of Employees" [ngValue]="employee">
-                {{employee.name + ' ' + employee.surname}}
-              </option>
-            </select>
-            <label [ngClass]="{'text-danger': checkFieldUpdated('reportingLine')}" for="floatingReportingLine">Select
-              reporting line
-            </label>
-            <div *ngIf="checkFieldUpdated('reportingLine')" class="text-danger">
-              Please select reporting line
-            </div>
-          </div>
+        <br>
+        <div>
+          <span class="text-start">Title</span>
+          <br>
+          <mat-radio-group formControlName="title">
+            <mat-radio-button *ngFor="let title of titles" [value]="title">{{title}}</mat-radio-button>
+          </mat-radio-group>
         </div>
-
-        <div class="row justify-content-center custom-row-content">
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <select [ngClass]="{'border-danger': checkFieldUpdated('employeeType')}" class="form-control"
-              id="floatingRole" formControlName="employeeType">
-              <option *ngFor="let type of employeeTypes" [ngValue]="type">
+        <div class="row flex-column justify-content-center align-items-center">
+          <mat-form-field appearance="outline" class="w-50">
+            <mat-label>Full name</mat-label>
+            <input matInput type="text" formControlName="name">
+            <mat-error *ngIf="newEmployeeForm.controls['name'].hasError('required')">
+              Full name is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-50">
+            <mat-label>Last name</mat-label>
+            <input matInput type="text" formControlName="surname">
+            <mat-error *ngIf="newEmployeeForm.controls['surname'].hasError('required')">
+              Last name is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-50">
+            <mat-label>Initials</mat-label>
+            <input matInput type="text" formControlName="initials">
+            <mat-error *ngIf="newEmployeeForm.controls['initials'].hasError('required')">
+              Initials are required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-50">
+            <mat-label>Work Email</mat-label>
+            <input matInput type="email" formControlName="email">
+            <mat-error *ngIf="newEmployeeForm.controls['email'].hasError('required')">
+              Work email is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-50">
+            <mat-label>Personal Email</mat-label>
+            <input matInput type="email" formControlName="personalEmail">
+            <mat-error *ngIf="newEmployeeForm.controls['personalEmail'].hasError('required')">
+              Personal email is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-50">
+            <mat-label>Select role</mat-label>
+            <mat-select formControlName="employeeType">
+              <mat-option *ngFor="let type of employeeTypes" [value]="type">
                 {{type.name}}
-              </option>
-            </select>
-            <label [ngClass]="{'text-danger': checkFieldUpdated('employeeType')}" for="floatingRole">Select role</label>
-            <div *ngIf="checkFieldUpdated('employeeType')" class="text-danger">
-              Please select role
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-50">
+            <mat-label>Select level</mat-label>
+            <mat-select formControlName="level">
+              <mat-option *ngFor="let level of levels" [value]="level">{{level}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-50">
+            <mat-label>Start Date</mat-label>
+            <input matInput formControlName="engagementDate" [matDatepicker]="engagementDatePicker">
+            <mat-datepicker-toggle matSuffix [for]="engagementDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #engagementDatePicker></mat-datepicker>
+            <mat-error *ngIf="newEmployeeForm.controls['engagementDate'].hasError('required')">
+              Engagement date is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-50">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput formControlName="dateOfBirth" [matDatepicker]="dateOfBirthPicker">
+            <mat-datepicker-toggle matSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dateOfBirthPicker></mat-datepicker>
+            <mat-error *ngIf="newEmployeeForm.controls['dateOfBirth'].hasError('required')">
+              Engagement date is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-50">
+            <mat-label>ID number</mat-label>
+            <input matInput type="text" formControlName="idNumber">
+            <mat-error *ngIf="newEmployeeForm.controls['idNumber'].hasError('required')">
+              ID number is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <form [formGroup]="settingsForm">
+          <mat-slide-toggle formControlName="toggleAdditionalFields">Additional fields</mat-slide-toggle>
+        </form>
+        <br>
+        <div *ngIf="settingsForm.controls['toggleAdditionalFields'].value === true"
+          class="row justify-content-center align-items-center">
+          <div class="row flex-column justify-content-center align-items-center">
+            <h1 class="col-12">Additional Information</h1>
+            <br>
+            <div class="col-md-6 mt-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Profile photo</mat-label>
+                <input matInput type="text" formControlName="photo">
+                <span mat-icon-button matSuffix (click)="uploadFile.click()" class="pe-3">
+                  <mat-icon id="fileUploadCursor">file_upload</mat-icon>
+                  <input type="file" #uploadFile (change)="onFileChange($event)" formControlName="photo" hidden>
+                </span>
+              </mat-form-field>
             </div>
-          </div>
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <select [ngClass]="{'border-danger': checkFieldUpdated('level')}" class="form-control" id="floatingLevel"
-              formControlName="level">
-              <option *ngFor="let level of levels" [value]="level">{{level}}</option>
-            </select>
-            <label [ngClass]="{'text-danger': checkFieldUpdated('level')}" for="floatingLevel">Select Level</label>
-            <div *ngIf="checkFieldUpdated('level')" class="text-danger">
-              Please select level
+            <br>
+            <div class="col-md-6 mt-2">
+              <span class="text-start">Gender</span>
+              <br>
+              <mat-radio-group formControlName="gender">
+                <mat-radio-button *ngFor="let gender of genders; index as i" [value]="i">{{gender}}</mat-radio-button>
+              </mat-radio-group>
             </div>
-          </div>
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <input [ngClass]="{'border-danger': checkFieldUpdated('personalEmail')}" type="email" class="form-control"
-              id="floatingPersonalEmail" formControlName="personalEmail">
-            <label [ngClass]="{'text-danger': checkFieldUpdated('personalEmail')}" for="floatingPersonalEmail">Personal
-              Email *</label>
-            <div *ngIf="checkFieldUpdated('personalEmail')" class="text-danger">
-              Please enter personal email
+            <br>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Select role</mat-label>
+              <mat-select formControlName="race">
+                <mat-option *ngFor="let race of races; index as i" [value]="i">
+                  {{race}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>T shirt size</mat-label>
+              <mat-select formControlName="tShirtSize">
+                <mat-option value="s">small</mat-option>
+                <mat-option value="m">medium</mat-option>
+                <mat-option value="l">large</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Diatary</mat-label>
+              <mat-select formControlName="dietary">
+                <mat-option value="h">halal</mat-option>
+                <mat-option value="v">vegan</mat-option>
+                <mat-option value="v">vegetarian</mat-option>
+                <mat-option value="p">pescatarian</mat-option>
+                <mat-option value="g">gluten intolerant</mat-option>
+                <mat-option value="n">none</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Allergies</mat-label>
+              <textarea matInput type="text" formControlName="notes">
+                </textarea>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2"
+              *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value">
+              <mat-label>Notes</mat-label>
+              <textarea matInput type="text" formControlName="notes">
+                </textarea>
+            </mat-form-field>
+            <div class="col-md-6 mt-2">
+              <span class="text-start">Do you have any disabilities ?</span>
+              <br>
+              <mat-radio-group formControlName="disability">
+                <mat-radio-button *ngFor="let check of [true, false]" [value]="check">{{check ? 'Yes' :
+                  'No'}}</mat-radio-button>
+              </mat-radio-group>
             </div>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2"
+              *ngIf="newEmployeeForm.controls['disability'].value">
+              <mat-label>Diability notes</mat-label>
+              <textarea matInput type="text" formControlName="disabilityNotes">
+                </textarea>
+            </mat-form-field>
+          </div>
+          <br>
+          <div class="row flex-column justify-content-center align-items-center">
+            <h1 class="col-12">Physical Address</h1>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Unit Number</mat-label>
+              <input matInput type="text" formControlName="unitNumber">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Complex Name</mat-label>
+              <input matInput type="text" formControlName="complexName">
+              <!-- <mat-error *ngIf="newEmployeeForm.controls['complexName'].hasError('required')">
+                  Complex Name is required
+                </mat-error> -->
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Suburb/District</mat-label>
+              <input matInput type="text" formControlName="suburbDistrict">
+              <!-- <mat-error *ngIf="newEmployeeForm.controls['suburbDistrict'].hasError('required')">
+                  Suburb/District is required
+                </mat-error> -->
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Street Number</mat-label>
+              <input matInput type="text" formControlName="streetNumber">
+              <!-- <mat-error *ngIf="newEmployeeForm.controls['streetNumber'].hasError('required')">
+                  Street Number is required
+                </mat-error> -->
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Country</mat-label>
+              <mat-select formControlName="country">
+                <mat-option value="South Africa">South Africa</mat-option>
+                <mat-option value="United States">United States</mat-option>
+                <mat-option value="United Kingdom">United Kingdom</mat-option>
+                <mat-option value="Australia">Nimibia</mat-option>
+                <mat-option value="Canada">Belgium</mat-option>
+                <mat-option value="France">France</mat-option>
+                <mat-option value="Germany">Germany</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Province</mat-label>
+              <mat-select formControlName="province">
+                <mat-option value="Gauteng">Gauteng</mat-option>
+                <mat-option value="Western Cape">Western Cape</mat-option>
+                <mat-option value="Eastern Cape">Eastern Cape</mat-option>
+                <mat-option value="Northern Cape">Northern Cape</mat-option>
+                <mat-option value="Free State">Free State</mat-option>
+                <mat-option value="KwaZulu-Natal">KwaZulu-Natal</mat-option>
+                <mat-option value="Limpopo">Limpopo</mat-option>
+                <mat-option value="Mpumalanga">Mpumalanga</mat-option>
+                <mat-option value="North West">North West</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Postal Code</mat-label>
+              <input matInput type="text" formControlName="postalCode">
+              <!-- <mat-error *ngIf="newEmployeeForm.controls['postalCode'].hasError('required')">
+                  Postal Code is required
+                </mat-error> -->
+            </mat-form-field>
+            <form [formGroup]="postalAddressForm" class="col-md-6 mt-2">
+              <mat-checkbox formControlName="sameAsPhysicalAddress" (change)="postalSameAsPhysicalAddress()">Postal
+                address is the same as physical address</mat-checkbox>
+            </form>
+          </div>
+          <br>
+          <div *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value"
+            class="row flex-column justify-content-center align-items-center">
+            <h1 class="col-12">Postal Address</h1>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Unit Number</mat-label>
+              <input matInput type="text" formControlName="unitNumberPostal">
+              <!-- <mat-error *ngIf="newEmployeeForm.controls['unitNumber'].hasError('required')">
+                  Unit Number is required
+                </mat-error> -->
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Complex Name</mat-label>
+              <input matInput type="text" formControlName="complexNamePostal">
+              <!-- <mat-error *ngIf="newEmployeeForm.controls['complexName'].hasError('required')">
+                  Complex Name is required
+                </mat-error> -->
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Suburb/District</mat-label>
+              <input matInput type="text" formControlName="suburbDistrictPostal">
+              <!-- <mat-error *ngIf="newEmployeeForm.controls['suburbDistrict'].hasError('required')">
+                  Suburb/District is required
+                </mat-error> -->
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Street Number</mat-label>
+              <input matInput type="text" formControlName="streetNumberPostal">
+              <!-- <mat-error *ngIf="newEmployeeForm.controls['streetNumber'].hasError('required')">
+                  Street Number is required
+                </mat-error> -->
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Country</mat-label>
+              <mat-select formControlName="countryPostal">
+                <mat-option value="South Africa">South Africa</mat-option>
+                <mat-option value="United States">United States</mat-option>
+                <mat-option value="United Kingdom">United Kingdom</mat-option>
+                <mat-option value="Australia">Nimibia</mat-option>
+                <mat-option value="Canada">Belgium</mat-option>
+                <mat-option value="France">France</mat-option>
+                <mat-option value="Germany">Germany</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Province</mat-label>
+              <mat-select formControlName="provincePostal">
+                <mat-option value="Gauteng">Gauteng</mat-option>
+                <mat-option value="Western Cape">Western Cape</mat-option>
+                <mat-option value="Eastern Cape">Eastern Cape</mat-option>
+                <mat-option value="Northern Cape">Northern Cape</mat-option>
+                <mat-option value="Free State">Free State</mat-option>
+                <mat-option value="KwaZulu-Natal">KwaZulu-Natal</mat-option>
+                <mat-option value="Limpopo">Limpopo</mat-option>
+                <mat-option value="Mpumalanga">Mpumalanga</mat-option>
+                <mat-option value="North West">North West</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Postal Code</mat-label>
+              <input matInput type="text" formControlName="postalCodePostal">
+              <!-- <mat-error *ngIf="newEmployeeForm.controls['postalCode'].hasError('required')">
+                  Postal Code is required
+                </mat-error> -->
+            </mat-form-field>
           </div>
         </div>
-      </div>
-      <div>
-        <div class="row justify-content-center custom-row-content">
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <input [ngClass]="{'border-danger': checkFieldUpdated('highestQualification')}" type="text"
-              class="form-control" id="floatingHighestQualification" formControlName="highestQualification">
-            <label [ngClass]="{'text-danger' : checkFieldUpdated('highestQualification')}"
-              for="floatingHighestQualification">Highest Qualification *</label>
-            <div *ngIf="checkFieldUpdated('highestQualification')" class="text-danger">
-              Please enter highest qualification
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <input [ngClass]="{'border-danger' : checkFieldUpdated('dateOfBirth')}" type="date" class="form-control"
-              id="floatingDateOfBirth" formControlName="dateOfBirth">
-            <label [ngClass]="{'text-danger' : checkFieldUpdated('dateOfBirth')}" for="floatingDateOfBirth">Date Of
-              Birth</label>
-            <div *ngIf="checkFieldUpdated('dateOfBirth')" class="text-danger">
-              Please enter date of birth
-            </div>
-          </div>
-          <label for="floatingPhoto"
-            class="col-md-4 col-sm-12 form-floating p-2 d-flex justify-content-center align-items-center">
-            <div class="text-white rounded-pill bg-primary px-5 pt-2 pb-2 fs-5">Select Photo</div>
-            <input type="file" id="floatingPhoto" class="d-none" accept="image/*">
-            <img *ngIf="this.newEmployeeForm.value.photo!" [src]="getImageFromBase64" alt="">
-          </label>
-        </div>
-        <div class="row justify-content-center custom-row-content">
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <select [ngClass]="{'border-danger': checkFieldUpdated('race')}" id="floatingRace" class="form-control"
-              (change)="setSelectedRace($event)" formControlName="race">
-              <option *ngFor="let race of races; index as i" [value]="+i">{{race}}</option>
-            </select>
-            <label [ngClass]="{'text-danger': checkFieldUpdated('race')}" for="floatingRace">Select race</label>
-            <div *ngIf="checkFieldUpdated('race')" class="text-danger">
-              Please select race
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <select [ngClass]="{'border-danger': checkFieldUpdated('gender')}" id="floatingGender" class="form-control"
-              (change)="setSelectedGender($event)" formControlName="gender">
-              <option *ngFor="let gender of genders; index as i" [value]="+i">{{gender}}</option>
-            </select>
-            <label [ngClass]="{'text-danger': checkFieldUpdated('gender')}" for="floatingGender">Select gender</label>
-            <div *ngIf="checkFieldUpdated('gender')" class="text-danger">
-              Please select gender
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-12 form-floating p-2">
-            <input [ngClass]="{'border-danger': checkFieldUpdated('engagementDate')}" type="date" class="form-control"
-              id="floatingEngagementDate" formControlName="engagementDate">
-            <label [ngClass]="{'text-danger': checkFieldUpdated('engagementDate')}"
-              for="floatingEngagementDate">Engagement
-              Date *</label>
-            <div *ngIf="checkFieldUpdated('engagementDate')" class="text-danger">
-              Please enter engagement date
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="!toggleAdditional" class="d-flex flex-column justify-content-center align-items-center"
-      style="width: 100%; gap: 30px">
-      <div class="form-floating form-floating-width">
-        <input type="text" [ngClass]="{'border-danger': checkFieldUpdated('name')}" class="form-control"
-          id="floatingFirstName" formControlName="name">
-        <label [ngClass]="{'text-danger': checkFieldUpdated('name')}" for="floatingFirstName">First name *</label>
-        <div *ngIf="checkFieldUpdated('name')" class="text-danger">
-          Please enter first name
-        </div>
-      </div>
-      <div class="form-floating form-floating-width">
-        <input type="text" [ngClass]="{'border-danger': checkFieldUpdated('surname')}" class="form-control"
-          id="floatingLastName" formControlName="surname">
-        <label [ngClass]="{'text-danger': checkFieldUpdated('surname')}" for="floatingLastName">Last name *</label>
-        <div *ngIf="checkFieldUpdated('surname')" class="text-danger">
-          Please enter last name
-        </div>
-      </div>
-      <div class="form-floating form-floating-width">
-        <select [ngClass]="{'border-danger': checkFieldUpdated('employeeType')}" class="form-control" id="floatingRole"
-          formControlName="employeeType">
-          <option *ngFor="let type of employeeTypes" [ngValue]="type">
-            {{type.name}}
-          </option>
-        </select>
-        <label [ngClass]="{'text-danger': checkFieldUpdated('employeeType')}" for="floatingRole">Select role</label>
-        <div *ngIf="checkFieldUpdated('employeeType')" class="text-danger">
-          Please select role
-        </div>
-      </div>
-      <div class="form-floating form-floating-width">
-        <select [ngClass]="{'border-danger': checkFieldUpdated('level')}" class="form-control" id="floatingLevel"
-          formControlName="level">
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-        </select>
-        <label [ngClass]="{'text-danger': checkFieldUpdated('level')}" for="floatingLevel">Select Level</label>
-        <div *ngIf="checkFieldUpdated('level')" class="text-danger">
-          Please select level
-        </div>
-      </div>
-      <div class="form-floating form-floating-width">
-        <input [ngClass]="{'border-danger': checkFieldUpdated('email')}" type="email" class="form-control"
-          id="floatingWorkEmail" formControlName="email">
-        <label [ngClass]="{'text-danger': checkFieldUpdated('email')}" for="floatingWorkEmail">Work Email *</label>
-        <div *ngIf="checkFieldUpdated('email')" class="text-danger">
-          Please enter work email
-        </div>
-      </div>
-      <div class="form-floating form-floating-width">
-        <input [ngClass]="{'border-danger': checkFieldUpdated('personalEmail')}" type="email" class="form-control"
-          id="floatingPersonalEmail" formControlName="personalEmail">
-        <label [ngClass]="{'text-danger': checkFieldUpdated('personalEmail')}" for="floatingPersonalEmail">Personal
-          Email *</label>
-        <div *ngIf="checkFieldUpdated('personalEmail')" class="text-danger">
-          Please enter personal email
-        </div>
-      </div>
-      <div class="form-floating form-floating-width">
-        <input [ngClass]="{'border-danger': checkFieldUpdated('engagementDate')}" type="date" class="form-control"
-          id="floatingEngagementDate" formControlName="engagementDate">
-        <label [ngClass]="{'text-danger': checkFieldUpdated('engagementDate')}" for="floatingEngagementDate">Engagement
-          Date *</label>
-        <div *ngIf="checkFieldUpdated('engagementDate')" class="text-danger">
-          Please enter engagement date
-        </div>
-      </div>
-      <div class="form-floating form-floating-width">
-        <input [ngClass]="{'border-danger': checkFieldUpdated('initials')}" type="text" class="form-control"
-          id="floatingInitials" formControlName="initials">
-        <label [ngClass]="{'text-danger': checkFieldUpdated('initials')}" for="floatingInitials">Initials *</label>
-        <div *ngIf="checkFieldUpdated('initials')" class="text-danger">
-          Please enter initials
-        </div>
-      </div>
-      <div class="form-floating form-floating-width">
-        <input [ngClass]="{'border-danger': checkFieldUpdated('cellphoneNo')}" type="text" class="form-control"
-          id="floatingCellphoneNo" formControlName="cellphoneNo">
-        <label [ngClass]="{'text-danger': checkFieldUpdated('cellphoneNo')}" for="floatingCellphoneNo">CellphoneNo
-          *</label>
-        <div *ngIf="checkFieldUpdated('cellphoneNo')" class="text-danger">
-          Please enter CellphoneNo
+        <div class="row flex-column justify-content-center align-items-center"
+          *ngIf="postalAddressForm.controls['sameAsPhysicalAddress'].value">
+          <h1 class="col-12">Additional Notes</h1>
+          <mat-form-field appearance="outline" class="col-md-6 mt-2">
+            <mat-label>Additional Notes</mat-label>
+            <textarea matInput type="text" formControlName="notes">
+              </textarea>
+          </mat-form-field>
         </div>
       </div>
     </div>
     <br>
-    <div class="row d-flex flex-column justify-content-center align-items-center" style="gap: 40px">
-      <h2 class="heading">Starter kit documents</h2>
-      <p class="heading-text">Please upload employee’s starter kit documents below</p>
-    </div>
-    <br>
-    <div class="rounded-5" id="import-files">
-      <div class="d-flex flex-column justify-content-center align-items-center bg-white border rounded-5">
-        <h2 class="text-primary">Drop your files here!</h2>
-        <i class="material-icons">file_upload</i>
-        <br>
-        <label for="selectFile">
-          <div class="text-white rounded-pill bg-primary px-5 pt-2 pb-2 fs-5">Select file</div>
-          <input type="file" id="selectFile" class="d-none" (change)="onSelect($event)"
-            [accept]="supportedExtensionsAsString">
-        </label>
-        <br>
-        <p class="upload_description text-primary">PDF,PPT, PPTX,Doc,Docx are supported</p>
-      </div>
-      <br>
-      <div class="d-flex flex-row">
-        <button class="d-flex flex-row justify-content-center align-middle rounded-5" type="button"
-          *ngFor="let file of files" (click)="removeSelect(file.name)"
-          style="border: 1px solid transparent; border-radius: 1px; align-items: center; justify-content: center; display: flex; box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;">
-          <p class="text-black">{{file.name}}</p>
-          <i class="material-icons text-danger">cancel</i>
-        </button>
-      </div>
-    </div>
-    <div class="row d-flex flex-column justify-content-center align-items form-buttons">
-      <br>
-      <button class="text-white rounded-pill border-primary bg-primary px-5 pt-2 pb-2 fs-5"
-        (click)="onSubmit()">Save</button>
-      <br>
-      <button class="text-primary rounded-pill border-primary bg-white px-5 pt-2 pb-2 fs-5"
-        (click)="onSubmit(true)">Save & add another</button>
-      <br>
-      <button class="text-primary bg-white fs-5 no-border" (click)="CaptureEvent()">Cancel</button>
-      <br>
-    </div>
-  </form>
-</main>
+  </main>
+  <footer class="bg-white col-12 p-3 d-flex justify-content-end">
+    <button mat-button type="button" color="primary" class="text-primary bg-white no-border"
+      (click)="CaptureEvent()">Cancel</button>
+    <button mat-raised-button type="submit" color="primary" class="text-white rounded-pill border-primary bg-primary"
+      matStepperNext>Next</button>
+  </footer>
+</form>
