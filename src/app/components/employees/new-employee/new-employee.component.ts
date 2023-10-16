@@ -6,6 +6,8 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
+import { TITLES } from 'src/app/models/constants/titles.constants';
+import { LEVELS } from 'src/app/models/constants/levels.constants';
 
 @Component({
   selector: 'app-new-employee',
@@ -18,14 +20,14 @@ export class NewEmployeeComponent implements OnInit {
     private employeeTypeService: EmployeeTypeService,
     private cookieService: CookieService,
     private toast: NgToastService
-  ) { }
+  ) {}
 
   employeeTypes: EmployeeType[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   toggleAdditional: boolean = false;
 
-  levels: number[] = [2, 3, 4, 5, 6];
-  titles: string[] = ['Mr', 'Ms', 'Miss', 'Mrs']
+  levels: number[] = LEVELS;
+  titles: string[] = TITLES;
 
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
@@ -54,7 +56,10 @@ export class NewEmployeeComponent implements OnInit {
       Validators.pattern(/^[0-9]*$/)
     ),
     taxNumber: new FormControl<string>('0', Validators.pattern(/^[0-9]*$/)),
-    engagementDate: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
+    engagementDate: new FormControl<Date | string>(
+      new Date(Date.now()),
+      Validators.required
+    ),
     terminationDate: new FormControl<Date | string | null>(null),
     reportingLine: new FormControl<EmployeeProfile | null>(
       null,
@@ -67,7 +72,9 @@ export class NewEmployeeComponent implements OnInit {
     countryOfBirth: new FormControl<string>('', Validators.required),
     nationality: new FormControl<string>('', Validators.required),
     passportNumber: new FormControl<string>(''),
-    passportExpiryDate: new FormControl<Date | string | null>(new Date(Date.now())),
+    passportExpiryDate: new FormControl<Date | string | null>(
+      new Date(Date.now())
+    ),
     passportCountryIssue: new FormControl<string>(''),
     level: new FormControl<number>(0, Validators.pattern(/^[0-9]*$/)),
     leaveInterval: new FormControl(0, Validators.pattern(/^[0-9]*$/)),
@@ -79,7 +86,10 @@ export class NewEmployeeComponent implements OnInit {
     name: new FormControl<string>('', Validators.required),
     initials: new FormControl<string>('', Validators.required),
     surname: new FormControl<string>('', Validators.required),
-    dateOfBirth: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
+    dateOfBirth: new FormControl<Date | string>(
+      new Date(Date.now()),
+      Validators.required
+    ),
     idNumber: new FormControl<string>('', Validators.required),
     race: new FormControl<number>(0),
     gender: new FormControl<number>(0, Validators.required),
@@ -96,8 +106,6 @@ export class NewEmployeeComponent implements OnInit {
       Validators.pattern(/^[0-9]*$/),
     ]),
     photo: new FormControl<string>(''),
-    tShirtSize: new FormControl<string>(''),
-    dietary: new FormControl<string>(''),
     unitNumber: new FormControl<string>('', Validators.required),
     complexName: new FormControl<string>('', Validators.required),
     suburbDistrict: new FormControl<string>('', Validators.required),
@@ -115,20 +123,23 @@ export class NewEmployeeComponent implements OnInit {
   });
 
   settingsForm: FormGroup = new FormGroup({
-    toggleAdditionalFields: new FormControl<boolean>(false, Validators.required),
-  })
-
-  log() {
-    console.log(this.newEmployeeForm.value);
-  }
+    toggleAdditionalFields: new FormControl<boolean>(
+      false,
+      Validators.required
+    ),
+  });
 
   onSubmit(reset: boolean = false) {
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
-      engagementDate: new Date(this.newEmployeeForm.value.engagementDate!).toISOString().split('T')[0],
-      dateOfBirth: new Date(this.newEmployeeForm.value.dateOfBirth!).toISOString().split('T')[0],
-    })
+      engagementDate: new Date(this.newEmployeeForm.value.engagementDate!)
+        .toISOString()
+        .split('T')[0],
+      dateOfBirth: new Date(this.newEmployeeForm.value.dateOfBirth!)
+        .toISOString()
+        .split('T')[0],
+    });
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
