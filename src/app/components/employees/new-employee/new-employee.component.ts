@@ -18,7 +18,7 @@ export class NewEmployeeComponent implements OnInit {
     private employeeTypeService: EmployeeTypeService,
     private cookieService: CookieService,
     private toast: NgToastService
-  ) {}
+  ) { }
 
   employeeTypes: EmployeeType[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
@@ -27,6 +27,7 @@ export class NewEmployeeComponent implements OnInit {
   genders: string[] = ['Prefer not to say', 'Male', 'Female'];
   races: string[] = ['Black', 'White', 'Indian', 'Coloured', 'Asian'];
   levels: number[] = [2, 3, 4, 5, 6];
+  titles: string[] = ['Mr', 'Ms', 'Miss', 'Mrs']
 
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
@@ -34,6 +35,10 @@ export class NewEmployeeComponent implements OnInit {
   Employees: EmployeeProfile[] = [];
   selectedEmployee!: EmployeeProfile;
   validImage: boolean = false;
+
+  isEmployeeInDb(): boolean {
+    return this.Employees.some((employee) => employee.email === this.newEmployeeForm.value.email);
+  }
 
   ngOnInit(): void {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
@@ -87,6 +92,20 @@ export class NewEmployeeComponent implements OnInit {
         this.newEmployeeForm.get(field)!.touched)
     );
   }
+
+  onFileChange(event: any): void {
+    const file = event.target.files[0] as File;
+    if (file) {
+      this.newEmployeeForm.patchValue({
+        photo: file.name,
+      })
+    }
+  }
+
+  postalAddressForm: FormGroup = new FormGroup({
+    sameAsPhysicalAddress: new FormControl<boolean>(false, Validators.required),
+  })
+
   newEmployeeForm = new FormGroup({
     id: new FormControl<number>(0, Validators.required),
     employeeNumber: new FormControl<string>(
@@ -94,8 +113,8 @@ export class NewEmployeeComponent implements OnInit {
       Validators.pattern(/^[0-9]*$/)
     ),
     taxNumber: new FormControl<string>('0', Validators.pattern(/^[0-9]*$/)),
-    engagementDate: new FormControl<Date>(new Date(), Validators.required),
-    terminationDate: new FormControl<Date | null>(null, Validators.required),
+    engagementDate: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
+    terminationDate: new FormControl<Date | string | null>(null, Validators.required),
     reportingLine: new FormControl<EmployeeProfile | null>(
       null,
       Validators.required
@@ -103,7 +122,7 @@ export class NewEmployeeComponent implements OnInit {
     highestQualification: new FormControl<string>('', Validators.required),
     disability: new FormControl<boolean>(false, Validators.required),
     disabilityNotes: new FormControl<string>('', Validators.required),
-    notes: new FormControl<string>('', Validators.required),
+    notes: new FormControl<string>(''),
     countryOfBirth: new FormControl<string>('', Validators.required),
     nationality: new FormControl<string>('', Validators.required),
     level: new FormControl<number>(0, Validators.pattern(/^[0-9]*$/)),
@@ -119,7 +138,7 @@ export class NewEmployeeComponent implements OnInit {
     name: new FormControl<string>('', Validators.required),
     initials: new FormControl<string>('', Validators.required),
     surname: new FormControl<string>('', Validators.required),
-    dateOfBirth: new FormControl<Date>(new Date(), Validators.required),
+    dateOfBirth: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
     idNumber: new FormControl<string>('', Validators.required),
     race: new FormControl<number>(0, Validators.required),
     gender: new FormControl<number>(0, Validators.required),
@@ -130,16 +149,57 @@ export class NewEmployeeComponent implements OnInit {
       Validators.email,
       Validators.pattern(this.emailPattern),
     ]),
-    personalEmail: new FormControl<string>('', [
-      Validators.required,
-      Validators.email,
-    ]),
+    personalEmail: new FormControl<string>('', Validators.email),
     cellphoneNo: new FormControl('', [
       Validators.required,
       Validators.pattern(/^[0-9]*$/),
     ]),
     photo: new FormControl<string>(''),
+    tShirtSize: new FormControl<string>('', Validators.required),
+    dietary: new FormControl<string>('', Validators.required),
+    unitNumber: new FormControl<string>('', Validators.required),
+    complexName: new FormControl<string>('', Validators.required),
+    suburbDistrict: new FormControl<string>('', Validators.required),
+    streetNumber: new FormControl<string>('', Validators.required),
+    country: new FormControl<string>('', Validators.required),
+    province: new FormControl<string>('', Validators.required),
+    postalCode: new FormControl<string>('', Validators.required),
+    unitNumberPostal: new FormControl<string>('', Validators.required),
+    complexNamePostal: new FormControl<string>('', Validators.required),
+    suburbDistrictPostal: new FormControl<string>('', Validators.required),
+    streetNumberPostal: new FormControl<string>('', Validators.required),
+    countryPostal: new FormControl<string>('', Validators.required),
+    provincePostal: new FormControl<string>('', Validators.required),
+    postalCodePostal: new FormControl<string>('', Validators.required),
   });
+
+  postalSameAsPhysicalAddress() {
+    if (this.postalAddressForm.value.sameAsPhysicalAddress) {
+      this.newEmployeeForm.patchValue({
+        unitNumberPostal: this.newEmployeeForm.value.unitNumber,
+        complexNamePostal: this.newEmployeeForm.value.complexName,
+        suburbDistrictPostal: this.newEmployeeForm.value.suburbDistrict,
+        streetNumberPostal: this.newEmployeeForm.value.streetNumber,
+        countryPostal: this.newEmployeeForm.value.country,
+        provincePostal: this.newEmployeeForm.value.province,
+        postalCodePostal: this.newEmployeeForm.value.postalCode,
+      });
+    } else {
+      this.newEmployeeForm.patchValue({
+        unitNumberPostal: '',
+        complexNamePostal: '',
+        suburbDistrictPostal: '',
+        streetNumberPostal: '',
+        countryPostal: '',
+        provincePostal: '',
+        postalCodePostal: '',
+      });
+    }
+  }
+
+  settingsForm: FormGroup = new FormGroup({
+    toggleAdditionalFields: new FormControl<boolean>(false, Validators.required),
+  })
 
   log() {
     console.log(this.newEmployeeForm.value);
@@ -148,9 +208,13 @@ export class NewEmployeeComponent implements OnInit {
   onSubmit(reset: boolean = false) {
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
+    this.newEmployeeForm.patchValue({
+      engagementDate: new Date(this.newEmployeeForm.value.engagementDate!).toISOString().split('T')[0],
+      dateOfBirth: new Date(this.newEmployeeForm.value.dateOfBirth!).toISOString().split('T')[0],
+    })
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
-      next: (data) => {
+      next: () => {
         this.toast.success({
           detail: 'Success',
           summary: `${this.newEmployeeForm.value.name} has been added`,
