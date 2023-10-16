@@ -1,22 +1,22 @@
 <form [formGroup]="newEmployeeForm" (ngSubmit)="onSubmit(false)">
   <main class="d-flex flex-column align-items-center p-4">
-    <div class="p-5 rounded-4 w-75 bg-white">
-      <div>
+    <div class="p-5 rounded-4 w-75 bg-white row flex-column justify-content-center align-items-center">
+      <div class="col-md-12">
         <h1 class="text-center fs-1 lh-base mt-3">Create employee profile</h1>
-        <span class="text-center lh-1 roboto-font" style="color: #0029C6;">
-          <p class="lh-1">Please enter the employee’s information in</p>
-          <p class="lh-1">order to create a profile for them.</p>
+        <span class="text-center roboto-font" style="font-size: 12px; line-height: 10px; color: #0029C6;">
+          <p class="">Please enter the employee’s information in</p>
+          <p class="">order to create a profile for them.</p>
         </span>
       </div>
       <br>
       <div class="text-center col-md-12">
-        <div>
-          <h3 class="fs-1 lh-base roboto-font">Employee Details</h3>
-          <p class="lh-1 roboto-font">Note: *The asterisk indicates required fields</p>
+        <div class="col-md-12 roboto-font">
+          <h3 class="fs-3 lh-base">Employee Details</h3>
+          <p class="lh-1">Note: *The asterisk indicates required fields</p>
         </div>
         <br>
-        <div>
-          <span class="text-start">Title</span>
+        <div class="col-md-12">
+          <span>Title</span>
           <br>
           <mat-radio-group formControlName="title">
             <mat-radio-button *ngFor="let title of titles" [value]="title">{{title}}</mat-radio-button>
@@ -98,17 +98,22 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <form [formGroup]="settingsForm">
-          <mat-slide-toggle formControlName="toggleAdditionalFields">Additional fields</mat-slide-toggle>
+        <form [formGroup]="settingsForm" class="col-12">
+          <div>
+            <label class="fw-base pe-3 custom-label" for="additionalFieldsToggle">Additional fields</label>
+            <mat-slide-toggle color="primary" id="additionalFieldsToggle" formControlName="toggleAdditionalFields"></mat-slide-toggle>
+          </div>
         </form>
         <br>
         <div *ngIf="settingsForm.controls['toggleAdditionalFields'].value === true"
           class="row justify-content-center align-items-center">
           <div class="row flex-column justify-content-center align-items-center">
-            <h1 class="col-12">Additional Information</h1>
+            <br>
+            <br>
+            <h1 class="text-start col-6 fs-1">Additional Information</h1>
             <br>
             <div class="col-md-6 mt-2">
-              <mat-form-field appearance="outline">
+              <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Profile photo</mat-label>
                 <input matInput type="text" formControlName="photo">
                 <span mat-icon-button matSuffix (click)="uploadFile.click()" class="pe-3">
@@ -118,8 +123,8 @@
               </mat-form-field>
             </div>
             <br>
-            <div class="col-md-6 mt-2">
-              <span class="text-start">Gender</span>
+            <div class="text-start col-md-6 mt-2">
+              <span class="fs-6 roboto-font">Gender</span>
               <br>
               <mat-radio-group formControlName="gender">
                 <mat-radio-button *ngFor="let gender of genders; index as i" [value]="i">{{gender}}</mat-radio-button>
@@ -164,8 +169,8 @@
               <textarea matInput type="text" formControlName="notes">
                 </textarea>
             </mat-form-field>
-            <div class="col-md-6 mt-2">
-              <span class="text-start">Do you have any disabilities ?</span>
+            <div class="text-start col-md-6 mt-2">
+              <span class="roboto-font">Do you have any disabilities ?</span>
               <br>
               <mat-radio-group formControlName="disability">
                 <mat-radio-button *ngFor="let check of [true, false]" [value]="check">{{check ? 'Yes' :
@@ -181,7 +186,9 @@
           </div>
           <br>
           <div class="row flex-column justify-content-center align-items-center">
-            <h1 class="col-12">Physical Address</h1>
+            <br>
+            <br>
+            <h1 class="text-start col-6">Physical Address</h1>
             <mat-form-field appearance="outline" class="col-md-6 mt-2">
               <mat-label>Unit Number</mat-label>
               <input matInput type="text" formControlName="unitNumber">
@@ -248,7 +255,7 @@
           <br>
           <div *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value"
             class="row flex-column justify-content-center align-items-center">
-            <h1 class="col-12">Postal Address</h1>
+            <h1 class="text-start col-6">Postal Address</h1>
             <mat-form-field appearance="outline" class="col-md-6 mt-2">
               <mat-label>Unit Number</mat-label>
               <input matInput type="text" formControlName="unitNumberPostal">
