@@ -1,6 +1,6 @@
 <div class="container">
     <div *ngIf="!showDetailedEntry;else ShowDetails">
-        <p-table *ngIf="pendingBankStatements.length > 0;else NoStatements" [value]="pendingBankStatements" [tableStyle]="{ 'min-width': '50rem' }">
+        <p-table *ngIf="pendingBankApplications.length > 0;else NoBankApplications" [value]="pendingBankApplications" [tableStyle]="{ 'min-width': '50rem' }">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Employee</th>
@@ -12,10 +12,10 @@
             </ng-template>
             <ng-template pTemplate="body" let-entry>
                 <tr>
-                    <td>{{ entry.employee.name }} ({{entry.employee.initials}}) {{ entry.employee.surname }}</td>
-                    <td>{{ entry.bankName }}</td>
-                    <td>{{ entry.accountType == 1 ? 'Savings' : 'Cheque' }}</td>
-                    <td>{{ entry.status == 1 ? 'Pending' : 'Approved' }}</td>
+                    <td>{{ entry.employee?.name }} ({{entry.employee?.initials}}) {{ entry.employee?.surname }}</td>
+                    <td>{{ entry?.bankName }}</td>
+                    <td>{{ entry?.accountType == 1 ? 'Savings' : 'Cheque' }}</td>
+                    <td>{{ entry?.status == 1 ? 'Pending' : 'Approved' }}</td>
                     <td>
                         <button mat-raised-button (click)="viewEntry(entry)" id="edit-icon-button">
                             <mat-icon matSuffix id="edit-icon">edit</mat-icon>
@@ -24,9 +24,9 @@
                 </tr>
             </ng-template>
         </p-table>
-        <ng-template #NoStatements>
+        <ng-template #NoBankApplications>
             <div style="text-align: center;">
-                <h1>No pending statements</h1>
+                <h1>No pending application</h1>
             </div>
         </ng-template>
     </div>
@@ -35,29 +35,29 @@
         <div class="row p-4">
             <div class="py-2 col-md-3">
                 <label class="form-label">Account Holder</label>
-                <input readonly class="form-control" type="text" [value]="selectedEntry?.accountHolderName">
+                <input readonly class="form-control" type="text" [value]="selectedApplication?.accountHolderName">
             </div>
             <div class="py-2 col-md-3">
                 <label class="form-label">Bank Name</label>
-                <input readonly class="form-control" type="text" [value]="selectedEntry?.bankName">
+                <input readonly class="form-control" type="text" [value]="selectedApplication?.bankName">
             </div>
             <div class="py-2 col-md-3">
                 <label class="form-label">Branch</label>
-                <input readonly class="form-control" type="text" [value]="selectedEntry?.branch">
+                <input readonly class="form-control" type="text" [value]="selectedApplication?.branch">
             </div>
             <div class="py-2 col-md-3">
                 <label class="form-label">Account Number</label>
-                <input readonly class="form-control" type="text" [value]="selectedEntry?.accountNo">
+                <input readonly class="form-control" type="text" [value]="selectedApplication?.accountNo">
             </div>
             <div class="py-2 col-md-3">
                 <label class="form-label">Account Type</label>
                 <input readonly class="form-control" type="text"
-                    [value]="selectedEntry?.accountType == 1 ? 'Savings' : 'Cheque'">
+                    [value]="selectedApplication?.accountType == 1 ? 'Savings' : 'Cheque'">
             </div>
             <div class="py-2 col-md-3">
                 <label class="form-label">Status</label>
                 <input readonly class="form-control" type="text"
-                    [value]="selectedEntry?.status == 1 ? 'Pending' : 'Approved'">
+                    [value]="selectedApplication?.status == 1 ? 'Pending' : 'Approved'">
             </div>
             <div class="py-2 col-md-3">
                 <label class="form-label">Proof of Account</label> <br>

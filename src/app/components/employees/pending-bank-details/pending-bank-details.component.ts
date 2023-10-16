@@ -9,10 +9,9 @@ import { NgToastService } from 'ng-angular-popup';
 })
 export class PendingBankDetailsComponent {
 
-  pendingBankStatements: EmployeeBanking[] = [];
+  pendingBankApplications: EmployeeBanking[] = [];
   showDetailedEntry: boolean = false;
-  selectedEntry: EmployeeBanking | null = null;
-  proofOfAccount_64: string = "";
+  selectedApplication: EmployeeBanking | null = null;
   base64String: string = '';
   fileToUpload: File | null = null;
   copyOfSelected: EmployeeBanking | null = null;
@@ -29,36 +28,36 @@ export class PendingBankDetailsComponent {
   
   fetchPending(){
     this.employeeBankingService.getPending().subscribe(dataArray => {
-      this.pendingBankStatements = dataArray;
+      this.pendingBankApplications = dataArray;
     })
   }
 
   viewEntry(entry: EmployeeBanking) {
-    this.selectedEntry = entry;
-    this.copyOfSelected = JSON.parse(JSON.stringify(this.selectedEntry));
+    this.selectedApplication = entry;
+    this.copyOfSelected = JSON.parse(JSON.stringify(this.selectedApplication));
     this.showDetailedEntry = true;
   }
 
   showTable() {
-    this.selectedEntry = null;
+    this.selectedApplication = null;
     this.copyOfSelected = null;
     this.showDetailedEntry = false;
     this.reason = "";
   }
 
   convertFileToBase64() {
-    if (this.selectedEntry?.file)
-      this.downloadFile(this.selectedEntry?.file, `${this.selectedEntry?.employee.name} ${this.selectedEntry?.employee.surname}_Proof_of_Account.pdf`);
+    if (this.selectedApplication?.file)
+      this.downloadFile(this.selectedApplication?.file, `${this.selectedApplication?.employee.name} ${this.selectedApplication?.employee.surname}_Proof_of_Account.pdf`);
   }
 
   downloadFile(base64String: string, fileName: string) {
     const byteString = atob(base64String);
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const intArray = new Uint8Array(arrayBuffer);
     for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
+      intArray[i] = byteString.charCodeAt(i);
     }
-    const blob = new Blob([ab], { type: 'application/pdf' });
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
 
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
@@ -75,7 +74,7 @@ export class PendingBankDetailsComponent {
 
   updateEntry() {
     if (this.copyOfSelected) {
-      this.copyOfSelected.reason = this.reason;
+      this.copyOfSelected.declineReason = this.reason;
     }
     const updateData = { ...this.copyOfSelected };
     delete updateData.employee;

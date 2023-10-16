@@ -8,6 +8,6 @@ export interface EmployeeBanking{
     accountType: number,
     accountHolderName: string,
     status: number,
-    reason: string,
+    declineReason: string,
     file: string
 }
