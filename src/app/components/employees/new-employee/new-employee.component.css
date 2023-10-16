@@ -37,8 +37,11 @@ main {
     border-radius: 100px;
 }
 
-.custom-label {
-    font-size: 18px;
+.additional-fields-label {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 28px;
+    word-wrap: break-word;
 }
 
 .title-line-height {
