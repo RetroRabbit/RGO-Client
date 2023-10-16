@@ -1,4 +1,4 @@
-.profile-container {
+/* .profile-container {
     background-color: #f0f5f0;
     border: 1px solid #d0e0d0;
     padding: 20px;
@@ -45,4 +45,22 @@ label{
     color: black;
     font-size: larger;
     width: 50%;
+} */
+
+.container-fluid{
+    border: 1px solid black;
 }
+
+#profile-header{
+    background-color: white;
+    border-radius: 2rem;
+}
+
+/* #profile-header h1{
+    color: #000;
+font-family: Poppins;
+font-size: 32px;
+font-style: normal;
+font-weight: 600;
+line-height: 36px;
+} */

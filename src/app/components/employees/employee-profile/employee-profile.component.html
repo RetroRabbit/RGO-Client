@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
     <div *ngIf="!isEdit;else IsEditing">
         <button class="btn btn-primary" (click)="toggleEdit()">Edit</button>
     </div>
@@ -28,6 +28,85 @@
                 <ng-template #NoOptions>
                     <input [id]=field.label [readOnly]="!canEdit(field)" class="form-control" type={{field.type}} (change)="captureChange($event, index)" [value]=field.value>
                 </ng-template>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="container mt-4">
+    <div id="profile-header" class="row">
+        <div class="col-md-3">
+            <!-- Profile Image here -->
+            <div>
+                <img src="" alt="">
+            </div>
+        </div>
+        <div class="col-md-9">
+            <!-- Details here -->
+            <div class="row">
+                <div class="col-10">
+                    <!-- Name -->
+                    <h1>Jane Doe</h1>
+                </div>
+                <div class="col-2">
+                    <!-- email link -->
+                    janedoe@gmail.com
+                </div>
+                <div class="col-12">
+                    <!-- Role | Level -->
+                    UX Designer | Level 4
+                </div>
+                <div class="col-12">
+                    <!-- Client -->
+                    Based in Johannesburg
+                </div>
+                <div class="col-12">
+                    <!-- quick info -->
+                    <div class="row">
+                        <div class="col-4">
+                            <!-- Team Lead -->
+                            <div class="row">
+                                <div class="col-2">
+                                    <!-- Icon -->
+                                </div>
+                                <div class="col-10">
+                                    <h4>Team Lead</h4>
+                                    <h5>Rouan van der Walt</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <!-- People Champ -->
+                            <div class="col-2">
+                                <!-- Icon -->
+                            </div>
+                            <div class="col-10">
+                                <h4>People Champion</h4>
+                                <h5>Mandy Pelser</h5>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <!-- Client status -->
+                            <div class="col-2">
+                                <!-- Icon -->
+                            </div>
+                            <div class="col-10">
+                                <h4>Client Allocated</h4>
+                                <h5>Discovery</h5>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <!-- Start Date -->
+                            <div class="col-2">
+                                <!-- Icon -->
+                            </div>
+                            <div class="col-10">
+                                <h4>Start Date</h4>
+                                <h5>01/01/2008</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
