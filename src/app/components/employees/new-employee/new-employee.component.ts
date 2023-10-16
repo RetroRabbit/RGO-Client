@@ -6,8 +6,8 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { TITLES } from 'src/app/models/constants/titles.constants';
-import { LEVELS } from 'src/app/models/constants/levels.constants';
+import { titles } from 'src/app/models/constants/titles.constants';
+import { level } from 'src/app/models/constants/level.constants';
 
 @Component({
   selector: 'app-new-employee',
@@ -20,14 +20,14 @@ export class NewEmployeeComponent implements OnInit {
     private employeeTypeService: EmployeeTypeService,
     private cookieService: CookieService,
     private toast: NgToastService
-  ) {}
+  ) { }
 
   employeeTypes: EmployeeType[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   toggleAdditional: boolean = false;
 
-  levels: number[] = LEVELS;
-  titles: string[] = TITLES;
+  levels: number[] = level.map((l) => l.value);
+  titles: string[] = titles;
 
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
