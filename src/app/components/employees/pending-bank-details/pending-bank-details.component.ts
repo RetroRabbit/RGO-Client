@@ -27,7 +27,7 @@ export class PendingBankDetailsComponent {
   }
   
   fetchPending(){
-    this.employeeBankingService.getPending().subscribe(dataArray => {
+    this.employeeBankingService.getPending(1).subscribe(dataArray => {
       this.pendingBankApplications = dataArray;
     })
   }
