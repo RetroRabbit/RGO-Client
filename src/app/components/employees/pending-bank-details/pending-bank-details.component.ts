@@ -15,7 +15,7 @@ export class PendingBankDetailsComponent {
   base64String: string = '';
   fileToUpload: File | null = null;
   copyOfSelected: EmployeeBanking | null = null;
-  reason : string = "";
+  declineReason : string = "";
 
   constructor(
     private employeeBankingService: EmployeeBankingService,
@@ -42,7 +42,7 @@ export class PendingBankDetailsComponent {
     this.selectedApplication = null;
     this.copyOfSelected = null;
     this.showDetailedEntry = false;
-    this.reason = "";
+    this.declineReason = "";
   }
 
   convertFileToBase64() {
@@ -74,12 +74,12 @@ export class PendingBankDetailsComponent {
 
   updateEntry() {
     if (this.copyOfSelected) {
-      this.copyOfSelected.declineReason = this.reason;
+      this.copyOfSelected.declineReason = this.declineReason;
     }
     const updateData = { ...this.copyOfSelected };
     delete updateData.employee;
 
-    if(updateData.status == 2 && this.reason == ''){
+    if(updateData.status == 2 && this.declineReason == ''){
       this.toast.error({detail:"Error",summary: "You must provide a reason for rejecting an application",duration:5000, position:'topRight'});
       return;
     }
