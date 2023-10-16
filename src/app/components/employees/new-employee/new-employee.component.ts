@@ -24,8 +24,6 @@ export class NewEmployeeComponent implements OnInit {
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   toggleAdditional: boolean = false;
 
-  genders: string[] = ['Prefer not to say', 'Male', 'Female'];
-  races: string[] = ['Black', 'White', 'Indian', 'Coloured', 'Asian'];
   levels: number[] = [2, 3, 4, 5, 6];
   titles: string[] = ['Mr', 'Ms', 'Miss', 'Mrs']
 
@@ -35,10 +33,6 @@ export class NewEmployeeComponent implements OnInit {
   Employees: EmployeeProfile[] = [];
   selectedEmployee!: EmployeeProfile;
   validImage: boolean = false;
-
-  isEmployeeInDb(): boolean {
-    return this.Employees.some((employee) => employee.email === this.newEmployeeForm.value.email);
-  }
 
   ngOnInit(): void {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
@@ -53,59 +47,6 @@ export class NewEmployeeComponent implements OnInit {
       });
   }
 
-  files: File[] = [];
-  supportedExtensions = ['pdf', 'ppt', 'pptx', 'doc', 'docx'];
-
-  get supportedExtensionsAsString() {
-    return this.supportedExtensions.map((fielType) => `.${fielType}`).join(',');
-  }
-
-  onSelect(event: any): void {
-    const input = event.target as HTMLInputElement;
-
-    if (!input.files) return;
-
-    for (let i = 0; i < input.files.length; i++) {
-      const file = input.files[i];
-      const ext = file.name.split('.').pop()?.toLowerCase();
-
-      if (this.supportedExtensions.includes(ext || '')) {
-        this.files.push(file);
-      } else {
-        alert(
-          `File type "${ext}" is not supported. Please select a valid file.`
-        );
-      }
-    }
-    input.value = '';
-  }
-
-  removeSelect(fileName: string): void {
-    this.files = this.files.filter((file) => file.name !== fileName);
-  }
-
-  checkFieldUpdated(field: string): boolean {
-    if (!this.newEmployeeForm.get(field)) return false;
-    return (
-      this.newEmployeeForm.get(field)!.invalid &&
-      (this.newEmployeeForm.get(field)!.dirty ||
-        this.newEmployeeForm.get(field)!.touched)
-    );
-  }
-
-  onFileChange(event: any): void {
-    const file = event.target.files[0] as File;
-    if (file) {
-      this.newEmployeeForm.patchValue({
-        photo: file.name,
-      })
-    }
-  }
-
-  postalAddressForm: FormGroup = new FormGroup({
-    sameAsPhysicalAddress: new FormControl<boolean>(false, Validators.required),
-  })
-
   newEmployeeForm = new FormGroup({
     id: new FormControl<number>(0, Validators.required),
     employeeNumber: new FormControl<string>(
@@ -114,7 +55,7 @@ export class NewEmployeeComponent implements OnInit {
     ),
     taxNumber: new FormControl<string>('0', Validators.pattern(/^[0-9]*$/)),
     engagementDate: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
-    terminationDate: new FormControl<Date | string | null>(null, Validators.required),
+    terminationDate: new FormControl<Date | string | null>(null),
     reportingLine: new FormControl<EmployeeProfile | null>(
       null,
       Validators.required
@@ -133,10 +74,7 @@ export class NewEmployeeComponent implements OnInit {
     salaryDays: new FormControl(0, Validators.pattern(/^[0-9]*$/)),
     payRate: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
     salary: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
-    employeeType: new FormControl<{ id: number; name: string } | null>(
-      null,
-      Validators.required
-    ),
+    employeeType: new FormControl<{ id: number; name: string } | null>(null),
     title: new FormControl<string>('', Validators.required),
     name: new FormControl<string>('', Validators.required),
     initials: new FormControl<string>('', Validators.required),
@@ -175,30 +113,6 @@ export class NewEmployeeComponent implements OnInit {
     provincePostal: new FormControl<string>('', Validators.required),
     postalCodePostal: new FormControl<string>('', Validators.required),
   });
-
-  postalSameAsPhysicalAddress() {
-    if (this.postalAddressForm.value.sameAsPhysicalAddress) {
-      this.newEmployeeForm.patchValue({
-        unitNumberPostal: this.newEmployeeForm.value.unitNumber,
-        complexNamePostal: this.newEmployeeForm.value.complexName,
-        suburbDistrictPostal: this.newEmployeeForm.value.suburbDistrict,
-        streetNumberPostal: this.newEmployeeForm.value.streetNumber,
-        countryPostal: this.newEmployeeForm.value.country,
-        provincePostal: this.newEmployeeForm.value.province,
-        postalCodePostal: this.newEmployeeForm.value.postalCode,
-      });
-    } else {
-      this.newEmployeeForm.patchValue({
-        unitNumberPostal: '',
-        complexNamePostal: '',
-        suburbDistrictPostal: '',
-        streetNumberPostal: '',
-        countryPostal: '',
-        provincePostal: '',
-        postalCodePostal: '',
-      });
-    }
-  }
 
   settingsForm: FormGroup = new FormGroup({
     toggleAdditionalFields: new FormControl<boolean>(false, Validators.required),
