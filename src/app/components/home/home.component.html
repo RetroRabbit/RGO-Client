@@ -165,7 +165,7 @@
           </mat-menu>
         </div>
         <div class="col-auto ms-4" id="employee-info">
-          <div>{{employeeProfile.name}} {{employeeProfile.surname}}</div>
+          <div>{{employeeProfile.name + ' ' + employeeProfile.surname}}</div>
           <div>{{employeeType.name}}</div>
         </div>
         <div class="col-auto" id="employee-photo">
@@ -179,7 +179,7 @@
       </div>
     </div>
   </div>
-  <div class="col-12 pt-3" id="content">
+  <div class="col-12" id="content">
     <div *ngIf="cookieService.get('currentPage') === '' || cookieService.get('currentPage') === 'Dashboard'"
       #ShowDashBoard>
       <div *ngIf="isAdmin()">
