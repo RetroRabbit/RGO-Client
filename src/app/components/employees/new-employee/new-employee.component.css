@@ -3,7 +3,7 @@ main {
     background: #E8EFFF;
 }
 
-form {
+#newEmployeeForm {
     min-width: 70%;
 }
 
@@ -39,4 +39,8 @@ form {
 
 .custom-label {
     font-size: 18px;
+}
+
+.title-line-height {
+    line-height: .5rem;
 }

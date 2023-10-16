@@ -1,27 +1,28 @@
-<form [formGroup]="newEmployeeForm" (ngSubmit)="onSubmit(false)">
+<form [formGroup]="newEmployeeForm" (ngSubmit)="onSubmit(false)" id="newEmployeeForm">
   <main class="d-flex flex-column align-items-center p-4">
     <div class="p-5 rounded-4 w-75 bg-white row flex-column justify-content-center align-items-center">
       <div class="col-md-12">
         <h1 class="text-center fs-1 lh-base mt-3">Create employee profile</h1>
         <span class="text-center roboto-font" style="font-size: 12px; line-height: 10px; color: #0029C6;">
-          <p class="">Please enter the employee’s information in</p>
-          <p class="">order to create a profile for them.</p>
+          <p>Please enter the employee’s information in</p>
+          <p>order to create a profile for them.</p>
         </span>
       </div>
       <br>
-      <div class="text-center col-md-12">
-        <div class="col-md-12 roboto-font">
-          <h3 class="fs-3 lh-base">Employee Details</h3>
-          <p class="lh-1">Note: *The asterisk indicates required fields</p>
+      <div class="row flex-column justify-content-center align-items-center col-md-12">
+        <div class="row flex-column justify-content-center align-items-center roboto-font">
+          <h1 class="col-6 fs-1">Employee Details</h1>
+          <p class="col-6">Note: *The asterisk indicates required fields</p>
         </div>
         <br>
-        <div class="col-md-12">
-          <span>Title</span>
+        <div class="row flex-column justify-content-center align-items-center roboto-font title-line-height">
+          <span class="col-6 fs-5">Title</span>
           <br>
-          <mat-radio-group formControlName="title">
+          <mat-radio-group class="col-6" formControlName="title">
             <mat-radio-button *ngFor="let title of titles" [value]="title">{{title}}</mat-radio-button>
           </mat-radio-group>
         </div>
+        <br>
         <div class="row flex-column justify-content-center align-items-center">
           <mat-form-field appearance="outline" class="w-50">
             <mat-label>Full name</mat-label>
@@ -98,8 +99,8 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <form [formGroup]="settingsForm" class="col-12">
-          <div>
+        <form [formGroup]="settingsForm" class="row flex-column justify-content-center align-items-center roboto-font col-12">
+          <div class="col-6">
             <label class="fw-base pe-3 custom-label" for="additionalFieldsToggle">Additional fields</label>
             <mat-slide-toggle color="primary" id="additionalFieldsToggle" formControlName="toggleAdditionalFields"></mat-slide-toggle>
           </div>
@@ -107,10 +108,10 @@
         <br>
         <div *ngIf="settingsForm.controls['toggleAdditionalFields'].value === true"
           class="row justify-content-center align-items-center">
-          <div class="row flex-column justify-content-center align-items-center">
+          <div class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mb-3">
             <br>
             <br>
-            <h1 class="text-start col-6 fs-1">Additional Information</h1>
+            <h1 class="col-6 fs-1">Additional Information</h1>
             <br>
             <div class="col-md-6 mt-2">
               <mat-form-field appearance="outline" class="w-100">
@@ -132,7 +133,7 @@
             </div>
             <br>
             <mat-form-field appearance="outline" class="col-md-6 mt-2">
-              <mat-label>Select role</mat-label>
+              <mat-label>Select race</mat-label>
               <mat-select formControlName="race">
                 <mat-option *ngFor="let race of races; index as i" [value]="i">
                   {{race}}
@@ -148,7 +149,7 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline" class="col-md-6 mt-2">
-              <mat-label>Diatary</mat-label>
+              <mat-label>Dietary</mat-label>
               <mat-select formControlName="dietary">
                 <mat-option value="h">halal</mat-option>
                 <mat-option value="v">vegan</mat-option>
@@ -162,6 +163,27 @@
               <mat-label>Allergies</mat-label>
               <textarea matInput type="text" formControlName="notes">
                 </textarea>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2">
+              <mat-label>Passport number</mat-label>
+              <input matInput type="number" formControlName="passportNumber">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-50">
+              <mat-label>Passport expiration date</mat-label>
+              <input matInput formControlName="passportExpiryDate" [matDatepicker]="passportExpiryDate">
+              <mat-datepicker-toggle matSuffix [for]="passportExpiryDate"></mat-datepicker-toggle>
+              <mat-datepicker #passportExpiryDate></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col-md-6 mt-2 custom-mat-select">
+              <mat-label>Country of issue</mat-label>
+              <input matInput type="text" formControlName="passportCountryIssue">
+              <mat-select #countrySelect formControlName="passportCountryIssue" hidden>
+                <mat-option value="South Africa">South Africa</mat-option>
+                <mat-option value="United States">United States</mat-option>
+                <mat-option value="United Kingdom">United Kingdom</mat-option>
+                <mat-option value="Afghanistan">Afghanistan</mat-option>
+              </mat-select>
+              <mat-icon matSuffix (click)="countrySelect.open()">search</mat-icon>
             </mat-form-field>
             <mat-form-field appearance="outline" class="col-md-6 mt-2"
               *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value">
@@ -184,11 +206,10 @@
                 </textarea>
             </mat-form-field>
           </div>
-          <br>
-          <div class="row flex-column justify-content-center align-items-center">
+          <div class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mb-3">
             <br>
             <br>
-            <h1 class="text-start col-6">Physical Address</h1>
+            <h1 class="col-6 fs-1">Physical Address</h1>
             <mat-form-field appearance="outline" class="col-md-6 mt-2">
               <mat-label>Unit Number</mat-label>
               <input matInput type="text" formControlName="unitNumber">
@@ -247,15 +268,14 @@
                   Postal Code is required
                 </mat-error> -->
             </mat-form-field>
-            <form [formGroup]="postalAddressForm" class="col-md-6 mt-2">
-              <mat-checkbox formControlName="sameAsPhysicalAddress" (change)="postalSameAsPhysicalAddress()">Postal
+            <form [formGroup]="postalAddressForm" class="col-md-6">
+              <mat-checkbox style="width: 100%;" formControlName="sameAsPhysicalAddress" (change)="postalSameAsPhysicalAddress()">Postal
                 address is the same as physical address</mat-checkbox>
             </form>
           </div>
-          <br>
           <div *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value"
-            class="row flex-column justify-content-center align-items-center">
-            <h1 class="text-start col-6">Postal Address</h1>
+            class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mt-5">
+            <h1 class="col-6 fs-1">Postal Address</h1>
             <mat-form-field appearance="outline" class="col-md-6 mt-2">
               <mat-label>Unit Number</mat-label>
               <input matInput type="text" formControlName="unitNumberPostal">
@@ -332,10 +352,12 @@
     </div>
     <br>
   </main>
-  <footer class="bg-white col-12 p-3 d-flex justify-content-end">
-    <button mat-button type="button" color="primary" class="text-primary bg-white no-border"
-      (click)="CaptureEvent()">Cancel</button>
-    <button mat-raised-button type="submit" color="primary" class="text-white rounded-pill border-primary bg-primary"
-      matStepperNext>Next</button>
+  <footer class="bg-white col-12 p-3 d-flex">
+    <div class="col-9 d-flex justify-content-end">
+      <button mat-button type="button" color="primary" class="text-primary bg-white rounded-pill border border-black mx-2"
+        (click)="CaptureEvent()">Cancel</button>
+      <button mat-raised-button type="submit" color="primary" class="text-white rounded-pill border-primary bg-primary"
+        matStepperNext>Next</button>
+    </div>
   </footer>
 </form>
