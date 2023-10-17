@@ -12,6 +12,10 @@ export class EmployeeProfileComponent {
   EditFields: Properties[] = [];
 
   isEdit: boolean = false;
+  
+  name : string = "";
+  surname : string = "";
+  pc : string = "";
 
   constructor(private accessPropertyService: AccessPropertiesService, 
     private cookieService : CookieService) { }
@@ -24,6 +28,11 @@ export class EmployeeProfileComponent {
     this.accessPropertyService.GetAccessProperties(this.cookieService.get('userEmail')).subscribe({
       next: data => {
         this.EmployeeFields = data;
+        console.log(this.EmployeeFields)
+        this.name = this.getValue("Employee Name");
+        this.surname = this.getValue("Surname");
+        this.pc = this.getValue("People's Champion");
+        console.log(this.pc)
       }
   });
   }
@@ -60,4 +69,10 @@ export class EmployeeProfileComponent {
     },500)
     this.toggleEdit();
   }
+
+    getValue(label : any) : any{
+      let field = this.EmployeeFields.filter( field => field.label === label);
+      // console.table(field);
+      return field[0].value != null ? field[0].value : "-";
+    }
 }
