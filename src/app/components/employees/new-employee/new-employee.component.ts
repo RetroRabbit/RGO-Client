@@ -8,6 +8,46 @@ import { EmployeeTypeService } from 'src/app/services/employee/employee-type.ser
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { titles } from 'src/app/models/constants/titles.constants';
 import { level } from 'src/app/models/constants/level.constants';
+import { race } from 'src/app/models/constants/race.constants';
+import { gender } from 'src/app/models/constants/gender.constants';
+import { FieldCode } from 'src/app/models/field-code.interface';
+import { dataTypes } from 'src/app/models/constants/types.constants';
+import { statuses } from 'src/app/models/constants/statuses.constants';
+import { FieldCodeOptions } from 'src/app/models/field-code-options.interface';
+import { FieldCodeService } from 'src/app/services/field-code.service';
+import {
+  Observable,
+  combineLatest,
+  first,
+  map,
+  retry,
+  take,
+} from 'rxjs';
+import { EmployeeDataService } from 'src/app/services/employee-data.service';
+import { EmployeeData } from 'src/app/models/employee-data.interface';
+import { FieldCodes } from 'src/app/models/constants/field-codes.constants';
+
+interface AddressControls {
+  unitNumber: FormControl<string | null>;
+  complexName: FormControl<string | null>;
+  suburbDistrict: FormControl<string | null>;
+  streetNumber: FormControl<string | null>;
+  country: FormControl<string | null>;
+  province: FormControl<string | null>;
+  postalCode: FormControl<string | null>;
+}
+
+interface TshirtControls {
+  tShirtSize: FormControl<string | null>;
+}
+
+interface DietaryControls {
+  dietary: FormControl<string | null>;
+}
+
+interface AllergiesControls {
+  allergies: FormControl<string | null>;
+}
 
 @Component({
   selector: 'app-new-employee',
@@ -18,6 +58,8 @@ export class NewEmployeeComponent implements OnInit {
   constructor(
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
+    private fieldCodeService: FieldCodeService,
+    private employeeDataService: EmployeeDataService,
     private cookieService: CookieService,
     private toast: NgToastService
   ) { }
@@ -28,6 +70,8 @@ export class NewEmployeeComponent implements OnInit {
 
   levels: number[] = level.map((l) => l.value);
   titles: string[] = titles;
+  races: string[] = race.map((r) => r.value);
+  genders: string[] = gender.map((g) => g.value);
 
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
@@ -35,6 +79,15 @@ export class NewEmployeeComponent implements OnInit {
   Employees: EmployeeProfile[] = [];
   selectedEmployee!: EmployeeProfile;
   validImage: boolean = false;
+
+  onFileChange(event: any): void {
+    const file = event.target.files[0] as File;
+    if (file) {
+      this.newEmployeeForm.patchValue({
+        photo: file.name,
+      });
+    }
+  }
 
   ngOnInit(): void {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
@@ -61,10 +114,7 @@ export class NewEmployeeComponent implements OnInit {
       Validators.required
     ),
     terminationDate: new FormControl<Date | string | null>(null),
-    reportingLine: new FormControl<EmployeeProfile | null>(
-      null,
-      Validators.required
-    ),
+    reportingLine: new FormControl<EmployeeProfile | null>(null),
     highestQualification: new FormControl<string>('', Validators.required),
     disability: new FormControl<boolean>(false, Validators.required),
     disabilityNotes: new FormControl<string>('', Validators.required),
@@ -104,20 +154,6 @@ export class NewEmployeeComponent implements OnInit {
       Validators.pattern(/^[0-9]*$/),
     ]),
     photo: new FormControl<string>(''),
-    unitNumber: new FormControl<string>('', Validators.required),
-    complexName: new FormControl<string>('', Validators.required),
-    suburbDistrict: new FormControl<string>('', Validators.required),
-    streetNumber: new FormControl<string>('', Validators.required),
-    country: new FormControl<string>('', Validators.required),
-    province: new FormControl<string>('', Validators.required),
-    postalCode: new FormControl<string>('', Validators.required),
-    unitNumberPostal: new FormControl<string>('', Validators.required),
-    complexNamePostal: new FormControl<string>('', Validators.required),
-    suburbDistrictPostal: new FormControl<string>('', Validators.required),
-    streetNumberPostal: new FormControl<string>('', Validators.required),
-    countryPostal: new FormControl<string>('', Validators.required),
-    provincePostal: new FormControl<string>('', Validators.required),
-    postalCodePostal: new FormControl<string>('', Validators.required),
   });
 
   settingsForm: FormGroup = new FormGroup({
@@ -127,7 +163,191 @@ export class NewEmployeeComponent implements OnInit {
     ),
   });
 
-  onSubmit(reset: boolean = false) {
+  postalAddressForm: FormGroup = new FormGroup({
+    sameAsPhysicalAddress: new FormControl<boolean>(false, Validators.required),
+  });
+
+  private createAddressForm(): FormGroup<AddressControls> {
+    return new FormGroup<AddressControls>({
+      unitNumber: new FormControl<string | null>(null, Validators.minLength(1)),
+      complexName: new FormControl<string | null>(null, Validators.minLength(1)),
+      suburbDistrict: new FormControl<string | null>(null, Validators.minLength(1)),
+      streetNumber: new FormControl<string | null>(null, Validators.minLength(1)),
+      country: new FormControl<string | null>(null, Validators.minLength(1)),
+      province: new FormControl<string | null>(null, Validators.minLength(1)),
+      postalCode: new FormControl<string | null>(null, Validators.minLength(1)),
+    });
+  }
+
+  physicalAddress: FormGroup<AddressControls> = this.createAddressForm();
+
+  postalAddress: FormGroup<AddressControls> = this.createAddressForm();
+
+  tshirtForm: FormGroup<TshirtControls> = new FormGroup({
+    tShirtSize: new FormControl<string | null>(null, Validators.minLength(1)),
+  })
+
+  dietaryForm: FormGroup<DietaryControls> = new FormGroup({
+    dietary: new FormControl<string | null>(null, Validators.minLength(1)),
+  })
+
+  allergiesForm: FormGroup<AllergiesControls> = new FormGroup({
+    allergies: new FormControl<string | null>(null, Validators.minLength(1)),
+  })
+
+  postalSameAsPhysicalAddress() {
+    if (this.postalAddressForm.value.sameAsPhysicalAddress) {
+      this.postalAddress.patchValue({
+        unitNumber: this.physicalAddress.value.unitNumber,
+        complexName: this.physicalAddress.value.complexName,
+        suburbDistrict: this.physicalAddress.value.suburbDistrict,
+        streetNumber: this.physicalAddress.value.streetNumber,
+        country: this.physicalAddress.value.country,
+        province: this.physicalAddress.value.province,
+        postalCode: this.physicalAddress.value.postalCode,
+      });
+    }
+  }
+
+  getEmployeeData(
+    employeeId: number,
+    fieldCodeId: number,
+    value: string
+  ): EmployeeData {
+    return {
+      id: 0,
+      employeeId: employeeId,
+      fieldCodeId: fieldCodeId,
+      value: value,
+    };
+  }
+
+  private createFieldCode(
+    code: FieldCodes,
+    addressName: string
+  ): void {
+    console.info(`[Creating field code(${addressName})]`);
+    const options: FieldCodeOptions[] = [
+      'Unit Number',
+      'Complex Name',
+      'Suburb/District',
+      'Street Number',
+      'Country',
+      'Province',
+      'Postal Code',
+    ].map((option: string) => {
+      return {
+        id: 0,
+        fieldCode: 0,
+        option: option,
+      };
+    });
+
+    const address: FieldCode = {
+      id: 0,
+      code: code,
+      name: addressName,
+      description: addressName,
+      regex: '',
+      type: dataTypes.find((dt) => dt.value === 'String')?.id,
+      status: statuses.find((s) => s.value === 'Active')?.id,
+      internal: false,
+      options: options,
+    };
+
+    console.info(`[Saving field code(${addressName})]`);
+    console.table(address);
+
+    this.fieldCodeService.saveFieldCode(address).subscribe({
+      next: () => console.info(`[Field code(${addressName}) saved]`),
+      error: () => console.error(`[Error saving field code(${addressName})]`),
+    });
+  }
+
+  private getAddressNameFromEnum(code: FieldCodes): string {
+    return Object.keys(FieldCodes).find((key: string) => (FieldCodes as Record<string, string>)[key] === code) || '';
+  }
+
+  createAddressFieldCodes(code: FieldCodes): void {
+    console.info('[Creating address field codes]');
+    const addressName = this.getAddressNameFromEnum(code);
+    this.createFieldCode(code, addressName);
+  }
+
+  getFieldCodeId(
+    code: FieldCodes
+  ): Observable<number | null | undefined> {
+    console.info('[Getting field code id]');
+    return this.fieldCodeService.getAllFieldCodes().pipe(
+      map((fieldCodes: FieldCode[]) => {
+        const matchingCode = fieldCodes.find(
+          (fc: FieldCode) => fc.code === code
+        );
+        if (!matchingCode) {
+          this.createAddressFieldCodes(code);
+          return null;
+        }
+        return matchingCode.id;
+      }),
+      retry(3),
+      take(1)
+    );
+  }
+
+  saveFieldCode(
+    code: FieldCodes,
+    email: string,
+    fieldDescriptions: { key: FormControl<any>; label: string }[]
+  ): void {
+    console.info(`[Saving ${code} address]`);
+    combineLatest([
+      this.getFieldCodeId(code).pipe(
+        first(),
+        map((id: number | null | undefined) => (id ? id : null))
+      ),
+      this.employeeService.get(email).pipe(
+        map((employee: EmployeeProfile) => employee.id),
+        retry(3),
+        take(1)
+      ),
+    ]).pipe(first()).subscribe({
+      next: ([fieldCodeId, employeeId]) => {
+        if (!fieldCodeId) {
+          this.toast.error({
+            detail: 'Error',
+            summary: `Error: Could not save ${code} address`,
+            duration: 5000,
+            position: 'topRight',
+          });
+          console.error(`[Error saving ${code} address(i.e.: fieldCodeId is null)]`);
+          return;
+        }
+
+        fieldDescriptions.forEach((field: { key: FormControl; label: string }) => {
+          if (field.key.valid && field.key.value && field.key.value.trim() !== '') {
+            const data: EmployeeData = this.getEmployeeData(
+              employeeId,
+              fieldCodeId!,
+              `${field.label}: ${field.key.value}`
+            )
+            console.info(`[Saving ${field.label} address]`);
+            console.table(data);
+            this.employeeDataService.saveEmployeeData(data)
+              .pipe(first())
+              .subscribe({
+                next: () => console.info(`[${field.label} saved]`),
+                error: (error: any) =>
+                  console.error(`[Error saving ${field.label}]\n${error}`),
+              });
+          }
+        })
+      },
+      error: (error: any) =>
+        console.error(`[Error saving ${code} address]\n${error}`),
+    })
+  }
+  
+  onSubmit(reset: boolean = false): void {
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
@@ -138,6 +358,7 @@ export class NewEmployeeComponent implements OnInit {
         .toISOString()
         .split('T')[0],
     });
+    const employeeEmail: string = this.newEmployeeForm.value.email!;
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
@@ -147,6 +368,35 @@ export class NewEmployeeComponent implements OnInit {
           duration: 5000,
           position: 'topRight',
         });
+
+        this.saveFieldCode(FieldCodes.Physical, employeeEmail, [
+          { key: this.physicalAddress.controls.unitNumber, label: 'Unit Number' },
+          { key: this.physicalAddress.controls.complexName, label: 'Complex Name' },
+          { key: this.physicalAddress.controls.suburbDistrict, label: 'Suburb District' },
+          { key: this.physicalAddress.controls.streetNumber, label: 'Street Number' },
+          { key: this.physicalAddress.controls.country, label: 'Country' },
+          { key: this.physicalAddress.controls.province, label: 'Province' },
+          { key: this.physicalAddress.controls.postalCode, label: 'Postal Code' },
+        ])
+        this.saveFieldCode(FieldCodes.Postal, employeeEmail, [
+          { key: this.postalAddress.controls.unitNumber, label: 'Unit Number' },
+          { key: this.postalAddress.controls.complexName, label: 'Complex Name' },
+          { key: this.postalAddress.controls.suburbDistrict, label: 'Suburb District' },
+          { key: this.postalAddress.controls.streetNumber, label: 'Street Number' },
+          { key: this.postalAddress.controls.country, label: 'Country' },
+          { key: this.postalAddress.controls.province, label: 'Province' },
+          { key: this.postalAddress.controls.postalCode, label: 'Postal Code' },
+        ])
+        this.saveFieldCode(FieldCodes.TShirtSize, employeeEmail, [
+          { key: this.tshirtForm.controls.tShirtSize, label: 'T-Shirt Size' },
+        ])
+        this.saveFieldCode(FieldCodes.Dietary, employeeEmail, [
+          { key: this.dietaryForm.controls.dietary, label: 'Dietary' },
+        ])
+        this.saveFieldCode(FieldCodes.Allergies, employeeEmail, [
+          { key: this.allergiesForm.controls.allergies, label: 'Allergies' },
+        ])
+
         if (reset) {
           this.newEmployeeForm.reset();
         } else {
