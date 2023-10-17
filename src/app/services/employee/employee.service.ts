@@ -12,26 +12,26 @@ export class EmployeeService {
   constructor(private httpClient: HttpClient) { }
 
   getAllEmployees(): Observable<Employee[]>{
-    return this.httpClient.get<Employee[]>(`${API.HttpBaseURL}/employee/employees/get`);
+    return this.httpClient.get<Employee[]>(`${API.HttpsBaseURL}/employee/employees/get`);
   }
 
   getAll(): Observable<Employee[]>{
-    return this.httpClient.get<Employee[]>(`${API.HttpBaseURL}/employee/employees`);
+    return this.httpClient.get<Employee[]>(`${API.HttpsBaseURL}/employee/employees`);
   }
 
   getAllProfiles(): Observable<EmployeeProfile[]>{
-    return this.httpClient.get<EmployeeProfile[]>(`${API.HttpBaseURL}/employee/employees`);
+    return this.httpClient.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employee/employees`);
   }
 
   addEmployee(newEmployee: any): Observable<any>{
-    return this.httpClient.post<any>(`${API.HttpBaseURL}/employee/add`, newEmployee);
+    return this.httpClient.post<any>(`${API.HttpsBaseURL}/employee/add`, newEmployee);
   }
 
-  get(email: string): Observable<Employee> {
-    return this.httpClient.get<Employee>(`${API.HttpBaseURL}/employee/get?email=${encodeURIComponent(email)}`);
+  get(email: string): Observable<EmployeeProfile> {
+    return this.httpClient.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/get?email=${encodeURIComponent(email)}`);
   }
 
   updateEmployee(employee: any): Observable<any>{
-    return this.httpClient.put<any>(`${API.HttpBaseURL}/employee/update`, employee)
+    return this.httpClient.put<any>(`${API.HttpsBaseURL}/employee/update`, employee)
   }
 }
