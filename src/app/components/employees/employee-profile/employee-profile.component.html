@@ -34,76 +34,82 @@
 </div> -->
 
 <div class="container mt-4">
-    <div id="profile-header" class="row">
-        <div class="col-md-3">
-            <!-- Profile Image here -->
-            <div>
-                <img src="" alt="">
+    <div id="profile-header" class="row p-2">
+        <div class="col-2 mt-4">
+            <div id="profile-image">
+                <img src="../../../../assets/img/profile.png" alt="">
             </div>
         </div>
-        <div class="col-md-9">
-            <!-- Details here -->
-            <div class="row">
-                <div class="col-10">
-                    <!-- Name -->
+        <div class="col-md-8 offset-md-2 offset-lg-0 col-lg-10 mt-4">
+            <div class="row mt-3">
+                <div class="col-6 col-md-8" id="header-name">
                     <h1>Jane Doe</h1>
                 </div>
-                <div class="col-2">
-                    <!-- email link -->
-                    janedoe@gmail.com
+                <div class="col-6 col-md-4" id="header-email">
+                    <div class="row me-4">
+                       <div class="col-auto">janedoe@gmail.com</div>
+                       <div class="col-1 mt-2" id="header-email-clip"><mat-icon>attachment</mat-icon></div> 
+                    </div>
                 </div>
-                <div class="col-12">
-                    <!-- Role | Level -->
+                <div class="col-12 my-2" id="header-role">
                     UX Designer | Level 4
                 </div>
-                <div class="col-12">
-                    <!-- Client -->
+                <div class="col-12 my-2" id="header-based">
                     Based in Johannesburg
                 </div>
-                <div class="col-12">
-                    <!-- quick info -->
+            </div>
+        </div>
+        <div class="col-12 col-lg-10 offset-lg-2 my-4">
+            <div class="row" id="quick-info">
+                <div class="col-3 mb-md-2">
                     <div class="row">
-                        <div class="col-4">
-                            <!-- Team Lead -->
-                            <div class="row">
-                                <div class="col-2">
-                                    <!-- Icon -->
-                                </div>
-                                <div class="col-10">
-                                    <h4>Team Lead</h4>
-                                    <h5>Rouan van der Walt</h5>
-                                </div>
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>people_outline</mat-icon>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <!-- People Champ -->
-                            <div class="col-2">
-                                <!-- Icon -->
-                            </div>
-                            <div class="col-10">
-                                <h4>People Champion</h4>
-                                <h5>Mandy Pelser</h5>
+                        <div class="col-9 my-2">
+                            <div id="header-label">Team Lead</div>
+                            <div id="header-value">Rouan van der Walt</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 mb-md-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>card_membership</mat-icon>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <!-- Client status -->
-                            <div class="col-2">
-                                <!-- Icon -->
-                            </div>
-                            <div class="col-10">
-                                <h4>Client Allocated</h4>
-                                <h5>Discovery</h5>
+                        <div class="col-9 my-2">
+                            <div id="header-label">People Champion</div>
+                            <div id="header-value">Mandy Pelser</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 mb-md-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>business_center</mat-icon>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <!-- Start Date -->
-                            <div class="col-2">
-                                <!-- Icon -->
+                        <div class="col-9 my-2">
+                            <div id="header-label">Client Allocated</div>
+                            <div id="header-value">Discovery</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 mb-md-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>date_range</mat-icon>
                             </div>
-                            <div class="col-10">
-                                <h4>Start Date</h4>
-                                <h5>01/01/2008</h5>
-                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">Start Date</div>
+                            <div id="header-value">Date here</div>
                         </div>
                     </div>
                 </div>
@@ -111,3 +117,4 @@
         </div>
     </div>
 </div>
+

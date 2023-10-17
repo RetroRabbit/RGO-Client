@@ -46,6 +46,61 @@ label{
     font-size: larger;
     width: 50%;
 } */
+/* Header */
+
+#header-name{
+    font-family: Poppins;
+}
+
+#header-role, #header-based{
+    color: #555454;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+}
+
+#header-email{
+    color: #555454;
+    text-align: right;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+}
+
+#header-email > .row{
+    display:flex;
+    justify-content: flex-end;
+}
+
+
+#header-email-clip{
+    color:blue;
+    transform: rotate(-45deg);
+    width: 20px;
+}
+#header-label{
+    color: #555454;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#header-value{
+    color: #555454;
+    font-family: Roboto;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
 
 .container-fluid{
     border: 1px solid black;
@@ -56,11 +111,36 @@ label{
     border-radius: 2rem;
 }
 
-/* #profile-header h1{
-    color: #000;
-font-family: Poppins;
-font-size: 32px;
-font-style: normal;
-font-weight: 600;
-line-height: 36px;
-} */
+#profile-image{
+    border-radius: 50%;
+    overflow: hidden;
+    height: 150px;
+    margin: 0 auto;
+    width: 150px;
+}
+
+#profile-image > img{
+    height: 100%;
+    width: 100%;
+}
+
+#outer-icon-container{
+    padding: 0;
+}
+
+#outer-icon-container > div {
+    border-radius: 50%;
+    background-color: #D7DFFF;
+    color: #0029C6;
+    display: table;
+    height:50px;
+    margin:0 auto;
+    text-align: center;
+    width: 50px;
+}
+
+#outer-icon-container > div > mat-icon{
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
