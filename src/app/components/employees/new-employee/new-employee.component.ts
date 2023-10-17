@@ -501,10 +501,7 @@ export class NewEmployeeComponent implements OnInit {
     reader.addEventListener('loadend', () => {
       this.imagePreview = reader.result as string;
       const base64Image = this.convertTobase64(this.imagePreview);
-      console.log('data:image/jpeg;base64,' + base64Image);
-      this.newEmployeeForm.patchValue({
-        photo: 'data:image/jpeg;base64,' + base64Image,
-      });
+      this.newEmployeeForm.patchValue({'photo' : 'data:image/jpeg;base64,' + base64Image});
       this.getImageFromBase64(base64Image);
     });
 

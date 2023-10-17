@@ -1,0 +1,27 @@
+.container{
+    border-radius: 4rem;
+    background-color: white;
+    padding: 2rem;
+    height: 80vh;
+}
+
+.form-control{
+    border:none;
+}
+
+#acceptance-container{
+    border: 1px solid grey;
+    border-radius: 4rem;
+    height: auto;
+    margin-top: 3rem;
+    padding: 2rem;
+}
+
+h3{
+    text-align: center;
+}
+
+#edit-icon{
+    display: inline-block;
+    margin: 0 auto;
+}
