@@ -37,22 +37,22 @@
     <div id="profile-header" class="row p-2">
         <div class="col-2 mt-4">
             <div id="profile-image">
-                <img src="../../../../assets/img/profile.png" alt="">
+                <img [src]="EmployeeProfile?.photo" alt="">
             </div>
         </div>
         <div class="col-md-8 offset-md-2 offset-lg-0 col-lg-10 mt-4">
             <div class="row mt-3">
                 <div class="col-6 col-md-8" id="header-name">
-                    <h1>Jane Doe</h1>
+                    <h1>{{EmployeeProfile?.name}} {{EmployeeProfile?.surname}}</h1>
                 </div>
                 <div class="col-6 col-md-4" id="header-email">
                     <div class="row me-4">
-                       <div class="col-auto">janedoe@gmail.com</div>
-                       <div class="col-1 mt-2" id="header-email-clip"><mat-icon>attachment</mat-icon></div> 
+                        <div class="col-auto">{{EmployeeProfile?.email}}</div>
+                        <div class="col-1 mt-2" id="header-email-clip"><mat-icon>attachment</mat-icon></div>
                     </div>
                 </div>
                 <div class="col-12 my-2" id="header-role">
-                    UX Designer | Level 4
+                    {{EmployeeProfile?.employeeType?.name}} | Level {{EmployeeProfile?.level}}
                 </div>
                 <div class="col-12 my-2" id="header-based">
                     Based in Johannesburg
@@ -109,7 +109,71 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">Start Date</div>
-                            <div id="header-value">Date here</div>
+                            <div id="header-value">{{EmployeeProfile?.engagementDate}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="profile-completeion" class="row p-2">
+        <!-- Implement -->
+    </div>
+
+    <div id="profile-accordions">
+        <div id="accordions-nav" class="row">
+            <div class="col-3">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)"
+                            [ngClass]="selectedItem == 'Profile Details' ? 'active' : 'idle'">
+                            Profile Details
+                        </div>
+                        <div *ngIf="selectedItem == 'Profile Details'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)"
+                            [ngClass]="selectedItem == 'Capture Summary' ? 'active' : 'idle'">
+                            Capture Summary
+                        </div>
+                        <div *ngIf="selectedItem == 'Capture Summary'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)"
+                            [ngClass]="selectedItem == 'Bank Information' ? 'active' : 'idle'">
+                            Bank Information
+                        </div>
+                        <div *ngIf="selectedItem == 'Bank Information'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Documents' ? 'active' : 'idle'">
+                            Documents
+                        </div>
+                        <div *ngIf="selectedItem == 'Documents'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -117,4 +181,3 @@
         </div>
     </div>
 </div>
-
