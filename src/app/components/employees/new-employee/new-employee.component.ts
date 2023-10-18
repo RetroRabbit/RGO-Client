@@ -216,7 +216,6 @@ export class NewEmployeeComponent implements OnInit {
     code: FieldCodes,
     addressName: string
   ): void {
-    console.info(`[Creating field code(${addressName})]`);
     const options: FieldCodeOptions[] = [
       'Unit Number',
       'Complex Name',
@@ -245,13 +244,7 @@ export class NewEmployeeComponent implements OnInit {
       options: options,
     };
 
-    console.info(`[Saving field code(${addressName})]`);
-    console.table(address);
-
-    this.fieldCodeService.saveFieldCode(address).subscribe({
-      next: () => console.info(`[Field code(${addressName}) saved]`),
-      error: () => console.error(`[Error saving field code(${addressName})]`),
-    });
+    this.fieldCodeService.saveFieldCode(address).subscribe();
   }
 
   private getAddressNameFromEnum(code: FieldCodes): string {
@@ -259,7 +252,6 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   createAddressFieldCodes(code: FieldCodes): void {
-    console.info('[Creating address field codes]');
     const addressName = this.getAddressNameFromEnum(code);
     this.createFieldCode(code, addressName);
   }
@@ -267,7 +259,6 @@ export class NewEmployeeComponent implements OnInit {
   getFieldCodeId(
     code: FieldCodes
   ): Observable<number | null | undefined> {
-    console.info('[Getting field code id]');
     return this.fieldCodeService.getAllFieldCodes().pipe(
       map((fieldCodes: FieldCode[]) => {
         const matchingCode = fieldCodes.find(
@@ -289,7 +280,6 @@ export class NewEmployeeComponent implements OnInit {
     email: string,
     fieldDescriptions: { key: FormControl<any>; label: string }[]
   ): void {
-    console.info(`[Saving ${code} address]`);
     combineLatest([
       this.getFieldCodeId(code).pipe(
         first(),
@@ -309,7 +299,6 @@ export class NewEmployeeComponent implements OnInit {
             duration: 5000,
             position: 'topRight',
           });
-          console.error(`[Error saving ${code} address(i.e.: fieldCodeId is null)]`);
           return;
         }
 
@@ -320,20 +309,13 @@ export class NewEmployeeComponent implements OnInit {
               fieldCodeId!,
               `${field.label}: ${field.key.value}`
             )
-            console.info(`[Saving ${field.label} address]`);
-            console.table(data);
             this.employeeDataService.saveEmployeeData(data)
               .pipe(first())
-              .subscribe({
-                next: () => console.info(`[${field.label} saved]`),
-                error: (error: any) =>
-                  console.error(`[Error saving ${field.label}]\n${error}`),
-              });
+              .subscribe();
           }
         })
       },
-      error: (error: any) =>
-        console.error(`[Error saving ${code} address]\n${error}`),
+      error: () => {},
     })
   }
   
@@ -406,7 +388,6 @@ export class NewEmployeeComponent implements OnInit {
           duration: 5000,
           position: 'topRight',
         });
-        console.error(error);
       },
     });
   }
