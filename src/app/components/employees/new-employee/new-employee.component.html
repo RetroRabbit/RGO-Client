@@ -126,7 +126,7 @@
             </div>
             <br>
             <div class="row flex-column justify-content-center align-items-center col-lg-12 col-md-12">
-              <span class="col-lg-6 fs-5 roboto-font">Gender</span>
+              <span class="col-lg-7 fs-5 roboto-font">Gender</span>
               <br>
               <mat-radio-group class="col-lg-7" formControlName="gender">
                 <mat-radio-button *ngFor="let gender of genders; index as i" [value]="i">{{gender}}</mat-radio-button>
@@ -145,9 +145,7 @@
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>T shirt size</mat-label>
                 <mat-select formControlName="tShirtSize">
-                  <mat-option value="s">small</mat-option>
-                  <mat-option value="m">medium</mat-option>
-                  <mat-option value="l">large</mat-option>
+                  <mat-option *ngFor="let size of tshirtSizes" [value]="size">{{size}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </form>
@@ -155,12 +153,7 @@
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Dietary</mat-label>
                 <mat-select formControlName="dietary">
-                  <mat-option value="h">halal</mat-option>
-                  <mat-option value="v">vegan</mat-option>
-                  <mat-option value="v">vegetarian</mat-option>
-                  <mat-option value="p">pescatarian</mat-option>
-                  <mat-option value="g">gluten intolerant</mat-option>
-                  <mat-option value="n">none</mat-option>
+                  <mat-option *ngFor="let diet of dietaryRestictions" [value]="diet">{{diet}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </form>
@@ -185,10 +178,7 @@
               <mat-label>Country of issue</mat-label>
               <input matInput type="text" formControlName="passportCountryIssue">
               <mat-select #countrySelect formControlName="passportCountryIssue" hidden>
-                <mat-option value="South Africa">South Africa</mat-option>
-                <mat-option value="United States">United States</mat-option>
-                <mat-option value="United Kingdom">United Kingdom</mat-option>
-                <mat-option value="Afghanistan">Afghanistan</mat-option>
+                <mat-option *ngFor="let country of countries" [value]="country">{{country}}</mat-option>
               </mat-select>
               <mat-icon matSuffix (click)="countrySelect.open()">search</mat-icon>
             </mat-form-field>
@@ -236,27 +226,13 @@
             <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
               <mat-label>Country</mat-label>
               <mat-select formControlName="country">
-                <mat-option value="South Africa">South Africa</mat-option>
-                <mat-option value="United States">United States</mat-option>
-                <mat-option value="United Kingdom">United Kingdom</mat-option>
-                <mat-option value="Australia">Nimibia</mat-option>
-                <mat-option value="Canada">Belgium</mat-option>
-                <mat-option value="France">France</mat-option>
-                <mat-option value="Germany">Germany</mat-option>
+                <mat-option *ngFor="let country of countries" [value]="country">{{country}}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
               <mat-label>Province</mat-label>
               <mat-select formControlName="province">
-                <mat-option value="Gauteng">Gauteng</mat-option>
-                <mat-option value="Western Cape">Western Cape</mat-option>
-                <mat-option value="Eastern Cape">Eastern Cape</mat-option>
-                <mat-option value="Northern Cape">Northern Cape</mat-option>
-                <mat-option value="Free State">Free State</mat-option>
-                <mat-option value="KwaZulu-Natal">KwaZulu-Natal</mat-option>
-                <mat-option value="Limpopo">Limpopo</mat-option>
-                <mat-option value="Mpumalanga">Mpumalanga</mat-option>
-                <mat-option value="North West">North West</mat-option>
+                <mat-option *ngFor="let province of provinces" [value]="province">{{province}}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
@@ -290,27 +266,13 @@
             <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
               <mat-label>Country</mat-label>
               <mat-select formControlName="country">
-                <mat-option value="South Africa">South Africa</mat-option>
-                <mat-option value="United States">United States</mat-option>
-                <mat-option value="United Kingdom">United Kingdom</mat-option>
-                <mat-option value="Australia">Nimibia</mat-option>
-                <mat-option value="Canada">Belgium</mat-option>
-                <mat-option value="France">France</mat-option>
-                <mat-option value="Germany">Germany</mat-option>
+                <mat-option *ngFor="let country of countries" [value]="country">{{country}}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
               <mat-label>Province</mat-label>
               <mat-select formControlName="province">
-                <mat-option value="Gauteng">Gauteng</mat-option>
-                <mat-option value="Western Cape">Western Cape</mat-option>
-                <mat-option value="Eastern Cape">Eastern Cape</mat-option>
-                <mat-option value="Northern Cape">Northern Cape</mat-option>
-                <mat-option value="Free State">Free State</mat-option>
-                <mat-option value="KwaZulu-Natal">KwaZulu-Natal</mat-option>
-                <mat-option value="Limpopo">Limpopo</mat-option>
-                <mat-option value="Mpumalanga">Mpumalanga</mat-option>
-                <mat-option value="North West">North West</mat-option>
+                <mat-option *ngFor="let province of provinces" [value]="province">{{province}}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
