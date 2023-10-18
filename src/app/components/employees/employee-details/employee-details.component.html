@@ -114,13 +114,6 @@
                     </div>
                     <small *ngIf="employeeForm?.get('disabilityNotes')?.dirty || employeeForm.hasError('required', 'employeeForm.disabilityNotes')" class="text-danger">Disability notes is required</small>
                   </div>
-                  <div class="mb-3 row">
-                    <div class="col-sm-12">
-                      <label class="col-form-label">Photo</label>
-                      <input type="text" class="form-control" formControlName="photo" />
-                    </div>
-                    <small *ngIf="employeeForm?.get('photo')?.dirty || employeeForm.hasError('required', 'employeeForm.photo')" class="text-danger">Photo is required</small>
-                  </div>
               </div>
               <div class="col-sm-6">
                 <div class="mb-3 row">
@@ -219,6 +212,13 @@
                     </select>
                     </div>
                     <small *ngIf="employeeForm?.get('disability')?.touched || employeeForm.hasError('required', 'employeeForm.disability')" class="text-danger">Disability is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Photo</label>
+                      <input type="text" class="form-control" formControlName="photo" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('photo')?.dirty || employeeForm.hasError('required', 'employeeForm.photo')" class="text-danger">Photo is required</small>
                   </div>                  
               </div>
             <div class="col-sm-12">
