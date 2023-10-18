@@ -205,6 +205,6 @@ label{
     padding: 0;
   }
 
-  .mat-accordion .mat-expansion-panel:not(.mat-expanded), .mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing) {
+  .mat-accordion .mat-expansion-panel, .mat-expanded, .mat-accordion .mat-expansion-panel, .mat-expansion-panel-spacing {
     border-radius: 1rem;
 }
