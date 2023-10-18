@@ -11,20 +11,20 @@ export class FieldCodeService {
     constructor(private httpClient: HttpClient) { }
 
     getAllFieldCodes(): Observable<FieldCode[]> {
-        return this.httpClient.get<FieldCode[]>(`${API.HttpBaseURL}/fieldcode/get`);
+        return this.httpClient.get<FieldCode[]>(`${API.HttpsBaseURL}/fieldcode/get`);
     }
 
     saveFieldCode(fieldCodeDto:FieldCode): Observable<any> {
-        return this.httpClient.post<any>(`${API.HttpBaseURL}/fieldcode/save`, fieldCodeDto);
+        return this.httpClient.post<any>(`${API.HttpsBaseURL}/fieldcode/save`, fieldCodeDto);
     }
 
     updateFieldCode(fieldCodeData: FieldCode): Observable<any> {
-        return this.httpClient.put<any>(`${API.HttpBaseURL}/fieldcode/update`, fieldCodeData
+        return this.httpClient.put<any>(`${API.HttpsBaseURL}/fieldcode/update`, fieldCodeData
         );
     }
 
     deleteFieldCode(fieldCodeData: FieldCode): Observable<any> {
-        return this.httpClient.delete<any>(`${API.HttpBaseURL}/fieldcode/delete`, {
+        return this.httpClient.delete<any>(`${API.HttpsBaseURL}/fieldcode/delete`, {
             body: fieldCodeData,
         });
     }

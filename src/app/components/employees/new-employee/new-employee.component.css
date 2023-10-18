@@ -37,7 +37,7 @@ main {
     border-radius: 100px;
 }
 
-.additional-fields-label {
+#additional-fields-label {
     font-size: 22px;
     font-weight: 400;
     line-height: 28px;
@@ -59,4 +59,10 @@ main {
     font-weight: 400;
     line-height: 44px;
     word-wrap: break-word;
+}
+
+#heading-text {
+    font-size: 12px;
+    line-height: 10px;
+    color: #0029C6;
 }
