@@ -183,8 +183,8 @@
                 </ng-template>
               </div>
               <div id="menu-quick-info">
-                <div>{{employeeProfile.name}}</div>
-                <div>{{employeeType.name}}</div>
+                <div>{{employeeProfile?.name}}</div>
+                <div>{{employeeType?.name}}</div>
               </div>
               <hr>
             </button>
@@ -193,8 +193,8 @@
           </mat-menu>
         </div>
         <div class="col-auto ms-4" id="employee-info">
-          <div>{{employeeProfile.name + ' ' + employeeProfile.surname}}</div>
-          <div>{{employeeType.name}}</div>
+          <div>{{employeeProfile?.name + ' ' + employeeProfile?.surname}}</div>
+          <div>{{employeeType?.name}}</div>
         </div>
         <div class="col-auto" id="employee-photo">
           <div id="image-container">
