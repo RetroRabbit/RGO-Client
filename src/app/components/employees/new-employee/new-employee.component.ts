@@ -26,28 +26,14 @@ import {
 import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
 import { FieldCodes } from 'src/app/models/constants/field-codes.constants';
-
-interface AddressControls {
-  unitNumber: FormControl<string | null>;
-  complexName: FormControl<string | null>;
-  suburbDistrict: FormControl<string | null>;
-  streetNumber: FormControl<string | null>;
-  country: FormControl<string | null>;
-  province: FormControl<string | null>;
-  postalCode: FormControl<string | null>;
-}
-
-interface TshirtControls {
-  tShirtSize: FormControl<string | null>;
-}
-
-interface DietaryControls {
-  dietary: FormControl<string | null>;
-}
-
-interface AllergiesControls {
-  allergies: FormControl<string | null>;
-}
+import { AddressControls } from 'src/app/models/address-controls.interface';
+import { TshirtControls } from 'src/app/models/tshirt-controls.interface';
+import { DietaryControls } from 'src/app/models/dietary-controls.interface';
+import { AllergiesControls } from 'src/app/models/allergies-controls.interface';
+import { tshirtsizes } from 'src/app/models/constants/tshirtsize.constatns';
+import { dietary } from 'src/app/models/constants/dietary.constants';
+import { countries } from 'src/app/models/constants/country.constants';
+import { provinces } from 'src/app/models/constants/provinces.constants';
 
 @Component({
   selector: 'app-new-employee',
@@ -72,6 +58,10 @@ export class NewEmployeeComponent implements OnInit {
   titles: string[] = titles;
   races: string[] = race.map((r) => r.value);
   genders: string[] = gender.map((g) => g.value);
+  tshirtSizes: string[] = tshirtsizes
+  dietaryRestictions: string[] = dietary
+  countries: string[] = countries
+  provinces: string[] = provinces
 
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
