@@ -52,9 +52,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
 import {MatSelectModule} from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatExpansionModule} from '@angular/material/expansion'; 
 
 import { PendingBankDetailsComponent } from './components/employees/pending-bank-details/pending-bank-details.component';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
@@ -134,6 +134,7 @@ import { AddEmployeeEventComponent } from './components/manage-employee-events/a
     MatRadioModule,
     MatSlideToggleModule,
     MatCheckboxModule,
+    MatExpansionModule,
     TableModule,
     NgMultiSelectDropDownModule.forRoot()
   ],

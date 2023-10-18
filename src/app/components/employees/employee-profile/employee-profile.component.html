@@ -179,5 +179,62 @@
                 </div>
             </div>
         </div>
+
+        <div class="row" *ngIf="selectedItem == 'Profile Details'" id="accordion-container">
+            <mat-accordion id="accordion">
+                <mat-expansion-panel class="my-3 mx-4" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Employee Details
+                        </mat-panel-title>
+                        <mat-panel-description>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <h1>Content goes here</h1>
+                    </div>
+
+                </mat-expansion-panel>
+                <mat-expansion-panel class="my-3 mx-4" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Personal Details
+                        </mat-panel-title>
+                        <mat-panel-description>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <h1>Content goes here</h1>
+                    </div>
+
+                </mat-expansion-panel>
+                <mat-expansion-panel class="my-3 mx-4" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Contact Details
+                        </mat-panel-title>
+                        <mat-panel-description>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <h1>Content goes here</h1>
+                    </div>
+
+                </mat-expansion-panel>
+                <mat-expansion-panel class="my-3 mx-4" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Address Details
+                        </mat-panel-title>
+                        <mat-panel-description>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div>
+                        <h1>Content goes here</h1>
+                    </div>
+
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
     </div>
 </div>

@@ -148,8 +148,7 @@ label{
 #accordions-nav{
     background-color: #0029C6;
     border-radius: 1rem;
-    padding-top: 1rem;
-
+    padding-top: 1rem
 }
 
 #nav-item > div {
@@ -192,4 +191,23 @@ label{
     background: white;
     border-top-left-radius: 100px;
     border-top-right-radius: 100px;
+  }
+
+  #test{
+    width: 50%;
+    height: 10px;
+    max-height: 10%;
+    overflow: hidden;
+    background-color: white
+  }
+
+  #accordion-container{
+    border: 1px solid black;
+    width: 100%;
+  }
+  /* Accordions */
+  .mat-expansion-panel{
+
+  }
+  .mat-expansion-panel-header {
   }

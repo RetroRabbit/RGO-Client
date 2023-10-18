@@ -15,6 +15,9 @@ export class EmployeeProfileComponent {
   EmployeeProfile !: EmployeeProfile;
   isEdit: boolean = false;
   selectedItem: string = 'Profile Details';
+  expandedIndex = 0;
+  
+  panelOpenState : boolean = false;
 
   constructor(private accessPropertyService: AccessPropertiesService,
     private cookieService: CookieService,
