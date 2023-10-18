@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
 import { CookieService } from 'ngx-cookie-service';
+import { Client } from 'src/app/models/client.interface';
 import { gender } from 'src/app/models/constants/gender.constants';
 import { general } from 'src/app/models/constants/general.constants';
 import { level } from 'src/app/models/constants/level.constants';
@@ -9,10 +10,13 @@ import { race } from 'src/app/models/constants/race.constants';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { FieldCode } from 'src/app/models/field-code.interface';
+import { ClientService } from 'src/app/services/client.service';
 import { EmployeeDataService } from 'src/app/services/employee-data.service';
+import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { FieldCodeService } from 'src/app/services/field-code.service';
+import { RoleService } from 'src/app/services/role.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -21,16 +25,27 @@ import { FieldCodeService } from 'src/app/services/field-code.service';
 })
 export class EmployeeDetailsComponent implements OnInit {
   @Input() selectedEmployee!: any | null;
-  employeeCustomForm!: FormGroup;
   employeeForm!: FormGroup;
 
   employeeTypes: EmployeeType[] = [];
   employeeData: EmployeeData[] = [];
   fieldcodes: FieldCode[] = [];
   employeeFieldcodes: any = [];
+  employees: any = [];
   viewMoreInfo: boolean = false;
   toEdit: boolean = false;
-
+  filteredEmployees: any = [];
+  clients: Client[] = [];
+  filteredClients: any = [];
+  employeeId?: number = 0;
+  clientId?: number = 0;
+  foundClient: any;
+  foundTeamLead: any;
+  filteredPeopleChamps: any = [];
+  employeeRoles: any = [];
+  peopleChampionId: number = 0;
+  foundChampion: any;
+  
   public genderTypes = gender;
   public raceTypes = race;
   public generalTypes = general;
@@ -42,13 +57,13 @@ export class EmployeeDetailsComponent implements OnInit {
     private fieldcodeService: FieldCodeService, 
     private employeeService: EmployeeService,
     private cookieService: CookieService,
-    private toast: NgToastService
+    private toast: NgToastService,
+    private clientService: ClientService,
+    private employeeRoleService: EmployeeRoleService
   ) { }
 
   ngOnInit(): void {
     this.callService();
-    this.initializeForm();
-    this.employeeForm.disable();
   }
 
   private callService() {
@@ -67,6 +82,24 @@ export class EmployeeDetailsComponent implements OnInit {
         this.fieldcodes = data
       }
     });
+    this.employeeService.getAllProfiles().subscribe({
+      next: data => {
+        this.employees = data;
+      }
+    });
+    this.clientService.getAllClients().subscribe({
+      next: data => {
+        this.clients = data;
+      }
+    });
+    this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
+      next: data => {
+        this.employeeRoles = data;
+        console.log(data)
+      }
+    })
+
+    this.initializeForm();
   }
 
   private initializeForm() {
@@ -96,12 +129,15 @@ export class EmployeeDetailsComponent implements OnInit {
       payRate: [this.selectedEmployee.payRate, Validators.required],
       photo: [this.selectedEmployee.photo, Validators.required],
       race: [this.selectedEmployee.race,Validators.required],
-      reportingLine: this.selectedEmployee.reportingLine, 
+      peopleChampion: this.selectedEmployee.peopleChampion, 
       salary: [this.selectedEmployee.salary,Validators.required],
       salaryDays: [this.selectedEmployee.salaryDays,Validators.required],
       terminationDate: this.selectedEmployee.terminationDate, 
-      dateOfBirth: [this.selectedEmployee.dateOfBirth, Validators.required]
+      dateOfBirth: [this.selectedEmployee.dateOfBirth, Validators.required],
+      clientAllocated: this.foundClient?.name,
+      teamLead: this.foundTeamLead?.name,
     });
+    this.employeeForm.disable();
   }
 
   checkEmployeeFieldCode() {
@@ -111,6 +147,31 @@ export class EmployeeDetailsComponent implements OnInit {
         return data.fieldCodeId == fieldcode.id
       });
       this.employeeForm.addControl(name, this.fb.control(fc ? fc.value : ''));
+    }
+
+    this.foundTeamLead = this.employees.find((data: any) => {
+      return data.id == this.selectedEmployee.teamLead
+    });
+    this.foundClient = this.clients.find((data: any) => {
+      return data.id == this.selectedEmployee.clientAllocated
+    });
+    this.foundChampion = this.employeeRoles.find((data: any) => {
+      return data.employee.id == this.selectedEmployee.peopleChampion
+    });
+
+    if(this.foundTeamLead != null ){
+      this.employeeForm.get('teamLead')?.setValue(this.foundTeamLead.name + ' ' + this.foundTeamLead.surname);
+      this.employeeId = this.foundTeamLead.id
+    }
+
+    if(this.foundClient != null){
+      this.employeeForm.get('clientAllocated')?.setValue(this.foundClient.name);
+      this.clientId = this.foundClient.id
+    }
+
+    if(this.foundChampion != null){
+      this.employeeForm.get('peopleChampion')?.setValue(this.foundChampion.employee.name + ' ' + this.foundChampion.employee.surname);
+      this.peopleChampionId = this.foundChampion.employee.id
     }
     this.employeeForm.disable();
   }
@@ -125,7 +186,7 @@ export class EmployeeDetailsComponent implements OnInit {
         taxNumber: employeeForm.taxNumber,
         engagementDate: employeeForm.engagementDate,
         terminationDate: employeeForm.terminationDate,
-        reportingLine: employeeForm.reportingLine,
+        peopleChampion: this.peopleChampionId == 0 ? null : this.peopleChampionId,
         disability: parseInt(employeeForm.disability) == 0 ? false : true,
         disabilityNotes: employeeForm.disabilityNotes,
         countryOfBirth: employeeForm.countryOfBirth,
@@ -154,16 +215,18 @@ export class EmployeeDetailsComponent implements OnInit {
         leaveInterval: employeeForm.leaveInterval,
         salary: employeeForm.salary,
         salaryDays: employeeForm.salaryDays,
-        payRate: employeeForm.payrate
+        payRate: employeeForm.payrate, 
+        clientAllocated: this.clientId == 0 ? null : this.clientId,
+        teamLead: this.employeeId == 0 ? null : this.employeeId
       }
-
       this.employeeService.updateEmployee(employeeProfileDto).subscribe({
-        next: (data) => { },
-        error: (error) => { },
+        next: (data) => {
+        this.cookieService.set('currentPage', 'People');
+        this.saveEmployeeCustomData();
+      },
+        error: (error) => { console.log(error) },
       });
-      this.saveEmployeeCustomData();
     }
-    this.cookieService.set('currentPage', 'People');
   }
 
   saveEmployeeCustomData() {
@@ -198,7 +261,7 @@ export class EmployeeDetailsComponent implements OnInit {
         if (employeeDataDto.value != '') {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
-              this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+              this.cookieService.set('currentPage', 'People'); 
             },
             error: (error) => {
               this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
@@ -235,5 +298,50 @@ export class EmployeeDetailsComponent implements OnInit {
 
   cancelAction(){
     this.cookieService.set('currentPage', 'People');
+  }
+
+  filterEmployees(event: any){
+    if (event) {
+      this.filteredEmployees = this.employees.filter((employee: { name: string; }) =>
+        employee.name.toLowerCase().includes(event.target.value.toLowerCase())
+      
+      );
+    } else {
+      this.filteredEmployees = this.employees; 
+    }
+  }
+
+  filterClients(event: any){
+    if (event) {
+      this.filteredClients = this.clients.filter((client: { name: string; }) =>
+        client.name.toLowerCase().includes(event.target.value.toLowerCase())
+      
+      );
+    } else {
+      this.filteredClients = this.clients; 
+    }
+  }
+
+  filterChampions(event: any){
+    if (event) {
+      this.filteredPeopleChamps = this.employeeRoles.filter((champs: any) =>
+        champs.employee.name.toLowerCase().includes(event.target.value.toLowerCase())
+      
+      );
+    } else {
+      this.filteredPeopleChamps= this.employeeRoles.employee.name; 
+    }
+  }
+
+  getId(data: any, name: string){
+    if (name == 'employee'){
+      this.employeeId = data.id
+    }
+    else if (name == 'client'){
+      this.clientId = data.id
+    }
+    else if (name == 'champion'){
+      this.peopleChampionId = data.employee.id
+    }
   }
 }

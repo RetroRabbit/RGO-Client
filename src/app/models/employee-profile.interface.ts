@@ -1,11 +1,12 @@
+import { NumberSymbol } from "@angular/common";
+
 export interface EmployeeProfile {
   id: number,
   employeeNumber: string,
   taxNumber: string,
   engagementDate: Date,
   terminationDate: Date,
-  reportingLine: number,
-  highestQualification: string,
+  reportingLine?: number,
   disability: boolean,
   disabilityNotes: string,
   countryOfBirth: string,
@@ -21,16 +22,20 @@ export interface EmployeeProfile {
   surname: string,
   dateOfBirth: Date,
   idNumber: string,
-  passportNumber: string,
-  passportExpirationDate: Date,
-  passportCountryIssue: string,
+  passportNumber?: string,
+  passportExpirationDate?: Date,
+  passportCountryIssue?: string,
   race: number,
   gender: number,
-  knownAs: string,
-  pronouns: string,
   email: string,
   personalEmail: string,
   cellphoneNo: string,
-  tshirtSize: number,
-  photo : string
+  photo : string, 
+  notes: string, 
+  leaveInterval: number,
+  salaryDays: number, 
+  payRate: number, 
+  salary: Number,
+  clientAllocated?: string,
+  teamLead?: number
 }
