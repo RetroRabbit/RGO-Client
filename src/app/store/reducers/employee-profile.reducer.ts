@@ -14,7 +14,6 @@ export const initialState: EmployeeProfileState = {
       engagementDate: new Date,
       terminationDate: new Date,
       reportingLine: 0,
-      highestQualification: '',
       disability: true,
       disabilityNotes: '',
       countryOfBirth: '',
@@ -35,13 +34,17 @@ export const initialState: EmployeeProfileState = {
       passportCountryIssue: '',
       race: 1,
       gender: 0,
-      knownAs: '',
-      pronouns: '',
       email: '',
       personalEmail: '',
       cellphoneNo: '',
-      tshirtSize: 0,
-      photo: ''
+      photo: '',
+      notes: '',
+      leaveInterval: 0,
+      salaryDays: 0,
+      payRate: 0,
+      salary: 0,
+      clientAllocated: '',
+      teamLead: 0
   }
 };
 
