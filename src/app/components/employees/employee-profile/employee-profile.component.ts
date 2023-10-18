@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { AccessPropertiesService } from 'src/app/services/access-properties.service';
 import { Properties } from 'src/app/models/properties.interface';
 import { CookieService } from 'ngx-cookie-service';
+import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -10,54 +12,35 @@ import { CookieService } from 'ngx-cookie-service';
 export class EmployeeProfileComponent {
   EmployeeFields: Properties[] = [];
   EditFields: Properties[] = [];
-
+  EmployeeProfile !: EmployeeProfile;
   isEdit: boolean = false;
+  selectedItem: string = 'Profile Details';
+  expandedIndex = 0;
+  
+  panelOpenState : boolean = false;
 
-  constructor(private accessPropertyService: AccessPropertiesService, 
-    private cookieService : CookieService) { }
+  constructor(private accessPropertyService: AccessPropertiesService,
+    private cookieService: CookieService,
+    private employeeProfileService : EmployeeProfileService) { }
 
   ngOnInit() {
     this.getEmployeeFields();
   }
 
-  getEmployeeFields(){
+  getEmployeeFields() {
     this.accessPropertyService.GetAccessProperties(this.cookieService.get('userEmail')).subscribe({
       next: data => {
         this.EmployeeFields = data;
       }
-  });
-  }
-
-  toggleEdit() {
-    this.isEdit = !this.isEdit;
-    this.EditFields = JSON.parse(JSON.stringify(this.EmployeeFields));
-  }
-
-  canEdit(field: Properties): boolean{
-    return this.isEdit && field.condition == 2;
-  }
-
-  captureChange(htmlValue: any, index: number) {
-    this.EditFields[index].value = htmlValue.target.value;
-  }
-
-  saveChanges(){
-    let payload : any[] = [];
-
-    this.EditFields.forEach((field, index) =>{
-      if(field.value !== this.EmployeeFields[index].value){
-        payload.push({
-          fieldId: field.id,
-          value: field.value
-        })
+    });
+    this.employeeProfileService.GetEmployeeProfile().subscribe({
+      next: data => {
+        this.EmployeeProfile = data;
       }
     });
-    this.accessPropertyService.UpdateProperties(this.cookieService.get('userEmail'), payload).subscribe(
-      () => {
-    });
-    setTimeout(()=>{
-      this.getEmployeeFields();
-    },500)
-    this.toggleEdit();
+  }
+  CaptureEvent(event: any) {
+    const target = event.target as HTMLAnchorElement;
+    this.selectedItem = target.innerText;
   }
 }
