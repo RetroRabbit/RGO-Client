@@ -147,7 +147,8 @@
         <div id="accordions-body`" class="row">
             <div class="col-12" *ngIf="selectedItem == 'Profile Details'" id="accordion-container">
                 <mat-accordion id="accordion" class="row">
-                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
                                 Employee Details
@@ -158,22 +159,77 @@
                         <div>
                             <h1>Content goes here</h1>
                         </div>
-    
+
                     </mat-expansion-panel>
-                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
                                 Personal Details
                             </mat-panel-title>
                             <mat-panel-description>
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <div>
-                            <h1>Content goes here</h1>
+                        <div class="row">
+                            <div class="col-10">
+                                <div class="row">
+                                    <div class="col-12 my-2">
+                                        <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
+                                        <mat-radio-group aria-label="Select your gender" [disabled]="!editPersonal">
+                                            <mat-radio-button [value]=1>Male</mat-radio-button>
+                                            <mat-radio-button [value]=2>Female</mat-radio-button>
+                                            <mat-radio-button [value]=0>Unclassified</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                                    <div class="col-4  my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Race</mat-label>
+                                            <mat-select [disabled]="!editPersonal">
+                                                <mat-option *ngFor="let race of races" [value]="race.id">
+                                                    {{race.value}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 mt-1"></div>
+                                    <div class="col-6  my-1">
+                                        <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any disabilities that you are aware of?</h3>
+                                        <mat-radio-group aria-label="Select status" (change)="setHasDisability($event)" [disabled]="!editPersonal">
+                                            <mat-radio-button [value]=true>yes</mat-radio-button>
+                                            <mat-radio-button [value]=false>false</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                                    <div class="col-12" *ngIf="hasDisbility">
+                                        <div class="row">
+                                            <div class="col-4" >
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Disability</mat-label>
+                                                    <mat-select>
+                                                        <mat-option *ngFor="let disability of disabilities" [value]="disability.id">
+                                                            {{disability.value}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-6">
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <textarea matInput placeholder="Disability Notes"></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <button *ngIf="!editPersonal" mat-button id="edit-button" (click)="editPersonalDetails()"> <mat-icon>edit</mat-icon>Edit Detail</button>
+                                <button *ngIf="editPersonal" mat-button id="cancel-button" (click)="cancelPersonalEdit()"> <mat-icon>clear</mat-icon>Cancel Edit</button>
+                            </div>
                         </div>
-    
+
                     </mat-expansion-panel>
-                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
                                 Contact Details
@@ -184,9 +240,10 @@
                         <div>
                             <h1>Content goes here</h1>
                         </div>
-    
+
                     </mat-expansion-panel>
-                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
                                 Address Details
@@ -197,7 +254,7 @@
                         <div>
                             <h1>Content goes here</h1>
                         </div>
-    
+
                     </mat-expansion-panel>
                 </mat-accordion>
             </div>
