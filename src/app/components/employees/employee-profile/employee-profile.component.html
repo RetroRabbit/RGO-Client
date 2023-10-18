@@ -1,33 +1,205 @@
-<div class="row">
-    <div *ngIf="!isEdit;else IsEditing">
-        <button class="btn btn-primary" (click)="toggleEdit()">Edit</button>
-    </div>
-    <ng-template #IsEditing>
-        <div class="row">
-            <div class="col-auto">
-                <button class="btn btn-success" (click)="saveChanges()">Save</button>
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-danger" (click)="toggleEdit()">Cancel</button>
+<div class="container mt-4">
+    <div id="profile-header" class="row p-2">
+        <div class="col-2 mt-4">
+            <div id="profile-image">
+                <img [src]="EmployeeProfile?.photo" alt="">
             </div>
         </div>
-    </ng-template>
-</div>
-<div class="row">
-    <div *ngFor="let field of EmployeeFields; index as index" class="col-6">
-        <div class="row">
-            <div class="col-5">
-                <label for={{field.label}}>{{field.label}}</label>
-            </div>
-            <div class="col-6">
-                <div *ngIf="field.options.length > 0; else NoOptions">
-                    <select (change)="captureChange($event, index)" [disabled]="!canEdit(field)">
-                        <option [selected]="option == field.value" class="form-select" value={{option}} *ngFor="let option of field.options">{{option}}</option>
-                    </select>
+        <div class="col-md-8 offset-md-2 offset-lg-0 col-lg-10 mt-4">
+            <div class="row mt-3">
+                <div class="col-6 col-md-8" id="header-name">
+                    <h1>{{EmployeeProfile?.name}} {{EmployeeProfile?.surname}}</h1>
                 </div>
-                <ng-template #NoOptions>
-                    <input [id]=field.label [readOnly]="!canEdit(field)" class="form-control" type={{field.type}} (change)="captureChange($event, index)" [value]=field.value>
-                </ng-template>
+                <div class="col-6 col-md-4" id="header-email">
+                    <div class="row me-4">
+                        <div class="col-auto">{{EmployeeProfile?.email}}</div>
+                        <div class="col-1 mt-2" id="header-email-clip"><mat-icon>attachment</mat-icon></div>
+                    </div>
+                </div>
+                <div class="col-12 my-2" id="header-role">
+                    {{EmployeeProfile?.employeeType?.name}} | Level {{EmployeeProfile?.level}}
+                </div>
+                <div class="col-12 my-2" id="header-based">
+                    Based in Johannesburg
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-10 offset-lg-2 my-4">
+            <div class="row" id="quick-info">
+                <div class="col-3 mb-md-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>people_outline</mat-icon>
+                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">Team Lead</div>
+                            <div id="header-value">Rouan van der Walt</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 mb-md-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>card_membership</mat-icon>
+                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">People Champion</div>
+                            <div id="header-value">Mandy Pelser</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 mb-md-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>business_center</mat-icon>
+                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">Client Allocated</div>
+                            <div id="header-value">Discovery</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 mb-md-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>date_range</mat-icon>
+                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">Start Date</div>
+                            <div id="header-value">{{EmployeeProfile?.engagementDate}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="profile-completion" class="row p-2">
+        <!-- ToDo: Add Tracking for Accordions -->
+    </div>
+
+    <div id="profile-accordions">
+        <div id="accordions-nav" class="row">
+            <div class="col-3">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)"
+                            [ngClass]="selectedItem == 'Profile Details' ? 'active' : 'idle'">
+                            Profile Details
+                        </div>
+                        <div *ngIf="selectedItem == 'Profile Details'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)"
+                            [ngClass]="selectedItem == 'Capture Summary' ? 'active' : 'idle'">
+                            Capture Summary
+                        </div>
+                        <div *ngIf="selectedItem == 'Capture Summary'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)"
+                            [ngClass]="selectedItem == 'Bank Information' ? 'active' : 'idle'">
+                            Bank Information
+                        </div>
+                        <div *ngIf="selectedItem == 'Bank Information'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Documents' ? 'active' : 'idle'">
+                            Documents
+                        </div>
+                        <div *ngIf="selectedItem == 'Documents'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="accordions-body`" class="row">
+            <div class="col-12" *ngIf="selectedItem == 'Profile Details'" id="accordion-container">
+                <mat-accordion id="accordion" class="row">
+                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Employee Details
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div>
+                            <h1>Content goes here</h1>
+                        </div>
+    
+                    </mat-expansion-panel>
+                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Personal Details
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div>
+                            <h1>Content goes here</h1>
+                        </div>
+    
+                    </mat-expansion-panel>
+                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Contact Details
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div>
+                            <h1>Content goes here</h1>
+                        </div>
+    
+                    </mat-expansion-panel>
+                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Address Details
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div>
+                            <h1>Content goes here</h1>
+                        </div>
+    
+                    </mat-expansion-panel>
+                </mat-accordion>
             </div>
         </div>
     </div>

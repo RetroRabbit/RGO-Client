@@ -55,6 +55,10 @@
     letter-spacing: 0.1px;
   }
   
+  #nav-item > div:hover{
+    cursor: pointer;
+  }
+
   #nav-item > div.active {
     text-align: center;
     color: #0029c6;
