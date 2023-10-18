@@ -201,13 +201,10 @@ label{
     background-color: white
   }
 
-  #accordion-container{
-    border: 1px solid black;
-    width: 100%;
+  .mat-expansion-panel {
+    padding: 0;
   }
-  /* Accordions */
-  .mat-expansion-panel{
 
-  }
-  .mat-expansion-panel-header {
-  }
+  .mat-accordion .mat-expansion-panel:not(.mat-expanded), .mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing) {
+    border-radius: 1rem;
+}
