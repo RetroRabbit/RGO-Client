@@ -221,8 +221,9 @@ export class EmployeeDetailsComponent implements OnInit {
         next: (data) => {
         this.cookieService.set('currentPage', 'People');
         this.saveEmployeeCustomData();
+        this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
       },
-        error: (error) => { console.log(error) },
+        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
       });
     }
   }
