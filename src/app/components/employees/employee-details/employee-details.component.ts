@@ -16,7 +16,6 @@ import { EmployeeRoleService } from 'src/app/services/employee/employee-role.ser
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { FieldCodeService } from 'src/app/services/field-code.service';
-import { RoleService } from 'src/app/services/role.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -95,7 +94,6 @@ export class EmployeeDetailsComponent implements OnInit {
     this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
       next: data => {
         this.employeeRoles = data;
-        console.log(data)
       }
     })
 
