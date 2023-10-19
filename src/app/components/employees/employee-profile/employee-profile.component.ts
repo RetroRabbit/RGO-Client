@@ -7,7 +7,7 @@ import { EmployeeProfileService } from 'src/app/services/employee/employee-profi
 import { race } from 'src/app/models/constants/race.constants';
 import { gender } from 'src/app/models/constants/gender.constants';
 import { tshirtSize } from 'src/app/models/constants/tshirt.constants';
-import { nationalities } from 'src/app/models/constants/nationaility.constants';
+import { countries } from 'src/app/models/constants/country.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { Address } from 'src/app/models/address.interface';
@@ -32,7 +32,7 @@ export class EmployeeProfileComponent {
   races: any[] = [];
   genders: any[] = [];
   sizes: any[] = [];
-  nationalities: any[] = [];
+  countries: any[] = [];
   hasDisbility: boolean = false;
   disabilities: any[] = [];
   provinces: any[] = [];
@@ -43,7 +43,7 @@ export class EmployeeProfileComponent {
 
   physicalCountryControl : string = "";
   postalCountryControl : string = "";
-  filteredCountries: any[] = this.nationalities.slice();
+  filteredCountries: any[] = this.countries.slice();
   constructor(private accessPropertyService: AccessPropertiesService,
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
@@ -55,7 +55,7 @@ export class EmployeeProfileComponent {
     this.races = race;
     this.genders = gender;
     this.sizes = tshirtSize;
-    this.nationalities = nationalities;
+    this.countries = countries;
     this.disabilities = disabilities;
     this.provinces = provinces;
   }
@@ -87,9 +87,10 @@ export class EmployeeProfileComponent {
 
   filterCountries(value: any) {
     const filterValue = value.target.value.toLowerCase();
-    this.filteredCountries = this.nationalities.filter(
-      (country) => country.value.toLowerCase().includes(filterValue)
+    this.filteredCountries = this.countries.filter(
+      (country) => country.toLowerCase().includes(filterValue)
     );
+    console.log(this.filteredCountries);
   }
 
   // Setting the bool for conditional rendering
@@ -127,6 +128,7 @@ export class EmployeeProfileComponent {
   cancelAddressEdit() {
     this.editAddress = false;
     this.hasDisbility = false;
+    this.physicalCountryControl = this.postalCountryControl = "";
   }
 }
 
