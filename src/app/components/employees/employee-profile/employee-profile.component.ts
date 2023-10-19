@@ -67,6 +67,9 @@ export class EmployeeProfileComponent {
   editPersonalDetails(){
     this.editPersonal = true;
   }
+  savePersonalEdit(){
+    this.editPersonal = false;
+  }
   cancelPersonalEdit(){
     this.editPersonal = false;
     this.hasDisbility = false;

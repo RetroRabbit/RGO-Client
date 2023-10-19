@@ -219,11 +219,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-12">
+                                        <button *ngIf="editPersonal" mat-button id="cancel-button" (click)="editPersonalDetails()">Cancel</button>
+                                        <button *ngIf="editPersonal" mat-button id="save-button" (click)="cancelPersonalEdit()">Save changes</button>        
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-2">
                                 <button *ngIf="!editPersonal" mat-button id="edit-button" (click)="editPersonalDetails()"> <mat-icon>edit</mat-icon>Edit Detail</button>
-                                <button *ngIf="editPersonal" mat-button id="cancel-button" (click)="cancelPersonalEdit()"> <mat-icon>clear</mat-icon>Cancel Edit</button>
                             </div>
                         </div>
 
