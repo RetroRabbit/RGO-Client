@@ -5,11 +5,13 @@ export interface Address{
     employee : EmployeeProfile,
     adressType : any,
     unitNumber : string,
-    complexNumber : string,
+    complexName : string,
+    country : string,
     streetNumber : string,
     streetName : string,
     suburb : string,
     city : string,
-    postalCode : string
+    postalCode : string,
+    province: string
 
 }
