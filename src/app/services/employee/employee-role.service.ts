@@ -25,4 +25,9 @@ export class EmployeeRoleService {
   removeRole(email: string, role: string): Observable<any> {
     return this.httpClient.delete<any>(`${API.HttpBaseURL}/employeerolemanager/remove?email=${encodeURIComponent(email)}&role=${encodeURIComponent(role)}`);
   }
+
+  getEmployeeOnRoles(roleId: number): Observable<any[]>{
+    const queryParams = `?roleId=${roleId}`;
+    return this.httpClient.get<any[]>(`${API.HttpBaseURL}/employeerolemanager/get-role${queryParams}`);
+  }
 }
