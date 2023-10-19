@@ -10,6 +10,10 @@ import { tshirtSize } from 'src/app/models/constants/tshirt.constants';
 import { nationalities } from 'src/app/models/constants/nationaility.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
+import { Address } from 'src/app/models/address.interface';
+import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
+import { FormControl } from '@angular/forms';
+import { startWith, map } from 'rxjs/operators';
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -19,24 +23,31 @@ export class EmployeeProfileComponent {
   EmployeeFields: Properties[] = [];
   EditFields: Properties[] = [];
   EmployeeProfile !: EmployeeProfile;
+  EmployeeAddress !: Address;
+
   isEdit: boolean = false;
   selectedItem: string = 'Profile Details'; // set the default accordion to Profile Details
-  expandedIndex = 0;  
-  panelOpenState : boolean = false;
-  races : any[] = [];
-  genders : any[] = [];
-  sizes : any[] = [];
-  nationalities : any[] = [];
-  hasDisbility : boolean = false;
+  expandedIndex = 0;
+  panelOpenState: boolean = false;
+  races: any[] = [];
+  genders: any[] = [];
+  sizes: any[] = [];
+  nationalities: any[] = [];
+  hasDisbility: boolean = false;
   disabilities: any[] = [];
-  provinces : any[] = [];
-  physicalEqualPostal : boolean = false;
+  provinces: any[] = [];
+  physicalEqualPostal: boolean = false;
 
-  editPersonal : boolean = false;
-  editAddress : boolean = false;
+  editPersonal: boolean = false;
+  editAddress: boolean = false;
+
+  physicalCountryControl : string = "";
+  postalCountryControl : string = "";
+  filteredCountries: any[] = this.nationalities.slice();
   constructor(private accessPropertyService: AccessPropertiesService,
     private cookieService: CookieService,
-    private employeeProfileService : EmployeeProfileService) { }
+    private employeeProfileService: EmployeeProfileService,
+    private employeeAddressService: EmployeeAddressService) { }
 
   ngOnInit() {
     this.getEmployeeFields();
@@ -59,6 +70,12 @@ export class EmployeeProfileComponent {
     this.employeeProfileService.GetEmployeeProfile().subscribe({
       next: data => {
         this.EmployeeProfile = data;
+        this.employeeAddressService.get(this.EmployeeProfile.id).subscribe({
+          next: data => {
+            this.EmployeeAddress = data;
+          },
+          error: (error) => console.log(error)
+        })
       }
     });
   }
@@ -67,40 +84,47 @@ export class EmployeeProfileComponent {
     const target = event.target as HTMLAnchorElement;
     this.selectedItem = target.innerText;
   }
-  
+
+  filterCountries(value: any) {
+    const filterValue = value.target.value.toLowerCase();
+    this.filteredCountries = this.nationalities.filter(
+      (country) => country.value.toLowerCase().includes(filterValue)
+    );
+  }
+
   // Setting the bool for conditional rendering
   setHasDisability(event: any) {
-      this.hasDisbility = event.value;
+    this.hasDisbility = event.value;
   }
   // When they click on the edit button
-  editPersonalDetails(){
+  editPersonalDetails() {
     this.editPersonal = true;
   }
   // Does nothing for now
-  savePersonalEdit(){
+  savePersonalEdit() {
     this.editPersonal = false;
   }
 
   // Grey out the values is cancelling an edit
-  cancelPersonalEdit(){
+  cancelPersonalEdit() {
     this.editPersonal = false;
     this.hasDisbility = false;
   }
 
-  setPhysicalEqualPostal(event : any){
+  setPhysicalEqualPostal(event: any) {
     console.log(this.physicalEqualPostal);
   }
 
-  editAddressDetails(){
+  editAddressDetails() {
     this.editAddress = true;
   }
   // Does nothing for now
-  saveAddressEdit(){
+  saveAddressEdit() {
     this.editAddress = false;
   }
 
   // Grey out the values is cancelling an edit
-  cancelAddressEdit(){
+  cancelAddressEdit() {
     this.editAddress = false;
     this.hasDisbility = false;
   }

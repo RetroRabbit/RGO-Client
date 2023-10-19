@@ -288,7 +288,8 @@
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Street Number</mat-label>
-                                            <input matInput [disabled]="!editAddress">
+                                            <input matInput [disabled]="!editAddress"
+                                                [value]="EmployeeAddress.streetNumber">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-6">
@@ -300,11 +301,14 @@
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Country</mat-label>
-                                            <mat-select [disabled]="!editAddress">
-                                                <mat-option *ngFor="let country of nationalities" [value]="country.id">
-                                                    {{country.value}}
+                                            <input matInput [(ngModel)]="physicalCountryControl" [matAutocomplete]="auto"
+                                                placeholder="Search country" (input)="filterCountries($event)" [disabled]="!editAddress"/>
+                                            <mat-autocomplete #auto="matAutocomplete">
+                                                <mat-option *ngFor="let country of filteredCountries"
+                                                    [value]="country.value">
+                                                    {{ country.value }}
                                                 </mat-option>
-                                            </mat-select>
+                                            </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
                                     <div class="col-6">
@@ -323,9 +327,9 @@
                                             <input matInput [disabled]="!editAddress">
                                         </mat-form-field>
                                     </div>
-
                                     <div class="col-12">
-                                        <mat-checkbox [(ngModel)]="physicalEqualPostal" [disabled]="!editAddress">Is the postal address the same as physical address?</mat-checkbox>
+                                        <mat-checkbox [(ngModel)]="physicalEqualPostal" [disabled]="!editAddress">Is the
+                                            postal address the same as physical address?</mat-checkbox>
                                     </div>
                                     <div *ngIf="!physicalEqualPostal" class="col-12 mt-2">
                                         <div class="row">
@@ -350,7 +354,8 @@
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Street Number</mat-label>
-                                                    <input matInput [disabled]="!editAddress">
+                                                    <input matInput [disabled]="!editAddress"
+                                                        [value]="EmployeeAddress.streetNumber">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-6">
@@ -362,11 +367,14 @@
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Country</mat-label>
-                                                    <mat-select [disabled]="!editAddress">
-                                                        <mat-option *ngFor="let country of nationalities" [value]="country.id">
-                                                            {{country.value}}
+                                                    <input matInput [(ngModel)]="postalCountryControl" [matAutocomplete]="auto"
+                                                        placeholder="Search country" (input)="filterCountries($event)" [disabled]="!editAddress"/>
+                                                    <mat-autocomplete #auto="matAutocomplete">
+                                                        <mat-option *ngFor="let country of filteredCountries"
+                                                            [value]="country.value">
+                                                            {{ country.value }}
                                                         </mat-option>
-                                                    </mat-select>
+                                                    </mat-autocomplete>
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-6">
@@ -391,14 +399,14 @@
                                 </div>
                             </div>
                             <div class="col-2"> <!-- Reusable -->
-                                <button *ngIf="!editAddress" mat-button id="edit-button"
-                                    (click)="editAddressDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
+                                <button *ngIf="!editAddress" mat-button id="edit-button" (click)="editAddressDetails()">
+                                    <mat-icon>edit</mat-icon>Edit Details</button>
                             </div>
                             <div class="col-12" id="edit-buttons"> <!-- Reusable -->
                                 <button *ngIf="editAddress" mat-button id="cancel-button"
                                     (click)="cancelAddressEdit()">Cancel</button>
-                                <button *ngIf="editAddress" mat-button id="save-button"
-                                    (click)="saveAddressEdit()">Save changes</button>
+                                <button *ngIf="editAddress" mat-button id="save-button" (click)="saveAddressEdit()">Save
+                                    changes</button>
                             </div>
                         </div>
 
