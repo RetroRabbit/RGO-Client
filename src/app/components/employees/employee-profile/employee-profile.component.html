@@ -175,8 +175,10 @@
                             <div class="col-10"> <!-- Reusable -->
                                 <div class="row"> <!-- Reusable (contents inside must be changed for your accordion) -->
                                     <div class="col-12 my-2">
-                                        <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>  <!-- Grey out the text when not editing -->
-                                        <mat-radio-group aria-label="Select your gender" [disabled]="!editPersonal"> <!-- Disable and enable when clicking edit button (check ts file) -->
+                                        <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
+                                        <!-- Grey out the text when not editing -->
+                                        <mat-radio-group aria-label="Select your gender" [disabled]="!editPersonal">
+                                            <!-- Disable and enable when clicking edit button (check ts file) -->
                                             <mat-radio-button [value]=1>Male</mat-radio-button>
                                             <mat-radio-button [value]=2>Female</mat-radio-button>
                                             <mat-radio-button [value]=0>Unclassified</mat-radio-button>
@@ -194,19 +196,23 @@
                                     </div>
                                     <div class="col-12 mt-1"></div>
                                     <div class="col-6  my-1">
-                                        <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any disabilities that you are aware of?</h3> <!-- Grey out the text when not editing -->
-                                        <mat-radio-group aria-label="Select status" (change)="setHasDisability($event)" [disabled]="!editPersonal">
+                                        <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any
+                                            disabilities that you are aware of?</h3>
+                                        <!-- Grey out the text when not editing -->
+                                        <mat-radio-group aria-label="Select status" (change)="setHasDisability($event)"
+                                            [disabled]="!editPersonal">
                                             <mat-radio-button [value]=true>yes</mat-radio-button>
                                             <mat-radio-button [value]=false>false</mat-radio-button>
                                         </mat-radio-group>
                                     </div>
                                     <div class="col-12" *ngIf="hasDisbility">
                                         <div class="row">
-                                            <div class="col-4" >
+                                            <div class="col-4">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Disability</mat-label>
                                                     <mat-select>
-                                                        <mat-option *ngFor="let disability of disabilities" [value]="disability.id">
+                                                        <mat-option *ngFor="let disability of disabilities"
+                                                            [value]="disability.id">
                                                             {{disability.value}}
                                                         </mat-option>
                                                     </mat-select>
@@ -219,14 +225,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12" id="edit-buttons"> <!-- Reusable -->
-                                        <button *ngIf="editPersonal" mat-button id="cancel-button" (click)="cancelPersonalEdit()">Cancel</button>
-                                        <button *ngIf="editPersonal" mat-button id="save-button" (click)="savePersonalEdit()">Save changes</button>        
-                                    </div>
                                 </div>
                             </div>
                             <div class="col-2"> <!-- Reusable -->
-                                <button *ngIf="!editPersonal" mat-button id="edit-button" (click)="editPersonalDetails()"> <mat-icon>edit</mat-icon>Edit Detail</button>
+                                <button *ngIf="!editPersonal" mat-button id="edit-button"
+                                    (click)="editPersonalDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
+                            </div>
+                            <div class="col-12" id="edit-buttons"> <!-- Reusable -->
+                                <button *ngIf="editPersonal" mat-button id="cancel-button"
+                                    (click)="cancelPersonalEdit()">Cancel</button>
+                                <button *ngIf="editPersonal" mat-button id="save-button"
+                                    (click)="savePersonalEdit()">Save changes</button>
                             </div>
                         </div>
 
@@ -252,10 +261,145 @@
                                 Address Details
                             </mat-panel-title>
                             <mat-panel-description>
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <div>
-                            <h1>Content goes here</h1>
+                        <div class="row"> <!-- Reusable -->
+                            <div class="col-10"> <!-- Reusable -->
+                                <div class="row"> <!-- Reusable (contents inside must be changed for your accordion) -->
+                                    <div class="col-6">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Unit Number</mat-label>
+                                            <input matInput [disabled]="!editAddress">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Complex Name</mat-label>
+                                            <input matInput [disabled]="!editAddress">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Suburb/District</mat-label>
+                                            <input matInput [disabled]="!editAddress">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Street Number</mat-label>
+                                            <input matInput [disabled]="!editAddress">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>City/Town</mat-label>
+                                            <input matInput [disabled]="!editAddress">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Country</mat-label>
+                                            <mat-select [disabled]="!editAddress">
+                                                <mat-option *ngFor="let country of nationalities" [value]="country.id">
+                                                    {{country.value}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Province</mat-label>
+                                            <mat-select [disabled]="!editAddress">
+                                                <mat-option *ngFor="let province of provinces" [value]="province.id">
+                                                    {{province.value}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Postal Code</mat-label>
+                                            <input matInput [disabled]="!editAddress">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <mat-checkbox [(ngModel)]="physicalEqualPostal" [disabled]="!editAddress">Is the postal address the same as physical address?</mat-checkbox>
+                                    </div>
+                                    <div *ngIf="!physicalEqualPostal" class="col-12 mt-2">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Unit Number</mat-label>
+                                                    <input matInput [disabled]="!editAddress">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-6">
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Complex Name</mat-label>
+                                                    <input matInput [disabled]="!editAddress">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-6">
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Suburb/District</mat-label>
+                                                    <input matInput [disabled]="!editAddress">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-6">
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Street Number</mat-label>
+                                                    <input matInput [disabled]="!editAddress">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-6">
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>City/Town</mat-label>
+                                                    <input matInput [disabled]="!editAddress">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-6">
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Country</mat-label>
+                                                    <mat-select [disabled]="!editAddress">
+                                                        <mat-option *ngFor="let country of nationalities" [value]="country.id">
+                                                            {{country.value}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-6">
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Province</mat-label>
+                                                    <mat-select [disabled]="!editAddress">
+                                                        <mat-option *ngFor="let province of provinces"
+                                                            [value]="province.id">
+                                                            {{province.value}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-6">
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Postal Code</mat-label>
+                                                    <input matInput [disabled]="!editAddress">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2"> <!-- Reusable -->
+                                <button *ngIf="!editAddress" mat-button id="edit-button"
+                                    (click)="editAddressDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
+                            </div>
+                            <div class="col-12" id="edit-buttons"> <!-- Reusable -->
+                                <button *ngIf="editAddress" mat-button id="cancel-button"
+                                    (click)="cancelAddressEdit()">Cancel</button>
+                                <button *ngIf="editAddress" mat-button id="save-button"
+                                    (click)="saveAddressEdit()">Save changes</button>
+                            </div>
                         </div>
 
                     </mat-expansion-panel>

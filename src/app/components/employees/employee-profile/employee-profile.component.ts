@@ -9,6 +9,7 @@ import { gender } from 'src/app/models/constants/gender.constants';
 import { tshirtSize } from 'src/app/models/constants/tshirt.constants';
 import { nationalities } from 'src/app/models/constants/nationaility.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
+import { provinces } from 'src/app/models/constants/provinces.constants';
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -28,8 +29,11 @@ export class EmployeeProfileComponent {
   nationalities : any[] = [];
   hasDisbility : boolean = false;
   disabilities: any[] = [];
+  provinces : any[] = [];
+  physicalEqualPostal : boolean = false;
 
   editPersonal : boolean = false;
+  editAddress : boolean = false;
   constructor(private accessPropertyService: AccessPropertiesService,
     private cookieService: CookieService,
     private employeeProfileService : EmployeeProfileService) { }
@@ -42,6 +46,7 @@ export class EmployeeProfileComponent {
     this.sizes = tshirtSize;
     this.nationalities = nationalities;
     this.disabilities = disabilities;
+    this.provinces = provinces;
   }
 
   getEmployeeFields() {
@@ -79,6 +84,24 @@ export class EmployeeProfileComponent {
   // Grey out the values is cancelling an edit
   cancelPersonalEdit(){
     this.editPersonal = false;
+    this.hasDisbility = false;
+  }
+
+  setPhysicalEqualPostal(event : any){
+    console.log(this.physicalEqualPostal);
+  }
+
+  editAddressDetails(){
+    this.editAddress = true;
+  }
+  // Does nothing for now
+  saveAddressEdit(){
+    this.editAddress = false;
+  }
+
+  // Grey out the values is cancelling an edit
+  cancelAddressEdit(){
+    this.editAddress = false;
     this.hasDisbility = false;
   }
 }
