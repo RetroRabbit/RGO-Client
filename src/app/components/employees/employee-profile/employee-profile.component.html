@@ -168,15 +168,15 @@
                                 Personal Details
                             </mat-panel-title>
                             <mat-panel-description>
-                                <mat-icon class="mx-1">error</mat-icon> Missing information
+                                <mat-icon class="mx-1">error</mat-icon> Missing information <!-- Reusable -->
                             </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="row">
+                        <div class="row"> <!-- Reusable -->
+                            <div class="col-10"> <!-- Reusable -->
+                                <div class="row"> <!-- Reusable (contents inside must be changed for your accordion) -->
                                     <div class="col-12 my-2">
-                                        <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
-                                        <mat-radio-group aria-label="Select your gender" [disabled]="!editPersonal">
+                                        <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>  <!-- Grey out the text when not editing -->
+                                        <mat-radio-group aria-label="Select your gender" [disabled]="!editPersonal"> <!-- Disable and enable when clicking edit button (check ts file) -->
                                             <mat-radio-button [value]=1>Male</mat-radio-button>
                                             <mat-radio-button [value]=2>Female</mat-radio-button>
                                             <mat-radio-button [value]=0>Unclassified</mat-radio-button>
@@ -194,7 +194,7 @@
                                     </div>
                                     <div class="col-12 mt-1"></div>
                                     <div class="col-6  my-1">
-                                        <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any disabilities that you are aware of?</h3>
+                                        <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any disabilities that you are aware of?</h3> <!-- Grey out the text when not editing -->
                                         <mat-radio-group aria-label="Select status" (change)="setHasDisability($event)" [disabled]="!editPersonal">
                                             <mat-radio-button [value]=true>yes</mat-radio-button>
                                             <mat-radio-button [value]=false>false</mat-radio-button>
@@ -219,13 +219,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12" id="edit-buttons">
+                                    <div class="col-12" id="edit-buttons"> <!-- Reusable -->
                                         <button *ngIf="editPersonal" mat-button id="cancel-button" (click)="cancelPersonalEdit()">Cancel</button>
                                         <button *ngIf="editPersonal" mat-button id="save-button" (click)="savePersonalEdit()">Save changes</button>        
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-2">
+                            <div class="col-2"> <!-- Reusable -->
                                 <button *ngIf="!editPersonal" mat-button id="edit-button" (click)="editPersonalDetails()"> <mat-icon>edit</mat-icon>Edit Detail</button>
                             </div>
                         </div>

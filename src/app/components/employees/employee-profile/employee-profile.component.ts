@@ -19,7 +19,7 @@ export class EmployeeProfileComponent {
   EditFields: Properties[] = [];
   EmployeeProfile !: EmployeeProfile;
   isEdit: boolean = false;
-  selectedItem: string = 'Profile Details';
+  selectedItem: string = 'Profile Details'; // set the default accordion to Profile Details
   expandedIndex = 0;  
   panelOpenState : boolean = false;
   races : any[] = [];
@@ -36,6 +36,7 @@ export class EmployeeProfileComponent {
 
   ngOnInit() {
     this.getEmployeeFields();
+    // populating constants
     this.races = race;
     this.genders = gender;
     this.sizes = tshirtSize;
@@ -44,6 +45,7 @@ export class EmployeeProfileComponent {
   }
 
   getEmployeeFields() {
+    // get the employee data
     this.accessPropertyService.GetAccessProperties(this.cookieService.get('userEmail')).subscribe({
       next: data => {
         this.EmployeeFields = data;
@@ -55,23 +57,32 @@ export class EmployeeProfileComponent {
       }
     });
   }
+  // This is for the accordion nav 
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.selectedItem = target.innerText;
   }
-
+  
+  // Setting the bool for conditional rendering
   setHasDisability(event: any) {
       this.hasDisbility = event.value;
   }
-
+  // When they click on the edit button
   editPersonalDetails(){
     this.editPersonal = true;
   }
+  // Does nothing for now
   savePersonalEdit(){
     this.editPersonal = false;
   }
+
+  // Grey out the values is cancelling an edit
   cancelPersonalEdit(){
     this.editPersonal = false;
     this.hasDisbility = false;
   }
 }
+
+/*
+  The css properties should apply to reusable as along as the id or class relates with what is in the file
+*/
