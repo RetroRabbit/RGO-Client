@@ -182,7 +182,7 @@
                                             <mat-radio-button [value]=0>Unclassified</mat-radio-button>
                                         </mat-radio-group>
                                     </div>
-                                    <div class="col-4  my-2">
+                                    <div class="col-4 my-2">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Race</mat-label>
                                             <mat-select [disabled]="!editPersonal">
@@ -219,9 +219,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <button *ngIf="editPersonal" mat-button id="cancel-button" (click)="editPersonalDetails()">Cancel</button>
-                                        <button *ngIf="editPersonal" mat-button id="save-button" (click)="cancelPersonalEdit()">Save changes</button>        
+                                    <div class="col-12" id="edit-buttons">
+                                        <button *ngIf="editPersonal" mat-button id="cancel-button" (click)="cancelPersonalEdit()">Cancel</button>
+                                        <button *ngIf="editPersonal" mat-button id="save-button" (click)="savePersonalEdit()">Save changes</button>        
                                     </div>
                                 </div>
                             </div>
