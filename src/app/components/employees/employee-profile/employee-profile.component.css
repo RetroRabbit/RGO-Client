@@ -166,10 +166,23 @@
     padding:1rem;
 }
 
-#cancel-button{
+#edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#save-button{
     border: none;
     border-radius: 2rem;
-    background-color: #ffd7ec;
-    color: #B3261E;
+    background-color: #0029C6;
+    color: white;
+    padding:1rem;
+}
+
+#cancel-button{
+    border: 1px solid #0029C6;
+    border-radius: 2rem;
+    background-color: white;
+    color: #0029C6;
     padding:1rem;
 }
