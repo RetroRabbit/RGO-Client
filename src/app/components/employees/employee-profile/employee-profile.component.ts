@@ -14,17 +14,18 @@ import { Address } from 'src/app/models/address.interface';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
+import { NgToastService } from 'ng-angular-popup';
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
   styleUrls: ['./employee-profile.component.css']
 })
 export class EmployeeProfileComponent {
-  EmployeeFields: Properties[] = [];
-  EditFields: Properties[] = [];
-  EmployeeProfile !: EmployeeProfile;
-  EmployeeAddress !: Address;
-  CustomFields: FieldCode[] = [];
+  employeeFields: Properties[] = [];
+  editFields: Properties[] = [];
+  employeeProfile !: EmployeeProfile;
+  employeeAddress !: Address;
+  customFields: FieldCode[] = [];
 
   isEdit: boolean = false;
   selectedItem: string = 'Profile Details'; // set the default accordion to Profile Details
@@ -53,7 +54,8 @@ export class EmployeeProfileComponent {
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
-    private customFields : FieldCodeService) { }
+    private customFieldsService : FieldCodeService,
+    private toast: NgToastService) { }
 
   ngOnInit() {
     this.getEmployeeFields();
@@ -68,21 +70,26 @@ export class EmployeeProfileComponent {
   getEmployeeFields() {
     this.accessPropertyService.GetAccessProperties(this.cookieService.get('userEmail')).subscribe({
       next: data => {
-        this.EmployeeFields = data;
+        this.employeeFields = data;
       }
     });
     this.employeeProfileService.GetEmployeeProfile().subscribe({
       next: data => {
-        this.EmployeeProfile = data;
-        this.employeeAddressService.get(this.EmployeeProfile.id).subscribe({
+        this.employeeProfile = data;
+        this.employeeAddressService.get(this.employeeProfile.id).subscribe({
           next: data => {
-            this.EmployeeAddress = data;
+            this.employeeAddress = data;
           },
-          error: (error) => console.log(error)
+          error: (error) => {
+            this.toast.error({detail:"Error",summary: "Failed to fetch address informaion",duration:5000, position:'topRight'});
+          }
         })
-        this.customFields.getAllFieldCodes().subscribe({
+        this.customFieldsService.getAllFieldCodes().subscribe({
           next: data => {
-            this.CustomFields = data;
+            this.customFields = data;
+          },
+          error: (error) => {
+            this.toast.error({detail:"Error",summary: "Failed to fetch addition informaion",duration:5000, position:'topRight'});
           }
         });
       }
@@ -98,7 +105,6 @@ export class EmployeeProfileComponent {
     this.filteredCountries = this.countries.filter(
       (country) => country.toLowerCase().includes(filterValue)
     );
-    console.log(this.filteredCountries);
   }
 
   setHasDisability(event: any) {
