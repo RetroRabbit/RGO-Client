@@ -57,7 +57,6 @@ export class EmployeeProfileComponent {
 
   ngOnInit() {
     this.getEmployeeFields();
-    // populating constants
     this.races = race;
     this.genders = gender;
     this.sizes = tshirtSize;
@@ -67,7 +66,6 @@ export class EmployeeProfileComponent {
   }
 
   getEmployeeFields() {
-    // get the employee data
     this.accessPropertyService.GetAccessProperties(this.cookieService.get('userEmail')).subscribe({
       next: data => {
         this.EmployeeFields = data;
@@ -90,7 +88,6 @@ export class EmployeeProfileComponent {
       }
     });
   }
-  // This is for the accordion nav 
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.selectedItem = target.innerText;
@@ -104,20 +101,19 @@ export class EmployeeProfileComponent {
     console.log(this.filteredCountries);
   }
 
-  // Setting the bool for conditional rendering
   setHasDisability(event: any) {
     this.hasDisbility = event.value;
   }
-  // When they click on the edit button
+ 
   editPersonalDetails() {
     this.editPersonal = true;
   }
-  // Does nothing for now
+
   savePersonalEdit() {
     this.editPersonal = false;
   }
 
-  // Grey out the values is cancelling an edit
+
   cancelPersonalEdit() {
     this.editPersonal = false;
     this.hasDisbility = false;
@@ -130,12 +126,11 @@ export class EmployeeProfileComponent {
   editAddressDetails() {
     this.editAddress = true;
   }
-  // Does nothing for now
+
   saveAddressEdit() {
     this.editAddress = false;
   }
 
-  // Grey out the values is cancelling an edit
   cancelAddressEdit() {
     this.editAddress = false;
     this.hasDisbility = false;
@@ -145,7 +140,7 @@ export class EmployeeProfileComponent {
   editEmployeeDetails(){
     this.editEmployee = true;
   }
-  // Does nothing for now
+
   saveEmployeeEdit(){
     this.editEmployee = false;
   }
@@ -157,7 +152,7 @@ export class EmployeeProfileComponent {
   editContactDetails(){
     this.editContact = true;
   }
-  // Does nothing for now
+
   saveContactEdit(){
     this.editContact = false;
   }
@@ -167,7 +162,3 @@ export class EmployeeProfileComponent {
   }
 
 }
-
-/*
-  The css properties should apply to reusable as along as the id or class relates with what is in the file
-*/

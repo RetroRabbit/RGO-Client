@@ -288,17 +288,15 @@
                                 Personal Details
                             </mat-panel-title>
                             <mat-panel-description>
-                                <mat-icon class="mx-1">error</mat-icon> Missing information <!-- Reusable -->
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <div class="row"> <!-- Reusable -->
-                            <div class="col-10"> <!-- Reusable -->
-                                <div class="row"> <!-- Reusable (contents inside must be changed for your accordion) -->
+                        <div class="row">
+                            <div class="col-10">
+                                <div class="row">
                                     <div class="col-12 my-2">
                                         <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
-                                        <!-- Grey out the text when not editing -->
                                         <mat-radio-group aria-label="Select your gender" [disabled]="!editPersonal">
-                                            <!-- Disable and enable when clicking edit button (check ts file) -->
                                             <mat-radio-button [value]=1>Male</mat-radio-button>
                                             <mat-radio-button [value]=2>Female</mat-radio-button>
                                             <mat-radio-button [value]=0>Unclassified</mat-radio-button>
@@ -319,7 +317,6 @@
                                     <div class="col-6  my-1">
                                         <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any
                                             disabilities that you are aware of?</h3>
-                                        <!-- Grey out the text when not editing -->
                                         <mat-radio-group aria-label="Select status" (change)="setHasDisability($event)"
                                             [disabled]="!editPersonal">
                                             <mat-radio-button [value]=true>yes</mat-radio-button>
@@ -348,11 +345,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-2"> <!-- Reusable -->
+                            <div class="col-2">
                                 <button *ngIf="!editPersonal" mat-button id="edit-button"
                                     (click)="editPersonalDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
                             </div>
-                            <div class="col-12" id="edit-buttons"> <!-- Reusable -->
+                            <div class="col-12" id="edit-buttons">
                                 <button *ngIf="editPersonal" mat-button id="cancel-button"
                                     (click)="cancelPersonalEdit()">Cancel</button>
                                 <button *ngIf="editPersonal" mat-button id="save-button"
@@ -439,9 +436,9 @@
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <div class="row"> <!-- Reusable -->
-                            <div class="col-10"> <!-- Reusable -->
-                                <div class="row"> <!-- Reusable (contents inside must be changed for your accordion) -->
+                        <div class="row">
+                            <div class="col-10">
+                                <div class="row"> 
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Unit Number</mat-label>
@@ -576,11 +573,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-2"> <!-- Reusable -->
+                            <div class="col-2">
                                 <button *ngIf="!editAddress" mat-button id="edit-button" (click)="editAddressDetails()">
                                     <mat-icon>edit</mat-icon>Edit Details</button>
                             </div>
-                            <div class="col-12" id="edit-buttons"> <!-- Reusable -->
+                            <div class="col-12" id="edit-buttons">
                                 <button *ngIf="editAddress" mat-button id="cancel-button"
                                     (click)="cancelAddressEdit()">Cancel</button>
                                 <button *ngIf="editAddress" mat-button id="save-button" (click)="saveAddressEdit()">Save
