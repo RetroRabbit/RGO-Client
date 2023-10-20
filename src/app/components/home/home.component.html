@@ -44,7 +44,7 @@
         </div>
         <div class="col-sm-12 col-md-12 col-lg-10" id="navigation">
           <div class="row">
-            <div class="col-2" *ngIf="isAdmin()">
+            <div class="col-2" *ngIf="isAdmin() || isJourney()">
               <div id="nav-item-container" class="col-auto">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Dashboard' ? 'active' : 'idle'">
@@ -70,13 +70,26 @@
                 </div>
               </div>
             </div>
-            <div class="col-2" *ngIf="isAdmin()">
+            <div class="col-2" *ngIf="isAdmin() || isJourney()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Employees' ? 'active' : 'idle'">
                     Employees
                   </div>
                   <div *ngIf="selectedItem == 'Employees'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2" *ngIf="isAdmin() || isJourney()">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Reports' ? 'active' : 'idle'">
+                    Reports
+                  </div>
+                  <div *ngIf="selectedItem == 'Reports'" id="selected-line-box">
                     <div id="selected-line">
                     </div>
                   </div>
@@ -144,10 +157,10 @@
     <div *ngIf="cookieService.get('currentPage') === '' || cookieService.get('currentPage') === 'Dashboard'"
       #ShowDashBoard>
       <div *ngIf="isAdmin()">
-        <app-admin-dashboard></app-admin-dashboard>      
+        <app-admin-dashboard></app-admin-dashboard>
       </div>
       <div *ngIf="!isAdmin()">
-        <app-employee-profile></app-employee-profile>   
+        <app-employee-profile></app-employee-profile>
       </div>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Employees'">
@@ -203,11 +216,11 @@
     <div *ngIf="cookieService.get('currentPage') == 'Add new field code'">
       <app-new-field-code></app-new-field-code>
     </div>
-   
+
     <div *ngIf="cookieService.get('currentPage') == '+ Add New Hire'">
       <app-new-employee></app-new-employee>
     </div>
-    
+
     <div *ngIf="cookieService.get('currentPage') == 'Employee Details'">
       <app-employee-details [selectedEmployee]="selectedEmployee"></app-employee-details>
      </div>
