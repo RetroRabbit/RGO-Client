@@ -24,7 +24,8 @@ export class EmployeeProfileComponent {
   employeeFields: Properties[] = [];
   editFields: Properties[] = [];
   employeeProfile !: EmployeeProfile;
-  employeeAddress !: Address;
+  employeePhysicalAddress !: Address;
+  employeePostalAddress !: Address;
   customFields: FieldCode[] = [];
 
   isEdit: boolean = false;
@@ -78,7 +79,7 @@ export class EmployeeProfileComponent {
         this.employeeProfile = data;
         this.employeeAddressService.get(this.employeeProfile.id).subscribe({
           next: data => {
-            this.employeeAddress = data;
+            this.employeePhysicalAddress = data;
           },
           error: (error) => {
             this.toast.error({detail:"Error",summary: "Failed to fetch address informaion",duration:5000, position:'topRight'});

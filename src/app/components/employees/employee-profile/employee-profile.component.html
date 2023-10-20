@@ -442,32 +442,32 @@
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Unit Number</mat-label>
-                                            <input matInput [disabled]="!editAddress" [value]="employeeAddress?.unitNumber">
+                                            <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress?.unitNumber">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Complex Name</mat-label>
-                                            <input matInput [disabled]="!editAddress" [value]="employeeAddress?.complexName">
+                                            <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress?.complexName">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Suburb/District</mat-label>
-                                            <input matInput [disabled]="!editAddress" [value]="employeeAddress?.suburb">
+                                            <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress?.suburb">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Street Number</mat-label>
                                             <input matInput [disabled]="!editAddress"
-                                                [value]="employeeAddress.streetNumber" [value]="employeeAddress?.streetNumber">
+                                                [value]="employeePhysicalAddress.streetNumber" [value]="employeePhysicalAddress?.streetNumber">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>City/Town</mat-label>
-                                            <input matInput [disabled]="!editAddress" [value]="employeeAddress?.city">
+                                            <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress?.city">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-6">
@@ -477,7 +477,7 @@
                                                 placeholder="Search country" (input)="filterCountries($event)" [disabled]="!editAddress"/>
                                             <mat-autocomplete #auto="matAutocomplete">
                                                 <mat-option *ngFor="let country of filteredCountries"
-                                                    [value]="employeeAddress?.country ?? country">
+                                                    [value]="employeePhysicalAddress?.country ?? country">
                                                     {{ country }}
                                                 </mat-option>
                                             </mat-autocomplete>
@@ -487,7 +487,7 @@
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Province</mat-label>
                                             <mat-select [disabled]="!editAddress">
-                                                <mat-option *ngFor="let province of provinces" [value]="employeeAddress?.province ?? province.id">
+                                                <mat-option *ngFor="let province of provinces" [value]="employeePhysicalAddress?.province ?? province.id">
                                                     {{province.value}}
                                                 </mat-option>
                                             </mat-select>
@@ -496,7 +496,7 @@
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Postal Code</mat-label>
-                                            <input matInput [disabled]="!editAddress" [value]="employeeAddress?.postalCode">
+                                            <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress?.postalCode">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-12">
@@ -508,32 +508,32 @@
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Unit Number</mat-label>
-                                                    <input matInput [disabled]="!editAddress" [value]="employeeAddress?.unitNumber">
+                                                    <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress?.unitNumber">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Complex Name</mat-label>
-                                                    <input matInput [disabled]="!editAddress" [value]="employeeAddress?.complexName">
+                                                    <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress?.complexName">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Suburb/District</mat-label>
-                                                    <input matInput [disabled]="!editAddress" [value]="employeeAddress?.suburb">
+                                                    <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress?.suburb">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Street Number</mat-label>
                                                     <input matInput [disabled]="!editAddress"
-                                                        [value]="employeeAddress.streetNumber" [value]="employeeAddress?.streetNumber">
+                                                        [value]="employeePhysicalAddress.streetNumber" [value]="employeePhysicalAddress?.streetNumber">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>City/Town</mat-label>
-                                                    <input matInput [disabled]="!editAddress" [value]="employeeAddress?.city">
+                                                    <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress?.city">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-6">
@@ -543,7 +543,7 @@
                                                         placeholder="Search country" (input)="filterCountries($event)" [disabled]="!editAddress"/>
                                                     <mat-autocomplete #auto="matAutocomplete">
                                                         <mat-option *ngFor="let country of filteredCountries"
-                                                            [value]="employeeAddress?.country ?? country">
+                                                            [value]="employeePhysicalAddress?.country ?? country">
                                                             {{ country }}
                                                         </mat-option>
                                                     </mat-autocomplete>
@@ -553,7 +553,7 @@
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Province</mat-label>
                                                     <mat-select [disabled]="!editAddress">
-                                                        <mat-option *ngFor="let province of provinces" [value]="employeeAddress?.province ?? province.id">
+                                                        <mat-option *ngFor="let province of provinces" [value]="employeePhysicalAddress?.province ?? province.id">
                                                             {{province.value}}
                                                         </mat-option>
                                                     </mat-select>
@@ -562,7 +562,7 @@
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Postal Code</mat-label>
-                                                    <input matInput [disabled]="!editAddress" [value]="employeeAddress?.postalCode">
+                                                    <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress?.postalCode">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-12">
