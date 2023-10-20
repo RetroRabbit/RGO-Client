@@ -59,8 +59,6 @@ export class NewEmployeeComponent implements OnInit {
   titles: string[] = titles;
   races: string[] = race.map((r) => r.value);
   genders: string[] = gender.map((g) => g.value);
-  tshirtSizes: string[] = tshirtsizes
-  dietaryRestictions: string[] = dietary
   countries: string[] = countries
   provinces: string[] = provinces
 
@@ -175,18 +173,6 @@ export class NewEmployeeComponent implements OnInit {
   physicalAddress: FormGroup<AddressControls> = this.createAddressForm();
 
   postalAddress: FormGroup<AddressControls> = this.createAddressForm();
-
-  tshirtForm: FormGroup<TshirtControls> = new FormGroup({
-    tShirtSize: new FormControl<string | null>(null, Validators.minLength(1)),
-  })
-
-  dietaryForm: FormGroup<DietaryControls> = new FormGroup({
-    dietary: new FormControl<string | null>(null, Validators.minLength(1)),
-  })
-
-  allergiesForm: FormGroup<AllergiesControls> = new FormGroup({
-    allergies: new FormControl<string | null>(null, Validators.minLength(1)),
-  })
 
   postalSameAsPhysicalAddress() {
     if (this.postalAddressForm.value.sameAsPhysicalAddress) {
