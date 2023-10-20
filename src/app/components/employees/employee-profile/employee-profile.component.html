@@ -154,10 +154,130 @@
                                 Employee Details
                             </mat-panel-title>
                             <mat-panel-description>
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <div>
-                            <h1>Content goes here</h1>
+                        <div class="row">
+                            <div class="col-10">
+                                <div class="row">
+                                    <div class="col-12 my-2">
+                                        <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Title</h4>
+                                        <mat-radio-group aria-label="Select your title" [disabled]="!editPersonal">
+                                            <mat-radio-button [value]=1>Mr</mat-radio-button>
+                                            <mat-radio-button [value]=2>Ms</mat-radio-button>
+                                            <mat-radio-button [value]=3>Miss</mat-radio-button>
+                                            <mat-radio-button [value]=0>Mrs</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Full Names*</mat-label>
+                                            <input matInput [disabled]="!editEmployee">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Last Name*</mat-label>
+                                            <input matInput [disabled]="!editEmployee">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Initials</mat-label>
+                                            <input matInput [disabled]="!editEmployee">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Client Allocated</mat-label>
+                                            <input type="text" placeholder="" matInput [matAutocomplete]="autoClient"
+                                                [disabled]="!editEmployee">
+                                            <mat-autocomplete #autoClient="matAutocomplete">
+                                                <mat-option>
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Role</mat-label>
+                                            <mat-select [disabled]="!editEmployee">
+                                                <mat-option>
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Level</mat-label>
+                                            <mat-select [disabled]="!editEmployee">
+                                                <mat-option>
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Team Lead</mat-label>
+                                            <input type="text" placeholder="" matInput [matAutocomplete]="autoLead"
+                                                [disabled]="!editEmployee">
+                                            <mat-autocomplete #autoLead="matAutocomplete">
+                                                <mat-option>
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>People's Champion</mat-label>
+                                            <input type="text" placeholder="" matInput [matAutocomplete]="autoChampion"
+                                                [disabled]="!editEmployee">
+                                            <mat-autocomplete #autoChampion="matAutocomplete">
+                                                <mat-option>
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Date of Birth*</mat-label>
+                                            <input type="date" matInput [matDatepicker]="picker1"
+                                                [disabled]="!editEmployee">
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>I.D number*</mat-label>
+                                            <input matInput [disabled]="!editEmployee">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Start Date*</mat-label>
+                                            <input type="date" matInput [matDatepicker]="picker2"
+                                                [disabled]="!editEmployee">
+                                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker2></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <button *ngIf="!editEmployee" mat-button id="edit-button"
+                                    (click)="editEmployeeDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
+                            </div>
+                            <div class="col-12" id="edit-buttons">
+                                <button *ngIf="editEmployee" mat-button id="cancel-button"
+                                    (click)="cancelEmployeeEdit()">Cancel</button>
+                                <button *ngIf="editEmployee" mat-button id="save-button"
+                                    (click)="saveEmployeeEdit()">Save changes</button>
+                            </div>
                         </div>
 
                     </mat-expansion-panel>
@@ -247,10 +367,64 @@
                                 Contact Details
                             </mat-panel-title>
                             <mat-panel-description>
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <div>
-                            <h1>Content goes here</h1>
+                        <div class="row">
+                            <div class="col-10">
+                                <div class="row">
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Personal Email*</mat-label>
+                                            <input matInput [disabled]="!editContact">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Work email*</mat-label>
+                                            <input matInput [disabled]="!editContact">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Cellphone Number*</mat-label>
+                                            <input matInput [disabled]="!editContact">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Home Number*</mat-label>
+                                            <input matInput [disabled]="!editContact">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Emergency Contact
+                                        </h3>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Emergency contact name*</mat-label>
+                                            <input matInput [disabled]="!editContact">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Emergency contact number*</mat-label>
+                                            <input matInput [disabled]="!editContact">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <button *ngIf="!editEmployee" mat-button id="edit-button"
+                                    (click)="editContactDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
+                            </div>
+                            <div class="col-12" id="edit-buttons">
+                                <button *ngIf="editContact" mat-button id="cancel-button"
+                                    (click)="cancelContactEdit()">Cancel</button>
+                                <button *ngIf="editContact" mat-button id="save-button"
+                                    (click)="saveContactEdit()">Save changes</button>
+                            </div>
                         </div>
 
                     </mat-expansion-panel>

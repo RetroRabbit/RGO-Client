@@ -36,6 +36,8 @@ export class EmployeeProfileComponent {
   provinces: any[] = [];
   physicalEqualPostal: boolean = false;
 
+  editContact: boolean = false;
+  editEmployee: boolean = false;
   editPersonal: boolean = false;
   editAddress: boolean = false;
 
@@ -128,6 +130,31 @@ export class EmployeeProfileComponent {
     this.hasDisbility = false;
     this.physicalCountryControl = this.postalCountryControl = "";
   }
+
+  editEmployeeDetails(){
+    this.editEmployee = true;
+  }
+  // Does nothing for now
+  saveEmployeeEdit(){
+    this.editEmployee = false;
+  }
+
+  cancelEmployeeEdit(){
+    this.editEmployee = false;
+  }
+
+  editContactDetails(){
+    this.editContact = true;
+  }
+  // Does nothing for now
+  saveContactEdit(){
+    this.editContact = false;
+  }
+
+  cancelContactEdit(){
+    this.editContact = false;
+  }
+
 }
 
 /*
