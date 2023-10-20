@@ -219,7 +219,7 @@ export class EmployeeDetailsComponent implements OnInit {
       }
       this.employeeService.updateEmployee(employeeProfileDto).subscribe({
         next: (data) => {
-        this.cookieService.set('currentPage', 'People');
+        this.cookieService.set('currentPage', 'Employees');
         this.saveEmployeeCustomData();
         this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
       },
@@ -260,7 +260,7 @@ export class EmployeeDetailsComponent implements OnInit {
         if (employeeDataDto.value != '') {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
-              this.cookieService.set('currentPage', 'People'); 
+              this.cookieService.set('currentPage', 'Employees'); 
             },
             error: (error) => {
               this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
@@ -296,7 +296,7 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   cancelAction(){
-    this.cookieService.set('currentPage', 'People');
+    this.cookieService.set('currentPage', 'Employees');
   }
 
   filterEmployees(event: any){
