@@ -336,42 +336,42 @@
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Unit Number</mat-label>
-                                                    <input matInput [disabled]="!editAddress">
+                                                    <input matInput [disabled]="!editAddress" [value]="EmployeeAddress?.unitNumber">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Complex Name</mat-label>
-                                                    <input matInput [disabled]="!editAddress">
+                                                    <input matInput [disabled]="!editAddress" [value]="EmployeeAddress?.complexName">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Suburb/District</mat-label>
-                                                    <input matInput [disabled]="!editAddress">
+                                                    <input matInput [disabled]="!editAddress" [value]="EmployeeAddress?.suburb">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Street Number</mat-label>
                                                     <input matInput [disabled]="!editAddress"
-                                                        [value]="EmployeeAddress.streetNumber">
+                                                        [value]="EmployeeAddress.streetNumber" [value]="EmployeeAddress?.streetNumber">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>City/Town</mat-label>
-                                                    <input matInput [disabled]="!editAddress">
+                                                    <input matInput [disabled]="!editAddress" [value]="EmployeeAddress?.city">
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Country</mat-label>
-                                                    <input matInput [(ngModel)]="postalCountryControl" [matAutocomplete]="auto"
+                                                    <input matInput [(ngModel)]="physicalCountryControl" [matAutocomplete]="auto"
                                                         placeholder="Search country" (input)="filterCountries($event)" [disabled]="!editAddress"/>
                                                     <mat-autocomplete #auto="matAutocomplete">
                                                         <mat-option *ngFor="let country of filteredCountries"
-                                                            [value]="country">
+                                                            [value]="EmployeeAddress?.country ?? country">
                                                             {{ country }}
                                                         </mat-option>
                                                     </mat-autocomplete>
@@ -381,8 +381,7 @@
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Province</mat-label>
                                                     <mat-select [disabled]="!editAddress">
-                                                        <mat-option *ngFor="let province of provinces"
-                                                            [value]="province.id">
+                                                        <mat-option *ngFor="let province of provinces" [value]="EmployeeAddress?.province ?? province.id">
                                                             {{province.value}}
                                                         </mat-option>
                                                     </mat-select>
@@ -391,8 +390,12 @@
                                             <div class="col-6">
                                                 <mat-form-field appearance="outline" style="width: 100%;">
                                                     <mat-label>Postal Code</mat-label>
-                                                    <input matInput [disabled]="!editAddress">
+                                                    <input matInput [disabled]="!editAddress" [value]="EmployeeAddress?.postalCode">
                                                 </mat-form-field>
+                                            </div>
+                                            <div class="col-12">
+                                                <mat-checkbox [(ngModel)]="physicalEqualPostal" [disabled]="!editAddress">Is the
+                                                    postal address the same as physical address?</mat-checkbox>
                                             </div>
                                         </div>
                                     </div>

@@ -12,8 +12,6 @@ import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { Address } from 'src/app/models/address.interface';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
-import { FormControl } from '@angular/forms';
-import { startWith, map } from 'rxjs/operators';
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
