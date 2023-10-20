@@ -143,18 +143,50 @@
     border-top-right-radius: 100px;
   }
 
-  #test{
-    width: 50%;
-    height: 10px;
-    max-height: 10%;
-    overflow: hidden;
-    background-color: white
-  }
-
   .mat-expansion-panel {
     padding: 0;
   }
 
   .mat-accordion .mat-expansion-panel, .mat-expanded, .mat-accordion .mat-expansion-panel, .mat-expansion-panel-spacing {
     border-radius: 1rem;
+}
+
+.mat-expansion-panel-header-description{
+    color: #B3261E;
+    display:flex;
+    justify-content: flex-end;
+    padding-right: 5rem;
+}
+
+#edit-button{
+    border: none;
+    border-radius: 2rem;
+    background-color: #D7DFFF;
+    color: #0029C6;
+    padding:1rem;
+}
+
+#edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#edit-buttons > button{
+    margin-right: 1rem;
+}
+
+#save-button{
+    border: none;
+    border-radius: 2rem;
+    background-color: #0029C6;
+    color: white;
+    padding:1rem;
+}
+
+#cancel-button{
+    border: 1px solid #0029C6;
+    border-radius: 2rem;
+    background-color: white;
+    color: #0029C6;
+    padding:1rem;
 }
