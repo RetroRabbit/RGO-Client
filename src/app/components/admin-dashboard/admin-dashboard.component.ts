@@ -15,23 +15,30 @@ export class AdminDashboardComponent {
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
   profileImage: string | null = null;
+  roles : string[] = [];
 
   employeeType: { id: number; name: string } = {
     id: 0,
     name: '',
   };
-  
+
   constructor(
     private chartService: ChartService,
     private cookieService: CookieService
   ) { }
 
   ngOnInit() {
+    const types: string = this.cookieService.get('userType');
+    this.roles = Object.keys(JSON.parse(types));
+
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
     });
   }
 
+  isAdmin(): boolean {
+    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
+  }
 
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
