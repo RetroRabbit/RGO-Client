@@ -12,6 +12,8 @@ import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { Address } from 'src/app/models/address.interface';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
+import { FieldCode } from 'src/app/models/field-code.interface';
+import { FieldCodeService } from 'src/app/services/field-code.service';
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -22,6 +24,7 @@ export class EmployeeProfileComponent {
   EditFields: Properties[] = [];
   EmployeeProfile !: EmployeeProfile;
   EmployeeAddress !: Address;
+  CustomFields: FieldCode[] = [];
 
   isEdit: boolean = false;
   selectedItem: string = 'Profile Details'; // set the default accordion to Profile Details
@@ -35,7 +38,7 @@ export class EmployeeProfileComponent {
   disabilities: any[] = [];
   provinces: any[] = [];
   physicalEqualPostal: boolean = false;
-
+  
   editContact: boolean = false;
   editEmployee: boolean = false;
   editPersonal: boolean = false;
@@ -43,11 +46,14 @@ export class EmployeeProfileComponent {
 
   physicalCountryControl : string = "";
   postalCountryControl : string = "";
+  
+
   filteredCountries: any[] = this.countries.slice();
   constructor(private accessPropertyService: AccessPropertiesService,
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
-    private employeeAddressService: EmployeeAddressService) { }
+    private employeeAddressService: EmployeeAddressService,
+    private customFields : FieldCodeService) { }
 
   ngOnInit() {
     this.getEmployeeFields();
@@ -76,6 +82,11 @@ export class EmployeeProfileComponent {
           },
           error: (error) => console.log(error)
         })
+        this.customFields.getAllFieldCodes().subscribe({
+          next: data => {
+            this.CustomFields = data;
+          }
+        });
       }
     });
   }
