@@ -26,7 +26,7 @@ export class HomeComponent {
   employeeProfile!: EmployeeProfile;
   profileImage: string = '';
   charts: Chart[] = [];
-  roles : string[] = []; 
+  roles : string[] = [];
   screenWidth !: number;
 
   employeeType: { id: number, name: string } = {
@@ -39,7 +39,7 @@ export class HomeComponent {
     private chartService: ChartService,
     private store: Store<{ app: Token }>,
     private auth: AuthService,
-    public cookieService: CookieService) { 
+    public cookieService: CookieService) {
     this.screenWidth = window.innerWidth;
   }
 
@@ -77,7 +77,7 @@ export class HomeComponent {
 
   handleSelectedEval(item: any) {
     this.selectedEvaluation = item
-    
+
   }
 
   populateAddEmployeeForm(event: any) {
@@ -86,6 +86,10 @@ export class HomeComponent {
 
   isAdmin(): boolean {
     return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
+  }
+
+  isJourney(): boolean {
+    return this.roles.includes('Journey');
   }
 
   isEmployee(): boolean {
