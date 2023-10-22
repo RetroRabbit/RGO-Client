@@ -13,7 +13,7 @@ export const initialState: EmployeeProfileState = {
       taxNumber: '',
       engagementDate: new Date,
       terminationDate: new Date,
-      reportingLine: 0,
+      peopleChampion: 0,
       disability: true,
       disabilityNotes: '',
       countryOfBirth: '',

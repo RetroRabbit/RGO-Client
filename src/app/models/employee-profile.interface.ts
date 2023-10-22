@@ -6,7 +6,7 @@ export interface EmployeeProfile {
   taxNumber: string,
   engagementDate: Date,
   terminationDate: Date,
-  reportingLine?: number,
+  peopleChampion?: number,
   disability: boolean,
   disabilityNotes: string,
   countryOfBirth: string,
