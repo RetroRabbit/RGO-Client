@@ -414,15 +414,15 @@
 
     <mat-form-field appearance="outline" style="width: 100%;">
       <mat-label>Select role</mat-label>
-      <mat-select [formControl]="roleControl" multiple>
-        <mat-select-trigger></mat-select-trigger>
-        <mat-option *ngFor="let role of filteredRoles" [value]="role">
-          {{role}}
-        </mat-option>
+      <mat-select [formControl]="typeControl" multiple>
+        <mat-option [value]="null">None</mat-option>
+        <mat-option *ngFor="let type of filteredTypes" [value]="type">{{ type }}</mat-option>
       </mat-select>
+ 
+    
       <mat-chip-grid #chipList>
-        <mat-chip-row *ngFor="let role of selectedRoles" [removable]="true" (removed)="onRoleRemoved(role)">
-          {{role}}
+        <mat-chip-row *ngFor="let type of selectedTypes" [removable]="true" (removed)="onTypeRemoved(type)">
+          {{type}}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip-row>
       </mat-chip-grid>
