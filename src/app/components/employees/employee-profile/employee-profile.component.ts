@@ -54,7 +54,6 @@ export class EmployeeProfileComponent {
   constructor(private accessPropertyService: AccessPropertiesService,
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
-    private employeeAddressService: EmployeeAddressService,
     private customFieldsService : FieldCodeService,
     private toast: NgToastService) { }
 
@@ -77,14 +76,6 @@ export class EmployeeProfileComponent {
     this.employeeProfileService.GetEmployeeProfile().subscribe({
       next: data => {
         this.employeeProfile = data;
-        this.employeeAddressService.get(this.employeeProfile.id).subscribe({
-          next: data => {
-            this.employeePhysicalAddress = data;
-          },
-          error: (error) => {
-            this.toast.error({detail:"Error",summary: "Failed to fetch address informaion",duration:5000, position:'topRight'});
-          }
-        })
         this.customFieldsService.getAllFieldCodes().subscribe({
           next: data => {
             this.customFields = data;
