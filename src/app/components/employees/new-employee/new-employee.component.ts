@@ -10,28 +10,10 @@ import { titles } from 'src/app/models/constants/titles.constants';
 import { level } from 'src/app/models/constants/level.constants';
 import { race } from 'src/app/models/constants/race.constants';
 import { gender } from 'src/app/models/constants/gender.constants';
-import { FieldCode } from 'src/app/models/field-code.interface';
-import { dataTypes } from 'src/app/models/constants/types.constants';
-import { statuses } from 'src/app/models/constants/statuses.constants';
-import { FieldCodeOptions } from 'src/app/models/field-code-options.interface';
-import { FieldCodeService } from 'src/app/services/field-code.service';
 import {
-  Observable,
   combineLatest,
   first,
-  map,
-  retry,
-  take,
 } from 'rxjs';
-import { EmployeeDataService } from 'src/app/services/employee-data.service';
-import { EmployeeData } from 'src/app/models/employee-data.interface';
-import { FieldCodes } from 'src/app/models/constants/field-codes.constants';
-import { AddressControls } from 'src/app/models/address-controls.interface';
-import { TshirtControls } from 'src/app/models/tshirt-controls.interface';
-import { DietaryControls } from 'src/app/models/dietary-controls.interface';
-import { AllergiesControls } from 'src/app/models/allergies-controls.interface';
-import { tshirtsizes } from 'src/app/models/constants/tshirtsize.constatns';
-import { dietary } from 'src/app/models/constants/dietary.constants';
 import { countries } from 'src/app/models/constants/country.constants';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
@@ -158,11 +140,12 @@ export class NewEmployeeComponent implements OnInit {
     sameAsPhysicalAddress: new FormControl<boolean>(false, Validators.required),
   });
 
-  private createAddressForm(): FormGroup<AddressControls> {
-    return new FormGroup<AddressControls>({
+  private createAddressForm(): FormGroup {
+    return new FormGroup({
       unitNumber: new FormControl<string | null>("TBD", Validators.minLength(1)),
       complexName: new FormControl<string | null>("TBD", Validators.minLength(1)),
       suburbDistrict: new FormControl<string | null>("TBD", Validators.minLength(1)),
+      city: new FormControl<string | null>("TBD", Validators.minLength(1)),
       streetNumber: new FormControl<string | null>("TBD", Validators.minLength(1)),
       country: new FormControl<string | null>("TBD", Validators.minLength(1)),
       province: new FormControl<string | null>("TBD", Validators.minLength(1)),
@@ -170,9 +153,9 @@ export class NewEmployeeComponent implements OnInit {
     });
   }
 
-  physicalAddress: FormGroup<AddressControls> = this.createAddressForm();
+  physicalAddress: FormGroup = this.createAddressForm();
 
-  postalAddress: FormGroup<AddressControls> = this.createAddressForm();
+  postalAddress: FormGroup = this.createAddressForm();
 
   postalSameAsPhysicalAddress() {
     if (this.postalAddressForm.value.sameAsPhysicalAddress) {
@@ -314,7 +297,7 @@ export class NewEmployeeComponent implements OnInit {
       unitNumber: this.physicalAddress.value.unitNumber!,
       complexName: this.physicalAddress.value.complexName!,
       suburbOrDistrict: this.physicalAddress.value.suburbDistrict!,
-      city: 'TBD',
+      city: this.physicalAddress.value.city!,
       streetNumber: this.physicalAddress.value.streetNumber!,
       country: this.physicalAddress.value.country!,
       province: this.physicalAddress.value.province!,
@@ -328,7 +311,7 @@ export class NewEmployeeComponent implements OnInit {
       unitNumber: this.postalAddress.value.unitNumber!,
       complexName: this.postalAddress.value.complexName!,
       suburbOrDistrict: this.postalAddress.value.suburbDistrict!,
-      city: 'TBD',
+      city: this.postalAddress.value.city!,
       streetNumber: this.postalAddress.value.streetNumber!,
       country: this.postalAddress.value.country!,
       province: this.postalAddress.value.province!,
