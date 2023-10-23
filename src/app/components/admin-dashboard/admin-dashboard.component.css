@@ -31,3 +31,8 @@
   padding: 0.5rem;
   width: 12rem;
 }
+
+.mat-mdc-select {
+  display: none;
+}
+

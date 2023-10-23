@@ -47,7 +47,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -61,6 +61,9 @@ import { EmployeeRoleManagerComponent } from './components/employees/employee-ro
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
 import { ManageEmployeeEventsComponent } from './components/manage-employee-events/manage-employee-events.component';
 import { AddEmployeeEventComponent } from './components/manage-employee-events/add-employee-event/add-employee-event.component';
+
+import { MatChipsModule } from '@angular/material/chips';
+
 
 @NgModule({
   declarations: [
@@ -94,6 +97,7 @@ import { AddEmployeeEventComponent } from './components/manage-employee-events/a
     FormsModule,
     ReactiveFormsModule,
     NgChartsModule,
+    MatChipsModule,
     StoreModule.forRoot({
       app: LoginReducer,
       employee: EmployeeProfileReducer,
