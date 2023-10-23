@@ -18,6 +18,8 @@ import { TemplateRef } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { NgToastService } from 'ng-angular-popup';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
+import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
+import { EmployeeType } from 'src/app/models/employee-type.model';
 
 
 
@@ -46,13 +48,11 @@ export class AdminDashboardComponent {
   categoryCtrl = new FormControl();
   selectedCategories: string[] = [];
 
-
-  // roles variabbals
-  roleControl = new FormControl();
-  roles: string[] = [];
-  filteredRoles: string[] = this.roles;
-  roleCtrl = new FormControl();
-  selectedRoles: string[] = [];
+  // type variables
+  typeControl = new FormControl();
+  types: string[]= [];
+  filteredTypes: any[] = this.types;
+  selectedTypes: string[] = [];
 
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
   charts: Chart[] = [];
@@ -75,7 +75,7 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     private cookieService: CookieService,
     private dialog: MatDialog,
     private toast: NgToastService,
-    private employeeRoleService: EmployeeRoleService
+    private employeeTypeService: EmployeeTypeService
   ) {
     this.categoryCtrl.valueChanges.subscribe(val => {
       if (val) {
@@ -97,8 +97,8 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
       this.selectedCategories = val;
     });
 
-    this.roleControl.valueChanges.subscribe(val => {
-      this.selectedRoles = val;
+    this.typeControl.valueChanges.subscribe(val => {
+      this.selectedTypes = val;
     });
 
     // Fetching the chart data
@@ -112,10 +112,11 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
       }
     });
 
-    this.employeeRoleService.getAllRoles().subscribe({
-      next: data => {
-        this.roles = data;
-        this.filteredRoles = data;
+    this.employeeTypeService.getAllEmployeeTypes().subscribe({
+      next: (data: EmployeeType[]) => {
+        // Assuming data is an array of EmployeeType objects
+        this.types = data.map(type => type.name || ''); // Extract the 'name' property
+        this.filteredTypes = this.types; // Assign the same array to filteredTypes
       }
     });
   }
@@ -167,37 +168,37 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     if (index >= 0) {
       categories.splice(index, 1);
       this.categoryControl.setValue(categories);
-    }
+    } 
   }
 
-  // For Roles:
-roleCtrlValueChanges() {
-  this.roleCtrl.valueChanges.subscribe(val => {
+  // For Types:
+TypeCtrlValueChanges() {
+  this.typeControl.valueChanges.subscribe(val => {
     if (val) {
-      this.filteredRoles = this.filterRoles(val);
+      this.filteredTypes = this.filterTypes(val);
     } else {
-      this.filteredRoles = this.roles;
+      this.filteredTypes = this.types;
     }
   });
 }
 
-filterRoles(val: string): string[] {
-  return this.roles.filter(role =>
-    role.toLowerCase().includes(val.toLowerCase()));
+filterTypes(val: string): string[] {
+  return this.types.filter(types =>
+    types.toLowerCase().includes(val.toLowerCase()));
 }
 
-onRoleRemoved(role: string): void {
-  const roles = this.roleControl.value;
-  const index = roles.indexOf(role);
+onTypeRemoved(type: string): void {
+  const types = this.typeControl.value;
+  const index = types.indexOf(type);
   if (index >= 0) {
-    roles.splice(index, 1);
-    this.roleControl.setValue(roles);
+    types.splice(index, 1);
+    this.typeControl.setValue(types);
   }
 }
 
 //Chart logic
   createChart() {
-    this.chartService.createChart(this.selectedDataItems, this.chartName, this.chartType)
+    this.chartService.createChart(this.selectedCategories, this.chartName, this.chartType)
       .subscribe({
         next : response => {
           this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
