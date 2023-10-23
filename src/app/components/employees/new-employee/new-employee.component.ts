@@ -163,6 +163,7 @@ export class NewEmployeeComponent implements OnInit {
         unitNumber: this.physicalAddress.value.unitNumber,
         complexName: this.physicalAddress.value.complexName,
         suburbDistrict: this.physicalAddress.value.suburbDistrict,
+        city: this.physicalAddress.value.city,
         streetNumber: this.physicalAddress.value.streetNumber,
         country: this.physicalAddress.value.country,
         province: this.physicalAddress.value.province,
