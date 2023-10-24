@@ -55,12 +55,18 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatExpansionModule} from '@angular/material/expansion'; 
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+
 
 import { PendingBankDetailsComponent } from './components/employees/pending-bank-details/pending-bank-details.component';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
 import { ManageEmployeeEventsComponent } from './components/manage-employee-events/manage-employee-events.component';
 import { AddEmployeeEventComponent } from './components/manage-employee-events/add-employee-event/add-employee-event.component';
+import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
+
+
 
 @NgModule({
   declarations: [
@@ -86,7 +92,8 @@ import { AddEmployeeEventComponent } from './components/manage-employee-events/a
     EmployeeDetailsComponent,
     PendingBankDetailsComponent,
     ManageEmployeeEventsComponent,
-    AddEmployeeEventComponent
+    AddEmployeeEventComponent,
+    SystemSettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -135,6 +142,8 @@ import { AddEmployeeEventComponent } from './components/manage-employee-events/a
     MatSlideToggleModule,
     MatCheckboxModule,
     MatExpansionModule,
+    MatSidenavModule,
+    MatListModule,
     TableModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
