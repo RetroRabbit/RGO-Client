@@ -37,5 +37,6 @@ export interface EmployeeProfile {
   payRate: number, 
   salary: Number,
   clientAllocated?: string,
-  teamLead?: number
+  teamLead?: number,
+  
 }
