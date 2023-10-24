@@ -41,6 +41,7 @@ export class EmployeeProfileComponent {
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
   employeeTypes: EmployeeType[] = [];
+  employeeProfileDto: any;
 
 
   isEdit: boolean = false;
@@ -254,7 +255,7 @@ export class EmployeeProfileComponent {
     if (this.employeeDetailsForm.valid) {
       const employeeDetailsForm = this.employeeDetailsForm.value;
 
-      const employeeProfileDto = {
+       this.employeeProfileDto = {
         id: this.employeeProfile.id,
         employeeNumber: this.employeeProfile.employeeNumber,
         taxNumber: this.employeeProfile.taxNumber,
@@ -293,10 +294,29 @@ export class EmployeeProfileComponent {
         clientAllocated: this.clientId == 0 ? null : this.clientId,
         teamLead: this.employeeId == 0 ? null : this.employeeId,
         physicalAddress: {
-          
+          id: this.employeeProfile.physicalAddress?.id,
+          unitNumber: this.employeeProfile.physicalAddress?.unitNumber,
+          complexName: this.employeeProfile.physicalAddress?.complexName,
+          streetNumber: this.employeeProfile.physicalAddress?.streetNumber,
+          suburbOrDistrict: this.employeeProfile.physicalAddress?.suburbOrDistrict,
+          city: this.employeeProfile.physicalAddress?.city,
+          country: this.employeeProfile.physicalAddress?.country,
+          province: this.employeeProfile.physicalAddress?.province,
+          postalCode: this.employeeProfile.physicalAddress?.postalCode,
+        },
+        postalAddress: {
+          id: this.employeeProfile.postalAddress?.id,
+          unitNumber: this.employeeProfile.postalAddress?.unitNumber,
+          complexName: this.employeeProfile.postalAddress?.complexName,
+          streetNumber: this.employeeProfile.postalAddress?.streetNumber,
+          suburbOrDistrict: this.employeeProfile.postalAddress?.suburbOrDistrict,
+          city: this.employeeProfile.postalAddress?.city,
+          country: this.employeeProfile.postalAddress?.country,
+          province: this.employeeProfile.postalAddress?.province,
+          postalCode: this.employeeProfile.postalAddress?.postalCode,
         }
       }
-      this.employeeService.updateEmployee(employeeProfileDto).subscribe({
+      this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
         this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
         this.employeeDetailsForm.disable();
