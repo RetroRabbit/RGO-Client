@@ -14,6 +14,4 @@ export class EmployeeTypeService {
     getAllEmployeeTypes(): Observable<EmployeeType[]>{
       return this.httpClient.get<EmployeeType[]>(`${API.HttpBaseURL}/employeetype/types`);
     }
-   
-  
 }

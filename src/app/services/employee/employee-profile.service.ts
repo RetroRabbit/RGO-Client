@@ -36,14 +36,15 @@ export class EmployeeProfileService {
     })
   }
 
-
   UpdateEmployeeProfile(profileUpdate: any): Observable<any> {
     console.log(profileUpdate.updatedProfile.email)
     return this.client.put<any>(
       `${API.HttpsBaseURL}/employee/update?email=${profileUpdate.updatedProfile.email}`, profileUpdate.updatedProfile
     );
   }
+
+  getAllEmployees(name: string): Observable<EmployeeProfile[]> {
+    const queryParams = `?name=${name}`;
+    return this.client.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employee/search${queryParams}`);
+  }
 }
-
-
-
