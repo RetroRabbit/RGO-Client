@@ -21,18 +21,22 @@
     </div>
 </div>
 
-
 <div *ngIf="searchResults.length > 0">
-    <div id="avatar">
-    </div>
-    <div id="search-results" *ngFor="let employee of searchResults">
+    <div id="avatar"></div>
+    <div id="search-results" *ngFor="let employee of searchResults; let i = index">
         {{ employee.name }}
         {{ employee.surname }}
+        <ng-container *ngIf="!displayAllEmployees && i < initialDisplayCount">
+            <!-- Add employee details here -->
+        </ng-container>
+        <ng-container *ngIf="!displayAllEmployees && i === initialDisplayCount - 1 && searchResults.length > initialDisplayCount">
+            <button (click)="viewMoreEmployees()">View {{ searchResults.length - initialDisplayCount }} more employees</button>
+        </ng-container>
+        <ng-container *ngIf="displayAllEmployees && i >= initialDisplayCount">
+            <!-- Add employee details here -->
+        </ng-container>
     </div>
-</div> 
-
-
-  
+</div>
 
 <div class="container-fluid" id="graph-container">
     <div id="graphs">
