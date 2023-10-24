@@ -10,7 +10,6 @@ import { tshirtSize } from 'src/app/models/constants/tshirt.constants';
 import { countries } from 'src/app/models/constants/country.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
-import { Address } from 'src/app/models/address.interface';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
@@ -24,6 +23,8 @@ import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { level } from 'src/app/models/constants/level.constants';
 
+import { EmployeeAddress } from 'src/app/models/employee-address.interface';
+
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -33,8 +34,8 @@ export class EmployeeProfileComponent {
   employeeFields: Properties[] = [];
   editFields: Properties[] = [];
   employeeProfile !: EmployeeProfile;
-  employeePhysicalAddress !: Address;
-  employeePostalAddress !: Address;
+  employeePhysicalAddress !: EmployeeAddress;
+  employeePostalAddress !: EmployeeAddress;
   customFields: FieldCode[] = [];
   employeeRoles: any = [];
   clients: Client[] = [];
@@ -109,15 +110,8 @@ export class EmployeeProfileComponent {
     this.employeeProfileService.GetEmployeeProfile().subscribe({
       next: data => {
         this.employeeProfile = data;
-        // this.employeeAddressService.get(this.employeeProfile.id).subscribe({
-        //   next: data => {
-        //     this.employeePhysicalAddress = data;
-        //   },
-        //   error: (error) => {
-        //     this.toast.error({detail:"Error",summary: "Failed to fetch address informaion",duration:5000, position:'topRight'});
-        //   }
-        // })
-
+        this.employeePhysicalAddress = data.physicalAddress!;
+        this.employeePostalAddress = data.postalAddress!;
         this.customFieldsService.getAllFieldCodes().subscribe({
           next: data => {
             this.customFields = data;
