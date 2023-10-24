@@ -1,0 +1,47 @@
+<div class="wrapper">
+  <div>
+    <div class="m-3 border-bottom">
+      <h1 class="page-heading">Manage Field Code</h1>
+    </div>
+    <div style="overflow: auto">
+      <div class="container-fluid">
+        <a href="/new-fieldcode">
+          <button class="btn btn-primary">Add new field code</button>
+        </a>
+        <div style="padding-top: 30px;"></div>
+
+        <label>Existing Custom Fields:</label><br>
+        <label>Search:</label>
+        <input pInputText type="text" [(ngModel)]="filterText" (input)="filterData()" />
+        <br>
+         <div *ngIf="filteredFieldCodes" class="custom-table" style="overflow: auto">
+          <p-table [value]="filteredFieldCodes" [paginator]="true" [rows]="10">
+             <ng-template pTemplate="header">
+               <tr>
+                 <th>ID</th>
+                 <th>Name</th>
+                 <th>Description</th>
+                 <th>Status</th>
+               </tr>
+             </ng-template>
+             <ng-template pTemplate="body" let-fieldCode>
+               <tr [ngClass]="{'selected-row': selectedFieldCode === fieldCode}" (click)="onRowSelect(fieldCode)">
+                 <td>{{ fieldCode.id }}</td>
+                 <td>{{ fieldCode.code }}</td>
+                 <td>{{ fieldCode.name }}</td>
+                 <td>
+                   <ng-container *ngIf="fieldCode.status === 0; else archived">{{ 'Active' }}</ng-container>
+                   <ng-template #archived>Archived</ng-template>
+                 </td>
+               </tr>
+             </ng-template>
+           </p-table>
+         </div>
+      </div>
+    </div>
+    <div style="padding-top: 30px;"></div>
+    <div *ngIf="selectedFieldCode != null" class="update-form">
+      <app-update-field [selectedFieldCode]="selectedFieldCode"></app-update-field>
+    </div>
+  </div>
+</div>

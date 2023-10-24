@@ -5,6 +5,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -23,17 +24,30 @@ export class AdminDashboardComponent {
     id: 0,
     name: '',
   };
-  
+
+  searchQuery: string = '';
+  searchResults: EmployeeProfile[] = [];
+  allEmployees: EmployeeProfile[] = [];
+
   constructor(
     private employeeProfileService: EmployeeProfileService,
+    private employeeService: EmployeeService,
     private chartService: ChartService,
     private auth: AuthService,
     private cookieService: CookieService
   ) { }
 
   ngOnInit() {
-    this.employeeProfileService.GetEmployeeProfile().subscribe((data) => {
-      this.admin = data;
+    this.employeeService.getAllProfiles().subscribe((data) => {
+      if (Array.isArray(data)) {
+        this.allEmployees = data;
+      } else if (data) {
+        this.allEmployees = [data];
+      }
+      this.searchResults = [];
+
+      console.log(this.allEmployees);
+      
 
       if (
         this.admin.photo &&
@@ -43,6 +57,10 @@ export class AdminDashboardComponent {
         this.profileImage = this.admin.photo;
       }
       this.employeeType = this.admin.employeeType;
+    });
+
+    this.employeeProfileService.getAllEmployees(this.searchQuery).subscribe((data) => {
+      this.allEmployees = data;
     });
 
     this.chartService.getAllCharts().subscribe({
@@ -59,5 +77,16 @@ export class AdminDashboardComponent {
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
+  }
+
+  searchEmployees() {
+    if (this.searchQuery) {
+      this.searchResults = this.allEmployees.filter(employee =>
+          employee.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          employee.surname.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    } else {
+      this.searchResults = [];
+    }
   }
 }
