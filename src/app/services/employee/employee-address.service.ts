@@ -20,6 +20,7 @@ export class EmployeeAddressService {
   }
 
   update(address: EmployeeAddress): Observable<EmployeeAddress> {
+    console.table(address);
     return this.client.put<EmployeeAddress>(`${API.HttpsBaseURL}/employeeaddress/update`, address);
   }
 
