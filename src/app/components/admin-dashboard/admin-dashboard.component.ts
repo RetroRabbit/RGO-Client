@@ -19,6 +19,8 @@ export class AdminDashboardComponent {
   menuClicked: boolean = false;
   admin!: EmployeeProfile;
   profileImage: string | null = null;
+  initialDisplayCount: number = 3;
+  displayAllEmployees: boolean = false;
 
   employeeType: { id: number; name: string } = {
     id: 0,
@@ -35,6 +37,7 @@ export class AdminDashboardComponent {
     private chartService: ChartService,
     private auth: AuthService,
     private cookieService: CookieService
+    
   ) { }
 
   ngOnInit() {
@@ -77,6 +80,10 @@ export class AdminDashboardComponent {
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
+  }
+
+  viewMoreEmployees() {
+    this.displayAllEmployees = true;
   }
 
   searchEmployees() {
