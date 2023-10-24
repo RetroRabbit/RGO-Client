@@ -24,17 +24,6 @@ import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { level } from 'src/app/models/constants/level.constants';
 
-
-import { ClientService } from 'src/app/services/client.service';
-import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { Client } from 'src/app/models/client.interface';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { EmployeeType } from 'src/app/models/employee-type.model';
-import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
-import { level } from 'src/app/models/constants/level.constants';
-
-
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -47,11 +36,6 @@ export class EmployeeProfileComponent {
   employeePhysicalAddress !: Address;
   employeePostalAddress !: Address;
   customFields: FieldCode[] = [];
-  employeeRoles: any = [];
-  clients: Client[] = [];
-  employees: EmployeeProfile[] = [];
-  employeeTypes: EmployeeType[] = [];
-
   employeeRoles: any = [];
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
@@ -74,18 +58,6 @@ export class EmployeeProfileComponent {
   public disabilities = disabilities;
   public provinces = provinces;
 
-
-
-
-  public genders = gender;
-  public races = race;
-  public levels = level;
-  public sizes = tshirtSize;
-  public countries = countries;
-  public disabilities = disabilities;
-  public provinces = provinces;
-
-
   editContact: boolean = false;
   editEmployee: boolean = false;
   editPersonal: boolean = false;
@@ -106,21 +78,9 @@ export class EmployeeProfileComponent {
   peopleChampionId: number = 0;
   foundChampion: any;
   client: string = '';
-  physicalCountryControl: string = "";
-  postalCountryControl: string = "";
 
-  employeeDetailsForm!: FormGroup;
-
-  filteredEmployees: any = [];
-  filteredClients: any = [];
-  employeeId?: number = 0;
-  clientId?: number = 0;
-  foundClient: any;
-  foundTeamLead: any;
-  filteredPeopleChamps: any = [];
-  peopleChampionId: number = 0;
-  foundChampion: any;
-  client: string = '';
+  client_placeholder: string = '';
+  
 
   filteredCountries: any[] = this.countries.slice();
   constructor(private accessPropertyService: AccessPropertiesService,
@@ -134,13 +94,7 @@ export class EmployeeProfileComponent {
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService) { }
-    private customFieldsService: FieldCodeService,
-    private clientService: ClientService,
-    private employeeRoleService: EmployeeRoleService,
-    private toast: NgToastService,
-    private fb: FormBuilder,
-    private employeeService: EmployeeService,
-    private employeeTypeService: EmployeeTypeService) { }
+ 
 
   ngOnInit() {
     this.getEmployeeFields();
@@ -163,14 +117,7 @@ export class EmployeeProfileComponent {
         //     this.toast.error({detail:"Error",summary: "Failed to fetch address informaion",duration:5000, position:'topRight'});
         //   }
         // })
-        // this.employeeAddressService.get(this.employeeProfile.id).subscribe({
-        //   next: data => {
-        //     this.employeePhysicalAddress = data;
-        //   },
-        //   error: (error) => {
-        //     this.toast.error({detail:"Error",summary: "Failed to fetch address informaion",duration:5000, position:'topRight'});
-        //   }
-        // })
+
         this.customFieldsService.getAllFieldCodes().subscribe({
           next: data => {
             this.customFields = data;
@@ -197,29 +144,6 @@ export class EmployeeProfileComponent {
         this.employeeTypeService.getAllEmployeeTypes().subscribe({
           next: data => {
             this.employeeTypes = data;
-
-          }
-        });
-        this.initializeForm();
-        this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
-          next: data => {
-            this.employeeRoles = data;
-          }
-        });
-        this.clientService.getAllClients().subscribe({
-          next: data => {
-            this.clients = data;
-          }
-        });
-        this.employeeService.getAllProfiles().subscribe({
-          next: data => {
-            this.employees = data;
-          }
-        });
-        this.employeeTypeService.getAllEmployeeTypes().subscribe({
-          next: data => {
-            this.employeeTypes = data;
-
           }
         });
         this.initializeForm();
@@ -227,51 +151,8 @@ export class EmployeeProfileComponent {
     });
   }
 
-  initializeForm() {
-    this.employeeDetailsForm = this.fb.group({
-      title: this.employeeProfile.title,
-      name: [this.employeeProfile.name, Validators.required],
-      surname: [this.employeeProfile.surname, Validators.required],
-      initials: this.employeeProfile.initials,
-      clientAllocated: this.employeeProfile.clientAllocated,
-      employeeType: this.employeeProfile.employeeType.name,
-      level: this.employeeProfile.level,
-      teamLead: this.employeeProfile.teamLead,
-      dateOfBirth: [this.employeeProfile.dateOfBirth, Validators.required],
-      idNumber: [this.employeeProfile.idNumber, Validators.required],
-      engagementDate: [this.employeeProfile.engagementDate, Validators.required],
-      peopleChampion: this.employeeProfile.peopleChampion
-    });
-    this.employeeDetailsForm.disable();
-  }
+  
 
-  checkEmployeeDetails() {
-    this.panelOpenState = true
-    this.foundTeamLead = this.employees.find((data: any) => {
-      return data.id == this.employeeProfile.teamLead
-    });
-    this.foundClient = this.clients.find((data: any) => {
-      return data.id == this.employeeProfile.clientAllocated
-    });
-    this.foundChampion = this.employeeRoles.find((data: any) => {
-      return data.employee.id == this.employeeProfile.clientAllocated
-    });
-
-    if (this.foundTeamLead != null) {
-      this.employeeDetailsForm.get('teamLead')?.setValue(this.foundTeamLead.name + ' ' + this.foundTeamLead.surname);
-      this.employeeId = this.foundTeamLead.id
-    }
-
-    if (this.foundClient != null) {
-      this.employeeDetailsForm.get('clientAllocated')?.setValue(this.foundClient.name);
-      this.clientId = this.foundClient.id
-    }
-
-    if (this.foundChampion != null) {
-      this.employeeDetailsForm.get('peopleChampion')?.setValue(this.foundChampion.employee.name + ' ' + this.foundChampion.employee.surname);
-      this.peopleChampionId = this.foundChampion.employee.id
-    }
-  }
 
 
   initializeForm() {
@@ -370,13 +251,11 @@ export class EmployeeProfileComponent {
 
   editEmployeeDetails() {
     this.employeeDetailsForm.enable();
-  editEmployeeDetails() {
-    this.employeeDetailsForm.enable();
     this.editEmployee = true;
   }
 
   saveEmployeeEdit() {
-  saveEmployeeEdit() {
+
     this.editEmployee = false;
     if (this.employeeDetailsForm.valid) {
       const employeeDetailsForm = this.employeeDetailsForm.value;
@@ -422,7 +301,6 @@ export class EmployeeProfileComponent {
         physicalAddress: {
           
         }
-        postalAddress: 
       }
       this.employeeService.updateEmployee(employeeProfileDto).subscribe({
         next: (data) => {
@@ -439,22 +317,20 @@ export class EmployeeProfileComponent {
     this.employeeDetailsForm.reset();
     this.initializeForm();
     this.employeeDetailsForm.disable();
-    this.employeeDetailsForm.reset();
-    this.initializeForm();
-    this.employeeDetailsForm.disable();
+
   }
 
-  editContactDetails() {
+ 
   editContactDetails() {
     this.editContact = true;
   }
 
-  saveContactEdit() {
+
   saveContactEdit() {
     this.editContact = false;
   }
 
-  cancelContactEdit() {
+ 
   cancelContactEdit() {
     this.editContact = false;
   }
@@ -495,48 +371,7 @@ export class EmployeeProfileComponent {
     }
     else if (name == 'client') {
       this.clientId = data.id
-    }
-    else if (name == 'champion') {
-      this.peopleChampionId = data.employee.id
-    }
-  }
-
-  filterEmployees(event: any) {
-    if (event) {
-      this.filteredEmployees = this.employees.filter((employee: { name: string; }) =>
-        employee.name.toLowerCase().includes(event.target.value.toLowerCase())
-      );
-    } else {
-      this.filteredEmployees = this.employees;
-    }
-  }
-
-  filterClients(event: any) {
-    if (event) {
-      this.filteredClients = this.clients.filter((client: { name: string; }) =>
-        client.name.toLowerCase().includes(event.target.value.toLowerCase())
-      );
-    } else {
-      this.filteredClients = this.clients;
-    }
-  }
-
-  filterChampions(event: any) {
-    if (event) {
-      this.filteredPeopleChamps = this.employeeRoles.filter((champs: any) =>
-        champs.employee.name.toLowerCase().includes(event.target.value.toLowerCase())
-      );
-    } else {
-      this.filteredPeopleChamps = this.employeeRoles.employee.name;
-    }
-  }
-
-  getId(data: any, name: string) {
-    if (name == 'employee') {
-      this.employeeId = data.id
-    }
-    else if (name == 'client') {
-      this.clientId = data.id
+      // this.employeeProfile.clientAllocated = data.id
     }
     else if (name == 'champion') {
       this.peopleChampionId = data.employee.id
