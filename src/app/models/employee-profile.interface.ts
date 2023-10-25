@@ -1,4 +1,4 @@
-import { NumberSymbol } from "@angular/common";
+import { EmployeeAddress } from "./employee-address.interface";
 
 export interface EmployeeProfile {
   id: number,
@@ -6,7 +6,7 @@ export interface EmployeeProfile {
   taxNumber: string,
   engagementDate: Date,
   terminationDate: Date,
-  reportingLine?: number,
+  peopleChampion?: number,
   disability: boolean,
   disabilityNotes: string,
   countryOfBirth: string,
@@ -37,5 +37,7 @@ export interface EmployeeProfile {
   payRate: number, 
   salary: Number,
   clientAllocated?: string,
-  teamLead?: number
+  teamLead?: number,
+  physicalAddress?: EmployeeAddress,
+  postalAddress?: EmployeeAddress,
 }

@@ -63,6 +63,7 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
   profileImage: string | null = null;
+  roles : string[] = [];
 
 
   employeeType: { id: number; name: string } = {
@@ -75,7 +76,7 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     private cookieService: CookieService,
     private dialog: MatDialog,
     private toast: NgToastService,
-    private employeeTypeService: EmployeeTypeService
+    private employeeTypeService: EmployeeTypeService,
   ) {
     this.categoryCtrl.valueChanges.subscribe(val => {
       if (val) {
@@ -86,7 +87,23 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     });
   }
 
+
+  // ngOnInit() {
+  //   const types: string = this.cookieService.get('userType');
+  //   this.roles = Object.keys(JSON.parse(types));
+
+  //   this.chartService.getAllCharts().subscribe({
+  //     next: (data) => (this.charts = data),
+  //   });
+  // }
+
+
+
   ngOnInit() {
+
+    const types: string = this.cookieService.get('userType');
+    this.roles = Object.keys(JSON.parse(types));
+
     // Getting the charts
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
@@ -119,6 +136,10 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
         this.filteredTypes = this.types; // Assign the same array to filteredTypes
       }
     });
+  }
+
+  isAdmin(): boolean {
+    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
 
   CaptureEventOld(event: any) {
@@ -168,7 +189,7 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     if (index >= 0) {
       categories.splice(index, 1);
       this.categoryControl.setValue(categories);
-    } 
+    }
   }
 
   // For Types:
