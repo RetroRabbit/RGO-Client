@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AccessPropertiesService } from 'src/app/services/access-properties.service';
 import { Properties } from 'src/app/models/properties.interface';
 import { CookieService } from 'ngx-cookie-service';
@@ -10,7 +10,6 @@ import { tshirtSize } from 'src/app/models/constants/tshirt.constants';
 import { countries } from 'src/app/models/constants/country.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
-import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { NgToastService } from 'ng-angular-popup';
@@ -22,6 +21,8 @@ import { EmployeeAddress } from 'src/app/models/employee-address.interface';
   styleUrls: ['./employee-profile.component.css']
 })
 export class EmployeeProfileComponent {
+  @Input() returnToEmpList: boolean = false;
+
   employeeFields: Properties[] = [];
   editFields: Properties[] = [];
   employeeProfile !: EmployeeProfile;
