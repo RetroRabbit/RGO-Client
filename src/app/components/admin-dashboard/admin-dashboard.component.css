@@ -36,3 +36,92 @@
   display: none;
 }
 
+#dialog-header > h1{
+  color: var(--m-3-black, #000);
+  /* M3/display/medium */
+  font-family: Roboto;
+  font-size: 300%;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 115.556%; /* 115.556% */
+}
+
+#dialog-header > h2{
+  color: var(--m-3-sys-light-primary, #0029C6);
+  text-align: center;
+  /* Body */
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 137.5%; /* 137.5% */
+  letter-spacing: -0.32px;
+}
+
+#dialog-box{
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+#dialog-save>button{
+  background: #0029c6;
+  border: none;
+  border-radius: 4rem;
+  color: white;
+  padding: 0.5rem;
+  width: 12rem;
+}
+
+  #dialog-close>button{
+    border: 1px solid #0029C6;
+    border-radius: 2rem;
+    background-color: white;
+    color: #0029C6;
+    padding:0.5rem;
+    width: 12rem;
+}
+
+.mat-mdc-radio-button.mat-accent {
+  --mdc-radio-disabled-selected-icon-color: #000;
+  --mdc-radio-disabled-unselected-icon-color: #000;
+  --mdc-radio-unselected-hover-icon-color: #212121;
+  --mdc-radio-unselected-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-radio-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-radio-selected-focus-icon-color: #0029C6;
+  --mdc-radio-selected-hover-icon-color: #0029C6;
+  --mdc-radio-selected-icon-color: #0029C6;
+  --mdc-radio-selected-pressed-icon-color: #0029C6;
+  --mat-radio-ripple-color: #000;
+  --mat-radio-checked-ripple-color: #0029C6;
+  --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
+  --mat-radio-checked-label-color: #0029C6;
+}
+
+.mat-radio-button.mat-radio-checked .mat-radio-label-content {
+  color: #0029C6 !important; /* using !important to override any existing styles */
+}
+
+.mat-mdc-standard-chip {
+  --mdc-chip-elevated-container-color: #D7DFFF;
+  --mdc-chip-label-text-color: #0029C6;
+  border-radius: 8px;
+  color: #0029C6;
+}
+.mat-mdc-standard-chip {
+  --mdc-chip-label-text-font: Roboto, normal;
+  --mdc-chip-label-text-line-height: 20px;
+  --mdc-chip-label-text-size: 14px;
+  --mdc-chip-label-text-tracking: 0.0178571429em;
+  --mdc-chip-label-text-weight: 500;
+}
+
+
+/* --mdc-outlined-text-field-focus-outline-color #0029C6;
+--mdc-outlined-text-field-focus-label-text-color: #0029C6;
+--mdc-outlined-text-field-outline-color: #0029C6; */
+.mdc-outlined-text-field-outline{
+  color: #0029C6;}
+

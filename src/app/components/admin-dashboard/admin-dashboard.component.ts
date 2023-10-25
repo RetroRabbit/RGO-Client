@@ -34,7 +34,7 @@ export class AdminDashboardComponent {
   categoryControl = new FormControl();
 
   // chart data variabbals
-  chartName: string = 'Name';
+  chartName: string = '';
   selectedDataItems: string[] = [];
   chartType: any = 'bar';
   chartData: number[] = [];
