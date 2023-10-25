@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
 import { CookieService } from 'ngx-cookie-service';
@@ -25,6 +25,8 @@ import { EmployeeAddress } from 'src/app/models/employee-address.interface';
   styleUrls: ['./new-employee.component.css'],
 })
 export class NewEmployeeComponent implements OnInit {
+  @Input() returnToEmpList: boolean = false;
+  
   constructor(
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
@@ -235,7 +237,7 @@ export class NewEmployeeComponent implements OnInit {
         if (reset) {
           this.newEmployeeForm.reset();
         } else {
-          this.cookieService.set('currentPage', 'Dashboard');
+          this.CaptureEvent()
         }
       },
       error: (error: any) => {
@@ -256,7 +258,9 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   CaptureEvent() {
-    this.cookieService.set('currentPage', 'Dashboard');
+    console.info(this.returnToEmpList)
+    if (this.returnToEmpList) this.cookieService.set('currentPage', 'View Employee');
+    else this.cookieService.set('currentPage', 'Dashboard');
   }
 
   checkBlankRequiredFields() {

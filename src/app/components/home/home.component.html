@@ -183,6 +183,9 @@
     <div *ngIf="cookieService.get('currentPage') === 'Manage Employee Roles'">
       <app-employee-role-manager></app-employee-role-manager>
     </div>
+    <div *ngIf="cookieService.get('currentPage') === 'Manage Permissions'">
+      <app-employee-role-manager></app-employee-role-manager>
+    </div>
     <div *ngIf="cookieService.get('currentPage') === 'Edit Dashboard'">
       <app-create-charts></app-create-charts>
     </div>
@@ -220,6 +223,9 @@
 
     <div *ngIf="cookieService.get('currentPage') == '+ Add New Hire'">
       <app-new-employee></app-new-employee>
+    </div>
+    <div *ngIf="cookieService.get('currentPage') == 'add\nAdd Employee'">
+      <app-new-employee [returnToEmpList]="returnToEmpList ? returnToEmpList : false" (viewEmployee)="handleReturnToEmpList($event)"></app-new-employee>
     </div>
 
     <div *ngIf="cookieService.get('currentPage') == 'Employee Details'">

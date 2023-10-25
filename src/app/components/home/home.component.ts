@@ -77,11 +77,23 @@ export class HomeComponent {
 
   handleSelectedEval(item: any) {
     this.selectedEvaluation = item
-
   }
 
   populateAddEmployeeForm(event: any) {
     this.selectedEvent = event;
+  }
+
+  viewProfile: EmployeeProfile | null = null;
+  
+  handleViewProfile(emp: EmployeeProfile) {
+    this.viewProfile = emp;
+  }
+
+  returnToEmpList: boolean | null = false;
+
+  handleReturnToEmpList(isTrue: any) {
+    console.info(`ViewEmployee: ${isTrue}`);
+    this.returnToEmpList = isTrue;
   }
 
   isAdmin(): boolean {
