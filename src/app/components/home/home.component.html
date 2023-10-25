@@ -44,7 +44,7 @@
         </div>
         <div class="col-sm-12 col-md-12 col-lg-10" id="navigation">
           <div class="row">
-            <div class="col-1" *ngIf="isAdmin()">
+            <div class="col-2" *ngIf="isAdmin() || isJourney()">
               <div id="nav-item-container" class="col-auto">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Dashboard' ? 'active' : 'idle'">
@@ -57,7 +57,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-1">
+            <div class="col-2">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Profile' ? 'active' : 'idle'">
@@ -70,99 +70,46 @@
                 </div>
               </div>
             </div>
-            <div class="col-1" *ngIf="isAdmin()">
+            <div class="col-2" *ngIf="isAdmin() || isJourney()">
               <div id="nav-item-container">
                 <div id="nav-item">
-                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'People' ? 'active' : 'idle'">
-                    People
+                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Employees' ? 'active' : 'idle'">
+                    Employees
                   </div>
-                  <div *ngIf="selectedItem == 'People'" id="selected-line-box">
+                  <div *ngIf="selectedItem == 'Employees'" id="selected-line-box">
                     <div id="selected-line">
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-1" *ngIf="isAdmin()">
+            <div class="col-2" *ngIf="isAdmin() || isJourney()">
               <div id="nav-item-container">
                 <div id="nav-item">
-                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Evaluations' ? 'active' : 'idle'">
-                    Evaluations
+                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Reports' ? 'active' : 'idle'">
+                    Reports
                   </div>
-                  <div *ngIf="selectedItem == 'Evaluations'" id="selected-line-box">
+                  <div *ngIf="selectedItem == 'Reports'" id="selected-line-box">
                     <div id="selected-line">
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-2" *ngIf="isAdmin()">
+            <div *ngIf="isAdmin()" class="col-2" id="info-menu">
               <div id="nav-item-container">
-                <div id="nav-item">
-                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Manage Field' ? 'active' : 'idle'">
-                    Manage Field
-                  </div>
-                  <div *ngIf="selectedItem == 'Manage Field'" id="selected-line-box">
-                    <div id="selected-line">
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <button mat-button [matMenuTriggerFor]="menu" id="nav-item">
+                More
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item  (click)="CaptureEvent($event)">Employee Banking</button>
+                <button mat-menu-item  (click)="CaptureEvent($event)">Manage Employee Events</button>
+                <button mat-menu-item  (click)="CaptureEvent($event)">Manage Employee Roles</button>
+                <button mat-menu-item  (click)="CaptureEvent($event)">Manage Roles</button>
+                <button mat-menu-item  (click)="CaptureEvent($event)">Manage Field</button>
+                <button mat-menu-item  (click)="CaptureEvent($event)">Evaluations</button>
+              </mat-menu>
             </div>
-            <div class="col-2" *ngIf="isAdmin()">
-              <div id="nav-item-container">
-                <div id="nav-item">
-                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Manage Roles' ? 'active' : 'idle'">
-                    Manage Roles
-                  </div>
-                  <div *ngIf="selectedItem == 'Manage Roles'" id="selected-line-box">
-                    <div id="selected-line">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-2" *ngIf="isAdmin()">
-              <div id="nav-item-container">
-                <div id="nav-item">
-                  <div (click)="CaptureEvent($event)"
-                    [ngClass]="selectedItem == 'Manage Employee Roles' ? 'active' : 'idle'">
-                    Manage Employee Roles
-                  </div>
-                  <div *ngIf="selectedItem == 'Manage Employee Roles'" id="selected-line-box">
-                    <div id="selected-line">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-2">
-              <div id="nav-item-container">
-                <div id="nav-item">
-                  <div (click)="CaptureEvent($event)"
-                    [ngClass]="selectedItem == 'Manage Employee Events' ? 'active' : 'idle'">
-                    Manage Employee Events
-                  </div>
-                  <div *ngIf="selectedItem == 'Manage Employee Events'" id="selected-line-box">
-                    <div id="selected-line">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-2" *ngIf="isAdmin()">
-              <div id="nav-item-container">
-                <div id="nav-item">
-                  <div (click)="CaptureEvent($event)"
-                    [ngClass]="selectedItem == 'Employee Banking' ? 'active' : 'idle'">
-                    Employee Banking
-                  </div>
-                  <div *ngIf="selectedItem == 'Employee Banking'" id="selected-line-box">
-                    <div id="selected-line">
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -183,8 +130,8 @@
                 </ng-template>
               </div>
               <div id="menu-quick-info">
-                <div>{{employeeProfile?.name}}</div>
-                <div>{{employeeType?.name}}</div>
+                <div>{{employeeProfile.name}}</div>
+                <div>{{employeeType.name}}</div>
               </div>
               <hr>
             </button>
@@ -193,8 +140,8 @@
           </mat-menu>
         </div>
         <div class="col-auto ms-4" id="employee-info">
-          <div>{{employeeProfile?.name + ' ' + employeeProfile?.surname}}</div>
-          <div>{{employeeType?.name}}</div>
+          <div>{{employeeProfile.name + ' ' + employeeProfile.surname}}</div>
+          <div>{{employeeType.name}}</div>
         </div>
         <div class="col-auto" id="employee-photo">
           <div id="image-container">
@@ -211,13 +158,13 @@
     <div *ngIf="cookieService.get('currentPage') === '' || cookieService.get('currentPage') === 'Dashboard'"
       #ShowDashBoard>
       <div *ngIf="isAdmin()">
-        <app-admin-dashboard></app-admin-dashboard>      
+        <app-admin-dashboard></app-admin-dashboard>
       </div>
       <div *ngIf="!isAdmin()">
-        <app-employee-profile></app-employee-profile>   
+        <app-employee-profile></app-employee-profile>
       </div>
     </div>
-    <div *ngIf="cookieService.get('currentPage') == 'People'">
+    <div *ngIf="cookieService.get('currentPage') == 'Employees'">
       <app-view-employee (selectedEmployee)="handleSelectedEmp($event)"></app-view-employee>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Evaluations'">
@@ -270,11 +217,11 @@
     <div *ngIf="cookieService.get('currentPage') == 'Add new field code'">
       <app-new-field-code></app-new-field-code>
     </div>
-   
+
     <div *ngIf="cookieService.get('currentPage') == '+ Add New Hire'">
       <app-new-employee></app-new-employee>
     </div>
-    
+
     <div *ngIf="cookieService.get('currentPage') == 'Employee Details'">
       <app-employee-details [selectedEmployee]="selectedEmployee"></app-employee-details>
      </div>

@@ -1,5 +1,5 @@
 <div id="new-hire">
-  <button class="my-4" (click)="CaptureEvent($event)">+ Add New Hire</button>
+    <button class="my-4" (click)="CaptureEvent($event)" *ngIf="isAdmin()">+ Add New Hire</button>
 </div>
 <div class="px-4 container-fluid" id="graph-container">
   <div id="graphs">
@@ -418,8 +418,8 @@
         <mat-option [value]="null">None</mat-option>
         <mat-option *ngFor="let type of filteredTypes" [value]="type">{{ type }}</mat-option>
       </mat-select>
- 
-    
+
+
       <mat-chip-grid #chipList>
         <mat-chip-row *ngFor="let type of selectedTypes" [removable]="true" (removed)="onTypeRemoved(type)">
           {{type}}
@@ -434,3 +434,4 @@
     <button mat-button (click)="createChart()">Create Chart</button>
   </div>
 </ng-template>
+
