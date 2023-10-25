@@ -43,7 +43,7 @@ export class EmployeeProfileComponent {
   employeeTypes: EmployeeType[] = [];
   employeeProfileDto: any;
   employeeType?: EmployeeType;
-
+  employeeAddressDto : any;
 
   isEdit: boolean = false;
   selectedItem: string = 'Profile Details'; // set the default accordion to Profile Details
@@ -71,6 +71,8 @@ export class EmployeeProfileComponent {
 
   employeeDetailsForm!: FormGroup;
   employeeContactForm!: FormGroup;
+  personalDetailsForm!: FormGroup;
+  addressDetailsForm!: FormGroup;
 
   filteredEmployees: any = [];
   filteredClients: any = [];
@@ -98,7 +100,7 @@ export class EmployeeProfileComponent {
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService) { }
- 
+
 
   ngOnInit() {
     this.getEmployeeFields();
@@ -184,6 +186,26 @@ export class EmployeeProfileComponent {
     this.employeeContactForm.disable();
 
     
+
+    this.addressDetailsForm = this.fb.group({
+      physicalUnitNumber: [this.employeeProfile.physicalAddress?.unitNumber, Validators.required],
+      physicalComplexName: [this.employeeProfile.physicalAddress?.complexName, Validators.required],
+      physicalStreetNumber: [this.employeeProfile.physicalAddress?.streetNumber, Validators.required],
+      physicalSuburb: [this.employeeProfile.physicalAddress?.suburbOrDistrict, Validators.required],
+      physicalCity: [this.employeeProfile.physicalAddress?.city, Validators.required],
+      physicalCountry: [this.employeeProfile.physicalAddress?.country, Validators.required],
+      physicalProvince: [this.employeeProfile.physicalAddress?.province, Validators.required],
+      physicalPostalCode: [this.employeeProfile.physicalAddress?.postalCode, Validators.required],
+      postalUnitNumber: [this.employeeProfile.postalAddress?.unitNumber, Validators.required],
+      postalComplexName: [this.employeeProfile.postalAddress?.complexName, Validators.required],
+      postalStreetNumber: [this.employeeProfile.postalAddress?.streetNumber, Validators.required],
+      postalSuburb: [this.employeeProfile.postalAddress?.suburbOrDistrict, Validators.required],
+      postalCity: [this.employeeProfile.postalAddress?.city, Validators.required],
+      postalCountry: [this.employeeProfile.postalAddress?.country, Validators.required],
+      postalProvince: [this.employeeProfile.postalAddress?.province, Validators.required],
+      postalPostalCode: [this.employeeProfile.postalAddress?.postalCode, Validators.required]
+    });
+    this.addressDetailsForm.disable();
   }
 
   checkEmployeeDetails() {
@@ -244,22 +266,63 @@ export class EmployeeProfileComponent {
     this.hasDisbility = false;
   }
 
-  setPhysicalEqualPostal(event: any) {
-    console.log(this.physicalEqualPostal);
-  }
-
   editAddressDetails() {
     this.editAddress = true;
+    this.addressDetailsForm.enable();
   }
 
   saveAddressEdit() {
     this.editAddress = false;
+    if (this.addressDetailsForm.valid) {
+      const addressDetailFormValue = this.addressDetailsForm.value;
+      this.employeeAddressDto = {
+        id: this.employeeProfile.physicalAddress?.id!,
+        unitNumber: addressDetailFormValue['physicalUnitNumber'],
+        complexName: addressDetailFormValue['physicalComplexName'],
+        streetNumber: addressDetailFormValue['physicalStreetNumber'],
+        suburbOrDistrict: addressDetailFormValue['physicalSuburb'],
+        city: addressDetailFormValue['physicalCity'],
+        country: addressDetailFormValue['physicalCountry'],
+        province: addressDetailFormValue['physicalProvince'],
+        postalCode: addressDetailFormValue['physicalPostalCode'],
+      }
+      this.employeeAddressService.update(this.employeeAddressDto).subscribe({
+        next: (data) => {
+          this.employeeAddressDto = {
+            id: this.employeeProfile.postalAddress?.id!,
+            unitNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalUnitNumber'] : addressDetailFormValue['postalUnitNumber'],
+            complexName: this.physicalEqualPostal ? addressDetailFormValue['physicalComplexName'] : addressDetailFormValue['postalComplexName'],
+            streetNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalStreetNumber'] : addressDetailFormValue['postalStreetNumber'],
+            suburbOrDistrict: this.physicalEqualPostal ? addressDetailFormValue['physicalSuburb'] : addressDetailFormValue['postalSuburb'],
+            city: this.physicalEqualPostal ? addressDetailFormValue['physicalCity'] : addressDetailFormValue['postalCity'],
+            country: this.physicalEqualPostal ? addressDetailFormValue['physicalCountry'] : addressDetailFormValue['postalCountry'],
+            province: this.physicalEqualPostal ? addressDetailFormValue['physicalProvince'] : addressDetailFormValue['postalProvince'],
+            postalCode: this.physicalEqualPostal ? addressDetailFormValue['physicalPostalCode'] : addressDetailFormValue['postalPostalCode'],
+          }
+          this.employeeAddressService.update(this.employeeAddressDto).subscribe({
+            next: (data) => {
+              this.toast.success({ detail: "Employee Address updated!", position: 'topRight' });
+              this.addressDetailsForm.disable();
+              this.getEmployeeFields();
+            },
+            error: (error) => { 
+              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); 
+            },
+          });
+        },
+        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+      });
+    }
   }
 
   cancelAddressEdit() {
     this.editAddress = false;
     this.hasDisbility = false;
-    this.physicalCountryControl = this.postalCountryControl = "";
+    this.addressDetailsForm.disable();
+  }
+
+  toggleEqualFields(){
+    this.physicalEqualPostal = !this.physicalEqualPostal;
   }
 
   editEmployeeDetails() {
@@ -423,11 +486,11 @@ export class EmployeeProfileComponent {
       // }
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-        this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
-        this.employeeDetailsForm.disable();
-      },
+          this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.employeeDetailsForm.disable();
+        },
         error: (error) => { console.log(error); this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
-      }); 
+      });
     }
   }
 
@@ -438,7 +501,7 @@ export class EmployeeProfileComponent {
     this.employeeDetailsForm.disable();
   }
 
- 
+
   editContactDetails() {
     this.employeeContactForm.enable();
     this.editContact = true;
