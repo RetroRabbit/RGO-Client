@@ -173,7 +173,7 @@ export class EmployeeProfileComponent {
     this.tShirtSizeFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
     if (this.tShirtSizeFieldValue == undefined) {
       this.tShirtSizeFieldValue = {
-        id: 0,
+        id:  (this.customFields[this.customFields.length - 1].id! + 1),
         employeeId: this.employeeProfile.id,
         fieldCodeId: fieldId.id,
         value: 'Unknown'
@@ -191,7 +191,7 @@ export class EmployeeProfileComponent {
     
     if (this.dietaryFieldValue == undefined) {
       this.dietaryFieldValue = {
-        id: 0,
+        id: (this.customFields[this.customFields.length - 1].id! + 2),
         employeeId: this.employeeProfile.id,
         fieldCodeId: fieldId.id,
         value: 'None'
@@ -208,7 +208,7 @@ export class EmployeeProfileComponent {
     this.allergiesFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
     if (this.allergiesFieldValue == undefined) {
       this.allergiesFieldValue = {
-        id: 0,
+        id:  (this.customFields[this.customFields.length - 1].id! + 3),
         employeeId: this.employeeProfile.id,
         fieldCodeId: fieldId.id,
         value: 'None'
@@ -264,10 +264,10 @@ export class EmployeeProfileComponent {
     this.addressDetailsForm.disable();
 
     this.personalDetailsForm = this.fb.group({
-      gender: [this.employeeProfile.gender],
-      race: [this.employeeProfile.race],
-      disability: [this.employeeProfile.disability],
-      disabilityNotes: [this.employeeProfile.disabilityNotes]
+      gender: [this.employeeProfile.gender,Validators.required],
+      race: [this.employeeProfile.race, Validators.required],
+      disability: [this.employeeProfile.disability, Validators.required],
+      disabilityNotes: [this.employeeProfile.disabilityNotes, Validators.required]
     })
     this.personalDetailsForm.disable();
   }
