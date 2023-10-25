@@ -24,6 +24,8 @@ import { EmployeeTypeService } from 'src/app/services/employee/employee-type.ser
 import { level } from 'src/app/models/constants/level.constants';
 
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
+import { EmployeeDataService } from 'src/app/services/employee-data.service';
+import { EmployeeData } from 'src/app/models/employee-data.interface';
 
 @Component({
   selector: 'app-employee-profile',
@@ -41,8 +43,10 @@ export class EmployeeProfileComponent {
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
   employeeTypes: EmployeeType[] = [];
+  employeeData: EmployeeData[] = [];
+
   employeeProfileDto: any;
-  employeeAddressDto : any;
+  employeeAddressDto: any;
 
   isEdit: boolean = false;
   selectedItem: string = 'Profile Details'; // set the default accordion to Profile Details
@@ -85,7 +89,14 @@ export class EmployeeProfileComponent {
 
   client_placeholder: string = '';
 
-
+  tShirtSizeField!: FieldCode;
+  tShirtSizeFieldValue!: EmployeeData;
+  dietaryField!: FieldCode;
+  dietaryFieldValue!: EmployeeData;
+  allergiesField!: FieldCode;
+  allergiesFieldValue!: EmployeeData;
+  
+  employeeDataDto : any;
   filteredCountries: any[] = this.countries.slice();
   constructor(private accessPropertyService: AccessPropertiesService,
     private cookieService: CookieService,
@@ -97,7 +108,8 @@ export class EmployeeProfileComponent {
     private toast: NgToastService,
     private fb: FormBuilder,
     private employeeService: EmployeeService,
-    private employeeTypeService: EmployeeTypeService) { }
+    private employeeTypeService: EmployeeTypeService,
+    private employeeDataService: EmployeeDataService) { }
 
 
   ngOnInit() {
@@ -105,11 +117,6 @@ export class EmployeeProfileComponent {
   }
 
   getEmployeeFields() {
-    this.accessPropertyService.GetAccessProperties(this.cookieService.get('userEmail')).subscribe({
-      next: data => {
-        this.employeeFields = data;
-      }
-    });
     this.employeeProfileService.GetEmployeeProfile().subscribe({
       next: data => {
         this.employeeProfile = data;
@@ -118,6 +125,9 @@ export class EmployeeProfileComponent {
         this.customFieldsService.getAllFieldCodes().subscribe({
           next: data => {
             this.customFields = data;
+            this.tShirtSizeField = this.customFields.filter(field => field.code == 'tsize')[0];
+            this.dietaryField = this.customFields.filter(field => field.code == 'dietary')[0];
+            this.allergiesField = this.customFields.filter(field => field.code == 'allergies')[0];
           },
           error: (error) => {
             this.toast.error({ detail: "Error", summary: "Failed to fetch addition informaion", duration: 5000, position: 'topRight' });
@@ -144,10 +154,74 @@ export class EmployeeProfileComponent {
           }
         });
         this.initializeForm();
+        this.employeeDataService.getEmployeeData(this.employeeProfile.id).subscribe({
+          next: data => {
+            this.employeeData = data;
+            this.getData();
+          },
+          error: error =>{
+            this.toast.error({ detail: "Error", summary: "Failed to Employee Data", duration: 5000, position: 'topRight' });
+
+          }
+        });
       }
     });
   }
 
+  getData() {
+    let fieldId = this.customFields.filter(field => field.code == 'tsize')[0];
+    this.tShirtSizeFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
+    if (this.tShirtSizeFieldValue == undefined) {
+      this.tShirtSizeFieldValue = {
+        id: 0,
+        employeeId: this.employeeProfile.id,
+        fieldCodeId: fieldId.id,
+        value: 'Unknown'
+      };
+      this.employeeDataService.saveEmployeeData(this.tShirtSizeFieldValue).subscribe(data => {
+        error: () => {
+          this.toast.error({ detail: "Error", summary: "Failed to fetch T-Size", duration: 5000, position: 'topRight' });
+        }
+      });
+    }
+    this.personalDetailsForm.addControl('tsize', this.fb.control(this.tShirtSizeFieldValue.value));
+
+    fieldId = this.customFields.filter(field => field.code == 'dietary')[0];
+    this.dietaryFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
+    
+    if (this.dietaryFieldValue == undefined) {
+      this.dietaryFieldValue = {
+        id: 0,
+        employeeId: this.employeeProfile.id,
+        fieldCodeId: fieldId.id,
+        value: 'None'
+      };
+      this.employeeDataService.saveEmployeeData(this.dietaryFieldValue).subscribe(data => {
+        error: () => {
+          this.toast.error({ detail: "Error", summary: "Failed to fetch Dietary", duration: 5000, position: 'topRight' });
+        }
+      });
+    }
+    this.personalDetailsForm.addControl('dietary', this.fb.control(this.dietaryFieldValue.value));
+
+    fieldId = this.customFields.filter(field => field.code == 'allergies')[0];
+    this.allergiesFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
+    if (this.allergiesFieldValue == undefined) {
+      this.allergiesFieldValue = {
+        id: 0,
+        employeeId: this.employeeProfile.id,
+        fieldCodeId: fieldId.id,
+        value: 'None'
+      };
+      this.employeeDataService.saveEmployeeData(this.allergiesFieldValue).subscribe(data => {
+        error: () => {
+          this.toast.error({ detail: "Error", summary: "Failed to fetch allergies", duration: 5000, position: 'topRight' });
+        }
+      });
+    }
+    this.personalDetailsForm.addControl('allergies', this.fb.control(this.allergiesFieldValue.value));
+
+  }
 
 
 
@@ -188,6 +262,14 @@ export class EmployeeProfileComponent {
       postalPostalCode: [this.employeeProfile.postalAddress?.postalCode, Validators.required]
     });
     this.addressDetailsForm.disable();
+
+    this.personalDetailsForm = this.fb.group({
+      gender: [this.employeeProfile.gender],
+      race: [this.employeeProfile.race],
+      disability: [this.employeeProfile.disability],
+      disabilityNotes: [this.employeeProfile.disabilityNotes]
+    })
+    this.personalDetailsForm.disable();
   }
 
   checkEmployeeDetails() {
@@ -237,10 +319,121 @@ export class EmployeeProfileComponent {
 
   editPersonalDetails() {
     this.editPersonal = true;
+    this.personalDetailsForm.enable();
   }
 
   savePersonalEdit() {
     this.editPersonal = false;
+    if (this.personalDetailsForm.valid) {
+      const personalDetailsFormValue = this.personalDetailsForm.value;
+
+      this.employeeProfileDto = {
+        id: this.employeeProfile.id,
+        employeeNumber: this.employeeProfile.employeeNumber,
+        taxNumber: this.employeeProfile.taxNumber,
+        engagementDate: this.employeeProfile.engagementDate,
+        terminationDate: this.employeeProfile.terminationDate,
+        peopleChampion: this.peopleChampionId == 0 ? null : this.peopleChampionId,
+        disability: personalDetailsFormValue['disability'],
+        disabilityNotes: personalDetailsFormValue['disabilityNotes'],
+        countryOfBirth: this.employeeProfile.countryOfBirth,
+        nationality: this.employeeProfile.nationality,
+        level: +this.employeeProfile.level,
+        employeeType: {
+          id: this.employeeProfile.employeeType.id,
+          name: this.employeeProfile.employeeType.name,
+        },
+        title: this.employeeProfile.title,
+        name: this.employeeProfile.name,
+        initials: this.employeeProfile.initials,
+        surname: this.employeeProfile.surname,
+        dateOfBirth: this.employeeProfile.dateOfBirth,
+        idNumber: this.employeeProfile.idNumber,
+        passportNumber: this.employeeProfile.passportNumber,
+        passportExpirationDate: this.employeeProfile.passportExpirationDate,
+        passportCountryIssue: this.employeeProfile.passportCountryIssue,
+        race: personalDetailsFormValue['race'],
+        gender: personalDetailsFormValue['gender'],
+        email: this.employeeProfile.email,
+        personalEmail: this.employeeProfile.personalEmail,
+        cellphoneNo: this.employeeProfile.cellphoneNo,
+        photo: this.employeeProfile.photo,
+        notes: '',
+        leaveInterval: this.employeeProfile.leaveInterval,
+        salary: this.employeeProfile.salary,
+        salaryDays: this.employeeProfile.salaryDays,
+        payRate: this.employeeProfile.payRate,
+        clientAllocated: this.clientId == 0 ? null : this.clientId,
+        teamLead: this.employeeId == 0 ? null : this.employeeId,
+        physicalAddress: {
+          id: this.employeeProfile.physicalAddress?.id,
+          unitNumber: this.employeeProfile.physicalAddress?.unitNumber,
+          complexName: this.employeeProfile.physicalAddress?.complexName,
+          streetNumber: this.employeeProfile.physicalAddress?.streetNumber,
+          suburbOrDistrict: this.employeeProfile.physicalAddress?.suburbOrDistrict,
+          city: this.employeeProfile.physicalAddress?.city,
+          country: this.employeeProfile.physicalAddress?.country,
+          province: this.employeeProfile.physicalAddress?.province,
+          postalCode: this.employeeProfile.physicalAddress?.postalCode,
+        },
+        postalAddress: {
+          id: this.employeeProfile.postalAddress?.id,
+          unitNumber: this.employeeProfile.postalAddress?.unitNumber,
+          complexName: this.employeeProfile.postalAddress?.complexName,
+          streetNumber: this.employeeProfile.postalAddress?.streetNumber,
+          suburbOrDistrict: this.employeeProfile.postalAddress?.suburbOrDistrict,
+          city: this.employeeProfile.postalAddress?.city,
+          country: this.employeeProfile.postalAddress?.country,
+          province: this.employeeProfile.postalAddress?.province,
+          postalCode: this.employeeProfile.postalAddress?.postalCode,
+        }
+      }
+      this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
+        next: (data) => {
+          this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.saveCustomFields();
+          this.personalDetailsForm.disable();
+          this.getEmployeeFields();
+        },
+        error: (error) => {
+          this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+        },
+      });
+    }
+  }
+
+  saveCustomFields(){
+    this.employeeDataService.updateEmployeeData(this.tShirtSizeFieldValue).subscribe({
+      next: () => {},
+      error: (error) => {
+        this.toast.error({ detail: "Error", summary: "Failed to update T-Shirt", duration: 5000, position: 'topRight' });
+      }
+    });
+
+    this.employeeDataService.updateEmployeeData(this.dietaryFieldValue).subscribe({
+      next: () => {},
+      error: (error) => {
+        this.toast.error({ detail: "Error", summary: "Failed to update Dietary", duration: 5000, position: 'topRight' });
+      }
+    });
+
+    this.employeeDataService.updateEmployeeData(this.allergiesFieldValue).subscribe({
+      next: () => {},
+      error: (error) => {
+        this.toast.error({ detail: "Error", summary: "Failed to update Allergies", duration: 5000, position: 'topRight' });
+      }
+    });
+  }
+  captureTSizeChange(event:any){
+    this.tShirtSizeFieldValue.value = event;
+  }
+  
+  captureDietaryChange(event:any){
+    this.dietaryFieldValue.value = event;
+  }
+  
+  captureAllergiesChange(event:any){
+    this.allergiesFieldValue.value = event;
   }
 
   cancelPersonalEdit() {
@@ -287,8 +480,8 @@ export class EmployeeProfileComponent {
               this.addressDetailsForm.disable();
               this.getEmployeeFields();
             },
-            error: (error) => { 
-              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); 
+            error: (error) => {
+              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
             },
           });
         },
@@ -303,7 +496,7 @@ export class EmployeeProfileComponent {
     this.addressDetailsForm.disable();
   }
 
-  toggleEqualFields(){
+  toggleEqualFields() {
     this.physicalEqualPostal = !this.physicalEqualPostal;
   }
 

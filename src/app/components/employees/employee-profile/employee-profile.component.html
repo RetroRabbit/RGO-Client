@@ -2,22 +2,22 @@
     <div id="profile-header" class="row p-2">
         <div class="col-2 mt-4">
             <div id="profile-image">
-                <img [src]="employeeProfile.photo" alt="">
+                <img [src]="employeeProfile?.photo" alt="">
             </div>
         </div>
         <div class="col-md-8 offset-md-2 offset-lg-0 col-lg-10 mt-4">
             <div class="row mt-3">
                 <div class="col-6 col-md-8" id="header-name">
-                    <h1>{{employeeProfile.name}} {{employeeProfile.surname}}</h1>
+                    <h1>{{employeeProfile?.name}} {{employeeProfile?.surname}}</h1>
                 </div>
                 <div class="col-6 col-md-4" id="header-email">
                     <div class="row me-4">
-                        <div class="col-auto">{{employeeProfile.email}}</div>
+                        <div class="col-auto">{{employeeProfile?.email}}</div>
                         <div class="col-1 mt-2" id="header-email-clip"><mat-icon>attachment</mat-icon></div>
                     </div>
                 </div>
                 <div class="col-12 my-2" id="header-role">
-                    {{employeeProfile.employeeType.name}} | Level {{employeeProfile.level}}
+                    {{employeeProfile?.employeeType?.name}} | Level {{employeeProfile?.level}}
                 </div>
                 <div class="col-12 my-2" id="header-based">
                     Based in Johannesburg
@@ -74,7 +74,7 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">Start Date</div>
-                            <div id="header-value">{{employeeProfile.engagementDate}}</div>
+                            <div id="header-value">{{employeeProfile?.engagementDate}}</div>
                         </div>
                     </div>
                 </div>
@@ -163,7 +163,8 @@
                                     <div class="row">
                                         <div class="col-12 my-2">
                                             <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Title</h4>
-                                            <mat-radio-group aria-label="Select your title" formControlName="title" [value]="employeeProfile.title">
+                                            <mat-radio-group aria-label="Select your title" formControlName="title"
+                                                [value]="employeeProfile?.title">
                                                 <mat-radio-button value=Mr>Mr</mat-radio-button>
                                                 <mat-radio-button value=Ms>Ms</mat-radio-button>
                                                 <mat-radio-button value=Miss>Miss</mat-radio-button>
@@ -193,10 +194,12 @@
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Client Allocated</mat-label>
-                                                <input type="text" placeholder="" matInput formControlName="clientAllocated"
-                                                    [matAutocomplete]="autoClient" (input)="filterClients($event)" [disabled]="!editEmployee">
+                                                <input type="text" placeholder="" matInput
+                                                    formControlName="clientAllocated" [matAutocomplete]="autoClient"
+                                                    (input)="filterClients($event)" [disabled]="!editEmployee">
                                                 <mat-autocomplete #autoClient="matAutocomplete">
-                                                    <mat-option *ngFor="let client of filteredClients" [value]="client.name"
+                                                    <mat-option *ngFor="let client of filteredClients"
+                                                        [value]="client.name"
                                                         (onSelectionChange)="getId(client, 'client')">
                                                         {{ client.name }}
                                                     </mat-option>
@@ -241,9 +244,9 @@
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>People's Champion</mat-label>
-                                                <input type="text" placeholder="" matInput formControlName="peopleChampion"
-                                                    [matAutocomplete]="autoChampion" (input)="filterChampions($event)"
-                                                    >
+                                                <input type="text" placeholder="" matInput
+                                                    formControlName="peopleChampion" [matAutocomplete]="autoChampion"
+                                                    (input)="filterChampions($event)">
                                                 <mat-autocomplete #autoChampion="matAutocomplete">
                                                     <mat-option *ngFor="let people of filteredPeopleChamps"
                                                         [value]="people.employee.name + ' ' + people.employee.surname"
@@ -257,7 +260,8 @@
                                                 <mat-label>Date of Birth</mat-label>
                                                 <input matInput [matDatepicker]="picker1" class="form-control"
                                                     formControlName="dateOfBirth">
-                                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="picker1"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker1></mat-datepicker>
                                             </mat-form-field>
                                         </div>
@@ -272,19 +276,23 @@
                                                 <mat-label>Start Date</mat-label>
                                                 <input matInput [matDatepicker]="picker2"
                                                     formControlName="engagementDate">
-                                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="picker2"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker2></mat-datepicker>
                                             </mat-form-field>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-2">
-                                    <button *ngIf="!editEmployee" mat-button id="edit-button" (click)="editEmployeeDetails()">
+                                    <button *ngIf="!editEmployee" mat-button id="edit-button"
+                                        (click)="editEmployeeDetails()">
                                         <mat-icon>edit</mat-icon>Edit Details</button>
                                 </div>
                                 <div class="col-12" id="edit-buttons">
-                                    <button *ngIf="editEmployee" mat-button id="cancel-button" (click)="cancelEmployeeEdit()">Cancel</button>
-                                    <button *ngIf="editEmployee" mat-button id="save-button" type="submit" [disabled]="!employeeDetailsForm.valid">Save
+                                    <button *ngIf="editEmployee" mat-button id="cancel-button"
+                                        (click)="cancelEmployeeEdit()">Cancel</button>
+                                    <button *ngIf="editEmployee" mat-button id="save-button" type="submit"
+                                        [disabled]="!employeeDetailsForm.valid">Save
                                         changes</button>
                                 </div>
                             </div>
@@ -300,72 +308,100 @@
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="row">
-                                    <div class="col-12 my-2">
-                                        <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
-                                        <mat-radio-group aria-label="Select your gender" [disabled]="!editPersonal" formControlName="gender" [value]="employeeProfile.gender">
-                                            <mat-radio-button [value]=1>Male</mat-radio-button>
-                                            <mat-radio-button [value]=2>Female</mat-radio-button>
-                                            <mat-radio-button [value]=0>Unclassified</mat-radio-button>
-                                        </mat-radio-group>
-                                    </div>
-                                    <div class="col-4 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Race</mat-label>
-                                            <mat-select [disabled]="!editPersonal" formControlName="race">
-                                                <mat-option *ngFor="let race of races" [value]="race.id">
-                                                    {{race.value}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                   <!-- ToDo: Add custom fields -->
-                                    <div class="col-12 mt-1"></div>
-                                    <div class="col-6  my-1">
-                                        <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any
-                                            disabilities that you are aware of?</h3>
-                                        <mat-radio-group aria-label="Select status" (change)="setHasDisability($event)"
-                                            [disabled]="!editPersonal">
-                                            <mat-radio-button [value]=true>yes</mat-radio-button>
-                                            <mat-radio-button [value]=false>false</mat-radio-button>
-                                        </mat-radio-group>
-                                    </div>
-                                    <div class="col-12" *ngIf="hasDisbility">
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <mat-label>Disability</mat-label>
-                                                    <mat-select>
-                                                        <mat-option *ngFor="let disability of disabilities"
-                                                            [value]="disability.id">
-                                                            {{disability.value}}
-                                                        </mat-option>
-                                                    </mat-select>
+                        <form [formGroup]="personalDetailsForm" (submit)="savePersonalEdit()">
+
+
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-12 my-2">
+                                            <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
+                                            <mat-radio-group aria-label="Select your gender"
+                                                formControlName="gender" [value]="employeeProfile.gender">
+                                                <mat-radio-button [value]=1>Male</mat-radio-button>
+                                                <mat-radio-button [value]=2>Female</mat-radio-button>
+                                                <mat-radio-button [value]=0>Unclassified</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Race</mat-label>
+                                                <mat-select formControlName="race">
+                                                    <mat-option *ngFor="let race of races; index as i" [value]="i">
+                                                        {{race.value}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- ToDo: Add custom fields -->
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>T-Shirt Size</mat-label>
+                                                <mat-select [disabled]="!editPersonal" [value]="tShirtSizeFieldValue?.value" (valueChange)="captureTSizeChange($event)">
+                                                    <mat-option *ngFor="let size of tShirtSizeField?.options" [value]=size.option>
+                                                        {{size.option}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Dietary</mat-label>
+                                                <mat-select [disabled]="!editPersonal" [value]="dietaryFieldValue?.value" (valueChange)="captureDietaryChange($event)">
+                                                    <mat-option *ngFor="let option of dietaryField?.options" [value]=option.option>
+                                                        {{option.option}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <textarea [disabled]="!editPersonal" matInput placeholder="Allergies Notes" [value]="allergiesFieldValue?.value" (valueChange)="captureAllergiesChange($event)"></textarea>
                                                 </mat-form-field>
-                                            </div>
-                                            <div class="col-6">
-                                                <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <textarea matInput placeholder="Disability Notes"></textarea>
-                                                </mat-form-field>
+                                        </div>
+                                        <div class="col-12 mt-1"></div>
+                                        <div class="col-6  my-1">
+                                            <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any
+                                                disabilities that you are aware of?</h3>
+                                            <mat-radio-group aria-label="Select status" (change)="setHasDisability($event)" formControlName="disability">
+                                                <mat-radio-button [value]=true>yes</mat-radio-button>
+                                                <mat-radio-button [value]=false>no</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                        <div class="col-12" *ngIf="hasDisbility">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                                        <mat-label>Disability</mat-label>
+                                                        <mat-select>
+                                                            <mat-option *ngFor="let disability of disabilities"
+                                                                [value]="disability.id">
+                                                                {{disability.value}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-6">
+                                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                                        <textarea matInput placeholder="Disability Notes" formControlName="disabilityNotes"></textarea>
+                                                    </mat-form-field>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-2">
+                                    <button *ngIf="!editPersonal" mat-button id="edit-button"
+                                        (click)="editPersonalDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
+                                </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editPersonal" mat-button id="cancel-button"
+                                        (click)="cancelPersonalEdit()">Cancel</button>
+                                    <button *ngIf="editPersonal" mat-button id="save-button"
+                                        (click)="savePersonalEdit()">Save changes</button>
+                                </div>
                             </div>
-                            <div class="col-2">
-                                <button *ngIf="!editPersonal" mat-button id="edit-button"
-                                    (click)="editPersonalDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
-                            </div>
-                            <div class="col-12" id="edit-buttons">
-                                <button *ngIf="editPersonal" mat-button id="cancel-button"
-                                    (click)="cancelPersonalEdit()">Cancel</button>
-                                <button *ngIf="editPersonal" mat-button id="save-button"
-                                    (click)="savePersonalEdit()">Save changes</button>
-                            </div>
-                        </div>
-
+                        </form>
                     </mat-expansion-panel>
                     <mat-expansion-panel class="my-3" (opened)="panelOpenState = true"
                         (closed)="panelOpenState = false">
@@ -429,8 +465,8 @@
                             <div class="col-12" id="edit-buttons">
                                 <button *ngIf="editContact" mat-button id="cancel-button"
                                     (click)="cancelContactEdit()">Cancel</button>
-                                <button *ngIf="editContact" mat-button id="save-button"
-                                    (click)="saveContactEdit()">Save changes</button>
+                                <button *ngIf="editContact" mat-button id="save-button" (click)="saveContactEdit()">Save
+                                    changes</button>
                             </div>
                         </div>
 
@@ -482,11 +518,12 @@
                                         <div class="col-6">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Country</mat-label>
-                                                <input matInput
-                                                    [matAutocomplete]="auto" placeholder="Search country"
-                                                    (input)="filterCountries($event)" formControlName="physicalCountry"/>
+                                                <input matInput [matAutocomplete]="auto" placeholder="Search country"
+                                                    (input)="filterCountries($event)"
+                                                    formControlName="physicalCountry" />
                                                 <mat-autocomplete #auto="matAutocomplete">
-                                                    <mat-option *ngFor="let country of filteredCountries" [value]="country">
+                                                    <mat-option *ngFor="let country of filteredCountries"
+                                                        [value]="country">
                                                         {{ country }}
                                                     </mat-option>
                                                 </mat-autocomplete>
@@ -509,7 +546,8 @@
                                             </mat-form-field>
                                         </div>
                                         <div class="col-12">
-                                            <mat-checkbox (change)="toggleEqualFields()" [disabled]="!editAddress">Is the postal address the same as physical address?</mat-checkbox>
+                                            <mat-checkbox (change)="toggleEqualFields()" [disabled]="!editAddress">Is
+                                                the postal address the same as physical address?</mat-checkbox>
                                         </div>
                                     </div>
                                     <div *ngIf="!physicalEqualPostal" class="row mt-4">
@@ -546,11 +584,11 @@
                                         <div class="col-6">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Country</mat-label>
-                                                <input matInput
-                                                    [matAutocomplete]="auto" placeholder="Search country"
-                                                    (input)="filterCountries($event)" formControlName="postalCountry"/>
+                                                <input matInput [matAutocomplete]="auto" placeholder="Search country"
+                                                    (input)="filterCountries($event)" formControlName="postalCountry" />
                                                 <mat-autocomplete #auto="matAutocomplete">
-                                                    <mat-option *ngFor="let country of filteredCountries" [value]="country">
+                                                    <mat-option *ngFor="let country of filteredCountries"
+                                                        [value]="country">
                                                         {{ country }}
                                                     </mat-option>
                                                 </mat-autocomplete>
@@ -575,13 +613,17 @@
                                     </div>
                                 </div>
                                 <div class="col-2">
-                                    <button *ngIf="!editAddress" mat-button id="edit-button" (click)="editAddressDetails()">
+                                    <button *ngIf="!editAddress" mat-button id="edit-button"
+                                        (click)="editAddressDetails()">
                                         <mat-icon>edit</mat-icon>Edit Details
                                     </button>
                                 </div>
                                 <div class="col-12" id="edit-buttons">
-                                    <button *ngIf="editAddress" mat-button id="cancel-button" (click)="cancelAddressEdit()">Cancel</button>
-                                    <button *ngIf="editAddress" mat-button id="save-button" type="submit" (click)="saveAddressEdit()" [disabled]="!addressDetailsForm.valid">Save changes</button>
+                                    <button *ngIf="editAddress" mat-button id="cancel-button"
+                                        (click)="cancelAddressEdit()">Cancel</button>
+                                    <button *ngIf="editAddress" mat-button id="save-button" type="submit"
+                                        (click)="saveAddressEdit()" [disabled]="!addressDetailsForm.valid">Save
+                                        changes</button>
                                 </div>
                             </div>
                         </form>
