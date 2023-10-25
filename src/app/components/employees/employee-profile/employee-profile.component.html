@@ -163,7 +163,8 @@
                                     <div class="row">
                                         <div class="col-12 my-2">
                                             <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Title</h4>
-                                            <mat-radio-group aria-label="Select your title" formControlName="title" [value]="employeeProfile.title">
+                                            <mat-radio-group aria-label="Select your title" formControlName="title"
+                                                >
                                                 <mat-radio-button value=Mr>Mr</mat-radio-button>
                                                 <mat-radio-button value=Ms>Ms</mat-radio-button>
                                                 <mat-radio-button value=Miss>Miss</mat-radio-button>
@@ -193,10 +194,12 @@
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Client Allocated</mat-label>
-                                                <input type="text" placeholder="" matInput formControlName="clientAllocated"
-                                                    [matAutocomplete]="autoClient" (input)="filterClients($event)" [disabled]="!editEmployee">
+                                                <input type="text" placeholder="" matInput
+                                                    formControlName="clientAllocated" [matAutocomplete]="autoClient"
+                                                    (input)="filterClients($event)" [disabled]="!editEmployee">
                                                 <mat-autocomplete #autoClient="matAutocomplete">
-                                                    <mat-option *ngFor="let client of filteredClients" [value]="client.name"
+                                                    <mat-option *ngFor="let client of filteredClients"
+                                                        [value]="client.name"
                                                         (onSelectionChange)="getId(client, 'client')">
                                                         {{ client.name }}
                                                     </mat-option>
@@ -241,9 +244,9 @@
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>People's Champion</mat-label>
-                                                <input type="text" placeholder="" matInput formControlName="peopleChampion"
-                                                    [matAutocomplete]="autoChampion" (input)="filterChampions($event)"
-                                                    >
+                                                <input type="text" placeholder="" matInput
+                                                    formControlName="peopleChampion" [matAutocomplete]="autoChampion"
+                                                    (input)="filterChampions($event)">
                                                 <mat-autocomplete #autoChampion="matAutocomplete">
                                                     <mat-option *ngFor="let people of filteredPeopleChamps"
                                                         [value]="people.employee.name + ' ' + people.employee.surname"
@@ -257,7 +260,8 @@
                                                 <mat-label>Date of Birth</mat-label>
                                                 <input matInput [matDatepicker]="picker1" class="form-control"
                                                     formControlName="dateOfBirth">
-                                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="picker1"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker1></mat-datepicker>
                                             </mat-form-field>
                                         </div>
@@ -272,19 +276,23 @@
                                                 <mat-label>Start Date</mat-label>
                                                 <input matInput [matDatepicker]="picker2"
                                                     formControlName="engagementDate">
-                                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="picker2"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker2></mat-datepicker>
                                             </mat-form-field>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-2">
-                                    <button *ngIf="!editEmployee" mat-button id="edit-button" (click)="editEmployeeDetails()">
+                                    <button *ngIf="!editEmployee" mat-button id="edit-button"
+                                        (click)="editEmployeeDetails()">
                                         <mat-icon>edit</mat-icon>Edit Details</button>
                                 </div>
                                 <div class="col-12" id="edit-buttons">
-                                    <button *ngIf="editEmployee" mat-button id="cancel-button" (click)="cancelEmployeeEdit()">Cancel</button>
-                                    <button *ngIf="editEmployee" mat-button id="save-button" type="submit" [disabled]="!employeeDetailsForm.valid">Save
+                                    <button *ngIf="editEmployee" mat-button id="cancel-button"
+                                        (click)="cancelEmployeeEdit()">Cancel</button>
+                                    <button *ngIf="editEmployee" mat-button id="save-button" type="submit"
+                                        [disabled]="!employeeDetailsForm.valid">Save
                                         changes</button>
                                 </div>
                             </div>
@@ -321,7 +329,7 @@
                                             </mat-select>
                                         </mat-form-field>
                                     </div>
-                                   <!-- ToDo: Add custom fields -->
+                                    <!-- ToDo: Add custom fields -->
                                     <div class="col-12 mt-1"></div>
                                     <div class="col-6  my-1">
                                         <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any
@@ -377,63 +385,64 @@
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="row">
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Personal Email*</mat-label>
-                                            <input matInput [disabled]="!editContact">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Work email*</mat-label>
-                                            <input matInput [disabled]="!editContact">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Cellphone Number*</mat-label>
-                                            <input matInput [disabled]="!editContact">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Home Number*</mat-label>
-                                            <input matInput [disabled]="!editContact">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-12 mt-2">
-                                        <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Emergency Contact
-                                        </h3>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Emergency contact name*</mat-label>
-                                            <input matInput [disabled]="!editContact">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Emergency contact number*</mat-label>
-                                            <input matInput [disabled]="!editContact">
-                                        </mat-form-field>
+                        <form [formGroup]="employeeContactForm" (submit)="saveContactEdit()">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Personal Email</mat-label>
+                                                <input matInput formControlName="personalEmail">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Work email</mat-label>
+                                                <input matInput formControlName="email">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Cellphone Number*</mat-label>
+                                                <input matInput formControlName="cellphoneNo">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Home Number</mat-label>
+                                                <input matInput formControlName="houseNo">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-12 mt-2">
+                                            <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Emergency Contact
+                                            </h3>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Emergency contact name</mat-label>
+                                                <input matInput formControlName="emergencyContactName">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Emergency contact number</mat-label>
+                                                <input matInput formControlName="emergencyContactNo">
+                                            </mat-form-field>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="col-2">
+                                    <button *ngIf="!editContact" mat-button id="edit-button"
+                                        (click)="editContactDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
+                                </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editContact" mat-button id="cancel-button"
+                                        (click)="cancelContactEdit()">Cancel</button>
+                                    <button *ngIf="editContact" mat-button id="save-button" type="submit"
+                                        [disabled]="!employeeContactForm.valid">Save changes</button>
+                                </div>
                             </div>
-                            <div class="col-2">
-                                <button *ngIf="!editEmployee" mat-button id="edit-button"
-                                    (click)="editContactDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
-                            </div>
-                            <div class="col-12" id="edit-buttons">
-                                <button *ngIf="editContact" mat-button id="cancel-button"
-                                    (click)="cancelContactEdit()">Cancel</button>
-                                <button *ngIf="editContact" mat-button id="save-button"
-                                    (click)="saveContactEdit()">Save changes</button>
-                            </div>
-                        </div>
-
+                        </form>
                     </mat-expansion-panel>
                     <mat-expansion-panel class="my-3" (opened)="panelOpenState = true"
                         (closed)="panelOpenState = false">
