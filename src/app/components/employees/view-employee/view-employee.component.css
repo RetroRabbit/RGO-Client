@@ -1,0 +1,58 @@
+.table-responsive,
+.card {
+    border-radius: 25px;
+    border-color: #fff;
+}
+
+mat-header-row {
+    background-color: #d7dfff;
+}
+
+#manage-permissions {
+    height: fit-content;
+    width: min-content;
+    color: #0029c6;
+    background-color: transparent;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    line-height: 20px;
+    letter-spacing: .10px;
+    border-radius: 25px;
+    border: 1px solid #0029c6
+}
+
+#add-employee {
+    height: fit-content;
+    width: min-content;
+    color: #fff;
+    background-color: #0029c6;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    line-height: 20px;
+    letter-spacing: .10px;
+    border-radius: 25px;
+}
+
+#searchbar {
+    border: 1px solid #0029c6;
+    border-radius: 25px;
+}
+
+#selected-line-box {
+    height: 14px;
+    position: relative;
+    margin: 0 auto;
+  }
+  
+  #selected-line {
+    width: 100%;
+    height: 3px;
+    left: 2px;
+    top: 11px;
+    position: absolute;
+    background: #0029c6;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+  }
