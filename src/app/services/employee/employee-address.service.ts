@@ -1,19 +1,29 @@
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
 import { HttpClient } from '@angular/common/http';
-import { Address } from "src/app/models/address.interface";
-import { API } from '../../models/constants/urls.constants';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { API } from 'src/app/models/constants/urls.constants';
+import { EmployeeAddress } from 'src/app/models/employee-address.interface';
 
 @Injectable({
-    providedIn: 'root'
-  })
+  providedIn: 'root'
+})
+export class EmployeeAddressService {
 
+  constructor(private client: HttpClient) { }
 
-export class EmployeeAddressService{
+  getall(): Observable<EmployeeAddress[]> {
+    return this.client.get<EmployeeAddress[]>(`${API.HttpsBaseURL}/employeeaddress/getall`);
+  }
 
-    constructor(private httpClient : HttpClient){}
+  save(address: EmployeeAddress): Observable<EmployeeAddress> {
+    return this.client.post<EmployeeAddress>(`${API.HttpsBaseURL}/employeeaddress/save`, address);
+  }
 
-    get(id : number): Observable<Address>{
-        return this.httpClient.get<Address>(`${API.HttpBaseURL}/employeeaddress/get?id=${id}`);
-    }
+  update(address: EmployeeAddress): Observable<EmployeeAddress> {
+    return this.client.put<EmployeeAddress>(`${API.HttpsBaseURL}/employeeaddress/update`, address);
+  }
+
+  delete(address: EmployeeAddress): Observable<EmployeeAddress> {
+    return this.client.delete<EmployeeAddress>(`${API.HttpsBaseURL}/employeeaddress/delete/`, { body: address });
+  }
 }
