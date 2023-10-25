@@ -313,7 +313,7 @@
                                 <div class="row">
                                     <div class="col-12 my-2">
                                         <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
-                                        <mat-radio-group aria-label="Select your gender" [disabled]="!editPersonal">
+                                        <mat-radio-group aria-label="Select your gender" [disabled]="!editPersonal" formControlName="gender" [value]="employeeProfile.gender">
                                             <mat-radio-button [value]=1>Male</mat-radio-button>
                                             <mat-radio-button [value]=2>Female</mat-radio-button>
                                             <mat-radio-button [value]=0>Unclassified</mat-radio-button>
@@ -322,7 +322,7 @@
                                     <div class="col-4 my-2">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Race</mat-label>
-                                            <mat-select [disabled]="!editPersonal">
+                                            <mat-select [disabled]="!editPersonal" formControlName="race">
                                                 <mat-option *ngFor="let race of races" [value]="race.id">
                                                     {{race.value}}
                                                 </mat-option>
@@ -454,154 +454,146 @@
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <div class="row">
-                            <!-- <div class="col-10">
-                                <div class="row"> 
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Unit Number</mat-label>
-                                            <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress.unitNumber">
-                                        </mat-form-field>
+                        <form [formGroup]="addressDetailsForm">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Unit Number</mat-label>
+                                                <input matInput formControlName="physicalUnitNumber">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Complex Name</mat-label>
+                                                <input matInput formControlName="physicalComplexName">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Suburb/District</mat-label>
+                                                <input matInput formControlName="physicalSuburb">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Street Number</mat-label>
+                                                <input matInput formControlName="physicalStreetNumber">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>City/Town</mat-label>
+                                                <input matInput formControlName="physicalCity">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Country</mat-label>
+                                                <input matInput
+                                                    [matAutocomplete]="auto" placeholder="Search country"
+                                                    (input)="filterCountries($event)" formControlName="physicalCountry"/>
+                                                <mat-autocomplete #auto="matAutocomplete">
+                                                    <mat-option *ngFor="let country of filteredCountries" [value]="country">
+                                                        {{ country }}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Province</mat-label>
+                                                <mat-select formControlName="physicalProvince">
+                                                    <mat-option *ngFor="let province of provinces" [value]="province">
+                                                        {{province}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Postal Code</mat-label>
+                                                <input matInput formControlName="physicalPostalCode">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-12">
+                                            <mat-checkbox (change)="toggleEqualFields()" [disabled]="!editAddress">Is the postal address the same as physical address?</mat-checkbox>
+                                        </div>
                                     </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Complex Name</mat-label>
-                                            <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress.complexName">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Suburb/District</mat-label>
-                                            <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress.suburbOrDistrict">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Street Number</mat-label>
-                                            <input matInput [disabled]="!editAddress"
-                                                [value]="employeePhysicalAddress.streetNumber" [value]="employeePhysicalAddress.streetNumber">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>City/Town</mat-label>
-                                            <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress.city">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Country</mat-label>
-                                            <input matInput [(ngModel)]="physicalCountryControl" [matAutocomplete]="auto"
-                                                placeholder="Search country" (input)="filterCountries($event)" [disabled]="!editAddress"/>
-                                            <mat-autocomplete #auto="matAutocomplete">
-                                                <mat-option *ngFor="let country of filteredCountries"
-                                                    [value]="employeePhysicalAddress.country ?? country">
-                                                    {{ country }}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Province</mat-label>
-                                            <mat-select [disabled]="!editAddress">
-                                                <mat-option *ngFor="let province of provinces" [value]="employeePhysicalAddress.province ?? province.id">
-                                                    {{province.value}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Postal Code</mat-label>
-                                            <input matInput [disabled]="!editAddress" [value]="employeePhysicalAddress.postalCode">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-12">
-                                        <mat-checkbox [(ngModel)]="physicalEqualPostal" [disabled]="!editAddress">Is the
-                                            postal address the same as physical address?</mat-checkbox>
-                                    </div>
-                                    <div *ngIf="!physicalEqualPostal" class="col-12 mt-2">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <mat-label>Unit Number</mat-label>
-                                                    <input matInput [disabled]="!editAddress" [value]="employeePostalAddress.unitNumber">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-6">
-                                                <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <mat-label>Complex Name</mat-label>
-                                                    <input matInput [disabled]="!editAddress" [value]="employeePostalAddress.complexName">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-6">
-                                                <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <mat-label>Suburb/District</mat-label>
-                                                    <input matInput [disabled]="!editAddress" [value]="employeePostalAddress.suburbOrDistrict">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-6">
-                                                <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <mat-label>Street Number</mat-label>
-                                                    <input matInput [disabled]="!editAddress"
-                                                        [value]="employeePostalAddress.streetNumber" [value]="employeePostalAddress.streetNumber">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-6">
-                                                <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <mat-label>City/Town</mat-label>
-                                                    <input matInput [disabled]="!editAddress" [value]="employeePostalAddress.city">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-6">
-                                                <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <mat-label>Country</mat-label>
-                                                    <input matInput [(ngModel)]="physicalCountryControl" [matAutocomplete]="auto"
-                                                        placeholder="Search country" (input)="filterCountries($event)" [disabled]="!editAddress"/>
-                                                    <mat-autocomplete #auto="matAutocomplete">
-                                                        <mat-option *ngFor="let country of filteredCountries"
-                                                            [value]="employeePostalAddress.country ?? country">
-                                                            {{ country }}
-                                                        </mat-option>
-                                                    </mat-autocomplete>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-6">
-                                                <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <mat-label>Province</mat-label>
-                                                    <mat-select [disabled]="!editAddress">
-                                                        <mat-option *ngFor="let province of provinces" [value]="employeePostalAddress.province ?? province.id">
-                                                            {{province.value}}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-6">
-                                                <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <mat-label>Postal Code</mat-label>
-                                                    <input matInput [disabled]="!editAddress" [value]="employeePostalAddress.postalCode">
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-12">
-                                                <mat-checkbox [(ngModel)]="physicalEqualPostal" [disabled]="!editAddress">Is the
-                                                    postal address the same as physical address?</mat-checkbox>
-                                            </div>
+                                    <div *ngIf="!physicalEqualPostal" class="row mt-4">
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Unit Number</mat-label>
+                                                <input matInput formControlName="postalUnitNumber">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Complex Name</mat-label>
+                                                <input matInput formControlName="postalComplexName">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Suburb/District</mat-label>
+                                                <input matInput formControlName="postalSuburb">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Street Number</mat-label>
+                                                <input matInput formControlName="postalStreetNumber">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>City/Town</mat-label>
+                                                <input matInput formControlName="postalCity">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Country</mat-label>
+                                                <input matInput
+                                                    [matAutocomplete]="auto" placeholder="Search country"
+                                                    (input)="filterCountries($event)" formControlName="postalCountry"/>
+                                                <mat-autocomplete #auto="matAutocomplete">
+                                                    <mat-option *ngFor="let country of filteredCountries" [value]="country">
+                                                        {{ country }}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Province</mat-label>
+                                                <mat-select formControlName="postalProvince">
+                                                    <mat-option *ngFor="let province of provinces" [value]="province">
+                                                        {{province}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Postal Code</mat-label>
+                                                <input matInput formControlName="physicalPostalCode">
+                                            </mat-form-field>
                                         </div>
                                     </div>
                                 </div>
-                            </div> -->
-                            <div class="col-2">
-                                <button *ngIf="!editAddress" mat-button id="edit-button" (click)="editAddressDetails()">
-                                    <mat-icon>edit</mat-icon>Edit Details</button>
+                                <div class="col-2">
+                                    <button *ngIf="!editAddress" mat-button id="edit-button" (click)="editAddressDetails()">
+                                        <mat-icon>edit</mat-icon>Edit Details
+                                    </button>
+                                </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editAddress" mat-button id="cancel-button" (click)="cancelAddressEdit()">Cancel</button>
+                                    <button *ngIf="editAddress" mat-button id="save-button" type="submit" (click)="saveAddressEdit()" [disabled]="!addressDetailsForm.valid">Save changes</button>
+                                </div>
                             </div>
-                            <div class="col-12" id="edit-buttons">
-                                <button *ngIf="editAddress" mat-button id="cancel-button"
-                                    (click)="cancelAddressEdit()">Cancel</button>
-                                <button *ngIf="editAddress" mat-button id="save-button" (click)="saveAddressEdit()">Save
-                                    changes</button>
-                            </div>
-                        </div>
+                        </form>
 
                     </mat-expansion-panel>
                 </mat-accordion>
