@@ -32,7 +32,6 @@ export class EmployeeService {
   }
 
   updateEmployee(employee: any): Observable<any>{
-    console.log(employee)
     return this.httpClient.put<any>(`${API.HttpsBaseURL}/employee/update`, employee)
   }
 }
