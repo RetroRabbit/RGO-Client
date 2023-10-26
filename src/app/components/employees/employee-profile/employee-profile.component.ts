@@ -122,6 +122,7 @@ export class EmployeeProfileComponent {
         this.employeeProfile = data;
         this.employeePhysicalAddress = data.physicalAddress!;
         this.employeePostalAddress = data.postalAddress!;
+        this.hasDisbility = this.employeeProfile.disability;
         this.customFieldsService.getAllFieldCodes().subscribe({
           next: data => {
             this.customFields = data;
@@ -172,6 +173,7 @@ export class EmployeeProfileComponent {
     let fieldId = this.customFields.filter(field => field.code == 'tsize')[0];
     this.tShirtSizeFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
     if (this.tShirtSizeFieldValue == undefined) {
+      console.log(this.allergiesFieldValue);
       this.tShirtSizeFieldValue = {
         id:  (this.customFields[this.customFields.length - 1].id! + 1),
         employeeId: this.employeeProfile.id,
@@ -190,6 +192,7 @@ export class EmployeeProfileComponent {
     this.dietaryFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
     
     if (this.dietaryFieldValue == undefined) {
+      console.log(this.allergiesFieldValue);
       this.dietaryFieldValue = {
         id: (this.customFields[this.customFields.length - 1].id! + 2),
         employeeId: this.employeeProfile.id,
@@ -207,6 +210,7 @@ export class EmployeeProfileComponent {
     fieldId = this.customFields.filter(field => field.code == 'allergies')[0];
     this.allergiesFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
     if (this.allergiesFieldValue == undefined) {
+      console.log(this.allergiesFieldValue);
       this.allergiesFieldValue = {
         id:  (this.customFields[this.customFields.length - 1].id! + 3),
         employeeId: this.employeeProfile.id,
@@ -433,7 +437,8 @@ export class EmployeeProfileComponent {
   }
   
   captureAllergiesChange(event:any){
-    this.allergiesFieldValue.value = event;
+    console.log(event.target.value);
+    this.allergiesFieldValue.value = event.target.value;
   }
 
   cancelPersonalEdit() {
