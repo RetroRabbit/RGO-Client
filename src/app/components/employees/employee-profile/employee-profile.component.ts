@@ -43,15 +43,14 @@ export class EmployeeProfileComponent {
   employeeTypes: EmployeeType[] = [];
   employeeProfileDto: any;
   employeeType?: EmployeeType;
-  employeeAddressDto : any;
+  employeeAddressDto: any;
 
   isEdit: boolean = false;
-  selectedItem: string = 'Profile Details'; // set the default accordion to Profile Details
+  selectedItem: string = 'Profile Details';
   expandedIndex = 0;
   panelOpenState: boolean = false;
   hasDisbility: boolean = false;
   physicalEqualPostal: boolean = false;
-
 
   public genders = gender;
   public races = race;
@@ -86,7 +85,6 @@ export class EmployeeProfileComponent {
   client: string = '';
 
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
-  
 
   filteredCountries: any[] = this.countries.slice();
   constructor(private accessPropertyService: AccessPropertiesService,
@@ -101,10 +99,8 @@ export class EmployeeProfileComponent {
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService) { }
 
-
   ngOnInit() {
     this.getEmployeeFields();
-    
   }
 
   getEmployeeFields() {
@@ -150,7 +146,6 @@ export class EmployeeProfileComponent {
         this.initializeForm();
       }
     });
-    
   }
 
   initializeForm() {
@@ -169,11 +164,10 @@ export class EmployeeProfileComponent {
       peopleChampion: this.employeeProfile.peopleChampion
     });
     this.employeeDetailsForm.disable();
-    
 
     this.employeeContactForm = this.fb.group({
       email: [this.employeeProfile.email, [Validators.required,
-        Validators.pattern(this.emailPattern)]],
+      Validators.pattern(this.emailPattern)]],
       personalEmail: [this.employeeProfile.personalEmail, [Validators.required, Validators.email]],
       cellphoneNo: [this.employeeProfile.cellphoneNo, [
         Validators.required,
@@ -184,8 +178,6 @@ export class EmployeeProfileComponent {
       emergencyContactNo: [this.employeeProfile.emergencyContactNo, Validators.required]
     });
     this.employeeContactForm.disable();
-
-    
 
     this.addressDetailsForm = this.fb.group({
       physicalUnitNumber: [this.employeeProfile.physicalAddress?.unitNumber, Validators.required],
@@ -305,8 +297,8 @@ export class EmployeeProfileComponent {
               this.addressDetailsForm.disable();
               this.getEmployeeFields();
             },
-            error: (error) => { 
-              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); 
+            error: (error) => {
+              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
             },
           });
         },
@@ -321,7 +313,7 @@ export class EmployeeProfileComponent {
     this.addressDetailsForm.disable();
   }
 
-  toggleEqualFields(){
+  toggleEqualFields() {
     this.physicalEqualPostal = !this.physicalEqualPostal;
   }
 
@@ -330,7 +322,7 @@ export class EmployeeProfileComponent {
     this.editEmployee = true;
   }
 
-  initializeEmployeeProfileDto(){
+  initializeEmployeeProfileDto() {
     this.employeeProfileDto = {
       id: this.employeeProfile.id,
       employeeNumber: this.employeeProfile.employeeNumber,
@@ -366,7 +358,7 @@ export class EmployeeProfileComponent {
       leaveInterval: this.employeeProfile.leaveInterval,
       salary: this.employeeProfile.salary,
       salaryDays: this.employeeProfile.salaryDays,
-      payRate: this.employeeProfile.payRate, 
+      payRate: this.employeeProfile.payRate,
       clientAllocated: this.employeeProfile.clientAllocated,
       teamLead: this.employeeProfile.teamLead,
       physicalAddress: {
@@ -420,76 +412,12 @@ export class EmployeeProfileComponent {
       this.employeeProfileDto.idNumber = employeeDetailsForm.idNumber;
       this.employeeProfileDto.engagementDate = employeeDetailsForm.engagementDate;
 
-      //  this.employeeProfileDto = {
-      //   id: this.employeeProfile.id,
-      //   employeeNumber: this.employeeProfile.employeeNumber,
-      //   taxNumber: this.employeeProfile.taxNumber,
-      //   engagementDate: this.employeeProfile.engagementDate,
-      //   terminationDate: this.employeeProfile.terminationDate,
-      //   peopleChampion: this.peopleChampionId == 0 ? null : this.peopleChampionId,
-      //   disability: this.employeeProfile.disability,
-      //   disabilityNotes: this.employeeProfile.disabilityNotes,
-      //   countryOfBirth: this.employeeProfile.countryOfBirth,
-      //   nationality: this.employeeProfile.nationality,
-      //   level: parseInt(employeeDetailsForm.level),
-      //   employeeType: {
-      //     id: this.employeeProfile.employeeType.id,
-      //     name: employeeDetailsForm.employeeType,
-      //   },
-      //   title: employeeDetailsForm.title,
-      //   name: employeeDetailsForm.name,
-      //   initials: employeeDetailsForm.initials,
-      //   surname: employeeDetailsForm.surname,
-      //   dateOfBirth: employeeDetailsForm.dateOfBirth,
-      //   idNumber: employeeDetailsForm.idNumber,
-      //   passportNumber: this.employeeProfile.passportNumber,
-      //   passportExpirationDate: this.employeeProfile.passportExpirationDate,
-      //   passportCountryIssue: this.employeeProfile.passportCountryIssue,
-      //   race: this.employeeProfile.race,
-      //   gender: this.employeeProfile.gender,
-      //   email: this.employeeProfile.email,
-      //   personalEmail: this.employeeProfile.personalEmail,
-      //   cellphoneNo: this.employeeProfile.cellphoneNo,
-      //   photo: this.employeeProfile.photo,
-      //   notes: '',
-      //   leaveInterval: this.employeeProfile.leaveInterval,
-      //   salary: this.employeeProfile.salary,
-      //   salaryDays: this.employeeProfile.salaryDays,
-      //   payRate: this.employeeProfile.payRate, 
-      //   clientAllocated: this.clientId == 0 ? null : this.clientId,
-      //   teamLead: this.employeeId == 0 ? null : this.employeeId,
-      //   physicalAddress: {
-      //     id: this.employeeProfile.physicalAddress?.id,
-      //     unitNumber: this.employeeProfile.physicalAddress?.unitNumber,
-      //     complexName: this.employeeProfile.physicalAddress?.complexName,
-      //     streetNumber: this.employeeProfile.physicalAddress?.streetNumber,
-      //     suburbOrDistrict: this.employeeProfile.physicalAddress?.suburbOrDistrict,
-      //     city: this.employeeProfile.physicalAddress?.city,
-      //     country: this.employeeProfile.physicalAddress?.country,
-      //     province: this.employeeProfile.physicalAddress?.province,
-      //     postalCode: this.employeeProfile.physicalAddress?.postalCode,
-      //   },
-      //   postalAddress: {
-      //     id: this.employeeProfile.postalAddress?.id,
-      //     unitNumber: this.employeeProfile.postalAddress?.unitNumber,
-      //     complexName: this.employeeProfile.postalAddress?.complexName,
-      //     streetNumber: this.employeeProfile.postalAddress?.streetNumber,
-      //     suburbOrDistrict: this.employeeProfile.postalAddress?.suburbOrDistrict,
-      //     city: this.employeeProfile.postalAddress?.city,
-      //     country: this.employeeProfile.postalAddress?.country,
-      //     province: this.employeeProfile.postalAddress?.province,
-      //     postalCode: this.employeeProfile.postalAddress?.postalCode,
-      //   },
-      //   houseNo: this.employeeProfile?.houseNo,
-      //   emergencyContactName: this.employeeProfile?.emergencyContactName,
-      //   emergencyContactNo: this.employeeProfile?.emergencyContactNo
-      // }
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
           this.employeeDetailsForm.disable();
         },
-        error: (error) => { console.log(error); this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
       });
     }
   }
@@ -512,7 +440,7 @@ export class EmployeeProfileComponent {
     this.editContact = false;
     if (this.employeeContactForm.valid) {
       const employeeContactForm = this.employeeContactForm.value;
-      
+
       this.employeeProfileDto.personalEmail = employeeContactForm.personalEmail;
       this.employeeProfileDto.email = employeeContactForm.email;
       this.employeeProfileDto.cellphoneNo = employeeContactForm.cellphoneNo;
@@ -522,11 +450,11 @@ export class EmployeeProfileComponent {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-        this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
-        this.employeeContactForm.disable();
-      },
-        error: (error) => { console.log(error); this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
-      }); 
+          this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.employeeContactForm.disable();
+        },
+        error: (error) => {this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+      });
     }
   }
 
@@ -573,7 +501,6 @@ export class EmployeeProfileComponent {
     }
     else if (name == 'client') {
       this.clientId = data.id
-      // this.employeeProfile.clientAllocated = data.id
     }
     else if (name == 'champion') {
       this.peopleChampionId = data.employee.id
