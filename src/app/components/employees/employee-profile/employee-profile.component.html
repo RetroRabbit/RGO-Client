@@ -355,8 +355,8 @@
                                         </div>
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <textarea [disabled]="!editPersonal" matInput placeholder="Allergies Notes" [value]="allergiesFieldValue?.value" (valueChange)="captureAllergiesChange($event)"></textarea>
-                                                </mat-form-field>
+                                                <textarea [disabled]="!editPersonal" matInput placeholder="Allergies Notes" [value]="allergiesFieldValue?.value" (input)="captureAllergiesChange($event)"></textarea>
+                                            </mat-form-field>
                                         </div>
                                         <div class="col-12 mt-1"></div>
                                         <div class="col-6  my-1">
