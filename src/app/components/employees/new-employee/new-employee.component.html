@@ -1,4 +1,8 @@
 <div class="container-fluid px-0">
+  <button mat-button class="btn" (click)="goToEmployees()">
+    <mat-icon>arrow_back</mat-icon>
+    <span>Back to Employees</span>
+  </button>
   <form [formGroup]="newEmployeeForm" (ngSubmit)="onSubmit(false)" id="newEmployeeForm">
     <main class="d-flex flex-column align-items-center p-4">
       <div class="p-5 rounded-4 w-75 bg-white row flex-column justify-content-center align-items-center pb-3">
