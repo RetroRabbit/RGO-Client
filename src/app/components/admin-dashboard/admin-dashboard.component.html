@@ -1,5 +1,5 @@
 <div id="group">
-    <div id="searchbar">
+    <div class="searchbar align-items-center justify-content-center p-0">
         <div id="leading-icon"></div>
         <input 
             type="search" 
@@ -20,23 +20,33 @@
         <button class="my-4" (click)="CaptureEvent($event)">+ Add New Hire</button>
     </div>
 </div>
-
-<div *ngIf="searchResults.length > 0">
-    <div id="avatar"></div>
-    <div id="search-results" *ngFor="let employee of searchResults; let i = index">
-        {{ employee.name }}
-        {{ employee.surname }}
-        <ng-container *ngIf="!displayAllEmployees && i < initialDisplayCount">
-            <!-- Add employee details here -->
-        </ng-container>
-        <ng-container *ngIf="!displayAllEmployees && i === initialDisplayCount - 1 && searchResults.length > initialDisplayCount">
-            <button (click)="viewMoreEmployees()">View {{ searchResults.length - initialDisplayCount }} more employees</button>
-        </ng-container>
-        <ng-container *ngIf="displayAllEmployees && i >= initialDisplayCount">
-            <!-- Add employee details here -->
-        </ng-container>
+<div id="search-results-container">
+    <div *ngIf="searchResults.length > 0">
+        
+        <div id="search-results" *ngFor="let employee of searchResults; let i = index">
+            <div>
+                <div id="avatar-container">
+                    <img id="avatar" src={{employee.photo}} alt="X">
+                </div>
+                <div>
+                    <div>{{employee.title}} - L{{employee.level}}</div>
+                    <h3>{{ employee.name }} {{ employee.surname }}</h3>
+                </div>
+            </div>
+            <ng-container *ngIf="!displayAllEmployees && i < initialDisplayCount">
+                <!-- Add employee details here -->
+            </ng-container>
+            <ng-container *ngIf="!displayAllEmployees && i === initialDisplayCount - 1 && searchResults.length > initialDisplayCount">
+                <button (click)="viewMoreEmployees()">View {{ searchResults.length - initialDisplayCount }} more employees</button>
+            </ng-container>
+            <ng-container *ngIf="displayAllEmployees && i >= initialDisplayCount">
+                <!-- Add employee details here -->
+            </ng-container>
+        </div>
     </div>
 </div>
+
+
 
 <div class="container-fluid" id="graph-container">
     <div id="graphs">
