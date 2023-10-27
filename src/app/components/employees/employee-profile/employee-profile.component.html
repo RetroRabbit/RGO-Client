@@ -2,7 +2,7 @@
     <div id="profile-header" class="row p-2">
         <div class="col-2 mt-4">
             <div id="profile-image">
-                <img [src]="employeeProfile!.photo" alt="">
+                <img [src]="employeeProfile?.photo" alt="">
             </div>
         </div>
         <div class="col-md-8 offset-md-2 offset-lg-0 col-lg-10 mt-4">
@@ -368,7 +368,7 @@
                                         <div class="col-12 my-2">
                                             <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
                                             <mat-radio-group aria-label="Select your gender"
-                                                formControlName="gender" [value]="employeeProfile.gender">
+                                                formControlName="gender" [value]="employeeProfile?.gender">
                                                 <mat-radio-button [value]=1>Male</mat-radio-button>
                                                 <mat-radio-button [value]=2>Female</mat-radio-button>
                                                 <mat-radio-button [value]=0>Unclassified</mat-radio-button>
@@ -463,7 +463,7 @@
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <form [formGroup]="employeeContactForm" (submit)="saveContactEdit()">
+                        <form [formGroup]="employeeContactForm">
                             <div class="row">
                                 <div class="col-10">
                                     <div class="row">
@@ -517,18 +517,8 @@
                                     <button *ngIf="editContact" mat-button id="cancel-button"
                                         (click)="cancelContactEdit()">Cancel</button>
                                     <button *ngIf="editContact" mat-button id="save-button" type="submit"
-                                        [disabled]="!employeeContactForm.valid">Save changes</button>
+                                        [disabled]="!employeeContactForm.valid" (click)="saveContactEdit()">Save changes</button>
                                 </div>
-                            </div>
-                            <div class="col-2">
-                                <button *ngIf="!editEmployee" mat-button id="edit-button"
-                                    (click)="editContactDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
-                            </div>
-                            <div class="col-12" id="edit-buttons">
-                                <button *ngIf="editContact" mat-button id="cancel-button"
-                                    (click)="cancelContactEdit()">Cancel</button>
-                                <button *ngIf="editContact" mat-button id="save-button" (click)="saveContactEdit()">Save
-                                    changes</button>
                             </div>
 
                         </form>
