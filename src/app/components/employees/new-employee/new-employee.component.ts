@@ -257,6 +257,10 @@ export class NewEmployeeComponent implements OnInit {
     });
   }
 
+  goToEmployees() {
+    this.cookieService.set('currentPage', 'Employees');
+  }
+
   CaptureEvent() {
     console.info(this.returnToEmpList)
     if (this.returnToEmpList) this.cookieService.set('currentPage', 'View Employee');
