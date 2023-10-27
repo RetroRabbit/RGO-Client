@@ -55,6 +55,10 @@
     letter-spacing: 0.1px;
   }
   
+  #nav-item > div:hover{
+    cursor: pointer;
+  }
+
   #nav-item > div.active {
     text-align: center;
     color: #0029c6;
@@ -137,10 +141,11 @@
   }
   
   #content {
-    background-color: #b9c8ff;
+    background-color: #D7DFFF;
     min-height: 90vh;
     max-height: auto;
     margin: 0;
+    padding: 0;
   }
   
   #new-hire > button {

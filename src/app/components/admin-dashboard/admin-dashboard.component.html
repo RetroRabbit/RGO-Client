@@ -17,9 +17,10 @@
     </div>
 
     <div id="new-hire">
-        <button class="my-4" (click)="CaptureEvent($event)">+ Add New Hire</button>
+        <button class="my-4" (click)="CaptureEvent($event)" *ngIf="isAdmin()">+ Add New Hire</button>
     </div>
 </div>
+
 <div id="search-results-container">
     <div *ngIf="searchResults.length > 0">
         
@@ -29,7 +30,7 @@
                     <img id="avatar" src={{employee.photo}} alt="X">
                 </div>
                 <div>
-                    <div>{{employee.title}} - L{{employee.level}}</div>
+                    <div>{{employee.employeeTypeId}} - L{{employee.level}}</div>
                     <h3>{{ employee.name }} {{ employee.surname }}</h3>
                 </div>
             </div>

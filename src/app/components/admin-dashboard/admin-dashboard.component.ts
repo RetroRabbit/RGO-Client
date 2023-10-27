@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { Chart } from 'src/app/models/charts.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { AuthService } from '@auth0/auth0-angular';
@@ -17,10 +17,10 @@ export class AdminDashboardComponent {
 
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
-  admin!: EmployeeProfile;
   profileImage: string | null = null;
   initialDisplayCount: number = 3;
   displayAllEmployees: boolean = false;
+  roles : string[] = [];
 
   employeeType: { id: number; name: string } = {
     id: 0,
@@ -35,12 +35,12 @@ export class AdminDashboardComponent {
     private employeeProfileService: EmployeeProfileService,
     private employeeService: EmployeeService,
     private chartService: ChartService,
-    private auth: AuthService,
     private cookieService: CookieService
-    
   ) { }
 
   ngOnInit() {
+    const types: string = this.cookieService.get('userType');
+    this.roles = Object.keys(JSON.parse(types));
     this.employeeService.getAllProfiles().subscribe((data) => {
       if (Array.isArray(data)) {
         this.allEmployees = data;
@@ -71,10 +71,8 @@ export class AdminDashboardComponent {
     });
   }
 
-  logout() {
-    this.auth.logout({
-      logoutParams: { returnTo: document.location.origin },
-    });
+  isAdmin(): boolean {
+    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
 
   CaptureEvent(event: any) {
