@@ -445,7 +445,7 @@ export class EmployeeProfileComponent {
       }
     });
   }
-  captureTSizeChange(event:any){
+  captureTShirtSizeChange(event:any){
     this.tShirtSizeFieldValue.value = event;
   }
   
@@ -454,7 +454,6 @@ export class EmployeeProfileComponent {
   }
   
   captureAllergiesChange(event:any){
-    console.log(event.target.value);
     this.allergiesFieldValue.value = event.target.value;
   }
 
