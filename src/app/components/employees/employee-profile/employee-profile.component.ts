@@ -88,7 +88,7 @@ export class EmployeeProfileComponent {
   foundChampion: any;
   client: string = '';
 
-  client_placeholder: string = '';
+  clientPlaceholder: string = '';
 
   tShirtSizeField!: FieldCode;
   tShirtSizeFieldValue!: EmployeeData;

@@ -2,7 +2,7 @@
     <div id="profile-header" class="row p-2">
         <div class="col-2 mt-4">
             <div id="profile-image">
-                <img [src]="employeeProfile?.photo" alt="">
+                <img [src]="employeeProfile!.photo" alt="">
             </div>
         </div>
         <div class="col-md-8 offset-md-2 offset-lg-0 col-lg-10 mt-4">
@@ -107,31 +107,31 @@
         <div class="col-10 px-4">
             <div class="row mx-2" id="accordion-progress">
                 <!-- ToDo: add ngClass for conditional styling for progress-stats -->
-                <div class="col-2 py-2" id="progress-stats">  
+                <div class="col-2 py-3" id="progress-stats">  
                     <h5>Profile Details %</h5>
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-2" id="progress-stats">
+                <div class="col-2 py-3" id="progress-stats">
                     <h5>Career Summary %</h5>
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-2" id="progress-stats">
+                <div class="col-2 py-3" id="progress-stats">
                     <h5>Bank Information %</h5>
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-2" id="progress-stats">
+                <div class="col-2 py-3" id="progress-stats">
                     <h5>Document %</h5>
                 </div>
             </div>
         </div>
         <div class="col-12 mt-3 px-4">
             <div class="row mx-2">
-                <div class="col-auto " id="overall-text">
+                <div class="col-auto pt-1" id="overall-text">
                     <h4>
                         % Overall Completed
                     </h4>
                 </div>
-                <div class="col-10" id="progress-container">
+                <div class="col-10 pt-3" id="progress-container">
                     <!-- ToDo: make value dependent on overall progress -->
                     <mat-progress-bar mode="determinate" value="40" id="overall-progress-bar"></mat-progress-bar>
                 </div>
@@ -387,7 +387,7 @@
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>T-Shirt Size</mat-label>
-                                                <mat-select [disabled]="!editPersonal" [value]="tShirtSizeFieldValue?.value" (valueChange)="captureTSizeChange($event)">
+                                                <mat-select [disabled]="!editPersonal" [value]="tShirtSizeFieldValue?.value" (valueChange)="captureTShirtSizeChange($event)">
                                                     <mat-option *ngFor="let size of tShirtSizeField?.options" [value]=size.option>
                                                         {{size.option}}
                                                     </mat-option>
