@@ -460,49 +460,61 @@
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="row">
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Personal Email*</mat-label>
-                                            <input matInput [disabled]="!editContact">
-                                        </mat-form-field>
+                        <form [formGroup]="employeeContactForm" (submit)="saveContactEdit()">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Personal Email</mat-label>
+                                                <input matInput formControlName="personalEmail">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Work email</mat-label>
+                                                <input matInput formControlName="email">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Cellphone Number*</mat-label>
+                                                <input matInput formControlName="cellphoneNo">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Home Number</mat-label>
+                                                <input matInput formControlName="houseNo">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-12 mt-2">
+                                            <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Emergency Contact
+                                            </h3>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Emergency contact name</mat-label>
+                                                <input matInput formControlName="emergencyContactName">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Emergency contact number</mat-label>
+                                                <input matInput formControlName="emergencyContactNo">
+                                            </mat-form-field>
+                                        </div>
                                     </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Work email*</mat-label>
-                                            <input matInput [disabled]="!editContact">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Cellphone Number*</mat-label>
-                                            <input matInput [disabled]="!editContact">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Home Number*</mat-label>
-                                            <input matInput [disabled]="!editContact">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-12 mt-2">
-                                        <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Emergency Contact
-                                        </h3>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Emergency contact name*</mat-label>
-                                            <input matInput [disabled]="!editContact">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Emergency contact number*</mat-label>
-                                            <input matInput [disabled]="!editContact">
-                                        </mat-form-field>
-                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <button *ngIf="!editContact" mat-button id="edit-button"
+                                        (click)="editContactDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
+                                </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editContact" mat-button id="cancel-button"
+                                        (click)="cancelContactEdit()">Cancel</button>
+                                    <button *ngIf="editContact" mat-button id="save-button" type="submit"
+                                        [disabled]="!employeeContactForm.valid">Save changes</button>
                                 </div>
                             </div>
                             <div class="col-2">
@@ -515,8 +527,8 @@
                                 <button *ngIf="editContact" mat-button id="save-button" (click)="saveContactEdit()">Save
                                     changes</button>
                             </div>
-                        </div>
 
+                        </form>
                     </mat-expansion-panel>
                     <mat-expansion-panel class="my-3" (opened)="panelOpenState = true"
                         (closed)="panelOpenState = false">
