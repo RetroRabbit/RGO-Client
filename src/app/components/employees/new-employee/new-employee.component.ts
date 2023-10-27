@@ -25,6 +25,7 @@ import { EmployeeAddress } from 'src/app/models/employee-address.interface';
   styleUrls: ['./new-employee.component.css'],
 })
 export class NewEmployeeComponent implements OnInit {
+  @Input() goto: 'dashboard' | 'employees' = 'dashboard';
   @Input() returnToEmpList: boolean = false;
   
   constructor(
@@ -73,6 +74,7 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
+    console.info(this.returnToEmpList)
   }
 
   newEmployeeForm = new FormGroup({
@@ -262,8 +264,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   CaptureEvent() {
-    console.info(this.returnToEmpList)
-    if (this.returnToEmpList) this.cookieService.set('currentPage', 'View Employee');
+    if (this.goto == 'employees') this.cookieService.set('currentPage', 'View Employee');
     else this.cookieService.set('currentPage', 'Dashboard');
   }
 
