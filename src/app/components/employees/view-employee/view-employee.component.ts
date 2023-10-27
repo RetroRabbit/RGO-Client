@@ -15,7 +15,12 @@ import { EmployeeRoleService } from 'src/app/services/employee/employee-role.ser
 })
 export class ViewEmployeeComponent {
   @Output() selectedEmployee = new EventEmitter<any>();
-  @Output() viewEmployee = new EventEmitter<boolean>();
+  @Output() addEmployeeEvent = new EventEmitter<void>();
+  
+  onAddEmployeeClick(): void {
+    this.addEmployeeEvent.emit();
+    this.cookieService.set('currentPage', '+ Add New Hire');
+  }
   searchTerm: string = '';
   filteredEmployees$: Observable<EmployeeProfile[]> =
     this.employeeService.getAllProfiles();
@@ -40,8 +45,6 @@ export class ViewEmployeeComponent {
   ngOnInit() {
     this.onResize();
     this.getEmployees();
-
-    console.log(this.paginator, this.dataSource.paginator)
   }
 
   getEmployees() {
@@ -77,17 +80,11 @@ export class ViewEmployeeComponent {
 
   CaptureEvent(event: any) {
     const target = event.target as HTMLButtonElement;
-    console.info(`ViewEmployee: ${target.innerText}`);
     this.cookieService.set('currentPage', target.innerText);
   }
 
   ViewUser(email: string) {
     this.cookieService.set('selectedUser', email);
-  }
-
-  newEmployeeClickEvent(): void {
-    this.viewEmployee.emit(true);
-    this.cookieService.set('currentPage', 'New Employee');
   }
 
   employeeClickEvent(event: any, employee: EmployeeProfile): void {
