@@ -41,17 +41,15 @@ export class RoleManagerComponent {
 
   ngOnInit() {
     this.employeeRoleService.getAllRoles().subscribe(roles => {
-   
-      this.displayedColumns = ["Permissions", ...roles]; 
+      this.displayedColumns = ["Permissions", ...roles];
 
       this.dataSource.data = [
-        { "Permissions": 'Permission 1', [roles[0]]: 'John', [roles[1]]: 68, [roles[2]]: 176,[roles[3]]: 176 },
-        { "Permissions": 'Permission 2', [roles[0]]: 'Doe', [roles[1]]: 75, [roles[2]]: 185,[roles[3]]: 176 },
-        { "Permissions": 'Permission 3', [roles[0]]: 'Smith', [roles[1]]: 62, [roles[2]]: 164 ,[roles[3]]: 176},
+        { "Permissions": 'Permission 1', [roles[0]]: false, [roles[1]]: false, [roles[2]]: false },
+        { "Permissions": 'Permission 2', [roles[0]]: true, [roles[1]]: true, [roles[2]]: false },
+        { "Permissions": 'Permission 3', [roles[0]]: false, [roles[1]]: true, [roles[2]]: true },
       ];
     });
   }
-
 
   getRoles(raw: Map<string, string[]>): string[] {
     return Object.keys(raw)
