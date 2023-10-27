@@ -212,10 +212,8 @@
     background-color: #d7dfff;
     color: #0029c6;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 #progress-stats > h5 {
@@ -224,6 +222,7 @@
     font-style: normal;
     font-weight: 500;
     letter-spacing: 0.1px;
+    margin: 0;
 }
 
 #overall-text > h4{
