@@ -1,7 +1,12 @@
+main {
+    font-family: 'Roboto', sans-serif;
+}
+
 .table-responsive,
 .card {
     border-radius: 25px;
     border-color: #fff;
+    overflow: hidden;
 }
 
 mat-header-row {
@@ -15,7 +20,6 @@ mat-header-row {
     background-color: transparent;
     font-size: 14px;
     font-weight: 500;
-    font-family: 'Roboto', sans-serif;
     line-height: 20px;
     letter-spacing: .10px;
     border-radius: 25px;
@@ -29,7 +33,6 @@ mat-header-row {
     background-color: #0029c6;
     font-size: 14px;
     font-weight: 500;
-    font-family: 'Roboto', sans-serif;
     line-height: 20px;
     letter-spacing: .10px;
     border-radius: 25px;
@@ -40,19 +43,148 @@ mat-header-row {
     border-radius: 25px;
 }
 
-#selected-line-box {
-    height: 14px;
+#paginator-text {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: .15px;
+    word-wrap: break-word;
+    flex: 0 0 auto;
+}
+
+.paginator {
+    color: #49454f;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: .10px;
+    word-wrap: break-word;
     position: relative;
-    margin: 0 auto;
+}
+
+.paginator.active::after {
+    content: "";
+    position: absolute;
+    bottom: -30%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    color: #0029c6;
+    background-color: #0029c6;
+}
+
+.paginator-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#paginator-text mat-form-field {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.paginator-dropdown {}
+
+::ng-deep .boldArrow .mat-sort-header-arrow.ng-trigger.ng-trigger-arrowPosition {
+    opacity: 1 !important;
+}
+
+.search-bar {
+    flex: 1 1 0;
+    gap: 8px;
+    border: 1px solid #0029C6;
+    background: #D7DFFF;
+    transition: background 0.3s ease;
+}
+
+#search-container {
+    align-self: flex-start;
+    height: 100%;
+}
+
+#back-button,
+#search-button {
+    color: #0029c6;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+#search-input {
+    font-size: 16px;
+    /* color: #0029C6; */
+    background: #D7DFFF;
+    border: 0;
+    flex-grow: 1;
+}
+
+#search-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#search-input.no-text::placeholder {
+    color: #0029C6;
+    font-size: 16px;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.50px;
+    word-wrap: break-word;
+}
+
+.input-focused {
+    background-color: white;
+}
+
+#add-employee-btn {
+    gap: 8px;
+    padding: 10px 16px;
+    background: #0029C6;
+    align-self: flex-end;
+}
+
+#add-employee-btn mat-icon {
+    color: white;
+}
+
+.d-flex.justify-content-between.align-items-center.gap-2 {
+    display: flex;
+    align-items: stretch;
+}
+
+/* Style the select to look like a button */
+.role-select-field {
+    width: 194px;
+    height: 32px;
+    background: #0029C6;
+    border-radius: 8px;
+    overflow: hidden;
+    
+    .mat-select-value {
+      color: white;
+      font-size: 14px;
+      font-family: Roboto;
+      font-weight: 500;
+      line-height: 20px;
+      padding-left: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      
+      .mat-select-arrow {
+        color: white;
+        margin-right: 12px;
+      }
+    }
   }
   
-  #selected-line {
-    width: 100%;
-    height: 3px;
-    left: 2px;
-    top: 11px;
-    position: absolute;
-    background: #0029c6;
-    border-top-left-radius: 100px;
-    border-top-right-radius: 100px;
+  /* Custom styles for the dropdown panel */
+  ::ng-deep .role-select-panel {
+    font-size: 14px;
+    font-family: Roboto;
+    .mat-option-text {
+      padding: 6px 12px;
+    }
   }
+  
