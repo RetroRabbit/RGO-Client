@@ -29,9 +29,9 @@
                 <div id="avatar-container">
                     <img id="avatar" src={{employee.photo}} alt="X">
                 </div>
-                <div>
-                    <div>{{employee.employeeTypeId}} - L{{employee.level}}</div>
-                    <h3>{{ employee.name }} {{ employee.surname }}</h3>
+                <div id="results-containter">
+                    <div>{{employee.employeeType.name}} - L{{employee.level}}</div>
+                    <div>{{ employee.name }} {{ employee.surname }}</div>
                 </div>
             </div>
             <ng-container *ngIf="!displayAllEmployees && i < initialDisplayCount">
