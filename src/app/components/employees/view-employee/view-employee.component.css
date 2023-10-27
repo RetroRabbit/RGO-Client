@@ -160,31 +160,36 @@ mat-header-row {
     background: #0029C6;
     border-radius: 8px;
     overflow: hidden;
-    
+
     .mat-select-value {
-      color: white;
-      font-size: 14px;
-      font-family: Roboto;
-      font-weight: 500;
-      line-height: 20px;
-      padding-left: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      
-      .mat-select-arrow {
         color: white;
-        margin-right: 12px;
-      }
+        font-size: 14px;
+        font-family: Roboto;
+        font-weight: 500;
+        line-height: 20px;
+        padding-left: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .mat-select-arrow {
+            color: white;
+            margin-right: 12px;
+        }
     }
-  }
-  
-  /* Custom styles for the dropdown panel */
-  ::ng-deep .role-select-panel {
+}
+
+/* Custom styles for the dropdown panel */
+::ng-deep .role-select-panel {
     font-size: 14px;
     font-family: Roboto;
+
     .mat-option-text {
-      padding: 6px 12px;
+        padding: 6px 12px;
     }
-  }
-  
+}
+
+mat-row:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
