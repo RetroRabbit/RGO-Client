@@ -8,6 +8,7 @@ import { Chart } from 'chart.js';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
+import { EmployeeDate } from 'src/app/models/employee-date.interface';
 
 @Component({
   selector: 'app-home',
@@ -18,13 +19,14 @@ import { EmployeeProfileService } from 'src/app/services/employee/employee-profi
 export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
   selectedEvaluation: any | null = null
+  selectedEvent: EmployeeDate | null = null;
   selectedEmployee: any | null = null;
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
-  admin!: EmployeeProfile;
+  employeeProfile!: EmployeeProfile;
   profileImage: string = '';
   charts: Chart[] = [];
-  roles : string[] = []; 
+  roles : string[] = [];
   screenWidth !: number;
 
   employeeType: { id: number, name: string } = {
@@ -37,7 +39,7 @@ export class HomeComponent {
     private chartService: ChartService,
     private store: Store<{ app: Token }>,
     private auth: AuthService,
-    public cookieService: CookieService) { 
+    public cookieService: CookieService) {
     this.screenWidth = window.innerWidth;
   }
 
@@ -48,9 +50,9 @@ export class HomeComponent {
 
     this.employeeProfileService.GetEmployeeProfile().subscribe({
       next: data => {
-        this.admin = data;
-        this.profileImage = this.admin.photo;
-        this.employeeType = this.admin.employeeType;
+        this.employeeProfile = data;
+        this.profileImage = this.employeeProfile.photo;
+        this.employeeType = this.employeeProfile.employeeType;
       }
     });
 
@@ -75,10 +77,23 @@ export class HomeComponent {
 
   handleSelectedEval(item: any) {
     this.selectedEvaluation = item
+
+  }
+
+  populateAddEmployeeForm(event: any) {
+    this.selectedEvent = event;
   }
 
   isAdmin(): boolean {
     return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
+  }
+
+  isJourney(): boolean {
+    return this.roles.includes('Journey');
+  }
+
+  isEmployee(): boolean {
+    return this.roles.includes('Employee');
   }
 
   handleSelectedEmp(item: any){
