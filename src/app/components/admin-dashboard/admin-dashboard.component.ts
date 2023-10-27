@@ -52,14 +52,14 @@ export class AdminDashboardComponent {
       console.log(this.allEmployees);
       
 
-      if (
-        this.admin.photo &&
-        (this.admin.photo.startsWith('http') ||
-          this.admin.photo.startsWith('data:image'))
-      ) {
-        this.profileImage = this.admin.photo;
-      }
-      this.employeeType = this.admin.employeeType;
+      // if (
+      //   this.admin.photo &&
+      //   (this.admin.photo.startsWith('http') ||
+      //     this.admin.photo.startsWith('data:image'))
+      // ) {
+      //   this.profileImage = this.admin.photo;
+      // }
+      // this.employeeType = this.admin.employeeType;
     });
 
     this.employeeProfileService.getAllEmployees(this.searchQuery).subscribe((data) => {
