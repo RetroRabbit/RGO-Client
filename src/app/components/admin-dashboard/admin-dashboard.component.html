@@ -23,13 +23,17 @@
 
 <div id="search-results-container">
     <div *ngIf="searchResults.length > 0">
-        
         <div id="search-results" *ngFor="let employee of searchResults; let i = index">
             <div>
+                <div id="results-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M10 17L15 12L10 7V17Z" fill="#0029C6"/>
+                    </svg>
+                </div>
                 <div id="avatar-container">
                     <img id="avatar" src={{employee.photo}} alt="X">
                 </div>
-                <div id="results-containter">
+                <div id="results-container">
                     <div>{{employee.employeeType.name}} - L{{employee.level}}</div>
                     <div>{{ employee.name }} {{ employee.surname }}</div>
                 </div>
@@ -37,9 +41,10 @@
             <ng-container *ngIf="!displayAllEmployees && i < initialDisplayCount">
                 <!-- Add employee details here -->
             </ng-container>
-            <ng-container *ngIf="!displayAllEmployees && i === initialDisplayCount - 1 && searchResults.length > initialDisplayCount">
+            <!-- "View More Employees" button moved inside the loop -->
+            <div id="view-more-container" *ngIf="!displayAllEmployees && i === initialDisplayCount - 1 && searchResults.length > initialDisplayCount">
                 <button (click)="viewMoreEmployees()">View {{ searchResults.length - initialDisplayCount }} more employees</button>
-            </ng-container>
+            </div>
             <ng-container *ngIf="displayAllEmployees && i >= initialDisplayCount">
                 <!-- Add employee details here -->
             </ng-container>
