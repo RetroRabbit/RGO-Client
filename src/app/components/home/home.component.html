@@ -165,7 +165,7 @@
       </div>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Employees'">
-      <app-view-employee (selectedEmployee)="handleSelectedEmp($event)"></app-view-employee>
+      <app-view-employee (addEmployeeEvent)="onAddEmployee()"></app-view-employee>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Evaluations'">
       <app-employee-evaluations (selectedEvaluation)="handleSelectedEval($event)"></app-employee-evaluations>
@@ -222,10 +222,15 @@
     </div>
 
     <div *ngIf="cookieService.get('currentPage') == '+ Add New Hire'">
-      <app-new-employee></app-new-employee>
+      <div *ngIf="!shouldDisplayNewEmployee">
+        <app-new-employee [goto]="'dashboard'"></app-new-employee>
+      </div>
+      <div *ngIf="shouldDisplayNewEmployee">
+        <app-new-employee [goto]="'employees'"></app-new-employee>
+      </div>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'add\nAdd Employee'">
-      <app-new-employee [returnToEmpList]="returnToEmpList ? returnToEmpList : false" (viewEmployee)="handleReturnToEmpList($event)"></app-new-employee>
+      <app-new-employee></app-new-employee>
     </div>
 
     <div *ngIf="cookieService.get('currentPage') == 'Employee Details'">

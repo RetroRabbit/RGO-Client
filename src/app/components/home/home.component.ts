@@ -89,6 +89,12 @@ export class HomeComponent {
     this.viewProfile = emp;
   }
 
+  shouldDisplayNewEmployee: boolean = false;
+
+  onAddEmployee(): void {
+    console.info('Home Component: Add Employee Clicked');
+    this.shouldDisplayNewEmployee = true;
+  }
   returnToEmpList: boolean | null = false;
 
   handleReturnToEmpList(isTrue: any) {
