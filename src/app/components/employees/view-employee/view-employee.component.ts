@@ -21,6 +21,7 @@ export class ViewEmployeeComponent {
     this.employeeService.getAllProfiles();
   Employees: EmployeeProfile[] = [];
   selectedEmp: any;
+  roles: Observable<string[]> = this.employeeRoleService.getAllRoles().pipe(first())
 
   get filteredEmployees(): EmployeeProfile[] {
     return this.Employees.filter((e) =>
@@ -76,6 +77,7 @@ export class ViewEmployeeComponent {
 
   CaptureEvent(event: any) {
     const target = event.target as HTMLButtonElement;
+    console.info(`ViewEmployee: ${target.innerText}`);
     this.cookieService.set('currentPage', target.innerText);
   }
 
