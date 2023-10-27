@@ -23,6 +23,7 @@ import { EmployeeTypeService } from 'src/app/services/employee/employee-type.ser
 import { level } from 'src/app/models/constants/level.constants';
 
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
+import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -298,12 +299,12 @@ export class EmployeeProfileComponent {
               this.addressDetailsForm.disable();
               this.getEmployeeFields();
             },
-            error: (error) => {
+            error: (error: any) => {
               this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
             },
           });
         },
-        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error: any) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
       });
     }
   }
