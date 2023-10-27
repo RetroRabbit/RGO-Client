@@ -1,3 +1,15 @@
+
+<table mat-table [dataSource]="dataSource" id="mattable">
+    <ng-container *ngFor="let column of displayedColumns; let i = index" [matColumnDef]="column">
+      <th mat-header-cell *matHeaderCellDef id="tableheader"> {{ column }} </th>
+      <td mat-cell *matCellDef="let element"> <mat-slide-toggle [color]="" id="mattoggle"></mat-slide-toggle> </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+ </table>
+
+  
 <form [formGroup]="newRoleForm" class="container">
     <div class="d-flex" *ngIf="roles$ | async as roles">
         <label><em>Roles:</em></label>

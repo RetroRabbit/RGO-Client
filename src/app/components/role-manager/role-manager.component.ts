@@ -5,6 +5,8 @@ import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { RoleService } from 'src/app/services/role.service';
+import { MatTableDataSource } from '@angular/material/table';
+
 
 @Component({
   selector: 'app-role-manager',
@@ -27,11 +29,29 @@ export class RoleManagerComponent {
     permission: new FormControl('', Validators.required),
   })
 
+  dataSource = new MatTableDataSource<any>();
+
+  displayedColumns: string[] = [];
+  
   constructor(
     private roleService: RoleService,
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService
   ) { }
+
+  ngOnInit() {
+    this.employeeRoleService.getAllRoles().subscribe(roles => {
+   
+      this.displayedColumns = ["Permissions", ...roles]; 
+
+      this.dataSource.data = [
+        { "Permissions": 'Permission 1', [roles[0]]: 'John', [roles[1]]: 68, [roles[2]]: 176,[roles[3]]: 176 },
+        { "Permissions": 'Permission 2', [roles[0]]: 'Doe', [roles[1]]: 75, [roles[2]]: 185,[roles[3]]: 176 },
+        { "Permissions": 'Permission 3', [roles[0]]: 'Smith', [roles[1]]: 62, [roles[2]]: 164 ,[roles[3]]: 176},
+      ];
+    });
+  }
+
 
   getRoles(raw: Map<string, string[]>): string[] {
     return Object.keys(raw)
