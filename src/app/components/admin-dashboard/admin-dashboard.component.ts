@@ -92,8 +92,23 @@ export class AdminDashboardComponent {
           employee.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
           employee.surname.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
+      this.activateSearchBar();
     } else {
       this.searchResults = [];
+      this.deactivateSearchBar();
     }
   }
+  
+  activateSearchBar() {
+    const searchBar = document.querySelector('.searchbar');
+    searchBar?.classList.add('active');
+    searchBar?.classList.remove('no-results');
+  }
+  
+  deactivateSearchBar() {
+    const searchBar = document.querySelector('.searchbar');
+    searchBar?.classList.remove('active');
+    searchBar?.classList.add('no-results');
+  }
+  
 }
