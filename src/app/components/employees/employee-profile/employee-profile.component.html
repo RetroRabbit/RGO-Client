@@ -82,8 +82,58 @@
         </div>
     </div>
 
-    <div id="profile-completion" class="row p-2">
-        <!-- ToDo: Add Tracking for Accordions -->
+    <div id="profile-completion" class="row p-4 my-4">
+        <div class="col-12" id="completion-header">
+            <div class="row" id="completion-header-container">
+                <div class="col-1">
+                    <div id="outer-icon-container">
+                        <div id="icon-container">
+                            <mat-icon>person_outline</mat-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-11">
+                    <h4> {{employeeProfile?.name}}'s profile progess </h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-3">
+            <h3 id="progress-require-message">Add all required information to complete profile</h3>
+        </div>
+        <div class="col-10">
+            
+            <div class="row" id="accordion-progress">
+                <!-- Add ngClass for if the progress value is greater than 0 -->
+                <div class="col-2 p-2" id="progress-stats">  
+                    <h5>Profile Details %</h5>
+                </div>
+                <div class="col-1 border" id="horizontal"></div>
+                <div class="col-2 p-2" id="progress-stats">
+                    <h5>Career Summary %</h5>
+                </div>
+                <div class="col-1 border" id="horizontal"></div>
+                <div class="col-2 p-2" id="progress-stats">
+                    <h5>Bank Information %</h5>
+                </div>
+                <div class="col-1 border" id="horizontal"></div>
+                <div class="col-2 p-2" id="progress-stats">
+                    <h5>Document %</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-3">
+            <div class="row">
+                <div class="col-auto px-1" id="overall-text">
+                    <h4>
+                        % Overall Completed
+                    </h4>
+                </div>
+                <div class="col-10 pt-2 px-0" id="progress-container">
+                    <!-- The max value is 100, value must be injected from ts -->
+                    <mat-progress-bar mode="determinate" value="40" id="overall-progress-bar"></mat-progress-bar>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="profile-accordions">
@@ -309,8 +359,6 @@
                             </mat-panel-description>
                         </mat-expansion-panel-header>
                         <form [formGroup]="personalDetailsForm" (submit)="savePersonalEdit()">
-
-
                             <div class="row">
                                 <div class="col-10">
                                     <div class="row">
