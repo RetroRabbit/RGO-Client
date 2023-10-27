@@ -35,7 +35,7 @@ import { EmployeeData } from 'src/app/models/employee-data.interface';
 export class EmployeeProfileComponent {
   employeeFields: Properties[] = [];
   editFields: Properties[] = [];
-  employeeProfile !: EmployeeProfile;
+  employeeProfile: EmployeeProfile | undefined;
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
   customFields: FieldCode[] = [];
@@ -53,7 +53,7 @@ export class EmployeeProfileComponent {
   selectedItem: string = 'Profile Details';
   expandedIndex = 0;
   panelOpenState: boolean = false;
-  hasDisbility: boolean = false;
+  hasDisbility: boolean | undefined = false;
   physicalEqualPostal: boolean = false;
 
   public genders = gender;
@@ -72,11 +72,57 @@ export class EmployeeProfileComponent {
   physicalCountryControl: string = "";
   postalCountryControl: string = "";
 
-  employeeDetailsForm!: FormGroup;
-  employeeContactForm!: FormGroup;
-  personalDetailsForm!: FormGroup;
-  addressDetailsForm!: FormGroup;
+  emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
+  employeeDetailsForm: FormGroup = this.fb.group({
+    title: { value: '', disabled: true },
+    name: { value: '', disabled: true },
+    surname: { value: '', disabled: true },
+    initials: { value: '', disabled: true },
+    clientAllocated: { value: '', disabled: true },
+    employeeType: { value: '', disabled: true },
+    level: { value: '', disabled: true },
+    teamLead: { value: '', disabled: true },
+    dateOfBirth: { value: '', disabled: true },
+    idNumber: { value: '', disabled: true },
+    engagementDate: { value: '', disabled: true },
+    peopleChampion: { value: '', disabled: true }
+  });
 
+  employeeContactForm: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+    personalEmail: ['', [Validators.required, Validators.email]],
+    cellphoneNo: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+    houseNo: '',
+    emergencyContactName: '',
+    emergencyContactNo: ''
+  });
+
+  personalDetailsForm: FormGroup =this.fb.group({
+    gender: { value: '', disabled: true },
+    race: { value: '', disabled: true },
+    disability: { value: '', disabled: true },
+    disabilityNotes: { value: '', disabled: true }
+  }); 
+  
+  addressDetailsForm: FormGroup = this.fb.group({
+    physicalUnitNumber: { value: '', disabled: true },
+    physicalComplexName: { value: '', disabled: true },
+    physicalStreetNumber: { value: '', disabled: true },
+    physicalSuburb: { value: '', disabled: true },
+    physicalCity: { value: '', disabled: true },
+    physicalCountry: { value: '', disabled: true },
+    physicalProvince: { value: '', disabled: true },
+    physicalPostalCode: { value: '', disabled: true },
+    postalUnitNumber: { value: '', disabled: true },
+    postalComplexName: { value: '', disabled: true },
+    postalStreetNumber: { value: '', disabled: true },
+    postalSuburb: { value: '', disabled: true },
+    postalCity: { value: '', disabled: true },
+    postalCountry: { value: '', disabled: true },
+    postalProvince: { value: '', disabled: true },
+    postalPostalCode: { value: '', disabled: true }
+  });
+  
   filteredEmployees: any = [];
   filteredClients: any = [];
   employeeId?: number = 0;
@@ -91,14 +137,13 @@ export class EmployeeProfileComponent {
   clientPlaceholder: string = '';
 
   tShirtSizeField!: FieldCode;
-  tShirtSizeFieldValue!: EmployeeData;
+  tShirtSizeFieldValue: EmployeeData | undefined;
   dietaryField!: FieldCode;
-  dietaryFieldValue!: EmployeeData;
+  dietaryFieldValue: EmployeeData | undefined;
   allergiesField!: FieldCode;
-  allergiesFieldValue!: EmployeeData;
-  
-  employeeDataDto : any;
-  emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
+  allergiesFieldValue: EmployeeData | undefined;
+
+  employeeDataDto: any;
 
   filteredCountries: any[] = this.countries.slice();
   constructor(private accessPropertyService: AccessPropertiesService,
@@ -124,7 +169,7 @@ export class EmployeeProfileComponent {
         this.employeeProfile = data;
         this.employeePhysicalAddress = data.physicalAddress!;
         this.employeePostalAddress = data.postalAddress!;
-        this.hasDisbility = this.employeeProfile.disability;
+        this.hasDisbility = this.employeeProfile!.disability;
         this.customFieldsService.getAllFieldCodes().subscribe({
           next: data => {
             this.customFields = data;
@@ -158,12 +203,12 @@ export class EmployeeProfileComponent {
           }
         });
         this.initializeForm();
-        this.employeeDataService.getEmployeeData(this.employeeProfile.id).subscribe({
+        this.employeeDataService.getEmployeeData(this.employeeProfile!.id).subscribe({
           next: data => {
             this.employeeData = data;
             this.getData();
           },
-          error: error =>{
+          error: error => {
             this.toast.error({ detail: "Error", summary: "Failed to Employee Data", duration: 5000, position: 'topRight' });
 
           }
@@ -178,8 +223,8 @@ export class EmployeeProfileComponent {
     if (this.tShirtSizeFieldValue == undefined) {
       console.log(this.allergiesFieldValue);
       this.tShirtSizeFieldValue = {
-        id:  (this.customFields[this.customFields.length - 1].id! + 1),
-        employeeId: this.employeeProfile.id,
+        id: (this.customFields[this.customFields.length - 1].id! + 1),
+        employeeId: this.employeeProfile!.id,
         fieldCodeId: fieldId.id,
         value: 'Unknown'
       };
@@ -193,12 +238,11 @@ export class EmployeeProfileComponent {
 
     fieldId = this.customFields.filter(field => field.code == 'dietary')[0];
     this.dietaryFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
-    
+
     if (this.dietaryFieldValue == undefined) {
-      console.log(this.allergiesFieldValue);
       this.dietaryFieldValue = {
         id: (this.customFields[this.customFields.length - 1].id! + 2),
-        employeeId: this.employeeProfile.id,
+        employeeId: this.employeeProfile!.id,
         fieldCodeId: fieldId.id,
         value: 'None'
       };
@@ -215,8 +259,8 @@ export class EmployeeProfileComponent {
     if (this.allergiesFieldValue == undefined) {
       console.log(this.allergiesFieldValue);
       this.allergiesFieldValue = {
-        id:  (this.customFields[this.customFields.length - 1].id! + 3),
-        employeeId: this.employeeProfile.id,
+        id: (this.customFields[this.customFields.length - 1].id! + 3),
+        employeeId: this.employeeProfile!.id,
         fieldCodeId: fieldId.id,
         value: 'None'
       };
@@ -235,60 +279,60 @@ export class EmployeeProfileComponent {
 
   initializeForm() {
     this.employeeDetailsForm = this.fb.group({
-      title: this.employeeProfile.title,
-      name: [this.employeeProfile.name, Validators.required],
-      surname: [this.employeeProfile.surname, Validators.required],
-      initials: this.employeeProfile.initials,
-      clientAllocated: this.employeeProfile.clientAllocated,
-      employeeType: this.employeeProfile.employeeType.name,
-      level: this.employeeProfile.level,
-      teamLead: this.employeeProfile.teamLead,
-      dateOfBirth: [this.employeeProfile.dateOfBirth, Validators.required],
-      idNumber: [this.employeeProfile.idNumber, Validators.required],
-      engagementDate: [this.employeeProfile.engagementDate, Validators.required],
-      peopleChampion: this.employeeProfile.peopleChampion
+      title: this.employeeProfile!.title,
+      name: [this.employeeProfile!.name, Validators.required],
+      surname: [this.employeeProfile!.surname, Validators.required],
+      initials: this.employeeProfile!.initials,
+      clientAllocated: this.employeeProfile!.clientAllocated,
+      employeeType: this.employeeProfile!.employeeType!.name,
+      level: this.employeeProfile!.level,
+      teamLead: this.employeeProfile!.teamLead,
+      dateOfBirth: [this.employeeProfile!.dateOfBirth, Validators.required],
+      idNumber: [this.employeeProfile!.idNumber, Validators.required],
+      engagementDate: [this.employeeProfile!.engagementDate, Validators.required],
+      peopleChampion: this.employeeProfile!.peopleChampion
     });
     this.employeeDetailsForm.disable();
 
     this.employeeContactForm = this.fb.group({
-      email: [this.employeeProfile.email, [Validators.required,
+      email: [this.employeeProfile!.email, [Validators.required,
       Validators.pattern(this.emailPattern)]],
-      personalEmail: [this.employeeProfile.personalEmail, [Validators.required, Validators.email]],
-      cellphoneNo: [this.employeeProfile.cellphoneNo, [
+      personalEmail: [this.employeeProfile!.personalEmail, [Validators.required, Validators.email]],
+      cellphoneNo: [this.employeeProfile!.cellphoneNo, [
         Validators.required,
         Validators.pattern(/^[0-9]*$/),
       ]],
-      houseNo: [this.employeeProfile.houseNo, Validators.required],
-      emergencyContactName: [this.employeeProfile.emergencyContactName, Validators.required],
-      emergencyContactNo: [this.employeeProfile.emergencyContactNo, Validators.required]
+      houseNo: [this.employeeProfile!.houseNo, Validators.required],
+      emergencyContactName: [this.employeeProfile!.emergencyContactName, Validators.required],
+      emergencyContactNo: [this.employeeProfile!.emergencyContactNo, Validators.required]
     });
     this.employeeContactForm.disable();
 
     this.addressDetailsForm = this.fb.group({
-      physicalUnitNumber: [this.employeeProfile.physicalAddress?.unitNumber, Validators.required],
-      physicalComplexName: [this.employeeProfile.physicalAddress?.complexName, Validators.required],
-      physicalStreetNumber: [this.employeeProfile.physicalAddress?.streetNumber, Validators.required],
-      physicalSuburb: [this.employeeProfile.physicalAddress?.suburbOrDistrict, Validators.required],
-      physicalCity: [this.employeeProfile.physicalAddress?.city, Validators.required],
-      physicalCountry: [this.employeeProfile.physicalAddress?.country, Validators.required],
-      physicalProvince: [this.employeeProfile.physicalAddress?.province, Validators.required],
-      physicalPostalCode: [this.employeeProfile.physicalAddress?.postalCode, Validators.required],
-      postalUnitNumber: [this.employeeProfile.postalAddress?.unitNumber, Validators.required],
-      postalComplexName: [this.employeeProfile.postalAddress?.complexName, Validators.required],
-      postalStreetNumber: [this.employeeProfile.postalAddress?.streetNumber, Validators.required],
-      postalSuburb: [this.employeeProfile.postalAddress?.suburbOrDistrict, Validators.required],
-      postalCity: [this.employeeProfile.postalAddress?.city, Validators.required],
-      postalCountry: [this.employeeProfile.postalAddress?.country, Validators.required],
-      postalProvince: [this.employeeProfile.postalAddress?.province, Validators.required],
-      postalPostalCode: [this.employeeProfile.postalAddress?.postalCode, Validators.required]
+      physicalUnitNumber: [this.employeeProfile!.physicalAddress?.unitNumber, Validators.required],
+      physicalComplexName: [this.employeeProfile!.physicalAddress?.complexName, Validators.required],
+      physicalStreetNumber: [this.employeeProfile!.physicalAddress?.streetNumber, Validators.required],
+      physicalSuburb: [this.employeeProfile!.physicalAddress?.suburbOrDistrict, Validators.required],
+      physicalCity: [this.employeeProfile!.physicalAddress?.city, Validators.required],
+      physicalCountry: [this.employeeProfile!.physicalAddress?.country, Validators.required],
+      physicalProvince: [this.employeeProfile!.physicalAddress?.province, Validators.required],
+      physicalPostalCode: [this.employeeProfile!.physicalAddress?.postalCode, Validators.required],
+      postalUnitNumber: [this.employeeProfile!.postalAddress?.unitNumber, Validators.required],
+      postalComplexName: [this.employeeProfile!.postalAddress?.complexName, Validators.required],
+      postalStreetNumber: [this.employeeProfile!.postalAddress?.streetNumber, Validators.required],
+      postalSuburb: [this.employeeProfile!.postalAddress?.suburbOrDistrict, Validators.required],
+      postalCity: [this.employeeProfile!.postalAddress?.city, Validators.required],
+      postalCountry: [this.employeeProfile!.postalAddress?.country, Validators.required],
+      postalProvince: [this.employeeProfile!.postalAddress?.province, Validators.required],
+      postalPostalCode: [this.employeeProfile!.postalAddress?.postalCode, Validators.required]
     });
     this.addressDetailsForm.disable();
 
     this.personalDetailsForm = this.fb.group({
-      gender: [this.employeeProfile.gender,Validators.required],
-      race: [this.employeeProfile.race, Validators.required],
-      disability: [this.employeeProfile.disability, Validators.required],
-      disabilityNotes: [this.employeeProfile.disabilityNotes, Validators.required]
+      gender: [this.employeeProfile!.gender, Validators.required],
+      race: [this.employeeProfile!.race, Validators.required],
+      disability: [this.employeeProfile!.disability, Validators.required],
+      disabilityNotes: [this.employeeProfile!.disabilityNotes, Validators.required]
     })
     this.personalDetailsForm.disable();
   }
@@ -296,13 +340,13 @@ export class EmployeeProfileComponent {
   checkEmployeeDetails() {
     this.panelOpenState = true;
     this.foundTeamLead = this.employees.find((data: any) => {
-      return data.id == this.employeeProfile.teamLead
+      return data.id == this.employeeProfile!.teamLead
     });
     this.foundClient = this.clients.find((data: any) => {
-      return data.id == this.employeeProfile.clientAllocated
+      return data.id == this.employeeProfile!.clientAllocated
     });
     this.foundChampion = this.employeeRoles.find((data: any) => {
-      return data.employee.id == this.employeeProfile.clientAllocated
+      return data.employee.id == this.employeeProfile!.clientAllocated
     });
 
     if (this.foundTeamLead != null) {
@@ -349,64 +393,64 @@ export class EmployeeProfileComponent {
       const personalDetailsFormValue = this.personalDetailsForm.value;
 
       this.employeeProfileDto = {
-        id: this.employeeProfile.id,
-        employeeNumber: this.employeeProfile.employeeNumber,
-        taxNumber: this.employeeProfile.taxNumber,
-        engagementDate: this.employeeProfile.engagementDate,
-        terminationDate: this.employeeProfile.terminationDate,
+        id: this.employeeProfile!.id,
+        employeeNumber: this.employeeProfile!.employeeNumber,
+        taxNumber: this.employeeProfile!.taxNumber,
+        engagementDate: this.employeeProfile!.engagementDate,
+        terminationDate: this.employeeProfile!.terminationDate,
         peopleChampion: this.peopleChampionId == 0 ? null : this.peopleChampionId,
         disability: personalDetailsFormValue['disability'],
         disabilityNotes: personalDetailsFormValue['disabilityNotes'],
-        countryOfBirth: this.employeeProfile.countryOfBirth,
-        nationality: this.employeeProfile.nationality,
-        level: +this.employeeProfile.level,
+        countryOfBirth: this.employeeProfile!.countryOfBirth,
+        nationality: this.employeeProfile!.nationality,
+        level: +this.employeeProfile!.level!,
         employeeType: {
-          id: this.employeeProfile.employeeType.id,
-          name: this.employeeProfile.employeeType.name,
+          id: this.employeeProfile!.employeeType!.id,
+          name: this.employeeProfile!.employeeType!.name,
         },
-        title: this.employeeProfile.title,
-        name: this.employeeProfile.name,
-        initials: this.employeeProfile.initials,
-        surname: this.employeeProfile.surname,
-        dateOfBirth: this.employeeProfile.dateOfBirth,
-        idNumber: this.employeeProfile.idNumber,
-        passportNumber: this.employeeProfile.passportNumber,
-        passportExpirationDate: this.employeeProfile.passportExpirationDate,
-        passportCountryIssue: this.employeeProfile.passportCountryIssue,
+        title: this.employeeProfile!.title,
+        name: this.employeeProfile!.name,
+        initials: this.employeeProfile!.initials,
+        surname: this.employeeProfile!.surname,
+        dateOfBirth: this.employeeProfile!.dateOfBirth,
+        idNumber: this.employeeProfile!.idNumber,
+        passportNumber: this.employeeProfile!.passportNumber,
+        passportExpirationDate: this.employeeProfile!.passportExpirationDate,
+        passportCountryIssue: this.employeeProfile!.passportCountryIssue,
         race: personalDetailsFormValue['race'],
         gender: personalDetailsFormValue['gender'],
-        email: this.employeeProfile.email,
-        personalEmail: this.employeeProfile.personalEmail,
-        cellphoneNo: this.employeeProfile.cellphoneNo,
-        photo: this.employeeProfile.photo,
+        email: this.employeeProfile!.email,
+        personalEmail: this.employeeProfile!.personalEmail,
+        cellphoneNo: this.employeeProfile!.cellphoneNo,
+        photo: this.employeeProfile!.photo,
         notes: '',
-        leaveInterval: this.employeeProfile.leaveInterval,
-        salary: this.employeeProfile.salary,
-        salaryDays: this.employeeProfile.salaryDays,
-        payRate: this.employeeProfile.payRate,
+        leaveInterval: this.employeeProfile!.leaveInterval,
+        salary: this.employeeProfile!.salary,
+        salaryDays: this.employeeProfile!.salaryDays,
+        payRate: this.employeeProfile!.payRate,
         clientAllocated: this.clientId == 0 ? null : this.clientId,
         teamLead: this.employeeId == 0 ? null : this.employeeId,
         physicalAddress: {
-          id: this.employeeProfile.physicalAddress?.id,
-          unitNumber: this.employeeProfile.physicalAddress?.unitNumber,
-          complexName: this.employeeProfile.physicalAddress?.complexName,
-          streetNumber: this.employeeProfile.physicalAddress?.streetNumber,
-          suburbOrDistrict: this.employeeProfile.physicalAddress?.suburbOrDistrict,
-          city: this.employeeProfile.physicalAddress?.city,
-          country: this.employeeProfile.physicalAddress?.country,
-          province: this.employeeProfile.physicalAddress?.province,
-          postalCode: this.employeeProfile.physicalAddress?.postalCode,
+          id: this.employeeProfile!.physicalAddress?.id,
+          unitNumber: this.employeeProfile!.physicalAddress?.unitNumber,
+          complexName: this.employeeProfile!.physicalAddress?.complexName,
+          streetNumber: this.employeeProfile!.physicalAddress?.streetNumber,
+          suburbOrDistrict: this.employeeProfile!.physicalAddress?.suburbOrDistrict,
+          city: this.employeeProfile!.physicalAddress?.city,
+          country: this.employeeProfile!.physicalAddress?.country,
+          province: this.employeeProfile!.physicalAddress?.province,
+          postalCode: this.employeeProfile!.physicalAddress?.postalCode,
         },
         postalAddress: {
-          id: this.employeeProfile.postalAddress?.id,
-          unitNumber: this.employeeProfile.postalAddress?.unitNumber,
-          complexName: this.employeeProfile.postalAddress?.complexName,
-          streetNumber: this.employeeProfile.postalAddress?.streetNumber,
-          suburbOrDistrict: this.employeeProfile.postalAddress?.suburbOrDistrict,
-          city: this.employeeProfile.postalAddress?.city,
-          country: this.employeeProfile.postalAddress?.country,
-          province: this.employeeProfile.postalAddress?.province,
-          postalCode: this.employeeProfile.postalAddress?.postalCode,
+          id: this.employeeProfile!.postalAddress?.id,
+          unitNumber: this.employeeProfile!.postalAddress?.unitNumber,
+          complexName: this.employeeProfile!.postalAddress?.complexName,
+          streetNumber: this.employeeProfile!.postalAddress?.streetNumber,
+          suburbOrDistrict: this.employeeProfile!.postalAddress?.suburbOrDistrict,
+          city: this.employeeProfile!.postalAddress?.city,
+          country: this.employeeProfile!.postalAddress?.country,
+          province: this.employeeProfile!.postalAddress?.province,
+          postalCode: this.employeeProfile!.postalAddress?.postalCode,
         }
       }
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
@@ -423,38 +467,38 @@ export class EmployeeProfileComponent {
     }
   }
 
-  saveCustomFields(){
-    this.employeeDataService.updateEmployeeData(this.tShirtSizeFieldValue).subscribe({
-      next: () => {},
+  saveCustomFields() {
+    this.employeeDataService.updateEmployeeData(this.tShirtSizeFieldValue!).subscribe({
+      next: () => { },
       error: (error) => {
         this.toast.error({ detail: "Error", summary: "Failed to update T-Shirt", duration: 5000, position: 'topRight' });
       }
     });
 
-    this.employeeDataService.updateEmployeeData(this.dietaryFieldValue).subscribe({
-      next: () => {},
+    this.employeeDataService.updateEmployeeData(this.dietaryFieldValue!).subscribe({
+      next: () => { },
       error: (error) => {
         this.toast.error({ detail: "Error", summary: "Failed to update Dietary", duration: 5000, position: 'topRight' });
       }
     });
 
-    this.employeeDataService.updateEmployeeData(this.allergiesFieldValue).subscribe({
-      next: () => {},
+    this.employeeDataService.updateEmployeeData(this.allergiesFieldValue!).subscribe({
+      next: () => { },
       error: (error) => {
         this.toast.error({ detail: "Error", summary: "Failed to update Allergies", duration: 5000, position: 'topRight' });
       }
     });
   }
-  captureTShirtSizeChange(event:any){
-    this.tShirtSizeFieldValue.value = event;
+  captureTShirtSizeChange(event: any) {
+    this.tShirtSizeFieldValue!.value = event;
   }
-  
-  captureDietaryChange(event:any){
-    this.dietaryFieldValue.value = event;
+
+  captureDietaryChange(event: any) {
+    this.dietaryFieldValue!.value = event;
   }
-  
-  captureAllergiesChange(event:any){
-    this.allergiesFieldValue.value = event.target.value;
+
+  captureAllergiesChange(event: any) {
+    this.allergiesFieldValue!.value = event.target.value;
   }
 
   cancelPersonalEdit() {
@@ -472,7 +516,7 @@ export class EmployeeProfileComponent {
     if (this.addressDetailsForm.valid) {
       const addressDetailFormValue = this.addressDetailsForm.value;
       this.employeeAddressDto = {
-        id: this.employeeProfile.physicalAddress?.id!,
+        id: this.employeeProfile!.physicalAddress?.id!,
         unitNumber: addressDetailFormValue['physicalUnitNumber'],
         complexName: addressDetailFormValue['physicalComplexName'],
         streetNumber: addressDetailFormValue['physicalStreetNumber'],
@@ -485,7 +529,7 @@ export class EmployeeProfileComponent {
       this.employeeAddressService.update(this.employeeAddressDto).subscribe({
         next: (data) => {
           this.employeeAddressDto = {
-            id: this.employeeProfile.postalAddress?.id!,
+            id: this.employeeProfile!.postalAddress?.id!,
             unitNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalUnitNumber'] : addressDetailFormValue['postalUnitNumber'],
             complexName: this.physicalEqualPostal ? addressDetailFormValue['physicalComplexName'] : addressDetailFormValue['postalComplexName'],
             streetNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalStreetNumber'] : addressDetailFormValue['postalStreetNumber'],
@@ -528,64 +572,64 @@ export class EmployeeProfileComponent {
 
   initializeEmployeeProfileDto() {
     this.employeeProfileDto = {
-      id: this.employeeProfile.id,
-      employeeNumber: this.employeeProfile.employeeNumber,
-      taxNumber: this.employeeProfile.taxNumber,
-      engagementDate: this.employeeProfile.engagementDate,
-      terminationDate: this.employeeProfile.terminationDate,
-      peopleChampion: this.employeeProfile.peopleChampion,
-      disability: this.employeeProfile.disability,
-      disabilityNotes: this.employeeProfile.disabilityNotes,
-      countryOfBirth: this.employeeProfile.countryOfBirth,
-      nationality: this.employeeProfile.nationality,
-      level: this.employeeProfile.level,
+      id: this.employeeProfile!.id,
+      employeeNumber: this.employeeProfile!.employeeNumber,
+      taxNumber: this.employeeProfile!.taxNumber,
+      engagementDate: this.employeeProfile!.engagementDate,
+      terminationDate: this.employeeProfile!.terminationDate,
+      peopleChampion: this.employeeProfile!.peopleChampion,
+      disability: this.employeeProfile!.disability,
+      disabilityNotes: this.employeeProfile!.disabilityNotes,
+      countryOfBirth: this.employeeProfile!.countryOfBirth,
+      nationality: this.employeeProfile!.nationality,
+      level: this.employeeProfile!.level,
       employeeType: {
-        id: this.employeeProfile.employeeType.id,
-        name: this.employeeProfile.employeeType.name,
+        id: this.employeeProfile!.employeeType!.id,
+        name: this.employeeProfile!.employeeType!.name,
       },
-      title: this.employeeProfile.title,
-      name: this.employeeProfile.name,
-      initials: this.employeeProfile.initials,
-      surname: this.employeeProfile.surname,
-      dateOfBirth: this.employeeProfile.dateOfBirth,
-      idNumber: this.employeeProfile.idNumber,
-      passportNumber: this.employeeProfile.passportNumber,
-      passportExpirationDate: this.employeeProfile.passportExpirationDate,
-      passportCountryIssue: this.employeeProfile.passportCountryIssue,
-      race: this.employeeProfile.race,
-      gender: this.employeeProfile.gender,
-      email: this.employeeProfile.email,
-      personalEmail: this.employeeProfile.personalEmail,
-      cellphoneNo: this.employeeProfile.cellphoneNo,
-      photo: this.employeeProfile.photo,
+      title: this.employeeProfile!.title,
+      name: this.employeeProfile!.name,
+      initials: this.employeeProfile!.initials,
+      surname: this.employeeProfile!.surname,
+      dateOfBirth: this.employeeProfile!.dateOfBirth,
+      idNumber: this.employeeProfile!.idNumber,
+      passportNumber: this.employeeProfile!.passportNumber,
+      passportExpirationDate: this.employeeProfile!.passportExpirationDate,
+      passportCountryIssue: this.employeeProfile!.passportCountryIssue,
+      race: this.employeeProfile!.race,
+      gender: this.employeeProfile!.gender,
+      email: this.employeeProfile!.email,
+      personalEmail: this.employeeProfile!.personalEmail,
+      cellphoneNo: this.employeeProfile!.cellphoneNo,
+      photo: this.employeeProfile!.photo,
       notes: '',
-      leaveInterval: this.employeeProfile.leaveInterval,
-      salary: this.employeeProfile.salary,
-      salaryDays: this.employeeProfile.salaryDays,
-      payRate: this.employeeProfile.payRate,
-      clientAllocated: this.employeeProfile.clientAllocated,
-      teamLead: this.employeeProfile.teamLead,
+      leaveInterval: this.employeeProfile!.leaveInterval,
+      salary: this.employeeProfile!.salary,
+      salaryDays: this.employeeProfile!.salaryDays,
+      payRate: this.employeeProfile!.payRate,
+      clientAllocated: this.employeeProfile!.clientAllocated,
+      teamLead: this.employeeProfile!.teamLead,
       physicalAddress: {
-        id: this.employeeProfile.physicalAddress?.id,
-        unitNumber: this.employeeProfile.physicalAddress?.unitNumber,
-        complexName: this.employeeProfile.physicalAddress?.complexName,
-        streetNumber: this.employeeProfile.physicalAddress?.streetNumber,
-        suburbOrDistrict: this.employeeProfile.physicalAddress?.suburbOrDistrict,
-        city: this.employeeProfile.physicalAddress?.city,
-        country: this.employeeProfile.physicalAddress?.country,
-        province: this.employeeProfile.physicalAddress?.province,
-        postalCode: this.employeeProfile.physicalAddress?.postalCode,
+        id: this.employeeProfile!.physicalAddress?.id,
+        unitNumber: this.employeeProfile!.physicalAddress?.unitNumber,
+        complexName: this.employeeProfile!.physicalAddress?.complexName,
+        streetNumber: this.employeeProfile!.physicalAddress?.streetNumber,
+        suburbOrDistrict: this.employeeProfile!.physicalAddress?.suburbOrDistrict,
+        city: this.employeeProfile!.physicalAddress?.city,
+        country: this.employeeProfile!.physicalAddress?.country,
+        province: this.employeeProfile!.physicalAddress?.province,
+        postalCode: this.employeeProfile!.physicalAddress?.postalCode,
       },
       postalAddress: {
-        id: this.employeeProfile.postalAddress?.id,
-        unitNumber: this.employeeProfile.postalAddress?.unitNumber,
-        complexName: this.employeeProfile.postalAddress?.complexName,
-        streetNumber: this.employeeProfile.postalAddress?.streetNumber,
-        suburbOrDistrict: this.employeeProfile.postalAddress?.suburbOrDistrict,
-        city: this.employeeProfile.postalAddress?.city,
-        country: this.employeeProfile.postalAddress?.country,
-        province: this.employeeProfile.postalAddress?.province,
-        postalCode: this.employeeProfile.postalAddress?.postalCode,
+        id: this.employeeProfile!.postalAddress?.id,
+        unitNumber: this.employeeProfile!.postalAddress?.unitNumber,
+        complexName: this.employeeProfile!.postalAddress?.complexName,
+        streetNumber: this.employeeProfile!.postalAddress?.streetNumber,
+        suburbOrDistrict: this.employeeProfile!.postalAddress?.suburbOrDistrict,
+        city: this.employeeProfile!.postalAddress?.city,
+        country: this.employeeProfile!.postalAddress?.country,
+        province: this.employeeProfile!.postalAddress?.province,
+        postalCode: this.employeeProfile!.postalAddress?.postalCode,
       },
       houseNo: this.employeeProfile?.houseNo,
       emergencyContactName: this.employeeProfile?.emergencyContactName,
@@ -607,8 +651,8 @@ export class EmployeeProfileComponent {
       this.employeeProfileDto.name = employeeDetailsForm.name;
       this.employeeProfileDto.surname = employeeDetailsForm.surname;
       this.employeeProfileDto.clientAllocated = this.clientId == 0 ? null : this.clientId;
-      this.employeeProfileDto.employeeType.id = this.employeeType !== null ? this.employeeType?.id : this.employeeProfile.employeeType.id;
-      this.employeeProfileDto.employeeType.name = this.employeeType !== null ? this.employeeType?.name : this.employeeProfile.employeeType.name;
+      this.employeeProfileDto.employeeType.id = this.employeeType !== null ? this.employeeType?.id : this.employeeProfile!.employeeType!.id;
+      this.employeeProfileDto.employeeType.name = this.employeeType !== null ? this.employeeType?.name : this.employeeProfile!.employeeType!.name;
       this.employeeProfileDto.level = employeeDetailsForm.level;
       this.employeeProfileDto.teamLead = this.employeeId == 0 ? null : this.employeeId;
       this.employeeProfileDto.peopleChampion = this.peopleChampionId == 0 ? null : this.peopleChampionId;
@@ -657,7 +701,7 @@ export class EmployeeProfileComponent {
           this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
           this.employeeContactForm.disable();
         },
-        error: (error) => {this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
       });
     }
   }
@@ -671,13 +715,14 @@ export class EmployeeProfileComponent {
 
   filterEmployees(event: any) {
     if (event) {
-      this.filteredEmployees = this.employees.filter((employee: { name: string; }) =>
-        employee.name.toLowerCase().includes(event.target.value.toLowerCase())
+      this.filteredEmployees = this.employees.filter((employee: EmployeeProfile) =>
+        employee.name!.toLowerCase().includes(event.target.value.toLowerCase())
       );
     } else {
       this.filteredEmployees = this.employees;
     }
   }
+
 
   filterClients(event: any) {
     if (event) {
@@ -711,5 +756,5 @@ export class EmployeeProfileComponent {
     }
   }
 
-  
+
 }
