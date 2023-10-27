@@ -40,4 +40,7 @@ export interface EmployeeProfile {
   teamLead?: number,
   physicalAddress?: EmployeeAddress,
   postalAddress?: EmployeeAddress,
+  houseNo?: string,
+  emergencyContactName?: string,
+  emergencyContactNo?: string
 }
