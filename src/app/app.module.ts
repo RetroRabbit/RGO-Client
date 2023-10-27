@@ -59,6 +59,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 
 
+
+
 import { PendingBankDetailsComponent } from './components/employees/pending-bank-details/pending-bank-details.component';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';

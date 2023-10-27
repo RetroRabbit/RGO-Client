@@ -19,3 +19,17 @@ div .d-flex {
 .selected {
     box-shadow: inset 0 0 0 0.2rem #000;
 }
+
+#tableheader{
+    background-color: #D7DFFF;
+}
+
+#mattable{
+    width: 200px;
+    margin-left: 20px;
+    margin-right:20px;
+}
+
+#mattoggle{
+    background-color: #0029C6;
+}
