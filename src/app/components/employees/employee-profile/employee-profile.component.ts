@@ -45,7 +45,7 @@ export class EmployeeProfileComponent {
   employeeTypes: EmployeeType[] = [];
   employeeData: EmployeeData[] = [];
 
-  employeeProfileDto: any;
+  employeeProfileDto?: any;
   employeeType?: EmployeeType;
   employeeAddressDto: any;
 
@@ -72,6 +72,10 @@ export class EmployeeProfileComponent {
   physicalCountryControl: string = "";
   postalCountryControl: string = "";
 
+  employeeClient : EmployeeProfile | undefined;
+  employeeTeamLead : EmployeeProfile | undefined;
+  employeePeopleChampion : EmployeeProfile | undefined;
+
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   employeeDetailsForm: FormGroup = this.fb.group({
     title: { value: '', disabled: true },
@@ -89,12 +93,12 @@ export class EmployeeProfileComponent {
   });
 
   employeeContactForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
-    personalEmail: ['', [Validators.required, Validators.email]],
-    cellphoneNo: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-    houseNo: '',
-    emergencyContactName: '',
-    emergencyContactNo: ''
+    email: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(this.emailPattern)]],
+    personalEmail: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
+    cellphoneNo: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+    houseNo: { value: '', disabled: true },
+    emergencyContactName: { value: '', disabled: true },
+    emergencyContactNo: { value: '', disabled: true }
   });
 
   personalDetailsForm: FormGroup =this.fb.group({
@@ -162,14 +166,14 @@ export class EmployeeProfileComponent {
   ngOnInit() {
     this.getEmployeeFields();
   }
-
+  
   getEmployeeFields() {
     this.employeeProfileService.GetEmployeeProfile().subscribe({
       next: data => {
         this.employeeProfile = data;
         this.employeePhysicalAddress = data.physicalAddress!;
         this.employeePostalAddress = data.postalAddress!;
-        this.hasDisbility = this.employeeProfile!.disability;
+        this.hasDisbility = this.employeeProfile!.disability; 
         this.customFieldsService.getAllFieldCodes().subscribe({
           next: data => {
             this.customFields = data;
@@ -194,6 +198,9 @@ export class EmployeeProfileComponent {
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
+            this.employeeClient = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfile?.id)[0];
+            this.employeeTeamLead = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
+            this.employeePeopleChampion = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
           }
         });
         this.employeeTypeService.getAllEmployeeTypes().subscribe({
@@ -202,17 +209,17 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
-        this.initializeForm();
-        this.employeeDataService.getEmployeeData(this.employeeProfile!.id).subscribe({
+        this.initializeForm(); 
+        this.employeeDataService.getEmployeeData(this.employeeProfile?.id).subscribe({
           next: data => {
             this.employeeData = data;
             this.getData();
           },
           error: error => {
             this.toast.error({ detail: "Error", summary: "Failed to Employee Data", duration: 5000, position: 'topRight' });
-
           }
         });
+        
       }
     });
   }
@@ -221,7 +228,6 @@ export class EmployeeProfileComponent {
     let fieldId = this.customFields.filter(field => field.code == 'tsize')[0];
     this.tShirtSizeFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
     if (this.tShirtSizeFieldValue == undefined) {
-      console.log(this.allergiesFieldValue);
       this.tShirtSizeFieldValue = {
         id: (this.customFields[this.customFields.length - 1].id! + 1),
         employeeId: this.employeeProfile!.id,
@@ -257,7 +263,6 @@ export class EmployeeProfileComponent {
     fieldId = this.customFields.filter(field => field.code == 'allergies')[0];
     this.allergiesFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
     if (this.allergiesFieldValue == undefined) {
-      console.log(this.allergiesFieldValue);
       this.allergiesFieldValue = {
         id: (this.customFields[this.customFields.length - 1].id! + 3),
         employeeId: this.employeeProfile!.id,
@@ -358,7 +363,7 @@ export class EmployeeProfileComponent {
       this.employeeDetailsForm.get('clientAllocated')?.setValue(this.foundClient.name);
       this.clientId = this.foundClient.id
     }
-
+    
     if (this.foundChampion != null) {
       this.employeeDetailsForm.get('peopleChampion')?.setValue(this.foundChampion.employee.name + ' ' + this.foundChampion.employee.surname);
       this.peopleChampionId = this.foundChampion.employee.id
@@ -465,6 +470,9 @@ export class EmployeeProfileComponent {
         },
       });
     }
+    else{
+      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+    }
   }
 
   saveCustomFields() {
@@ -552,6 +560,9 @@ export class EmployeeProfileComponent {
         },
         error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
       });
+    }
+    else{
+      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
     }
   }
 
@@ -668,6 +679,9 @@ export class EmployeeProfileComponent {
         error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
       });
     }
+    else{
+      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+    }
   }
 
   cancelEmployeeEdit() {
@@ -703,6 +717,9 @@ export class EmployeeProfileComponent {
         },
         error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
       });
+    }
+    else{
+      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
     }
   }
 
@@ -746,13 +763,13 @@ export class EmployeeProfileComponent {
 
   getId(data: any, name: string) {
     if (name == 'employee') {
-      this.employeeId = data.id
+      this.employeeId = data.id;
     }
     else if (name == 'client') {
-      this.clientId = data.id
+      this.clientId = data.id;
     }
     else if (name == 'champion') {
-      this.peopleChampionId = data.employee.id
+      this.peopleChampionId = data.employee.id;
     }
   }
 

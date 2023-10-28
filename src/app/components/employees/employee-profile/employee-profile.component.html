@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">Team Lead</div>
-                            <div id="header-value">Rouan van der Walt</div>
+                            <div id="header-value">{{employeeTeamLead ? employeeTeamLead.name + ' ' + employeeTeamLead.surname : 'Not assigned'}}</div>
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">People Champion</div>
-                            <div id="header-value">Mandy Pelser</div>
+                            <div id="header-value">{{employeePeopleChampion ? employeePeopleChampion.name + ' ' + employeePeopleChampion.surname: 'Not assigned'}}</div>
                         </div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">Client Allocated</div>
-                            <div id="header-value">Discovery</div>
+                            <div id="header-value">{{employeeProfile?.clientAllocated ?? 'Bench'}}</div>
                         </div>
                     </div>
                 </div>
@@ -83,29 +83,29 @@
     </div>
 
     <div id="profile-completion" class="row my-4 p-2">
-        <div class="col-12" id="completion-header">
+        <div class="col-12 mt-2" id="completion-header">
             <div class="row" id="completion-header-container">
                 <div class="col-1">
                     <div id="outer-icon-container">
-                        <div id="icon-container">
+                        <div id="icon-container" class="me-0 pe-0">
                             <mat-icon>person_outline</mat-icon>
                         </div>
                     </div>
                 </div>
-                <div class="col-11">
-                    <h4> {{employeeProfile?.name}}'s profile progess </h4>
+                <div class="col-11 ps-0">
+                    <h4 style="margin:0"> {{employeeProfile?.name}}'s profile progess </h4>
                 </div>
             </div>
         </div>
         <div class="col-12 mt-3 px-4">
             <div class="row">
-                <div class="col-12 mx-2">
+                <div class="col-12 mx-3">
                     <h3 id="progress-require-message">Add all required information to complete profile</h3>
                 </div>
             </div>
         </div>
         <div class="col-10 px-4">
-            <div class="row mx-2" id="accordion-progress">
+            <div class="row mx-3" id="accordion-progress">
                 <!-- ToDo: add ngClass for conditional styling for progress-stats -->
                 <div class="col-2 py-3" id="progress-stats">  
                     <h5>Profile Details %</h5>
@@ -448,7 +448,7 @@
                                     <button *ngIf="editPersonal" mat-button id="cancel-button"
                                         (click)="cancelPersonalEdit()">Cancel</button>
                                     <button *ngIf="editPersonal" mat-button id="save-button"
-                                        (click)="savePersonalEdit()">Save changes</button>
+                                        (click)="savePersonalEdit()" [disabled]="!personalDetailsForm.valid">Save changes</button>
                                 </div>
                             </div>
                         </form>
