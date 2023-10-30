@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
-import { ChartType } from 'chart.js';
+import {  ChartType } from 'chart.js';
 import { Chart } from 'src/app/models/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { ChartData } from '../../models/chartdata.interface';
@@ -27,6 +27,12 @@ export class ChartComponent implements OnInit {
   Type:'',}
   coloursArray : string[] = colours;
   chartCanvasArray: any[] = [];
+    
+  chartOptions = {
+    events: []
+}
+    
+
   constructor(private chartService: ChartService,private cookieService: CookieService) {}
 
   ngOnInit(): void {
@@ -43,6 +49,8 @@ export class ChartComponent implements OnInit {
   });
   }
 
+
+
   getNumberOfEmployees(): void {
     this.chartService.getTotalEmployees().subscribe({
       next: data => {
@@ -55,6 +63,7 @@ export class ChartComponent implements OnInit {
   processChartData(data: any[]): void {
     if (data.length > 0) {
       this.chartData = data;
+      console.log(this.chartData);
       this.populateCanvasCharts();
       this.displayChart = true;
       this.selectedChartType = this.chartData[0].type;
@@ -138,6 +147,7 @@ export class ChartComponent implements OnInit {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
   }
+
   
   populateCanvasCharts(){
     for(let i = 0; i < this.chartData.length; i++) {
@@ -147,7 +157,7 @@ export class ChartComponent implements OnInit {
           data: this.chartData[i].data[j],
           backgroundColor: this.coloursArray[j],
           borderColor: this.coloursArray[j],
-          label: this.chartData[i].labels[j]
+          label: this.chartData[i].labels[j],
         });
       }
       this.chartCanvasArray.push(dataset);
