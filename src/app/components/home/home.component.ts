@@ -92,14 +92,12 @@ export class HomeComponent {
   shouldDisplayNewEmployee: boolean = false;
 
   onAddEmployee(): void {
-    console.info('Home Component: Add Employee Clicked');
     this.shouldDisplayNewEmployee = true;
   }
   returnToEmpList: boolean | null = false;
 
-  handleReturnToEmpList(isTrue: any) {
-    console.info(`ViewEmployee: ${isTrue}`);
-    this.returnToEmpList = isTrue;
+  onReturnToEmployees() {
+    this.returnToEmpList = true;
   }
 
   isAdmin(): boolean {
@@ -115,7 +113,9 @@ export class HomeComponent {
   }
 
   handleSelectedEmp(item: any){
+    console.info(`Selected employee: ${item}`)
     this.selectedEmployee = item
+    
   }
 
   CaptureEvent(event: any) {
