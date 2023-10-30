@@ -29,8 +29,10 @@ export class RoleManagerComponent {
     permission: new FormControl('', Validators.required),
   })
 
+
  
   displayedColumns: string[] = [];
+  permisssionRows: string[] = [];
   
   constructor(
     private roleService: RoleService,
@@ -41,7 +43,6 @@ export class RoleManagerComponent {
   ngOnInit() {
     this.employeeRoleService.getAllRoles().subscribe(roles => {
       this.displayedColumns = ["Permissions", ...roles];
-      console.log(this.roleAccesses$)
     });
   }
 
