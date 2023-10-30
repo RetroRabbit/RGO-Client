@@ -62,8 +62,8 @@
         <!-- <canvas baseChart [datasets]="[{ data: chart.data, backgroundColor: coloursArray, borderColor:coloursArray, label: chart.labels}]" [labels]="chart.labels"
           [options]="chart.labels" [type]="chart.type"></canvas> -->
         <canvas baseChart [datasets]="[
-          { data:[1,2], backgroundColor: coloursArray, borderColor: coloursArray, label: 'a'  }
-        ]" [labels]="chart.labels" [options]="chart.labels" [type]="chart.type"></canvas>
+          {data: chart.data, backgroundColor: coloursArray, borderColor: coloursArray, label: chart.labels  }
+        ]" [labels]="chart.labels" [options]="chart.labels" [type]="chart.type" [options]="chartOptions" ></canvas>
 
       </div>
       <div id="chart-footer">
