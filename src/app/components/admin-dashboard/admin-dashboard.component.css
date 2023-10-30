@@ -16,10 +16,19 @@
   width: 12rem;
 }
 
+#graphs-btn>button {
+  background: #0029c6;
+  border: none;
+  border-radius: 4rem;
+  color: white;
+  padding: 0.5rem;
+  width: 12rem;
+}
+
 #no-graphs {
   background-color: white;
   border-radius: 2rem;
-  height: 75vh;
+  min-height: 75vh;
   text-align: center;
 }
 
@@ -118,10 +127,40 @@
   --mdc-chip-label-text-weight: 500;
 }
 
+#my-dialog.mdc-dialog.mdc-dialog_content {
+  padding: 20px 24px 0px 24px;
+}
+
+
+#graph-heading>h3 {
+  color: #212121;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 28px;
+  font-family: Roboto, sans-serif;
+  letter-spacing: .009375em;
+  margin: 0 0 0;
+}
+
+#graph-subheading>h5 {
+color: #7E7E7E;
+font-size: 14px;
+font-family: Roboto;
+font-weight: 400;
+line-height: 20px;
+letter-spacing: 0.25px;
+word-wrap: break-word;
+}
+
+.mat-form-field.mat-select>#edit-button.mat-select-value {
+  border: none;
+  border-radius: 2rem;
+  background-color: #D7DFFF;
+  color: #0029C6;
+  padding: 1rem;
+}
+
 
 /* --mdc-outlined-text-field-focus-outline-color #0029C6;
 --mdc-outlined-text-field-focus-label-text-color: #0029C6;
 --mdc-outlined-text-field-outline-color: #0029C6; */
-.mdc-outlined-text-field-outline{
-  color: #0029C6;}
-
