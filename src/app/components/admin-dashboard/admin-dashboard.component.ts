@@ -36,7 +36,7 @@ export class AdminDashboardComponent {
   // chart data variabbals
   chartName: string = '';
   selectedDataItems: string[] = [];
-  chartType: any = 'bar';
+  chartType: any = '';
   chartData: number[] = [];
   chartLabels: string[] = [];
   chartOptions: any = {

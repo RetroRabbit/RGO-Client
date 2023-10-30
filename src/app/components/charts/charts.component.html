@@ -1,7 +1,7 @@
-<div class="charts-wrapper">
-  
+<div class="charts-wrapper" style="border-style: solid; border-color: black;">
+
     <button (click)="CaptureEvent($event)" type="button" class="edit-button">Edit Dashboard</button>
-  
+
   <div class="numberofempoyees">
     <h5>Total number of employees: {{ numberOfEmployees }}</h5>
   </div>
@@ -39,7 +39,7 @@
     <form (submit)="updateChart()">
       <label for="Name">Chart Name:</label>
       <input type="text" id="Name" name="Name" [(ngModel)]="updateFormData.Name">
-     
+
       <div class="report-controls">
         <label for="chartType">Chart Type:</label>
         <select id="chartType" name="chartType" [(ngModel)]="updateFormData.Type">
@@ -48,7 +48,7 @@
           <option value="pie">Pie</option>
           <option value="doughnut">Doughnut</option>
         </select>
-        
+
         <button type="submit" class="update-button">Update Chart</button>
         <button type="button" class="cancel-button" (click)="showUpdateForm = false">Cancel</button>
       </div>
