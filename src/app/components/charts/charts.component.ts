@@ -29,7 +29,15 @@ export class ChartComponent implements OnInit {
   chartCanvasArray: any[] = [];
     
   chartOptions = {
-    events: []
+    events: [],
+    scales: {
+      x: {
+          ticks: {
+              autoSkip: true
+          }
+      }
+
+  }
 }
     
 
