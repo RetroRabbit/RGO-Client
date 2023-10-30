@@ -106,20 +106,20 @@
         </div>
         <div class="col-10 px-4">
             <div class="row mx-3" id="accordion-progress">
-                <!-- ToDo: add ngClass for conditional styling for progress-stats -->
-                <div class="col-2 py-3" id="progress-stats">  
-                    <h5>Profile Details {{profileFormProgress}}%</h5>
+                <div class="col-2 py-3" id="progress-stats" style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                    <h5>Profile Details {{ profileFormProgress }}%</h5>
                 </div>
+                
                 <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-3" id="progress-stats">
+                <div class="col-2 py-3" id="progress-stats" style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Career Summary %</h5>
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-3" id="progress-stats">
+                <div class="col-2 py-3" id="progress-stats" style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Bank Information %</h5>
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-3" id="progress-stats">
+                <div class="col-2 py-3" id="progress-stats" style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Document %</h5>
                 </div>
             </div>
@@ -128,12 +128,11 @@
             <div class="row mx-2">
                 <div class="col-auto pt-1" id="overall-text">
                     <h4>
-                        % Overall Completed
+                        {{overallFormProgress}}% Overall CompletedM
                     </h4>
                 </div>
                 <div class="col-10 pt-3" id="progress-container">
-                    <!-- ToDo: make value dependent on overall progress -->
-                    <mat-progress-bar mode="determinate" value="{{overallFormProgress}}" id="overall-progress-bar"></mat-progress-bar>
+                    <mat-progress-bar mode="determinate" [value]=overallFormProgress id="overall-progress-bar"></mat-progress-bar>
                 </div>
             </div>
         </div>
