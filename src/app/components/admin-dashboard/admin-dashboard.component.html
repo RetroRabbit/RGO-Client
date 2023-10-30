@@ -23,31 +23,57 @@
 
 <div id="search-results-container">
     <div *ngIf="searchResults.length > 0">
-        <div id="search-results" *ngFor="let employee of searchResults; let i = index">
-            <div>
-                <div id="results-icon">
+        <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
+
+            <!-- Add your click event to the div below -->
+            <div class="col-12 px-4">
+                <div class="row px-4">
+                    <div class="col-2">
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M10 17L15 12L10 7V17Z" fill="#0029C6"/>
+                        </svg> -->
+                        <div>
+                            <img id="avatar" src={{employee.photo}} alt="X">
+                        </div>
+                    </div>
+                    <div class="col-10 pt-1 px-3">
+                        <div>
+                            <div>{{employee.employeeType.name}} - L{{employee.level}}</div>
+                            <div>{{ employee.name }} {{ employee.surname }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col-4" id="results-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M10 17L15 12L10 7V17Z" fill="#0029C6"/>
                     </svg>
                 </div>
-                <div id="avatar-container">
-                    <img id="avatar" src={{employee.photo}} alt="X">
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-12" id="avatar-container">
+                            <img id="avatar" src={{employee.photo}} alt="X">
+                        </div>
+                        <div class="col-12" id="results-container">
+                            <div>{{employee.employeeType.name}} - L{{employee.level}}</div>
+                            <div>{{ employee.name }} {{ employee.surname }}</div>
+                        </div>
+                    </div>
                 </div>
-                <div id="results-container">
-                    <div>{{employee.employeeType.name}} - L{{employee.level}}</div>
-                    <div>{{ employee.name }} {{ employee.surname }}</div>
-                </div>
-            </div>
+            </div> -->
+            
             <ng-container *ngIf="!displayAllEmployees && i < initialDisplayCount">
                 <!-- Add employee details here -->
             </ng-container>
             <!-- "View More Employees" button moved inside the loop -->
-            <div id="view-more-container" *ngIf="!displayAllEmployees && i === initialDisplayCount - 1 && searchResults.length > initialDisplayCount">
-                <button (click)="viewMoreEmployees()">View {{ searchResults.length - initialDisplayCount }} more employees</button>
-            </div>
+            
             <ng-container *ngIf="displayAllEmployees && i >= initialDisplayCount">
                 <!-- Add employee details here -->
             </ng-container>
+        </div>
+        <div id="view-more-container" *ngIf="!displayAllEmployees" style="margin-top: 0;">
+            <div (click)="viewMoreEmployees()">View {{ searchResults.length - initialDisplayCount }} more employees</div>
         </div>
     </div>
 </div>
