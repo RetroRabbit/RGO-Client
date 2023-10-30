@@ -108,7 +108,7 @@
             <div class="row mx-3" id="accordion-progress">
                 <!-- ToDo: add ngClass for conditional styling for progress-stats -->
                 <div class="col-2 py-3" id="progress-stats">  
-                    <h5>Profile Details %</h5>
+                    <h5>Profile Details {{profileFormProgress}}%</h5>
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
                 <div class="col-2 py-3" id="progress-stats">
@@ -133,7 +133,7 @@
                 </div>
                 <div class="col-10 pt-3" id="progress-container">
                     <!-- ToDo: make value dependent on overall progress -->
-                    <mat-progress-bar mode="determinate" value="40" id="overall-progress-bar"></mat-progress-bar>
+                    <mat-progress-bar mode="determinate" value="{{overallFormProgress}}" id="overall-progress-bar"></mat-progress-bar>
                 </div>
             </div>
         </div>
@@ -304,7 +304,7 @@
                                                     <mat-option *ngFor="let people of filteredPeopleChamps"
                                                         [value]="people.employee.name + ' ' + people.employee.surname"
                                                         (onSelectionChange)="getId(people, 'champion')">
-                                                        {{ people.employee.name }} </mat-option>
+                                                        {{ people.employee.name }} {{people.employee.surname}}</mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
                                         </div>
@@ -423,9 +423,9 @@
                                                 <div class="col-4">
                                                     <mat-form-field appearance="outline" style="width: 100%;">
                                                         <mat-label>Disability</mat-label>
-                                                        <mat-select>
-                                                            <mat-option *ngFor="let disability of disabilities"
-                                                                [value]="disability.id">
+                                                        <mat-select formControlName="disabilityList">
+                                                            <mat-option *ngFor="let disability of disabilities; index as i"
+                                                            [value]="i">
                                                                 {{disability.value}}
                                                             </mat-option>
                                                         </mat-select>
