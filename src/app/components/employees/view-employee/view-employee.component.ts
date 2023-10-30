@@ -83,7 +83,6 @@ export class ViewEmployeeComponent {
     this.selectedEmp = employee;
     this.selectedEmployee.emit(this.selectedEmp);
     this.cookieService.set('currentPage', 'Profile');
-    //this.cookieService.set('currentPage', 'Employee Details');
   }
 
   displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];

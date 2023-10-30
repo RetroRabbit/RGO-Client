@@ -48,7 +48,15 @@ mat-header-row {
     line-height: 24px;
     letter-spacing: .15px;
     word-wrap: break-word;
-    flex: 0 0 auto;
+    height: inherit;
+}
+
+#paginator-text .mat-form-field-wrapper {
+    height: 100%;
+}
+
+#paginator-text .mat-form-field-flex {
+    align-items: center;
 }
 
 .paginator {
@@ -76,6 +84,19 @@ mat-header-row {
     display: flex;
     align-items: center;
     gap: 8px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
 }
 
 #paginator-text mat-form-field {
@@ -84,7 +105,9 @@ mat-header-row {
     align-items: center;
 }
 
-.paginator-dropdown {}
+.paginator-dropdown {
+    border: 1px solid #cac4d0;
+}
 
 ::ng-deep .boldArrow .mat-sort-header-arrow.ng-trigger.ng-trigger-arrowPosition {
     opacity: 1 !important;
@@ -148,9 +171,33 @@ mat-header-row {
     color: white;
 }
 
+.role-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #0029C6;
+    color: white;
+    font-family: Roboto;
+    min-width: 75%;
+    justify-content: space-between;
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.role-btn mat-icon {
+    color: white;
+    margin-left: auto;
+}
+
 .d-flex.justify-content-between.align-items-center.gap-2 {
     display: flex;
     align-items: stretch;
+}
+#pageSize {
+
 }
 
 /* Style the select to look like a button */

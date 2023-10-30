@@ -19,7 +19,7 @@
             mat-Input
             #filter
             (keyup)="applyFilter(filter.value)"
-            [ngClass]="{ 'no-text': filter.value === ''}"
+            [ngClass]="{ 'no-text': filter.value === '' }"
             class="ms-4 bg-transparent"
             id="search-input"
             placeholder="Search for employee by name"
@@ -82,27 +82,23 @@
             }}</mat-cell>
           </ng-container>
           <!-- Roles Column -->
-          <ng-container matColumnDef="Roles">
-            <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
-            <mat-cell *matCellDef="let employee" class="row">
-              <!-- <mat-select>
-                <mat-option
-                  *ngFor="let role of roles | async"
-                  [value]="role"
-                  class="btn btn-primary"
-                >
+<ng-container matColumnDef="Roles">
+  <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
+  <mat-cell *matCellDef="let employee">
+      <div (click)="$event.stopPropagation()">
+          <button mat-button [matMenuTriggerFor]="roleMenu" type="button" class="role-btn">
+              <span>{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</span>
+              <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #roleMenu>
+              <button mat-menu-item *ngFor="let role of roles | async" [value]="role">
                   {{ role }}
-                </mat-option>
-              </mat-select> -->
-              <button
-                (click)="CaptureEvent($event)"
-                type="button"
-                id="add-employee-btn"
-                class="col-lg-9 col-md-12 btn btn-primary">
-                {{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}
               </button>
-            </mat-cell>
-          </ng-container>
+          </mat-menu>
+      </div>
+  </mat-cell>
+</ng-container>
+
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row
@@ -159,7 +155,8 @@
           class="col-lg-3 col-md-5"
           id="paginator-dropdown"
         >
-          <mat-select #pageNo (valueChange)="changePageSize(+pageNo.value)">
+          <input id="pageSize" matInput type="number" min="1" [(ngModel)]="paginator.pageSize" (blur)="changePageSize(paginator.pageSize)" (focus)="pageNo.open()">
+          <mat-select #pageNo [(ngModel)]="paginator.pageSize" hidden>
             <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
               {{ pageSize }}
             </mat-option>
