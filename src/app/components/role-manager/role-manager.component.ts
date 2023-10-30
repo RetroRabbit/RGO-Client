@@ -5,7 +5,7 @@ import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { RoleService } from 'src/app/services/role.service';
-import { MatTableDataSource } from '@angular/material/table';
+
 
 
 @Component({
@@ -29,8 +29,7 @@ export class RoleManagerComponent {
     permission: new FormControl('', Validators.required),
   })
 
-  dataSource = new MatTableDataSource<any>();
-
+ 
   displayedColumns: string[] = [];
   
   constructor(
@@ -42,12 +41,7 @@ export class RoleManagerComponent {
   ngOnInit() {
     this.employeeRoleService.getAllRoles().subscribe(roles => {
       this.displayedColumns = ["Permissions", ...roles];
-
-      this.dataSource.data = [
-        { "Permissions": 'Permission 1', [roles[0]]: false, [roles[1]]: false, [roles[2]]: false },
-        { "Permissions": 'Permission 2', [roles[0]]: true, [roles[1]]: true, [roles[2]]: false },
-        { "Permissions": 'Permission 3', [roles[0]]: false, [roles[1]]: true, [roles[2]]: true },
-      ];
+      console.log(this.roleAccesses$)
     });
   }
 
