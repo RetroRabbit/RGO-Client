@@ -33,7 +33,7 @@ export class ChartComponent implements OnInit {
     scales: {
       x: {
           ticks: {
-              autoSkip: true
+              autoSkip: false,
           }
       }
 
