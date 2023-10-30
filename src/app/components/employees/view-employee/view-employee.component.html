@@ -107,7 +107,7 @@
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row
             *matRowDef="let row; columns: displayedColumns"
-            (click)="employeeClickEvent($event, row)"
+            (click)="employeeClickEvent(row)"
           ></mat-row>
         </mat-table>
         <mat-paginator hidden></mat-paginator>

@@ -14,7 +14,7 @@ import { EmployeeRoleService } from 'src/app/services/employee/employee-role.ser
   styleUrls: ['./view-employee.component.css'],
 })
 export class ViewEmployeeComponent {
-  @Output() selectedEmployee = new EventEmitter<any>();
+  @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() addEmployeeEvent = new EventEmitter<void>();
   
   onAddEmployeeClick(): void {
@@ -27,14 +27,6 @@ export class ViewEmployeeComponent {
   Employees: EmployeeProfile[] = [];
   selectedEmp: any;
   roles: Observable<string[]> = this.employeeRoleService.getAllRoles().pipe(first())
-
-  get filteredEmployees(): EmployeeProfile[] {
-    return this.Employees.filter((e) =>
-      (e.name + ' ' + e.surname)
-        .toLowerCase()
-        .includes(this.searchTerm.toLowerCase())
-    );
-  }
 
   constructor(
     private employeeService: EmployeeService,
@@ -87,10 +79,11 @@ export class ViewEmployeeComponent {
     this.cookieService.set('selectedUser', email);
   }
 
-  employeeClickEvent(event: any, employee: EmployeeProfile): void {
+  employeeClickEvent(employee: EmployeeProfile): void {
     this.selectedEmp = employee;
     this.selectedEmployee.emit(this.selectedEmp);
-    this.cookieService.set('currentPage', 'Employee Details');
+    this.cookieService.set('currentPage', 'Profile');
+    //this.cookieService.set('currentPage', 'Employee Details');
   }
 
   displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];

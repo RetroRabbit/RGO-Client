@@ -74,7 +74,6 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
-    console.info(this.returnToEmpList)
   }
 
   newEmployeeForm = new FormGroup({
