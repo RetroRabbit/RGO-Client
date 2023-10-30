@@ -147,7 +147,7 @@ export class EmployeeProfileComponent {
   allergiesField!: FieldCode;
   allergiesFieldValue: EmployeeData | undefined;
 
-  employeeDataDto: any;
+  employeeDataDto!: EmployeeData;
 
   filteredCountries: any[] = this.countries.slice();
   constructor(private accessPropertyService: AccessPropertiesService,
