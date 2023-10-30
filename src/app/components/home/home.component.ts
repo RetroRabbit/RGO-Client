@@ -23,16 +23,17 @@ export class HomeComponent {
   selectedEmployee: any | null = null;
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
-  employeeProfile!: EmployeeProfile;
-  profileImage: string = '';
+  employeeProfile: EmployeeProfile | undefined;
+  profileImage: string | undefined = '';
   charts: Chart[] = [];
   roles : string[] = [];
   screenWidth !: number;
 
-  employeeType: { id: number, name: string } = {
+  employeeType: { id?: number, name?: string } | undefined = {
     id: 0,
     name: ''
   };
+  
 
   constructor(
     private employeeProfileService: EmployeeProfileService,
