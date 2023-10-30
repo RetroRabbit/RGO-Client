@@ -54,6 +54,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatExpansionModule} from '@angular/material/expansion'; 
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -137,6 +139,7 @@ import { AddEmployeeEventComponent } from './components/manage-employee-events/a
     MatSlideToggleModule,
     MatCheckboxModule,
     MatExpansionModule,
+    MatProgressBarModule,
     TableModule,
     MatPaginatorModule,
     MatSortModule,
