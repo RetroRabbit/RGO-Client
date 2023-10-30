@@ -20,7 +20,7 @@ export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
   selectedEvaluation: any | null = null
   selectedEvent: EmployeeDate | null = null;
-  selectedEmployee: any | null = null;
+  selectedEmployee: EmployeeProfile | null = null;
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
   employeeProfile!: EmployeeProfile;
