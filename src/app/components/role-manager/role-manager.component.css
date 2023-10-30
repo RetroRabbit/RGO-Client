@@ -30,9 +30,17 @@ div .d-flex {
     margin-left: 20px;
     margin-right:20px;
     width: 1200px;
-
-
 }
 
+#savechangesbtn{
+    background-color:#0029C6 ;
+    color:#FFFFFF;
+    margin-left: 1000px;
+    margin-bottom: 20px;
+    width: 200px;
+    height: 40px;
+    border:none;
+    border-radius: 20px;
+}
 
 
