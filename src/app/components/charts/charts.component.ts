@@ -3,6 +3,9 @@ import { ChartService } from 'src/app/services/charts.service';
 import { ChartType } from 'chart.js';
 import { Chart } from 'src/app/models/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
+import { ChartData } from '../../models/chartdata.interface';
+import { colours } from '../../models/constants/colours.constants';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-chart',
@@ -22,7 +25,8 @@ export class ChartComponent implements OnInit {
   updateFormData: any = {
   Name: '',
   Type:'',}
-
+  coloursArray : string[] = colours;
+  chartCanvasArray: any[] = [];
   constructor(private chartService: ChartService,private cookieService: CookieService) {}
 
   ngOnInit(): void {
@@ -51,6 +55,7 @@ export class ChartComponent implements OnInit {
   processChartData(data: any[]): void {
     if (data.length > 0) {
       this.chartData = data;
+      this.populateCanvasCharts();
       this.displayChart = true;
       this.selectedChartType = this.chartData[0].type;
     } else {
@@ -132,6 +137,22 @@ export class ChartComponent implements OnInit {
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
+  }
+  
+  populateCanvasCharts(){
+    for(let i = 0; i < this.chartData.length; i++) {
+      let dataset = [];
+      for(let j = 0; j < this.chartData[i].labels.length; j++){
+        dataset.push({
+          data: this.chartData[i].data[j],
+          backgroundColor: this.coloursArray[j],
+          borderColor: this.coloursArray[j],
+          label: this.chartData[i].labels[j]
+        });
+      }
+      this.chartCanvasArray.push(dataset);
+      console.log(this.chartCanvasArray)
+    }
   }
 }
 

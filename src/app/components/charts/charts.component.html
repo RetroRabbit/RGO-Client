@@ -1,19 +1,14 @@
-<div class="charts-wrapper" style="border-style: solid; border-color: black;">
+<div class="charts-wrapper">
 
-    <button (click)="CaptureEvent($event)" type="button" class="edit-button">Edit Dashboard</button>
+  <button (click)="CaptureEvent($event)" type="button" class="edit-button">Edit Dashboard</button>
 
   <div class="numberofempoyees">
     <h5>Total number of employees: {{ numberOfEmployees }}</h5>
   </div>
   <div *ngIf="activeChart" class="chart-wrapper">
     <div class="chart-item">
-      <canvas
-        baseChart
-        [datasets]="[{ data: activeChart.data, label: activeChart.name }]"
-        [labels]="activeChart.labels"
-        [options]="activeChart.labels"
-        [type]="activeChart.type"
-      ></canvas>
+      <canvas baseChart [datasets]="[{ data: activeChart.data, label: activeChart.name }]" [labels]="activeChart.labels"
+        [options]="activeChart.labels" [type]="activeChart.type"></canvas>
     </div>
     <div class="report-controls">
       <button class="back-button" (click)="clearActiveChart()">Back to Dashboard</button>
@@ -23,8 +18,8 @@
     </div>
   </div>
   <app-report *ngIf="showReport" [chartData]="activeChart"></app-report>
-  <div *ngIf="!activeChart" class="chart-container">
-    <div *ngFor="let chart of chartData;" class="chart-item" (click)="onChartClick(chart)">
+  <!--<div *ngIf="!activeChart" class="chart-container">
+     <div *ngFor="let chart of chartData;" class="chart-item" (click)="onChartClick(chart)">
       <canvas
         baseChart
         [datasets]="[{ data: chart.data, label: chart.name }]"
@@ -32,6 +27,48 @@
         [options]="chart.labels"
         [type]="chart.type"
       ></canvas>
+    </div> 
+  </div>-->
+  <div class="row" id="chart-container">
+    <div class="col-3 mx-1 border" *ngFor="let chart of chartData;index as i" id="chart-item">
+      <div id="chart-header" class="row p-4">
+        <div class="col-10">
+          <h2>{{chart.name}}</h2>
+        </div>
+        <div class="col-2" id="chart-icon">
+          <button mat-button [matMenuTriggerFor]="menu" id="options-trigger">
+            <mat-icon id="menu-icon">more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon id="chart-icon-menu" class="pe-3">keyboard_backspace</mat-icon> Download graph
+            </button>
+            <button mat-menu-item>
+              <mat-icon class="pe-3">arrow_forward_ios</mat-icon> Export as graph
+            </button>
+            <button mat-menu-item>
+              <mat-icon class="pe-3">edit</mat-icon> Edit graph
+            </button>
+            <button mat-menu-item>
+              <mat-icon class="pe-3">delete_outline</mat-icon> Delete graph
+            </button>
+            <button mat-menu-item>
+              <mat-icon class="pe-3">remove_red_eye</mat-icon> Hide Filters
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+      <div id="chart-body" class="row mt-4 pt-4">
+        <!-- <canvas baseChart [datasets]="[{ data: chart.data, backgroundColor: coloursArray, borderColor:coloursArray, label: chart.labels}]" [labels]="chart.labels"
+          [options]="chart.labels" [type]="chart.type"></canvas> -->
+        <canvas baseChart [datasets]="[
+          { data:[1,2], backgroundColor: coloursArray, borderColor: coloursArray }
+        ]" [labels]="chart.labels" [options]="chart.labels" [type]="chart.type"></canvas>
+
+      </div>
+      <div id="chart-footer">
+
+      </div>
     </div>
   </div>
   <div *ngIf="showUpdateForm" class="update-form">
@@ -55,4 +92,3 @@
     </form>
   </div>
 </div>
-
