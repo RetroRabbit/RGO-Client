@@ -184,7 +184,7 @@ export class ViewEmployeeComponent {
     return this.paginator.pageIndex;
   }
 
-  prevPage() {
+  previousPage() {
     if (!this.paginator.hasPreviousPage()) return;
     this.paginator.previousPage();
   }
