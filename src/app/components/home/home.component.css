@@ -173,3 +173,11 @@
     padding: 0.5rem;
     width: 12rem;
   }
+  
+  #info-menu > #nav-item-container > button{
+    padding:0;
+    height :auto;
+  }
+  #info-menu > #nav-item-container > button:hover{
+    cursor: pointer;
+  }

@@ -55,6 +55,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatExpansionModule} from '@angular/material/expansion'; 
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 import { PendingBankDetailsComponent } from './components/employees/pending-bank-details/pending-bank-details.component';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
@@ -139,6 +140,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatSlideToggleModule,
     MatCheckboxModule,
     MatExpansionModule,
+    MatProgressBarModule,
     TableModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
