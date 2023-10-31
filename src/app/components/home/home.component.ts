@@ -100,12 +100,6 @@ export class HomeComponent {
     this.shouldDisplayNewEmployee = true;
   }
 
-  returnToEmpList: boolean | null = false;
-
-  onReturnToEmployees() {
-    this.returnToEmpList = true;
-  }
-
   isAdmin(): boolean {
     return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
