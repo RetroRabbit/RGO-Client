@@ -285,7 +285,6 @@ export class EmployeeProfileComponent {
       });
     }
     this.personalDetailsForm.addControl('allergies', this.fb.control(this.allergiesFieldValue.value));
-
   }
 
   initializeForm() {
@@ -347,7 +346,7 @@ export class EmployeeProfileComponent {
       race: [this.employeeProfile!.race, Validators.required],
       disability: [this.employeeProfile!.disability, Validators.required],
       disabilityList: "",
-      disabilityNotes: [this.employeeProfile!.disabilityNotes, Validators.required]
+      disabilityNotes: [this.employeeProfile!.disabilityNotes]
     })
     this.personalDetailsForm.disable();
     this.checkPersonalFormProgress();
@@ -397,7 +396,6 @@ export class EmployeeProfileComponent {
   setHasDisability(event: any) {
     this.hasDisbility = event.value;
   }
-
 
   editPersonalDetails() {
     this.editPersonal = true;
@@ -607,7 +605,6 @@ export class EmployeeProfileComponent {
     }
   }
 
-
   saveEmployeeEdit() {
     this.editEmployee = false;
     if (this.employeeDetailsForm.valid) {
@@ -733,30 +730,22 @@ export class EmployeeProfileComponent {
     }
     else if (name == 'champion') {
       this.peopleChampionId = data.employee.id;
-      console.log(this.peopleChampionId)
-      console.log(data)
-      console.log(name)
     }
   }
 
   checkEmployeeFormProgress(){
-    console.log("hello")
     let filledCount = 0;
     const formControls = this.employeeDetailsForm.controls;
     const totalFields = Object.keys(this.employeeDetailsForm.controls).length;
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        console.log(control)
-        console.log("hello2")
         if (control.value != null && control.value != '') {
           filledCount++;
         }
       }
     }
     this.employeeFormProgress = Math.round((filledCount / totalFields) * 100);
-    console.log(filledCount / totalFields * 100)
-    console.log(Math.floor((filledCount / totalFields) * 100))
   }
  
   checkPersonalFormProgress(){
@@ -766,24 +755,22 @@ export class EmployeeProfileComponent {
 
     if(this.hasDisbility){
       totalFields = (Object.keys(this.personalDetailsForm.controls).length);
-      console.log(totalFields);
     }
     else{
       totalFields = (Object.keys(this.personalDetailsForm.controls).length)-2;
-      console.log(totalFields);
     }
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        console.log(control)
-        if (control.value != null && control.value != '' && control.value != false && control.value != "na") {
+        if (control.value != null && control.value != '' && this.hasDisbility != false && control.value != "na") {
+          filledCount++;
+        }
+        else if(controlName.includes("disability") && this.hasDisbility == false){
           filledCount++;
         }
       }
     }
     this.personalFormProgress = Math.round((filledCount / totalFields) * 100);
-    console.log(filledCount / totalFields * 100)
-    console.log(Math.floor((filledCount / totalFields) * 100))
   }
 
   checkContactFormProgress(){
@@ -793,15 +780,12 @@ export class EmployeeProfileComponent {
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        console.log(control)
         if (control.value != null && control.value != '') {
           filledCount++;
         }
       }
     }
     this.contactFormProgress = Math.round((filledCount / totalFields) * 100);
-    console.log(filledCount / totalFields * 100)
-    console.log(Math.floor((filledCount / totalFields) * 100))
   }
 
   checkAddressFormProgress(){
@@ -810,40 +794,30 @@ export class EmployeeProfileComponent {
     let totalFields = 0;
     if(this.physicalEqualPostal){
       totalFields = (Object.keys(this.addressDetailsForm.controls).length)/2;
-      console.log(totalFields);
     }
     else if(!this.physicalEqualPostal){
       totalFields = (Object.keys(this.addressDetailsForm.controls).length);
-      console.log(totalFields);
     }
 
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        console.log(control)
-        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != '') {
+        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != '' && control.value != "TBD") {
           filledCount++;
         }
-        else if (!this.physicalEqualPostal  && control.value != null && control.value != '') {
+        else if (!this.physicalEqualPostal  && control.value != null && control.value != '' && control.value != "TBD") {
           filledCount++;
         }
       }
     }
     console.log(filledCount)
     this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
-    console.log(filledCount / totalFields * 100)
-    console.log(Math.floor((filledCount / totalFields) * 100))
   }
 
 
   totalProfileProgress(){
-    console.log(this.employeeFormProgress);
-    console.log(this.personalFormProgress);
-    console.log(this.contactFormProgress);
-    console.log(this.addressFormProgress)
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress) / 4);
     this.overallProgress();
-    console.log(this.profileFormProgress)
   }
 
   overallProgress(){

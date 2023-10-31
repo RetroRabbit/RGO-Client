@@ -128,7 +128,7 @@
             <div class="row mx-2">
                 <div class="col-auto pt-1" id="overall-text">
                     <h4>
-                        {{overallFormProgress}}% Overall CompletedM
+                        {{overallFormProgress}}% Overall Completed
                     </h4>
                 </div>
                 <div class="col-10 pt-3" id="progress-container">
@@ -205,7 +205,7 @@
                             <mat-panel-title>
                                 Employee Details
                             </mat-panel-title>
-                            <mat-panel-description *ngIf="!(employeeDetailsForm.disabled || employeeDetailsForm.valid)">
+                            <mat-panel-description *ngIf="(employeeDetailsForm.disabled && !employeeDetailsForm.valid)">
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
@@ -356,7 +356,7 @@
                             <mat-panel-title>
                                 Personal Details
                             </mat-panel-title>
-                            <mat-panel-description *ngIf="!(personalDetailsForm.disabled || personalDetailsForm.valid)">
+                            <mat-panel-description *ngIf="(personalDetailsForm.disabled && !personalDetailsForm.valid)">
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
@@ -458,7 +458,7 @@
                             <mat-panel-title>
                                 Contact Details
                             </mat-panel-title>
-                            <mat-panel-description *ngIf="!(employeeContactForm.disabled || employeeContactForm.valid)">
+                            <mat-panel-description *ngIf="(employeeContactForm.disabled && !employeeContactForm.valid)">
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
@@ -528,7 +528,7 @@
                             <mat-panel-title>
                                 Address Details
                             </mat-panel-title>
-                            <mat-panel-description *ngIf="!(addressDetailsForm.disabled || addressDetailsForm.valid)">
+                            <mat-panel-description *ngIf="(addressDetailsForm.disabled && !addressDetailsForm.valid)">
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
