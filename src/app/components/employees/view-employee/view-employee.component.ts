@@ -34,6 +34,10 @@ export class ViewEmployeeComponent {
   @Output() addEmployeeEvent = new EventEmitter<void>();
   @Output() managePermissionsEvent = new EventEmitter<void>();
 
+  roles: Observable<string[]> = this.employeeRoleService
+    .getAllRoles()
+    .pipe(first());
+
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
     this.cookieService.set('currentPage', '+ Add New Hire');
@@ -43,14 +47,6 @@ export class ViewEmployeeComponent {
     this.managePermissionsEvent.emit();
     this.cookieService.set('currentPage', 'Manage Permissions');
   }
-  searchTerm: string = '';
-  filteredEmployees$: Observable<EmployeeProfile[]> =
-    this.employeeService.getAllProfiles();
-  Employees: EmployeeProfile[] = [];
-  selectedEmp: any;
-  roles: Observable<string[]> = this.employeeRoleService
-    .getAllRoles()
-    .pipe(first());
 
   constructor(
     private employeeService: EmployeeService,
