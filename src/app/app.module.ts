@@ -60,6 +60,7 @@ import { MatListModule } from '@angular/material/list';
 
 
 
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 import { PendingBankDetailsComponent } from './components/employees/pending-bank-details/pending-bank-details.component';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
@@ -146,6 +147,7 @@ import { SystemSettingsComponent } from './components/system-settings/system-set
     MatExpansionModule,
     MatSidenavModule,
     MatListModule,
+    MatProgressBarModule,
     TableModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
