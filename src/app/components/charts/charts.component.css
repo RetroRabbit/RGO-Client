@@ -1,7 +1,8 @@
 #chart-item {
   background-color: #F4F7FE;
   border-radius: 1rem;
-  min-height: 520px;
+  min-height: 30vh; 
+  max-width:90%;
 }
 
 #chart-header{

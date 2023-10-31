@@ -406,7 +406,7 @@
 </div>
 
 
-<ng-template #dialogTemplate>
+<!-- <ng-template #dialogTemplate>
   <div id="my-dialog">
 
     <div id="dialog-header" class="text-center">
@@ -416,7 +416,6 @@
 
 
     <div mat-dialog-content>
-      <!-- Your dialog content goes here -->
       <div class="dialog-box d-flex justify-content-center align-items-center">
         <div id="radio">
           <mat-radio-group aria-label="Select an option" [(ngModel)]="chartType">
@@ -448,7 +447,6 @@
               <mat-chip-row *ngFor="let category of selectedCategories" [removable]="true"
                 (removed)="onCategoryRemoved(category)">
                 {{category}}
-                <!-- <mat-icon matChipRemove>cancel</mat-icon> -->
                 <svg matChipRemove xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18"
                   fill="none">
                   <path
@@ -496,16 +494,87 @@
         <button mat-dialog-close>Close</button>
       </div>
     </div>
-
-    <!-- <div mat-dialog-actions>
-    <div class="row"  id="dialog-buttons" >
-      <div class="col-12" id="dialog-save">
-        <button (click)="createChart()">SAVE</button>
+  </div>
+</ng-template> -->
+<ng-template #dialogTemplate>
+  <div class="container p-4">
+    <div class="row">
+      <div class="col-12" id="dialog-header">
+        <h2 mat-dialog-title id="dialog-title">Add Information graph</h2>
+        <h5 id="dialog-subtitle">Consists of typical information to generate</h5>
       </div>
-      <div class="col-12" id="dialog-close">
-        <button mat-dialog-close >Close</button>
+      <div class="col-12" id="dialog-body">
+        <div class="row">
+          <div class="offset-1 col-10 dialog-box d-flex justify-content-center align-items-center" id="dialog-radios">
+            <mat-radio-group aria-label="Select an option" [(ngModel)]="chartType">
+              <mat-radio-button value="line">Line Graph</mat-radio-button>
+              <mat-radio-button value="bar">Bar Graph</mat-radio-button>
+              <mat-radio-button value="pie">Pie Chart</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="mt-3 px-4 offset-1 col-10">
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-label>Graph title</mat-label>
+              <input matInput type="text" id="chartData" [(ngModel)]="chartName">
+            </mat-form-field>
+          </div>
+          <div class="px-4 offset-1 col-10">
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-label>Select category</mat-label>
+              <mat-select [formControl]="categoryControl" (selectionChange)="onDropDownChange()" multiple>
+                <mat-select-trigger></mat-select-trigger>
+                <mat-option *ngFor="let category of filteredCategories" [value]="category">
+                  {{category}}
+                </mat-option>
+              </mat-select>
+              <mat-chip-grid #chipList>
+                <mat-chip-row *ngFor="let category of selectedCategories" [removable]="true"
+                  (removed)="onCategoryRemoved(category)">
+                  {{category}}
+                  <svg matChipRemove xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18"
+                    fill="none">
+                    <path
+                      d="M14.75 4.8075L13.6925 3.75L9.5 7.9425L5.3075 3.75L4.25 4.8075L8.4425 9L4.25 13.1925L5.3075 14.25L9.5 10.0575L13.6925 14.25L14.75 13.1925L10.5575 9L14.75 4.8075Z"
+                      fill="#0029C6" />
+                  </svg>
+                </mat-chip-row>
+              </mat-chip-grid>
+              <mat-icon matSuffix>arrow_drop_down</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="px-4 offset-1 col-10">
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-label>Select role</mat-label>
+              <mat-select [formControl]="typeControl" multiple>
+                <mat-option [value]="null">None</mat-option>
+                <mat-option *ngFor="let type of filteredTypes" [value]="type">{{ type }}</mat-option>
+              </mat-select>
+              <mat-chip-grid #chipList>
+                <mat-chip-row *ngFor="let type of selectedTypes" [removable]="true" (removed)="onTypeRemoved(type)">
+                  {{type}}
+                  <svg matChipRemove xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18"
+                    fill="none">
+                    <path
+                      d="M14.75 4.8075L13.6925 3.75L9.5 7.9425L5.3075 3.75L4.25 4.8075L8.4425 9L4.25 13.1925L5.3075 14.25L9.5 10.0575L13.6925 14.25L14.75 13.1925L10.5575 9L14.75 4.8075Z"
+                      fill="#0029C6" />
+                  </svg>
+                </mat-chip-row>
+              </mat-chip-grid>
+              <mat-icon matSuffix>arrow_drop_down</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div mat-dialog-actions class="row">
+          <div class="col-12 d-flex justify-content-center align-items-center mb-3" id="dialog-save">
+            <button (click)="createChart()">Save</button>
+          </div>
+          <div class="col-12 d-flex justify-content-center align-items-center" id="dialog-close">
+            <button mat-dialog-close>Close</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div> -->
   </div>
 </ng-template>
