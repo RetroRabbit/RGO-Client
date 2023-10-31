@@ -348,6 +348,7 @@ export class EmployeeProfileComponent {
     this.personalDetailsForm.disable();
     this.checkPersonalFormProgress();
     this.totalProfileProgress();
+    this.checkEmployeeDetails();
   }
 
   checkEmployeeDetails() {
@@ -521,13 +522,6 @@ export class EmployeeProfileComponent {
     else{
       this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
     }
-  }
-
-  getClient(){
-    this.foundClient = this.clients.find((data: any) => {
-      return data.id == this.employeeProfile!.clientAllocated
-    });
-    console.log(this.foundClient)
   }
 
   cancelAddressEdit() {
