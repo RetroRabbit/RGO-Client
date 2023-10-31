@@ -37,7 +37,8 @@
                         </div>
                     </div>
                     <div class="col-10 pt-1 px-3">
-                        <div>
+                        <!-- <div (click)="navigateToEmployeePage(employee.id)"> -->
+                        <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Employees' ? 'active' : 'idle'">
                             <div>{{employee.employeeType.name}} - L{{employee.level}}</div>
                             <div>{{ employee.name }} {{ employee.surname }}</div>
                         </div>
