@@ -1,4 +1,8 @@
 main {
+    --primary-color: #0029C6;
+    --background-light: #D7DFFF;
+    --font-size-1: 14px;
+    --font-size-2: 16px;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -7,44 +11,45 @@ main {
     border-radius: 25px;
     border-color: #E8EFFF;
     overflow: hidden;
+    font-family: inherit;
 }
 
 mat-header-row {
-    background-color: #d7dfff;
+    background-color: var(--background-light);
+    font-family: inherit;
 }
 
 #manage-permissions {
     height: fit-content;
     width: min-content;
-    color: #0029c6;
+    color: var(--primary-color);
     background-color: transparent;
-    font-size: 14px;
+    font-size: var(--font-size-1);
     font-weight: 500;
     line-height: 20px;
     letter-spacing: .10px;
-    border-radius: 25px;
-    border: 1px solid #0029c6
+    border: 1px solid var(--primary-color);
+    font-family: inherit;
 }
 
 #add-employee {
     height: fit-content;
     width: min-content;
     color: #fff;
-    background-color: #0029c6;
-    font-size: 14px;
+    background-color: var(--primary-color);
+    font-size: var(--font-size-1);
     font-weight: 500;
     line-height: 20px;
     letter-spacing: .10px;
-    border-radius: 25px;
+    font-family: inherit;
 }
 
 #searchbar {
-    border: 1px solid #0029c6;
-    border-radius: 25px;
+    border: 1px solid var(--primary-color);
 }
 
 #paginator-text {
-    font-size: 16px;
+    font-size: var(--font-size-2);
     line-height: 24px;
     letter-spacing: .15px;
     word-wrap: break-word;
@@ -61,12 +66,13 @@ mat-header-row {
 
 .paginator {
     color: #49454f;
-    font-size: 14px;
+    font-size: var(--font-size-1);
     font-weight: 500;
     line-height: 20px;
     letter-spacing: .10px;
     word-wrap: break-word;
     position: relative;
+    font-family: inherit;
 }
 
 .paginator.active::after {
@@ -76,27 +82,27 @@ mat-header-row {
     left: 0;
     right: 0;
     height: 2px;
-    color: #0029c6;
-    background-color: #0029c6;
+    color: var(--primary-color);
+    background-color: var(--primary-color);
 }
 
 .paginator-container {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: Roboto;
-    font-size: 14px;
+    font-family: inherit;
+    font-size: var(--font-size-1);
     font-weight: 500;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
+    appearance: none;
     margin: 0;
 }
 
 input[type="number"] {
-    -moz-appearance: textfield; /* Firefox */
+    appearance: textfield;
 }
 
 #paginator-text mat-form-field {
@@ -104,6 +110,7 @@ input[type="number"] {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    font-family: inherit;
 }
 
 .paginator-dropdown {
@@ -119,24 +126,26 @@ input[type="number"] {
     height: 100%;
     flex: 1 1 0;
     gap: 8px;
-    border: 1px solid #0029C6;
-    background: #D7DFFF;
+    border: 1px solid var(--primary-color);
+    background: var(--background-light);
     transition: background 0.3s ease;
+    font-family: inherit;
 }
 
 #back-button,
 #search-button {
-    color: #0029c6;
+    color: var(--primary-color);
     margin-left: 2px;
     margin-right: 2px;
+    font-family: inherit;
 }
 
 #search-input {
-    font-size: 16px;
-    /* color: #0029C6; */
-    background: #D7DFFF;
+    font-size: var(--font-size-2);
+    background: var(--background-light);
     border: 0;
     flex-grow: 1;
+    font-family: inherit;
 }
 
 #search-input:focus {
@@ -145,9 +154,8 @@ input[type="number"] {
 }
 
 #search-input.no-text::placeholder {
-    color: #0029C6;
-    font-size: 16px;
-    font-family: Roboto;
+    color: var(--primary-color);
+    font-size: var(--font-size-2);
     font-weight: 400;
     line-height: 24px;
     letter-spacing: 0.50px;
@@ -162,15 +170,17 @@ input[type="number"] {
     background-color: transparent;
     font-weight: 500;
     padding: 10px 16px;
-    color: #0029c6;
-    border: 3px solid #0029c6;
+    color: var(--primary-color);
+    border: 3px solid var(--primary-color);
+    font-family: inherit;
 }
 
 #add-employee-button {
     gap: 8px;
     padding: 10px 16px;
-    background: #0029C6;
+    background: var(--primary-color);
     align-self: flex-end;
+    font-family: inherit;
 }
 
 #add-employee-button mat-icon {
@@ -183,12 +193,12 @@ input[type="number"] {
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
-    background: #0029C6;
+    background: var(--primary-color);
     color: white;
-    font-family: Roboto;
+    font-family: inherit;
     min-width: 75%;
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--font-size-1);
     border-radius: 8px;
 }
 
@@ -211,35 +221,37 @@ input[type="number"] {
 .role-select-field {
     width: 194px;
     height: 32px;
-    background: #0029C6;
+    background: var(--primary-color);
     border-radius: 8px;
     overflow: hidden;
+    font-family: inherit;
+}
 
-    .mat-select-value {
-        color: white;
-        font-size: 14px;
-        font-family: Roboto;
-        font-weight: 500;
-        line-height: 20px;
-        padding-left: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+.role-select-field.mat-select-value {
+    color: white;
+    font-size: var(--font-size-1);
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 20px;
+    padding-left: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: inherit;
+}
 
-        .mat-select-arrow {
-            color: white;
-            margin-right: 12px;
-        }
-    }
+.role-select-field.mat-select-value.mat-select-arrow {
+    color: white;
+    margin-right: 12px;
 }
 
 .role-select-panel {
-    font-size: 14px;
-    font-family: Roboto;
+    font-size: var(--font-size-1);
+    font-family: inherit;
+}
 
-    .mat-option-text {
-        padding: 6px 12px;
-    }
+.role-select-panel.mat-option-text {
+    padding: 6px 12px;
 }
 
 mat-row:hover {
