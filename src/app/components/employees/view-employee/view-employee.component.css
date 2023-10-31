@@ -5,7 +5,7 @@ main {
 .table-responsive,
 .card {
     border-radius: 25px;
-    border-color: #fff;
+    border-color: #E8EFFF;
     overflow: hidden;
 }
 
@@ -101,6 +101,7 @@ input[type="number"] {
 
 #paginator-text mat-form-field {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 }
@@ -160,6 +161,14 @@ input[type="number"] {
     background-color: white;
 }
 
+#manage-permissions-btn {
+    background-color: transparent;
+    font-weight: 500;
+    padding: 10px 16px;
+    color: #0029c6;
+    border: 3px solid #0029c6;
+}
+
 #add-employee-btn {
     gap: 8px;
     padding: 10px 16px;
@@ -172,7 +181,8 @@ input[type="number"] {
 }
 
 .role-btn {
-    display: inline-flex;
+    display: flex;
+    min-width: 75%;
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
@@ -180,27 +190,27 @@ input[type="number"] {
     color: white;
     font-family: Roboto;
     min-width: 75%;
-    justify-content: space-between;
     font-weight: 500;
     font-size: 14px;
     border-radius: 8px;
+}
+
+.role-text {
+    flex-grow: 1;
     text-align: center;
 }
 
 .role-btn mat-icon {
     color: white;
     margin-left: auto;
+    order: 2;
 }
 
 .d-flex.justify-content-between.align-items-center.gap-2 {
     display: flex;
     align-items: stretch;
 }
-#pageSize {
 
-}
-
-/* Style the select to look like a button */
 .role-select-field {
     width: 194px;
     height: 32px;
@@ -226,8 +236,7 @@ input[type="number"] {
     }
 }
 
-/* Custom styles for the dropdown panel */
-::ng-deep .role-select-panel {
+.role-select-panel {
     font-size: 14px;
     font-family: Roboto;
 
