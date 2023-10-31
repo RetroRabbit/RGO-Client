@@ -6,6 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { ChartData } from '../../models/chartdata.interface';
 import { colours } from '../../models/constants/colours.constants';
 import { Table } from 'primeng/table';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-chart',
@@ -23,11 +24,15 @@ export class ChartComponent implements OnInit {
   showReport: boolean = false;
   showUpdateForm:boolean=false;
   updateFormData: any = {
-  Name: '',
-  Type:'',}
+      Name: '',
+      Type:''
+  }
   coloursArray : string[] = colours;
   chartCanvasArray: any[] = [];
-  constructor(private chartService: ChartService,private cookieService: CookieService) {}
+
+  selectedChartIndex: number = -1;
+  constructor(private chartService: ChartService,private cookieService: CookieService,
+    private toast: NgToastService) {}
 
   ngOnInit(): void {
     this.createAndDisplayChart();
@@ -75,6 +80,7 @@ export class ChartComponent implements OnInit {
   clearActiveChart(): void {
     this.activeChart = null;
     this.showReport = false;
+    this.showUpdateForm = false;
   }
 
   generateReport(): void {
@@ -82,54 +88,73 @@ export class ChartComponent implements OnInit {
       this.showReport = true;
     }
   }
-  openUpdateForm(): void {
-    if (this.activeChart) {
-      this.updateFormData = { ...this.activeChart };
-      this.showUpdateForm = true;
-    }
-  }
+  // openUpdateForm(): void {
+  //   if (this.activeChart) {
+  //     this.updateFormData = { ...this.activeChart };
+  //     this.showUpdateForm = true;
+  //   }
+  // }
 
   updateChart(): void {
+
     if (this.activeChart) {
-      
       const updatedChart: Chart = {
         ...this.activeChart,
         Name: this.updateFormData.Name,
         Type: this.updateFormData.Type,
       };
-  
-      this.chartService.updateChart(updatedChart).subscribe({
+    // console.log(this.updateFormData)
+      this.chartService.updateChart(this.updateFormData).subscribe({
         next: (updatedData: any) => {
-          const index = this.chartData.findIndex((c) => c.id === updatedData.Id);
-          if (index !== -1) {
-            this.chartData[index] = updatedData;
-          }
-  
-          this.showUpdateForm = false;
-          this.activeChart = null;
-  
+          this.toast.success({detail:"Success",summary: "Update successful",duration:5000, position:'topRight'});
           this.createAndDisplayChart();
+          this.showUpdateForm = false;
+          this.updateFormData = null;
+          // const index = this.chartData.findIndex((c) => c.id === updatedData.Id);
+          // if (index !== -1) {
+          //   this.chartData[index] = updatedData;
+          // }
   
-          if (this.selectedChartType !== updatedData.Type) {
-            this.selectedChartType = updatedData.Type;
-          }
+          // this.showUpdateForm = false;
+          // this.activeChart = null;
+  
+          // this.createAndDisplayChart();
+  
+          // if (this.selectedChartType !== updatedData.Type) {
+          //   this.selectedChartType = updatedData.Type;
+          // }
         },
-        error: error => { }
+        error: error => {
+          this.toast.error({detail:"error",summary: "Update unsuccessful",duration:5000, position:'topRight'});
+
+         }
     });
     }
   }
   
-  deleteChart(chartId: number): void {
-    if (this.activeChart) {
-      this.chartService.deleteChart(chartId).subscribe({
+  editChart(index : number){
+    this.selectedChartIndex = index;
+    this.activeChart = this.chartData[index];
+    this.updateFormData = {...this.activeChart};
+    this.showUpdateForm = true;
+  }
+
+  deleteChart(selectedIndex : number): void {
+    console.log(selectedIndex);
+    if (this.chartData[selectedIndex]) {
+      this.chartService.deleteChart(this.chartData[selectedIndex].id).subscribe({
         next: () => {
-          const index = this.chartData.findIndex((c) => c.id === chartId);
-          if (index !== -1) {
-            this.chartData.splice(index, 1);
-          }
-          this.clearActiveChart();
+          this.toast.success({detail:"Success",summary: "Delete successful",duration:5000, position:'topRight'});
+          this.createAndDisplayChart();
+          //const index = this.chartData.findIndex((c) => c.id === chartId);
+          // if (index !== -1) {
+          //   this.chartData.splice(index, 1);
+          // }
+          // this.clearActiveChart();
         },
-        error: error => { }
+        error: error => {
+          this.toast.error({detail:"Error",summary: "Failed to detele graph",duration:5000, position:'topRight'});
+        }
     });
     }
   }
@@ -142,16 +167,33 @@ export class ChartComponent implements OnInit {
   populateCanvasCharts(){
     for(let i = 0; i < this.chartData.length; i++) {
       let dataset = [];
-      for(let j = 0; j < this.chartData[i].labels.length; j++){
-        dataset.push({
-          data: this.chartData[i].data[j],
-          backgroundColor: this.coloursArray[j],
-          borderColor: this.coloursArray[j],
-          label: this.chartData[i].labels[j]
+      let data : any;
+      if(this.chartData[i].type == 'pie'){
+        var labelsArray : any[] = [];
+        this.chartData[i].labels.forEach( (label : any) => {
+          labelsArray.push(label);
         });
+         var obj = {
+          data: this.chartData[i].data,
+          backgroundColor: this.coloursArray,
+          borderColor: this.coloursArray,
+          labels: labelsArray
+         }
+        dataset.push(obj)
+      }else{
+
+        for(let j = 0; j < this.chartData[i].labels.length; j++){
+          
+          dataset.push({
+            data: [this.chartData[i].data[j]],
+            backgroundColor: this.coloursArray[j],
+            borderColor: this.coloursArray[j],
+            label: this.chartData[i].labels[j]
+          });
+          
+        }
       }
       this.chartCanvasArray.push(dataset);
-      console.log(this.chartCanvasArray)
     }
   }
 }

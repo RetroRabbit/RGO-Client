@@ -1,8 +1,9 @@
 export const colours = [
     'Blue',
-    'Green',
+    'Teal',
     'Yellow',
     'Purple',
+    'Green',
     'Olive',
     'Orange',
     'Pink',
@@ -10,7 +11,6 @@ export const colours = [
     'Brown',
     'Gray',
     'Magenta',
-    'Teal',
     'Lavender',
     'Cyan',
     'Navy',
