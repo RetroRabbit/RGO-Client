@@ -3,9 +3,7 @@ import { ChartService } from 'src/app/services/charts.service';
 import {  ChartType } from 'chart.js';
 import { Chart } from 'src/app/models/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
-import { ChartData } from '../../models/chartdata.interface';
 import { colours } from '../../models/constants/colours.constants';
-import { Table } from 'primeng/table';
 import { NgToastService } from 'ng-angular-popup';
 
 @Component({
@@ -15,6 +13,7 @@ import { NgToastService } from 'ng-angular-popup';
 })
 export class ChartComponent implements OnInit {
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
+  @Output() captureCharts = new EventEmitter<number>();
   @Input() chartsArray: Chart[] = [];
   selectedChartType: ChartType ='bar';
   displayChart: boolean = false;
@@ -33,7 +32,6 @@ export class ChartComponent implements OnInit {
   selectedChartIndex: number = -1;
   constructor(private chartService: ChartService,private cookieService: CookieService,
     private toast: NgToastService) {}
-
 
     resetPage(){
       this.displayChart = false
@@ -55,7 +53,6 @@ export class ChartComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    console.log("changed")
     this.createAndDisplayChart();
     this.getNumberOfEmployees();
   }
@@ -69,8 +66,6 @@ export class ChartComponent implements OnInit {
   });
   }
 
-
-
   getNumberOfEmployees(): void {
     this.chartService.getTotalEmployees().subscribe({
       next: data => {
@@ -83,13 +78,13 @@ export class ChartComponent implements OnInit {
   processChartData(data: any[]): void {
     if (data.length > 0) {
       this.chartData = data;
-      console.log(this.chartData);
       this.populateCanvasCharts();
       this.displayChart = true;
       this.selectedChartType = this.chartData[0].type;
     } else {
       this.chartData = [];
       this.displayChart = false;
+      this.captureCharts.emit(0);
     }
   }
 
@@ -107,17 +102,13 @@ export class ChartComponent implements OnInit {
     this.showUpdateForm = false;
   }
 
-  generateReport(): void {
-    if (this.activeChart) {
+  generateReport(index : number): void {
+    if (this.chartData[index]) {
       this.showReport = true;
+      this.updateFormData = this.chartData[index];
+      this.selectedChartIndex = index;
     }
   }
-  // openUpdateForm(): void {
-  //   if (this.activeChart) {
-  //     this.updateFormData = { ...this.activeChart };
-  //     this.showUpdateForm = true;
-  //   }
-  // }
 
   updateChart(): void {
 
@@ -127,25 +118,11 @@ export class ChartComponent implements OnInit {
         Name: this.updateFormData.Name,
         Type: this.updateFormData.Type,
       };
-    // console.log(this.updateFormData)
       this.chartService.updateChart(this.updateFormData).subscribe({
         next: (updatedData: any) => {
           this.toast.success({detail:"Success",summary: "Update successful",duration:5000, position:'topRight'});
           this.resetPage();
           this.createAndDisplayChart();
-          // const index = this.chartData.findIndex((c) => c.id === updatedData.Id);
-          // if (index !== -1) {
-          //   this.chartData[index] = updatedData;
-          // }
-  
-          // this.showUpdateForm = false;
-          // this.activeChart = null;
-  
-          // this.createAndDisplayChart();
-  
-          // if (this.selectedChartType !== updatedData.Type) {
-          //   this.selectedChartType = updatedData.Type;
-          // }
         },
         error: error => {
           this.toast.error({detail:"error",summary: "Update unsuccessful",duration:5000, position:'topRight'});
@@ -163,18 +140,12 @@ export class ChartComponent implements OnInit {
   }
 
   deleteChart(selectedIndex : number): void {
-    console.log(selectedIndex);
     if (this.chartData[selectedIndex]) {
       this.chartService.deleteChart(this.chartData[selectedIndex].id).subscribe({
         next: () => {
           this.toast.success({detail:"Success",summary: "Delete successful",duration:5000, position:'topRight'});
           this.resetPage();
           this.createAndDisplayChart();
-          //const index = this.chartData.findIndex((c) => c.id === chartId);
-          // if (index !== -1) {
-          //   this.chartData.splice(index, 1);
-          // }
-          // this.clearActiveChart();
         },
         error: error => {
           this.toast.error({detail:"Error",summary: "Failed to detele graph",duration:5000, position:'topRight'});

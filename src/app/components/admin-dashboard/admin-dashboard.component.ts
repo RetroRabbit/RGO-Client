@@ -23,7 +23,6 @@ export class AdminDashboardComponent {
 
   categoryControl = new FormControl();
 
-  // chart data variabbals
   chartName: string = '';
   selectedDataItems: string[] = [];
   chartType: any = '';
@@ -38,7 +37,6 @@ export class AdminDashboardComponent {
   categoryCtrl = new FormControl();
   selectedCategories: string[] = [];
 
-  // type variables
   typeControl = new FormControl();
   types: string[]= [];
   filteredTypes: any[] = this.types;
@@ -77,23 +75,10 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     });
   }
 
-
-  // ngOnInit() {
-  //   const types: string = this.cookieService.get('userType');
-  //   this.roles = Object.keys(JSON.parse(types));
-
-  //   this.chartService.getAllCharts().subscribe({
-  //     next: (data) => (this.charts = data),
-  //   });
-  // }
-
-
-
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
 
-    // Getting the charts
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
       error: (error) =>{
@@ -101,7 +86,6 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
       }
     });
 
-    // Setting the categoryControl value changes
     this.categoryControl.valueChanges.subscribe(val => {
       this.selectedCategories = val;
     });
@@ -110,10 +94,6 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
       this.selectedTypes = val;
     });
 
-    // Fetching the chart data
-    //this.getChartData();
-
-    // Assuming the method getCategoriesColumns() fetches the required data
     this.chartService.getColumns().subscribe({
       next: data => {
         this.categories = data;
@@ -123,9 +103,8 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
-        // Assuming data is an array of EmployeeType objects
-        this.types = data.map(type => type.name || ''); // Extract the 'name' property
-        this.filteredTypes = this.types; // Assign the same array to filteredTypes
+        this.types = data.map(type => type.name || '');
+        this.filteredTypes = this.types;
       }
     });
   }
@@ -141,13 +120,7 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   CaptureEvent(event: any) {
     let dialogRef = this.dialog.open(this.dialogTemplate, {
-      width: '500px',
-      // you can add more configuration options here if needed
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog closed');
-      // Handle any actions after the dialog is closed
+      width: '500px'
     });
   }
 
@@ -184,7 +157,6 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     }
   }
 
-  // For Types:
 TypeCtrlValueChanges() {
   this.typeControl.valueChanges.subscribe(val => {
     if (val) {
@@ -209,13 +181,28 @@ onTypeRemoved(type: string): void {
   }
 }
 
-//Chart logic
   createChart() {
+    if(!this.chartType){
+      this.toast.info({detail:"Missing chart type", summary:"Please select a chart type",duration:5000, position:'topRight'});
+      return;
+    }
+    if(!this.chartName){
+      this.toast.info({detail:"Missing chart name", summary:"Please enter a chart name",duration:5000, position:'topRight'});
+      return;
+    }
+    if(this.selectedCategories.length  < 1){
+      this.toast.info({detail:"Missing chart category", summary:"Please select a category/s",duration:5000, position:'topRight'});
+      return;
+    }
+
     this.chartService.createChart(this.selectedCategories, this.chartName, this.chartType)
       .subscribe({
         next : response => {
           this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
           this.dialog.closeAll();   
+          this.selectedCategories = [];
+          this.chartName = '';
+          this.chartType = '';
           this.ngOnInit();
         },
         error: error => {
@@ -224,64 +211,31 @@ onTypeRemoved(type: string): void {
       );
   }
 
-  // getChartData() {
-  //   if (this.selectedDataItems && this.selectedDataItems.length > 0) {
-  //     this.chartService.getChartDataByType(this.selectedDataItems).subscribe({
-  //       next: data => {
-  //         this.chartData = data.data;
-  //         this.chartLabels = data.labels;
-  //       },
-  //       error: error => {
-  //         this.toast.error({
-  //           detail: "Error",
-  //           summary: "Failed to get chartData.",
-  //           duration: 5000,
-  //           position: 'topRight'
-  //         });
-  //       }
-  //   });
-  //   } else {
-  //     this.toast.info({
-  //       detail: "No data selected.",
-  //       summary: "Please select data items.",
-  //       duration: 5000,
-  //       position: 'topRight'
-  //     });
-  //   }
-  // }
-
   onDropDownChange() {
     //if (this.selectedDataItems && this.selectedDataItems.length > 0) {
       if(this.selectedDataItems.length < 1){
         return;
       }
-      console.log ("dropdown changed")
       this.chartService.getChartDataByType(this.selectedDataItems).subscribe({
         next: data => {
           this.chartData = data.data;
           this.chartLabels = data.labels;
         },
         error: error => {
-          this.toast.error({
-            detail: "Error",
-            summary: "Failed to get chartData.",
-            duration: 5000,
-            position: 'topRight'
-          });
+          this.toast.error({ detail: "Error", summary: "Failed to get chartData.", duration: 5000,position: 'topRight'});
         }
     });
-   // } else {
-      // this.toast.info({
-      //   detail: "No data selected.",
-      //   summary: "Please select data items.",
-      //   duration: 5000,
-      //   position: 'topRight'
-      // });
-   // }
   }
 
   CaptureEventlast(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
+  }
+
+  recieveNumber(number:any){
+    this.chartService.getAllCharts().subscribe({
+      next : data => this.charts = data,
+      error: error => this.toast.error({ detail: "Error", summary: "Failed to get charts.", duration: 5000,position: 'topRight'})
+    })
   }
 }

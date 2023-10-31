@@ -7,12 +7,16 @@ import { ChartService } from 'src/app/services/charts.service';
   styleUrls: ['./chart-reports.component.css']
 })
 export class ReportComponent {
-  @Input() chartData: any;
+  @Input() chartData !: { selectedChart: any; canvasData: any; };
   activeChart: any = null;
   showReport: boolean = false;
   clearActiveChart: () => void = () => { };
 
-  constructor(private chartService: ChartService) { }
+  ngOnInit(){
+  }
+
+  constructor(private chartService: ChartService) { 
+  }
 
   generateReport(): void {
     const reportHTML = this.generateHTMLReport();
@@ -21,18 +25,16 @@ export class ReportComponent {
       newWindow.document.open();
       newWindow.document.write(reportHTML);
       newWindow.document.close();
-    } else {
-      console.error('Failed to open a new window for the report.');
     }
   }
   generateHTMLReport(): string {
-    const chartHTML = `<h1>${this.chartData.label}</h1>`;
-    const dataHTML = `<p>Data: ${JSON.stringify(this.chartData.data)}</p>`;
+    const chartHTML = `<h1>${this.chartData.selectedChart.label}</h1>`;
+    const dataHTML = `<p>Data: ${JSON.stringify(this.chartData.selectedChart.data)}</p>`;
     return `<html><body>${chartHTML}${dataHTML}</body></html>`;
   }
 
   getTotalEmployees(): number {
-    return this.chartData.data.reduce((total: number, value: number) => total + value, 0);
+    return this.chartData.selectedChart.data.reduce((total: number, value: number) => total + value, 0);
   }
 
   calculatePercentage(value: number): string {
