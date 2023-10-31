@@ -4,7 +4,7 @@
       <div class="col-6 pl-0 d-flex align-items-center">
         <div
           id="search-container"
-          class="d-flex align-items-center search-bar rounded-pill w-100"
+          class="d-flex align-items-center rounded-pill w-100"
           [ngClass]="{ 'bg-white': filter.value !== '' }"
         >
           <button
@@ -30,11 +30,11 @@
         </div>
       </div>
       <div class="col-6 pr-0 d-flex justify-content-end align-items-center gap-3">
-        <input matInput id="manage-permissions-btn" class="btn col-lg-3 rounded-pill" (click)="onManagePermissionClick()" value="Manage Permissions">
+        <input matInput id="manage-permissions-button" class="btn col-lg-3 rounded-pill" (click)="onManagePermissionClick()" value="Manage Permissions">
         <button
           (click)="onAddEmployeeClick()"
           type="button"
-          id="add-employee-btn"
+          id="add-employee-button"
           class="col-lg-3 btn btn-primary rounded-pill d-flex justify-content-center align-items-center"
         >
           <mat-icon>add</mat-icon>
@@ -170,9 +170,9 @@
             min="1"
             [(ngModel)]="paginator.pageSize"
             (blur)="changePageSize(paginator.pageSize)"
-            (focus)="pageNo.open()"
+            (focus)="pageNumber.open()"
           />
-          <mat-select #pageNo [(ngModel)]="paginator.pageSize" hidden>
+          <mat-select #pageNumber [(ngModel)]="paginator.pageSize" hidden>
             <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
               {{ pageSize }}
             </mat-option>
