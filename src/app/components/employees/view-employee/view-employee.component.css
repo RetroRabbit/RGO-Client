@@ -110,7 +110,7 @@ input[type="number"] {
     border: 1px solid #cac4d0;
 }
 
-::ng-deep .boldArrow .mat-sort-header-arrow.ng-trigger.ng-trigger-arrowPosition {
+.boldArrow .mat-sort-header-arrow.ng-trigger.ng-trigger-arrowPosition {
     opacity: 1 !important;
 }
 
