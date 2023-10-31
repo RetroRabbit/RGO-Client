@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { AccessPropertiesService } from 'src/app/services/access-properties.service';
 import { Properties } from 'src/app/models/properties.interface';
-import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { race } from 'src/app/models/constants/race.constants';
@@ -147,8 +145,6 @@ export class EmployeeProfileComponent {
   foundChampion: any;
   client: string = '';
 
-  clientPlaceholder: string = '';
-
   tShirtSizeField!: FieldCode;
   tShirtSizeFieldValue: EmployeeData | undefined;
   dietaryField!: FieldCode;
@@ -159,9 +155,7 @@ export class EmployeeProfileComponent {
   employeeDataDto!: EmployeeData;
 
   filteredCountries: any[] = this.countries.slice();
-  constructor(private accessPropertyService: AccessPropertiesService,
-    private cookieService: CookieService,
-    private employeeProfileService: EmployeeProfileService,
+  constructor(private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
     private customFieldsService: FieldCodeService,
     private clientService: ClientService,
@@ -417,8 +411,8 @@ export class EmployeeProfileComponent {
           this.saveCustomFields();
           this.checkPersonalFormProgress();
           this.totalProfileProgress();
-          this.personalDetailsForm.disable();
           this.getEmployeeFields();
+          this.personalDetailsForm.disable();
         },
         error: (error) => {
           this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
@@ -467,6 +461,8 @@ export class EmployeeProfileComponent {
   cancelPersonalEdit() {
     this.editPersonal = false;
     this.hasDisbility = false;
+    this.initializeForm();
+    this.personalDetailsForm.disable();
   }
 
   editAddressDetails() {
@@ -526,6 +522,7 @@ export class EmployeeProfileComponent {
   cancelAddressEdit() {
     this.editAddress = false;
     this.hasDisbility = false;
+    this.initializeForm();
     this.addressDetailsForm.disable();
   }
 
@@ -649,12 +646,10 @@ export class EmployeeProfileComponent {
     this.employeeDetailsForm.disable();
   }
 
-
   editContactDetails() {
     this.employeeContactForm.enable();
     this.editContact = true;
   }
-
 
   saveContactEdit() {
     this.editContact = false;
@@ -699,7 +694,6 @@ export class EmployeeProfileComponent {
       this.filteredEmployees = this.employees;
     }
   }
-
 
   filterClients(event: any) {
     if (event) {
@@ -810,10 +804,8 @@ export class EmployeeProfileComponent {
         }
       }
     }
-    console.log(filledCount)
     this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
   }
-
 
   totalProfileProgress(){
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress) / 4);
@@ -821,7 +813,6 @@ export class EmployeeProfileComponent {
   }
 
   overallProgress(){
-    this.overallFormProgress = 0.25 * this.profileFormProgress;
+    this.overallFormProgress = Math.round(0.25 * this.profileFormProgress);
   }
-
 }
