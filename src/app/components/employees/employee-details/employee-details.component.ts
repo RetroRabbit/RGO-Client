@@ -132,8 +132,8 @@ export class EmployeeDetailsComponent implements OnInit {
       salaryDays: [this.selectedEmployee.salaryDays,Validators.required],
       terminationDate: this.selectedEmployee.terminationDate, 
       dateOfBirth: [this.selectedEmployee.dateOfBirth, Validators.required],
-      clientAllocated: this.selectedEmployee.clientAllocated,
-      teamLead: this.selectedEmployee.teamLead,
+      clientAllocated: this.foundClient?.name,
+      teamLead: this.foundTeamLead?.name,
     });
     this.employeeForm.disable();
   }
@@ -213,7 +213,7 @@ export class EmployeeDetailsComponent implements OnInit {
         leaveInterval: employeeForm.leaveInterval,
         salary: employeeForm.salary,
         salaryDays: employeeForm.salaryDays,
-        payRate: employeeForm.payRate, 
+        payRate: employeeForm.payrate, 
         clientAllocated: this.clientId == 0 ? null : this.clientId,
         teamLead: this.employeeId == 0 ? null : this.employeeId
       }
@@ -223,8 +223,8 @@ export class EmployeeDetailsComponent implements OnInit {
         this.saveEmployeeCustomData();
         this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
       },
-        error: (error) => {this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
-      }); 
+        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+      });
     }
   }
 

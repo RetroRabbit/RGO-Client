@@ -11,7 +11,7 @@ export class EmployeeDataService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getEmployeeData(employeeId: number | undefined): Observable<EmployeeData[]>{
+  getEmployeeData(employeeId: number): Observable<EmployeeData[]>{
     const queryParams = `?id=${employeeId}`;
     return this.httpClient.get<EmployeeData[]>(`${API.HttpsBaseURL}/employeedata/get${queryParams}`);
   }
