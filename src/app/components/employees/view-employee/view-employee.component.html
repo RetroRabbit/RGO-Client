@@ -49,14 +49,12 @@
     <div class="card px-0">
       <div class="table-responsive p-0 m-0">
         <mat-table [dataSource]="dataSource" matSort>
-          <!-- Name Column -->
           <ng-container matColumnDef="Name">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow"
               >Name</mat-header-cell
             >
             <mat-cell *matCellDef="let employee">{{ employee.Name }}</mat-cell>
           </ng-container>
-          <!-- Position Column -->
           <ng-container matColumnDef="Position">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow"
               >Position</mat-header-cell
@@ -65,7 +63,6 @@
               employee.Position
             }}</mat-cell>
           </ng-container>
-          <!-- Level Column -->
           <ng-container matColumnDef="Level">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow"
               >Level</mat-header-cell
@@ -74,7 +71,6 @@
               employee.Level == 0 ? "N/A" : employee.Level
             }}</mat-cell>
           </ng-container>
-          <!-- Client Column -->
           <ng-container matColumnDef="Client">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow"
               >Client</mat-header-cell
@@ -83,7 +79,6 @@
               employee.Client
             }}</mat-cell>
           </ng-container>
-          <!-- Roles Column -->
           <ng-container matColumnDef="Roles">
             <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
             <mat-cell *matCellDef="let employee" class="row justify-content-start">
