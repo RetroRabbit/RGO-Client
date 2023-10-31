@@ -385,7 +385,7 @@
           <button class="ml-auto" (click)="CaptureEvent($event)">+ Add Graph</button>
         </div>
       </div>
-      <div style="border-style: solid; border-color: blue;">
+      <div>
         <div class="d-flex align-items-left">
 
           <!-- <mat-form-field >
@@ -398,7 +398,7 @@
 
         </div>
         <!-- <button (click)="CaptureEventOld($event)">+ Add Graph old</button> -->
-        <app-chart></app-chart>
+        <app-chart [chartsArray]="charts"></app-chart>
       </div>
     </div>
   </ng-template>
@@ -490,7 +490,7 @@
 
     <div mat-dialog-actions class="row">
       <div class="col-12 d-flex justify-content-center align-items-center mb-3" id="dialog-save">
-        <button (click)="createChart()">SAVE</button>
+        <button (click)="createChart()">Save</button>
       </div>
       <div class="col-12 d-flex justify-content-center align-items-center" id="dialog-close">
         <button mat-dialog-close>Close</button>
