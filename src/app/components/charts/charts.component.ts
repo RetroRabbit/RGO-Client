@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
 import {  ChartType } from 'chart.js';
 import { Chart } from 'src/app/models/charts.interface';
@@ -15,7 +15,7 @@ import { NgToastService } from 'ng-angular-popup';
 })
 export class ChartComponent implements OnInit {
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
-  
+  @Input() chartsArray: Chart[] = [];
   selectedChartType: ChartType ='bar';
   displayChart: boolean = false;
   numberOfEmployees: number = 0;
@@ -34,7 +34,28 @@ export class ChartComponent implements OnInit {
   constructor(private chartService: ChartService,private cookieService: CookieService,
     private toast: NgToastService) {}
 
+
+    resetPage(){
+      this.displayChart = false
+      this.chartData = [];
+      this.activeChart = null;
+      this.showReport  = false;
+      this.showUpdateForm = false;
+      this.chartCanvasArray = [];
+      this.updateFormData  = {
+          Name: '',
+          Type:''
+      }
+    }
+    ngOnChanges(changes: SimpleChanges) {
+      if (changes['chartsArray'] && !changes['chartsArray'].firstChange) {
+        this.resetPage();
+        this.ngOnInit();
+      }
+    }
+
   ngOnInit(): void {
+    console.log("changed")
     this.createAndDisplayChart();
     this.getNumberOfEmployees();
   }
@@ -110,9 +131,8 @@ export class ChartComponent implements OnInit {
       this.chartService.updateChart(this.updateFormData).subscribe({
         next: (updatedData: any) => {
           this.toast.success({detail:"Success",summary: "Update successful",duration:5000, position:'topRight'});
+          this.resetPage();
           this.createAndDisplayChart();
-          this.showUpdateForm = false;
-          this.updateFormData = null;
           // const index = this.chartData.findIndex((c) => c.id === updatedData.Id);
           // if (index !== -1) {
           //   this.chartData[index] = updatedData;
@@ -148,6 +168,7 @@ export class ChartComponent implements OnInit {
       this.chartService.deleteChart(this.chartData[selectedIndex].id).subscribe({
         next: () => {
           this.toast.success({detail:"Success",summary: "Delete successful",duration:5000, position:'topRight'});
+          this.resetPage();
           this.createAndDisplayChart();
           //const index = this.chartData.findIndex((c) => c.id === chartId);
           // if (index !== -1) {

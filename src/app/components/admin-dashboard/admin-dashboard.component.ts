@@ -1,23 +1,13 @@
 import { Component,ElementRef, ViewChild, inject } from '@angular/core';
 import { Chart } from 'src/app/models/charts.interface';
 import { ChartService } from 'src/app/services/charts.service';
-import { AuthService } from '@auth0/auth0-angular';
 import { CookieService } from 'ngx-cookie-service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable } from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent, MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
-import {map, startWith} from 'rxjs/operators';
-import {MatIconModule} from '@angular/material/icon';
-import {NgFor, AsyncPipe} from '@angular/common';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { TemplateRef } from '@angular/core';
-import { MatInputModule } from '@angular/material/input';
 import { NgToastService } from 'ng-angular-popup';
-import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 
@@ -100,13 +90,15 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
 
   ngOnInit() {
-
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
 
     // Getting the charts
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
+      error: (error) =>{
+        this.toast.error({detail:"Error", summary:"Failed to fetch charts.",duration:5000, position:'topRight'});
+      }
     });
 
     // Setting the categoryControl value changes
@@ -119,7 +111,7 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     });
 
     // Fetching the chart data
-    this.getChartData();
+    //this.getChartData();
 
     // Assuming the method getCategoriesColumns() fetches the required data
     this.chartService.getColumns().subscribe({
@@ -223,7 +215,8 @@ onTypeRemoved(type: string): void {
       .subscribe({
         next : response => {
           this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
-          this.cookieService.set('currentPage', "Charts");
+          this.dialog.closeAll();   
+          this.ngOnInit();
         },
         error: error => {
             this.toast.error({detail:"Error", summary:"Failed to create chart.",duration:5000, position:'topRight'});
@@ -231,34 +224,37 @@ onTypeRemoved(type: string): void {
       );
   }
 
-  getChartData() {
-    if (this.selectedDataItems && this.selectedDataItems.length > 0) {
-      this.chartService.getChartDataByType(this.selectedDataItems).subscribe({
-        next: data => {
-          this.chartData = data.data;
-          this.chartLabels = data.labels;
-        },
-        error: error => {
-          this.toast.error({
-            detail: "Error",
-            summary: "Failed to get chartData.",
-            duration: 5000,
-            position: 'topRight'
-          });
-        }
-    });
-    } else {
-      this.toast.info({
-        detail: "No data selected.",
-        summary: "Please select data items.",
-        duration: 5000,
-        position: 'topRight'
-      });
-    }
-  }
+  // getChartData() {
+  //   if (this.selectedDataItems && this.selectedDataItems.length > 0) {
+  //     this.chartService.getChartDataByType(this.selectedDataItems).subscribe({
+  //       next: data => {
+  //         this.chartData = data.data;
+  //         this.chartLabels = data.labels;
+  //       },
+  //       error: error => {
+  //         this.toast.error({
+  //           detail: "Error",
+  //           summary: "Failed to get chartData.",
+  //           duration: 5000,
+  //           position: 'topRight'
+  //         });
+  //       }
+  //   });
+  //   } else {
+  //     this.toast.info({
+  //       detail: "No data selected.",
+  //       summary: "Please select data items.",
+  //       duration: 5000,
+  //       position: 'topRight'
+  //     });
+  //   }
+  // }
 
   onDropDownChange() {
-    if (this.selectedDataItems && this.selectedDataItems.length > 0) {
+    //if (this.selectedDataItems && this.selectedDataItems.length > 0) {
+      if(this.selectedDataItems.length < 1){
+        return;
+      }
       console.log ("dropdown changed")
       this.chartService.getChartDataByType(this.selectedDataItems).subscribe({
         next: data => {
@@ -274,14 +270,14 @@ onTypeRemoved(type: string): void {
           });
         }
     });
-    } else {
-      this.toast.info({
-        detail: "No data selected.",
-        summary: "Please select data items.",
-        duration: 5000,
-        position: 'topRight'
-      });
-    }
+   // } else {
+      // this.toast.info({
+      //   detail: "No data selected.",
+      //   summary: "Please select data items.",
+      //   duration: 5000,
+      //   position: 'topRight'
+      // });
+   // }
   }
 
   CaptureEventlast(event: any) {
