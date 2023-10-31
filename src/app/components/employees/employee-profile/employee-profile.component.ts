@@ -193,23 +193,26 @@ export class EmployeeProfileComponent {
             this.employeeRoles = data;
           }
         });
-        this.clientService.getAllClients().subscribe({
-          next: data => {
-            this.clients = data;
-          }
-        });
+        
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
-            this.employeeClient = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfile?.id)[0];
             this.employeeTeamLead = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
             this.employeePeopleChampion = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+            this.clientService.getAllClients().subscribe({
+              next: data => {
+                this.clients = data;
+                this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.clientAllocated)[0];
+                console.log(this.employeeClient)
+              }
+            });
           }
         });
         this.employeeTypeService.getAllEmployeeTypes().subscribe({
           next: data => {
             this.employeeTypes = data;
             this.initializeEmployeeProfileDto();
+            
           }
         });
       
@@ -446,6 +449,7 @@ export class EmployeeProfileComponent {
       }
     });
   }
+
   captureTShirtSizeChange(event: any) {
     this.tShirtSizeFieldValue!.value = event;
   }
@@ -517,6 +521,13 @@ export class EmployeeProfileComponent {
     else{
       this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
     }
+  }
+
+  getClient(){
+    this.foundClient = this.clients.find((data: any) => {
+      return data.id == this.employeeProfile!.clientAllocated
+    });
+    console.log(this.foundClient)
   }
 
   cancelAddressEdit() {
@@ -629,6 +640,9 @@ export class EmployeeProfileComponent {
           this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
           this.checkEmployeeFormProgress();
           this.totalProfileProgress();
+          this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfileDto?.clientAllocated)[0];
+          this.employeeTeamLead = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfileDto?.teamLead)[0];
+          this.employeePeopleChampion = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfileDto?.peopleChampion)[0];
           this.employeeDetailsForm.disable();
         },
         error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
