@@ -1,6 +1,6 @@
 <div id="chart-container">
   <div class="row">
-    <div class="col-7" style="max-height: 40vh;">
+    <div class="col-7" style="max-height:fit-content;">
       <div id="edit-chart-container">
         <canvas baseChart [datasets]='chartData.canvasData' [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.dataTypes : chartData.selectedChart.labels" [type]="chartData.selectedChart.type"></canvas>
       </div>

@@ -12,6 +12,9 @@
   background-color: #0029C6;
   color: white;
   padding: 1rem;
+}
 
-  margin: 0px auto
+#edit-chart-container{
+  max-height: fit-content;
+  text-align:center;
 }

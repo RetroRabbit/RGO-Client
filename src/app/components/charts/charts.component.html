@@ -22,7 +22,7 @@
                 <mat-radio-button value='bar'>Bar</mat-radio-button>
                 <mat-radio-button value='line'>Line</mat-radio-button>
                 <mat-radio-button value='pie'>Pie</mat-radio-button>
-                <mat-radio-button value='doughnut'>Doughnut</mat-radio-button>
+                <!-- <mat-radio-button value='doughnut'>Doughnut</mat-radio-button> -->
               </mat-radio-group>
             </div>
             <div class="col-12 mt-3 justify-content" id="edit-controls">
@@ -37,12 +37,16 @@
     </div>
   </div>
   <div id="report-page" *ngIf="showReport">
-    <app-report [chartData]="{selectedChart : updateFormData, canvasData :chartCanvasArray[selectedChartIndex]}"></app-report>
-    <button mat-button id="cancel-button" (click)="showReport= false">Cancel</button>
+    <div style="height: 90%;" class="my-2">
+      <app-report [chartData]="{selectedChart : updateFormData, canvasData :chartCanvasArray[selectedChartIndex]}"></app-report>
+    </div>
+    <div class="mt-4">
+      <button mat-button id="cancel-button" (click)="showReport= false">Cancel</button>
+    </div>
   </div>
   <div class="row" id="chart-container" *ngIf="!showUpdateForm && !showReport">
-    <div class="col-3 mx-1 border" *ngFor="let chart of chartData;index as i" id="chart-item">
-      <div id="chart-header" class="row p-4">
+    <div class="offset-1 col-4 my-2 border" *ngFor="let chart of chartData;index as i" id="chart-item">
+      <div id="chart-header" class="row p-2">
         <div class="col-10">
           <h2>{{chart.name}}</h2>
         </div>
@@ -69,13 +73,10 @@
           </mat-menu>
         </div>
       </div>
-      <div id="chart-body" class="row mt-4 pt-4">
+      <div id="chart-body" class="row pb-2">
         <div id="canvas-container">
           <canvas baseChart [datasets]='chartCanvasArray[i]' [labels]="chart.type == 'bar'? chart.dataTypes : chart.labels" [type]="chart.type"></canvas>
         </div>
-      </div>
-      <div id="chart-footer">
-
       </div>
     </div>
   </div>
