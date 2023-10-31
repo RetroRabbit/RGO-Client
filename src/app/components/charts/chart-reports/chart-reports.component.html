@@ -1,21 +1,44 @@
-<div class="report-wrapper">
-  <div class="report-container">
-    <h1>{{ chartData.name }}</h1>
-    <p class="report-description">This report provides information about the {{chartData.name}} chart:</p>
-    <div class="chart-info">
-      <strong>Chart Type:</strong> {{ chartData.type }}<br>
-      <strong>Total Employees:</strong> {{ getTotalEmployees() }} employees
+<div id="chart-container">
+  <div class="row">
+    <div class="col-7" style="max-height: 40vh;">
+      <div id="edit-chart-container">
+        <canvas baseChart [datasets]='chartData.canvasData' [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.dataTypes : chartData.selectedChart.labels" [type]="chartData.selectedChart.type"></canvas>
+      </div>
     </div>
-    <div class="chart-data">
-      <h2>Chart Data:</h2>
-      <ul>
-        <li *ngFor="let label of chartData.labels; let i = index">
-          <div class="data-label">{{ label }}:</div>
-          <div class="data-value">{{ chartData.data[i] }} employees</div>
-          <div class="data-percentage">({{ calculatePercentage(chartData.data[i]) }}% of total)</div>
-        </li>
-      </ul>
+    <div class="col-5">
+      <div class="row pe-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12" id="title">
+                <h1>{{ chartData.selectedChart.name }}</h1>
+              </div>
+              <div class="col-12">
+                <p class="report-description">This report provides information about the {{chartData.selectedChart.name}} chart:</p>
+              </div>
+              <hr>
+              <div class="col-6">
+                <h3>Chart Type: </h3> {{ chartData.selectedChart.type }}<br>
+              </div>
+              <div class="col-6 mb-2">
+                <h3>Total Employees: </h3> {{ getTotalEmployees() }} employees
+              </div>
+              <hr>
+              <div class="col-12">
+                <h2>Chart Data</h2>
+              </div>
+              <div class="col-6" *ngFor="let label of chartData.selectedChart.labels; let i = index">
+                <div class="data-label">{{ label }}:</div>
+                <div class="data-value">{{ chartData.selectedChart.data[i] }} employees</div>
+                <div class="data-percentage">({{ calculatePercentage(chartData.selectedChart.data[i]) }}% of total)</div>      
+              </div>
+              <div class="col-12" id="button-container">
+                <button mat-button id="save-button" (click)="downloadReportAsCSV(chartData.selectedChart.dataTypes)">Download CSV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <button class="btn btn-primary" (click)="downloadReportAsCSV(chartData.dataTypes)">Download CSV</button>
 </div>
