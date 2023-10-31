@@ -26,7 +26,6 @@ import { EmployeeAddress } from 'src/app/models/employee-address.interface';
 })
 export class NewEmployeeComponent implements OnInit {
   @Input() goto: 'dashboard' | 'employees' = 'dashboard';
-  @Input() returnToEmpList: boolean = false;
   
   constructor(
     private employeeService: EmployeeService,
