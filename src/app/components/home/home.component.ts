@@ -95,6 +95,11 @@ export class HomeComponent {
   onAddEmployee(): void {
     this.shouldDisplayNewEmployee = true;
   }
+
+  onManageEmployee(): void {
+    this.shouldDisplayNewEmployee = true;
+  }
+
   returnToEmpList: boolean | null = false;
 
   onReturnToEmployees() {
@@ -114,7 +119,6 @@ export class HomeComponent {
   }
 
   handleSelectedEmp(item: any){
-    console.info(`Selected employee: ${item}`)
     this.selectedEmployee = item
     
   }

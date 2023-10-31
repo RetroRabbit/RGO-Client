@@ -165,7 +165,7 @@
       </div>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Employees'">
-      <app-view-employee (addEmployeeEvent)="onAddEmployee()" (selectedEmployee)="handleSelectedEmp($event)"></app-view-employee>
+      <app-view-employee (addEmployeeEvent)="onAddEmployee()" (managePermissionsEvent)="onManageEmployee()" (selectedEmployee)="handleSelectedEmp($event)"></app-view-employee>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Evaluations'">
       <app-employee-evaluations (selectedEvaluation)="handleSelectedEval($event)"></app-employee-evaluations>
@@ -176,14 +176,19 @@
     <div *ngIf="cookieService.get('currentPage') === 'Manage Field'">
       <app-manage-field-code></app-manage-field-code>
     </div>
+    <div *ngIf="cookieService.get('currentPage') === 'Manage Permissions'">
+      <div *ngIf="!shouldDisplayNewEmployee">
+        <app-role-manager [goto]="'dashboard'"></app-role-manager>
+      </div>
+      <div *ngIf="shouldDisplayNewEmployee">
+        <app-role-manager [goto]="'employees'"></app-role-manager>
+      </div>
+    </div>
 
     <div *ngIf="cookieService.get('currentPage') === 'Manage Roles'">
       <app-role-manager></app-role-manager>
     </div>
     <div *ngIf="cookieService.get('currentPage') === 'Manage Employee Roles'">
-      <app-employee-role-manager></app-employee-role-manager>
-    </div>
-    <div *ngIf="cookieService.get('currentPage') === 'Manage Permissions'">
       <app-employee-role-manager></app-employee-role-manager>
     </div>
     <div *ngIf="cookieService.get('currentPage') === 'Edit Dashboard'">
