@@ -114,17 +114,14 @@ input[type="number"] {
     opacity: 1 !important;
 }
 
-.search-bar {
+#search-container {
+    align-self: flex-start;
+    height: 100%;
     flex: 1 1 0;
     gap: 8px;
     border: 1px solid #0029C6;
     background: #D7DFFF;
     transition: background 0.3s ease;
-}
-
-#search-container {
-    align-self: flex-start;
-    height: 100%;
 }
 
 #back-button,
@@ -161,7 +158,7 @@ input[type="number"] {
     background-color: white;
 }
 
-#manage-permissions-btn {
+#manage-permissions-button {
     background-color: transparent;
     font-weight: 500;
     padding: 10px 16px;
@@ -169,14 +166,14 @@ input[type="number"] {
     border: 3px solid #0029c6;
 }
 
-#add-employee-btn {
+#add-employee-button {
     gap: 8px;
     padding: 10px 16px;
     background: #0029C6;
     align-self: flex-end;
 }
 
-#add-employee-btn mat-icon {
+#add-employee-button mat-icon {
     color: white;
 }
 
