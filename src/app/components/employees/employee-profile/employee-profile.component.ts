@@ -25,6 +25,8 @@ import { level } from 'src/app/models/constants/level.constants';
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
 import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
+import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-employee-profile',
@@ -32,10 +34,10 @@ import { EmployeeData } from 'src/app/models/employee-data.interface';
   styleUrls: ['./employee-profile.component.css']
 })
 export class EmployeeProfileComponent {
-  @Input() selectedEmployee!: EmployeeProfile | null;
+  @Input() selectedEmployee: EmployeeProfile | null = null;
   employeeFields: Properties[] = [];
   editFields: Properties[] = [];
-  employeeProfile: EmployeeProfile | undefined;
+  employeeProfile: EmployeeProfile | null = null;
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
   customFields: FieldCode[] = [];
@@ -164,12 +166,16 @@ export class EmployeeProfileComponent {
     private employeeDataService: EmployeeDataService) { }
 
   ngOnInit() {
-    console.info(`Profile: ${this.selectedEmployee}`)
     this.getEmployeeFields();
+  }
+
+  goToEmployees() {
+    this.cookieService.set('currentPage', 'Employees');
   }
   
   getEmployeeFields() {
-    this.employeeProfileService.GetEmployeeProfile().subscribe({
+    const employeeObservale = this.selectedEmployee ? of(this.selectedEmployee) : this.employeeProfileService.GetEmployeeProfile();
+    employeeObservale.subscribe({
       next: data => {
         this.employeeProfile = data;
         this.employeePhysicalAddress = data.physicalAddress!;
@@ -279,9 +285,6 @@ export class EmployeeProfileComponent {
     this.personalDetailsForm.addControl('allergies', this.fb.control(this.allergiesFieldValue.value));
 
   }
-
-
-
 
   initializeForm() {
     this.employeeDetailsForm = this.fb.group({
@@ -649,7 +652,6 @@ export class EmployeeProfileComponent {
     }
   }
 
-
   saveEmployeeEdit() {
     this.editEmployee = false;
     if (this.employeeDetailsForm.valid) {
@@ -688,16 +690,14 @@ export class EmployeeProfileComponent {
   cancelEmployeeEdit() {
     this.editEmployee = false;
     this.employeeDetailsForm.reset();
-    this.initializeForm(this.selectedEmployee ? this.selectedEmployee : this.employeeProfile);
+    this.initializeForm();
     this.employeeDetailsForm.disable();
   }
-
 
   editContactDetails() {
     this.employeeContactForm.enable();
     this.editContact = true;
   }
-
 
   saveContactEdit() {
     this.editContact = false;
@@ -727,7 +727,7 @@ export class EmployeeProfileComponent {
   cancelContactEdit() {
     this.editContact = false;
     this.employeeContactForm.reset();
-    this.initializeForm(this.selectedEmployee ? this.selectedEmployee : this.employeeProfile);
+    this.initializeForm();
     this.employeeContactForm.disable();
   }
 
@@ -740,7 +740,6 @@ export class EmployeeProfileComponent {
       this.filteredEmployees = this.employees;
     }
   }
-
 
   filterClients(event: any) {
     if (event) {
@@ -773,6 +772,4 @@ export class EmployeeProfileComponent {
       this.peopleChampionId = data.employee.id;
     }
   }
-
-
 }

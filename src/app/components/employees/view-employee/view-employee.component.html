@@ -29,23 +29,25 @@
           </button>
         </div>
       </div>
-      <div class="col-6 pr-0 d-flex justify-content-end align-items-center">
+      <div class="col-6 pr-0 d-flex justify-content-end align-items-center gap-3">
+        <input matInput id="manage-permissions-btn" class="btn col-lg-3 rounded-pill" (click)="onManagePermissionClick()" value="Manage Permissions">
         <button
           (click)="onAddEmployeeClick()"
           type="button"
           id="add-employee-btn"
-          class="col-lg-4 btn btn-primary rounded-pill d-flex justify-content-center align-items-center"
+          class="col-lg-3 btn btn-primary rounded-pill d-flex justify-content-center align-items-center"
         >
           <mat-icon>add</mat-icon>
           <span>Add Employee</span>
         </button>
       </div>
+
     </div>
   </section>
 
   <div class="row">
     <div class="card px-0">
-      <div class="table-responsive">
+      <div class="table-responsive p-0 m-0">
         <mat-table [dataSource]="dataSource" matSort>
           <!-- Name Column -->
           <ng-container matColumnDef="Name">
@@ -82,23 +84,34 @@
             }}</mat-cell>
           </ng-container>
           <!-- Roles Column -->
-<ng-container matColumnDef="Roles">
-  <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
-  <mat-cell *matCellDef="let employee">
-      <div (click)="$event.stopPropagation()">
-          <button mat-button [matMenuTriggerFor]="roleMenu" type="button" class="role-btn">
-              <span>{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</span>
-              <mat-icon>arrow_drop_down</mat-icon>
-          </button>
-          <mat-menu #roleMenu>
-              <button mat-menu-item *ngFor="let role of roles | async" [value]="role">
-                  {{ role }}
-              </button>
-          </mat-menu>
-      </div>
-  </mat-cell>
-</ng-container>
-
+          <ng-container matColumnDef="Roles">
+            <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
+            <mat-cell *matCellDef="let employee" class="row justify-content-start">
+              <div (click)="$event.stopPropagation()" class="row col-9">
+                <button
+                  mat-button
+                  [matMenuTriggerFor]="roleMenu"
+                  type="button"
+                  class="role-btn col-12"
+                >
+                  <span class="role-text">{{
+                    employee.Roles.length > 0 ? employee.Roles[0] : "N/A"
+                  }}</span>
+                  <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+                <mat-menu #roleMenu>
+                  <button
+                    mat-menu-item
+                    *ngFor="let role of roles | async"
+                    [value]="role"
+                    (click)="changeRole(employee.Email, role)"
+                  >
+                    {{ role }}
+                  </button>
+                </mat-menu>
+              </div>
+            </mat-cell>
+          </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row
@@ -110,7 +123,7 @@
       </div>
     </div>
     <div
-      class="row justify-content-center align-items-center mt-3"
+      class="d-flex flex-row justify-content-center align-items-center mt-3"
       *ngIf="paginator"
     >
       <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">
@@ -155,7 +168,15 @@
           class="col-lg-3 col-md-5"
           id="paginator-dropdown"
         >
-          <input id="pageSize" matInput type="number" min="1" [(ngModel)]="paginator.pageSize" (blur)="changePageSize(paginator.pageSize)" (focus)="pageNo.open()">
+          <input
+            id="pageSize"
+            matInput
+            type="number"
+            min="1"
+            [(ngModel)]="paginator.pageSize"
+            (blur)="changePageSize(paginator.pageSize)"
+            (focus)="pageNo.open()"
+          />
           <mat-select #pageNo [(ngModel)]="paginator.pageSize" hidden>
             <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
               {{ pageSize }}

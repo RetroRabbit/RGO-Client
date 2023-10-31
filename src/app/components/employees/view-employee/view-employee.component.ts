@@ -1,12 +1,28 @@
-import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  ViewChild,
+  HostListener,
+} from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable, first, map } from 'rxjs';
+import {
+  Observable,
+  catchError,
+  first,
+  forkJoin,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-view-employee',
@@ -16,21 +32,30 @@ import { EmployeeRoleService } from 'src/app/services/employee/employee-role.ser
 export class ViewEmployeeComponent {
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() addEmployeeEvent = new EventEmitter<void>();
-  
+  @Output() managePermissionsEvent = new EventEmitter<void>();
+
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
     this.cookieService.set('currentPage', '+ Add New Hire');
+  }
+
+  onManagePermissionClick(): void {
+    this.managePermissionsEvent.emit();
+    this.cookieService.set('currentPage', 'Manage Permissions');
   }
   searchTerm: string = '';
   filteredEmployees$: Observable<EmployeeProfile[]> =
     this.employeeService.getAllProfiles();
   Employees: EmployeeProfile[] = [];
   selectedEmp: any;
-  roles: Observable<string[]> = this.employeeRoleService.getAllRoles().pipe(first())
+  roles: Observable<string[]> = this.employeeRoleService
+    .getAllRoles()
+    .pipe(first());
 
   constructor(
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
+    private toast: NgToastService,
     private cookieService: CookieService
   ) {}
 
@@ -43,27 +68,45 @@ export class ViewEmployeeComponent {
     this.employeeService
       .getAllProfiles()
       .pipe(
-        map((employees: EmployeeProfile[]) => {
-          return employees.map((emp: EmployeeProfile) => {
-            const roles: string[]= [];
-            this.employeeRoleService.getRoles(emp.email).pipe(first()).subscribe((data) => roles.push(...data));
-            return {
-              Name: emp.name + ' ' + emp.surname,
-              Position: emp.employeeType.name,
-              Level: emp.level,
-              Client: emp.clientAllocated ? emp.clientAllocated : 'Bench',
-              Roles: roles
-            }
-          })
+        switchMap((employees: EmployeeProfile[]) => {
+          const modifiedEmployees$ = employees.map((emp: EmployeeProfile) => {
+            return this.employeeRoleService.getRoles(emp.email!).pipe(
+              map((roles) => ({
+                Name: `${emp.name} ${emp.surname}`,
+                Position: emp.employeeType!.name,
+                Level: emp.level,
+                Client: emp.clientAllocated ? emp.clientAllocated : 'Bench',
+                Roles: this.sortRoles(roles),
+                Email: emp.email,
+              }))
+            );
+          });
+          return forkJoin(modifiedEmployees$);
         }),
-        first()
-        )
-      .subscribe((data) => {
-        this.dataSource = new MatTableDataSource(data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-      });
+        tap((data) => {
+          this.dataSource = new MatTableDataSource(data);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        }),
+        catchError((error) => {
+          this.toast.error({
+            detail: `Error: ${error}`,
+            summary: 'Failed to load employees',
+            duration: 10000,
+            position: 'topRight',
+          });
+          return of([]);
+        })
+      )
+      .subscribe();
   }
+  
+  sortRoles(roles: string[]): string[] {
+    const adminRoles = roles.filter(role => role.toLowerCase().includes('admin')).sort().reverse();
+    const nonAdminRoles = roles.filter(role => !role.toLowerCase().includes('admin')).sort();
+  
+    return [...adminRoles, ...nonAdminRoles];
+  }  
 
   reset(): void {
     this.dataSource.filter = '';
@@ -79,25 +122,47 @@ export class ViewEmployeeComponent {
     this.cookieService.set('selectedUser', email);
   }
 
-  employeeClickEvent(employee: EmployeeProfile): void {
-    this.selectedEmp = employee;
-    this.selectedEmployee.emit(this.selectedEmp);
-    this.cookieService.set('currentPage', 'Profile');
+  employeeClickEvent(employee: {
+    Name: string;
+    Position: string | undefined;
+    Level: number | undefined;
+    Client: string;
+    Roles: string[];
+    Email: string | undefined;
+  }): void {
+    this.employeeService
+      .getAllProfiles()
+      .pipe(
+        map(
+          (employees: EmployeeProfile[]) =>
+            employees.filter(
+              (emp: EmployeeProfile) =>
+                `${emp.name} ${emp.surname}` === `${employee.Name}`
+            )[0]
+        ),
+        tap((data) => {
+          this.selectedEmployee.emit(data);
+          this.cookieService.set('currentPage', 'Profile');
+        }),
+        first()
+      )
+      .subscribe();
   }
 
   displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];
 
   dataSource: MatTableDataSource<{
     Name: string;
-    Position: string;
-    Level: number;
+    Position: string | undefined;
+    Level: number | undefined;
     Client: string;
     Roles: string[];
-}> = new MatTableDataSource();
+    Email: string | undefined;
+  }> = new MatTableDataSource();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
+
   screenWidth: number = 992;
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -131,17 +196,43 @@ export class ViewEmployeeComponent {
 
   get visiblePages(): number[] {
     const totalPages = this.paginator.getNumberOfPages();
-    
+
     let maxVisiblePages = this.screenWidth <= 992 ? 2 : 4;
-    
-    let startPage = Math.max(this.paginator.pageIndex - Math.floor(maxVisiblePages / 2), 0);
+
+    let startPage = Math.max(
+      this.paginator.pageIndex - Math.floor(maxVisiblePages / 2),
+      0
+    );
     let endPage = Math.min(startPage + maxVisiblePages - 1, totalPages - 1);
     startPage = Math.max(endPage - maxVisiblePages + 1, 0);
-  
+
     const pages: number[] = [];
     for (let i = startPage; i <= endPage; i++) {
       pages.push(i + 1);
     }
     return pages;
+  }
+
+  changeRole(email: string, role: string): void {
+    this.employeeRoleService.addRole(email, role).pipe(
+      tap(() => {
+        this.toast.success({
+          detail: `Role changed successfully!`,
+          summary: 'Success',
+          duration: 5000,
+          position: 'topRight',
+        });
+        this.getEmployees();
+      }),
+      catchError((error) => {
+        this.toast.error({
+          detail: 'Failed to change role',
+          summary: 'Error',
+          duration: 10000,
+          position: 'topRight',
+        });
+        return of(null);
+      })
+    ).subscribe();
   }  
 }
