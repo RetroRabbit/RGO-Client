@@ -69,15 +69,15 @@ export class ViewEmployeeComponent {
       .getAllProfiles()
       .pipe(
         switchMap((employees: EmployeeProfile[]) => {
-          const modifiedEmployees$ = employees.map((emp: EmployeeProfile) => {
-            return this.employeeRoleService.getRoles(emp.email!).pipe(
+          const modifiedEmployees$ = employees.map((employee: EmployeeProfile) => {
+            return this.employeeRoleService.getRoles(employee.email!).pipe(
               map((roles) => ({
-                Name: `${emp.name} ${emp.surname}`,
-                Position: emp.employeeType!.name,
-                Level: emp.level,
-                Client: emp.clientAllocated ? emp.clientAllocated : 'Bench',
+                Name: `${employee.name} ${employee.surname}`,
+                Position: employee.employeeType!.name,
+                Level: employee.level,
+                Client: employee.clientAllocated ? employee.clientAllocated : 'Bench',
                 Roles: this.sortRoles(roles),
-                Email: emp.email,
+                Email: employee.email,
               }))
             );
           });
