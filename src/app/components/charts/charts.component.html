@@ -111,8 +111,7 @@
       </div>
       <div id="chart-body" class="row mt-4 pt-4">
         <div id="canvas-container">
-          <canvas baseChart [datasets]='chartCanvasArray[i]'
-          [labels]="chart.type == 'bar'? chart.dataTypes : chart.labels" [type]="chart.type"></canvas>
+          <canvas baseChart [datasets]='chartCanvasArray[i]' [labels]="chart.type == 'bar'? chart.dataTypes : chart.labels" [type]="chart.type"></canvas>
         </div>
       </div>
       <div id="chart-footer">
