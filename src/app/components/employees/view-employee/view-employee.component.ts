@@ -11,6 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
 import {
   Observable,
   catchError,
+  combineLatest,
   first,
   forkJoin,
   map,
@@ -23,6 +24,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { NgToastService } from 'ng-angular-popup';
+import { ClientService } from 'src/app/services/client.service';
 
 @Component({
   selector: 'app-view-employee',
@@ -51,6 +53,7 @@ export class ViewEmployeeComponent {
   constructor(
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
+    private clientService: ClientService,
     private toast: NgToastService,
     private cookieService: CookieService
   ) {}
@@ -65,18 +68,44 @@ export class ViewEmployeeComponent {
       .getAllProfiles()
       .pipe(
         switchMap((employees: EmployeeProfile[]) => {
-          const modifiedEmployees$ = employees.map((employee: EmployeeProfile) => {
-            return this.employeeRoleService.getRoles(employee.email!).pipe(
-              map((roles) => ({
-                Name: `${employee.name} ${employee.surname}`,
-                Position: employee.employeeType!.name,
-                Level: employee.level,
-                Client: employee.clientAllocated ? employee.clientAllocated : 'Bench',
-                Roles: this.sortRoles(roles),
-                Email: employee.email,
-              }))
-            );
-          });
+          const modifiedEmployees$ = employees.map(
+            (employee: EmployeeProfile) => {
+              const clients$ = this.clientService.getAllClients().pipe(
+                tap((clients) => {
+                  console.info(employee.clientAllocated)
+                  console.info(clients)
+                }),
+                map((clients) =>
+                  clients.find(
+                    (client) => employee.clientAllocated && client.id === +employee.clientAllocated
+                  )
+                ),
+                map((client) => (client ? client.name : 'Bench')),
+                first()
+              );
+
+              const roles$ = this.employeeRoleService
+                .getRoles(employee.email!)
+                .pipe(
+                  map((roles) => ({
+                    Name: `${employee.name} ${employee.surname}`,
+                    Position: employee.employeeType!.name,
+                    Level: employee.level,
+                    Client: '',
+                    Roles: this.sortRoles(roles),
+                    Email: employee.email,
+                  }))
+                );
+              
+              return combineLatest([clients$, roles$])
+                .pipe(
+                  map(([clientName, employeeWithRoles]) => {
+                    employeeWithRoles.Client = clientName;
+                    return employeeWithRoles;
+                  })
+                );
+            }
+          );
           return forkJoin(modifiedEmployees$);
         }),
         tap((data) => {
@@ -96,13 +125,18 @@ export class ViewEmployeeComponent {
       )
       .subscribe();
   }
-  
+
   sortRoles(roles: string[]): string[] {
-    const adminRoles = roles.filter(role => role.toLowerCase().includes('admin')).sort().reverse();
-    const nonAdminRoles = roles.filter(role => !role.toLowerCase().includes('admin')).sort();
-  
+    const adminRoles = roles
+      .filter((role) => role.toLowerCase().includes('admin'))
+      .sort()
+      .reverse();
+    const nonAdminRoles = roles
+      .filter((role) => !role.toLowerCase().includes('admin'))
+      .sort();
+
     return [...adminRoles, ...nonAdminRoles];
-  }  
+  }
 
   reset(): void {
     this.dataSource.filter = '';
@@ -210,25 +244,28 @@ export class ViewEmployeeComponent {
   }
 
   changeRole(email: string, role: string): void {
-    this.employeeRoleService.addRole(email, role).pipe(
-      tap(() => {
-        this.toast.success({
-          detail: `Role changed successfully!`,
-          summary: 'Success',
-          duration: 5000,
-          position: 'topRight',
-        });
-        this.getEmployees();
-      }),
-      catchError((error) => {
-        this.toast.error({
-          detail: 'Failed to change role',
-          summary: 'Error',
-          duration: 10000,
-          position: 'topRight',
-        });
-        return of(null);
-      })
-    ).subscribe();
-  }  
+    this.employeeRoleService
+      .addRole(email, role)
+      .pipe(
+        tap(() => {
+          this.toast.success({
+            detail: `Role changed successfully!`,
+            summary: 'Success',
+            duration: 5000,
+            position: 'topRight',
+          });
+          this.getEmployees();
+        }),
+        catchError((error) => {
+          this.toast.error({
+            detail: 'Failed to change role',
+            summary: 'Error',
+            duration: 10000,
+            position: 'topRight',
+          });
+          return of(null);
+        })
+      )
+      .subscribe();
+  }
 }
