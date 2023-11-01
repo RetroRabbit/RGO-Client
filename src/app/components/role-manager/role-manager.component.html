@@ -1,39 +1,51 @@
 
 <button id="savechangesbtn">Save Changes</button>
+
 <div class="table-responsive">
-    <table class="table" id="mattable">
-      <thead id="thead">
-        <tr>
-          <ng-container *ngFor="let column of displayedColumns; let i = index">
-            <th id="tableheader">{{ column }}</th>
-          </ng-container>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngIf="roleAccesses$ | async as roleAccesses">
-          <ng-container *ngIf="getPermissions(roleAccesses) as permissions">
-            <tr *ngFor="let permission of permissions">
-              <th scope="row">{{ permission }}</th>
-              <td>
-                <mat-checkbox color="primary"  id="checkbox"></mat-checkbox>
-              </td>
-              <td>
-                <mat-checkbox color="primary"  id="checkbox"></mat-checkbox>
-              </td>
-              <td>
-                <mat-checkbox color="primary"  id="checkbox"></mat-checkbox>
-              </td>
-              <td>
-                <mat-checkbox color="primary"  id="checkbox"></mat-checkbox>
-              </td>
-            </tr>
-          </ng-container>
-        </ng-container>
-      </tbody>
-    </table>
-  </div>
-  
-  
+  <table class="table" id="mattable">
+    <thead>
+      <tr>
+        <th scope="col"id="tableheader">
+          Permissions
+         </th>
+        <th scope="col" *ngFor="let p of displayedColumns" id="tableheader">
+         {{p}}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row" id="subheader">
+          Charts
+         </th>
+         <th scope="row" *ngFor="let t of displayedColumns" id="subheader">
+          <mat-checkbox
+            color="primary"
+            [(ngModel)]="parentSelector"
+            [value]="-1 + ''"
+            (change)="onChangeFood($event)"
+        >All</mat-checkbox>
+         </th>
+      </tr>
+      <tr *ngFor="let n of chartsPermissions">
+        <th scope="row">
+         {{n.description}}
+        </th>
+        <th *ngFor="let n of roleAccessLink">
+          <mat-checkbox
+          color="primary"
+          [value]="n.roleId.toString()"
+          [checked]="n.selected"
+          (change)="onChangeFood($event)"
+        ></mat-checkbox>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+
+
+</div>
+ 
   
 <form [formGroup]="newRoleForm" class="container">
     <div class="d-flex" *ngIf="roles$ | async as roles">

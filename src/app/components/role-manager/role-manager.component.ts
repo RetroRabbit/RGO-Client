@@ -8,6 +8,7 @@ import { RoleService } from 'src/app/services/role.service';
 
 
 
+
 @Component({
   selector: 'app-role-manager',
   templateUrl: './role-manager.component.html',
@@ -33,6 +34,67 @@ export class RoleManagerComponent {
  
   displayedColumns: string[] = [];
   permisssionRows: string[] = [];
+
+  title = 'toolsets';
+  parentSelector: boolean = false;
+
+  roleAccessLink = [
+    { id: 5, roleId:1, roleAccessId: 5, selected: false},
+    { id: 6, roleId:1, roleAccessId: 6, selected: false},
+    { id: 7, roleId:1, roleAccessId: 7, selected: true},
+    { id: 8, roleId:1, roleAccessId: 8, selected: false}, 
+  ];
+
+  roles= [
+    {id:1, description:"SuperAdmin"},
+    {id:2, description:"Admin"},
+    {id:2, description:"Employee"},
+    {id:2, description:"Talent"}
+  ];
+
+  permissionTag =[{
+    id:1, description:"Charts",parentSelector:true,
+  }]
+
+  roleAccess = [
+    {id:1, description:"ViewEmployee",tag: "Employee Data"},
+    {id:2, description:"AddEmployee",tag: "Employee Data"},
+    {id:3, description:"EditEmployee",tag: "Employee Data"},
+    {id:4, description:"DeleteEmployee",tag: "Employee Data"},
+    {id:5, description:"ViewChart",tag: "Charts"},
+    {id:6, description:"AddChart",tag: "Charts"},
+    {id:7, description:"EditChart",tag: "Charts"},
+    {id:8, description:"DeleteChart",tag: "Charts"},
+    {id:9, description:"ViewOwnInfo",tag: "Employee Data"},
+    {id:10, description:"EditOwnInfo",tag: "Employee Data"}
+  ]
+
+  chartsPermissions = this.roleAccess.filter(permission => permission.tag === "Charts");
+
+  food = [
+    { id: 1, select: false, name: 'dumpling' },
+    { id: 2, select: true, name: 'burger' },
+    { id: 3, select: true, name: 'sandwich' },
+  ];
+
+  onChangeFood($event: any) {
+    const id = $event.source.value;
+    const isChecked = $event.source.checked;
+
+    this.roleAccessLink = this.roleAccessLink.map((d) => {
+      if (d.id == id) {
+        d.selected = isChecked;
+        this.parentSelector = false;
+        return d;
+      }
+      if (id == -1) {
+        d.selected = this.parentSelector;
+        return d;
+      }
+      return d;
+    });
+    console.log(this.roleAccessLink);
+  }
   
   constructor(
     private roleService: RoleService,
@@ -42,7 +104,7 @@ export class RoleManagerComponent {
 
   ngOnInit() {
     this.employeeRoleService.getAllRoles().subscribe(roles => {
-      this.displayedColumns = ["Permissions", ...roles];
+      this.displayedColumns = roles;
     });
   }
 
