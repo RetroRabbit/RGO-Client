@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AccessPropertiesService } from 'src/app/services/access-properties.service';
 import { Properties } from 'src/app/models/properties.interface';
-import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { race } from 'src/app/models/constants/race.constants';
@@ -27,6 +25,7 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { of } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -79,6 +78,14 @@ export class EmployeeProfileComponent {
   employeePeopleChampion : EmployeeProfile | undefined;
 
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
+
+  employeeFormProgress: number = 0;
+  personalFormProgress: number = 0;
+  contactFormProgress: number = 0;
+  addressFormProgress: number = 0;
+  profileFormProgress: number = 0;
+  overallFormProgress: number = 0;
+
   employeeDetailsForm: FormGroup = this.fb.group({
     title: { value: '', disabled: true },
     name: { value: '', disabled: true },
@@ -107,7 +114,8 @@ export class EmployeeProfileComponent {
     gender: { value: '', disabled: true },
     race: { value: '', disabled: true },
     disability: { value: '', disabled: true },
-    disabilityNotes: { value: '', disabled: true }
+    disabilityNotes: { value: '', disabled: true },
+    disabilityList: {value: '', disabled: true}
   }); 
   
   addressDetailsForm: FormGroup = this.fb.group({
@@ -131,16 +139,14 @@ export class EmployeeProfileComponent {
   
   filteredEmployees: any = [];
   filteredClients: any = [];
-  employeeId?: number = 0;
-  clientId?: number = 0;
+  employeeId? = null;
+  clientId? = null;
   foundClient: any;
   foundTeamLead: any;
   filteredPeopleChamps: any = [];
-  peopleChampionId: number = 0;
+  peopleChampionId = null;
   foundChampion: any;
   client: string = '';
-
-  clientPlaceholder: string = '';
 
   tShirtSizeField!: FieldCode;
   tShirtSizeFieldValue: EmployeeData | undefined;
@@ -152,9 +158,7 @@ export class EmployeeProfileComponent {
   employeeDataDto!: EmployeeData;
 
   filteredCountries: any[] = this.countries.slice();
-  constructor(private accessPropertyService: AccessPropertiesService,
-    private cookieService: CookieService,
-    private employeeProfileService: EmployeeProfileService,
+  constructor(private cookieService: CookieService,private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
     private customFieldsService: FieldCodeService,
     private clientService: ClientService,
@@ -180,6 +184,7 @@ export class EmployeeProfileComponent {
         this.employeeProfile = data;
         this.employeePhysicalAddress = data.physicalAddress!;
         this.employeePostalAddress = data.postalAddress!;
+        this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability; 
         this.customFieldsService.getAllFieldCodes().subscribe({
           next: data => {
@@ -197,17 +202,18 @@ export class EmployeeProfileComponent {
             this.employeeRoles = data;
           }
         });
-        this.clientService.getAllClients().subscribe({
-          next: data => {
-            this.clients = data;
-          }
-        });
+        
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
-            this.employeeClient = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfile?.id)[0];
             this.employeeTeamLead = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
             this.employeePeopleChampion = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+            this.clientService.getAllClients().subscribe({
+              next: data => {
+                this.clients = data;
+                this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.clientAllocated)[0];
+              }
+            });
           }
         });
         this.employeeTypeService.getAllEmployeeTypes().subscribe({
@@ -216,7 +222,6 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
-        this.initializeForm(); 
         this.employeeDataService.getEmployeeData(this.employeeProfile?.id).subscribe({
           next: data => {
             this.employeeData = data;
@@ -226,7 +231,7 @@ export class EmployeeProfileComponent {
             this.toast.error({ detail: "Error", summary: "Failed to Employee Data", duration: 5000, position: 'topRight' });
           }
         });
-        
+        this.initializeForm(); 
       }
     });
   }
@@ -283,7 +288,6 @@ export class EmployeeProfileComponent {
       });
     }
     this.personalDetailsForm.addControl('allergies', this.fb.control(this.allergiesFieldValue.value));
-
   }
 
   initializeForm() {
@@ -302,6 +306,7 @@ export class EmployeeProfileComponent {
       peopleChampion: this.employeeProfile!.peopleChampion
     });
     this.employeeDetailsForm.disable();
+    this.checkEmployeeFormProgress();
 
     this.employeeContactForm = this.fb.group({
       email: [this.employeeProfile!.email, [Validators.required,
@@ -316,6 +321,7 @@ export class EmployeeProfileComponent {
       emergencyContactNo: [this.employeeProfile!.emergencyContactNo, Validators.required]
     });
     this.employeeContactForm.disable();
+    this.checkContactFormProgress();
 
     this.addressDetailsForm = this.fb.group({
       physicalUnitNumber: [this.employeeProfile!.physicalAddress?.unitNumber, Validators.required],
@@ -336,14 +342,19 @@ export class EmployeeProfileComponent {
       postalPostalCode: [this.employeeProfile!.postalAddress?.postalCode, Validators.required]
     });
     this.addressDetailsForm.disable();
-
+    this.checkAddressFormProgress();
+             
     this.personalDetailsForm = this.fb.group({
       gender: [this.employeeProfile!.gender, Validators.required],
       race: [this.employeeProfile!.race, Validators.required],
       disability: [this.employeeProfile!.disability, Validators.required],
+      disabilityList: "",
       disabilityNotes: [this.employeeProfile!.disabilityNotes, Validators.required]
     })
     this.personalDetailsForm.disable();
+    this.checkPersonalFormProgress();
+    this.totalProfileProgress();
+    this.checkEmployeeDetails();
   }
 
   checkEmployeeDetails() {
@@ -355,7 +366,7 @@ export class EmployeeProfileComponent {
       return data.id == this.employeeProfile!.clientAllocated
     });
     this.foundChampion = this.employeeRoles.find((data: any) => {
-      return data.employee.id == this.employeeProfile!.clientAllocated
+      return data.employee.id == this.employeeProfile!.peopleChampion
     });
 
     if (this.foundTeamLead != null) {
@@ -390,7 +401,6 @@ export class EmployeeProfileComponent {
     this.hasDisbility = event.value;
   }
 
-
   editPersonalDetails() {
     this.editPersonal = true;
     this.personalDetailsForm.enable();
@@ -400,74 +410,19 @@ export class EmployeeProfileComponent {
     this.editPersonal = false;
     if (this.personalDetailsForm.valid) {
       const personalDetailsFormValue = this.personalDetailsForm.value;
+      this.employeeProfileDto.disability = personalDetailsFormValue.disability;
+      this.employeeProfileDto.disabilityNotes = personalDetailsFormValue.disabilityNotes;
+      this.employeeProfileDto.race = personalDetailsFormValue.race;
+      this.employeeProfileDto.gender = personalDetailsFormValue.gender;
 
-      this.employeeProfileDto = {
-        id: this.employeeProfile!.id,
-        employeeNumber: this.employeeProfile!.employeeNumber,
-        taxNumber: this.employeeProfile!.taxNumber,
-        engagementDate: this.employeeProfile!.engagementDate,
-        terminationDate: this.employeeProfile!.terminationDate,
-        peopleChampion: this.peopleChampionId == 0 ? null : this.peopleChampionId,
-        disability: personalDetailsFormValue['disability'],
-        disabilityNotes: personalDetailsFormValue['disabilityNotes'],
-        countryOfBirth: this.employeeProfile!.countryOfBirth,
-        nationality: this.employeeProfile!.nationality,
-        level: +this.employeeProfile!.level!,
-        employeeType: {
-          id: this.employeeProfile!.employeeType!.id,
-          name: this.employeeProfile!.employeeType!.name,
-        },
-        title: this.employeeProfile!.title,
-        name: this.employeeProfile!.name,
-        initials: this.employeeProfile!.initials,
-        surname: this.employeeProfile!.surname,
-        dateOfBirth: this.employeeProfile!.dateOfBirth,
-        idNumber: this.employeeProfile!.idNumber,
-        passportNumber: this.employeeProfile!.passportNumber,
-        passportExpirationDate: this.employeeProfile!.passportExpirationDate,
-        passportCountryIssue: this.employeeProfile!.passportCountryIssue,
-        race: personalDetailsFormValue['race'],
-        gender: personalDetailsFormValue['gender'],
-        email: this.employeeProfile!.email,
-        personalEmail: this.employeeProfile!.personalEmail,
-        cellphoneNo: this.employeeProfile!.cellphoneNo,
-        photo: this.employeeProfile!.photo,
-        notes: '',
-        leaveInterval: this.employeeProfile!.leaveInterval,
-        salary: this.employeeProfile!.salary,
-        salaryDays: this.employeeProfile!.salaryDays,
-        payRate: this.employeeProfile!.payRate,
-        clientAllocated: this.clientId == 0 ? null : this.clientId,
-        teamLead: this.employeeId == 0 ? null : this.employeeId,
-        physicalAddress: {
-          id: this.employeeProfile!.physicalAddress?.id,
-          unitNumber: this.employeeProfile!.physicalAddress?.unitNumber,
-          complexName: this.employeeProfile!.physicalAddress?.complexName,
-          streetNumber: this.employeeProfile!.physicalAddress?.streetNumber,
-          suburbOrDistrict: this.employeeProfile!.physicalAddress?.suburbOrDistrict,
-          city: this.employeeProfile!.physicalAddress?.city,
-          country: this.employeeProfile!.physicalAddress?.country,
-          province: this.employeeProfile!.physicalAddress?.province,
-          postalCode: this.employeeProfile!.physicalAddress?.postalCode,
-        },
-        postalAddress: {
-          id: this.employeeProfile!.postalAddress?.id,
-          unitNumber: this.employeeProfile!.postalAddress?.unitNumber,
-          complexName: this.employeeProfile!.postalAddress?.complexName,
-          streetNumber: this.employeeProfile!.postalAddress?.streetNumber,
-          suburbOrDistrict: this.employeeProfile!.postalAddress?.suburbOrDistrict,
-          city: this.employeeProfile!.postalAddress?.city,
-          country: this.employeeProfile!.postalAddress?.country,
-          province: this.employeeProfile!.postalAddress?.province,
-          postalCode: this.employeeProfile!.postalAddress?.postalCode,
-        }
-      }
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
           this.saveCustomFields();
-          this.personalDetailsForm.disable();
+          this.checkPersonalFormProgress();
+          this.totalProfileProgress();
           this.getEmployeeFields();
+          this.personalDetailsForm.disable();
         },
         error: (error) => {
           this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
@@ -501,6 +456,7 @@ export class EmployeeProfileComponent {
       }
     });
   }
+
   captureTShirtSizeChange(event: any) {
     this.tShirtSizeFieldValue!.value = event;
   }
@@ -516,6 +472,8 @@ export class EmployeeProfileComponent {
   cancelPersonalEdit() {
     this.editPersonal = false;
     this.hasDisbility = false;
+    this.initializeForm();
+    this.personalDetailsForm.disable();
   }
 
   editAddressDetails() {
@@ -555,6 +513,8 @@ export class EmployeeProfileComponent {
             next: (data) => {
               this.toast.success({ detail: "Employee Address updated!", position: 'topRight' });
               this.addressDetailsForm.disable();
+              this.checkAddressFormProgress();
+              this.totalProfileProgress();
               this.getEmployeeFields();
             },
             error: (error: any) => {
@@ -573,6 +533,7 @@ export class EmployeeProfileComponent {
   cancelAddressEdit() {
     this.editAddress = false;
     this.hasDisbility = false;
+    this.initializeForm();
     this.addressDetailsForm.disable();
   }
 
@@ -664,12 +625,12 @@ export class EmployeeProfileComponent {
       this.employeeProfileDto.title = employeeDetailsForm.title;
       this.employeeProfileDto.name = employeeDetailsForm.name;
       this.employeeProfileDto.surname = employeeDetailsForm.surname;
-      this.employeeProfileDto.clientAllocated = this.clientId == 0 ? null : this.clientId;
+      this.employeeProfileDto.clientAllocated = this.employeeDetailsForm.controls["clientAllocated"].value == "" ? null : this.clientId;
       this.employeeProfileDto.employeeType.id = this.employeeType !== null ? this.employeeType?.id : this.employeeProfile!.employeeType!.id;
       this.employeeProfileDto.employeeType.name = this.employeeType !== null ? this.employeeType?.name : this.employeeProfile!.employeeType!.name;
       this.employeeProfileDto.level = employeeDetailsForm.level;
-      this.employeeProfileDto.teamLead = this.employeeId == 0 ? null : this.employeeId;
-      this.employeeProfileDto.peopleChampion = this.peopleChampionId == 0 ? null : this.peopleChampionId;
+      this.employeeProfileDto.teamLead = this.employeeDetailsForm.controls["teamLead"].value == 0 ? null : this.employeeId;
+      this.employeeProfileDto.peopleChampion = this.employeeDetailsForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
       this.employeeProfileDto.dateOfBirth = employeeDetailsForm.dateOfBirth;
       this.employeeProfileDto.idNumber = employeeDetailsForm.idNumber;
       this.employeeProfileDto.engagementDate = employeeDetailsForm.engagementDate;
@@ -677,6 +638,11 @@ export class EmployeeProfileComponent {
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.checkEmployeeFormProgress();
+          this.totalProfileProgress();
+          this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfileDto?.clientAllocated)[0];
+          this.employeeTeamLead = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfileDto?.teamLead)[0];
+          this.employeePeopleChampion = this.employees.filter((employee : EmployeeProfile) => employee.id === this.employeeProfileDto?.peopleChampion)[0];
           this.employeeDetailsForm.disable();
         },
         error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
@@ -714,6 +680,8 @@ export class EmployeeProfileComponent {
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.checkContactFormProgress();
+          this.totalProfileProgress();
           this.employeeContactForm.disable();
         },
         error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
@@ -771,5 +739,94 @@ export class EmployeeProfileComponent {
     else if (name == 'champion') {
       this.peopleChampionId = data.employee.id;
     }
+  }
+
+  checkEmployeeFormProgress(){
+    let filledCount = 0;
+    const formControls = this.employeeDetailsForm.controls;
+    const totalFields = Object.keys(this.employeeDetailsForm.controls).length;
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '') {
+          filledCount++;
+        }
+      }
+    }
+    this.employeeFormProgress = Math.round((filledCount / totalFields) * 100);
+  }
+ 
+  checkPersonalFormProgress(){
+    let filledCount = 0;
+    let totalFields = 0;
+    const formControls = this.personalDetailsForm.controls;
+
+    if(this.hasDisbility){
+      totalFields = (Object.keys(this.personalDetailsForm.controls).length);
+    }
+    else{
+      totalFields = (Object.keys(this.personalDetailsForm.controls).length)-2;
+    }
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '' && this.hasDisbility != false && control.value != "na") {
+          filledCount++;
+        }
+        else if(controlName.includes("disability") && this.hasDisbility == false){
+          filledCount++;
+        }
+      }
+    }
+    this.personalFormProgress = Math.round((filledCount / totalFields) * 100);
+  }
+
+  checkContactFormProgress(){
+    let filledCount = 0;
+    const formControls = this.employeeContactForm.controls;
+    const totalFields = Object.keys(this.employeeContactForm.controls).length;
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '') {
+          filledCount++;
+        }
+      }
+    }
+    this.contactFormProgress = Math.round((filledCount / totalFields) * 100);
+  }
+
+  checkAddressFormProgress(){
+    let filledCount = 0;
+    const formControls = this.addressDetailsForm.controls;
+    let totalFields = 0;
+    if(this.physicalEqualPostal){
+      totalFields = (Object.keys(this.addressDetailsForm.controls).length)/2;
+    }
+    else if(!this.physicalEqualPostal){
+      totalFields = (Object.keys(this.addressDetailsForm.controls).length);
+    }
+
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != '' && control.value != "TBD") {
+          filledCount++;
+        }
+        else if (!this.physicalEqualPostal  && control.value != null && control.value != '' && control.value != "TBD") {
+          filledCount++;
+        }
+      }
+    }
+    this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
+  }
+
+  totalProfileProgress(){
+    this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress) / 4);
+    this.overallProgress();
+  }
+
+  overallProgress(){
+    this.overallFormProgress = Math.round(0.25 * this.profileFormProgress);
   }
 }
