@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AccessPropertiesService } from 'src/app/services/access-properties.service';
 import { Properties } from 'src/app/models/properties.interface';
 import { CookieService } from 'ngx-cookie-service';
@@ -10,7 +10,6 @@ import { tshirtSize } from 'src/app/models/constants/tshirt.constants';
 import { countries } from 'src/app/models/constants/country.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
-import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { NgToastService } from 'ng-angular-popup';
@@ -26,6 +25,8 @@ import { level } from 'src/app/models/constants/level.constants';
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
 import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
+import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-employee-profile',
@@ -33,9 +34,10 @@ import { EmployeeData } from 'src/app/models/employee-data.interface';
   styleUrls: ['./employee-profile.component.css']
 })
 export class EmployeeProfileComponent {
+  @Input() selectedEmployee: EmployeeProfile | null = null;
   employeeFields: Properties[] = [];
   editFields: Properties[] = [];
-  employeeProfile: EmployeeProfile | undefined;
+  employeeProfile: EmployeeProfile | null = null;
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
   customFields: FieldCode[] = [];
@@ -166,9 +168,14 @@ export class EmployeeProfileComponent {
   ngOnInit() {
     this.getEmployeeFields();
   }
+
+  goToEmployees() {
+    this.cookieService.set('currentPage', 'Employees');
+  }
   
   getEmployeeFields() {
-    this.employeeProfileService.GetEmployeeProfile().subscribe({
+    const employeeObservale = this.selectedEmployee ? of(this.selectedEmployee) : this.employeeProfileService.GetEmployeeProfile();
+    employeeObservale.subscribe({
       next: data => {
         this.employeeProfile = data;
         this.employeePhysicalAddress = data.physicalAddress!;
@@ -278,9 +285,6 @@ export class EmployeeProfileComponent {
     this.personalDetailsForm.addControl('allergies', this.fb.control(this.allergiesFieldValue.value));
 
   }
-
-
-
 
   initializeForm() {
     this.employeeDetailsForm = this.fb.group({
@@ -553,12 +557,12 @@ export class EmployeeProfileComponent {
               this.addressDetailsForm.disable();
               this.getEmployeeFields();
             },
-            error: (error) => {
+            error: (error: any) => {
               this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
             },
           });
         },
-        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error: any) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
       });
     }
     else{
@@ -648,7 +652,6 @@ export class EmployeeProfileComponent {
     }
   }
 
-
   saveEmployeeEdit() {
     this.editEmployee = false;
     if (this.employeeDetailsForm.valid) {
@@ -691,12 +694,10 @@ export class EmployeeProfileComponent {
     this.employeeDetailsForm.disable();
   }
 
-
   editContactDetails() {
     this.employeeContactForm.enable();
     this.editContact = true;
   }
-
 
   saveContactEdit() {
     this.editContact = false;
@@ -740,7 +741,6 @@ export class EmployeeProfileComponent {
     }
   }
 
-
   filterClients(event: any) {
     if (event) {
       this.filteredClients = this.clients.filter((client: { name: string; }) =>
@@ -772,6 +772,4 @@ export class EmployeeProfileComponent {
       this.peopleChampionId = data.employee.id;
     }
   }
-
-
 }

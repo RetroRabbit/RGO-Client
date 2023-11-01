@@ -20,7 +20,7 @@ export class HomeComponent {
   type$: Observable<Token> = this.store.select('app')
   selectedEvaluation: any | null = null
   selectedEvent: EmployeeDate | null = null;
-  selectedEmployee: any | null = null;
+  selectedEmployee: EmployeeProfile | null = null;
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
   employeeProfile: EmployeeProfile | undefined;
@@ -78,11 +78,26 @@ export class HomeComponent {
 
   handleSelectedEval(item: any) {
     this.selectedEvaluation = item
-
   }
 
   populateAddEmployeeForm(event: any) {
     this.selectedEvent = event;
+  }
+
+  viewProfile: EmployeeProfile | null = null;
+  
+  handleViewProfile(emp: EmployeeProfile) {
+    this.viewProfile = emp;
+  }
+
+  shouldDisplayNewEmployee: boolean = false;
+
+  onAddEmployee(): void {
+    this.shouldDisplayNewEmployee = true;
+  }
+
+  onManageEmployee(): void {
+    this.shouldDisplayNewEmployee = true;
   }
 
   isAdmin(): boolean {
