@@ -203,7 +203,6 @@ export class EmployeeProfileComponent {
               next: data => {
                 this.clients = data;
                 this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.clientAllocated)[0];
-                console.log(this.employeeClient)
               }
             });
           }
@@ -212,10 +211,8 @@ export class EmployeeProfileComponent {
           next: data => {
             this.employeeTypes = data;
             this.initializeEmployeeProfileDto();
-            
           }
         });
-      
         this.employeeDataService.getEmployeeData(this.employeeProfile?.id).subscribe({
           next: data => {
             this.employeeData = data;
@@ -343,7 +340,7 @@ export class EmployeeProfileComponent {
       race: [this.employeeProfile!.race, Validators.required],
       disability: [this.employeeProfile!.disability, Validators.required],
       disabilityList: "",
-      disabilityNotes: [this.employeeProfile!.disabilityNotes]
+      disabilityNotes: [this.employeeProfile!.disabilityNotes, Validators.required]
     })
     this.personalDetailsForm.disable();
     this.checkPersonalFormProgress();
