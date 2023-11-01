@@ -124,6 +124,11 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     });
   }
 
+  AddNewHire(event : any){
+    const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('currentPage', target.innerText);
+  }
+
   selected(event: MatAutocompleteSelectedEvent): void {
     this.selectedCategories.push(event.option.viewValue);
     this.categoryCtrl.setValue(null);
