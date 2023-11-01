@@ -8,7 +8,6 @@ import { tshirtSize } from 'src/app/models/constants/tshirt.constants';
 import { countries } from 'src/app/models/constants/country.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
-import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { NgToastService } from 'ng-angular-popup';
@@ -24,6 +23,8 @@ import { level } from 'src/app/models/constants/level.constants';
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
 import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
+import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-employee-profile',
@@ -31,9 +32,10 @@ import { EmployeeData } from 'src/app/models/employee-data.interface';
   styleUrls: ['./employee-profile.component.css']
 })
 export class EmployeeProfileComponent {
+  @Input() selectedEmployee: EmployeeProfile | null = null;
   employeeFields: Properties[] = [];
   editFields: Properties[] = [];
-  employeeProfile: EmployeeProfile | undefined;
+  employeeProfile: EmployeeProfile | null = null;
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
   customFields: FieldCode[] = [];
@@ -169,9 +171,14 @@ export class EmployeeProfileComponent {
   ngOnInit() {
     this.getEmployeeFields();
   }
+
+  goToEmployees() {
+    this.cookieService.set('currentPage', 'Employees');
+  }
   
   getEmployeeFields() {
-    this.employeeProfileService.GetEmployeeProfile().subscribe({
+    const employeeObservale = this.selectedEmployee ? of(this.selectedEmployee) : this.employeeProfileService.GetEmployeeProfile();
+    employeeObservale.subscribe({
       next: data => {
         this.employeeProfile = data;
         this.employeePhysicalAddress = data.physicalAddress!;
@@ -508,12 +515,12 @@ export class EmployeeProfileComponent {
               this.totalProfileProgress();
               this.getEmployeeFields();
             },
-            error: (error) => {
+            error: (error: any) => {
               this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
             },
           });
         },
-        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error: any) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
       });
     }
     else{
