@@ -120,6 +120,7 @@ export class HomeComponent {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
     this.selectedItem = target.innerText;
+    this.selectedEmployee = null;
   }
 
 }
