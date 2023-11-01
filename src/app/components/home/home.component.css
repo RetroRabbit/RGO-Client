@@ -141,7 +141,7 @@
   }
   
   #content {
-    background-color: #D7DFFF;
+    background-color: #E8EFFF;
     min-height: 90vh;
     max-height: auto;
     margin: 0;
@@ -174,3 +174,10 @@
     width: 12rem;
   }
   
+  #info-menu > #nav-item-container > button{
+    padding:0;
+    height :auto;
+  }
+  #info-menu > #nav-item-container > button:hover{
+    cursor: pointer;
+  }
