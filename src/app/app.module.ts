@@ -56,6 +56,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatExpansionModule} from '@angular/material/expansion'; 
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 import { PendingBankDetailsComponent } from './components/employees/pending-bank-details/pending-bank-details.component';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
@@ -138,6 +140,8 @@ import { AddEmployeeEventComponent } from './components/manage-employee-events/a
     MatExpansionModule,
     MatProgressBarModule,
     TableModule,
+    MatPaginatorModule,
+    MatSortModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
