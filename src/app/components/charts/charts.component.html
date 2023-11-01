@@ -55,9 +55,9 @@
             <mat-icon id="menu-icon">more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <!-- <button mat-menu-item>
               <mat-icon id="chart-icon-menu" class="pe-3">keyboard_backspace</mat-icon> Download graph
-            </button>
+            </button> -->
             <button mat-menu-item (click)="generateReport(i)">
               <mat-icon class="pe-3">arrow_forward_ios</mat-icon> Export as graph
             </button>
@@ -67,9 +67,9 @@
             <button mat-menu-item  (click)="deleteChart(i)">
               <mat-icon class="pe-3">delete_outline</mat-icon> Delete graph
             </button>
-            <button mat-menu-item>
+            <!-- <button mat-menu-item>
               <mat-icon class="pe-3">remove_red_eye</mat-icon> Hide Filters
-            </button>
+            </button> -->
           </mat-menu>
         </div>
       </div>
