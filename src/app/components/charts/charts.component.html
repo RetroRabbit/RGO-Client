@@ -1,82 +1,84 @@
- <div id="chart-container" *ngIf="showUpdateForm">
-    <div class="row pt-4">
-      <div class="col-8" style="max-height: 40vh;">
-        <div id="edit-chart-container">
-          <canvas baseChart [datasets]='chartCanvasArray[selectedChartIndex]'
+<div id="chart-container" *ngIf="showUpdateForm">
+  <div class="row pt-4">
+    <div class="col-8" style="max-height: 40vh;">
+      <div id="edit-chart-container">
+        <canvas baseChart [datasets]='chartCanvasArray[selectedChartIndex]'
           [labels]="activeChart.type == 'bar'? activeChart.dataTypes : activeChart.labels"
           [type]="activeChart.type"></canvas>
-        </div>
       </div>
-      <div class="col-4">
-        <div class="row pe-4">
-          <h3>Update Chart</h3>
-          <div class="row">
-            <div class="col-12">
-              <mat-form-field appearance="outline" style="width: 100%;">
-                <mat-label>Chart Name</mat-label>
-                <input matInput [(ngModel)]="updateFormData.name">
-              </mat-form-field>
-            </div>
-            <div class="col-12">
-              <mat-radio-group aria-label="Chart Type" [(ngModel)]="updateFormData.type">
-                <mat-radio-button value='bar'>Bar</mat-radio-button>
-                <mat-radio-button value='line'>Line</mat-radio-button>
-                <mat-radio-button value='pie'>Pie</mat-radio-button>
-                <!-- <mat-radio-button value='doughnut'>Doughnut</mat-radio-button> -->
-              </mat-radio-group>
-            </div>
-            <div class="col-12 mt-3 justify-content" id="edit-controls">
-              <button mat-button id="cancel-button" (click)="showUpdateForm = false">Cancel</button>
-              <button mat-button id="save-button" (click)="updateChart()">Save changes</button>
-            </div>
-            <div class="report-controls">
-            </div>
+    </div>
+    <div class="col-4">
+      <div class="row pe-4">
+        <h3>Update Chart</h3>
+        <div class="row">
+          <div class="col-12">
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-label>Chart Name</mat-label>
+              <input matInput [(ngModel)]="updateFormData.name">
+            </mat-form-field>
+          </div>
+          <div class="col-12">
+            <mat-radio-group aria-label="Chart Type" [(ngModel)]="updateFormData.type">
+              <mat-radio-button value='bar'>Bar</mat-radio-button>
+              <mat-radio-button value='line'>Line</mat-radio-button>
+              <mat-radio-button value='pie'>Pie</mat-radio-button>
+              <!-- <mat-radio-button value='doughnut'>Doughnut</mat-radio-button> -->
+            </mat-radio-group>
+          </div>
+          <div class="col-12 mt-3 justify-content" id="edit-controls">
+            <button mat-button id="cancel-button" (click)="showUpdateForm = false">Cancel</button>
+            <button mat-button id="save-button" (click)="updateChart()">Save changes</button>
+          </div>
+          <div class="report-controls">
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div id="report-page" *ngIf="showReport">
-    <div style="height: 90%;" class="my-2">
-      <app-report [chartData]="{selectedChart : updateFormData, canvasData :chartCanvasArray[selectedChartIndex]}"></app-report>
-    </div>
-    <div class="mt-4">
-      <button mat-button id="cancel-button" (click)="showReport= false">Cancel</button>
-    </div>
+</div>
+<div id="report-page" *ngIf="showReport">
+  <div style="height: 90%;" class="my-2">
+    <app-report
+      [chartData]="{selectedChart : updateFormData, canvasData :chartCanvasArray[selectedChartIndex]}"></app-report>
   </div>
-  <div class="row" id="chart-container" *ngIf="!showUpdateForm && !showReport">
-    <div class="offset-1 col-4 my-2 border" *ngFor="let chart of chartData;index as i" id="chart-item">
-      <div id="chart-header" class="row p-2">
-        <div class="col-10">
-          <h2>{{chart.name}}</h2>
-        </div>
-        <div class="col-2" id="chart-icon">
-          <button mat-button [matMenuTriggerFor]="menu" id="options-trigger">
-            <mat-icon id="menu-icon">more_vert</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-            <!-- <button mat-menu-item>
+  <div class="mt-4">
+    <button mat-button id="cancel-button" (click)="showReport= false">Cancel</button>
+  </div>
+</div>
+<div class="row" id="chart-container" *ngIf="!showUpdateForm && !showReport">
+  <div class="offset-1 col-4 my-2 border" *ngFor="let chart of chartData;index as i" id="chart-item">
+    <div id="chart-header" class="row p-2">
+      <div class="col-10">
+        <h2>{{chart.name}}</h2>
+      </div>
+      <div class="col-2" id="chart-icon">
+        <button mat-button [matMenuTriggerFor]="menu" id="options-trigger">
+          <mat-icon id="menu-icon">more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <!-- <button mat-menu-item>
               <mat-icon id="chart-icon-menu" class="pe-3">keyboard_backspace</mat-icon> Download graph
             </button> -->
-            <button mat-menu-item (click)="generateReport(i)">
-              <mat-icon class="pe-3">arrow_forward_ios</mat-icon> Export as graph
-            </button>
-            <button mat-menu-item (click)="editChart(i)">
-              <mat-icon class="pe-3">edit</mat-icon> Edit graph
-            </button>
-            <button mat-menu-item  (click)="deleteChart(i)">
-              <mat-icon class="pe-3">delete_outline</mat-icon> Delete graph
-            </button>
-            <!-- <button mat-menu-item>
+          <button mat-menu-item (click)="generateReport(i)">
+            <mat-icon class="pe-3">arrow_forward_ios</mat-icon> Export as graph
+          </button>
+          <button mat-menu-item (click)="editChart(i)">
+            <mat-icon class="pe-3">edit</mat-icon> Edit graph
+          </button>
+          <button mat-menu-item (click)="deleteChart(i)">
+            <mat-icon class="pe-3">delete_outline</mat-icon> Delete graph
+          </button>
+          <!-- <button mat-menu-item>
               <mat-icon class="pe-3">remove_red_eye</mat-icon> Hide Filters
             </button> -->
-          </mat-menu>
-        </div>
+        </mat-menu>
       </div>
-      <div id="chart-body" class="row pb-2">
-        <div id="canvas-container">
-          <canvas baseChart [datasets]='chartCanvasArray[i]' [labels]="chart.type == 'bar'? chart.dataTypes : chart.labels" [type]="chart.type"></canvas>
-        </div>
+    </div>
+    <div id="chart-body" class="row pb-2">
+      <div id="canvas-container">
+        <canvas baseChart [datasets]='chartCanvasArray[i]'
+          [labels]="chart.type == 'bar'? chart.dataTypes : chart.labels" [type]="chart.type"></canvas>
       </div>
     </div>
   </div>
+</div>
