@@ -121,6 +121,7 @@ export class HomeComponent {
     this.cookieService.set('currentPage', target.innerText);
     this.selectedItem = target.innerText;
     this.selectedEmployee = null;
+    this.shouldDisplayNewEmployee = false;
   }
 
 }
