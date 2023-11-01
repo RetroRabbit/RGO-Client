@@ -71,10 +71,6 @@ export class ViewEmployeeComponent {
           const modifiedEmployees$ = employees.map(
             (employee: EmployeeProfile) => {
               const clients$ = this.clientService.getAllClients().pipe(
-                tap((clients) => {
-                  console.info(employee.clientAllocated)
-                  console.info(clients)
-                }),
                 map((clients) =>
                   clients.find(
                     (client) => employee.clientAllocated && client.id === +employee.clientAllocated
