@@ -9,7 +9,7 @@
         >
           <button
             mat-button
-            (click)="filter.value = ''"
+            (click)="filter.value = ''; applyFilter('')"
             *ngIf="filter.value !== ''"
             id="back-button"
           >
@@ -47,7 +47,7 @@
 
   <div class="row">
     <div class="card px-0">
-      <div class="table-responsive p-0 m-0">
+      <div *ngIf="dataSource.filteredData.length > 0" class="table-responsive p-0 m-0">
         <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="Name">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow"
@@ -115,6 +115,13 @@
           ></mat-row>
         </mat-table>
         <mat-paginator hidden></mat-paginator>
+      </div>
+      <div *ngIf="dataSource.filteredData.length <= 0" class="d-flex flex-row justify-content-center align-items-center">
+        <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
+        <span id="noResults" class="col-6 d-flex flex-column justify-content-center align-items-center">
+          <h1>Oops!</h1>
+          <h2>No results on your search</h2>
+        </span>
       </div>
     </div>
     <div

@@ -258,3 +258,19 @@ mat-row:hover {
     background-color: rgba(0, 0, 0, 0.05);
     cursor: pointer;
 }
+
+#noResults h1 {
+    font-size: 36px;
+    font-family: inherit;
+    font-weight: 400;
+    line-height: 44px;
+    word-wrap: break-word;
+}
+
+#noResults h2 {
+    font-size: 22px;
+    font-family: inherit;
+    font-weight: 400;
+    line-height: 28px;
+    word-wrap: break-word;
+}

@@ -59,7 +59,10 @@ export class ViewEmployeeComponent {
   ) {}
 
   ngOnInit() {
-    this.onResize();
+    this.onResize()
+  }
+
+  ngAfterViewInit() {
     this.getEmployees();
   }
 
@@ -108,6 +111,7 @@ export class ViewEmployeeComponent {
           this.dataSource = new MatTableDataSource(data);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
+          this.dataSource._updateChangeSubscription();
         }),
         catchError((error) => {
           this.toast.error({
@@ -201,13 +205,18 @@ export class ViewEmployeeComponent {
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
 
+  // changePageSize(size: number) {
+  //   this.paginator.pageSize = size;
+  //   this.dataSource._updateChangeSubscription();
+  // }
   changePageSize(size: number) {
     this.paginator.pageSize = size;
-    this.dataSource._updateChangeSubscription();
+    this.dataSource.data = [...this.dataSource.data];
   }
 
+
   get pageIndex(): number {
-    return this.paginator.pageIndex;
+    return this.paginator?.pageIndex ?? 0;
   }
 
   previousPage() {
@@ -220,8 +229,14 @@ export class ViewEmployeeComponent {
     this.paginator.nextPage();
   }
 
+  get getNumberOfPages(): number {
+    if (!this.paginator || this.paginator.pageSize === 0) return 0;
+    return Math.ceil(this.paginator.length / this.paginator.pageSize);
+  }
+
+
   get visiblePages(): number[] {
-    const totalPages = this.paginator.getNumberOfPages();
+    const totalPages = this.getNumberOfPages;
 
     let maxVisiblePages = this.screenWidth <= 992 ? 2 : 4;
 
@@ -236,6 +251,7 @@ export class ViewEmployeeComponent {
     for (let i = startPage; i <= endPage; i++) {
       pages.push(i + 1);
     }
+
     return pages;
   }
 
