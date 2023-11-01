@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Properties } from 'src/app/models/properties.interface';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
@@ -25,6 +25,7 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { of } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -157,7 +158,7 @@ export class EmployeeProfileComponent {
   employeeDataDto!: EmployeeData;
 
   filteredCountries: any[] = this.countries.slice();
-  constructor(private employeeProfileService: EmployeeProfileService,
+  constructor(private cookieService: CookieService,private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
     private customFieldsService: FieldCodeService,
     private clientService: ClientService,
@@ -183,6 +184,7 @@ export class EmployeeProfileComponent {
         this.employeeProfile = data;
         this.employeePhysicalAddress = data.physicalAddress!;
         this.employeePostalAddress = data.postalAddress!;
+        this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability; 
         this.customFieldsService.getAllFieldCodes().subscribe({
           next: data => {
