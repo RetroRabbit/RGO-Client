@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
@@ -12,6 +13,7 @@ import { RoleService } from 'src/app/services/role.service';
   styleUrls: ['./role-manager.component.css'],
 })
 export class RoleManagerComponent {
+  @Input() goto: 'dashboard' | 'employees' = 'dashboard';
   roles$: Observable<string[]> = this.employeeRoleService.getAllRoles()
   employees$: Observable<Employee[]> = this.employeeService.getAll()
   roleAccesses$: Observable<Map<string, string[]>> = this.roleService.getAllRoles();
@@ -30,8 +32,13 @@ export class RoleManagerComponent {
   constructor(
     private roleService: RoleService,
     private employeeService: EmployeeService,
-    private employeeRoleService: EmployeeRoleService
+    private employeeRoleService: EmployeeRoleService,
+    private cookieService: CookieService
   ) { }
+
+  goToEmployees() {
+    this.cookieService.set('currentPage', 'Employees');
+  }
 
   getRoles(raw: Map<string, string[]>): string[] {
     return Object.keys(raw)
