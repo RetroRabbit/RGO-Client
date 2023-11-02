@@ -28,6 +28,15 @@ import { NgToastService } from 'ng-angular-popup';
 import { ClientService } from 'src/app/services/client.service';
 import { Client } from 'src/app/models/client.interface';
 
+interface EmployeeData {
+  Name: string;
+  Position: string | undefined;
+  Level: number | undefined;
+  Client: string;
+  Roles: string[];
+  Email: string | undefined;
+}
+
 @Component({
   selector: 'app-view-employee',
   templateUrl: './view-employee.component.html',
@@ -68,14 +77,16 @@ export class ViewEmployeeComponent {
   }
 
   getEmployees(): void {
-    const clients$: Observable<Client[]> = this.clientService.getAllClients().pipe(
-      catchError(error => of([] as Client[]))
-    )
+    const clients$: Observable<Client[]> = this.clientService
+      .getAllClients()
+      .pipe(catchError(() => of([] as Client[])));
 
     this.employeeService
       .getAllProfiles()
       .pipe(
-        switchMap((employees: EmployeeProfile[]) => this.combineEmployeesWithRolesAndClients(employees, clients$)),
+        switchMap((employees: EmployeeProfile[]) =>
+          this.combineEmployeesWithRolesAndClients(employees, clients$)
+        ),
         tap((data) => this.setupDataSource(data)),
         catchError((error) => {
           this.toast.error({
@@ -84,58 +95,53 @@ export class ViewEmployeeComponent {
             duration: 10000,
             position: 'topRight',
           });
-          return of([] as {
-            Name: string;
-            Position: string | undefined;
-            Level: number | undefined;
-            Client: string;
-            Roles: string[];
-            Email: string | undefined;
-        }[]);
+          return of([]);
         }),
         first()
-      ).subscribe();
+      )
+      .subscribe();
   }
 
-  private combineEmployeesWithRolesAndClients(employees: EmployeeProfile[], clients$: Observable<Client[]>): Observable<{
-    Name: string;
-    Position: string | undefined;
-    Level: number | undefined;
-    Client: string;
-    Roles: string[];
-    Email: string | undefined;
-}[]> {
-    const rolesRequests$ = employees.map(employee =>
+  private combineEmployeesWithRolesAndClients(
+    employees: EmployeeProfile[],
+    clients$: Observable<Client[]>
+  ): Observable<EmployeeData[]> {
+    const rolesRequests$ = employees.map((employee) =>
       this.employeeRoleService
         .getRoles(employee.email!)
         .pipe(catchError(() => of([] as string[])))
     );
 
     return forkJoin([of(employees), clients$, ...rolesRequests$]).pipe(
-      map(([employees, clients, ...rolesList]) => this.constructEmployeeData(employees, clients, rolesList))
+      map(([employees, clients, ...rolesList]) =>
+        this.constructEmployeeData(employees, clients, rolesList)
+      )
     );
   }
 
-  private constructEmployeeData(employees: EmployeeProfile[], clients: Client[], rolesList: string[][]): {
-    Name: string;
-    Position: string | undefined;
-    Level: number | undefined;
-    Client: string;
-    Roles: string[];
-    Email: string | undefined;
-}[] {
-    return employees.map((employee, index) => {
-      const client = clients.find(client => employee.clientAllocated && client.id === +employee.clientAllocated);
-      const sortedRoles = this.sortRoles(rolesList[index]);
-      return {
-        Name: `${employee.name} ${employee.surname}`,
-        Position: employee.employeeType!.name,
-        Level: employee.level,
-        Client: client ? client.name : 'Bench',
-        Roles: sortedRoles,
-        Email: employee.email,
-      };
-    });
+  private constructEmployeeData(
+    employees: EmployeeProfile[],
+    clients: Client[],
+    rolesList: string[][]
+  ): EmployeeData[] {
+    const employeeDataList: EmployeeData[] = employees.map(
+      (employee, index) => {
+        const client = clients.find(
+          (client) =>
+            employee.clientAllocated && client.id === +employee.clientAllocated
+        );
+        const sortedRoles = this.sortRoles(rolesList[index]);
+        return {
+          Name: `${employee.name} ${employee.surname}`,
+          Position: employee.employeeType!.name,
+          Level: employee.level,
+          Client: client ? client.name : 'Bench',
+          Roles: sortedRoles,
+          Email: employee.email,
+        };
+      }
+    );
+    return employeeDataList;
   }
 
   private setupDataSource(data: any[]): void {
@@ -200,14 +206,7 @@ export class ViewEmployeeComponent {
 
   displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];
 
-  dataSource: MatTableDataSource<{
-    Name: string;
-    Position: string | undefined;
-    Level: number | undefined;
-    Client: string;
-    Roles: string[];
-    Email: string | undefined;
-  }> = new MatTableDataSource();
+  dataSource: MatTableDataSource<EmployeeData> = new MatTableDataSource();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
