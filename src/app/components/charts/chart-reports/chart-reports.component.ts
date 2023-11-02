@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Inject } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-report',
@@ -7,7 +9,7 @@ import { ChartService } from 'src/app/services/charts.service';
   styleUrls: ['./chart-reports.component.css']
 })
 export class ReportComponent {
-  @Input() chartData !: { selectedChart: any; canvasData: any; };
+  @Input() inputchartData !: { selectedChart: any; canvasData: any; };
   activeChart: any = null;
   showReport: boolean = false;
   clearActiveChart: () => void = () => { };
@@ -15,7 +17,7 @@ export class ReportComponent {
   ngOnInit(){
   }
 
-  constructor(private chartService: ChartService) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService) {
   }
 
   generateReport(): void {
@@ -48,7 +50,7 @@ export class ReportComponent {
     this.chartService.downloadCSV(dataTypes).subscribe(data => {
 
       const blob = new Blob([data], { type: 'text/csv' });
-      
+
       const downloadLink = document.createElement('a');
       downloadLink.href = window.URL.createObjectURL(blob);
       downloadLink.download = 'Report.csv';
@@ -59,4 +61,4 @@ export class ReportComponent {
       document.body.removeChild(downloadLink);
     });
   }
-} 
+}
