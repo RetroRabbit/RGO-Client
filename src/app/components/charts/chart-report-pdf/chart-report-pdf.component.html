@@ -1,8 +1,11 @@
           <!-- Button on the Right -->
-          <div class="row justify-content-left mb-4">
+          <div class="row justify-content-centre mb-4">
             <div class="col-auto text-center"> <!-- col-auto adjusts to content width -->
               <button mat-button id="save-button" (click)="downloadReportAsPDF()">Download PDF</button>
             </div>
+            <div class="col-auto text-right">
+            <button mat-button id="save-button" (click)="downloadReportAsCSV(chartData.selectedChart.dataTypes)">Download CSV</button>
+          </div>
           </div>
 <div class="container m-0"> <!-- Main container to center everything -->
   <div class="row">
@@ -40,7 +43,11 @@
         <div class="row mb-4 text-center">
           <div class="col-12">
             <div id="edit-chart-container">
-              <canvas baseChart [datasets]='chartData.canvasData' [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.dataTypes : chartData.selectedChart.labels" [type]="chartData.selectedChart.type"></canvas>
+              <canvas baseChart [datasets]='chartData.canvasData'
+              [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.dataTypes : chartData.selectedChart.labels"
+              [plugins]="chartData.selectedChart.type == 'bar' ? barChartPlugins : barChartPlugins"
+              [options]="chartData.selectedChart.type == 'bar' ? barChartOptions : pieChartOptions"
+              [type]="chartData.selectedChart.type" ></canvas>
             </div>
           </div>
           <hr>

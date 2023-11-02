@@ -3,6 +3,9 @@ import { ChartService } from 'src/app/services/charts.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+
 
 @Component({
   selector: 'app-chart-report-pdf',
@@ -14,11 +17,51 @@ export class ChartReportPdfComponent {
   activeChart: any = null;
   showReport: boolean = false;
   clearActiveChart: () => void = () => { };
+  public pieChartPlugins = [ChartDataLabels];
+  public barChartPlugins = [ChartDataLabels];
 
   ngOnInit(){
   }
   constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService) {
   }
+
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      x: {},
+      y: {
+        min: 0,
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+      },
+      datalabels: {
+        anchor: 'middle',
+        align: 'middle',
+      } as any,
+    },
+  };
+
+
+  public pieChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      // datalabels: {
+      //   formatter: (value: any, ctx: any) => {
+      //     if (ctx.chart.data.labels) {
+      //       return ctx.chart.data.labels[ctx.dataIndex];
+      //     }
+      //   },
+      // },
+    },
+  };
 
   generateReport(): void {
     const reportHTML = this.generateHTMLReport();
@@ -60,5 +103,21 @@ export class ChartReportPdfComponent {
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save('report.pdf');
     });
+}
+downloadReportAsCSV(dataTypes: string[]) {
+
+  this.chartService.downloadCSV(dataTypes).subscribe(data => {
+
+    const blob = new Blob([data], { type: 'text/csv' });
+
+    const downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = 'Report.csv';
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+
+    document.body.removeChild(downloadLink);
+  });
 }
 }
