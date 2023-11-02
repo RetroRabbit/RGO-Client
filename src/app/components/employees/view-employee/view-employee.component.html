@@ -177,7 +177,7 @@
             type="number"
             min="1"
             [(ngModel)]="pageSize"
-            (blur)="changePageSize(pageSize)"
+            (ngModelChange)="changePageSize(pageSize)"
             (focus)="pageNumber.open()"
           />
           <mat-select #pageNumber [(ngModel)]="pageSize" hidden>
