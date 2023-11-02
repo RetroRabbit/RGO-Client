@@ -26,15 +26,7 @@ import { EmployeeRoleService } from 'src/app/services/employee/employee-role.ser
 import { NgToastService } from 'ng-angular-popup';
 import { ClientService } from 'src/app/services/client.service';
 import { Client } from 'src/app/models/client.interface';
-
-interface EmployeeData {
-  Name: string;
-  Position: string | undefined;
-  Level: number | undefined;
-  Client: string;
-  Roles: string[];
-  Email: string | undefined;
-}
+import { EmployeeData } from 'src/app/models/employeedata.interface';
 
 @Component({
   selector: 'app-view-employee',
@@ -77,7 +69,10 @@ export class ViewEmployeeComponent {
     this.getEmployees();
   }
 
+  isLoading: boolean = true;
+
   getEmployees(): void {
+    this.isLoading = true;
     const clients$: Observable<Client[]> = this.clientService
       .getAllClients()
       .pipe(catchError(() => of([] as Client[])));
@@ -88,7 +83,6 @@ export class ViewEmployeeComponent {
         switchMap((employees: EmployeeProfile[]) =>
           this.combineEmployeesWithRolesAndClients(employees, clients$)
         ),
-        tap((data) => this.setupDataSource(data)),
         catchError((error) => {
           this.toast.error({
             detail: `Error: ${error}`,
@@ -100,7 +94,10 @@ export class ViewEmployeeComponent {
         }),
         first()
       )
-      .subscribe();
+      .subscribe((data) => {
+        this.setupDataSource(data)
+        this.isLoading = false;
+      });
   }
 
   private combineEmployeesWithRolesAndClients(
