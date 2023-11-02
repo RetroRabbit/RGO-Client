@@ -1,17 +1,20 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
-import {  ChartType } from 'chart.js';
 import { Chart } from 'src/app/models/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { colours } from '../../models/constants/colours.constants';
 import { NgToastService } from 'ng-angular-popup';
 import { MatDialog } from '@angular/material/dialog';
 import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';
+import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+
 @Component({
   selector: 'app-chart',
   templateUrl: './charts.component.html',
   styleUrls: ['./charts.component.css'],
 })
+
 export class ChartComponent implements OnInit {
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   @Output() captureCharts = new EventEmitter<number>();
@@ -30,9 +33,50 @@ export class ChartComponent implements OnInit {
   coloursArray : string[] = colours;
   chartCanvasArray: any[] = [];
 
+  public pieChartPlugins = [ChartDataLabels];
+  public barChartPlugins = [ChartDataLabels];
+
   selectedChartIndex: number = -1;
   constructor(private chartService: ChartService,private cookieService: CookieService,
     private toast: NgToastService, public dialog: MatDialog) {}
+
+    public barChartOptions: ChartConfiguration['options'] = {
+      responsive: true,
+      // We use these empty structures as placeholders for dynamic theming.
+      scales: {
+        x: {},
+        y: {
+          min: 0,
+        },
+      },
+      plugins: {
+        legend: {
+          display: true,
+        },
+        datalabels: {
+          anchor: 'middle',
+          align: 'middle',
+        } as any,
+      },
+    };
+
+
+    public pieChartOptions: ChartConfiguration['options'] = {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+        },
+        // datalabels: {
+        //   formatter: (value: any, ctx: any) => {
+        //     if (ctx.chart.data.labels) {
+        //       return ctx.chart.data.labels[ctx.dataIndex];
+        //     }
+        //   },
+        // },
+      },
+    };
 
     resetPage(){
       this.displayChart = false
@@ -172,8 +216,6 @@ export class ChartComponent implements OnInit {
         });
          var obj = {
           data: this.chartData[i].data,
-          backgroundColor: this.coloursArray,
-          borderColor: this.coloursArray,
           labels: labelsArray
          }
         dataset.push(obj)
@@ -183,8 +225,6 @@ export class ChartComponent implements OnInit {
 
           dataset.push({
             data: [this.chartData[i].data[j]],
-            backgroundColor: this.coloursArray[j],
-            borderColor: this.coloursArray[j],
             label: this.chartData[i].labels[j]
           });
 
