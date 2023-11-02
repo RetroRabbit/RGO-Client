@@ -64,8 +64,12 @@
   padding:1rem;
 }
 
-#edit-chart-container{
-  max-height: 35vh;
-  margin: 0px auto;
-  width: 80%;
+#edit-chart-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 48vh; 
+  max-width: 95%; 
+  margin: 0 auto;
 }
+
