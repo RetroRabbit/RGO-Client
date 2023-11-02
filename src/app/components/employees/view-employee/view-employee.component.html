@@ -47,8 +47,11 @@
 
   <div class="row">
     <div class="card px-0">
+      <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
+        <mat-spinner></mat-spinner>
+      </div>
       <div
-        [hidden]="dataSource.filteredData.length <= 0"
+        [hidden]="isLoading || dataSource.filteredData.length <= 0"
         class="table-responsive p-0 m-0"
       >
         <mat-table [dataSource]="dataSource" matSort>
@@ -119,7 +122,7 @@
         </mat-table>
         <mat-paginator hidden></mat-paginator>
       </div>
-      <div *ngIf="dataSource.filteredData.length <= 0" class="d-flex flex-row justify-content-center align-items-center">
+      <div *ngIf="!isLoading && dataSource.filteredData.length <= 0" class="d-flex flex-row justify-content-center align-items-center">
         <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
         <span id="noResults" class="col-6 d-flex flex-column justify-content-center align-items-center">
           <h1>Oops!</h1>
@@ -129,7 +132,7 @@
     </div>
     <div
       class="d-flex flex-row justify-content-center align-items-center mt-3"
-      *ngIf="dataSource.filteredData.length > 0"
+      *ngIf="!isLoading && dataSource.filteredData.length > 0"
     >
       <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">
         <span class="fw-medium">
