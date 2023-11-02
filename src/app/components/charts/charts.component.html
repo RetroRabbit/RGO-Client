@@ -38,7 +38,7 @@
 <div id="report-page" *ngIf="showReport">
   <div style="height: 90%;" class="my-2">
     <app-report
-      [chartData]="{selectedChart : updateFormData, canvasData :chartCanvasArray[selectedChartIndex]}"></app-report>
+      [inputchartData]="{selectedChart : updateFormData, canvasData :chartCanvasArray[selectedChartIndex]}"></app-report>
   </div>
   <div class="mt-4">
     <button mat-button id="cancel-button" (click)="showReport= false">Cancel</button>
@@ -55,9 +55,9 @@
           <mat-icon id="menu-icon">more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <!-- <button mat-menu-item>
+          <button mat-menu-item (click)="pdfPreview(i)">
               <mat-icon id="chart-icon-menu" class="pe-3">keyboard_backspace</mat-icon> Download graph
-            </button> -->
+            </button>
           <button mat-menu-item (click)="generateReport(i)">
             <mat-icon class="pe-3">arrow_forward_ios</mat-icon> Export as graph
           </button>

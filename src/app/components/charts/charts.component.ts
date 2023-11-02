@@ -5,6 +5,8 @@ import { Chart } from 'src/app/models/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { colours } from '../../models/constants/colours.constants';
 import { NgToastService } from 'ng-angular-popup';
+import { MatDialog } from '@angular/material/dialog';
+import { ReportComponent } from './chart-reports/chart-reports.component';
 
 @Component({
   selector: 'app-chart',
@@ -31,7 +33,7 @@ export class ChartComponent implements OnInit {
 
   selectedChartIndex: number = -1;
   constructor(private chartService: ChartService,private cookieService: CookieService,
-    private toast: NgToastService) {}
+    private toast: NgToastService, public dialog: MatDialog) {}
 
     resetPage(){
       this.displayChart = false
@@ -131,7 +133,7 @@ export class ChartComponent implements OnInit {
     });
     }
   }
-  
+
   editChart(index : number){
     this.selectedChartIndex = index;
     this.activeChart = this.chartData[index];
@@ -159,7 +161,7 @@ export class ChartComponent implements OnInit {
     this.cookieService.set('currentPage', target.innerText);
   }
 
-  
+
   populateCanvasCharts(){
     for(let i = 0; i < this.chartData.length; i++) {
       let dataset = [];
@@ -179,18 +181,32 @@ export class ChartComponent implements OnInit {
       }else{
 
         for(let j = 0; j < this.chartData[i].labels.length; j++){
-          
+
           dataset.push({
             data: [this.chartData[i].data[j]],
             backgroundColor: this.coloursArray[j],
             borderColor: this.coloursArray[j],
             label: this.chartData[i].labels[j]
           });
-          
+
         }
       }
       this.chartCanvasArray.push(dataset);
     }
+  }
+
+  pdfPreview(index: number): void {
+    const dialogRef = this.dialog.open(ReportComponent, {
+      width: '80%',
+      data: {
+        selectedChart: this.chartData[index],
+        canvasData: this.chartCanvasArray[index]
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 }
 
