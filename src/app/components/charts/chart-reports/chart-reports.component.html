@@ -1,9 +1,11 @@
 <div id="chart-container">
   <div class="row">
-    <div class="col-7" style="max-height:fit-content;">
-      <div id="edit-chart-container">
-        <canvas baseChart [datasets]='chartData.canvasData' [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.dataTypes : chartData.selectedChart.labels" [type]="chartData.selectedChart.type"></canvas>
-      </div>
+    <div class="col-7">
+      <div id="edit-chart-container"
+     [class.pie-chart]="isPieChart(chartData.selectedChart.type)"
+     [class.bar-chart]="!isPieChart(chartData.selectedChart.type)">
+  <canvas baseChart [datasets]='chartData.canvasData' [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.dataTypes : chartData.selectedChart.labels" [type]="chartData.selectedChart.type"></canvas>
+</div>
     </div>
     <div class="col-5">
       <div class="row pe-4">
@@ -30,11 +32,11 @@
               <div class="col-6" *ngFor="let label of chartData.selectedChart.labels; let i = index">
                 <div class="data-label">{{ label }}:</div>
                 <div class="data-value">{{ chartData.selectedChart.data[i] }} employees</div>
-                <div class="data-percentage">({{ calculatePercentage(chartData.selectedChart.data[i]) }}% of total)</div>
+                <div class="data-percentage">({{ calculatePercentage(chartData.selectedChart.data[i]) }}% of total)</div>      
               </div>
-              <!-- <div class="col-12" id="button-container">
+              <div class="col-12" id="button-container">
                 <button mat-button id="save-button" (click)="downloadReportAsCSV(chartData.selectedChart.dataTypes)">Download CSV</button>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>

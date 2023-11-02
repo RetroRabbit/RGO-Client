@@ -1,7 +1,5 @@
-import { Component, Input, Inject } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-
 
 @Component({
   selector: 'app-report',
@@ -9,7 +7,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./chart-reports.component.css']
 })
 export class ReportComponent {
-  @Input() inputchartData !: { selectedChart: any; canvasData: any; };
+  @Input() chartData !: { selectedChart: any; canvasData: any; };
   activeChart: any = null;
   showReport: boolean = false;
   clearActiveChart: () => void = () => { };
@@ -17,9 +15,13 @@ export class ReportComponent {
   ngOnInit(){
   }
 
-  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService) {
+  constructor(private chartService: ChartService) { 
   }
 
+  isPieChart(chartType: string): boolean {
+    return chartType === 'pie';
+  }
+  
   generateReport(): void {
     const reportHTML = this.generateHTMLReport();
     const newWindow = window.open();
@@ -50,7 +52,7 @@ export class ReportComponent {
     this.chartService.downloadCSV(dataTypes).subscribe(data => {
 
       const blob = new Blob([data], { type: 'text/csv' });
-
+      
       const downloadLink = document.createElement('a');
       downloadLink.href = window.URL.createObjectURL(blob);
       downloadLink.download = 'Report.csv';
@@ -61,4 +63,4 @@ export class ReportComponent {
       document.body.removeChild(downloadLink);
     });
   }
-}
+} 
