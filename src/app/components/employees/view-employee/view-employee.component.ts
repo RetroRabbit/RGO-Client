@@ -4,6 +4,7 @@ import {
   EventEmitter,
   ViewChild,
   HostListener,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
@@ -52,12 +53,18 @@ export class ViewEmployeeComponent {
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
     private toast: NgToastService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.onResize();
     this.getEmployees();
+    this.cdRef.detectChanges();
+  }
+
+  ngAfterViewInit() {
+    
   }
 
   getEmployees() {
@@ -102,7 +109,7 @@ export class ViewEmployeeComponent {
     const nonAdminRoles = roles.filter(role => !role.toLowerCase().includes('admin')).sort();
   
     return [...adminRoles, ...nonAdminRoles];
-  }  
+  }
 
   reset(): void {
     this.dataSource.filter = '';
@@ -172,12 +179,12 @@ export class ViewEmployeeComponent {
   pageSizes: number[] = [1, 5, 10, 25, 100];
 
   changePageSize(size: number) {
-    this.paginator.pageSize = size;
+    if (this.paginator) this.paginator.pageSize = size;
     this.dataSource._updateChangeSubscription();
   }
 
   get pageIndex(): number {
-    return this.paginator.pageIndex;
+    return this.paginator?.pageIndex ?? 0;
   }
 
   previousPage() {
@@ -230,5 +237,21 @@ export class ViewEmployeeComponent {
         return of(null);
       })
     ).subscribe();
-  }  
+  }
+
+  get pageSize(): number {
+    return this.paginator ? this.paginator.pageSize : 1;
+  }
+
+  set pageSize(size: number) {
+    if (this.paginator) this.paginator.pageSize = size;
+  }
+
+  get start(): number {
+    return this.paginator ? this.paginator.pageIndex * this.paginator.pageSize + 1 : 0;
+  }
+
+  get end(): number {
+    return this.paginator ? (this.paginator.pageIndex + 1) * this.paginator.pageSize : 0;
+  }
 }

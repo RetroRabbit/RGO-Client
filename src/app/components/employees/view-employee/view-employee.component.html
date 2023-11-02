@@ -9,7 +9,7 @@
         >
           <button
             mat-button
-            (click)="filter.value = ''"
+            (click)="filter.value = ''; applyFilter('')"
             *ngIf="filter.value !== ''"
             id="back-button"
           >
@@ -47,7 +47,10 @@
 
   <div class="row">
     <div class="card px-0">
-      <div class="table-responsive p-0 m-0">
+      <div
+        [hidden]="dataSource.filteredData.length <= 0"
+        class="table-responsive p-0 m-0"
+      >
         <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="Name">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow"
@@ -119,13 +122,11 @@
     </div>
     <div
       class="d-flex flex-row justify-content-center align-items-center mt-3"
-      *ngIf="paginator"
+      *ngIf="dataSource.filteredData.length > 0"
     >
       <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">
         <span class="fw-medium">
-          Showing {{ paginator.pageIndex * paginator.pageSize + 1 }}-{{
-            (paginator.pageIndex + 1) * paginator.pageSize
-          }}
+          Showing {{ start }}-{{ end }}
         </span>
         <span>of {{ paginator.length }} results</span>
       </div>
@@ -168,11 +169,11 @@
             matInput
             type="number"
             min="1"
-            [(ngModel)]="paginator.pageSize"
-            (blur)="changePageSize(paginator.pageSize)"
+            [(ngModel)]="pageSize"
+            (blur)="changePageSize(pageSize)"
             (focus)="pageNumber.open()"
           />
-          <mat-select #pageNumber [(ngModel)]="paginator.pageSize" hidden>
+          <mat-select #pageNumber [(ngModel)]="pageSize" hidden>
             <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
               {{ pageSize }}
             </mat-option>
