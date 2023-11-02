@@ -4,6 +4,7 @@ import {
   EventEmitter,
   ViewChild,
   HostListener,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
@@ -55,7 +56,8 @@ export class ViewEmployeeComponent {
     private employeeRoleService: EmployeeRoleService,
     private clientService: ClientService,
     private toast: NgToastService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -64,6 +66,11 @@ export class ViewEmployeeComponent {
 
   ngAfterViewInit() {
     this.getEmployees();
+    this.cdRef.detectChanges();
+  }
+
+  ngAfterViewInit() {
+    
   }
 
   getEmployees() {
@@ -210,8 +217,8 @@ export class ViewEmployeeComponent {
   //   this.dataSource._updateChangeSubscription();
   // }
   changePageSize(size: number) {
-    this.paginator.pageSize = size;
-    this.dataSource.data = [...this.dataSource.data];
+    if (this.paginator) this.paginator.pageSize = size;
+    this.dataSource._updateChangeSubscription();
   }
 
 
@@ -256,28 +263,41 @@ export class ViewEmployeeComponent {
   }
 
   changeRole(email: string, role: string): void {
-    this.employeeRoleService
-      .addRole(email, role)
-      .pipe(
-        tap(() => {
-          this.toast.success({
-            detail: `Role changed successfully!`,
-            summary: 'Success',
-            duration: 5000,
-            position: 'topRight',
-          });
-          this.getEmployees();
-        }),
-        catchError((error) => {
-          this.toast.error({
-            detail: 'Failed to change role',
-            summary: 'Error',
-            duration: 10000,
-            position: 'topRight',
-          });
-          return of(null);
-        })
-      )
-      .subscribe();
+    this.employeeRoleService.addRole(email, role).pipe(
+      tap(() => {
+        this.toast.success({
+          detail: `Role changed successfully!`,
+          summary: 'Success',
+          duration: 5000,
+          position: 'topRight',
+        });
+        this.getEmployees();
+      }),
+      catchError((error) => {
+        this.toast.error({
+          detail: 'Failed to change role',
+          summary: 'Error',
+          duration: 10000,
+          position: 'topRight',
+        });
+        return of(null);
+      })
+    ).subscribe();
+  }
+
+  get pageSize(): number {
+    return this.paginator ? this.paginator.pageSize : 1;
+  }
+
+  set pageSize(size: number) {
+    if (this.paginator) this.paginator.pageSize = size;
+  }
+
+  get start(): number {
+    return this.paginator ? this.paginator.pageIndex * this.paginator.pageSize + 1 : 0;
+  }
+
+  get end(): number {
+    return this.paginator ? (this.paginator.pageIndex + 1) * this.paginator.pageSize : 0;
   }
 }
