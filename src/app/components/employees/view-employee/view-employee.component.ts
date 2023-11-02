@@ -26,6 +26,7 @@ import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { NgToastService } from 'ng-angular-popup';
 import { ClientService } from 'src/app/services/client.service';
+import { Client } from 'src/app/models/client.interface';
 
 @Component({
   selector: 'app-view-employee',
@@ -61,56 +62,88 @@ export class ViewEmployeeComponent {
   ) {}
 
   ngOnInit() {
-    this.onResize()
+    this.onResize();
     this.getEmployees();
     this.cdRef.detectChanges();
   }
 
-  getEmployees() {
-    const clients$ = this.clientService.getAllClients();
+  getEmployees(): void {
+    const clients$: Observable<Client[]> = this.clientService.getAllClients().pipe(
+      catchError(error => of([] as Client[]))
+    )
 
-    this.employeeService.getAllProfiles().pipe(
-        switchMap((employees: EmployeeProfile[]) => {
-            const rolesRequests$ = employees.map(employee =>
-                this.employeeRoleService.getRoles(employee.email!).pipe(
-                    catchError(() => of([]))
-                )
-            );
-
-            return forkJoin([of(employees), clients$, ...rolesRequests$]);
-        }),
-        map(([employees, clients, ...rolesList]) => {
-            return employees.map((employee, index) => {
-                const client = clients.find(client => employee.clientAllocated && client.id === +employee.clientAllocated);
-                const sortedRoles = this.sortRoles(rolesList[index]);
-                return {
-                    Name: `${employee.name} ${employee.surname}`,
-                    Position: employee.employeeType!.name,
-                    Level: employee.level,
-                    Client: client ? client.name : 'Bench',
-                    Roles: sortedRoles,
-                    Email: employee.email,
-                };
-            });
-        }),
-        tap((data) => {
-            this.dataSource = new MatTableDataSource(data);
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
-            this.dataSource._updateChangeSubscription();
-        }),
+    this.employeeService
+      .getAllProfiles()
+      .pipe(
+        switchMap((employees: EmployeeProfile[]) => this.combineEmployeesWithRolesAndClients(employees, clients$)),
+        tap((data) => this.setupDataSource(data)),
         catchError((error) => {
-            this.toast.error({
-                detail: `Error: ${error}`,
-                summary: 'Failed to load employees',
-                duration: 10000,
-                position: 'topRight',
-            });
-            return of([]);
-        })
-    ).subscribe();
-}
+          this.toast.error({
+            detail: `Error: ${error}`,
+            summary: 'Failed to load employees',
+            duration: 10000,
+            position: 'topRight',
+          });
+          return of([] as {
+            Name: string;
+            Position: string | undefined;
+            Level: number | undefined;
+            Client: string;
+            Roles: string[];
+            Email: string | undefined;
+        }[]);
+        }),
+        first()
+      ).subscribe();
+  }
 
+  private combineEmployeesWithRolesAndClients(employees: EmployeeProfile[], clients$: Observable<Client[]>): Observable<{
+    Name: string;
+    Position: string | undefined;
+    Level: number | undefined;
+    Client: string;
+    Roles: string[];
+    Email: string | undefined;
+}[]> {
+    const rolesRequests$ = employees.map(employee =>
+      this.employeeRoleService
+        .getRoles(employee.email!)
+        .pipe(catchError(() => of([] as string[])))
+    );
+
+    return forkJoin([of(employees), clients$, ...rolesRequests$]).pipe(
+      map(([employees, clients, ...rolesList]) => this.constructEmployeeData(employees, clients, rolesList))
+    );
+  }
+
+  private constructEmployeeData(employees: EmployeeProfile[], clients: Client[], rolesList: string[][]): {
+    Name: string;
+    Position: string | undefined;
+    Level: number | undefined;
+    Client: string;
+    Roles: string[];
+    Email: string | undefined;
+}[] {
+    return employees.map((employee, index) => {
+      const client = clients.find(client => employee.clientAllocated && client.id === +employee.clientAllocated);
+      const sortedRoles = this.sortRoles(rolesList[index]);
+      return {
+        Name: `${employee.name} ${employee.surname}`,
+        Position: employee.employeeType!.name,
+        Level: employee.level,
+        Client: client ? client.name : 'Bench',
+        Roles: sortedRoles,
+        Email: employee.email,
+      };
+    });
+  }
+
+  private setupDataSource(data: any[]): void {
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource._updateChangeSubscription();
+  }
 
   sortRoles(roles: string[]): string[] {
     const adminRoles = roles
@@ -215,7 +248,6 @@ export class ViewEmployeeComponent {
     return Math.ceil(this.paginator.length / this.paginator.pageSize);
   }
 
-
   get visiblePages(): number[] {
     const totalPages = this.getNumberOfPages;
 
@@ -237,26 +269,29 @@ export class ViewEmployeeComponent {
   }
 
   changeRole(email: string, role: string): void {
-    this.employeeRoleService.addRole(email, role).pipe(
-      tap(() => {
-        this.toast.success({
-          detail: `Role changed successfully!`,
-          summary: 'Success',
-          duration: 5000,
-          position: 'topRight',
-        });
-        this.getEmployees();
-      }),
-      catchError((error) => {
-        this.toast.error({
-          detail: 'Failed to change role',
-          summary: 'Error',
-          duration: 10000,
-          position: 'topRight',
-        });
-        return of(null);
-      })
-    ).subscribe();
+    this.employeeRoleService
+      .addRole(email, role)
+      .pipe(
+        tap(() => {
+          this.toast.success({
+            detail: `Role changed successfully!`,
+            summary: 'Success',
+            duration: 5000,
+            position: 'topRight',
+          });
+          this.getEmployees();
+        }),
+        catchError((error) => {
+          this.toast.error({
+            detail: 'Failed to change role',
+            summary: 'Error',
+            duration: 10000,
+            position: 'topRight',
+          });
+          return of(null);
+        })
+      )
+      .subscribe();
   }
 
   get pageSize(): number {
@@ -268,10 +303,14 @@ export class ViewEmployeeComponent {
   }
 
   get start(): number {
-    return this.paginator ? this.paginator.pageIndex * this.paginator.pageSize + 1 : 0;
+    return this.paginator
+      ? this.paginator.pageIndex * this.paginator.pageSize + 1
+      : 0;
   }
 
   get end(): number {
-    return this.paginator ? (this.paginator.pageIndex + 1) * this.paginator.pageSize : 0;
+    return this.paginator
+      ? (this.paginator.pageIndex + 1) * this.paginator.pageSize
+      : 0;
   }
 }
