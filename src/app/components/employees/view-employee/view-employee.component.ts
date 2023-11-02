@@ -67,64 +67,50 @@ export class ViewEmployeeComponent {
   }
 
   getEmployees() {
-    this.employeeService
-      .getAllProfiles()
-      .pipe(
-        switchMap((employees: EmployeeProfile[]) => {
-          const modifiedEmployees$ = employees.map(
-            (employee: EmployeeProfile) => {
-              const clients$ = this.clientService.getAllClients().pipe(
-                map((clients) =>
-                  clients.find(
-                    (client) => employee.clientAllocated && client.id === +employee.clientAllocated
-                  )
-                ),
-                map((client) => (client ? client.name : 'Bench')),
-                first()
-              );
+    const clients$ = this.clientService.getAllClients();
 
-              const roles$ = this.employeeRoleService
-                .getRoles(employee.email!)
-                .pipe(
-                  map((roles) => ({
+    this.employeeService.getAllProfiles().pipe(
+        switchMap((employees: EmployeeProfile[]) => {
+            const rolesRequests$ = employees.map(employee =>
+                this.employeeRoleService.getRoles(employee.email!).pipe(
+                    catchError(() => of([]))
+                )
+            );
+
+            return forkJoin([of(employees), clients$, ...rolesRequests$]);
+        }),
+        map(([employees, clients, ...rolesList]) => {
+            return employees.map((employee, index) => {
+                const client = clients.find(client => employee.clientAllocated && client.id === +employee.clientAllocated);
+                const sortedRoles = this.sortRoles(rolesList[index]);
+                return {
                     Name: `${employee.name} ${employee.surname}`,
                     Position: employee.employeeType!.name,
                     Level: employee.level,
-                    Client: '',
-                    Roles: this.sortRoles(roles),
+                    Client: client ? client.name : 'Bench',
+                    Roles: sortedRoles,
                     Email: employee.email,
-                  }))
-                );
-              
-              return combineLatest([clients$, roles$])
-                .pipe(
-                  map(([clientName, employeeWithRoles]) => {
-                    employeeWithRoles.Client = clientName;
-                    return employeeWithRoles;
-                  })
-                );
-            }
-          );
-          return forkJoin(modifiedEmployees$);
+                };
+            });
         }),
         tap((data) => {
-          this.dataSource = new MatTableDataSource(data);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource._updateChangeSubscription();
+            this.dataSource = new MatTableDataSource(data);
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+            this.dataSource._updateChangeSubscription();
         }),
         catchError((error) => {
-          this.toast.error({
-            detail: `Error: ${error}`,
-            summary: 'Failed to load employees',
-            duration: 10000,
-            position: 'topRight',
-          });
-          return of([]);
+            this.toast.error({
+                detail: `Error: ${error}`,
+                summary: 'Failed to load employees',
+                duration: 10000,
+                position: 'topRight',
+            });
+            return of([]);
         })
-      )
-      .subscribe();
-  }
+    ).subscribe();
+}
+
 
   sortRoles(roles: string[]): string[] {
     const adminRoles = roles
@@ -205,15 +191,10 @@ export class ViewEmployeeComponent {
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
 
-  // changePageSize(size: number) {
-  //   this.paginator.pageSize = size;
-  //   this.dataSource._updateChangeSubscription();
-  // }
   changePageSize(size: number) {
     if (this.paginator) this.paginator.pageSize = size;
     this.dataSource._updateChangeSubscription();
   }
-
 
   get pageIndex(): number {
     return this.paginator?.pageIndex ?? 0;
