@@ -1,4 +1,16 @@
 <div class="container mt-4">
+    <div class="w-75 py-3">
+        <button
+          mat-button
+          class="btn"
+          id="back-to-employees"
+          (click)="goToEmployees()"
+          *ngIf="selectedEmployee"
+        >
+          <mat-icon>arrow_back</mat-icon>
+          <span>Back to Employees</span>
+        </button>
+      </div>
     <div id="profile-header" class="row p-2">
         <div class="col-2 mt-4">
             <div id="profile-image">
@@ -61,7 +73,7 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">Client Allocated</div>
-                            <div id="header-value">{{employeeProfile?.clientAllocated ?? 'Bench'}}</div>
+                            <div id="header-value">{{employeeClient?.name ?? 'Bench'}}</div>
                         </div>
                     </div>
                 </div>
@@ -106,20 +118,20 @@
         </div>
         <div class="col-10 px-4">
             <div class="row mx-3" id="accordion-progress">
-                <!-- ToDo: add ngClass for conditional styling for progress-stats -->
-                <div class="col-2 py-3" id="progress-stats">  
-                    <h5>Profile Details %</h5>
+                <div class="col-2 py-3" id="progress-stats" style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                    <h5>Profile Details {{ profileFormProgress }}%</h5>
                 </div>
+                
                 <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-3" id="progress-stats">
+                <div class="col-2 py-3" id="progress-stats" style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Career Summary %</h5>
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-3" id="progress-stats">
+                <div class="col-2 py-3" id="progress-stats" style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Bank Information %</h5>
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-3" id="progress-stats">
+                <div class="col-2 py-3" id="progress-stats" style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Document %</h5>
                 </div>
             </div>
@@ -128,12 +140,11 @@
             <div class="row mx-2">
                 <div class="col-auto pt-1" id="overall-text">
                     <h4>
-                        % Overall Completed
+                        {{overallFormProgress}}% Overall Completed
                     </h4>
                 </div>
                 <div class="col-10 pt-3" id="progress-container">
-                    <!-- ToDo: make value dependent on overall progress -->
-                    <mat-progress-bar mode="determinate" value="40" id="overall-progress-bar"></mat-progress-bar>
+                    <mat-progress-bar mode="determinate" [value]=overallFormProgress id="overall-progress-bar"></mat-progress-bar>
                 </div>
             </div>
         </div>
@@ -206,7 +217,7 @@
                             <mat-panel-title>
                                 Employee Details
                             </mat-panel-title>
-                            <mat-panel-description>
+                            <mat-panel-description *ngIf="employeeFormProgress != 100">
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
@@ -304,7 +315,7 @@
                                                     <mat-option *ngFor="let people of filteredPeopleChamps"
                                                         [value]="people.employee.name + ' ' + people.employee.surname"
                                                         (onSelectionChange)="getId(people, 'champion')">
-                                                        {{ people.employee.name }} </mat-option>
+                                                        {{ people.employee.name }} {{people.employee.surname}}</mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
                                         </div>
@@ -357,7 +368,7 @@
                             <mat-panel-title>
                                 Personal Details
                             </mat-panel-title>
-                            <mat-panel-description>
+                            <mat-panel-description *ngIf="personalFormProgress != 100">
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
@@ -423,9 +434,9 @@
                                                 <div class="col-4">
                                                     <mat-form-field appearance="outline" style="width: 100%;">
                                                         <mat-label>Disability</mat-label>
-                                                        <mat-select>
-                                                            <mat-option *ngFor="let disability of disabilities"
-                                                                [value]="disability.id">
+                                                        <mat-select formControlName="disabilityList">
+                                                            <mat-option *ngFor="let disability of disabilities; index as i"
+                                                            [value]="i">
                                                                 {{disability.value}}
                                                             </mat-option>
                                                         </mat-select>
@@ -459,7 +470,7 @@
                             <mat-panel-title>
                                 Contact Details
                             </mat-panel-title>
-                            <mat-panel-description>
+                            <mat-panel-description *ngIf="contactFormProgress != 100">
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
@@ -529,7 +540,7 @@
                             <mat-panel-title>
                                 Address Details
                             </mat-panel-title>
-                            <mat-panel-description>
+                            <mat-panel-description *ngIf="addressFormProgress != 100">
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
