@@ -177,19 +177,31 @@
       </div>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Employees'">
-      <app-view-employee (selectedEmployee)="handleSelectedEmp($event)"></app-view-employee>
+      <app-view-employee (addEmployeeEvent)="onAddEmployee()" (managePermissionsEvent)="onManageEmployee()" (selectedEmployee)="handleSelectedEmp($event)"></app-view-employee>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Evaluations'">
       <app-employee-evaluations (selectedEvaluation)="handleSelectedEval($event)"></app-employee-evaluations>
     </div>
-    <div *ngIf="selectedItem == 'Profile'">
-      <app-employee-profile></app-employee-profile>
+    <div *ngIf="cookieService.get('currentPage') == 'Profile'">
+      <app-employee-profile [selectedEmployee]="selectedEmployee"></app-employee-profile>
     </div>
     <div *ngIf="selectedItem == 'System Settings'">
       <app-system-settings></app-system-settings>
     </div>
     <div *ngIf="cookieService.get('currentPage') === 'Manage Field'">
       <app-manage-field-code></app-manage-field-code>
+    </div>
+    <div *ngIf="cookieService.get('currentPage') === 'Manage Permissions'">
+      <div *ngIf="!shouldDisplayNewEmployee">
+        <app-role-manager [goto]="'dashboard'"></app-role-manager>
+      </div>
+      <div *ngIf="shouldDisplayNewEmployee">
+        <app-role-manager [goto]="'employees'"></app-role-manager>
+      </div>
+    </div>
+
+    <div *ngIf="cookieService.get('currentPage') === 'Manage Roles'">
+      <app-role-manager></app-role-manager>
     </div>
     <div *ngIf="cookieService.get('currentPage') === 'Manage Employee Roles'">
       <app-employee-role-manager></app-employee-role-manager>
@@ -230,7 +242,12 @@
     </div>
 
     <div *ngIf="cookieService.get('currentPage') == '+ Add New Hire'">
-      <app-new-employee></app-new-employee>
+      <div *ngIf="!shouldDisplayNewEmployee">
+        <app-new-employee [goto]="'dashboard'"></app-new-employee>
+      </div>
+      <div *ngIf="shouldDisplayNewEmployee">
+        <app-new-employee [goto]="'employees'"></app-new-employee>
+      </div>
     </div>
 
     <div *ngIf="cookieService.get('currentPage') == 'Employee Details'">

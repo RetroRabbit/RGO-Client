@@ -66,3 +66,13 @@ main {
     line-height: 10px;
     color: #0029C6;
 }
+
+#back-to-employees {
+    color: #0029C6;
+    font-size: 14px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.10px;
+    word-wrap: break-word;
+}
