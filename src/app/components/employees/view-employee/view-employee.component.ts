@@ -4,7 +4,7 @@ import {
   EventEmitter,
   ViewChild,
   HostListener,
-  ChangeDetectorRef,
+  NgZone,
 } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
@@ -66,13 +66,15 @@ export class ViewEmployeeComponent {
     private clientService: ClientService,
     private toast: NgToastService,
     private cookieService: CookieService,
-    private cdRef: ChangeDetectorRef
+    private ngZone: NgZone
   ) {}
 
   ngOnInit() {
     this.onResize();
+  }
+
+  ngAfterViewInit() {
     this.getEmployees();
-    this.cdRef.detectChanges();
   }
 
   getEmployees(): void {
@@ -145,8 +147,10 @@ export class ViewEmployeeComponent {
 
   private setupDataSource(data: any[]): void {
     this.dataSource = new MatTableDataSource(data);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    this.ngZone.run(() => {
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    })
     this.dataSource._updateChangeSubscription();
   }
 
@@ -229,16 +233,6 @@ export class ViewEmployeeComponent {
 
   get pageIndex(): number {
     return this.paginator?.pageIndex ?? 0;
-  }
-
-  previousPage() {
-    if (!this.paginator.hasPreviousPage()) return;
-    this.paginator.previousPage();
-  }
-
-  nextPage() {
-    if (!this.paginator.hasNextPage()) return;
-    this.paginator.nextPage();
   }
 
   get getNumberOfPages(): number {

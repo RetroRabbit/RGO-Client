@@ -140,7 +140,7 @@
       <div class="col-lg-4 col-md-4 row justify-content-center">
         <button
           mat-icon-button
-          (click)="previousPage()"
+          (click)="paginator.previousPage()"
           [disabled]="!paginator.hasPreviousPage()"
         >
           <mat-icon>arrow_left</mat-icon>
@@ -155,7 +155,7 @@
         </button>
         <button
           mat-icon-button
-          (click)="nextPage()"
+          (click)="paginator.nextPage()"
           [disabled]="!paginator.hasNextPage()"
         >
           <mat-icon>arrow_right</mat-icon>
