@@ -62,15 +62,8 @@ export class ViewEmployeeComponent {
 
   ngOnInit() {
     this.onResize()
-  }
-
-  ngAfterViewInit() {
     this.getEmployees();
     this.cdRef.detectChanges();
-  }
-
-  ngAfterViewInit() {
-    
   }
 
   getEmployees() {
