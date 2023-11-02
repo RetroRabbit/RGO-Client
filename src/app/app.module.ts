@@ -66,6 +66,7 @@ import { ManageEmployeeEventsComponent } from './components/manage-employee-even
 import { AddEmployeeEventComponent } from './components/manage-employee-events/add-employee-event/add-employee-event.component';
 
 import { MatChipsModule } from '@angular/material/chips';
+import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
 
 
 @NgModule({
@@ -92,7 +93,8 @@ import { MatChipsModule } from '@angular/material/chips';
     EmployeeDetailsComponent,
     PendingBankDetailsComponent,
     ManageEmployeeEventsComponent,
-    AddEmployeeEventComponent
+    AddEmployeeEventComponent,
+    ChartReportPdfComponent
   ],
   imports: [
     BrowserModule,

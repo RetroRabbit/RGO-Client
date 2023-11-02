@@ -6,8 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { colours } from '../../models/constants/colours.constants';
 import { NgToastService } from 'ng-angular-popup';
 import { MatDialog } from '@angular/material/dialog';
-import { ReportComponent } from './chart-reports/chart-reports.component';
-
+import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';
 @Component({
   selector: 'app-chart',
   templateUrl: './charts.component.html',
@@ -196,8 +195,8 @@ export class ChartComponent implements OnInit {
   }
 
   pdfPreview(index: number): void {
-    const dialogRef = this.dialog.open(ReportComponent, {
-      width: '80%',
+    const dialogRef = this.dialog.open(ChartReportPdfComponent, {
+      maxWidth: '800px',
       data: {
         selectedChart: this.chartData[index],
         canvasData: this.chartCanvasArray[index]
