@@ -48,18 +48,6 @@
  
   
 <form [formGroup]="newRoleForm" class="container">
-    <div class="w-75 py-3">
-        <button
-          mat-button
-          class="btn"
-          id="back-to-employees"
-          (click)="goToEmployees()"
-          *ngIf="goto === 'employees'"
-        >
-          <mat-icon>arrow_back</mat-icon>
-          <span>Back to Employees</span>
-        </button>
-      </div>
     <div class="d-flex" *ngIf="roles$ | async as roles">
         <label><em>Roles:</em></label>
         <br>
