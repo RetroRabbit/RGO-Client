@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
+import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 @Component({
   selector: 'app-report',
@@ -11,17 +13,56 @@ export class ReportComponent {
   activeChart: any = null;
   showReport: boolean = false;
   clearActiveChart: () => void = () => { };
+  public pieChartPlugins = [ChartDataLabels];
+  public barChartPlugins = [ChartDataLabels];
 
   ngOnInit(){
   }
-
-  constructor(private chartService: ChartService) { 
+  constructor(private chartService: ChartService) {
   }
+
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      x: {},
+      y: {
+        min: 0,
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+      },
+      datalabels: {
+        anchor: 'middle',
+        align: 'middle',
+      } as any,
+    },
+  };
+
+
+  public pieChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      // datalabels: {
+      //   formatter: (value: any, ctx: any) => {
+      //     if (ctx.chart.data.labels) {
+      //       return ctx.chart.data.labels[ctx.dataIndex];
+      //     }
+      //   },
+      // },
+    },
+  };
 
   isPieChart(chartType: string): boolean {
     return chartType === 'pie';
   }
-  
+
   generateReport(): void {
     const reportHTML = this.generateHTMLReport();
     const newWindow = window.open();
@@ -52,7 +93,7 @@ export class ReportComponent {
     this.chartService.downloadCSV(dataTypes).subscribe(data => {
 
       const blob = new Blob([data], { type: 'text/csv' });
-      
+
       const downloadLink = document.createElement('a');
       downloadLink.href = window.URL.createObjectURL(blob);
       downloadLink.download = 'Report.csv';
@@ -63,4 +104,4 @@ export class ReportComponent {
       document.body.removeChild(downloadLink);
     });
   }
-} 
+}
