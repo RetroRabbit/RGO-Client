@@ -6,6 +6,8 @@ import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { RoleService } from 'src/app/services/role.service';
+import { RoleAccess } from 'src/app/models/role-access-interface';
+import { Role } from 'src/app/models/role.interface';
 
 
 
@@ -24,6 +26,7 @@ export class RoleManagerComponent {
   saved: boolean = false
   deleted: boolean = false
   failed: boolean = false
+  selected: boolean = false
 
   currRole!: Map<string, string[]>
 
@@ -34,68 +37,63 @@ export class RoleManagerComponent {
 
 
  
-  displayedColumns: string[] = [];
-  permisssionRows: string[] = [];
+  // roles: Role[] = [];
+  // roleAccesses: RoleAccess[] = [];
 
   title = 'toolsets';
   parentSelector: boolean = false;
 
   roleAccessLink = [
-    { id: 5, roleId:1, roleAccessId: 5, selected: false},
-    { id: 6, roleId:1, roleAccessId: 6, selected: false},
-    { id: 7, roleId:1, roleAccessId: 7, selected: true},
-    { id: 8, roleId:1, roleAccessId: 8, selected: false}, 
+    { id: 1, roleId:1, roleAccessId: 1, },
+    { id: 2, roleId:1, roleAccessId: 2, },
+    { id: 3, roleId:1, roleAccessId: 2, },
+    { id: 4, roleId:1, roleAccessId: 8, },
+    { id: 5, roleId:1, roleAccessId: 5, },
+    { id: 6, roleId:1, roleAccessId: 6, },
+    { id: 7, roleId:1, roleAccessId: 7,},
+    { id: 8, roleId:1, roleAccessId: 8, }, 
   ];
 
   roles= [
     {id:1, description:"SuperAdmin"},
     {id:2, description:"Admin"},
-    {id:2, description:"Employee"},
-    {id:2, description:"Talent"}
+    {id:3, description:"Employee"},
+    {id:4, description:"Talent"}
   ];
 
   permissionTag =[{
     id:1, description:"Charts",parentSelector:true,
   }]
-
   roleAccess = [
-    {id:1, description:"ViewEmployee",tag: "Employee Data"},
-    {id:2, description:"AddEmployee",tag: "Employee Data"},
-    {id:3, description:"EditEmployee",tag: "Employee Data"},
-    {id:4, description:"DeleteEmployee",tag: "Employee Data"},
-    {id:5, description:"ViewChart",tag: "Charts"},
-    {id:6, description:"AddChart",tag: "Charts"},
-    {id:7, description:"EditChart",tag: "Charts"},
-    {id:8, description:"DeleteChart",tag: "Charts"},
-    {id:9, description:"ViewOwnInfo",tag: "Employee Data"},
-    {id:10, description:"EditOwnInfo",tag: "Employee Data"}
-  ]
+    { id: 1, description: "ViewEmployee" },
+    { id: 2, description: "AddEmployee" },
+    { id: 3, description: "EditEmployee" },
+    { id: 4, description: "DeleteEmployee" },
+    { id: 5, description: "ViewChart" },
+    { id: 6, description: "AddChart" },
+    { id: 7, description: "EditChart" },
+    { id: 8, description: "DeleteChart" },
+    { id: 9, description: "ViewOwnInfo" },
+    { id: 10, description: "EditOwnInfo" }
+];
 
-  chartsPermissions = this.roleAccess.filter(permission => permission.tag === "Charts");
+chartsPermissions = this.roleAccess.filter(permission => permission.description.includes("Chart"));
 
-  food = [
-    { id: 1, select: false, name: 'dumpling' },
-    { id: 2, select: true, name: 'burger' },
-    { id: 3, select: true, name: 'sandwich' },
-  ];
+ 
 
-  onChangeFood($event: any) {
-    const id = $event.source.value;
-    const isChecked = $event.source.checked;
+  onChangeRoleAccess($event: any, role: string, permission: string) {
+    
+     console.log(role,permission)
+     console.log($event);
+    var isChecked = $event.source.checked;
+    if(isChecked){
+      
+      this.onAdd(role,permission);
+    }
+    else{
+      this.onDelete(role,permission);
+    }
 
-    this.roleAccessLink = this.roleAccessLink.map((d) => {
-      if (d.id == id) {
-        d.selected = isChecked;
-        this.parentSelector = false;
-        return d;
-      }
-      if (id == -1) {
-        d.selected = this.parentSelector;
-        return d;
-      }
-      return d;
-    });
-    console.log(this.roleAccessLink);
   }
   
   constructor(
@@ -106,17 +104,21 @@ export class RoleManagerComponent {
   ) { }
 
   ngOnInit() {
-    this.employeeRoleService.getAllRoles().subscribe(roles => {
-      this.displayedColumns = roles;
-    });
+    // this.employeeRoleService.getAllRoles().subscribe(roles => {
+    //   this.roles = roles;
+    // });
+
+    // this.employeeRoleService.getAllRoles().subscribe(roleAccess => {
+    //  this.roleAccesses = roleAccess
+    // });
   }
 
   getRoles(raw: Map<string, string[]>): string[] {
     return Object.keys(raw)
   }
 
-  changePermission(permission: string): void {
-    this.newRoleForm.setValue({ role: this.newRoleForm.value.role ?? '', permission: permission })
+  changePermission(role:string, permission: string): void {
+    this.newRoleForm.setValue({ role: role, permission: permission })
   }
 
   changeRole(role: string): void {
@@ -138,8 +140,8 @@ export class RoleManagerComponent {
     })
   }
 
-  onAdd(): void {
-    this.roleService.addRole(this.newRoleForm.value.role!, this.newRoleForm.value.permission!).subscribe({
+  onAdd(role:string,permission:string): void {
+    this.roleService.addRole(role, permission).subscribe({
       next: (data) => {
         this.saved = true
       },
@@ -149,8 +151,8 @@ export class RoleManagerComponent {
     })
   }
 
-  onDelete(): void {
-    this.roleService.deleteRole(this.newRoleForm.value.role!, this.newRoleForm.value.permission!).subscribe({
+  onDelete(role:string,permission:string): void {
+    this.roleService.deleteRole(role, permission).subscribe({
       next: (data) => {
         this.deleted = true
       },
