@@ -12,7 +12,6 @@ import { CookieService } from 'ngx-cookie-service';
 import {
   Observable,
   catchError,
-  combineLatest,
   first,
   forkJoin,
   map,
