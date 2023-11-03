@@ -86,6 +86,10 @@ export class EmployeeProfileComponent {
   profileFormProgress: number = 0;
   overallFormProgress: number = 0;
 
+  careerSummaryProgress: number = 0;
+  bankInformationProgress: number = 0;
+  documentsProgress: number = 0;
+
   employeeDetailsForm: FormGroup = this.fb.group({
     title: { value: '', disabled: true },
     name: { value: '', disabled: true },
