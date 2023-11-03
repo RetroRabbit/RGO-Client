@@ -1,15 +1,19 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Inject } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
+
 @Component({
-  selector: 'app-report',
-  templateUrl: './chart-reports.component.html',
-  styleUrls: ['./chart-reports.component.css']
+  selector: 'app-chart-report-pdf',
+  templateUrl: './chart-report-pdf.component.html',
+  styleUrls: ['./chart-report-pdf.component.css']
 })
-export class ReportComponent {
-  @Input() chartData !: { selectedChart: any; canvasData: any; };
+export class ChartReportPdfComponent {
+  @Input() inputchartData !: { selectedChart: any; canvasData: any; };
   activeChart: any = null;
   showReport: boolean = false;
   clearActiveChart: () => void = () => { };
@@ -18,7 +22,7 @@ export class ReportComponent {
 
   ngOnInit(){
   }
-  constructor(private chartService: ChartService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService) {
   }
 
   public barChartOptions: ChartConfiguration['options'] = {
@@ -51,10 +55,6 @@ export class ReportComponent {
     },
   };
 
-  isPieChart(chartType: string): boolean {
-    return chartType === 'pie';
-  }
-
   generateReport(): void {
     const reportHTML = this.generateHTMLReport();
     const newWindow = window.open();
@@ -80,15 +80,28 @@ export class ReportComponent {
     return percentage.toFixed(2);
   }
 
-  downloadReportAsCSV(dataTypes: string[]) {
-    this.chartService.downloadCSV(dataTypes).subscribe(data => {
-      const blob = new Blob([data], { type: 'text/csv' });
-      const downloadLink = document.createElement('a');
-      downloadLink.href = window.URL.createObjectURL(blob);
-      downloadLink.download = 'Report.csv';
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
+  downloadReportAsPDF() {
+    const container = document.querySelector(".container") as HTMLElement;
+    html2canvas(container).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('report.pdf');
     });
-  }
+}
+downloadReportAsCSV(dataTypes: string[]) {
+
+  this.chartService.downloadCSV(dataTypes).subscribe(data => {
+    const blob = new Blob([data], { type: 'text/csv' });
+    const downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = 'Report.csv';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  });
+}
 }
