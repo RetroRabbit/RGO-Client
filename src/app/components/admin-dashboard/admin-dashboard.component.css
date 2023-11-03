@@ -91,7 +91,7 @@
 }
 
 .mat-radio-button.mat-radio-checked .mat-radio-label-content {
-  color: #0029C6 !important; /* using !important to override any existing styles */
+  color: #0029C6 !important;
 }
 
 .mat-mdc-standard-chip {
