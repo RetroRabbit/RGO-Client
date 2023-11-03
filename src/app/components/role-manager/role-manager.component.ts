@@ -6,8 +6,10 @@ import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { RoleService } from 'src/app/services/role.service';
-import { RoleAccess } from 'src/app/models/role-access-interface';
+import { RoleAccess } from 'src/app/models/role-access.interface';
 import { Role } from 'src/app/models/role.interface';
+import { RoleAccessLink} from 'src/app/models/role-access-link.interface';
+import { RoleManagementService } from 'src/app/services/role-management.service';
 
 
 
@@ -19,72 +21,52 @@ import { Role } from 'src/app/models/role.interface';
 })
 export class RoleManagerComponent {
   @Input() goto: 'dashboard' | 'employees' = 'dashboard';
-  roles$: Observable<string[]> = this.employeeRoleService.getAllRoles()
-  employees$: Observable<Employee[]> = this.employeeService.getAll()
-  roleAccesses$: Observable<Map<string, string[]>> = this.roleService.getAllRoles();
-
+ 
   saved: boolean = false
   deleted: boolean = false
   failed: boolean = false
   selected: boolean = false
 
-  currRole!: Map<string, string[]>
-
-  newRoleForm = new FormGroup({
-    role: new FormControl('', Validators.required),
-    permission: new FormControl('', Validators.required),
-  })
-
-
  
-  // roles: Role[] = [];
-  // roleAccesses: RoleAccess[] = [];
+  
 
-  title = 'toolsets';
+  roles: Role[] = [];
+  
+  roleAccesses: RoleAccess[] = [];
+
+  roleAccessLinks: RoleAccessLink[] = [];
+
+  chartPermissions :RoleAccess[] = [];
+
   parentSelector: boolean = false;
 
-  roleAccessLink = [
-    { id: 1, roleId:1, roleAccessId: 1, },
-    { id: 2, roleId:1, roleAccessId: 2, },
-    { id: 3, roleId:1, roleAccessId: 2, },
-    { id: 4, roleId:1, roleAccessId: 8, },
-    { id: 5, roleId:1, roleAccessId: 5, },
-    { id: 6, roleId:1, roleAccessId: 6, },
-    { id: 7, roleId:1, roleAccessId: 7,},
-    { id: 8, roleId:1, roleAccessId: 8, }, 
-  ];
+  
+  ngOnInit() {
+    this.roleManagementService.getAllRoles().subscribe(roles => {
+      this.roles = roles;
+    });
+    
+    this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
+      this.roleAccessLinks = roleAccessLinks ;
+      console.log(this.roleAccessLinks);
+    });
 
-  roles= [
-    {id:1, description:"SuperAdmin"},
-    {id:2, description:"Admin"},
-    {id:3, description:"Employee"},
-    {id:4, description:"Talent"}
-  ];
+    this.roleManagementService.getAllRoleAccesses().subscribe(roleAccess => {
+     this.roleAccesses = roleAccess
+     this.chartPermissions = this.roleAccesses.filter(p=> p.permission.includes("Chart"));
+    
+     console.log(this.roleAccesses);
+    });
+  }
 
-  permissionTag =[{
-    id:1, description:"Charts",parentSelector:true,
-  }]
-  roleAccess = [
-    { id: 1, description: "ViewEmployee" },
-    { id: 2, description: "AddEmployee" },
-    { id: 3, description: "EditEmployee" },
-    { id: 4, description: "DeleteEmployee" },
-    { id: 5, description: "ViewChart" },
-    { id: 6, description: "AddChart" },
-    { id: 7, description: "EditChart" },
-    { id: 8, description: "DeleteChart" },
-    { id: 9, description: "ViewOwnInfo" },
-    { id: 10, description: "EditOwnInfo" }
-];
 
-chartsPermissions = this.roleAccess.filter(permission => permission.description.includes("Chart"));
+
+   
 
  
 
   onChangeRoleAccess($event: any, role: string, permission: string) {
     
-     console.log(role,permission)
-     console.log($event);
     var isChecked = $event.source.checked;
     if(isChecked){
       
@@ -97,49 +79,11 @@ chartsPermissions = this.roleAccess.filter(permission => permission.description.
   }
   
   constructor(
+    private roleManagementService: RoleManagementService,
     private roleService: RoleService,
-    private employeeService: EmployeeService,
-    private employeeRoleService: EmployeeRoleService,
-    private cookieService: CookieService
   ) { }
 
-  ngOnInit() {
-    // this.employeeRoleService.getAllRoles().subscribe(roles => {
-    //   this.roles = roles;
-    // });
-
-    // this.employeeRoleService.getAllRoles().subscribe(roleAccess => {
-    //  this.roleAccesses = roleAccess
-    // });
-  }
-
-  getRoles(raw: Map<string, string[]>): string[] {
-    return Object.keys(raw)
-  }
-
-  changePermission(role:string, permission: string): void {
-    this.newRoleForm.setValue({ role: role, permission: permission })
-  }
-
-  changeRole(role: string): void {
-    this.newRoleForm.setValue({ role: role, permission: this.newRoleForm.value.permission ?? '' })
-    this.getRole(role)
-  }
-
-  getPermissions(roleAccess: Map<string, string[]>): string[] {
-    return Object.values(roleAccess)
-      .join(',')
-      .split(',')
-      .filter((value, index, self) => self.indexOf(value) === index)
-  }
-
-  getRole(selectedRole: string): void {
-    this.roleService.getRole(selectedRole).subscribe({
-      next: role =>
-      this.currRole = role
-    })
-  }
-
+  
   onAdd(role:string,permission:string): void {
     this.roleService.addRole(role, permission).subscribe({
       next: (data) => {
