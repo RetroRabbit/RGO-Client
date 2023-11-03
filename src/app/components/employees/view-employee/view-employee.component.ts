@@ -4,6 +4,7 @@ import {
   EventEmitter,
   ViewChild,
   HostListener,
+  NgZone,
 } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
@@ -23,6 +24,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { NgToastService } from 'ng-angular-popup';
+import { ClientService } from 'src/app/services/client.service';
+import { Client } from 'src/app/models/client.interface';
+import { EmployeeData } from 'src/app/models/employeedata.interface';
 
 @Component({
   selector: 'app-view-employee',
@@ -51,39 +55,34 @@ export class ViewEmployeeComponent {
   constructor(
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
+    private clientService: ClientService,
     private toast: NgToastService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit() {
     this.onResize();
+  }
+
+  ngAfterViewInit() {
     this.getEmployees();
   }
 
-  getEmployees() {
+  isLoading: boolean = true;
+
+  getEmployees(): void {
+    this.isLoading = true;
+    const clients$: Observable<Client[]> = this.clientService
+      .getAllClients()
+      .pipe(catchError(() => of([] as Client[])));
+
     this.employeeService
       .getAllProfiles()
       .pipe(
-        switchMap((employees: EmployeeProfile[]) => {
-          const modifiedEmployees$ = employees.map((employee: EmployeeProfile) => {
-            return this.employeeRoleService.getRoles(employee.email!).pipe(
-              map((roles) => ({
-                Name: `${employee.name} ${employee.surname}`,
-                Position: employee.employeeType!.name,
-                Level: employee.level,
-                Client: employee.clientAllocated ? employee.clientAllocated : 'Bench',
-                Roles: this.sortRoles(roles),
-                Email: employee.email,
-              }))
-            );
-          });
-          return forkJoin(modifiedEmployees$);
-        }),
-        tap((data) => {
-          this.dataSource = new MatTableDataSource(data);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-        }),
+        switchMap((employees: EmployeeProfile[]) =>
+          this.combineEmployeesWithRolesAndClients(employees, clients$)
+        ),
         catchError((error) => {
           this.toast.error({
             detail: `Error: ${error}`,
@@ -92,17 +91,77 @@ export class ViewEmployeeComponent {
             position: 'topRight',
           });
           return of([]);
-        })
+        }),
+        first()
       )
-      .subscribe();
+      .subscribe((data) => {
+        this.setupDataSource(data)
+        this.isLoading = false;
+      });
   }
-  
+
+  private combineEmployeesWithRolesAndClients(
+    employees: EmployeeProfile[],
+    clients$: Observable<Client[]>
+  ): Observable<EmployeeData[]> {
+    const rolesRequests$ = employees.map((employee) =>
+      this.employeeRoleService
+        .getRoles(employee.email!)
+        .pipe(catchError(() => of([] as string[])))
+    );
+
+    return forkJoin([of(employees), clients$, ...rolesRequests$]).pipe(
+      map(([employees, clients, ...rolesList]) =>
+        this.constructEmployeeData(employees, clients, rolesList)
+      )
+    );
+  }
+
+  private constructEmployeeData(
+    employees: EmployeeProfile[],
+    clients: Client[],
+    rolesList: string[][]
+  ): EmployeeData[] {
+    const employeeDataList: EmployeeData[] = employees.map(
+      (employee, index) => {
+        const client = clients.find(
+          (client) =>
+            employee.clientAllocated && client.id === +employee.clientAllocated
+        );
+        const sortedRoles = this.sortRoles(rolesList[index]);
+        return {
+          Name: `${employee.name} ${employee.surname}`,
+          Position: employee.employeeType!.name,
+          Level: employee.level,
+          Client: client ? client.name : 'Bench',
+          Roles: sortedRoles,
+          Email: employee.email,
+        };
+      }
+    );
+    return employeeDataList;
+  }
+
+  private setupDataSource(data: any[]): void {
+    this.dataSource = new MatTableDataSource(data);
+    this.ngZone.run(() => {
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    })
+    this.dataSource._updateChangeSubscription();
+  }
+
   sortRoles(roles: string[]): string[] {
-    const adminRoles = roles.filter(role => role.toLowerCase().includes('admin')).sort().reverse();
-    const nonAdminRoles = roles.filter(role => !role.toLowerCase().includes('admin')).sort();
-  
+    const adminRoles = roles
+      .filter((role) => role.toLowerCase().includes('admin'))
+      .sort()
+      .reverse();
+    const nonAdminRoles = roles
+      .filter((role) => !role.toLowerCase().includes('admin'))
+      .sort();
+
     return [...adminRoles, ...nonAdminRoles];
-  }  
+  }
 
   reset(): void {
     this.dataSource.filter = '';
@@ -147,14 +206,7 @@ export class ViewEmployeeComponent {
 
   displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];
 
-  dataSource: MatTableDataSource<{
-    Name: string;
-    Position: string | undefined;
-    Level: number | undefined;
-    Client: string;
-    Roles: string[];
-    Email: string | undefined;
-  }> = new MatTableDataSource();
+  dataSource: MatTableDataSource<EmployeeData> = new MatTableDataSource();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -172,26 +224,21 @@ export class ViewEmployeeComponent {
   pageSizes: number[] = [1, 5, 10, 25, 100];
 
   changePageSize(size: number) {
-    this.paginator.pageSize = size;
+    if (this.paginator) this.paginator.pageSize = size;
     this.dataSource._updateChangeSubscription();
   }
 
   get pageIndex(): number {
-    return this.paginator.pageIndex;
+    return this.paginator?.pageIndex ?? 0;
   }
 
-  previousPage() {
-    if (!this.paginator.hasPreviousPage()) return;
-    this.paginator.previousPage();
-  }
-
-  nextPage() {
-    if (!this.paginator.hasNextPage()) return;
-    this.paginator.nextPage();
+  get getNumberOfPages(): number {
+    if (!this.paginator || this.paginator.pageSize === 0) return 0;
+    return Math.ceil(this.paginator.length / this.paginator.pageSize);
   }
 
   get visiblePages(): number[] {
-    const totalPages = this.paginator.getNumberOfPages();
+    const totalPages = this.getNumberOfPages;
 
     let maxVisiblePages = this.screenWidth <= 992 ? 2 : 4;
 
@@ -206,29 +253,53 @@ export class ViewEmployeeComponent {
     for (let i = startPage; i <= endPage; i++) {
       pages.push(i + 1);
     }
+
     return pages;
   }
 
   changeRole(email: string, role: string): void {
-    this.employeeRoleService.addRole(email, role).pipe(
-      tap(() => {
-        this.toast.success({
-          detail: `Role changed successfully!`,
-          summary: 'Success',
-          duration: 5000,
-          position: 'topRight',
-        });
-        this.getEmployees();
-      }),
-      catchError((error) => {
-        this.toast.error({
-          detail: 'Failed to change role',
-          summary: 'Error',
-          duration: 10000,
-          position: 'topRight',
-        });
-        return of(null);
-      })
-    ).subscribe();
-  }  
+    this.employeeRoleService
+      .addRole(email, role)
+      .pipe(
+        tap(() => {
+          this.toast.success({
+            detail: `Role changed successfully!`,
+            summary: 'Success',
+            duration: 5000,
+            position: 'topRight',
+          });
+          this.getEmployees();
+        }),
+        catchError((error) => {
+          this.toast.error({
+            detail: 'Failed to change role',
+            summary: 'Error',
+            duration: 10000,
+            position: 'topRight',
+          });
+          return of(null);
+        })
+      )
+      .subscribe();
+  }
+
+  get pageSize(): number {
+    return this.paginator ? this.paginator.pageSize : 1;
+  }
+
+  set pageSize(size: number) {
+    if (this.paginator) this.paginator.pageSize = size;
+  }
+
+  get start(): number {
+    return this.paginator
+      ? this.paginator.pageIndex * this.paginator.pageSize + 1
+      : 0;
+  }
+
+  get end(): number {
+    return this.paginator
+      ? (this.paginator.pageIndex + 1) * this.paginator.pageSize
+      : 0;
+  }
 }
