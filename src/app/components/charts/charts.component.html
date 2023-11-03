@@ -21,7 +21,6 @@
             <mat-radio-group aria-label="Chart Type" [(ngModel)]="updateFormData.type">
               <mat-radio-button value='bar'>Bar</mat-radio-button>
               <mat-radio-button value='pie'>Pie</mat-radio-button>
-              <!-- <mat-radio-button value='doughnut'>Doughnut</mat-radio-button> -->
             </mat-radio-group>
           </div>
           <div class="col-12 mt-3 justify-content" id="edit-controls">
@@ -67,9 +66,6 @@
           <button mat-menu-item (click)="deleteChart(i)">
             <mat-icon class="pe-3">delete_outline</mat-icon> Delete graph
           </button>
-          <!-- <button mat-menu-item>
-              <mat-icon class="pe-3">remove_red_eye</mat-icon> Hide Filters
-            </button> -->
         </mat-menu>
       </div>
     </div>

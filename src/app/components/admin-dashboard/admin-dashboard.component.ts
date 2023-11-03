@@ -1,11 +1,11 @@
-import { Component,ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Chart } from 'src/app/models/charts.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { CookieService } from 'ngx-cookie-service';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatAutocompleteSelectedEvent, MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { FormControl } from '@angular/forms';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatDialog } from '@angular/material/dialog';
 import { TemplateRef } from '@angular/core';
 import { NgToastService } from 'ng-angular-popup';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';

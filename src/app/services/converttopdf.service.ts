@@ -5,7 +5,7 @@ import html2canvas from 'html2canvas';
 @Injectable({
   providedIn: 'root'
 })
-export class ConverttopdfService {
+export class ConvertToPdfService {
 
   constructor() { }
 

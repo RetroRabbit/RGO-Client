@@ -33,7 +33,6 @@
   background-color: white;
   border-radius: 2rem;
   min-height: 75vh;
-  /* text-align: center; */
 }
 
 #add-graph>button {
@@ -160,7 +159,7 @@ word-wrap: break-word;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22px; /* 137.5% */
+  line-height: 22px;
   letter-spacing: -0.32px;
 }
 
