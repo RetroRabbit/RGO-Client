@@ -41,6 +41,7 @@ export class ViewEmployeeComponent {
   roles: Observable<string[]> = this.employeeRoleService
     .getAllRoles()
     .pipe(first());
+   
 
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
