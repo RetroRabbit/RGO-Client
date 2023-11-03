@@ -25,16 +25,16 @@
         >All RoleID :{{r.id}}</mat-checkbox>
          </th>
       </tr>
-      <tr *ngFor="let n of chartsPermissions">
+      <tr *ngFor="let n of chartPermissions">
         <th scope="row">
-         {{n.description}}
+         {{n.permission}}
         </th>
         <th *ngFor="let r of roles">
           <mat-checkbox
           color="primary"
           [checked]="false"
-          (change)="onChangeRoleAccess($event, r.description, n.description)"
-        >role : {{r.description}} Permission: {{n.description}}</mat-checkbox>
+          (change)="onChangeRoleAccess($event, r.description, n.permission)"
+        >role : {{r.id}} Permission: {{n.id}}</mat-checkbox>
         </th>
       </tr>
     </tbody>
