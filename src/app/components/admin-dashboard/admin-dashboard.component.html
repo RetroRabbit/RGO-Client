@@ -368,11 +368,10 @@
     </div>
   </div>
 
-
   <ng-template #ShowCharts>
     <div class="row p-4" id="no-graphs">
-      <div class="" id="graph-header">
-        <div>
+      <div class="row" id="graph-header">
+        <div class="col-10">
           <div class="m-0" id="graph-heading">
             <h3>Graphs Overview</h3>
           </div>
@@ -380,7 +379,7 @@
             <h5>Your recent graphs</h5>
           </div>
         </div>
-        <div id="graphs-btn">
+        <div class="col-2" id="graphs-btn">
           <button class="ml-auto" (click)="CaptureEvent($event)">+ Add Graph</button>
         </div>
       </div>

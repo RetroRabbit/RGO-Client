@@ -39,9 +39,6 @@
                 <div class="data-value">{{ chartData.selectedChart.data[i] }} employees</div>
                 <div class="data-percentage">({{ calculatePercentage(chartData.selectedChart.data[i]) }}% of total)</div>
               </div>
-              <div class="col-12" id="button-container">
-                <button mat-button id="save-button" (click)="downloadReportAsCSV(chartData.selectedChart.dataTypes)">Download CSV</button>
-              </div>
             </div>
           </div>
         </div>
