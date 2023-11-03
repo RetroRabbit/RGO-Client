@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { RoleService } from 'src/app/services/role.service';
 import { RoleAccess } from 'src/app/models/role-access-interface';
 import { Role } from 'src/app/models/role.interface';
+import { MatDialog } from '@angular/material/dialog';
 
 
 
@@ -19,6 +20,7 @@ import { Role } from 'src/app/models/role.interface';
 })
 export class RoleManagerComponent {
   @Input() goto: 'dashboard' | 'employees' = 'dashboard';
+  @ViewChild('dialogContentTemplate') dialogContentTemplate!: TemplateRef<any>;
   roles$: Observable<string[]> = this.employeeRoleService.getAllRoles()
   employees$: Observable<Employee[]> = this.employeeService.getAll()
   roleAccesses$: Observable<Map<string, string[]>> = this.roleService.getAllRoles();
@@ -100,7 +102,8 @@ chartsPermissions = this.roleAccess.filter(permission => permission.description.
     private roleService: RoleService,
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -160,5 +163,16 @@ chartsPermissions = this.roleAccess.filter(permission => permission.description.
         this.failed = true
       }
     })
+  }
+
+  openDialog(): void {
+    console.log("hello")
+    const dialogRef = this.dialog.open(this.dialogContentTemplate);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        console.log('Delete action confirmed');
+      }
+    });
   }
 }

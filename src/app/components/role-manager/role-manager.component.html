@@ -1,4 +1,27 @@
-<button id="savechangesbtn">Save Changes</button>
+<button mat-button id="savechangesbtn" (click)="openDialog()">Save Changes</button>
+
+<ng-template #dialogContentTemplate>
+  <!-- <h2 mat-dialog-title>Save Permissions</h2>
+  <mat-dialog-content>Are you sure you want to save the permissions that you edited?</mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Save</button>
+    <button mat-button [mat-dialog-close]="true">Back</button>
+  </mat-dialog-actions> -->
+  <div id="dialog-content">
+    <div class="row">
+     <div id="dialog-container">
+      <div id="dialog-header">
+        <h2 mat-dialog-title id="dialog-title">Save Permissions</h2>
+        <h4 id="dialog-subtitle">Are you sure you want to save the permissions that you edited?</h4>
+      </div>
+      <div id="button-container">
+        <button mat-button mat-dialog-close id="save-button">Save</button>
+        <button mat-button mat-dialog-close id="cancel-button">Back</button>
+      </div>
+     </div>
+    </div>
+  </div>
+</ng-template>
 
 <div class="table-responsive">
   <table class="table" id="mattable">
