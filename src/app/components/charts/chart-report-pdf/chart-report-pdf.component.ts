@@ -27,7 +27,6 @@ export class ChartReportPdfComponent {
 
   public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
-    // We use these empty structures as placeholders for dynamic theming.
     scales: {
       x: {},
       y: {
@@ -53,13 +52,6 @@ export class ChartReportPdfComponent {
         display: true,
         position: 'top',
       },
-      // datalabels: {
-      //   formatter: (value: any, ctx: any) => {
-      //     if (ctx.chart.data.labels) {
-      //       return ctx.chart.data.labels[ctx.dataIndex];
-      //     }
-      //   },
-      // },
     },
   };
 
@@ -90,16 +82,12 @@ export class ChartReportPdfComponent {
 
   downloadReportAsPDF() {
     const container = document.querySelector(".container") as HTMLElement;
-
     html2canvas(container).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
-
-        // Create a document in portrait layout (210mm x 297mm)
         const pdf = new jsPDF('p', 'mm', 'a4');
         const imgProps = pdf.getImageProperties(imgData);
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save('report.pdf');
     });
@@ -107,16 +95,12 @@ export class ChartReportPdfComponent {
 downloadReportAsCSV(dataTypes: string[]) {
 
   this.chartService.downloadCSV(dataTypes).subscribe(data => {
-
     const blob = new Blob([data], { type: 'text/csv' });
-
     const downloadLink = document.createElement('a');
     downloadLink.href = window.URL.createObjectURL(blob);
     downloadLink.download = 'Report.csv';
-
     document.body.appendChild(downloadLink);
     downloadLink.click();
-
     document.body.removeChild(downloadLink);
   });
 }

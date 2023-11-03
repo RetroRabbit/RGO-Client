@@ -114,7 +114,6 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   }
 
   CaptureEventOld(event: any) {
-    // const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', "+ Add Graph");
   }
 
@@ -204,7 +203,7 @@ onTypeRemoved(type: string): void {
       .subscribe({
         next : response => {
           this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
-          this.dialog.closeAll();   
+          this.dialog.closeAll();
           this.selectedCategories = [];
           this.chartName = '';
           this.chartType = '';
@@ -217,7 +216,6 @@ onTypeRemoved(type: string): void {
   }
 
   onDropDownChange() {
-    //if (this.selectedDataItems && this.selectedDataItems.length > 0) {
       if(this.selectedDataItems.length < 1){
         return;
       }

@@ -1,23 +1,16 @@
-          <!-- Button on the Right -->
           <div class="row justify-content-centre mb-4">
-            <div class="col-auto text-center"> <!-- col-auto adjusts to content width -->
+            <div class="col-auto text-center">
               <button mat-button id="save-button" (click)="downloadReportAsPDF()">Download PDF</button>
             </div>
-            <!-- <div class="col-auto text-right">
+            <div class="col-auto text-right">
             <button mat-button id="save-button" (click)="downloadReportAsCSV(chartData.selectedChart.dataTypes)">Download CSV</button>
-          </div> -->
           </div>
-<div class="container m-0"> <!-- Main container to center everything -->
+          </div>
+<div class="container m-0">
   <div class="row">
 
     <div class="col-12 m-0 text-center" id="chart-container">
-
-
-
-      <!-- A4 Format Dimensions -->
       <div class="container text-center" style="height: 297mm; background: white; margin: 0 auto;">
-
-        <!-- Top Section: Title and Description -->
         <div class="row text-center">
           <div class="col-12" id="title">
             <h1>{{ chartData.selectedChart.name }}</h1>
@@ -27,8 +20,6 @@
             <hr>
           </div>
         </div>
-
-        <!-- Middle Section: Chart Type and Total Employees -->
         <div class="row mb-4 text-center">
           <div class="col-6">
             <h3>Chart Type: </h3> {{ chartData.selectedChart.type }}
@@ -38,8 +29,6 @@
           </div>
           <hr>
         </div>
-
-        <!-- Chart Display -->
         <div class="row mb-4 text-center">
           <div class="col-12">
             <div id="edit-chart-container">
@@ -52,8 +41,6 @@
           </div>
           <hr>
         </div>
-
-        <!-- Bottom Section: Chart Data -->
         <div class="row text-center">
           <div class="col-12">
             <h2>Chart Data</h2>

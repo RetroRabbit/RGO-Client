@@ -42,7 +42,6 @@ export class ChartComponent implements OnInit {
 
     public barChartOptions: ChartConfiguration['options'] = {
       responsive: true,
-      // We use these empty structures as placeholders for dynamic theming.
       scales: {
         x: {},
         y: {
@@ -68,13 +67,6 @@ export class ChartComponent implements OnInit {
           display: true,
           position: 'top',
         },
-        // datalabels: {
-        //   formatter: (value: any, ctx: any) => {
-        //     if (ctx.chart.data.labels) {
-        //       return ctx.chart.data.labels[ctx.dataIndex];
-        //     }
-        //   },
-        // },
       },
     };
 

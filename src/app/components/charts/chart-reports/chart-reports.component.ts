@@ -23,7 +23,6 @@ export class ReportComponent {
 
   public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
-    // We use these empty structures as placeholders for dynamic theming.
     scales: {
       x: {},
       y: {
@@ -49,13 +48,6 @@ export class ReportComponent {
         display: true,
         position: 'top',
       },
-      // datalabels: {
-      //   formatter: (value: any, ctx: any) => {
-      //     if (ctx.chart.data.labels) {
-      //       return ctx.chart.data.labels[ctx.dataIndex];
-      //     }
-      //   },
-      // },
     },
   };
 
@@ -89,18 +81,13 @@ export class ReportComponent {
   }
 
   downloadReportAsCSV(dataTypes: string[]) {
-
     this.chartService.downloadCSV(dataTypes).subscribe(data => {
-
       const blob = new Blob([data], { type: 'text/csv' });
-
       const downloadLink = document.createElement('a');
       downloadLink.href = window.URL.createObjectURL(blob);
       downloadLink.download = 'Report.csv';
-
       document.body.appendChild(downloadLink);
       downloadLink.click();
-
       document.body.removeChild(downloadLink);
     });
   }
