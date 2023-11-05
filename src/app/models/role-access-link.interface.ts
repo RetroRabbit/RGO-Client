@@ -7,6 +7,8 @@ export interface RoleAccessLink {
     roleAccess: {
       id: number;
       permission: string;
+      grouping: string
     };
+    changeType: string;
   }
   

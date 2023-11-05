@@ -1,4 +1,4 @@
-<button id="savechangesbtn">Save Changes</button>
+<button id="savechangesbtn" (click)="saveChanges()">Save Changes</button>
 
 <div class="table-responsive">
   <table class="table" id="mattable">
@@ -33,7 +33,7 @@
           <mat-checkbox
           color="primary"
           [checked]="false"
-          (change)="onChangeRoleAccess($event, r.description, n.permission)"
+          (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)"
         >role : {{r.id}} Permission: {{n.id}}</mat-checkbox>
         </th>
       </tr>
