@@ -15,7 +15,6 @@
 }
 
 #edit-chart-container{
-  max-height: fit-content;
   text-align:center;
   width: 85%;
   margin: 0 auto;
@@ -24,4 +23,10 @@
 #edit-chart-container>canvas{
   margin: 0 auto;
   height: 100%;
+}
+
+#oveflow-contianer{
+  height: 95vh;
+  overflow-y:scroll;
+  overflow-x: hidden;
 }
