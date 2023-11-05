@@ -4,41 +4,44 @@
   <table class="table" id="mattable">
     <thead>
       <tr>
-        <th scope="col"id="tableheader">
+        <th scope="col" id="tableheader">
           Permissions
-         </th>
+        </th>
         <th scope="col" *ngFor="let p of roles" id="tableheader">
-         {{p.description}}
+          {{ p.description }}
         </th>
       </tr>
     </thead>
     <tbody>
+      <!-- charts Permissions -->
       <tr>
         <th scope="row" id="subheader">
           Charts
-         </th>
-         <th scope="row" *ngFor="let r of roles" id="subheader">
+        </th>
+        <th scope="row" *ngFor="let r of roles" id="subheader">
           <mat-checkbox
             color="primary"
-            [(ngModel)]="parentSelector"
-            [value]="-1 + ''"
-        >All RoleID :{{r.id}}</mat-checkbox>
-         </th>
+            [(ngModel)]="allCheckboxesState[r.description]"
+            (change)="toggleAllCheckboxes(r.description)"
+          >
+            All RoleID: {{ r.id }}
+          </mat-checkbox>
+        </th>
       </tr>
       <tr *ngFor="let n of chartPermissions">
         <th scope="row">
-         {{n.permission}}
+          {{ n.permission }}
         </th>
         <th *ngFor="let r of roles">
           <mat-checkbox
-          color="primary"
-          [checked]="false"
-          (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)"
-        >role : {{r.id}} Permission: {{n.id}}</mat-checkbox>
+            color="primary"
+            [(ngModel)]="checkboxStates[r.description + n.permission]"
+            (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)"
+          >
+            role: {{ r.id }} Permission: {{ n.id }}
+          </mat-checkbox>
         </th>
       </tr>
     </tbody>
   </table>
 </div>
- 
-
