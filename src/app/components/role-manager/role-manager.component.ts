@@ -26,11 +26,10 @@ export class RoleManagerComponent {
   roleAccessLinks: RoleAccessLink[] = [];
 
   chartPermissions :RoleAccess[] = [];
+  employeePermissions :RoleAccess[] = [];
 
   temporaryRoleAccessChanges: RoleAccessLink[] = [];
 
-
-  
   parentSelector: boolean = false;
 
   constructor(
@@ -46,30 +45,75 @@ export class RoleManagerComponent {
     });
     
     this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
-      this.roleAccessLinks = roleAccessLinks ;
+      this.roleAccessLinks = roleAccessLinks;
+      this.updateCheckboxStates();
     });
 
     this.roleManagementService.getAllRoleAccesses().subscribe(roleAccess => {
      this.roleAccesses = roleAccess
      this.chartPermissions = this.roleAccesses.filter(permission => permission.grouping === "Charts");
-
+     this.employeePermissions = this.roleAccesses.filter(permission => permission.grouping === "Employee Data");
     });
+
   }
 
-  saveChanges() {
-    this.temporaryRoleAccessChanges.forEach((change) => {
-      if (change.changeType === 'add') {
-        this.onAdd(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
-      } else if (change.changeType === 'delete') {
-        this.onDelete(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
+  updateCheckboxStates() {
+    for (let n of this.chartPermissions) {
+      for (let r of this.roles) {
+        const key = r.description + n.permission;
+        const existingLink = this.roleAccessLinks.find(link =>
+          link.role.description === r.description &&
+          link.roleAccess.permission === n.permission &&
+          link.roleAccess.grouping === n.grouping
+        );
+        this.checkboxStates[key] = existingLink ? true : false;
       }
-    });
-  
-    // Reset the temporaryRoleAccessChanges array after processing all changes
-    this.temporaryRoleAccessChanges = [];
+    }
   }
-  
-  
+
+allCheckboxesState: { [key: string]: boolean } = {};
+
+checkboxStates: { [key: string]: boolean } = {};
+
+toggleAllCheckboxes(roleDescription: string) {
+  for (let n of this.chartPermissions) {
+    const key = roleDescription + n.permission;
+    this.checkboxStates[key] = this.allCheckboxesState[roleDescription];
+    const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
+      item.role.description === roleDescription && item.roleAccess.permission === n.permission && item.roleAccess.grouping === n.grouping
+    );
+
+    if (this.allCheckboxesState[roleDescription]) {
+      if (existingChangeIndex === -1) {
+        const existingLink = this.roleAccessLinks.find(link =>
+          link.role.description === roleDescription &&
+          link.roleAccess.permission === n.permission &&
+          link.roleAccess.grouping === n.grouping
+        );
+        const changeType = existingLink ? 'delete' : 'add';
+        this.temporaryRoleAccessChanges.push({
+          id: existingLink ? existingLink.id : -1,
+          role: { id: -1, description: roleDescription },
+          roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
+          changeType: changeType,
+        });
+      }
+    } else {
+      if (existingChangeIndex !== -1) {
+        this.temporaryRoleAccessChanges[existingChangeIndex].changeType = 'delete';
+      } else {
+        this.temporaryRoleAccessChanges.push({
+          id: -1,
+          role: { id: -1, description: roleDescription },
+          roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
+          changeType: 'delete',
+        });
+      }
+    }
+  }
+}
+
+
   onChangeRoleAccess($event: any, role: string, permission: string, grouping: string) {
     const isChecked = $event.source.checked;
   
@@ -87,7 +131,6 @@ export class RoleManagerComponent {
       changeType: isChecked ? 'add' : 'delete',
     };
   
-    // Check if the change already exists in the array and remove it
     const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
       item.role.description === role && item.roleAccess.permission === permission && item.roleAccess.grouping === grouping
     );
@@ -96,16 +139,27 @@ export class RoleManagerComponent {
       this.temporaryRoleAccessChanges.splice(existingChangeIndex, 1);
     }
   
-    // Push the new change to the array
     this.temporaryRoleAccessChanges.push(change);
   }
   
+  saveChanges() {
+    this.temporaryRoleAccessChanges.forEach((change) => {
+      if (change.changeType === 'add') {
+        this.onAdd(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
+      } else if (change.changeType === 'delete') {
+        this.onDelete(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
+      }
+    });
   
+    this.temporaryRoleAccessChanges = [];
+  }
+  
+
   onAdd(role:string,permission:string,grouping: string): void {
     this.roleService.addRole(role, permission,grouping).subscribe({
       next: (data) => {
         this.toast.success({
-          detail: `RoleAccess saved  successfully!`,
+          detail: `Permissions saved  successfully!`,
           summary: 'Success',
           duration: 5000,
           position: 'topRight',
@@ -122,7 +176,7 @@ export class RoleManagerComponent {
     this.roleService.deleteRole(role, permission,grouping).subscribe({
       next: (data) => {
         this.toast.success({
-          detail: `RoleAccessLink deleted  successfully!`,
+          detail: `Permissions deleted  successfully!`,
           summary: 'Success',
           duration: 5000,
           position: 'topRight',
@@ -132,7 +186,7 @@ export class RoleManagerComponent {
       error: (error) => {
         this.toast.error({
           detail: `Error: ${error}`,
-          summary: 'Failed to delete roleAccessLink',
+          summary: 'Failed to delete Permissions',
           duration: 10000,
           position: 'topRight',
         });
