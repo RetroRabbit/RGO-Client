@@ -112,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-10 px-4">
+        <div class="col-11 px-4">
             <div class="row mx-3" id="accordion-progress">
                 <div class="col-2 py-3" id="progress-stats"
                     style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
@@ -126,7 +126,7 @@
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
                 <div class="col-2 py-3" id="progress-stats"
-                    style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                    style="background-color: {{ bankInformationProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Bank Information {{bankInformationProgress}}%</h5>
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
@@ -717,7 +717,7 @@
                             <mat-panel-title>
                                 Employee Details
                             </mat-panel-title>
-                            <mat-panel-description *ngIf="employeeFormProgress != 100">
+                            <mat-panel-description *ngIf="bankInformationProgress != 100">
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
@@ -769,36 +769,42 @@
                                                     formControlName="branch">
                                             </mat-form-field>
                                         </div>
+                                        <p id="base64"></p>
                                         <div class="col-6 my-2">
-                                            <mat-label>
+                                            <mat-label [ngStyle]="{color: editBanking ? 'black' : 'grey'}">
                                                 Proof of account
                                             </mat-label>
                                             <div class="my-2">
-                                                <div class="row" id="uploadButton" (click)="openFileInput()">
+                                                <div *ngIf="employeeBanking.file.length > 1">
+                                                    <button mat-button color="primary"
+                                                        (click)="convertFileToBase64()">Download</button>
+                                                </div>
+                                                <div [hidden]="!editBanking" class="row" id="uploadButton"
+                                                    (click)="openFileInput()">
                                                     <div class="col-1" style="color: blue">
                                                         <img src="../../../../assets/img/file_upload.svg" alt="">
                                                     </div>
                                                     <div class="col-5">
                                                         <h4>Upload document here</h4>
-                                                        <input type="file" id="fileUpload" hidden
-                                                            (change)="handleFileInput($event)" formControlName="file">
+                                                        <input id="fileUpload" hidden type="file" (change)="onFileSelected($event)" accept=".pdf">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-2">
-                                    <button *ngIf="!editBanking" mat-button id="edit-button"
-                                        (click)="editBankingDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
+                                    <div class="col-2">
+                                        <button *ngIf="!editBanking" mat-button id="edit-button"
+                                            (click)="editBankingDetails()"> <mat-icon>edit</mat-icon>Edit
+                                            Details</button>
+                                    </div>
+                                    <div class="col-12" id="edit-buttons">
+                                        <button *ngIf="editBanking" mat-button id="cancel-button"
+                                            (click)="cancelBankingDetails()">Cancel</button>
+                                        <button *ngIf="editBanking" mat-button id="save-button"
+                                            (click)="saveBankingDetails()">Save changes</button>
+                                    </div>
                                 </div>
-                                <div class="col-12" id="edit-buttons">
-                                    <button *ngIf="editBanking" mat-button id="cancel-button"
-                                        (click)="cancelBankingDetails()">Cancel</button>
-                                    <button *ngIf="editBanking" mat-button id="save-button"
-                                        (click)="saveBankingDetails()">Save changes</button>
-                                </div>
-                            </div>
                         </form>
                     </mat-expansion-panel>
                 </mat-accordion>
