@@ -15,7 +15,7 @@
 }
 
 #edit-chart-container{
-  text-align:center;
+  text-align: center;
   width: 85%;
   margin: 0 auto;
 }
@@ -27,6 +27,6 @@
 
 #oveflow-contianer{
   height: 95vh;
-  overflow-y:scroll;
+  overflow-y: scroll;
   overflow-x: hidden;
 }
