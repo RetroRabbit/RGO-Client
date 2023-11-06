@@ -16,17 +16,11 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./role-manager.component.css'],
 })
 export class RoleManagerComponent {
-  @Input() goto: 'dashboard' | 'employees' = 'dashboard';
-  @ViewChild('dialogContentTemplate') dialogContentTemplate!: TemplateRef<any>;
-<<<<<<< Updated upstream
- 
-=======
-  @ViewChild('dialogCancelTemplate') dialogCancelTemplate!: TemplateRef<any>;
-  roles$: Observable<string[]> = this.employeeRoleService.getAllRoles()
-  employees$: Observable<Employee[]> = this.employeeService.getAll()
-  roleAccesses$: Observable<Map<string, string[]>> = this.roleService.getAllRoles();
 
->>>>>>> Stashed changes
+  @ViewChild('dialogContentTemplate') dialogContentTemplate!: TemplateRef<any>;
+ 
+  @ViewChild('dialogCancelTemplate') dialogCancelTemplate!: TemplateRef<any>;
+  
   saved: boolean = false
   deleted: boolean = false
   failed: boolean = false
@@ -39,6 +33,7 @@ export class RoleManagerComponent {
   roleAccessLinks: RoleAccessLink[] = [];
 
   chartPermissions :RoleAccess[] = [];
+
   employeePermissions :RoleAccess[] = [];
 
   temporaryRoleAccessChanges: RoleAccessLink[] = [];
@@ -48,33 +43,38 @@ export class RoleManagerComponent {
   constructor(
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
-    private employeeService: EmployeeService,
-    private employeeRoleService: EmployeeRoleService,
-    private cookieService: CookieService,
     private dialog: MatDialog,
     private toast: NgToastService
   ) { }
 
   
   ngOnInit() {
+
     this.roleManagementService.getAllRoles().subscribe(roles => {
       this.roles = roles;
     });
     
-    this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
-      this.roleAccessLinks = roleAccessLinks;
-      this.updateCheckboxStates();
-    });
-
     this.roleManagementService.getAllRoleAccesses().subscribe(roleAccess => {
      this.roleAccesses = roleAccess
      this.chartPermissions = this.roleAccesses.filter(permission => permission.grouping === "Charts");
      this.employeePermissions = this.roleAccesses.filter(permission => permission.grouping === "Employee Data");
     });
 
+    this.updateRoleAccessLinks();
+
   }
 
-  updateCheckboxStates() {
+  updateRoleAccessLinks() {
+    this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
+      this.roleAccessLinks = roleAccessLinks;
+      
+    this.updateChartPermissionsCheckboxStates();
+    this.updateEmployeeDataPermissionsCheckboxStates();
+    });
+    
+  }
+
+  updateChartPermissionsCheckboxStates() {
     for (let n of this.chartPermissions) {
       for (let r of this.roles) {
         const key = r.description + n.permission;
@@ -88,9 +88,28 @@ export class RoleManagerComponent {
     }
   }
 
+  updateEmployeeDataPermissionsCheckboxStates() {
+    for (let n of this.employeePermissions) {
+      for (let r of this.roles) {
+        const key = r.description + n.permission;
+        const existingLink = this.roleAccessLinks.find(link =>
+          link.role.description === r.description &&
+          link.roleAccess.permission === n.permission &&
+          link.roleAccess.grouping === n.grouping
+        );
+
+        this.checkboxStatesEmployeePermissions[key] = existingLink ? true : false;
+      }
+    }
+  }
+
 allCheckboxesState: { [key: string]: boolean } = {};
 
+allEmployeeDataCheckboxesState: { [key: string]: boolean } = {}
+
 checkboxStates: { [key: string]: boolean } = {};
+
+checkboxStatesEmployeePermissions: { [key: string]: boolean } = {};
 
 toggleAllCheckboxes(roleDescription: string) {
   for (let n of this.chartPermissions) {
@@ -113,6 +132,38 @@ toggleAllCheckboxes(roleDescription: string) {
           role: { id: -1, description: roleDescription },
           roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
           changeType: changeType,
+        });
+      }
+    } else {
+      if (existingChangeIndex !== -1) {
+        this.temporaryRoleAccessChanges[existingChangeIndex].changeType = 'delete';
+      } else {
+        this.temporaryRoleAccessChanges.push({
+          id: -1,
+          role: { id: -1, description: roleDescription },
+          roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
+          changeType: 'delete',
+        });
+      }
+    }
+  }
+}
+
+toggleAllEmployeeDataCheckboxes(roleDescription: string) {
+  for (let n of this.employeePermissions) {
+    const key = roleDescription + n.permission;
+    this.checkboxStatesEmployeePermissions[key] = this.allEmployeeDataCheckboxesState[roleDescription];
+    const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
+      item.role.description === roleDescription && item.roleAccess.permission === n.permission && item.roleAccess.grouping === n.grouping
+    );
+
+    if (this.allEmployeeDataCheckboxesState[roleDescription]) {
+      if (existingChangeIndex === -1) {
+        this.temporaryRoleAccessChanges.push({
+          id: -1,
+          role: { id: -1, description: roleDescription },
+          roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
+          changeType: 'add',
         });
       }
     } else {
@@ -167,7 +218,10 @@ toggleAllCheckboxes(roleDescription: string) {
         this.onDelete(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
       }
     });
-  
+
+    this.updateRoleAccessLinks();
+    this.updateChartPermissionsCheckboxStates();
+    this.updateEmployeeDataPermissionsCheckboxStates();
     this.temporaryRoleAccessChanges = [];
   }
   
@@ -214,9 +268,10 @@ toggleAllCheckboxes(roleDescription: string) {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(this.dialogContentTemplate);
-
+     
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
+
         console.log('Delete action confirmed');
       }
     });

@@ -9,7 +9,7 @@
         <h4 id="dialog-subtitle">Are you sure you want to save the permissions that you edited?</h4>
       </div>
       <div id="button-container">
-        <button mat-button mat-dialog-close id="save-button">Save</button>
+        <button mat-button mat-dialog-close id="save-button" (click)="saveChanges()">Save</button>
         <button mat-button mat-dialog-close id="cancel-button"(click)="onCancel()">Back</button>
       </div>
      </div>
@@ -72,6 +72,36 @@
             (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)"
           >
             role: {{ r.id }} Permission: {{ n.id }}
+          </mat-checkbox>
+        </th>
+      </tr>
+
+      <!-- Emloyee data permissions -->
+      <tr>
+        <th scope="row" id="subheader">
+          Employee Data
+        </th>
+        <th scope="row" *ngFor="let r of roles" id="subheader">
+          <mat-checkbox
+            color="primary"
+            [(ngModel)]="allEmployeeDataCheckboxesState[r.description]"
+            (change)="toggleAllEmployeeDataCheckboxes(r.description)"
+          >
+            All RoleID: {{r.id}}
+          </mat-checkbox>
+        </th>
+      </tr>
+      <tr *ngFor="let n of employeePermissions">
+        <th scope="row">
+          {{n.permission}}
+        </th>
+        <th *ngFor="let r of roles">
+          <mat-checkbox
+            color="primary"
+            [(ngModel)]="checkboxStatesEmployeePermissions[r.description + n.permission]"
+            (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)"
+          >
+            role: {{r.id}} Permission: {{n.id}}
           </mat-checkbox>
         </th>
       </tr>
