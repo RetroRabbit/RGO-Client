@@ -1,4 +1,4 @@
-import { Component, Input, Inject, ElementRef, ViewChild, AfterViewInit} from '@angular/core';
+import { Component, Input, Inject, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import jsPDF from 'jspdf';
@@ -6,7 +6,6 @@ import html2canvas from 'html2canvas';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { NgToastService } from 'ng-angular-popup';
-
 
 @Component({
   selector: 'app-chart-report-pdf',
@@ -17,7 +16,6 @@ export class ChartReportPdfComponent {
   @Input() inputchartData !: { selectedChart: any; canvasData: any; };
   activeChart: any = null;
   showReport: boolean = false;
-  clearActiveChart: () => void = () => { };
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
   @ViewChild('chartContainer') chartContainer!: ElementRef;
@@ -28,9 +26,10 @@ export class ChartReportPdfComponent {
   }
   constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, private toast: NgToastService ) {
   }
-
   ngAfterViewInit() {
-    const context: CanvasRenderingContext2D = this.canvas.nativeElement.getContext('2d');
+    if (this.canvas && this.canvas.nativeElement) {
+      const context: CanvasRenderingContext2D = this.canvas.nativeElement.getContext('2d');
+    }
   }
 
   public barChartOptions: ChartConfiguration['options'] = {
