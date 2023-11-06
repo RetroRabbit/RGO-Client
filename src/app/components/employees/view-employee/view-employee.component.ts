@@ -40,7 +40,10 @@ export class ViewEmployeeComponent {
 
   roles: Observable<string[]> = this.employeeRoleService
     .getAllRoles()
-    .pipe(first());
+    .pipe(
+      map((roles: string[]) => roles.filter((role) => !role.includes('SuperAdmin'))),
+      first()
+    );
    
 
   onAddEmployeeClick(): void {
