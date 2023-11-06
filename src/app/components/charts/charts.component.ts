@@ -39,8 +39,8 @@ export class ChartComponent implements OnInit {
   public barChartPlugins = [ChartDataLabels];
 
   selectedChartIndex: number = -1;
-  constructor(private chartService: ChartService,private cookieService: CookieService,
-    private toast: NgToastService, public dialog: MatDialog,   private renderer: Renderer2,
+  constructor(private chartService: ChartService, private cookieService: CookieService,
+    private toast: NgToastService, public dialog: MatDialog, private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document) {}
 
     public barChartOptions: ChartConfiguration['options'] = {
@@ -229,7 +229,7 @@ export class ChartComponent implements OnInit {
     }
   }
 
-  pdfPreview(index: number): void {
+  pdfPreview(index: number) {
     const dialogRef = this.dialog.open(ChartReportPdfComponent, {
       maxWidth: '820px',
       data: {
