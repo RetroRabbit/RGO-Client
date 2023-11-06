@@ -26,7 +26,7 @@ export class ChartReportPdfComponent {
 
   ngOnInit(){
   }
-  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, private toast: NgToastService,) {
+  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, private toast: NgToastService ) {
   }
 
   ngAfterViewInit() {
