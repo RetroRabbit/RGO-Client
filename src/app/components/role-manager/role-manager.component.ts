@@ -18,7 +18,15 @@ import { CookieService } from 'ngx-cookie-service';
 export class RoleManagerComponent {
   @Input() goto: 'dashboard' | 'employees' = 'dashboard';
   @ViewChild('dialogContentTemplate') dialogContentTemplate!: TemplateRef<any>;
+<<<<<<< Updated upstream
  
+=======
+  @ViewChild('dialogCancelTemplate') dialogCancelTemplate!: TemplateRef<any>;
+  roles$: Observable<string[]> = this.employeeRoleService.getAllRoles()
+  employees$: Observable<Employee[]> = this.employeeService.getAll()
+  roleAccesses$: Observable<Map<string, string[]>> = this.roleService.getAllRoles();
+
+>>>>>>> Stashed changes
   saved: boolean = false
   deleted: boolean = false
   failed: boolean = false
@@ -205,7 +213,6 @@ toggleAllCheckboxes(roleDescription: string) {
   }
 
   openDialog(): void {
-    console.log("hello")
     const dialogRef = this.dialog.open(this.dialogContentTemplate);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -213,5 +220,9 @@ toggleAllCheckboxes(roleDescription: string) {
         console.log('Delete action confirmed');
       }
     });
+  }
+
+  onCancel(): void {
+    const dialogRef = this.dialog.open(this.dialogCancelTemplate);
   }
 }
