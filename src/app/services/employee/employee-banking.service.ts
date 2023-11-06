@@ -20,4 +20,15 @@ export class EmployeeBankingService{
     updatePending(updatedEntry : any) :Observable<any> {
         return this.httpClient.put<EmployeeBanking[]>(`${API.HttpBaseURL}/employeebanking/update`, updatedEntry);
     }
+
+    getBankingDetails(id: number | undefined): Observable<EmployeeBanking> {
+      return this.httpClient.get<EmployeeBanking>(`${API.HttpBaseURL}/employeebanking/getDetails?id=${id}`)
+    }
+
+    updateBankingDetails(payload : EmployeeBanking): Observable<EmployeeBanking> {
+      return this.httpClient.put<EmployeeBanking>(`${API.HttpBaseURL}/employeebanking/update`, payload);
+    }
+  //   updateBankingDetails(updatedEntry : any) :Observable<any> {
+  //     return this.httpClient.put<EmployeeBanking[]>(${API.HttpBaseURL}/employeebanking/update, updatedEntry);
+  // }
 }
