@@ -53,8 +53,8 @@ export class RoleManagerComponent {
     });
   
     this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
-      this.roleAccessLinks = roleAccessLinks;
-      this.updateChartAndEmployeeDataCheckboxStates();
+      this.roleAccessLinks = roleAccessLinks; 
+      this.updateChartAndEmployeeDataCheckboxStates(); 
     });
   
     this.roleManagementService.getAllRoleAccesses().subscribe(roleAccess => {
@@ -62,6 +62,8 @@ export class RoleManagerComponent {
       this.chartPermissions = this.roleAccesses.filter(permission => permission.grouping === "Charts");
       this.employeePermissions = this.roleAccesses.filter(permission => permission.grouping === "Employee Data");
     });
+
+
   }
   
   updateChartAndEmployeeDataCheckboxStates() {
@@ -204,10 +206,8 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
     });
 
     this.temporaryRoleAccessChanges = [];
-    this.ngOnInit();
   }
   
-
   onAdd(role:string,permission:string,grouping: string): void {
     this.roleService.addRole(role, permission,grouping).subscribe({
       next: (data) => {
