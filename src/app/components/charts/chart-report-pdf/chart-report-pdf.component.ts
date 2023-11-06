@@ -5,6 +5,8 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { NgToastService } from 'ng-angular-popup';
+
 
 @Component({
   selector: 'app-chart-report-pdf',
@@ -24,7 +26,7 @@ export class ChartReportPdfComponent {
 
   ngOnInit(){
   }
-  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, private toast: NgToastService,) {
   }
 
   ngAfterViewInit() {
@@ -104,7 +106,7 @@ downloadReportAsPDF() {
         container.removeAttribute("style");
       }
     }).catch(error => {
-      console.error('Error generating PDF:', error);
+      this.toast.error({detail:"error",summary: "Error generating PDF:",duration:5000, position:'topRight'});
 
       if (originalStyle !== null) {
         container.setAttribute("style", originalStyle);
@@ -113,7 +115,7 @@ downloadReportAsPDF() {
       }
     });
   } else {
-    console.error("Could not find the container element to generate the PDF.");
+    this.toast.error({detail:"error",summary: "Could not find the container element to generate the PDF",duration:5000, position:'topRight'});
   }
 }
 
