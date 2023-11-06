@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { Renderer2, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-chart',
@@ -37,8 +39,9 @@ export class ChartComponent implements OnInit {
   public barChartPlugins = [ChartDataLabels];
 
   selectedChartIndex: number = -1;
-  constructor(private chartService: ChartService,private cookieService: CookieService,
-    private toast: NgToastService, public dialog: MatDialog) {}
+  constructor(private chartService: ChartService, private cookieService: CookieService,
+    private toast: NgToastService, public dialog: MatDialog, private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document) {}
 
     public barChartOptions: ChartConfiguration['options'] = {
       responsive: true,
@@ -226,15 +229,19 @@ export class ChartComponent implements OnInit {
     }
   }
 
-  pdfPreview(index: number): void {
+  pdfPreview(index: number) {
     const dialogRef = this.dialog.open(ChartReportPdfComponent, {
-      maxWidth: '800px',
+      maxWidth: '820px',
       data: {
         selectedChart: this.chartData[index],
         canvasData: this.chartCanvasArray[index]
       }
     });
-
+    dialogRef.afterOpened().subscribe(() => {
+      const dialogContainer = this.document.getElementsByClassName('mdc-dialog__surface')[0];
+      this.renderer.setStyle(dialogContainer, 'overflow-x', 'hidden');
+      this.renderer.setStyle(dialogContainer, 'overflow-y', 'auto');
+    });
     dialogRef.afterClosed().subscribe(result => {
     });
   }
