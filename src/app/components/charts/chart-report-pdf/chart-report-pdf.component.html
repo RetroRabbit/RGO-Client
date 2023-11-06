@@ -36,7 +36,7 @@
             <div class="col-12">
               <div #chartContainer id="edit-chart-container">
                 <canvas baseChart [datasets]='chartData.canvasData'
-                  [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.dataTypes : chartData.selectedChart.labels"
+                  [labels]="chartData.selectedChart.type == 'bar' ? chartData.selectedChart.dataTypes : chartData.selectedChart.labels"
                   [plugins]="chartData.selectedChart.type == 'bar' ? barChartPlugins : barChartPlugins"
                   [options]="chartData.selectedChart.type == 'bar' ? barChartOptions : pieChartOptions"
                   [type]="chartData.selectedChart.type"></canvas>
