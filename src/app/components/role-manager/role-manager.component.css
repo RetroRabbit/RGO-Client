@@ -40,13 +40,14 @@ div .d-flex {
     width: 400px;
     margin-left: 20px;
     margin-right:20px;
-    width: 1200px;
+    width: 1580px;
+    margin-bottom: 20px;
 }
 
 #savechangesbtn{
     background-color:#0029C6 ;
     color:#FFFFFF;
-    margin-left: 1000px;
+    margin-left: 1370px;
     margin-bottom: 20px;
     width: 200px;
     height: 40px;
