@@ -198,7 +198,7 @@ onTypeRemoved(type: string): void {
       this.toast.info({detail:"Missing chart category", summary:"Please select a category/s",duration:5000, position:'topRight'});
       return;
     }
-
+  
     this.chartService.createChart(this.selectedCategories, this.chartName, this.chartType)
       .subscribe({
         next : response => {
@@ -213,6 +213,8 @@ onTypeRemoved(type: string): void {
             this.toast.error({detail:"Error", summary:"Failed to create chart.",duration:5000, position:'topRight'});
         }}
       );
+      this.selectedCategories = [];
+      this.categoryControl.setValue(null);
   }
 
   onDropDownChange() {
