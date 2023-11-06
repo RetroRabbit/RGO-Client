@@ -158,7 +158,7 @@
     <div *ngIf="cookieService.get('currentPage') === '' || cookieService.get('currentPage') === 'Dashboard'"
       #ShowDashBoard>
       <div *ngIf="isAdmin()">
-        <app-admin-dashboard></app-admin-dashboard>
+        <app-admin-dashboard (selectedEmployee)="handleSelectedEmp($event)"></app-admin-dashboard>
       </div>
       <div *ngIf="!isAdmin()">
         <app-employee-profile></app-employee-profile>
