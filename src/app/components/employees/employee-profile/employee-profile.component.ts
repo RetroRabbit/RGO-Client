@@ -53,6 +53,7 @@ export class EmployeeProfileComponent {
   employeeProfileDto?: any;
   employeeType?: EmployeeType;
   employeeAddressDto: any;
+  employeeBankingDto !: any;
 
   isEdit: boolean = false;
   selectedItem: string = 'Profile Details';
@@ -95,9 +96,14 @@ export class EmployeeProfileComponent {
   profileFormProgress: number = 0;
   overallFormProgress: number = 0;
 
+  bankingFormProgress: number = 0;
+
   careerSummaryProgress: number = 0;
   bankInformationProgress: number = 0;
   documentsProgress: number = 0;
+  bankingId: number = 0;
+  bankingStatus: number = 0; 
+  bankingReason: string = "" ;
 
   employeeDetailsForm: FormGroup = this.fb.group({
     title: { value: '', disabled: true },
@@ -151,15 +157,12 @@ export class EmployeeProfileComponent {
   });
 
   employeeBankingsForm: FormGroup = this.fb.group({
-    empId: { value: 0, disabled: true },
     accountHolderName: { value: 0, disabled: true },
     accountType: { value: 0, disabled: true },
     bankName: { value: 0, disabled: true },
     accountNo: { value: 0, disabled: true },
     branch: { value: 0, disabled: true },
     file: { value: 0, disabled: true },
-    status: { value: 0, disabled: true },
-    declineReason: { value: 0, disabled: true }
   });
 
   filteredEmployees: any = [];
@@ -216,23 +219,24 @@ export class EmployeeProfileComponent {
         this.hasDisbility = data.disability;
         this.employeeBankingService.getBankingDetails(this.employeeProfile?.id).subscribe({
           next: data => {
-            this.employeeBanking = data; 
-            console.log(this.employeeBanking);
+            this.employeeBanking = data;
+            this.bankingId = this.employeeBanking.id;
+            this.bankingStatus = this.employeeBanking.status;
+            this.bankingReason = this.employeeBanking.declineReason;
             this.employeeBankingsForm = this.fb.group({
-              empId: [data.employee, Validators.required],
               accountHolderName: [this.employeeBanking!.accountHolderName, Validators.required],
               accountType: [this.employeeBanking!.accountType, Validators.required],
               bankName: [this.employeeBanking!.bankName, Validators.required],
               accountNo: [this.employeeBanking!.accountNo, Validators.required],
               branch: [this.employeeBanking!.branch, Validators.required],
               file: [this.employeeBanking!.file, Validators.required],
-              status: [this.employeeBanking!.status, Validators.required],
-              declineReason: [this.employeeBanking!.declineReason, Validators.required]
             });
-
-            console.log(this.employeeBankingsForm);   
+            this.employeeBankingsForm.disable();
+            this.checkBankingInformationProgress();
+            this.totalBankingProgress();
           },
-          error: data => console.log("error")
+          error: data => this.toast.error({ detail: "Error", summary: "Failed to fetch banking information", duration: 5000, position: 'topRight' })
+
         });
         this.hasDisbility = this.employeeProfile!.disability;
         this.customFieldsService.getAllFieldCodes().subscribe({
@@ -871,50 +875,123 @@ export class EmployeeProfileComponent {
     this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
+  checkBankingInformationProgress() {
+    let filledCount = 0;
+    let totalFields = 0;
+    const formControls = this.employeeBankingsForm.controls;
+    totalFields = (Object.keys(this.employeeBankingsForm.controls).length);
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value !== '') {
+          filledCount++;
+        }
+      }
+    }
+    this.bankingFormProgress = Math.round((filledCount / totalFields) * 100);
+  }
+
   totalProfileProgress() {
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress) / 4);
     this.overallProgress();
   }
+  
+  totalBankingProgress(){
+    this.bankInformationProgress = Math.floor(this.bankingFormProgress);
+    this.overallProgress();
+  }
 
   overallProgress() {
-    this.overallFormProgress = Math.round(0.25 * this.profileFormProgress);
+    this.overallFormProgress = Math.round((0.25 * this.profileFormProgress) + (0.25 * this.bankInformationProgress));
   }
 
 
-  openFileInput(){
+  openFileInput() {
     const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
     fileInput.click();
   }
 
-  handleFileInput(files: any) {
-    console.log(files.target.files);
-    const selectedFile = files.target.files.item(0);
-    if (selectedFile) {
-      console.log('Selected file:', selectedFile);
-    }
-  }
-
-  editBankingDetails(){
+  editBankingDetails() {
     this.editBanking = true;
     this.employeeBankingsForm.enable();
   }
-  cancelBankingDetails(){
+  cancelBankingDetails() {
     this.editBanking = false;
+    this.employeeBankingsForm.disable();
   }
-  saveBankingDetails(){
+
+  saveBankingDetails() {
+
     this.editBanking = false;
     this.isUpdated = true;
-    this.employeeBankingsForm.get('employeeId')?.setValue(this.employeeProfile?.id);
-    this.employeeBankingsForm.get('status')?.setValue(1);
-    this.employeeBankingsForm.get('declineReason')?.setValue("");
-    console.log(this.employeeBankingsForm.value)
-    this.employeeBankingService.updateBankingDetails(this.employeeBankingsForm.value).subscribe({
-      next: (data) => {
-          console.log(data);
+    const employeeBankingFormValue = this.employeeBankingsForm.value;
+    this.employeeBankingDto = {
+      id: this.bankingId,
+      accountHolderName: employeeBankingFormValue.accountHolderName,
+      employeeId: this.employeeProfile?.id,
+      bankName: employeeBankingFormValue.bankName,
+      branch: employeeBankingFormValue.branch,
+      accountNo: employeeBankingFormValue.accountNo,
+      accountType: employeeBankingFormValue.accountType,
+      status: this.bankingStatus,
+      declineReason: this.bankingReason,
+      file: employeeBankingFormValue.file
+    }
+    this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
+      next: () => {
+        this.toast.success({ detail: "Employee Banking updated!", position: 'topRight' });
+        this.addressDetailsForm.disable();
+        this.checkAddressFormProgress();
+        this.totalBankingProgress();
+        this.getEmployeeFields();
+        this.checkBankingInformationProgress();
       },
       error: (error) => {
-        console.log(error);
+        this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
       }
     })
   }
+  convertFileToBase64() {
+    if (this.employeeBanking.file)
+      this.downloadFile(this.employeeBanking.file, `${this.employeeProfile?.name} ${this.employeeProfile?.surname}_Proof_of_Account.pdf`);
+  }
+
+  downloadFile(base64String: string, fileName: string) {
+    const commaIndex = base64String.indexOf(',');
+    if (commaIndex !== -1) {
+      base64String = base64String.slice(commaIndex + 1);
+    }
+
+    const byteString = atob(base64String);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const intArray = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      intArray[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+  }
+
+  selectedFile !: File;
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    this.uploadFile();
+  }
+
+  uploadFile() {
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        this.employeeBankingsForm.patchValue({ 'file': base64String });
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
 }
