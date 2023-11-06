@@ -1,17 +1,14 @@
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CookieService } from 'ngx-cookie-service';
-import { Observable } from 'rxjs';
-import { Employee } from 'src/app/models/employee.interface';
-import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { RoleService } from 'src/app/services/role.service';
-import { RoleAccess } from 'src/app/models/role-access-interface';
+import { RoleAccess } from 'src/app/models/role-access.interface';
 import { Role } from 'src/app/models/role.interface';
 import { MatDialog } from '@angular/material/dialog';
-
-
-
+import { RoleAccessLink} from 'src/app/models/role-access-link.interface';
+import { RoleManagementService } from 'src/app/services/role-management.service';
+import { NgToastService } from 'ng-angular-popup';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
+import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-role-manager',
@@ -21,131 +18,161 @@ import { MatDialog } from '@angular/material/dialog';
 export class RoleManagerComponent {
   @Input() goto: 'dashboard' | 'employees' = 'dashboard';
   @ViewChild('dialogContentTemplate') dialogContentTemplate!: TemplateRef<any>;
-  roles$: Observable<string[]> = this.employeeRoleService.getAllRoles()
-  employees$: Observable<Employee[]> = this.employeeService.getAll()
-  roleAccesses$: Observable<Map<string, string[]>> = this.roleService.getAllRoles();
-
+ 
   saved: boolean = false
   deleted: boolean = false
   failed: boolean = false
   selected: boolean = false
 
-  currRole!: Map<string, string[]>
+  roles: Role[] = [];
+  
+  roleAccesses: RoleAccess[] = [];
 
-  newRoleForm = new FormGroup({
-    role: new FormControl('', Validators.required),
-    permission: new FormControl('', Validators.required),
-  })
+  roleAccessLinks: RoleAccessLink[] = [];
 
+  chartPermissions :RoleAccess[] = [];
+  employeePermissions :RoleAccess[] = [];
 
- 
-  // roles: Role[] = [];
-  // roleAccesses: RoleAccess[] = [];
+  temporaryRoleAccessChanges: RoleAccessLink[] = [];
 
-  title = 'toolsets';
   parentSelector: boolean = false;
 
-  roleAccessLink = [
-    { id: 1, roleId:1, roleAccessId: 1, },
-    { id: 2, roleId:1, roleAccessId: 2, },
-    { id: 3, roleId:1, roleAccessId: 2, },
-    { id: 4, roleId:1, roleAccessId: 8, },
-    { id: 5, roleId:1, roleAccessId: 5, },
-    { id: 6, roleId:1, roleAccessId: 6, },
-    { id: 7, roleId:1, roleAccessId: 7,},
-    { id: 8, roleId:1, roleAccessId: 8, }, 
-  ];
-
-  roles= [
-    {id:1, description:"SuperAdmin"},
-    {id:2, description:"Admin"},
-    {id:3, description:"Employee"},
-    {id:4, description:"Talent"}
-  ];
-
-  permissionTag =[{
-    id:1, description:"Charts",parentSelector:true,
-  }]
-  roleAccess = [
-    { id: 1, description: "ViewEmployee" },
-    { id: 2, description: "AddEmployee" },
-    { id: 3, description: "EditEmployee" },
-    { id: 4, description: "DeleteEmployee" },
-    { id: 5, description: "ViewChart" },
-    { id: 6, description: "AddChart" },
-    { id: 7, description: "EditChart" },
-    { id: 8, description: "DeleteChart" },
-    { id: 9, description: "ViewOwnInfo" },
-    { id: 10, description: "EditOwnInfo" }
-];
-
-chartsPermissions = this.roleAccess.filter(permission => permission.description.includes("Chart"));
-
- 
-
-  onChangeRoleAccess($event: any, role: string, permission: string) {
-    
-     console.log(role,permission)
-     console.log($event);
-    var isChecked = $event.source.checked;
-    if(isChecked){
-      
-      this.onAdd(role,permission);
-    }
-    else{
-      this.onDelete(role,permission);
-    }
-
-  }
-  
   constructor(
+    private roleManagementService: RoleManagementService,
     private roleService: RoleService,
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
     private cookieService: CookieService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toast: NgToastService
   ) { }
 
+  
   ngOnInit() {
-    // this.employeeRoleService.getAllRoles().subscribe(roles => {
-    //   this.roles = roles;
-    // });
+    this.roleManagementService.getAllRoles().subscribe(roles => {
+      this.roles = roles;
+    });
+    
+    this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
+      this.roleAccessLinks = roleAccessLinks;
+      this.updateCheckboxStates();
+    });
 
-    // this.employeeRoleService.getAllRoles().subscribe(roleAccess => {
-    //  this.roleAccesses = roleAccess
-    // });
+    this.roleManagementService.getAllRoleAccesses().subscribe(roleAccess => {
+     this.roleAccesses = roleAccess
+     this.chartPermissions = this.roleAccesses.filter(permission => permission.grouping === "Charts");
+     this.employeePermissions = this.roleAccesses.filter(permission => permission.grouping === "Employee Data");
+    });
+
   }
 
-  getRoles(raw: Map<string, string[]>): string[] {
-    return Object.keys(raw)
+  updateCheckboxStates() {
+    for (let n of this.chartPermissions) {
+      for (let r of this.roles) {
+        const key = r.description + n.permission;
+        const existingLink = this.roleAccessLinks.find(link =>
+          link.role.description === r.description &&
+          link.roleAccess.permission === n.permission &&
+          link.roleAccess.grouping === n.grouping
+        );
+        this.checkboxStates[key] = existingLink ? true : false;
+      }
+    }
   }
 
-  changePermission(role:string, permission: string): void {
-    this.newRoleForm.setValue({ role: role, permission: permission })
-  }
+allCheckboxesState: { [key: string]: boolean } = {};
 
-  changeRole(role: string): void {
-    this.newRoleForm.setValue({ role: role, permission: this.newRoleForm.value.permission ?? '' })
-    this.getRole(role)
-  }
+checkboxStates: { [key: string]: boolean } = {};
 
-  getPermissions(roleAccess: Map<string, string[]>): string[] {
-    return Object.values(roleAccess)
-      .join(',')
-      .split(',')
-      .filter((value, index, self) => self.indexOf(value) === index)
-  }
+toggleAllCheckboxes(roleDescription: string) {
+  for (let n of this.chartPermissions) {
+    const key = roleDescription + n.permission;
+    this.checkboxStates[key] = this.allCheckboxesState[roleDescription];
+    const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
+      item.role.description === roleDescription && item.roleAccess.permission === n.permission && item.roleAccess.grouping === n.grouping
+    );
 
-  getRole(selectedRole: string): void {
-    this.roleService.getRole(selectedRole).subscribe({
-      next: role =>
-      this.currRole = role
-    })
+    if (this.allCheckboxesState[roleDescription]) {
+      if (existingChangeIndex === -1) {
+        const existingLink = this.roleAccessLinks.find(link =>
+          link.role.description === roleDescription &&
+          link.roleAccess.permission === n.permission &&
+          link.roleAccess.grouping === n.grouping
+        );
+        const changeType = existingLink ? 'delete' : 'add';
+        this.temporaryRoleAccessChanges.push({
+          id: existingLink ? existingLink.id : -1,
+          role: { id: -1, description: roleDescription },
+          roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
+          changeType: changeType,
+        });
+      }
+    } else {
+      if (existingChangeIndex !== -1) {
+        this.temporaryRoleAccessChanges[existingChangeIndex].changeType = 'delete';
+      } else {
+        this.temporaryRoleAccessChanges.push({
+          id: -1,
+          role: { id: -1, description: roleDescription },
+          roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
+          changeType: 'delete',
+        });
+      }
+    }
   }
+}
 
-  onAdd(role:string,permission:string): void {
-    this.roleService.addRole(role, permission).subscribe({
+
+  onChangeRoleAccess($event: any, role: string, permission: string, grouping: string) {
+    const isChecked = $event.source.checked;
+  
+    const change: RoleAccessLink = {
+      id: -1,
+      role: {
+        id: -1,
+        description: role,
+      },
+      roleAccess: {
+        id: -1,
+        permission: permission,
+        grouping: grouping,
+      },
+      changeType: isChecked ? 'add' : 'delete',
+    };
+  
+    const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
+      item.role.description === role && item.roleAccess.permission === permission && item.roleAccess.grouping === grouping
+    );
+  
+    if (existingChangeIndex !== -1) {
+      this.temporaryRoleAccessChanges.splice(existingChangeIndex, 1);
+    }
+  
+    this.temporaryRoleAccessChanges.push(change);
+  }
+  
+  saveChanges() {
+    this.temporaryRoleAccessChanges.forEach((change) => {
+      if (change.changeType === 'add') {
+        this.onAdd(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
+      } else if (change.changeType === 'delete') {
+        this.onDelete(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
+      }
+    });
+  
+    this.temporaryRoleAccessChanges = [];
+  }
+  
+
+  onAdd(role:string,permission:string,grouping: string): void {
+    this.roleService.addRole(role, permission,grouping).subscribe({
       next: (data) => {
+        this.toast.success({
+          detail: `Permissions saved  successfully!`,
+          summary: 'Success',
+          duration: 5000,
+          position: 'topRight',
+        });
         this.saved = true
       },
       error: (error) => {
@@ -154,12 +181,24 @@ chartsPermissions = this.roleAccess.filter(permission => permission.description.
     })
   }
 
-  onDelete(role:string,permission:string): void {
-    this.roleService.deleteRole(role, permission).subscribe({
+  onDelete(role:string,permission:string,grouping: string): void {
+    this.roleService.deleteRole(role, permission,grouping).subscribe({
       next: (data) => {
+        this.toast.success({
+          detail: `Permissions deleted  successfully!`,
+          summary: 'Success',
+          duration: 5000,
+          position: 'topRight',
+        });
         this.deleted = true
       },
       error: (error) => {
+        this.toast.error({
+          detail: `Error: ${error}`,
+          summary: 'Failed to delete Permissions',
+          duration: 10000,
+          position: 'topRight',
+        });
         this.failed = true
       }
     })

@@ -1,0 +1,57 @@
+          <div class="row justify-content-centre mb-4">
+            <div class="col-auto text-center">
+              <button mat-button id="save-button" (click)="downloadReportAsPDF()">Download PDF</button>
+            </div>
+            <div class="col-auto text-right">
+            <button mat-button id="save-button" (click)="downloadReportAsCSV(chartData.selectedChart.dataTypes)">Download CSV</button>
+          </div>
+          </div>
+<div class="container m-0">
+  <div class="row">
+
+    <div class="col-12 m-0 text-center" id="chart-container">
+      <div class="container text-center" style="height: 297mm; background: white; margin: 0 auto;">
+        <div class="row text-center">
+          <div class="col-12" id="title">
+            <h1>{{ chartData.selectedChart.name }}</h1>
+          </div>
+          <div class="col-12">
+            <p class="report-description">This report provides information about the {{chartData.selectedChart.name}} chart:</p>
+            <hr>
+          </div>
+        </div>
+        <div class="row mb-4 text-center">
+          <div class="col-6">
+            <h3>Chart Type: </h3> {{ chartData.selectedChart.type }}
+          </div>
+          <div class="col-6">
+            <h3>Total Employees: </h3> {{ getTotalEmployees() }} employees
+          </div>
+          <hr>
+        </div>
+        <div class="row mb-4 text-center">
+          <div class="col-12">
+            <div id="edit-chart-container">
+              <canvas baseChart [datasets]='chartData.canvasData'
+              [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.dataTypes : chartData.selectedChart.labels"
+              [plugins]="chartData.selectedChart.type == 'bar' ? barChartPlugins : barChartPlugins"
+              [options]="chartData.selectedChart.type == 'bar' ? barChartOptions : pieChartOptions"
+              [type]="chartData.selectedChart.type" ></canvas>
+            </div>
+          </div>
+          <hr>
+        </div>
+        <div class="row text-center">
+          <div class="col-12">
+            <h2>Chart Data</h2>
+          </div>
+          <div class="col-6" *ngFor="let label of chartData.selectedChart.labels; let i = index">
+            <div class="data-label">{{ label }}:</div>
+            <div class="data-value">{{ chartData.selectedChart.data[i] }} employees</div>
+            <div class="data-percentage">({{ calculatePercentage(chartData.selectedChart.data[i]) }}% of total)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

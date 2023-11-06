@@ -11,19 +11,19 @@ export class EmployeeRoleService {
   constructor(private httpClient: HttpClient) { }
 
   getAllRoles(): Observable<string[]> {
-    return this.httpClient.get<string[]>(`${API.HttpBaseURL}/employeerolemanager/get-all`);
+    return this.httpClient.get<string[]>(`${API.HttpsBaseURL}/employeerolemanager/get-all`);
   }
 
   getRoles(email: string): Observable<string[]> {
-    return this.httpClient.get<string[]>(`${API.HttpBaseURL}/employeerolemanager/get?email=${encodeURIComponent(email)}`);
+    return this.httpClient.get<string[]>(`${API.HttpsBaseURL}/employeerolemanager/get?email=${encodeURIComponent(email)}`);
   }
 
   addRole(email: string, role: string): Observable<any> {
-    return this.httpClient.post<any>(`${API.HttpBaseURL}/employeerolemanager/add?email=${encodeURIComponent(email)}&role=${encodeURIComponent(role)}`, {});
+    return this.httpClient.post<any>(`${API.HttpsBaseURL}/employeerolemanager/add?email=${encodeURIComponent(email)}&role=${encodeURIComponent(role)}`, {});
   }
 
   removeRole(email: string, role: string): Observable<any> {
-    return this.httpClient.delete<any>(`${API.HttpBaseURL}/employeerolemanager/remove?email=${encodeURIComponent(email)}&role=${encodeURIComponent(role)}`);
+    return this.httpClient.delete<any>(`${API.HttpsBaseURL}/employeerolemanager/remove?email=${encodeURIComponent(email)}&role=${encodeURIComponent(role)}`);
   }
 
   getEmployeeOnRoles(roleId: number): Observable<any[]>{
