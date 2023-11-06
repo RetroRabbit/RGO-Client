@@ -1,4 +1,5 @@
 export interface RoleAccess {
     id: number;
-    description: string;
+    permission: string;
+    grouping: string;
     }
