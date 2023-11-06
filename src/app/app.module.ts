@@ -47,7 +47,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -71,6 +71,10 @@ import { ManageEmployeeEventsComponent } from './components/manage-employee-even
 import { AddEmployeeEventComponent } from './components/manage-employee-events/add-employee-event/add-employee-event.component';
 import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
 
+
+
+import { MatChipsModule } from '@angular/material/chips';
+import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
 
 
 @NgModule({
@@ -99,6 +103,7 @@ import { SystemSettingsComponent } from './components/system-settings/system-set
     ManageEmployeeEventsComponent,
     AddEmployeeEventComponent,
     SystemSettingsComponent,
+    ChartReportPdfComponent
   ],
   imports: [
     BrowserModule,
@@ -106,6 +111,7 @@ import { SystemSettingsComponent } from './components/system-settings/system-set
     FormsModule,
     ReactiveFormsModule,
     NgChartsModule,
+    MatChipsModule,
     StoreModule.forRoot({
       app: LoginReducer,
       employee: EmployeeProfileReducer,

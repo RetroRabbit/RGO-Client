@@ -1,6 +1,6 @@
 <div class="container">
     <h2>Create a Chart</h2>
-    
+
     <div class="chart-form">
         <label for="chartType">Chart Type:</label>
         <select id="chartType" [(ngModel)]="chartType">
@@ -29,13 +29,10 @@
         >
         </ng-multiselect-dropdown>
       </div>
-      
-
     <div class="chart-container">
         <canvas baseChart [datasets]="[{ data: chartData, label: chartName }]" [labels]="chartLabels" [type]="chartType"
             [options]="chartOptions">
         </canvas>
     </div>
-
     <button class="create-button" (click)="createChart()">Create Chart</button>
 </div>
