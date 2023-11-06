@@ -222,7 +222,7 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
     this.updateRoleAccessLinks();
     this.updateChartPermissionsCheckboxStates();
     this.updateEmployeeDataPermissionsCheckboxStates();
-    this.temporaryRoleAccessChanges = [];
+  
   }
   
 

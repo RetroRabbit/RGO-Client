@@ -57,7 +57,7 @@
             [(ngModel)]="allCheckboxesState[r.description]"
             (change)="toggleAllCheckboxes(r.description)"
           >
-            All RoleID: {{ r.id }}
+            All
           </mat-checkbox>
         </th>
       </tr>
@@ -71,7 +71,6 @@
             [(ngModel)]="checkboxStates[r.description + n.permission]"
             (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)"
           >
-            role: {{ r.id }} Permission: {{ n.id }}
           </mat-checkbox>
         </th>
       </tr>
@@ -87,7 +86,7 @@
             [(ngModel)]="allEmployeeDataCheckboxesState[r.description]"
             (change)="toggleAllEmployeeDataCheckboxes(r.description)"
           >
-            All RoleID: {{r.id}}
+            All
           </mat-checkbox>
         </th>
       </tr>
@@ -101,7 +100,6 @@
             [(ngModel)]="checkboxStatesEmployeePermissions[r.description + n.permission]"
             (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)"
           >
-            role: {{r.id}} Permission: {{n.id}}
           </mat-checkbox>
         </th>
       </tr>
