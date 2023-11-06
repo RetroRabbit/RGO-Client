@@ -1,17 +1,24 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
-import { ChartType } from 'chart.js';
 import { Chart } from 'src/app/models/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
+import { colours } from '../../models/constants/colours.constants';
+import { NgToastService } from 'ng-angular-popup';
+import { MatDialog } from '@angular/material/dialog';
+import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';
+import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 @Component({
   selector: 'app-chart',
   templateUrl: './charts.component.html',
   styleUrls: ['./charts.component.css'],
 })
+
 export class ChartComponent implements OnInit {
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
-  
+  @Output() captureCharts = new EventEmitter<number>();
+  @Input() chartsArray: Chart[] = [];
   selectedChartType: ChartType ='bar';
   displayChart: boolean = false;
   numberOfEmployees: number = 0;
@@ -20,10 +27,67 @@ export class ChartComponent implements OnInit {
   showReport: boolean = false;
   showUpdateForm:boolean=false;
   updateFormData: any = {
-  Name: '',
-  Type:'',}
+      Name: '',
+      Type:''
+  }
+  coloursArray : string[] = colours;
+  chartCanvasArray: any[] = [];
 
-  constructor(private chartService: ChartService,private cookieService: CookieService) {}
+  public pieChartPlugins = [ChartDataLabels];
+  public barChartPlugins = [ChartDataLabels];
+
+  selectedChartIndex: number = -1;
+  constructor(private chartService: ChartService,private cookieService: CookieService,
+    private toast: NgToastService, public dialog: MatDialog) {}
+
+    public barChartOptions: ChartConfiguration['options'] = {
+      responsive: true,
+      scales: {
+        x: {},
+        y: {
+          min: 0,
+        },
+      },
+      plugins: {
+        legend: {
+          display: true,
+        },
+        datalabels: {
+          anchor: 'middle',
+          align: 'middle',
+        } as any,
+      },
+    };
+
+
+    public pieChartOptions: ChartConfiguration['options'] = {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+        },
+      },
+    };
+
+    resetPage(){
+      this.displayChart = false
+      this.chartData = [];
+      this.activeChart = null;
+      this.showReport  = false;
+      this.showUpdateForm = false;
+      this.chartCanvasArray = [];
+      this.updateFormData  = {
+          Name: '',
+          Type:''
+      }
+    }
+    ngOnChanges(changes: SimpleChanges) {
+      if (changes['chartsArray'] && !changes['chartsArray'].firstChange) {
+        this.resetPage();
+        this.ngOnInit();
+      }
+    }
 
   ngOnInit(): void {
     this.createAndDisplayChart();
@@ -51,11 +115,13 @@ export class ChartComponent implements OnInit {
   processChartData(data: any[]): void {
     if (data.length > 0) {
       this.chartData = data;
+      this.populateCanvasCharts();
       this.displayChart = true;
       this.selectedChartType = this.chartData[0].type;
     } else {
       this.chartData = [];
       this.displayChart = false;
+      this.captureCharts.emit(0);
     }
   }
 
@@ -70,61 +136,57 @@ export class ChartComponent implements OnInit {
   clearActiveChart(): void {
     this.activeChart = null;
     this.showReport = false;
+    this.showUpdateForm = false;
   }
 
-  generateReport(): void {
-    if (this.activeChart) {
+  generateReport(index : number): void {
+    if (this.chartData[index]) {
       this.showReport = true;
-    }
-  }
-  openUpdateForm(): void {
-    if (this.activeChart) {
-      this.updateFormData = { ...this.activeChart };
-      this.showUpdateForm = true;
+      this.updateFormData = this.chartData[index];
+      this.selectedChartIndex = index;
     }
   }
 
   updateChart(): void {
+
     if (this.activeChart) {
-      
       const updatedChart: Chart = {
         ...this.activeChart,
         Name: this.updateFormData.Name,
         Type: this.updateFormData.Type,
       };
-  
-      this.chartService.updateChart(updatedChart).subscribe({
+      this.chartService.updateChart(this.updateFormData).subscribe({
         next: (updatedData: any) => {
-          const index = this.chartData.findIndex((c) => c.id === updatedData.Id);
-          if (index !== -1) {
-            this.chartData[index] = updatedData;
-          }
-  
-          this.showUpdateForm = false;
-          this.activeChart = null;
-  
+          this.toast.success({detail:"Success",summary: "Update successful",duration:5000, position:'topRight'});
+          this.resetPage();
           this.createAndDisplayChart();
-  
-          if (this.selectedChartType !== updatedData.Type) {
-            this.selectedChartType = updatedData.Type;
-          }
         },
-        error: error => { }
+        error: error => {
+          this.toast.error({detail:"error",summary: "Update unsuccessful",duration:5000, position:'topRight'});
+
+         }
     });
     }
   }
-  
-  deleteChart(chartId: number): void {
-    if (this.activeChart) {
-      this.chartService.deleteChart(chartId).subscribe({
+
+  editChart(index : number){
+    this.selectedChartIndex = index;
+    this.activeChart = this.chartData[index];
+    this.updateFormData = {...this.activeChart};
+    this.showUpdateForm = true;
+  }
+
+  deleteChart(selectedIndex : number): void {
+    if (this.chartData[selectedIndex]) {
+      this.chartService.deleteChart(this.chartData[selectedIndex].id).subscribe({
         next: () => {
-          const index = this.chartData.findIndex((c) => c.id === chartId);
-          if (index !== -1) {
-            this.chartData.splice(index, 1);
-          }
-          this.clearActiveChart();
+          this.toast.success({detail:"Success",summary: "Delete successful",duration:5000, position:'topRight'});
+          this.resetPage();
+          this.createAndDisplayChart();
         },
-        error: error => { }
+        error: error => {
+          this.toast.error({detail:"Error",summary: "Failed to detele graph",duration:5000, position:'topRight'});
+        }
     });
     }
   }
@@ -132,6 +194,49 @@ export class ChartComponent implements OnInit {
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
+  }
+
+
+  populateCanvasCharts(){
+    for(let i = 0; i < this.chartData.length; i++) {
+      let dataset = [];
+      let data : any;
+      if(this.chartData[i].type == 'pie'){
+        var labelsArray : any[] = [];
+        this.chartData[i].labels.forEach( (label : any) => {
+          labelsArray.push(label);
+        });
+         var obj = {
+          data: this.chartData[i].data,
+          labels: labelsArray
+         }
+        dataset.push(obj)
+      }else{
+
+        for(let j = 0; j < this.chartData[i].labels.length; j++){
+
+          dataset.push({
+            data: [this.chartData[i].data[j]],
+            label: this.chartData[i].labels[j]
+          });
+
+        }
+      }
+      this.chartCanvasArray.push(dataset);
+    }
+  }
+
+  pdfPreview(index: number): void {
+    const dialogRef = this.dialog.open(ChartReportPdfComponent, {
+      maxWidth: '800px',
+      data: {
+        selectedChart: this.chartData[index],
+        canvasData: this.chartCanvasArray[index]
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 }
 

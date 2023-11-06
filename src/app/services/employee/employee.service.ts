@@ -12,7 +12,7 @@ export class EmployeeService {
   constructor(private httpClient: HttpClient) { }
 
   getAllEmployees(): Observable<Employee[]>{
-    return this.httpClient.get<Employee[]>(`${API.HttpsBaseURL}/employee/employees/get`);
+    return this.httpClient.get<Employee[]>(`${API.HttpsBaseURL}/employee/employees`);
   }
 
   getAll(): Observable<Employee[]>{
