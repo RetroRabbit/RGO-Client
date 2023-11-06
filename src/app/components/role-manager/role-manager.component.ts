@@ -47,36 +47,26 @@ export class RoleManagerComponent {
     private toast: NgToastService
   ) { }
 
-  
   ngOnInit() {
-
     this.roleManagementService.getAllRoles().subscribe(roles => {
       this.roles = roles;
     });
-    
-    this.roleManagementService.getAllRoleAccesses().subscribe(roleAccess => {
-     this.roleAccesses = roleAccess
-     this.chartPermissions = this.roleAccesses.filter(permission => permission.grouping === "Charts");
-     this.employeePermissions = this.roleAccesses.filter(permission => permission.grouping === "Employee Data");
-    });
-
-    this.updateRoleAccessLinks();
-
-  }
-
-  updateRoleAccessLinks() {
+  
     this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
       this.roleAccessLinks = roleAccessLinks;
-      
-    this.updateChartPermissionsCheckboxStates();
-    this.updateEmployeeDataPermissionsCheckboxStates();
+      this.updateChartAndEmployeeDataCheckboxStates();
     });
-    
+  
+    this.roleManagementService.getAllRoleAccesses().subscribe(roleAccess => {
+      this.roleAccesses = roleAccess;
+      this.chartPermissions = this.roleAccesses.filter(permission => permission.grouping === "Charts");
+      this.employeePermissions = this.roleAccesses.filter(permission => permission.grouping === "Employee Data");
+    });
   }
-
-  updateChartPermissionsCheckboxStates() {
-    for (let n of this.chartPermissions) {
-      for (let r of this.roles) {
+  
+  updateChartAndEmployeeDataCheckboxStates() {
+    for (let r of this.roles) {
+      for (let n of this.chartPermissions) {
         const key = r.description + n.permission;
         const existingLink = this.roleAccessLinks.find(link =>
           link.role.description === r.description &&
@@ -85,24 +75,18 @@ export class RoleManagerComponent {
         );
         this.checkboxStates[key] = existingLink ? true : false;
       }
-    }
-  }
-
-  updateEmployeeDataPermissionsCheckboxStates() {
-    for (let n of this.employeePermissions) {
-      for (let r of this.roles) {
+      for (let n of this.employeePermissions) {
         const key = r.description + n.permission;
         const existingLink = this.roleAccessLinks.find(link =>
           link.role.description === r.description &&
           link.roleAccess.permission === n.permission &&
           link.roleAccess.grouping === n.grouping
         );
-
         this.checkboxStatesEmployeePermissions[key] = existingLink ? true : false;
       }
     }
   }
-
+  
 allCheckboxesState: { [key: string]: boolean } = {};
 
 allEmployeeDataCheckboxesState: { [key: string]: boolean } = {}
@@ -219,10 +203,8 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
       }
     });
 
-    this.updateRoleAccessLinks();
-    this.updateChartPermissionsCheckboxStates();
-    this.updateEmployeeDataPermissionsCheckboxStates();
-  
+    this.temporaryRoleAccessChanges = [];
+    this.ngOnInit();
   }
   
 
