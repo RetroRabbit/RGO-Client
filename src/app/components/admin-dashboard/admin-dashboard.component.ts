@@ -21,6 +21,7 @@ import { NgToastService } from 'ng-angular-popup';
 })
 export class AdminDashboardComponent {
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
+  @Output() expandSearch = new EventEmitter<string>();
 
   charts: Chart[] = [];
   selectedItem: string = 'Dashboard';
@@ -83,6 +84,8 @@ export class AdminDashboardComponent {
 
   viewMoreEmployees() {
     this.displayAllEmployees = true;
+    this.expandSearch.emit(this.searchQuery);
+    this.cookieService.set('currentPage', 'Employees');
   }
 
   searchEmployees() {
