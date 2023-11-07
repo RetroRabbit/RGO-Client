@@ -10,6 +10,9 @@ import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
+
 
 @Component({
   selector: 'app-chart',
@@ -26,6 +29,7 @@ export class ChartComponent implements OnInit {
   numberOfEmployees: number = 0;
   chartData: any[] = [];
   activeChart: any = null;
+  employeeNames: { [id: string]: string } = {};
   showReport: boolean = false;
   showUpdateForm:boolean=false;
   updateFormData: any = {
@@ -41,7 +45,7 @@ export class ChartComponent implements OnInit {
   selectedChartIndex: number = -1;
   constructor(private chartService: ChartService, private cookieService: CookieService,
     private toast: NgToastService, public dialog: MatDialog, private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document) {}
+    @Inject(DOCUMENT) private document: Document, private employeeProfile:EmployeeService) {}
 
     public barChartOptions: ChartConfiguration['options'] = {
       responsive: true,
@@ -95,6 +99,7 @@ export class ChartComponent implements OnInit {
   ngOnInit(): void {
     this.createAndDisplayChart();
     this.getNumberOfEmployees();
+    this.fetchPeopleChampionEmployees();
   }
 
   createAndDisplayChart(): void {
@@ -199,35 +204,81 @@ export class ChartComponent implements OnInit {
     this.cookieService.set('currentPage', target.innerText);
   }
 
-
-  populateCanvasCharts(){
-    for(let i = 0; i < this.chartData.length; i++) {
-      let dataset = [];
-      let data : any;
-      if(this.chartData[i].type == 'pie'){
-        var labelsArray : any[] = [];
-        this.chartData[i].labels.forEach( (label : any) => {
-          labelsArray.push(label);
+  fetchPeopleChampionEmployees() {
+    this.employeeProfile.filterEmployeesByType("People Champion").subscribe(
+      (employees: EmployeeProfile[]) => {
+        employees.forEach((employee) => {
+          if (employee.id) {
+            this.employeeNames[employee.id] = `${employee.name} ${employee.surname}`;
+          }
         });
-         var obj = {
+        this.populateCanvasCharts()
+      });
+  }
+  
+   getEmployeeName(employeeId: string | undefined): string {
+    
+    const id = (employeeId || '').toString();
+    
+    if (this.employeeNames[id]) {
+      return this.employeeNames[id];
+    }
+
+    return id;
+  }
+  
+  populateCanvasCharts() {
+    this.chartCanvasArray = [];
+    
+    for (let i = 0; i < this.chartData.length; i++) {
+      let dataset = [];
+  
+      if (this.chartData[i].type === 'pie') {
+        const labelsArray: string[] = this.chartData[i].labels.map((label: string) => this.getEmployeeName(label));
+        dataset.push({
           data: this.chartData[i].data,
-          labels: labelsArray
-         }
-        dataset.push(obj)
-      }else{
-
-        for(let j = 0; j < this.chartData[i].labels.length; j++){
-
-          dataset.push({
-            data: [this.chartData[i].data[j]],
-            label: this.chartData[i].labels[j]
-          });
-
+          labels: labelsArray,
+        });
+      } else {
+        if (this.chartData[i].labels) {
+          for (let j = 0; j < this.chartData[i].labels.length; j++) {
+            dataset.push({
+              data: [this.chartData[i].data[j]],
+              label: this.getEmployeeName(this.chartData[i].labels[j]),
+            });
+          }
         }
       }
       this.chartCanvasArray.push(dataset);
     }
   }
+  // populateCanvasCharts(){
+  //   for(let i = 0; i < this.chartData.length; i++) {
+  //     let dataset = [];
+  //     let data : any;
+  //     if(this.chartData[i].type == 'pie'){
+  //       var labelsArray : any[] = [];
+  //       this.chartData[i].labels.forEach( (label : any) => {
+  //         labelsArray.push(label);
+  //       });
+  //        var obj = {
+  //         data: this.chartData[i].data,
+  //         labels: labelsArray
+  //        }
+  //       dataset.push(obj)
+  //     }else{
+
+  //       for(let j = 0; j < this.chartData[i].labels.length; j++){
+
+  //         dataset.push({
+  //           data: [this.chartData[i].data[j]],
+  //           label: this.chartData[i].labels[j]
+  //         });
+  //       }
+  //     }
+  //     this.chartCanvasArray.push(dataset);
+  //   }
+  // }
 
   pdfPreview(index: number) {
     const dialogRef = this.dialog.open(ChartReportPdfComponent, {
