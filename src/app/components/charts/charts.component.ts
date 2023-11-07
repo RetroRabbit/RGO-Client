@@ -48,6 +48,7 @@ export class ChartComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document, private employeeProfile:EmployeeService) {}
 
     public barChartOptions: ChartConfiguration['options'] = {
+      events: [],
       responsive: true,
       scales: {
         x: {},
@@ -68,6 +69,7 @@ export class ChartComponent implements OnInit {
 
 
     public pieChartOptions: ChartConfiguration['options'] = {
+      events: [],
       responsive: true,
       plugins: {
         legend: {
@@ -97,17 +99,27 @@ export class ChartComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.createAndDisplayChart();
-    this.getNumberOfEmployees();
     this.fetchPeopleChampionEmployees();
+    this.getNumberOfEmployees();
   }
 
   createAndDisplayChart(): void {
     this.chartService.getAllCharts().subscribe({
       next: data => {
-        this.processChartData(data);
+        if (data.length > 0) {
+          this.chartData = data;
+          this.populateCanvasCharts();
+          this.displayChart = true;
+          this.selectedChartType = this.chartData[0].type;
+        } else {
+          this.chartData = [];
+          this.displayChart = false;
+          this.captureCharts.emit(0);
+        }
       },
-      error: error => { }
+      error: error => {
+        //Handle Error
+       }
   });
   }
 
@@ -118,19 +130,6 @@ export class ChartComponent implements OnInit {
       },
       error: error => {  }
   });
-  }
-
-  processChartData(data: any[]): void {
-    if (data.length > 0) {
-      this.chartData = data;
-      this.populateCanvasCharts();
-      this.displayChart = true;
-      this.selectedChartType = this.chartData[0].type;
-    } else {
-      this.chartData = [];
-      this.displayChart = false;
-      this.captureCharts.emit(0);
-    }
   }
 
   updateChartType(chartType: ChartType): void {
@@ -195,9 +194,7 @@ export class ChartComponent implements OnInit {
         error: error => {
           this.toast.error({detail:"Error",summary: "Failed to detele graph",duration:5000, position:'topRight'});
         }
-    });
-    }
-  }
+    });}}
 
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
@@ -205,36 +202,44 @@ export class ChartComponent implements OnInit {
   }
 
   fetchPeopleChampionEmployees() {
-    this.employeeProfile.filterEmployeesByType("People Champion").subscribe(
-      (employees: EmployeeProfile[]) => {
+    this.employeeProfile.filterEmployeesByType("People Champion").subscribe({
+      next :(employees: EmployeeProfile[]) => {
         employees.forEach((employee) => {
           if (employee.id) {
             this.employeeNames[employee.id] = `${employee.name} ${employee.surname}`;
           }
         });
-        this.populateCanvasCharts()
-      });
-  }
+  }, error: (error) => {
+//Handle Error
+
+  }, complete: () => {
+    this.createAndDisplayChart();
+  },
+
+});}
   
+
    getEmployeeName(employeeId: string | undefined): string {
     
     const id = (employeeId || '').toString();
     
+    console.log(this.employeeNames[id])
     if (this.employeeNames[id]) {
       return this.employeeNames[id];
     }
-
+    console.log("Returning ID")
     return id;
+    
   }
   
   populateCanvasCharts() {
     this.chartCanvasArray = [];
-    
     for (let i = 0; i < this.chartData.length; i++) {
       let dataset = [];
   
       if (this.chartData[i].type === 'pie') {
         const labelsArray: string[] = this.chartData[i].labels.map((label: string) => this.getEmployeeName(label));
+        this.chartData[i].labels = labelsArray;
         dataset.push({
           data: this.chartData[i].data,
           labels: labelsArray,
