@@ -67,7 +67,6 @@ export class ChartComponent implements OnInit {
       },
     };
 
-
     public pieChartOptions: ChartConfiguration['options'] = {
       events: [],
       responsive: true,
@@ -118,7 +117,7 @@ export class ChartComponent implements OnInit {
         }
       },
       error: error => {
-        //Handle Error
+        this.toast.error({detail:"error",summary: "Chart display unsuccessful",duration:5000, position:'topRight'});
        }
   });
   }
@@ -127,8 +126,7 @@ export class ChartComponent implements OnInit {
     this.chartService.getTotalEmployees().subscribe({
       next: data => {
         this.numberOfEmployees = data;
-      },
-      error: error => {  }
+      }
   });
   }
 
@@ -210,7 +208,8 @@ export class ChartComponent implements OnInit {
           }
         });
   }, error: (error) => {
-//Handle Error
+    
+    this.toast.error({detail:"error",summary: "Failed to fetch people champion",duration:5000, position:'topRight'});
 
   }, complete: () => {
     this.createAndDisplayChart();
@@ -218,7 +217,6 @@ export class ChartComponent implements OnInit {
 
 });}
   
-
    getEmployeeName(employeeId: string | undefined): string {
     
     const id = (employeeId || '').toString();
@@ -257,33 +255,6 @@ export class ChartComponent implements OnInit {
       this.chartCanvasArray.push(dataset);
     }
   }
-  // populateCanvasCharts(){
-  //   for(let i = 0; i < this.chartData.length; i++) {
-  //     let dataset = [];
-  //     let data : any;
-  //     if(this.chartData[i].type == 'pie'){
-  //       var labelsArray : any[] = [];
-  //       this.chartData[i].labels.forEach( (label : any) => {
-  //         labelsArray.push(label);
-  //       });
-  //        var obj = {
-  //         data: this.chartData[i].data,
-  //         labels: labelsArray
-  //        }
-  //       dataset.push(obj)
-  //     }else{
-
-  //       for(let j = 0; j < this.chartData[i].labels.length; j++){
-
-  //         dataset.push({
-  //           data: [this.chartData[i].data[j]],
-  //           label: this.chartData[i].labels[j]
-  //         });
-  //       }
-  //     }
-  //     this.chartCanvasArray.push(dataset);
-  //   }
-  // }
 
   pdfPreview(index: number) {
     const dialogRef = this.dialog.open(ChartReportPdfComponent, {
