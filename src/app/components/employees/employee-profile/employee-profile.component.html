@@ -715,14 +715,13 @@
                         (closed)="panelOpenState = false">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
-                                Employee Details
+                                Main Bank Account
                             </mat-panel-title>
                             <mat-panel-description *ngIf="bankInformationProgress != 100">
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
                         <form [formGroup]="employeeBankingsForm">
-                            <!-- <div *ngIf="isUpdated">Last updated: 18 October 2023 |</div> -->
                             <div class="row">
                                 <div class="col-10">
                                     <div class="row">
@@ -758,14 +757,14 @@
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Account Number</mat-label>
-                                                <input type="number" matInput placeholder="Enter account number"
+                                                <input type="number" min="0" matInput placeholder="Enter account number"
                                                     formControlName="accountNo">
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Branch Code</mat-label>
-                                                <input matInput placeholder="Enter branch code"
+                                                <input type="number" min="0" matInput placeholder="Enter branch code"
                                                     formControlName="branch">
                                             </mat-form-field>
                                         </div>
@@ -785,10 +784,10 @@
                                                         <div class="col" *ngIf="bankingPDFName.length > 1">
                                                             <p id="recently-uploaded">{{bankingPDFName}}</p>
                                                         </div>
-                                                        <div class="col-1" style="color: blue">
+                                                        <div class="col-1" style="color: blue" id="uploadfile">
                                                             <img src="../../../../assets/img/file_upload.svg" alt="">
                                                         </div>
-                                                        <div class="col-5">
+                                                        <div class="col-5" id="uploadfile">
                                                             <h4>Upload document here</h4>
                                                             <input id="fileUpload" hidden type="file"
                                                                 (change)="onFileSelected($event)" accept=".pdf">
