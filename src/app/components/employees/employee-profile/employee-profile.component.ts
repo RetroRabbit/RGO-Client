@@ -229,7 +229,6 @@ export class EmployeeProfileComponent {
         this.employeeDataService.getEmployeeData(this.employeeProfile?.id).subscribe({
           next: data => {
             this.employeeData = data;
-            this.getData();
           },
           error: error => {
             this.toast.error({ detail: "Error", summary: "Failed to Employee Data", duration: 5000, position: 'topRight' });
@@ -238,60 +237,6 @@ export class EmployeeProfileComponent {
         this.initializeForm(); 
       }
     });
-  }
-
-  getData() {
-    let fieldId = this.customFields.filter(field => field.code == 'tsize')[0];
-    this.tShirtSizeFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
-    if (this.tShirtSizeFieldValue == undefined) {
-      this.tShirtSizeFieldValue = {
-        id: (this.customFields[this.customFields.length - 1].id! + 1),
-        employeeId: this.employeeProfile!.id,
-        fieldCodeId: fieldId.id,
-        value: 'Unknown'
-      };
-      this.employeeDataService.saveEmployeeData(this.tShirtSizeFieldValue).subscribe(data => {
-        error: () => {
-          this.toast.error({ detail: "Error", summary: "Failed to fetch T-Size", duration: 5000, position: 'topRight' });
-        }
-      });
-    }
-    this.personalDetailsForm.addControl('tsize', this.fb.control(this.tShirtSizeFieldValue.value));
-
-    fieldId = this.customFields.filter(field => field.code == 'dietary')[0];
-    this.dietaryFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
-
-    if (this.dietaryFieldValue == undefined) {
-      this.dietaryFieldValue = {
-        id: (this.customFields[this.customFields.length - 1].id! + 2),
-        employeeId: this.employeeProfile!.id,
-        fieldCodeId: fieldId.id,
-        value: 'None'
-      };
-      this.employeeDataService.saveEmployeeData(this.dietaryFieldValue).subscribe(data => {
-        error: () => {
-          this.toast.error({ detail: "Error", summary: "Failed to fetch Dietary", duration: 5000, position: 'topRight' });
-        }
-      });
-    }
-    this.personalDetailsForm.addControl('dietary', this.fb.control(this.dietaryFieldValue.value));
-
-    fieldId = this.customFields.filter(field => field.code == 'allergies')[0];
-    this.allergiesFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
-    if (this.allergiesFieldValue == undefined) {
-      this.allergiesFieldValue = {
-        id: (this.customFields[this.customFields.length - 1].id! + 3),
-        employeeId: this.employeeProfile!.id,
-        fieldCodeId: fieldId.id,
-        value: 'None'
-      };
-      this.employeeDataService.saveEmployeeData(this.allergiesFieldValue).subscribe(data => {
-        error: () => {
-          this.toast.error({ detail: "Error", summary: "Failed to fetch allergies", duration: 5000, position: 'topRight' });
-        }
-      });
-    }
-    this.personalDetailsForm.addControl('allergies', this.fb.control(this.allergiesFieldValue.value));
   }
 
   initializeForm() {
@@ -422,7 +367,7 @@ export class EmployeeProfileComponent {
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
-          this.saveCustomFields();
+          // this.saveCustomFields();
           this.checkPersonalFormProgress();
           this.totalProfileProgress();
           this.getEmployeeFields();
@@ -437,30 +382,7 @@ export class EmployeeProfileComponent {
       this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
     }
   }
-
-  saveCustomFields() {
-    this.employeeDataService.updateEmployeeData(this.tShirtSizeFieldValue!).subscribe({
-      next: () => { },
-      error: (error) => {
-        this.toast.error({ detail: "Error", summary: "Failed to update T-Shirt", duration: 5000, position: 'topRight' });
-      }
-    });
-
-    this.employeeDataService.updateEmployeeData(this.dietaryFieldValue!).subscribe({
-      next: () => { },
-      error: (error) => {
-        this.toast.error({ detail: "Error", summary: "Failed to update Dietary", duration: 5000, position: 'topRight' });
-      }
-    });
-
-    this.employeeDataService.updateEmployeeData(this.allergiesFieldValue!).subscribe({
-      next: () => { },
-      error: (error) => {
-        this.toast.error({ detail: "Error", summary: "Failed to update Allergies", duration: 5000, position: 'topRight' });
-      }
-    });
-  }
-
+  
   captureTShirtSizeChange(event: any) {
     this.tShirtSizeFieldValue!.value = event;
   }
