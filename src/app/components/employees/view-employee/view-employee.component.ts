@@ -4,6 +4,7 @@ import {
   EventEmitter,
   ViewChild,
   HostListener,
+  Input,
 } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
@@ -33,6 +34,17 @@ export class ViewEmployeeComponent {
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() addEmployeeEvent = new EventEmitter<void>();
   @Output() managePermissionsEvent = new EventEmitter<void>();
+  _searchQuery: string = '';
+
+  @Input()
+  set searchQuery(text: string) {
+    this._searchQuery = text;
+    this.applyFilter();
+  }
+
+  get searchQuery(): string {
+    return this._searchQuery;
+  }
 
   roles: Observable<string[]> = this.employeeRoleService
     .getAllRoles()
@@ -83,6 +95,7 @@ export class ViewEmployeeComponent {
           this.dataSource = new MatTableDataSource(data);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
+          this.applyFilter();
         }),
         catchError((error) => {
           this.toast.error({
@@ -165,8 +178,11 @@ export class ViewEmployeeComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter() {
+    if (this.searchQuery.trim() === '') console.error('Search query is empty');
+    this.dataSource.filter = this.searchQuery.trim().toLowerCase();
+    this.dataSource._updateChangeSubscription();
+    console.info('Filter applied', this.dataSource.filter);
   }
 
   pageSizes: number[] = [1, 5, 10, 25, 100];

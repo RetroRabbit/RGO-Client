@@ -116,6 +116,11 @@ export class HomeComponent {
     this.selectedEmployee = item
   }
 
+  searchQuery: string = '';
+  handleSearchQuery(query: string) {
+    this.searchQuery = query;
+  }
+
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);

@@ -5,21 +5,20 @@
         <div
           id="search-container"
           class="d-flex align-items-center rounded-pill w-100"
-          [ngClass]="{ 'bg-white': filter.value !== '' }"
+          [ngClass]="{ 'bg-white': searchQuery !== '' }"
         >
           <button
             mat-button
-            (click)="filter.value = ''"
-            *ngIf="filter.value !== ''"
+            (click)="searchQuery = ''"
+            *ngIf="searchQuery !== ''"
             id="back-button"
           >
             <mat-icon>arrow_back</mat-icon>
           </button>
           <input
             mat-Input
-            #filter
-            (keyup)="applyFilter(filter.value)"
-            [ngClass]="{ 'no-text': filter.value === '' }"
+            [(ngModel)]="searchQuery"
+            [ngClass]="{ 'no-text': searchQuery === '' }"
             class="ms-4 bg-transparent"
             id="search-input"
             placeholder="Search for employee by name"
