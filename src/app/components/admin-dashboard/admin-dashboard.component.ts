@@ -90,17 +90,34 @@ export class AdminDashboardComponent {
 
   searchEmployees() {
     if (this.searchQuery) {
-      this.searchResults = this.allEmployees.filter(
-        (employee) =>
-          employee.name && employee.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          employee.surname && employee.surname.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+      this.searchResults = this.allEmployees
+        .filter(
+          (employee) =>
+            employee.name &&
+            employee.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+            employee.surname &&
+            employee.surname.toLowerCase().includes(this.searchQuery.toLowerCase())
+        )
+        .filter(employee => employee.name !== undefined)
+        .sort((a, b) => {
+          if (a.name && b.name) {
+            return a.name.localeCompare(b.name);
+          } else {
+            return 0;
+          }
+        });
+
+      // Ensure only up to three employees are displayed
+      this.searchResults = this.searchResults.slice(0, 3);
+      
       this.activateSearchBar();
     } else {
       this.searchResults = [];
       this.deactivateSearchBar();
     }
-  }
+}
+
+  
  
   activateSearchBar() {
     const searchBar = document.querySelector('.searchbar');
