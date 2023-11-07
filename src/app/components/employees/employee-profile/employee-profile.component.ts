@@ -102,9 +102,9 @@ export class EmployeeProfileComponent {
   bankInformationProgress: number = 0;
   documentsProgress: number = 0;
   bankingId: number = 0;
-  bankingStatus: number = 0; 
+  bankingStatus: number = 0;
   bankingReason: string = "" ;
-  
+
   bankingPDFName: string = "" ;
   hasBankingData: boolean = false;
   hasFile: boolean = false;
@@ -899,7 +899,7 @@ export class EmployeeProfileComponent {
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress) / 4);
     this.overallProgress();
   }
-  
+
   totalBankingProgress(){
     this.bankInformationProgress = Math.floor(this.bankingFormProgress);
     this.overallProgress();
@@ -934,7 +934,7 @@ export class EmployeeProfileComponent {
       accountHolderName: employeeBankingFormValue.accountHolderName,
       employeeId: this.employeeProfile?.id,
       bankName: employeeBankingFormValue.bankName,
-      branch: employeeBankingFormValue.branch,
+      branch: `${employeeBankingFormValue.branch}`,
       accountNo: `${employeeBankingFormValue.accountNo}`,
       accountType: employeeBankingFormValue.accountType,
       status: 1,
