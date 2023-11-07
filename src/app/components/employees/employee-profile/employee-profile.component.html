@@ -758,7 +758,7 @@
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Account Number</mat-label>
-                                                <input matInput placeholder="Enter account number"
+                                                <input type="number" matInput placeholder="Enter account number"
                                                     formControlName="accountNo">
                                             </mat-form-field>
                                         </div>
@@ -777,14 +777,14 @@
                                             <div class="my-2">
                                                 <div class="row">
                                                     <div *ngIf="employeeBanking.file.length > 1">
-                                                        <button mat-button color="primary"
+                                                        <button mat-button color="primary" [hidden]="employeeBanking.file.length == 0"
                                                             (click)="convertFileToBase64()">Download</button>
                                                     </div>
-                                                    <div class="col-5" [hidden]="!editBanking" class="row" id="uploadButton"
-                                                    (click)="openFileInput()">
-                                                    <div class="col" *ngIf="bankingPDFName.length > 1">
-                                                        <p id="recently-uploaded">{{bankingPDFName}}</p>
-                                                    </div>
+                                                    <div class="col-5" [hidden]="!editBanking" class="row"
+                                                        id="uploadButton" (click)="openFileInput()">
+                                                        <div class="col" *ngIf="bankingPDFName.length > 1">
+                                                            <p id="recently-uploaded">{{bankingPDFName}}</p>
+                                                        </div>
                                                         <div class="col-1" style="color: blue">
                                                             <img src="../../../../assets/img/file_upload.svg" alt="">
                                                         </div>

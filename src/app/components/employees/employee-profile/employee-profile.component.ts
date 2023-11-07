@@ -106,6 +106,7 @@ export class EmployeeProfileComponent {
   bankingReason: string = "" ;
   
   bankingPDFName: string = "" ;
+  hasBankingData: boolean = false;
 
   employeeDetailsForm: FormGroup = this.fb.group({
     title: { value: '', disabled: true },
@@ -159,12 +160,12 @@ export class EmployeeProfileComponent {
   });
 
   employeeBankingsForm: FormGroup = this.fb.group({
-    accountHolderName: { value: 0, disabled: true },
-    accountType: { value: 0, disabled: true },
-    bankName: { value: 0, disabled: true },
-    accountNo: { value: 0, disabled: true },
-    branch: { value: 0, disabled: true },
-    file: { value: 0, disabled: true },
+    accountHolderName: [{ value: '', disabled: true }, Validators.required],
+    accountType: [{ value: -1, disabled: true }, Validators.required],
+    bankName:[{ value: '', disabled: true }, Validators.required],
+    accountNo:  [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+    branch:[{ value: '', disabled: true }, Validators.required],
+    file:[{ value: '', disabled: true }, Validators.required],
   });
 
   filteredEmployees: any = [];
@@ -222,23 +223,23 @@ export class EmployeeProfileComponent {
         this.employeeBankingService.getBankingDetails(this.employeeProfile?.id).subscribe({
           next: data => {
             this.employeeBanking = data;
+            console.log(this.employeeBanking);
+            this.hasBankingData = true;
             this.bankingId = this.employeeBanking.id;
             this.bankingStatus = this.employeeBanking.status;
             this.bankingReason = this.employeeBanking.declineReason;
             this.employeeBankingsForm = this.fb.group({
-              accountHolderName: [this.employeeBanking!.accountHolderName, Validators.required],
-              accountType: [this.employeeBanking!.accountType, Validators.required],
-              bankName: [this.employeeBanking!.bankName, Validators.required],
-              accountNo: [this.employeeBanking!.accountNo, Validators.required],
-              branch: [this.employeeBanking!.branch, Validators.required],
-              file: [this.employeeBanking!.file, Validators.required],
+              accountHolderName: [this.employeeBanking?.accountHolderName, Validators.required],
+              accountType: [this.employeeBanking?.accountType, Validators.required],
+              bankName: [this.employeeBanking?.bankName, Validators.required],
+              accountNo: [this.employeeBanking?.accountNo,  [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+              branch: [this.employeeBanking?.branch, Validators.required],
+              file: [this.employeeBanking?.file, Validators.required],
             });
             this.employeeBankingsForm.disable();
             this.checkBankingInformationProgress();
             this.totalBankingProgress();
-          },
-          error: data => this.toast.error({ detail: "Error", summary: "Failed to fetch banking information", duration: 5000, position: 'topRight' })
-
+          }
         });
         this.hasDisbility = this.employeeProfile!.disability;
         this.customFieldsService.getAllFieldCodes().subscribe({
@@ -252,11 +253,11 @@ export class EmployeeProfileComponent {
             this.toast.error({ detail: "Error", summary: "Failed to fetch addition informaion", duration: 5000, position: 'topRight' });
           }
         });
-        this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
-          next: data => {
-            this.employeeRoles = data;
-          }
-        });
+        // this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
+        //   next: data => {
+        //     this.employeeRoles = data;
+        //   }
+        // });
 
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
@@ -933,15 +934,17 @@ export class EmployeeProfileComponent {
       employeeId: this.employeeProfile?.id,
       bankName: employeeBankingFormValue.bankName,
       branch: employeeBankingFormValue.branch,
-      accountNo: employeeBankingFormValue.accountNo,
+      accountNo: `${employeeBankingFormValue.accountNo}`,
       accountType: employeeBankingFormValue.accountType,
-      status: this.bankingStatus,
+      status: 1,
       declineReason: this.bankingReason,
       file: employeeBankingFormValue.file
     }
-    this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
-      next: () => {
-        this.toast.success({ detail: "Employee Banking updated!", position: 'topRight' });
+    if(this.hasBankingData){
+
+      this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
+        next: () => {
+          this.toast.success({ detail: "Employee Banking updated!", position: 'topRight' });
         this.addressDetailsForm.disable();
         this.checkAddressFormProgress();
         this.totalBankingProgress();
@@ -952,6 +955,22 @@ export class EmployeeProfileComponent {
         this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
       }
     })
+    }
+    else{
+      this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
+        next: () => {
+          this.toast.success({ detail: "Banking Details Added!", position: 'topRight' });
+          this.addressDetailsForm.disable();
+          this.checkAddressFormProgress();
+          this.totalBankingProgress();
+          this.getEmployeeFields();
+          this.checkBankingInformationProgress();
+        }
+        ,error : (error) => {
+          this.toast.error({ detail: "Failed to create banking information", summary: error, duration: 5000, position: 'topRight' });
+        }
+      })
+    }
   }
   convertFileToBase64() {
     if (this.employeeBanking.file)
