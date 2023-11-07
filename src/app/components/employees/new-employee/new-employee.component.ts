@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
 import { CookieService } from 'ngx-cookie-service';
@@ -18,6 +18,10 @@ import { countries } from 'src/app/models/constants/country.constants';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
+import { NgxFileDropEntry,
+  FileSystemFileEntry,
+  FileSystemDirectoryEntry } from 'ngx-file-drop';
+  import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-new-employee',
@@ -26,7 +30,7 @@ import { EmployeeAddress } from 'src/app/models/employee-address.interface';
 })
 export class NewEmployeeComponent implements OnInit {
   @Input() goto: 'dashboard' | 'employees' = 'dashboard';
-  
+
   constructor(
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
@@ -34,6 +38,12 @@ export class NewEmployeeComponent implements OnInit {
     private cookieService: CookieService,
     private toast: NgToastService
   ) { }
+
+  employeeDocument: EmployeeDocument[] = [];
+  public newEmployeeEmail = "";
+  public base64String = "";
+  public filename = "";
+  @ViewChild('stepper') private myStepper!: MatStepper;
 
   employeeTypes: EmployeeType[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
@@ -52,8 +62,177 @@ export class NewEmployeeComponent implements OnInit {
   Employees: EmployeeProfile[] = [];
   selectedEmployee!: EmployeeProfile;
   validImage: boolean = false;
+  public files: NgxFileDropEntry[] = [];
+  employeeDocumentModels: EmployeeDocument[] = [];
 
-  onFileChange(event: any): void {
+  public dropped(files: NgxFileDropEntry[]) {
+    this.files.push(...files);
+    for (const droppedFile of files) {
+      if (droppedFile.fileEntry.isFile) {
+        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+        fileEntry.file((file: File) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const base64String = e.target?.result as string;
+            this.employeeService.get(this.newEmployeeEmail).subscribe({
+              next: (employeeProfile: EmployeeProfile) => {
+                const employeeDocument: EmployeeDocument = {
+                  id: 0,
+                  employeeId: employeeProfile.id as number,
+                  fileName: file.name,
+                  file: base64String,
+                  uploadDate: new Date()
+                };
+                this.employeeDocumentModels.push(employeeDocument);
+              },
+              error: (error: any) => {
+                this.toast.error({
+                  detail: 'Error',
+                  summary: 'Failed compile documents',
+                  duration: 5000,
+                   position: 'topRight',
+                });
+              }
+            });
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+    }
+  }
+
+  onUploadDocument(): void {
+    // Upload each document model
+    this.employeeDocumentModels.forEach((documentModel) => {
+      this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
+        next: () => {
+            this.toast.success({
+              detail: 'Success',
+              summary: `files have been uploaded`,
+              duration: 5000,
+              position: 'topRight',
+            });
+        },
+        error: (error: any) => {
+          this.toast.error({
+            detail: 'Error',
+            summary: 'Failed to save documents',
+            duration: 5000,
+             position: 'topRight',
+          });
+        }
+      });
+    });
+    this.employeeDocumentModels = [];
+    this.newEmployeeEmail = "";
+    this.files = [];
+  }
+  // public dropped(files: NgxFileDropEntry[]) {
+  //   this.files = files;
+  //   for (const droppedFile of files) {
+  //     // Is it a file?
+  //     if (droppedFile.fileEntry.isFile) {
+  //       const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+  //       fileEntry.file((file: File) => {
+  //         // Access the real file
+  //         console.log(droppedFile.relativePath, file);
+  //         this.filename = file.name;
+  //         //Converting the file to base64
+  //         const reader = new FileReader();
+
+  //         reader.onload = (e) => {
+  //           this.base64String = e.target?.result as string;
+  //           console.log(this.base64String);
+
+
+
+  //           //user method on service to save the document
+  //           // this.employeeDocumentService.saveEmployeeDocument(this.employeeDocument).subscribe((savedDocument) => {
+  //           //   console.log('Document saved successfully', savedDocument);
+  //           // });
+  //         };
+  //         reader.readAsDataURL(file);
+  //       });
+  //     } else {
+  //       const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
+  //       console.log(droppedFile.relativePath, fileEntry);
+  //     }
+  //   }
+  // }
+
+  // onUploadDocument(): void {
+  //   // Assuming this.uploadDocumentForm.value.file contains the file data as a base64 string
+  //   // and this.uploadDocumentForm.value.fileName contains the name of the file.
+
+  //   // First, get the employee details using the email
+  //   this.employeeService.get(this.newEmployeeEmail).subscribe({
+  //     next: (employeeProfile: EmployeeProfile) => {
+  //       const employeeDocument: EmployeeDocument = {
+  //         id: 0,
+  //         employeeId: 1, //employeeProfile.id as number,
+  //         fileName: this.filename,
+  //         file: this.base64String,
+  //         uploadDate: new Date()
+  //       };
+
+  //       console.log(employeeDocument);
+
+  //       this.employeeDocumentService.saveEmployeeDocument(employeeDocument).subscribe({
+  //         next: () => {
+  //           this.toast.success({
+  //             detail: 'Success',
+  //             summary: `${employeeDocument.fileName} has been uploaded`,
+  //             duration: 5000,
+  //             position: 'topRight',
+  //           });
+  //         },
+  //         error: (error: any) => {
+  //           // Handle errors
+  //           let message = 'An unexpected error occurred';
+  //           if (error.status === 400) {
+  //             message = 'Incorrect form values';
+  //           } else if (error.status === 406) {
+  //             message = 'User already exists';
+  //           }
+  //           this.toast.error({
+  //             detail: 'Error',
+  //             summary: `Error: ${message}`,
+  //             duration: 5000,
+  //             position: 'topRight',
+  //           });
+  //         }
+  //       });
+  //     },
+  //     error: (error: any) => {
+  //       // Handle errors for the get employee call
+  //       this.toast.error({
+  //         detail: 'Error',
+  //         summary: 'Failed to retrieve employee details',
+  //         duration: 5000,
+  //         position: 'topRight',
+  //       });
+  //     }
+  //   });
+  // }
+  // public saveDocument() {
+  //   this.employeeEmail = this.newEmployeeForm.value.email;
+  //   this.employeeService.saveEmployee(this.newEmployeeForm.value);
+  // }
+
+  public fileOver(event: Event) {
+    console.log(event);
+  }
+  public fileLeave(event: Event) {
+    console.log(event);
+  }
+  public removeFileByIndex(index: number): void {
+    if (index >= 0 && index < this.files.length) {
+      this.files.splice(index, 1);
+    }
+    console.log(index);
+  }
+  //
+  public onFileChange(event: any): void {
     const file = event.target.files[0] as File;
     if (file) {
       this.newEmployeeForm.patchValue({
@@ -201,7 +380,7 @@ export class NewEmployeeComponent implements OnInit {
       postalCode: this.postalAddress.value.postalCode!,
     };
   }
-  
+
   saveAddress(): void {
       combineLatest([
         this.employeeAddressService.save(this.physicalAddressObj),
@@ -209,7 +388,12 @@ export class NewEmployeeComponent implements OnInit {
       ]).pipe(first()).subscribe()
   }
 
-  onSubmit(reset: boolean = false): void {
+  onSubmit( reset: boolean = false): void {
+    if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined) {
+      this.newEmployeeEmail = this.newEmployeeForm.value.email;
+    } else {
+      this.toast.error({detail: 'Error', summary: `please enter your email address`, duration: 5000, position: 'topRight'});
+    }
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
@@ -239,7 +423,9 @@ export class NewEmployeeComponent implements OnInit {
         } else {
           this.CaptureEvent()
         }
+        this.myStepper.next();
       },
+
       error: (error: any) => {
         let message = '';
         if (error.status === 400) {
@@ -255,7 +441,54 @@ export class NewEmployeeComponent implements OnInit {
         });
       },
     });
+    this.myStepper.next();
   }
+
+  // onUploadDocument(): void {
+
+
+  //   this.uploadDocumentForm.patchValue({
+  //     employee: this.selectedEmployee,
+  //     fileName: this.uploadDocumentForm.value.fileName,
+  //     file: this.uploadDocumentForm.value.file,
+  //     uploadDate: new Date(this.uploadDocumentForm.value.uploadDate!)
+  //       .toISOString()
+  //       .split('T')[0],
+  //   });
+
+  //   var employeedetails = this.employeeService.get(this.newEmployeeEmail);
+  //   this.employeeDocument
+
+
+  //   this.employeeDocumentService
+  //     .saveEmployeeDocument(this.employeeDocument[0])
+  //     .subscribe({
+  //       next: () => {
+  //         this.toast.success({
+  //           detail: 'Success',
+  //           summary: `${this.uploadDocumentForm.value.fileName} has been uploaded`,
+  //           duration: 5000,
+  //           position: 'topRight',
+  //         });
+  //       },
+  //       error: (error: any) => {
+  //         let message = '';
+  //         if (error.status === 400) {
+  //           message = 'Incorrect form values';
+  //         } else if (error.status === 406) {
+  //           message = 'User already exists';
+  //         }
+  //         this.toast.error({
+  //           detail: 'Error',
+  //           summary: `Error: ${message}`,
+  //           duration: 5000,
+  //           position: 'topRight',
+  //         });
+  //       },
+  //     });
+  // }
+
+
 
   goToEmployees() {
     this.cookieService.set('currentPage', 'Employees');
