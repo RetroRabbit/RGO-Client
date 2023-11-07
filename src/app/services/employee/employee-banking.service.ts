@@ -24,4 +24,8 @@ export class EmployeeBankingService{
     getBankingDetails(id: number | undefined): Observable<EmployeeBanking> {
       return this.httpClient.get<EmployeeBanking>(`${API.HttpsBaseURL}/employeebanking/getDetails?id=${id}`)
     }
+
+    addBankingDetails(newEntry : EmployeeBanking): Observable<EmployeeBanking> {
+    return this.httpClient.post<EmployeeBanking>(`${API.HttpsBaseURL}/employeebanking/add`, newEntry);
+    }
 }
