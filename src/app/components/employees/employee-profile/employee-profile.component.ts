@@ -104,6 +104,8 @@ export class EmployeeProfileComponent {
   bankingId: number = 0;
   bankingStatus: number = 0; 
   bankingReason: string = "" ;
+  
+  bankingPDFName: string = "" ;
 
   employeeDetailsForm: FormGroup = this.fb.group({
     title: { value: '', disabled: true },
@@ -980,6 +982,7 @@ export class EmployeeProfileComponent {
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
+    this.bankingPDFName = this.selectedFile.name;
     this.uploadFile();
   }
 
