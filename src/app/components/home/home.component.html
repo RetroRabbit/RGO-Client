@@ -118,7 +118,6 @@
                 <button mat-menu-item  (click)="CaptureEvent($event)">Employee Banking</button>
                 <button mat-menu-item  (click)="CaptureEvent($event)">Manage Employee Events</button>
                 <button mat-menu-item  (click)="CaptureEvent($event)">Manage Employee Roles</button>
-                <button mat-menu-item  (click)="CaptureEvent($event)">Manage Field</button>
                 <button mat-menu-item  (click)="CaptureEvent($event)">Evaluations</button>
               </mat-menu>
             </div>
@@ -187,21 +186,6 @@
     </div>
     <div *ngIf="selectedItem == 'System Settings'">
       <app-system-settings></app-system-settings>
-    </div>
-    <div *ngIf="cookieService.get('currentPage') === 'Manage Field'">
-      <app-manage-field-code></app-manage-field-code>
-    </div>
-    <div *ngIf="cookieService.get('currentPage') === 'Manage Permissions'">
-      <div *ngIf="!shouldDisplayNewEmployee">
-        <app-role-manager></app-role-manager>
-      </div>
-      <div *ngIf="shouldDisplayNewEmployee">
-        <app-role-manager></app-role-manager>
-      </div>
-    </div>
-
-    <div *ngIf="cookieService.get('currentPage') === 'Manage Roles'">
-      <app-role-manager></app-role-manager>
     </div>
     <div *ngIf="cookieService.get('currentPage') === 'Manage Employee Roles'">
       <app-employee-role-manager></app-employee-role-manager>

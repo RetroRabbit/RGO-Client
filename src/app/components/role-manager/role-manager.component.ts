@@ -250,7 +250,6 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
  
     this.temporaryRoleAccessChanges = [];
 
-    this.updateData();
   }
 
   discardChanges() {
