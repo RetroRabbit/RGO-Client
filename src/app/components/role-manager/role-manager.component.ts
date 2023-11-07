@@ -55,7 +55,6 @@ export class RoleManagerComponent {
       this.roleAccesses = roleAccess;
       this.chartPermissions = this.roleAccesses.filter(permission => permission.grouping === "Charts");
       this.employeePermissions = this.roleAccesses.filter(permission => permission.grouping === "Employee Data");
-     
     });
   
     this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
@@ -232,7 +231,15 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
     this.temporaryRoleAccessChanges.push(change);
   }
   
+  
+  updateData() {
+    this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
+      this.roleAccessLinks = roleAccessLinks;
+      this.updateChartAndEmployeeDataCheckboxStates();
+    });
+  }
   saveChanges() {
+   
     this.temporaryRoleAccessChanges.forEach((change) => {
       if (change.changeType === 'add') {
         this.onAdd(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
@@ -240,8 +247,10 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
         this.onDelete(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
       }
     });
-
+ 
     this.temporaryRoleAccessChanges = [];
+
+    this.updateData();
   }
 
   discardChanges() {

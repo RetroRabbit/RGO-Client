@@ -59,7 +59,14 @@ div .d-flex {
 
 #subheader{
     background-color:#F7F2FA ;
-   
+    padding-bottom: 10px;
+    padding-top: 20px;
+}
+
+#permissions{
+    padding-bottom: 10px;
+    padding-top: 20px;
+    align-items: start;
 }
 
 #allsubheader{
