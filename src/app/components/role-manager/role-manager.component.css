@@ -33,6 +33,8 @@ div .d-flex {
 
 #tableheader{
     background-color: #D7DFFF;
+    height: 60px;
+    padding-bottom: 20px;
 
 }
 
@@ -47,7 +49,7 @@ div .d-flex {
 #savechangesbtn{
     background-color:#0029C6 ;
     color:#FFFFFF;
-    margin-left: 1370px;
+    margin-left: 77%;
     margin-bottom: 20px;
     width: 200px;
     height: 40px;
@@ -57,6 +59,18 @@ div .d-flex {
 
 #subheader{
     background-color:#F7F2FA ;
+   
+}
+
+#allsubheader{
+   background-color:#F7F2FA ;
+   padding-left:30px ;
+   font-family: Roboto;
+   font-size: 16px;
+   font-weight: 500;
+   line-height: 24px;
+   letter-spacing: 0.15000000596046448px;
+   text-align: center;
 }
 
 #dialog-content {
@@ -178,4 +192,6 @@ div .d-flex {
       line-height: 20px;
       text-transform: uppercase;
   }
+
+ 
 

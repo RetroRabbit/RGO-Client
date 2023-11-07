@@ -1,32 +1,35 @@
-<div class="row">
-  <mat-drawer-container autosize>
-    <mat-drawer #drawer opened="true" mode="side" position="start">
-      <div id="drawerheader">
-        <h1>System Settings</h1>
-      </div>"
-     <div id="drawerheader">
-      <h2>Manage system settings</h2>
-     </div>
-    <mat-nav-list>
-        <mat-list-item>
-            <button mat-button (click)="CaptureEvent($event)"><mat-icon>mode_edit_24px</mat-icon>Custom Field management</button>
-        </mat-list-item>
-        <mat-list-item>
-            <button mat-button (click)="CaptureEvent($event)"> <mat-icon>person_outline_24px</mat-icon>Role Management</button>
-        </mat-list-item>
-    </mat-nav-list>
-    </mat-drawer>
-    <mat-drawer-content>
-      <div style="text-align: center;min-height: 600px;min-width: fit-content;">
-        <div class="col-12" id="content">
-          <div *ngIf="cookieService.get('currentPage') === 'Custom Field management'">
-            <app-manage-field-code></app-manage-field-code>
+<main class="container-fluid mt-3 px-5">
+  <div class="row">
+    <mat-drawer-container  id="matdrawercontainer">
+      <mat-drawer #drawer opened="true" mode="side" position="start">
+        <div id="drawerheader">
+          <h1>System Settings</h1>
+        </div>"
+       <div id="drawerheader">
+        <h2>Manage system settings</h2>
+       </div>
+      <mat-nav-list>
+          <mat-list-item>
+              <button mat-button (click)="CaptureEvent($event)"><mat-icon>mode_edit_24px</mat-icon>Custom Field management</button>
+          </mat-list-item>
+          <mat-list-item>
+              <button mat-button (click)="CaptureEvent($event)"> <mat-icon>person_outline_24px</mat-icon>Role Management</button>
+          </mat-list-item>
+      </mat-nav-list>
+      </mat-drawer>
+      <mat-drawer-content>
+        <div style="text-align: center;min-height: 600px;min-width: fit-content;">
+          <div class="col-12" id="content">
+            <div *ngIf="cookieService.get('currentPage') === 'Custom Field management'">
+              <app-manage-field-code></app-manage-field-code>
+            </div>
+            <div *ngIf="cookieService.get('currentPage') === 'Role Management'">
+              <app-role-manager></app-role-manager>
+            </div>
           </div>
-          <div *ngIf="cookieService.get('currentPage') === 'Role Management'">
-            <app-role-manager></app-role-manager>
-          </div>
-        </div>
-      </div>  
-    </mat-drawer-content>
-  </mat-drawer-container>
-</div>
+        </div>  
+      </mat-drawer-content>
+    </mat-drawer-container>
+  </div>
+</main>
+

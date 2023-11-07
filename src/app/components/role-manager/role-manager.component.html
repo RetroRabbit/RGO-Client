@@ -1,4 +1,5 @@
-<button mat-button id="savechangesbtn" (click)="openDialog()">Save Changes</button>
+
+<button mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save Changes</button>
 
 <ng-template #dialogContentTemplate>
   <div id="dialog-content">
@@ -25,7 +26,7 @@
         <h2 mat-dialog-title id="dialog-title-cancel">Discard unsaved changes?</h2>
       </div>
       <div id="button-container">
-        <button mat-button mat-dialog-close id="save-button">Discard</button>
+        <button mat-button mat-dialog-close id="save-button" (click)="discardChanges()">Discard</button>
         <button mat-button mat-dialog-close id="cancel-button"(click)="openDialog()">Back</button>
       </div>
      </div>
@@ -51,13 +52,13 @@
         <th scope="row" id="subheader">
           Charts
         </th>
-        <th scope="row" *ngFor="let r of roles" id="subheader">
+        <th scope="row" *ngFor="let r of roles" id="allsubheader">
           <mat-checkbox
             color="primary"
             [(ngModel)]="allCheckboxesState[r.description]"
             (change)="toggleAllCheckboxes(r.description)"
           >
-            All
+            All    
           </mat-checkbox>
         </th>
       </tr>
@@ -80,7 +81,7 @@
         <th scope="row" id="subheader">
           Employee Data
         </th>
-        <th scope="row" *ngFor="let r of roles" id="subheader">
+        <th scope="row" *ngFor="let r of roles" id="allsubheader">
           <mat-checkbox
             color="primary"
             [(ngModel)]="allEmployeeDataCheckboxesState[r.description]"

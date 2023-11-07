@@ -38,8 +38,7 @@ export class RoleManagerComponent {
 
   temporaryRoleAccessChanges: RoleAccessLink[] = [];
 
-  parentSelector: boolean = false;
-
+  parentSelector :boolean = false;
   constructor(
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
@@ -52,19 +51,54 @@ export class RoleManagerComponent {
       this.roles = roles;
     });
   
-    this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
-      this.roleAccessLinks = roleAccessLinks; 
-      this.updateChartAndEmployeeDataCheckboxStates(); 
-    });
-  
     this.roleManagementService.getAllRoleAccesses().subscribe(roleAccess => {
       this.roleAccesses = roleAccess;
       this.chartPermissions = this.roleAccesses.filter(permission => permission.grouping === "Charts");
       this.employeePermissions = this.roleAccesses.filter(permission => permission.grouping === "Employee Data");
+     
     });
-
-
+  
+    this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
+      this.roleAccessLinks = roleAccessLinks;
+      this.updateChartAndEmployeeDataCheckboxStates();
+    });
   }
+  
+
+  areAllCheckboxesSelected(columnKey: string): boolean {
+    return this.roles.every((r) => this.checkboxStates[r.description + columnKey]);
+  }
+
+   updateAllCheckboxes() {
+    for (let r of this.roles) {
+      const hasLinks = this.chartPermissions.every((n) =>
+        this.roleAccessLinks.some((link) =>
+          link.role.description === r.description &&
+          link.roleAccess.permission === n.permission &&
+          link.roleAccess.grouping === n.grouping
+        )
+      );
+      this.allCheckboxesState[r.description] = hasLinks;
+    }
+  }
+
+  areAllEmployeeDataCheckboxesSelected(columnKey: string): boolean {
+    return this.roles.every((r) => this.checkboxStatesEmployeePermissions[r.description + columnKey]);
+  }
+
+updateAllEmployeeDataCheckboxes() {
+  for (let r of this.roles) {
+    const hasLinks = this.employeePermissions.every((n) =>
+      this.roleAccessLinks.some((link) =>
+        link.role.description === r.description &&
+        link.roleAccess.permission === n.permission &&
+        link.roleAccess.grouping === n.grouping
+      )
+    );
+    this.allEmployeeDataCheckboxesState[r.description] = hasLinks;
+  }
+}
+
   
   updateChartAndEmployeeDataCheckboxStates() {
     for (let r of this.roles) {
@@ -87,6 +121,8 @@ export class RoleManagerComponent {
         this.checkboxStatesEmployeePermissions[key] = existingLink ? true : false;
       }
     }
+    this.updateAllCheckboxes();
+    this.updateAllEmployeeDataCheckboxes();
   }
   
 allCheckboxesState: { [key: string]: boolean } = {};
@@ -132,7 +168,7 @@ toggleAllCheckboxes(roleDescription: string) {
         });
       }
     }
-  }
+  } 
 }
 
 toggleAllEmployeeDataCheckboxes(roleDescription: string) {
@@ -165,8 +201,8 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
       }
     }
   }
-}
 
+}
 
   onChangeRoleAccess($event: any, role: string, permission: string, grouping: string) {
     const isChecked = $event.source.checked;
@@ -207,13 +243,21 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
 
     this.temporaryRoleAccessChanges = [];
   }
+
+  discardChanges() {
+    this.ngOnInit();
+    this.toast.success({
+      detail: `Changes discarded successfully!`,
+      duration: 5000,
+      position: 'topRight',
+    });
+  }
   
   onAdd(role:string,permission:string,grouping: string): void {
     this.roleService.addRole(role, permission,grouping).subscribe({
       next: (data) => {
         this.toast.success({
           detail: `Permissions saved  successfully!`,
-          summary: 'Success',
           duration: 5000,
           position: 'topRight',
         });
@@ -230,7 +274,6 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
       next: (data) => {
         this.toast.success({
           detail: `Permissions deleted  successfully!`,
-          summary: 'Success',
           duration: 5000,
           position: 'topRight',
         });
@@ -253,8 +296,6 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
      
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-
-        console.log('Delete action confirmed');
       }
     });
   }
