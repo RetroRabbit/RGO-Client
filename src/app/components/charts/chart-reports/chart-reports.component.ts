@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
+import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 @Component({
   selector: 'app-report',
@@ -7,12 +9,51 @@ import { ChartService } from 'src/app/services/charts.service';
   styleUrls: ['./chart-reports.component.css']
 })
 export class ReportComponent {
-  @Input() chartData: any;
+  @Input() chartData !: { selectedChart: any; canvasData: any; };
   activeChart: any = null;
   showReport: boolean = false;
   clearActiveChart: () => void = () => { };
+  public pieChartPlugins = [ChartDataLabels];
+  public barChartPlugins = [ChartDataLabels];
 
-  constructor(private chartService: ChartService) { }
+  ngOnInit(){
+  }
+  constructor(private chartService: ChartService) {
+  }
+
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    scales: {
+      x: {},
+      y: {
+        min: 0,
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+      },
+      datalabels: {
+        anchor: 'middle',
+        align: 'middle',
+      } as any,
+    },
+  };
+
+
+  public pieChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+    },
+  };
+
+  isPieChart(chartType: string): boolean {
+    return chartType === 'pie';
+  }
 
   generateReport(): void {
     const reportHTML = this.generateHTMLReport();
@@ -21,18 +62,16 @@ export class ReportComponent {
       newWindow.document.open();
       newWindow.document.write(reportHTML);
       newWindow.document.close();
-    } else {
-      console.error('Failed to open a new window for the report.');
     }
   }
   generateHTMLReport(): string {
-    const chartHTML = `<h1>${this.chartData.label}</h1>`;
-    const dataHTML = `<p>Data: ${JSON.stringify(this.chartData.data)}</p>`;
+    const chartHTML = `<h1>${this.chartData.selectedChart.label}</h1>`;
+    const dataHTML = `<p>Data: ${JSON.stringify(this.chartData.selectedChart.data)}</p>`;
     return `<html><body>${chartHTML}${dataHTML}</body></html>`;
   }
 
   getTotalEmployees(): number {
-    return this.chartData.data.reduce((total: number, value: number) => total + value, 0);
+    return this.chartData.selectedChart.data.reduce((total: number, value: number) => total + value, 0);
   }
 
   calculatePercentage(value: number): string {
@@ -42,19 +81,14 @@ export class ReportComponent {
   }
 
   downloadReportAsCSV(dataTypes: string[]) {
-
     this.chartService.downloadCSV(dataTypes).subscribe(data => {
-
       const blob = new Blob([data], { type: 'text/csv' });
-      
       const downloadLink = document.createElement('a');
       downloadLink.href = window.URL.createObjectURL(blob);
       downloadLink.download = 'Report.csv';
-
       document.body.appendChild(downloadLink);
       downloadLink.click();
-
       document.body.removeChild(downloadLink);
     });
   }
-} 
+}

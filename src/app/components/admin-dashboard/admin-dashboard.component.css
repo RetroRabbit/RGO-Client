@@ -24,11 +24,23 @@
   width: 12rem;
 }
 
+#graphs-btn {
+  text-align:right;
+}
+
+#graphs-btn>button {
+  background: #0029c6;
+  border: none;
+  border-radius: 4rem;
+  color: white;
+  padding: 0.5rem;
+  width: 12rem;
+}
+
 #no-graphs {
   background-color: white;
   border-radius: 2rem;
-  height: 75vh;
-  text-align: center;
+  min-height: 75vh;
 }
 
 #add-graph>button {
@@ -241,4 +253,127 @@ div#results-container {
   border-top: 1px #0029C6 solid;
   
   margin-top: 16px;
+}
+.mat-mdc-select {
+  display: none;
+}
+#dialog-box{
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+#dialog-save>button{
+  background: #0029c6;
+  border: none;
+  border-radius: 4rem;
+  color: white;
+  padding: 0.5rem;
+  width: 12rem;
+}
+
+  #dialog-close>button{
+    border: 1px solid #0029C6;
+    border-radius: 2rem;
+    background-color: white;
+    color: #0029C6;
+    padding:0.5rem;
+    width: 12rem;
+}
+
+.mat-mdc-radio-button.mat-accent {
+  --mdc-radio-disabled-selected-icon-color: #000;
+  --mdc-radio-disabled-unselected-icon-color: #000;
+  --mdc-radio-unselected-hover-icon-color: #212121;
+  --mdc-radio-unselected-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-radio-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-radio-selected-focus-icon-color: #0029C6;
+  --mdc-radio-selected-hover-icon-color: #0029C6;
+  --mdc-radio-selected-icon-color: #0029C6;
+  --mdc-radio-selected-pressed-icon-color: #0029C6;
+  --mat-radio-ripple-color: #000;
+  --mat-radio-checked-ripple-color: #0029C6;
+  --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
+  --mat-radio-checked-label-color: #0029C6;
+}
+
+.mat-radio-button.mat-radio-checked .mat-radio-label-content {
+  color: #0029C6 !important;
+}
+
+.mat-mdc-standard-chip {
+  --mdc-chip-elevated-container-color: #D7DFFF;
+  --mdc-chip-label-text-color: #0029C6;
+  border-radius: 8px;
+  color: #0029C6;
+}
+.mat-mdc-standard-chip {
+  --mdc-chip-label-text-font: Roboto, normal;
+  --mdc-chip-label-text-line-height: 20px;
+  --mdc-chip-label-text-size: 14px;
+  --mdc-chip-label-text-tracking: 0.0178571429em;
+  --mdc-chip-label-text-weight: 500;
+}
+
+#my-dialog.mdc-dialog.mdc-dialog_content {
+  padding: 20px 24px 0px 24px;
+}
+
+#graph-heading>h3 {
+  color: #212121;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 28px;
+  font-family: Roboto, sans-serif;
+  letter-spacing: .009375em;
+  margin: 0 0 0;
+}
+
+#graph-subheading>h5 {
+color: #7E7E7E;
+font-size: 14px;
+font-family: Roboto;
+font-weight: 400;
+line-height: 20px;
+letter-spacing: 0.25px;
+word-wrap: break-word;
+}
+
+.mat-form-field.mat-select>#edit-button.mat-select-value {
+  border: none;
+  border-radius: 2rem;
+  background-color: #D7DFFF;
+  color: #0029C6;
+  padding: 1rem;
+}
+
+#dialog-title{
+  color: var(--m-3-black, #000);
+  text-align: center;
+  font-family: Roboto;
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 52px;
+
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+#dialog-subtitle{
+  color: var(--m-3-sys-light-primary, #0029C6);
+  text-align: center;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.32px;
+}
+
+#graph-header{
+  padding: 0;
+  height: fit-content;
 }

@@ -83,19 +83,6 @@
                 </div>
               </div>
             </div>
-            <div class="col-2" *ngIf="isAdmin() || isJourney()">
-              <div id="nav-item-container">
-                <div id="nav-item">
-                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Reports' ? 'active' : 'idle'">
-                    Reports
-                  </div>
-                  <div *ngIf="selectedItem == 'Reports'" id="selected-line-box">
-                    <div id="selected-line">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div *ngIf="isAdmin()" class="col-2" id="info-menu">
               <div id="nav-item-container">
               <button mat-button [matMenuTriggerFor]="menu" id="nav-item">
