@@ -495,44 +495,108 @@
               </mat-form-field>
             </form>
           </div>
-          <div
-            class="row flex-column justify-content-center align-items-center col-md-12"
-            *ngIf="postalAddressForm.controls['sameAsPhysicalAddress'].value"
-          >
-            <h1 class="col-lg-7 col-md-12 mt-2">Additional Notes</h1>
-            <mat-form-field
-              appearance="outline"
-              class="col-lg-7 col-md-12 mt-2"
-            >
-              <mat-label>Additional Notes</mat-label>
-              <textarea matInput type="text" formControlName="notes">
-              </textarea>
-            </mat-form-field>
+
+        </form>
+        <!-- newEmployeeForm Footer controls -->
+        <footer class="bg-white col-12">
+          <div class="col d-flex justify-content-end">
+            <button mat-button type="button" color="primary"
+              class="text-primary bg-white rounded-pill border border-black mx-2"
+              (click)="CaptureEvent()">Cancel</button>
+
+            <button mat-raised-button type="button" color="primary"
+              class="text-white rounded-pill border-primary bg-primary mx-2"
+              (click)="onSubmit(false)">Save</button>
+          </div>
+        </footer>
+
+      </mat-step>
+      <!-- Employee Documents - Step 2 -->
+      <mat-step #stepper [stepControl]="uploadDocumentForm">
+        <ng-template matStepLabel>Upload Documents</ng-template>
+        <!-- Heading -->
+        <div class="row justify-content-center align-items-center">
+          <div class="col-md-12 col-lg-12">
+            <h2 class="text-center" id="createEmployee">Start Kit Documents</h2>
+            <span class="text-center roboto-font" id="heading-text">
+              <p>Please upload employee’s starter kit documents below</p>
+            </span>
           </div>
         </div>
-      </div>
-    </main>
-    <footer class="bg-white col-12 p-3 d-flex">
-      <div class="col-9 d-flex justify-content-end">
-        <button
-          mat-button
-          type="button"
-          color="primary"
-          class="text-primary bg-white rounded-pill border border-black mx-2"
-          (click)="CaptureEvent()"
-        >
-          Cancel
-        </button>
-        <button
-          mat-raised-button
-          type="submit"
-          color="primary"
-          class="text-white rounded-pill border-primary bg-primary"
-          matStepperNext
-        >
-          Next
-        </button>
-      </div>
-    </footer>
-  </form>
+        <!-- uploadDocumentForm -->
+        <form [formGroup]="uploadDocumentForm" id="uploadDocumentForm">
+          <div class="container-fluid upload-drop-container">
+            <div class="row justify-content-center align-items-center">
+              <!-- File Drop Zone -->
+              <ngx-file-drop
+              dropZoneClassName="upload-drop-section"
+              contentClassName=""
+              accept=".PDF,.PPT.PPTX,.Doc,.Docx"
+              (onFileDrop)="dropped($event)"
+              (onFileOver)="fileOver($event)"
+              (onFileLeave)="fileLeave($event)">
+                <ng-template
+                ngx-file-drop-content-tmp
+                let-openFileSelector="openFileSelector"
+                directory="true"
+                multiple="true"
+                >
+                  <div class="upload-drop-section">
+                    <div class="justify-content-center align-items-center text-center p-2 m-2">
+                      <h2 class="">Drop your files here!</h2>
+                    </div>
+                    <div class="justify-content-center text-center p-2 m-2">
+                      <img src="../../../../assets/img/file_upload.svg" />
+                    </div>
+                    <div class="justify-content-center align-items-center text-center p-2 m-2">
+
+                      <button class="upload-button text-white rounded-pill border-primary bg-primary mx-2" id="upload-button" color="primary" type="button"
+                      mat-raised-button (click)="openFileSelector()">Select file</button>
+
+                    </div>
+                    <div class="upload-doc-section text-center p-2 m-2">
+                      <p>PDF, PPT, PPTX, Doc, Docx are supported</p>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngx-file-drop>
+            </div>
+          </div>
+          <!-- File List Array -->
+          <div class="row text-center p-2 m-2">
+            <mat-chip-grid>
+              <mat-chip *ngFor="let file of files; let i=index" [removable]="true" (removed)="removeFileByIndex(i)">
+                {{ file.relativePath }}
+                <svg matChipRemove xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+                  <path d="M14.75 4.8075L13.6925 3.75L9.5 7.9425L5.3075 3.75L4.25 4.8075L8.4425 9L4.25 13.1925L5.3075 14.25L9.5 10.0575L13.6925 14.25L14.75 13.1925L10.5575 9L14.75 4.8075Z" fill="#0029C6" />
+                </svg>
+              </mat-chip>
+            </mat-chip-grid>
+
+          </div>
+        </form>
+        <!-- Footer Controls - Form 2 -->
+        <footer class="bg-white col-12">
+          <div class="col d-flex justify-content-end">
+            <button mat-button type="button" color="primary"
+              class="text-primary bg-white rounded-pill border border-black mx-2"
+              (click)="CaptureEvent()">Cancel</button>
+
+            <button mat-raised-button type="submit" color="primary"
+              class="text-white rounded-pill border-primary bg-primary mx-2"
+              >Save & add another</button>
+
+            <button mat-raised-button type="submit" color="primary"
+              class="text-white rounded-pill border-primary bg-primary mx-2"
+              (click)="onUploadDocument()"
+              >Save button</button>
+          </div>
+        </footer>
+
+      </mat-step>
+    </mat-stepper>
+  </main>
+  <footer>
+
+  </footer>
 </div>
