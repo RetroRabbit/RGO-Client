@@ -58,8 +58,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { NgxFileDropModule } from 'ngx-file-drop';
 import { MatStepperModule } from '@angular/material/stepper';
-
 import { PendingBankDetailsComponent } from './components/employees/pending-bank-details/pending-bank-details.component';
 import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
@@ -146,6 +146,7 @@ import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/ch
     MatCheckboxModule,
     MatExpansionModule,
     MatProgressBarModule,
+    NgxFileDropModule,
     MatStepperModule,
     TableModule,
     MatPaginatorModule,
