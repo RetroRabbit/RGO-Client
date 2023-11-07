@@ -7,6 +7,8 @@
           class="d-flex align-items-center rounded-pill w-100"
           [ngClass]="{ 'bg-white': searchQuery !== '' }"
         >
+            <!-- (click)="filter.value = ''; applyFilter('')"
+            *ngIf="filter.value !== ''" -->
           <button
             mat-button
             (click)="searchQuery = ''"
@@ -29,12 +31,12 @@
         </div>
       </div>
       <div class="col-6 pr-0 d-flex justify-content-end align-items-center gap-3">
-        <input matInput id="manage-permissions-button" class="btn col-lg-3 rounded-pill" (click)="onManagePermissionClick()" value="Manage Permissions">
+        <input matInput id="manage-permissions-button" class="btn col-lg-4 col-md-6 rounded-pill" (click)="onManagePermissionClick()" value="Manage Permissions">
         <button
           (click)="onAddEmployeeClick()"
           type="button"
           id="add-employee-button"
-          class="col-lg-3 btn btn-primary rounded-pill d-flex justify-content-center align-items-center"
+          class="col-lg-4 col-md-6 btn btn-primary rounded-pill d-flex justify-content-center align-items-center"
         >
           <mat-icon>add</mat-icon>
           <span>Add Employee</span>
@@ -46,7 +48,13 @@
 
   <div class="row">
     <div class="card px-0">
-      <div class="table-responsive p-0 m-0">
+      <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
+        <mat-spinner></mat-spinner>
+      </div>
+      <div
+        [hidden]="isLoading || dataSource.filteredData.length <= 0"
+        class="table-responsive p-0 m-0"
+      >
         <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="Name">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow"
@@ -115,23 +123,28 @@
         </mat-table>
         <mat-paginator hidden></mat-paginator>
       </div>
+      <div *ngIf="!isLoading && dataSource.filteredData.length <= 0" class="d-flex flex-row justify-content-center align-items-center">
+        <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
+        <span id="noResults" class="col-6 d-flex flex-column justify-content-center align-items-center">
+          <h1>Oops!</h1>
+          <h2>No results on your search</h2>
+        </span>
+      </div>
     </div>
     <div
       class="d-flex flex-row justify-content-center align-items-center mt-3"
-      *ngIf="paginator"
+      *ngIf="!isLoading && dataSource.filteredData.length > 0"
     >
       <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">
         <span class="fw-medium">
-          Showing {{ paginator.pageIndex * paginator.pageSize + 1 }}-{{
-            (paginator.pageIndex + 1) * paginator.pageSize
-          }}
+          Showing {{ start }}-{{ end }}
         </span>
         <span>of {{ paginator.length }} results</span>
       </div>
       <div class="col-lg-4 col-md-4 row justify-content-center">
         <button
           mat-icon-button
-          (click)="previousPage()"
+          (click)="paginator.previousPage()"
           [disabled]="!paginator.hasPreviousPage()"
         >
           <mat-icon>arrow_left</mat-icon>
@@ -146,7 +159,7 @@
         </button>
         <button
           mat-icon-button
-          (click)="nextPage()"
+          (click)="paginator.nextPage()"
           [disabled]="!paginator.hasNextPage()"
         >
           <mat-icon>arrow_right</mat-icon>
@@ -167,11 +180,11 @@
             matInput
             type="number"
             min="1"
-            [(ngModel)]="paginator.pageSize"
-            (blur)="changePageSize(paginator.pageSize)"
+            [(ngModel)]="pageSize"
+            (ngModelChange)="changePageSize(pageSize)"
             (focus)="pageNumber.open()"
           />
-          <mat-select #pageNumber [(ngModel)]="paginator.pageSize" hidden>
+          <mat-select #pageNumber [(ngModel)]="pageSize" hidden>
             <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
               {{ pageSize }}
             </mat-option>
