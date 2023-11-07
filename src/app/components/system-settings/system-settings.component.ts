@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Output,
+  EventEmitter } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
@@ -7,7 +8,10 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./system-settings.component.css']
 })
 export class SystemSettingsComponent {
-  selectedItem: string = 'Role Management';
+  @Output() RoleManagementEvent = new EventEmitter<void>();
+  @Output() CustomFieldsEvent = new EventEmitter<void>();
+
+  
 
   constructor (public cookieService: CookieService){
 
@@ -16,9 +20,13 @@ export class SystemSettingsComponent {
   ngOnInit() {
   }
 
-  CaptureEvent(event: any) {
-    const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('currentPage', target.innerText);
-    this.selectedItem = target.innerText;
+  onRoleManagementClick(): void {
+    this.RoleManagementEvent.emit();
+    this.cookieService.set('currentPage', 'Role Management');
+  }
+
+  onCustomFieldsManagementClick(): void {
+    this.RoleManagementEvent.emit();
+    this.cookieService.set('currentPage', 'Custom Field management');
   }
 }
