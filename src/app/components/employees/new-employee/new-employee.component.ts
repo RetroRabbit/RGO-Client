@@ -10,24 +10,22 @@ import { titles } from 'src/app/models/constants/titles.constants';
 import { level } from 'src/app/models/constants/level.constants';
 import { race } from 'src/app/models/constants/race.constants';
 import { gender } from 'src/app/models/constants/gender.constants';
-import {
-  combineLatest,
-  first,
-} from 'rxjs';
+import { combineLatest, first } from 'rxjs';
 import { countries } from 'src/app/models/constants/country.constants';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
-import { NgxFileDropEntry,
-  FileSystemFileEntry,
-  FileSystemDirectoryEntry } from 'ngx-file-drop';
-  import { MatStepper } from '@angular/material/stepper';
+import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { MatStepper } from '@angular/material/stepper';
+import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
+import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 
 @Component({
   selector: 'app-new-employee',
   templateUrl: './new-employee.component.html',
   styleUrls: ['./new-employee.component.css'],
 })
+
 export class NewEmployeeComponent implements OnInit {
   @Input() goto: 'dashboard' | 'employees' = 'dashboard';
 
@@ -36,7 +34,8 @@ export class NewEmployeeComponent implements OnInit {
     private employeeTypeService: EmployeeTypeService,
     private employeeAddressService: EmployeeAddressService,
     private cookieService: CookieService,
-    private toast: NgToastService
+    private toast: NgToastService,
+    private employeeDocumentService: EmployeeDocumentService
   ) { }
 
   employeeDocument: EmployeeDocument[] = [];
@@ -90,7 +89,7 @@ export class NewEmployeeComponent implements OnInit {
                   detail: 'Error',
                   summary: 'Failed compile documents',
                   duration: 5000,
-                   position: 'topRight',
+                  position: 'topRight',
                 });
               }
             });
@@ -102,23 +101,22 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   onUploadDocument(): void {
-    // Upload each document model
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
         next: () => {
-            this.toast.success({
-              detail: 'Success',
-              summary: `files have been uploaded`,
-              duration: 5000,
-              position: 'topRight',
-            });
+          this.toast.success({
+            detail: 'Success',
+            summary: `files have been uploaded`,
+            duration: 5000,
+            position: 'topRight',
+          });
         },
         error: (error: any) => {
           this.toast.error({
             detail: 'Error',
             summary: 'Failed to save documents',
             duration: 5000,
-             position: 'topRight',
+            position: 'topRight',
           });
         }
       });
@@ -286,7 +284,7 @@ export class NewEmployeeComponent implements OnInit {
     passportNumber: new FormControl<string>(''),
     passportExpiryDate: new FormControl<Date | string | null>(
       new Date(Date.now())
-      ),
+    ),
     passportCountryIssue: new FormControl<string>(''),
     race: new FormControl<number>(0),
     gender: new FormControl<number>(0, Validators.required),
@@ -382,17 +380,17 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAddress(): void {
-      combineLatest([
-        this.employeeAddressService.save(this.physicalAddressObj),
-        this.employeeAddressService.save(this.postalAddressObj)
-      ]).pipe(first()).subscribe()
+    combineLatest([
+      this.employeeAddressService.save(this.physicalAddressObj),
+      this.employeeAddressService.save(this.postalAddressObj)
+    ]).pipe(first()).subscribe()
   }
 
-  onSubmit( reset: boolean = false): void {
+  onSubmit(reset: boolean = false): void {
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
-      this.toast.error({detail: 'Error', summary: `please enter your email address`, duration: 5000, position: 'topRight'});
+      this.toast.error({ detail: 'Error', summary: `please enter your email address`, duration: 5000, position: 'topRight' });
     }
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
@@ -575,7 +573,7 @@ export class NewEmployeeComponent implements OnInit {
     reader.addEventListener('loadend', () => {
       this.imagePreview = reader.result as string;
       const base64Image = this.convertTobase64(this.imagePreview);
-      this.newEmployeeForm.patchValue({'photo' : 'data:image/jpeg;base64,' + base64Image});
+      this.newEmployeeForm.patchValue({ 'photo': 'data:image/jpeg;base64,' + base64Image });
       this.getImageFromBase64(base64Image);
     });
 
