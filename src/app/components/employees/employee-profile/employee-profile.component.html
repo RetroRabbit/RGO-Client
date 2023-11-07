@@ -770,41 +770,47 @@
                                             </mat-form-field>
                                         </div>
                                         <p id="base64"></p>
-                                        <div class="col-6 my-2">
+                                        <div class="col-8 my-2">
                                             <mat-label [ngStyle]="{color: editBanking ? 'black' : 'grey'}">
                                                 Proof of account
                                             </mat-label>
                                             <div class="my-2">
-                                                <div *ngIf="employeeBanking.file.length > 1">
-                                                    <button mat-button color="primary"
-                                                        (click)="convertFileToBase64()">Download</button>
-                                                </div>
-                                                <div [hidden]="!editBanking" class="row" id="uploadButton"
-                                                    (click)="openFileInput()">
-                                                    <div class="col-1" style="color: blue">
-                                                        <img src="../../../../assets/img/file_upload.svg" alt="">
+                                                <div class="row">
+                                                    <div *ngIf="employeeBanking.file.length > 1">
+                                                        <button mat-button color="primary"
+                                                            (click)="convertFileToBase64()">Download</button>
                                                     </div>
-                                                    <div class="col-5">
-                                                        <h4>Upload document here</h4>
-                                                        <input id="fileUpload" hidden type="file" (change)="onFileSelected($event)" accept=".pdf">
+                                                    <div class="col-5" [hidden]="!editBanking" class="row" id="uploadButton"
+                                                    (click)="openFileInput()">
+                                                    <div class="col" *ngIf="bankingPDFName.length > 1">
+                                                        <p id="recently-uploaded">{{bankingPDFName}}</p>
+                                                    </div>
+                                                        <div class="col-1" style="color: blue">
+                                                            <img src="../../../../assets/img/file_upload.svg" alt="">
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <h4>Upload document here</h4>
+                                                            <input id="fileUpload" hidden type="file"
+                                                                (change)="onFileSelected($event)" accept=".pdf">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                    <div class="col-2">
-                                        <button *ngIf="!editBanking" mat-button id="edit-button"
-                                            (click)="editBankingDetails()"> <mat-icon>edit</mat-icon>Edit
-                                            Details</button>
-                                    </div>
-                                    <div class="col-12" id="edit-buttons">
-                                        <button *ngIf="editBanking" mat-button id="cancel-button"
-                                            (click)="cancelBankingDetails()">Cancel</button>
-                                        <button *ngIf="editBanking" mat-button id="save-button"
-                                            (click)="saveBankingDetails()">Save changes</button>
-                                    </div>
+                                <div class="col-2">
+                                    <button *ngIf="!editBanking" mat-button id="edit-button"
+                                        (click)="editBankingDetails()"> <mat-icon>edit</mat-icon>Edit
+                                        Details</button>
                                 </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editBanking" mat-button id="cancel-button"
+                                        (click)="cancelBankingDetails()">Cancel</button>
+                                    <button *ngIf="editBanking" mat-button id="save-button"
+                                        (click)="saveBankingDetails()">Save changes</button>
+                                </div>
+                            </div>
                         </form>
                     </mat-expansion-panel>
                 </mat-accordion>
