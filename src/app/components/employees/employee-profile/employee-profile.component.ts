@@ -107,6 +107,7 @@ export class EmployeeProfileComponent {
   
   bankingPDFName: string = "" ;
   hasBankingData: boolean = false;
+  hasFile: boolean = false;
 
   employeeDetailsForm: FormGroup = this.fb.group({
     title: { value: '', disabled: true },
@@ -220,11 +221,12 @@ export class EmployeeProfileComponent {
         this.employeePhysicalAddress = data.physicalAddress!;
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
-        this.employeeBankingService.getBankingDetails(this.employeeProfile?.id).subscribe({
+        this.employeeBankingService.getBankingDetails(this.employeeProfile!.id).subscribe({
           next: data => {
             this.employeeBanking = data;
             console.log(this.employeeBanking);
             this.hasBankingData = true;
+            this.hasFile = this.employeeBanking?.file.length > 0;
             this.bankingId = this.employeeBanking.id;
             this.bankingStatus = this.employeeBanking.status;
             this.bankingReason = this.employeeBanking.declineReason;
@@ -258,7 +260,6 @@ export class EmployeeProfileComponent {
         //     this.employeeRoles = data;
         //   }
         // });
-
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
