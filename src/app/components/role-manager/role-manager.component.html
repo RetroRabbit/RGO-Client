@@ -62,8 +62,8 @@
           </mat-checkbox>
         </th>
       </tr>
-      <tr *ngFor="let n of chartPermissions">
-        <th scope="row">
+      <tr *ngFor="let n of chartPermissions" >
+        <th scope="row" id="permissions">
           {{ n.permission }}
         </th>
         <th *ngFor="let r of roles">
@@ -91,8 +91,8 @@
           </mat-checkbox>
         </th>
       </tr>
-      <tr *ngFor="let n of employeePermissions">
-        <th scope="row">
+      <tr *ngFor="let n of employeePermissions" >
+        <th scope="row" id="permissions">
           {{n.permission}}
         </th>
         <th *ngFor="let r of roles">
