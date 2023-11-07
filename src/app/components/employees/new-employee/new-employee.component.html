@@ -300,7 +300,6 @@
         </div>
         <div class="container-fluid upload-drop-container">
           <div class="row justify-content-center align-items-center">
-            <!-- File Drop Zone -->
             <ngx-file-drop 
             dropZoneClassName="upload-drop-section" 
             contentClassName=""
@@ -335,7 +334,6 @@
             </ngx-file-drop>
           </div>
         </div>
-        <!-- File List Array -->
         <div class="row text-center p-2 m-2">
           <mat-chip-grid>
             <mat-chip *ngFor="let file of files; let i=index" [removable]="true" (removed)="removeFileByIndex(i)">
