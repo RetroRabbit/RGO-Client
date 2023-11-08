@@ -47,7 +47,7 @@ export class AdminDashboardComponent {
   filteredCategories: string[] = this.categories;
   categoryCtrl = new FormControl();
   selectedCategories: string[] = [];
-
+  noResults: boolean = false;
   typeControl = new FormControl();
   types: string[]= [];
   filteredTypes: any[] = this.types;
@@ -187,16 +187,23 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
             return 0;
           }
         });
-
-      // Ensure only up to three employees are displayed
-      this.searchResults = this.searchResults.slice(0, 3);
+  
+      if (this.searchResults.length <= 0) {
+        this.noResults = true;
+      } else {
+        this.noResults = false;
+        this.activateSearchBar();
+      }
+  
       
-      this.activateSearchBar();
     } else {
       this.searchResults = [];
+      this.noResults = true;
       this.deactivateSearchBar();
     }
+    this.searchResults = this.searchResults.slice(0, 3);
   }
+  
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.selectedCategories.push(event.option.viewValue);
@@ -312,10 +319,7 @@ onTypeRemoved(type: string): void {
       next : data => this.charts = data,
       error: error => this.toast.error({ detail: "Error", summary: "Failed to get charts.", duration: 5000,position: 'topRight'})
     })
-  }
-
-
-  
+  }  
  
   activateSearchBar() {
     const searchBar = document.querySelector('.searchbar');

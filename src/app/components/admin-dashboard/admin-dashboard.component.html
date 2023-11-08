@@ -1,5 +1,6 @@
-<div id="group">
-  <div class="searchbar align-items-center justify-content-center p-0">
+<div id="group" class="row align-items-center justify-content-between w-75">
+    <div class="searchbar align-items-center justify-content-center p-0 col-lg-4"
+     [ngClass]="{'no-results': noResults}">
       <div id="leading-icon"></div>
       <input 
           type="search" 
@@ -16,71 +17,50 @@
       </div>
   </div>
 
-  <div id="new-hire">
+  <!-- <div id="new-hire" class="border col">
       <button class="my-4" (click)="CaptureEvent($event)" *ngIf="isAdmin()">+ Add New Hire</button>
-  </div>
+  </div> -->
+  <button id="new-hire" class="col-lg-2" (click)="CaptureEvent($event)" *ngIf="isAdmin()">+ Add New Hire</button>
 </div>
 
 <div id="search-results-container">
   <div *ngIf="searchResults.length > 0">
       <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
-
-          <!-- Add your click event to the div below -->
           <div class="col-12 px-4">
               <div class="row px-4">
                   <div class="col-2">
-                      <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                          <path d="M10 17L15 12L10 7V17Z" fill="#0029C6"/>
-                      </svg> -->
                       <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Employees' ? 'active' : 'idle'">
                           <img id="avatar" src={{employee?.photo}} alt="X">
                       </div>
                   </div>
-                  <div class="col-10 pt-1 px-3">
-                      <!-- <div (click)="navigateToEmployeePage(employee.id)"> -->
+                     
+                  <div class="col-9 pt-1 px-4">
                       <div (click)="employeeClickEvent(employee)">
                           <div>{{employee.employeeType?.name}} - L{{employee?.level}}</div>
                           <div>{{ employee?.name }} {{ employee?.surname }}</div>
                       </div>
                   </div>
+                  <div id="search-arrow" class="col-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M10 17L15 12L10 7V17Z" fill="#0029C6"/>
+                    </svg>
+                </div> 
               </div>
           </div>
-          <!-- <div class="row">
-              <div class="col-4" id="results-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M10 17L15 12L10 7V17Z" fill="#0029C6"/>
-                  </svg>
-              </div>
-              <div class="col-8">
-                  <div class="row">
-                      <div class="col-12" id="avatar-container">
-                          <img id="avatar" src={{employee.photo}} alt="X">
-                      </div>
-                      <div class="col-12" id="results-container">
-                          <div>{{employee.employeeType.name}} - L{{employee.level}}</div>
-                          <div>{{ employee.name }} {{ employee.surname }}</div>
-                      </div>
-                  </div>
-              </div>
-          </div> -->
-          
-          <ng-container *ngIf="!displayAllEmployees && i < initialDisplayCount">
-              <!-- Add employee details here -->
-          </ng-container>
-          <!-- "View More Employees" button moved inside the loop -->
-          
-          <ng-container *ngIf="displayAllEmployees && i >= initialDisplayCount">
-              <!-- Add employee details here -->
-          </ng-container>
       </div>
       <div id="view-more-container" *ngIf="!displayAllEmployees" style="margin-top: 0;">
-          <div (click)="viewMoreEmployees()">View {{ searchResults!.length - initialDisplayCount }} more employees</div>
-      </div>
+        <div (click)="viewMoreEmployees()">View more employees</div>
+    </div>
   </div>
 </div>
 
+<div class="px-4 container-fluid pt-4" id="graph-container">
 
-<div class="px-4 container-fluid" id="graph-container">
+
+  
+
+
+
   <div id="graphs">
     <div *ngIf="charts.length < 1;else ShowCharts" class="py-4 row justify-content-center align-items-center"
       id="no-graphs">
