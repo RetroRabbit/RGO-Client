@@ -55,6 +55,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatExpansionModule} from '@angular/material/expansion'; 
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+
+
+
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -64,6 +69,9 @@ import { EmployeeRoleManagerComponent } from './components/employees/employee-ro
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
 import { ManageEmployeeEventsComponent } from './components/manage-employee-events/manage-employee-events.component';
 import { AddEmployeeEventComponent } from './components/manage-employee-events/add-employee-event/add-employee-event.component';
+import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
+
+
 
 import { MatChipsModule } from '@angular/material/chips';
 import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
@@ -94,6 +102,7 @@ import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/ch
     PendingBankDetailsComponent,
     ManageEmployeeEventsComponent,
     AddEmployeeEventComponent,
+    SystemSettingsComponent,
     ChartReportPdfComponent
   ],
   imports: [
@@ -144,6 +153,8 @@ import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/ch
     MatSlideToggleModule,
     MatCheckboxModule,
     MatExpansionModule,
+    MatSidenavModule,
+    MatListModule,
     MatProgressBarModule,
     TableModule,
     MatPaginatorModule,
