@@ -3,9 +3,6 @@ main {
     background: #e8efff;
 }
 
-/* #newEmployeeForm {
-    min-width: 70%;
-} */
 
 .roboto-font {
     font-family: "Roboto", sans-serif;
@@ -106,8 +103,7 @@ main {
     height: 101px;
     justify-content: flex-end;
     align-items: center;
-    gap: 16px   ;
-
+    gap: 16px;
 }
 
 #next-button {
@@ -119,17 +115,14 @@ main {
     background: #0029c6;
     border-radius: 30px;
     border: none ;
-
     color: #FFF;
     text-align: center;
-
     font-family: Roboto;
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
-    line-height: 20px; /* 142.857% */
+    line-height: 20px;
     letter-spacing: 0.1px;  
-
 }
 
 #save-button {
@@ -141,17 +134,14 @@ main {
     background: #0029c6;
     border-radius: 30px;
     border: none ;
-
     color: #FFF;
     text-align: center;
-
     font-family: Roboto;
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
-    line-height: 20px; /* 142.857% */
+    line-height: 20px;
     letter-spacing: 0.1px; 
-    
 }
 
 #cancel-button {
@@ -163,15 +153,13 @@ main {
     background: #fff;
     border-radius: 30px;
     border: 1px solid #0029c6;
-
     color:#0029c6;
     text-align: center;
-
     font-family: Roboto;
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
-    line-height: 20px; /* 142.857% */
+    line-height: 20px;
     letter-spacing: 0.1px;
 }
 
@@ -184,15 +172,13 @@ main {
     background: #fff;
     border-radius: 30px;
     border: 1px solid #0029c6;
-
     color:#0029c6;
     text-align: center;
-
     font-family: Roboto;
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
-    line-height: 20px; /* 142.857% */
+    line-height: 20px;
     letter-spacing: 0.1px;
 }
 
@@ -202,10 +188,8 @@ main {
     background: #0029c6;
     border-radius: 30px;
     border: none ;
-
     color: #FFF;
     text-align: center;
-
     font-family: Roboto;
     font-size: 14px;
     font-style: normal;
@@ -223,8 +207,8 @@ main {
 }
 
 .upload-drop-section{
-background: #D7DFFF;
-border-radius: 40px;
+    background: #D7DFFF;
+    border-radius: 40px;
     background: #FFF;
     margin: 10px;
     padding: auto;
@@ -238,14 +222,12 @@ border-radius: 40px;
     color: #0029C6;
     padding: 10px;
     max-width: fit-content;
-
     color:#0029c6;
     text-align: center;
-
     font-family: Roboto;
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
-    line-height: 20px; /* 142.857% */
+    line-height: 20px;
     letter-spacing: 0.1px;
 }
