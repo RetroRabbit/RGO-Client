@@ -14,10 +14,18 @@ export class EmployeeBankingService{
     constructor(private httpClient : HttpClient){}
 
     getPending(status : number): Observable<EmployeeBanking[]>{
-        return this.httpClient.get<EmployeeBanking[]>(`${API.HttpBaseURL}/employeebanking/get?status=${status}`);
+        return this.httpClient.get<EmployeeBanking[]>(`${API.HttpsBaseURL}/employeebanking/get?status=${status}`);
     }
 
     updatePending(updatedEntry : any) :Observable<any> {
-        return this.httpClient.put<EmployeeBanking[]>(`${API.HttpBaseURL}/employeebanking/update`, updatedEntry);
+        return this.httpClient.put<EmployeeBanking[]>(`${API.HttpsBaseURL}/employeebanking/update`, updatedEntry);
+    }
+
+    getBankingDetails(id: number | undefined): Observable<EmployeeBanking> {
+      return this.httpClient.get<EmployeeBanking>(`${API.HttpsBaseURL}/employeebanking/getDetails?id=${id}`)
+    }
+
+    addBankingDetails(newEntry : EmployeeBanking): Observable<EmployeeBanking> {
+    return this.httpClient.post<EmployeeBanking>(`${API.HttpsBaseURL}/employeebanking/add`, newEntry);
     }
 }
