@@ -13,15 +13,15 @@ export class EmployeeDateService {
   constructor(private httpClient: HttpClient) { }
 
   saveEmployeeDate(employeeDateInput: EmployeeDateInput): Observable<any> {
-    return this.httpClient.post<any>(`${API.HttpBaseURL}/employeedate/save`, employeeDateInput);
+    return this.httpClient.post<any>(`${API.HttpsBaseURL}/employeedate/save`, employeeDateInput);
   }
 
   deleteEmployeeDate(employeeDateInput: EmployeeDateInput): Observable<any> {
-    return this.httpClient.delete<any>(`${API.HttpBaseURL}/employeedate/delete`, { body: employeeDateInput });
+    return this.httpClient.delete<any>(`${API.HttpsBaseURL}/employeedate/delete`, { body: employeeDateInput });
   }
 
   updateEmployeeDate(employeeDate: EmployeeDate): Observable<any> {
-    return this.httpClient.put<any>(`${API.HttpBaseURL}/employeedate/update`, employeeDate);
+    return this.httpClient.put<any>(`${API.HttpsBaseURL}/employeedate/update`, employeeDate);
   }
 
   getall(email: string | null = null, subject: string | null = null, date: Date | null = null): Observable<EmployeeDate[]> {
@@ -32,6 +32,6 @@ export class EmployeeDateService {
     if (date !== null) queryParams.push(`date=${date.toISOString().split('T')[0]}`);
 
     const queryString = queryParams.length ? '?' + queryParams.join('&') : '';
-    return this.httpClient.get<any[]>(`${API.HttpBaseURL}/employeedate/getall${queryString}`);
+    return this.httpClient.get<any[]>(`${API.HttpsBaseURL}/employeedate/getall${queryString}`);
   }
 }

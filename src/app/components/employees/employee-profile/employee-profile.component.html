@@ -1,16 +1,10 @@
 <div class="container mt-4">
     <div class="w-75 py-3">
-        <button
-          mat-button
-          class="btn"
-          id="back-to-employees"
-          (click)="goToEmployees()"
-          *ngIf="selectedEmployee"
-        >
-          <mat-icon>arrow_back</mat-icon>
-          <span>Back to Employees</span>
+        <button mat-button class="btn" id="back-to-employees" (click)="goToEmployees()" *ngIf="selectedEmployee">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Back to Employees</span>
         </button>
-      </div>
+    </div>
     <div id="profile-header" class="row p-2">
         <div class="col-2 mt-4">
             <div id="profile-image">
@@ -47,7 +41,8 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">Team Lead</div>
-                            <div id="header-value">{{employeeTeamLead ? employeeTeamLead.name + ' ' + employeeTeamLead.surname : 'Not assigned'}}</div>
+                            <div id="header-value">{{employeeTeamLead ? employeeTeamLead.name + ' ' +
+                                employeeTeamLead.surname : 'Not assigned'}}</div>
                         </div>
                     </div>
                 </div>
@@ -60,7 +55,8 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">People Champion</div>
-                            <div id="header-value">{{employeePeopleChampion ? employeePeopleChampion.name + ' ' + employeePeopleChampion.surname: 'Not assigned'}}</div>
+                            <div id="header-value">{{employeePeopleChampion ? employeePeopleChampion.name + ' ' +
+                                employeePeopleChampion.surname: 'Not assigned'}}</div>
                         </div>
                     </div>
                 </div>
@@ -116,22 +112,26 @@
                 </div>
             </div>
         </div>
-        <div class="col-10 px-4">
+        <div class="col-11 px-4">
             <div class="row mx-3" id="accordion-progress">
-                <div class="col-2 py-3" id="progress-stats" style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                <div class="col-2 py-3" id="progress-stats"
+                    style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Profile Details {{ profileFormProgress }}%</h5>
                 </div>
-                
+
                 <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-3" id="progress-stats" style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                <div class="col-2 py-3" id="progress-stats"
+                    style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Career Summary {{careerSummaryProgress}}%</h5>
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-3" id="progress-stats" style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                <div class="col-2 py-3" id="progress-stats"
+                    style="background-color: {{ bankInformationProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Bank Information {{bankInformationProgress}}%</h5>
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-3" id="progress-stats" style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                <div class="col-2 py-3" id="progress-stats"
+                    style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Document {{documentsProgress}}%</h5>
                 </div>
             </div>
@@ -144,7 +144,8 @@
                     </h4>
                 </div>
                 <div class="col-10 pt-3" id="progress-container">
-                    <mat-progress-bar mode="determinate" [value]=overallFormProgress id="overall-progress-bar"></mat-progress-bar>
+                    <mat-progress-bar mode="determinate" [value]=overallFormProgress
+                        id="overall-progress-bar"></mat-progress-bar>
                 </div>
             </div>
         </div>
@@ -315,7 +316,8 @@
                                                     <mat-option *ngFor="let people of filteredPeopleChamps"
                                                         [value]="people.employee.name + ' ' + people.employee.surname"
                                                         (onSelectionChange)="getId(people, 'champion')">
-                                                        {{ people.employee.name }} {{people.employee.surname}}</mat-option>
+                                                        {{ people.employee.name }}
+                                                        {{people.employee.surname}}</mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
                                         </div>
@@ -378,8 +380,8 @@
                                     <div class="row">
                                         <div class="col-12 my-2">
                                             <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
-                                            <mat-radio-group aria-label="Select your gender"
-                                                formControlName="gender" [value]="employeeProfile?.gender">
+                                            <mat-radio-group aria-label="Select your gender" formControlName="gender"
+                                                [value]="employeeProfile?.gender">
                                                 <mat-radio-button [value]=1>Male</mat-radio-button>
                                                 <mat-radio-button [value]=2>Female</mat-radio-button>
                                                 <mat-radio-button [value]=0>Unclassified</mat-radio-button>
@@ -399,7 +401,8 @@
                                         <div class="col-6  my-1">
                                             <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any
                                                 disabilities that you are aware of?</h3>
-                                            <mat-radio-group aria-label="Select status" (change)="setHasDisability($event)" formControlName="disability">
+                                            <mat-radio-group aria-label="Select status"
+                                                (change)="setHasDisability($event)" formControlName="disability">
                                                 <mat-radio-button [value]=true>yes</mat-radio-button>
                                                 <mat-radio-button [value]=false>no</mat-radio-button>
                                             </mat-radio-group>
@@ -410,8 +413,9 @@
                                                     <mat-form-field appearance="outline" style="width: 100%;">
                                                         <mat-label>Disability</mat-label>
                                                         <mat-select formControlName="disabilityList">
-                                                            <mat-option *ngFor="let disability of disabilities; index as i"
-                                                            [value]="i">
+                                                            <mat-option
+                                                                *ngFor="let disability of disabilities; index as i"
+                                                                [value]="i">
                                                                 {{disability.value}}
                                                             </mat-option>
                                                         </mat-select>
@@ -419,7 +423,8 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <mat-form-field appearance="outline" style="width: 100%;">
-                                                        <textarea matInput placeholder="Disability Notes" formControlName="disabilityNotes"></textarea>
+                                                        <textarea matInput placeholder="Disability Notes"
+                                                            formControlName="disabilityNotes"></textarea>
                                                     </mat-form-field>
                                                 </div>
                                             </div>
@@ -434,7 +439,8 @@
                                     <button *ngIf="editPersonal" mat-button id="cancel-button"
                                         (click)="cancelPersonalEdit()">Cancel</button>
                                     <button *ngIf="editPersonal" mat-button id="save-button"
-                                        (click)="savePersonalEdit()" [disabled]="!personalDetailsForm.valid">Save changes</button>
+                                        (click)="savePersonalEdit()" [disabled]="!personalDetailsForm.valid">Save
+                                        changes</button>
                                 </div>
                             </div>
                         </form>
@@ -503,7 +509,8 @@
                                     <button *ngIf="editContact" mat-button id="cancel-button"
                                         (click)="cancelContactEdit()">Cancel</button>
                                     <button *ngIf="editContact" mat-button id="save-button" type="submit"
-                                        [disabled]="!employeeContactForm.valid" (click)="saveContactEdit()">Save changes</button>
+                                        [disabled]="!employeeContactForm.valid" (click)="saveContactEdit()">Save
+                                        changes</button>
                                 </div>
                             </div>
 
@@ -666,6 +673,111 @@
                             </div>
                         </form>
 
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-12" *ngIf="selectedItem == 'Bank Information'" id="accordion-container">
+                <mat-accordion id="accordion" class="row">
+                    <mat-expansion-panel class="my-3" (opened)="checkEmployeeDetails()"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Main Bank Account
+                            </mat-panel-title>
+                            <mat-panel-description *ngIf="bankInformationProgress != 100">
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="employeeBankingsForm">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Bank Account Owner</mat-label>
+                                                <input matInput placeholder="Enter name of owner"
+                                                    formControlName="accountHolderName">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6"></div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Account Type</mat-label>
+                                                <mat-select placeholder="Select Type" formControlName="accountType">
+                                                    <mat-option *ngFor="let accountType of accountTypes"
+                                                        [value]="accountType.id">
+                                                        {{accountType.value}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Bank Name</mat-label>
+                                                <mat-select placeholder="Select bank" formControlName="bankName">
+                                                    <mat-option *ngFor="let bank of banks" [value]="bank.value">
+                                                        {{bank.value}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Account Number</mat-label>
+                                                <input type="number" min="0" matInput placeholder="Enter account number"
+                                                    formControlName="accountNo">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Branch Code</mat-label>
+                                                <input type="number" min="0" matInput placeholder="Enter branch code"
+                                                    formControlName="branch">
+                                            </mat-form-field>
+                                        </div>
+                                        <p id="base64"></p>
+                                        <div class="col-8 my-2">
+                                            <mat-label [ngStyle]="{color: editBanking ? 'black' : 'grey'}">
+                                                Proof of account
+                                            </mat-label>
+                                            <div class="my-2">
+                                                <div class="row">
+                                                    <div *ngIf="hasFile">
+                                                        <button mat-button color="primary" [hidden]="employeeBanking.file.length == 0"
+                                                            (click)="convertFileToBase64()">Download</button>
+                                                    </div>
+                                                    <div class="col-5" [hidden]="!editBanking" class="row"
+                                                        id="uploadButton" (click)="openFileInput()">
+                                                        <div class="col" *ngIf="bankingPDFName.length > 1">
+                                                            <p id="recently-uploaded">{{bankingPDFName}}</p>
+                                                        </div>
+                                                        <div class="col-1" style="color: blue" id="uploadfile">
+                                                            <img src="../../../../assets/img/file_upload.svg" alt="">
+                                                        </div>
+                                                        <div class="col-5" id="uploadfile">
+                                                            <h4>Upload document here</h4>
+                                                            <input id="fileUpload" hidden type="file"
+                                                                (change)="onFileSelected($event)" accept=".pdf">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <button *ngIf="!editBanking" mat-button id="edit-button"
+                                        (click)="editBankingDetails()"> <mat-icon>edit</mat-icon>Edit
+                                        Details</button>
+                                </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editBanking" mat-button id="cancel-button"
+                                        (click)="cancelBankingDetails()">Cancel</button>
+                                    <button *ngIf="editBanking" mat-button id="save-button"
+                                        (click)="saveBankingDetails()">Save changes</button>
+                                </div>
+                            </div>
+                        </form>
                     </mat-expansion-panel>
                 </mat-accordion>
             </div>
