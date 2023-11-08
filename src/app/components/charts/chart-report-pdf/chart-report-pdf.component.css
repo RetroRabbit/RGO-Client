@@ -22,7 +22,7 @@
 
 #edit-chart-container>canvas{
   margin: 0 auto;
-  height: 100%;
+  width: 40vw;
 }
 
 #oveflow-contianer{
