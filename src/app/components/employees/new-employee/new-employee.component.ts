@@ -169,6 +169,7 @@ export class NewEmployeeComponent implements OnInit {
         this.Employees = data;
       });
   }
+
   public dropped(files: NgxFileDropEntry[]) {
     this.files.push(...files);
     for (const droppedFile of files) {
@@ -340,54 +341,7 @@ export class NewEmployeeComponent implements OnInit {
         });
       },
     });
-    // this.myStepper.next();
   }
-
-  // onUploadDocument(): void {
-
-
-  //   this.patchValue({
-  //     employee: this.selectedEmployee,
-  //     fileName: this.uploadDocumentForm.value.fileName,
-  //     file: this.uploadDocumentForm.value.file,
-  //     uploadDate: new Date(this.uploadDocumentForm.value.uploadDate!)
-  //       .toISOString()
-  //       .split('T')[0],
-  //   });
-
-  //   var employeedetails = this.employeeService.get(this.newEmployeeEmail);
-  //   this.employeeDocument
-
-
-  //   this.employeeDocumentService
-  //     .saveEmployeeDocument(this.employeeDocument[0])
-  //     .subscribe({
-  //       next: () => {
-  //         this.toast.success({
-  //           detail: 'Success',
-  //           summary: `${this.uploadDocumentForm.value.fileName} has been uploaded`,
-  //           duration: 5000,
-  //           position: 'topRight',
-  //         });
-  //       },
-  //       error: (error: any) => {
-  //         let message = '';
-  //         if (error.status === 400) {
-  //           message = 'Incorrect form values';
-  //         } else if (error.status === 406) {
-  //           message = 'User already exists';
-  //         }
-  //         this.toast.error({
-  //           detail: 'Error',
-  //           summary: `Error: ${message}`,
-  //           duration: 5000,
-  //           position: 'topRight',
-  //         });
-  //       },
-  //     });
-  // }
-
-
 
   goToEmployees() {
     this.cookieService.set('currentPage', 'Employees');
@@ -403,10 +357,6 @@ export class NewEmployeeComponent implements OnInit {
       .dateOfBirth
       ? this.newEmployeeForm.value.engagementDate
       : new Date(Date.now());
-    // this.newEmployeeForm.value.title =
-    //   this.newEmployeeForm.value.title === ''
-    //     ? 'TBA'
-    //     : this.newEmployeeForm.value.title?.trim();
     this.newEmployeeForm.value.countryOfBirth =
       this.newEmployeeForm.value.countryOfBirth === ''
         ? 'TBA'
