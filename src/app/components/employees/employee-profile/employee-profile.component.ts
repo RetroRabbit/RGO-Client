@@ -179,29 +179,18 @@ export class EmployeeProfileComponent {
   peopleChampionId = null;
   foundChampion: any;
   client: string = '';
-
-  // tShirtSizeField!: FieldCode;
-  // tShirtSizeFieldValue: EmployeeData | undefined;
-  // dietaryField!: FieldCode;
-  // dietaryFieldValue: EmployeeData | undefined;
-  // allergiesField!: FieldCode;
-  // allergiesFieldValue: EmployeeData | undefined;
-
   employeeDataDto!: EmployeeData;
-
   filteredCountries: any[] = this.countries.slice();
 
 
   constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
-    private customFieldsService: FieldCodeService,
     private clientService: ClientService,
     private employeeRoleService: EmployeeRoleService,
     private toast: NgToastService,
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
-    private employeeDataService: EmployeeDataService,
     private employeeBankingService: EmployeeBankingService) { }
 
   ngOnInit() {
@@ -221,18 +210,7 @@ export class EmployeeProfileComponent {
         this.employeePhysicalAddress = data.physicalAddress!;
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
-        this.hasDisbility = this.employeeProfile!.disability; 
-        // this.customFieldsService.getAllFieldCodes().subscribe({
-        //   next: data => {
-        //     this.customFields = data;
-        //     this.tShirtSizeField = this.customFields.filter(field => field.code == 'tsize')[0];
-        //     this.dietaryField = this.customFields.filter(field => field.code == 'dietary')[0];
-        //     this.allergiesField = this.customFields.filter(field => field.code == 'allergies')[0];
-        //   },
-        //   error: (error) => {
-        //     this.toast.error({ detail: "Error", summary: "Failed to fetch addition informaion", duration: 5000, position: 'topRight' });
-        //   }
-        // });
+        this.hasDisbility = this.employeeProfile!.disability;
         this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
           next: data => {
             this.employeeRoles = data;
@@ -258,14 +236,6 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
-        // this.employeeDataService.getEmployeeData(this.employeeProfile?.id).subscribe({
-        //   next: data => {
-        //     this.employeeData = data;
-        //   },
-        //   error: error => {
-        //     this.toast.error({ detail: "Error", summary: "Failed to Employee Data", duration: 5000, position: 'topRight' });
-        //   }
-        // });
         this.initializeForm(); 
       }
     });
@@ -400,7 +370,6 @@ export class EmployeeProfileComponent {
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
-          // this.saveCustomFields();
           this.checkPersonalFormProgress();
           this.totalProfileProgress();
           this.getEmployeeFields();
@@ -415,18 +384,6 @@ export class EmployeeProfileComponent {
       this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
     }
   }
-  
-  // captureTShirtSizeChange(event: any) {
-  //   this.tShirtSizeFieldValue!.value = event;
-  // }
-
-  // captureDietaryChange(event: any) {
-  //   this.dietaryFieldValue!.value = event;
-  // }
-
-  // captureAllergiesChange(event: any) {
-  //   this.allergiesFieldValue!.value = event.target.value;
-  // }
 
   cancelPersonalEdit() {
     this.editPersonal = false;
