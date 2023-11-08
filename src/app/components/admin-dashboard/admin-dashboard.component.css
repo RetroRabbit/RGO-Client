@@ -71,12 +71,11 @@
 
 #employee-search {
   color: var(--m-3-sys-light-primary, #0029C6);
-  /* M3/body/large */
   font-family: Roboto;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 24px; /* 150% */
+  line-height: 24px;
   letter-spacing: 0.5px;
   display: flex;
   align-items: center;
@@ -144,22 +143,12 @@
   gap: 10px;
 }
 
-/* #search-view-model {
-  display: flex;
-  width: 481px;
-  height: 360px;
-  flex-direction: column;
-  align-items: flex-start;
-  flex-shrink: 0;
-} */
-
 #group {
   display: flex;
   width: 1136px;
   align-items: center;
   gap: 433px;
   margin-top: 40px;
-  /* margin-bottom: 40px; */
   margin-left: 12px;
 }
 

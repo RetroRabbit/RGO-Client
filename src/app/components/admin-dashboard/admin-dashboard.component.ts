@@ -366,7 +366,6 @@ onTypeRemoved(type: string): void {
         tap((data) => {
           this.dataSource = new MatTableDataSource(data);
           this.dataSource.sort = this.sort;
-          //this.dataSource.paginator = this.paginator;
         }),
         catchError((error) => {
           this.toast.error({
