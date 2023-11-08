@@ -10,6 +10,9 @@ import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
+
 
 @Component({
   selector: 'app-chart',
@@ -26,6 +29,7 @@ export class ChartComponent implements OnInit {
   numberOfEmployees: number = 0;
   chartData: any[] = [];
   activeChart: any = null;
+  employeeNames: { [id: string]: string } = {};
   showReport: boolean = false;
   showUpdateForm:boolean=false;
   updateFormData: any = {
@@ -41,9 +45,10 @@ export class ChartComponent implements OnInit {
   selectedChartIndex: number = -1;
   constructor(private chartService: ChartService, private cookieService: CookieService,
     private toast: NgToastService, public dialog: MatDialog, private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document) {}
+    @Inject(DOCUMENT) private document: Document, private employeeProfile:EmployeeService) {}
 
     public barChartOptions: ChartConfiguration['options'] = {
+      events: [],
       responsive: true,
       scales: {
         x: {},
@@ -62,8 +67,8 @@ export class ChartComponent implements OnInit {
       },
     };
 
-
     public pieChartOptions: ChartConfiguration['options'] = {
+      events: [],
       responsive: true,
       plugins: {
         legend: {
@@ -93,16 +98,27 @@ export class ChartComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.createAndDisplayChart();
+    this.fetchPeopleChampionEmployees();
     this.getNumberOfEmployees();
   }
 
   createAndDisplayChart(): void {
     this.chartService.getAllCharts().subscribe({
       next: data => {
-        this.processChartData(data);
+        if (data.length > 0) {
+          this.chartData = data;
+          this.populateCanvasCharts();
+          this.displayChart = true;
+          this.selectedChartType = this.chartData[0].type;
+        } else {
+          this.chartData = [];
+          this.displayChart = false;
+          this.captureCharts.emit(0);
+        }
       },
-      error: error => { }
+      error: error => {
+        this.toast.error({detail:"error",summary: "Chart display unsuccessful",duration:5000, position:'topRight'});
+       }
   });
   }
 
@@ -110,22 +126,8 @@ export class ChartComponent implements OnInit {
     this.chartService.getTotalEmployees().subscribe({
       next: data => {
         this.numberOfEmployees = data;
-      },
-      error: error => {  }
+      }
   });
-  }
-
-  processChartData(data: any[]): void {
-    if (data.length > 0) {
-      this.chartData = data;
-      this.populateCanvasCharts();
-      this.displayChart = true;
-      this.selectedChartType = this.chartData[0].type;
-    } else {
-      this.chartData = [];
-      this.displayChart = false;
-      this.captureCharts.emit(0);
-    }
   }
 
   updateChartType(chartType: ChartType): void {
@@ -190,39 +192,64 @@ export class ChartComponent implements OnInit {
         error: error => {
           this.toast.error({detail:"Error",summary: "Failed to detele graph",duration:5000, position:'topRight'});
         }
-    });
-    }
-  }
+    });}}
 
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
   }
 
-
-  populateCanvasCharts(){
-    for(let i = 0; i < this.chartData.length; i++) {
-      let dataset = [];
-      let data : any;
-      if(this.chartData[i].type == 'pie'){
-        var labelsArray : any[] = [];
-        this.chartData[i].labels.forEach( (label : any) => {
-          labelsArray.push(label);
+  fetchPeopleChampionEmployees() {
+    this.employeeProfile.filterEmployeesByType("People Champion").subscribe({
+      next :(employees: EmployeeProfile[]) => {
+        employees.forEach((employee) => {
+          if (employee.id) {
+            this.employeeNames[employee.id] = `${employee.name} ${employee.surname}`;
+          }
         });
-         var obj = {
+  }, error: (error) => {
+    
+    this.toast.error({detail:"error",summary: "Failed to fetch people champion",duration:5000, position:'topRight'});
+
+  }, complete: () => {
+    this.createAndDisplayChart();
+  },
+
+});}
+  
+   getEmployeeName(employeeId: string | undefined): string {
+    
+    const id = (employeeId || '').toString();
+    
+    console.log(this.employeeNames[id])
+    if (this.employeeNames[id]) {
+      return this.employeeNames[id];
+    }
+    console.log("Returning ID")
+    return id;
+    
+  }
+  
+  populateCanvasCharts() {
+    this.chartCanvasArray = [];
+    for (let i = 0; i < this.chartData.length; i++) {
+      let dataset = [];
+  
+      if (this.chartData[i].type === 'pie') {
+        const labelsArray: string[] = this.chartData[i].labels.map((label: string) => this.getEmployeeName(label));
+        this.chartData[i].labels = labelsArray;
+        dataset.push({
           data: this.chartData[i].data,
-          labels: labelsArray
-         }
-        dataset.push(obj)
-      }else{
-
-        for(let j = 0; j < this.chartData[i].labels.length; j++){
-
-          dataset.push({
-            data: [this.chartData[i].data[j]],
-            label: this.chartData[i].labels[j]
-          });
-
+          labels: labelsArray,
+        });
+      } else {
+        if (this.chartData[i].labels) {
+          for (let j = 0; j < this.chartData[i].labels.length; j++) {
+            dataset.push({
+              data: [this.chartData[i].data[j]],
+              label: this.getEmployeeName(this.chartData[i].labels[j]),
+            });
+          }
         }
       }
       this.chartCanvasArray.push(dataset);
