@@ -179,29 +179,18 @@ export class EmployeeProfileComponent {
   peopleChampionId = null;
   foundChampion: any;
   client: string = '';
-
-  tShirtSizeField!: FieldCode;
-  tShirtSizeFieldValue: EmployeeData | undefined;
-  dietaryField!: FieldCode;
-  dietaryFieldValue: EmployeeData | undefined;
-  allergiesField!: FieldCode;
-  allergiesFieldValue: EmployeeData | undefined;
-
   employeeDataDto!: EmployeeData;
-
   filteredCountries: any[] = this.countries.slice();
 
 
   constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
-    private customFieldsService: FieldCodeService,
     private clientService: ClientService,
     private employeeRoleService: EmployeeRoleService,
     private toast: NgToastService,
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
-    private employeeDataService: EmployeeDataService,
     private employeeBankingService: EmployeeBankingService) { }
 
   ngOnInit() {
@@ -221,41 +210,13 @@ export class EmployeeProfileComponent {
         this.employeePhysicalAddress = data.physicalAddress!;
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
-        this.employeeBankingService.getBankingDetails(this.employeeProfile!.id).subscribe({
-          next: data => {
-            this.employeeBanking = data;
-            console.log(this.employeeBanking);
-            this.hasBankingData = true;
-            this.hasFile = this.employeeBanking?.file.length > 0;
-            this.bankingId = this.employeeBanking.id;
-            this.bankingStatus = this.employeeBanking.status;
-            this.bankingReason = this.employeeBanking.declineReason;
-            this.employeeBankingsForm = this.fb.group({
-              accountHolderName: [this.employeeBanking?.accountHolderName, Validators.required],
-              accountType: [this.employeeBanking?.accountType, Validators.required],
-              bankName: [this.employeeBanking?.bankName, Validators.required],
-              accountNo: [this.employeeBanking?.accountNo,  [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-              branch: [this.employeeBanking?.branch, Validators.required],
-              file: [this.employeeBanking?.file, Validators.required],
-            });
-            this.employeeBankingsForm.disable();
-            this.checkBankingInformationProgress();
-            this.totalBankingProgress();
-          }
-        });
         this.hasDisbility = this.employeeProfile!.disability;
-        this.customFieldsService.getAllFieldCodes().subscribe({
+        this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
           next: data => {
-            this.customFields = data;
-            this.tShirtSizeField = this.customFields.filter(field => field.code == 'tsize')[0];
-            this.dietaryField = this.customFields.filter(field => field.code == 'dietary')[0];
-            this.allergiesField = this.customFields.filter(field => field.code == 'allergies')[0];
-          },
-          error: (error) => {
-            this.toast.error({ detail: "Error", summary: "Failed to fetch addition informaion", duration: 5000, position: 'topRight' });
+            this.employeeRoles = data;
           }
         });
-
+        
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
@@ -275,72 +236,9 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
-        this.employeeDataService.getEmployeeData(this.employeeProfile?.id).subscribe({
-          next: data => {
-            this.employeeData = data;
-            this.getData();
-          },
-          error: error => {
-            this.toast.error({ detail: "Error", summary: "Failed to Employee Data", duration: 5000, position: 'topRight' });
-          }
-        });
-        this.initializeForm();
+        this.initializeForm(); 
       }
     });
-  }
-
-  getData() {
-    let fieldId = this.customFields.filter(field => field.code == 'tsize')[0];
-    this.tShirtSizeFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
-    if (this.tShirtSizeFieldValue == undefined) {
-      this.tShirtSizeFieldValue = {
-        id: (this.customFields[this.customFields.length - 1].id! + 1),
-        employeeId: this.employeeProfile!.id,
-        fieldCodeId: fieldId.id,
-        value: 'Unknown'
-      };
-      this.employeeDataService.saveEmployeeData(this.tShirtSizeFieldValue).subscribe(data => {
-        error: () => {
-          this.toast.error({ detail: "Error", summary: "Failed to fetch T-Size", duration: 5000, position: 'topRight' });
-        }
-      });
-    }
-    this.personalDetailsForm.addControl('tsize', this.fb.control(this.tShirtSizeFieldValue.value));
-
-    fieldId = this.customFields.filter(field => field.code == 'dietary')[0];
-    this.dietaryFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
-
-    if (this.dietaryFieldValue == undefined) {
-      this.dietaryFieldValue = {
-        id: (this.customFields[this.customFields.length - 1].id! + 2),
-        employeeId: this.employeeProfile!.id,
-        fieldCodeId: fieldId.id,
-        value: 'None'
-      };
-      this.employeeDataService.saveEmployeeData(this.dietaryFieldValue).subscribe(data => {
-        error: () => {
-          this.toast.error({ detail: "Error", summary: "Failed to fetch Dietary", duration: 5000, position: 'topRight' });
-        }
-      });
-    }
-    this.personalDetailsForm.addControl('dietary', this.fb.control(this.dietaryFieldValue.value));
-
-    fieldId = this.customFields.filter(field => field.code == 'allergies')[0];
-    this.allergiesFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
-    if (this.allergiesFieldValue == undefined) {
-      this.allergiesFieldValue = {
-        id: (this.customFields[this.customFields.length - 1].id! + 3),
-        employeeId: this.employeeProfile!.id,
-        fieldCodeId: fieldId.id,
-        value: 'None'
-      };
-      this.employeeDataService.saveEmployeeData(this.allergiesFieldValue).subscribe(data => {
-        error: () => {
-          this.toast.error({ detail: "Error", summary: "Failed to fetch allergies", duration: 5000, position: 'topRight' });
-        }
-      });
-    }
-    this.personalDetailsForm.addControl('allergies', this.fb.control(this.allergiesFieldValue.value));
   }
 
   initializeForm() {
@@ -472,7 +370,6 @@ export class EmployeeProfileComponent {
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
-          this.saveCustomFields();
           this.checkPersonalFormProgress();
           this.totalProfileProgress();
           this.getEmployeeFields();
@@ -486,41 +383,6 @@ export class EmployeeProfileComponent {
     else {
       this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
     }
-  }
-
-  saveCustomFields() {
-    this.employeeDataService.updateEmployeeData(this.tShirtSizeFieldValue!).subscribe({
-      next: () => { },
-      error: (error) => {
-        this.toast.error({ detail: "Error", summary: "Failed to update T-Shirt", duration: 5000, position: 'topRight' });
-      }
-    });
-
-    this.employeeDataService.updateEmployeeData(this.dietaryFieldValue!).subscribe({
-      next: () => { },
-      error: (error) => {
-        this.toast.error({ detail: "Error", summary: "Failed to update Dietary", duration: 5000, position: 'topRight' });
-      }
-    });
-
-    this.employeeDataService.updateEmployeeData(this.allergiesFieldValue!).subscribe({
-      next: () => { },
-      error: (error) => {
-        this.toast.error({ detail: "Error", summary: "Failed to update Allergies", duration: 5000, position: 'topRight' });
-      }
-    });
-  }
-
-  captureTShirtSizeChange(event: any) {
-    this.tShirtSizeFieldValue!.value = event;
-  }
-
-  captureDietaryChange(event: any) {
-    this.dietaryFieldValue!.value = event;
-  }
-
-  captureAllergiesChange(event: any) {
-    this.allergiesFieldValue!.value = event.target.value;
   }
 
   cancelPersonalEdit() {

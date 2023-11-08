@@ -397,39 +397,6 @@
                                                 </mat-select>
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>T-Shirt Size</mat-label>
-                                                <mat-select [disabled]="!editPersonal"
-                                                    [value]="tShirtSizeFieldValue?.value"
-                                                    (valueChange)="captureTShirtSizeChange($event)">
-                                                    <mat-option *ngFor="let size of tShirtSizeField?.options"
-                                                        [value]=size.option>
-                                                        {{size.option}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Dietary</mat-label>
-                                                <mat-select [disabled]="!editPersonal"
-                                                    [value]="dietaryFieldValue?.value"
-                                                    (valueChange)="captureDietaryChange($event)">
-                                                    <mat-option *ngFor="let option of dietaryField?.options"
-                                                        [value]=option.option>
-                                                        {{option.option}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <textarea [disabled]="!editPersonal" matInput
-                                                    placeholder="Allergies Notes" [value]="allergiesFieldValue?.value"
-                                                    (input)="captureAllergiesChange($event)"></textarea>
-                                            </mat-form-field>
-                                        </div>
                                         <div class="col-12 mt-1"></div>
                                         <div class="col-6  my-1">
                                             <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any
