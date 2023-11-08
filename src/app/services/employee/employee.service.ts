@@ -34,4 +34,8 @@ export class EmployeeService {
   updateEmployee(employee: any): Observable<any>{
     return this.httpClient.put<any>(`${API.HttpsBaseURL}/employee/update`, employee)
   }
+
+  filterEmployeesByType(type: string): Observable<EmployeeProfile[]> {
+    return this.httpClient.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employee/employees/filterbytype?type=${encodeURIComponent(type)}`)
+  }
 }
