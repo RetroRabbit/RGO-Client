@@ -1,56 +1,107 @@
-<form [formGroup]="newRoleForm" class="container">
-    <div class="w-75 py-3">
-        <button
-          mat-button
-          class="btn"
-          id="back-to-employees"
-          (click)="goToEmployees()"
-          *ngIf="goto === 'employees'"
-        >
-          <mat-icon>arrow_back</mat-icon>
-          <span>Back to Employees</span>
-        </button>
+
+<button mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save Changes</button>
+
+<ng-template #dialogContentTemplate>
+  <div id="dialog-content">
+    <div class="row">
+     <div id="dialog-container">
+      <div id="dialog-header">
+        <h2 mat-dialog-title id="dialog-title">Save Permissions</h2>
+        <h4 id="dialog-subtitle">Are you sure you want to save the permissions that you edited?</h4>
       </div>
-    <div class="d-flex" *ngIf="roles$ | async as roles">
-        <label><em>Roles:</em></label>
-        <br>
-        <button class="card btn" type="button" (click)="changeRole(role)" *ngFor="let role of roles">
-            <span [ngClass]="role == newRoleForm.value.role ? 'selected' : ''">{{role}}</span>
-        </button>
+      <div id="button-container">
+        <button mat-button mat-dialog-close id="save-button" (click)="saveChanges()">Save</button>
+        <button mat-button mat-dialog-close id="cancel-button"(click)="onCancel()">Back</button>
+      </div>
+     </div>
     </div>
-    <div *ngIf="roleAccesses$ | async as roleAccesses">
-        <div class="d-flex" *ngIf="getPermissions(roleAccesses) as permissions">
-            <label><em>Permissions:</em></label>
-            <br>
-            <button class="card btn" type="button" (click)="changePermission(permission)" *ngFor="let permission of permissions">
-                <span [ngClass]="permission == newRoleForm.value.permission? 'selected' : ''">{{permission}}</span>
-            </button>
-        </div>
+  </div>
+</ng-template>
+
+<ng-template #dialogCancelTemplate>
+  <div id="dialog-content">
+    <div class="row">
+     <div id="dialog-container">
+      <div id="dialog-header-cancel">
+        <h2 mat-dialog-title id="dialog-title-cancel">Discard unsaved changes?</h2>
+      </div>
+      <div id="button-container">
+        <button mat-button mat-dialog-close id="save-button" (click)="discardChanges()">Discard</button>
+        <button mat-button mat-dialog-close id="cancel-button"(click)="openDialog()">Back</button>
+      </div>
+     </div>
     </div>
-    <br>
-    <button type="submit" class="btn btn-primary" [disabled]="!newRoleForm.valid" (click)="onAdd()">Add</button>
-    <button type="submit" class="btn btn-danger" [disabled]="!newRoleForm.valid" (click)="onDelete()">Delete</button>
-    <br>
-    <div class="alert alert-info" *ngIf="saved || deleted">
-        operation succeded
-    </div>
-    <br>
-    <div class="alert alert-warning" *ngIf="failed">
-        operation failed
-    </div>
-    <div class="card container" *ngIf="newRoleForm.controls.role.valid">
-        <div class="card-header">
-            Permissions of {{ newRoleForm.value.role }}
-        </div>
-        <div class="card-body">
-            <button type="button" (click)="getRole(newRoleForm.value.role!)">
-                Reload
-            </button>
-            <code>
-                <pre>
-                    {{ currRole | json}}
-                </pre>
-            </code>
-        </div>
-    </div>
-</form>
+  </div>
+</ng-template>
+
+<div class="table-responsive">
+  <table class="table" id="mattable">
+    <thead>
+      <tr>
+        <th scope="col" id="tableheader">
+          Permissions
+        </th>
+        <th scope="col" *ngFor="let p of roles" id="tableheader">
+          {{ p.description }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row" id="subheader">
+          Charts
+        </th>
+        <th scope="row" *ngFor="let r of roles" id="allsubheader">
+          <mat-checkbox
+            color="primary"
+            [(ngModel)]="allCheckboxesState[r.description]"
+            (change)="toggleAllCheckboxes(r.description)"
+          >
+            All    
+          </mat-checkbox>
+        </th>
+      </tr>
+      <tr *ngFor="let n of chartPermissions" >
+        <th scope="row" id="permissions">
+          {{ n.permission }}
+        </th>
+        <th *ngFor="let r of roles">
+          <mat-checkbox
+            color="primary"
+            [(ngModel)]="checkboxStates[r.description + n.permission]"
+            (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)"
+          >
+          </mat-checkbox>
+        </th>
+      </tr>
+
+      <tr>
+        <th scope="row" id="subheader">
+          Employee Data
+        </th>
+        <th scope="row" *ngFor="let r of roles" id="allsubheader">
+          <mat-checkbox
+            color="primary"
+            [(ngModel)]="allEmployeeDataCheckboxesState[r.description]"
+            (change)="toggleAllEmployeeDataCheckboxes(r.description)"
+          >
+            All
+          </mat-checkbox>
+        </th>
+      </tr>
+      <tr *ngFor="let n of employeePermissions" >
+        <th scope="row" id="permissions">
+          {{n.permission}}
+        </th>
+        <th *ngFor="let r of roles">
+          <mat-checkbox
+            color="primary"
+            [(ngModel)]="checkboxStatesEmployeePermissions[r.description + n.permission]"
+            (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)"
+          >
+          </mat-checkbox>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+</div>
