@@ -83,6 +83,32 @@
                 </div>
               </div>
             </div>
+            <div class="col-2" *ngIf="isAdmin() || isJourney()">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Reports' ? 'active' : 'idle'">
+                    Reports
+                  </div>
+                  <div *ngIf="selectedItem == 'Reports'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2" *ngIf="isAdmin() || isJourney()">
+              <div id="nav-item-container">
+                <div id="nav-item">
+                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'System Settings' ? 'active' : 'idle'">
+                    System Settings
+                  </div>
+                  <div *ngIf="selectedItem == 'System Settings'" id="selected-line-box">
+                    <div id="selected-line">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div *ngIf="isAdmin()" class="col-2" id="info-menu">
               <div id="nav-item-container">
               <button mat-button [matMenuTriggerFor]="menu" id="nav-item">
@@ -92,8 +118,6 @@
                 <button mat-menu-item  (click)="CaptureEvent($event)">Employee Banking</button>
                 <button mat-menu-item  (click)="CaptureEvent($event)">Manage Employee Events</button>
                 <button mat-menu-item  (click)="CaptureEvent($event)">Manage Employee Roles</button>
-                <button mat-menu-item  (click)="CaptureEvent($event)">Manage Roles</button>
-                <button mat-menu-item  (click)="CaptureEvent($event)">Manage Field</button>
                 <button mat-menu-item  (click)="CaptureEvent($event)">Evaluations</button>
               </mat-menu>
             </div>
@@ -160,20 +184,8 @@
     <div *ngIf="cookieService.get('currentPage') == 'Profile'">
       <app-employee-profile [selectedEmployee]="selectedEmployee"></app-employee-profile>
     </div>
-    <div *ngIf="cookieService.get('currentPage') === 'Manage Field'">
-      <app-manage-field-code></app-manage-field-code>
-    </div>
-    <div *ngIf="cookieService.get('currentPage') === 'Manage Permissions'">
-      <div *ngIf="!shouldDisplayNewEmployee">
-        <app-role-manager [goto]="'dashboard'"></app-role-manager>
-      </div>
-      <div *ngIf="shouldDisplayNewEmployee">
-        <app-role-manager [goto]="'employees'"></app-role-manager>
-      </div>
-    </div>
-
-    <div *ngIf="cookieService.get('currentPage') === 'Manage Roles'">
-      <app-role-manager></app-role-manager>
+    <div *ngIf="selectedItem == 'System Settings'">
+      <app-system-settings></app-system-settings>
     </div>
     <div *ngIf="cookieService.get('currentPage') === 'Manage Employee Roles'">
       <app-employee-role-manager></app-employee-role-manager>

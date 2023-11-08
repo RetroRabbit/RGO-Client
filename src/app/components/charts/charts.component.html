@@ -71,7 +71,7 @@
     </div>
     <div id="chart-body" class="row pb-2">
       <div id="canvas-container">
-        <canvas [plugins]="chart.type == 'bar' ? barChartPlugins : barChartPlugins" baseChart [datasets]='chartCanvasArray[i]'
+        <canvas [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart [datasets]='chartCanvasArray[i]'
           [labels]="chart.type == 'bar'? chart.dataTypes : chart.labels" [type]="chart.type" [options]="chart.type == 'bar' ? barChartOptions : pieChartOptions"></canvas>
       </div>
     </div>

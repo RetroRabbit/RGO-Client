@@ -1,0 +1,86 @@
+
+.mat-drawer {
+    background-color: #D7DFFF; 
+    color: white; 
+    border-radius: 0px, 50px, 50px, 0px; 
+    width: Fixed (300px);
+    height:  1500px;
+    top: 40px;
+    padding: 12px;
+    gap: 4px;
+}
+
+.mat-list-item {
+color: #FFFFFF;
+width: Fill (276px);
+height: Fixed (56px);
+border-radius: 100px;
+gap: 12px
+}
+
+button {
+font-family: Roboto;
+font-size: 14px;
+font-weight: 600;
+line-height: 20px;
+letter-spacing: 0.10000000149011612px;
+text-align: left;
+}
+
+button:hover {
+    color:#0029C6;
+    background-color: #FFFFFF;
+    width: Fill (276px);
+    height: Fixed (56px);
+    border-radius: 100px;
+    gap: 12px
+}
+
+h1{
+ color: #49454F;
+font-family: Roboto;
+font-size: 28px;
+font-weight: 400;
+line-height: 36px;
+letter-spacing: 0em;
+text-align: left;
+
+}
+
+h2{
+color:#0029C6;
+font-family: Roboto;
+font-size: 16px;
+font-weight: 500;
+line-height: 24px;
+letter-spacing: 0.15000000596046448px;
+text-align: left;
+
+}
+
+#drawerheader{
+padding: 10px;
+border-radius: 100px;
+gap: 5px
+}
+
+.mat-drawer-content{
+    top: 40px;
+    padding-bottom: 40px;
+   
+}
+
+
+
+.mat-drawer-container {
+    background-color:#e8efff;
+}
+
+
+main {
+    --primary-color: #0029C6;
+    --background-light: #D7DFFF;
+    --font-size-1: 14px;
+    --font-size-2: 16px;
+    font-family: 'Roboto', sans-serif;
+}
