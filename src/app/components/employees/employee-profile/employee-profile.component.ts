@@ -255,11 +255,7 @@ export class EmployeeProfileComponent {
             this.toast.error({ detail: "Error", summary: "Failed to fetch addition informaion", duration: 5000, position: 'topRight' });
           }
         });
-        // this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
-        //   next: data => {
-        //     this.employeeRoles = data;
-        //   }
-        // });
+
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
