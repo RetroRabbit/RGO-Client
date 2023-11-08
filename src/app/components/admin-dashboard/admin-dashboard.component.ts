@@ -194,8 +194,6 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
         this.noResults = false;
         this.activateSearchBar();
       }
-  
-      
     } else {
       this.searchResults = [];
       this.noResults = true;
