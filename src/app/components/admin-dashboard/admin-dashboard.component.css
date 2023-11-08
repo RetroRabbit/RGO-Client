@@ -2,7 +2,19 @@
   margin: 0;
 }
 
-#new-hire {
+#group {
+  /* display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 433px; */
+
+  margin-top: 40px;
+  /* margin-bottom: 40px; */
+  margin-left: 12px;
+  overflow: hidden;
+}
+
+/* #new-hire {
   text-align: right;
   display: flex;
   width: 223px;
@@ -12,9 +24,9 @@
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-}
+} */
 
-#new-hire>button {
+#new-hire {
   background: #0029c6;
   border: none;
   border-radius: 4rem;
@@ -22,6 +34,7 @@
   margin-right: 4rem;
   padding: 0.5rem;
   width: 12rem;
+  align-items: right;
 }
 
 #graphs-btn {
@@ -59,14 +72,18 @@
   gap: 4px;
   flex: 1 0 0;
   align-self: stretch;
-  width: 481px;
+  /* width: 481px; */
   height: 40px;
-  min-width: 360px;
+  /* min-width: 360px; */
   flex-shrink: 0;
   border-radius: 28px;
   border: 1px solid var(--m-3-sys-light-primary, #0029C6);
   background: var(--m-3-sys-light-primary-container, #D7DFFF);
   color: var(--m-3-sys-light-primary, #0029C6);
+}
+
+.searchbar.no-results {
+  border-radius: 28px 28px 28px 28px;
 }
 
 #employee-search {
@@ -153,13 +170,6 @@
   flex-shrink: 0;
 } */
 
-#group {
-  display: flex;
-  width: 1136px;
-  align-items: center;
-  gap: 433px;
-}
-
 #avatar {
   display: flex;
   width: 56px;
@@ -193,13 +203,6 @@ div#results-container {
 }
 
 #search-results {
-  /* 
-  display: flex;//
-  padding: 12px 24px 12px 16px;//
-  align-items: flex-start;//
-  gap: 16px;//
-  align-self: stretch;// 
-*/
   display: flex;
   padding: 4px;
   padding: 12px 24px 12px 16px;
@@ -216,12 +219,14 @@ div#results-container {
   height: 88px;
   min-height: 88px;
   flex-direction: column;
+  margin: 0px 0px 0px 0px;
+  margin-left: 12px;
   
 }
 
 #search-results > div {
   flex: 1;
-  min-width: 200px;
+  min-width: 480px;
 }
 
 #search-results-container {
@@ -232,6 +237,7 @@ div#results-container {
   z-index: 1000;
   position: absolute;
   box-shadow: 0px 5px 50px 0px rgba(0, 41, 198, 0.08);
+  /*margin-left: 20px;*/
 }
 
 #view-more-container {
@@ -253,6 +259,7 @@ div#results-container {
   border-top: 1px #0029C6 solid;
   
   margin-top: 16px;
+  margin-left: 12px;
 }
 .mat-mdc-select {
   display: none;
@@ -376,4 +383,9 @@ word-wrap: break-word;
 #graph-header{
   padding: 0;
   height: fit-content;
+}
+
+#search-arrow{
+  width: 24px;
+  height: 24px;
 }
