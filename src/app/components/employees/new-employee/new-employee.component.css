@@ -1,20 +1,17 @@
 main {
     width: 100%;
-    background: #E8EFFF;
+    background: #e8efff;
 }
 
-#newEmployeeForm {
-    min-width: 70%;
-}
 
 .roboto-font {
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
 }
 
 .heading-text {
     width: 332px;
     text-align: center;
-    color: #0029C6;
+    color: #0029c6;
     font-size: 16px;
     font-family: Inter;
     font-weight: 400;
@@ -32,8 +29,8 @@ main {
 
 #fileUploadCursor {
     cursor: pointer;
-    color: #0029C6;
-    background-color: #D7DFFF;
+    color: #0029c6;
+    background-color: #d7dfff;
     border-radius: 100px;
 }
 
@@ -45,7 +42,7 @@ main {
 }
 
 .title-line-height {
-    line-height: .5rem;
+    line-height: 0.5rem;
 }
 
 #createEmployee {
@@ -64,15 +61,173 @@ main {
 #heading-text {
     font-size: 12px;
     line-height: 10px;
-    color: #0029C6;
+    color: #0029c6;
 }
 
 #back-to-employees {
-    color: #0029C6;
+    color: #0029c6;
     font-size: 14px;
     font-family: Roboto;
     font-weight: 500;
     line-height: 20px;
-    letter-spacing: 0.10px;
+    letter-spacing: 0.1px;
     word-wrap: break-word;
+}
+
+.mat-mdc-standard-chip {
+    --mdc-chip-label-text-font: Roboto, normal;
+    --mdc-chip-label-text-color: #000;
+    --mdc-chip-label-text-line-height: 20px;
+    --mdc-chip-label-text-size: 14px;
+    --mdc-chip-label-text-tracking: 0.0178571429em;
+    --mdc-chip-label-text-weight: 500;
+    --mdc-chip-elevated-container-color: #fff;
+    --mdc-chip-elevated-container-elevation: 1;
+    border-radius: 8px;
+    color: #000;
+    border-radius: 5px;
+    background: #FFF;
+    box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.15);
+    display: flex;
+    width: fit-content;
+    padding: 10px;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#footer {
+    display: flex;
+    width: 100%;
+    height: 101px;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+}
+
+#next-button {
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #0029c6;
+    border-radius: 30px;
+    border: none ;
+    color: #FFF;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;  
+}
+
+#save-button {
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #0029c6;
+    border-radius: 30px;
+    border: none ;
+    color: #FFF;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px; 
+}
+
+#cancel-button {
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border-radius: 30px;
+    border: 1px solid #0029c6;
+    color:#0029c6;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#save-add-button{
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border-radius: 30px;
+    border: 1px solid #0029c6;
+    color:#0029c6;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#upload-button{
+    padding: 10px 24px;
+    gap: 8px;
+    background: #0029c6;
+    border-radius: 30px;
+    border: none ;
+    color: #FFF;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+.upload-drop-container{
+    border-radius: 40px;
+    background: #D7DFFF;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.upload-drop-section{
+    background: #D7DFFF;
+    border-radius: 40px;
+    background: #FFF;
+    margin: 10px;
+    padding: auto;
+    justify-content: center;    
+    border: 1px dashed rgba(0, 0, 0, 0.40);
+}
+
+.upload-doc-section{
+    border-radius: 15px;
+    background: #F4F7FE;
+    color: #0029C6;
+    padding: 10px;
+    max-width: fit-content;
+    color:#0029c6;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
 }
