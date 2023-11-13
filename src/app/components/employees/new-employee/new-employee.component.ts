@@ -310,7 +310,7 @@ export class NewEmployeeComponent implements OnInit {
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith("retrorabbit.co.za")) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
-      this.toast.error({ detail: 'Error', summary: `⚠️ Please enter your official Retro Rabbit email address`, duration: 5000, position: 'topRight',
+      this.toast.error({ detail: 'Error', summary: `⚠️ Please enter an official Retro Rabbit email address`, duration: 5000, position: 'topRight',
      });
      return;
     }
