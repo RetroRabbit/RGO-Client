@@ -211,11 +211,13 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
-        this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
-          next: data => {
-            this.employeeRoles = data;
-          }
-        });
+        // this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
+        //   next: data => {
+        //     this.employeeRoles = data;
+        //     console.log("HERE")
+        //     console.log(data)
+        //   }
+        // });
         
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
