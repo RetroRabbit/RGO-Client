@@ -117,7 +117,7 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
       error: (error) =>{
-        this.toast.error({detail:"Error", summary:"Failed to fetch charts.",duration:5000, position:'topRight'});
+        this.toast.error({detail:"Error", summary:"Failed to fetch charts.", duration:5000, position:'topRight'});
       }
     });
 
