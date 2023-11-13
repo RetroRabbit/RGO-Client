@@ -28,7 +28,6 @@ export class HomeComponent {
   charts: Chart[] = [];
   roles : string[] = [];
   screenWidth !: number;
-
   employeeType: { id?: number, name?: string } | undefined = {
     id: 0,
     name: ''
