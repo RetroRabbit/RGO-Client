@@ -225,7 +225,6 @@ export class EmployeeProfileComponent {
             this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
               next: data => {
                 this.employeeRoles = data;
-                console.log(this.employeeRoles)
               }
             });
             this.clientService.getAllClients().subscribe({
@@ -245,7 +244,6 @@ export class EmployeeProfileComponent {
         this.initializeForm(); 
       }
     });
-    
   }
 
   initializeForm() {
