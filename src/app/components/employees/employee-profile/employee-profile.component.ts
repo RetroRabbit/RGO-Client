@@ -125,9 +125,9 @@ export class EmployeeProfileComponent {
   });
 
   employeeContactForm: FormGroup = this.fb.group({
-    email: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(this.emailPattern)]],
-    personalEmail: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
-    cellphoneNo: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+    email: { value: '', disabled: true },
+    personalEmail: { value: '', disabled: true },
+    cellphoneNo: { value: '', disabled: true },
     houseNo: { value: '', disabled: true },
     emergencyContactName: { value: '', disabled: true },
     emergencyContactNo: { value: '', disabled: true }
@@ -224,6 +224,11 @@ export class EmployeeProfileComponent {
             this.employees = data;
             this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
             this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+            this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
+              next: data => {
+                this.employeeRoles = data;
+              }
+            });
             this.clientService.getAllClients().subscribe({
               next: data => {
                 this.clients = data;

@@ -245,12 +245,14 @@ export class NewEmployeeComponent implements OnInit {
     console.log(index);
   }
 
-  public onFileChange(event: any): void {
-    const file = event.target.files[0] as File;
-    if (file) {
-      this.newEmployeeForm.patchValue({
-        photo: file.name,
-      });
+  onFileChange(event: any): void {
+    if(event.target.files && event.target.files.length) {
+      const file = event.target.files[0];
+      if(this.validateFile(file)) {
+        this.imageConverter(file); 
+      } else {
+        this.clearUpload();
+      }
     }
   }
 

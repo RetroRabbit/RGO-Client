@@ -92,7 +92,8 @@
                         <mat-label>Profile photo</mat-label>
                         <input matInput type="text" formControlName="photo" />
                         <span mat-icon-button matSuffix (click)="uploadFile.click()" class="pe-3">
-                          <mat-icon id="fileUploadCursor">file_upload</mat-icon> <input type="file" #uploadFile (change)="onFileChange($event)" formControlName="photo" hidden />
+                          <mat-icon id="fileUploadCursor">file_upload</mat-icon> 
+                          <input type="file" #uploadFile (change)="onFileChange($event)" hidden />
                         </span>
                       </mat-form-field>
                     </div>
