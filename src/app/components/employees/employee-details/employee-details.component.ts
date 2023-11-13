@@ -94,6 +94,8 @@ export class EmployeeDetailsComponent implements OnInit {
     this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
       next: data => {
         this.employeeRoles = data;
+        console.log("HERE")
+        console.log(data)
       }
     })
 
