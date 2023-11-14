@@ -257,3 +257,7 @@
     letter-spacing: 0.10px;
     word-wrap: break-word;
 }
+
+#banking-field{
+  width: 100%;
+}
