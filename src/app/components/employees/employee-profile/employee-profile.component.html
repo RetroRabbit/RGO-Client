@@ -118,12 +118,6 @@
                     style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Profile Details {{ profileFormProgress }}%</h5>
                 </div>
-
-                <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-3" id="progress-stats"
-                    style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
-                    <h5>Career Summary {{careerSummaryProgress}}%</h5>
-                </div>
                 <div class="col-1 border" id="horizontal"></div>
                 <div class="col-2 py-3" id="progress-stats"
                     style="background-color: {{ bankInformationProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
@@ -153,7 +147,7 @@
 
     <div id="profile-accordions">
         <div id="accordions-nav" class="row">
-            <div class="col-3">
+            <div class="col-4">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
                         <div (click)="CaptureEvent($event)"
@@ -167,21 +161,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
-                <div id="nav-item-container" class="col-auto">
-                    <div id="nav-item">
-                        <div (click)="CaptureEvent($event)"
-                            [ngClass]="selectedItem == 'Capture Summary' ? 'active' : 'idle'">
-                            Career Summary
-                        </div>
-                        <div *ngIf="selectedItem == 'Capture Summary'" id="selected-line-box">
-                            <div id="selected-line">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
                         <div (click)="CaptureEvent($event)"
@@ -195,7 +175,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
                         <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Documents' ? 'active' : 'idle'">
