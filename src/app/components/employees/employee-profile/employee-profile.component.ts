@@ -110,7 +110,6 @@ export class EmployeeProfileComponent {
   hasFile: boolean = false;
 
   employeeDetailsForm: FormGroup = this.fb.group({
-    title: { value: '', disabled: true },
     name: { value: '', disabled: true },
     surname: { value: '', disabled: true },
     initials: { value: '', disabled: true },
@@ -250,7 +249,6 @@ export class EmployeeProfileComponent {
 
   initializeForm() {
     this.employeeDetailsForm = this.fb.group({
-      title: this.employeeProfile!.title,
       name: [this.employeeProfile!.name, Validators.required],
       surname: [this.employeeProfile!.surname, Validators.required],
       initials: this.employeeProfile!.initials,
@@ -486,7 +484,6 @@ export class EmployeeProfileComponent {
         id: this.employeeProfile!.employeeType!.id,
         name: this.employeeProfile!.employeeType!.name,
       },
-      title: this.employeeProfile!.title,
       name: this.employeeProfile!.name,
       initials: this.employeeProfile!.initials,
       surname: this.employeeProfile!.surname,
@@ -544,8 +541,6 @@ export class EmployeeProfileComponent {
       this.employeeType = this.employeeTypes.find((data: any) => {
         return data.name == employeeDetailsForm.employeeType
       });
-
-      this.employeeProfileDto.title = employeeDetailsForm.title;
       this.employeeProfileDto.name = employeeDetailsForm.name;
       this.employeeProfileDto.surname = employeeDetailsForm.surname;
       this.employeeProfileDto.clientAllocated = this.employeeDetailsForm.controls["clientAllocated"].value == "" ? null : this.clientId;
