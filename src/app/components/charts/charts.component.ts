@@ -221,11 +221,9 @@ export class ChartComponent implements OnInit {
     
     const id = (employeeId || '').toString();
     
-    console.log(this.employeeNames[id])
     if (this.employeeNames[id]) {
       return this.employeeNames[id];
     }
-    console.log("Returning ID")
     return id;
     
   }

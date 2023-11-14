@@ -15,6 +15,14 @@
           <mat-list-item>
               <button mat-button (click)="onRoleManagementClick()"> <mat-icon>person_outline_24px</mat-icon> <span>Role Management</span> </button>
           </mat-list-item>
+          <mat-list-item>
+          <button mat-button [matMenuTriggerFor]="menu" id="nav-item">
+            More
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item  (click)="CaptureEvent($event)">Employee Banking</button>
+          </mat-menu>
+        </mat-list-item>
       </mat-nav-list>
       </mat-drawer>
       <mat-drawer-content>
@@ -25,6 +33,9 @@
             </div>
             <div *ngIf="cookieService.get('currentPage') === 'Role Management'">
               <app-role-manager></app-role-manager>
+            </div>
+            <div *ngIf="cookieService.get('currentPage') == 'Employee Banking'">
+              <app-pending-bank-statements></app-pending-bank-statements>
             </div>
           </div>
         </div>  

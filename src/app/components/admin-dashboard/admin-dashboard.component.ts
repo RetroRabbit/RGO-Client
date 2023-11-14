@@ -11,8 +11,6 @@ import { NgToastService } from 'ng-angular-popup';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 
-
-
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -28,17 +26,14 @@ export class AdminDashboardComponent {
   chartType: any = '';
   chartData: number[] = [];
   chartLabels: string[] = [];
-  chartOptions: any = {
-    responsive: true,
-    scales: { y: { beginAtZero: true } }
-  };
+
   categories: string[] = [];// ToDo: fetch from backend
   filteredCategories: string[] = this.categories;
   categoryCtrl = new FormControl();
   selectedCategories: string[] = [];
 
   typeControl = new FormControl();
-  types: string[]= [];
+  types: string[] = [];
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
 
@@ -46,12 +41,12 @@ export class AdminDashboardComponent {
   charts: Chart[] = [];
   public showModal: boolean = false;
 
-readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
   profileImage: string | null = null;
-  roles : string[] = [];
+  roles: string[] = [];
 
 
   employeeType: { id: number; name: string } = {
@@ -81,8 +76,8 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
-      error: (error) =>{
-        this.toast.error({detail:"Error", summary:"Failed to fetch charts.",duration:5000, position:'topRight'});
+      error: (error) => {
+        this.toast.error({ detail: "Error", summary: "Failed to fetch charts.", duration: 5000, position: 'topRight' });
       }
     });
 
@@ -123,7 +118,7 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     });
   }
 
-  AddNewHire(event : any){
+  AddNewHire(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
   }
@@ -161,48 +156,48 @@ readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     }
   }
 
-TypeCtrlValueChanges() {
-  this.typeControl.valueChanges.subscribe(val => {
-    if (val) {
-      this.filteredTypes = this.filterTypes(val);
-    } else {
-      this.filteredTypes = this.types;
-    }
-  });
-}
-
-filterTypes(val: string): string[] {
-  return this.types.filter(types =>
-    types.toLowerCase().includes(val.toLowerCase()));
-}
-
-onTypeRemoved(type: string): void {
-  const types = this.typeControl.value;
-  const index = types.indexOf(type);
-  if (index >= 0) {
-    types.splice(index, 1);
-    this.typeControl.setValue(types);
+  TypeCtrlValueChanges() {
+    this.typeControl.valueChanges.subscribe(val => {
+      if (val) {
+        this.filteredTypes = this.filterTypes(val);
+      } else {
+        this.filteredTypes = this.types;
+      }
+    });
   }
-}
+
+  filterTypes(val: string): string[] {
+    return this.types.filter(types =>
+      types.toLowerCase().includes(val.toLowerCase()));
+  }
+
+  onTypeRemoved(type: string): void {
+    const types = this.typeControl.value;
+    const index = types.indexOf(type);
+    if (index >= 0) {
+      types.splice(index, 1);
+      this.typeControl.setValue(types);
+    }
+  }
 
   createChart() {
-    if(!this.chartType){
-      this.toast.info({detail:"Missing chart type", summary:"Please select a chart type",duration:5000, position:'topRight'});
+    if (!this.chartType) {
+      this.toast.info({ detail: "Missing chart type", summary: "Please select a chart type", duration: 5000, position: 'topRight' });
       return;
     }
-    if(!this.chartName){
-      this.toast.info({detail:"Missing chart name", summary:"Please enter a chart name",duration:5000, position:'topRight'});
+    if (!this.chartName) {
+      this.toast.info({ detail: "Missing chart name", summary: "Please enter a chart name", duration: 5000, position: 'topRight' });
       return;
     }
-    if(this.selectedCategories.length  < 1){
-      this.toast.info({detail:"Missing chart category", summary:"Please select a category/s",duration:5000, position:'topRight'});
+    if (this.selectedCategories.length < 1) {
+      this.toast.info({ detail: "Missing chart category", summary: "Please select a category/s", duration: 5000, position: 'topRight' });
       return;
     }
-  
+
     this.chartService.createChart(this.selectedCategories, this.chartName, this.chartType)
       .subscribe({
-        next : response => {
-          this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
+        next: response => {
+          this.toast.success({ detail: "Success", summary: 'Chart created', duration: 5000, position: 'topRight' });
           this.dialog.closeAll();
           this.selectedCategories = [];
           this.chartName = '';
@@ -210,25 +205,26 @@ onTypeRemoved(type: string): void {
           this.ngOnInit();
         },
         error: error => {
-            this.toast.error({detail:"Error", summary:"Failed to create chart.",duration:5000, position:'topRight'});
-        }}
+          this.toast.error({ detail: "Error", summary: "Failed to create chart.", duration: 5000, position: 'topRight' });
+        }
+      }
       );
-      this.selectedCategories = [];
-      this.categoryControl.setValue(null);
+    this.selectedCategories = [];
+    this.categoryControl.setValue(null);
   }
 
   onDropDownChange() {
-      if(this.selectedDataItems.length < 1){
-        return;
+    if (this.selectedDataItems.length < 1) {
+      return;
+    }
+    this.chartService.getChartDataByType(this.selectedDataItems).subscribe({
+      next: data => {
+        this.chartData = data.data;
+        this.chartLabels = data.labels;
+      },
+      error: error => {
+        this.toast.error({ detail: "Error", summary: "Failed to get chartData.", duration: 5000, position: 'topRight' });
       }
-      this.chartService.getChartDataByType(this.selectedDataItems).subscribe({
-        next: data => {
-          this.chartData = data.data;
-          this.chartLabels = data.labels;
-        },
-        error: error => {
-          this.toast.error({ detail: "Error", summary: "Failed to get chartData.", duration: 5000,position: 'topRight'});
-        }
     });
   }
 
@@ -237,10 +233,10 @@ onTypeRemoved(type: string): void {
     this.cookieService.set('currentPage', target.innerText);
   }
 
-  recieveNumber(number:any){
+  recieveNumber(number: any) {
     this.chartService.getAllCharts().subscribe({
-      next : data => this.charts = data,
-      error: error => this.toast.error({ detail: "Error", summary: "Failed to get charts.", duration: 5000,position: 'topRight'})
+      next: data => this.charts = data,
+      error: error => this.toast.error({ detail: "Error", summary: "Failed to get charts.", duration: 5000, position: 'topRight' })
     })
   }
 }

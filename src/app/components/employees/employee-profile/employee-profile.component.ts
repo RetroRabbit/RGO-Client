@@ -4,12 +4,10 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { race } from 'src/app/models/constants/race.constants';
 import { gender } from 'src/app/models/constants/gender.constants';
-import { tshirtSize } from 'src/app/models/constants/tshirt.constants';
 import { countries } from 'src/app/models/constants/country.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { FieldCode } from 'src/app/models/field-code.interface';
-import { FieldCodeService } from 'src/app/services/field-code.service';
 import { NgToastService } from 'ng-angular-popup';
 import { ClientService } from 'src/app/services/client.service';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
@@ -21,7 +19,6 @@ import { EmployeeTypeService } from 'src/app/services/employee/employee-type.ser
 import { level } from 'src/app/models/constants/level.constants';
 
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
-import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { of } from 'rxjs';
@@ -43,7 +40,6 @@ export class EmployeeProfileComponent {
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
   customFields: FieldCode[] = [];
-  employeeRoles: any = [];
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
   employeeTypes: EmployeeType[] = [];
@@ -65,7 +61,6 @@ export class EmployeeProfileComponent {
   public genders = gender;
   public races = race;
   public levels = level;
-  public sizes = tshirtSize;
   public countries = countries;
   public disabilities = disabilities;
   public provinces = provinces;
@@ -164,7 +159,7 @@ export class EmployeeProfileComponent {
     accountType: [{ value: -1, disabled: true }, Validators.required],
     bankName:[{ value: '', disabled: true }, Validators.required],
     accountNo:  [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-    branch:[{ value: '', disabled: true }, Validators.required],
+    branch:[{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
     file:[{ value: '', disabled: true }, Validators.required],
   });
 
@@ -185,7 +180,6 @@ export class EmployeeProfileComponent {
   constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
     private clientService: ClientService,
-    private employeeRoleService: EmployeeRoleService,
     private toast: NgToastService,
     private fb: FormBuilder,
     private employeeService: EmployeeService,
@@ -201,7 +195,6 @@ export class EmployeeProfileComponent {
   }
 
   getEmployeeFields() {
-
     const employeeObservale = this.selectedEmployee ? of(this.selectedEmployee) : this.employeeProfileService.GetEmployeeProfile();
     employeeObservale.subscribe({
       next: data => {
@@ -210,24 +203,13 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
-        // this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
-        //   next: data => {
-        //     this.employeeRoles = data;
-        //     console.log("HERE")
-        //     console.log(data)
-        //   }
-        // });
         
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
             this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
             this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-            this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
-              next: data => {
-                this.employeeRoles = data;
-              }
-            });
+
             this.clientService.getAllClients().subscribe({
               next: data => {
                 this.clients = data;
@@ -322,7 +304,7 @@ export class EmployeeProfileComponent {
     this.foundClient = this.clients.find((data: any) => {
       return data.id == this.employeeProfile!.clientAllocated
     });
-    this.foundChampion = this.employeeRoles.find((data: any) => {
+    this.foundChampion = this.employees.find((data: any) => {
       return data.employee.id == this.employeeProfile!.peopleChampion
     });
 
@@ -639,11 +621,11 @@ export class EmployeeProfileComponent {
 
   filterChampions(event: any) {
     if (event) {
-      this.filteredPeopleChamps = this.employeeRoles.filter((champs: any) =>
+      this.filteredPeopleChamps = this.employees.filter((champs: any) =>
         champs.employee.name.toLowerCase().includes(event.target.value.toLowerCase())
       );
     } else {
-      this.filteredPeopleChamps = this.employeeRoles.employee.name;
+
     }
   }
 

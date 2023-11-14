@@ -29,4 +29,9 @@ export class SystemSettingsComponent {
     this.RoleManagementEvent.emit();
     this.cookieService.set('currentPage', 'Custom Field management');
   }
+
+  CaptureEvent(event: any) {
+    const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('currentPage', target.innerText);
+  }
 }
