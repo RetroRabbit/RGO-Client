@@ -85,7 +85,6 @@ import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/ch
     CreateChartsComponent,
     ReportComponent,
     RoleManagerComponent,
-    EmployeeRoleManagerComponent,
     NewEmployeeComponent,
     ManageFieldCodeComponent,
     ViewEmployeeComponent,
