@@ -96,19 +96,6 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="isAdmin()" class="col-2" id="info-menu">
-              <div id="nav-item-container">
-              <button mat-button [matMenuTriggerFor]="menu" id="nav-item">
-                More
-              </button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item  (click)="CaptureEvent($event)">Employee Banking</button>
-                <button mat-menu-item  (click)="CaptureEvent($event)">Manage Employee Events</button>
-                <button mat-menu-item  (click)="CaptureEvent($event)">Manage Employee Roles</button>
-                <button mat-menu-item  (click)="CaptureEvent($event)">Evaluations</button>
-              </mat-menu>
-            </div>
-            </div>
           </div>
         </div>
       </div>
@@ -199,7 +186,7 @@
       <app-new-field-code></app-new-field-code>
     </div>
 
-    <div *ngIf="cookieService.get('currentPage') == '+ Add New Hire'">
+    <div *ngIf="cookieService.get('currentPage') == '+ Add Employee'">
       <div *ngIf="!shouldDisplayNewEmployee">
         <app-new-employee [goto]="'dashboard'"></app-new-employee>
       </div>
