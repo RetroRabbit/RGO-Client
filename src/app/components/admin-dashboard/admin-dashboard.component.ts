@@ -62,11 +62,7 @@ export class AdminDashboardComponent {
     private employeeTypeService: EmployeeTypeService,
   ) {
     this.categoryCtrl.valueChanges.subscribe(val => {
-      if (val) {
-        this.filteredCategories = this.filterCategories(val);
-      } else {
-        this.filteredCategories = this.categories;
-      }
+      this.filteredCategories = val ? this.filterCategories(val) : this.categories;
     });
   }
 
