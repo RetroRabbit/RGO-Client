@@ -104,7 +104,6 @@ export class EmployeeDetailsComponent implements OnInit {
 
   private initializeForm() {
     this.employeeForm = this.fb.group({
-      title: [this.selectedEmployee?.title, Validators.required],
       name: [this.selectedEmployee?.name, Validators.required],
       initials: [this.selectedEmployee?.initials, Validators.required],
       surname: [this.selectedEmployee?.surname, Validators.required],
@@ -196,7 +195,6 @@ export class EmployeeDetailsComponent implements OnInit {
           id: this.selectedEmployee.employeeType.id,
           name: employeeForm.employeeType,
         },
-        title: employeeForm.title,
         name: employeeForm.name,
         initials: employeeForm.initials,
         surname: employeeForm.surname,

@@ -169,6 +169,9 @@
       <app-employee-evaluations (selectedEvaluation)="handleSelectedEval($event)"></app-employee-evaluations>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Profile'">
+      <app-employee-profile></app-employee-profile>
+    </div>
+    <div *ngIf="cookieService.get('currentPage') == 'EmployeeProfile'">
       <app-employee-profile [selectedEmployee]="selectedEmployee"></app-employee-profile>
     </div>
     <div *ngIf="selectedItem == 'System Settings'">

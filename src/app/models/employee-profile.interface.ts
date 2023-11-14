@@ -16,7 +16,6 @@ export interface EmployeeProfile {
     id?: number,
     name?: string,
   },
-  title?: string,
   name?: string,
   initials?: string,
   surname?: string,

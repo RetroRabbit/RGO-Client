@@ -23,7 +23,6 @@ export const initialState: EmployeeProfileState = {
         id: 0,
         name: '',
       },
-      title: '',
       name: '',
       initials: '',
       surname: '',
