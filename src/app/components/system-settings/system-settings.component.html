@@ -10,17 +10,17 @@
        </div>
       <mat-nav-list>
           <mat-list-item>
-              <button mat-button (click)="onCustomFieldsManagementClick()"><mat-icon>mode_edit_24px</mat-icon> <span>Custom Field management</span></button>
+              <button mat-button (click)="displayCustomFieldsManagement()"><mat-icon>mode_edit_24px</mat-icon> <span>Custom Field management</span></button>
           </mat-list-item>
           <mat-list-item>
-              <button mat-button (click)="onRoleManagementClick()"> <mat-icon>person_outline_24px</mat-icon> <span>Role Management</span> </button>
+              <button mat-button (click)="displayRoleManagement()"> <mat-icon>person_outline_24px</mat-icon> <span>Role Management</span> </button>
           </mat-list-item>
           <mat-list-item>
           <button mat-button [matMenuTriggerFor]="menu" id="nav-item">
             More
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item  (click)="CaptureEvent($event)">Employee Banking</button>
+            <button mat-menu-item  (click)="displayEmployeeBanking()">Employee Banking</button>
           </mat-menu>
         </mat-list-item>
       </mat-nav-list>
