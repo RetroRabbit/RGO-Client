@@ -624,9 +624,7 @@ export class EmployeeProfileComponent {
       this.filteredPeopleChamps = this.employees.filter((champs: any) =>
         champs.employee.name.toLowerCase().includes(event.target.value.toLowerCase())
       );
-    } else {
-
-    }
+    } 
   }
 
   getId(data: any, name: string) {

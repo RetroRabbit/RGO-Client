@@ -20,18 +20,17 @@ export class SystemSettingsComponent {
   ngOnInit() {
   }
 
-  onRoleManagementClick(): void {
+  displayRoleManagement(): void {
     this.RoleManagementEvent.emit();
     this.cookieService.set('currentPage', 'Role Management');
   }
 
-  onCustomFieldsManagementClick(): void {
+  displayCustomFieldsManagement(): void {
     this.RoleManagementEvent.emit();
     this.cookieService.set('currentPage', 'Custom Field management');
   }
 
-  CaptureEvent(event: any) {
-    const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('currentPage', target.innerText);
+  displayEmployeeBanking() {
+    this.cookieService.set('currentPage', 'Employee Banking');
   }
 }
