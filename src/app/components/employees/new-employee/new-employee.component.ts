@@ -6,7 +6,6 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { titles } from 'src/app/models/constants/titles.constants';
 import { level } from 'src/app/models/constants/level.constants';
 import { race } from 'src/app/models/constants/race.constants';
 import { gender } from 'src/app/models/constants/gender.constants';
@@ -58,7 +57,6 @@ export class NewEmployeeComponent implements OnInit {
   toggleAdditional: boolean = false;
 
   levels: number[] = level.map((l) => l.value);
-  titles: string[] = titles;
   races: string[] = race.map((r) => r.value);
   genders: string[] = gender.map((g) => g.value);
   countries: string[] = countries
@@ -107,7 +105,6 @@ export class NewEmployeeComponent implements OnInit {
     nationality: new FormControl<string>(''),
     level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
     employeeType: new FormControl<{ id: number; name: string } | null>(null, Validators.required),
-    title: new FormControl<string>('Mr',),
     name: new FormControl<string>('', Validators.required),
     initials: new FormControl<string>('', Validators.required),
     surname: new FormControl<string>('', Validators.required),
