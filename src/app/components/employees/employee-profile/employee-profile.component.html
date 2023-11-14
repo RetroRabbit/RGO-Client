@@ -683,7 +683,7 @@
                                 <div class="col-10">
                                     <div class="row">
                                         <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-form-field appearance="outline" id="banking-field">
                                                 <mat-label>Bank Account Owner</mat-label>
                                                 <input matInput placeholder="Enter name of owner"
                                                     formControlName="accountHolderName">
@@ -691,7 +691,7 @@
                                         </div>
                                         <div class="col-6"></div>
                                         <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-form-field appearance="outline" id="banking-field">
                                                 <mat-label>Account Type</mat-label>
                                                 <mat-select placeholder="Select Type" formControlName="accountType">
                                                     <mat-option *ngFor="let accountType of accountTypes"
@@ -702,7 +702,7 @@
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-form-field appearance="outline" id="banking-field">
                                                 <mat-label>Bank Name</mat-label>
                                                 <mat-select placeholder="Select bank" formControlName="bankName">
                                                     <mat-option *ngFor="let bank of banks" [value]="bank.value">
@@ -712,14 +712,14 @@
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-form-field appearance="outline" id="banking-field">
                                                 <mat-label>Account Number</mat-label>
                                                 <input type="number" min="0" matInput placeholder="Enter account number"
                                                     formControlName="accountNo">
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-form-field appearance="outline" id="banking-field">
                                                 <mat-label>Branch Code</mat-label>
                                                 <input type="number" min="0" matInput placeholder="Enter branch code"
                                                     formControlName="branch">
