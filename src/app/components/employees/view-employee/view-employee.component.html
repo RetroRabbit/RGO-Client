@@ -61,9 +61,7 @@
             <mat-cell *matCellDef="let employee" class="row justify-content-start">
               <div (click)="$event.stopPropagation()" class="row col-9">
                 <button mat-button [matMenuTriggerFor]="roleMenu" type="button" class="role-btn col-12">
-                  <span class="role-text">{{
-                    employee.Roles.length > 0 ? employee.Roles[0] : "N/A"
-                    }}</span>
+                  <span class="role-text">{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</span>
                   <mat-icon>arrow_drop_down</mat-icon>
                 </button>
                 <mat-menu #roleMenu>
