@@ -2,41 +2,23 @@
   <section class="container-fluid mt-4 mb-4 mx-0">
     <div class="d-flex justify-content-between gap-2">
       <div class="col-6 pl-0 d-flex align-items-center">
-        <div
-          id="search-container"
-          class="d-flex align-items-center rounded-pill w-100"
-          [ngClass]="{ 'bg-white': searchQuery !== '' }"
-        >
-            <!-- (click)="filter.value = ''; applyFilter('')"
+        <div id="search-container" class="d-flex align-items-center rounded-pill w-100"
+          [ngClass]="{ 'bg-white': searchQuery !== '' }">
+          <!-- (click)="filter.value = ''; applyFilter('')"
             *ngIf="filter.value !== ''" -->
-          <button
-            mat-button
-            (click)="searchQuery = ''"
-            *ngIf="searchQuery !== ''"
-            id="back-button"
-          >
+          <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
             <mat-icon>arrow_back</mat-icon>
           </button>
-          <input
-            mat-Input
-            [(ngModel)]="searchQuery"
-            [ngClass]="{ 'no-text': searchQuery === '' }"
-            class="ms-4 bg-transparent"
-            id="search-input"
-            placeholder="Search for employee by name"
-          />
+          <input mat-Input [(ngModel)]="searchQuery" [ngClass]="{ 'no-text': searchQuery === '' }"
+            class="ms-4 bg-transparent" id="search-input" placeholder="Search for employee by name" />
           <button mat-button id="search-button">
             <mat-icon>search</mat-icon>
           </button>
         </div>
       </div>
       <div class="col-6 pr-0 d-flex justify-content-end align-items-center gap-3">
-        <button
-          (click)="onAddEmployeeClick()"
-          type="button"
-          id="add-employee-button"
-          class="col-lg-4 col-md-6 btn btn-primary rounded-pill d-flex justify-content-center align-items-center"
-        >
+        <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
+          class="col-lg-4 col-md-6 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
           <mat-icon>add</mat-icon>
           <span>Add Employee</span>
         </button>
@@ -50,63 +32,43 @@
       <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
         <mat-spinner></mat-spinner>
       </div>
-      <div
-        [hidden]="isLoading || dataSource.filteredData.length <= 0"
-        class="table-responsive p-0 m-0"
-      >
+      <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
         <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="Name">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow"
-              >Name</mat-header-cell
-            >
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Name</mat-header-cell>
             <mat-cell *matCellDef="let employee">{{ employee.Name }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Position">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow"
-              >Position</mat-header-cell
-            >
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Position</mat-header-cell>
             <mat-cell *matCellDef="let employee">{{
               employee.Position
-            }}</mat-cell>
+              }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Level">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow"
-              >Level</mat-header-cell
-            >
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Level</mat-header-cell>
             <mat-cell *matCellDef="let employee">{{
               employee.Level == 0 ? "N/A" : employee.Level
-            }}</mat-cell>
+              }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Client">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow"
-              >Client</mat-header-cell
-            >
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Client</mat-header-cell>
             <mat-cell *matCellDef="let employee">{{
               employee.Client
-            }}</mat-cell>
+              }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Roles">
             <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
             <mat-cell *matCellDef="let employee" class="row justify-content-start">
               <div (click)="$event.stopPropagation()" class="row col-9">
-                <button
-                  mat-button
-                  [matMenuTriggerFor]="roleMenu"
-                  type="button"
-                  class="role-btn col-12"
-                >
+                <button mat-button [matMenuTriggerFor]="roleMenu" type="button" class="role-btn col-12">
                   <span class="role-text">{{
                     employee.Roles.length > 0 ? employee.Roles[0] : "N/A"
-                  }}</span>
+                    }}</span>
                   <mat-icon>arrow_drop_down</mat-icon>
                 </button>
                 <mat-menu #roleMenu>
-                  <button
-                    mat-menu-item
-                    *ngFor="let role of roles | async"
-                    [value]="role"
-                    (click)="changeRole(employee.Email, role)"
-                  >
+                  <button mat-menu-item *ngFor="let role of roles | async" [value]="role"
+                    (click)="changeRole(employee.Email, role)">
                     {{ role }}
                   </button>
                 </mat-menu>
@@ -115,14 +77,12 @@
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row
-            *matRowDef="let row; columns: displayedColumns"
-            (click)="employeeClickEvent(row)"
-          ></mat-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns" (click)="employeeClickEvent(row)"></mat-row>
         </mat-table>
         <mat-paginator hidden></mat-paginator>
       </div>
-      <div *ngIf="!isLoading && dataSource.filteredData.length <= 0" class="d-flex flex-row justify-content-center align-items-center">
+      <div *ngIf="!isLoading && dataSource.filteredData.length <= 0"
+        class="d-flex flex-row justify-content-center align-items-center">
         <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
         <span id="noResults" class="col-6 d-flex flex-column justify-content-center align-items-center">
           <h1>Oops!</h1>
@@ -130,10 +90,8 @@
         </span>
       </div>
     </div>
-    <div
-      class="d-flex flex-row justify-content-center align-items-center mt-3"
-      *ngIf="!isLoading && dataSource.filteredData.length > 0"
-    >
+    <div class="d-flex flex-row justify-content-center align-items-center mt-3"
+      *ngIf="!isLoading && dataSource.filteredData.length > 0">
       <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">
         <span class="fw-medium">
           Showing {{ start }}-{{ end }}
@@ -141,48 +99,23 @@
         <span>of {{ paginator.length }} results</span>
       </div>
       <div class="col-lg-4 col-md-4 row justify-content-center">
-        <button
-          mat-icon-button
-          (click)="paginator.previousPage()"
-          [disabled]="!paginator.hasPreviousPage()"
-        >
+        <button mat-icon-button (click)="paginator.previousPage()" [disabled]="!paginator.hasPreviousPage()">
           <mat-icon>arrow_left</mat-icon>
         </button>
         <button mat-icon-button *ngFor="let page of visiblePages">
-          <span
-            class="paginator"
-            [ngClass]="{ active: page === pageIndex + 1 }"
-          >
+          <span class="paginator" [ngClass]="{ active: page === pageIndex + 1 }">
             {{ page }}
           </span>
         </button>
-        <button
-          mat-icon-button
-          (click)="paginator.nextPage()"
-          [disabled]="!paginator.hasNextPage()"
-        >
+        <button mat-icon-button (click)="paginator.nextPage()" [disabled]="!paginator.hasNextPage()">
           <mat-icon>arrow_right</mat-icon>
         </button>
       </div>
-      <div
-        class="col-lg-4 col-md-4 row justify-content-end align-items-center"
-        id="paginator-text"
-      >
+      <div class="col-lg-4 col-md-4 row justify-content-end align-items-center" id="paginator-text">
         <span class="col-lg-4 col-md-7 fw-medium"> Items per page </span>
-        <mat-form-field
-          appearance="outline"
-          class="col-lg-3 col-md-5"
-          id="paginator-dropdown"
-        >
-          <input
-            id="pageSize"
-            matInput
-            type="number"
-            min="1"
-            [(ngModel)]="pageSize"
-            (ngModelChange)="changePageSize(pageSize)"
-            (focus)="pageNumber.open()"
-          />
+        <mat-form-field appearance="outline" class="col-lg-3 col-md-5" id="paginator-dropdown">
+          <input id="pageSize" matInput type="number" min="1" [(ngModel)]="pageSize"
+            (ngModelChange)="changePageSize(pageSize)" (focus)="pageNumber.open()" />
           <mat-select #pageNumber [(ngModel)]="pageSize" hidden>
             <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
               {{ pageSize }}
