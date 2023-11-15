@@ -42,7 +42,6 @@ export class HomeComponent {
     this.screenWidth = window.innerWidth;
   }
 
-
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
