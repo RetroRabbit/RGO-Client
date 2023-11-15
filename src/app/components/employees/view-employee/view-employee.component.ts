@@ -266,7 +266,7 @@ export class ViewEmployeeComponent {
 
   changeRole(email: string, role: string): void {
     this.employeeRoleService
-      .addRole(email, role)
+      .updateRole(email, role)
       .pipe(
         tap(() => {
           this.toast.success({
