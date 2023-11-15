@@ -6,7 +6,7 @@ import { colours } from '../../models/constants/colours.constants';
 import { NgToastService } from 'ng-angular-popup';
 import { MatDialog } from '@angular/material/dialog';
 import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';
-import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import { ChartConfiguration, ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
@@ -221,11 +221,9 @@ export class ChartComponent implements OnInit {
     
     const id = (employeeId || '').toString();
     
-    console.log(this.employeeNames[id])
     if (this.employeeNames[id]) {
       return this.employeeNames[id];
     }
-    console.log("Returning ID")
     return id;
     
   }
