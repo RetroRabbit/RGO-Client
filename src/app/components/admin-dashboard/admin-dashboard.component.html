@@ -1,4 +1,3 @@
-<!-- <div id="group" class="row px-3 my-4 justify-content-between"> -->
 <div id="group">
   <div class="searchbar align-items-center justify-content-center p-0"
      [ngClass]="{'no-results': noResults}">
@@ -21,8 +20,6 @@
     <button (click)="CaptureEvent($event)" *ngIf="isAdmin()">+ Add New Hire</button>
   </div>
 </div>
-
-
 <div id="search-results-container">
   <div *ngIf="searchResults.length > 0">
       <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
@@ -83,8 +80,6 @@
     </div>
   </div>
 </div>
-
-
 <div class="px-4 container-fluid pt-4" id="graph-container">
   <div id="graphs">
     <div *ngIf="charts.length < 1;else ShowCharts" class="py-4 row justify-content-center align-items-center"
@@ -433,7 +428,6 @@
             <path d="M254.691 87.0008L253.479 86.377C253.479 86.377 253.944 87.5106 254.691 87.0008Z" fill="#263238" />
           </svg>
         </div>
-
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12">
         <div>
@@ -450,7 +444,6 @@
       </div>
     </div>
   </div>
-
   <ng-template #ShowCharts>
     <div class="row p-4" id="no-graphs">
       <div class="row" id="graph-header">
@@ -471,7 +464,6 @@
       </div>
     </div>
   </ng-template>
-
 </div>
 <ng-template #dialogTemplate>
   <div class="container p-4">
