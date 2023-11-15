@@ -13,8 +13,6 @@
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-  z-index: 10;
-  padding-top: 40px;
 }
 
 #new-hire>button {
@@ -29,8 +27,6 @@
   /* margin-left: 1000px; */
   right: 0px;
   position: absolute;
-  margin-top: 20px;
-  z-index: 10;
 }
 
 #graphs-btn {
