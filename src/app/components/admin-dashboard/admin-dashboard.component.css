@@ -3,8 +3,9 @@
 }
 
 #new-hire {
-  text-align: right;
+  text-align: center;
   display: flex;
+  margin: 0px auto;
   width: 223px;
   height: 40px;
   flex-direction: column;
@@ -12,6 +13,8 @@
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  z-index: 10;
+  padding-top: 40px;
 }
 
 #new-hire>button {
@@ -19,9 +22,15 @@
   border: none;
   border-radius: 4rem;
   color: white;
+  margin: 0px auto;
+  width: 12rem;
   margin-right: 4rem;
   padding: 0.5rem;
-  width: 12rem;
+  /* margin-left: 1000px; */
+  right: 0px;
+  position: absolute;
+  margin-top: 20px;
+  z-index: 10;
 }
 
 #graphs-btn {
@@ -53,20 +62,31 @@
 }
 
 .searchbar {
-  display: flex;
+  /* display: flex;
   padding: 4px;
-  align-items: center;
+  align-items: left;
   gap: 4px;
   flex: 1 0 0;
   align-self: stretch;
-  width: 481px;
   height: 40px;
+  width: 481px;
   min-width: 360px;
+  margin-left: 12px;
   flex-shrink: 0;
   border-radius: 28px;
   border: 1px solid var(--m-3-sys-light-primary, #0029C6);
   background: var(--m-3-sys-light-primary-container, #D7DFFF);
-  color: var(--m-3-sys-light-primary, #0029C6);
+  color: var(--m-3-sys-light-primary, #0029C6); */
+  display: flex;
+width: 481px;
+height: 40px;
+min-width: 360px;
+align-items: center;
+gap: 4px;
+flex-shrink: 0;
+border-radius: 28px;
+border: 1px solid var(--m-3-sys-light-primary, #0029C6);
+background: var(--m-3-sys-light-primary-container, #D7DFFF);
 }
 
 #employee-search {
@@ -192,7 +212,7 @@ div#results-container {
   flex-wrap: wrap; 
   gap: 16px;
   align-self: stretch;
-  width: 480px;
+  width: 481px;
   min-width: 360px;
   flex-shrink: 0;
   background: var(--m-3-white, #FFF);
@@ -208,14 +228,14 @@ div#results-container {
 
 #search-results > div {
   flex: 1;
-  min-width: 480px;
+  min-width: 481px;
 }
 
 #search-results-container {
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 480px;
+  width: 481px;
   z-index: 1000;
   position: absolute;
   box-shadow: 0px 5px 50px 0px rgba(0, 41, 198, 0.08);
@@ -228,8 +248,8 @@ div#results-container {
   display: flex;
   height: 72px;
   min-height: 56px;
-  width: 480px;
-  min-width: 480px;;
+  width: 481px;
+  min-width: 481px;;
   flex-direction: column;
   justify-content: center;
   align-items: center;
