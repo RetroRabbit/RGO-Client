@@ -69,15 +69,15 @@ export class RoleManagerComponent {
   }
 
    updateAllCheckboxes() {
-    for (let r of this.roles) {
+    for (let role of this.roles) {
       const hasLinks = this.chartPermissions.every((n) =>
         this.roleAccessLinks.some((link) =>
-          link.role.description === r.description &&
+          link.role.description === role.description &&
           link.roleAccess.permission === n.permission &&
           link.roleAccess.grouping === n.grouping
         )
       );
-      this.allCheckboxesState[r.description] = hasLinks;
+      this.allCheckboxesState[role.description] = hasLinks;
     }
   }
 

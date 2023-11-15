@@ -83,20 +83,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-2" *ngIf="isAdmin() || isJourney()">
-              <div id="nav-item-container">
-                <div id="nav-item">
-                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Reports' ? 'active' : 'idle'">
-                    Reports
-                  </div>
-                  <div *ngIf="selectedItem == 'Reports'" id="selected-line-box">
-                    <div id="selected-line">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-2" *ngIf="isAdmin() || isJourney()">
+            <div class="col-2" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'System Settings' ? 'active' : 'idle'">
@@ -108,19 +95,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div *ngIf="isAdmin()" class="col-2" id="info-menu">
-              <div id="nav-item-container">
-              <button mat-button [matMenuTriggerFor]="menu" id="nav-item">
-                More
-              </button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item  (click)="CaptureEvent($event)">Employee Banking</button>
-                <button mat-menu-item  (click)="CaptureEvent($event)">Manage Employee Events</button>
-                <button mat-menu-item  (click)="CaptureEvent($event)">Manage Employee Roles</button>
-                <button mat-menu-item  (click)="CaptureEvent($event)">Evaluations</button>
-              </mat-menu>
-            </div>
             </div>
           </div>
         </div>
@@ -178,25 +152,18 @@
     <div *ngIf="cookieService.get('currentPage') == 'Employees'">
       <app-view-employee (addEmployeeEvent)="onAddEmployee()" (managePermissionsEvent)="onManageEmployee()" (selectedEmployee)="handleSelectedEmp($event)" [searchQuery]="searchQuery"></app-view-employee>
     </div>
-    <div *ngIf="cookieService.get('currentPage') == 'Evaluations'">
-      <app-employee-evaluations (selectedEvaluation)="handleSelectedEval($event)"></app-employee-evaluations>
-    </div>
     <div *ngIf="cookieService.get('currentPage') == 'Profile'">
+      <app-employee-profile></app-employee-profile>
+    </div>
+    <div *ngIf="cookieService.get('currentPage') == 'EmployeeProfile'">
       <app-employee-profile [selectedEmployee]="selectedEmployee"></app-employee-profile>
     </div>
     <div *ngIf="selectedItem == 'System Settings'">
       <app-system-settings></app-system-settings>
     </div>
-    <div *ngIf="cookieService.get('currentPage') === 'Manage Employee Roles'">
-      <app-employee-role-manager></app-employee-role-manager>
-    </div>
     <div *ngIf="cookieService.get('currentPage') === 'Edit Dashboard'">
       <app-create-charts></app-create-charts>
     </div>
-    <div *ngIf="cookieService.get('currentPage') === 'Manage Employee Events'">
-      <app-manage-employee-events (event)="populateAddEmployeeForm($event)"></app-manage-employee-events>
-    </div>
-
     <div *ngIf="cookieService.get('currentPage') === 'New Employee'">
       <app-new-employee></app-new-employee>
     </div>
@@ -210,12 +177,6 @@
     <div *ngIf="cookieService.get('currentPage') == 'Evaluation Items'">
       <app-template-items></app-template-items>
     </div>
-    <div *ngIf="cookieService.get('currentPage') == 'Employee Banking'">
-      <app-pending-bank-statements></app-pending-bank-statements>
-    </div>
-    <div *ngIf="cookieService.get('currentPage') == 'New Event'">
-      <app-add-employee-event [selectedEvent]="selectedEvent"></app-add-employee-event>
-    </div>
 
     <div *ngIf="cookieService.get('currentPage') == '+ Add Graph'">
       <app-create-charts></app-create-charts>
@@ -225,7 +186,7 @@
       <app-new-field-code></app-new-field-code>
     </div>
 
-    <div *ngIf="cookieService.get('currentPage') == '+ Add New Hire'">
+    <div *ngIf="cookieService.get('currentPage') == '+ Add Employee'">
       <div *ngIf="!shouldDisplayNewEmployee">
         <app-new-employee [goto]="'dashboard'"></app-new-employee>
       </div>
