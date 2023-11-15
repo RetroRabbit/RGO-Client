@@ -63,7 +63,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { MatStepperModule } from '@angular/material/stepper';
 import { PendingBankDetailsComponent } from './components/employees/pending-bank-details/pending-bank-details.component';
-import { EmployeeRoleManagerComponent } from './components/employees/employee-role-manager/employee-role-manager.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
 import { ManageEmployeeEventsComponent } from './components/manage-employee-events/manage-employee-events.component';
 import { AddEmployeeEventComponent } from './components/manage-employee-events/add-employee-event/add-employee-event.component';
@@ -86,7 +85,6 @@ import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/ch
     CreateChartsComponent,
     ReportComponent,
     RoleManagerComponent,
-    EmployeeRoleManagerComponent,
     NewEmployeeComponent,
     ManageFieldCodeComponent,
     ViewEmployeeComponent,
