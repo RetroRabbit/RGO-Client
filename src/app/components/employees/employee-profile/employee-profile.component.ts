@@ -4,12 +4,10 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { race } from 'src/app/models/constants/race.constants';
 import { gender } from 'src/app/models/constants/gender.constants';
-import { tshirtSize } from 'src/app/models/constants/tshirt.constants';
 import { countries } from 'src/app/models/constants/country.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { FieldCode } from 'src/app/models/field-code.interface';
-import { FieldCodeService } from 'src/app/services/field-code.service';
 import { NgToastService } from 'ng-angular-popup';
 import { ClientService } from 'src/app/services/client.service';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
@@ -21,7 +19,6 @@ import { EmployeeTypeService } from 'src/app/services/employee/employee-type.ser
 import { level } from 'src/app/models/constants/level.constants';
 
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
-import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { of } from 'rxjs';
@@ -43,7 +40,6 @@ export class EmployeeProfileComponent {
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
   customFields: FieldCode[] = [];
-  employeeRoles: any = [];
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
   employeeTypes: EmployeeType[] = [];
@@ -65,7 +61,6 @@ export class EmployeeProfileComponent {
   public genders = gender;
   public races = race;
   public levels = level;
-  public sizes = tshirtSize;
   public countries = countries;
   public disabilities = disabilities;
   public provinces = provinces;
@@ -110,7 +105,6 @@ export class EmployeeProfileComponent {
   hasFile: boolean = false;
 
   employeeDetailsForm: FormGroup = this.fb.group({
-    title: { value: '', disabled: true },
     name: { value: '', disabled: true },
     surname: { value: '', disabled: true },
     initials: { value: '', disabled: true },
@@ -125,9 +119,9 @@ export class EmployeeProfileComponent {
   });
 
   employeeContactForm: FormGroup = this.fb.group({
-    email: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(this.emailPattern)]],
-    personalEmail: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
-    cellphoneNo: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+    email: { value: '', disabled: true },
+    personalEmail: { value: '', disabled: true },
+    cellphoneNo: { value: '', disabled: true },
     houseNo: { value: '', disabled: true },
     emergencyContactName: { value: '', disabled: true },
     emergencyContactNo: { value: '', disabled: true }
@@ -165,7 +159,7 @@ export class EmployeeProfileComponent {
     accountType: [{ value: -1, disabled: true }, Validators.required],
     bankName:[{ value: '', disabled: true }, Validators.required],
     accountNo:  [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-    branch:[{ value: '', disabled: true }, Validators.required],
+    branch:[{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
     file:[{ value: '', disabled: true }, Validators.required],
   });
 
@@ -179,29 +173,17 @@ export class EmployeeProfileComponent {
   peopleChampionId = null;
   foundChampion: any;
   client: string = '';
-
-  tShirtSizeField!: FieldCode;
-  tShirtSizeFieldValue: EmployeeData | undefined;
-  dietaryField!: FieldCode;
-  dietaryFieldValue: EmployeeData | undefined;
-  allergiesField!: FieldCode;
-  allergiesFieldValue: EmployeeData | undefined;
-
   employeeDataDto!: EmployeeData;
-
   filteredCountries: any[] = this.countries.slice();
 
 
   constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
-    private customFieldsService: FieldCodeService,
     private clientService: ClientService,
-    private employeeRoleService: EmployeeRoleService,
     private toast: NgToastService,
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
-    private employeeDataService: EmployeeDataService,
     private employeeBankingService: EmployeeBankingService) { }
 
   ngOnInit() {
@@ -213,7 +195,6 @@ export class EmployeeProfileComponent {
   }
 
   getEmployeeFields() {
-
     const employeeObservale = this.selectedEmployee ? of(this.selectedEmployee) : this.employeeProfileService.GetEmployeeProfile();
     employeeObservale.subscribe({
       next: data => {
@@ -221,46 +202,14 @@ export class EmployeeProfileComponent {
         this.employeePhysicalAddress = data.physicalAddress!;
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
-        this.employeeBankingService.getBankingDetails(this.employeeProfile!.id).subscribe({
-          next: data => {
-            this.employeeBanking = data;
-            console.log(this.employeeBanking);
-            this.hasBankingData = true;
-            this.hasFile = this.employeeBanking?.file.length > 0;
-            this.bankingId = this.employeeBanking.id;
-            this.bankingStatus = this.employeeBanking.status;
-            this.bankingReason = this.employeeBanking.declineReason;
-            this.employeeBankingsForm = this.fb.group({
-              accountHolderName: [this.employeeBanking?.accountHolderName, Validators.required],
-              accountType: [this.employeeBanking?.accountType, Validators.required],
-              bankName: [this.employeeBanking?.bankName, Validators.required],
-              accountNo: [this.employeeBanking?.accountNo,  [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-              branch: [this.employeeBanking?.branch, Validators.required],
-              file: [this.employeeBanking?.file, Validators.required],
-            });
-            this.employeeBankingsForm.disable();
-            this.checkBankingInformationProgress();
-            this.totalBankingProgress();
-          }
-        });
         this.hasDisbility = this.employeeProfile!.disability;
-        this.customFieldsService.getAllFieldCodes().subscribe({
-          next: data => {
-            this.customFields = data;
-            this.tShirtSizeField = this.customFields.filter(field => field.code == 'tsize')[0];
-            this.dietaryField = this.customFields.filter(field => field.code == 'dietary')[0];
-            this.allergiesField = this.customFields.filter(field => field.code == 'allergies')[0];
-          },
-          error: (error) => {
-            this.toast.error({ detail: "Error", summary: "Failed to fetch addition informaion", duration: 5000, position: 'topRight' });
-          }
-        });
-
+        
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
             this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
             this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+
             this.clientService.getAllClients().subscribe({
               next: data => {
                 this.clients = data;
@@ -275,77 +224,13 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
-        this.employeeDataService.getEmployeeData(this.employeeProfile?.id).subscribe({
-          next: data => {
-            this.employeeData = data;
-            this.getData();
-          },
-          error: error => {
-            this.toast.error({ detail: "Error", summary: "Failed to Employee Data", duration: 5000, position: 'topRight' });
-          }
-        });
-        this.initializeForm();
+        this.initializeForm(); 
       }
     });
   }
 
-  getData() {
-    let fieldId = this.customFields.filter(field => field.code == 'tsize')[0];
-    this.tShirtSizeFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
-    if (this.tShirtSizeFieldValue == undefined) {
-      this.tShirtSizeFieldValue = {
-        id: (this.customFields[this.customFields.length - 1].id! + 1),
-        employeeId: this.employeeProfile!.id,
-        fieldCodeId: fieldId.id,
-        value: 'Unknown'
-      };
-      this.employeeDataService.saveEmployeeData(this.tShirtSizeFieldValue).subscribe(data => {
-        error: () => {
-          this.toast.error({ detail: "Error", summary: "Failed to fetch T-Size", duration: 5000, position: 'topRight' });
-        }
-      });
-    }
-    this.personalDetailsForm.addControl('tsize', this.fb.control(this.tShirtSizeFieldValue.value));
-
-    fieldId = this.customFields.filter(field => field.code == 'dietary')[0];
-    this.dietaryFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
-
-    if (this.dietaryFieldValue == undefined) {
-      this.dietaryFieldValue = {
-        id: (this.customFields[this.customFields.length - 1].id! + 2),
-        employeeId: this.employeeProfile!.id,
-        fieldCodeId: fieldId.id,
-        value: 'None'
-      };
-      this.employeeDataService.saveEmployeeData(this.dietaryFieldValue).subscribe(data => {
-        error: () => {
-          this.toast.error({ detail: "Error", summary: "Failed to fetch Dietary", duration: 5000, position: 'topRight' });
-        }
-      });
-    }
-    this.personalDetailsForm.addControl('dietary', this.fb.control(this.dietaryFieldValue.value));
-
-    fieldId = this.customFields.filter(field => field.code == 'allergies')[0];
-    this.allergiesFieldValue = this.employeeData.filter(data => data.fieldCodeId == fieldId.id)[0];
-    if (this.allergiesFieldValue == undefined) {
-      this.allergiesFieldValue = {
-        id: (this.customFields[this.customFields.length - 1].id! + 3),
-        employeeId: this.employeeProfile!.id,
-        fieldCodeId: fieldId.id,
-        value: 'None'
-      };
-      this.employeeDataService.saveEmployeeData(this.allergiesFieldValue).subscribe(data => {
-        error: () => {
-          this.toast.error({ detail: "Error", summary: "Failed to fetch allergies", duration: 5000, position: 'topRight' });
-        }
-      });
-    }
-    this.personalDetailsForm.addControl('allergies', this.fb.control(this.allergiesFieldValue.value));
-  }
-
   initializeForm() {
     this.employeeDetailsForm = this.fb.group({
-      title: this.employeeProfile!.title,
       name: [this.employeeProfile!.name, Validators.required],
       surname: [this.employeeProfile!.surname, Validators.required],
       initials: this.employeeProfile!.initials,
@@ -419,7 +304,7 @@ export class EmployeeProfileComponent {
     this.foundClient = this.clients.find((data: any) => {
       return data.id == this.employeeProfile!.clientAllocated
     });
-    this.foundChampion = this.employeeRoles.find((data: any) => {
+    this.foundChampion = this.employees.find((data: any) => {
       return data.employee.id == this.employeeProfile!.peopleChampion
     });
 
@@ -472,7 +357,6 @@ export class EmployeeProfileComponent {
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
-          this.saveCustomFields();
           this.checkPersonalFormProgress();
           this.totalProfileProgress();
           this.getEmployeeFields();
@@ -486,41 +370,6 @@ export class EmployeeProfileComponent {
     else {
       this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
     }
-  }
-
-  saveCustomFields() {
-    this.employeeDataService.updateEmployeeData(this.tShirtSizeFieldValue!).subscribe({
-      next: () => { },
-      error: (error) => {
-        this.toast.error({ detail: "Error", summary: "Failed to update T-Shirt", duration: 5000, position: 'topRight' });
-      }
-    });
-
-    this.employeeDataService.updateEmployeeData(this.dietaryFieldValue!).subscribe({
-      next: () => { },
-      error: (error) => {
-        this.toast.error({ detail: "Error", summary: "Failed to update Dietary", duration: 5000, position: 'topRight' });
-      }
-    });
-
-    this.employeeDataService.updateEmployeeData(this.allergiesFieldValue!).subscribe({
-      next: () => { },
-      error: (error) => {
-        this.toast.error({ detail: "Error", summary: "Failed to update Allergies", duration: 5000, position: 'topRight' });
-      }
-    });
-  }
-
-  captureTShirtSizeChange(event: any) {
-    this.tShirtSizeFieldValue!.value = event;
-  }
-
-  captureDietaryChange(event: any) {
-    this.dietaryFieldValue!.value = event;
-  }
-
-  captureAllergiesChange(event: any) {
-    this.allergiesFieldValue!.value = event.target.value;
   }
 
   cancelPersonalEdit() {
@@ -617,7 +466,6 @@ export class EmployeeProfileComponent {
         id: this.employeeProfile!.employeeType!.id,
         name: this.employeeProfile!.employeeType!.name,
       },
-      title: this.employeeProfile!.title,
       name: this.employeeProfile!.name,
       initials: this.employeeProfile!.initials,
       surname: this.employeeProfile!.surname,
@@ -675,8 +523,6 @@ export class EmployeeProfileComponent {
       this.employeeType = this.employeeTypes.find((data: any) => {
         return data.name == employeeDetailsForm.employeeType
       });
-
-      this.employeeProfileDto.title = employeeDetailsForm.title;
       this.employeeProfileDto.name = employeeDetailsForm.name;
       this.employeeProfileDto.surname = employeeDetailsForm.surname;
       this.employeeProfileDto.clientAllocated = this.employeeDetailsForm.controls["clientAllocated"].value == "" ? null : this.clientId;
@@ -775,12 +621,10 @@ export class EmployeeProfileComponent {
 
   filterChampions(event: any) {
     if (event) {
-      this.filteredPeopleChamps = this.employeeRoles.filter((champs: any) =>
+      this.filteredPeopleChamps = this.employees.filter((champs: any) =>
         champs.employee.name.toLowerCase().includes(event.target.value.toLowerCase())
       );
-    } else {
-      this.filteredPeopleChamps = this.employeeRoles.employee.name;
-    }
+    } 
   }
 
   getId(data: any, name: string) {

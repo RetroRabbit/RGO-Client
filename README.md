@@ -18,6 +18,7 @@ Open folder "RGO-Client" in Visual Studio Code
 ```powershell / cmd / internal terminal
 #cd RGO-Client
 npm install
+npm install ngx-file-drop
 ```
 
 ### Change to the Dev branch

@@ -118,12 +118,6 @@
                     style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Profile Details {{ profileFormProgress }}%</h5>
                 </div>
-
-                <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-3" id="progress-stats"
-                    style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
-                    <h5>Career Summary {{careerSummaryProgress}}%</h5>
-                </div>
                 <div class="col-1 border" id="horizontal"></div>
                 <div class="col-2 py-3" id="progress-stats"
                     style="background-color: {{ bankInformationProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
@@ -132,7 +126,7 @@
                 <div class="col-1 border" id="horizontal"></div>
                 <div class="col-2 py-3" id="progress-stats"
                     style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
-                    <h5>Document {{documentsProgress}}%</h5>
+                    <h5>Documents {{documentsProgress}}%</h5>
                 </div>
             </div>
         </div>
@@ -153,7 +147,7 @@
 
     <div id="profile-accordions">
         <div id="accordions-nav" class="row">
-            <div class="col-3">
+            <div class="col-4">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
                         <div (click)="CaptureEvent($event)"
@@ -167,21 +161,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
-                <div id="nav-item-container" class="col-auto">
-                    <div id="nav-item">
-                        <div (click)="CaptureEvent($event)"
-                            [ngClass]="selectedItem == 'Capture Summary' ? 'active' : 'idle'">
-                            Capture Summary
-                        </div>
-                        <div *ngIf="selectedItem == 'Capture Summary'" id="selected-line-box">
-                            <div id="selected-line">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
                         <div (click)="CaptureEvent($event)"
@@ -195,7 +175,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
                         <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Documents' ? 'active' : 'idle'">
@@ -226,16 +206,6 @@
                             <div class="row">
                                 <div class="col-10">
                                     <div class="row">
-                                        <div class="col-12 my-2">
-                                            <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Title</h4>
-                                            <mat-radio-group aria-label="Select your title" formControlName="title"
-                                                [value]="employeeProfile?.title">
-                                                <mat-radio-button value=Mr>Mr</mat-radio-button>
-                                                <mat-radio-button value=Ms>Ms</mat-radio-button>
-                                                <mat-radio-button value=Miss>Miss</mat-radio-button>
-                                                <mat-radio-button value=Mrs>Mrs</mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Full Names</mat-label>
@@ -395,39 +365,6 @@
                                                         {{race.value}}
                                                     </mat-option>
                                                 </mat-select>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>T-Shirt Size</mat-label>
-                                                <mat-select [disabled]="!editPersonal"
-                                                    [value]="tShirtSizeFieldValue?.value"
-                                                    (valueChange)="captureTShirtSizeChange($event)">
-                                                    <mat-option *ngFor="let size of tShirtSizeField?.options"
-                                                        [value]=size.option>
-                                                        {{size.option}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Dietary</mat-label>
-                                                <mat-select [disabled]="!editPersonal"
-                                                    [value]="dietaryFieldValue?.value"
-                                                    (valueChange)="captureDietaryChange($event)">
-                                                    <mat-option *ngFor="let option of dietaryField?.options"
-                                                        [value]=option.option>
-                                                        {{option.option}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <textarea [disabled]="!editPersonal" matInput
-                                                    placeholder="Allergies Notes" [value]="allergiesFieldValue?.value"
-                                                    (input)="captureAllergiesChange($event)"></textarea>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-12 mt-1"></div>
@@ -726,7 +663,7 @@
                                 <div class="col-10">
                                     <div class="row">
                                         <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-form-field appearance="outline" id="banking-field">
                                                 <mat-label>Bank Account Owner</mat-label>
                                                 <input matInput placeholder="Enter name of owner"
                                                     formControlName="accountHolderName">
@@ -734,7 +671,7 @@
                                         </div>
                                         <div class="col-6"></div>
                                         <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-form-field appearance="outline" id="banking-field">
                                                 <mat-label>Account Type</mat-label>
                                                 <mat-select placeholder="Select Type" formControlName="accountType">
                                                     <mat-option *ngFor="let accountType of accountTypes"
@@ -745,7 +682,7 @@
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-form-field appearance="outline" id="banking-field">
                                                 <mat-label>Bank Name</mat-label>
                                                 <mat-select placeholder="Select bank" formControlName="bankName">
                                                     <mat-option *ngFor="let bank of banks" [value]="bank.value">
@@ -755,14 +692,14 @@
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-form-field appearance="outline" id="banking-field">
                                                 <mat-label>Account Number</mat-label>
                                                 <input type="number" min="0" matInput placeholder="Enter account number"
                                                     formControlName="accountNo">
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-form-field appearance="outline" id="banking-field">
                                                 <mat-label>Branch Code</mat-label>
                                                 <input type="number" min="0" matInput placeholder="Enter branch code"
                                                     formControlName="branch">

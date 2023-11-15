@@ -1,538 +1,291 @@
-<div class="container-fluid px-0">
-  <form
-    [formGroup]="newEmployeeForm"
-    (ngSubmit)="onSubmit(false)"
-    id="newEmployeeForm"
-  >
-    <main class="d-flex flex-column align-items-center p-4">
-      <div class="w-75 py-3">
-        <button
-          mat-button
-          class="btn"
-          id="back-to-employees"
-          (click)="goToEmployees()"
-          *ngIf="goto === 'employees'"
-        >
-          <mat-icon>arrow_back</mat-icon>
-          <span>Back to Employees</span>
-        </button>
-      </div>
-      <div
-        class="p-5 rounded-4 w-75 bg-white row flex-column justify-content-center align-items-center pb-3"
-      >
-        <div class="col-md-12 col-lg-8 pb-3">
-          <h1 class="text-center mt-3 roboto-font" id="createEmployee">
-            Create employee profile
-          </h1>
-          <span class="text-center roboto-font" id="heading-text">
-            <p>Please enter the employee’s information in</p>
-            <p>order to create a profile for them.</p>
-          </span>
-        </div>
-        <div
-          class="row flex-column justify-content-center align-items-center col-md-12 col-lg-9"
-        >
-          <div
-            class="row flex-column justify-content-center align-items-center roboto-font col-md-12 pb-3"
-          >
-            <h1 class="col-lg-7 col-md-12" id="heading">Employee Details</h1>
-            <p class="col-lg-7 col-md-12">
-              Note: *The asterisk indicates required fields
-            </p>
-          </div>
-          <div
-            class="row flex-column justify-content-center align-items-center roboto-font title-line-height pb-3"
-          >
-            <span class="col-lg-7 col-md-12 fs-5 pb-3">Title</span>
-            <mat-radio-group class="col-lg-7 col-md-12" formControlName="title">
-              <mat-radio-button *ngFor="let title of titles" [value]="title">{{
-                title
-              }}</mat-radio-button>
-            </mat-radio-group>
-          </div>
-          <div
-            class="row flex-column justify-content-center align-items-center col-md-12"
-          >
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-              <mat-label>Full name</mat-label>
-              <input matInput type="text" formControlName="name" />
-              <mat-error
-                *ngIf="newEmployeeForm.controls['name'].hasError('required')"
-              >
-                Full name is required
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-              <mat-label>Last name</mat-label>
-              <input matInput type="text" formControlName="surname" />
-              <mat-error
-                *ngIf="newEmployeeForm.controls['surname'].hasError('required')"
-              >
-                Last name is required
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-              <mat-label>Initials</mat-label>
-              <input matInput type="text" formControlName="initials" />
-              <mat-error
-                *ngIf="
-                  newEmployeeForm.controls['initials'].hasError('required')
-                "
-              >
-                Initials are required
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-              <mat-label>Work Email</mat-label>
-              <input matInput type="email" formControlName="email" />
-              <mat-error
-                *ngIf="newEmployeeForm.controls['email'].hasError('required')"
-              >
-                Work email is required
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-              <mat-label>Personal Email</mat-label>
-              <input matInput type="email" formControlName="personalEmail" />
-              <mat-error
-                *ngIf="
-                  newEmployeeForm.controls['personalEmail'].hasError('required')
-                "
-              >
-                Personal email is required
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-              <mat-label>Role</mat-label>
-              <mat-select formControlName="employeeType">
-                <mat-option *ngFor="let type of employeeTypes" [value]="type">
-                  {{ type.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-              <mat-label>Select level</mat-label>
-              <mat-select formControlName="level">
-                <mat-option *ngFor="let level of levels" [value]="level">{{
-                  level
-                }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-              <mat-label>Start Date</mat-label>
-              <input
-                matInput
-                formControlName="engagementDate"
-                [matDatepicker]="engagementDatePicker"
-              />
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="engagementDatePicker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #engagementDatePicker></mat-datepicker>
-              <mat-error
-                *ngIf="
-                  newEmployeeForm.controls['engagementDate'].hasError(
-                    'required'
-                  )
-                "
-              >
-                Engagement date is required
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-              <mat-label>Date of Birth</mat-label>
-              <input
-                matInput
-                formControlName="dateOfBirth"
-                [matDatepicker]="dateOfBirthPicker"
-              />
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="dateOfBirthPicker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #dateOfBirthPicker></mat-datepicker>
-              <mat-error
-                *ngIf="
-                  newEmployeeForm.controls['dateOfBirth'].hasError('required')
-                "
-              >
-                Engagement date is required
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-              <mat-label>ID number</mat-label>
-              <input matInput type="text" formControlName="idNumber" />
-              <mat-error
-                *ngIf="
-                  newEmployeeForm.controls['idNumber'].hasError('required')
-                "
-              >
-                ID number is required
-              </mat-error>
-            </mat-form-field>
-          </div>
-          <form
-            [formGroup]="settingsForm"
-            class="row flex-column justify-content-center align-items-center roboto-font col-md-12 pb-5"
-          >
-            <div class="col-lg-7">
-              <label
-                class="fw-base pe-3"
-                id="additional-fields-label"
-                for="additionalFieldsToggle"
-                >Additional fields</label
-              >
-              <mat-slide-toggle
-                color="primary"
-                id="additionalFieldsToggle"
-                formControlName="toggleAdditionalFields"
-              ></mat-slide-toggle>
-            </div>
-          </form>
-          <div
-            *ngIf="
-              settingsForm.controls['toggleAdditionalFields'].value === true
-            "
-            class="row justify-content-center align-items-center col-md-12"
-          >
-            <div
-              class="row flex-column justify-content-center align-items-center roboto-font pb-5"
-            >
-              <h1 class="col-lg-7 col-md-12 pb-3" id="heading">
-                Additional Information
-              </h1>
-              <div class="col-lg-7 col-md-12 pb-3">
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Profile photo</mat-label>
-                  <input matInput type="text" formControlName="photo" />
-                  <span
-                    mat-icon-button
-                    matSuffix
-                    (click)="uploadFile.click()"
-                    class="pe-3"
-                  >
-                    <mat-icon id="fileUploadCursor">file_upload</mat-icon>
-                    <input
-                      type="file"
-                      #uploadFile
-                      (change)="onFileChange($event)"
-                      formControlName="photo"
-                      hidden
-                    />
-                  </span>
-                </mat-form-field>
-              </div>
-              <div
-                class="row flex-column justify-content-center align-items-center col-lg-12 col-md-12 pb-3"
-              >
-                <span class="col-lg-7 fs-5 roboto-font pb-3">Gender</span>
-                <mat-radio-group class="col-lg-7" formControlName="gender">
-                  <mat-radio-button
-                    *ngFor="let gender of genders; index as i"
-                    [value]="i"
-                    >{{ gender }}</mat-radio-button
-                  >
-                </mat-radio-group>
-              </div>
-              <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
-                <mat-label>Select race</mat-label>
-                <mat-select formControlName="race">
-                  <mat-option
-                    *ngFor="let race of races; index as i"
-                    [value]="i"
-                  >
-                    {{ race }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field
-                *ngIf="newEmployeeForm.controls['idNumber'].value === ''"
-                appearance="outline"
-                class="col-lg-7 col-md-12"
-              >
-                <mat-label>Passport number</mat-label>
-                <input
-                  matInput
-                  type="number"
-                  formControlName="passportNumber"
-                />
-              </mat-form-field>
-              <mat-form-field
-                *ngIf="newEmployeeForm.controls['idNumber'].value === ''"
-                appearance="outline"
-                class="col-lg-7 col-md-12"
-              >
-                <mat-label>Passport expiration date</mat-label>
-                <input
-                  matInput
-                  formControlName="passportExpiryDate"
-                  [matDatepicker]="passportExpiryDate"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="passportExpiryDate"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #passportExpiryDate></mat-datepicker>
-              </mat-form-field>
-              <mat-form-field
-                *ngIf="newEmployeeForm.controls['idNumber'].value === ''"
-                appearance="outline"
-                class="col-lg-7 col-md-12 custom-mat-select"
-              >
-                <mat-label>Country of issue</mat-label>
-                <input
-                  matInput
-                  type="text"
-                  formControlName="passportCountryIssue"
-                />
-                <mat-select
-                  #countrySelect
-                  formControlName="passportCountryIssue"
-                  hidden
-                >
-                  <mat-option
-                    *ngFor="let country of countries"
-                    [value]="country"
-                    >{{ country }}</mat-option
-                  >
-                </mat-select>
-                <mat-icon matSuffix (click)="countrySelect.open()"
-                  >search</mat-icon
-                >
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12"
-                *ngIf="
-                  !postalAddressForm.controls['sameAsPhysicalAddress'].value
-                "
-              >
-                <mat-label>Notes</mat-label>
-                <textarea matInput type="text" formControlName="notes">
-                </textarea>
-              </mat-form-field>
-              <div class="col-lg-7 col-md-12">
-                <span class="roboto-font pb-3"
-                  >Do you have any disabilities ?</span
-                >
-                <mat-radio-group formControlName="disability">
-                  <mat-radio-button
-                    *ngFor="let check of [true, false]"
-                    [value]="check"
-                    >{{ check ? "Yes" : "No" }}</mat-radio-button
-                  >
-                </mat-radio-group>
-              </div>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12"
-                *ngIf="newEmployeeForm.controls['disability'].value"
-              >
-                <mat-label>Diability notes</mat-label>
-                <textarea
-                  matInput
-                  type="text"
-                  formControlName="disabilityNotes"
-                >
-                </textarea>
-              </mat-form-field>
-            </div>
-            <form
-              [formGroup]="physicalAddress"
-              class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mb-3"
-            >
-              <h1 class="col-lg-7 col-md-12 fs-1">Physical Address</h1>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Unit Number</mat-label>
-                <input matInput type="text" formControlName="unitNumber" />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Complex Name</mat-label>
-                <input matInput type="text" formControlName="complexName" />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>City/Town</mat-label>
-                <input matInput type="text" formControlName="city" />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Suburb/District</mat-label>
-                <input matInput type="text" formControlName="suburbDistrict" />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Street Number</mat-label>
-                <input matInput type="text" formControlName="streetNumber" />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Country</mat-label>
-                <mat-select formControlName="country">
-                  <mat-option
-                    *ngFor="let country of countries"
-                    [value]="country"
-                    >{{ country }}</mat-option
-                  >
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Province</mat-label>
-                <mat-select formControlName="province">
-                  <mat-option
-                    *ngFor="let province of provinces"
-                    [value]="province"
-                    >{{ province }}</mat-option
-                  >
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Postal Code</mat-label>
-                <input matInput type="text" formControlName="postalCode" />
-              </mat-form-field>
-              <form [formGroup]="postalAddressForm" class="col-lg-7 col-md-12">
-                <mat-checkbox
-                  formControlName="sameAsPhysicalAddress"
-                  (change)="postalSameAsPhysicalAddress()"
-                  >Postal address is the same as physical address</mat-checkbox
-                >
-              </form>
-            </form>
-            <form
-              [formGroup]="postalAddress"
-              *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value"
-              class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mt-5"
-            >
-              <h1 class="col-lg-7 col-md-12 fs-1">Postal Address</h1>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Unit Number</mat-label>
-                <input matInput type="text" formControlName="unitNumber" />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Complex Name</mat-label>
-                <input matInput type="text" formControlName="complexName" />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>City/Town</mat-label>
-                <input matInput type="text" formControlName="city" />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Suburb/District</mat-label>
-                <input matInput type="text" formControlName="suburbDistrict" />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Street Number</mat-label>
-                <input matInput type="text" formControlName="streetNumber" />
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Country</mat-label>
-                <mat-select formControlName="country">
-                  <mat-option
-                    *ngFor="let country of countries"
-                    [value]="country"
-                    >{{ country }}</mat-option
-                  >
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Province</mat-label>
-                <mat-select formControlName="province">
-                  <mat-option
-                    *ngFor="let province of provinces"
-                    [value]="province"
-                    >{{ province }}</mat-option
-                  >
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field
-                appearance="outline"
-                class="col-lg-7 col-md-12 mt-2"
-              >
-                <mat-label>Postal Code</mat-label>
-                <input matInput type="text" formControlName="postalCode" />
-              </mat-form-field>
-            </form>
-          </div>
-          <div
-            class="row flex-column justify-content-center align-items-center col-md-12"
-            *ngIf="postalAddressForm.controls['sameAsPhysicalAddress'].value"
-          >
-            <h1 class="col-lg-7 col-md-12 mt-2">Additional Notes</h1>
-            <mat-form-field
-              appearance="outline"
-              class="col-lg-7 col-md-12 mt-2"
-            >
-              <mat-label>Additional Notes</mat-label>
-              <textarea matInput type="text" formControlName="notes">
-              </textarea>
-            </mat-form-field>
+<div class="container">
+  <div class="mt-4 mb-4">
+    <mat-stepper class="rounded-4 mt-4" [linear]="isLinear" #stepper>
+      <mat-step [stepControl]="newEmployeeForm" label="Basic Information">
+        <ng-template matStepLabel>Basic Information</ng-template>
+        <div class="row justify-content-center align-items-center">
+          <div class="col-md-12 col-lg-12">
+            <h2 class="text-center" id="createEmployee">Create employee profile</h2>
+            <span class="text-center roboto-font" id="heading-text">
+              <p>Please enter the employee’s information in order to create a profile for them.</p>
+            </span>
           </div>
         </div>
-      </div>
-    </main>
-    <footer class="bg-white col-12 p-3 d-flex">
-      <div class="col-9 d-flex justify-content-end">
-        <button
-          mat-button
-          type="button"
-          color="primary"
-          class="text-primary bg-white rounded-pill border border-black mx-2"
-          (click)="CaptureEvent()"
-        >
-          Cancel
-        </button>
-        <button
-          mat-raised-button
-          type="submit"
-          color="primary"
-          class="text-white rounded-pill border-primary bg-primary"
-          matStepperNext
-        >
-          Next
-        </button>
-      </div>
-    </footer>
-  </form>
+        <form [formGroup]="newEmployeeForm" (ngSubmit)="onSubmit(false)" id="newEmployeeForm">
+            <div class="row justify-content-center align-items-center">
+                <div class="row justify-content-center align-items-center roboto-font col-md-12 pb-3">
+                  <h1 class="col-lg-7 col-md-12" id="heading">Employee Details</h1>
+                  <p class="col-lg-7 col-md-12">Note: *The asterisk indicates required fields</p>
+                </div>
+                <div class="row flex-column justify-content-center align-items-center col-md-12">
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-label>Full name</mat-label>
+                    <input matInput type="text" formControlName="name" />
+                    <mat-error *ngIf="newEmployeeForm.controls['name'].hasError('required')"> Full name is required</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-label>Last name</mat-label>
+                    <input matInput type="text" formControlName="surname" />
+                    <mat-error *ngIf="newEmployeeForm.controls['surname'].hasError('required')"> Last name is required</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-label>Initials</mat-label>
+                    <input matInput type="text" formControlName="initials" />
+                    <mat-error *ngIf="newEmployeeForm.controls['initials'].hasError('required')"> Initials are required</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-label>Work Email</mat-label>
+                    <input matInput type="email" formControlName="email" />
+                    <mat-error *ngIf="newEmployeeForm.controls['email'].hasError('required')"> Work email is required</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-label>Personal Email</mat-label>
+                    <input matInput type="email" formControlName="personalEmail" />
+                    <mat-error *ngIf="newEmployeeForm.controls['personalEmail'].hasError('required')"> Personal email is required</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-label>Role</mat-label>
+                    <mat-select formControlName="employeeType">
+                      <mat-option *ngFor="let type of employeeTypes" [value]="type">{{ type.name }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-label>Select level</mat-label>
+                    <mat-select formControlName="level">
+                      <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput formControlName="engagementDate" [matDatepicker]="engagementDatePicker" />
+                    <mat-datepicker-toggle matSuffix [for]="engagementDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #engagementDatePicker></mat-datepicker>
+                    <mat-error *ngIf="newEmployeeForm.controls['engagementDate'].hasError('required')">Engagement date is required</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-label>Date of Birth</mat-label> 
+                    <input matInput formControlName="dateOfBirth" [matDatepicker]="dateOfBirthPicker" />
+                    <mat-datepicker-toggle matSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dateOfBirthPicker></mat-datepicker>
+                    <mat-error *ngIf="newEmployeeForm.controls['dateOfBirth'].hasError('required')"> Date of birth is required</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-label>ID number</mat-label>
+                    <input matInput type="text" formControlName="idNumber" />
+                    <mat-error *ngIf="newEmployeeForm.controls['idNumber'].hasError('required')"> ID number is required </mat-error>
+                  </mat-form-field>
+                </div>
+                <form [formGroup]="settingsForm"
+                  class="row flex-column justify-content-center align-items-center roboto-font col-md-12 pb-5">
+                  <div class="col-lg-7"> <label class="fw-base pe-3" id="additional-fields-label"
+                      for="additionalFieldsToggle">Additional fields</label>
+                    <mat-slide-toggle color="primary" id="additionalFieldsToggle"
+                      formControlName="toggleAdditionalFields"></mat-slide-toggle>
+                  </div>
+                </form>
+                <div *ngIf="settingsForm.controls['toggleAdditionalFields'].value === true "
+                  class="row justify-content-center align-items-center col-md-12">
+                  <div class="row flex-column justify-content-center align-items-center roboto-font pb-5">
+                    <h1 class="col-lg-7 col-md-12 pb-3" id="heading">Additional Information</h1>
+                    <div class="col-lg-7 col-md-12 pb-3">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Profile photo</mat-label>
+                        <input matInput type="text" formControlName="photo" />
+                        <span mat-icon-button matSuffix (click)="uploadFile.click()" class="pe-3">
+                          <mat-icon id="fileUploadCursor">file_upload</mat-icon> 
+                          <input type="file" #uploadFile (change)="onFileChange($event)" hidden />
+                        </span>
+                      </mat-form-field>
+                    </div>
+                    <div class="row flex-column justify-content-center align-items-center col-lg-12 col-md-12 pb-3"> 
+                      <span class="col-lg-7 fs-5 roboto-font pb-3">Gender</span>
+                      <mat-radio-group class="col-lg-7" formControlName="gender">
+                        <mat-radio-button *ngFor="let gender of genders; index as i" [value]="i">{{ gender }}</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
+                      <mat-label>Select race</mat-label>
+                      <mat-select formControlName="race">
+                        <mat-option *ngFor="let race of races; index as i" [value]="i">{{ race }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="newEmployeeForm.controls['idNumber'].value === ''" appearance="outline" class="col-lg-7 col-md-12">
+                      <mat-label>Passport number</mat-label> 
+                      <input matInput type="number" formControlName="passportNumber" />
+                    </mat-form-field>
+                    <mat-form-field *ngIf="newEmployeeForm.controls['idNumber'].value === ''" appearance="outline" class="col-lg-7 col-md-12">
+                      <mat-label>Passport expiration date</mat-label>
+                      <input matInput formControlName="passportExpiryDate" [matDatepicker]="passportExpiryDate" />
+                      <mat-datepicker-toggle matSuffix [for]="passportExpiryDate"></mat-datepicker-toggle>
+                      <mat-datepicker #passportExpiryDate></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="newEmployeeForm.controls['idNumber'].value === ''" appearance="outline" class="col-lg-7 col-md-12 custom-mat-select">
+                      <mat-label>Country of issue</mat-label> 
+                      <input matInput type="text" formControlName="passportCountryIssue" />
+                      <mat-select #countrySelect formControlName="passportCountryIssue" hidden>
+                        <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
+                      </mat-select>
+                      <mat-icon matSuffix (click)="countrySelect.open()">search</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12" *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value">
+                      <mat-label>Notes</mat-label> <textarea matInput type="text" formControlName="notes">
+                      </textarea>
+                    </mat-form-field>
+                    <div class="col-lg-7 col-md-12"> <span class="roboto-font pb-3">Do you have any disabilities ?</span>
+                      <mat-radio-group formControlName="disability">
+                        <mat-radio-button *ngFor="let check of [true, false]" [value]="check">{{ check ? "Yes" : "No"
+                          }}</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12"
+                      *ngIf="newEmployeeForm.controls['disability'].value">
+                      <mat-label>Diability notes</mat-label> <textarea matInput type="text"
+                        formControlName="disabilityNotes">
+                      </textarea>
+                    </mat-form-field>           
+                  </div>
+                  <form [formGroup]="physicalAddress" class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mb-3">
+                    <h1 class="col-lg-7 col-md-12 fs-1">Physical Address</h1>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Unit Number</mat-label>
+                      <input matInput type="text" formControlName="unitNumber" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Complex Name</mat-label>
+                      <input matInput type="text" formControlName="complexName" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>City/Town</mat-label>
+                      <input matInput type="text" formControlName="city" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Suburb/District</mat-label>
+                      <input matInput type="text" formControlName="suburbDistrict" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Street Number</mat-label>
+                      <input matInput type="text" formControlName="streetNumber" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Country</mat-label>
+                      <mat-select formControlName="country">
+                        <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Province</mat-label>
+                      <mat-select formControlName="province">
+                        <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Postal Code</mat-label>
+                      <input matInput type="text" formControlName="postalCode" />
+                    </mat-form-field>
+                    <form [formGroup]="postalAddressForm" class="col-lg-7 col-md-12">
+                      <mat-checkbox formControlName="sameAsPhysicalAddress" (change)="postalSameAsPhysicalAddress()">Postal address is the same as physical address</mat-checkbox>
+                    </form>
+                  </form>
+                  <form [formGroup]="postalAddress" *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value" class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mt-5">
+                    <h1 class="col-lg-7 col-md-12 fs-1">Postal Address</h1>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Unit Number</mat-label>
+                      <input matInput type="text" formControlName="unitNumber" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Complex Name</mat-label>
+                      <input matInput type="text" formControlName="complexName" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>City/Town</mat-label>
+                      <input matInput type="text" formControlName="city" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Suburb/District</mat-label>
+                      <input matInput type="text" formControlName="suburbDistrict" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Street Number</mat-label>
+                      <input matInput type="text" formControlName="streetNumber" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Country</mat-label>
+                      <mat-select formControlName="country">
+                        <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Province</mat-label>
+                      <mat-select formControlName="province">
+                        <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                      <mat-label>Postal Code</mat-label>
+                      <input matInput type="text" formControlName="postalCode" />
+                    </mat-form-field>
+                  </form>
+                </div>
+              </div>
+          <div id="footer"> 
+            <button id="cancel-button" (click)="goToEmployees()">Cancel</button>
+            <button id="next-button" matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="uploadDocumentForm" label="Upload Documents">
+        <ng-template matStepLabel>Upload Documents</ng-template>
+        <form [formGroup]="uploadDocumentForm">
+            <div class="row justify-content-center align-items-center">
+              <div class="col-md-12 col-lg-12">
+                <h2 class="text-center" id="createEmployee">Start Kit Documents</h2>
+                <span class="text-center roboto-font" id="heading-text">
+                  <p>Please upload employee’s starter kit documents below</p>
+                </span>
+              </div>
+            </div>
+            <div class="container upload-drop-container">
+              <div class="row justify-content-center align-items-center">
+                <ngx-file-drop 
+                dropZoneClassName="upload-drop-section" 
+                contentClassName="" 
+                accept=".PDF,.PPT.PPTX,.Doc,.Docx" 
+                (onFileDrop)="dropped($event)" 
+                (onFileOver)="fileOver($event)" 
+                (onFileLeave)="fileLeave($event)">
+                  <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true" multiple="true">
+                    <div class="upload-drop-section row">
+                      <div class="justify-content-center align-items-center text-center p-2 m-2">
+                        <h2 class="">Drop your files here!</h2>
+                      </div>
+                      <div class="justify-content-center text-center p-2 m-2"> 
+                        <img src="../../../../assets/img/file_upload.svg" /> 
+                      </div>
+                      <div class="justify-content-center text-center p-2 m-2">
+                      <button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()"> Select file</button>
+                      </div>
+                      <div class="upload-doc-section text-center p-2 m-2">
+                        <p>PDF, PPT, PPTX, Doc, Docx are supported</p>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngx-file-drop>
+              </div>
+            </div>
+            <div class="row text-center p-2 m-2">
+              <mat-chip-grid>
+                <mat-chip *ngFor="let file of files; let i = index" [removable]="true" (removed)="removeFileByIndex(i)"> {{ file.relativePath }} 
+                  <img matChipRemove src="../../../../assets/img/close_chip.svg" />
+                </mat-chip>
+              </mat-chip-grid>
+            </div>
+          <div id="footer"> 
+            <button id="cancel-button" (click)="goToEmployees()">Cancel</button>
+            <button id="save-add-button" (click)="onUploadDocument()">Save and add another</button>
+            <button id="save-button" (click)="onUploadDocument()">Save</button>
+          </div>
+        </form>
+      </mat-step>
+    </mat-stepper>
+  </div>
 </div>

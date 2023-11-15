@@ -79,6 +79,9 @@ export class ViewEmployeeComponent {
 
   ngOnInit() {
     this.onResize();
+
+   
+    
   }
 
   ngAfterViewInit() {
@@ -213,7 +216,7 @@ export class ViewEmployeeComponent {
         ),
         tap((data) => {
           this.selectedEmployee.emit(data);
-          this.cookieService.set('currentPage', 'Profile');
+          this.cookieService.set('currentPage', 'EmployeeProfile');
         }),
         first()
       )
