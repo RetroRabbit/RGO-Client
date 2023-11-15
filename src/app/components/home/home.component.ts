@@ -33,7 +33,6 @@ export class HomeComponent {
     name: ''
   };
   
-
   constructor(
     private employeeProfileService: EmployeeProfileService,
     private chartService: ChartService,
@@ -126,4 +125,5 @@ export class HomeComponent {
     this.selectedEmployee = null;
     this.shouldDisplayNewEmployee = false;
   }
+
 }
