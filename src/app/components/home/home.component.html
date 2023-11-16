@@ -194,7 +194,6 @@
         <app-new-employee [goto]="'employees'"></app-new-employee>
       </div>
     </div>
-
     <div *ngIf="cookieService.get('currentPage') == 'Employee Details'">
       <app-employee-details [selectedEmployee]="selectedEmployee"></app-employee-details>
      </div>
