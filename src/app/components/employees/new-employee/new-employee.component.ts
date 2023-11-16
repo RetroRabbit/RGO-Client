@@ -14,7 +14,7 @@ import { countries } from 'src/app/models/constants/country.constants';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
-import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
@@ -70,6 +70,8 @@ export class NewEmployeeComponent implements OnInit {
   validImage: boolean = false;
   public files: NgxFileDropEntry[] = [];
   employeeDocumentModels: EmployeeDocument[] = [];
+  CURRENT_PAGE = 'currentPage';
+  PREVIOUS_PAGE = 'previousPage';
 
 
   private createAddressForm(): FormGroup {
@@ -203,7 +205,15 @@ export class NewEmployeeComponent implements OnInit {
     }
   }
 
-  onUploadDocument(): void {
+  saveAndExit(){
+    this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
+  }
+
+  saveAndAddAnother(){
+    this.onUploadDocument('+ Add Employee');
+  }
+
+  onUploadDocument(nextPage: string): void {
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
         next: () => {
@@ -221,12 +231,17 @@ export class NewEmployeeComponent implements OnInit {
             duration: 5000,
             position: 'topRight',
           });
+        }, complete: () => {
+          this.employeeDocumentModels = [];
+          this.newEmployeeEmail = "";
+          this.files = [];
+          location.reload();
+          this.cookieService.set(this.CURRENT_PAGE, nextPage);
         }
       });
     });
-    this.employeeDocumentModels = [];
-    this.newEmployeeEmail = "";
-    this.files = [];
+   
+
   }
 
   public fileOver(event: Event) {
@@ -346,12 +361,15 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   goToEmployees() {
-    this.cookieService.set('currentPage', 'Employees');
+    this.cookieService.set(this.CURRENT_PAGE, 'Employees');
   }
 
   CaptureEvent() {
-    if (this.goto == 'employees') this.cookieService.set('currentPage', 'View Employee');
-    else this.cookieService.set('currentPage', 'Dashboard');
+    //this.cookieService.set(this.CURRENT_PAGE, this.got)
+    if (this.goto == 'employees'){
+      this.cookieService.set(this.CURRENT_PAGE, 'View Employee');
+    } 
+    else this.cookieService.set(this.CURRENT_PAGE, 'Dashboard');
   }
 
   checkBlankRequiredFields() {
@@ -460,5 +478,11 @@ export class NewEmployeeComponent implements OnInit {
   setSelectedGender(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
     this.newEmployeeForm.patchValue({ gender: +selectedValue });
+  }
+
+  goToPreviousPage(){
+    console.log(this.cookieService.get(this.PREVIOUS_PAGE));
+    this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
+
   }
 }
