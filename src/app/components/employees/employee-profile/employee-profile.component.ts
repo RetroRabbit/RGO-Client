@@ -175,6 +175,7 @@ export class EmployeeProfileComponent {
   client: string = '';
   employeeDataDto!: EmployeeData;
   filteredCountries: any[] = this.countries.slice();
+  previousPage: string = '';
 
 
   constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
@@ -188,10 +189,15 @@ export class EmployeeProfileComponent {
 
   ngOnInit() {
     this.getEmployeeFields();
+    this.previousPage = this.cookieService.get('previousPage');
   }
 
   goToEmployees() {
     this.cookieService.set('currentPage', 'Employees');
+  }
+
+  goToDashboard() {
+    this.cookieService.set('currentPage', 'Dashboard');
   }
 
   getEmployeeFields() {

@@ -43,7 +43,7 @@ export class ViewEmployeeComponent {
   @Input()
   set searchQuery(text: string) {
     this._searchQuery = text;
-    this.applyFilter();
+    this.applySearchFilter();
   }
 
   get searchQuery(): string {
@@ -79,7 +79,7 @@ export class ViewEmployeeComponent {
 
   ngOnInit() {
     this.onResize();
-
+    this.applySearchFilter();
    
     
   }
@@ -216,6 +216,8 @@ export class ViewEmployeeComponent {
         ),
         tap((data) => {
           this.selectedEmployee.emit(data);
+          this._searchQuery = '';
+          this.cookieService.set('previousPage','Employees');
           this.cookieService.set('currentPage', 'EmployeeProfile');
         }),
         first()
@@ -236,11 +238,11 @@ export class ViewEmployeeComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  applyFilter() {
-    if (this.searchQuery.trim() === '') console.error('Search query is empty');
-    this.dataSource.filter = this.searchQuery.trim().toLowerCase();
-    this.dataSource._updateChangeSubscription();
-    console.info('Filter applied', this.dataSource.filter);
+  applySearchFilter() {
+    if (this.searchQuery.trim() != ''){
+      this.dataSource.filter = this.searchQuery.trim().toLowerCase();
+      this.dataSource._updateChangeSubscription();
+    };
   }
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
