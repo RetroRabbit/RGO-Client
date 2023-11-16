@@ -38,7 +38,7 @@ export class AdminDashboardComponent {
   chartData: number[] = [];
   chartLabels: string[] = [];
 
-  categories: string[] = [];// ToDo: fetch from backend
+  categories: string[] = [];
   filteredCategories: string[] = this.categories;
   categoryCtrl = new FormControl();
   selectedCategories: string[] = [];
@@ -380,6 +380,7 @@ export class AdminDashboardComponent {
   employeeClickEvent(employee: EmployeeProfile): void {
     this.selectedEmployee.emit(employee);
     this.cookieService.set('currentPage', 'Profile');
+    this.cookieService.set('previousPage', 'Dashboard');
     console.log(employee);
   }
 

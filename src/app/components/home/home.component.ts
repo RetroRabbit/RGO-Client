@@ -124,5 +124,4 @@ export class HomeComponent {
     this.selectedEmployee = null;
     this.shouldDisplayNewEmployee = false;
   }
-
 }
