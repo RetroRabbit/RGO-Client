@@ -111,7 +111,7 @@ export class EmployeeProfileComponent {
   hasFile: boolean = false;
 
   displayedColumns: string[] = ['document', 'action', 'status'];
-  dataSource = new MatTableDataSource<EmployeeDocument>();
+  dataSource = new MatTableDataSource<string>();
   employeeDocuments : EmployeeDocument[] = [];
   uploadButtonIndex : number= 0;
   base64String : string = "";
@@ -559,7 +559,7 @@ export class EmployeeProfileComponent {
           this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfileDto?.peopleChampion)[0];
           this.employeeDetailsForm.disable();
         },
-        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error) => { this.toast.error({ detail: "Error", summary: "test"+error, duration: 5000, position: 'topRight' }); },
       });
     }
     else {
@@ -897,8 +897,9 @@ getEmployeeDocuments() {
     this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile?.id as number).subscribe({
       next: data => {
         this.employeeDocuments = data;
-        this.dataSource.data = data;
-        console.log(this.dataSource.data);
+        this.dataSource.data = this.fileCategories;
+        this.calculateDocumentProgress();
+        // console.log(this.dataSource.data);
       },
       error: error => {
         console.log(error);
@@ -908,20 +909,30 @@ getEmployeeDocuments() {
 
   uploadDocumentDto(document : any){
     if(document.id == 0){
-      //adding a document
-      this.employeeDocumentService.saveEmployeeDocument(document).subscribe({
+      const saveObj = {
+        id: document.id,
+        employeeId: document.employee.id,
+        fileName: document.fileName,
+        file: this.base64String,
+        fileCategory: document.fileCategory,
+        uploadDate: document.uploadDate
+      }
+      this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
         next: () => {
           this.toast.success({ detail: "Document added!", position: 'topRight' });
+          this.getEmployeeDocuments();
+          this.calculateDocumentProgress();
         },
         error: () => {
           this.toast.error({ detail: "Document unable to upload!", position: 'topRight' });
         }
       });
     }else{
-      //updating document
       this.employeeDocumentService.updateEmployeeDocument(document).subscribe({
         next: () => {
           this.toast.success({ detail: "Document updated ", position: 'topRight' });
+          this.getEmployeeDocuments();
+          this.calculateDocumentProgress();
         },
         error: () => {
           this.toast.error({ detail: "Document unable to update!", position: 'topRight' });
@@ -930,16 +941,13 @@ getEmployeeDocuments() {
     }
   }
   buildDocumentDto(){
-    const existingValue = this.filterDocumentsByCategory(this.uploadButtonIndex);
-    // this.getbase64();
+    const existingValue = this.filterDocumentsByCategory();
     if (this.selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
-        console.log("hey");
         this.base64String = reader.result as string;
         var newDto : {} = {
           id: existingValue != undefined ?  existingValue?.id as number : 0,
-          // employeeId: this.employeeProfile?.id as number,
           employee: this.employeeProfile,
           reference: "",
           fileName: this.documentsFileName,
@@ -948,8 +956,8 @@ getEmployeeDocuments() {
           status: 1,
           uploadDate: new Date(),
           reason: '',
-        } 
-        console.log(newDto);
+        };
+        console.log("buildDocumentDto; "+ newDto);
         this.uploadDocumentDto(newDto);
 
       };
@@ -957,19 +965,7 @@ getEmployeeDocuments() {
     }
   }
   
-  getbase64() {
-    console.log(this.selectedFile);
-    // if (this.selectedFile) {
-    //   const reader = new FileReader();
-    //   reader.onload = () => {
-    //     console.log("hey");
-    //     this.base64String = reader.result as string;
-    //   };
-    //   reader.readAsDataURL(this.selectedFile);
-    // }
-  }
-
-  filterDocumentsByCategory(index : number) : EmployeeDocument | null{
+  filterDocumentsByCategory() : EmployeeDocument | null{
     var object  = this.employeeDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
     if(object == null){
       return null;
@@ -977,4 +973,37 @@ getEmployeeDocuments() {
     return object[0];
   }
 
+  getFileName(index : number) : EmployeeDocument{
+    var docObj = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
+    return docObj;
+  }
+
+  downloadDocument(event: any){
+    const id = event.srcElement.parentElement.id;
+    const docObj = this.employeeDocuments.find(document => document.fileCategory == id) as any;
+    if(docObj === undefined){
+      // ToDo: download clean slate form
+    }
+    else{
+      if(docObj.status == 2){
+          // ToDo: download clean slate form
+      }else{
+        this.downloadFile(docObj?.blob as string, docObj?.fileName as string);
+      }
+    }
+  }
+  
+  disableButton(index: number):boolean{
+    const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
+    if(docObj == undefined || docObj?.status == 2){
+      return false;
+    }
+    return true;
+  }
+
+  calculateDocumentProgress(){
+    const total = this.fileCategories.length;
+    const fetchedDocuments = this.employeeDocuments.length;
+    this.documentFormProgress = Math.floor( fetchedDocuments/total);
+  }
 }

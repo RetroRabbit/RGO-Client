@@ -768,15 +768,18 @@
                       <!-- Document Column -->
                       <ng-container matColumnDef="document">
                         <mat-header-cell *matHeaderCellDef> Document </mat-header-cell>
-                        <mat-cell *matCellDef="let row; let i = index">`
+                        <mat-cell *matCellDef="let row; let i = index">
                           <div class="row">
                             <div class="col-12">
-                                <strong>{{fileCategories[i]}}</strong>
+                                <strong>{{row}}</strong>
                             </div>
-                            <div class="col-12">
-                                <p>{{row.fileName}}</p>
-                                <p *ngIf="row.status == 2" [ngStyle]="{'color': row.reason ? 'red' : 'inherit'}">Reason: {{row.reason}}</p>
+                            <div class="col-12" *ngIf="getFileName(i) as document;else NoFile">
+                                <p>{{document.fileName}}</p>
                             </div>
+                            <ng-template #NoFile>
+                                <p>Download & upload document here</p>
+                            </ng-template>
+                            <p *ngIf="row.status == 2" [ngStyle]="{'color': row.reason ? 'red' : 'inherit'}">Reason: {{row.reason}}</p>
                           </div>
                           </mat-cell>
                       </ng-container>
@@ -785,8 +788,8 @@
                       <ng-container matColumnDef="action">
                         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                         <mat-cell *matCellDef="let row; let i = index">
-                          <button mat-button color="primary">Download</button>
-                          <button mat-button color="primary" (click)="captureUploadIndex($event)" [id]=i>Upload</button>
+                          <button mat-button color="primary" (click)="downloadDocument($event)" [id]=i>Download</button>
+                          <button mat-button color="primary" (click)="captureUploadIndex($event)" [id]=i [disabled]="disableButton(i)">Upload</button>
                           <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf" [id]="i + '-document'">
                         </mat-cell>
                       </ng-container>
@@ -794,12 +797,22 @@
                       <!-- Status Column -->
                       <ng-container matColumnDef="status">
                         <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-                        <mat-cell *matCellDef="let row">
-                          <span *ngIf="row.status === 0" >{{ 'Approved' }}</span>
-                          <span *ngIf="row.status === 2" >{{ 'Rejected' }}</span>
-                          <span *ngIf="row.status === 1" >{{ 'Pending' }}</span>
-                          <span *ngIf="row.status === 3" >{{ 'Action Required' }}</span>
-                        </mat-cell>
+                          <mat-cell *matCellDef="let row; let i = index">
+                                <div *ngIf="getFileName(i) as document; else noDoc">
+                                    <div *ngIf="document.status === 0">
+                                        <span>{{ 'Approved' }}</span>
+                                    </div>
+                                    <div *ngIf="document.status === 2">
+                                        <span>{{ 'Rejected' }}</span>
+                                    </div>
+                                    <div *ngIf="document.status === 1">
+                                        <span>{{ 'Pending' }}</span>
+                                    </div>
+                                </div>
+                                <ng-template #noDoc>
+                                        <span>{{ 'Action Required' }}</span>
+                                </ng-template>
+                            </mat-cell>
                       </ng-container>
         
                       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
