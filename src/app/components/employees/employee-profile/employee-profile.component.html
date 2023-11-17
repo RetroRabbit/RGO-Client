@@ -1,6 +1,6 @@
 <div class="container mt-4">
     <div class="w-75 py-3">
-        <button mat-button class="btn" id="back-button" (click)="goToEmployees()" *ngIf="selectedEmployee">
+        <button mat-button class="btn" id="back-button" (click)="goToEmployees()" *ngIf="previousPage == 'Employees'">
             <mat-icon>arrow_back</mat-icon>
             <span>Back to Employees</span>
         </button>

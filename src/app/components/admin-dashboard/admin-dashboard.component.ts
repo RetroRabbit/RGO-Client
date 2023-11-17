@@ -379,7 +379,7 @@ export class AdminDashboardComponent {
 
   employeeClickEvent(employee: EmployeeProfile): void {
     this.selectedEmployee.emit(employee);
-    this.cookieService.set('currentPage', 'Profile');
+    this.cookieService.set('currentPage', 'EmployeeProfile');
     this.cookieService.set('previousPage', 'Dashboard');
     console.log(employee);
   }
