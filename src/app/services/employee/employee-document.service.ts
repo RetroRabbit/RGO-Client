@@ -12,7 +12,7 @@ export class EmployeeDocumentService {
     constructor(private httpClient: HttpClient) { }
 
     getAllEmployeeDocuments(employeeId: number): Observable<EmployeeDocument[]> {
-        return this.httpClient.get<EmployeeDocument[]>(`${API.HttpsBaseURL}/employeedocument/getAll/${employeeId}`);
+        return this.httpClient.get<EmployeeDocument[]>(`${API.HttpsBaseURL}/employeedocument/all/?employeeId= ${employeeId}`);
     }
     saveEmployeeDocument(employeeDocument: EmployeeDocument): Observable<EmployeeDocument> {
         return this.httpClient.post<EmployeeDocument>(`${API.HttpsBaseURL}/employeedocument/save`, employeeDocument);
@@ -21,6 +21,7 @@ export class EmployeeDocumentService {
         return this.httpClient.get<EmployeeDocument>(`${API.HttpsBaseURL}/employeedocument/get/${employeeId}/${filename}`);
     }
     updateEmployeeDocument(employeeDocument: EmployeeDocument): Observable<EmployeeDocument> {
+        console.log(employeeDocument);
         return this.httpClient.put<EmployeeDocument>(`${API.HttpsBaseURL}/employeedocument/update`, employeeDocument);
     }
     deleteEmployeeDocument(employeeDocument: EmployeeDocument): Observable<void> {

@@ -751,6 +751,98 @@
                     </mat-expansion-panel>
                 </mat-accordion>
             </div>
+            <div class="col-12" *ngIf="selectedItem == 'Documents'" id="accordion-container">
+                <mat-accordion id="accordion" class="row">
+                  <mat-expansion-panel class="my-3">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        HR Documents
+                      </mat-panel-title>
+                      <mat-panel-description *ngIf="documentFormProgress != 100">
+                        <mat-icon class="mx-1">error</mat-icon> Missing information
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+        
+                    <mat-table [dataSource]="dataSource.data" class="mat-elevation-z8">
+        
+                      <!-- Document Column -->
+                      <ng-container matColumnDef="document">
+                        <mat-header-cell *matHeaderCellDef> Document </mat-header-cell>
+                        <mat-cell *matCellDef="let row; let i = index">`
+                          <div class="row">
+                            <div class="col-12">
+                                <strong>{{fileCategories[i]}}</strong>
+                            </div>
+                            <div class="col-12">
+                                <p>{{row.fileName}}</p>
+                                <p *ngIf="row.status == 2" [ngStyle]="{'color': row.reason ? 'red' : 'inherit'}">Reason: {{row.reason}}</p>
+                            </div>
+                          </div>
+                          </mat-cell>
+                      </ng-container>
+        
+                      <!-- Action Column -->
+                      <ng-container matColumnDef="action">
+                        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                        <mat-cell *matCellDef="let row; let i = index">
+                          <button mat-button color="primary">Download</button>
+                          <button mat-button color="primary" (click)="captureUploadIndex($event)" [id]=i>Upload</button>
+                          <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf" [id]="i + '-document'">
+                        </mat-cell>
+                      </ng-container>
+        
+                      <!-- Status Column -->
+                      <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                          <span *ngIf="row.status === 0" >{{ 'Approved' }}</span>
+                          <span *ngIf="row.status === 2" >{{ 'Rejected' }}</span>
+                          <span *ngIf="row.status === 1" >{{ 'Pending' }}</span>
+                          <span *ngIf="row.status === 3" >{{ 'Action Required' }}</span>
+                        </mat-cell>
+                      </ng-container>
+        
+                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+        
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </div>
+        
+              <mat-accordion id="accordion" class="row">
+                <mat-expansion-panel class="my-3" (opened)="checkEmployeeDetails()" (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Equipment
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <!-- <app-employee-documents></app-employee-documents> -->
+                </mat-expansion-panel>
+              </mat-accordion>
+        
+              <mat-accordion id="accordion" class="row">
+                <mat-expansion-panel class="my-3" (opened)="checkEmployeeDetails()" (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Performance Review
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <!-- <app-employee-documents></app-employee-documents> -->
+                </mat-expansion-panel>
+              </mat-accordion>
+        
+              <mat-accordion id="accordion" class="row">
+                <mat-expansion-panel class="my-3" (opened)="checkEmployeeDetails()" (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Additional Information
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <!-- <app-employee-documents></app-employee-documents> -->
+                </mat-expansion-panel>
+              </mat-accordion>
+
         </div>
     </div>
 </div>
