@@ -116,6 +116,7 @@ export class AdminDashboardComponent {
 
   AddNewHire(event: any) {
     const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('previousPage', 'Dashboard');
     this.cookieService.set('currentPage', target.innerText);
   }
 
