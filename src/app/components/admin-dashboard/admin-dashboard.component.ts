@@ -100,10 +100,10 @@ export class AdminDashboardComponent {
     });
 
     this.employeeProfileService
-      .getAllEmployees(this.searchQuery)
+      .searchEmployees(this.searchQuery)
       .subscribe((data) => {
         this.allEmployees = data;
-      });
+    });
 
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
@@ -157,6 +157,7 @@ export class AdminDashboardComponent {
   viewMoreEmployees() {
     this.displayAllEmployees = true;
     this.expandSearch.emit(this.searchQuery);
+    this.cookieService.set('previousPage', 'Dashboard');
     this.cookieService.set('currentPage', 'Employees');
   }
 

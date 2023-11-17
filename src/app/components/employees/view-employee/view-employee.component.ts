@@ -42,8 +42,10 @@ export class ViewEmployeeComponent {
 
   @Input()
   set searchQuery(text: string) {
-    this._searchQuery = text;
-    this.applySearchFilter();
+    if(this.cookieService.get('previousPage') == "Dashboard"){
+      this._searchQuery = text;
+      this.applySearchFilter();
+    }
   }
 
   get searchQuery(): string {
@@ -79,9 +81,6 @@ export class ViewEmployeeComponent {
 
   ngOnInit() {
     this.onResize();
-    this.applySearchFilter();
-   
-    
   }
 
   ngAfterViewInit() {
@@ -182,16 +181,6 @@ export class ViewEmployeeComponent {
     return [...adminRoles, ...nonAdminRoles];
   }
 
-  reset(): void {
-    this.dataSource.filter = '';
-    this.dataSource._updateChangeSubscription();
-  }
-
-  CaptureEvent(event: any) {
-    const target = event.target as HTMLButtonElement;
-    this.cookieService.set('currentPage', target.innerText);
-  }
-
   ViewUser(email: string) {
     this.cookieService.set('selectedUser', email);
   }
@@ -239,10 +228,11 @@ export class ViewEmployeeComponent {
   }
 
   applySearchFilter() {
-    if (this.searchQuery.trim() != ''){
+      console.log(this.dataSource);
       this.dataSource.filter = this.searchQuery.trim().toLowerCase();
       this.dataSource._updateChangeSubscription();
-    };
+      console.log(this.dataSource);
+      console.log("HERE")
   }
 
   pageSizes: number[] = [1, 5, 10, 25, 100];

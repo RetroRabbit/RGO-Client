@@ -190,6 +190,7 @@ export class EmployeeProfileComponent {
   ngOnInit() {
     this.getEmployeeFields();
     this.previousPage = this.cookieService.get('previousPage');
+    console.log(this.previousPage);
   }
 
   goToEmployees() {
