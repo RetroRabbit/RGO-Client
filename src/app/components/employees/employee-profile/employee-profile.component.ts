@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { Properties } from 'src/app/models/properties.interface';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
-import { race } from 'src/app/models/constants/race.constants';
-import { gender } from 'src/app/models/constants/gender.constants';
+import { races } from 'src/app/models/constants/race.constants';
+import { genders } from 'src/app/models/constants/gender.constants';
 import { countries } from 'src/app/models/constants/country.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
@@ -16,7 +16,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
-import { level } from 'src/app/models/constants/level.constants';
+import { levels } from 'src/app/models/constants/levels.constants';
 
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
@@ -58,9 +58,9 @@ export class EmployeeProfileComponent {
   hasDisbility: boolean | undefined = false;
   physicalEqualPostal: boolean = false;
 
-  public genders = gender;
-  public races = race;
-  public levels = level;
+  public genders = genders;
+  public races = races;
+  public levels = levels;
   public countries = countries;
   public disabilities = disabilities;
   public provinces = provinces;

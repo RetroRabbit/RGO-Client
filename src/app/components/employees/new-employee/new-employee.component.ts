@@ -6,9 +6,9 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { level } from 'src/app/models/constants/level.constants';
-import { race } from 'src/app/models/constants/race.constants';
-import { gender } from 'src/app/models/constants/gender.constants';
+import { levels } from 'src/app/models/constants/levels.constants';
+import { races } from 'src/app/models/constants/race.constants';
+import { genders } from 'src/app/models/constants/gender.constants';
 import { combineLatest, first } from 'rxjs';
 import { countries } from 'src/app/models/constants/country.constants';
 import { provinces } from 'src/app/models/constants/provinces.constants';
@@ -26,7 +26,6 @@ import { MatStepper } from '@angular/material/stepper';
 })
 
 export class NewEmployeeComponent implements OnInit {
-  @Input() goto: 'dashboard' | 'employees' = 'dashboard';
 
   constructor(
     private employeeService: EmployeeService,
@@ -56,9 +55,9 @@ export class NewEmployeeComponent implements OnInit {
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   toggleAdditional: boolean = false;
 
-  levels: number[] = level.map((l) => l.value);
-  races: string[] = race.map((r) => r.value);
-  genders: string[] = gender.map((g) => g.value);
+  levels: number[] = levels.map((level) => level.value);
+  races: string[] = races.map((race) => race.value);
+  genders: string[] = genders.map((gender) => gender.value);
   countries: string[] = countries
   provinces: string[] = provinces
 
@@ -72,6 +71,7 @@ export class NewEmployeeComponent implements OnInit {
   employeeDocumentModels: EmployeeDocument[] = [];
   CURRENT_PAGE = 'currentPage';
   PREVIOUS_PAGE = 'previousPage';
+  COMPANY_EMAIL = 'retrorabbit.co.za';
 
 
   private createAddressForm(): FormGroup {
@@ -319,7 +319,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   onSubmit(reset: boolean = false): void {
-    if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith("retrorabbit.co.za")) {
+    if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
       this.toast.error({ detail: 'Error', summary: `⚠️ Please enter an official Retro Rabbit email address`, duration: 5000, position: 'topRight',
@@ -358,18 +358,6 @@ export class NewEmployeeComponent implements OnInit {
         });
       },
     });
-  }
-
-  goToEmployees() {
-    this.cookieService.set(this.CURRENT_PAGE, 'Employees');
-  }
-
-  CaptureEvent() {
-    //this.cookieService.set(this.CURRENT_PAGE, this.got)
-    if (this.goto == 'employees'){
-      this.cookieService.set(this.CURRENT_PAGE, 'View Employee');
-    } 
-    else this.cookieService.set(this.CURRENT_PAGE, 'Dashboard');
   }
 
   checkBlankRequiredFields() {

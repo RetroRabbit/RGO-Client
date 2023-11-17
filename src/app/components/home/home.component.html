@@ -187,12 +187,7 @@
     </div>
 
     <div *ngIf="cookieService.get('currentPage') == '+ Add Employee'">
-      <div *ngIf="!shouldDisplayNewEmployee">
-        <app-new-employee [goto]="'dashboard'"></app-new-employee>
-      </div>
-      <div *ngIf="shouldDisplayNewEmployee">
-        <app-new-employee [goto]="'employees'"></app-new-employee>
-      </div>
+        <app-new-employee></app-new-employee>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Employee Details'">
       <app-employee-details [selectedEmployee]="selectedEmployee"></app-employee-details>
