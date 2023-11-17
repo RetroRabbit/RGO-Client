@@ -15,7 +15,6 @@ export class EmployeeDocumentService {
         return this.httpClient.get<EmployeeDocument[]>(`${API.HttpsBaseURL}/employeedocument/all/?employeeId= ${employeeId}`);
     }
     saveEmployeeDocument(employeeDocument: any): Observable<EmployeeDocument> {
-        console.log(employeeDocument);
         return this.httpClient.post<EmployeeDocument>(`${API.HttpsBaseURL}/employeedocument/save`, employeeDocument);
     }
     getEmployeeDocument(employeeId: number, filename: string): Observable<EmployeeDocument> {
