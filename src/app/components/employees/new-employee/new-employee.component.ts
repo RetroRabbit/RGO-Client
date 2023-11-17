@@ -167,6 +167,41 @@ export class NewEmployeeComponent implements OnInit {
       });
   }
 
+  // public dropped(files: NgxFileDropEntry[]) {
+  //   this.files.push(...files);
+  //   for (const droppedFile of files) {
+  //     if (droppedFile.fileEntry.isFile) {
+  //       const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+  //       fileEntry.file((file: File) => {
+  //         const reader = new FileReader();
+  //         reader.onload = (e) => {
+  //           const base64String = e.target?.result as string;
+  //           this.employeeService.get(this.newEmployeeEmail).subscribe({
+  //             next: (employeeProfile: EmployeeProfile) => {
+  //               const employeeDocument: EmployeeDocument = {
+  //                 id: 0,
+  //                 employeeId: employeeProfile.id as number,
+  //                 fileName: file.name,
+  //                 file: base64String,
+  //                 uploadDate: new Date()
+  //               };
+  //               this.employeeDocumentModels.push(employeeDocument);
+  //             },
+  //             error: (error: any) => {
+  //               this.toast.error({
+  //                 detail: 'Error',
+  //                 summary: 'Failed compile documents',
+  //                 duration: 5000,
+  //                 position: 'topRight',
+  //               });
+  //             }
+  //           });
+  //         };
+  //         reader.readAsDataURL(file);
+  //       });
+  //     }
+  //   }
+  // }
   public dropped(files: NgxFileDropEntry[]) {
     this.files.push(...files);
     for (const droppedFile of files) {
@@ -181,9 +216,13 @@ export class NewEmployeeComponent implements OnInit {
                 const employeeDocument: EmployeeDocument = {
                   id: 0,
                   employeeId: employeeProfile.id as number,
+                  reference: "",
                   fileName: file.name,
+                  fileCategory: -1,
                   file: base64String,
-                  uploadDate: new Date()
+                  uploadDate: new Date(),
+                  reason: "",
+                  status: 1,
                 };
                 this.employeeDocumentModels.push(employeeDocument);
               },
@@ -202,7 +241,6 @@ export class NewEmployeeComponent implements OnInit {
       }
     }
   }
-
   onUploadDocument(): void {
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({

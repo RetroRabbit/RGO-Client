@@ -27,6 +27,10 @@ import { EmployeeBankingService } from 'src/app/services/employee/employee-banki
 import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
 import { banks } from 'src/app/models/constants/banks.constants';
 import { accountTypes } from 'src/app/models/constants/accountTypes.constants';
+import { MatTableDataSource } from '@angular/material/table';
+import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
+import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
+import { Document } from 'src/app/models/constants/documents.contants';
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -66,6 +70,7 @@ export class EmployeeProfileComponent {
   public provinces = provinces;
   public banks = banks;
   public accountTypes = accountTypes;
+  public fileCategories = Document;
 
   editContact: boolean = false;
   editEmployee: boolean = false;
@@ -90,7 +95,8 @@ export class EmployeeProfileComponent {
   addressFormProgress: number = 0;
   profileFormProgress: number = 0;
   overallFormProgress: number = 0;
-
+  documentFormProgress: number = 0;
+  
   bankingFormProgress: number = 0;
 
   careerSummaryProgress: number = 0;
@@ -103,6 +109,13 @@ export class EmployeeProfileComponent {
   bankingPDFName: string = "" ;
   hasBankingData: boolean = false;
   hasFile: boolean = false;
+
+  displayedColumns: string[] = ['document', 'action', 'status'];
+  dataSource = new MatTableDataSource<EmployeeDocument>();
+  employeeDocuments : EmployeeDocument[] = [];
+  uploadButtonIndex : number= 0;
+  base64String : string = "";
+  documentsFileName : string = "";
 
   employeeDetailsForm: FormGroup = this.fb.group({
     name: { value: '', disabled: true },
@@ -184,7 +197,8 @@ export class EmployeeProfileComponent {
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
-    private employeeBankingService: EmployeeBankingService) { }
+    private employeeBankingService: EmployeeBankingService,
+    private employeeDocumentService: EmployeeDocumentService) { }
 
   ngOnInit() {
     this.getEmployeeFields();
@@ -203,7 +217,7 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
-        
+        this.getEmployeeDocuments();
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
@@ -855,6 +869,112 @@ export class EmployeeProfileComponent {
       };
       reader.readAsDataURL(this.selectedFile);
     }
+  }
+  
+  captureUploadIndex(event : any){
+    this.uploadButtonIndex = event.srcElement.parentElement.id;
+    const inputField = document.getElementById(`${this.uploadButtonIndex}-document`) as HTMLInputElement;
+    inputField.click();
+  }
+
+  uploadDocument(event: any){
+    this.selectedFile = event.target.files[0];
+    this.documentsFileName = this.selectedFile.name;
+    this.uploadProfileDocument();
+  }
+  
+  uploadProfileDocument(){
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.buildDocumentDto();
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+getEmployeeDocuments() {
+    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile?.id as number).subscribe({
+      next: data => {
+        this.employeeDocuments = data;
+        this.dataSource.data = data;
+        console.log(this.dataSource.data);
+      },
+      error: error => {
+        console.log(error);
+      }
+    })
+  }
+
+  uploadDocumentDto(document : any){
+    if(document.id == 0){
+      //adding a document
+      this.employeeDocumentService.saveEmployeeDocument(document).subscribe({
+        next: () => {
+          this.toast.success({ detail: "Document added!", position: 'topRight' });
+        },
+        error: () => {
+          this.toast.error({ detail: "Document unable to upload!", position: 'topRight' });
+        }
+      });
+    }else{
+      //updating document
+      this.employeeDocumentService.updateEmployeeDocument(document).subscribe({
+        next: () => {
+          this.toast.success({ detail: "Document updated ", position: 'topRight' });
+        },
+        error: () => {
+          this.toast.error({ detail: "Document unable to update!", position: 'topRight' });
+        }
+      });
+    }
+  }
+  buildDocumentDto(){
+    const existingValue = this.filterDocumentsByCategory(this.uploadButtonIndex);
+    // this.getbase64();
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        console.log("hey");
+        this.base64String = reader.result as string;
+        var newDto : {} = {
+          id: existingValue != undefined ?  existingValue?.id as number : 0,
+          // employeeId: this.employeeProfile?.id as number,
+          employee: this.employeeProfile,
+          reference: "",
+          fileName: this.documentsFileName,
+          fileCategory: +this.uploadButtonIndex,
+          blob: this.base64String,
+          status: 1,
+          uploadDate: new Date(),
+          reason: '',
+        } 
+        console.log(newDto);
+        this.uploadDocumentDto(newDto);
+
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+  
+  getbase64() {
+    console.log(this.selectedFile);
+    // if (this.selectedFile) {
+    //   const reader = new FileReader();
+    //   reader.onload = () => {
+    //     console.log("hey");
+    //     this.base64String = reader.result as string;
+    //   };
+    //   reader.readAsDataURL(this.selectedFile);
+    // }
+  }
+
+  filterDocumentsByCategory(index : number) : EmployeeDocument | null{
+    var object  = this.employeeDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
+    if(object == null){
+      return null;
+    }
+    return object[0];
   }
 
 }
