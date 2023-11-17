@@ -48,7 +48,8 @@ export class ViewEmployeeComponent {
 
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
-    this.cookieService.set('currentPage', '+ Add New Hire');
+    this.cookieService.set('previousPage', 'Employees');
+    this.cookieService.set('currentPage', '+ Add Employee');
   }
 
   onManagePermissionClick(): void {
