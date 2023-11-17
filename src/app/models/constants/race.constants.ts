@@ -1,4 +1,4 @@
-export const race = [
+export const races = [
     {id: 0, value: 'Black'},
     {id: 1, value: 'White'},
     {id: 2, value: 'Indian'},
