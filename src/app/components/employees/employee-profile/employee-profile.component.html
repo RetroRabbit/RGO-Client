@@ -762,9 +762,9 @@
                         <mat-icon class="mx-1">error</mat-icon> Missing information
                       </mat-panel-description>
                     </mat-expansion-panel-header>
-        
+
                     <mat-table [dataSource]="dataSource.data" class="mat-elevation-z8">
-        
+
                       <!-- Document Column -->
                       <ng-container matColumnDef="document">
                         <mat-header-cell *matHeaderCellDef> Document </mat-header-cell>
@@ -783,17 +783,21 @@
                           </div>
                           </mat-cell>
                       </ng-container>
-        
+
                       <!-- Action Column -->
                       <ng-container matColumnDef="action">
                         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-                        <mat-cell *matCellDef="let row; let i = index">
+                        <mat-cell *matCellDef="let row; let i = index" id="ActionCell">
+                          <div id="ActionCellDownload">
                           <button mat-button color="primary" (click)="downloadDocument($event)" [id]=i>Download</button>
+                        </div>
+                        <div id="ActionCellUpload">
                           <button mat-button color="primary" (click)="captureUploadIndex($event)" [id]=i [disabled]="disableButton(i)">Upload</button>
+                        </div>
                           <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf" [id]="i + '-document'">
                         </mat-cell>
                       </ng-container>
-        
+
                       <!-- Status Column -->
                       <ng-container matColumnDef="status">
                         <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
@@ -814,15 +818,15 @@
                                 </ng-template>
                             </mat-cell>
                       </ng-container>
-        
+
                       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                     </mat-table>
-        
+
                   </mat-expansion-panel>
                 </mat-accordion>
               </div>
-        
+
               <mat-accordion id="accordion" class="row">
                 <mat-expansion-panel class="my-3" (opened)="checkEmployeeDetails()" (closed)="panelOpenState = false">
                   <mat-expansion-panel-header>
@@ -833,7 +837,7 @@
                   <!-- <app-employee-documents></app-employee-documents> -->
                 </mat-expansion-panel>
               </mat-accordion>
-        
+
               <mat-accordion id="accordion" class="row">
                 <mat-expansion-panel class="my-3" (opened)="checkEmployeeDetails()" (closed)="panelOpenState = false">
                   <mat-expansion-panel-header>
@@ -844,7 +848,7 @@
                   <!-- <app-employee-documents></app-employee-documents> -->
                 </mat-expansion-panel>
               </mat-accordion>
-        
+
               <mat-accordion id="accordion" class="row">
                 <mat-expansion-panel class="my-3" (opened)="checkEmployeeDetails()" (closed)="panelOpenState = false">
                   <mat-expansion-panel-header>
