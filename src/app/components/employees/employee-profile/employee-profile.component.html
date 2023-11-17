@@ -713,7 +713,8 @@
                                             <div class="my-2">
                                                 <div class="row">
                                                     <div *ngIf="hasFile">
-                                                        <button mat-button color="primary" [hidden]="employeeBanking.file.length == 0"
+                                                        <button mat-button color="primary"
+                                                            [hidden]="employeeBanking.file.length == 0"
                                                             (click)="convertFileToBase64()">Download</button>
                                                     </div>
                                                     <div class="col-5" [hidden]="!editBanking" class="row"
@@ -753,112 +754,117 @@
             </div>
             <div class="col-12" *ngIf="selectedItem == 'Documents'" id="accordion-container">
                 <mat-accordion id="accordion" class="row">
-                  <mat-expansion-panel class="my-3">
-                    <mat-expansion-panel-header>
-                      <mat-panel-title>
-                        HR Documents
-                      </mat-panel-title>
-                      <mat-panel-description *ngIf="documentFormProgress != 100">
-                        <mat-icon class="mx-1">error</mat-icon> Missing information
-                      </mat-panel-description>
-                    </mat-expansion-panel-header>
+                    <mat-expansion-panel class="my-3">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                HR Documents
+                            </mat-panel-title>
+                            <mat-panel-description *ngIf="documentFormProgress != 100">
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
 
-                    <mat-table [dataSource]="dataSource.data" class="mat-elevation-z8">
-
-                      <!-- Document Column -->
-                      <ng-container matColumnDef="document">
-                        <mat-header-cell *matHeaderCellDef> Document </mat-header-cell>
-                        <mat-cell *matCellDef="let row; let i = index">
-                          <div class="row">
-                            <div class="col-12">
-                                <strong>{{row}}</strong>
+                        <div id="table">
+                            <div id="table-header" class="row pt-3">
+                                <div class="col-6">
+                                    <h4 class="ms-2 mt-1">Document</h4>
+                                </div>
+                                <div class="col-4">
+                                    <h4 class="ms-1 mt-1">Action</h4>
+                                </div>
+                                <div class="col-2">
+                                    <h4 class="ms-1 mt-1">Status</h4>
+                                </div>
                             </div>
-                            <div class="col-12" *ngIf="getFileName(i) as document;else NoFile">
-                                <p>{{document.fileName}}</p>
-                            </div>
-                            <ng-template #NoFile>
-                                <p>Download & upload document here</p>
-                            </ng-template>
-                            <p *ngIf="row.status == 2" [ngStyle]="{'color': row.reason ? 'red' : 'inherit'}">Reason: {{row.reason}}</p>
-                          </div>
-                          </mat-cell>
-                      </ng-container>
-
-                      <!-- Action Column -->
-                      <ng-container matColumnDef="action">
-                        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-                        <mat-cell *matCellDef="let row; let i = index" id="ActionCell">
-                          <div id="ActionCellDownload">
-                          <button mat-button color="primary" (click)="downloadDocument($event)" [id]=i>Download</button>
-                        </div>
-                        <div id="ActionCellUpload">
-                          <button mat-button color="primary" (click)="captureUploadIndex($event)" [id]=i [disabled]="disableButton(i)">Upload</button>
-                        </div>
-                          <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf" [id]="i + '-document'">
-                        </mat-cell>
-                      </ng-container>
-
-                      <!-- Status Column -->
-                      <ng-container matColumnDef="status">
-                        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-                          <mat-cell *matCellDef="let row; let i = index">
-                                <div *ngIf="getFileName(i) as document; else noDoc">
-                                    <div *ngIf="document.status === 0">
-                                        <span>{{ 'Approved' }}</span>
+                            <div id="table-body" class="my-2">
+                                <div *ngFor="let category of fileCategories;let i = index" class="row my-2 py-2"
+                                    id="document-row">
+                                    <div id="document" class="col-6 py-2">
+                                        <h3>{{category}}</h3>
+                                        <div class="col-12" *ngIf="getFileName(i) as document;else NoFile"
+                                            id="fileName">
+                                            <p>{{document.fileName}}</p>
+                                        </div>
+                                        <ng-template #NoFile>
+                                            <p>Download & upload document here</p>
+                                        </ng-template>
                                     </div>
-                                    <div *ngIf="document.status === 2">
-                                        <span>{{ 'Rejected' }}</span>
+                                    <div class="col-4 py-2">
+                                        <div class="row">
+                                            <div id="ActionCellDownload" class="col-auto">
+                                                <button mat-button color="primary" (click)="downloadDocument($event)"
+                                                    [id]=i>Download</button>
+                                            </div>
+                                            <div id="ActionCellUpload" class="col-auto">
+                                                <button mat-button color="primary" (click)="captureUploadIndex($event)"
+                                                    [id]=i [disabled]="disableButton(i)"
+                                                    [ngStyle]="{'background-color': !disableButton(i) ? '#0029c6' : '#e3e3e4ff'}">Upload</button>
+                                            </div>
+                                            <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf"
+                                                [id]="i + '-document'">
+                                        </div>
                                     </div>
-                                    <div *ngIf="document.status === 1">
-                                        <span>{{ 'Pending' }}</span>
+                                    <div class="col-2 py-2">
+                                        <div *ngIf="getFileName(i) as document; else noDoc" id="statuses">
+                                            <div *ngIf="document.status === 0" id="status-0">
+                                                <span>{{ 'Approved' }}</span>
+                                            </div>
+                                            <div *ngIf="document.status === 2" id="status-2">
+                                                <span>{{ 'Rejected' }}</span>
+                                            </div>
+                                            <div *ngIf="document.status === 1" id="status-1">
+                                                <span>{{ 'Pending Approval' }}</span>
+                                            </div>
+                                        </div>
+                                        <ng-template #noDoc>
+                                            <div id="status-null">
+                                                <span>{{ 'Action Required' }}</span>
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                    <div *ngIf="getFileName(i) as document" id="reject-reason">
+                                        <h5 *ngIf="document.status == 2">{{document.reason}}</h5>
                                     </div>
                                 </div>
-                                <ng-template #noDoc>
-                                        <span>{{ 'Action Required' }}</span>
-                                </ng-template>
-                            </mat-cell>
-                      </ng-container>
 
-                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                    </mat-table>
-
-                  </mat-expansion-panel>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
                 </mat-accordion>
-              </div>
+            </div>
 
-              <mat-accordion id="accordion" class="row">
+            <mat-accordion id="accordion" class="row">
                 <mat-expansion-panel class="my-3" (opened)="checkEmployeeDetails()" (closed)="panelOpenState = false">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      Equipment
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <!-- <app-employee-documents></app-employee-documents> -->
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Equipment
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <!-- <app-employee-documents></app-employee-documents> -->
                 </mat-expansion-panel>
-              </mat-accordion>
+            </mat-accordion>
 
-              <mat-accordion id="accordion" class="row">
+            <mat-accordion id="accordion" class="row">
                 <mat-expansion-panel class="my-3" (opened)="checkEmployeeDetails()" (closed)="panelOpenState = false">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      Performance Review
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <!-- <app-employee-documents></app-employee-documents> -->
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Performance Review
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <!-- <app-employee-documents></app-employee-documents> -->
                 </mat-expansion-panel>
-              </mat-accordion>
+            </mat-accordion>
 
-              <mat-accordion id="accordion" class="row">
+            <mat-accordion id="accordion" class="row">
                 <mat-expansion-panel class="my-3" (opened)="checkEmployeeDetails()" (closed)="panelOpenState = false">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      Additional Information
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <!-- <app-employee-documents></app-employee-documents> -->
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Additional Information
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <!-- <app-employee-documents></app-employee-documents> -->
                 </mat-expansion-panel>
-              </mat-accordion>
+            </mat-accordion>
 
         </div>
     </div>

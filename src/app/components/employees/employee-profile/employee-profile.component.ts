@@ -96,7 +96,7 @@ export class EmployeeProfileComponent {
   profileFormProgress: number = 0;
   overallFormProgress: number = 0;
   documentFormProgress: number = 0;
-  
+
   bankingFormProgress: number = 0;
 
   careerSummaryProgress: number = 0;
@@ -238,7 +238,7 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
-        this.initializeForm(); 
+        this.initializeForm();
       }
     });
   }
@@ -638,7 +638,7 @@ export class EmployeeProfileComponent {
       this.filteredPeopleChamps = this.employees.filter((champs: any) =>
         champs.employee.name.toLowerCase().includes(event.target.value.toLowerCase())
       );
-    } 
+    }
   }
 
   getId(data: any, name: string) {
@@ -870,7 +870,7 @@ export class EmployeeProfileComponent {
       reader.readAsDataURL(this.selectedFile);
     }
   }
-  
+
   captureUploadIndex(event : any){
     this.uploadButtonIndex = event.srcElement.parentElement.id;
     const inputField = document.getElementById(`${this.uploadButtonIndex}-document`) as HTMLInputElement;
@@ -882,7 +882,7 @@ export class EmployeeProfileComponent {
     this.documentsFileName = this.selectedFile.name;
     this.uploadProfileDocument();
   }
-  
+
   uploadProfileDocument(){
     if (this.selectedFile) {
       const reader = new FileReader();
@@ -899,10 +899,10 @@ getEmployeeDocuments() {
         this.employeeDocuments = data;
         this.dataSource.data = this.fileCategories;
         this.calculateDocumentProgress();
-        // console.log(this.dataSource.data);
       },
       error: error => {
-        console.log(error);
+        this.toast.error({ detail: "Error detching documents", position: 'topRight' });
+
       }
     })
   }
@@ -964,7 +964,7 @@ getEmployeeDocuments() {
       reader.readAsDataURL(this.selectedFile);
     }
   }
-  
+
   filterDocumentsByCategory() : EmployeeDocument | null{
     var object  = this.employeeDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
     if(object == null){
@@ -992,7 +992,7 @@ getEmployeeDocuments() {
       }
     }
   }
-  
+
   disableButton(index: number):boolean{
     const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
     if(docObj == undefined || docObj?.status == 2){

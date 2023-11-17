@@ -280,3 +280,71 @@
   padding: 0.5rem;
   width: 7rem;
 }
+
+#header-cell{
+    color: black;
+    font-size: 16px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    word-wrap: break-word;
+
+    padding-left: 2rem;
+}
+
+#table{
+    background: #fdfdfe;
+}
+
+#table-header{
+    background: #D7DFFF;
+    border-top-right-radius: 2rem;
+    border-top-left-radius: 2rem;
+}
+
+#header-header > div{
+    color: black;
+    font-size: 16px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+}
+
+#document-row{
+    background-color: white;
+    border-radius: 2rem;
+}
+
+#fileName{
+    color: grey;
+}
+
+#statuses > div{
+    color:white;
+    text-align: center;
+    width: fit-content;
+    border-radius: 0.3rem;
+}
+
+#status-0{
+    background: #0faf4bff;
+    padding: 0.3rem 0.7rem;
+}
+#status-1{
+    background: #322f35ff;
+    padding: 0.3rem 0.7rem;
+}
+#status-2{
+    background: #b3261eff;
+    padding: 0.3rem 0.7rem;
+}
+#status-null{
+    background: white;
+    color: #0029c6;
+    padding: 0.3rem 0.7rem;
+}
+#reject-reason{
+    color: #b3261eff;
+}
