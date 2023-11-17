@@ -43,13 +43,13 @@ export class EmployeeProfileService {
     );
   }
 
-  getAllEmployees(name: string): Observable<EmployeeProfile[]> {
+  searchEmployees(name: string): Observable<EmployeeProfile[]> {
     const queryParams = `?name=${name}`;
     return this.client.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employee/search${queryParams}`);
   }
 
   getEmployeeById(id: number): Observable<EmployeeProfile | undefined> {
-    return this.getAllEmployees('').pipe(
+    return this.searchEmployees('').pipe(
       map(employees => employees.find(employee => employee.id === id))
     );
   }
