@@ -760,7 +760,7 @@ export class EmployeeProfileComponent {
   }
 
   overallProgress() {
-    this.overallFormProgress = Math.round((0.25 * this.profileFormProgress) + (0.25 * this.bankInformationProgress));
+    this.overallFormProgress = Math.round((0.25 * this.profileFormProgress) + (0.25 * this.bankInformationProgress) + (0.25 * this.documentFormProgress));
   }
 
 
@@ -1003,7 +1003,8 @@ getEmployeeDocuments() {
 
   calculateDocumentProgress(){
     const total = this.fileCategories.length;
-    const fetchedDocuments = this.employeeDocuments.length;
-    this.documentFormProgress = Math.floor( fetchedDocuments/total);
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
+    this.documentFormProgress = fetchedDocuments/total * 100;
+    this.overallProgress();
   }
 }
