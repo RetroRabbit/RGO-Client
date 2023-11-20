@@ -60,6 +60,11 @@ export class ChartComponent implements OnInit {
       legend: {
         display: true,
         position: 'bottom',
+        labels:{
+          font: {
+            size: 16
+          }
+        }
       },
       datalabels: {
         anchor: 'middle',
@@ -73,10 +78,20 @@ export class ChartComponent implements OnInit {
   public pieChartOptions: ChartConfiguration['options'] = {
     events: [],
     responsive: true,
+    layout:{
+      padding:{
+        left: 20
+      }
+    },
     plugins: {
       legend: {
         display: true,
-        position: 'bottom',
+        position: 'right',
+        labels:{
+          font: {
+            size: 16
+          }
+        }
       },
       datalabels: {
         anchor: 'middle',
@@ -125,7 +140,7 @@ export class ChartComponent implements OnInit {
         }
       },
       error: error => {
-        this.toast.error({ detail: "error", summary: "Chart display unsuccessful", duration: 5000, position: 'topRight' });
+        this.toast.error({ detail: "Error", summary: "Chart display unsuccessful", duration: 5000, position: 'topRight' });
       }
     });
   }
