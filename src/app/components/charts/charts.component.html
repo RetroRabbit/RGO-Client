@@ -45,11 +45,11 @@
 </div>
 <div class="row" id="chart-container" *ngIf="!showUpdateForm && !showReport">
   <div class="offset-1 col-4 my-2 border" *ngFor="let chart of chartData;index as i" id="chart-item">
-    <div id="chart-header" class="row p-2">
-      <div class="col-10">
+    <div id="chart-header" class="row px-2 pt-2">
+      <div class="col-11">
         <h2>{{chart.name}}</h2>
       </div>
-      <div class="col-2" id="chart-icon">
+      <div class="col-1" id="chart-icon">
         <button mat-button [matMenuTriggerFor]="menu" id="options-trigger">
           <mat-icon id="menu-icon">more_vert</mat-icon>
         </button>
