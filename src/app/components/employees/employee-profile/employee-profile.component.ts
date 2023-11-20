@@ -27,6 +27,10 @@ import { EmployeeBankingService } from 'src/app/services/employee/employee-banki
 import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
 import { banks } from 'src/app/models/constants/banks.constants';
 import { accountTypes } from 'src/app/models/constants/accountTypes.constants';
+import { MatTableDataSource } from '@angular/material/table';
+import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
+import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
+import { Document } from 'src/app/models/constants/documents.contants';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { category } from 'src/app/models/constants/fieldcodeCategory.constants';
@@ -71,6 +75,7 @@ export class EmployeeProfileComponent {
   public provinces = provinces;
   public banks = banks;
   public accountTypes = accountTypes;
+  public fileCategories = Document;
   public category = category;
   public fieldTypes = dataTypes;
 
@@ -98,6 +103,8 @@ export class EmployeeProfileComponent {
   profileFormProgress: number = 0;
   additionalFormProgress: number = 0;
   overallFormProgress: number = 0;
+  documentFormProgress: number = 0;
+
   bankingFormProgress: number = 0;
 
   careerSummaryProgress: number = 0;
@@ -110,6 +117,13 @@ export class EmployeeProfileComponent {
   bankingPDFName: string = "" ;
   hasBankingData: boolean = false;
   hasFile: boolean = false;
+
+  displayedColumns: string[] = ['document', 'action', 'status'];
+  dataSource = new MatTableDataSource<string>();
+  employeeDocuments : EmployeeDocument[] = [];
+  uploadButtonIndex : number= 0;
+  base64String : string = "";
+  documentsFileName : string = "";
 
   employeeDetailsForm: FormGroup = this.fb.group({
     name: { value: '', disabled: true },
@@ -194,6 +208,7 @@ export class EmployeeProfileComponent {
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
     private employeeBankingService: EmployeeBankingService,
+    private employeeDocumentService: EmployeeDocumentService,
     private fieldCodeService: FieldCodeService,
     private employeeDataService: EmployeeDataService) { }
 
@@ -214,6 +229,7 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
+        this.getEmployeeDocuments();
 
         this.employeeDataService.getEmployeeData(this.selectedEmployee ? this.selectedEmployee.id : this.employeeProfile?.id).subscribe({
           next: data => {
@@ -239,6 +255,7 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
+        this.initializeForm();
         this.fieldCodeService.getAllFieldCodes().subscribe({
           next: data => {
             this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id)
@@ -247,7 +264,7 @@ export class EmployeeProfileComponent {
             this.totalProfileProgress();
           }
         });
-        this.initializeForm(); 
+        this.initializeForm();
       }
     });
   }
@@ -360,7 +377,7 @@ export class EmployeeProfileComponent {
         this.additionalInfoForm = this.fb.group(formGroupConfig);
         this.additionalInfoForm.disable();
       }
-    }); 
+    });
   }
 
   CaptureEvent(event: any) {
@@ -730,7 +747,7 @@ export class EmployeeProfileComponent {
     } else {
       this.filteredPeopleChamps = this.employees;
     }
-    
+
   }
 
   getId(data: any, name: string) {
@@ -829,7 +846,7 @@ export class EmployeeProfileComponent {
     let filledCount = 0;
     const formControls = this.additionalInfoForm.controls;
     let totalFields = Object.keys(this.additionalInfoForm.controls).length;
-  
+
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
@@ -868,7 +885,7 @@ export class EmployeeProfileComponent {
   }
 
   overallProgress() {
-    this.overallFormProgress = Math.round((0.33 * this.profileFormProgress) + (0.33 * this.bankInformationProgress));
+    this.overallFormProgress = Math.round((0.33 * this.profileFormProgress) + (0.33 * this.bankInformationProgress) + (0.33 * this.documentFormProgress));
   }
 
   openFileInput() {
@@ -977,4 +994,139 @@ export class EmployeeProfileComponent {
     }
   }
 
+  captureUploadIndex(event : any){
+    this.uploadButtonIndex = event.srcElement.parentElement.id;
+    const inputField = document.getElementById(`${this.uploadButtonIndex}-document`) as HTMLInputElement;
+    inputField.click();
+  }
+
+  uploadDocument(event: any){
+    this.selectedFile = event.target.files[0];
+    this.documentsFileName = this.selectedFile.name;
+    this.uploadProfileDocument();
+  }
+
+  uploadProfileDocument(){
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.buildDocumentDto();
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+getEmployeeDocuments() {
+    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile?.id as number).subscribe({
+      next: data => {
+        this.employeeDocuments = data;
+        this.dataSource.data = this.fileCategories;
+        this.calculateDocumentProgress();
+      },
+      error: error => {
+        this.toast.error({ detail: "Error detching documents", position: 'topRight' });
+
+      }
+    })
+  }
+
+  uploadDocumentDto(document : any){
+    if(document.id == 0){
+      const saveObj = {
+        id: document.id,
+        employeeId: document.employee.id,
+        fileName: document.fileName,
+        file: this.base64String,
+        fileCategory: document.fileCategory,
+        uploadDate: document.uploadDate
+      }
+      this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
+        next: () => {
+          this.toast.success({ detail: "Document added!", position: 'topRight' });
+          this.getEmployeeDocuments();
+          this.calculateDocumentProgress();
+        },
+        error: () => {
+          this.toast.error({ detail: "Document unable to upload!", position: 'topRight' });
+        }
+      });
+    }else{
+      this.employeeDocumentService.updateEmployeeDocument(document).subscribe({
+        next: () => {
+          this.toast.success({ detail: "Document updated ", position: 'topRight' });
+          this.getEmployeeDocuments();
+          this.calculateDocumentProgress();
+        },
+        error: () => {
+          this.toast.error({ detail: "Document unable to update!", position: 'topRight' });
+        }
+      });
+    }
+  }
+  buildDocumentDto(){
+    const existingValue = this.filterDocumentsByCategory();
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.base64String = reader.result as string;
+        var newDto : {} = {
+          id: existingValue != undefined ?  existingValue?.id as number : 0,
+          employee: this.employeeProfile,
+          reference: "",
+          fileName: this.documentsFileName,
+          fileCategory: +this.uploadButtonIndex,
+          blob: this.base64String,
+          status: 1,
+          uploadDate: new Date(),
+          reason: '',
+        };
+        this.uploadDocumentDto(newDto);
+
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  filterDocumentsByCategory() : EmployeeDocument | null{
+    var object  = this.employeeDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
+    if(object == null){
+      return null;
+    }
+    return object[0];
+  }
+
+  getFileName(index : number) : EmployeeDocument{
+    var docObj = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
+    return docObj;
+  }
+
+  downloadDocument(event: any){
+    const id = event.srcElement.parentElement.id;
+    const docObj = this.employeeDocuments.find(document => document.fileCategory == id) as any;
+    if(docObj === undefined){
+      // TODO: download clean slate form
+    }
+    else{
+      if(docObj.status == 2){
+          // TODO: download clean slate form
+      }else{
+        this.downloadFile(docObj?.blob as string, docObj?.fileName as string);
+      }
+    }
+  }
+
+  disableButton(index: number):boolean{
+    const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
+    if(docObj == undefined || docObj?.status == 2){
+      return false;
+    }
+    return true;
+  }
+
+  calculateDocumentProgress(){
+    const total = this.fileCategories.length;
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
+    this.documentFormProgress = fetchedDocuments/total * 100;
+    this.overallProgress();
+  }
 }

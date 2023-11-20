@@ -169,6 +169,7 @@ export class NewEmployeeComponent implements OnInit {
       });
   }
 
+  
   public dropped(files: NgxFileDropEntry[]) {
     this.files.push(...files);
     for (const droppedFile of files) {
@@ -183,9 +184,13 @@ export class NewEmployeeComponent implements OnInit {
                 const employeeDocument: EmployeeDocument = {
                   id: 0,
                   employeeId: employeeProfile.id as number,
+                  reference: "",
                   fileName: file.name,
+                  fileCategory: -1,
                   file: base64String,
-                  uploadDate: new Date()
+                  uploadDate: new Date(),
+                  reason: "",
+                  status: 1,
                 };
                 this.employeeDocumentModels.push(employeeDocument);
               },
@@ -240,7 +245,7 @@ export class NewEmployeeComponent implements OnInit {
         }
       });
     });
-   
+
 
   }
 
@@ -261,7 +266,7 @@ export class NewEmployeeComponent implements OnInit {
     if(event.target.files && event.target.files.length) {
       const file = event.target.files[0];
       if(this.validateFile(file)) {
-        this.imageConverter(file); 
+        this.imageConverter(file);
       } else {
         this.clearUpload();
       }
@@ -326,7 +331,7 @@ export class NewEmployeeComponent implements OnInit {
      });
      return;
     }
-    
+
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
