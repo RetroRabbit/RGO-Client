@@ -262,7 +262,7 @@
   width: 100%;
 }
 
-#ActionCellDownload>button {
+#actionCellDownload>button {
   border: 1px solid #0029C6;
   border-radius: 2rem;
   background-color: white;
@@ -272,7 +272,7 @@
 
 }
 
-#ActionCellUpload>button{
+#actionCellUpload>button{
   background: #0029c6;
   border: none;
   border-radius: 4rem;
