@@ -1,3 +1,14 @@
+import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
+import { CookieService } from 'ngx-cookie-service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
+import { NgToastService } from 'ng-angular-popup';
+import { ClientService } from 'src/app/services/client.service';
+import { Client } from 'src/app/models/client.interface';
+import { EmployeeData } from 'src/app/models/employeedata.interface';
 import {
   Component,
   Output,
@@ -6,9 +17,6 @@ import {
   HostListener,
   NgZone,
 } from '@angular/core';
-import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { CookieService } from 'ngx-cookie-service';
 import {
   Observable,
   catchError,
@@ -19,14 +27,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { NgToastService } from 'ng-angular-popup';
-import { ClientService } from 'src/app/services/client.service';
-import { Client } from 'src/app/models/client.interface';
-import { EmployeeData } from 'src/app/models/employeedata.interface';
 
 @Component({
   selector: 'app-view-employee',
@@ -37,6 +37,8 @@ export class ViewEmployeeComponent {
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() addEmployeeEvent = new EventEmitter<void>();
   @Output() managePermissionsEvent = new EventEmitter<void>();
+
+  CURRENT_PAGE = 'currentPage';
 
   roles: Observable<string[]> = this.employeeRoleService
     .getAllRoles()
@@ -49,12 +51,7 @@ export class ViewEmployeeComponent {
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
     this.cookieService.set('previousPage', 'Employees');
-    this.cookieService.set('currentPage', '+ Add Employee');
-  }
-
-  onManagePermissionClick(): void {
-    this.managePermissionsEvent.emit();
-    this.cookieService.set('currentPage', 'Manage Permissions');
+    this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee');
   }
 
   constructor(
@@ -178,7 +175,7 @@ export class ViewEmployeeComponent {
 
   CaptureEvent(event: any) {
     const target = event.target as HTMLButtonElement;
-    this.cookieService.set('currentPage', target.innerText);
+    this.cookieService.set(this.CURRENT_PAGE, target.innerText);
   }
 
   ViewUser(email: string) {
@@ -205,7 +202,7 @@ export class ViewEmployeeComponent {
         ),
         tap((data) => {
           this.selectedEmployee.emit(data);
-          this.cookieService.set('currentPage', 'EmployeeProfile');
+          this.cookieService.set(this.CURRENT_PAGE, 'EmployeeProfile');
         }),
         first()
       )
