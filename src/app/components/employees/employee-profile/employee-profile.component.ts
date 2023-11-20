@@ -12,7 +12,7 @@ import { NgToastService } from 'ng-angular-popup';
 import { ClientService } from 'src/app/services/client.service';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { Client } from 'src/app/models/client.interface';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
@@ -27,6 +27,11 @@ import { EmployeeBankingService } from 'src/app/services/employee/employee-banki
 import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
 import { banks } from 'src/app/models/constants/banks.constants';
 import { accountTypes } from 'src/app/models/constants/accountTypes.constants';
+import { FieldCodeService } from 'src/app/services/field-code.service';
+import { EmployeeDataService } from 'src/app/services/employee-data.service';
+import { category } from 'src/app/models/constants/fieldcodeCategory.constants';
+import { dataTypes } from 'src/app/models/constants/types.constants';
+import { Employee } from 'src/app/models/employee.interface';
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -66,13 +71,15 @@ export class EmployeeProfileComponent {
   public provinces = provinces;
   public banks = banks;
   public accountTypes = accountTypes;
+  public category = category;
+  public fieldTypes = dataTypes;
 
   editContact: boolean = false;
   editEmployee: boolean = false;
   editPersonal: boolean = false;
   editAddress: boolean = false;
+  editAdditional: boolean = false;
   editBanking: boolean = false;
-
 
   isUpdated: boolean = false;
   physicalCountryControl: string = "";
@@ -89,8 +96,8 @@ export class EmployeeProfileComponent {
   contactFormProgress: number = 0;
   addressFormProgress: number = 0;
   profileFormProgress: number = 0;
+  additionalFormProgress: number = 0;
   overallFormProgress: number = 0;
-
   bankingFormProgress: number = 0;
 
   careerSummaryProgress: number = 0;
@@ -154,6 +161,8 @@ export class EmployeeProfileComponent {
     postalPostalCode: { value: '', disabled: true }
   });
 
+  additionalInfoForm: FormGroup = this.fb.group({});
+
   employeeBankingsForm: FormGroup = this.fb.group({
     accountHolderName: [{ value: '', disabled: true }, Validators.required],
     accountType: [{ value: -1, disabled: true }, Validators.required],
@@ -184,7 +193,9 @@ export class EmployeeProfileComponent {
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
-    private employeeBankingService: EmployeeBankingService) { }
+    private employeeBankingService: EmployeeBankingService,
+    private fieldCodeService: FieldCodeService,
+    private employeeDataService: EmployeeDataService) { }
 
   ngOnInit() {
     this.getEmployeeFields();
@@ -203,13 +214,17 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
-        
+
+        this.employeeDataService.getEmployeeData(this.selectedEmployee ? this.selectedEmployee.id : this.employeeProfile?.id).subscribe({
+          next: data => {
+            this.employeeData = data;
+          }
+        });
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
             this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
             this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-
             this.clientService.getAllClients().subscribe({
               next: data => {
                 this.clients = data;
@@ -222,6 +237,14 @@ export class EmployeeProfileComponent {
           next: data => {
             this.employeeTypes = data;
             this.initializeEmployeeProfileDto();
+          }
+        });
+        this.fieldCodeService.getAllFieldCodes().subscribe({
+          next: data => {
+            this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id)
+            this.checkAdditionalInformation();
+            this.checkAdditionalFormProgress();
+            this.totalProfileProgress();
           }
         });
         this.initializeForm(); 
@@ -305,7 +328,10 @@ export class EmployeeProfileComponent {
       return data.id == this.employeeProfile!.clientAllocated
     });
     this.foundChampion = this.employees.find((data: any) => {
-      return data.employee.id == this.employeeProfile!.peopleChampion
+      if (this.employeeProfile?.peopleChampion != null){
+        return data.employee.id == this.employeeProfile!.peopleChampion
+      }
+      return null;
     });
 
     if (this.foundTeamLead != null) {
@@ -322,6 +348,19 @@ export class EmployeeProfileComponent {
       this.employeeDetailsForm.get('peopleChampion')?.setValue(this.foundChampion.employee.name + ' ' + this.foundChampion.employee.surname);
       this.peopleChampionId = this.foundChampion.employee.id
     }
+  }
+
+  checkAdditionalInformation(){
+    this.panelOpenState = true;
+    const formGroupConfig: any = {};
+    this.customFields.forEach(fieldName => {
+      if (fieldName.code != null || fieldName.code != undefined) {
+        const customData = this.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
+        formGroupConfig[fieldName.code] = new FormControl({value: customData[0] ? customData[0].value : '', disabled: true});
+        this.additionalInfoForm = this.fb.group(formGroupConfig);
+        this.additionalInfoForm.disable();
+      }
+    }); 
   }
 
   CaptureEvent(event: any) {
@@ -599,6 +638,70 @@ export class EmployeeProfileComponent {
     this.employeeContactForm.disable();
   }
 
+  saveAdditionalEdit(){
+    this.editAdditional = false;
+    for (const fieldcode of this.customFields) {
+      const found = this.employeeData.find((data) => {
+        return fieldcode.id == data.fieldCodeId
+      });
+
+      if (found != null) {
+        var formatFound: any = fieldcode.code
+        const employeeDataDto = {
+          id: found.id,
+          employeeId: found.employeeId,
+          fieldcodeId: found.fieldCodeId,
+          value: this.additionalInfoForm.get(formatFound)?.value
+        }
+
+        this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
+          next: (data) => {
+            this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+            this.checkAdditionalFormProgress();
+            this.totalProfileProgress();
+            this.additionalInfoForm.disable();
+          },
+          error: (error) => { },
+        });
+      }
+      else if (found == null) {
+        var formatFound: any = fieldcode?.code
+        const employeeDataDto = {
+          id: 0,
+          employeeId: this.selectedEmployee ? this.selectedEmployee.id: this.employeeProfile?.id,
+          fieldcodeId: fieldcode.id,
+          value: this.additionalInfoForm.get(formatFound)?.value
+        }
+
+        if (employeeDataDto.value != '') {
+          this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
+            next: (data) => {
+              this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+              this.checkAdditionalFormProgress();
+              this.totalProfileProgress();
+              this.additionalInfoForm.disable();
+            },
+            error: (error) => {
+              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+            }
+          });
+        }
+      }
+    }
+  }
+
+  editAdditionalDetails() {
+    this.additionalInfoForm.enable();
+    this.editAdditional = true;
+  }
+
+  cancelAdditionalEdit() {
+    this.editAdditional = false;
+    this.additionalInfoForm.reset();
+    this.initializeForm();
+    this.additionalInfoForm.disable();
+  }
+
   filterEmployees(event: any) {
     if (event) {
       this.filteredEmployees = this.employees.filter((employee: EmployeeProfile) =>
@@ -621,10 +724,13 @@ export class EmployeeProfileComponent {
 
   filterChampions(event: any) {
     if (event) {
-      this.filteredPeopleChamps = this.employees.filter((champs: any) =>
-        champs.employee.name.toLowerCase().includes(event.target.value.toLowerCase())
+      this.filteredPeopleChamps = this.employees.filter((champs: EmployeeProfile) =>
+        champs.employeeType?.id == 7 && champs.name?.toLowerCase().includes(event.target.value.toLowerCase())
       );
-    } 
+    } else {
+      this.filteredPeopleChamps = this.employees;
+    }
+    
   }
 
   getId(data: any, name: string) {
@@ -719,6 +825,22 @@ export class EmployeeProfileComponent {
     this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
+  checkAdditionalFormProgress(){
+    let filledCount = 0;
+    const formControls = this.additionalInfoForm.controls;
+    let totalFields = Object.keys(this.additionalInfoForm.controls).length;
+  
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '') {
+          filledCount++;
+        }
+      }
+    }
+    this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
+  }
+
   checkBankingInformationProgress() {
     let filledCount = 0;
     let totalFields = 0;
@@ -736,7 +858,7 @@ export class EmployeeProfileComponent {
   }
 
   totalProfileProgress() {
-    this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress) / 4);
+    this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress + this.additionalFormProgress) / 5);
     this.overallProgress();
   }
 
@@ -746,9 +868,8 @@ export class EmployeeProfileComponent {
   }
 
   overallProgress() {
-    this.overallFormProgress = Math.round((0.25 * this.profileFormProgress) + (0.25 * this.bankInformationProgress));
+    this.overallFormProgress = Math.round((0.33 * this.profileFormProgress) + (0.33 * this.bankInformationProgress));
   }
-
 
   openFileInput() {
     const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
@@ -765,7 +886,6 @@ export class EmployeeProfileComponent {
   }
 
   saveBankingDetails() {
-
     this.editBanking = false;
     this.isUpdated = true;
     const employeeBankingFormValue = this.employeeBankingsForm.value;
