@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
-import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import { ChartConfiguration } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 @Component({
