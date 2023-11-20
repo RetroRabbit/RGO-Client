@@ -283,11 +283,11 @@
                                                     formControlName="peopleChampion" [matAutocomplete]="autoChampion"
                                                     (input)="filterChampions($event)">
                                                 <mat-autocomplete #autoChampion="matAutocomplete">
-                                                    <mat-option *ngFor="let people of filteredPeopleChamps"
-                                                        [value]="people.name + ' ' + people.surname"
-                                                        (onSelectionChange)="getId(people, 'champion')">
-                                                        {{ people.name }}
-                                                        {{ people.surname }}</mat-option>
+                                                    <mat-option *ngFor="let peopleChampion of filteredPeopleChamps"
+                                                        [value]="peopleChampion.name + ' ' + peopleChampion.surname"
+                                                        (onSelectionChange)="getId(peopleChampion, 'champion')">
+                                                        {{ peopleChampion.name }}
+                                                        {{ peopleChampion.surname }}</mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
                                         </div>
