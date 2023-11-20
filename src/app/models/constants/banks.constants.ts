@@ -4,7 +4,7 @@ export const banks = [
     {id:2, value: "First National Bank"},
     {id:3, value: "Nedbank"},
     {id:4, value: "Standard Bank"},
-    {id:4, value: "Thymebank"},
-    {id:4, value: "Discovery Bank"},
-    {id:4, value: "African Bank"}
+    {id:5, value: "Thymebank"},
+    {id:6, value: "Discovery Bank"},
+    {id:7, value: "African Bank"}
   ]
