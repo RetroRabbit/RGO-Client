@@ -53,8 +53,19 @@ export class ChartComponent implements OnInit {
     scales: {
       x: {},
       y: {
-        min: 0,
-      },
+        display: true,
+        title: {
+          display: true,
+          text: 'Number of Employee',
+          color: '#black',
+          font: {
+            family: 'Roboto',
+            size: 20,
+            style: 'normal',
+            lineHeight: 1.2
+          },
+        }
+      }
     },
     plugins: {
       legend: {
