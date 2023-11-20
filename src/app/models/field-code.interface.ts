@@ -11,4 +11,5 @@ export interface FieldCode {
   internal?: boolean;
   internalTable?: string;
   options?: FieldCodeOptions[];
+  category?: number;
 }
