@@ -329,9 +329,9 @@ export class EmployeeProfileComponent {
     });
     this.foundChampion = this.employees.find((data: any) => {
       if (this.employeeProfile?.peopleChampion != null){
-        return data.employee.id == this.employeeProfile!.peopleChampion
+        return data.id == this.employeeProfile!.peopleChampion
       }
-      return null;
+      else return null;
     });
 
     if (this.foundTeamLead != null) {
@@ -345,8 +345,8 @@ export class EmployeeProfileComponent {
     }
 
     if (this.foundChampion != null) {
-      this.employeeDetailsForm.get('peopleChampion')?.setValue(this.foundChampion.employee.name + ' ' + this.foundChampion.employee.surname);
-      this.peopleChampionId = this.foundChampion.employee.id
+      this.employeeDetailsForm.get('peopleChampion')?.setValue(this.foundChampion.name + ' ' + this.foundChampion.surname);
+      this.peopleChampionId = this.foundChampion.id
     }
   }
 
@@ -741,7 +741,7 @@ export class EmployeeProfileComponent {
       this.clientId = data.id;
     }
     else if (name == 'champion') {
-      this.peopleChampionId = data.employee.id;
+      this.peopleChampionId = data.id;
     }
   }
 
