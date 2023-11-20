@@ -56,7 +56,7 @@ export class ChartComponent implements OnInit {
         display: true,
         title: {
           display: true,
-          text: 'Number of Employee',
+          text: 'Employees',
           color: '#black',
           font: {
             family: 'Roboto',
