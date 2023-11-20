@@ -7,7 +7,6 @@ import { StoreModule } from '@ngrx/store';
 import { LoginReducer } from './store/reducers/login.reducer';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { environment } from 'src/enviroment/env';
 import { LoginEffects } from './store/effects/app.effects';
 import { AuthService } from './services/auth.service';
@@ -79,7 +78,6 @@ import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/ch
     AppComponent,
     SignInComponent,
     HomeComponent,
-    SidebarComponent,
     EmployeeProfileComponent,
     ChartComponent,
     CreateChartsComponent,
