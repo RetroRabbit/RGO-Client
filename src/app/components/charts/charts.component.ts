@@ -190,7 +190,7 @@ export class ChartComponent implements OnInit {
           this.createAndDisplayChart();
         },
         error: error => {
-          this.toast.error({ detail: "error", summary: "Update unsuccessful", duration: 5000, position: 'topRight' });
+          this.toast.error({ detail: "Error", summary: "Update unsuccessful", duration: 5000, position: 'topRight' });
 
         }
       });
@@ -234,7 +234,7 @@ export class ChartComponent implements OnInit {
         });
       }, error: (error) => {
 
-        this.toast.error({ detail: "error", summary: "Failed to fetch people champion", duration: 5000, position: 'topRight' });
+        this.toast.error({ detail: "Error", summary: "Failed to fetch people champion", duration: 5000, position: 'topRight' });
 
       }, complete: () => {
         this.createAndDisplayChart();
