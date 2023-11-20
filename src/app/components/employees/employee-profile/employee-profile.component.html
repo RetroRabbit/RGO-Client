@@ -1205,9 +1205,9 @@
                                         <div *ngIf="fieldcode.type != fieldTypes[4].id">
                                             <input matInput formControlName="{{fieldcode.code}}">
                                         </div>
-                                    </mat-form-field>
+                                      </mat-form-field>
+                                    </div>
                                 </div>
-                            </div>
                             <div class="col-2">
                                 <button *ngIf="!editAdditional" mat-button id="edit-button"
                                     (click)="editAdditionalDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
@@ -1270,29 +1270,29 @@
                                         </mat-form-field>
                                     </div>
                                     <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" id="banking-field">
-                                            <mat-label>Account Number</mat-label>
-                                            <input type="number" min="0" matInput placeholder="Enter account number"
-                                                formControlName="accountNo">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" id="banking-field">
-                                            <mat-label>Branch Code</mat-label>
-                                            <input type="number" min="0" matInput placeholder="Enter branch code"
-                                                formControlName="branch">
-                                        </mat-form-field>
-                                    </div>
-                                    <p id="base64"></p>
-                                    <div class="col-8 my-2">
-                                        <mat-label [ngStyle]="{color: editBanking ? 'black' : 'grey'}">
-                                            Proof of account
-                                        </mat-label>
-                                        <div class="my-2">
-                                            <div class="row">
-                                                <div *ngIf="hasFile">
-                                                    <button mat-button color="primary" [hidden]="employeeBanking.file.length == 0"
-                                                        (click)="convertFileToBase64()">Download</button>
+                                      <mat-form-field appearance="outline" id="banking-field">
+                                          <mat-label>Account Number</mat-label>
+                                          <input type="text" min="0" matInput placeholder="Enter account number"
+                                              formControlName="accountNo">
+                                      </mat-form-field>
+                                  </div>
+                                  <div class="col-6 my-2">
+                                      <mat-form-field appearance="outline" id="banking-field">
+                                          <mat-label>Branch Code</mat-label>
+                                          <input type="text" min="0" matInput placeholder="Enter branch code"
+                                              formControlName="branch">
+                                      </mat-form-field>
+                                  </div>
+                                  <p id="base64"></p>
+                                  <div class="col-8 my-2">
+                                      <mat-label [ngStyle]="{color: editBanking ? 'black' : 'grey'}">
+                                          Proof of account
+                                      </mat-label>
+                                      <div class="my-2">
+                                          <div class="row">
+                                              <div *ngIf="hasFile">
+                                                  <button mat-button color="primary" [hidden]="employeeBanking.file.length == 0"
+                                                      (click)="convertFileToBase64()">Download</button>
                                                 </div>
                                                 <div class="col-5" [hidden]="!editBanking" class="row"
                                                     id="uploadButton" (click)="openFileInput()">

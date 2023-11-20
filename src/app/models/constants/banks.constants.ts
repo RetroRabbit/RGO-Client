@@ -3,5 +3,8 @@ export const banks = [
     {id:1, value: "Capitec"},
     {id:2, value: "First National Bank"},
     {id:3, value: "Nedbank"},
-    {id:4, value: "Standard Bank"}
+    {id:4, value: "Standard Bank"},
+    {id:5, value: "Thymebank"},
+    {id:6, value: "Discovery Bank"},
+    {id:7, value: "African Bank"}
   ]
