@@ -231,7 +231,7 @@
                                                 <mat-label>Client Allocated</mat-label>
                                                 <input type="text" placeholder="" matInput
                                                     formControlName="clientAllocated" [matAutocomplete]="autoClient"
-                                                    (input)="filterClients($event)" [disabled]="!editEmployee">
+                                                    (input)="filterClients($event)">
                                                 <mat-autocomplete #autoClient="matAutocomplete">
                                                     <mat-option *ngFor="let client of filteredClients"
                                                         [value]="client.name"
@@ -283,11 +283,11 @@
                                                     formControlName="peopleChampion" [matAutocomplete]="autoChampion"
                                                     (input)="filterChampions($event)">
                                                 <mat-autocomplete #autoChampion="matAutocomplete">
-                                                    <mat-option *ngFor="let people of filteredPeopleChamps"
-                                                        [value]="people.employee.name + ' ' + people.employee.surname"
-                                                        (onSelectionChange)="getId(people, 'champion')">
-                                                        {{ people.employee.name }}
-                                                        {{people.employee.surname}}</mat-option>
+                                                    <mat-option *ngFor="let peopleChampion of filteredPeopleChamps"
+                                                        [value]="peopleChampion.name + ' ' + peopleChampion.surname"
+                                                        (onSelectionChange)="getId(peopleChampion, 'champion')">
+                                                        {{ peopleChampion.name }}
+                                                        {{ peopleChampion.surname }}</mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
                                         </div>
@@ -642,7 +642,49 @@
                                 </div>
                             </div>
                         </form>
-
+                    </mat-expansion-panel>
+                    <mat-expansion-panel class="my-3" (opened)="checkAdditionalInformation()"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                               Additional Information
+                            </mat-panel-title>
+                            <mat-panel-description *ngIf="additionalFormProgress != 100">
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="additionalInfoForm">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="col-6 my-2" *ngFor="let fieldcode of customFields">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>{{fieldcode.name}}</mat-label>
+                                            <div *ngIf="fieldcode.type == fieldTypes[4].id">
+                                                <mat-select formControlName="{{fieldcode.code}}">
+                                                    <mat-option *ngFor="let option of fieldcode.options" [value]="option.option">
+                                                        {{option.option}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </div>
+                                            <div *ngIf="fieldcode.type != fieldTypes[4].id">
+                                                <input matInput formControlName="{{fieldcode.code}}">
+                                            </div>
+                                        </mat-form-field>
+                                    </div>     
+                                </div>
+                                <div class="col-2">
+                                    <button *ngIf="!editAdditional" mat-button id="edit-button"
+                                        (click)="editAdditionalDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
+                                </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editAdditional" mat-button id="cancel-button"
+                                        (click)="cancelAdditionalEdit()">Cancel</button>
+                                    <button *ngIf="editAdditional" mat-button id="save-button" type="submit"
+                                        [disabled]="!additionalInfoForm.valid" (click)="saveAdditionalEdit()">Save
+                                        changes</button>
+                                </div>
+                            </div>
+                        </form>
                     </mat-expansion-panel>
                 </mat-accordion>
             </div>
