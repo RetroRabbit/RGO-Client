@@ -268,7 +268,7 @@
   background-color: white;
   color: #0029C6;
   padding:0.5rem;
-  width: 7rem;
+  width: 8rem;
 
 }
 
@@ -278,7 +278,7 @@
   border-radius: 4rem;
   color: white;
   padding: 0.5rem;
-  width: 7rem;
+  width: 8rem;
 }
 
 #header-cell{
@@ -347,4 +347,8 @@
 }
 #reject-reason{
     color: #b3261eff;
+}
+
+#svg-icon-w #icon-w {
+  fill: white;
 }
