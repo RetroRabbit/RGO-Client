@@ -601,7 +601,7 @@ export class EmployeeProfileComponent {
           this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfileDto?.peopleChampion)[0];
           this.employeeDetailsForm.disable();
         },
-        error: (error) => { this.toast.error({ detail: "Error", summary: "test"+error, duration: 5000, position: 'topRight' }); },
+        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
       });
     }
     else {
