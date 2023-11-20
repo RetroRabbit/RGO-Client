@@ -175,7 +175,7 @@ export class ChartComponent implements OnInit {
           this.createAndDisplayChart();
         },
         error: error => {
-          this.toast.error({ detail: "error", summary: "Update unsuccessful", duration: 5000, position: 'topRight' });
+          this.toast.error({ detail: "Error", summary: "Update unsuccessful", duration: 5000, position: 'topRight' });
 
         }
       });
