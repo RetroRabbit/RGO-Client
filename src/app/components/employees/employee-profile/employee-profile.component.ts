@@ -1104,11 +1104,11 @@ getEmployeeDocuments() {
     const id = event.srcElement.parentElement.id;
     const docObj = this.employeeDocuments.find(document => document.fileCategory == id) as any;
     if(docObj === undefined){
-      // ToDo: download clean slate form
+      // TODO: download clean slate form
     }
     else{
       if(docObj.status == 2){
-          // ToDo: download clean slate form
+          // TODO: download clean slate form
       }else{
         this.downloadFile(docObj?.blob as string, docObj?.fileName as string);
       }
