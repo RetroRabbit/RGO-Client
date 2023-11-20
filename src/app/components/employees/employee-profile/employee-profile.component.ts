@@ -957,7 +957,6 @@ getEmployeeDocuments() {
           uploadDate: new Date(),
           reason: '',
         };
-        console.log("buildDocumentDto; "+ newDto);
         this.uploadDocumentDto(newDto);
 
       };
