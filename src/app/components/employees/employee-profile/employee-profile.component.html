@@ -25,8 +25,8 @@
                 <div class="col-12 my-2" id="header-role">
                     {{employeeProfile?.employeeType?.name}} | Level {{employeeProfile?.level}}
                 </div>
-                <div class="col-12 my-2" id="header-based">
-                    Based in Johannesburg
+                <div class="col-12 my-2" id="header-based" *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ''">
+                    Based in {{employeePhysicalAddress.city}}
                 </div>
             </div>
         </div>
