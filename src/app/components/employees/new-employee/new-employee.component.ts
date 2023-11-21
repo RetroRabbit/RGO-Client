@@ -75,6 +75,8 @@ export class NewEmployeeComponent implements OnInit {
   PREVIOUS_PAGE = 'previousPage';
   COMPANY_EMAIL = 'retrorabbit.co.za';
 
+  filteredPeopleChamps: any = [];
+  peopleChampionId = null;
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
@@ -137,6 +139,7 @@ export class NewEmployeeComponent implements OnInit {
     salary: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
     physicalAddress: new FormControl<EmployeeAddress | null>(null),
     postalAddress: new FormControl<EmployeeAddress | null>(null),
+    peopleChampion: new FormControl<string>('', Validators.required)
   });
 
   settingsForm: FormGroup = new FormGroup({
@@ -171,6 +174,21 @@ export class NewEmployeeComponent implements OnInit {
       });
   }
 
+  filterChampions(event: any) {
+    if (event) {
+      this.filteredPeopleChamps = this.Employees.filter((champs: EmployeeProfile) =>
+        champs.employeeType?.id == 7 && champs.name?.toLowerCase().includes(event.target.value.toLowerCase())
+      );
+    } else {
+      this.filteredPeopleChamps = this.Employees;
+    }
+  }
+  
+  getId(data: any, name: string) {
+    if (name == 'champion') {
+      this.peopleChampionId = data.id;
+    }
+  }
 
   public dropped(files: NgxFileDropEntry[]) {
     this.files.push(...files);
@@ -248,8 +266,6 @@ export class NewEmployeeComponent implements OnInit {
         }
       });
     });
-
-
   }
 
   public fileOver(event: Event) {
@@ -343,6 +359,7 @@ export class NewEmployeeComponent implements OnInit {
       dateOfBirth: new Date(this.newEmployeeForm.value.dateOfBirth!).toISOString().split('T')[0],
       physicalAddress: this.physicalAddressObj,
       postalAddress: this.postalAddressObj,
+      peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
     });
     const employeeEmail: string = this.newEmployeeForm.value.email!;
     this.checkBlankRequiredFields();
@@ -478,7 +495,6 @@ export class NewEmployeeComponent implements OnInit {
 
   goToPreviousPage(){
     this.hideNavService.showNavbar=true;
-    console.log(this.cookieService.get(this.PREVIOUS_PAGE));
     this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
 
   }
