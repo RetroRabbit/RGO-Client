@@ -1,7 +1,7 @@
 <div class="row" id="container">
-  <div class="col-12 row px-4" id="header">
+  <div class="col-12 row px-4" id="header" *ngIf="showNav">
     <div class="col-11 col-md-9 col-lg-8 mt-auto">
-      <div class="row" id="left-column">
+      <div class="row" id="left-column" >
         <div class="col-md-12" id="retro-logo">
           <svg width="162" height="21" viewBox="0 0 162 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -42,7 +42,7 @@
               fill="black" />
           </svg>
         </div>
-        <div class="col-sm-12 col-md-12 col-lg-10" id="navigation">
+        <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" >
           <div class="row">
             <div class="col-2" *ngIf="isAdmin() || isJourney()">
               <div id="nav-item-container" class="col-auto">

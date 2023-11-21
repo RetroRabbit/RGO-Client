@@ -18,6 +18,7 @@ import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-new-employee',
@@ -34,7 +35,8 @@ export class NewEmployeeComponent implements OnInit {
     private cookieService: CookieService,
     private toast: NgToastService,
     private employeeDocumentService: EmployeeDocumentService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private hideNavService: HideNavService
   ) { }
 
   firstFormGroup = this._formBuilder.group({
@@ -169,7 +171,7 @@ export class NewEmployeeComponent implements OnInit {
       });
   }
 
-  
+
   public dropped(files: NgxFileDropEntry[]) {
     this.files.push(...files);
     for (const droppedFile of files) {
@@ -211,6 +213,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndExit(){
+    this.hideNavService.toggleNavElements(true);
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
