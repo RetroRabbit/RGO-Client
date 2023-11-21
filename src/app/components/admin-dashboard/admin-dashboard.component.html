@@ -2,7 +2,7 @@
   <div class="searchbar align-items-center justify-content-center p-0" [ngClass]="{'no-results': noResults}">
     <div id="leading-icon"></div>
     <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
-      [(ngModel)]="searchQuery" (input)="searchEmployees()" />
+      [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off"/>
     <div id="search-icon" (click)="searchEmployees()">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path fill-rule="evenodd" clip-rule="evenodd"
