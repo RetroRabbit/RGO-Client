@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy  } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { Store } from '@ngrx/store';
 import { Token } from 'src/app/models/token.interface';
@@ -9,6 +9,8 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { EmployeeDate } from 'src/app/models/employee-date.interface';
+import { Subscription } from 'rxjs';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +18,9 @@ import { EmployeeDate } from 'src/app/models/employee-date.interface';
   styleUrls: ['./home.component.css']
 })
 
-export class HomeComponent {
+export class HomeComponent implements OnDestroy{
+  showNav = true;
+  private subscription: Subscription;
   type$: Observable<Token> = this.store.select('app')
   selectedEvaluation: any | null = null
   selectedEvent: EmployeeDate | null = null;
@@ -33,15 +37,21 @@ export class HomeComponent {
     id: 0,
     name: ''
   };
-  
+
 
   constructor(
     private employeeProfileService: EmployeeProfileService,
     private chartService: ChartService,
     private store: Store<{ app: Token }>,
     private auth: AuthService,
-    public cookieService: CookieService) {
+    public cookieService: CookieService,
+    private hideNavService: HideNavService)
+    {
     this.screenWidth = window.innerWidth;
+
+    this.subscription = this.hideNavService.showNavElements$.subscribe(show => {
+      this.showNav = show;
+    });
   }
 
 
@@ -57,6 +67,8 @@ export class HomeComponent {
       }
     });
 
+
+
     this.chartService.getAllCharts().subscribe({
       next: (data: any) => this.charts = data
     });
@@ -67,6 +79,9 @@ export class HomeComponent {
     localStorage.removeItem('id_token');
     sessionStorage.removeItem('access_token');
     sessionStorage.removeItem('id_token');
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   logout() {
@@ -84,7 +99,7 @@ export class HomeComponent {
   }
 
   viewProfile: EmployeeProfile | null = null;
-  
+
   handleViewProfile(emp: EmployeeProfile) {
     this.viewProfile = emp;
   }
