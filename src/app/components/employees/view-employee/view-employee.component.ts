@@ -42,10 +42,21 @@ export class ViewEmployeeComponent {
 
   @Input()
   set searchQuery(text: string) {
-    if(this.cookieService.get('previousPage') == "Dashboard"){
-      this._searchQuery = text;
-      this.applySearchFilter();
+    //if(this.cookieService.get('previousPage') == "Dashboard"){ 
+    // this._searchQuery = text;
+    // this.applySearchFilter();
+    //}
+    //Bloop 2
+    if(this.cookieService.get('previousPage') != "Dashboard"){ 
+      this._searchQuery = "";
+      console.log("Previous page != Dashboard");
     }
+    else{
+      this._searchQuery = text;
+      console.log("Previous page == Dashboard");
+    }
+    console.log(this.searchQuery);
+    this.applySearchFilter();
   }
 
   get searchQuery(): string {
@@ -115,6 +126,7 @@ export class ViewEmployeeComponent {
       .subscribe((data) => {
         this.setupDataSource(data)
         this.isLoading = false;
+        this.applySearchFilter(); //bloop 2
       });
   }
 
@@ -228,11 +240,11 @@ export class ViewEmployeeComponent {
   }
 
   applySearchFilter() {
-      console.log(this.dataSource);
+      //console.log(this.dataSource);
       this.dataSource.filter = this.searchQuery.trim().toLowerCase();
       this.dataSource._updateChangeSubscription();
-      console.log(this.dataSource);
-      console.log("HERE")
+      //console.log(this.dataSource);
+      //console.log("HERE")
   }
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
