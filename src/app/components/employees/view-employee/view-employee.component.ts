@@ -34,7 +34,6 @@ export class ViewEmployeeComponent {
 
 
   onAddEmployeeClick(): void {
-    this.hideNavService.showNavbar=false;
     this.addEmployeeEvent.emit();
     this.cookieService.set('previousPage', 'Employees');
     this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee');
@@ -52,9 +51,6 @@ export class ViewEmployeeComponent {
 
   ngOnInit() {
     this.onResize();
-
-
-
   }
 
   ngAfterViewInit() {
