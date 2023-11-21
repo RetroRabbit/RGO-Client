@@ -228,7 +228,7 @@
                 </div>
               </div>
           <div id="footer"> 
-            <button id="cancel-button" (click)="goToEmployees()">Cancel</button>
+            <button id="cancel-button" (click)="goToPreviousPage()">Cancel</button>
             <button id="next-button" matStepperNext>Next</button>
           </div>
         </form>
@@ -280,9 +280,9 @@
               </mat-chip-grid>
             </div>
           <div id="footer"> 
-            <button id="cancel-button" (click)="goToEmployees()">Cancel</button>
-            <button id="save-add-button" (click)="onUploadDocument()">Save and add another</button>
-            <button id="save-button" (click)="onUploadDocument()">Save</button>
+            <button id="cancel-button" (click)="goToPreviousPage()">Cancel</button>
+            <button id="save-add-button" (click)="saveAndAddAnother()">Save and add another</button>
+            <button id="save-button" (click)="saveAndExit()">Save</button>
           </div>
         </form>
       </mat-step>

@@ -19,6 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TemplateRef } from '@angular/core';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -81,6 +82,7 @@ export class AdminDashboardComponent {
     private router: Router,
     private dialog: MatDialog,
     private employeeTypeService: EmployeeTypeService,
+    private hideNavService: HideNavService
   ) {
     this.categoryCtrl.valueChanges.subscribe(val => {
       this.filteredCategories = val ? this.filterCategories(val) : this.categories;
@@ -88,6 +90,7 @@ export class AdminDashboardComponent {
   }
 
   ngOnInit() {
+    this.hideNavService.showNavbar = true;
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
     this.employeeService.getAllProfiles().subscribe((data) => {
@@ -150,7 +153,9 @@ export class AdminDashboardComponent {
   }
 
   AddNewHire(event: any) {
+    this.hideNavService.showNavbar = false;
     const target = event.target as HTMLAnchorElement;
+    this.cookieService.set('previousPage', 'Dashboard');
     this.cookieService.set('currentPage', target.innerText);
   }
 

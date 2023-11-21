@@ -1,25 +1,6 @@
-import {
-  Component,
-  Output,
-  EventEmitter,
-  ViewChild,
-  HostListener,
-  Input,
-  NgZone,
-} from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { CookieService } from 'ngx-cookie-service';
-import {
-  Observable,
-  catchError,
-  first,
-  forkJoin,
-  map,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -28,6 +9,9 @@ import { NgToastService } from 'ng-angular-popup';
 import { ClientService } from 'src/app/services/client.service';
 import { Client } from 'src/app/models/client.interface';
 import { EmployeeData } from 'src/app/models/employeedata.interface';
+import { Component, Output, EventEmitter, ViewChild, HostListener, NgZone, Input } from '@angular/core';
+import { Observable, catchError, first, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-view-employee',
@@ -63,22 +47,21 @@ export class ViewEmployeeComponent {
     return this._searchQuery;
   }
 
+  CURRENT_PAGE = 'currentPage';
+
   roles: Observable<string[]> = this.employeeRoleService
     .getAllRoles()
     .pipe(
       map((roles: string[]) => roles.filter((role) => !role.includes('SuperAdmin'))),
       first()
     );
-   
+
 
   onAddEmployeeClick(): void {
+    this.hideNavService.showNavbar=false;
     this.addEmployeeEvent.emit();
-    this.cookieService.set('currentPage', '+ Add New Hire');
-  }
-
-  onManagePermissionClick(): void {
-    this.managePermissionsEvent.emit();
-    this.cookieService.set('currentPage', 'Manage Permissions');
+    this.cookieService.set('previousPage', 'Employees');//TODO: FIX
+    this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee'); 
   }
 
   constructor(
@@ -87,11 +70,13 @@ export class ViewEmployeeComponent {
     private clientService: ClientService,
     private toast: NgToastService,
     private cookieService: CookieService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private hideNavService: HideNavService
   ) {}
 
   ngOnInit() {
     this.onResize();
+
   }
 
   ngAfterViewInit() {
@@ -193,6 +178,16 @@ export class ViewEmployeeComponent {
     return [...adminRoles, ...nonAdminRoles];
   }
 
+  reset(): void {
+    this.dataSource.filter = '';
+    this.dataSource._updateChangeSubscription();
+  }
+
+  CaptureEvent(event: any) {
+    const target = event.target as HTMLButtonElement;
+    this.cookieService.set(this.CURRENT_PAGE, target.innerText);
+  }
+
   ViewUser(email: string) {
     this.cookieService.set('selectedUser', email);
   }
@@ -219,7 +214,8 @@ export class ViewEmployeeComponent {
           this.selectedEmployee.emit(data);
           this._searchQuery = '';
           this.cookieService.set('previousPage','Employees');
-          this.cookieService.set('currentPage', 'EmployeeProfile');
+          this.cookieService.set('currentPage', 'EmployeeProfile'); //TODO: FIX
+          this.cookieService.set(this.CURRENT_PAGE, 'EmployeeProfile');
         }),
         first()
       )

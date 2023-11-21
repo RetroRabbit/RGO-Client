@@ -6,18 +6,19 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { level } from 'src/app/models/constants/level.constants';
-import { race } from 'src/app/models/constants/race.constants';
-import { gender } from 'src/app/models/constants/gender.constants';
+import { levels } from 'src/app/models/constants/levels.constants';
+import { races } from 'src/app/models/constants/races.constants';
+import { genders } from 'src/app/models/constants/genders.constants';
 import { combineLatest, first } from 'rxjs';
-import { countries } from 'src/app/models/constants/country.constants';
+import { countries } from 'src/app/models/constants/countries.constants';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
-import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-new-employee',
@@ -26,7 +27,6 @@ import { MatStepper } from '@angular/material/stepper';
 })
 
 export class NewEmployeeComponent implements OnInit {
-  @Input() goto: 'dashboard' | 'employees' = 'dashboard';
 
   constructor(
     private employeeService: EmployeeService,
@@ -35,7 +35,8 @@ export class NewEmployeeComponent implements OnInit {
     private cookieService: CookieService,
     private toast: NgToastService,
     private employeeDocumentService: EmployeeDocumentService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private hideNavService: HideNavService
   ) { }
 
   firstFormGroup = this._formBuilder.group({
@@ -56,9 +57,9 @@ export class NewEmployeeComponent implements OnInit {
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   toggleAdditional: boolean = false;
 
-  levels: number[] = level.map((l) => l.value);
-  races: string[] = race.map((r) => r.value);
-  genders: string[] = gender.map((g) => g.value);
+  levels: number[] = levels.map((level) => level.value);
+  races: string[] = races.map((race) => race.value);
+  genders: string[] = genders.map((gender) => gender.value);
   countries: string[] = countries
   provinces: string[] = provinces
 
@@ -70,6 +71,9 @@ export class NewEmployeeComponent implements OnInit {
   validImage: boolean = false;
   public files: NgxFileDropEntry[] = [];
   employeeDocumentModels: EmployeeDocument[] = [];
+  CURRENT_PAGE = 'currentPage';
+  PREVIOUS_PAGE = 'previousPage';
+  COMPANY_EMAIL = 'retrorabbit.co.za';
 
 
   private createAddressForm(): FormGroup {
@@ -167,6 +171,7 @@ export class NewEmployeeComponent implements OnInit {
       });
   }
 
+
   public dropped(files: NgxFileDropEntry[]) {
     this.files.push(...files);
     for (const droppedFile of files) {
@@ -181,9 +186,13 @@ export class NewEmployeeComponent implements OnInit {
                 const employeeDocument: EmployeeDocument = {
                   id: 0,
                   employeeId: employeeProfile.id as number,
+                  reference: "",
                   fileName: file.name,
+                  fileCategory: -1,
                   file: base64String,
-                  uploadDate: new Date()
+                  uploadDate: new Date(),
+                  reason: "",
+                  status: 1,
                 };
                 this.employeeDocumentModels.push(employeeDocument);
               },
@@ -203,7 +212,16 @@ export class NewEmployeeComponent implements OnInit {
     }
   }
 
-  onUploadDocument(): void {
+  saveAndExit(){
+    this.hideNavService.showNavbar=true;
+    this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
+  }
+
+  saveAndAddAnother(){
+    this.onUploadDocument('+ Add Employee');
+  }
+
+  onUploadDocument(nextPage: string): void {
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
         next: () => {
@@ -221,12 +239,17 @@ export class NewEmployeeComponent implements OnInit {
             duration: 5000,
             position: 'topRight',
           });
+        }, complete: () => {
+          this.employeeDocumentModels = [];
+          this.newEmployeeEmail = "";
+          this.files = [];
+          location.reload();
+          this.cookieService.set(this.CURRENT_PAGE, nextPage);
         }
       });
     });
-    this.employeeDocumentModels = [];
-    this.newEmployeeEmail = "";
-    this.files = [];
+
+
   }
 
   public fileOver(event: Event) {
@@ -246,7 +269,7 @@ export class NewEmployeeComponent implements OnInit {
     if(event.target.files && event.target.files.length) {
       const file = event.target.files[0];
       if(this.validateFile(file)) {
-        this.imageConverter(file); 
+        this.imageConverter(file);
       } else {
         this.clearUpload();
       }
@@ -304,14 +327,14 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   onSubmit(reset: boolean = false): void {
-    if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith("retrorabbit.co.za")) {
+    if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
       this.toast.error({ detail: 'Error', summary: `⚠️ Please enter an official Retro Rabbit email address`, duration: 5000, position: 'topRight',
      });
      return;
     }
-    
+
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
@@ -343,15 +366,6 @@ export class NewEmployeeComponent implements OnInit {
         });
       },
     });
-  }
-
-  goToEmployees() {
-    this.cookieService.set('currentPage', 'Employees');
-  }
-
-  CaptureEvent() {
-    if (this.goto == 'employees') this.cookieService.set('currentPage', 'View Employee');
-    else this.cookieService.set('currentPage', 'Dashboard');
   }
 
   checkBlankRequiredFields() {
@@ -460,5 +474,12 @@ export class NewEmployeeComponent implements OnInit {
   setSelectedGender(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
     this.newEmployeeForm.patchValue({ gender: +selectedValue });
+  }
+
+  goToPreviousPage(){
+    this.hideNavService.showNavbar=true;
+    console.log(this.cookieService.get(this.PREVIOUS_PAGE));
+    this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
+
   }
 }
