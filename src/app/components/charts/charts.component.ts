@@ -24,19 +24,19 @@ export class ChartComponent implements OnInit {
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   @Output() captureCharts = new EventEmitter<number>();
   @Input() chartsArray: Chart[] = [];
-  selectedChartType: ChartType ='bar';
+  selectedChartType: ChartType = 'bar';
   displayChart: boolean = false;
   numberOfEmployees: number = 0;
   chartData: any[] = [];
   activeChart: any = null;
   employeeNames: { [id: string]: string } = {};
   showReport: boolean = false;
-  showUpdateForm:boolean=false;
+  showUpdateForm: boolean = false;
   updateFormData: any = {
-      Name: '',
-      Type:''
+    Name: '',
+    Type: ''
   }
-  coloursArray : string[] = colours;
+  coloursArray: string[] = colours;
   chartCanvasArray: any[] = [];
 
   public pieChartPlugins = [ChartDataLabels];
@@ -45,57 +45,91 @@ export class ChartComponent implements OnInit {
   selectedChartIndex: number = -1;
   constructor(private chartService: ChartService, private cookieService: CookieService,
     private toast: NgToastService, public dialog: MatDialog, private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document, private employeeProfile:EmployeeService) {}
+    @Inject(DOCUMENT) private document: Document, private employeeProfile: EmployeeService) { }
 
-    public barChartOptions: ChartConfiguration['options'] = {
-      events: [],
-      responsive: true,
-      scales: {
-        x: {},
-        y: {
-          min: 0,
-        },
-      },
-      plugins: {
-        legend: {
+  public barChartOptions: ChartConfiguration['options'] = {
+    events: [],
+    responsive: true,
+    scales: {
+      x: {},
+      y: {
+        display: true,
+        title: {
           display: true,
-        },
-        datalabels: {
-          anchor: 'middle',
-          align: 'middle',
-        } as any,
-      },
-    };
-
-    public pieChartOptions: ChartConfiguration['options'] = {
-      events: [],
-      responsive: true,
-      plugins: {
-        legend: {
-          display: true,
-          position: 'top',
-        },
-      },
-    };
-
-    resetPage(){
-      this.displayChart = false
-      this.chartData = [];
-      this.activeChart = null;
-      this.showReport  = false;
-      this.showUpdateForm = false;
-      this.chartCanvasArray = [];
-      this.updateFormData  = {
-          Name: '',
-          Type:''
+          text: 'Employees',
+          color: '#black',
+          font: {
+            family: 'Roboto',
+            size: 20,
+            style: 'normal',
+            lineHeight: 1.2
+          },
+        }
       }
-    }
-    ngOnChanges(changes: SimpleChanges) {
-      if (changes['chartsArray'] && !changes['chartsArray'].firstChange) {
-        this.resetPage();
-        this.ngOnInit();
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels:{
+          font: {
+            size: 16
+          }
+        }
+      },
+      datalabels: {
+        anchor: 'middle',
+        align: 'center',
+        color: ['white', 'white', 'black', 'black', 'white', 'white'],
+      } as any,
+    },
+
+  };
+
+  public pieChartOptions: ChartConfiguration['options'] = {
+    events: [],
+    responsive: true,
+    layout:{
+      padding:{
+        left: 20
       }
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right',
+        labels:{
+          font: {
+            size: 16
+          }
+        }
+      },
+      datalabels: {
+        anchor: 'middle',
+        align: 'center',
+        color: ['white', 'white', 'black', 'black', 'white', 'white'],
+      } as any,
+    },
+  };
+
+  resetPage() {
+    this.displayChart = false
+    this.chartData = [];
+    this.activeChart = null;
+    this.showReport = false;
+    this.showUpdateForm = false;
+    this.chartCanvasArray = [];
+    this.updateFormData = {
+      Name: '',
+      Type: ''
     }
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['chartsArray'] && !changes['chartsArray'].firstChange) {
+      this.resetPage();
+      this.ngOnInit();
+    }
+  }
 
   ngOnInit(): void {
     this.fetchPeopleChampionEmployees();
@@ -117,9 +151,9 @@ export class ChartComponent implements OnInit {
         }
       },
       error: error => {
-        this.toast.error({detail:"error",summary: "Chart display unsuccessful",duration:5000, position:'topRight'});
-       }
-  });
+        this.toast.error({ detail: "Error", summary: "Chart display unsuccessful", duration: 5000, position: 'topRight' });
+      }
+    });
   }
 
   getNumberOfEmployees(): void {
@@ -127,7 +161,7 @@ export class ChartComponent implements OnInit {
       next: data => {
         this.numberOfEmployees = data;
       }
-  });
+    });
   }
 
   updateChartType(chartType: ChartType): void {
@@ -144,7 +178,7 @@ export class ChartComponent implements OnInit {
     this.showUpdateForm = false;
   }
 
-  generateReport(index : number): void {
+  generateReport(index: number): void {
     if (this.chartData[index]) {
       this.showReport = true;
       this.updateFormData = this.chartData[index];
@@ -162,37 +196,39 @@ export class ChartComponent implements OnInit {
       };
       this.chartService.updateChart(this.updateFormData).subscribe({
         next: (updatedData: any) => {
-          this.toast.success({detail:"Success",summary: "Update successful",duration:5000, position:'topRight'});
+          this.toast.success({ detail: "Success", summary: "Update successful", duration: 5000, position: 'topRight' });
           this.resetPage();
           this.createAndDisplayChart();
         },
         error: error => {
-          this.toast.error({detail:"error",summary: "Update unsuccessful",duration:5000, position:'topRight'});
+          this.toast.error({ detail: "Error", summary: "Update unsuccessful", duration: 5000, position: 'topRight' });
 
-         }
-    });
+        }
+      });
     }
   }
 
-  editChart(index : number){
+  editChart(index: number) {
     this.selectedChartIndex = index;
     this.activeChart = this.chartData[index];
-    this.updateFormData = {...this.activeChart};
+    this.updateFormData = { ...this.activeChart };
     this.showUpdateForm = true;
   }
 
-  deleteChart(selectedIndex : number): void {
+  deleteChart(selectedIndex: number): void {
     if (this.chartData[selectedIndex]) {
       this.chartService.deleteChart(this.chartData[selectedIndex].id).subscribe({
         next: () => {
-          this.toast.success({detail:"Success",summary: "Delete successful",duration:5000, position:'topRight'});
+          this.toast.success({ detail: "Success", summary: "Delete successful", duration: 5000, position: 'topRight' });
           this.resetPage();
           this.createAndDisplayChart();
         },
         error: error => {
-          this.toast.error({detail:"Error",summary: "Failed to detele graph",duration:5000, position:'topRight'});
+          this.toast.error({ detail: "Error", summary: "Failed to detele graph", duration: 5000, position: 'topRight' });
         }
-    });}}
+      });
+    }
+  }
 
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
@@ -201,44 +237,46 @@ export class ChartComponent implements OnInit {
 
   fetchPeopleChampionEmployees() {
     this.employeeProfile.filterEmployeesByType("People Champion").subscribe({
-      next :(employees: EmployeeProfile[]) => {
+      next: (employees: EmployeeProfile[]) => {
         employees.forEach((employee) => {
           if (employee.id) {
             this.employeeNames[employee.id] = `${employee.name} ${employee.surname}`;
           }
         });
-  }, error: (error) => {
-    
-    this.toast.error({detail:"error",summary: "Failed to fetch people champion",duration:5000, position:'topRight'});
+      }, error: (error) => {
 
-  }, complete: () => {
-    this.createAndDisplayChart();
-  },
+        this.toast.error({ detail: "Error", summary: "Failed to fetch people champion", duration: 5000, position: 'topRight' });
 
-});}
-  
-   getEmployeeName(employeeId: string | undefined): string {
-    
+      }, complete: () => {
+        this.createAndDisplayChart();
+      },
+
+    });
+  }
+
+  getEmployeeName(employeeId: string | undefined): string {
+
     const id = (employeeId || '').toString();
-    
+
     if (this.employeeNames[id]) {
       return this.employeeNames[id];
     }
     return id;
-    
+
   }
-  
+
   populateCanvasCharts() {
     this.chartCanvasArray = [];
     for (let i = 0; i < this.chartData.length; i++) {
       let dataset = [];
-  
+
       if (this.chartData[i].type === 'pie') {
         const labelsArray: string[] = this.chartData[i].labels.map((label: string) => this.getEmployeeName(label));
         this.chartData[i].labels = labelsArray;
         dataset.push({
           data: this.chartData[i].data,
           labels: labelsArray,
+          backgroundColor: this.coloursArray
         });
       } else {
         if (this.chartData[i].labels) {
@@ -246,6 +284,8 @@ export class ChartComponent implements OnInit {
             dataset.push({
               data: [this.chartData[i].data[j]],
               label: this.getEmployeeName(this.chartData[i].labels[j]),
+              backgroundColor: this.coloursArray[j],
+              borderColor: this.coloursArray[j],
             });
           }
         }
