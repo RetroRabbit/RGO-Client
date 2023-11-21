@@ -201,7 +201,7 @@ export class EmployeeProfileComponent {
   employeeDataDto!: EmployeeData;
   filteredCountries: any[] = this.countries.slice();
   previousPage: string = '';
-  CURRENT_PAGE = 'currentPage';
+  currentPage: string = '';
 
   constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
@@ -218,15 +218,15 @@ export class EmployeeProfileComponent {
   ngOnInit() {
     this.getEmployeeFields();
     this.previousPage = this.cookieService.get('previousPage');
-    console.log(this.previousPage);
+    this.currentPage = this.cookieService.get('currentPage');
   }
 
   goToEmployees() {
-    this.cookieService.set(this.CURRENT_PAGE, 'Employees');
+    this.cookieService.set('currentPage', 'Employees');
   }
 
   goToDashboard() {
-    this.cookieService.set(this.CURRENT_PAGE, 'Dashboard');
+    this.cookieService.set('currentPage', 'Dashboard');
   }
 
   getEmployeeFields() {
