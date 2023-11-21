@@ -50,6 +50,19 @@
                     </mat-select>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                      <mat-label>People's Champion</mat-label>
+                      <input type="text" placeholder="" matInput
+                          formControlName="peopleChampion" [matAutocomplete]="autoChampion"
+                          (input)="filterChampions($event)">
+                      <mat-autocomplete #autoChampion="matAutocomplete">
+                          <mat-option *ngFor="let peopleChampion of filteredPeopleChamps"
+                              [value]="peopleChampion.name + ' ' + peopleChampion.surname"
+                              (onSelectionChange)="getId(peopleChampion, 'champion')">
+                              {{ peopleChampion.name }}
+                              {{ peopleChampion.surname }}</mat-option>
+                      </mat-autocomplete>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Select level</mat-label>
                     <mat-select formControlName="level">
                       <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
