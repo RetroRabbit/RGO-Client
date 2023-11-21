@@ -26,20 +26,7 @@ export class ViewEmployeeComponent {
 
   @Input()
   set searchQuery(text: string) {
-    //if(this.cookieService.get('previousPage') == "Dashboard"){ 
-    // this._searchQuery = text;
-    // this.applySearchFilter();
-    //}
-    //Bloop 2
-    if(this.cookieService.get('previousPage') != "Dashboard"){ 
-      this._searchQuery = "";
-      console.log("Previous page != Dashboard");
-    }
-    else{
-      this._searchQuery = text;
-      console.log("Previous page == Dashboard");
-    }
-    console.log(this.searchQuery);
+    this._searchQuery = text;
     this.applySearchFilter();
   }
 
@@ -60,7 +47,7 @@ export class ViewEmployeeComponent {
   onAddEmployeeClick(): void {
     this.hideNavService.showNavbar=false;
     this.addEmployeeEvent.emit();
-    this.cookieService.set('previousPage', 'Employees');//TODO: FIX
+    this.cookieService.set('previousPage', 'Employees');
     this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee'); 
   }
 
@@ -76,7 +63,9 @@ export class ViewEmployeeComponent {
 
   ngOnInit() {
     this.onResize();
-
+    if(this.cookieService.get('previousPage') != "Dashboard"){ 
+      this._searchQuery = "";
+    } 
   }
 
   ngAfterViewInit() {
@@ -111,7 +100,7 @@ export class ViewEmployeeComponent {
       .subscribe((data) => {
         this.setupDataSource(data)
         this.isLoading = false;
-        this.applySearchFilter(); //bloop 2
+        this.applySearchFilter();
       });
   }
 
@@ -214,7 +203,6 @@ export class ViewEmployeeComponent {
           this.selectedEmployee.emit(data);
           this._searchQuery = '';
           this.cookieService.set('previousPage','Employees');
-          this.cookieService.set('currentPage', 'EmployeeProfile'); //TODO: FIX
           this.cookieService.set(this.CURRENT_PAGE, 'EmployeeProfile');
         }),
         first()
@@ -236,11 +224,8 @@ export class ViewEmployeeComponent {
   }
 
   applySearchFilter() {
-      //console.log(this.dataSource);
       this.dataSource.filter = this.searchQuery.trim().toLowerCase();
       this.dataSource._updateChangeSubscription();
-      //console.log(this.dataSource);
-      //console.log("HERE")
   }
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
