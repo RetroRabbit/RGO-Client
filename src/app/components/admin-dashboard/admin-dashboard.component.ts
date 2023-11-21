@@ -32,13 +32,11 @@ export class AdminDashboardComponent {
   @Output() expandSearch = new EventEmitter<string>();
 
   categoryControl = new FormControl();
-
   chartName: string = '';
   selectedDataItems: string[] = [];
   chartType: any = '';
   chartData: number[] = [];
   chartLabels: string[] = [];
-
   categories: string[] = [];
   filteredCategories: string[] = this.categories;
   categoryCtrl = new FormControl();
