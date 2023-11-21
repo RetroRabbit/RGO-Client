@@ -9,7 +9,6 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { EmployeeDate } from 'src/app/models/employee-date.interface';
-import { Subscription } from 'rxjs';
 import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
@@ -18,9 +17,8 @@ import { HideNavService } from 'src/app/services/hide-nav.service';
   styleUrls: ['./home.component.css']
 })
 
-export class HomeComponent implements OnDestroy{
-  showNav = true;
-  private subscription: Subscription;
+export class HomeComponent{
+  showNav = this.hideNavService.showNavbar;
   type$: Observable<Token> = this.store.select('app')
   selectedEvaluation: any | null = null
   selectedEvent: EmployeeDate | null = null;
@@ -45,13 +43,9 @@ export class HomeComponent implements OnDestroy{
     private store: Store<{ app: Token }>,
     private auth: AuthService,
     public cookieService: CookieService,
-    private hideNavService: HideNavService)
+    public hideNavService: HideNavService)
     {
     this.screenWidth = window.innerWidth;
-
-    this.subscription = this.hideNavService.showNavElements$.subscribe(show => {
-      this.showNav = show;
-    });
   }
 
 
@@ -79,9 +73,6 @@ export class HomeComponent implements OnDestroy{
     localStorage.removeItem('id_token');
     sessionStorage.removeItem('access_token');
     sessionStorage.removeItem('id_token');
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
   logout() {

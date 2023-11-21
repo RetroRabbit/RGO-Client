@@ -69,7 +69,7 @@ export class AdminDashboardComponent {
   }
 
   ngOnInit() {
-    this.hideNavService.toggleNavElements(true);
+    this.hideNavService.showNavbar = true;
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
 
@@ -118,7 +118,7 @@ export class AdminDashboardComponent {
   }
 
   AddNewHire(event: any) {
-    this.hideNavService.toggleNavElements(false);
+    this.hideNavService.showNavbar = false;
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('previousPage', 'Dashboard');
     this.cookieService.set('currentPage', target.innerText);
