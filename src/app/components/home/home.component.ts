@@ -62,7 +62,6 @@ export class HomeComponent{
     });
 
 
-
     this.chartService.getAllCharts().subscribe({
       next: (data: any) => this.charts = data
     });
