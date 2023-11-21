@@ -477,6 +477,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   goToPreviousPage(){
+    this.hideNavService.showNavbar=true;
     console.log(this.cookieService.get(this.PREVIOUS_PAGE));
     this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
 
