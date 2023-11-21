@@ -213,7 +213,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndExit(){
-    this.hideNavService.toggleNavElements(true);
+    this.hideNavService.showNavbar=true;
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
