@@ -262,6 +262,7 @@ export class NewEmployeeComponent implements OnInit {
           this.employeeDocumentModels = [];
           this.newEmployeeEmail = "";
           this.files = [];
+          this.myStepper.previous();
           location.reload();
           this.cookieService.set(this.CURRENT_PAGE, nextPage);
         }
@@ -370,6 +371,7 @@ export class NewEmployeeComponent implements OnInit {
         this.toast.success({
           detail: 'Success', summary: `${this.newEmployeeForm.value.name} has been added`, duration: 5000, position: 'topRight',
         });
+        // console.log(this.myStepper.previous());
         this.myStepper.next();
       },
 
