@@ -35,6 +35,7 @@ export class ViewEmployeeComponent {
   }
 
   CURRENT_PAGE = 'currentPage';
+  PREVIOUS_PAGE = 'previousPage';
 
   roles: Observable<string[]> = this.employeeRoleService
     .getAllRoles()
@@ -47,7 +48,7 @@ export class ViewEmployeeComponent {
   onAddEmployeeClick(): void {
     this.hideNavService.showNavbar=false;
     this.addEmployeeEvent.emit();
-    this.cookieService.set('previousPage', 'Employees');
+    this.cookieService.set(this.PREVIOUS_PAGE, 'Employees');
     this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee'); 
   }
 
@@ -63,14 +64,14 @@ export class ViewEmployeeComponent {
 
   ngOnInit() {
     this.onResize();
-    if(this.cookieService.get('previousPage') != "Dashboard"){ 
+    if(this.cookieService.get(this.PREVIOUS_PAGE) != "Dashboard"){ 
       this._searchQuery = "";
     }
   }
 
   ngAfterViewInit() {
     this.getEmployees();
-    this.cookieService.set('previousPage', 'Employees');
+    this.cookieService.set(this.PREVIOUS_PAGE, 'Employees');
   }
 
   isLoading: boolean = true;
@@ -203,7 +204,7 @@ export class ViewEmployeeComponent {
         tap((data) => {
           this.selectedEmployee.emit(data);
           this._searchQuery = '';
-          this.cookieService.set('previousPage','Employees');
+          this.cookieService.set(this.PREVIOUS_PAGE,'Employees');
           this.cookieService.set(this.CURRENT_PAGE, 'EmployeeProfile');
         }),
         first()

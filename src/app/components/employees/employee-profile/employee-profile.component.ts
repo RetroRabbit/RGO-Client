@@ -203,6 +203,9 @@ export class EmployeeProfileComponent {
   previousPage: string = '';
   currentPage: string = '';
 
+  CURRENT_PAGE = "currentPage";
+  PREVIOUS_PAGE = "previousPage";
+
   constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
     private clientService: ClientService,
@@ -217,16 +220,16 @@ export class EmployeeProfileComponent {
 
   ngOnInit() {
     this.getEmployeeFields();
-    this.previousPage = this.cookieService.get('previousPage');
-    this.currentPage = this.cookieService.get('currentPage');
+    this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+    this.currentPage = this.cookieService.get(this.CURRENT_PAGE);
   }
 
   goToEmployees() {
-    this.cookieService.set('currentPage', 'Employees');
+    this.cookieService.set(this.CURRENT_PAGE, 'Employees');
   }
 
   goToDashboard() {
-    this.cookieService.set('currentPage', 'Dashboard');
+    this.cookieService.set(this.CURRENT_PAGE, 'Dashboard');
   }
 
   getEmployeeFields() {

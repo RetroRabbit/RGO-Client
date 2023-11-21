@@ -70,6 +70,9 @@ export class AdminDashboardComponent {
   searchResults: EmployeeProfile[] = [];
   allEmployees: EmployeeProfile[] = [];
 
+  CURRENT_PAGE = "currentPage";
+  PREVIOUS_PAGE = "previousPage";
+
   constructor(
     private employeeProfileService: EmployeeProfileService,
     private employeeService: EmployeeService,
@@ -141,7 +144,7 @@ export class AdminDashboardComponent {
   }
 
   CaptureEventOld(event: any) {
-    this.cookieService.set('currentPage', "+ Add Graph");
+    this.cookieService.set(this.CURRENT_PAGE, "+ Add Graph");
   }
 
   CaptureEvent(event: any) {
@@ -153,15 +156,15 @@ export class AdminDashboardComponent {
   AddNewHire(event: any) {
     this.hideNavService.showNavbar = false;
     const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('previousPage', 'Dashboard');
-    this.cookieService.set('currentPage', target.innerText);
+    this.cookieService.set(this.PREVIOUS_PAGE, 'Dashboard');
+    this.cookieService.set(this.CURRENT_PAGE, target.innerText);
   }
 
   viewMoreEmployees() {
     this.displayAllEmployees = true;
     this.expandSearch.emit(this.searchQuery);
-    this.cookieService.set('previousPage', 'Dashboard');
-    this.cookieService.set('currentPage', 'Employees');
+    this.cookieService.set(this.PREVIOUS_PAGE, 'Dashboard');
+    this.cookieService.set(this.CURRENT_PAGE, 'Employees');
   }
 
   searchEmployees() {
@@ -305,7 +308,7 @@ export class AdminDashboardComponent {
 
   CaptureEventlast(event: any) {
     const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('currentPage', target.innerText);
+    this.cookieService.set(this.CURRENT_PAGE, target.innerText);
   }
 
   recieveNumber(number: any) {
@@ -383,8 +386,8 @@ export class AdminDashboardComponent {
 
   employeeClickEvent(employee: EmployeeProfile): void {
     this.selectedEmployee.emit(employee);
-    this.cookieService.set('currentPage', 'EmployeeProfile');
-    this.cookieService.set('previousPage', 'Dashboard');
+    this.cookieService.set(this.CURRENT_PAGE, 'EmployeeProfile');
+    this.cookieService.set(this.PREVIOUS_PAGE, 'Dashboard');
     console.log(employee);
   }
 
