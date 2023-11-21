@@ -65,11 +65,12 @@ export class ViewEmployeeComponent {
     this.onResize();
     if(this.cookieService.get('previousPage') != "Dashboard"){ 
       this._searchQuery = "";
-    } 
+    }
   }
 
   ngAfterViewInit() {
     this.getEmployees();
+    this.cookieService.set('previousPage', 'Employees');
   }
 
   isLoading: boolean = true;
