@@ -9,24 +9,9 @@ import { NgToastService } from 'ng-angular-popup';
 import { ClientService } from 'src/app/services/client.service';
 import { Client } from 'src/app/models/client.interface';
 import { EmployeeData } from 'src/app/models/employeedata.interface';
-import {
-  Component,
-  Output,
-  EventEmitter,
-  ViewChild,
-  HostListener,
-  NgZone,
-} from '@angular/core';
-import {
-  Observable,
-  catchError,
-  first,
-  forkJoin,
-  map,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { Component, Output, EventEmitter, ViewChild, HostListener, NgZone } from '@angular/core';
+import { Observable, catchError, first, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-view-employee',
@@ -46,9 +31,10 @@ export class ViewEmployeeComponent {
       map((roles: string[]) => roles.filter((role) => !role.includes('SuperAdmin'))),
       first()
     );
-   
+
 
   onAddEmployeeClick(): void {
+    this.hideNavService.showNavbar=false;
     this.addEmployeeEvent.emit();
     this.cookieService.set('previousPage', 'Employees');
     this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee');
@@ -60,14 +46,15 @@ export class ViewEmployeeComponent {
     private clientService: ClientService,
     private toast: NgToastService,
     private cookieService: CookieService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private hideNavService: HideNavService
   ) {}
 
   ngOnInit() {
     this.onResize();
 
-   
-    
+
+
   }
 
   ngAfterViewInit() {
