@@ -231,3 +231,9 @@ main {
     line-height: 20px;
     letter-spacing: 0.1px;
 }
+
+#image-preview > img{
+    display: block;
+    margin: auto;
+    width: 50%;
+}
