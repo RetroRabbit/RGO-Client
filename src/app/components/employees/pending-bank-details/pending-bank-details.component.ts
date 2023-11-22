@@ -23,9 +23,9 @@ export class PendingBankDetailsComponent {
 
   ngOnInit() {
     this.fetchPending();
-    
+
   }
-  
+
   fetchPending(){
     this.employeeBankingService.getPending(1).subscribe(dataArray => {
       this.pendingBankApplications = dataArray;
@@ -80,20 +80,20 @@ export class PendingBankDetailsComponent {
     delete updateData.employee;
 
     if(updateData.status == 2 && this.declineReason == ''){
-      this.toast.error({detail:"Error",summary: "You must provide a reason for rejecting an application",duration:5000, position:'topRight'});
+      this.toast.error({detail:"Error",summary: "You must provide a reason for rejecting an application",duration:5000, position:'topCenter'});
       return;
     }
     if(updateData.status == 1){
-      this.toast.error({detail:"Error",summary: "You must provide a response to submit",duration:5000, position:'topRight'});
+      this.toast.error({detail:"Error",summary: "You must provide a response to submit",duration:5000, position:'topCenter'});
       return;
     }
     this.employeeBankingService.updatePending(updateData).subscribe( (data) => {
-      this.toast.success({detail:"Success",summary:`${this.copyOfSelected?.accountHolderName} has been updated`,duration:5000, position:'topRight'});
+      this.toast.success({detail:"Success",summary:`${this.copyOfSelected?.accountHolderName} has been updated`,duration:5000, position:'topCenter'});
       this.showTable();
       this.ngOnInit();
     },
     (error) => {
-      this.toast.error({detail:"Error",summary: "Please try again later",duration:5000, position:'topRight'});
+      this.toast.error({detail:"Error",summary: "Please try again later",duration:5000, position:'topCenter'});
     });
   }
 }

@@ -52,7 +52,7 @@ export class NewFieldCodeComponent {
         option: [''],
         internal: [false],
         internalTable: [''],
-        options: this.fb.array([]) 
+        options: this.fb.array([])
       }),
     });
     this.isUnique = true;
@@ -93,11 +93,11 @@ export class NewFieldCodeComponent {
         internalTable: fieldCode.internalTable,
         options:optionsArray
       };
-      
-  
+
+
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
               next: (data) => {
-                this.toast.success({detail:"Field Code saved!", position:'topRight'})
+                this.toast.success({detail:"Field Code saved!", position:'topCenter'})
                 this.newFieldCodeForm.disable();
               },
               error: (error) => {
@@ -105,7 +105,7 @@ export class NewFieldCodeComponent {
                   this.isUnique = false;
                 }
                 else {
-                  this.toast.error({detail:"Error", summary:error, duration:5000, position:'topRight'});
+                  this.toast.error({detail:"Error", summary:error, duration:5000, position:'topCenter'});
                 }
               }
             });

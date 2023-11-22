@@ -1,0 +1,82 @@
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Employee } from 'src/app/models/employee.interface';
+import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
+import { RoleService } from 'src/app/services/role.service';
+
+@Component({
+  selector: 'app-employee-role-manager',
+  templateUrl: './employee-role-manager.component.html',
+  styleUrls: ['./employee-role-manager.component.css']
+})
+export class EmployeeRoleManagerComponent {
+  roles$: Observable<string[]> = this.employeeRoleService.getAllRoles()
+  employees$: Observable<Employee[]> = this.empoloyeeService.getAll()
+
+  saved: boolean = false
+  deleted: boolean = false
+  failed: boolean = false
+
+  newEmployeeForm = new FormGroup({
+    email: new FormControl<string>('', Validators.required),
+    role: new FormControl<string>('', Validators.required),
+  })
+
+  currRoles!: string[]
+
+  constructor(
+    private empoloyeeService: EmployeeService,
+    private employeeRoleService: EmployeeRoleService
+  ) { }
+
+  isInCurrent(role: string): boolean {
+    return this.currRoles.includes(role)
+  }
+
+  getRoles(selectedEmail: string): void {
+    this.employeeRoleService.getRoles(selectedEmail).subscribe({
+      next: data =>
+        this.currRoles = data
+    })
+  }
+
+  changeEmail(email: string): void {
+    this.newEmployeeForm.setValue({ email: email, role: this.newEmployeeForm.value.role ?? '' })
+  }
+
+  changeRole(role: string): void {
+    this.newEmployeeForm.setValue({ email: this.newEmployeeForm.value.email ?? '', role: role })
+  }
+
+  assignRole(): void {
+    this.employeeRoleService.addRole(this.newEmployeeForm.value.email!, this.newEmployeeForm.value.role!).subscribe({
+      next: data => {
+        this.newEmployeeForm.reset()
+        this.newEmployeeForm.setValue({ email: '', role: '' })
+        this.saved = true
+      },
+      error: error => {
+        this.newEmployeeForm.reset()
+        this.newEmployeeForm.setValue({ email: '', role: '' })
+        this.failed = true
+      }
+    })
+  }
+
+  unassignRole(): void {
+    this.employeeRoleService.removeRole(this.newEmployeeForm.value.email!, this.newEmployeeForm.value.role!).subscribe({
+      next: data => {
+        this.newEmployeeForm.reset()
+        this.newEmployeeForm.setValue({ email: '', role: '' })
+        this.deleted = true
+      },
+      error: error => {
+        this.newEmployeeForm.reset()
+        this.newEmployeeForm.setValue({ email: '', role: '' })
+        this.failed = true
+      }
+    })
+  }
+}

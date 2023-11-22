@@ -203,7 +203,7 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
-        
+
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
@@ -224,7 +224,7 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
-        this.initializeForm(); 
+        this.initializeForm();
       }
     });
   }
@@ -356,19 +356,19 @@ export class EmployeeProfileComponent {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-          this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.toast.success({ detail: "Employee Details updated!", position: 'topCenter' });
           this.checkPersonalFormProgress();
           this.totalProfileProgress();
           this.getEmployeeFields();
           this.personalDetailsForm.disable();
         },
         error: (error) => {
-          this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+          this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topCenter' });
         },
       });
     }
     else {
-      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topCenter' });
     }
   }
 
@@ -414,22 +414,22 @@ export class EmployeeProfileComponent {
           }
           this.employeeAddressService.update(this.employeeAddressDto).subscribe({
             next: (data) => {
-              this.toast.success({ detail: "Employee Address updated!", position: 'topRight' });
+              this.toast.success({ detail: "Employee Address updated!", position: 'topCenter' });
               this.addressDetailsForm.disable();
               this.checkAddressFormProgress();
               this.totalProfileProgress();
               this.getEmployeeFields();
             },
             error: (error: any) => {
-              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topCenter' });
             },
           });
         },
-        error: (error: any) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error: any) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topCenter' }); },
       });
     }
     else {
-      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topCenter' });
     }
   }
 
@@ -537,7 +537,7 @@ export class EmployeeProfileComponent {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-          this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.toast.success({ detail: "Employee Details updated!", position: 'topCenter' });
           this.checkEmployeeFormProgress();
           this.totalProfileProgress();
           this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfileDto?.clientAllocated)[0];
@@ -545,11 +545,11 @@ export class EmployeeProfileComponent {
           this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfileDto?.peopleChampion)[0];
           this.employeeDetailsForm.disable();
         },
-        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topCenter' }); },
       });
     }
     else {
-      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topCenter' });
     }
   }
 
@@ -579,16 +579,16 @@ export class EmployeeProfileComponent {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-          this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.toast.success({ detail: "Employee Details updated!", position: 'topCenter' });
           this.checkContactFormProgress();
           this.totalProfileProgress();
           this.employeeContactForm.disable();
         },
-        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topCenter' }); },
       });
     }
     else {
-      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topCenter' });
     }
   }
 
@@ -624,7 +624,7 @@ export class EmployeeProfileComponent {
       this.filteredPeopleChamps = this.employees.filter((champs: any) =>
         champs.employee.name.toLowerCase().includes(event.target.value.toLowerCase())
       );
-    } 
+    }
   }
 
   getId(data: any, name: string) {
@@ -785,7 +785,7 @@ export class EmployeeProfileComponent {
 
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {
-          this.toast.success({ detail: "Employee Banking updated!", position: 'topRight' });
+          this.toast.success({ detail: "Employee Banking updated!", position: 'topCenter' });
         this.addressDetailsForm.disable();
         this.checkAddressFormProgress();
         this.totalBankingProgress();
@@ -793,14 +793,14 @@ export class EmployeeProfileComponent {
         this.checkBankingInformationProgress();
       },
       error: (error) => {
-        this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+        this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topCenter' });
       }
     })
     }
     else{
       this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
         next: () => {
-          this.toast.success({ detail: "Banking Details Added!", position: 'topRight' });
+          this.toast.success({ detail: "Banking Details Added!", position: 'topCenter' });
           this.addressDetailsForm.disable();
           this.checkAddressFormProgress();
           this.totalBankingProgress();
@@ -808,7 +808,7 @@ export class EmployeeProfileComponent {
           this.checkBankingInformationProgress();
         }
         ,error : (error) => {
-          this.toast.error({ detail: "Failed to create banking information", summary: error, duration: 5000, position: 'topRight' });
+          this.toast.error({ detail: "Failed to create banking information", summary: error, duration: 5000, position: 'topCenter' });
         }
       })
     }

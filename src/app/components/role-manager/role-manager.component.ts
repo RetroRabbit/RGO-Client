@@ -18,16 +18,16 @@ import { CookieService } from 'ngx-cookie-service';
 export class RoleManagerComponent {
 
   @ViewChild('dialogContentTemplate') dialogContentTemplate!: TemplateRef<any>;
- 
+
   @ViewChild('dialogCancelTemplate') dialogCancelTemplate!: TemplateRef<any>;
-  
+
   saved: boolean = false
   deleted: boolean = false
   failed: boolean = false
   selected: boolean = false
 
   roles: Role[] = [];
-  
+
   roleAccesses: RoleAccess[] = [];
 
   roleAccessLinks: RoleAccessLink[] = [];
@@ -50,19 +50,19 @@ export class RoleManagerComponent {
     this.roleManagementService.getAllRoles().subscribe(roles => {
       this.roles = roles;
     });
-  
+
     this.roleManagementService.getAllRoleAccesses().subscribe(roleAccess => {
       this.roleAccesses = roleAccess;
       this.chartPermissions = this.roleAccesses.filter(permission => permission.grouping === "Charts");
       this.employeePermissions = this.roleAccesses.filter(permission => permission.grouping === "Employee Data");
     });
-  
+
     this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
       this.roleAccessLinks = roleAccessLinks;
       this.updateChartAndEmployeeDataCheckboxStates();
     });
   }
-  
+
 
   areAllCheckboxesSelected(columnKey: string): boolean {
     return this.roles.every((r) => this.checkboxStates[r.description + columnKey]);
@@ -98,7 +98,7 @@ updateAllEmployeeDataCheckboxes() {
   }
 }
 
-  
+
   updateChartAndEmployeeDataCheckboxStates() {
     for (let r of this.roles) {
       for (let n of this.chartPermissions) {
@@ -123,7 +123,7 @@ updateAllEmployeeDataCheckboxes() {
     this.updateAllCheckboxes();
     this.updateAllEmployeeDataCheckboxes();
   }
-  
+
 allCheckboxesState: { [key: string]: boolean } = {};
 
 allEmployeeDataCheckboxesState: { [key: string]: boolean } = {}
@@ -167,7 +167,7 @@ toggleAllCheckboxes(roleDescription: string) {
         });
       }
     }
-  } 
+  }
 }
 
 toggleAllEmployeeDataCheckboxes(roleDescription: string) {
@@ -205,7 +205,7 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
 
   onChangeRoleAccess($event: any, role: string, permission: string, grouping: string) {
     const isChecked = $event.source.checked;
-  
+
     const change: RoleAccessLink = {
       id: -1,
       role: {
@@ -219,19 +219,19 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
       },
       changeType: isChecked ? 'add' : 'delete',
     };
-  
+
     const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
       item.role.description === role && item.roleAccess.permission === permission && item.roleAccess.grouping === grouping
     );
-  
+
     if (existingChangeIndex !== -1) {
       this.temporaryRoleAccessChanges.splice(existingChangeIndex, 1);
     }
-  
+
     this.temporaryRoleAccessChanges.push(change);
   }
-  
-  
+
+
   updateData() {
     this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
       this.roleAccessLinks = roleAccessLinks;
@@ -239,7 +239,7 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
     });
   }
   saveChanges() {
-   
+
     this.temporaryRoleAccessChanges.forEach((change) => {
       if (change.changeType === 'add') {
         this.onAdd(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
@@ -247,7 +247,7 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
         this.onDelete(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
       }
     });
- 
+
     this.temporaryRoleAccessChanges = [];
 
   }
@@ -257,17 +257,17 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
     this.toast.success({
       detail: `Changes discarded successfully!`,
       duration: 5000,
-      position: 'topRight',
+      position: 'topCenter',
     });
   }
-  
+
   onAdd(role:string,permission:string,grouping: string): void {
     this.roleService.addRole(role, permission,grouping).subscribe({
       next: (data) => {
         this.toast.success({
           detail: `Permissions saved  successfully!`,
           duration: 5000,
-          position: 'topRight',
+          position: 'topCenter',
         });
         this.saved = true
       },
@@ -283,7 +283,7 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
         this.toast.success({
           detail: `Permissions deleted  successfully!`,
           duration: 5000,
-          position: 'topRight',
+          position: 'topCenter',
         });
         this.deleted = true
       },
@@ -292,7 +292,7 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
           detail: `Error: ${error}`,
           summary: 'Failed to delete Permissions',
           duration: 10000,
-          position: 'topRight',
+          position: 'topCenter',
         });
         this.failed = true
       }
@@ -301,7 +301,7 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(this.dialogContentTemplate);
-     
+
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
       }

@@ -105,7 +105,7 @@ export class ChartReportPdfComponent {
           container.removeAttribute("style");
         }
       }).catch(error => {
-        this.toast.error({ detail: "error", summary: "Error generating PDF:", duration: 5000, position: 'topRight' });
+        this.toast.error({ detail: "error", summary: "Error generating PDF:", duration: 5000, position: 'topCenter' });
 
         if (originalStyle !== null) {
           container.setAttribute("style", originalStyle);
@@ -114,7 +114,7 @@ export class ChartReportPdfComponent {
         }
       });
     } else {
-      this.toast.error({ detail: "error", summary: "Could not find the container element to generate the PDF", duration: 5000, position: 'topRight' });
+      this.toast.error({ detail: "error", summary: "Could not find the container element to generate the PDF", duration: 5000, position: 'topCenter' });
     }
   }
 
