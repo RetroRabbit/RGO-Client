@@ -172,11 +172,11 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
-      this.hideNavService.showNavbar=false;
+      this.hideNavService.showNavbar = false;
   }
 
   ngOnDestroy() {
-    this.hideNavService.showNavbar=true;
+    this.hideNavService.showNavbar = true;
   }
 
   filterChampions(event: any) {
