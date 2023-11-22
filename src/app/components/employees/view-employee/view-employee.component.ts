@@ -9,7 +9,7 @@ import { NgToastService } from 'ng-angular-popup';
 import { ClientService } from 'src/app/services/client.service';
 import { Client } from 'src/app/models/client.interface';
 import { EmployeeData } from 'src/app/models/employeedata.interface';
-import { Component, Output, EventEmitter, ViewChild, HostListener, NgZone } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, HostListener, NgZone, Input } from '@angular/core';
 import { Observable, catchError, first, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { HideNavService } from 'src/app/services/hide-nav.service';
 
@@ -22,8 +22,20 @@ export class ViewEmployeeComponent {
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() addEmployeeEvent = new EventEmitter<void>();
   @Output() managePermissionsEvent = new EventEmitter<void>();
+  _searchQuery: string = '';
+
+  @Input()
+  set searchQuery(text: string) {
+    this._searchQuery = text;
+    this.applySearchFilter();
+  }
+
+  get searchQuery(): string {
+    return this._searchQuery;
+  }
 
   CURRENT_PAGE = 'currentPage';
+  PREVIOUS_PAGE = 'previousPage';
 
   roles: Observable<string[]> = this.employeeRoleService
     .getAllRoles()
@@ -35,8 +47,8 @@ export class ViewEmployeeComponent {
 
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
-    this.cookieService.set('previousPage', 'Employees');
-    this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee');
+    this.cookieService.set(this.PREVIOUS_PAGE, 'Employees');
+    this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee'); 
   }
 
   constructor(
@@ -51,10 +63,14 @@ export class ViewEmployeeComponent {
 
   ngOnInit() {
     this.onResize();
+    if(this.cookieService.get(this.PREVIOUS_PAGE) != "Dashboard"){ 
+      this._searchQuery = "";
+    }
   }
 
   ngAfterViewInit() {
     this.getEmployees();
+    this.cookieService.set(this.PREVIOUS_PAGE, 'Employees');
   }
 
   isLoading: boolean = true;
@@ -85,6 +101,7 @@ export class ViewEmployeeComponent {
       .subscribe((data) => {
         this.setupDataSource(data)
         this.isLoading = false;
+        this.applySearchFilter();
       });
   }
 
@@ -185,6 +202,8 @@ export class ViewEmployeeComponent {
         ),
         tap((data) => {
           this.selectedEmployee.emit(data);
+          this._searchQuery = '';
+          this.cookieService.set(this.PREVIOUS_PAGE,'Employees');
           this.cookieService.set(this.CURRENT_PAGE, 'EmployeeProfile');
         }),
         first()
@@ -205,8 +224,9 @@ export class ViewEmployeeComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applySearchFilter() {
+      this.dataSource.filter = this.searchQuery.trim().toLowerCase();
+      this.dataSource._updateChangeSubscription();
   }
 
   pageSizes: number[] = [1, 5, 10, 25, 100];

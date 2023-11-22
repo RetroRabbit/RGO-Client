@@ -1,13 +1,22 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, HostListener} from '@angular/core';
 import { Chart } from 'src/app/models/charts.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { CookieService } from 'ngx-cookie-service';
+import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
+import { Router } from '@angular/router';
+import { Observable, catchError, first, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
+import { NgToastService } from 'ng-angular-popup';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { TemplateRef } from '@angular/core';
-import { NgToastService } from 'ng-angular-popup';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { HideNavService } from 'src/app/services/hide-nav.service';
@@ -19,20 +28,20 @@ import { HideNavService } from 'src/app/services/hide-nav.service';
 })
 
 export class AdminDashboardComponent {
+  @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
+  @Output() expandSearch = new EventEmitter<string>();
 
   categoryControl = new FormControl();
-
   chartName: string = '';
   selectedDataItems: string[] = [];
   chartType: any = '';
   chartData: number[] = [];
   chartLabels: string[] = [];
-
-  categories: string[] = [];// ToDo: fetch from backend
+  categories: string[] = [];
   filteredCategories: string[] = this.categories;
   categoryCtrl = new FormControl();
   selectedCategories: string[] = [];
-
+  noResults: boolean = false;
   typeControl = new FormControl();
   types: string[] = [];
   filteredTypes: any[] = this.types;
@@ -47,6 +56,8 @@ export class AdminDashboardComponent {
   selectedItem: string = 'Dashboard';
   menuClicked: boolean = false;
   profileImage: string | null = null;
+  initialDisplayCount: number = 3;
+  displayAllEmployees: boolean = false;
   roles: string[] = [];
 
 
@@ -55,11 +66,22 @@ export class AdminDashboardComponent {
     name: '',
   };
 
+  searchQuery: string = '';
+  searchResults: EmployeeProfile[] = [];
+  allEmployees: EmployeeProfile[] = [];
+
+  CURRENT_PAGE = "currentPage";
+  PREVIOUS_PAGE = "previousPage";
+
   constructor(
+    private employeeProfileService: EmployeeProfileService,
+    private employeeService: EmployeeService,
+    private employeeRoleService: EmployeeRoleService,
+    private toast: NgToastService,
     private chartService: ChartService,
     private cookieService: CookieService,
+    private router: Router,
     private dialog: MatDialog,
-    private toast: NgToastService,
     private employeeTypeService: EmployeeTypeService,
     private hideNavService: HideNavService
   ) {
@@ -71,6 +93,20 @@ export class AdminDashboardComponent {
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
+    this.employeeService.getAllProfiles().subscribe((data) => {
+      if (Array.isArray(data)) {
+        this.allEmployees = data;
+      } else if (data) {
+        this.allEmployees = [data];
+      }
+      this.searchResults = [];
+    });
+
+    this.employeeProfileService
+      .searchEmployees(this.searchQuery)
+      .subscribe((data) => {
+        this.allEmployees = data;
+    });
 
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
@@ -107,7 +143,7 @@ export class AdminDashboardComponent {
   }
 
   CaptureEventOld(event: any) {
-    this.cookieService.set('currentPage', "+ Add Graph");
+    this.cookieService.set(this.CURRENT_PAGE, "+ Add Graph");
   }
 
   CaptureEvent(event: any) {
@@ -118,9 +154,50 @@ export class AdminDashboardComponent {
 
   AddNewHire(event: any) {
     const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('previousPage', 'Dashboard');
-    this.cookieService.set('currentPage', target.innerText);
+    this.cookieService.set(this.PREVIOUS_PAGE, 'Dashboard');
+    this.cookieService.set(this.CURRENT_PAGE, target.innerText);
   }
+
+  viewMoreEmployees() {
+    this.displayAllEmployees = true;
+    this.expandSearch.emit(this.searchQuery);
+    this.cookieService.set(this.PREVIOUS_PAGE, 'Dashboard');
+    this.cookieService.set(this.CURRENT_PAGE, 'Employees');
+  }
+
+  searchEmployees() {
+    if (this.searchQuery) {
+      this.searchResults = this.allEmployees
+        .filter(
+          (employee) =>
+            employee.name &&
+            employee.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+            employee.surname &&
+            employee.surname.toLowerCase().includes(this.searchQuery.toLowerCase())
+        )
+        .filter(employee => employee.name !== undefined)
+        .sort((a, b) => {
+          if (a.name && b.name) {
+            return a.name.localeCompare(b.name);
+          } else {
+            return 0;
+          }
+        });
+  
+      if (this.searchResults.length <= 0) {
+        this.noResults = true;
+      } else {
+        this.noResults = false;
+        this.activateSearchBar();
+      }
+    } else {
+      this.searchResults = [];
+      this.noResults = true;
+      this.deactivateSearchBar();
+    }
+    this.searchResults = this.searchResults.slice(0, 3);
+  }
+  
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.selectedCategories.push(event.option.viewValue);
@@ -229,7 +306,7 @@ export class AdminDashboardComponent {
 
   CaptureEventlast(event: any) {
     const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('currentPage', target.innerText);
+    this.cookieService.set(this.CURRENT_PAGE, target.innerText);
   }
 
   recieveNumber(number: any) {
@@ -237,5 +314,82 @@ export class AdminDashboardComponent {
       next: data => this.charts = data,
       error: error => this.toast.error({ detail: "Error", summary: "Failed to get charts.", duration: 5000, position: 'topRight' })
     })
+  }  
+ 
+  activateSearchBar() {
+    const searchBar = document.querySelector('.searchbar');
+    searchBar?.classList.add('active');
+    searchBar?.classList.remove('no-results');
+  }
+
+  deactivateSearchBar() {
+    const searchBar = document.querySelector('.searchbar');
+    searchBar?.classList.remove('active');
+    searchBar?.classList.add('no-results');
+  }
+
+  dataSource: MatTableDataSource<{
+    Name: string;
+    Position: string | undefined;
+    Level: number | undefined;
+    Client: string;
+    Roles: string[];
+    Email: string | undefined;
+  }> = new MatTableDataSource();
+
+  @ViewChild(MatSort) sort!: MatSort;
+  
+  getEmployees() {
+    this.employeeService
+      .getAllProfiles()
+      .pipe(
+        switchMap((employees: EmployeeProfile[]) => {
+          const modifiedEmployees$ = employees.map((employee: EmployeeProfile) => {
+            return this.employeeRoleService.getRoles(employee.email!).pipe(
+              map((roles) => ({
+                Name: `${employee.name} ${employee.surname}`,
+                Position: employee.employeeType!.name,
+                Level: employee.level,
+                Client: employee.clientAllocated ? employee.clientAllocated : 'Bench',
+                Roles: this.sortRoles(roles),
+                Email: employee.email,
+              }))
+            );
+          });
+          return forkJoin(modifiedEmployees$);
+        }),
+        tap((data) => {
+          this.dataSource = new MatTableDataSource(data);
+          this.dataSource.sort = this.sort;
+        }),
+        catchError((error) => {
+          this.toast.error({
+            detail: `Error: ${error}`,
+            summary: 'Failed to load employees',
+            duration: 10000,
+            position: 'topRight',
+          });
+          return of([]);
+        })
+      )
+      .subscribe();
+  }
+
+  sortRoles(roles: string[]): string[] {
+    const adminRoles = roles.filter(role => role.toLowerCase().includes('admin')).sort().reverse();
+    const nonAdminRoles = roles.filter(role => !role.toLowerCase().includes('admin')).sort();
+  
+    return [...adminRoles, ...nonAdminRoles];
+  } 
+
+  employeeClickEvent(employee: EmployeeProfile): void {
+    this.selectedEmployee.emit(employee);
+    this.cookieService.set(this.CURRENT_PAGE, 'EmployeeProfile');
+    this.cookieService.set(this.PREVIOUS_PAGE, 'Dashboard');
+    console.log(employee);
+  }
+
+  ViewUser(email: string) {
+    this.cookieService.set('selectedUser', email);
   }
 }
