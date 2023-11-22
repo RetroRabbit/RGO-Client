@@ -45,6 +45,7 @@
   background-color: white;
   border-radius: 2rem;
   min-height: 75vh;
+  text-align: center;
 }
 
 #add-graph>button {
@@ -365,7 +366,6 @@ word-wrap: break-word;
   padding: 0;
   height: fit-content;
 }
-
 #search-arrow{
   width: 24px;
   height: 24px;
