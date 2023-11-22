@@ -11,12 +11,13 @@
       <div class="row pe-4">
         <h3>Update Chart</h3>
         <div class="row">
-          <div class="col-12">
+          <div class="col-12" id="dialog-radios">
             <mat-form-field appearance="outline" style="width: 100%;">
               <mat-label>Chart Name</mat-label>
               <input matInput [(ngModel)]="updateFormData.name">
             </mat-form-field>
           </div>
+
           <div class="col-12">
             <mat-radio-group aria-label="Chart Type" [(ngModel)]="updateFormData.type">
               <mat-radio-button value='bar'>Bar</mat-radio-button>
