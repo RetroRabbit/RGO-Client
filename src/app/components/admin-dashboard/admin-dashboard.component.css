@@ -33,6 +33,7 @@
   background-color: white;
   border-radius: 2rem;
   min-height: 75vh;
+  text-align: center;
 }
 
 #add-graph>button {
