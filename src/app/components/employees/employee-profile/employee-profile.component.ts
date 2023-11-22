@@ -277,7 +277,7 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
-        this.initializeForm();
+        // this.initializeForm();
         this.fieldCodeService.getAllFieldCodes().subscribe({
           next: data => {
             this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id)
