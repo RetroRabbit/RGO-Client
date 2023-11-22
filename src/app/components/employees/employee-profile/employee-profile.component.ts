@@ -245,6 +245,11 @@ export class EmployeeProfileComponent {
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
         
+        this.employeeDataService.getEmployeeData(this.selectedEmployee ? this.selectedEmployee.id : this.employeeProfile?.id).subscribe({
+          next: data => {
+            this.employeeData = data;
+          }
+        });
         this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
           next: (data) => {
             this.employeeBanking = data;
@@ -253,11 +258,6 @@ export class EmployeeProfileComponent {
             
           }
         })
-        this.employeeDataService.getEmployeeData(this.selectedEmployee ? this.selectedEmployee.id : this.employeeProfile?.id).subscribe({
-          next: data => {
-            this.employeeData = data;
-          }
-        });
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
