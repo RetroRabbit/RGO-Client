@@ -452,55 +452,61 @@ export class EmployeeProfileComponent {
     this.addressDetailsForm.enable();
   }
 
-  saveAddressEdit() {
-    this.editAddress = false;
-    if (this.addressDetailsForm.valid) {
-      const addressDetailFormValue = this.addressDetailsForm.value;
-      this.employeeAddressDto = {
-        id: this.employeeProfile!.physicalAddress?.id!,
-        unitNumber: addressDetailFormValue['physicalUnitNumber'],
-        complexName: addressDetailFormValue['physicalComplexName'],
-        streetNumber: addressDetailFormValue['physicalStreetNumber'],
-        suburbOrDistrict: addressDetailFormValue['physicalSuburb'],
-        city: addressDetailFormValue['physicalCity'],
-        country: addressDetailFormValue['physicalCountry'],
-        province: addressDetailFormValue['physicalProvince'],
-        postalCode: addressDetailFormValue['physicalPostalCode'],
-      }
-      this.employeeAddressService.update(this.employeeAddressDto).subscribe({
-        next: (data) => {
-          this.employeeAddressDto = {
-            id: this.employeeProfile!.postalAddress?.id!,
-            unitNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalUnitNumber'] : addressDetailFormValue['postalUnitNumber'],
-            complexName: this.physicalEqualPostal ? addressDetailFormValue['physicalComplexName'] : addressDetailFormValue['postalComplexName'],
-            streetNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalStreetNumber'] : addressDetailFormValue['postalStreetNumber'],
-            suburbOrDistrict: this.physicalEqualPostal ? addressDetailFormValue['physicalSuburb'] : addressDetailFormValue['postalSuburb'],
-            city: this.physicalEqualPostal ? addressDetailFormValue['physicalCity'] : addressDetailFormValue['postalCity'],
-            country: this.physicalEqualPostal ? addressDetailFormValue['physicalCountry'] : addressDetailFormValue['postalCountry'],
-            province: this.physicalEqualPostal ? addressDetailFormValue['physicalProvince'] : addressDetailFormValue['postalProvince'],
-            postalCode: this.physicalEqualPostal ? addressDetailFormValue['physicalPostalCode'] : addressDetailFormValue['postalPostalCode'],
-          }
-          this.employeeAddressService.update(this.employeeAddressDto).subscribe({
-            next: (data) => {
-              this.toast.success({ detail: "Employee Address updated!", position: 'topRight' });
-              this.addressDetailsForm.disable();
-              this.checkAddressFormProgress();
-              this.totalProfileProgress();
-              this.getEmployeeFields();
-            },
-            error: (error: any) => {
-              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
-            },
-          });
-        },
-        error: (error: any) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
-      });
-    }
-    else {
-      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
-    }
-  }
+saveAddressEdit() {
+  this.editAddress = false;
+  if (this.addressDetailsForm.valid) {
+    const addressDetailFormValue = this.addressDetailsForm.value;
 
+    const physicalAddressDto: EmployeeAddress = {
+      id: this.employeeProfile!.physicalAddress?.id!,
+      unitNumber: addressDetailFormValue['physicalUnitNumber'],
+      complexName: addressDetailFormValue['physicalComplexName'],
+      streetNumber: addressDetailFormValue['physicalStreetNumber'],
+      suburbOrDistrict: addressDetailFormValue['physicalSuburb'],
+      city: addressDetailFormValue['physicalCity'],
+      country: addressDetailFormValue['physicalCountry'],
+      province: addressDetailFormValue['physicalProvince'],
+      postalCode: addressDetailFormValue['physicalPostalCode'],
+    };
+
+    const postalAddressDto: EmployeeAddress = {
+      id: this.employeeProfile!.postalAddress?.id!,
+      unitNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalUnitNumber'] : addressDetailFormValue['postalUnitNumber'],
+      complexName: this.physicalEqualPostal ? addressDetailFormValue['physicalComplexName'] : addressDetailFormValue['postalComplexName'],
+      streetNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalStreetNumber'] : addressDetailFormValue['postalStreetNumber'],
+      suburbOrDistrict: this.physicalEqualPostal ? addressDetailFormValue['physicalSuburb'] : addressDetailFormValue['postalSuburb'],
+      city: this.physicalEqualPostal ? addressDetailFormValue['physicalCity'] : addressDetailFormValue['postalCity'],
+      country: this.physicalEqualPostal ? addressDetailFormValue['physicalCountry'] : addressDetailFormValue['postalCountry'],
+      province: this.physicalEqualPostal ? addressDetailFormValue['physicalProvince'] : addressDetailFormValue['postalProvince'],
+      postalCode: this.physicalEqualPostal ? addressDetailFormValue['physicalPostalCode'] : addressDetailFormValue['postalPostalCode'],
+    };
+    this.employeeAddressService.update(postalAddressDto).subscribe({
+      next: (postalData) => {
+        this.employeeProfile!.postalAddress = postalAddressDto;
+        this.toast.success({ detail: "Postal Address updated!", position: 'topRight' });
+
+        this.employeeAddressService.update(physicalAddressDto).subscribe({
+          next: (data) => {
+            this.employeeProfile!.physicalAddress = physicalAddressDto;
+            this.toast.success({ detail: "Physical Address updated!", position: 'topRight' });
+            this.addressDetailsForm.disable();
+            this.checkAddressFormProgress();
+            this.totalProfileProgress();
+            this.getEmployeeFields();
+          },
+          error: (error: any) => {
+            this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+          },
+        });
+      },
+      error: (postalError: any) => {
+        this.toast.error({ detail: "Error", summary: postalError, duration: 5000, position: 'topRight' });
+      },
+    });
+  } else {
+    this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+  }
+}
   cancelAddressEdit() {
     this.editAddress = false;
     this.hasDisbility = false;
@@ -843,10 +849,10 @@ export class EmployeeProfileComponent {
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != '' && control.value != "TBD") {
+        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != " ") {
           filledCount++;
         }
-        else if (!this.physicalEqualPostal && control.value != null && control.value != '' && control.value != "TBD") {
+        else if (!this.physicalEqualPostal && control.value != null && control.value != " ") {
           filledCount++;
         }
       }
