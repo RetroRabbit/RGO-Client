@@ -18,6 +18,7 @@ import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-new-employee',
@@ -34,7 +35,8 @@ export class NewEmployeeComponent implements OnInit {
     private cookieService: CookieService,
     private toast: NgToastService,
     private employeeDocumentService: EmployeeDocumentService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private hideNavService: HideNavService
   ) { }
 
   firstFormGroup = this._formBuilder.group({
@@ -49,6 +51,7 @@ export class NewEmployeeComponent implements OnInit {
   public newEmployeeEmail = "";
   public base64String = "";
   public filename = "";
+  imageName : string = "";
   @ViewChild('stepper') private myStepper!: MatStepper;
 
   employeeTypes: EmployeeType[] = [];
@@ -73,6 +76,8 @@ export class NewEmployeeComponent implements OnInit {
   PREVIOUS_PAGE = 'previousPage';
   COMPANY_EMAIL = 'retrorabbit.co.za';
 
+  filteredPeopleChamps: any = [];
+  peopleChampionId = null;
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
@@ -135,6 +140,7 @@ export class NewEmployeeComponent implements OnInit {
     salary: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
     physicalAddress: new FormControl<EmployeeAddress | null>(null),
     postalAddress: new FormControl<EmployeeAddress | null>(null),
+    peopleChampion: new FormControl<string>('', Validators.required)
   });
 
   settingsForm: FormGroup = new FormGroup({
@@ -167,6 +173,27 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
+      this.hideNavService.showNavbar = false;
+  }
+
+  ngOnDestroy() {
+    this.hideNavService.showNavbar = true;
+  }
+
+  filterChampions(event: any) {
+    if (event) {
+      this.filteredPeopleChamps = this.Employees.filter((champs: EmployeeProfile) =>
+        champs.employeeType?.id == 7 && champs.name?.toLowerCase().includes(event.target.value.toLowerCase())
+      );
+    } else {
+      this.filteredPeopleChamps = this.Employees;
+    }
+  }
+
+  getId(data: any, name: string) {
+    if (name == 'champion') {
+      this.peopleChampionId = data.id;
+    }
   }
 
   public dropped(files: NgxFileDropEntry[]) {
@@ -183,9 +210,13 @@ export class NewEmployeeComponent implements OnInit {
                 const employeeDocument: EmployeeDocument = {
                   id: 0,
                   employeeId: employeeProfile.id as number,
+                  reference: "",
                   fileName: file.name,
+                  fileCategory: -1,
                   file: base64String,
-                  uploadDate: new Date()
+                  uploadDate: new Date(),
+                  reason: "",
+                  status: 1,
                 };
                 this.employeeDocumentModels.push(employeeDocument);
               },
@@ -222,7 +253,7 @@ export class NewEmployeeComponent implements OnInit {
             summary: `files have been uploaded`,
             duration: 5000,
             position: 'topRight',
-          });
+          });   
         },
         error: (error: any) => {
           this.toast.error({
@@ -235,13 +266,12 @@ export class NewEmployeeComponent implements OnInit {
           this.employeeDocumentModels = [];
           this.newEmployeeEmail = "";
           this.files = [];
+          this.myStepper.previous();
           location.reload();
           this.cookieService.set(this.CURRENT_PAGE, nextPage);
         }
       });
     });
-   
-
   }
 
   public fileOver(event: Event) {
@@ -260,8 +290,9 @@ export class NewEmployeeComponent implements OnInit {
   onFileChange(event: any): void {
     if(event.target.files && event.target.files.length) {
       const file = event.target.files[0];
+      this.imageName = file.name;
       if(this.validateFile(file)) {
-        this.imageConverter(file); 
+        this.imageConverter(file);
       } else {
         this.clearUpload();
       }
@@ -326,7 +357,7 @@ export class NewEmployeeComponent implements OnInit {
      });
      return;
     }
-    
+
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
@@ -335,6 +366,7 @@ export class NewEmployeeComponent implements OnInit {
       dateOfBirth: new Date(this.newEmployeeForm.value.dateOfBirth!).toISOString().split('T')[0],
       physicalAddress: this.physicalAddressObj,
       postalAddress: this.postalAddressObj,
+      peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
     });
     const employeeEmail: string = this.newEmployeeForm.value.email!;
     this.checkBlankRequiredFields();
@@ -469,7 +501,6 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   goToPreviousPage(){
-    console.log(this.cookieService.get(this.PREVIOUS_PAGE));
     this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
 
   }
