@@ -149,6 +149,7 @@
 
   .mat-accordion .mat-expansion-panel, .mat-expanded, .mat-accordion .mat-expansion-panel, .mat-expansion-panel-spacing {
     border-radius: 1rem;
+    box-shadow: none;
 }
 
 .mat-expansion-panel-header-description{
@@ -351,4 +352,9 @@
 
 #svg-icon-w #icon-w {
   fill: white;
+}
+
+
+#last-updated{
+    color: #666666ff
 }
