@@ -81,14 +81,14 @@ export class NewEmployeeComponent implements OnInit {
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
-      unitNumber: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      complexName: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      suburbDistrict: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      city: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      country: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      province: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      postalCode: new FormControl<string | null>("TBD", Validators.minLength(1)),
+      unitNumber: new FormControl<string | null>(" ", Validators.minLength(1)),
+      complexName: new FormControl<string | null>(" ", Validators.minLength(1)),
+      suburbDistrict: new FormControl<string | null>(" ", Validators.minLength(1)),
+      city: new FormControl<string | null>(" ", Validators.minLength(1)),
+      streetNumber: new FormControl<string | null>(" ", Validators.minLength(1)),
+      country: new FormControl<string | null>(" ", Validators.minLength(1)),
+      province: new FormControl<string | null>(" ", Validators.minLength(1)),
+      postalCode: new FormControl<string | null>(" ", Validators.minLength(1)),
     });
   }
 
