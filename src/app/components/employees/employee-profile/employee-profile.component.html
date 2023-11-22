@@ -1,8 +1,12 @@
 <div class="container mt-4">
   <div class="w-75 py-3">
-    <button mat-button class="btn" id="back-to-employees" (click)="goToEmployees()" *ngIf="selectedEmployee">
-      <mat-icon>arrow_back</mat-icon>
-      <span>Back to Employees</span>
+    <button mat-button class="btn" id="back-button" (click)="goToEmployees()" *ngIf="previousPage == 'Employees' && currentPage != 'Profile'">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back to Employees</span>
+      </button>
+    <button mat-button class="btn" id="back-button" (click)="goToDashboard()" *ngIf="previousPage == 'Dashboard'  &&  currentPage != 'Profile'">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back to Dashboard</span>
     </button>
   </div>
   <div id="profile-header" class="row p-2">

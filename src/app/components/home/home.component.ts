@@ -30,12 +30,10 @@ export class HomeComponent{
   charts: Chart[] = [];
   roles : string[] = [];
   screenWidth !: number;
-
   employeeType: { id?: number, name?: string } | undefined = {
     id: 0,
     name: ''
   };
-
 
   constructor(
     private employeeProfileService: EmployeeProfileService,
@@ -47,7 +45,6 @@ export class HomeComponent{
     {
     this.screenWidth = window.innerWidth;
   }
-
 
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
@@ -119,6 +116,11 @@ export class HomeComponent{
     this.selectedEmployee = item
   }
 
+  searchQuery: string = '';
+  handleSearchQuery(query: string) {
+    this.searchQuery = query;
+  }
+
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);
@@ -126,5 +128,4 @@ export class HomeComponent{
     this.selectedEmployee = null;
     this.shouldDisplayNewEmployee = false;
   }
-
 }

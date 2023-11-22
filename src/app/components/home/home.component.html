@@ -143,14 +143,14 @@
     <div *ngIf="cookieService.get('currentPage') === '' || cookieService.get('currentPage') === 'Dashboard'"
       #ShowDashBoard>
       <div *ngIf="isAdmin()">
-        <app-admin-dashboard></app-admin-dashboard>
+        <app-admin-dashboard (selectedEmployee)="handleSelectedEmp($event)" (expandSearch)="handleSearchQuery($event)"></app-admin-dashboard>
       </div>
       <div *ngIf="!isAdmin()">
         <app-employee-profile></app-employee-profile>
       </div>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Employees'">
-      <app-view-employee (addEmployeeEvent)="onAddEmployee()" (managePermissionsEvent)="onManageEmployee()" (selectedEmployee)="handleSelectedEmp($event)"></app-view-employee>
+      <app-view-employee (addEmployeeEvent)="onAddEmployee()" (managePermissionsEvent)="onManageEmployee()" (selectedEmployee)="handleSelectedEmp($event)" [searchQuery]="searchQuery"></app-view-employee>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Profile'">
       <app-employee-profile></app-employee-profile>

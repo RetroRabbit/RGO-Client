@@ -36,11 +36,13 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { category } from 'src/app/models/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { Employee } from 'src/app/models/employee.interface';
+
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
   styleUrls: ['./employee-profile.component.css']
 })
+
 export class EmployeeProfileComponent {
   @Input() selectedEmployee: EmployeeProfile | null = null;
   employeeFields: Properties[] = [];
@@ -198,7 +200,11 @@ export class EmployeeProfileComponent {
   client: string = '';
   employeeDataDto!: EmployeeData;
   filteredCountries: any[] = this.countries.slice();
+  previousPage: string = '';
+  currentPage: string = '';
 
+  CURRENT_PAGE = "currentPage";
+  PREVIOUS_PAGE = "previousPage";
 
   constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
@@ -214,10 +220,16 @@ export class EmployeeProfileComponent {
 
   ngOnInit() {
     this.getEmployeeFields();
+    this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+    this.currentPage = this.cookieService.get(this.CURRENT_PAGE);
   }
 
   goToEmployees() {
-    this.cookieService.set('currentPage', 'Employees');
+    this.cookieService.set(this.CURRENT_PAGE, 'Employees');
+  }
+
+  goToDashboard() {
+    this.cookieService.set(this.CURRENT_PAGE, 'Dashboard');
   }
 
   getEmployeeFields() {
