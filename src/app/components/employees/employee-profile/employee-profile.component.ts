@@ -900,7 +900,6 @@ saveAddressEdit() {
       }
     }
     this.bankingFormProgress = Math.round((filledCount / totalFields) * 100);
-    console.log(filledCount, totalFields)
   }
 
   totalProfileProgress() {
@@ -1162,7 +1161,6 @@ getEmployeeDocuments() {
   }
 
   initializeBankingForm(bankingDetails : EmployeeBanking){
-    console.log(bankingDetails);
     if(bankingDetails == null){
       this.hasBankingData = false;
       return;

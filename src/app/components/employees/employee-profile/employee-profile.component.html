@@ -127,7 +127,7 @@
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
                 <div class="col-2 py-3" id="progress-stats"
-                    style="background-color: {{ bankInformationProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                    style="background-color: {{ bankInformationProgress === 100 && employeeBanking.status == 0 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 && employeeBanking.status == 0 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 && employeeBanking.status == 0 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Bank Information {{bankInformationProgress}}%</h5>
                 </div>
                 <div class="col-1 border" id="horizontal"></div>
@@ -493,165 +493,7 @@
 
                         </form>
                     </mat-expansion-panel>
-                    <!-- <mat-expansion-panel class="mt-3" (opened)="panelOpenState = true"
-                        (closed)="panelOpenState = false">
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                Address Details
-                            </mat-panel-title>
-                            <mat-panel-description *ngIf="addressFormProgress != 100">
-                                <mat-icon class="mx-1">error</mat-icon> Missing information
-                            </mat-panel-description>
-                        </mat-expansion-panel-header>
-                        <form [formGroup]="addressDetailsForm">
-                            <div class="row">
-                                <div class="col-10">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Unit Number</mat-label>
-                                                <input matInput formControlName="physicalUnitNumber">
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Complex Name</mat-label>
-                                                <input matInput formControlName="physicalComplexName">
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Suburb/District</mat-label>
-                                                <input matInput formControlName="physicalSuburb">
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Street Number</mat-label>
-                                                <input matInput formControlName="physicalStreetNumber">
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>City/Town</mat-label>
-                                                <input matInput formControlName="physicalCity">
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Country</mat-label>
-                                                <input matInput [matAutocomplete]="auto" placeholder="Search country"
-                                                    (input)="filterCountries($event)"
-                                                    formControlName="physicalCountry" />
-                                                <mat-autocomplete #auto="matAutocomplete">
-                                                    <mat-option *ngFor="let country of filteredCountries"
-                                                        [value]="country">
-                                                        {{ country }}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Province</mat-label>
-                                                <mat-select formControlName="physicalProvince">
-                                                    <mat-option *ngFor="let province of provinces" [value]="province">
-                                                        {{province}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Postal Code</mat-label>
-                                                <input matInput formControlName="physicalPostalCode">
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-12">
-                                            <mat-checkbox (change)="toggleEqualFields()" [disabled]="!editAddress">Is
-                                                the postal address the same as physical address?</mat-checkbox>
-                                        </div>
-                                    </div>
-                                    <div *ngIf="!physicalEqualPostal" class="row mt-4">
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Unit Number</mat-label>
-                                                <input matInput formControlName="postalUnitNumber">
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Complex Name</mat-label>
-                                                <input matInput formControlName="postalComplexName">
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Suburb/District</mat-label>
-                                                <input matInput formControlName="postalSuburb">
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Street Number</mat-label>
-                                                <input matInput formControlName="postalStreetNumber">
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>City/Town</mat-label>
-                                                <input matInput formControlName="postalCity">
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Country</mat-label>
-                                                <input matInput [matAutocomplete]="auto" placeholder="Search country"
-                                                    (input)="filterCountries($event)" formControlName="postalCountry" />
-                                                <mat-autocomplete #auto="matAutocomplete">
-                                                    <mat-option *ngFor="let country of filteredCountries"
-                                                        [value]="country">
-                                                        {{ country }}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Province</mat-label>
-                                                <mat-select formControlName="postalProvince">
-                                                    <mat-option *ngFor="let province of provinces" [value]="province">
-                                                        {{province}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Postal Code</mat-label>
-                                                <input matInput formControlName="physicalPostalCode">
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-2">
-                                    <button *ngIf="!editAddress" mat-button id="edit-button"
-                                        (click)="editAddressDetails()">
-                                        <mat-icon>edit</mat-icon>Edit Details
-                                    </button>
-                                </div>
-                                <div class="col-12" id="edit-buttons">
-                                    <button *ngIf="editAddress" mat-button id="cancel-button"
-                                        (click)="cancelAddressEdit()">Cancel</button>
-                                    <button *ngIf="editAddress" mat-button id="save-button" type="submit"
-                                        (click)="saveAddressEdit()" [disabled]="!addressDetailsForm.valid">Save
-                                        changes</button>
-                                </div>
-                            </div>
-                        </form>
-                    </mat-expansion-panel> -->
-
-                    <mat-expansion-panel class="my-3" (opened)="panelOpenState = true"
+                    <mat-expansion-panel class="mt-3" (opened)="panelOpenState = true"
                         (closed)="panelOpenState = false">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
@@ -858,7 +700,7 @@
                             <mat-panel-title>
                                 Main Bank Account
                             </mat-panel-title>
-                            <mat-panel-description *ngIf="bankInformationProgress != 100">
+                            <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking?.status == 2">
                                 <mat-icon class="mx-1">error</mat-icon> Missing information
                             </mat-panel-description>
                         </mat-expansion-panel-header>
