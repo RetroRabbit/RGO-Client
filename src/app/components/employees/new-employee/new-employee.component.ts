@@ -51,6 +51,7 @@ export class NewEmployeeComponent implements OnInit {
   public newEmployeeEmail = "";
   public base64String = "";
   public filename = "";
+  imageName : string = "";
   @ViewChild('stepper') private myStepper!: MatStepper;
 
   employeeTypes: EmployeeType[] = [];
@@ -172,6 +173,11 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
+      this.hideNavService.showNavbar = false;
+  }
+
+  ngOnDestroy() {
+    this.hideNavService.showNavbar = true;
   }
 
   filterChampions(event: any) {
@@ -183,7 +189,7 @@ export class NewEmployeeComponent implements OnInit {
       this.filteredPeopleChamps = this.Employees;
     }
   }
-  
+
   getId(data: any, name: string) {
     if (name == 'champion') {
       this.peopleChampionId = data.id;
@@ -231,7 +237,6 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndExit(){
-    this.hideNavService.showNavbar=true;
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
@@ -248,7 +253,7 @@ export class NewEmployeeComponent implements OnInit {
             summary: `files have been uploaded`,
             duration: 5000,
             position: 'topRight',
-          });
+          });   
         },
         error: (error: any) => {
           this.toast.error({
@@ -261,6 +266,7 @@ export class NewEmployeeComponent implements OnInit {
           this.employeeDocumentModels = [];
           this.newEmployeeEmail = "";
           this.files = [];
+          this.myStepper.previous();
           location.reload();
           this.cookieService.set(this.CURRENT_PAGE, nextPage);
         }
@@ -284,6 +290,7 @@ export class NewEmployeeComponent implements OnInit {
   onFileChange(event: any): void {
     if(event.target.files && event.target.files.length) {
       const file = event.target.files[0];
+      this.imageName = file.name;
       if(this.validateFile(file)) {
         this.imageConverter(file);
       } else {
@@ -494,7 +501,6 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   goToPreviousPage(){
-    this.hideNavService.showNavbar=true;
     this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
 
   }
