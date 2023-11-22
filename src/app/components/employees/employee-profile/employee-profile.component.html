@@ -712,6 +712,44 @@
                             <div class="row">
                                 <div class="col-10">
                                     <div class="row">
+                                        <div class="col-12 row my-3">
+                                            <div class="col-7 my-2">
+                                                <div class="row">
+                                                    <div class="col-12 mt-1" *ngIf="hasBankingData && employeeBanking.status > 0">
+                                                        <!-- TODO: Add timestamp -->
+                                                        Last updated: 18 October 2023
+                                                    </div>
+                                                    <div class="col-11 px-4" *ngIf="hasBankingData && employeeBanking.status > 0">
+
+                                                        <hr>
+                                                    </div>
+                                                    <div class="col-7 ps-4 pt-2" id="last-updated" *ngIf="hasUpdatedBanking">
+                                                        Update submitted on {{bankingUpdate}}
+                                                    </div>
+                                                    <div *ngIf="hasBankingData;else NoBankingInfo" class="col-4" id="statuses">
+                                                        <div *ngIf="employeeBanking.status === 0" id="status-0">
+                                                            <span>{{ 'Approved' }}</span>
+                                                        </div>
+                                                        <div *ngIf="employeeBanking.status === 2" id="status-2">
+                                                            <span>{{ 'Rejected' }}</span>
+                                                        </div>
+                                                        <div *ngIf="employeeBanking.status === 1" id="status-1">
+                                                            <span>{{ 'Pending Approval' }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <ng-template #NoBankingInfo>
+                                                        <div id="status-null">
+                                                            <span>{{ 'Action Required' }}</span>
+                                                        </div>
+                                                    </ng-template>
+                                                    <div class="col-12" *ngIf="hasBankingData && employeeBanking.status ==2">
+                                                        <div id="reject-reason">
+                                                            <h5>{{employeeBanking.declineReason}}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" id="banking-field">
                                                 <mat-label>Bank Account Owner</mat-label>
