@@ -371,7 +371,6 @@ export class NewEmployeeComponent implements OnInit {
         this.toast.success({
           detail: 'Success', summary: `${this.newEmployeeForm.value.name} has been added`, duration: 5000, position: 'topRight',
         });
-        // console.log(this.myStepper.previous());
         this.myStepper.next();
       },
 
