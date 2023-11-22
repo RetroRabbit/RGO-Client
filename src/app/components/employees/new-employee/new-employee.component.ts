@@ -172,6 +172,11 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
+      this.hideNavService.showNavbar = false;
+  }
+
+  ngOnDestroy() {
+    this.hideNavService.showNavbar = true;
   }
 
   filterChampions(event: any) {
@@ -183,7 +188,7 @@ export class NewEmployeeComponent implements OnInit {
       this.filteredPeopleChamps = this.Employees;
     }
   }
-  
+
   getId(data: any, name: string) {
     if (name == 'champion') {
       this.peopleChampionId = data.id;
@@ -231,7 +236,6 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndExit(){
-    this.hideNavService.showNavbar=true;
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
@@ -494,7 +498,6 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   goToPreviousPage(){
-    this.hideNavService.showNavbar=true;
     this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
 
   }
