@@ -51,6 +51,7 @@ export class NewEmployeeComponent implements OnInit {
   public newEmployeeEmail = "";
   public base64String = "";
   public filename = "";
+  imageName : string = "";
   @ViewChild('stepper') private myStepper!: MatStepper;
 
   employeeTypes: EmployeeType[] = [];
@@ -252,7 +253,7 @@ export class NewEmployeeComponent implements OnInit {
             summary: `files have been uploaded`,
             duration: 5000,
             position: 'topRight',
-          });
+          });   
         },
         error: (error: any) => {
           this.toast.error({
@@ -265,6 +266,7 @@ export class NewEmployeeComponent implements OnInit {
           this.employeeDocumentModels = [];
           this.newEmployeeEmail = "";
           this.files = [];
+          this.myStepper.previous();
           location.reload();
           this.cookieService.set(this.CURRENT_PAGE, nextPage);
         }
@@ -288,6 +290,7 @@ export class NewEmployeeComponent implements OnInit {
   onFileChange(event: any): void {
     if(event.target.files && event.target.files.length) {
       const file = event.target.files[0];
+      this.imageName = file.name;
       if(this.validateFile(file)) {
         this.imageConverter(file);
       } else {
