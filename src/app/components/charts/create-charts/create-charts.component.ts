@@ -13,7 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class CreateChartsComponent {
 
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
-  
+
   chartName: string = 'Name';
   selectedDataItems: string[] = [];
   chartType: any = 'bar';
@@ -26,7 +26,7 @@ export class CreateChartsComponent {
   columns: string[] = [];
 
   dropdownSettings = {
-    singleSelection: false, 
+    singleSelection: false,
     text: 'Select Data Items',
     selectAllText: 'Select All',
     unSelectAllText: 'Unselect All',
@@ -46,11 +46,11 @@ export class CreateChartsComponent {
     this.ChartService.createChart(this.selectedDataItems, this.chartName, this.chartType)
       .subscribe({
         next : response => {
-          this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topRight'});
+          this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topCenter'});
           this.cookieService.set('currentPage', "Charts");
         },
         error: error => {
-            this.toast.error({detail:"Error", summary:"Failed to create chart.",duration:5000, position:'topRight'});
+            this.toast.error({detail:"Error", summary:"Failed to create chart.",duration:5000, position:'topCenter'});
         }}
       );
   }
@@ -67,7 +67,7 @@ export class CreateChartsComponent {
             detail: "Error",
             summary: "Failed to get chartData.",
             duration: 5000,
-            position: 'topRight'
+            position: 'topCenter'
           });
         }
     });
@@ -76,7 +76,7 @@ export class CreateChartsComponent {
         detail: "No data selected.",
         summary: "Please select data items.",
         duration: 5000,
-        position: 'topRight'
+        position: 'topCenter'
       });
     }
   }
@@ -93,7 +93,7 @@ export class CreateChartsComponent {
             detail: "Error",
             summary: "Failed to get chartData.",
             duration: 5000,
-            position: 'topRight'
+            position: 'topCenter'
           });
         }
     });
@@ -102,11 +102,11 @@ export class CreateChartsComponent {
         detail: "No data selected.",
         summary: "Please select data items.",
         duration: 5000,
-        position: 'topRight'
+        position: 'topCenter'
       });
     }
   }
-  
+
   CaptureEvent(event: any) {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set('currentPage', target.innerText);

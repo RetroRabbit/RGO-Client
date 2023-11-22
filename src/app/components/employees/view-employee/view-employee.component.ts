@@ -44,7 +44,7 @@ export class ViewEmployeeComponent {
       map((roles: string[]) => roles.filter((role) => !role.includes('SuperAdmin'))),
       first()
     );
-   
+
 
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
@@ -68,8 +68,8 @@ export class ViewEmployeeComponent {
   ngOnInit() {
     this.onResize();
 
-   
-    
+
+
   }
 
   ngAfterViewInit() {
@@ -273,7 +273,7 @@ export class ViewEmployeeComponent {
             detail: `Role changed successfully!`,
             summary: 'Success',
             duration: 5000,
-            position: 'topRight',
+            position: 'topCenter',
           });
           this.getEmployees();
         }),
@@ -282,7 +282,7 @@ export class ViewEmployeeComponent {
             detail: 'Failed to change role',
             summary: 'Error',
             duration: 10000,
-            position: 'topRight',
+            position: 'topCenter',
           });
           return of(null);
         })

@@ -56,8 +56,8 @@ export class UpdateFieldComponent {
 
   addOption() {
     this.options.push(this.fb.control(''));
-  }  
-  
+  }
+
   removeOption(index: number) {
     this.options.removeAt(index);
   }
@@ -70,7 +70,7 @@ export class UpdateFieldComponent {
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
       const { fieldCode } = this.newFieldCodeForm.value;
-      
+
       const optionsArray = this.options.value.map((optionValue: any) => {
         return {
           id: 0,
@@ -78,11 +78,11 @@ export class UpdateFieldComponent {
           option: optionValue,
         };
       });
-  
+
       const existingOptions = this.selectedFieldCode?.options?.map(option => option.option) || [];
       const optionsToRemove = existingOptions.filter(option => !optionsArray.some((opt: any) => opt.option === option));
       const updatedOptions = optionsArray.filter((option: any) => !optionsToRemove.includes(option.option));
-  
+
       const fieldCodeDto = {
         id: this.selectedFieldCode?.id,
         code: fieldCode.code,
@@ -95,20 +95,20 @@ export class UpdateFieldComponent {
         internalTable: fieldCode.internalTable || '',
         options: updatedOptions.map((opt: any) => opt)
       }
-  
+
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
-          this.toast.success({ detail: "Field Details updated!", position: 'topRight' })
+          this.toast.success({ detail: "Field Details updated!", position: 'topCenter' })
           this.selectedFieldCode = data;
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
-          
-          this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+
+          this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topCenter' });
         }
       });
     }
-  } 
+  }
 
   onCancel() {
     this.isUpdateClicked = false;
@@ -121,11 +121,11 @@ export class UpdateFieldComponent {
     if (this.selectedFieldCode) {
       this.fieldCodeService.deleteFieldCode(this.selectedFieldCode).subscribe({
         next: (data) => {
-          this.toast.success({detail: "Field Code Archived!", position: 'topRight'})
+          this.toast.success({detail: "Field Code Archived!", position: 'topCenter'})
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
-          this.toast.error({detail: "Error", summary: error, duration: 5000, position: 'topRight'})
+          this.toast.error({detail: "Error", summary: error, duration: 5000, position: 'topCenter'})
         }
       });
     }
@@ -144,14 +144,14 @@ export class UpdateFieldComponent {
     if (changes['selectedFieldCode']) {
       this.newFieldCodeForm.reset();
       this.initializeForm();
-  
+
       const optionsArray = this.newFieldCodeForm.get('fieldCode.options') as FormArray;
-  
+
       if (this.selectedFieldCode?.options) {
         this.selectedFieldCode.options.forEach(option => {
           optionsArray.push(this.fb.control(option.option));
         });
       }
     }
-  }  
+  }
 }

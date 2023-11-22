@@ -44,16 +44,16 @@ export class EmployeeDetailsComponent implements OnInit {
   employeeRoles: any = [];
   peopleChampionId: number = 0;
   foundChampion: any;
-  
+
   public genderTypes = gender;
   public raceTypes = race;
   public generalTypes = general;
   public levelTypes = level;
 
-  constructor(private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
     private employeeTypeService: EmployeeTypeService,
-    private employeeDataService: EmployeeDataService, 
-    private fieldcodeService: FieldCodeService, 
+    private employeeDataService: EmployeeDataService,
+    private fieldcodeService: FieldCodeService,
     private employeeService: EmployeeService,
     private cookieService: CookieService,
     private toast: NgToastService,
@@ -117,19 +117,19 @@ export class EmployeeDetailsComponent implements OnInit {
       disabilityNotes: [this.selectedEmployee?.disabilityNotes, Validators.required],
       disability: [this.selectedEmployee.disability == true ? 1 : 0, Validators.required],
       gender: [this.selectedEmployee.gender, Validators.required],
-      idNumber: [this.selectedEmployee.idNumber, Validators.required], 
+      idNumber: [this.selectedEmployee.idNumber, Validators.required],
       leaveInterval: [this.selectedEmployee.leaveInterval, Validators.required],
       level: [this.selectedEmployee.level, Validators.required],
-      passportCountryIssue: this.selectedEmployee.passportCountryIssue, 
-      passportExpirationDate: this.selectedEmployee.passportExpirationDate, 
-      passportNumber: this.selectedEmployee.passportNumber, 
+      passportCountryIssue: this.selectedEmployee.passportCountryIssue,
+      passportExpirationDate: this.selectedEmployee.passportExpirationDate,
+      passportNumber: this.selectedEmployee.passportNumber,
       payRate: [this.selectedEmployee.payRate, Validators.required],
       photo: [this.selectedEmployee.photo, Validators.required],
       race: [this.selectedEmployee.race,Validators.required],
-      peopleChampion: this.selectedEmployee.peopleChampion, 
+      peopleChampion: this.selectedEmployee.peopleChampion,
       salary: [this.selectedEmployee.salary,Validators.required],
       salaryDays: [this.selectedEmployee.salaryDays,Validators.required],
-      terminationDate: this.selectedEmployee.terminationDate, 
+      terminationDate: this.selectedEmployee.terminationDate,
       dateOfBirth: [this.selectedEmployee.dateOfBirth, Validators.required],
       clientAllocated: this.selectedEmployee.clientAllocated,
       teamLead: this.selectedEmployee.teamLead,
@@ -211,7 +211,7 @@ export class EmployeeDetailsComponent implements OnInit {
         leaveInterval: employeeForm.leaveInterval,
         salary: employeeForm.salary,
         salaryDays: employeeForm.salaryDays,
-        payRate: employeeForm.payRate, 
+        payRate: employeeForm.payRate,
         clientAllocated: this.clientId == 0 ? null : this.clientId,
         teamLead: this.employeeId == 0 ? null : this.employeeId
       }
@@ -219,10 +219,10 @@ export class EmployeeDetailsComponent implements OnInit {
         next: (data) => {
         this.cookieService.set('currentPage', 'Employees');
         this.saveEmployeeCustomData();
-        this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+        this.toast.success({ detail: "Employee Details updated!", position: 'topCenter' });
       },
-        error: (error) => {this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
-      }); 
+        error: (error) => {this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topCenter' }); },
+      });
     }
   }
 
@@ -258,10 +258,10 @@ export class EmployeeDetailsComponent implements OnInit {
         if (employeeDataDto.value != '') {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
-              this.cookieService.set('currentPage', 'Employees'); 
+              this.cookieService.set('currentPage', 'Employees');
             },
             error: (error) => {
-              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topCenter' });
             }
           });
         }
@@ -301,10 +301,10 @@ export class EmployeeDetailsComponent implements OnInit {
     if (event) {
       this.filteredEmployees = this.employees.filter((employee: { name: string; }) =>
         employee.name.toLowerCase().includes(event.target.value.toLowerCase())
-      
+
       );
     } else {
-      this.filteredEmployees = this.employees; 
+      this.filteredEmployees = this.employees;
     }
   }
 
@@ -312,10 +312,10 @@ export class EmployeeDetailsComponent implements OnInit {
     if (event) {
       this.filteredClients = this.clients.filter((client: { name: string; }) =>
         client.name.toLowerCase().includes(event.target.value.toLowerCase())
-      
+
       );
     } else {
-      this.filteredClients = this.clients; 
+      this.filteredClients = this.clients;
     }
   }
 
@@ -323,10 +323,10 @@ export class EmployeeDetailsComponent implements OnInit {
     if (event) {
       this.filteredPeopleChamps = this.employeeRoles.filter((champs: any) =>
         champs.employee.name.toLowerCase().includes(event.target.value.toLowerCase())
-      
+
       );
     } else {
-      this.filteredPeopleChamps= this.employeeRoles.employee.name; 
+      this.filteredPeopleChamps= this.employeeRoles.employee.name;
     }
   }
 

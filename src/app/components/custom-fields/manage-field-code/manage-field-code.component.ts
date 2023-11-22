@@ -19,7 +19,7 @@ export class ManageFieldCodeComponent {
   selectedFieldCode?: FieldCode;
   isClicked: boolean = false;
   statuses: any[] = [];
-  dataTypes: any[] = []; 
+  dataTypes: any[] = [];
   newFieldCodeForm!: FormGroup;
   searchTerm: string = '';
   @ViewChild('dataTable') dataTable: Table | undefined = undefined;
@@ -31,7 +31,7 @@ export class ManageFieldCodeComponent {
     this.selectedFieldCode = fieldCode;
     this.isClicked = true;
   }
- 
+
   constructor(
     public router: Router,
     private fieldCodeService: FieldCodeService,
@@ -97,7 +97,7 @@ export class ManageFieldCodeComponent {
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: () => {
-          this.toast.success({detail:"Field Code saved!", position:'topRight'})
+          this.toast.success({detail:"Field Code saved!", position:'topCenter'})
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
@@ -105,7 +105,7 @@ export class ManageFieldCodeComponent {
             this.isUnique = false;
           }
           else {
-            this.toast.error({detail:"Error", summary:error, duration:5000, position:'topRight'});
+            this.toast.error({detail:"Error", summary:error, duration:5000, position:'topCenter'});
           }
         }
       });
@@ -113,7 +113,7 @@ export class ManageFieldCodeComponent {
       this.showValidationErrors();
     }
   }
-  
+
   private showValidationErrors() {
     this.newFieldCodeForm.markAllAsTouched();
   }
@@ -125,7 +125,7 @@ export class ManageFieldCodeComponent {
         this.filteredFieldCodes = this.fieldCodes;
       },
       error: error => {
-        this.toast.error({detail: 'Error loading Field Codes', summary: error, duration: 5000, position: 'topRight'});
+        this.toast.error({detail: 'Error loading Field Codes', summary: error, duration: 5000, position: 'topCenter'});
       }
     });
   }
@@ -147,10 +147,10 @@ export class ManageFieldCodeComponent {
       fieldCode.status && (fieldCode.status === 0 ? 'Active' : 'Archived').toLowerCase().includes(this.filterText.toLowerCase())
     );
   }
-  
+
   onSearch(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
-  
+
     if (this.dataTable) {
       this.dataTable.filterGlobal(searchTerm, 'contains');
     }

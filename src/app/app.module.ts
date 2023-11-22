@@ -72,6 +72,8 @@ import { SystemSettingsComponent } from './components/system-settings/system-set
 
 import { MatChipsModule } from '@angular/material/chips';
 import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarComponent } from './components/snackbar/snackbar.component';
 
 
 @NgModule({
@@ -99,7 +101,8 @@ import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/ch
     ManageEmployeeEventsComponent,
     AddEmployeeEventComponent,
     SystemSettingsComponent,
-    ChartReportPdfComponent
+    ChartReportPdfComponent,
+    SnackbarComponent
   ],
   imports: [
     BrowserModule,
@@ -108,6 +111,7 @@ import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/ch
     ReactiveFormsModule,
     NgChartsModule,
     MatChipsModule,
+    MatSnackBarModule,
     StoreModule.forRoot({
       app: LoginReducer,
       employee: EmployeeProfileReducer,

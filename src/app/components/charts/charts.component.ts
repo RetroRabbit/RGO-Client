@@ -117,7 +117,7 @@ export class ChartComponent implements OnInit {
         }
       },
       error: error => {
-        this.toast.error({detail:"error",summary: "Chart display unsuccessful",duration:5000, position:'topRight'});
+        this.toast.error({detail:"error",summary: "Chart display unsuccessful",duration:5000, position:'topCenter'});
        }
   });
   }
@@ -162,12 +162,12 @@ export class ChartComponent implements OnInit {
       };
       this.chartService.updateChart(this.updateFormData).subscribe({
         next: (updatedData: any) => {
-          this.toast.success({detail:"Success",summary: "Update successful",duration:5000, position:'topRight'});
+          this.toast.success({detail:"Success",summary: "Update successful",duration:5000, position:'topCenter'});
           this.resetPage();
           this.createAndDisplayChart();
         },
         error: error => {
-          this.toast.error({detail:"error",summary: "Update unsuccessful",duration:5000, position:'topRight'});
+          this.toast.error({detail:"error",summary: "Update unsuccessful",duration:5000, position:'topCenter'});
 
          }
     });
@@ -185,12 +185,12 @@ export class ChartComponent implements OnInit {
     if (this.chartData[selectedIndex]) {
       this.chartService.deleteChart(this.chartData[selectedIndex].id).subscribe({
         next: () => {
-          this.toast.success({detail:"Success",summary: "Delete successful",duration:5000, position:'topRight'});
+          this.toast.success({detail:"Success",summary: "Delete successful",duration:5000, position:'topCenter'});
           this.resetPage();
           this.createAndDisplayChart();
         },
         error: error => {
-          this.toast.error({detail:"Error",summary: "Failed to detele graph",duration:5000, position:'topRight'});
+          this.toast.error({detail:"Error",summary: "Failed to detele graph",duration:5000, position:'topCenter'});
         }
     });}}
 
@@ -208,31 +208,31 @@ export class ChartComponent implements OnInit {
           }
         });
   }, error: (error) => {
-    
-    this.toast.error({detail:"error",summary: "Failed to fetch people champion",duration:5000, position:'topRight'});
+
+    this.toast.error({detail:"error",summary: "Failed to fetch people champion",duration:5000, position:'topCenter'});
 
   }, complete: () => {
     this.createAndDisplayChart();
   },
 
 });}
-  
+
    getEmployeeName(employeeId: string | undefined): string {
-    
+
     const id = (employeeId || '').toString();
-    
+
     if (this.employeeNames[id]) {
       return this.employeeNames[id];
     }
     return id;
-    
+
   }
-  
+
   populateCanvasCharts() {
     this.chartCanvasArray = [];
     for (let i = 0; i < this.chartData.length; i++) {
       let dataset = [];
-  
+
       if (this.chartData[i].type === 'pie') {
         const labelsArray: string[] = this.chartData[i].labels.map((label: string) => this.getEmployeeName(label));
         this.chartData[i].labels = labelsArray;

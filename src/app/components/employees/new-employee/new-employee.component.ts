@@ -1,8 +1,10 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild} from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 import { NgToastService } from 'ng-angular-popup';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
@@ -18,6 +20,7 @@ import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 
 import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
+import { SnackbarComponent } from '../../snackbar/snackbar.component';
 
 @Component({
   selector: 'app-new-employee',
@@ -35,7 +38,8 @@ export class NewEmployeeComponent implements OnInit {
     private cookieService: CookieService,
     private toast: NgToastService,
     private employeeDocumentService: EmployeeDocumentService,
-    private _formBuilder: FormBuilder
+    private snackBarService: SnackbarService,
+    private _formBuilder: FormBuilder,
   ) { }
 
   firstFormGroup = this._formBuilder.group({
@@ -192,7 +196,7 @@ export class NewEmployeeComponent implements OnInit {
                   detail: 'Error',
                   summary: 'Failed compile documents',
                   duration: 5000,
-                  position: 'topRight',
+                  position: 'topCenter',
                 });
               }
             });
@@ -211,7 +215,7 @@ export class NewEmployeeComponent implements OnInit {
             detail: 'Success',
             summary: `files have been uploaded`,
             duration: 5000,
-            position: 'topRight',
+            position: 'topCenter',
           });
         },
         error: (error: any) => {
@@ -219,7 +223,7 @@ export class NewEmployeeComponent implements OnInit {
             detail: 'Error',
             summary: 'Failed to save documents',
             duration: 5000,
-            position: 'topRight',
+            position: 'topCenter',
           });
         }
       });
@@ -246,7 +250,7 @@ export class NewEmployeeComponent implements OnInit {
     if(event.target.files && event.target.files.length) {
       const file = event.target.files[0];
       if(this.validateFile(file)) {
-        this.imageConverter(file); 
+        this.imageConverter(file);
       } else {
         this.clearUpload();
       }
@@ -307,11 +311,10 @@ export class NewEmployeeComponent implements OnInit {
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith("retrorabbit.co.za")) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
-      this.toast.error({ detail: 'Error', summary: `⚠️ Please enter an official Retro Rabbit email address`, duration: 5000, position: 'topRight',
-     });
-     return;
+      this.snackBarService.showSnackbar("⚠️ Please enter an official Retro Rabbit email address", "snack-error");
+      return;
     }
-    
+
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
@@ -326,7 +329,7 @@ export class NewEmployeeComponent implements OnInit {
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
         this.toast.success({
-          detail: 'Success', summary: `${this.newEmployeeForm.value.name} has been added`, duration: 5000, position: 'topRight',
+          detail: 'Success', summary: `${this.newEmployeeForm.value.name} has been added`, duration: 5000, position: 'topCenter',
         });
         this.myStepper.next();
       },
@@ -338,9 +341,9 @@ export class NewEmployeeComponent implements OnInit {
         } else if (error.status === 406) {
           message = 'User already exists';
         }
-        this.toast.error({
-          detail: 'Error', summary: `Error: ${message}`, duration: 5000, position: 'topRight',
-        });
+        /*this.toast.error({
+          detail: 'Error', summary: `Error: ${message}`, duration: 5000, position: 'topCenter',
+        });*/
       },
     });
   }

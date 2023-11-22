@@ -73,7 +73,7 @@ export class AdminDashboardComponent {
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
       error: (error) => {
-        this.toast.error({ detail: "Error", summary: "Failed to fetch charts.", duration: 5000, position: 'topRight' });
+        this.toast.error({ detail: "Error", summary: "Failed to fetch charts.", duration: 5000, position: 'topCenter' });
       }
     });
 
@@ -178,22 +178,22 @@ export class AdminDashboardComponent {
 
   createChart() {
     if (!this.chartType) {
-      this.toast.info({ detail: "Missing chart type", summary: "Please select a chart type", duration: 5000, position: 'topRight' });
+      this.toast.info({ detail: "Missing chart type", summary: "Please select a chart type", duration: 5000, position: 'topCenter' });
       return;
     }
     if (!this.chartName) {
-      this.toast.info({ detail: "Missing chart name", summary: "Please enter a chart name", duration: 5000, position: 'topRight' });
+      this.toast.info({ detail: "Missing chart name", summary: "Please enter a chart name", duration: 5000, position: 'topCenter' });
       return;
     }
     if (this.selectedCategories.length < 1) {
-      this.toast.info({ detail: "Missing chart category", summary: "Please select a category/s", duration: 5000, position: 'topRight' });
+      this.toast.info({ detail: "Missing chart category", summary: "Please select a category/s", duration: 5000, position: 'topCenter' });
       return;
     }
 
     this.chartService.createChart(this.selectedCategories, this.chartName, this.chartType)
       .subscribe({
         next: response => {
-          this.toast.success({ detail: "Success", summary: 'Chart created', duration: 5000, position: 'topRight' });
+          this.toast.success({ detail: "Success", summary: 'Chart created', duration: 5000, position: 'topCenter' });
           this.dialog.closeAll();
           this.selectedCategories = [];
           this.chartName = '';
@@ -201,7 +201,7 @@ export class AdminDashboardComponent {
           this.ngOnInit();
         },
         error: error => {
-          this.toast.error({ detail: "Error", summary: "Failed to create chart.", duration: 5000, position: 'topRight' });
+          this.toast.error({ detail: "Error", summary: "Failed to create chart.", duration: 5000, position: 'topCenter' });
         }
       }
       );
@@ -219,7 +219,7 @@ export class AdminDashboardComponent {
         this.chartLabels = data.labels;
       },
       error: error => {
-        this.toast.error({ detail: "Error", summary: "Failed to get chartData.", duration: 5000, position: 'topRight' });
+        this.toast.error({ detail: "Error", summary: "Failed to get chartData.", duration: 5000, position: 'topCenter' });
       }
     });
   }
@@ -232,7 +232,7 @@ export class AdminDashboardComponent {
   recieveNumber(number: any) {
     this.chartService.getAllCharts().subscribe({
       next: data => this.charts = data,
-      error: error => this.toast.error({ detail: "Error", summary: "Failed to get charts.", duration: 5000, position: 'topRight' })
+      error: error => this.toast.error({ detail: "Error", summary: "Failed to get charts.", duration: 5000, position: 'topCenter' })
     })
   }
 }
