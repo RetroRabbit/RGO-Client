@@ -483,12 +483,12 @@ saveAddressEdit() {
     this.employeeAddressService.update(postalAddressDto).subscribe({
       next: (postalData) => {
         this.employeeProfile!.postalAddress = postalAddressDto;
-        this.toast.success({ detail: "Postal Address updated!", position: 'topRight' });
+        this.toast.success({ detail: "Postal address updated!", position: 'topRight' });
 
         this.employeeAddressService.update(physicalAddressDto).subscribe({
           next: (data) => {
             this.employeeProfile!.physicalAddress = physicalAddressDto;
-            this.toast.success({ detail: "Physical Address updated!", position: 'topRight' });
+            this.toast.success({ detail: "Physical address updated!", position: 'topRight' });
             this.addressDetailsForm.disable();
             this.checkAddressFormProgress();
             this.totalProfileProgress();
