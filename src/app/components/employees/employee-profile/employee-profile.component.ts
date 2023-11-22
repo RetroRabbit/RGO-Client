@@ -277,7 +277,6 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
-        // this.initializeForm();
         this.fieldCodeService.getAllFieldCodes().subscribe({
           next: data => {
             this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id)
@@ -944,7 +943,6 @@ export class EmployeeProfileComponent {
     }
 
     if(this.hasBankingData){
-      console.log(this.employeeBankingDto);
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {
           this.toast.success({ detail: "Employee Banking updated!", position: 'topRight' });
