@@ -9,5 +9,7 @@ export interface EmployeeBanking{
     accountHolderName: string,
     status: number,
     declineReason: string,
-    file: string
+    file: string,
+    lastUpdateDate?: Date,
+    pendingUpdateDate?: Date
 }

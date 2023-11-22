@@ -716,10 +716,9 @@
                                         <div class="col-12 row my-3">
                                             <div class="col-7 my-2">
                                                 <div class="row">
-                                                    <div class="col-12 mt-1"
+                                                    <div class="col-12 ps-4 mt-1"
                                                         *ngIf="hasBankingData && employeeBanking.status > 0">
-                                                        <!-- TODO: Add timestamp -->
-                                                        Last updated: 18 October 2023
+                                                        Last updated: {{employeeBanking.lastUpdateDate | date}}
                                                     </div>
                                                     <div class="col-11 px-4"
                                                         *ngIf="hasBankingData && employeeBanking.status > 0">
@@ -727,8 +726,8 @@
                                                         <hr>
                                                     </div>
                                                     <div class="col-7 ps-4 pt-2" id="last-updated"
-                                                        *ngIf="hasUpdatedBanking">
-                                                        Update submitted on {{bankingUpdate}}
+                                                        *ngIf="hasBankingData && employeeBanking.pendingUpdateDate">
+                                                        Update submitted on {{employeeBanking.pendingUpdateDate | date}}
                                                     </div>
                                                     <div *ngIf="hasBankingData;else NoBankingInfo" class="col-4"
                                                         id="statuses">
@@ -749,7 +748,7 @@
                                                     </ng-template>
                                                     <div class="col-12"
                                                         *ngIf="hasBankingData && employeeBanking.status ==2">
-                                                        <div id="reject-reason">
+                                                        <div id="reject-reason" class="ps-3">
                                                             <h5>{{employeeBanking.declineReason}}</h5>
                                                         </div>
                                                     </div>
