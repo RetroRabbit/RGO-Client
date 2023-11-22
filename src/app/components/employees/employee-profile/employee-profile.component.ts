@@ -1051,7 +1051,7 @@ getEmployeeDocuments() {
         this.calculateDocumentProgress();
       },
       error: error => {
-        this.toast.error({ detail: "Error detching documents", position: 'topRight' });
+        this.toast.error({ detail: "Error fetching documents", position: 'topRight' });
 
       }
     })
