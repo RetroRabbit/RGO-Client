@@ -1,8 +1,9 @@
 #chart-item {
-  background-color: #F4F7FE;
+  background-color: white;
   border-radius: 1rem;
-  min-height: 30vh; 
+  min-height: 30vh;
   max-width:90%;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.30), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
 }
 
 #chart-header{
@@ -12,7 +13,7 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
-  line-height: 21px; 
+  line-height: 21px;
 }
 
 #canvas-container{
@@ -67,8 +68,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  max-height: 48vh; 
-  max-width: 95%; 
+  max-height: 48vh;
+  max-width: 95%;
   margin: 0 auto;
+}
+
+.mat-mdc-radio-button.mat-accent {
+  --mdc-radio-disabled-selected-icon-color: #000;
+  --mdc-radio-disabled-unselected-icon-color: #000;
+  --mdc-radio-unselected-hover-icon-color: #212121;
+  --mdc-radio-unselected-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-radio-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-radio-selected-focus-icon-color: #0029C6;
+  --mdc-radio-selected-hover-icon-color: #0029C6;
+  --mdc-radio-selected-icon-color: #0029C6;
+  --mdc-radio-selected-pressed-icon-color: #0029C6;
+  --mat-radio-ripple-color: #000;
+  --mat-radio-checked-ripple-color: #0029C6;
+  --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
+  --mat-radio-checked-label-color: #0029C6;
+}
+
+.mat-radio-button.mat-radio-checked .mat-radio-label-content {
+  color: #0029C6 !important;
 }
 

@@ -50,6 +50,19 @@
                     </mat-select>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                      <mat-label>People's Champion</mat-label>
+                      <input type="text" placeholder="" matInput
+                          formControlName="peopleChampion" [matAutocomplete]="autoChampion"
+                          (input)="filterChampions($event)">
+                      <mat-autocomplete #autoChampion="matAutocomplete">
+                          <mat-option *ngFor="let peopleChampion of filteredPeopleChamps"
+                              [value]="peopleChampion.name + ' ' + peopleChampion.surname"
+                              (onSelectionChange)="getId(peopleChampion, 'champion')">
+                              {{ peopleChampion.name }}
+                              {{ peopleChampion.surname }}</mat-option>
+                      </mat-autocomplete>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Select level</mat-label>
                     <mat-select formControlName="level">
                       <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
@@ -90,12 +103,15 @@
                     <div class="col-lg-7 col-md-12 pb-3">
                       <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Profile photo</mat-label>
-                        <input matInput type="text" formControlName="photo" />
+                        <input matInput type="text" [value]="imageName" />
                         <span mat-icon-button matSuffix (click)="uploadFile.click()" class="pe-3">
                           <mat-icon id="fileUploadCursor">file_upload</mat-icon> 
                           <input type="file" #uploadFile (change)="onFileChange($event)" hidden />
                         </span>
                       </mat-form-field>
+                      <div id="image-preview" *ngIf="imageUrl !== ''">
+                        <img [src]="imageUrl"/>
+                      </div>
                     </div>
                     <div class="row flex-column justify-content-center align-items-center col-lg-12 col-md-12 pb-3"> 
                       <span class="col-lg-7 fs-5 roboto-font pb-3">Gender</span>
