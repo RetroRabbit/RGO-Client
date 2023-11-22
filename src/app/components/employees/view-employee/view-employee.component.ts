@@ -46,7 +46,6 @@ export class ViewEmployeeComponent {
 
 
   onAddEmployeeClick(): void {
-    this.hideNavService.showNavbar=false;
     this.addEmployeeEvent.emit();
     this.cookieService.set(this.PREVIOUS_PAGE, 'Employees');
     this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee'); 
