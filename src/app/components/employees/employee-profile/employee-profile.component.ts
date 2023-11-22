@@ -241,8 +241,15 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
-        this.getEmployeeDocuments();
-
+        
+        this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
+          next: (data) => {
+            this.employeeBanking = data;
+            this.bankingId = this.employeeBanking.id;
+            this.initializeBankingForm(this.employeeBanking);
+            
+          }
+        })
         this.employeeDataService.getEmployeeData(this.selectedEmployee ? this.selectedEmployee.id : this.employeeProfile?.id).subscribe({
           next: data => {
             this.employeeData = data;
@@ -276,6 +283,7 @@ export class EmployeeProfileComponent {
             this.totalProfileProgress();
           }
         });
+        this.getEmployeeDocuments();
         this.initializeForm();
       }
     });
@@ -884,6 +892,7 @@ export class EmployeeProfileComponent {
       }
     }
     this.bankingFormProgress = Math.round((filledCount / totalFields) * 100);
+    console.log(filledCount, totalFields)
   }
 
   totalProfileProgress() {
@@ -930,8 +939,9 @@ export class EmployeeProfileComponent {
       declineReason: this.bankingReason,
       file: employeeBankingFormValue.file
     }
-    if(this.hasBankingData){
 
+    if(this.hasBankingData){
+      console.log(this.employeeBankingDto);
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {
           this.toast.success({ detail: "Employee Banking updated!", position: 'topRight' });
@@ -1140,5 +1150,25 @@ getEmployeeDocuments() {
     const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
     this.documentFormProgress = fetchedDocuments/total * 100;
     this.overallProgress();
+  }
+
+  initializeBankingForm(bankingDetails : EmployeeBanking){
+    console.log(bankingDetails);
+    if(bankingDetails == null){
+      this.hasBankingData = false;
+      return;
+    }
+    this.employeeBankingsForm = this.fb.group({
+      accountHolderName: [{ value: bankingDetails.accountHolderName, disabled: true }, Validators.required],
+      accountType: [{ value: bankingDetails.accountType, disabled: true }, Validators.required],
+      bankName:[{ value: bankingDetails.bankName, disabled: true }, Validators.required],
+      accountNo:  [{ value: bankingDetails.accountNo, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      branch:[{ value: bankingDetails.branch, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      file:[{ value: bankingDetails.file, disabled: true }, Validators.required],
+    });
+    this.hasFile = bankingDetails.file.length > 0;
+    this.hasBankingData = true;
+    this.checkBankingInformationProgress();
+    this.totalBankingProgress();
   }
 }
