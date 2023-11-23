@@ -1,4 +1,4 @@
-import { Component,TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { RoleService } from 'src/app/services/role.service';
 import { RoleAccess } from 'src/app/models/role-access.interface';
 import { Role } from 'src/app/models/role.interface';
@@ -6,14 +6,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { RoleAccessLink} from 'src/app/models/role-access-link.interface';
 import { RoleManagementService } from 'src/app/services/role-management.service';
 import { NgToastService } from 'ng-angular-popup';
-
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-role-manager',
   templateUrl: './role-manager.component.html',
   styleUrls: ['./role-manager.component.css'],
 })
-export class RoleManagerComponent {
+export class RoleManagerComponent implements OnInit {
 
   @ViewChild('dialogContentTemplate') dialogContentTemplate!: TemplateRef<any>;
  
@@ -46,22 +46,20 @@ export class RoleManagerComponent {
   ) { }
 
   ngOnInit() {
-    this.roleManagementService.getAllRoles().subscribe(roles => {
+    forkJoin([
+      this.roleManagementService.getAllRoles(),
+      this.roleManagementService.getAllRoleAccesses(),
+      this.roleManagementService.getAllRoleAccesssLinks()
+    ]).subscribe(([roles, roleAccess, roleAccessLinks]) => {
       this.roles = roles;
-    });
-  
-    this.roleManagementService.getAllRoleAccesses().subscribe(roleAccess => {
       this.roleAccesses = roleAccess;
       this.chartPermissions = this.roleAccesses.filter(permission => permission.grouping === "Charts");
       this.employeePermissions = this.roleAccesses.filter(permission => permission.grouping === "Employee Data");
-    });
-  
-    this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
       this.roleAccessLinks = roleAccessLinks;
       this.updateChartAndEmployeeDataCheckboxStates();
     });
   }
- 
+
   areAllCheckboxesSelected(columnKey: string): boolean {
     return this.roles.every((r) => this.checkboxStates[r.description + columnKey]);
   }
