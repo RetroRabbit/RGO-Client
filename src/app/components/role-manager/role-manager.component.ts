@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import { Component,TemplateRef, ViewChild } from '@angular/core';
 import { RoleService } from 'src/app/services/role.service';
 import { RoleAccess } from 'src/app/models/role-access.interface';
 import { Role } from 'src/app/models/role.interface';
@@ -6,9 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RoleAccessLink} from 'src/app/models/role-access-link.interface';
 import { RoleManagementService } from 'src/app/services/role-management.service';
 import { NgToastService } from 'ng-angular-popup';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-role-manager',
@@ -25,7 +23,7 @@ export class RoleManagerComponent {
   deleted: boolean = false
   failed: boolean = false
   selected: boolean = false
-
+ 
   roles: Role[] = [];
   
   roleAccesses: RoleAccess[] = [];
@@ -39,6 +37,7 @@ export class RoleManagerComponent {
   temporaryRoleAccessChanges: RoleAccessLink[] = [];
 
   parentSelector :boolean = false;
+
   constructor(
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
@@ -62,8 +61,7 @@ export class RoleManagerComponent {
       this.updateChartAndEmployeeDataCheckboxStates();
     });
   }
-  
-
+ 
   areAllCheckboxesSelected(columnKey: string): boolean {
     return this.roles.every((r) => this.checkboxStates[r.description + columnKey]);
   }
@@ -308,7 +306,11 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
     });
   }
 
-  onCancel(): void {
+  openDiscardDialog(): void {
     const dialogRef = this.dialog.open(this.dialogCancelTemplate);
+  }
+
+  onBack(): void {
+    this.dialog.closeAll();
   }
 }
