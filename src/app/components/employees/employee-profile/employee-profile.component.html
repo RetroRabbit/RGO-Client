@@ -503,10 +503,10 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Unit Number</mat-label>
-                                            <input matInput formControlName="physicalUnitNumber">
+                                          <mat-label>Unit Number</mat-label>
+                                          <input matInput formControlName="physicalUnitNumber">
                                         </mat-form-field>
-                                    </div>
+                                      </div>
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Complex Name</mat-label>
@@ -534,15 +534,12 @@
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Country</mat-label>
-                                            <input matInput [matAutocomplete]="auto" placeholder="Search country"
-                                                (input)="filterCountries($event)"
-                                                formControlName="physicalCountry" />
-                                            <mat-autocomplete #auto="matAutocomplete">
-                                                <mat-option *ngFor="let country of filteredCountries"
+                                            <mat-select formControlName="physicalCountry">
+                                            <mat-option *ngFor="let country of filteredCountries"
                                                     [value]="country">
                                                     {{ country }}
                                                 </mat-option>
-                                            </mat-autocomplete>
+                                                </mat-select>
                                         </mat-form-field>
                                     </div>
                                     <div class="col-6">
@@ -600,14 +597,12 @@
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Country</mat-label>
-                                            <input matInput [matAutocomplete]="auto" placeholder="Search country"
-                                                (input)="filterCountries($event)" formControlName="postalCountry" />
-                                            <mat-autocomplete #auto="matAutocomplete">
-                                                <mat-option *ngFor="let country of filteredCountries"
+                                            <mat-select formControlName="postalCountry">
+                                            <mat-option *ngFor="let country of filteredCountries"
                                                     [value]="country">
                                                     {{ country }}
                                                 </mat-option>
-                                            </mat-autocomplete>
+                                                </mat-select>
                                         </mat-form-field>
                                     </div>
                                     <div class="col-6">
@@ -623,7 +618,7 @@
                                     <div class="col-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Postal Code</mat-label>
-                                            <input matInput formControlName="physicalPostalCode">
+                                            <input matInput formControlName="postalPostalCode">
                                         </mat-form-field>
                                     </div>
                                 </div>

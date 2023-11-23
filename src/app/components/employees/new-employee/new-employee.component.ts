@@ -81,14 +81,14 @@ export class NewEmployeeComponent implements OnInit {
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
-      unitNumber: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      complexName: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      suburbDistrict: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      city: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      country: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      province: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      postalCode: new FormControl<string | null>("TBD", Validators.minLength(1)),
+      unitNumber: new FormControl<string | null>(" ", Validators.minLength(1)),
+      complexName: new FormControl<string | null>(" ", Validators.minLength(1)),
+      suburbDistrict: new FormControl<string | null>(" ", Validators.minLength(1)),
+      city: new FormControl<string | null>(" ", Validators.minLength(1)),
+      streetNumber: new FormControl<string | null>(" ", Validators.minLength(1)),
+      country: new FormControl<string | null>(" ", Validators.minLength(1)),
+      province: new FormControl<string | null>(" ", Validators.minLength(1)),
+      postalCode: new FormControl<string | null>(" ", Validators.minLength(1)),
     });
   }
 
@@ -349,7 +349,15 @@ export class NewEmployeeComponent implements OnInit {
     ]).pipe(first()).subscribe()
   }
 
+  isDirty = false;
+
   onSubmit(reset: boolean = false): void {
+    if(this.isDirty == true)
+      return;
+
+    if(this.isDirty == false)
+      this.isDirty = true;
+    
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
@@ -376,6 +384,7 @@ export class NewEmployeeComponent implements OnInit {
           detail: 'Success', summary: `${this.newEmployeeForm.value.name} has been added`, duration: 5000, position: 'topRight',
         });
         this.myStepper.next();
+        this.isDirty = false;
       },
 
       error: (error: any) => {
@@ -388,7 +397,9 @@ export class NewEmployeeComponent implements OnInit {
         this.toast.error({
           detail: 'Error', summary: `Error: ${message}`, duration: 5000, position: 'topRight',
         });
+        this.isDirty = false;
       },
+
     });
   }
 
