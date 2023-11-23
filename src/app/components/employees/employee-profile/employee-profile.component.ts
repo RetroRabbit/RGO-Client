@@ -127,6 +127,9 @@ export class EmployeeProfileComponent {
   base64String : string = "";
   documentsFileName : string = "";
 
+  bankingUpdate: string = "";
+  hasUpdatedBanking : boolean = false;
+
   employeeDetailsForm: FormGroup = this.fb.group({
     name: { value: '', disabled: true },
     surname: { value: '', disabled: true },
@@ -241,13 +244,20 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
-        this.getEmployeeDocuments();
-
+        
         this.employeeDataService.getEmployeeData(this.selectedEmployee ? this.selectedEmployee.id : this.employeeProfile?.id).subscribe({
           next: data => {
             this.employeeData = data;
           }
         });
+        this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
+          next: (data) => {
+            this.employeeBanking = data;
+            this.bankingId = this.employeeBanking.id;
+            this.initializeBankingForm(this.employeeBanking);
+            
+          }
+        })
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
@@ -267,7 +277,6 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
-        this.initializeForm();
         this.fieldCodeService.getAllFieldCodes().subscribe({
           next: data => {
             this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id)
@@ -276,6 +285,7 @@ export class EmployeeProfileComponent {
             this.totalProfileProgress();
           }
         });
+        this.getEmployeeDocuments();
         this.initializeForm();
       }
     });
@@ -936,8 +946,8 @@ saveAddressEdit() {
       declineReason: this.bankingReason,
       file: employeeBankingFormValue.file
     }
-    if(this.hasBankingData){
 
+    if(this.hasBankingData){
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {
           this.toast.success({ detail: "Employee Banking updated!", position: 'topRight' });
@@ -946,6 +956,7 @@ saveAddressEdit() {
         this.totalBankingProgress();
         this.getEmployeeFields();
         this.checkBankingInformationProgress();
+        this.hasUpdatedBanking = true;
       },
       error: (error) => {
         this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
@@ -961,6 +972,7 @@ saveAddressEdit() {
           this.totalBankingProgress();
           this.getEmployeeFields();
           this.checkBankingInformationProgress();
+          this.hasUpdatedBanking = true;
         }
         ,error : (error) => {
           this.toast.error({ detail: "Failed to create banking information", summary: error, duration: 5000, position: 'topRight' });
@@ -1042,7 +1054,7 @@ getEmployeeDocuments() {
         this.calculateDocumentProgress();
       },
       error: error => {
-        this.toast.error({ detail: "Error detching documents", position: 'topRight' });
+        this.toast.error({ detail: "Error fetching documents", position: 'topRight' });
 
       }
     })
@@ -1146,5 +1158,43 @@ getEmployeeDocuments() {
     const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
     this.documentFormProgress = fetchedDocuments/total * 100;
     this.overallProgress();
+  }
+
+  initializeBankingForm(bankingDetails : EmployeeBanking){
+    if(bankingDetails == null){
+      this.hasBankingData = false;
+      return;
+    }
+    this.employeeBankingsForm = this.fb.group({
+      accountHolderName: [{ value: bankingDetails.accountHolderName, disabled: true }, Validators.required],
+      accountType: [{ value: bankingDetails.accountType, disabled: true }, Validators.required],
+      bankName:[{ value: bankingDetails.bankName, disabled: true }, Validators.required],
+      accountNo:  [{ value: bankingDetails.accountNo, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      branch:[{ value: bankingDetails.branch, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      file:[{ value: bankingDetails.file, disabled: true }, Validators.required],
+    });
+    this.hasFile = bankingDetails.file.length > 0;
+    this.hasBankingData = true;
+    this.checkBankingInformationProgress();
+    this.totalBankingProgress();
+    this.bankingUpdate = `${new Date().getDate()} ${this.returnMonth(new Date().getMonth() + 1)} ${new Date().getFullYear()}`;
+  }
+
+  returnMonth(month: number): string {
+    switch(month) {
+      case 1: return 'January'
+      case 2: return 'February'
+      case 3: return 'March'
+      case 4: return 'April'
+      case 5: return 'May'
+      case 6: return 'June'
+      case 7: return 'July'
+      case 8: return 'August'
+      case 9: return 'September'
+      case 10: return 'October'
+      case 11: return 'November'
+      case 12: return 'December'
+    }
+    return 'month';
   }
 }
