@@ -21,12 +21,10 @@ export class SystemSettingsComponent {
   }
 
   displayRoleManagement(): void {
-    this.RoleManagementEvent.emit();
     this.cookieService.set('currentPage', 'Role Management');
   }
 
   displayCustomFieldsManagement(): void {
-    this.RoleManagementEvent.emit();
     this.cookieService.set('currentPage', 'Custom Field management');
   }
 
