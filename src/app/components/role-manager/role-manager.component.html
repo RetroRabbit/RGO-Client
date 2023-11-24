@@ -1,4 +1,3 @@
-
 <ng-template #dialogContentTemplate>
   <div id="dialog-content">
     <div class="row">
@@ -32,65 +31,68 @@
   </div>
 </ng-template>
 
-<div class="table-responsive">
-  <div>
-    <button mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save Changes</button>
+<div class="row">
+  <div class="col-12" id="button-save-container">
+    <button mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save
+      Changes</button>
   </div>
-  <table class="table" id="mattable">
-    <thead>
-      <tr>
-        <th scope="col" id="tableheader">
-          Permissions
-        </th>
-        <th scope="col" *ngFor="let p of roles" id="tableheader">
-          {{ p.description }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row" id="subheader">
-          Charts
-        </th>
-        <th scope="row" *ngFor="let r of roles" id="allsubheader">
-          <mat-checkbox color="primary" [(ngModel)]="allCheckboxesState[r.description]"
-            (change)="toggleAllCheckboxes(r.description)">
-            All
-          </mat-checkbox>
-        </th>
-      </tr>
-      <tr *ngFor="let n of chartPermissions">
-        <th scope="row" id="permissions">
-          {{ n.permission }}
-        </th>
-        <th *ngFor="let r of roles">
-          <mat-checkbox color="primary" [(ngModel)]="checkboxStates[r.description + n.permission]"
-            (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)">
-          </mat-checkbox>
-        </th>
-      </tr>
+  <div class="table-responsive">
+    <table class="table" id="mattable">
+      <thead>
+        <tr>
+          <th scope="col" id="tableheader">
+            Permissions
+          </th>
+          <th scope="col" *ngFor="let p of roles" id="tableheader">
+            {{ p.description }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row" id="subheader">
+            Charts
+          </th>
+          <th scope="row" *ngFor="let r of roles" id="allsubheader">
+            <mat-checkbox color="primary" [(ngModel)]="allCheckboxesState[r.description]"
+              (change)="toggleAllCheckboxes(r.description)">
+              All
+            </mat-checkbox>
+          </th>
+        </tr>
+        <tr *ngFor="let n of chartPermissions">
+          <th scope="row" id="permissions">
+            {{ n.permission }}
+          </th>
+          <th *ngFor="let r of roles">
+            <mat-checkbox color="primary" [(ngModel)]="checkboxStates[r.description + n.permission]"
+              (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)">
+            </mat-checkbox>
+          </th>
+        </tr>
 
-      <tr>
-        <th scope="row" id="subheader">
-          Employee Data
-        </th>
-        <th scope="row" *ngFor="let r of roles" id="allsubheader">
-          <mat-checkbox color="primary" [(ngModel)]="allEmployeeDataCheckboxesState[r.description]"
-            (change)="toggleAllEmployeeDataCheckboxes(r.description)">
-            All
-          </mat-checkbox>
-        </th>
-      </tr>
-      <tr *ngFor="let n of employeePermissions">
-        <th scope="row" id="permissions">
-          {{n.permission}}
-        </th>
-        <th *ngFor="let r of roles">
-          <mat-checkbox color="primary" [(ngModel)]="checkboxStatesEmployeePermissions[r.description + n.permission]"
-            (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)">
-          </mat-checkbox>
-        </th>
-      </tr>
-    </tbody>
-  </table>
+        <tr>
+          <th scope="row" id="subheader">
+            Employee Data
+          </th>
+          <th scope="row" *ngFor="let r of roles" id="allsubheader">
+            <mat-checkbox color="primary" [(ngModel)]="allEmployeeDataCheckboxesState[r.description]"
+              (change)="toggleAllEmployeeDataCheckboxes(r.description)">
+              All
+            </mat-checkbox>
+          </th>
+        </tr>
+        <tr *ngFor="let n of employeePermissions">
+          <th scope="row" id="permissions">
+            {{n.permission}}
+          </th>
+          <th *ngFor="let r of roles">
+            <mat-checkbox color="primary" [(ngModel)]="checkboxStatesEmployeePermissions[r.description + n.permission]"
+              (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)">
+            </mat-checkbox>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
