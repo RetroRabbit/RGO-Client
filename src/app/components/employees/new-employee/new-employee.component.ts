@@ -151,7 +151,7 @@ export class NewEmployeeComponent implements OnInit {
   });
 
   postalAddressForm: FormGroup = new FormGroup({
-    sameAsPhysicalAddress: new FormControl<boolean>(false, Validators.required),
+    sameAsPhysicalAddress: new FormControl<boolean>(true, Validators.required),
   });
 
   uploadDocumentForm = new FormGroup({
@@ -253,7 +253,7 @@ export class NewEmployeeComponent implements OnInit {
             summary: `files have been uploaded`,
             duration: 5000,
             position: 'topRight',
-          });   
+          });
         },
         error: (error: any) => {
           this.toast.error({
@@ -357,7 +357,6 @@ export class NewEmployeeComponent implements OnInit {
 
     if(this.isDirty == false)
       this.isDirty = true;
-    
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
