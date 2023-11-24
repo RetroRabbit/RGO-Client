@@ -67,17 +67,22 @@ div .d-flex {
     padding-bottom: 10px;
     padding-top: 20px;
     align-items: start;
+    color: var(--m-3-sys-light-on-surface, #1D1B20);
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.5px;
 }
 
 #allsubheader{
    background-color:#F7F2FA ;
-   padding-left:30px ;
    font-family: Roboto;
    font-size: 16px;
    font-weight: 500;
    line-height: 24px;
    letter-spacing: 0.15000000596046448px;
-   text-align: center;
 }
 
 #dialog-content {
