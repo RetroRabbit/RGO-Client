@@ -1,19 +1,17 @@
 
-<button mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save Changes</button>
-
 <ng-template #dialogContentTemplate>
   <div id="dialog-content">
     <div class="row">
-     <div id="dialog-container">
-      <div id="dialog-header">
-        <h2 mat-dialog-title id="dialog-title">Save Permissions</h2>
-        <h4 id="dialog-subtitle">Are you sure you want to save the permissions that you edited?</h4>
+      <div id="dialog-container">
+        <div id="dialog-header">
+          <h2 mat-dialog-title id="dialog-title">Save Permissions</h2>
+          <h4 id="dialog-subtitle">Are you sure you want to save the permissions that you edited?</h4>
+        </div>
+        <div id="button-container">
+          <button mat-button mat-dialog-close id="save-button" (click)="saveChanges()">Save</button>
+          <button mat-button mat-dialog-close id="cancel-button" (click)="onBack()">Back</button>
+        </div>
       </div>
-      <div id="button-container">
-        <button mat-button mat-dialog-close id="save-button" (click)="saveChanges()">Save</button>
-        <button mat-button mat-dialog-close id="cancel-button"(click)="onBack()">Back</button>
-      </div>
-     </div>
     </div>
   </div>
 </ng-template>
@@ -21,20 +19,23 @@
 <ng-template #dialogCancelTemplate>
   <div id="dialog-content">
     <div class="row">
-     <div id="dialog-container">
-      <div id="dialog-header-cancel">
-        <h2 mat-dialog-title id="dialog-title-cancel">Discard unsaved changes?</h2>
+      <div id="dialog-container">
+        <div id="dialog-header-cancel">
+          <h2 mat-dialog-title id="dialog-title-cancel">Discard unsaved changes?</h2>
+        </div>
+        <div id="button-container">
+          <button mat-button mat-dialog-close id="save-button" (click)="discardChanges()">Discard</button>
+          <button mat-button mat-dialog-close id="cancel-button" (click)="onBack()">Back</button>
+        </div>
       </div>
-      <div id="button-container">
-        <button mat-button mat-dialog-close id="save-button" (click)="discardChanges()">Discard</button>
-        <button mat-button mat-dialog-close id="cancel-button"(click)="onBack()">Back</button>
-      </div>
-     </div>
     </div>
   </div>
 </ng-template>
 
 <div class="table-responsive">
+  <div>
+    <button mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save Changes</button>
+  </div>
   <table class="table" id="mattable">
     <thead>
       <tr>
@@ -52,25 +53,19 @@
           Charts
         </th>
         <th scope="row" *ngFor="let r of roles" id="allsubheader">
-          <mat-checkbox
-            color="primary"
-            [(ngModel)]="allCheckboxesState[r.description]"
-            (change)="toggleAllCheckboxes(r.description)"
-          >
-            All    
+          <mat-checkbox color="primary" [(ngModel)]="allCheckboxesState[r.description]"
+            (change)="toggleAllCheckboxes(r.description)">
+            All
           </mat-checkbox>
         </th>
       </tr>
-      <tr *ngFor="let n of chartPermissions" >
+      <tr *ngFor="let n of chartPermissions">
         <th scope="row" id="permissions">
           {{ n.permission }}
         </th>
         <th *ngFor="let r of roles">
-          <mat-checkbox
-            color="primary"
-            [(ngModel)]="checkboxStates[r.description + n.permission]"
-            (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)"
-          >
+          <mat-checkbox color="primary" [(ngModel)]="checkboxStates[r.description + n.permission]"
+            (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)">
           </mat-checkbox>
         </th>
       </tr>
@@ -80,25 +75,19 @@
           Employee Data
         </th>
         <th scope="row" *ngFor="let r of roles" id="allsubheader">
-          <mat-checkbox
-            color="primary"
-            [(ngModel)]="allEmployeeDataCheckboxesState[r.description]"
-            (change)="toggleAllEmployeeDataCheckboxes(r.description)"
-          >
+          <mat-checkbox color="primary" [(ngModel)]="allEmployeeDataCheckboxesState[r.description]"
+            (change)="toggleAllEmployeeDataCheckboxes(r.description)">
             All
           </mat-checkbox>
         </th>
       </tr>
-      <tr *ngFor="let n of employeePermissions" >
+      <tr *ngFor="let n of employeePermissions">
         <th scope="row" id="permissions">
           {{n.permission}}
         </th>
         <th *ngFor="let r of roles">
-          <mat-checkbox
-            color="primary"
-            [(ngModel)]="checkboxStatesEmployeePermissions[r.description + n.permission]"
-            (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)"
-          >
+          <mat-checkbox color="primary" [(ngModel)]="checkboxStatesEmployeePermissions[r.description + n.permission]"
+            (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)">
           </mat-checkbox>
         </th>
       </tr>

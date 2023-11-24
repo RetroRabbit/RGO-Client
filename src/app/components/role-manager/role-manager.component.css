@@ -49,7 +49,7 @@ div .d-flex {
 #savechangesbtn{
     background-color:#0029C6 ;
     color:#FFFFFF;
-    margin-left: 77%;
+    float: right;
     margin-bottom: 20px;
     width: 200px;
     height: 40px;
