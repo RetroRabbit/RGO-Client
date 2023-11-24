@@ -4,10 +4,10 @@ import { NgToastService } from 'ng-angular-popup';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Client } from 'src/app/models/client.interface';
-import { gender } from 'src/app/models/constants/gender.constants';
+import { genders } from 'src/app/models/constants/genders.constants';
 import { general } from 'src/app/models/constants/general.constants';
-import { level } from 'src/app/models/constants/level.constants';
-import { race } from 'src/app/models/constants/race.constants';
+import { levels } from 'src/app/models/constants/levels.constants';
+import { races} from 'src/app/models/constants/races.constants';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { FieldCode } from 'src/app/models/field-code.interface';
@@ -46,10 +46,10 @@ export class EmployeeDetailsComponent implements OnInit {
   peopleChampionId: number = 0;
   foundChampion: any;
 
-  public genderTypes = gender;
-  public raceTypes = race;
-  public generalTypes = general;
-  public levelTypes = level;
+  public genders = genders;
+  public races = races;
+  public general = general;
+  public levels = levels;
 
   constructor(private fb: FormBuilder,
     private employeeTypeService: EmployeeTypeService,

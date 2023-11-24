@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { Properties } from 'src/app/models/properties.interface';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
-import { race } from 'src/app/models/constants/race.constants';
-import { gender } from 'src/app/models/constants/gender.constants';
-import { countries } from 'src/app/models/constants/country.constants';
+import { races } from 'src/app/models/constants/races.constants';
+import { genders } from 'src/app/models/constants/genders.constants';
+import { countries } from 'src/app/models/constants/countries.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { FieldCode } from 'src/app/models/field-code.interface';
@@ -13,11 +13,11 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { ClientService } from 'src/app/services/client.service';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { Client } from 'src/app/models/client.interface';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
-import { level } from 'src/app/models/constants/level.constants';
+import { levels } from 'src/app/models/constants/levels.constants';
 
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
@@ -28,11 +28,22 @@ import { EmployeeBankingService } from 'src/app/services/employee/employee-banki
 import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
 import { banks } from 'src/app/models/constants/banks.constants';
 import { accountTypes } from 'src/app/models/constants/accountTypes.constants';
+import { MatTableDataSource } from '@angular/material/table';
+import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
+import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
+import { Document } from 'src/app/models/constants/documents.contants';
+import { FieldCodeService } from 'src/app/services/field-code.service';
+import { EmployeeDataService } from 'src/app/services/employee-data.service';
+import { category } from 'src/app/models/constants/fieldcodeCategory.constants';
+import { dataTypes } from 'src/app/models/constants/types.constants';
+import { Employee } from 'src/app/models/employee.interface';
+
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
   styleUrls: ['./employee-profile.component.css']
 })
+
 export class EmployeeProfileComponent {
   @Input() selectedEmployee: EmployeeProfile | null = null;
   employeeFields: Properties[] = [];
@@ -59,21 +70,24 @@ export class EmployeeProfileComponent {
   hasDisbility: boolean | undefined = false;
   physicalEqualPostal: boolean = false;
 
-  public genders = gender;
-  public races = race;
-  public levels = level;
+  public genders = genders;
+  public races = races;
+  public levels = levels;
   public countries = countries;
   public disabilities = disabilities;
   public provinces = provinces;
   public banks = banks;
   public accountTypes = accountTypes;
+  public fileCategories = Document;
+  public category = category;
+  public fieldTypes = dataTypes;
 
   editContact: boolean = false;
   editEmployee: boolean = false;
   editPersonal: boolean = false;
   editAddress: boolean = false;
+  editAdditional: boolean = false;
   editBanking: boolean = false;
-
 
   isUpdated: boolean = false;
   physicalCountryControl: string = "";
@@ -90,7 +104,9 @@ export class EmployeeProfileComponent {
   contactFormProgress: number = 0;
   addressFormProgress: number = 0;
   profileFormProgress: number = 0;
+  additionalFormProgress: number = 0;
   overallFormProgress: number = 0;
+  documentFormProgress: number = 0;
 
   bankingFormProgress: number = 0;
 
@@ -104,6 +120,16 @@ export class EmployeeProfileComponent {
   bankingPDFName: string = "" ;
   hasBankingData: boolean = false;
   hasFile: boolean = false;
+
+  displayedColumns: string[] = ['document', 'action', 'status'];
+  dataSource = new MatTableDataSource<string>();
+  employeeDocuments : EmployeeDocument[] = [];
+  uploadButtonIndex : number= 0;
+  base64String : string = "";
+  documentsFileName : string = "";
+
+  bankingUpdate: string = "";
+  hasUpdatedBanking : boolean = false;
 
   employeeDetailsForm: FormGroup = this.fb.group({
     name: { value: '', disabled: true },
@@ -155,6 +181,8 @@ export class EmployeeProfileComponent {
     postalPostalCode: { value: '', disabled: true }
   });
 
+  additionalInfoForm: FormGroup = this.fb.group({});
+
   employeeBankingsForm: FormGroup = this.fb.group({
     accountHolderName: [{ value: '', disabled: true }, Validators.required],
     accountType: [{ value: -1, disabled: true }, Validators.required],
@@ -176,7 +204,11 @@ export class EmployeeProfileComponent {
   client: string = '';
   employeeDataDto!: EmployeeData;
   filteredCountries: any[] = this.countries.slice();
+  previousPage: string = '';
+  currentPage: string = '';
 
+  CURRENT_PAGE = "currentPage";
+  PREVIOUS_PAGE = "previousPage";
 
   constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
@@ -186,14 +218,23 @@ export class EmployeeProfileComponent {
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
     private employeeBankingService: EmployeeBankingService,
+    private employeeDocumentService: EmployeeDocumentService,
+    private fieldCodeService: FieldCodeService,
+    private employeeDataService: EmployeeDataService,
     private snackBarService: SnackbarService) { }
 
   ngOnInit() {
     this.getEmployeeFields();
+    this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+    this.currentPage = this.cookieService.get(this.CURRENT_PAGE);
   }
 
   goToEmployees() {
-    this.cookieService.set('currentPage', 'Employees');
+    this.cookieService.set(this.CURRENT_PAGE, 'Employees');
+  }
+
+  goToDashboard() {
+    this.cookieService.set(this.CURRENT_PAGE, 'Dashboard');
   }
 
   getEmployeeFields() {
@@ -206,12 +247,24 @@ export class EmployeeProfileComponent {
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
 
+        this.employeeDataService.getEmployeeData(this.selectedEmployee ? this.selectedEmployee.id : this.employeeProfile?.id).subscribe({
+          next: data => {
+            this.employeeData = data;
+          }
+        });
+        this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
+          next: (data) => {
+            this.employeeBanking = data;
+            this.bankingId = this.employeeBanking.id;
+            this.initializeBankingForm(this.employeeBanking);
+
+          }
+        })
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
             this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
             this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-
             this.clientService.getAllClients().subscribe({
               next: data => {
                 this.clients = data;
@@ -226,6 +279,15 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
+        this.fieldCodeService.getAllFieldCodes().subscribe({
+          next: data => {
+            this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id)
+            this.checkAdditionalInformation();
+            this.checkAdditionalFormProgress();
+            this.totalProfileProgress();
+          }
+        });
+        this.getEmployeeDocuments();
         this.initializeForm();
       }
     });
@@ -307,7 +369,10 @@ export class EmployeeProfileComponent {
       return data.id == this.employeeProfile!.clientAllocated
     });
     this.foundChampion = this.employees.find((data: any) => {
-      return data.employee.id == this.employeeProfile!.peopleChampion
+      if (this.employeeProfile?.peopleChampion != null){
+        return data.id == this.employeeProfile!.peopleChampion
+      }
+      else return null;
     });
 
     if (this.foundTeamLead != null) {
@@ -321,9 +386,22 @@ export class EmployeeProfileComponent {
     }
 
     if (this.foundChampion != null) {
-      this.employeeDetailsForm.get('peopleChampion')?.setValue(this.foundChampion.employee.name + ' ' + this.foundChampion.employee.surname);
-      this.peopleChampionId = this.foundChampion.employee.id
+      this.employeeDetailsForm.get('peopleChampion')?.setValue(this.foundChampion.name + ' ' + this.foundChampion.surname);
+      this.peopleChampionId = this.foundChampion.id
     }
+  }
+
+  checkAdditionalInformation(){
+    this.panelOpenState = true;
+    const formGroupConfig: any = {};
+    this.customFields.forEach(fieldName => {
+      if (fieldName.code != null || fieldName.code != undefined) {
+        const customData = this.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
+        formGroupConfig[fieldName.code] = new FormControl({value: customData[0] ? customData[0].value : '', disabled: true});
+        this.additionalInfoForm = this.fb.group(formGroupConfig);
+        this.additionalInfoForm.disable();
+      }
+    });
   }
 
   CaptureEvent(event: any) {
@@ -386,55 +464,61 @@ export class EmployeeProfileComponent {
     this.addressDetailsForm.enable();
   }
 
-  saveAddressEdit() {
-    this.editAddress = false;
-    if (this.addressDetailsForm.valid) {
-      const addressDetailFormValue = this.addressDetailsForm.value;
-      this.employeeAddressDto = {
-        id: this.employeeProfile!.physicalAddress?.id!,
-        unitNumber: addressDetailFormValue['physicalUnitNumber'],
-        complexName: addressDetailFormValue['physicalComplexName'],
-        streetNumber: addressDetailFormValue['physicalStreetNumber'],
-        suburbOrDistrict: addressDetailFormValue['physicalSuburb'],
-        city: addressDetailFormValue['physicalCity'],
-        country: addressDetailFormValue['physicalCountry'],
-        province: addressDetailFormValue['physicalProvince'],
-        postalCode: addressDetailFormValue['physicalPostalCode'],
-      }
-      this.employeeAddressService.update(this.employeeAddressDto).subscribe({
-        next: (data) => {
-          this.employeeAddressDto = {
-            id: this.employeeProfile!.postalAddress?.id!,
-            unitNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalUnitNumber'] : addressDetailFormValue['postalUnitNumber'],
-            complexName: this.physicalEqualPostal ? addressDetailFormValue['physicalComplexName'] : addressDetailFormValue['postalComplexName'],
-            streetNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalStreetNumber'] : addressDetailFormValue['postalStreetNumber'],
-            suburbOrDistrict: this.physicalEqualPostal ? addressDetailFormValue['physicalSuburb'] : addressDetailFormValue['postalSuburb'],
-            city: this.physicalEqualPostal ? addressDetailFormValue['physicalCity'] : addressDetailFormValue['postalCity'],
-            country: this.physicalEqualPostal ? addressDetailFormValue['physicalCountry'] : addressDetailFormValue['postalCountry'],
-            province: this.physicalEqualPostal ? addressDetailFormValue['physicalProvince'] : addressDetailFormValue['postalProvince'],
-            postalCode: this.physicalEqualPostal ? addressDetailFormValue['physicalPostalCode'] : addressDetailFormValue['postalPostalCode'],
-          }
-          this.employeeAddressService.update(this.employeeAddressDto).subscribe({
-            next: (data) => {
-              this.snackBarService.showSnackbar("Employee address updated!", "snack-sucsess");
-              this.addressDetailsForm.disable();
-              this.checkAddressFormProgress();
-              this.totalProfileProgress();
-              this.getEmployeeFields();
-            },
-            error: (error: any) => {
-              this.snackBarService.showSnackbar(error, "snack-error");
-            },
-          });
-        },
-        error: (error: any) => { this.snackBarService.showSnackbar(error, "snack-error")},
-      });
-    }
-    else {
-      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
-    }
-  }
+saveAddressEdit() {
+  this.editAddress = false;
+  if (this.addressDetailsForm.valid) {
+    const addressDetailFormValue = this.addressDetailsForm.value;
 
+    const physicalAddressDto: EmployeeAddress = {
+      id: this.employeeProfile!.physicalAddress?.id!,
+      unitNumber: addressDetailFormValue['physicalUnitNumber'],
+      complexName: addressDetailFormValue['physicalComplexName'],
+      streetNumber: addressDetailFormValue['physicalStreetNumber'],
+      suburbOrDistrict: addressDetailFormValue['physicalSuburb'],
+      city: addressDetailFormValue['physicalCity'],
+      country: addressDetailFormValue['physicalCountry'],
+      province: addressDetailFormValue['physicalProvince'],
+      postalCode: addressDetailFormValue['physicalPostalCode'],
+    };
+
+    const postalAddressDto: EmployeeAddress = {
+      id: this.employeeProfile!.postalAddress?.id!,
+      unitNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalUnitNumber'] : addressDetailFormValue['postalUnitNumber'],
+      complexName: this.physicalEqualPostal ? addressDetailFormValue['physicalComplexName'] : addressDetailFormValue['postalComplexName'],
+      streetNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalStreetNumber'] : addressDetailFormValue['postalStreetNumber'],
+      suburbOrDistrict: this.physicalEqualPostal ? addressDetailFormValue['physicalSuburb'] : addressDetailFormValue['postalSuburb'],
+      city: this.physicalEqualPostal ? addressDetailFormValue['physicalCity'] : addressDetailFormValue['postalCity'],
+      country: this.physicalEqualPostal ? addressDetailFormValue['physicalCountry'] : addressDetailFormValue['postalCountry'],
+      province: this.physicalEqualPostal ? addressDetailFormValue['physicalProvince'] : addressDetailFormValue['postalProvince'],
+      postalCode: this.physicalEqualPostal ? addressDetailFormValue['physicalPostalCode'] : addressDetailFormValue['postalPostalCode'],
+    };
+    this.employeeAddressService.update(postalAddressDto).subscribe({
+      next: (postalData) => {
+        this.employeeProfile!.postalAddress = postalAddressDto;
+        this.toast.success({ detail: "Postal address updated!", position: 'topRight' });
+
+        this.employeeAddressService.update(physicalAddressDto).subscribe({
+          next: (data) => {
+            this.employeeProfile!.physicalAddress = physicalAddressDto;
+            this.toast.success({ detail: "Physical address updated!", position: 'topRight' });
+            this.addressDetailsForm.disable();
+            this.checkAddressFormProgress();
+            this.totalProfileProgress();
+            this.getEmployeeFields();
+          },
+          error: (error: any) => {
+            this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+          },
+        });
+      },
+      error: (postalError: any) => {
+        this.toast.error({ detail: "Error", summary: postalError, duration: 5000, position: 'topRight' });
+      },
+    });
+  } else {
+    this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+  }
+}
   cancelAddressEdit() {
     this.editAddress = false;
     this.hasDisbility = false;
@@ -601,6 +685,70 @@ export class EmployeeProfileComponent {
     this.employeeContactForm.disable();
   }
 
+  saveAdditionalEdit(){
+    this.editAdditional = false;
+    for (const fieldcode of this.customFields) {
+      const found = this.employeeData.find((data) => {
+        return fieldcode.id == data.fieldCodeId
+      });
+
+      if (found != null) {
+        var formatFound: any = fieldcode.code
+        const employeeDataDto = {
+          id: found.id,
+          employeeId: found.employeeId,
+          fieldcodeId: found.fieldCodeId,
+          value: this.additionalInfoForm.get(formatFound)?.value
+        }
+
+        this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
+          next: (data) => {
+            this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+            this.checkAdditionalFormProgress();
+            this.totalProfileProgress();
+            this.additionalInfoForm.disable();
+          },
+          error: (error) => { },
+        });
+      }
+      else if (found == null) {
+        var formatFound: any = fieldcode?.code
+        const employeeDataDto = {
+          id: 0,
+          employeeId: this.selectedEmployee ? this.selectedEmployee.id: this.employeeProfile?.id,
+          fieldcodeId: fieldcode.id,
+          value: this.additionalInfoForm.get(formatFound)?.value
+        }
+
+        if (employeeDataDto.value != '') {
+          this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
+            next: (data) => {
+              this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+              this.checkAdditionalFormProgress();
+              this.totalProfileProgress();
+              this.additionalInfoForm.disable();
+            },
+            error: (error) => {
+              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+            }
+          });
+        }
+      }
+    }
+  }
+
+  editAdditionalDetails() {
+    this.additionalInfoForm.enable();
+    this.editAdditional = true;
+  }
+
+  cancelAdditionalEdit() {
+    this.editAdditional = false;
+    this.additionalInfoForm.reset();
+    this.initializeForm();
+    this.additionalInfoForm.disable();
+  }
+
   filterEmployees(event: any) {
     if (event) {
       this.filteredEmployees = this.employees.filter((employee: EmployeeProfile) =>
@@ -623,10 +771,13 @@ export class EmployeeProfileComponent {
 
   filterChampions(event: any) {
     if (event) {
-      this.filteredPeopleChamps = this.employees.filter((champs: any) =>
-        champs.employee.name.toLowerCase().includes(event.target.value.toLowerCase())
+      this.filteredPeopleChamps = this.employees.filter((champs: EmployeeProfile) =>
+        champs.employeeType?.id == 7 && champs.name?.toLowerCase().includes(event.target.value.toLowerCase())
       );
+    } else {
+      this.filteredPeopleChamps = this.employees;
     }
+
   }
 
   getId(data: any, name: string) {
@@ -637,7 +788,7 @@ export class EmployeeProfileComponent {
       this.clientId = data.id;
     }
     else if (name == 'champion') {
-      this.peopleChampionId = data.employee.id;
+      this.peopleChampionId = data.id;
     }
   }
 
@@ -710,15 +861,31 @@ export class EmployeeProfileComponent {
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != '' && control.value != "TBD") {
+        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != " ") {
           filledCount++;
         }
-        else if (!this.physicalEqualPostal && control.value != null && control.value != '' && control.value != "TBD") {
+        else if (!this.physicalEqualPostal && control.value != null && control.value != " ") {
           filledCount++;
         }
       }
     }
     this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
+  }
+
+  checkAdditionalFormProgress(){
+    let filledCount = 0;
+    const formControls = this.additionalInfoForm.controls;
+    let totalFields = Object.keys(this.additionalInfoForm.controls).length;
+
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '') {
+          filledCount++;
+        }
+      }
+    }
+    this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
   checkBankingInformationProgress() {
@@ -738,7 +905,7 @@ export class EmployeeProfileComponent {
   }
 
   totalProfileProgress() {
-    this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress) / 4);
+    this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress + this.additionalFormProgress) / 5);
     this.overallProgress();
   }
 
@@ -748,9 +915,8 @@ export class EmployeeProfileComponent {
   }
 
   overallProgress() {
-    this.overallFormProgress = Math.round((0.25 * this.profileFormProgress) + (0.25 * this.bankInformationProgress));
+    this.overallFormProgress = Math.round((0.33 * this.profileFormProgress) + (0.33 * this.bankInformationProgress) + (0.33 * this.documentFormProgress));
   }
-
 
   openFileInput() {
     const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
@@ -767,7 +933,6 @@ export class EmployeeProfileComponent {
   }
 
   saveBankingDetails() {
-
     this.editBanking = false;
     this.isUpdated = true;
     const employeeBankingFormValue = this.employeeBankingsForm.value;
@@ -783,8 +948,8 @@ export class EmployeeProfileComponent {
       declineReason: this.bankingReason,
       file: employeeBankingFormValue.file
     }
-    if(this.hasBankingData){
 
+    if(this.hasBankingData){
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {
         this.snackBarService.showSnackbar("Employee Banking updated!", "snack-success");
@@ -793,6 +958,7 @@ export class EmployeeProfileComponent {
         this.totalBankingProgress();
         this.getEmployeeFields();
         this.checkBankingInformationProgress();
+        this.hasUpdatedBanking = true;
       },
       error: (error) => {
         this.snackBarService.showSnackbar(error, "snack-error");
@@ -808,6 +974,7 @@ export class EmployeeProfileComponent {
           this.totalBankingProgress();
           this.getEmployeeFields();
           this.checkBankingInformationProgress();
+          this.hasUpdatedBanking = true;
         }
         ,error : (error) => {
           this.snackBarService.showSnackbar("Failed to create banking information", "snack-error");
@@ -859,4 +1026,177 @@ export class EmployeeProfileComponent {
     }
   }
 
+  captureUploadIndex(event : any){
+    this.uploadButtonIndex = event.srcElement.parentElement.id;
+    const inputField = document.getElementById(`${this.uploadButtonIndex}-document`) as HTMLInputElement;
+    inputField.click();
+  }
+
+  uploadDocument(event: any){
+    this.selectedFile = event.target.files[0];
+    this.documentsFileName = this.selectedFile.name;
+    this.uploadProfileDocument();
+  }
+
+  uploadProfileDocument(){
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.buildDocumentDto();
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+getEmployeeDocuments() {
+    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile?.id as number).subscribe({
+      next: data => {
+        this.employeeDocuments = data;
+        this.dataSource.data = this.fileCategories;
+        this.calculateDocumentProgress();
+      },
+      error: error => {
+        this.toast.error({ detail: "Error fetching documents", position: 'topRight' });
+
+      }
+    })
+  }
+
+  uploadDocumentDto(document : any){
+    if(document.id == 0){
+      const saveObj = {
+        id: document.id,
+        employeeId: document.employee.id,
+        fileName: document.fileName,
+        file: this.base64String,
+        fileCategory: document.fileCategory,
+        uploadDate: document.uploadDate
+      }
+      this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
+        next: () => {
+          this.toast.success({ detail: "Document added!", position: 'topRight' });
+          this.getEmployeeDocuments();
+          this.calculateDocumentProgress();
+        },
+        error: () => {
+          this.toast.error({ detail: "Document unable to upload!", position: 'topRight' });
+        }
+      });
+    }else{
+      this.employeeDocumentService.updateEmployeeDocument(document).subscribe({
+        next: () => {
+          this.toast.success({ detail: "Document updated ", position: 'topRight' });
+          this.getEmployeeDocuments();
+          this.calculateDocumentProgress();
+        },
+        error: () => {
+          this.toast.error({ detail: "Document unable to update!", position: 'topRight' });
+        }
+      });
+    }
+  }
+  buildDocumentDto(){
+    const existingValue = this.filterDocumentsByCategory();
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.base64String = reader.result as string;
+        var newDto : {} = {
+          id: existingValue != undefined ?  existingValue?.id as number : 0,
+          employee: this.employeeProfile,
+          reference: "",
+          fileName: this.documentsFileName,
+          fileCategory: +this.uploadButtonIndex,
+          blob: this.base64String,
+          status: 1,
+          uploadDate: new Date(),
+          reason: '',
+        };
+        this.uploadDocumentDto(newDto);
+
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  filterDocumentsByCategory() : EmployeeDocument | null{
+    var object  = this.employeeDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
+    if(object == null){
+      return null;
+    }
+    return object[0];
+  }
+
+  getFileName(index : number) : EmployeeDocument{
+    var docObj = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
+    return docObj;
+  }
+
+  downloadDocument(event: any){
+    const id = event.srcElement.parentElement.id;
+    const docObj = this.employeeDocuments.find(document => document.fileCategory == id) as any;
+    if(docObj === undefined){
+      // TODO: download clean slate form
+    }
+    else{
+      if(docObj.status == 2){
+          // TODO: download clean slate form
+      }else{
+        this.downloadFile(docObj?.blob as string, docObj?.fileName as string);
+      }
+    }
+  }
+
+  disableButton(index: number):boolean{
+    const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
+    if(docObj == undefined || docObj?.status == 2){
+      return false;
+    }
+    return true;
+  }
+
+  calculateDocumentProgress(){
+    const total = this.fileCategories.length;
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
+    this.documentFormProgress = fetchedDocuments/total * 100;
+    this.overallProgress();
+  }
+
+  initializeBankingForm(bankingDetails : EmployeeBanking){
+    if(bankingDetails == null){
+      this.hasBankingData = false;
+      return;
+    }
+    this.employeeBankingsForm = this.fb.group({
+      accountHolderName: [{ value: bankingDetails.accountHolderName, disabled: true }, Validators.required],
+      accountType: [{ value: bankingDetails.accountType, disabled: true }, Validators.required],
+      bankName:[{ value: bankingDetails.bankName, disabled: true }, Validators.required],
+      accountNo:  [{ value: bankingDetails.accountNo, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      branch:[{ value: bankingDetails.branch, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      file:[{ value: bankingDetails.file, disabled: true }, Validators.required],
+    });
+    this.hasFile = bankingDetails.file.length > 0;
+    this.hasBankingData = true;
+    this.checkBankingInformationProgress();
+    this.totalBankingProgress();
+    this.bankingUpdate = `${new Date().getDate()} ${this.returnMonth(new Date().getMonth() + 1)} ${new Date().getFullYear()}`;
+  }
+
+  returnMonth(month: number): string {
+    switch(month) {
+      case 1: return 'January'
+      case 2: return 'February'
+      case 3: return 'March'
+      case 4: return 'April'
+      case 5: return 'May'
+      case 6: return 'June'
+      case 7: return 'July'
+      case 8: return 'August'
+      case 9: return 'September'
+      case 10: return 'October'
+      case 11: return 'November'
+      case 12: return 'December'
+    }
+    return 'month';
+  }
 }

@@ -1,7 +1,7 @@
 <div class="row" id="container">
-  <div class="col-12 row px-4" id="header">
+  <div class="col-12 row px-4" id="header" *ngIf="hideNavService.showNavbar">
     <div class="col-11 col-md-9 col-lg-8 mt-auto">
-      <div class="row" id="left-column">
+      <div class="row" id="left-column" >
         <div class="col-md-12" id="retro-logo">
           <svg width="162" height="21" viewBox="0 0 162 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -42,7 +42,7 @@
               fill="black" />
           </svg>
         </div>
-        <div class="col-sm-12 col-md-12 col-lg-10" id="navigation">
+        <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" >
           <div class="row">
             <div class="col-2" *ngIf="isAdmin() || isJourney()">
               <div id="nav-item-container" class="col-auto">
@@ -83,7 +83,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-2" *ngIf="isAdmin()">
+            <div class="col-3" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'System Settings' ? 'active' : 'idle'">
@@ -143,14 +143,14 @@
     <div *ngIf="cookieService.get('currentPage') === '' || cookieService.get('currentPage') === 'Dashboard'"
       #ShowDashBoard>
       <div *ngIf="isAdmin()">
-        <app-admin-dashboard></app-admin-dashboard>
+        <app-admin-dashboard (selectedEmployee)="handleSelectedEmp($event)" (expandSearch)="handleSearchQuery($event)"></app-admin-dashboard>
       </div>
       <div *ngIf="!isAdmin()">
         <app-employee-profile></app-employee-profile>
       </div>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Employees'">
-      <app-view-employee (addEmployeeEvent)="onAddEmployee()" (managePermissionsEvent)="onManageEmployee()" (selectedEmployee)="handleSelectedEmp($event)"></app-view-employee>
+      <app-view-employee (addEmployeeEvent)="onAddEmployee()" (managePermissionsEvent)="onManageEmployee()" (selectedEmployee)="handleSelectedEmp($event)" [searchQuery]="searchQuery"></app-view-employee>
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Profile'">
       <app-employee-profile></app-employee-profile>
@@ -187,14 +187,8 @@
     </div>
 
     <div *ngIf="cookieService.get('currentPage') == '+ Add Employee'">
-      <div *ngIf="!shouldDisplayNewEmployee">
-        <app-new-employee [goto]="'dashboard'"></app-new-employee>
-      </div>
-      <div *ngIf="shouldDisplayNewEmployee">
-        <app-new-employee [goto]="'employees'"></app-new-employee>
-      </div>
+        <app-new-employee></app-new-employee>
     </div>
-
     <div *ngIf="cookieService.get('currentPage') == 'Employee Details'">
       <app-employee-details [selectedEmployee]="selectedEmployee"></app-employee-details>
      </div>
