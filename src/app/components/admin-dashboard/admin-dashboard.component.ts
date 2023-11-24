@@ -73,6 +73,14 @@ export class AdminDashboardComponent {
   CURRENT_PAGE = "currentPage";
   PREVIOUS_PAGE = "previousPage";
 
+  get filteredCategoriesSorted(): string[] {
+    return this.sortCategories(this.filteredCategories);
+  }
+
+  private sortCategories(categories: string[]): string[] {
+    return this.categories.sort((a, b) => a.localeCompare(b));
+  }
+  
   constructor(
     private employeeProfileService: EmployeeProfileService,
     private employeeService: EmployeeService,
@@ -85,8 +93,8 @@ export class AdminDashboardComponent {
     private employeeTypeService: EmployeeTypeService,
     private hideNavService: HideNavService
   ) {
-    this.categoryCtrl.valueChanges.subscribe(val => {
-      this.filteredCategories = val ? this.filterCategories(val) : this.categories;
+    this.categoryCtrl.valueChanges.subscribe(value => { //TODO: Change value name
+      this.filteredCategories = value ? this.sortCategories(this.filterCategories(value)) : this.sortCategories(this.categories);
     });
   }
 
@@ -289,7 +297,7 @@ export class AdminDashboardComponent {
     this.categoryControl.setValue(null);
   }
 
-  onDropDownChange() {
+  onDropDownChange() { //Over here
     if (this.selectedDataItems.length < 1) {
       return;
     }
