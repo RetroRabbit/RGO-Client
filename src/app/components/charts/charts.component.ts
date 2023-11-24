@@ -254,19 +254,16 @@ export class ChartComponent implements OnInit {
 
 });}
 
-   getEmployeeName(employeeId: string | undefined): string {
-
-    });
-  }
-
   getEmployeeName(employeeId: string | undefined): string {
 
     const id = (employeeId || '').toString();
+
 
     if (this.employeeNames[id]) {
       return this.employeeNames[id];
     }
     return id;
+
 
   }
 
