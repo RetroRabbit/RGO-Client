@@ -30,4 +30,8 @@ export class EmployeeRoleService {
     const queryParams = `?roleId=${roleId}`;
     return this.httpClient.get<any[]>(`${API.HttpBaseURL}/employeerolemanager/get-role${queryParams}`);
   }
+
+  updateRole(email: string, role: string): Observable<any> {
+    return this.httpClient.post<any>(`${API.HttpsBaseURL}/employeerolemanager/update?email=${encodeURIComponent(email)}&role=${encodeURIComponent(role)}`, {});
+  }
 }

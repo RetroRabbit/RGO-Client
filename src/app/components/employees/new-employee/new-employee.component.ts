@@ -8,19 +8,19 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { level } from 'src/app/models/constants/level.constants';
-import { race } from 'src/app/models/constants/race.constants';
-import { gender } from 'src/app/models/constants/gender.constants';
+import { levels } from 'src/app/models/constants/levels.constants';
+import { races } from 'src/app/models/constants/races.constants';
+import { genders } from 'src/app/models/constants/genders.constants';
 import { combineLatest, first } from 'rxjs';
-import { countries } from 'src/app/models/constants/country.constants';
+import { countries } from 'src/app/models/constants/countries.constants';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
-import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
-import { SnackbarComponent } from '../../snackbar/snackbar.component';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-new-employee',
@@ -29,7 +29,6 @@ import { SnackbarComponent } from '../../snackbar/snackbar.component';
 })
 
 export class NewEmployeeComponent implements OnInit {
-  @Input() goto: 'dashboard' | 'employees' = 'dashboard';
 
   constructor(
     private employeeService: EmployeeService,
@@ -39,7 +38,8 @@ export class NewEmployeeComponent implements OnInit {
     private toast: NgToastService,
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: FormBuilder,,
+    private hideNavService: HideNavService
   ) { }
 
   firstFormGroup = this._formBuilder.group({
@@ -54,15 +54,16 @@ export class NewEmployeeComponent implements OnInit {
   public newEmployeeEmail = "";
   public base64String = "";
   public filename = "";
+  imageName : string = "";
   @ViewChild('stepper') private myStepper!: MatStepper;
 
   employeeTypes: EmployeeType[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   toggleAdditional: boolean = false;
 
-  levels: number[] = level.map((l) => l.value);
-  races: string[] = race.map((r) => r.value);
-  genders: string[] = gender.map((g) => g.value);
+  levels: number[] = levels.map((level) => level.value);
+  races: string[] = races.map((race) => race.value);
+  genders: string[] = genders.map((gender) => gender.value);
   countries: string[] = countries
   provinces: string[] = provinces
 
@@ -74,18 +75,23 @@ export class NewEmployeeComponent implements OnInit {
   validImage: boolean = false;
   public files: NgxFileDropEntry[] = [];
   employeeDocumentModels: EmployeeDocument[] = [];
+  CURRENT_PAGE = 'currentPage';
+  PREVIOUS_PAGE = 'previousPage';
+  COMPANY_EMAIL = 'retrorabbit.co.za';
 
+  filteredPeopleChamps: any = [];
+  peopleChampionId = null;
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
-      unitNumber: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      complexName: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      suburbDistrict: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      city: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      country: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      province: new FormControl<string | null>("TBD", Validators.minLength(1)),
-      postalCode: new FormControl<string | null>("TBD", Validators.minLength(1)),
+      unitNumber: new FormControl<string | null>(" ", Validators.minLength(1)),
+      complexName: new FormControl<string | null>(" ", Validators.minLength(1)),
+      suburbDistrict: new FormControl<string | null>(" ", Validators.minLength(1)),
+      city: new FormControl<string | null>(" ", Validators.minLength(1)),
+      streetNumber: new FormControl<string | null>(" ", Validators.minLength(1)),
+      country: new FormControl<string | null>(" ", Validators.minLength(1)),
+      province: new FormControl<string | null>(" ", Validators.minLength(1)),
+      postalCode: new FormControl<string | null>(" ", Validators.minLength(1)),
     });
   }
 
@@ -137,6 +143,7 @@ export class NewEmployeeComponent implements OnInit {
     salary: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
     physicalAddress: new FormControl<EmployeeAddress | null>(null),
     postalAddress: new FormControl<EmployeeAddress | null>(null),
+    peopleChampion: new FormControl<string>('', Validators.required)
   });
 
   settingsForm: FormGroup = new FormGroup({
@@ -147,7 +154,7 @@ export class NewEmployeeComponent implements OnInit {
   });
 
   postalAddressForm: FormGroup = new FormGroup({
-    sameAsPhysicalAddress: new FormControl<boolean>(false, Validators.required),
+    sameAsPhysicalAddress: new FormControl<boolean>(true, Validators.required),
   });
 
   uploadDocumentForm = new FormGroup({
@@ -169,6 +176,27 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
+      this.hideNavService.showNavbar = false;
+  }
+
+  ngOnDestroy() {
+    this.hideNavService.showNavbar = true;
+  }
+
+  filterChampions(event: any) {
+    if (event) {
+      this.filteredPeopleChamps = this.Employees.filter((champs: EmployeeProfile) =>
+        champs.employeeType?.id == 7 && champs.name?.toLowerCase().includes(event.target.value.toLowerCase())
+      );
+    } else {
+      this.filteredPeopleChamps = this.Employees;
+    }
+  }
+
+  getId(data: any, name: string) {
+    if (name == 'champion') {
+      this.peopleChampionId = data.id;
+    }
   }
 
   public dropped(files: NgxFileDropEntry[]) {
@@ -185,9 +213,13 @@ export class NewEmployeeComponent implements OnInit {
                 const employeeDocument: EmployeeDocument = {
                   id: 0,
                   employeeId: employeeProfile.id as number,
+                  reference: "",
                   fileName: file.name,
+                  fileCategory: -1,
                   file: base64String,
-                  uploadDate: new Date()
+                  uploadDate: new Date(),
+                  reason: "",
+                  status: 1,
                 };
                 this.employeeDocumentModels.push(employeeDocument);
               },
@@ -202,7 +234,15 @@ export class NewEmployeeComponent implements OnInit {
     }
   }
 
-  onUploadDocument(): void {
+  saveAndExit(){
+    this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
+  }
+
+  saveAndAddAnother(){
+    this.onUploadDocument('+ Add Employee');
+  }
+
+  onUploadDocument(nextPage: string): void {
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
         next: () => {
@@ -210,12 +250,16 @@ export class NewEmployeeComponent implements OnInit {
         },
         error: (error: any) => {
           this.snackBarService.showSnackbar("Failed to save documents", "snack-error");
+        }, complete: () => {
+          this.employeeDocumentModels = [];
+          this.newEmployeeEmail = "";
+          this.files = [];
+          this.myStepper.previous();
+          location.reload();
+          this.cookieService.set(this.CURRENT_PAGE, nextPage);
         }
       });
     });
-    this.employeeDocumentModels = [];
-    this.newEmployeeEmail = "";
-    this.files = [];
   }
 
   public fileOver(event: Event) {
@@ -234,6 +278,7 @@ export class NewEmployeeComponent implements OnInit {
   onFileChange(event: any): void {
     if(event.target.files && event.target.files.length) {
       const file = event.target.files[0];
+      this.imageName = file.name;
       if(this.validateFile(file)) {
         this.imageConverter(file);
       } else {
@@ -292,8 +337,15 @@ export class NewEmployeeComponent implements OnInit {
     ]).pipe(first()).subscribe()
   }
 
+  isDirty = false;
+
   onSubmit(reset: boolean = false): void {
-    if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith("retrorabbit.co.za")) {
+    if(this.isDirty == true)
+      return;
+
+    if(this.isDirty == false)
+      this.isDirty = true;
+    if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
       this.snackBarService.showSnackbar("⚠️ Please enter an official Retro Rabbit email address", "snack-error");
@@ -308,6 +360,7 @@ export class NewEmployeeComponent implements OnInit {
       dateOfBirth: new Date(this.newEmployeeForm.value.dateOfBirth!).toISOString().split('T')[0],
       physicalAddress: this.physicalAddressObj,
       postalAddress: this.postalAddressObj,
+      peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
     });
     const employeeEmail: string = this.newEmployeeForm.value.email!;
     this.checkBlankRequiredFields();
@@ -315,6 +368,7 @@ export class NewEmployeeComponent implements OnInit {
       next: () => {
         this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
         this.myStepper.next();
+        this.isDirty = false;
       },
 
       error: (error: any) => {
@@ -325,17 +379,10 @@ export class NewEmployeeComponent implements OnInit {
           message = 'User already exists';
         }
         this.snackBarService.showSnackbar(`Error: ${message}`, "snackbar-success");
+        this.isDirty = false;
       },
+
     });
-  }
-
-  goToEmployees() {
-    this.cookieService.set('currentPage', 'Employees');
-  }
-
-  CaptureEvent() {
-    if (this.goto == 'employees') this.cookieService.set('currentPage', 'View Employee');
-    else this.cookieService.set('currentPage', 'Dashboard');
   }
 
   checkBlankRequiredFields() {
@@ -444,5 +491,10 @@ export class NewEmployeeComponent implements OnInit {
   setSelectedGender(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
     this.newEmployeeForm.patchValue({ gender: +selectedValue });
+  }
+
+  goToPreviousPage(){
+    this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
+
   }
 }

@@ -7,6 +7,7 @@ import { Token } from '../../models/token.interface';
 import { Store } from '@ngrx/store';
 import { EmployeeState } from '../../store/reducers/employee.reducer';
 import { CookieService } from 'ngx-cookie-service';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -36,13 +37,20 @@ export class EmployeeProfileService {
     })
   }
 
-
   UpdateEmployeeProfile(profileUpdate: any): Observable<any> {
     return this.client.put<any>(
       `${API.HttpsBaseURL}/employee/update?email=${profileUpdate.updatedProfile.email}`, profileUpdate.updatedProfile
     );
   }
+
+  searchEmployees(name: string): Observable<EmployeeProfile[]> {
+    const queryParams = `?name=${name}`;
+    return this.client.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employee/search${queryParams}`);
+  }
+
+  getEmployeeById(id: number): Observable<EmployeeProfile | undefined> {
+    return this.searchEmployees('').pipe(
+      map(employees => employees.find(employee => employee.id === id))
+    );
+  }
 }
-
-
-
