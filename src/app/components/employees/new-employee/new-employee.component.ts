@@ -192,12 +192,7 @@ export class NewEmployeeComponent implements OnInit {
                 this.employeeDocumentModels.push(employeeDocument);
               },
               error: (error: any) => {
-                this.toast.error({
-                  detail: 'Error',
-                  summary: 'Failed compile documents',
-                  duration: 5000,
-                  position: 'topCenter',
-                });
+                this.snackBarService.showSnackbar("Failed to compile documents", "snack-error");
               }
             });
           };
@@ -211,20 +206,10 @@ export class NewEmployeeComponent implements OnInit {
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
         next: () => {
-          this.toast.success({
-            detail: 'Success',
-            summary: `files have been uploaded`,
-            duration: 5000,
-            position: 'topCenter',
-          });
+          this.snackBarService.showSnackbar("Files have been uploaded", "snack-success");
         },
         error: (error: any) => {
-          this.toast.error({
-            detail: 'Error',
-            summary: 'Failed to save documents',
-            duration: 5000,
-            position: 'topCenter',
-          });
+          this.snackBarService.showSnackbar("Failed to save documents", "snack-error");
         }
       });
     });
@@ -328,9 +313,7 @@ export class NewEmployeeComponent implements OnInit {
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
-        this.toast.success({
-          detail: 'Success', summary: `${this.newEmployeeForm.value.name} has been added`, duration: 5000, position: 'topCenter',
-        });
+        this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
         this.myStepper.next();
       },
 
@@ -341,9 +324,7 @@ export class NewEmployeeComponent implements OnInit {
         } else if (error.status === 406) {
           message = 'User already exists';
         }
-        /*this.toast.error({
-          detail: 'Error', summary: `Error: ${message}`, duration: 5000, position: 'topCenter',
-        });*/
+        this.snackBarService.showSnackbar(`Error: ${message}`, "snackbar-success");
       },
     });
   }

@@ -8,6 +8,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { TemplateRef } from '@angular/core';
 import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 
@@ -59,6 +60,7 @@ export class AdminDashboardComponent {
     private cookieService: CookieService,
     private dialog: MatDialog,
     private toast: NgToastService,
+    private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
   ) {
     this.categoryCtrl.valueChanges.subscribe(val => {
@@ -73,7 +75,7 @@ export class AdminDashboardComponent {
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
       error: (error) => {
-        this.toast.error({ detail: "Error", summary: "Failed to fetch charts.", duration: 5000, position: 'topCenter' });
+        this.snackBarService.showSnackbar("Failed to fetch charts", "snack-error");
       }
     });
 
@@ -178,22 +180,22 @@ export class AdminDashboardComponent {
 
   createChart() {
     if (!this.chartType) {
-      this.toast.info({ detail: "Missing chart type", summary: "Please select a chart type", duration: 5000, position: 'topCenter' });
+      this.snackBarService.showSnackbar("Please select a chart type", "snack-error");
       return;
     }
     if (!this.chartName) {
-      this.toast.info({ detail: "Missing chart name", summary: "Please enter a chart name", duration: 5000, position: 'topCenter' });
+      this.snackBarService.showSnackbar("Please enter a chart name", "snack-error");
       return;
     }
     if (this.selectedCategories.length < 1) {
-      this.toast.info({ detail: "Missing chart category", summary: "Please select a category/s", duration: 5000, position: 'topCenter' });
+      this.snackBarService.showSnackbar("Missing chart category", "snack-error");
       return;
     }
 
     this.chartService.createChart(this.selectedCategories, this.chartName, this.chartType)
       .subscribe({
         next: response => {
-          this.toast.success({ detail: "Success", summary: 'Chart created', duration: 5000, position: 'topCenter' });
+          this.snackBarService.showSnackbar("Chart created", "snack-success");
           this.dialog.closeAll();
           this.selectedCategories = [];
           this.chartName = '';
@@ -201,7 +203,7 @@ export class AdminDashboardComponent {
           this.ngOnInit();
         },
         error: error => {
-          this.toast.error({ detail: "Error", summary: "Failed to create chart.", duration: 5000, position: 'topCenter' });
+          this.snackBarService.showSnackbar("Failed to create chart", "snack-error");
         }
       }
       );
@@ -219,7 +221,7 @@ export class AdminDashboardComponent {
         this.chartLabels = data.labels;
       },
       error: error => {
-        this.toast.error({ detail: "Error", summary: "Failed to get chartData.", duration: 5000, position: 'topCenter' });
+        this.snackBarService.showSnackbar("Failed to get chart data", "snack-error");
       }
     });
   }
@@ -232,7 +234,7 @@ export class AdminDashboardComponent {
   recieveNumber(number: any) {
     this.chartService.getAllCharts().subscribe({
       next: data => this.charts = data,
-      error: error => this.toast.error({ detail: "Error", summary: "Failed to get charts.", duration: 5000, position: 'topCenter' })
+      error: error => this.snackBarService.showSnackbar("Failed to get charts", "snack-error")
     })
   }
 }

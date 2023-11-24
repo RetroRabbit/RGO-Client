@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { statuses } from 'src/app/models/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
@@ -25,7 +26,8 @@ export class NewFieldCodeComponent {
     private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
     private toast: NgToastService,
-    public cookieService: CookieService) {
+    public cookieService: CookieService,
+    private snackBarService: SnackbarService) {
 
     this.initializeForm();
   }
@@ -97,7 +99,7 @@ export class NewFieldCodeComponent {
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
               next: (data) => {
-                this.toast.success({detail:"Field Code saved!", position:'topCenter'})
+                this.snackBarService.showSnackbar("Field Code saved!", "snack-success");
                 this.newFieldCodeForm.disable();
               },
               error: (error) => {
@@ -105,7 +107,7 @@ export class NewFieldCodeComponent {
                   this.isUnique = false;
                 }
                 else {
-                  this.toast.error({detail:"Error", summary:error, duration:5000, position:'topCenter'});
+                  this.snackBarService.showSnackbar(error, "snack-error");
                 }
               }
             });
