@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Client } from 'src/app/models/client.interface';
 import { gender } from 'src/app/models/constants/gender.constants';
@@ -58,7 +59,8 @@ export class EmployeeDetailsComponent implements OnInit {
     private cookieService: CookieService,
     private toast: NgToastService,
     private clientService: ClientService,
-    private employeeRoleService: EmployeeRoleService
+    private employeeRoleService: EmployeeRoleService,
+    private snackBarService: SnackbarService
   ) { }
 
   ngOnInit(): void {
@@ -219,9 +221,9 @@ export class EmployeeDetailsComponent implements OnInit {
         next: (data) => {
         this.cookieService.set('currentPage', 'Employees');
         this.saveEmployeeCustomData();
-        this.toast.success({ detail: "Employee Details updated!", position: 'topCenter' });
+        this.snackBarService.showSnackbar("Employee details updated!", "snack-success");
       },
-        error: (error) => {this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topCenter' }); },
+        error: (error) => {this.snackBarService.showSnackbar(error, "snack-error")},
       });
     }
   }
@@ -261,7 +263,7 @@ export class EmployeeDetailsComponent implements OnInit {
               this.cookieService.set('currentPage', 'Employees');
             },
             error: (error) => {
-              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topCenter' });
+              this.snackBarService.showSnackbar(error, "snack-error");
             }
           });
         }

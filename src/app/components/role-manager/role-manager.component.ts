@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RoleAccessLink} from 'src/app/models/role-access-link.interface';
 import { RoleManagementService } from 'src/app/services/role-management.service';
 import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -43,7 +44,8 @@ export class RoleManagerComponent {
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
     private dialog: MatDialog,
-    private toast: NgToastService
+    private toast: NgToastService,
+    private snackBarService: SnackbarService
   ) { }
 
   ngOnInit() {
@@ -254,21 +256,13 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
 
   discardChanges() {
     this.ngOnInit();
-    this.toast.success({
-      detail: `Changes discarded successfully!`,
-      duration: 5000,
-      position: 'topCenter',
-    });
+    this.snackBarService.showSnackbar("Changes discared successfully", "snack-success");
   }
 
   onAdd(role:string,permission:string,grouping: string): void {
     this.roleService.addRole(role, permission,grouping).subscribe({
       next: (data) => {
-        this.toast.success({
-          detail: `Permissions saved  successfully!`,
-          duration: 5000,
-          position: 'topCenter',
-        });
+        this.snackBarService.showSnackbar("Permission saved successfully!", "snack-success");
         this.saved = true
       },
       error: (error) => {
@@ -280,20 +274,11 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
   onDelete(role:string,permission:string,grouping: string): void {
     this.roleService.deleteRole(role, permission,grouping).subscribe({
       next: (data) => {
-        this.toast.success({
-          detail: `Permissions deleted  successfully!`,
-          duration: 5000,
-          position: 'topCenter',
-        });
+        this.snackBarService.showSnackbar("Permissions deleted successfully!", "snack-success");
         this.deleted = true
       },
       error: (error) => {
-        this.toast.error({
-          detail: `Error: ${error}`,
-          summary: 'Failed to delete Permissions',
-          duration: 10000,
-          position: 'topCenter',
-        });
+        this.snackBarService.showSnackbar("Failed to delete Permissions", "snack-error");
         this.failed = true
       }
     })

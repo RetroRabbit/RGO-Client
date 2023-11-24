@@ -1,6 +1,7 @@
 import { Component,Output, EventEmitter } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
 import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -33,7 +34,8 @@ export class CreateChartsComponent {
     enableSearchFilter: true,
   };
 
-  constructor(private ChartService: ChartService,private toast: NgToastService, private router: Router,private cookieService: CookieService) {}
+  constructor(private ChartService: ChartService,private toast: NgToastService, private router: Router,private cookieService: CookieService,
+    private snackBarService: SnackbarService) {}
 
   ngOnInit() : void {
     this.getChartData();
@@ -46,11 +48,11 @@ export class CreateChartsComponent {
     this.ChartService.createChart(this.selectedDataItems, this.chartName, this.chartType)
       .subscribe({
         next : response => {
-          this.toast.success({detail:"Success",summary:'Chart created',duration:5000, position:'topCenter'});
+          this.snackBarService.showSnackbar("Chart created", "snack-success");
           this.cookieService.set('currentPage', "Charts");
         },
         error: error => {
-            this.toast.error({detail:"Error", summary:"Failed to create chart.",duration:5000, position:'topCenter'});
+          this.snackBarService.showSnackbar("Failed to create chart", "snack-error");
         }}
       );
   }
@@ -63,21 +65,11 @@ export class CreateChartsComponent {
           this.chartLabels = data.labels;
         },
         error: error => {
-          this.toast.error({
-            detail: "Error",
-            summary: "Failed to get chartData.",
-            duration: 5000,
-            position: 'topCenter'
-          });
+          this.snackBarService.showSnackbar("Failed to get chart data", "snack-error");
         }
     });
     } else {
-      this.toast.info({
-        detail: "No data selected.",
-        summary: "Please select data items.",
-        duration: 5000,
-        position: 'topCenter'
-      });
+      this.snackBarService.showSnackbar("No data selected. Please select data items.", "snack-error");
     }
   }
 
@@ -89,21 +81,11 @@ export class CreateChartsComponent {
           this.chartLabels = data.labels;
         },
         error: error => {
-          this.toast.error({
-            detail: "Error",
-            summary: "Failed to get chartData.",
-            duration: 5000,
-            position: 'topCenter'
-          });
+          this.snackBarService.showSnackbar("Failed to get chart data.", "snack-error");
         }
     });
     } else {
-      this.toast.info({
-        detail: "No data selected.",
-        summary: "Please select data items.",
-        duration: 5000,
-        position: 'topCenter'
-      });
+      this.snackBarService.showSnackbar("No data selected. Please select data items", "snack-error");
     }
   }
 

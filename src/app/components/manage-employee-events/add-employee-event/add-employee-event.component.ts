@@ -7,6 +7,7 @@ import { Employee } from 'src/app/models/employee.interface';
 import { EmployeeDateService } from 'src/app/services/employee-date.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeDate } from 'src/app/models/employee-date.interface';
 
 @Component({
@@ -45,7 +46,8 @@ export class AddEmployeeEventComponent {
     private employeeService: EmployeeService,
     private employeeDateService: EmployeeDateService,
     private notificationService: NotificationService,
-    private cookieService: CookieService) { }
+    private cookieService: CookieService,
+    private snackBarService: SnackbarService) { }
 
   ngOnInit(): void {
     if (this.selectedEvent) {
@@ -80,11 +82,11 @@ export class AddEmployeeEventComponent {
       this.employeeDateService.updateEmployeeDate(employeeDate).subscribe(
         () => {
           this.isLoading = false
-          this.notificationService.showToast('Event updated successfully', 'success')
+          this.snackBarService.showSnackbar("Event updated successfully", "snack-success")
         },
         () => {
           this.isLoading = false
-          this.notificationService.showToast('Failed to update event', 'error')
+          this.snackBarService.showSnackbar("Failed to update event", "snack-error")
         }
       );
       return
@@ -93,11 +95,11 @@ export class AddEmployeeEventComponent {
     this.employeeDateService.saveEmployeeDate(event).subscribe(
       () => {
         this.isLoading = false
-        this.notificationService.showToast('Event saved successfully', 'success')
+        this.snackBarService.showSnackbar("Event saved successfully", "snack-success")
       },
       () => {
         this.isLoading = false
-        this.notificationService.showToast('Failed to save event', 'error')
+        this.snackBarService.showSnackbar("Failed to save event", "snack-error");
       }
     );
   }

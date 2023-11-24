@@ -4,6 +4,7 @@ import { Chart } from 'src/app/models/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { colours } from '../../models/constants/colours.constants';
 import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';
 import { ChartConfiguration, ChartType } from 'chart.js';
@@ -45,7 +46,7 @@ export class ChartComponent implements OnInit {
   selectedChartIndex: number = -1;
   constructor(private chartService: ChartService, private cookieService: CookieService,
     private toast: NgToastService, public dialog: MatDialog, private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document, private employeeProfile:EmployeeService) {}
+    @Inject(DOCUMENT) private document: Document, private employeeProfile:EmployeeService, private snackBarService: SnackbarService) {}
 
     public barChartOptions: ChartConfiguration['options'] = {
       events: [],
@@ -117,7 +118,7 @@ export class ChartComponent implements OnInit {
         }
       },
       error: error => {
-        this.toast.error({detail:"error",summary: "Chart display unsuccessful",duration:5000, position:'topCenter'});
+        this.snackBarService.showSnackbar("Chart display unsuccessful", "snack-error");
        }
   });
   }
@@ -162,12 +163,12 @@ export class ChartComponent implements OnInit {
       };
       this.chartService.updateChart(this.updateFormData).subscribe({
         next: (updatedData: any) => {
-          this.toast.success({detail:"Success",summary: "Update successful",duration:5000, position:'topCenter'});
+          this.snackBarService.showSnackbar("Update successful", "snack-success");
           this.resetPage();
           this.createAndDisplayChart();
         },
         error: error => {
-          this.toast.error({detail:"error",summary: "Update unsuccessful",duration:5000, position:'topCenter'});
+          this.snackBarService.showSnackbar("Update unsuccessful", "snack-error");
 
          }
     });
@@ -185,12 +186,12 @@ export class ChartComponent implements OnInit {
     if (this.chartData[selectedIndex]) {
       this.chartService.deleteChart(this.chartData[selectedIndex].id).subscribe({
         next: () => {
-          this.toast.success({detail:"Success",summary: "Delete successful",duration:5000, position:'topCenter'});
+          this.snackBarService.showSnackbar("Delete successful", "snack-success");
           this.resetPage();
           this.createAndDisplayChart();
         },
         error: error => {
-          this.toast.error({detail:"Error",summary: "Failed to detele graph",duration:5000, position:'topCenter'});
+          this.snackBarService.showSnackbar("Failed to delete graph", "snack-error");
         }
     });}}
 
@@ -209,7 +210,7 @@ export class ChartComponent implements OnInit {
         });
   }, error: (error) => {
 
-    this.toast.error({detail:"error",summary: "Failed to fetch people champion",duration:5000, position:'topCenter'});
+    this.snackBarService.showSnackbar("Failed to fetch people champion", "snack-error");
 
   }, complete: () => {
     this.createAndDisplayChart();

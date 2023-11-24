@@ -4,6 +4,7 @@ import { FieldCodeService } from 'src/app/services/field-code.service';
 import { Router } from '@angular/router';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { Table } from 'primeng/table';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { NgToastService } from 'ng-angular-popup';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -37,7 +38,8 @@ export class ManageFieldCodeComponent {
     private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
     private toast: NgToastService,
-    public cookieService: CookieService) {
+    public cookieService: CookieService,
+    private snackBarService: SnackbarService) {
     this.initializeForm();
   }
 
@@ -97,7 +99,7 @@ export class ManageFieldCodeComponent {
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: () => {
-          this.toast.success({detail:"Field Code saved!", position:'topCenter'})
+          this.snackBarService.showSnackbar("Field code saved", "snack-success");
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
@@ -105,7 +107,7 @@ export class ManageFieldCodeComponent {
             this.isUnique = false;
           }
           else {
-            this.toast.error({detail:"Error", summary:error, duration:5000, position:'topCenter'});
+            this.snackBarService.showSnackbar(error, "snack-error");
           }
         }
       });
@@ -125,7 +127,7 @@ export class ManageFieldCodeComponent {
         this.filteredFieldCodes = this.fieldCodes;
       },
       error: error => {
-        this.toast.error({detail: 'Error loading Field Codes', summary: error, duration: 5000, position: 'topCenter'});
+        this.snackBarService.showSnackbar("Error loading Field Codes", "snack-error");
       }
     });
   }
