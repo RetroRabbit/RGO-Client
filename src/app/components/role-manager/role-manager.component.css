@@ -1,10 +1,9 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap');
 
 #dialog-title,
 #dialog-subtitle {
-  width: 100%; 
+    width: 100%;
 }
 
 
@@ -15,7 +14,8 @@ pre {
     background-color: #fff;
 }
 
-.card, .form-control {
+.card,
+.form-control {
     width: fit-content;
     margin: 0.1rem 0.1rem;
     padding: 0.5rem 0.5rem;
@@ -31,39 +31,40 @@ div .d-flex {
     box-shadow: inset 0 0 0 0.2rem #000;
 }
 
-#tableheader{
+#tableheader {
     background-color: #D7DFFF;
     height: 60px;
     padding-bottom: 20px;
 
 }
 
-#mattable{
+#mattable {
     width: 400px;
     margin-left: 20px;
-    margin-right:20px;
+    margin-right: 20px;
     width: 1580px;
     margin-bottom: 20px;
 }
 
-#savechangesbtn{
-    background-color:#0029C6 ;
-    color:#FFFFFF;
+#savechangesbtn {
+    background-color: #0029C6;
+    color: #FFFFFF;
     float: right;
+    margin-right: 0;
     margin-bottom: 20px;
     width: 200px;
     height: 40px;
-    border:none;
+    border: none;
     border-radius: 20px;
 }
 
-#subheader{
-    background-color:#F7F2FA ;
+#subheader {
+    background-color: #F7F2FA;
     padding-bottom: 10px;
     padding-top: 20px;
 }
 
-#permissions{
+#permissions {
     padding-bottom: 10px;
     padding-top: 20px;
     align-items: start;
@@ -76,13 +77,13 @@ div .d-flex {
     letter-spacing: 0.5px;
 }
 
-#allsubheader{
-   background-color:#F7F2FA ;
-   font-family: Roboto;
-   font-size: 16px;
-   font-weight: 500;
-   line-height: 24px;
-   letter-spacing: 0.15000000596046448px;
+#allsubheader {
+    background-color: #F7F2FA;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15000000596046448px;
 }
 
 #dialog-content {
@@ -95,20 +96,20 @@ div .d-flex {
     gap: 10px;
     flex-shrink: 0;
     border-radius: 100px;
-  }
+}
 
-  #dialog-title {
-      color: var(--m-3-black, #000);
-      font-family: Roboto;
-      font-size: 38px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 52px;
-      width: 357px;
-      text-align: center;
-  }
+#dialog-title {
+    color: var(--m-3-black, #000);
+    font-family: Roboto;
+    font-size: 38px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 52px;
+    width: 357px;
+    text-align: center;
+}
 
-  #dialog-title-cancel {
+#dialog-title-cancel {
     color: var(--m-3-black, #000);
     width: 534px;
     font-family: Roboto;
@@ -117,93 +118,91 @@ div .d-flex {
     font-weight: 400;
     line-height: 52px;
 }
-  
-  #dialog-subtitle {
-      color: var(--m-3-sys-light-primary, #0029C6);
-      text-align: center;
 
-      font-family: Inter;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 22px;
-      letter-spacing: -0.32px;
-  }
+#dialog-subtitle {
+    color: var(--m-3-sys-light-primary, #0029C6);
+    text-align: center;
 
-  #dialog-header {
-      width: 381px;
-      height: 112px;
-      display: inline-block;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 16px;
-  }
-  
-  #dialog-header-cancel {
-      display: flex;
-      width: 534px; 
-      height: 112px;
-      flex-direction: column;
-      align-items: center;
-      gap: 67px;
-  }
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.32px;
+}
 
-  #dialog-container {
-      display: flex;
-      width: 905px;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 40px;
-      border-radius: 100px;
-  }
+#dialog-header {
+    width: 381px;
+    height: 112px;
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
 
-  #save-button {
-      display: flex;
-      width: 426px;
-      height: 55px;
-      padding: 10px;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      border-radius: 100px;
-      background: var(--m-3-sys-light-primary, #0029C6);
-      color: #FFF;
+#dialog-header-cancel {
+    display: flex;
+    width: 534px;
+    height: 112px;
+    flex-direction: column;
+    align-items: center;
+    gap: 67px;
+}
 
-      font-family: Roboto;
-      font-size: 20px;
-      font-style: normal;
-      font-weight: 300;
-      line-height: 20px;
-      text-transform: uppercase;
-  }
-  #button-container {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 20px;
-  }
+#dialog-container {
+    display: flex;
+    width: 905px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 40px;
+    border-radius: 100px;
+}
 
-  #cancel-button {
-      display: flex;
-      width: 426px;
-      height: 55px;
-      padding: 10px;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      border-radius: 100px;
-      border: 1px solid var(--m-3-sys-light-primary, #0029C6);
-      color: #0029C6;
+#save-button {
+    display: flex;
+    width: 426px;
+    height: 55px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 100px;
+    background: var(--m-3-sys-light-primary, #0029C6);
+    color: #FFF;
 
-      font-family: Montserrat;
-      font-size: 20px;
-      font-style: normal;
-      font-weight: 300;
-      line-height: 20px;
-      text-transform: uppercase;
-  }
+    font-family: Roboto;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 20px;
+    text-transform: uppercase;
+}
 
- 
+#button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
 
+#cancel-button {
+    display: flex;
+    width: 426px;
+    height: 55px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 100px;
+    border: 1px solid var(--m-3-sys-light-primary, #0029C6);
+    color: #0029C6;
+
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 20px;
+    text-transform: uppercase;
+}
