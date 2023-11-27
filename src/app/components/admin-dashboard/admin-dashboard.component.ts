@@ -72,14 +72,6 @@ export class AdminDashboardComponent {
 
   CURRENT_PAGE = "currentPage";
   PREVIOUS_PAGE = "previousPage";
-
-  get filteredCategoriesSorted(): string[] {
-    return this.sortCategories(this.filteredCategories);
-  }
-
-  private sortCategories(categories: string[]): string[] {
-    return this.categories.sort((a, b) => a.localeCompare(b));
-  }
   
   constructor(
     private employeeProfileService: EmployeeProfileService,
@@ -92,12 +84,8 @@ export class AdminDashboardComponent {
     private dialog: MatDialog,
     private employeeTypeService: EmployeeTypeService,
     private hideNavService: HideNavService
-  ) {
-    this.categoryCtrl.valueChanges.subscribe(value => {
-      this.filteredCategories = value ? this.sortCategories(this.filterCategories(value)) : this.sortCategories(this.categories);
-    });
-  }
-
+  ) {}
+  
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
@@ -109,35 +97,35 @@ export class AdminDashboardComponent {
       }
       this.searchResults = [];
     });
-
+    
     this.employeeProfileService
       .searchEmployees(this.searchQuery)
       .subscribe((data) => {
         this.allEmployees = data;
     });
-
+    
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
       error: (error) => {
         this.toast.error({ detail: "Error", summary: "Failed to fetch charts.", duration: 5000, position: 'topRight' });
       }
     });
-
+    
     this.categoryControl.valueChanges.subscribe(val => {
       this.selectedCategories = val;
     });
-
+    
     this.typeControl.valueChanges.subscribe(val => {
       this.selectedTypes = val;
     });
-
+    
     this.chartService.getColumns().subscribe({
       next: data => {
         this.categories = data;
-        this.filteredCategories = data;
+        this.filteredCategories = this.categories.slice().sort((a, b) => a.localeCompare(b));
       }
     });
-
+    
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.types = data.map(type => type.name || '');
@@ -205,7 +193,6 @@ export class AdminDashboardComponent {
     }
     this.searchResults = this.searchResults.slice(0, 3);
   }
-  
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.selectedCategories.push(event.option.viewValue);

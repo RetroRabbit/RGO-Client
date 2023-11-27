@@ -486,7 +486,7 @@
               <mat-label>Select category</mat-label>
               <mat-select [formControl]="categoryControl" (selectionChange)="onDropDownChange()" multiple>
                 <mat-select-trigger></mat-select-trigger>
-                <mat-option *ngFor="let category of filteredCategoriesSorted" [value]="category">
+                <mat-option *ngFor="let category of filteredCategories" [value]="category">
                   {{ category }}
                 </mat-option>
               </mat-select>
