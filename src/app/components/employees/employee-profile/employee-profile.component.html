@@ -1,892 +1,943 @@
 <div class="container mt-4">
-  <div class="w-75 py-3">
-    <button mat-button class="btn" id="back-button" (click)="goToEmployees()" *ngIf="previousPage == 'Employees' && currentPage != 'Profile'">
-        <mat-icon>arrow_back</mat-icon>
-        <span>Back to Employees</span>
-      </button>
-    <button mat-button class="btn" id="back-button" (click)="goToDashboard()" *ngIf="previousPage == 'Dashboard'  &&  currentPage != 'Profile'">
-        <mat-icon>arrow_back</mat-icon>
-        <span>Back to Dashboard</span>
-    </button>
-  </div>
-  <div id="profile-header" class="row p-2">
-    <div class="col-2 mt-4">
-      <div id="profile-image">
-        <img [src]="employeeProfile?.photo" alt="">
-      </div>
+    <div class="w-75 py-3">
+        <button mat-button class="btn" id="back-button" (click)="goToEmployees()"
+            *ngIf="previousPage == 'Employees' && currentPage != 'Profile'">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Back to Employees</span>
+        </button>
+        <button mat-button class="btn" id="back-button" (click)="goToDashboard()"
+            *ngIf="previousPage == 'Dashboard'  &&  currentPage != 'Profile'">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Back to Dashboard</span>
+        </button>
     </div>
-    <div class="col-md-8 offset-md-2 offset-lg-0 col-lg-10 mt-4">
-      <div class="row mt-3">
-        <div class="col-6 col-md-8" id="header-name">
-          <h1>{{employeeProfile?.name}} {{employeeProfile?.surname}}</h1>
-        </div>
-        <div class="col-6 col-md-4" id="header-email">
-          <div class="row me-4">
-            <div class="col-auto">{{employeeProfile?.email}}</div>
-            <div class="col-1 mt-2" id="header-email-clip"><mat-icon>attachment</mat-icon></div>
-          </div>
-        </div>
-        <div class="col-12 my-2" id="header-role">
-          {{employeeProfile?.employeeType?.name}} | Level {{employeeProfile?.level}}
-        </div>
-        <div class="col-12 my-2" id="header-based" *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ''">
-            Based in {{employeePhysicalAddress.city}}
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-lg-10 offset-lg-2 my-4">
-      <div class="row" id="quick-info">
-        <div class="col-3 mb-md-2">
-          <div class="row">
-            <div class="col-3" id="outer-icon-container">
-              <div id="icon-container">
-                <mat-icon>people_outline</mat-icon>
-              </div>
+    <div id="profile-header" class="row p-2">
+        <div class="col-2 mt-4">
+            <div id="profile-image">
+                <img [src]="employeeProfile?.photo" alt="">
             </div>
-            <div class="col-9 my-2">
-              <div id="header-label">Team Lead</div>
-              <div id="header-value">{{employeeTeamLead ? employeeTeamLead.name + ' ' +
-                employeeTeamLead.surname : 'Not assigned'}}</div>
-            </div>
-          </div>
         </div>
-        <div class="col-3 mb-md-2">
-          <div class="row">
-            <div class="col-3" id="outer-icon-container">
-              <div id="icon-container">
-                <mat-icon>card_membership</mat-icon>
-              </div>
-            </div>
-            <div class="col-9 my-2">
-              <div id="header-label">People Champion</div>
-              <div id="header-value">{{employeePeopleChampion ? employeePeopleChampion.name + ' ' +
-                employeePeopleChampion.surname: 'Not assigned'}}</div>
-            </div>
-          </div>
-        </div>
-        <div class="col-3 mb-md-2">
-          <div class="row">
-            <div class="col-3" id="outer-icon-container">
-              <div id="icon-container">
-                <mat-icon>business_center</mat-icon>
-              </div>
-            </div>
-            <div class="col-9 my-2">
-              <div id="header-label">Client Allocated</div>
-              <div id="header-value">{{employeeClient?.name ?? 'Bench'}}</div>
-            </div>
-          </div>
-        </div>
-        <div class="col-3 mb-md-2">
-          <div class="row">
-            <div class="col-3" id="outer-icon-container">
-              <div id="icon-container">
-                <mat-icon>date_range</mat-icon>
-              </div>
-            </div>
-            <div class="col-9 my-2">
-              <div id="header-label">Start Date</div>
-              <div id="header-value">{{employeeProfile?.engagementDate}}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="profile-completion" class="row my-4 p-2">
-    <div class="col-12 mt-2" id="completion-header">
-      <div class="row" id="completion-header-container">
-        <div class="col-1">
-          <div id="outer-icon-container">
-            <div id="icon-container" class="me-0 pe-0">
-              <mat-icon>person_outline</mat-icon>
-            </div>
-          </div>
-        </div>
-        <div class="col-11 ps-0">
-          <h4 style="margin:0"> {{employeeProfile?.name}}'s profile progess </h4>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 mt-3 px-4">
-      <div class="row">
-        <div class="col-12 mx-3">
-          <h3 id="progress-require-message">Add all required information to complete profile</h3>
-        </div>
-      </div>
-    </div>
-    <div class="col-11 px-4">
-      <div class="row mx-3" id="accordion-progress">
-        <div class="col-2 py-3" id="progress-stats"
-          style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
-          <h5>Profile Details {{ profileFormProgress }}%</h5>
-        </div>
-        <div class="col-1 border" id="horizontal"></div>
-        <div class="col-2 py-3" id="progress-stats"
-          style="background-color: {{ bankInformationProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
-          <h5>Bank Information {{bankInformationProgress}}%</h5>
-        </div>
-        <div class="col-1 border" id="horizontal"></div>
-        <div class="col-2 py-3" id="progress-stats"
-          style="background-color: {{ documentFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ documentFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ documentFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
-          <h5>Documents {{documentFormProgress}}%</h5>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 mt-3 px-4">
-      <div class="row mx-2">
-        <div class="col-auto pt-1" id="overall-text">
-          <h4>
-            {{overallFormProgress}}% Overall Completed
-          </h4>
-        </div>
-        <div class="col-10 pt-3" id="progress-container">
-          <mat-progress-bar mode="determinate" [value]=overallFormProgress id="overall-progress-bar"></mat-progress-bar>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="profile-accordions">
-    <div id="accordions-nav" class="row">
-      <div class="col-4">
-        <div id="nav-item-container" class="col-auto">
-          <div id="nav-item">
-            <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Profile Details' ? 'active' : 'idle'">
-              Profile Details
-            </div>
-            <div *ngIf="selectedItem == 'Profile Details'" id="selected-line-box">
-              <div id="selected-line">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-4">
-        <div id="nav-item-container" class="col-auto">
-          <div id="nav-item">
-            <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Bank Information' ? 'active' : 'idle'">
-              Bank Information
-            </div>
-            <div *ngIf="selectedItem == 'Bank Information'" id="selected-line-box">
-              <div id="selected-line">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-4">
-        <div id="nav-item-container" class="col-auto">
-          <div id="nav-item">
-            <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Documents' ? 'active' : 'idle'">
-              Documents
-            </div>
-            <div *ngIf="selectedItem == 'Documents'" id="selected-line-box">
-              <div id="selected-line">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-      <div id="accordions-body`" class="row">
-        <div class="col-12" *ngIf="selectedItem == 'Profile Details'" id="accordion-container">
-            <mat-accordion id="accordion" class="row">
-                <mat-expansion-panel class="my-3" (opened)="checkEmployeeDetails()"
-                    (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            Employee Details
-                        </mat-panel-title>
-                        <mat-panel-description *ngIf="employeeFormProgress != 100">
-                            <mat-icon class="mx-1">error</mat-icon> Missing information
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <form [formGroup]="employeeDetailsForm" (submit)="saveEmployeeEdit()">
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="row">
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Full Names</mat-label>
-                                            <input matInput formControlName="name">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Last Name</mat-label>
-                                            <input matInput formControlName="surname">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Initials</mat-label>
-                                            <input matInput formControlName="initials">
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Client Allocated</mat-label>
-                                            <input type="text" placeholder="" matInput
-                                                formControlName="clientAllocated" [matAutocomplete]="autoClient"
-                                                (input)="filterClients($event)">
-                                            <mat-autocomplete #autoClient="matAutocomplete">
-                                                <mat-option *ngFor="let client of filteredClients"
-                                                    [value]="client.name"
-                                                    (onSelectionChange)="getId(client, 'client')">
-                                                    {{ client.name }}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Role</mat-label>
-                                            <mat-select formControlName="employeeType">
-                                                <mat-option *ngFor="let type of employeeTypes" [value]="type.name">
-                                                    {{type.name}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Level</mat-label>
-                                            <mat-select formControlName="level">
-                                                <mat-option *ngFor="let level of levels" [value]="level.value">
-                                                    {{level.value}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Team Lead</mat-label>
-                                            <input type="text" placeholder="" matInput formControlName="teamLead"
-                                                [matAutocomplete]="autoLead" (input)="filterEmployees($event)">
-                                            <mat-autocomplete #autoLead="matAutocomplete">
-                                                <mat-option *ngFor="let employee of filteredEmployees"
-                                                    [value]="employee.name + ' ' + employee.surname"
-                                                    (onSelectionChange)="getId(employee, 'employee')">
-                                                    {{ employee.name }} {{ employee.surname }}</mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>People's Champion</mat-label>
-                                            <input type="text" placeholder="" matInput
-                                                formControlName="peopleChampion" [matAutocomplete]="autoChampion"
-                                                (input)="filterChampions($event)">
-                                            <mat-autocomplete #autoChampion="matAutocomplete">
-                                                <mat-option *ngFor="let peopleChampion of filteredPeopleChamps"
-                                                    [value]="peopleChampion.name + ' ' + peopleChampion.surname"
-                                                    (onSelectionChange)="getId(peopleChampion, 'champion')">
-                                                    {{ peopleChampion.name }}
-                                                    {{ peopleChampion.surname }}</mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Date of Birth</mat-label>
-                                            <input matInput [matDatepicker]="picker1" class="form-control"
-                                                formControlName="dateOfBirth">
-                                            <mat-datepicker-toggle matSuffix
-                                                [for]="picker1"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker1></mat-datepicker>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>I.D number</mat-label>
-                                            <input matInput formControlName="idNumber">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Start Date</mat-label>
-                                            <input matInput [matDatepicker]="picker2"
-                                                formControlName="engagementDate">
-                                            <mat-datepicker-toggle matSuffix
-                                                [for]="picker2"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker2></mat-datepicker>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <button *ngIf="!editEmployee" mat-button id="edit-button"
-                                    (click)="editEmployeeDetails()">
-                                    <mat-icon>edit</mat-icon>Edit Details</button>
-                            </div>
-                            <div class="col-12" id="edit-buttons">
-                                <button *ngIf="editEmployee" mat-button id="cancel-button"
-                                    (click)="cancelEmployeeEdit()">Cancel</button>
-                                <button *ngIf="editEmployee" mat-button id="save-button" type="submit"
-                                    [disabled]="!employeeDetailsForm.valid">Save
-                                    changes</button>
-                            </div>
-                        </div>
-                    </form>
-                </mat-expansion-panel>
-                <mat-expansion-panel class="my-3" (opened)="panelOpenState = true"
-                    (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            Personal Details
-                        </mat-panel-title>
-                        <mat-panel-description *ngIf="personalFormProgress != 100">
-                            <mat-icon class="mx-1">error</mat-icon> Missing information
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <form [formGroup]="personalDetailsForm" (submit)="savePersonalEdit()">
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="row">
-                                    <div class="col-12 my-2">
-                                        <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
-                                        <mat-radio-group aria-label="Select your gender" formControlName="gender"
-                                            [value]="employeeProfile?.gender">
-                                            <mat-radio-button [value]=1>Male</mat-radio-button>
-                                            <mat-radio-button [value]=2>Female</mat-radio-button>
-                                            <mat-radio-button [value]=0>Unclassified</mat-radio-button>
-                                        </mat-radio-group>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Race</mat-label>
-                                            <mat-select formControlName="race">
-                                                <mat-option *ngFor="let race of races; index as i" [value]="i">
-                                                    {{race.value}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-12 mt-1"></div>
-                                    <div class="col-6  my-1">
-                                        <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any
-                                            disabilities that you are aware of?</h3>
-                                        <mat-radio-group aria-label="Select status"
-                                            (change)="setHasDisability($event)" formControlName="disability">
-                                            <mat-radio-button [value]=true>yes</mat-radio-button>
-                                            <mat-radio-button [value]=false>no</mat-radio-button>
-                                        </mat-radio-group>
-                                    </div>
-                                    <div class="col-12" *ngIf="hasDisbility">
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <mat-label>Disability</mat-label>
-                                                    <mat-select formControlName="disabilityList">
-                                                        <mat-option
-                                                            *ngFor="let disability of disabilities; index as i"
-                                                            [value]="i">
-                                                            {{disability.value}}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-6">
-                                                <mat-form-field appearance="outline" style="width: 100%;">
-                                                    <textarea matInput placeholder="Disability Notes"
-                                                        formControlName="disabilityNotes"></textarea>
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <button *ngIf="!editPersonal" mat-button id="edit-button"
-                                    (click)="editPersonalDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
-                            </div>
-                            <div class="col-12" id="edit-buttons">
-                                <button *ngIf="editPersonal" mat-button id="cancel-button"
-                                    (click)="cancelPersonalEdit()">Cancel</button>
-                                <button *ngIf="editPersonal" mat-button id="save-button"
-                                    (click)="savePersonalEdit()" [disabled]="!personalDetailsForm.valid">Save
-                                    changes</button>
-                            </div>
-                        </div>
-                    </form>
-                </mat-expansion-panel>
-                <mat-expansion-panel class="my-3" (opened)="panelOpenState = true"
-                    (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            Contact Details
-                        </mat-panel-title>
-                        <mat-panel-description *ngIf="contactFormProgress != 100">
-                            <mat-icon class="mx-1">error</mat-icon> Missing information
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <form [formGroup]="employeeContactForm">
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="row">
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Personal Email</mat-label>
-                                            <input matInput formControlName="personalEmail">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Work email</mat-label>
-                                            <input matInput formControlName="email">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Cellphone Number*</mat-label>
-                                            <input matInput formControlName="cellphoneNo">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Home Number</mat-label>
-                                            <input matInput formControlName="houseNo">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-12 mt-2">
-                                        <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Emergency Contact
-                                        </h3>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Emergency contact name</mat-label>
-                                            <input matInput formControlName="emergencyContactName">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Emergency contact number</mat-label>
-                                            <input matInput formControlName="emergencyContactNo">
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <button *ngIf="!editContact" mat-button id="edit-button"
-                                    (click)="editContactDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
-                            </div>
-                            <div class="col-12" id="edit-buttons">
-                                <button *ngIf="editContact" mat-button id="cancel-button"
-                                    (click)="cancelContactEdit()">Cancel</button>
-                                <button *ngIf="editContact" mat-button id="save-button" type="submit"
-                                    [disabled]="!employeeContactForm.valid" (click)="saveContactEdit()">Save
-                                    changes</button>
-                            </div>
-                        </div>
-
-                    </form>
-                </mat-expansion-panel>
-                <mat-expansion-panel class="my-3" (opened)="panelOpenState = true"
-                    (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            Address Details
-                        </mat-panel-title>
-                        <mat-panel-description *ngIf="addressFormProgress != 100">
-                            <mat-icon class="mx-1">error</mat-icon> Missing information
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <form [formGroup]="addressDetailsForm">
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Unit Number</mat-label>
-                                            <input matInput formControlName="physicalUnitNumber">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Complex Name</mat-label>
-                                            <input matInput formControlName="physicalComplexName">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Suburb/District</mat-label>
-                                            <input matInput formControlName="physicalSuburb">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Street Number</mat-label>
-                                            <input matInput formControlName="physicalStreetNumber">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>City/Town</mat-label>
-                                            <input matInput formControlName="physicalCity">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Country</mat-label>
-                                            <input matInput [matAutocomplete]="auto" placeholder="Search country"
-                                                (input)="filterCountries($event)"
-                                                formControlName="physicalCountry" />
-                                            <mat-autocomplete #auto="matAutocomplete">
-                                                <mat-option *ngFor="let country of filteredCountries"
-                                                    [value]="country">
-                                                    {{ country }}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Province</mat-label>
-                                            <mat-select formControlName="physicalProvince">
-                                                <mat-option *ngFor="let province of provinces" [value]="province">
-                                                    {{province}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Postal Code</mat-label>
-                                            <input matInput formControlName="physicalPostalCode">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-12">
-                                        <mat-checkbox (change)="toggleEqualFields()" [disabled]="!editAddress">Is
-                                            the postal address the same as physical address?</mat-checkbox>
-                                    </div>
-                                </div>
-                                <div *ngIf="!physicalEqualPostal" class="row mt-4">
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Unit Number</mat-label>
-                                            <input matInput formControlName="postalUnitNumber">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Complex Name</mat-label>
-                                            <input matInput formControlName="postalComplexName">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Suburb/District</mat-label>
-                                            <input matInput formControlName="postalSuburb">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Street Number</mat-label>
-                                            <input matInput formControlName="postalStreetNumber">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>City/Town</mat-label>
-                                            <input matInput formControlName="postalCity">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Country</mat-label>
-                                            <input matInput [matAutocomplete]="auto" placeholder="Search country"
-                                                (input)="filterCountries($event)" formControlName="postalCountry" />
-                                            <mat-autocomplete #auto="matAutocomplete">
-                                                <mat-option *ngFor="let country of filteredCountries"
-                                                    [value]="country">
-                                                    {{ country }}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Province</mat-label>
-                                            <mat-select formControlName="postalProvince">
-                                                <mat-option *ngFor="let province of provinces" [value]="province">
-                                                    {{province}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Postal Code</mat-label>
-                                            <input matInput formControlName="physicalPostalCode">
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <button *ngIf="!editAddress" mat-button id="edit-button"
-                                    (click)="editAddressDetails()">
-                                    <mat-icon>edit</mat-icon>Edit Details
-                                </button>
-                            </div>
-                            <div class="col-12" id="edit-buttons">
-                                <button *ngIf="editAddress" mat-button id="cancel-button"
-                                    (click)="cancelAddressEdit()">Cancel</button>
-                                <button *ngIf="editAddress" mat-button id="save-button" type="submit"
-                                    (click)="saveAddressEdit()" [disabled]="!addressDetailsForm.valid">Save
-                                    changes</button>
-                            </div>
-                        </div>
-                    </form>
-                </mat-expansion-panel>
-                <mat-expansion-panel class="my-3" (opened)="checkAdditionalInformation()"
-                    (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                           Additional Information
-                        </mat-panel-title>
-                        <mat-panel-description *ngIf="additionalFormProgress != 100">
-                            <mat-icon class="mx-1">error</mat-icon> Missing information
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <form [formGroup]="additionalInfoForm">
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="col-6 my-2" *ngFor="let fieldcode of customFields">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>{{fieldcode.name}}</mat-label>
-                                        <div *ngIf="fieldcode.type == fieldTypes[4].id">
-                                            <mat-select formControlName="{{fieldcode.code}}">
-                                                <mat-option *ngFor="let option of fieldcode.options" [value]="option.option">
-                                                    {{option.option}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </div>
-                                        <div *ngIf="fieldcode.type != fieldTypes[4].id">
-                                            <input matInput formControlName="{{fieldcode.code}}">
-                                        </div>
-                                      </mat-form-field>
-                                    </div>
-                                </div>
-                            <div class="col-2">
-                                <button *ngIf="!editAdditional" mat-button id="edit-button"
-                                    (click)="editAdditionalDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
-                            </div>
-                            <div class="col-12" id="edit-buttons">
-                                <button *ngIf="editAdditional" mat-button id="cancel-button"
-                                    (click)="cancelAdditionalEdit()">Cancel</button>
-                                <button *ngIf="editAdditional" mat-button id="save-button" type="submit"
-                                    [disabled]="!additionalInfoForm.valid" (click)="saveAdditionalEdit()">Save
-                                    changes</button>
-                            </div>
-                        </div>
-                    </form>
-                </mat-expansion-panel>
-            </mat-accordion>
-        </div>
-        <div class="col-12" *ngIf="selectedItem == 'Bank Information'" id="accordion-container">
-            <mat-accordion id="accordion" class="row">
-                <mat-expansion-panel class="my-3" (opened)="checkEmployeeDetails()"
-                    (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            Main Bank Account
-                        </mat-panel-title>
-                        <mat-panel-description *ngIf="bankInformationProgress != 100">
-                            <mat-icon class="mx-1">error</mat-icon> Missing information
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <form [formGroup]="employeeBankingsForm">
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="row">
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" id="banking-field">
-                                            <mat-label>Bank Account Owner</mat-label>
-                                            <input matInput placeholder="Enter name of owner"
-                                                formControlName="accountHolderName">
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6"></div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" id="banking-field">
-                                            <mat-label>Account Type</mat-label>
-                                            <mat-select placeholder="Select Type" formControlName="accountType">
-                                                <mat-option *ngFor="let accountType of accountTypes"
-                                                    [value]="accountType.id">
-                                                    {{accountType.value}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        <mat-form-field appearance="outline" id="banking-field">
-                                            <mat-label>Bank Name</mat-label>
-                                            <mat-select placeholder="Select bank" formControlName="bankName">
-                                                <mat-option *ngFor="let bank of banks" [value]="bank.value">
-                                                    {{bank.value}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                      <mat-form-field appearance="outline" id="banking-field">
-                                          <mat-label>Account Number</mat-label>
-                                          <input type="text" min="0" matInput placeholder="Enter account number"
-                                              formControlName="accountNo">
-                                      </mat-form-field>
-                                  </div>
-                                  <div class="col-6 my-2">
-                                      <mat-form-field appearance="outline" id="banking-field">
-                                          <mat-label>Branch Code</mat-label>
-                                          <input type="text" min="0" matInput placeholder="Enter branch code"
-                                              formControlName="branch">
-                                      </mat-form-field>
-                                  </div>
-                                  <p id="base64"></p>
-                                  <div class="col-8 my-2">
-                                      <mat-label [ngStyle]="{color: editBanking ? 'black' : 'grey'}">
-                                          Proof of account
-                                      </mat-label>
-                                      <div class="my-2">
-                                          <div class="row">
-                                              <div *ngIf="hasFile">
-                                                  <button mat-button color="primary" [hidden]="employeeBanking.file.length == 0"
-                                                      (click)="convertFileToBase64()">Download</button>
-                                                </div>
-                                                <div class="col-5" [hidden]="!editBanking" class="row"
-                                                    id="uploadButton" (click)="openFileInput()">
-                                                    <div class="col" *ngIf="bankingPDFName.length > 1">
-                                                        <p id="recently-uploaded">{{bankingPDFName}}</p>
-                                                    </div>
-                                                    <div class="col-1" style="color: blue" id="uploadfile">
-                                                        <img src="../../../../assets/img/file_upload.svg" alt="">
-                                                    </div>
-                                                    <div class="col-5" id="uploadfile">
-                                                        <h4>Upload document here</h4>
-                                                        <input id="fileUpload" hidden type="file"
-                                                            (change)="onFileSelected($event)" accept=".pdf">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <button *ngIf="!editBanking" mat-button id="edit-button"
-                                    (click)="editBankingDetails()"> <mat-icon>edit</mat-icon>Edit
-                                    Details</button>
-                            </div>
-                            <div class="col-12" id="edit-buttons">
-                                <button *ngIf="editBanking" mat-button id="cancel-button"
-                                    (click)="cancelBankingDetails()">Cancel</button>
-                                <button *ngIf="editBanking" mat-button id="save-button"
-                                    (click)="saveBankingDetails()">Save changes</button>
-                            </div>
-                        </div>
-                    </form>
-                </mat-expansion-panel>
-            </mat-accordion>
-        </div>
-      <div class="col-12" *ngIf="selectedItem == 'Documents'" id="accordion-container">
-        <mat-accordion id="accordion" class="row">
-          <mat-expansion-panel class="my-3">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                HR Documents
-              </mat-panel-title>
-              <mat-panel-description *ngIf="documentFormProgress != 100">
-                <mat-icon class="mx-1">error</mat-icon> Missing information
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <div id="table">
-              <div id="table-header" class="row pt-3">
-                <div class="col-6">
-                  <h4 class="ms-2 mt-1">Document</h4>
+        <div class="col-md-8 offset-md-2 offset-lg-0 col-lg-10 mt-4">
+            <div class="row mt-3">
+                <div class="col-6 col-md-8" id="header-name">
+                    <h1>{{employeeProfile?.name}} {{employeeProfile?.surname}}</h1>
                 </div>
-                <div class="col-4">
-                  <h4 class="ms-1 mt-1">Action</h4>
-                </div>
-                <div class="col-2">
-                  <h4 class="ms-1 mt-1">Status</h4>
-                </div>
-              </div>
-              <div id="table-body" class="my-2">
-                <div *ngFor="let category of fileCategories;let i = index" class="row my-2 py-2" id="document-row">
-                  <div id="document" class="col-6 py-2">
-                    <h3>{{category}}</h3>
-                    <div class="col-12" *ngIf="getFileName(i) as document;else NoFile" id="fileName">
-                      <p>{{document.fileName}}</p>
+                <div class="col-6 col-md-4" id="header-email">
+                    <div class="row me-4">
+                        <div class="col-auto">{{employeeProfile?.email}}</div>
+                        <div class="col-1 mt-2" id="header-email-clip"><mat-icon>attachment</mat-icon></div>
                     </div>
-                    <ng-template #NoFile>
-                      <p>Download & upload document here</p>
-                    </ng-template>
-                  </div>
-                  <div class="col-4 py-2">
+                </div>
+                <div class="col-12 my-2" id="header-role">
+                    {{employeeProfile?.employeeType?.name}} | Level {{employeeProfile?.level}}
+                </div>
+                <div class="col-12 my-2" id="header-based"
+                    *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ''">
+                    Based in {{employeePhysicalAddress.city}}
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-10 offset-lg-2 my-4">
+            <div class="row" id="quick-info">
+                <div class="col-3 mb-md-2">
                     <div class="row">
-                      <div id="actionCellDownload" class="col-auto">
-                        <button mat-button color="primary" (click)="downloadDocument($event)" [id]=i> <svg id="svg-icon"
-                            width="19" height="19" viewBox="0 0 19 19" fill="white" xmlns="http://www.w3.org/2000/svg">
-                            <g id="Icons/file_download">
-                              <path id="icon"
-                                d="M13.9414 11.75V14H4.94141V11.75H3.44141V14C3.44141 14.825 4.11641 15.5 4.94141 15.5H13.9414C14.7664 15.5 15.4414 14.825 15.4414 14V11.75H13.9414ZM13.1914 8.75L12.1339 7.6925L10.1914 9.6275V3.5H8.69141V9.6275L6.74891 7.6925L5.69141 8.75L9.44141 12.5L13.1914 8.75Z"
-                                fill="#0029C6" />
-                            </g>
-                          </svg>
-                          Download</button>
-                      </div>
-                      <div id="actionCellUpload" class="col-auto">
-                        <button mat-button color="primary" (click)="captureUploadIndex($event)" [id]=i
-                          [disabled]="disableButton(i)"
-                          [ngStyle]="{'background-color': !disableButton(i) ? '#0029c6' : '#e3e3e4ff'}">
-                          <svg id="svg-icon-w" width="24" height="24" viewBox="0 0 24 24" fill="#e3e3e4ff"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <g id="Icons/file_upload">
-                              <path id="icon-w"
-                                d="M18 15V18H6V15H4V18C4 19.1 4.9 20 6 20H18C19.1 20 20 19.1 20 18V15H18ZM7 9L8.41 10.41L11 7.83V16H13V7.83L15.59 10.41L17 9L12 4L7 9Z"
-                                fill="#0029C6" />
-                            </g>
-                          </svg> Upload</button>
-                      </div>
-                      <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf" [id]="i + '-document'">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>people_outline</mat-icon>
+                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">Team Lead</div>
+                            <div id="header-value">{{employeeTeamLead ? employeeTeamLead.name + ' ' +
+                                employeeTeamLead.surname : 'Not assigned'}}</div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="col-2 py-2">
-                    <div *ngIf="getFileName(i) as document; else noDoc" id="statuses">
-                      <div *ngIf="document.status === 0" id="status-0">
-                        <span>{{ 'Approved' }}</span>
-                      </div>
-                      <div *ngIf="document.status === 2" id="status-2">
-                        <span>{{ 'Rejected' }}</span>
-                      </div>
-                      <div *ngIf="document.status === 1" id="status-1">
-                        <span>{{ 'Pending Approval' }}</span>
-                      </div>
-                    </div>
-                    <ng-template #noDoc>
-                      <div id="status-null">
-                        <span>{{ 'Action Required' }}</span>
-                      </div>
-                    </ng-template>
-                  </div>
-                  <div *ngIf="getFileName(i) as document" id="reject-reason">
-                    <h5 *ngIf="document.status == 2">{{document.reason}}</h5>
-                  </div>
                 </div>
-
-              </div>
+                <div class="col-3 mb-md-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>card_membership</mat-icon>
+                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">People Champion</div>
+                            <div id="header-value">{{employeePeopleChampion ? employeePeopleChampion.name + ' ' +
+                                employeePeopleChampion.surname: 'Not assigned'}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 mb-md-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>business_center</mat-icon>
+                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">Client Allocated</div>
+                            <div id="header-value">{{employeeClient?.name ?? 'Bench'}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 mb-md-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>date_range</mat-icon>
+                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">Start Date</div>
+                            <div id="header-value">{{employeeProfile?.engagementDate}}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </div>
-
+        </div>
     </div>
-  </div>
+
+    <div id="profile-completion" class="row my-4 p-2">
+        <div class="col-12 mt-2" id="completion-header">
+            <div class="row" id="completion-header-container">
+                <div class="col-1">
+                    <div id="outer-icon-container">
+                        <div id="icon-container" class="me-0 pe-0">
+                            <mat-icon>person_outline</mat-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-11 ps-0">
+                    <h4 style="margin:0"> {{employeeProfile?.name}}'s profile progess </h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-3 px-4">
+            <div class="row">
+                <div class="col-12 mx-3">
+                    <h3 id="progress-require-message">Add all required information to complete profile</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-11 px-4">
+            <div class="row mx-3" id="accordion-progress">
+                <div class="col-2 py-3" id="progress-stats"
+                    style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                    <h5>Profile Details {{ profileFormProgress }}%</h5>
+                </div>
+                <div class="col-1 border" id="horizontal"></div>
+                <div class="col-2 py-3" id="progress-stats"
+                    style="background-color: {{ bankInformationProgress === 100 && employeeBanking.status == 0 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 && employeeBanking.status == 0 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 && employeeBanking.status == 0 ? '1px solid #0029c6' : '1px solid grey' }}">
+                    <h5>Bank Information {{bankInformationProgress}}%</h5>
+                </div>
+                <div class="col-1 border" id="horizontal"></div>
+                <div class="col-2 py-3" id="progress-stats"
+                    style="background-color: {{ documentFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ documentFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ documentFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                    <h5>Documents {{documentFormProgress}}%</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-3 px-4">
+            <div class="row mx-2">
+                <div class="col-auto pt-1" id="overall-text">
+                    <h4>
+                        {{overallFormProgress}}% Overall Completed
+                    </h4>
+                </div>
+                <div class="col-10 pt-3" id="progress-container">
+                    <mat-progress-bar mode="determinate" [value]=overallFormProgress
+                        id="overall-progress-bar"></mat-progress-bar>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="profile-accordions">
+        <div id="accordions-nav" class="row">
+            <div class="col-4">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)"
+                            [ngClass]="selectedItem == 'Profile Details' ? 'active' : 'idle'">
+                            Profile Details
+                        </div>
+                        <div *ngIf="selectedItem == 'Profile Details'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)"
+                            [ngClass]="selectedItem == 'Bank Information' ? 'active' : 'idle'">
+                            Bank Information
+                        </div>
+                        <div *ngIf="selectedItem == 'Bank Information'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Documents' ? 'active' : 'idle'">
+                            Documents
+                        </div>
+                        <div *ngIf="selectedItem == 'Documents'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="accordions-body`" class="row">
+            <div class="col-12" *ngIf="selectedItem == 'Profile Details'" id="accordion-container">
+                <mat-accordion id="accordion" class="row">
+                    <mat-expansion-panel class="mt-3" (opened)="checkEmployeeDetails()"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Employee Details
+                            </mat-panel-title>
+                            <mat-panel-description *ngIf="employeeFormProgress != 100">
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="employeeDetailsForm" (submit)="saveEmployeeEdit()">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Full Names</mat-label>
+                                                <input matInput formControlName="name">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Last Name</mat-label>
+                                                <input matInput formControlName="surname">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Initials</mat-label>
+                                                <input matInput formControlName="initials">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Client Allocated</mat-label>
+                                                <input type="text" placeholder="" matInput
+                                                    formControlName="clientAllocated" [matAutocomplete]="autoClient"
+                                                    (input)="filterClients($event)">
+                                                <mat-autocomplete #autoClient="matAutocomplete">
+                                                    <mat-option *ngFor="let client of filteredClients"
+                                                        [value]="client.name"
+                                                        (onSelectionChange)="getId(client, 'client')">
+                                                        {{ client.name }}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Role</mat-label>
+                                                <mat-select formControlName="employeeType">
+                                                    <mat-option *ngFor="let type of employeeTypes" [value]="type.name">
+                                                        {{type.name}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Level</mat-label>
+                                                <mat-select formControlName="level">
+                                                    <mat-option *ngFor="let level of levels" [value]="level.value">
+                                                        {{level.value}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Team Lead</mat-label>
+                                                <input type="text" placeholder="" matInput formControlName="teamLead"
+                                                    [matAutocomplete]="autoLead" (input)="filterEmployees($event)">
+                                                <mat-autocomplete #autoLead="matAutocomplete">
+                                                    <mat-option *ngFor="let employee of filteredEmployees"
+                                                        [value]="employee.name + ' ' + employee.surname"
+                                                        (onSelectionChange)="getId(employee, 'employee')">
+                                                        {{ employee.name }} {{ employee.surname }}</mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>People's Champion</mat-label>
+                                                <input type="text" placeholder="" matInput
+                                                    formControlName="peopleChampion" [matAutocomplete]="autoChampion"
+                                                    (input)="filterChampions($event)">
+                                                <mat-autocomplete #autoChampion="matAutocomplete">
+                                                    <mat-option *ngFor="let peopleChampion of filteredPeopleChamps"
+                                                        [value]="peopleChampion.name + ' ' + peopleChampion.surname"
+                                                        (onSelectionChange)="getId(peopleChampion, 'champion')">
+                                                        {{ peopleChampion.name }}
+                                                        {{ peopleChampion.surname }}</mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Date of Birth</mat-label>
+                                                <input matInput [matDatepicker]="picker1" class="form-control"
+                                                    formControlName="dateOfBirth">
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="picker1"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker1></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>I.D number</mat-label>
+                                                <input matInput formControlName="idNumber">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Start Date</mat-label>
+                                                <input matInput [matDatepicker]="picker2"
+                                                    formControlName="engagementDate">
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="picker2"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker2></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <button *ngIf="!editEmployee" mat-button id="edit-button"
+                                        (click)="editEmployeeDetails()">
+                                        <mat-icon>edit</mat-icon>Edit Details</button>
+                                </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editEmployee" mat-button id="cancel-button"
+                                        (click)="cancelEmployeeEdit()">Cancel</button>
+                                    <button *ngIf="editEmployee" mat-button id="save-button" type="submit"
+                                        [disabled]="!employeeDetailsForm.valid">Save
+                                        changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel class="mt-3" (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Personal Details
+                            </mat-panel-title>
+                            <mat-panel-description *ngIf="personalFormProgress != 100">
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="personalDetailsForm" (submit)="savePersonalEdit()">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-12 my-2">
+                                            <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
+                                            <mat-radio-group aria-label="Select your gender" formControlName="gender"
+                                                [value]="employeeProfile?.gender">
+                                                <mat-radio-button [value]=1>Male</mat-radio-button>
+                                                <mat-radio-button [value]=2>Female</mat-radio-button>
+                                                <mat-radio-button [value]=0>Unclassified</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Race</mat-label>
+                                                <mat-select formControlName="race">
+                                                    <mat-option *ngFor="let race of races; index as i" [value]="i">
+                                                        {{race.value}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-12 mt-1"></div>
+                                        <div class="col-6  my-1">
+                                            <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any
+                                                disabilities that you are aware of?</h3>
+                                            <mat-radio-group aria-label="Select status"
+                                                (change)="setHasDisability($event)" formControlName="disability">
+                                                <mat-radio-button [value]=true>yes</mat-radio-button>
+                                                <mat-radio-button [value]=false>no</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                        <div class="col-12" *ngIf="hasDisbility">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                                        <mat-label>Disability</mat-label>
+                                                        <mat-select formControlName="disabilityList">
+                                                            <mat-option
+                                                                *ngFor="let disability of disabilities; index as i"
+                                                                [value]="i">
+                                                                {{disability.value}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-6">
+                                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                                        <textarea matInput placeholder="Disability Notes"
+                                                            formControlName="disabilityNotes"></textarea>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <button *ngIf="!editPersonal" mat-button id="edit-button"
+                                        (click)="editPersonalDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
+                                </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editPersonal" mat-button id="cancel-button"
+                                        (click)="cancelPersonalEdit()">Cancel</button>
+                                    <button *ngIf="editPersonal" mat-button id="save-button"
+                                        (click)="savePersonalEdit()" [disabled]="!personalDetailsForm.valid">Save
+                                        changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel class="mt-3" (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Contact Details
+                            </mat-panel-title>
+                            <mat-panel-description *ngIf="contactFormProgress != 100">
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="employeeContactForm">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Personal Email</mat-label>
+                                                <input matInput formControlName="personalEmail">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Work email</mat-label>
+                                                <input matInput formControlName="email">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Cellphone Number*</mat-label>
+                                                <input matInput formControlName="cellphoneNo">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Home Number</mat-label>
+                                                <input matInput formControlName="houseNo">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-12 mt-2">
+                                            <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Emergency Contact
+                                            </h3>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Emergency contact name</mat-label>
+                                                <input matInput formControlName="emergencyContactName">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Emergency contact number</mat-label>
+                                                <input matInput formControlName="emergencyContactNo">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <button *ngIf="!editContact" mat-button id="edit-button"
+                                        (click)="editContactDetails()"> <mat-icon>edit</mat-icon>Edit Details</button>
+                                </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editContact" mat-button id="cancel-button"
+                                        (click)="cancelContactEdit()">Cancel</button>
+                                    <button *ngIf="editContact" mat-button id="save-button" type="submit"
+                                        [disabled]="!employeeContactForm.valid" (click)="saveContactEdit()">Save
+                                        changes</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel class="mt-3" (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Address Details
+                            </mat-panel-title>
+                            <mat-panel-description *ngIf="addressFormProgress != 100">
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="addressDetailsForm">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Unit Number</mat-label>
+                                                <input matInput formControlName="physicalUnitNumber">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Complex Name</mat-label>
+                                                <input matInput formControlName="physicalComplexName">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Suburb/District</mat-label>
+                                                <input matInput formControlName="physicalSuburb">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Street Number</mat-label>
+                                                <input matInput formControlName="physicalStreetNumber">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>City/Town</mat-label>
+                                                <input matInput formControlName="physicalCity">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Country</mat-label>
+                                                <mat-select formControlName="physicalCountry">
+                                                    <mat-option *ngFor="let country of filteredCountries"
+                                                        [value]="country">
+                                                        {{ country }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Province</mat-label>
+                                                <mat-select formControlName="physicalProvince">
+                                                    <mat-option *ngFor="let province of provinces" [value]="province">
+                                                        {{province}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Postal Code</mat-label>
+                                                <input matInput formControlName="physicalPostalCode">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-12">
+                                            <mat-checkbox (change)="toggleEqualFields()" [disabled]="!editAddress">Is
+                                                the postal address the same as physical address?</mat-checkbox>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="!physicalEqualPostal" class="row mt-4">
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Unit Number</mat-label>
+                                                <input matInput formControlName="postalUnitNumber">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Complex Name</mat-label>
+                                                <input matInput formControlName="postalComplexName">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Suburb/District</mat-label>
+                                                <input matInput formControlName="postalSuburb">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Street Number</mat-label>
+                                                <input matInput formControlName="postalStreetNumber">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>City/Town</mat-label>
+                                                <input matInput formControlName="postalCity">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Country</mat-label>
+                                                <mat-select formControlName="postalCountry">
+                                                    <mat-option *ngFor="let country of filteredCountries"
+                                                        [value]="country">
+                                                        {{ country }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Province</mat-label>
+                                                <mat-select formControlName="postalProvince">
+                                                    <mat-option *ngFor="let province of provinces" [value]="province">
+                                                        {{province}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Postal Code</mat-label>
+                                                <input matInput formControlName="postalPostalCode">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <button *ngIf="!editAddress" mat-button id="edit-button"
+                                        (click)="editAddressDetails()">
+                                        <mat-icon>edit</mat-icon>Edit Details
+                                    </button>
+                                </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editAddress" mat-button id="cancel-button"
+                                        (click)="cancelAddressEdit()">Cancel</button>
+                                    <button *ngIf="editAddress" mat-button id="save-button" type="submit"
+                                        (click)="saveAddressEdit()" [disabled]="!addressDetailsForm.valid">Save
+                                        changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel class="mt-3" (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Additional Information
+                            </mat-panel-title>
+                            <mat-panel-description *ngIf="additionalFormProgress != 100">
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="additionalInfoForm">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="col-6 my-2" *ngFor="let fieldcode of customFields">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>{{fieldcode.name}}</mat-label>
+                                            <div *ngIf="fieldcode.type == fieldTypes[4].id">
+                                                <mat-select formControlName="{{fieldcode.code}}">
+                                                    <mat-option *ngFor="let option of fieldcode.options"
+                                                        [value]="option.option">
+                                                        {{option.option}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </div>
+                                            <div *ngIf="fieldcode.type != fieldTypes[4].id">
+                                                <input matInput formControlName="{{fieldcode.code}}">
+                                            </div>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <button *ngIf="!editAdditional" mat-button id="edit-button"
+                                        (click)="editAdditionalDetails()"> <mat-icon>edit</mat-icon>Edit
+                                        Details</button>
+                                </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editAdditional" mat-button id="cancel-button"
+                                        (click)="cancelAdditionalEdit()">Cancel</button>
+                                    <button *ngIf="editAdditional" mat-button id="save-button" type="submit"
+                                        [disabled]="!additionalInfoForm.valid" (click)="saveAdditionalEdit()">Save
+                                        changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-12" *ngIf="selectedItem == 'Bank Information'" id="accordion-container">
+                <mat-accordion id="accordion" class="row">
+                    <mat-expansion-panel class="mt-3" (opened)="checkEmployeeDetails()"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Main Bank Account
+                            </mat-panel-title>
+                            <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking?.status == 2">
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="employeeBankingsForm">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-12 row my-3">
+                                            <div class="col-7 my-2">
+                                                <div class="row">
+                                                    <div class="col-12 ps-4 mt-1"
+                                                        *ngIf="hasBankingData && employeeBanking.status > 0">
+                                                        Last updated: {{employeeBanking.lastUpdateDate | date}}
+                                                    </div>
+                                                    <div class="col-11 px-4"
+                                                        *ngIf="hasBankingData && employeeBanking.status > 0">
+
+                                                        <hr>
+                                                    </div>
+                                                    <div class="col-7 ps-4 pt-2" id="last-updated"
+                                                        *ngIf="hasBankingData && employeeBanking.pendingUpdateDate">
+                                                        Update submitted on {{employeeBanking.pendingUpdateDate | date}}
+                                                    </div>
+                                                    <div *ngIf="hasBankingData;else NoBankingInfo" class="col-4"
+                                                        id="statuses">
+                                                        <div *ngIf="employeeBanking.status === 0" id="status-0">
+                                                            <span>{{ 'Approved' }}</span>
+                                                        </div>
+                                                        <div *ngIf="employeeBanking.status === 2" id="status-2">
+                                                            <span>{{ 'Rejected' }}</span>
+                                                        </div>
+                                                        <div *ngIf="employeeBanking.status === 1" id="status-1">
+                                                            <span>{{ 'Pending Approval' }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <ng-template #NoBankingInfo>
+                                                        <div id="status-null">
+                                                            <span>{{ 'Action Required' }}</span>
+                                                        </div>
+                                                    </ng-template>
+                                                    <div class="col-12"
+                                                        *ngIf="hasBankingData && employeeBanking.status ==2">
+                                                        <div id="reject-reason" class="ps-3">
+                                                            <h5>{{employeeBanking.declineReason}}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" id="banking-field">
+                                                <mat-label>Bank Account Owner</mat-label>
+                                                <input matInput placeholder="Enter name of owner"
+                                                    formControlName="accountHolderName">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6"></div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" id="banking-field">
+                                                <mat-label>Account Type</mat-label>
+                                                <mat-select placeholder="Select Type" formControlName="accountType">
+                                                    <mat-option *ngFor="let accountType of accountTypes"
+                                                        [value]="accountType.id">
+                                                        {{accountType.value}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" id="banking-field">
+                                                <mat-label>Bank Name</mat-label>
+                                                <mat-select placeholder="Select bank" formControlName="bankName">
+                                                    <mat-option *ngFor="let bank of banks" [value]="bank.value">
+                                                        {{bank.value}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" id="banking-field">
+                                                <mat-label>Account Number</mat-label>
+                                                <input type="text" min="0" matInput placeholder="Enter account number"
+                                                    formControlName="accountNo">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" id="banking-field">
+                                                <mat-label>Branch Code</mat-label>
+                                                <input type="text" min="0" matInput placeholder="Enter branch code"
+                                                    formControlName="branch">
+                                            </mat-form-field>
+                                        </div>
+                                        <p id="base64"></p>
+                                        <div class="col-8 my-2">
+                                            <mat-label [ngStyle]="{color: editBanking ? 'black' : 'grey'}">
+                                                Proof of account
+                                            </mat-label>
+                                            <div class="my-2">
+                                                <div class="row">
+                                                    <div *ngIf="hasFile">
+                                                        <button mat-button color="primary"
+                                                            [hidden]="employeeBanking.file.length == 0"
+                                                            (click)="convertFileToBase64()">Download</button>
+                                                    </div>
+                                                    <div class="col-5" [hidden]="!editBanking" class="row"
+                                                        id="uploadButton" (click)="openFileInput()">
+                                                        <div class="col" *ngIf="bankingPDFName.length > 1">
+                                                            <p id="recently-uploaded">{{bankingPDFName}}</p>
+                                                        </div>
+                                                        <div class="col-1" style="color: blue" id="uploadfile">
+                                                            <img src="../../../../assets/img/file_upload.svg" alt="">
+                                                        </div>
+                                                        <div class="col-5" id="uploadfile">
+                                                            <h4>Upload document here</h4>
+                                                            <input id="fileUpload" hidden type="file"
+                                                                (change)="onFileSelected($event)" accept=".pdf">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <button *ngIf="!editBanking" mat-button id="edit-button"
+                                        (click)="editBankingDetails()"> <mat-icon>edit</mat-icon>Edit
+                                        Details</button>
+                                </div>
+                                <div class="col-12" id="edit-buttons">
+                                    <button *ngIf="editBanking" mat-button id="cancel-button"
+                                        (click)="cancelBankingDetails()">Cancel</button>
+                                    <button *ngIf="editBanking" mat-button id="save-button"
+                                        (click)="saveBankingDetails()">Save changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-12" *ngIf="selectedItem == 'Documents'" id="accordion-container">
+                <mat-accordion id="accordion" class="row">
+                    <mat-expansion-panel class="mt-3">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                HR Documents
+                            </mat-panel-title>
+                            <mat-panel-description *ngIf="documentFormProgress != 100">
+                                <mat-icon class="mx-1">error</mat-icon> Missing information
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+
+                        <div id="table">
+                            <div id="table-header" class="row pt-3">
+                                <div class="col-6">
+                                    <h4 class="ms-2 mt-1">Document</h4>
+                                </div>
+                                <div class="col-4">
+                                    <h4 class="ms-1 mt-1">Action</h4>
+                                </div>
+                                <div class="col-2">
+                                    <h4 class="ms-1 mt-1">Status</h4>
+                                </div>
+                            </div>
+                            <div id="table-body" class="my-2">
+                                <div *ngFor="let category of fileCategories;let i = index" class="row my-2 py-2"
+                                    id="document-row">
+                                    <div id="document" class="col-6 py-2">
+                                        <h3>{{category}}</h3>
+                                        <div class="col-12" *ngIf="getFileName(i) as document;else NoFile"
+                                            id="fileName">
+                                            <p>{{document.fileName}}</p>
+                                        </div>
+                                        <ng-template #NoFile>
+                                            <p>Download & upload document here</p>
+                                        </ng-template>
+                                    </div>
+                                    <div class="col-4 py-2">
+                                        <div class="row">
+                                            <div id="actionCellDownload" class="col-auto">
+                                                <button mat-button color="primary" (click)="downloadDocument($event)"
+                                                    [id]=i> <svg id="svg-icon" width="19" height="19"
+                                                        viewBox="0 0 19 19" fill="white"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g id="Icons/file_download">
+                                                            <path id="icon"
+                                                                d="M13.9414 11.75V14H4.94141V11.75H3.44141V14C3.44141 14.825 4.11641 15.5 4.94141 15.5H13.9414C14.7664 15.5 15.4414 14.825 15.4414 14V11.75H13.9414ZM13.1914 8.75L12.1339 7.6925L10.1914 9.6275V3.5H8.69141V9.6275L6.74891 7.6925L5.69141 8.75L9.44141 12.5L13.1914 8.75Z"
+                                                                fill="#0029C6" />
+                                                        </g>
+                                                    </svg>
+                                                    Download</button>
+                                            </div>
+                                            <div id="actionCellUpload" class="col-auto">
+                                                <button mat-button color="primary" (click)="captureUploadIndex($event)"
+                                                    [id]=i [disabled]="disableButton(i)"
+                                                    [ngStyle]="{'background-color': !disableButton(i) ? '#0029c6' : '#e3e3e4ff'}">
+                                                    <svg id="svg-icon-w" width="24" height="24" viewBox="0 0 24 24"
+                                                        fill="#e3e3e4ff" xmlns="http://www.w3.org/2000/svg">
+                                                        <g id="Icons/file_upload">
+                                                            <path id="icon-w"
+                                                                d="M18 15V18H6V15H4V18C4 19.1 4.9 20 6 20H18C19.1 20 20 19.1 20 18V15H18ZM7 9L8.41 10.41L11 7.83V16H13V7.83L15.59 10.41L17 9L12 4L7 9Z"
+                                                                fill="#0029C6" />
+                                                        </g>
+                                                    </svg> Upload</button>
+                                            </div>
+                                            <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf"
+                                                [id]="i + '-document'">
+                                        </div>
+                                    </div>
+                                    <div class="col-2 py-2">
+                                        <div *ngIf="getFileName(i) as document; else noDoc" id="statuses">
+                                            <div *ngIf="document.status === 0" id="status-0">
+                                                <span>{{ 'Approved' }}</span>
+                                            </div>
+                                            <div *ngIf="document.status === 2" id="status-2">
+                                                <span>{{ 'Rejected' }}</span>
+                                            </div>
+                                            <div *ngIf="document.status === 1" id="status-1">
+                                                <span>{{ 'Pending Approval' }}</span>
+                                            </div>
+                                        </div>
+                                        <ng-template #noDoc>
+                                            <div id="status-null">
+                                                <span>{{ 'Action Required' }}</span>
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                    <div *ngIf="getFileName(i) as document" id="reject-reason">
+                                        <h5 *ngIf="document.status == 2">{{document.reason}}</h5>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+
+        </div>
+    </div>
 </div>

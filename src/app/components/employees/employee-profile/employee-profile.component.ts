@@ -127,6 +127,9 @@ export class EmployeeProfileComponent {
   base64String : string = "";
   documentsFileName : string = "";
 
+  bankingUpdate: string = "";
+  hasUpdatedBanking : boolean = false;
+
   employeeDetailsForm: FormGroup = this.fb.group({
     name: { value: '', disabled: true },
     surname: { value: '', disabled: true },
@@ -241,13 +244,20 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
-        this.getEmployeeDocuments();
-
+        
         this.employeeDataService.getEmployeeData(this.selectedEmployee ? this.selectedEmployee.id : this.employeeProfile?.id).subscribe({
           next: data => {
             this.employeeData = data;
           }
         });
+        this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
+          next: (data) => {
+            this.employeeBanking = data;
+            this.bankingId = this.employeeBanking.id;
+            this.initializeBankingForm(this.employeeBanking);
+            
+          }
+        })
         this.employeeService.getAllProfiles().subscribe({
           next: data => {
             this.employees = data;
@@ -267,7 +277,6 @@ export class EmployeeProfileComponent {
             this.initializeEmployeeProfileDto();
           }
         });
-        this.initializeForm();
         this.fieldCodeService.getAllFieldCodes().subscribe({
           next: data => {
             this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id)
@@ -276,6 +285,7 @@ export class EmployeeProfileComponent {
             this.totalProfileProgress();
           }
         });
+        this.getEmployeeDocuments();
         this.initializeForm();
       }
     });
@@ -452,55 +462,61 @@ export class EmployeeProfileComponent {
     this.addressDetailsForm.enable();
   }
 
-  saveAddressEdit() {
-    this.editAddress = false;
-    if (this.addressDetailsForm.valid) {
-      const addressDetailFormValue = this.addressDetailsForm.value;
-      this.employeeAddressDto = {
-        id: this.employeeProfile!.physicalAddress?.id!,
-        unitNumber: addressDetailFormValue['physicalUnitNumber'],
-        complexName: addressDetailFormValue['physicalComplexName'],
-        streetNumber: addressDetailFormValue['physicalStreetNumber'],
-        suburbOrDistrict: addressDetailFormValue['physicalSuburb'],
-        city: addressDetailFormValue['physicalCity'],
-        country: addressDetailFormValue['physicalCountry'],
-        province: addressDetailFormValue['physicalProvince'],
-        postalCode: addressDetailFormValue['physicalPostalCode'],
-      }
-      this.employeeAddressService.update(this.employeeAddressDto).subscribe({
-        next: (data) => {
-          this.employeeAddressDto = {
-            id: this.employeeProfile!.postalAddress?.id!,
-            unitNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalUnitNumber'] : addressDetailFormValue['postalUnitNumber'],
-            complexName: this.physicalEqualPostal ? addressDetailFormValue['physicalComplexName'] : addressDetailFormValue['postalComplexName'],
-            streetNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalStreetNumber'] : addressDetailFormValue['postalStreetNumber'],
-            suburbOrDistrict: this.physicalEqualPostal ? addressDetailFormValue['physicalSuburb'] : addressDetailFormValue['postalSuburb'],
-            city: this.physicalEqualPostal ? addressDetailFormValue['physicalCity'] : addressDetailFormValue['postalCity'],
-            country: this.physicalEqualPostal ? addressDetailFormValue['physicalCountry'] : addressDetailFormValue['postalCountry'],
-            province: this.physicalEqualPostal ? addressDetailFormValue['physicalProvince'] : addressDetailFormValue['postalProvince'],
-            postalCode: this.physicalEqualPostal ? addressDetailFormValue['physicalPostalCode'] : addressDetailFormValue['postalPostalCode'],
-          }
-          this.employeeAddressService.update(this.employeeAddressDto).subscribe({
-            next: (data) => {
-              this.toast.success({ detail: "Employee Address updated!", position: 'topRight' });
-              this.addressDetailsForm.disable();
-              this.checkAddressFormProgress();
-              this.totalProfileProgress();
-              this.getEmployeeFields();
-            },
-            error: (error: any) => {
-              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
-            },
-          });
-        },
-        error: (error: any) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
-      });
-    }
-    else {
-      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
-    }
-  }
+saveAddressEdit() {
+  this.editAddress = false;
+  if (this.addressDetailsForm.valid) {
+    const addressDetailFormValue = this.addressDetailsForm.value;
 
+    const physicalAddressDto: EmployeeAddress = {
+      id: this.employeeProfile!.physicalAddress?.id!,
+      unitNumber: addressDetailFormValue['physicalUnitNumber'],
+      complexName: addressDetailFormValue['physicalComplexName'],
+      streetNumber: addressDetailFormValue['physicalStreetNumber'],
+      suburbOrDistrict: addressDetailFormValue['physicalSuburb'],
+      city: addressDetailFormValue['physicalCity'],
+      country: addressDetailFormValue['physicalCountry'],
+      province: addressDetailFormValue['physicalProvince'],
+      postalCode: addressDetailFormValue['physicalPostalCode'],
+    };
+
+    const postalAddressDto: EmployeeAddress = {
+      id: this.employeeProfile!.postalAddress?.id!,
+      unitNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalUnitNumber'] : addressDetailFormValue['postalUnitNumber'],
+      complexName: this.physicalEqualPostal ? addressDetailFormValue['physicalComplexName'] : addressDetailFormValue['postalComplexName'],
+      streetNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalStreetNumber'] : addressDetailFormValue['postalStreetNumber'],
+      suburbOrDistrict: this.physicalEqualPostal ? addressDetailFormValue['physicalSuburb'] : addressDetailFormValue['postalSuburb'],
+      city: this.physicalEqualPostal ? addressDetailFormValue['physicalCity'] : addressDetailFormValue['postalCity'],
+      country: this.physicalEqualPostal ? addressDetailFormValue['physicalCountry'] : addressDetailFormValue['postalCountry'],
+      province: this.physicalEqualPostal ? addressDetailFormValue['physicalProvince'] : addressDetailFormValue['postalProvince'],
+      postalCode: this.physicalEqualPostal ? addressDetailFormValue['physicalPostalCode'] : addressDetailFormValue['postalPostalCode'],
+    };
+    this.employeeAddressService.update(postalAddressDto).subscribe({
+      next: (postalData) => {
+        this.employeeProfile!.postalAddress = postalAddressDto;
+        this.toast.success({ detail: "Postal address updated!", position: 'topRight' });
+
+        this.employeeAddressService.update(physicalAddressDto).subscribe({
+          next: (data) => {
+            this.employeeProfile!.physicalAddress = physicalAddressDto;
+            this.toast.success({ detail: "Physical address updated!", position: 'topRight' });
+            this.addressDetailsForm.disable();
+            this.checkAddressFormProgress();
+            this.totalProfileProgress();
+            this.getEmployeeFields();
+          },
+          error: (error: any) => {
+            this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+          },
+        });
+      },
+      error: (postalError: any) => {
+        this.toast.error({ detail: "Error", summary: postalError, duration: 5000, position: 'topRight' });
+      },
+    });
+  } else {
+    this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+  }
+}
   cancelAddressEdit() {
     this.editAddress = false;
     this.hasDisbility = false;
@@ -843,10 +859,10 @@ export class EmployeeProfileComponent {
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != '' && control.value != "TBD") {
+        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != " ") {
           filledCount++;
         }
-        else if (!this.physicalEqualPostal && control.value != null && control.value != '' && control.value != "TBD") {
+        else if (!this.physicalEqualPostal && control.value != null && control.value != " ") {
           filledCount++;
         }
       }
@@ -930,8 +946,8 @@ export class EmployeeProfileComponent {
       declineReason: this.bankingReason,
       file: employeeBankingFormValue.file
     }
-    if(this.hasBankingData){
 
+    if(this.hasBankingData){
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {
           this.toast.success({ detail: "Employee Banking updated!", position: 'topRight' });
@@ -940,6 +956,7 @@ export class EmployeeProfileComponent {
         this.totalBankingProgress();
         this.getEmployeeFields();
         this.checkBankingInformationProgress();
+        this.hasUpdatedBanking = true;
       },
       error: (error) => {
         this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
@@ -955,6 +972,7 @@ export class EmployeeProfileComponent {
           this.totalBankingProgress();
           this.getEmployeeFields();
           this.checkBankingInformationProgress();
+          this.hasUpdatedBanking = true;
         }
         ,error : (error) => {
           this.toast.error({ detail: "Failed to create banking information", summary: error, duration: 5000, position: 'topRight' });
@@ -1036,7 +1054,7 @@ getEmployeeDocuments() {
         this.calculateDocumentProgress();
       },
       error: error => {
-        this.toast.error({ detail: "Error detching documents", position: 'topRight' });
+        this.toast.error({ detail: "Error fetching documents", position: 'topRight' });
 
       }
     })
@@ -1140,5 +1158,43 @@ getEmployeeDocuments() {
     const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
     this.documentFormProgress = fetchedDocuments/total * 100;
     this.overallProgress();
+  }
+
+  initializeBankingForm(bankingDetails : EmployeeBanking){
+    if(bankingDetails == null){
+      this.hasBankingData = false;
+      return;
+    }
+    this.employeeBankingsForm = this.fb.group({
+      accountHolderName: [{ value: bankingDetails.accountHolderName, disabled: true }, Validators.required],
+      accountType: [{ value: bankingDetails.accountType, disabled: true }, Validators.required],
+      bankName:[{ value: bankingDetails.bankName, disabled: true }, Validators.required],
+      accountNo:  [{ value: bankingDetails.accountNo, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      branch:[{ value: bankingDetails.branch, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      file:[{ value: bankingDetails.file, disabled: true }, Validators.required],
+    });
+    this.hasFile = bankingDetails.file.length > 0;
+    this.hasBankingData = true;
+    this.checkBankingInformationProgress();
+    this.totalBankingProgress();
+    this.bankingUpdate = `${new Date().getDate()} ${this.returnMonth(new Date().getMonth() + 1)} ${new Date().getFullYear()}`;
+  }
+
+  returnMonth(month: number): string {
+    switch(month) {
+      case 1: return 'January'
+      case 2: return 'February'
+      case 3: return 'March'
+      case 4: return 'April'
+      case 5: return 'May'
+      case 6: return 'June'
+      case 7: return 'July'
+      case 8: return 'August'
+      case 9: return 'September'
+      case 10: return 'October'
+      case 11: return 'November'
+      case 12: return 'December'
+    }
+    return 'month';
   }
 }
