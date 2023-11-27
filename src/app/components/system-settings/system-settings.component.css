@@ -58,11 +58,6 @@ h5{
     text-transform: capitalize;
 }
 
-/* #button-container{
-    padding-top: 12px;
-    padding-bottom: 12px;
-} */
-
 #button-container > button{
     color: var(--m-3-sys-light-on-surface-variant, #49454F);
     font-family: Roboto;
