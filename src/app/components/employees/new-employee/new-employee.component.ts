@@ -38,7 +38,7 @@ export class NewEmployeeComponent implements OnInit {
     private toast: NgToastService,
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
-    private _formBuilder: FormBuilder,,
+    private _formBuilder: FormBuilder,
     private hideNavService: HideNavService
   ) { }
 
