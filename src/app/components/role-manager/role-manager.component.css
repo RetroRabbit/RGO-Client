@@ -35,7 +35,6 @@ div .d-flex {
     background-color: #D7DFFF;
     height: 60px;
     padding-bottom: 20px;
-
 }
 
 #mattable {
@@ -205,4 +204,12 @@ div .d-flex {
     font-weight: 300;
     line-height: 20px;
     text-transform: uppercase;
+}
+
+#table-header{
+    width: 8%;
+}
+
+tr{
+    background-color: white;
 }
