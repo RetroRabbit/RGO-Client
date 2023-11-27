@@ -348,7 +348,7 @@ export class NewEmployeeComponent implements OnInit {
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
-      this.snackBarService.showSnackbar("⚠️ Please enter an official Retro Rabbit email address", "snack-error");
+      this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
       return;
     }
 
