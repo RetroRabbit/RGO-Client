@@ -1,8 +1,8 @@
 main {
     width: 100%;
-    background: #e8efff;
+    background: hsl(222, 100%, 95%);
+    padding: 70px, 0px, 70px, 0px;
 }
-
 
 .roboto-font {
     font-family: "Roboto", sans-serif;
@@ -257,3 +257,15 @@ main {
 .mat-radio-button.mat-radio-checked .mat-radio-label-content {
   color: #0029C6 !important;
 }
+
+.mat-stepper-vertical, .mat-stepper-horizontal{
+   width:60%;
+   margin-left:20%;
+   margin-bottom:70px;
+}
+
+.container{
+    margin-top: 70px;
+}
+
+
