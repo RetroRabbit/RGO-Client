@@ -93,7 +93,7 @@ export class AdminDashboardComponent {
     private employeeTypeService: EmployeeTypeService,
     private hideNavService: HideNavService
   ) {
-    this.categoryCtrl.valueChanges.subscribe(value => { //TODO: Change value name
+    this.categoryCtrl.valueChanges.subscribe(value => {
       this.filteredCategories = value ? this.sortCategories(this.filterCategories(value)) : this.sortCategories(this.categories);
     });
   }
@@ -297,7 +297,7 @@ export class AdminDashboardComponent {
     this.categoryControl.setValue(null);
   }
 
-  onDropDownChange() { //Over here
+  onDropDownChange() {
     if (this.selectedDataItems.length < 1) {
       return;
     }
