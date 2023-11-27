@@ -71,6 +71,7 @@ import { SystemSettingsComponent } from './components/system-settings/system-set
 
 import { MatChipsModule } from '@angular/material/chips';
 import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
+import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
@@ -97,7 +98,8 @@ import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/ch
     ManageEmployeeEventsComponent,
     AddEmployeeEventComponent,
     SystemSettingsComponent,
-    ChartReportPdfComponent
+    ChartReportPdfComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

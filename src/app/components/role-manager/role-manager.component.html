@@ -1,35 +1,4 @@
-<ng-template #dialogContentTemplate>
-  <div id="dialog-content">
-    <div class="row">
-      <div id="dialog-container">
-        <div id="dialog-header">
-          <h2 mat-dialog-title id="dialog-title">Save Permissions</h2>
-          <h4 id="dialog-subtitle">Are you sure you want to save the permissions that you edited?</h4>
-        </div>
-        <div id="button-container">
-          <button mat-button mat-dialog-close id="save-button" (click)="saveChanges()">Save</button>
-          <button mat-button mat-dialog-close id="cancel-button" (click)="onBack()">Back</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #dialogCancelTemplate>
-  <div id="dialog-content">
-    <div class="row">
-      <div id="dialog-container">
-        <div id="dialog-header-cancel">
-          <h2 mat-dialog-title id="dialog-title-cancel">Discard unsaved changes?</h2>
-        </div>
-        <div id="button-container">
-          <button mat-button mat-dialog-close id="save-button" (click)="discardChanges()">Discard</button>
-          <button mat-button mat-dialog-close id="cancel-button" (click)="onBack()">Back</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-template>
+<app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmmation)="dialogFeedBack($event)"></app-confirm-dialog>
 
 <div class="row">
   <div class="col-12" id="button-save-container">
