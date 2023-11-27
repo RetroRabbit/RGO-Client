@@ -8,11 +8,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .snack-error {
   --mdc-snackbar-supporting-text-color: #fff;
   --mdc-snackbar-container-color: #B3261E;
+  --mat-snack-bar-button-color: white;
   text-align: center;
+
 }
 
 .snack-success {
   --mdc-snackbar-supporting-text-color: #fff;
   --mdc-snackbar-container-color: #0FAF4B;
+  --mat-snack-bar-button-color: white;
   text-align: center;
 }
