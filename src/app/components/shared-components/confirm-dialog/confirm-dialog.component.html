@@ -1,0 +1,32 @@
+<ng-template #dialogSaveTemplate>
+    <div id="dialog-content">
+        <div class="row">
+            <div id="dialog-container">
+                <div id="dialog-header">
+                    <h2 mat-dialog-title id="dialog-title">Save Permissions</h2>
+                    <h4 id="dialog-subtitle">Are you sure you want to save?</h4>
+                </div>
+                <div id="button-container">
+                    <button mat-button mat-dialog-close id="save-button" (click)="captureResponse(true)">Save</button>
+                    <button mat-button mat-dialog-close id="cancel-button" (click)="captureResponse(false)">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #dialogCancelTemplate>
+    <div id="dialog-content">
+      <div class="row">
+        <div id="dialog-container">
+          <div id="dialog-header-cancel">
+            <h2 mat-dialog-title id="dialog-title-cancel">Discard unsaved changes?</h2>
+          </div>
+          <div id="button-container">
+            <button mat-button mat-dialog-close id="save-button" (click)="captureResponse(true)">Discard</button>
+            <button mat-button mat-dialog-close id="cancel-button" (click)="captureResponse(false)">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</ng-template>
