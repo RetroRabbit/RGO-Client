@@ -165,7 +165,11 @@ export class NewEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
-        this.employeeTypes = data;
+        this.employeeTypes = data.sort((a, b) => {
+          const nameA = (a.name || '').toLowerCase();
+          const nameB = (b.name || '').toLowerCase();
+          return nameA.localeCompare(nameB);
+        });
       },
     });
     this.employeeService
