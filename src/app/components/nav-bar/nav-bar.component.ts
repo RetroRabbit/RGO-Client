@@ -1,22 +1,22 @@
+
 import { Token } from "@angular/compiler";
 import { Component } from "@angular/core";
 import { AuthService } from "@auth0/auth0-angular";
-import { Store } from "@ngrx/store";
 import { CookieService } from "ngx-cookie-service";
 import { HideNavService } from 'src/app/services/hide-nav.service';
-import { ChartService } from "./services/charts.service";
-import { EmployeeProfileService } from "./services/employee/employee-profile.service";
-import { EmployeeProfile } from "./models/employee-profile.interface";
+import { ChartService } from "src/app/services/charts.service";
+import { EmployeeProfileService } from "src/app/services/employee/employee-profile.service";
+import { EmployeeProfile } from "src/app/models/employee-profile.interface";
 import { Chart } from "chart.js";
-import { CommonModule } from "@angular/common";
-import { RouterOutlet, RouterLink, RouterLinkActive } from "@angular/router";
+
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-nav-bar',
+  templateUrl: './nav-bar.component.html',
+  styleUrls: ['./nav-bar.component.css']
 })
-export class AppComponent {
+export class NavBarComponent {
+
   title = 'HRIS';
   showNav = this.hideNavService.showNavbar;
   screenWidth !: number;
@@ -33,7 +33,6 @@ export class AppComponent {
   constructor(
     private employeeProfileService: EmployeeProfileService,
     private chartService: ChartService,
-    private store: Store<{ app: Token }>,
     private auth: AuthService,
     public cookieService: CookieService,
     public hideNavService: HideNavService)
@@ -42,8 +41,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    console.log(this.hideNavService.showNavbar)
-    // this.hideNavService.showNavbar = false;
+    
   }
 
   signIn(){
@@ -99,5 +97,4 @@ export class AppComponent {
     // this.selectedEmployee = null;
     // this.shouldDisplayNewEmployee = false;
   }
-  
 }
