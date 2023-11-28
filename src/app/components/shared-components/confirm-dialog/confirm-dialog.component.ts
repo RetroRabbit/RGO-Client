@@ -8,28 +8,28 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ConfirmDialogComponent {
 
-  @Input() dialogType: { type: string, title: string } = { type: '', title: '' };
-  @Output() confirmmation = new EventEmitter<boolean>();
+  @Input() dialogType: { type: string, title: string, subtitle: string } = { type: '', title: '', subtitle: '' };
+  @Output() confirmation = new EventEmitter<boolean>();
 
   @ViewChild('dialogSaveTemplate') dialogSaveTemplate!: TemplateRef<any>;
-  @ViewChild('dialogCancelTemplate') dialogCancelTemplate!: TemplateRef<any>;
-
+  buttonText: string = '';
   constructor(private dialog: MatDialog) { }
 
   ngAfterViewInit() {
     switch (this.dialogType.type) {
       case 'save': {
-        this.dialog.open(this.dialogSaveTemplate);
+        this.buttonText= 'Save'
         break;
       }
       case 'discard': {
-        this.dialog.open(this.dialogCancelTemplate);
+        this.buttonText= 'Discard'
         break;
       }
     }
+    this.dialog.open(this.dialogSaveTemplate);
   }
 
   captureResponse(event: any) {
-    this.confirmmation.emit(event);
+    this.confirmation.emit(event);
   }
 }

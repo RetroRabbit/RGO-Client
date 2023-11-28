@@ -1,4 +1,4 @@
-<app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmmation)="dialogFeedBack($event)"></app-confirm-dialog>
+<app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
 
 <div class="row">
   <div class="col-12" id="button-save-container">
@@ -19,7 +19,7 @@
         </th>
         <th class="py-2 px-2" scope="row" *ngFor="let r of roles" id="allsubheader">
           <mat-checkbox color="primary" [(ngModel)]="allCheckboxesState[r.description]"
-            (change)="toggleAllCheckboxes(r.description)">
+            (change)="toggleAllCheckboxes(r.description, $event)">
             All
           </mat-checkbox>
         </th>
