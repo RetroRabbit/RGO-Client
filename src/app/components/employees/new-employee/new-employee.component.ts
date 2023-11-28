@@ -140,7 +140,7 @@ export class NewEmployeeComponent implements OnInit {
     salary: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
     physicalAddress: new FormControl<EmployeeAddress | null>(null),
     postalAddress: new FormControl<EmployeeAddress | null>(null),
-    peopleChampion: new FormControl<string>('', Validators.required)
+    peopleChampion: new FormControl<string>('')
   });
 
   settingsForm: FormGroup = new FormGroup({
