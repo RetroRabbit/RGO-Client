@@ -298,7 +298,7 @@ export class RoleManagerComponent implements OnInit {
   }
 
   openDialog(): void {
-    this.dialogTypeData = { type: 'save', title: 'title'}
+    this.dialogTypeData = { type: 'save', title: 'Permissions'}
     this.showConfirmDialog = true;
   }
 
