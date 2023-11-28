@@ -86,11 +86,7 @@ export class AdminDashboardComponent {
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
     private hideNavService: HideNavService
-  ) {
-    this.categoryCtrl.valueChanges.subscribe(val => {
-      this.filteredCategories = val ? this.filterCategories(val) : this.categories;
-    });
-  }
+  ) {}
 
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
@@ -128,7 +124,7 @@ export class AdminDashboardComponent {
     this.chartService.getColumns().subscribe({
       next: data => {
         this.categories = data;
-        this.filteredCategories = data;
+        this.filteredCategories = this.categories.slice().sort((a, b) => a.localeCompare(b));
       }
     });
 
@@ -199,7 +195,6 @@ export class AdminDashboardComponent {
     }
     this.searchResults = this.searchResults.slice(0, 3);
   }
-
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.selectedCategories.push(event.option.viewValue);
