@@ -71,6 +71,7 @@ import { SystemSettingsComponent } from './components/system-settings/system-set
 
 import { MatChipsModule } from '@angular/material/chips';
 import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 
 
 @NgModule({
@@ -97,7 +98,8 @@ import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/ch
     ManageEmployeeEventsComponent,
     AddEmployeeEventComponent,
     SystemSettingsComponent,
-    ChartReportPdfComponent
+    ChartReportPdfComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,
