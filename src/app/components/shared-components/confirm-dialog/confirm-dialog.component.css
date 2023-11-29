@@ -1,121 +1,79 @@
-#dialog-content {
+#dialog-content{
+    align-items: center;
+    background: #FFF;
+    border-radius: 20px;
     display: inline-flex;
-    height: 463px;
-    width: 905px;
-    padding: 90px 0px 64px 0px;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    flex-shrink: 0;
-    border-radius: 100px;
+    justify-content: center;
+    gap: 16px;
+    padding: 24px 40px;
+    width: 461px;
+    height: 296px;
 }
 
-#dialog-title {
-    color: var(--m-3-black, #000);
-    font-family: Roboto;
-    font-size: 38px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 52px;
-    width: 357px;
+#dialog-header{
+    width: 381px;
+    height: 112px;
     text-align: center;
+    margin-bottom: 40px;
 }
 
-#dialog-title-cancel {
+#dialog-header > h2{
     color: var(--m-3-black, #000);
-    width: 534px;
+    text-align: center;
+    /* M3/display/medium */
     font-family: Roboto;
-    font-size: 40px;
+    font-size: 36px;
     font-style: normal;
     font-weight: 400;
-    line-height: 52px;
+    line-height: 52px; /* 115.556% */
+    margin-bottom: 16px;
+    padding:0;
 }
 
-#dialog-subtitle {
+#dialog-header > h4{
     color: var(--m-3-sys-light-primary, #0029C6);
     text-align: center;
-
+    margin: auto;
+    /* Body */
     font-family: Inter;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    line-height: 22px;
+    line-height: 22px; /* 137.5% */
     letter-spacing: -0.32px;
+    width: 265px;
 }
 
-#dialog-header {
+#button-container{
     width: 381px;
-    height: 112px;
-    display: inline-block;
+    min-height: 96px;
+}
+
+#save-button{
+    display: flex;
+    height: 40px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 16px;
-}
-
-#dialog-header-cancel {
-    display: flex;
-    width: 534px;
-    height: 112px;
-    flex-direction: column;
-    align-items: center;
-    gap: 67px;
-}
-
-#dialog-container {
-    display: flex;
-    width: 905px;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 40px;
-    border-radius: 100px;
-}
-
-#button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-}
-
-
-#save-button {
-    display: flex;
-    width: 426px;
-    height: 55px;
-    padding: 10px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+    gap: 8px;
+    align-self: stretch;
     border-radius: 100px;
     background: var(--m-3-sys-light-primary, #0029C6);
-    color: #FFF;
-
-    font-family: Roboto;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: 20px;
-    text-transform: uppercase;
+    width: 381px;
+    margin-bottom: 16px;
+    color: white
 }
 
-#cancel-button {
-    display: flex;
-    width: 426px;
-    height: 55px;
-    padding: 10px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+#cancel-button{
     border-radius: 100px;
     border: 1px solid var(--m-3-sys-light-primary, #0029C6);
-    color: #0029C6;
-
-    font-family: Montserrat;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: 20px;
-    text-transform: uppercase;
+    display: flex;
+    height: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    width: 381px;
 }

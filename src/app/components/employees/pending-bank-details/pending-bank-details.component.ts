@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
 import { EmployeeBankingService } from 'src/app/services/employee/employee-banking.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-import { NgToastService } from 'ng-angular-popup';
 @Component({
   selector: 'app-pending-bank-statements',
   templateUrl: './pending-bank-details.component.html',
@@ -20,7 +19,6 @@ export class PendingBankDetailsComponent {
 
   constructor(
     private employeeBankingService: EmployeeBankingService,
-    private toast: NgToastService,
     private snackBarService: SnackbarService) { }
 
   ngOnInit() {

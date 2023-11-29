@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgToastService } from 'ng-angular-popup';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Client } from 'src/app/models/client.interface';
@@ -57,7 +56,6 @@ export class EmployeeDetailsComponent implements OnInit {
     private fieldcodeService: FieldCodeService,
     private employeeService: EmployeeService,
     private cookieService: CookieService,
-    private toast: NgToastService,
     private clientService: ClientService,
     private employeeRoleService: EmployeeRoleService,
     private snackBarService: SnackbarService
@@ -221,7 +219,7 @@ export class EmployeeDetailsComponent implements OnInit {
         next: (data) => {
         this.cookieService.set('currentPage', 'Employees');
         this.saveEmployeeCustomData();
-        this.snackBarService.showSnackbar("Employee details updated!", "snack-success");
+        this.snackBarService.showSnackbar("Employee details updated", "snack-success");
       },
         error: (error) => {this.snackBarService.showSnackbar(error, "snack-error")},
       });
