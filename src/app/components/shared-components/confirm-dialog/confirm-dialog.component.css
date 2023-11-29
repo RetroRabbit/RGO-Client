@@ -21,12 +21,11 @@
 #dialog-header > h2{
     color: var(--m-3-black, #000);
     text-align: center;
-    /* M3/display/medium */
     font-family: Roboto;
     font-size: 36px;
     font-style: normal;
     font-weight: 400;
-    line-height: 52px; /* 115.556% */
+    line-height: 52px;
     margin-bottom: 16px;
     padding:0;
 }
@@ -35,12 +34,11 @@
     color: var(--m-3-sys-light-primary, #0029C6);
     text-align: center;
     margin: auto;
-    /* Body */
     font-family: Inter;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    line-height: 22px; /* 137.5% */
+    line-height: 22px;
     letter-spacing: -0.32px;
     width: 265px;
 }
