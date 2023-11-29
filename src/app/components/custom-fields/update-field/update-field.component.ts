@@ -120,7 +120,7 @@ export class UpdateFieldComponent {
     if (this.selectedFieldCode) {
       this.fieldCodeService.deleteFieldCode(this.selectedFieldCode).subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Field Code archived", "snack-success");
+          this.snackBarService.showSnackbar("Custom field archived", "snack-success");
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
