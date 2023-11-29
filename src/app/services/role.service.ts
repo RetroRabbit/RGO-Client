@@ -19,7 +19,6 @@ export class RoleService {
   }
 
   addRole(role: string, permission: any, grouping:string): Observable<any> {
-    console.log(role + permission + grouping);
     return this.httpClient.post<any>(`${API.HttpsBaseURL}/rolemanage/add?role=${encodeURIComponent(role)}&permission=${encodeURIComponent(permission)}&grouping=${encodeURIComponent(grouping)}`, {});
   }
 
