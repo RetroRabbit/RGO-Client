@@ -97,7 +97,7 @@ export class NewFieldCodeComponent {
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
               next: (data) => {
-                this.snackBarService.showSnackbar("Field Code saved", "snack-success");
+                this.snackBarService.showSnackbar("Custom field saved", "snack-success");
                 this.newFieldCodeForm.disable();
               },
               error: (error) => {
