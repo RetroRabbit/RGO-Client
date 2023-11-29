@@ -5,7 +5,6 @@ import { Role } from 'src/app/models/role.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { RoleAccessLink } from 'src/app/models/role-access-link.interface';
 import { RoleManagementService } from 'src/app/services/role-management.service';
-import { NgToastService } from 'ng-angular-popup';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { forkJoin } from 'rxjs';
 
@@ -41,7 +40,6 @@ export class RoleManagerComponent implements OnInit {
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
     private dialog: MatDialog,
-    private toast: NgToastService,
     private snackBarService: SnackbarService
   ) { }
 
@@ -297,7 +295,7 @@ export class RoleManagerComponent implements OnInit {
   }
 
   openDialog(): void {
-    this.dialogTypeData = { type: 'save', title: 'Save Permissions', subtitle: 'Save your changes' }
+    this.dialogTypeData = { type: 'save', title: 'Save Permissions', subtitle: 'Are you sure you want to save the permissions that you edited?' }
     this.showConfirmDialog = true;
   }
 

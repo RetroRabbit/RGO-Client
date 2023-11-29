@@ -1,7 +1,6 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgToastService } from 'ng-angular-popup';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { statuses } from 'src/app/models/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
@@ -25,7 +24,6 @@ export class UpdateFieldComponent {
 
   constructor(public router: Router, private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
-    private toast: NgToastService,
     private snackBarService: SnackbarService) {
     this.initializeForm();
   }
@@ -100,7 +98,7 @@ export class UpdateFieldComponent {
 
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Field Details updated!", "snack-success");
+          this.snackBarService.showSnackbar("Field details updated", "snack-success");
           this.selectedFieldCode = data;
           this.newFieldCodeForm.disable();
         },
@@ -122,7 +120,7 @@ export class UpdateFieldComponent {
     if (this.selectedFieldCode) {
       this.fieldCodeService.deleteFieldCode(this.selectedFieldCode).subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Field Code acrhived!", "snack-success");
+          this.snackBarService.showSnackbar("Field Code archived", "snack-success");
           this.newFieldCodeForm.disable();
         },
         error: (error) => {

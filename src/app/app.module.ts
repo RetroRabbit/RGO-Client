@@ -18,7 +18,7 @@ import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects'
 import { NgChartsModule } from 'ng2-charts';
 import { ChartComponent } from './components/charts/charts.component';
 import { CreateChartsComponent } from './components/charts/create-charts/create-charts.component';
-import { NgToastModule } from 'ng-angular-popup';
+
 import { ReportComponent } from './components/charts/chart-reports/chart-reports.component';
 import { RoleManagerComponent } from './components/role-manager/role-manager.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
@@ -124,7 +124,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     }),
     HttpClientModule,
     BrowserAnimationsModule,
-    NgToastModule,
+
     MatButtonModule,
     MatMenuModule,
     MatIconModule,

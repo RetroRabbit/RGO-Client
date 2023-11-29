@@ -5,7 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { NgToastService } from 'ng-angular-popup';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { ClientService } from 'src/app/services/client.service';
 import { Client } from 'src/app/models/client.interface';
@@ -56,7 +55,6 @@ export class ViewEmployeeComponent {
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
     private clientService: ClientService,
-    private toast: NgToastService,
     private cookieService: CookieService,
     private ngZone: NgZone,
     private hideNavService: HideNavService,

@@ -11,7 +11,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { NgToastService } from 'ng-angular-popup';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -78,7 +77,6 @@ export class AdminDashboardComponent {
     private employeeProfileService: EmployeeProfileService,
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
-    private toast: NgToastService,
     private chartService: ChartService,
     private cookieService: CookieService,
     private router: Router,
@@ -309,7 +307,7 @@ export class AdminDashboardComponent {
   recieveNumber(number: any) {
     this.chartService.getAllCharts().subscribe({
       next: data => this.charts = data,
-      error: error => this.toast.error({ detail: "Error", summary: "Failed to get charts.", duration: 5000, position: 'topRight' })
+      error: error => this.snackBarService.showSnackbar("Failed to get charts", "snack-error")
     })
   }
 
@@ -360,12 +358,7 @@ export class AdminDashboardComponent {
           this.dataSource.sort = this.sort;
         }),
         catchError((error) => {
-          this.toast.error({
-            detail: `Error: ${error}`,
-            summary: 'Failed to load employees',
-            duration: 10000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Failed to load employees", "snack-error");
           return of([]);
         })
       )
