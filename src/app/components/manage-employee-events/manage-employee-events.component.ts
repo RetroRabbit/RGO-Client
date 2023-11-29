@@ -5,6 +5,7 @@ import { Observable, map, startWith } from 'rxjs';
 import { EmployeeDate } from 'src/app/models/employee-date.interface';
 import { EmployeeDateService } from 'src/app/services/employee-date.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 
 @Component({
   selector: 'app-manage-employee-events',
@@ -30,7 +31,8 @@ export class ManageEmployeeEventsComponent {
   constructor(
     private employeeDateService: EmployeeDateService,
     private notificationService: NotificationService,
-    private cookieService: CookieService) { }
+    private cookieService: CookieService,
+    private snackBarService: SnackbarService) { }
 
   updateEvents(filter: {
     email?: string,
@@ -70,9 +72,9 @@ export class ManageEmployeeEventsComponent {
     this.employeeDateService.deleteEmployeeDate(employeeDateInput).subscribe(
       () => {
         this.updateEvents({})
-        this.notificationService.showToast('Event deleted successfully', 'success')
+        this.snackBarService.showSnackbar("Event deleted succesfully", "snack-success")
       },
-      () => this.notificationService.showToast('Failed to delete event', 'error')
+      () => this.snackBarService.showSnackbar("Failed to delete event", "snack-error")
     );
   }
 
