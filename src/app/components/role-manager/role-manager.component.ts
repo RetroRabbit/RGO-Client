@@ -92,7 +92,6 @@ export class RoleManagerComponent implements OnInit {
     }
   }
 
-
   updateChartAndEmployeeDataCheckboxStates() {
     for (let r of this.roles) {
       for (let n of this.chartPermissions) {
@@ -156,9 +155,7 @@ export class RoleManagerComponent implements OnInit {
         });
       }
     }
-    console.log(this.temporaryRoleAccessChanges);
   }
-
   toggleAllEmployeeDataCheckboxes(roleDescription: string, event: any) {
     for (let n of this.employeePermissions) {
       const key = roleDescription + n.permission;
@@ -193,7 +190,6 @@ export class RoleManagerComponent implements OnInit {
 
   onChangeRoleAccess($event: any, role: string, permission: string, grouping: string) {
     const isChecked = $event.source.checked;
-    // console.log(this.temporaryRoleAccessChanges);
     const change: RoleAccessLink = {
       id: -1,
       role: {
@@ -207,7 +203,6 @@ export class RoleManagerComponent implements OnInit {
       },
       changeType: isChecked ? 'add' : 'delete',
     };
-    // console.log(change);
     const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
       item.role.description === role && item.roleAccess.permission === permission && item.roleAccess.grouping === grouping
     );
@@ -219,7 +214,6 @@ export class RoleManagerComponent implements OnInit {
     this.temporaryRoleAccessChanges.push(change);
   }
 
-
   updateData() {
     this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
       this.roleAccessLinks = roleAccessLinks;
@@ -229,20 +223,15 @@ export class RoleManagerComponent implements OnInit {
   saveChanges() {
     this.temporaryRoleAccessChanges.forEach((change) => {
       if (change.changeType === 'add') {
-        console.log('add');
         this.onAdd(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
       } else if (change.changeType === 'delete') {
-        console.log('removes');
         this.onDelete(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
       }
     });
-
     this.temporaryRoleAccessChanges = [];
-
   }
 
   discardChanges() {
-    this.ngOnInit();
     this.toast.success({
       detail: `Changes discarded successfully!`,
       duration: 5000,
@@ -258,7 +247,8 @@ export class RoleManagerComponent implements OnInit {
           duration: 5000,
           position: 'topRight',
         });
-        this.saved = true
+        this.saved = true;
+        this.ngOnInit();
       },
       error: (error) => {
         this.failed = true
@@ -274,7 +264,8 @@ export class RoleManagerComponent implements OnInit {
           duration: 5000,
           position: 'topRight',
         });
-        this.deleted = true
+        this.deleted = true;
+        this.ngOnInit();
       },
       error: (error) => {
         this.toast.error({
@@ -300,5 +291,6 @@ export class RoleManagerComponent implements OnInit {
     } else {
       this.discardChanges();
     }
+    
   }
 }
