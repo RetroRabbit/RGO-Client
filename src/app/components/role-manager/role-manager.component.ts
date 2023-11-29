@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RoleAccessLink } from 'src/app/models/role-access-link.interface';
 import { RoleManagementService } from 'src/app/services/role-management.service';
 import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -40,7 +41,8 @@ export class RoleManagerComponent implements OnInit {
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
     private dialog: MatDialog,
-    private toast: NgToastService
+    private toast: NgToastService,
+    private snackBarService: SnackbarService
   ) { }
 
   ngOnInit() {
@@ -156,6 +158,7 @@ export class RoleManagerComponent implements OnInit {
       }
     }
   }
+
   toggleAllEmployeeDataCheckboxes(roleDescription: string, event: any) {
     for (let n of this.employeePermissions) {
       const key = roleDescription + n.permission;
@@ -190,6 +193,7 @@ export class RoleManagerComponent implements OnInit {
 
   onChangeRoleAccess($event: any, role: string, permission: string, grouping: string) {
     const isChecked = $event.source.checked;
+
     const change: RoleAccessLink = {
       id: -1,
       role: {
@@ -203,6 +207,7 @@ export class RoleManagerComponent implements OnInit {
       },
       changeType: isChecked ? 'add' : 'delete',
     };
+
     const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
       item.role.description === role && item.roleAccess.permission === permission && item.roleAccess.grouping === grouping
     );
@@ -232,23 +237,15 @@ export class RoleManagerComponent implements OnInit {
   }
 
   discardChanges() {
-    this.toast.success({
-      detail: `Changes discarded successfully!`,
-      duration: 5000,
-      position: 'topRight',
-    });
+    this.ngOnInit();
+    this.snackBarService.showSnackbar("Changes discared successfully", "snack-success");
   }
 
-  onAdd(role: string, permission: string, grouping: string): void {
-    this.roleService.addRole(role, permission, grouping).subscribe({
+  onAdd(role:string,permission:string,grouping: string): void {
+    this.roleService.addRole(role, permission,grouping).subscribe({
       next: (data) => {
-        this.toast.success({
-          detail: `Permissions updated successfully!`,
-          duration: 5000,
-          position: 'topRight',
-        });
-        this.saved = true;
-        this.ngOnInit();
+        this.snackBarService.showSnackbar("Permission saved successfully!", "snack-success");
+        this.saved = true
       },
       error: (error) => {
         this.failed = true
@@ -259,23 +256,15 @@ export class RoleManagerComponent implements OnInit {
   onDelete(role: string, permission: string, grouping: string): void {
     this.roleService.deleteRole(role, permission, grouping).subscribe({
       next: (data) => {
-        this.toast.success({
-          detail: `Permissions updated  successfully!`,
-          duration: 5000,
-          position: 'topRight',
-        });
+        this.snackBarService.showSnackbar("Permissions deleted successfully!", "snack-success");
         this.deleted = true;
         this.ngOnInit();
       },
       error: (error) => {
-        this.toast.error({
-          detail: `Error: ${error}`,
-          summary: 'Failed update permissions',
-          duration: 10000,
-          position: 'topRight',
-        });
-        this.failed = true
-      }
+        this.snackBarService.showSnackbar("Failed to delete Permissions", "snack-error");
+        this.snackBarService.showSnackbar("Permissions deleted successfully!", "snack-success");
+        this.deleted = true
+      },
     })
   }
 

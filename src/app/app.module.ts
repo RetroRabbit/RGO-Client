@@ -72,6 +72,7 @@ import { SystemSettingsComponent } from './components/system-settings/system-set
 import { MatChipsModule } from '@angular/material/chips';
 import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -108,6 +109,7 @@ import { ConfirmDialogComponent } from './components/shared-components/confirm-d
     ReactiveFormsModule,
     NgChartsModule,
     MatChipsModule,
+    MatSnackBarModule,
     StoreModule.forRoot({
       app: LoginReducer,
       employee: EmployeeProfileReducer,
