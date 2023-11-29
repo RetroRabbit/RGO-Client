@@ -4,6 +4,7 @@ import { FieldCodeService } from 'src/app/services/field-code.service';
 import { Router } from '@angular/router';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { Table } from 'primeng/table';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { NgToastService } from 'ng-angular-popup';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -19,7 +20,7 @@ export class ManageFieldCodeComponent {
   selectedFieldCode?: FieldCode;
   isClicked: boolean = false;
   statuses: any[] = [];
-  dataTypes: any[] = []; 
+  dataTypes: any[] = [];
   newFieldCodeForm!: FormGroup;
   searchTerm: string = '';
   @ViewChild('dataTable') dataTable: Table | undefined = undefined;
@@ -31,13 +32,14 @@ export class ManageFieldCodeComponent {
     this.selectedFieldCode = fieldCode;
     this.isClicked = true;
   }
- 
+
   constructor(
     public router: Router,
     private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
     private toast: NgToastService,
-    public cookieService: CookieService) {
+    public cookieService: CookieService,
+    private snackBarService: SnackbarService) {
     this.initializeForm();
   }
 
@@ -97,7 +99,7 @@ export class ManageFieldCodeComponent {
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: () => {
-          this.toast.success({detail:"Field Code saved!", position:'topRight'})
+          this.snackBarService.showSnackbar("Field code saved", "snack-success");
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
@@ -105,7 +107,7 @@ export class ManageFieldCodeComponent {
             this.isUnique = false;
           }
           else {
-            this.toast.error({detail:"Error", summary:error, duration:5000, position:'topRight'});
+            this.snackBarService.showSnackbar(error, "snack-error");
           }
         }
       });
@@ -113,7 +115,7 @@ export class ManageFieldCodeComponent {
       this.showValidationErrors();
     }
   }
-  
+
   private showValidationErrors() {
     this.newFieldCodeForm.markAllAsTouched();
   }
@@ -125,7 +127,7 @@ export class ManageFieldCodeComponent {
         this.filteredFieldCodes = this.fieldCodes;
       },
       error: error => {
-        this.toast.error({detail: 'Error loading Field Codes', summary: error, duration: 5000, position: 'topRight'});
+        this.snackBarService.showSnackbar("Error loading Field Codes", "snack-error");
       }
     });
   }
@@ -147,10 +149,10 @@ export class ManageFieldCodeComponent {
       fieldCode.status && (fieldCode.status === 0 ? 'Active' : 'Archived').toLowerCase().includes(this.filterText.toLowerCase())
     );
   }
-  
+
   onSearch(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
-  
+
     if (this.dataTable) {
       this.dataTable.filterGlobal(searchTerm, 'contains');
     }
