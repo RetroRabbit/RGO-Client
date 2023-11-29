@@ -131,69 +131,108 @@ export class RoleManagerComponent implements OnInit {
     for (let n of this.chartPermissions) {
       const key = roleDescription + n.permission;
       this.checkboxStates[key] = this.allCheckboxesState[roleDescription];
+  
       const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
-        item.role.description === roleDescription && item.roleAccess.permission === n.permission && item.roleAccess.grouping === n.grouping
+        item.role.description === roleDescription &&
+        item.roleAccess.permission === n.permission &&
+        item.roleAccess.grouping === n.grouping
       );
-      if(this.allCheckboxesState[roleDescription]){
-        if(existingChangeIndex == -1){ 
+  
+      if (this.allCheckboxesState[roleDescription]) {
+        if (existingChangeIndex === -1) {
           const existingLink = this.roleAccessLinks.find(link =>
             link.role.description === roleDescription &&
             link.roleAccess.permission === n.permission &&
             link.roleAccess.grouping === n.grouping
-            );
-            this.temporaryRoleAccessChanges.push({
+          );
+  
+          const newChange = {
             id: existingLink ? existingLink.id : -1,
             role: { id: -1, description: roleDescription },
             roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
             changeType: event.checked ? 'add' : 'delete',
-          });
+          };
+  
+          if (newChange.id === -1) {
+            this.temporaryRoleAccessChanges.push(newChange);
+          }
+        } else {
+          this.temporaryRoleAccessChanges[existingChangeIndex].changeType = event.checked ? 'add' : 'delete';
         }
-      }else{
-        this.temporaryRoleAccessChanges.push({
-          id: -1,
-          role: { id: -1, description: roleDescription },
-          roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
-          changeType: event.checked ? 'add' : 'delete',
-        });
+      } else {
+        if (existingChangeIndex === -1) {
+          const newChange = {
+            id: -1,
+            role: { id: -1, description: roleDescription },
+            roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
+            changeType: event.checked ? 'add' : 'delete',
+          };
+  
+          if (newChange.id === -1) {
+            this.temporaryRoleAccessChanges.push(newChange);
+          }
+        } else {
+          this.temporaryRoleAccessChanges[existingChangeIndex].changeType = event.checked ? 'add' : 'delete';
+        }
       }
     }
+    console.log(this.temporaryRoleAccessChanges);
   }
-
+  
   toggleAllEmployeeDataCheckboxes(roleDescription: string, event: any) {
     for (let n of this.employeePermissions) {
       const key = roleDescription + n.permission;
       this.checkboxStatesEmployeePermissions[key] = this.allEmployeeDataCheckboxesState[roleDescription];
+  
       const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
-        item.role.description === roleDescription && item.roleAccess.permission === n.permission && item.roleAccess.grouping === n.grouping
+        item.role.description === roleDescription &&
+        item.roleAccess.permission === n.permission &&
+        item.roleAccess.grouping === n.grouping
       );
-
+  
       if (this.allEmployeeDataCheckboxesState[roleDescription]) {
         if (existingChangeIndex === -1) {
-          this.temporaryRoleAccessChanges.push({
-            id: -1,
+          const existingLink = this.roleAccessLinks.find(link =>
+            link.role.description === roleDescription &&
+            link.roleAccess.permission === n.permission &&
+            link.roleAccess.grouping === n.grouping
+          );
+  
+          const newChange = {
+            id: existingLink ? existingLink.id : -1,
             role: { id: -1, description: roleDescription },
             roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
             changeType: event.checked ? 'add' : 'delete',
-          });
+          };
+  
+          if (newChange.id === -1) {
+            this.temporaryRoleAccessChanges.push(newChange);
+          }
+        } else {
+          this.temporaryRoleAccessChanges[existingChangeIndex].changeType = event.checked ? 'add' : 'delete';
         }
       } else {
-        if (existingChangeIndex !== -1) {
-          this.temporaryRoleAccessChanges[existingChangeIndex].changeType = event.checked ? 'add' : 'delete';
-        } else {
-          this.temporaryRoleAccessChanges.push({
+        if (existingChangeIndex === -1) {
+          const newChange = {
             id: -1,
             role: { id: -1, description: roleDescription },
             roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
             changeType: event.checked ? 'add' : 'delete',
-          });
+          };
+  
+          if (newChange.id === -1) {
+            this.temporaryRoleAccessChanges.push(newChange);
+          }
+        } else {
+          this.temporaryRoleAccessChanges[existingChangeIndex].changeType = event.checked ? 'add' : 'delete';
         }
       }
     }
+    console.log(this.temporaryRoleAccessChanges);
   }
-
+  
   onChangeRoleAccess($event: any, role: string, permission: string, grouping: string) {
     const isChecked = $event.source.checked;
-
     const change: RoleAccessLink = {
       id: -1,
       role: {
@@ -207,7 +246,6 @@ export class RoleManagerComponent implements OnInit {
       },
       changeType: isChecked ? 'add' : 'delete',
     };
-
     const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
       item.role.description === role && item.roleAccess.permission === permission && item.roleAccess.grouping === grouping
     );
@@ -217,14 +255,9 @@ export class RoleManagerComponent implements OnInit {
     }
 
     this.temporaryRoleAccessChanges.push(change);
+    console.log(this.temporaryRoleAccessChanges);
   }
 
-  updateData() {
-    this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
-      this.roleAccessLinks = roleAccessLinks;
-      this.updateChartAndEmployeeDataCheckboxStates();
-    });
-  }
   saveChanges() {
     this.temporaryRoleAccessChanges.forEach((change) => {
       if (change.changeType === 'add') {
@@ -234,6 +267,7 @@ export class RoleManagerComponent implements OnInit {
       }
     });
     this.temporaryRoleAccessChanges = [];
+    this.snackBarService.showSnackbar("Permissions updated successfully!", "snack-success");
   }
 
   discardChanges() {
@@ -244,11 +278,11 @@ export class RoleManagerComponent implements OnInit {
   onAdd(role:string,permission:string,grouping: string): void {
     this.roleService.addRole(role, permission,grouping).subscribe({
       next: (data) => {
-        this.snackBarService.showSnackbar("Permission saved successfully!", "snack-success");
         this.saved = true
       },
       error: (error) => {
         this.failed = true
+        this.snackBarService.showSnackbar("Failed to updated Permissions", "snack-error");
       }
     })
   }
@@ -256,13 +290,10 @@ export class RoleManagerComponent implements OnInit {
   onDelete(role: string, permission: string, grouping: string): void {
     this.roleService.deleteRole(role, permission, grouping).subscribe({
       next: (data) => {
-        this.snackBarService.showSnackbar("Permissions deleted successfully!", "snack-success");
         this.deleted = true;
-        this.ngOnInit();
       },
       error: (error) => {
         this.snackBarService.showSnackbar("Failed to delete Permissions", "snack-error");
-        this.snackBarService.showSnackbar("Permissions deleted successfully!", "snack-success");
         this.deleted = true
       },
     })
@@ -280,6 +311,5 @@ export class RoleManagerComponent implements OnInit {
     } else {
       this.discardChanges();
     }
-    
   }
 }
