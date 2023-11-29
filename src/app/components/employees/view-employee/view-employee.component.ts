@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { ClientService } from 'src/app/services/client.service';
 import { Client } from 'src/app/models/client.interface';
 import { EmployeeData } from 'src/app/models/employeedata.interface';
@@ -48,7 +49,7 @@ export class ViewEmployeeComponent {
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
     this.cookieService.set(this.PREVIOUS_PAGE, 'Employees');
-    this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee'); 
+    this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee');
   }
 
   constructor(
@@ -58,12 +59,13 @@ export class ViewEmployeeComponent {
     private toast: NgToastService,
     private cookieService: CookieService,
     private ngZone: NgZone,
-    private hideNavService: HideNavService
+    private hideNavService: HideNavService,
+    private snackBarService: SnackbarService
   ) {}
 
   ngOnInit() {
     this.onResize();
-    if(this.cookieService.get(this.PREVIOUS_PAGE) != "Dashboard"){ 
+    if(this.cookieService.get(this.PREVIOUS_PAGE) != "Dashboard"){
       this._searchQuery = "";
     }
   }
@@ -88,12 +90,7 @@ export class ViewEmployeeComponent {
           this.combineEmployeesWithRolesAndClients(employees, clients$)
         ),
         catchError((error) => {
-          this.toast.error({
-            detail: `Error: ${error}`,
-            summary: 'Failed to load employees',
-            duration: 10000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Failed to load employees", "snack-error");
           return of([]);
         }),
         first()
@@ -270,21 +267,11 @@ export class ViewEmployeeComponent {
       .updateRole(email, role)
       .pipe(
         tap(() => {
-          this.toast.success({
-            detail: `Role changed successfully!`,
-            summary: 'Success',
-            duration: 5000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Role changed successfully!", "snack-success");
           this.getEmployees();
         }),
         catchError((error) => {
-          this.toast.error({
-            detail: 'Failed to change role',
-            summary: 'Error',
-            duration: 10000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Falied to change role", "snack-error");
           return of(null);
         })
       )

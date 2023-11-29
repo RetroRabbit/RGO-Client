@@ -1,8 +1,10 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild} from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 import { NgToastService } from 'ng-angular-popup';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
@@ -35,6 +37,7 @@ export class NewEmployeeComponent implements OnInit {
     private cookieService: CookieService,
     private toast: NgToastService,
     private employeeDocumentService: EmployeeDocumentService,
+    private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
     private hideNavService: HideNavService
   ) { }
@@ -140,7 +143,7 @@ export class NewEmployeeComponent implements OnInit {
     salary: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
     physicalAddress: new FormControl<EmployeeAddress | null>(null),
     postalAddress: new FormControl<EmployeeAddress | null>(null),
-    peopleChampion: new FormControl<string>('', Validators.required)
+    peopleChampion: new FormControl<string>('')
   });
 
   settingsForm: FormGroup = new FormGroup({
@@ -165,7 +168,11 @@ export class NewEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
-        this.employeeTypes = data;
+        this.employeeTypes = data.sort((a, b) => {
+          const nameA = (a.name || '').toLowerCase();
+          const nameB = (b.name || '').toLowerCase();
+          return nameA.localeCompare(nameB);
+        });
       },
     });
     this.employeeService
@@ -221,12 +228,7 @@ export class NewEmployeeComponent implements OnInit {
                 this.employeeDocumentModels.push(employeeDocument);
               },
               error: (error: any) => {
-                this.toast.error({
-                  detail: 'Error',
-                  summary: 'Failed compile documents',
-                  duration: 5000,
-                  position: 'topRight',
-                });
+                this.snackBarService.showSnackbar("Failed to compile documents", "snack-error");
               }
             });
           };
@@ -248,20 +250,10 @@ export class NewEmployeeComponent implements OnInit {
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
         next: () => {
-          this.toast.success({
-            detail: 'Success',
-            summary: `files have been uploaded`,
-            duration: 5000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Files have been uploaded", "snack-success");
         },
         error: (error: any) => {
-          this.toast.error({
-            detail: 'Error',
-            summary: 'Failed to save documents',
-            duration: 5000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Failed to save documents", "snack-error");
         }, complete: () => {
           this.employeeDocumentModels = [];
           this.newEmployeeEmail = "";
@@ -360,9 +352,8 @@ export class NewEmployeeComponent implements OnInit {
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
-      this.toast.error({ detail: 'Error', summary: `⚠️ Please enter an official Retro Rabbit email address`, duration: 5000, position: 'topRight',
-     });
-     return;
+      this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
+      return;
     }
 
     this.newEmployeeForm.value.cellphoneNo =
@@ -379,9 +370,7 @@ export class NewEmployeeComponent implements OnInit {
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
-        this.toast.success({
-          detail: 'Success', summary: `${this.newEmployeeForm.value.name} has been added`, duration: 5000, position: 'topRight',
-        });
+        this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
         this.myStepper.next();
         this.isDirty = false;
       },
@@ -393,9 +382,7 @@ export class NewEmployeeComponent implements OnInit {
         } else if (error.status === 406) {
           message = 'User already exists';
         }
-        this.toast.error({
-          detail: 'Error', summary: `Error: ${message}`, duration: 5000, position: 'topRight',
-        });
+        this.snackBarService.showSnackbar(`Error: ${message}`, "snackbar-success");
         this.isDirty = false;
       },
 
