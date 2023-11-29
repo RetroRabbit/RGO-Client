@@ -47,10 +47,10 @@
             <div class="col-2" *ngIf="isAdmin() || isJourney()">
               <div id="nav-item-container" class="col-auto">
                 <div id="nav-item">
-                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Dashboard' ? 'active' : 'idle'">
+                  <div (click)="CaptureEvent($event)" [ngClass]="cookieService.get('currentPage') == 'Dashboard' ? 'active' : 'idle'">
                     Dashboard
                   </div>
-                  <div *ngIf="selectedItem == 'Dashboard'" id="selected-line-box">
+                  <div *ngIf="cookieService.get('currentPage') == 'Dashboard'" id="selected-line-box">
                     <div id="selected-line">
                     </div>
                   </div>
@@ -60,10 +60,10 @@
             <div class="col-2">
               <div id="nav-item-container">
                 <div id="nav-item">
-                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Profile' ? 'active' : 'idle'">
+                  <div (click)="CaptureEvent($event)" [ngClass]="cookieService.get('currentPage').includes('Profile')  ? 'active' : 'idle'">
                     Profile
                   </div>
-                  <div *ngIf="selectedItem == 'Profile'" id="selected-line-box">
+                  <div *ngIf="cookieService.get('currentPage').includes('Profile')" id="selected-line-box">
                     <div id="selected-line">
                     </div>
                   </div>
@@ -73,10 +73,10 @@
             <div class="col-2" *ngIf="isAdmin() || isJourney()">
               <div id="nav-item-container">
                 <div id="nav-item">
-                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Employees' ? 'active' : 'idle'">
+                  <div (click)="CaptureEvent($event)" [ngClass]="cookieService.get('currentPage') == 'Employees' ? 'active' : 'idle'">
                     Employees
                   </div>
-                  <div *ngIf="selectedItem == 'Employees'" id="selected-line-box">
+                  <div *ngIf="cookieService.get('currentPage') == 'Employees'"  id="selected-line-box">
                     <div id="selected-line">
                     </div>
                   </div>
@@ -86,10 +86,10 @@
             <div class="col-3" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
-                  <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'System Settings' ? 'active' : 'idle'">
+                  <div (click)="CaptureEvent($event)" [ngClass]="cookieService.get('currentPage') == 'System Settings' || cookieService.get('currentPage') == 'Role Management' || cookieService.get('currentPage') == 'Custom Field management'  || cookieService.get('currentPage') == 'Role Management' || cookieService.get('currentPage') == 'Employee Banking' ? 'active' : 'idle'">
                     System Settings
                   </div>
-                  <div *ngIf="selectedItem == 'System Settings'" id="selected-line-box">
+                  <div *ngIf="cookieService.get('currentPage') == 'System Settings' || cookieService.get('currentPage') == 'Role Management' || cookieService.get('currentPage') == 'Custom Field management' || cookieService.get('currentPage') == 'Employee Banking'" id="selected-line-box">
                     <div id="selected-line">
                     </div>
                   </div>
