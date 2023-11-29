@@ -44,6 +44,7 @@ export class HomeComponent{
     public hideNavService: HideNavService)
     {
     this.screenWidth = window.innerWidth;
+    this.cookieService.set('currentPage', 'Dashboard');
   }
 
   ngOnInit() {
