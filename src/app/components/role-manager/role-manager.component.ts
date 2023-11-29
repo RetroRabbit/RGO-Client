@@ -176,7 +176,6 @@ export class RoleManagerComponent implements OnInit {
         }
       }
     }
-    console.log(this.temporaryRoleAccessChanges);
   }
   
   toggleAllEmployeeDataCheckboxes(roleDescription: string, event: any) {
@@ -228,7 +227,6 @@ export class RoleManagerComponent implements OnInit {
         }
       }
     }
-    console.log(this.temporaryRoleAccessChanges);
   }
   
   onChangeRoleAccess($event: any, role: string, permission: string, grouping: string) {
@@ -255,7 +253,6 @@ export class RoleManagerComponent implements OnInit {
     }
 
     this.temporaryRoleAccessChanges.push(change);
-    console.log(this.temporaryRoleAccessChanges);
   }
 
   saveChanges() {
