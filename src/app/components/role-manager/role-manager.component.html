@@ -40,7 +40,7 @@
         </th>
         <th class="py-2 px-2" scope="row" *ngFor="let r of roles" id="allsubheader">
           <mat-checkbox color="primary" [(ngModel)]="allEmployeeDataCheckboxesState[r.description]"
-            (change)="toggleAllEmployeeDataCheckboxes(r.description)">
+            (change)="toggleAllEmployeeDataCheckboxes(r.description, $event)">
             All
           </mat-checkbox>
         </th>

@@ -15,10 +15,6 @@ import { forkJoin } from 'rxjs';
 })
 export class RoleManagerComponent implements OnInit {
 
-  @ViewChild('dialogContentTemplate') dialogContentTemplate!: TemplateRef<any>;
-
-  @ViewChild('dialogCancelTemplate') dialogCancelTemplate!: TemplateRef<any>;
-
   saved: boolean = false
   deleted: boolean = false
   failed: boolean = false
@@ -137,15 +133,14 @@ export class RoleManagerComponent implements OnInit {
       const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
         item.role.description === roleDescription && item.roleAccess.permission === n.permission && item.roleAccess.grouping === n.grouping
       );
-      
       if(this.allCheckboxesState[roleDescription]){
         if(existingChangeIndex == -1){ 
           const existingLink = this.roleAccessLinks.find(link =>
             link.role.description === roleDescription &&
             link.roleAccess.permission === n.permission &&
             link.roleAccess.grouping === n.grouping
-          );
-          this.temporaryRoleAccessChanges.push({
+            );
+            this.temporaryRoleAccessChanges.push({
             id: existingLink ? existingLink.id : -1,
             role: { id: -1, description: roleDescription },
             roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
@@ -153,6 +148,35 @@ export class RoleManagerComponent implements OnInit {
           });
         }
       }else{
+        this.temporaryRoleAccessChanges.push({
+          id: -1,
+          role: { id: -1, description: roleDescription },
+          roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
+          changeType: event.checked ? 'add' : 'delete',
+        });
+      }
+    }
+    console.log(this.temporaryRoleAccessChanges);
+  }
+
+  toggleAllEmployeeDataCheckboxes(roleDescription: string, event: any) {
+    for (let n of this.employeePermissions) {
+      const key = roleDescription + n.permission;
+      this.checkboxStatesEmployeePermissions[key] = this.allEmployeeDataCheckboxesState[roleDescription];
+      const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
+        item.role.description === roleDescription && item.roleAccess.permission === n.permission && item.roleAccess.grouping === n.grouping
+      );
+
+      if (this.allEmployeeDataCheckboxesState[roleDescription]) {
+        if (existingChangeIndex === -1) {
+          this.temporaryRoleAccessChanges.push({
+            id: -1,
+            role: { id: -1, description: roleDescription },
+            roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
+            changeType: event.checked ? 'add' : 'delete',
+          });
+        }
+      } else {
         if (existingChangeIndex !== -1) {
           this.temporaryRoleAccessChanges[existingChangeIndex].changeType = event.checked ? 'add' : 'delete';
         } else {
@@ -167,42 +191,9 @@ export class RoleManagerComponent implements OnInit {
     }
   }
 
-  toggleAllEmployeeDataCheckboxes(roleDescription: string) {
-    for (let n of this.employeePermissions) {
-      const key = roleDescription + n.permission;
-      this.checkboxStatesEmployeePermissions[key] = this.allEmployeeDataCheckboxesState[roleDescription];
-      const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
-        item.role.description === roleDescription && item.roleAccess.permission === n.permission && item.roleAccess.grouping === n.grouping
-      );
-
-      if (this.allEmployeeDataCheckboxesState[roleDescription]) {
-        if (existingChangeIndex === -1) {
-          this.temporaryRoleAccessChanges.push({
-            id: -1,
-            role: { id: -1, description: roleDescription },
-            roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
-            changeType: 'add',
-          });
-        }
-      } else {
-        if (existingChangeIndex !== -1) {
-          this.temporaryRoleAccessChanges[existingChangeIndex].changeType = 'delete';
-        } else {
-          this.temporaryRoleAccessChanges.push({
-            id: -1,
-            role: { id: -1, description: roleDescription },
-            roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
-            changeType: 'delete',
-          });
-        }
-      }
-    }
-
-  }
-
   onChangeRoleAccess($event: any, role: string, permission: string, grouping: string) {
     const isChecked = $event.source.checked;
-
+    // console.log(this.temporaryRoleAccessChanges);
     const change: RoleAccessLink = {
       id: -1,
       role: {
@@ -216,7 +207,7 @@ export class RoleManagerComponent implements OnInit {
       },
       changeType: isChecked ? 'add' : 'delete',
     };
-
+    // console.log(change);
     const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
       item.role.description === role && item.roleAccess.permission === permission && item.roleAccess.grouping === grouping
     );
@@ -236,11 +227,12 @@ export class RoleManagerComponent implements OnInit {
     });
   }
   saveChanges() {
-
     this.temporaryRoleAccessChanges.forEach((change) => {
       if (change.changeType === 'add') {
+        console.log('add');
         this.onAdd(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
       } else if (change.changeType === 'delete') {
+        console.log('removes');
         this.onDelete(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
       }
     });
@@ -262,7 +254,7 @@ export class RoleManagerComponent implements OnInit {
     this.roleService.addRole(role, permission, grouping).subscribe({
       next: (data) => {
         this.toast.success({
-          detail: `Permissions saved  successfully!`,
+          detail: `Permissions updated successfully!`,
           duration: 5000,
           position: 'topRight',
         });
@@ -278,7 +270,7 @@ export class RoleManagerComponent implements OnInit {
     this.roleService.deleteRole(role, permission, grouping).subscribe({
       next: (data) => {
         this.toast.success({
-          detail: `Permissions deleted  successfully!`,
+          detail: `Permissions updated  successfully!`,
           duration: 5000,
           position: 'topRight',
         });
@@ -287,7 +279,7 @@ export class RoleManagerComponent implements OnInit {
       error: (error) => {
         this.toast.error({
           detail: `Error: ${error}`,
-          summary: 'Failed to delete Permissions',
+          summary: 'Failed update permissions',
           duration: 10000,
           position: 'topRight',
         });
@@ -299,10 +291,6 @@ export class RoleManagerComponent implements OnInit {
   openDialog(): void {
     this.dialogTypeData = { type: 'save', title: 'Save Permissions', subtitle: 'Save your changes' }
     this.showConfirmDialog = true;
-  }
-
-  openDiscardDialog(): void {
-    const dialogRef = this.dialog.open(this.dialogCancelTemplate);
   }
 
   dialogFeedBack(event: any) {
