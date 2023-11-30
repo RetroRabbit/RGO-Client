@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RoleAccessLink} from 'src/app/models/role-access-link.interface';
 import { RoleManagementService } from 'src/app/services/role-management.service';
 import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -16,16 +17,16 @@ import { forkJoin } from 'rxjs';
 export class RoleManagerComponent implements OnInit {
 
   @ViewChild('dialogContentTemplate') dialogContentTemplate!: TemplateRef<any>;
- 
+
   @ViewChild('dialogCancelTemplate') dialogCancelTemplate!: TemplateRef<any>;
-  
+
   saved: boolean = false
   deleted: boolean = false
   failed: boolean = false
   selected: boolean = false
- 
+
   roles: Role[] = [];
-  
+
   roleAccesses: RoleAccess[] = [];
 
   roleAccessLinks: RoleAccessLink[] = [];
@@ -42,7 +43,8 @@ export class RoleManagerComponent implements OnInit {
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
     private dialog: MatDialog,
-    private toast: NgToastService
+    private toast: NgToastService,
+    private snackBarService: SnackbarService
   ) { }
 
   ngOnInit() {
@@ -94,7 +96,7 @@ updateAllEmployeeDataCheckboxes() {
   }
 }
 
-  
+
   updateChartAndEmployeeDataCheckboxStates() {
     for (let r of this.roles) {
       for (let n of this.chartPermissions) {
@@ -119,7 +121,7 @@ updateAllEmployeeDataCheckboxes() {
     this.updateAllCheckboxes();
     this.updateAllEmployeeDataCheckboxes();
   }
-  
+
 allCheckboxesState: { [key: string]: boolean } = {};
 
 allEmployeeDataCheckboxesState: { [key: string]: boolean } = {}
@@ -163,7 +165,7 @@ toggleAllCheckboxes(roleDescription: string) {
         });
       }
     }
-  } 
+  }
 }
 
 toggleAllEmployeeDataCheckboxes(roleDescription: string) {
@@ -201,7 +203,7 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
 
   onChangeRoleAccess($event: any, role: string, permission: string, grouping: string) {
     const isChecked = $event.source.checked;
-  
+
     const change: RoleAccessLink = {
       id: -1,
       role: {
@@ -215,19 +217,19 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
       },
       changeType: isChecked ? 'add' : 'delete',
     };
-  
+
     const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
       item.role.description === role && item.roleAccess.permission === permission && item.roleAccess.grouping === grouping
     );
-  
+
     if (existingChangeIndex !== -1) {
       this.temporaryRoleAccessChanges.splice(existingChangeIndex, 1);
     }
-  
+
     this.temporaryRoleAccessChanges.push(change);
   }
-  
-  
+
+
   updateData() {
     this.roleManagementService.getAllRoleAccesssLinks().subscribe(roleAccessLinks => {
       this.roleAccessLinks = roleAccessLinks;
@@ -235,7 +237,7 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
     });
   }
   saveChanges() {
-   
+
     this.temporaryRoleAccessChanges.forEach((change) => {
       if (change.changeType === 'add') {
         this.onAdd(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
@@ -243,28 +245,20 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
         this.onDelete(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
       }
     });
- 
+
     this.temporaryRoleAccessChanges = [];
 
   }
 
   discardChanges() {
     this.ngOnInit();
-    this.toast.success({
-      detail: `Changes discarded successfully!`,
-      duration: 5000,
-      position: 'topRight',
-    });
+    this.snackBarService.showSnackbar("Changes discared successfully", "snack-success");
   }
-  
+
   onAdd(role:string,permission:string,grouping: string): void {
     this.roleService.addRole(role, permission,grouping).subscribe({
       next: (data) => {
-        this.toast.success({
-          detail: `Permissions saved  successfully!`,
-          duration: 5000,
-          position: 'topRight',
-        });
+        this.snackBarService.showSnackbar("Permission saved successfully!", "snack-success");
         this.saved = true
       },
       error: (error) => {
@@ -276,20 +270,11 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
   onDelete(role:string,permission:string,grouping: string): void {
     this.roleService.deleteRole(role, permission,grouping).subscribe({
       next: (data) => {
-        this.toast.success({
-          detail: `Permissions deleted  successfully!`,
-          duration: 5000,
-          position: 'topRight',
-        });
+        this.snackBarService.showSnackbar("Permissions deleted successfully!", "snack-success");
         this.deleted = true
       },
       error: (error) => {
-        this.toast.error({
-          detail: `Error: ${error}`,
-          summary: 'Failed to delete Permissions',
-          duration: 10000,
-          position: 'topRight',
-        });
+        this.snackBarService.showSnackbar("Failed to delete Permissions", "snack-error");
         this.failed = true
       }
     })
@@ -297,7 +282,7 @@ toggleAllEmployeeDataCheckboxes(roleDescription: string) {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(this.dialogContentTemplate);
-     
+
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
       }
