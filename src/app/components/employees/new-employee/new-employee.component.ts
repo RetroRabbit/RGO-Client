@@ -21,6 +21,7 @@ import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
 import { HideNavService } from 'src/app/services/hide-nav.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-employee',
@@ -39,7 +40,8 @@ export class NewEmployeeComponent implements OnInit {
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
-    private hideNavService: HideNavService
+    private hideNavService: HideNavService,
+    private router: Router,
   ) { }
 
   firstFormGroup = this._formBuilder.group({
