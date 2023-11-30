@@ -62,6 +62,8 @@ export class ViewEmployeeComponent {
   ) {}
 
   ngOnInit() {
+    this.dataSource.paginator = this.paginator;
+
     this.onResize();
     if(this.cookieService.get(this.PREVIOUS_PAGE) != "Dashboard"){ 
       this._searchQuery = "";
@@ -231,18 +233,37 @@ export class ViewEmployeeComponent {
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
 
-  changePageSize(size: number) {
-    if (this.paginator) this.paginator.pageSize = size;
-    this.dataSource._updateChangeSubscription();
-  }
+  // changePageSize(size: number) {
+  //   if (this.paginator) this.paginator.pageSize = size;
+  //   this.dataSource._updateChangeSubscription(); //HERE  //ORIGINAL
+  // }
 
+  // changePageSize(size: number) {
+  //   if (this.paginator) {
+  //     this.paginator.pageSize = size;
+  //     this.paginator.pageIndex = 0;
+  //     this.applySearchFilter(); 
+  //   }
+  //}
+
+  public changePageSize(size: number) {
+    if (this.paginator) {
+      this.paginator.pageSize = size;
+      this.paginator.pageIndex = 0; // Reset page
+      this.applySearchFilter(); // Reapply filter
+      this.dataSource.paginator = this.paginator; // Trigger paginator
+      console.log(this.paginator);
+    }
+    console.log(this.paginator);
+  }
+  
   get pageIndex(): number {
     return this.paginator?.pageIndex ?? 0;
   }
 
   get getNumberOfPages(): number {
     if (!this.paginator || this.paginator.pageSize === 0) return 0;
-    return Math.ceil(this.paginator.length / this.paginator.pageSize);
+    return Math.ceil(this.paginator.length / this.paginator.pageSize); //HERE
   }
 
   get visiblePages(): number[] {

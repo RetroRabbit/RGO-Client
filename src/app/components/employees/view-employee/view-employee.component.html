@@ -75,7 +75,8 @@
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns" (click)="employeeClickEvent(row)"></mat-row>
         </mat-table>
-        <mat-paginator hidden></mat-paginator>
+        <mat-paginator hidden [pageSizeOptions]="pageSizes" showFirstLastButtons></mat-paginator>
+        <!-- <mat-paginator [pageSizeOptions]="pageSizes" showFirstLastButtons></mat-paginator> -->
       </div>
       <div *ngIf="!isLoading && dataSource.filteredData.length <= 0"
         class="d-flex flex-row justify-content-center align-items-center">
