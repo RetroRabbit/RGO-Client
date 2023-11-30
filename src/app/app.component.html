@@ -1,6 +1,8 @@
 <div class="row" id="container">
 <app-nav-bar *ngIf="hideNavService.showNavbar"></app-nav-bar>
-<router-outlet></router-outlet>
+<div class="col-12" id="content">
+    <router-outlet></router-outlet>
+</div>
 <ng-toast></ng-toast>
 </div>
 

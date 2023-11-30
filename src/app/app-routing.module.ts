@@ -26,7 +26,7 @@ const routes: Routes = [
   {path: 'manage-field', component: ManageFieldCodeComponent},
   {path: 'charts', component: ChartComponent},
   {path: 'create-charts', component: CreateChartsComponent},
-  {path: 'new-employee', component: NewEmployeeComponent},
+  {path: 'create-employee', component: NewEmployeeComponent},
   {path: 'new-fieldcode', component: NewFieldCodeComponent},
   {path: 'update-fieldcode', component: UpdateFieldComponent},
   {path: 'employee-details', component: EmployeeDetailsComponent},
