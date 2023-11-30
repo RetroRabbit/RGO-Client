@@ -5,7 +5,6 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { NgToastService } from 'ng-angular-popup';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 
 @Component({
@@ -25,8 +24,7 @@ export class ChartReportPdfComponent {
 
   ngOnInit() {
   }
-  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, private toast: NgToastService,
-   private snackBarService: SnackbarService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, private snackBarService: SnackbarService) { }
 
   ngAfterViewInit() {
     if (this.canvas && this.canvas.nativeElement) {

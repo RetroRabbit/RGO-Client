@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { Table } from 'primeng/table';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-import { NgToastService } from 'ng-angular-popup';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
@@ -37,7 +36,6 @@ export class ManageFieldCodeComponent {
     public router: Router,
     private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
-    private toast: NgToastService,
     public cookieService: CookieService,
     private snackBarService: SnackbarService) {
     this.initializeForm();
