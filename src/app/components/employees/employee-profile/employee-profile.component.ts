@@ -9,6 +9,7 @@ import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { ClientService } from 'src/app/services/client.service';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { Client } from 'src/app/models/client.interface';
@@ -219,7 +220,8 @@ export class EmployeeProfileComponent {
     private employeeBankingService: EmployeeBankingService,
     private employeeDocumentService: EmployeeDocumentService,
     private fieldCodeService: FieldCodeService,
-    private employeeDataService: EmployeeDataService) { }
+    private employeeDataService: EmployeeDataService,
+    private snackBarService: SnackbarService) { }
 
   ngOnInit() {
     this.getEmployeeFields();
@@ -244,7 +246,7 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
-        
+
         this.employeeDataService.getEmployeeData(this.selectedEmployee ? this.selectedEmployee.id : this.employeeProfile?.id).subscribe({
           next: data => {
             this.employeeData = data;
@@ -255,7 +257,7 @@ export class EmployeeProfileComponent {
             this.employeeBanking = data;
             this.bankingId = this.employeeBanking.id;
             this.initializeBankingForm(this.employeeBanking);
-            
+
           }
         })
         this.employeeService.getAllProfiles().subscribe({
@@ -434,19 +436,19 @@ export class EmployeeProfileComponent {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-          this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.snackBarService.showSnackbar("Employee Details updated!", "snack-success");
           this.checkPersonalFormProgress();
           this.totalProfileProgress();
           this.getEmployeeFields();
           this.personalDetailsForm.disable();
         },
         error: (error) => {
-          this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+          this.snackBarService.showSnackbar(error, "snack-error");
         },
       });
     }
     else {
-      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
   }
 
@@ -621,7 +623,7 @@ saveAddressEdit() {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-          this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.snackBarService.showSnackbar("Employee Details updated!", "snack-success");
           this.checkEmployeeFormProgress();
           this.totalProfileProgress();
           this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfileDto?.clientAllocated)[0];
@@ -629,11 +631,11 @@ saveAddressEdit() {
           this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfileDto?.peopleChampion)[0];
           this.employeeDetailsForm.disable();
         },
-        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error) => { this.snackBarService.showSnackbar(error, "snack-error")},
       });
     }
     else {
-      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
   }
 
@@ -663,16 +665,16 @@ saveAddressEdit() {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-          this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.snackBarService.showSnackbar("Employee Details updated!", "snack-success");
           this.checkContactFormProgress();
           this.totalProfileProgress();
           this.employeeContactForm.disable();
         },
-        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error) => { this.snackBarService.showSnackbar(error, "snack-error")},
       });
     }
     else {
-      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+      this.snackBarService.showSnackbar("Please fill in the reuired fields", "snack-error");
     }
   }
 
@@ -950,7 +952,7 @@ saveAddressEdit() {
     if(this.hasBankingData){
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {
-          this.toast.success({ detail: "Employee Banking updated!", position: 'topRight' });
+        this.snackBarService.showSnackbar("Employee Banking updated!", "snack-success");
         this.addressDetailsForm.disable();
         this.checkAddressFormProgress();
         this.totalBankingProgress();
@@ -959,14 +961,14 @@ saveAddressEdit() {
         this.hasUpdatedBanking = true;
       },
       error: (error) => {
-        this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+        this.snackBarService.showSnackbar(error, "snack-error");
       }
     })
     }
     else{
       this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
         next: () => {
-          this.toast.success({ detail: "Banking Details Added!", position: 'topRight' });
+          this.snackBarService.showSnackbar("Bankin Details Added!", "snack-success");
           this.addressDetailsForm.disable();
           this.checkAddressFormProgress();
           this.totalBankingProgress();
@@ -975,7 +977,7 @@ saveAddressEdit() {
           this.hasUpdatedBanking = true;
         }
         ,error : (error) => {
-          this.toast.error({ detail: "Failed to create banking information", summary: error, duration: 5000, position: 'topRight' });
+          this.snackBarService.showSnackbar("Failed to create banking information", "snack-error");
         }
       })
     }

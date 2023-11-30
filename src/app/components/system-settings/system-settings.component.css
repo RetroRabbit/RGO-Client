@@ -1,86 +1,87 @@
-
-.mat-drawer {
-    background-color: #D7DFFF; 
-    color: white; 
-    border-radius: 0px, 50px, 50px, 0px; 
-    width: Fixed (300px);
-    height:  1500px;
-    top: 40px;
+#side-menu{
+    border-radius: 0px 16px 16px 0px;
+    background: var(--m-3-sys-light-primary-container, #D7DFFF);
     padding: 12px;
-    gap: 4px;
-}
-
-.mat-list-item {
-color: #FFFFFF;
-width: Fill (276px);
-height: Fixed (56px);
-border-radius: 100px;
-gap: 12px
-}
-
-button {
-font-family: Roboto;
-font-size: 14px;
-font-weight: 600;
-line-height: 20px;
-letter-spacing: 0.10000000149011612px;
-text-align: left;
-}
-
-button:hover {
-    color:#0029C6;
-    background-color: #FFFFFF;
-    width: Fill (276px);
-    height: Fixed (56px);
-    border-radius: 100px;
-    gap: 12px
+    width: 312px;
+    min-height: 80vh;
 }
 
 h1{
- color: #49454F;
-font-family: Roboto;
-font-size: 28px;
-font-weight: 400;
-line-height: 36px;
-letter-spacing: 0em;
-text-align: left;
+    color: var(--m-3-sys-light-on-surface-variant, #49454F);
+    font-family: Roboto;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 36px;
 
+    padding-left: 12px;
 }
 
-h2{
-color:#0029C6;
-font-family: Roboto;
-font-size: 16px;
-font-weight: 500;
-line-height: 24px;
-letter-spacing: 0.15000000596046448px;
-text-align: left;
+h5{
+    color: var(--m-3-sys-light-primary, #0029C6);
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
 
+    padding-left: 12px;
 }
 
-#drawerheader{
-padding: 10px;
-border-radius: 100px;
-gap: 5px
+#icon-text-container {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding: 12px;
+    border-radius: 100px;
+    transition: 0.5s background-color;
 }
 
-.mat-drawer-content{
-    top: 40px;
-    padding-bottom: 40px;
-   
+#icon-text-container:hover{
+    background: var(--m-3-white, #FFF);
+    cursor: pointer;
 }
 
-
-
-.mat-drawer-container {
-    background-color:#e8efff;
+#icon-text-container > #mat-icon{
+    margin:0px 16px;
 }
 
+#icon-text-container > span{
+    color: var(--m-3-sys-light-on-surface-variant, #49454F);
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+}
 
-main {
-    --primary-color: #0029C6;
-    --background-light: #D7DFFF;
-    --font-size-1: 14px;
-    --font-size-2: 16px;
-    font-family: 'Roboto', sans-serif;
+#button-container > button{
+    color: var(--m-3-sys-light-on-surface-variant, #49454F);
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+
+    background: none;
+    border: none;
+}
+
+#icon-text-container.active,
+#icon-text-container.active span{
+    color: var(--m-3-sys-light-primary, #0029C6);
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    border-radius: 100px;
+
+    background: var(--m-3-sys-light-primary-container, #ffffff);
 }
