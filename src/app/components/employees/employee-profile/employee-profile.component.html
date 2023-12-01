@@ -217,18 +217,27 @@
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Full Names</mat-label>
                                                 <input matInput formControlName="name">
+                                                <mat-error *ngIf="employeeDetailsForm.controls['name'].hasError('required')"> Full name is required</mat-error>
+                                                <mat-error *ngIf="employeeDetailsForm.controls['name'].hasError('pattern') && !employeeDetailsForm.controls['name'].hasError('required') " >
+                                                  Enter a valid full name</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Last Name</mat-label>
                                                 <input matInput formControlName="surname">
+                                                <mat-error *ngIf="employeeDetailsForm.controls['surname'].hasError('required')"> Last name is required</mat-error>
+                                                <mat-error *ngIf="employeeDetailsForm.controls['surname'].hasError('pattern') && !employeeDetailsForm.controls['surname'].hasError('required') " >
+                                                  Enter a valid last name</mat-error> 
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Initials</mat-label>
                                                 <input matInput formControlName="initials">
+                                                <mat-error *ngIf="employeeDetailsForm.controls['initials'].hasError('required')"> Initials are required</mat-error>
+                                                <mat-error *ngIf="employeeDetailsForm.controls['initials'].hasError('pattern') && !employeeDetailsForm.controls['initials'].hasError('required')"> 
+                                                    These are not valid initials</mat-error>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -312,6 +321,10 @@
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>I.D number</mat-label>
                                                 <input matInput formControlName="idNumber">
+                                                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('required')"> ID number is required </mat-error>
+                                                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('InvalidsaID') && !employeeDetailsForm.controls['idNumber'].hasError('required')">
+                                                  Not a valid South African ID number
+                                                </mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
@@ -440,24 +453,36 @@
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Personal Email</mat-label>
                                                 <input matInput formControlName="personalEmail">
+                                                <mat-error *ngIf="employeeContactForm.controls['personalEmail'].hasError('required')"> Personal email is required</mat-error>
+                                                <mat-error *ngIf="employeeContactForm.controls['personalEmail'].hasError('pattern') && !employeeContactForm.controls['personalEmail'].hasError('required')"> 
+                                                  This is not a valid email</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Work email</mat-label>
                                                 <input matInput formControlName="email">
+                                                <mat-error *ngIf="employeeContactForm.controls['email'].hasError('required')"> Work email is required</mat-error>
+                                                <mat-error *ngIf="employeeContactForm.controls['email'].hasError('pattern') && !employeeContactForm.controls['email'].hasError('required')">
+                                                   This is not a valid work email</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Cellphone Number</mat-label>
                                                 <input matInput formControlName="cellphoneNo">
+                                                <mat-error *ngIf="employeeContactForm.controls['cellphoneNo'].hasError('required')"> Cellphone number is required</mat-error>
+                                                <mat-error *ngIf="employeeContactForm.controls['cellphoneNo'].hasError('pattern') && !employeeContactForm.controls['cellphoneNo'].hasError('required')">
+                                                   This is not a valid cell phone number</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Home Number</mat-label>
                                                 <input matInput formControlName="houseNo">
+                                                <mat-error *ngIf="employeeContactForm.controls['houseNo'].hasError('required')"> Home number is required</mat-error>
+                                                <mat-error *ngIf="employeeContactForm.controls['houseNo'].hasError('pattern') && !employeeContactForm.controls['cellphoneNo'].hasError('required')">
+                                                   This is not a valid home number</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-12 mt-2">
@@ -468,12 +493,18 @@
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Emergency contact name</mat-label>
                                                 <input matInput formControlName="emergencyContactName">
+                                                <mat-error *ngIf="employeeContactForm.controls['emergencyContactName'].hasError('required')"> Emergency contact name is required</mat-error>
+                                                <mat-error *ngIf="employeeContactForm.controls['emergencyContactName'].hasError('pattern') && !employeeContactForm.controls['emergencyContactName'].hasError('required')">
+                                                   This is not a valid contact name</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Emergency contact number</mat-label>
                                                 <input matInput formControlName="emergencyContactNo">
+                                                <mat-error *ngIf="employeeContactForm.controls['emergencyContactNo'].hasError('required')"> Emergency contact number is required</mat-error>
+                                                <mat-error *ngIf="employeeContactForm.controls['emergencyContactNo'].hasError('pattern') && !employeeContactForm.controls['emergencyContactName'].hasError('required')">
+                                                   This is not a valid contact number</mat-error>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -511,6 +542,9 @@
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Unit Number</mat-label>
                                                 <input matInput formControlName="physicalUnitNumber">
+                                                <mat-error *ngIf="addressDetailsForm.controls['physicalUnitNumber'].hasError('required')"> Unit number is required</mat-error>
+                                                <mat-error *ngIf="addressDetailsForm.controls['physicalUnitNumber'].hasError('pattern') && !addressDetailsForm.controls['physicalUnitNumber'].hasError('required')">
+                                                   This is not a valid number</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6">
@@ -529,6 +563,9 @@
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Street Number</mat-label>
                                                 <input matInput formControlName="physicalStreetNumber">
+                                                <mat-error *ngIf="addressDetailsForm.controls['physicalStreetNumber'].hasError('required')"> Street number is required</mat-error>
+                                                <mat-error *ngIf="addressDetailsForm.controls['physicalStreetNumber'].hasError('pattern') && !addressDetailsForm.controls['physicalStreetNumber'].hasError('required')">
+                                                   This is not a valid number</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6">
@@ -562,6 +599,9 @@
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Postal Code</mat-label>
                                                 <input matInput formControlName="physicalPostalCode">
+                                                <mat-error *ngIf="addressDetailsForm.controls['physicalPostalCode'].hasError('required')"> Postal code is required</mat-error>
+                                                <mat-error *ngIf="addressDetailsForm.controls['physicalPostalCode'].hasError('pattern') && !addressDetailsForm.controls['physicalPostalCode'].hasError('required')">
+                                                   This is not a valid number</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-12">
@@ -755,6 +795,7 @@
                                                 <mat-label>Bank Account Owner</mat-label>
                                                 <input matInput placeholder="Enter name of owner"
                                                     formControlName="accountHolderName">
+                                                    <mat-error *ngIf="employeeBankingsForm.controls['accountHolderName'].hasError('required')"> Owner name is  required</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6"></div>
@@ -784,6 +825,9 @@
                                                 <mat-label>Account Number</mat-label>
                                                 <input type="text" min="0" matInput placeholder="Enter account number"
                                                     formControlName="accountNo">
+                                                    <mat-error *ngIf="employeeBankingsForm.controls['accountNo'].hasError('required')">Account number is required</mat-error>
+                                                    <mat-error *ngIf="employeeBankingsForm.controls['accountNo'].hasError('pattern') && !employeeBankingsForm.controls['accountNo'].hasError('required')">
+                                                       This is not a valid number</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
@@ -791,6 +835,9 @@
                                                 <mat-label>Branch Code</mat-label>
                                                 <input type="text" min="0" matInput placeholder="Enter branch code"
                                                     formControlName="branch">
+                                                    <mat-error *ngIf="employeeBankingsForm.controls['branch'].hasError('required')">Branch code is required</mat-error>
+                                                    <mat-error *ngIf="employeeBankingsForm.controls['branch'].hasError('pattern') && !employeeBankingsForm.controls['branch'].hasError('required')">
+                                                       This is not a valid number</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <p id="base64"></p>
