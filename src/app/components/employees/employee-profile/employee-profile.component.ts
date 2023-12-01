@@ -36,6 +36,7 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { category } from 'src/app/models/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { Employee } from 'src/app/models/employee.interface';
+import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 
 @Component({
   selector: 'app-employee-profile',
@@ -97,6 +98,8 @@ export class EmployeeProfileComponent {
   employeePeopleChampion: EmployeeProfile | undefined;
 
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
+  initialsPattern = /^[A-Z]+$/;
+  namePattern = /^[a-zA-Z\s'-]*$/;
 
   employeeFormProgress: number = 0;
   personalFormProgress: number = 0;
@@ -293,15 +296,17 @@ export class EmployeeProfileComponent {
 
   initializeForm() {
     this.employeeDetailsForm = this.fb.group({
-      name: [this.employeeProfile!.name, Validators.required],
-      surname: [this.employeeProfile!.surname, Validators.required],
-      initials: this.employeeProfile!.initials,
+      name: [this.employeeProfile!.name, [Validators.required,
+        Validators.pattern(this.namePattern)]],
+      surname: [this.employeeProfile!.surname, [Validators.required,
+        Validators.pattern(this.namePattern)]],
+      initials: [this.employeeProfile!.initials,[ Validators.pattern(this.initialsPattern)]],
       clientAllocated: this.employeeProfile!.clientAllocated,
       employeeType: this.employeeProfile!.employeeType!.name,
       level: this.employeeProfile!.level,
       teamLead: this.employeeProfile!.teamLead,
       dateOfBirth: [this.employeeProfile!.dateOfBirth, Validators.required],
-      idNumber: [this.employeeProfile!.idNumber, Validators.required],
+      idNumber: [this.employeeProfile!.idNumber, [Validators.required, CustomvalidationService.validateSaID]],
       engagementDate: [this.employeeProfile!.engagementDate, Validators.required],
       peopleChampion: this.employeeProfile!.peopleChampion
     });
@@ -311,35 +316,35 @@ export class EmployeeProfileComponent {
     this.employeeContactForm = this.fb.group({
       email: [this.employeeProfile!.email, [Validators.required,
       Validators.pattern(this.emailPattern)]],
-      personalEmail: [this.employeeProfile!.personalEmail, [Validators.required, Validators.email]],
+      personalEmail: [this.employeeProfile!.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
       cellphoneNo: [this.employeeProfile!.cellphoneNo, [
-        Validators.required,
+        Validators.required, Validators.maxLength(10),
         Validators.pattern(/^[0-9]*$/),
       ]],
-      houseNo: [this.employeeProfile!.houseNo, Validators.required],
-      emergencyContactName: [this.employeeProfile!.emergencyContactName, Validators.required],
-      emergencyContactNo: [this.employeeProfile!.emergencyContactNo, Validators.required]
+      houseNo: [this.employeeProfile!.houseNo, [Validators.required,Validators.minLength(4), Validators.pattern(/^[0-9]*$/)]],
+      emergencyContactName: [this.employeeProfile!.emergencyContactName, [Validators.required, Validators.pattern(this.namePattern)]],
+      emergencyContactNo: [this.employeeProfile!.emergencyContactNo, [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(10)]]
     });
     this.employeeContactForm.disable();
     this.checkContactFormProgress();
 
     this.addressDetailsForm = this.fb.group({
-      physicalUnitNumber: [this.employeeProfile!.physicalAddress?.unitNumber, Validators.required],
+      physicalUnitNumber: [this.employeeProfile!.physicalAddress?.unitNumber, [Validators.required,Validators.pattern(/^[0-9]*$/)]],
       physicalComplexName: [this.employeeProfile!.physicalAddress?.complexName, Validators.required],
-      physicalStreetNumber: [this.employeeProfile!.physicalAddress?.streetNumber, Validators.required],
+      physicalStreetNumber: [this.employeeProfile!.physicalAddress?.streetNumber, [Validators.required,Validators.pattern(/^[0-9]*$/)]],
       physicalSuburb: [this.employeeProfile!.physicalAddress?.suburbOrDistrict, Validators.required],
       physicalCity: [this.employeeProfile!.physicalAddress?.city, Validators.required],
       physicalCountry: [this.employeeProfile!.physicalAddress?.country, Validators.required],
       physicalProvince: [this.employeeProfile!.physicalAddress?.province, Validators.required],
-      physicalPostalCode: [this.employeeProfile!.physicalAddress?.postalCode, Validators.required],
-      postalUnitNumber: [this.employeeProfile!.postalAddress?.unitNumber, Validators.required],
+      physicalPostalCode: [this.employeeProfile!.physicalAddress?.postalCode, [Validators.required,Validators.pattern(/^[0-9]*$/),Validators.max(4)]],
+      postalUnitNumber: [this.employeeProfile!.postalAddress?.unitNumber, [Validators.required,Validators.pattern(/^[0-9]*$/)]],
       postalComplexName: [this.employeeProfile!.postalAddress?.complexName, Validators.required],
-      postalStreetNumber: [this.employeeProfile!.postalAddress?.streetNumber, Validators.required],
+      postalStreetNumber: [this.employeeProfile!.postalAddress?.streetNumber, [Validators.required,Validators.pattern(/^[0-9]*$/)]],
       postalSuburb: [this.employeeProfile!.postalAddress?.suburbOrDistrict, Validators.required],
       postalCity: [this.employeeProfile!.postalAddress?.city, Validators.required],
       postalCountry: [this.employeeProfile!.postalAddress?.country, Validators.required],
       postalProvince: [this.employeeProfile!.postalAddress?.province, Validators.required],
-      postalPostalCode: [this.employeeProfile!.postalAddress?.postalCode, Validators.required]
+      postalPostalCode: [this.employeeProfile!.postalAddress?.postalCode, [Validators.required,Validators.pattern(/^[0-9]*$/),Validators.max(4)]]
     });
     this.addressDetailsForm.disable();
     this.checkAddressFormProgress();
