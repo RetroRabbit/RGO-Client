@@ -23,27 +23,28 @@
                     <input matInput type="text" formControlName="name" />
                     <mat-error *ngIf="newEmployeeForm.controls['name'].hasError('required')"> Full name is required</mat-error>
                     <mat-error *ngIf="newEmployeeForm.controls['name'].hasError('pattern') && !newEmployeeForm.controls['name'].hasError('required') " >
-                      Enter a valid full name</mat-error>
+                      Full name must not contain numbers</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Last name</mat-label>
                     <input matInput type="text" formControlName="surname" />
                     <mat-error *ngIf="newEmployeeForm.controls['surname'].hasError('required')"> Last name is required</mat-error>
                     <mat-error *ngIf="newEmployeeForm.controls['surname'].hasError('pattern') && !newEmployeeForm.controls['surname'].hasError('required') " >
-                      Enter a valid last name</mat-error>
+                      Last name must not contain numbers</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Initials</mat-label>
                     <input matInput type="text" formControlName="initials" />
                     <mat-error *ngIf="newEmployeeForm.controls['initials'].hasError('required')"> Initials are required</mat-error>
-                    <mat-error *ngIf="newEmployeeForm.controls['initials'].hasError('pattern') && !newEmployeeForm.controls['initials'].hasError('required')"> These are not valid initials</mat-error>
+                    <mat-error *ngIf="newEmployeeForm.controls['initials'].hasError('pattern') && !newEmployeeForm.controls['initials'].hasError('required')"> 
+                      Initials must not contain numbers</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Work Email</mat-label>
                     <input matInput type="email" formControlName="email" />
                     <mat-error *ngIf="newEmployeeForm.controls['email'].hasError('required')"> Work email is required</mat-error>
                     <mat-error *ngIf="newEmployeeForm.controls['email'].hasError('pattern') && !newEmployeeForm.controls['email'].hasError('required')">
-                       This is not a valid work email</mat-error>
+                       Work email must end with @retrorabbit.co.za</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Personal Email</mat-label>
@@ -194,7 +195,7 @@
                       <mat-label>Street Number</mat-label>
                       <input matInput type="text" formControlName="streetNumber" />
                       <mat-error *ngIf="physicalAddress.controls['streetNumber'].hasError('pattern')">
-                        Not a valid number
+                        Street number must  only contain numbers
                       </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
@@ -213,7 +214,7 @@
                       <mat-label>Postal Code</mat-label>
                       <input matInput type="text" formControlName="postalCode" />
                       <mat-error *ngIf="physicalAddress.controls['postalCode'].hasError('pattern')">
-                        Not a valid number
+                        Postal code must contain only numbers.
                       </mat-error>
                     </mat-form-field>
                     <form [formGroup]="postalAddressForm" class="col-lg-7 col-md-12">
@@ -242,7 +243,7 @@
                       <mat-label>Street Number</mat-label>
                       <input matInput type="text" formControlName="streetNumber" />
                       <mat-error *ngIf="postalAddress.controls['streetNumber'].hasError('pattern')">
-                        Not a valid number
+                        Street Number must contain only numbers.
                       </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
@@ -261,7 +262,7 @@
                       <mat-label>Postal Code</mat-label>
                       <input matInput type="text" formControlName="postalCode" />
                       <mat-error *ngIf="postalAddress.controls['postalCode'].hasError('pattern')">
-                        Not a valid number
+                        Postal code must contain only numbers.
                       </mat-error>
                     </mat-form-field>
                   </form>

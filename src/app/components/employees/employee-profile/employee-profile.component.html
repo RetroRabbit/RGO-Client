@@ -219,7 +219,7 @@
                                                 <input matInput formControlName="name">
                                                 <mat-error *ngIf="employeeDetailsForm.controls['name'].hasError('required')"> Full name is required</mat-error>
                                                 <mat-error *ngIf="employeeDetailsForm.controls['name'].hasError('pattern') && !employeeDetailsForm.controls['name'].hasError('required') " >
-                                                  Enter a valid full name</mat-error>
+                                                  Full name must not contain numbers</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
@@ -228,7 +228,7 @@
                                                 <input matInput formControlName="surname">
                                                 <mat-error *ngIf="employeeDetailsForm.controls['surname'].hasError('required')"> Last name is required</mat-error>
                                                 <mat-error *ngIf="employeeDetailsForm.controls['surname'].hasError('pattern') && !employeeDetailsForm.controls['surname'].hasError('required') " >
-                                                  Enter a valid last name</mat-error> 
+                                                  Last name must not contain numbers</mat-error> 
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
@@ -237,7 +237,7 @@
                                                 <input matInput formControlName="initials">
                                                 <mat-error *ngIf="employeeDetailsForm.controls['initials'].hasError('required')"> Initials are required</mat-error>
                                                 <mat-error *ngIf="employeeDetailsForm.controls['initials'].hasError('pattern') && !employeeDetailsForm.controls['initials'].hasError('required')"> 
-                                                    These are not valid initials</mat-error>
+                                                    Initials must not contain numbers</mat-error>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -323,7 +323,7 @@
                                                 <input matInput formControlName="idNumber">
                                                 <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('required')"> ID number is required </mat-error>
                                                 <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('InvalidsaID') && !employeeDetailsForm.controls['idNumber'].hasError('required')">
-                                                  Not a valid South African ID number
+                                                 This is not a valid South African ID number
                                                 </mat-error>
                                             </mat-form-field>
                                         </div>
@@ -464,7 +464,7 @@
                                                 <input matInput formControlName="email">
                                                 <mat-error *ngIf="employeeContactForm.controls['email'].hasError('required')"> Work email is required</mat-error>
                                                 <mat-error *ngIf="employeeContactForm.controls['email'].hasError('pattern') && !employeeContactForm.controls['email'].hasError('required')">
-                                                   This is not a valid work email</mat-error>
+                                                    Work email must end with @retrorabbit.co.za </mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
@@ -482,7 +482,7 @@
                                                 <input matInput formControlName="houseNo">
                                                 <mat-error *ngIf="employeeContactForm.controls['houseNo'].hasError('required')"> Home number is required</mat-error>
                                                 <mat-error *ngIf="employeeContactForm.controls['houseNo'].hasError('pattern') && !employeeContactForm.controls['cellphoneNo'].hasError('required')">
-                                                   This is not a valid home number</mat-error>
+                                                   Home number must only contain numbers</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-12 mt-2">
@@ -495,7 +495,7 @@
                                                 <input matInput formControlName="emergencyContactName">
                                                 <mat-error *ngIf="employeeContactForm.controls['emergencyContactName'].hasError('required')"> Emergency contact name is required</mat-error>
                                                 <mat-error *ngIf="employeeContactForm.controls['emergencyContactName'].hasError('pattern') && !employeeContactForm.controls['emergencyContactName'].hasError('required')">
-                                                   This is not a valid contact name</mat-error>
+                                                   Contact name must not contain numbers</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
@@ -544,7 +544,7 @@
                                                 <input matInput formControlName="physicalUnitNumber">
                                                 <mat-error *ngIf="addressDetailsForm.controls['physicalUnitNumber'].hasError('required')"> Unit number is required</mat-error>
                                                 <mat-error *ngIf="addressDetailsForm.controls['physicalUnitNumber'].hasError('pattern') && !addressDetailsForm.controls['physicalUnitNumber'].hasError('required')">
-                                                   This is not a valid number</mat-error>
+                                                   Unit number must only contain numbers</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6">
@@ -565,7 +565,7 @@
                                                 <input matInput formControlName="physicalStreetNumber">
                                                 <mat-error *ngIf="addressDetailsForm.controls['physicalStreetNumber'].hasError('required')"> Street number is required</mat-error>
                                                 <mat-error *ngIf="addressDetailsForm.controls['physicalStreetNumber'].hasError('pattern') && !addressDetailsForm.controls['physicalStreetNumber'].hasError('required')">
-                                                   This is not a valid number</mat-error>
+                                                   Street Number must only contain numbers</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6">
@@ -601,7 +601,7 @@
                                                 <input matInput formControlName="physicalPostalCode">
                                                 <mat-error *ngIf="addressDetailsForm.controls['physicalPostalCode'].hasError('required')"> Postal code is required</mat-error>
                                                 <mat-error *ngIf="addressDetailsForm.controls['physicalPostalCode'].hasError('pattern') && !addressDetailsForm.controls['physicalPostalCode'].hasError('required')">
-                                                   This is not a valid number</mat-error>
+                                                   Postal code should contain only number</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-12">
@@ -827,7 +827,7 @@
                                                     formControlName="accountNo">
                                                     <mat-error *ngIf="employeeBankingsForm.controls['accountNo'].hasError('required')">Account number is required</mat-error>
                                                     <mat-error *ngIf="employeeBankingsForm.controls['accountNo'].hasError('pattern') && !employeeBankingsForm.controls['accountNo'].hasError('required')">
-                                                       This is not a valid number</mat-error>
+                                                       Account number must contain only numbers</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
@@ -837,7 +837,7 @@
                                                     formControlName="branch">
                                                     <mat-error *ngIf="employeeBankingsForm.controls['branch'].hasError('required')">Branch code is required</mat-error>
                                                     <mat-error *ngIf="employeeBankingsForm.controls['branch'].hasError('pattern') && !employeeBankingsForm.controls['branch'].hasError('required')">
-                                                       This is not a valid number</mat-error>
+                                                       Branch Code must contain only numbers</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <p id="base64"></p>
