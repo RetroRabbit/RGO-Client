@@ -1,6 +1,5 @@
 import { Component,Output, EventEmitter } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
-import { NgToastService } from 'ng-angular-popup';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
@@ -34,7 +33,7 @@ export class CreateChartsComponent {
     enableSearchFilter: true,
   };
 
-  constructor(private ChartService: ChartService,private toast: NgToastService, private router: Router,private cookieService: CookieService,
+  constructor(private ChartService: ChartService, private router: Router,private cookieService: CookieService,
     private snackBarService: SnackbarService) {}
 
   ngOnInit() : void {
@@ -49,6 +48,7 @@ export class CreateChartsComponent {
       .subscribe({
         next : response => {
           this.snackBarService.showSnackbar("Chart created", "snack-success");
+          this.router.navigateByUrl('/charts')
           this.cookieService.set('currentPage', "Charts");
         },
         error: error => {

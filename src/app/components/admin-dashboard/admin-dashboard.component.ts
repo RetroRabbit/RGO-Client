@@ -11,7 +11,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { NgToastService } from 'ng-angular-popup';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -71,14 +70,12 @@ export class AdminDashboardComponent {
   searchResults: EmployeeProfile[] = [];
   allEmployees: EmployeeProfile[] = [];
 
-  CURRENT_PAGE = "currentPage";
   PREVIOUS_PAGE = "previousPage";
 
   constructor(
     private employeeProfileService: EmployeeProfileService,
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
-    private toast: NgToastService,
     private chartService: ChartService,
     private cookieService: CookieService,
     private router: Router,
@@ -140,10 +137,6 @@ export class AdminDashboardComponent {
     return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
 
-  CaptureEventOld(event: any) {
-    this.cookieService.set(this.CURRENT_PAGE, "+ Add Graph");
-  }
-
   CaptureEvent(event: any) {
     let dialogRef = this.dialog.open(this.dialogTemplate, {
       width: '500px'
@@ -152,8 +145,7 @@ export class AdminDashboardComponent {
 
   AddNewHire(event: any) {
     const target = event.target as HTMLAnchorElement;
-    this.cookieService.set(this.PREVIOUS_PAGE, 'Dashboard');
-    this.cookieService.set(this.CURRENT_PAGE, target.innerText);
+    this.cookieService.set(this.PREVIOUS_PAGE, '/dashboard');
     this.router.navigateByUrl('/create-employee');
 
   }
@@ -161,8 +153,8 @@ export class AdminDashboardComponent {
   viewMoreEmployees() {
     this.displayAllEmployees = true;
     this.expandSearch.emit(this.searchQuery);
-    this.cookieService.set(this.PREVIOUS_PAGE, 'Dashboard');
-    this.cookieService.set(this.CURRENT_PAGE, 'Employees');
+    this.cookieService.set(this.PREVIOUS_PAGE, '/dashboard');
+    this.router.navigateByUrl('/employees');
   }
 
   searchEmployees() {
@@ -303,15 +295,10 @@ export class AdminDashboardComponent {
     });
   }
 
-  CaptureEventlast(event: any) {
-    const target = event.target as HTMLAnchorElement;
-    this.cookieService.set(this.CURRENT_PAGE, target.innerText);
-  }
-
   recieveNumber(number: any) {
     this.chartService.getAllCharts().subscribe({
       next: data => this.charts = data,
-      error: error => this.toast.error({ detail: "Error", summary: "Failed to get charts.", duration: 5000, position: 'topRight' })
+      error: error => this.snackBarService.showSnackbar("Failed to get charts", "snack-error")
     })
   }
 
@@ -362,12 +349,7 @@ export class AdminDashboardComponent {
           this.dataSource.sort = this.sort;
         }),
         catchError((error) => {
-          this.toast.error({
-            detail: `Error: ${error}`,
-            summary: 'Failed to load employees',
-            duration: 10000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Failed to load employees", "snack-error");
           return of([]);
         })
       )
@@ -383,9 +365,8 @@ export class AdminDashboardComponent {
 
   employeeClickEvent(employee: EmployeeProfile): void {
     this.selectedEmployee.emit(employee);
-    this.cookieService.set(this.CURRENT_PAGE, 'EmployeeProfile');
-    this.cookieService.set(this.PREVIOUS_PAGE, 'Dashboard');
-    console.log(employee);
+    this.cookieService.set(this.PREVIOUS_PAGE, '/dashboard');
+    this.router.navigateByUrl('/profile');
   }
 
   ViewUser(email: string) {

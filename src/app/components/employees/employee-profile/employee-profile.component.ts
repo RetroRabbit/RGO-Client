@@ -8,10 +8,8 @@ import { countries } from 'src/app/models/constants/countries.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { FieldCode } from 'src/app/models/field-code.interface';
-import { NgToastService } from 'ng-angular-popup';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { ClientService } from 'src/app/services/client.service';
-import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { Client } from 'src/app/models/client.interface';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
@@ -213,7 +211,6 @@ export class EmployeeProfileComponent {
   constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
     private clientService: ClientService,
-    private toast: NgToastService,
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
@@ -436,7 +433,7 @@ export class EmployeeProfileComponent {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Employee Details updated!", "snack-success");
+          this.snackBarService.showSnackbar("Personal details updated", "snack-success");
           this.checkPersonalFormProgress();
           this.totalProfileProgress();
           this.getEmployeeFields();
@@ -495,28 +492,27 @@ saveAddressEdit() {
     this.employeeAddressService.update(postalAddressDto).subscribe({
       next: (postalData) => {
         this.employeeProfile!.postalAddress = postalAddressDto;
-        this.toast.success({ detail: "Postal address updated!", position: 'topRight' });
-
+        this.snackBarService.showSnackbar("Postal Details updated", "snack-success");
         this.employeeAddressService.update(physicalAddressDto).subscribe({
           next: (data) => {
             this.employeeProfile!.physicalAddress = physicalAddressDto;
-            this.toast.success({ detail: "Physical address updated!", position: 'topRight' });
+            this.snackBarService.showSnackbar("Physical address updated", "snack-success");
             this.addressDetailsForm.disable();
             this.checkAddressFormProgress();
             this.totalProfileProgress();
             this.getEmployeeFields();
           },
           error: (error: any) => {
-            this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+            this.snackBarService.showSnackbar(error, "snack-error");
           },
         });
       },
       error: (postalError: any) => {
-        this.toast.error({ detail: "Error", summary: postalError, duration: 5000, position: 'topRight' });
+        this.snackBarService.showSnackbar(postalError, "snack-error");
       },
     });
   } else {
-    this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+    this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
   }
 }
   cancelAddressEdit() {
@@ -623,7 +619,7 @@ saveAddressEdit() {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Employee Details updated!", "snack-success");
+          this.snackBarService.showSnackbar("Employee details updated", "snack-success");
           this.checkEmployeeFormProgress();
           this.totalProfileProgress();
           this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfileDto?.clientAllocated)[0];
@@ -665,7 +661,7 @@ saveAddressEdit() {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Employee Details updated!", "snack-success");
+          this.snackBarService.showSnackbar("Contact details updated", "snack-success");
           this.checkContactFormProgress();
           this.totalProfileProgress();
           this.employeeContactForm.disable();
@@ -674,7 +670,7 @@ saveAddressEdit() {
       });
     }
     else {
-      this.snackBarService.showSnackbar("Please fill in the reuired fields", "snack-error");
+      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
   }
 
@@ -703,7 +699,7 @@ saveAddressEdit() {
 
         this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
           next: (data) => {
-            this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+            this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
             this.checkAdditionalFormProgress();
             this.totalProfileProgress();
             this.additionalInfoForm.disable();
@@ -723,13 +719,13 @@ saveAddressEdit() {
         if (employeeDataDto.value != '') {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
-              this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+              this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
               this.checkAdditionalFormProgress();
               this.totalProfileProgress();
               this.additionalInfoForm.disable();
             },
             error: (error) => {
-              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+              this.snackBarService.showSnackbar(error, "snack-error");
             }
           });
         }
@@ -952,7 +948,7 @@ saveAddressEdit() {
     if(this.hasBankingData){
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {
-        this.snackBarService.showSnackbar("Employee Banking updated!", "snack-success");
+        this.snackBarService.showSnackbar("Banking details updated", "snack-success");
         this.addressDetailsForm.disable();
         this.checkAddressFormProgress();
         this.totalBankingProgress();
@@ -968,7 +964,7 @@ saveAddressEdit() {
     else{
       this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Bankin Details Added!", "snack-success");
+          this.snackBarService.showSnackbar("Banking details added", "snack-success");
           this.addressDetailsForm.disable();
           this.checkAddressFormProgress();
           this.totalBankingProgress();
@@ -1056,8 +1052,7 @@ getEmployeeDocuments() {
         this.calculateDocumentProgress();
       },
       error: error => {
-        this.toast.error({ detail: "Error fetching documents", position: 'topRight' });
-
+        this.snackBarService.showSnackbar(error, "snack-error");
       }
     })
   }
@@ -1074,23 +1069,23 @@ getEmployeeDocuments() {
       }
       this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
         next: () => {
-          this.toast.success({ detail: "Document added!", position: 'topRight' });
+          this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getEmployeeDocuments();
           this.calculateDocumentProgress();
         },
-        error: () => {
-          this.toast.error({ detail: "Document unable to upload!", position: 'topRight' });
+        error: (error) => {
+          this.snackBarService.showSnackbar(error, "snack-error");
         }
       });
     }else{
       this.employeeDocumentService.updateEmployeeDocument(document).subscribe({
         next: () => {
-          this.toast.success({ detail: "Document updated ", position: 'topRight' });
+          this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getEmployeeDocuments();
           this.calculateDocumentProgress();
         },
-        error: () => {
-          this.toast.error({ detail: "Document unable to update!", position: 'topRight' });
+        error: (error) => {
+          this.snackBarService.showSnackbar(error, "snack-error");
         }
       });
     }

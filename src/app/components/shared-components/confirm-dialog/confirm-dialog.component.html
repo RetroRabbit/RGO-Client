@@ -1,0 +1,16 @@
+<ng-template #dialogSaveTemplate>
+    <div id="dialog-content">
+        <div class="row">
+            <div id="dialog-container">
+                <div id="dialog-header">
+                    <h2 mat-dialog-title id="dialog-title">{{dialogType.title}}</h2>
+                    <h4 id="dialog-subtitle">{{dialogType.subtitle}}</h4>
+                </div>
+                <div id="button-container">
+                    <button mat-button mat-dialog-close id="save-button" (click)="captureResponse(true)">{{buttonText}}</button>
+                    <button mat-button mat-dialog-close id="cancel-button" (click)="captureResponse(false)">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
