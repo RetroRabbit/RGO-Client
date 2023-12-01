@@ -22,26 +22,34 @@
                     <mat-label>Full name</mat-label>
                     <input matInput type="text" formControlName="name" />
                     <mat-error *ngIf="newEmployeeForm.controls['name'].hasError('required')"> Full name is required</mat-error>
+                    <mat-error *ngIf="newEmployeeForm.controls['name'].hasError('pattern') && !newEmployeeForm.controls['name'].hasError('required') " >
+                      Enter a valid full name</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Last name</mat-label>
                     <input matInput type="text" formControlName="surname" />
                     <mat-error *ngIf="newEmployeeForm.controls['surname'].hasError('required')"> Last name is required</mat-error>
+                    <mat-error *ngIf="newEmployeeForm.controls['surname'].hasError('pattern') && !newEmployeeForm.controls['surname'].hasError('required') " >
+                      Enter a valid last name</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Initials</mat-label>
                     <input matInput type="text" formControlName="initials" />
                     <mat-error *ngIf="newEmployeeForm.controls['initials'].hasError('required')"> Initials are required</mat-error>
+                    <mat-error *ngIf="newEmployeeForm.controls['initials'].hasError('pattern') && !newEmployeeForm.controls['initials'].hasError('required')"> These are not valid initials</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Work Email</mat-label>
                     <input matInput type="email" formControlName="email" />
                     <mat-error *ngIf="newEmployeeForm.controls['email'].hasError('required')"> Work email is required</mat-error>
+                    <mat-error *ngIf="newEmployeeForm.controls['email'].hasError('pattern') && !newEmployeeForm.controls['email'].hasError('required')">
+                       This is not a valid work email</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Personal Email</mat-label>
                     <input matInput type="email" formControlName="personalEmail" />
                     <mat-error *ngIf="newEmployeeForm.controls['personalEmail'].hasError('required')"> Personal email is required</mat-error>
+                    <mat-error *ngIf="newEmployeeForm.controls['personalEmail'].hasError('pattern') && !newEmployeeForm.controls['personalEmail'].hasError('required')"> This is not a valid email</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Role</mat-label>
@@ -86,6 +94,9 @@
                     <mat-label>ID number</mat-label>
                     <input matInput type="text" formControlName="idNumber" />
                     <mat-error *ngIf="newEmployeeForm.controls['idNumber'].hasError('required')"> ID number is required </mat-error>
+                    <mat-error *ngIf="newEmployeeForm.controls['idNumber'].hasError('InvalidsaID') && !newEmployeeForm.controls['idNumber'].hasError('required')">
+                      Not a valid South African ID number
+                    </mat-error>
                   </mat-form-field>
                 </div>
                 <form [formGroup]="settingsForm"
