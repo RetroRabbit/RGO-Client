@@ -473,7 +473,7 @@
                                                 <input matInput formControlName="cellphoneNo">
                                                 <mat-error *ngIf="employeeContactForm.controls['cellphoneNo'].hasError('required')"> Cellphone number is required</mat-error>
                                                 <mat-error *ngIf="employeeContactForm.controls['cellphoneNo'].hasError('pattern') && !employeeContactForm.controls['cellphoneNo'].hasError('required')">
-                                                   This is not a valid cell phone number</mat-error>
+                                                 Cell Phone number must only contain numbers</mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
@@ -504,7 +504,7 @@
                                                 <input matInput formControlName="emergencyContactNo">
                                                 <mat-error *ngIf="employeeContactForm.controls['emergencyContactNo'].hasError('required')"> Emergency contact number is required</mat-error>
                                                 <mat-error *ngIf="employeeContactForm.controls['emergencyContactNo'].hasError('pattern') && !employeeContactForm.controls['emergencyContactName'].hasError('required')">
-                                                   This is not a valid contact number</mat-error>
+                                                   Contact number must only contain numbers</mat-error>
                                             </mat-form-field>
                                         </div>
                                     </div>
