@@ -91,13 +91,5 @@ export class AppComponent {
       logoutParams: { returnTo: document.location.origin }
     });
   }
-
-  CaptureEvent(event: any) {
-    const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('currentPage', target.innerText);
-    this.selectedItem = target.innerText;
-    // this.selectedEmployee = null;
-    // this.shouldDisplayNewEmployee = false;
-  }
   
 }

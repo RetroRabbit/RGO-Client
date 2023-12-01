@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild} from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
-import { NgToastService } from 'ng-angular-popup';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -36,7 +35,6 @@ export class NewEmployeeComponent implements OnInit {
     private employeeTypeService: EmployeeTypeService,
     private employeeAddressService: EmployeeAddressService,
     private cookieService: CookieService,
-    private toast: NgToastService,
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
@@ -500,7 +498,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   goToPreviousPage(){
-    this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
-
+    this.router.navigateByUrl(this.cookieService.get(this.PREVIOUS_PAGE));
+    //this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
   }
 }

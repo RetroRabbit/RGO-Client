@@ -18,7 +18,7 @@ import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects'
 import { NgChartsModule } from 'ng2-charts';
 import { ChartComponent } from './components/charts/charts.component';
 import { CreateChartsComponent } from './components/charts/create-charts/create-charts.component';
-import { NgToastModule } from 'ng-angular-popup';
+
 import { ReportComponent } from './components/charts/chart-reports/chart-reports.component';
 import { RoleManagerComponent } from './components/role-manager/role-manager.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
@@ -72,6 +72,7 @@ import { SystemSettingsComponent } from './components/system-settings/system-set
 import { MatChipsModule } from '@angular/material/chips';
 import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
@@ -100,7 +101,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     AddEmployeeEventComponent,
     SystemSettingsComponent,
     ChartReportPdfComponent,
-    NavBarComponent
+    NavBarComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -124,7 +126,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     }),
     HttpClientModule,
     BrowserAnimationsModule,
-    NgToastModule,
+
     MatButtonModule,
     MatMenuModule,
     MatIconModule,

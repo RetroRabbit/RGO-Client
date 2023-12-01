@@ -3,7 +3,6 @@ import { ChartService } from 'src/app/services/charts.service';
 import { Chart } from 'src/app/models/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { colours } from '../../models/constants/colours.constants';
-import { NgToastService } from 'ng-angular-popup';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';
@@ -44,8 +43,7 @@ export class ChartComponent implements OnInit {
   public barChartPlugins = [ChartDataLabels];
 
   selectedChartIndex: number = -1;
-  constructor(private chartService: ChartService, private cookieService: CookieService,
-    private toast: NgToastService, public dialog: MatDialog, private renderer: Renderer2,
+  constructor(private chartService: ChartService, private cookieService: CookieService, public dialog: MatDialog, private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document, private employeeProfile: EmployeeService, private snackBarService: SnackbarService) { }
 
   public barChartOptions: ChartConfiguration['options'] = {
@@ -229,11 +227,6 @@ export class ChartComponent implements OnInit {
         }
       });
     }
-  }
-
-  CaptureEvent(event: any) {
-    const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('currentPage', target.innerText);
   }
 
   fetchPeopleChampionEmployees() {
