@@ -193,6 +193,9 @@
                     <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                       <mat-label>Street Number</mat-label>
                       <input matInput type="text" formControlName="streetNumber" />
+                      <mat-error *ngIf="physicalAddress.controls['streetNumber'].hasError('pattern')">
+                        Not a valid number
+                      </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                       <mat-label>Country</mat-label>
@@ -209,6 +212,9 @@
                     <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                       <mat-label>Postal Code</mat-label>
                       <input matInput type="text" formControlName="postalCode" />
+                      <mat-error *ngIf="physicalAddress.controls['postalCode'].hasError('pattern')">
+                        Not a valid number
+                      </mat-error>
                     </mat-form-field>
                     <form [formGroup]="postalAddressForm" class="col-lg-7 col-md-12">
                       <mat-checkbox formControlName="sameAsPhysicalAddress" (change)="postalSameAsPhysicalAddress()">Postal address is the same as physical address</mat-checkbox>
@@ -235,6 +241,9 @@
                     <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                       <mat-label>Street Number</mat-label>
                       <input matInput type="text" formControlName="streetNumber" />
+                      <mat-error *ngIf="postalAddress.controls['streetNumber'].hasError('pattern')">
+                        Not a valid number
+                      </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                       <mat-label>Country</mat-label>
@@ -251,6 +260,9 @@
                     <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                       <mat-label>Postal Code</mat-label>
                       <input matInput type="text" formControlName="postalCode" />
+                      <mat-error *ngIf="postalAddress.controls['postalCode'].hasError('pattern')">
+                        Not a valid number
+                      </mat-error>
                     </mat-form-field>
                   </form>
                 </div>

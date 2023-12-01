@@ -89,10 +89,10 @@ export class NewEmployeeComponent implements OnInit {
       complexName: new FormControl<string | null>(" ", Validators.minLength(1)),
       suburbDistrict: new FormControl<string | null>(" ", Validators.minLength(1)),
       city: new FormControl<string | null>(" ", Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>(" ", [Validators.minLength(4)]),
+      streetNumber: new FormControl<string | null>(" ", [Validators.minLength(4),Validators.pattern(/^[0-9]*$/)]),
       country: new FormControl<string | null>(" ", Validators.minLength(1)),
       province: new FormControl<string | null>(" ", Validators.minLength(1)),
-      postalCode: new FormControl<string | null>(" ", [Validators.minLength(4),Validators.pattern( /^\d{4}$/)]),
+      postalCode: new FormControl<string | null>(" ", [Validators.minLength(4),Validators.pattern(/^[0-9]*$/)]),
     });
   }
 
