@@ -20,7 +20,6 @@ import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
 import { HideNavService } from 'src/app/services/hide-nav.service';
-import { ValidationService } from 'src/app/services/validation.service';
 import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 
 @Component({
@@ -40,7 +39,6 @@ export class NewEmployeeComponent implements OnInit {
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
     private hideNavService: HideNavService,
-    private validationService: ValidationService,
     private customValidationService: CustomvalidationService
   ) { }
 
@@ -133,7 +131,7 @@ export class NewEmployeeComponent implements OnInit {
       new Date(Date.now()),
       Validators.required
     ),
-    idNumber: new FormControl<string>('', [Validators.required, this.validationService.validateIdNumber]),
+    idNumber: new FormControl<string>('', [Validators.required, this.customValidationService.idNumberValidator]),
     passportNumber: new FormControl<string>(''),
     passportExpiryDate: new FormControl<Date | string | null>(
       new Date(Date.now())

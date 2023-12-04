@@ -312,6 +312,10 @@
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>I.D number</mat-label>
                                                 <input matInput formControlName="idNumber" (blur)="getGenderBirthday($event)">
+                                                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('required')"> ID number is required </mat-error>
+                                                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('invalidIdNumber') && !employeeDetailsForm.controls['idNumber'].hasError('required')">
+                                                 This is not a valid South African ID number
+                                                </mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
@@ -322,16 +326,6 @@
                                                 <mat-datepicker-toggle matSuffix
                                                     [for]="picker1"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker1></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>I.D number</mat-label>
-                                                <input matInput formControlName="idNumber">
-                                                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('required')"> ID number is required </mat-error>
-                                                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('invalidIdNumber') && !employeeDetailsForm.controls['idNumber'].hasError('required')">
-                                                 This is not a valid South African ID number
-                                                </mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
