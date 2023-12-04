@@ -11,7 +11,6 @@ export class ValidationService {
     const idNumber = control.value;
 
     if (!idNumber) {
-      // Handle the case where the input is empty
       return null;
     }
 
