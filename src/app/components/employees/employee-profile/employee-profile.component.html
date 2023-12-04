@@ -322,7 +322,7 @@
                                                 <mat-label>I.D number</mat-label>
                                                 <input matInput formControlName="idNumber">
                                                 <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('required')"> ID number is required </mat-error>
-                                                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('InvalidsaID') && !employeeDetailsForm.controls['idNumber'].hasError('required')">
+                                                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('invalidIdNumber') && !employeeDetailsForm.controls['idNumber'].hasError('required')">
                                                  This is not a valid South African ID number
                                                 </mat-error>
                                             </mat-form-field>

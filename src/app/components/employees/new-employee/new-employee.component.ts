@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild} from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
@@ -38,8 +38,11 @@ export class NewEmployeeComponent implements OnInit {
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
-    private hideNavService: HideNavService
+    private hideNavService: HideNavService,
+    private customValidationService: CustomvalidationService
   ) { }
+
+   
 
   firstFormGroup = this._formBuilder.group({
     firstCtrl: ['', Validators.required],
@@ -82,6 +85,8 @@ export class NewEmployeeComponent implements OnInit {
 
   filteredPeopleChamps: any = [];
   peopleChampionId = null;
+
+  
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
@@ -126,7 +131,8 @@ export class NewEmployeeComponent implements OnInit {
       new Date(Date.now()),
       Validators.required
     ),
-    idNumber: new FormControl<string>('', [Validators.required, CustomvalidationService.validateSaID]),
+    
+    idNumber: new FormControl<string>('', [Validators.required, this.customValidationService.idNumberValidator]),
     passportNumber: new FormControl<string>(''),
     passportExpiryDate: new FormControl<Date | string | null>(
       new Date(Date.now())
