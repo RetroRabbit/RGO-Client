@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild} from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
@@ -21,6 +21,7 @@ import { EmployeeDocumentService } from 'src/app/services/employee/employee-docu
 import { MatStepper } from '@angular/material/stepper';
 import { HideNavService } from 'src/app/services/hide-nav.service';
 import { ValidationService } from 'src/app/services/validation.service';
+import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 
 @Component({
   selector: 'app-new-employee',
@@ -39,8 +40,11 @@ export class NewEmployeeComponent implements OnInit {
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
     private hideNavService: HideNavService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private customValidationService: CustomvalidationService
   ) { }
+
+   
 
   firstFormGroup = this._formBuilder.group({
     firstCtrl: ['', Validators.required],
@@ -59,6 +63,8 @@ export class NewEmployeeComponent implements OnInit {
 
   employeeTypes: EmployeeType[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
+  namePattern = /^[a-zA-Z\s'-]*$/;
+  initialsPattern = /^[A-Z]+$/;
   toggleAdditional: boolean = false;
 
   levels: number[] = levels.map((level) => level.value);
@@ -82,16 +88,18 @@ export class NewEmployeeComponent implements OnInit {
   filteredPeopleChamps: any = [];
   peopleChampionId = null;
 
+  
+
   private createAddressForm(): FormGroup {
     return new FormGroup({
       unitNumber: new FormControl<string | null>(" ", Validators.minLength(1)),
       complexName: new FormControl<string | null>(" ", Validators.minLength(1)),
       suburbDistrict: new FormControl<string | null>(" ", Validators.minLength(1)),
       city: new FormControl<string | null>(" ", Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>(" ", Validators.minLength(1)),
+      streetNumber: new FormControl<string | null>(" ", [Validators.minLength(4),Validators.pattern(/^[0-9]*$/)]),
       country: new FormControl<string | null>(" ", Validators.minLength(1)),
       province: new FormControl<string | null>(" ", Validators.minLength(1)),
-      postalCode: new FormControl<string | null>(" ", Validators.minLength(1)),
+      postalCode: new FormControl<string | null>(" ", [Validators.minLength(4),Validators.pattern(/^[0-9]*$/)]),
     });
   }
 
@@ -115,9 +123,12 @@ export class NewEmployeeComponent implements OnInit {
     nationality: new FormControl<string>(''),
     level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
     employeeType: new FormControl<{ id: number; name: string } | null>(null, Validators.required),
-    name: new FormControl<string>('', Validators.required),
-    initials: new FormControl<string>('', Validators.required),
-    surname: new FormControl<string>('', Validators.required),
+    name: new FormControl<string>('',[Validators.required,
+      Validators.pattern(this.namePattern)]),
+    initials: new FormControl<string>('', [ Validators.required,
+      Validators.pattern(this.initialsPattern)]),
+    surname: new FormControl<string>('', [Validators.required,
+      Validators.pattern(this.namePattern)]),
     dateOfBirth: new FormControl<Date | string>(
       new Date(Date.now()),
       Validators.required
@@ -132,8 +143,8 @@ export class NewEmployeeComponent implements OnInit {
     gender: new FormControl<number>(0),
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),
     ]),
-    personalEmail: new FormControl<string>('', [Validators.required, Validators.email]),
-    cellphoneNo: new FormControl('', [Validators.pattern(/^[0-9]*$/),
+    personalEmail: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]),
+    cellphoneNo: new FormControl('', [Validators.pattern(/^[0-9]*$/),Validators.maxLength(10)
     ]),
     photo: new FormControl<string>(''),
     notes: new FormControl<string>(''),
