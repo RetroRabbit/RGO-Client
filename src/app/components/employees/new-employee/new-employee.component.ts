@@ -1,8 +1,9 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { NgToastService } from 'ng-angular-popup';
+import { Component, Input, OnInit, ViewChild} from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
+import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
@@ -19,6 +20,7 @@ import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
 import { HideNavService } from 'src/app/services/hide-nav.service';
+import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 
 @Component({
   selector: 'app-new-employee',
@@ -33,11 +35,14 @@ export class NewEmployeeComponent implements OnInit {
     private employeeTypeService: EmployeeTypeService,
     private employeeAddressService: EmployeeAddressService,
     private cookieService: CookieService,
-    private toast: NgToastService,
     private employeeDocumentService: EmployeeDocumentService,
+    private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
-    private hideNavService: HideNavService
+    private hideNavService: HideNavService,
+    private customValidationService: CustomvalidationService
   ) { }
+
+   
 
   firstFormGroup = this._formBuilder.group({
     firstCtrl: ['', Validators.required],
@@ -56,6 +61,8 @@ export class NewEmployeeComponent implements OnInit {
 
   employeeTypes: EmployeeType[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
+  namePattern = /^[a-zA-Z\s'-]*$/;
+  initialsPattern = /^[A-Z]+$/;
   toggleAdditional: boolean = false;
 
   levels: number[] = levels.map((level) => level.value);
@@ -79,16 +86,18 @@ export class NewEmployeeComponent implements OnInit {
   filteredPeopleChamps: any = [];
   peopleChampionId = null;
 
+  
+
   private createAddressForm(): FormGroup {
     return new FormGroup({
       unitNumber: new FormControl<string | null>(" ", Validators.minLength(1)),
       complexName: new FormControl<string | null>(" ", Validators.minLength(1)),
       suburbDistrict: new FormControl<string | null>(" ", Validators.minLength(1)),
       city: new FormControl<string | null>(" ", Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>(" ", Validators.minLength(1)),
+      streetNumber: new FormControl<string | null>(" ", [Validators.minLength(4),Validators.pattern(/^[0-9]*$/)]),
       country: new FormControl<string | null>(" ", Validators.minLength(1)),
       province: new FormControl<string | null>(" ", Validators.minLength(1)),
-      postalCode: new FormControl<string | null>(" ", Validators.minLength(1)),
+      postalCode: new FormControl<string | null>(" ", [Validators.minLength(4),Validators.pattern(/^[0-9]*$/)]),
     });
   }
 
@@ -112,14 +121,18 @@ export class NewEmployeeComponent implements OnInit {
     nationality: new FormControl<string>(''),
     level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
     employeeType: new FormControl<{ id: number; name: string } | null>(null, Validators.required),
-    name: new FormControl<string>('', Validators.required),
-    initials: new FormControl<string>('', Validators.required),
-    surname: new FormControl<string>('', Validators.required),
+    name: new FormControl<string>('',[Validators.required,
+      Validators.pattern(this.namePattern)]),
+    initials: new FormControl<string>('', [ Validators.required,
+      Validators.pattern(this.initialsPattern)]),
+    surname: new FormControl<string>('', [Validators.required,
+      Validators.pattern(this.namePattern)]),
     dateOfBirth: new FormControl<Date | string>(
       new Date(Date.now()),
       Validators.required
     ),
-    idNumber: new FormControl<string>('', Validators.required),
+    
+    idNumber: new FormControl<string>('', [Validators.required, this.customValidationService.idNumberValidator]),
     passportNumber: new FormControl<string>(''),
     passportExpiryDate: new FormControl<Date | string | null>(
       new Date(Date.now())
@@ -129,8 +142,8 @@ export class NewEmployeeComponent implements OnInit {
     gender: new FormControl<number>(0),
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),
     ]),
-    personalEmail: new FormControl<string>('', [Validators.required, Validators.email]),
-    cellphoneNo: new FormControl('', [Validators.pattern(/^[0-9]*$/),
+    personalEmail: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]),
+    cellphoneNo: new FormControl('', [Validators.pattern(/^[0-9]*$/),Validators.maxLength(10)
     ]),
     photo: new FormControl<string>(''),
     notes: new FormControl<string>(''),
@@ -225,12 +238,7 @@ export class NewEmployeeComponent implements OnInit {
                 this.employeeDocumentModels.push(employeeDocument);
               },
               error: (error: any) => {
-                this.toast.error({
-                  detail: 'Error',
-                  summary: 'Failed compile documents',
-                  duration: 5000,
-                  position: 'topRight',
-                });
+                this.snackBarService.showSnackbar("Failed to compile documents", "snack-error");
               }
             });
           };
@@ -252,20 +260,10 @@ export class NewEmployeeComponent implements OnInit {
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
         next: () => {
-          this.toast.success({
-            detail: 'Success',
-            summary: `files have been uploaded`,
-            duration: 5000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Files have been uploaded", "snack-success");
         },
         error: (error: any) => {
-          this.toast.error({
-            detail: 'Error',
-            summary: 'Failed to save documents',
-            duration: 5000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Failed to save documents", "snack-error");
         }, complete: () => {
           this.employeeDocumentModels = [];
           this.newEmployeeEmail = "";
@@ -364,9 +362,8 @@ export class NewEmployeeComponent implements OnInit {
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
-      this.toast.error({ detail: 'Error', summary: `⚠️ Please enter an official Retro Rabbit email address`, duration: 5000, position: 'topRight',
-     });
-     return;
+      this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
+      return;
     }
 
     this.newEmployeeForm.value.cellphoneNo =
@@ -383,9 +380,7 @@ export class NewEmployeeComponent implements OnInit {
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
-        this.toast.success({
-          detail: 'Success', summary: `${this.newEmployeeForm.value.name} has been added`, duration: 5000, position: 'topRight',
-        });
+        this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
         this.myStepper.next();
         this.isDirty = false;
       },
@@ -397,9 +392,7 @@ export class NewEmployeeComponent implements OnInit {
         } else if (error.status === 406) {
           message = 'User already exists';
         }
-        this.toast.error({
-          detail: 'Error', summary: `Error: ${message}`, duration: 5000, position: 'topRight',
-        });
+        this.snackBarService.showSnackbar(`Error: ${message}`, "snackbar-success");
         this.isDirty = false;
       },
 

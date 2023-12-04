@@ -8,7 +8,7 @@ import { countries } from 'src/app/models/constants/countries.constants';
 import { disabilities } from 'src/app/models/constants/disabilities.constant';
 import { provinces } from 'src/app/models/constants/provinces.constants';
 import { FieldCode } from 'src/app/models/field-code.interface';
-import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { ClientService } from 'src/app/services/client.service';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { Client } from 'src/app/models/client.interface';
@@ -36,6 +36,7 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { category } from 'src/app/models/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { Employee } from 'src/app/models/employee.interface';
+import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 
 @Component({
   selector: 'app-employee-profile',
@@ -97,6 +98,8 @@ export class EmployeeProfileComponent {
   employeePeopleChampion: EmployeeProfile | undefined;
 
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
+  initialsPattern = /^[A-Z]+$/;
+  namePattern = /^[a-zA-Z\s'-]*$/;
 
   employeeFormProgress: number = 0;
   personalFormProgress: number = 0;
@@ -212,14 +215,15 @@ export class EmployeeProfileComponent {
   constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
     private clientService: ClientService,
-    private toast: NgToastService,
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private employeeTypeService: EmployeeTypeService,
     private employeeBankingService: EmployeeBankingService,
     private employeeDocumentService: EmployeeDocumentService,
     private fieldCodeService: FieldCodeService,
-    private employeeDataService: EmployeeDataService) { }
+    private employeeDataService: EmployeeDataService,
+    private snackBarService: SnackbarService,
+    private customValidationService: CustomvalidationService) { }
 
   ngOnInit() {
     this.getEmployeeFields();
@@ -244,7 +248,7 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisbility = data.disability;
         this.hasDisbility = this.employeeProfile!.disability;
-        
+
         this.employeeDataService.getEmployeeData(this.selectedEmployee ? this.selectedEmployee.id : this.employeeProfile?.id).subscribe({
           next: data => {
             this.employeeData = data;
@@ -255,7 +259,7 @@ export class EmployeeProfileComponent {
             this.employeeBanking = data;
             this.bankingId = this.employeeBanking.id;
             this.initializeBankingForm(this.employeeBanking);
-            
+
           }
         })
         this.employeeService.getAllProfiles().subscribe({
@@ -293,15 +297,17 @@ export class EmployeeProfileComponent {
 
   initializeForm() {
     this.employeeDetailsForm = this.fb.group({
-      name: [this.employeeProfile!.name, Validators.required],
-      surname: [this.employeeProfile!.surname, Validators.required],
-      initials: this.employeeProfile!.initials,
+      name: [this.employeeProfile!.name, [Validators.required,
+        Validators.pattern(this.namePattern)]],
+      surname: [this.employeeProfile!.surname, [Validators.required,
+        Validators.pattern(this.namePattern)]],
+      initials: [this.employeeProfile!.initials,[ Validators.pattern(this.initialsPattern)]],
       clientAllocated: this.employeeProfile!.clientAllocated,
       employeeType: this.employeeProfile!.employeeType!.name,
       level: this.employeeProfile!.level,
       teamLead: this.employeeProfile!.teamLead,
       dateOfBirth: [this.employeeProfile!.dateOfBirth, Validators.required],
-      idNumber: [this.employeeProfile!.idNumber, Validators.required],
+      idNumber: [this.employeeProfile!.idNumber, [Validators.required, this.customValidationService.idNumberValidator]],
       engagementDate: [this.employeeProfile!.engagementDate, Validators.required],
       peopleChampion: this.employeeProfile!.peopleChampion
     });
@@ -311,35 +317,35 @@ export class EmployeeProfileComponent {
     this.employeeContactForm = this.fb.group({
       email: [this.employeeProfile!.email, [Validators.required,
       Validators.pattern(this.emailPattern)]],
-      personalEmail: [this.employeeProfile!.personalEmail, [Validators.required, Validators.email]],
+      personalEmail: [this.employeeProfile!.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
       cellphoneNo: [this.employeeProfile!.cellphoneNo, [
-        Validators.required,
+        Validators.required, Validators.maxLength(10),
         Validators.pattern(/^[0-9]*$/),
       ]],
-      houseNo: [this.employeeProfile!.houseNo, Validators.required],
-      emergencyContactName: [this.employeeProfile!.emergencyContactName, Validators.required],
-      emergencyContactNo: [this.employeeProfile!.emergencyContactNo, Validators.required]
+      houseNo: [this.employeeProfile!.houseNo, [Validators.required,Validators.minLength(4), Validators.pattern(/^[0-9]*$/)]],
+      emergencyContactName: [this.employeeProfile!.emergencyContactName, [Validators.required, Validators.pattern(this.namePattern)]],
+      emergencyContactNo: [this.employeeProfile!.emergencyContactNo, [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(10)]]
     });
     this.employeeContactForm.disable();
     this.checkContactFormProgress();
 
     this.addressDetailsForm = this.fb.group({
-      physicalUnitNumber: [this.employeeProfile!.physicalAddress?.unitNumber, Validators.required],
+      physicalUnitNumber: [this.employeeProfile!.physicalAddress?.unitNumber, [Validators.required,Validators.pattern(/^[0-9]*$/)]],
       physicalComplexName: [this.employeeProfile!.physicalAddress?.complexName, Validators.required],
-      physicalStreetNumber: [this.employeeProfile!.physicalAddress?.streetNumber, Validators.required],
+      physicalStreetNumber: [this.employeeProfile!.physicalAddress?.streetNumber, [Validators.required,Validators.pattern(/^[0-9]*$/)]],
       physicalSuburb: [this.employeeProfile!.physicalAddress?.suburbOrDistrict, Validators.required],
       physicalCity: [this.employeeProfile!.physicalAddress?.city, Validators.required],
       physicalCountry: [this.employeeProfile!.physicalAddress?.country, Validators.required],
       physicalProvince: [this.employeeProfile!.physicalAddress?.province, Validators.required],
-      physicalPostalCode: [this.employeeProfile!.physicalAddress?.postalCode, Validators.required],
-      postalUnitNumber: [this.employeeProfile!.postalAddress?.unitNumber, Validators.required],
+      physicalPostalCode: [this.employeeProfile!.physicalAddress?.postalCode, [Validators.required,Validators.pattern(/^[0-9]*$/),Validators.max(4)]],
+      postalUnitNumber: [this.employeeProfile!.postalAddress?.unitNumber, [Validators.required,Validators.pattern(/^[0-9]*$/)]],
       postalComplexName: [this.employeeProfile!.postalAddress?.complexName, Validators.required],
-      postalStreetNumber: [this.employeeProfile!.postalAddress?.streetNumber, Validators.required],
+      postalStreetNumber: [this.employeeProfile!.postalAddress?.streetNumber, [Validators.required,Validators.pattern(/^[0-9]*$/)]],
       postalSuburb: [this.employeeProfile!.postalAddress?.suburbOrDistrict, Validators.required],
       postalCity: [this.employeeProfile!.postalAddress?.city, Validators.required],
       postalCountry: [this.employeeProfile!.postalAddress?.country, Validators.required],
       postalProvince: [this.employeeProfile!.postalAddress?.province, Validators.required],
-      postalPostalCode: [this.employeeProfile!.postalAddress?.postalCode, Validators.required]
+      postalPostalCode: [this.employeeProfile!.postalAddress?.postalCode, [Validators.required,Validators.pattern(/^[0-9]*$/),Validators.max(4)]]
     });
     this.addressDetailsForm.disable();
     this.checkAddressFormProgress();
@@ -434,19 +440,19 @@ export class EmployeeProfileComponent {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-          this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.snackBarService.showSnackbar("Personal details updated", "snack-success");
           this.checkPersonalFormProgress();
           this.totalProfileProgress();
           this.getEmployeeFields();
           this.personalDetailsForm.disable();
         },
         error: (error) => {
-          this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+          this.snackBarService.showSnackbar(error, "snack-error");
         },
       });
     }
     else {
-      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
   }
 
@@ -493,28 +499,27 @@ saveAddressEdit() {
     this.employeeAddressService.update(postalAddressDto).subscribe({
       next: (postalData) => {
         this.employeeProfile!.postalAddress = postalAddressDto;
-        this.toast.success({ detail: "Postal address updated!", position: 'topRight' });
-
+        this.snackBarService.showSnackbar("Postal Details updated", "snack-success");
         this.employeeAddressService.update(physicalAddressDto).subscribe({
           next: (data) => {
             this.employeeProfile!.physicalAddress = physicalAddressDto;
-            this.toast.success({ detail: "Physical address updated!", position: 'topRight' });
+            this.snackBarService.showSnackbar("Physical address updated", "snack-success");
             this.addressDetailsForm.disable();
             this.checkAddressFormProgress();
             this.totalProfileProgress();
             this.getEmployeeFields();
           },
           error: (error: any) => {
-            this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+            this.snackBarService.showSnackbar(error, "snack-error");
           },
         });
       },
       error: (postalError: any) => {
-        this.toast.error({ detail: "Error", summary: postalError, duration: 5000, position: 'topRight' });
+        this.snackBarService.showSnackbar(postalError, "snack-error");
       },
     });
   } else {
-    this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+    this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
   }
 }
   cancelAddressEdit() {
@@ -621,7 +626,7 @@ saveAddressEdit() {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-          this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.snackBarService.showSnackbar("Employee details updated", "snack-success");
           this.checkEmployeeFormProgress();
           this.totalProfileProgress();
           this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfileDto?.clientAllocated)[0];
@@ -629,11 +634,11 @@ saveAddressEdit() {
           this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfileDto?.peopleChampion)[0];
           this.employeeDetailsForm.disable();
         },
-        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error) => { this.snackBarService.showSnackbar(error, "snack-error")},
       });
     }
     else {
-      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
   }
 
@@ -663,16 +668,16 @@ saveAddressEdit() {
 
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
-          this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+          this.snackBarService.showSnackbar("Contact details updated", "snack-success");
           this.checkContactFormProgress();
           this.totalProfileProgress();
           this.employeeContactForm.disable();
         },
-        error: (error) => { this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' }); },
+        error: (error) => { this.snackBarService.showSnackbar(error, "snack-error")},
       });
     }
     else {
-      this.toast.error({ detail: "Error", summary: "Please fill in the required fields", duration: 5000, position: 'topRight' });
+      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
   }
 
@@ -701,7 +706,7 @@ saveAddressEdit() {
 
         this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
           next: (data) => {
-            this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+            this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
             this.checkAdditionalFormProgress();
             this.totalProfileProgress();
             this.additionalInfoForm.disable();
@@ -721,13 +726,13 @@ saveAddressEdit() {
         if (employeeDataDto.value != '') {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
-              this.toast.success({ detail: "Employee Details updated!", position: 'topRight' });
+              this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
               this.checkAdditionalFormProgress();
               this.totalProfileProgress();
               this.additionalInfoForm.disable();
             },
             error: (error) => {
-              this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+              this.snackBarService.showSnackbar(error, "snack-error");
             }
           });
         }
@@ -950,7 +955,7 @@ saveAddressEdit() {
     if(this.hasBankingData){
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {
-          this.toast.success({ detail: "Employee Banking updated!", position: 'topRight' });
+        this.snackBarService.showSnackbar("Banking details updated", "snack-success");
         this.addressDetailsForm.disable();
         this.checkAddressFormProgress();
         this.totalBankingProgress();
@@ -959,14 +964,14 @@ saveAddressEdit() {
         this.hasUpdatedBanking = true;
       },
       error: (error) => {
-        this.toast.error({ detail: "Error", summary: error, duration: 5000, position: 'topRight' });
+        this.snackBarService.showSnackbar(error, "snack-error");
       }
     })
     }
     else{
       this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
         next: () => {
-          this.toast.success({ detail: "Banking Details Added!", position: 'topRight' });
+          this.snackBarService.showSnackbar("Banking details added", "snack-success");
           this.addressDetailsForm.disable();
           this.checkAddressFormProgress();
           this.totalBankingProgress();
@@ -975,7 +980,7 @@ saveAddressEdit() {
           this.hasUpdatedBanking = true;
         }
         ,error : (error) => {
-          this.toast.error({ detail: "Failed to create banking information", summary: error, duration: 5000, position: 'topRight' });
+          this.snackBarService.showSnackbar("Failed to create banking information", "snack-error");
         }
       })
     }
@@ -1054,8 +1059,7 @@ getEmployeeDocuments() {
         this.calculateDocumentProgress();
       },
       error: error => {
-        this.toast.error({ detail: "Error fetching documents", position: 'topRight' });
-
+        this.snackBarService.showSnackbar(error, "snack-error");
       }
     })
   }
@@ -1072,23 +1076,23 @@ getEmployeeDocuments() {
       }
       this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
         next: () => {
-          this.toast.success({ detail: "Document added!", position: 'topRight' });
+          this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getEmployeeDocuments();
           this.calculateDocumentProgress();
         },
-        error: () => {
-          this.toast.error({ detail: "Document unable to upload!", position: 'topRight' });
+        error: (error) => {
+          this.snackBarService.showSnackbar(error, "snack-error");
         }
       });
     }else{
       this.employeeDocumentService.updateEmployeeDocument(document).subscribe({
         next: () => {
-          this.toast.success({ detail: "Document updated ", position: 'topRight' });
+          this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getEmployeeDocuments();
           this.calculateDocumentProgress();
         },
-        error: () => {
-          this.toast.error({ detail: "Document unable to update!", position: 'topRight' });
+        error: (error) => {
+          this.snackBarService.showSnackbar(error, "snack-error");
         }
       });
     }

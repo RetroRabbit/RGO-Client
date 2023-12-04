@@ -5,7 +5,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 
 @Component({
   selector: 'app-chart-report-pdf',
@@ -24,8 +24,8 @@ export class ChartReportPdfComponent {
 
   ngOnInit() {
   }
-  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, private toast: NgToastService) {
-  }
+  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, private snackBarService: SnackbarService) { }
+
   ngAfterViewInit() {
     if (this.canvas && this.canvas.nativeElement) {
       const context: CanvasRenderingContext2D = this.canvas.nativeElement.getContext('2d');
@@ -105,7 +105,7 @@ export class ChartReportPdfComponent {
           container.removeAttribute("style");
         }
       }).catch(error => {
-        this.toast.error({ detail: "error", summary: "Error generating PDF:", duration: 5000, position: 'topRight' });
+        this.snackBarService.showSnackbar("Error generating PDF", "snack-error");
 
         if (originalStyle !== null) {
           container.setAttribute("style", originalStyle);
@@ -114,7 +114,7 @@ export class ChartReportPdfComponent {
         }
       });
     } else {
-      this.toast.error({ detail: "error", summary: "Could not find the container element to generate the PDF", duration: 5000, position: 'topRight' });
+      this.snackBarService.showSnackbar("Could not find the container element to generate the PDF","snack-error");
     }
   }
 
