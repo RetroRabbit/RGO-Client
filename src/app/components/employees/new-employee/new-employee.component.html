@@ -86,19 +86,18 @@
                     <mat-error *ngIf="newEmployeeForm.controls['engagementDate'].hasError('required')">Engagement date is required</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-label>ID number</mat-label>
+                    <input matInput type="text" formControlName="idNumber" (blur)="getGenderBirthday($event)"/>
+                    <mat-error *ngIf="newEmployeeForm.controls['idNumber'].hasError('invalidIdNumber') && !newEmployeeForm.controls['idNumber'].hasError('required')">
+                      Not a valid South African ID number
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Date of Birth</mat-label> 
                     <input matInput formControlName="dateOfBirth" [matDatepicker]="dateOfBirthPicker" />
                     <mat-datepicker-toggle matSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle>
                     <mat-datepicker #dateOfBirthPicker></mat-datepicker>
                     <mat-error *ngIf="newEmployeeForm.controls['dateOfBirth'].hasError('required')"> Date of birth is required</mat-error>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                    <mat-label>ID number</mat-label>
-                    <input matInput type="text" formControlName="idNumber" />
-                    <mat-error *ngIf="newEmployeeForm.controls['idNumber'].hasError('required')"> ID number is required </mat-error>
-                    <mat-error *ngIf="newEmployeeForm.controls['idNumber'].hasError('invalidIdNumber') && !newEmployeeForm.controls['idNumber'].hasError('required')">
-                      Not a valid South African ID number
-                    </mat-error>
                   </mat-form-field>
                 </div>
                 <form [formGroup]="settingsForm"
