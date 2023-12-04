@@ -6,8 +6,8 @@ import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
     providedIn: 'root'
 })
 export class CustomvalidationService {
- static ValidateIdNumber(
-    idNumber: any) {
+    
+ static ValidateIdNumber(idNumber: any) {
         var tempTotal;
         var checkSum = 0;
         var multiplier = 1;
