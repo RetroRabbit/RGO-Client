@@ -20,6 +20,7 @@ import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
 import { HideNavService } from 'src/app/services/hide-nav.service';
+import { ValidationService } from 'src/app/services/validation.service';
 
 @Component({
   selector: 'app-new-employee',
@@ -37,7 +38,8 @@ export class NewEmployeeComponent implements OnInit {
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
-    private hideNavService: HideNavService
+    private hideNavService: HideNavService,
+    private validationService: ValidationService
   ) { }
 
   firstFormGroup = this._formBuilder.group({
@@ -120,7 +122,7 @@ export class NewEmployeeComponent implements OnInit {
       new Date(Date.now()),
       Validators.required
     ),
-    idNumber: new FormControl<string>('', Validators.required),
+    idNumber: new FormControl<string>('', [Validators.required, this.validationService.validateIdNumber]),
     passportNumber: new FormControl<string>(''),
     passportExpiryDate: new FormControl<Date | string | null>(
       new Date(Date.now())
@@ -353,17 +355,28 @@ export class NewEmployeeComponent implements OnInit {
       this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
       return;
     }
-
+    console.log(this.newEmployeeForm.value.engagementDate)
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
       employeeNumber: this.newEmployeeForm.value.surname?.substring(0, 3).toUpperCase() + '000',
-      engagementDate: new Date(this.newEmployeeForm.value.engagementDate!).toISOString().split('T')[0],
-      dateOfBirth: new Date(this.newEmployeeForm.value.dateOfBirth!).toISOString().split('T')[0],
+      engagementDate: new Date(
+        new Date(this.newEmployeeForm.value.engagementDate!)
+          .setUTCHours(0, 0, 0, 0)
+          + (
+            new Date(this.newEmployeeForm.value.engagementDate!).toDateString() ===
+            new Date().toDateString()
+                ? 0
+                : 24 * 60 * 60 * 1000
+            )
+      ).toISOString()
+   ,
+      dateOfBirth: this.newEmployeeForm.value.dateOfBirth,
       physicalAddress: this.physicalAddressObj,
       postalAddress: this.postalAddressObj,
       peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
     });
+   
     const employeeEmail: string = this.newEmployeeForm.value.email!;
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
@@ -390,7 +403,7 @@ export class NewEmployeeComponent implements OnInit {
   checkBlankRequiredFields() {
     this.newEmployeeForm.value.dateOfBirth = this.newEmployeeForm.value
       .dateOfBirth
-      ? this.newEmployeeForm.value.engagementDate
+      ? this.newEmployeeForm.value.dateOfBirth
       : new Date(Date.now());
     this.newEmployeeForm.value.countryOfBirth =
       this.newEmployeeForm.value.countryOfBirth === ''
@@ -499,4 +512,34 @@ export class NewEmployeeComponent implements OnInit {
     this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
 
   }
+
+  getGenderBirthday(event: FocusEvent){
+    let idNo = (event.target as HTMLInputElement).value;
+    let dob = idNo.slice(0, 6);
+    let gender = parseInt(idNo.slice(6, 10));
+
+    let dobMatch = dob.match(/\d{2}/g)
+    if(dobMatch){
+      let [year, month, day] = dobMatch;
+      const currentYear= new Date().getFullYear().toString().slice(0, 2);
+      let birthYear =(parseInt(year) < parseInt(currentYear)) ? ('20' + year) : ('19' + year);
+      // const dateObject = new Date(parseInt(birthYear), parseInt(month)-1, parseInt(day)+1);
+      // dateObject.setUTCHours(0, 0, 0, 0)
+      // this.newEmployeeForm.patchValue({dateOfBirth: dateObject.toISOString()})
+      this.newEmployeeForm.patchValue({ dateOfBirth: new Date(Date.UTC(parseInt(birthYear), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0))
+        .toISOString() });
+
+      // let dateObject2 = new Date(parseInt(birthYear), parseInt(month)-1, parseInt(day)+1).toISOString();
+      // console.log(dateObject)
+      // console.log(dateObject2)
+      // console.log(new Date(new Date(this.newEmployeeForm.value.dateOfBirth!).toISOString()))
+      // console.log((this.newEmployeeForm.value.dateOfBirth!))
+
+    }
+    if (gender){
+      gender > 4999 ? this.newEmployeeForm.patchValue({gender: 1}) : this.newEmployeeForm.patchValue({gender: 2})
+    }
+  }
+
+
 }
