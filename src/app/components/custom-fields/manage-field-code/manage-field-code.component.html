@@ -1,43 +1,96 @@
-<div class="wrapper">
+<!-- <div class="wrapper">
   <div>
     <div class="m-3 border-bottom">
       <h1 class="page-heading">Manage Field Code</h1>
     </div>
     <div style="overflow: auto">
       <div class="container-fluid">
-          <button class="btn btn-primary" (click)="CaptureEvent($event)">Add new field code</button>
+        <button class="btn btn-primary" (click)="CaptureEvent($event)">Add new field code</button>
         <div style="padding-top: 30px;"></div>
         <label>Custom Fields:</label><br>
         <label>Search:</label>
         <input pInputText type="text" [(ngModel)]="filterText" (input)="filterData()" /><br>
-         <div *ngIf="filteredFieldCodes" class="custom-table" style="overflow: auto">
+        <div *ngIf="filteredFieldCodes" class="custom-table" style="overflow: auto">
           <p-table [value]="filteredFieldCodes" [paginator]="true" [rows]="10">
-             <ng-template pTemplate="header">
-               <tr>
+            <ng-template pTemplate="header">
+              <tr>
                 <th pSortableColumn="id">ID</th>
-                 <th pSortableColumn="name">Name</th>
-                 <th pSortableColumn="description" >Description</th>
-                 <th pSortableColumn="status" >Status</th>
-               </tr>
-             </ng-template>
-             <ng-template pTemplate="body" let-fieldCode>
-               <tr [ngClass]="{'selected-row': selectedFieldCode === fieldCode}" (click)="onRowSelect(fieldCode)">
-                 <td>{{ fieldCode.id }}</td>
-                 <td>{{ fieldCode.code }}</td>
-                 <td>{{ fieldCode.name }}</td>
-                 <td>
-                   <ng-container *ngIf="fieldCode.status === 0; else archived">{{ 'Active' }}</ng-container>
-                   <ng-template #archived>Archived</ng-template>
-                 </td>
-               </tr>
-             </ng-template>
-           </p-table>
-         </div>
+                <th pSortableColumn="name">Name</th>
+                <th pSortableColumn="description">Description</th>
+                <th pSortableColumn="status">Status</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-fieldCode>
+              <tr [ngClass]="{'selected-row': selectedFieldCode === fieldCode}" (click)="onRowSelect(fieldCode)">
+                <td>{{ fieldCode.id }}</td>
+                <td>{{ fieldCode.code }}</td>
+                <td>{{ fieldCode.name }}</td>
+                <td>
+                  <ng-container *ngIf="fieldCode.status === 0; else archived">{{ 'Active' }}</ng-container>
+                  <ng-template #archived>Archived</ng-template>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
       </div>
     </div>
     <div style="padding-top: 30px;"></div>
     <div *ngIf="selectedFieldCode != null" class="update-form">
       <app-update-field [selectedFieldCode]="selectedFieldCode"></app-update-field>
+    </div>
+  </div>
+</div> -->
+<div id="field-code-container" class="mt-4">
+  <div id="interact-fields" class="justify-content-between ms-3">
+    <div id="search-container" class="row">
+      <div class="col-10 ps-4">
+        <input pInputText [(ngModel)]="filterText" (input)="filterData()" type="text" placeholder="Search custom field"
+          class="w-100" id="search-field">
+      </div>
+      <div id="icon" class="col-1 pt-2 ps-4">
+        <mat-icon>search</mat-icon>
+      </div>
+    </div>
+    <div id="button-container">
+      <button (click)="AddNewField()">+ Add New Field</button>
+    </div>
+  </div>
+  <div id="tab-buttons" class="mb-0">
+    <div id="tab" (click)="changeTab('active')" [ngClass]="activeTab == 'active' ? 'activeTab' : ''">
+      Active (2)
+    </div>
+    <div (click)="changeTab('passive')" id="tab" [ngClass]="activeTab == 'passive' ? 'activeTab' : ''">
+      Archived (4)
+    </div>
+  </div>
+  <hr class="m-0 p-0">
+  <div id="field-table-container">
+    <div id="table-buttons">
+      <button [ngClass]="selectedFields > 0 ? 'archive-active' : ''">Archive</button>
+    </div>
+    <div id="table-header" class="row">
+
+    </div>
+    <div id="table-body">
+      <p-table [value]="filteredFieldCodes" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="id">ID</th>
+            <th pSortableColumn="name">Name</th>
+            <th pSortableColumn="description">Description</th>
+            <th pSortableColumn="status">Status</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fieldCode>
+          <tr [ngClass]="{'selected-row': selectedFieldCode === fieldCode}" (click)="onRowSelect(fieldCode)">
+            <td>{{ fieldCode.id }}</td>
+            <td>{{ fieldCode.code }}</td>
+            <td>{{ fieldCode.name }}</td>
+            <td>{{fieldCode.status === 0 ? 'Active' : 'Archived'}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   </div>
 </div>

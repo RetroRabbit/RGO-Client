@@ -1,7 +1,7 @@
 import { Component, Output,
   EventEmitter } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-
+import { HideNavService } from 'src/app/services/hide-nav.service';
 @Component({
   selector: 'app-system-settings',
   templateUrl: './system-settings.component.html',
@@ -13,11 +13,8 @@ export class SystemSettingsComponent {
 
   clicked: string = "";
 
-  constructor (public cookieService: CookieService){
+  constructor (public cookieService: CookieService, public hideNavService: HideNavService){
 
-  }
-
-  ngOnInit() {
   }
 
   displayRoleManagement(): void {
