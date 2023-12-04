@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
 import { EmployeeBankingService } from 'src/app/services/employee/employee-banking.service';
-import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 @Component({
   selector: 'app-pending-bank-statements',
   templateUrl: './pending-bank-details.component.html',
@@ -19,13 +19,13 @@ export class PendingBankDetailsComponent {
 
   constructor(
     private employeeBankingService: EmployeeBankingService,
-    private toast: NgToastService) { }
+    private snackBarService: SnackbarService) { }
 
   ngOnInit() {
     this.fetchPending();
-    
+
   }
-  
+
   fetchPending(){
     this.employeeBankingService.getPending(1).subscribe(dataArray => {
       this.pendingBankApplications = dataArray;
@@ -80,20 +80,20 @@ export class PendingBankDetailsComponent {
     delete updateData.employee;
 
     if(updateData.status == 2 && this.declineReason == ''){
-      this.toast.error({detail:"Error",summary: "You must provide a reason for rejecting an application",duration:5000, position:'topRight'});
+      this.snackBarService.showSnackbar("You must provide a reason for rejecting an application", "snack-error");
       return;
     }
     if(updateData.status == 1){
-      this.toast.error({detail:"Error",summary: "You must provide a response to submit",duration:5000, position:'topRight'});
+      this.snackBarService.showSnackbar("You must provide a response to submit", "snack-error");
       return;
     }
     this.employeeBankingService.updatePending(updateData).subscribe( (data) => {
-      this.toast.success({detail:"Success",summary:`${this.copyOfSelected?.accountHolderName} has been updated`,duration:5000, position:'topRight'});
+      this.snackBarService.showSnackbar(`${this.copyOfSelected?.accountHolderName} has been updated`, "snack-success");
       this.showTable();
       this.ngOnInit();
     },
     (error) => {
-      this.toast.error({detail:"Error",summary: "Please try again later",duration:5000, position:'topRight'});
+      this.snackBarService.showSnackbar("Please try again later", "snack-error");
     });
   }
 }

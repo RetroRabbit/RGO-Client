@@ -11,12 +11,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { NgToastService } from 'ng-angular-popup';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { TemplateRef } from '@angular/core';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { HideNavService } from 'src/app/services/hide-nav.service';
@@ -72,20 +72,20 @@ export class AdminDashboardComponent {
 
   CURRENT_PAGE = "currentPage";
   PREVIOUS_PAGE = "previousPage";
-  
+
   constructor(
     private employeeProfileService: EmployeeProfileService,
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
-    private toast: NgToastService,
     private chartService: ChartService,
     private cookieService: CookieService,
     private router: Router,
     private dialog: MatDialog,
+    private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
     private hideNavService: HideNavService
   ) {}
-  
+
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
@@ -97,35 +97,35 @@ export class AdminDashboardComponent {
       }
       this.searchResults = [];
     });
-    
+
     this.employeeProfileService
       .searchEmployees(this.searchQuery)
       .subscribe((data) => {
         this.allEmployees = data;
     });
-    
+
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
       error: (error) => {
-        this.toast.error({ detail: "Error", summary: "Failed to fetch charts.", duration: 5000, position: 'topRight' });
+        this.snackBarService.showSnackbar("Failed to fetch charts", "snack-error");
       }
     });
-    
+
     this.categoryControl.valueChanges.subscribe(val => {
       this.selectedCategories = val;
     });
-    
+
     this.typeControl.valueChanges.subscribe(val => {
       this.selectedTypes = val;
     });
-    
+
     this.chartService.getColumns().subscribe({
       next: data => {
         this.categories = data;
         this.filteredCategories = this.categories.slice().sort((a, b) => a.localeCompare(b));
       }
     });
-    
+
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.types = data.map(type => type.name || '');
@@ -179,7 +179,7 @@ export class AdminDashboardComponent {
             return 0;
           }
         });
-  
+
       if (this.searchResults.length <= 0) {
         this.noResults = true;
       } else {
@@ -253,22 +253,22 @@ export class AdminDashboardComponent {
 
   createChart() {
     if (!this.chartType) {
-      this.toast.info({ detail: "Missing chart type", summary: "Please select a chart type", duration: 5000, position: 'topRight' });
+      this.snackBarService.showSnackbar("Please select a chart type", "snack-error");
       return;
     }
     if (!this.chartName) {
-      this.toast.info({ detail: "Missing chart name", summary: "Please enter a chart name", duration: 5000, position: 'topRight' });
+      this.snackBarService.showSnackbar("Please enter a chart name", "snack-error");
       return;
     }
     if (this.selectedCategories.length < 1) {
-      this.toast.info({ detail: "Missing chart category", summary: "Please select a category/s", duration: 5000, position: 'topRight' });
+      this.snackBarService.showSnackbar("Missing chart category", "snack-error");
       return;
     }
 
     this.chartService.createChart(this.selectedCategories, this.chartName, this.chartType)
       .subscribe({
         next: response => {
-          this.toast.success({ detail: "Success", summary: 'Chart created', duration: 5000, position: 'topRight' });
+          this.snackBarService.showSnackbar("Chart created", "snack-success");
           this.dialog.closeAll();
           this.selectedCategories = [];
           this.chartName = '';
@@ -276,7 +276,7 @@ export class AdminDashboardComponent {
           this.ngOnInit();
         },
         error: error => {
-          this.toast.error({ detail: "Error", summary: "Failed to create chart.", duration: 5000, position: 'topRight' });
+          this.snackBarService.showSnackbar("Failed to create chart", "snack-error");
         }
       }
       );
@@ -294,7 +294,7 @@ export class AdminDashboardComponent {
         this.chartLabels = data.labels;
       },
       error: error => {
-        this.toast.error({ detail: "Error", summary: "Failed to get chartData.", duration: 5000, position: 'topRight' });
+        this.snackBarService.showSnackbar("Failed to get chart data", "snack-error");
       }
     });
   }
@@ -307,10 +307,10 @@ export class AdminDashboardComponent {
   recieveNumber(number: any) {
     this.chartService.getAllCharts().subscribe({
       next: data => this.charts = data,
-      error: error => this.toast.error({ detail: "Error", summary: "Failed to get charts.", duration: 5000, position: 'topRight' })
+      error: error => this.snackBarService.showSnackbar("Failed to get charts", "snack-error")
     })
-  }  
- 
+  }
+
   activateSearchBar() {
     const searchBar = document.querySelector('.searchbar');
     searchBar?.classList.add('active');
@@ -333,7 +333,7 @@ export class AdminDashboardComponent {
   }> = new MatTableDataSource();
 
   @ViewChild(MatSort) sort!: MatSort;
-  
+
   getEmployees() {
     this.employeeService
       .getAllProfiles()
@@ -358,12 +358,7 @@ export class AdminDashboardComponent {
           this.dataSource.sort = this.sort;
         }),
         catchError((error) => {
-          this.toast.error({
-            detail: `Error: ${error}`,
-            summary: 'Failed to load employees',
-            duration: 10000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Failed to load employees", "snack-error");
           return of([]);
         })
       )
@@ -373,9 +368,9 @@ export class AdminDashboardComponent {
   sortRoles(roles: string[]): string[] {
     const adminRoles = roles.filter(role => role.toLowerCase().includes('admin')).sort().reverse();
     const nonAdminRoles = roles.filter(role => !role.toLowerCase().includes('admin')).sort();
-  
+
     return [...adminRoles, ...nonAdminRoles];
-  } 
+  }
 
   employeeClickEvent(employee: EmployeeProfile): void {
     this.selectedEmployee.emit(employee);
