@@ -36,6 +36,7 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { category } from 'src/app/models/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { Employee } from 'src/app/models/employee.interface';
+import { ValidationService } from 'src/app/services/validation.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -219,7 +220,8 @@ export class EmployeeProfileComponent {
     private employeeDocumentService: EmployeeDocumentService,
     private fieldCodeService: FieldCodeService,
     private employeeDataService: EmployeeDataService,
-    private snackBarService: SnackbarService) { }
+    private snackBarService: SnackbarService,
+    private validationService: ValidationService) { }
 
   ngOnInit() {
     this.getEmployeeFields();
@@ -301,7 +303,7 @@ export class EmployeeProfileComponent {
       level: this.employeeProfile!.level,
       teamLead: this.employeeProfile!.teamLead,
       dateOfBirth: [this.employeeProfile!.dateOfBirth, Validators.required],
-      idNumber: [this.employeeProfile!.idNumber, Validators.required],
+      idNumber: [this.employeeProfile!.idNumber, [Validators.required, this.validationService.validateIdNumber]],
       engagementDate: [this.employeeProfile!.engagementDate, Validators.required],
       peopleChampion: this.employeeProfile!.peopleChampion
     });
@@ -602,6 +604,7 @@ saveAddressEdit() {
     this.editEmployee = false;
     if (this.employeeDetailsForm.valid) {
       const employeeDetailsForm = this.employeeDetailsForm.value;
+      const personalDetailsForm = this.personalDetailsForm.value;
 
       this.employeeType = this.employeeTypes.find((data: any) => {
         return data.name == employeeDetailsForm.employeeType
@@ -614,10 +617,15 @@ saveAddressEdit() {
       this.employeeProfileDto.level = employeeDetailsForm.level;
       this.employeeProfileDto.teamLead = this.employeeDetailsForm.controls["teamLead"].value == 0 ? null : this.employeeId;
       this.employeeProfileDto.peopleChampion = this.employeeDetailsForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
-      this.employeeProfileDto.dateOfBirth = employeeDetailsForm.dateOfBirth;
+      this.employeeProfileDto.dateOfBirth = this.employeeDetailsForm.value.dateOfBirth;
       this.employeeProfileDto.idNumber = employeeDetailsForm.idNumber;
-      this.employeeProfileDto.engagementDate = employeeDetailsForm.engagementDate;
-
+      this.employeeProfileDto.engagementDate = new Date(
+        new Date(this.employeeDetailsForm.value.engagementDate!)
+          .setUTCHours(0, 0, 0, 0)
+          + 24 * 60 * 60 * 1000
+      ).toISOString();
+      this.employeeProfileDto.gender = personalDetailsForm.gender;
+      
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Employee details updated", "snack-success");
@@ -1195,4 +1203,34 @@ getEmployeeDocuments() {
     }
     return 'month';
   }
+
+
+  getGenderBirthday(event: FocusEvent){
+    let idNo = (event.target as HTMLInputElement).value;
+    let dob = idNo.slice(0, 6);
+    let gender = parseInt(idNo.slice(6, 10));
+
+    let dobMatch = dob.match(/\d{2}/g)
+    if(dobMatch){
+      let [year, month, day] = dobMatch;
+      const currentYear= new Date().getFullYear().toString().slice(0, 2);
+      let birthYear =(parseInt(year) < parseInt(currentYear)) ? ('20' + year) : ('19' + year);
+      // const dateObject = new Date(parseInt(birthYear), parseInt(month)-1, parseInt(day)+1);
+      // dateObject.setUTCHours(0, 0, 0, 0)
+      // this.newEmployeeForm.patchValue({dateOfBirth: dateObject.toISOString()})
+      this.employeeDetailsForm.patchValue({ dateOfBirth: new Date(Date.UTC(parseInt(birthYear), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0))
+        .toISOString() });
+
+      // let dateObject2 = new Date(parseInt(birthYear), parseInt(month)-1, parseInt(day)+1).toISOString();
+      // console.log(dateObject)
+      // console.log(dateObject2)
+      // console.log(new Date(new Date(this.newEmployeeForm.value.dateOfBirth!).toISOString()))
+      // console.log((this.newEmployeeForm.value.dateOfBirth!))
+
+    }
+    if (gender){
+      gender > 4999 ? this.employeeDetailsForm.patchValue({gender: 1}) : this.employeeDetailsForm.patchValue({gender: 2})
+    }
+  }
+
 }
