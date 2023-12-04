@@ -222,7 +222,8 @@ export class EmployeeProfileComponent {
     private employeeDocumentService: EmployeeDocumentService,
     private fieldCodeService: FieldCodeService,
     private employeeDataService: EmployeeDataService,
-    private snackBarService: SnackbarService) { }
+    private snackBarService: SnackbarService,
+    private customValidationService: CustomvalidationService) { }
 
   ngOnInit() {
     this.getEmployeeFields();
@@ -306,7 +307,7 @@ export class EmployeeProfileComponent {
       level: this.employeeProfile!.level,
       teamLead: this.employeeProfile!.teamLead,
       dateOfBirth: [this.employeeProfile!.dateOfBirth, Validators.required],
-      idNumber: [this.employeeProfile!.idNumber, [Validators.required, CustomvalidationService.validateSaID]],
+      idNumber: [this.employeeProfile!.idNumber, [Validators.required, this.customValidationService.idNumberValidator]],
       engagementDate: [this.employeeProfile!.engagementDate, Validators.required],
       peopleChampion: this.employeeProfile!.peopleChampion
     });
