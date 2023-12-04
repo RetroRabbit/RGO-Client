@@ -1204,7 +1204,6 @@ getEmployeeDocuments() {
     return 'month';
   }
 
-
   getGenderBirthday(event: FocusEvent){
     let idNo = (event.target as HTMLInputElement).value;
     let dob = idNo.slice(0, 6);
@@ -1215,22 +1214,11 @@ getEmployeeDocuments() {
       let [year, month, day] = dobMatch;
       const currentYear= new Date().getFullYear().toString().slice(0, 2);
       let birthYear =(parseInt(year) < parseInt(currentYear)) ? ('20' + year) : ('19' + year);
-      // const dateObject = new Date(parseInt(birthYear), parseInt(month)-1, parseInt(day)+1);
-      // dateObject.setUTCHours(0, 0, 0, 0)
-      // this.newEmployeeForm.patchValue({dateOfBirth: dateObject.toISOString()})
       this.employeeDetailsForm.patchValue({ dateOfBirth: new Date(Date.UTC(parseInt(birthYear), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0))
         .toISOString() });
-
-      // let dateObject2 = new Date(parseInt(birthYear), parseInt(month)-1, parseInt(day)+1).toISOString();
-      // console.log(dateObject)
-      // console.log(dateObject2)
-      // console.log(new Date(new Date(this.newEmployeeForm.value.dateOfBirth!).toISOString()))
-      // console.log((this.newEmployeeForm.value.dateOfBirth!))
-
     }
     if (gender){
       gender > 4999 ? this.employeeDetailsForm.patchValue({gender: 1}) : this.employeeDetailsForm.patchValue({gender: 2})
     }
   }
-
 }
