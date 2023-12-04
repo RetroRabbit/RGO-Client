@@ -36,7 +36,6 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { category } from 'src/app/models/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { Employee } from 'src/app/models/employee.interface';
-import { ValidationService } from 'src/app/services/validation.service';
 import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 
 @Component({
@@ -224,7 +223,6 @@ export class EmployeeProfileComponent {
     private fieldCodeService: FieldCodeService,
     private employeeDataService: EmployeeDataService,
     private snackBarService: SnackbarService,
-    private validationService: ValidationService,
     private customValidationService: CustomvalidationService) { }
 
   ngOnInit() {
@@ -309,7 +307,7 @@ export class EmployeeProfileComponent {
       level: this.employeeProfile!.level,
       teamLead: this.employeeProfile!.teamLead,
       dateOfBirth: [this.employeeProfile!.dateOfBirth, Validators.required],
-      idNumber: [this.employeeProfile!.idNumber, [Validators.required, this.validationService.validateIdNumber]],
+      idNumber: [this.employeeProfile!.idNumber, [Validators.required, this.customValidationService.idNumberValidator]],
       engagementDate: [this.employeeProfile!.engagementDate, Validators.required],
       peopleChampion: this.employeeProfile!.peopleChampion
     });
