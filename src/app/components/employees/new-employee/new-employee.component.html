@@ -74,18 +74,18 @@
                     <mat-error *ngIf="newEmployeeForm.controls['idNumber'].hasError('required')"> ID number is required </mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                    <mat-label>Start Date</mat-label>
-                    <input matInput formControlName="engagementDate" [matDatepicker]="engagementDatePicker" />
-                    <mat-datepicker-toggle matSuffix [for]="engagementDatePicker"></mat-datepicker-toggle>
-                    <mat-datepicker #engagementDatePicker></mat-datepicker>
-                    <mat-error *ngIf="newEmployeeForm.controls['engagementDate'].hasError('required')">Engagement date is required</mat-error>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                     <mat-label>Date of Birth</mat-label> 
                     <input matInput formControlName="dateOfBirth" [matDatepicker]="dateOfBirthPicker" />
                     <mat-datepicker-toggle matSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle>
                     <mat-datepicker #dateOfBirthPicker></mat-datepicker>
                     <mat-error *ngIf="newEmployeeForm.controls['dateOfBirth'].hasError('required')"> Date of birth is required</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput formControlName="engagementDate" [matDatepicker]="engagementDatePicker" />
+                    <mat-datepicker-toggle matSuffix [for]="engagementDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #engagementDatePicker></mat-datepicker>
+                    <mat-error *ngIf="newEmployeeForm.controls['engagementDate'].hasError('required')">Engagement date is required</mat-error>
                   </mat-form-field>
                 </div>
                 <form [formGroup]="settingsForm"
