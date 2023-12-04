@@ -6,5 +6,5 @@ import { Injectable } from '@angular/core';
 export class HideNavService {
 
   public showNavbar: boolean = true;
-
+  public showSystemNavbar: boolean = true;
 }

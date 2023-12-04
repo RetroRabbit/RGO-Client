@@ -26,6 +26,10 @@ export class ManageFieldCodeComponent {
   filterText: string = '';
   isUnique?: boolean = true;
 
+  // --------------------
+  activeTab: string = 'active';
+  selectedFields: number = 0;
+  // -------------------- 
 
   onRowSelect(fieldCode: FieldCode) {
     this.selectedFieldCode = fieldCode;
@@ -101,7 +105,7 @@ export class ManageFieldCodeComponent {
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
-          if(error.error === "Field with that name found"){
+          if (error.error === "Field with that name found") {
             this.isUnique = false;
           }
           else {
@@ -162,8 +166,13 @@ export class ManageFieldCodeComponent {
     }
   }
 
-  CaptureEvent(event: any) {
-    const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('currentPage', target.innerText);
+  AddNewField() {
+    this.cookieService.set('currentPage', 'Add new field code');
   }
+
+  // --------------
+  changeTab(tabName : string){
+    this.activeTab = tabName;
+  }
+  // --------------
 }

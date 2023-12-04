@@ -19,7 +19,6 @@ import { TemplateRef } from '@angular/core';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
-import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -82,8 +81,7 @@ export class AdminDashboardComponent {
     private router: Router,
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
-    private employeeTypeService: EmployeeTypeService,
-    private hideNavService: HideNavService
+    private employeeTypeService: EmployeeTypeService
   ) {}
 
   ngOnInit() {
