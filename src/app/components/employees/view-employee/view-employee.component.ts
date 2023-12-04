@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { SnackbarService } from 'src/app/services/snackbar.service';
+import { NgToastService } from 'ng-angular-popup';
 import { ClientService } from 'src/app/services/client.service';
 import { Client } from 'src/app/models/client.interface';
 import { EmployeeData } from 'src/app/models/employeedata.interface';
@@ -48,24 +48,24 @@ export class ViewEmployeeComponent {
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
     this.cookieService.set(this.PREVIOUS_PAGE, 'Employees');
-    this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee');
+    this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee'); 
   }
 
   constructor(
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
     private clientService: ClientService,
+    private toast: NgToastService,
     private cookieService: CookieService,
     private ngZone: NgZone,
-    private hideNavService: HideNavService,
-    private snackBarService: SnackbarService
+    private hideNavService: HideNavService
   ) {}
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
 
     this.onResize();
-    if(this.cookieService.get(this.PREVIOUS_PAGE) != "Dashboard"){
+    if(this.cookieService.get(this.PREVIOUS_PAGE) != "Dashboard"){ 
       this._searchQuery = "";
     }
   }
@@ -90,7 +90,12 @@ export class ViewEmployeeComponent {
           this.combineEmployeesWithRolesAndClients(employees, clients$)
         ),
         catchError((error) => {
-          this.snackBarService.showSnackbar("Failed to load employees", "snack-error");
+          this.toast.error({
+            detail: `Error: ${error}`,
+            summary: 'Failed to load employees',
+            duration: 10000,
+            position: 'topRight',
+          });
           return of([]);
         }),
         first()
@@ -232,25 +237,6 @@ export class ViewEmployeeComponent {
   //   if (this.paginator) this.paginator.pageSize = size;
   //   this.dataSource._updateChangeSubscription(); //HERE  //ORIGINAL
   // }
-
-  // changePageSize(size: number) {
-  //   if (this.paginator) {
-  //     this.paginator.pageSize = size;
-  //     this.paginator.pageIndex = 0;
-  //     this.applySearchFilter(); 
-  //   }
-  //}
-
-  public changePageSize(size: number) {
-    if (this.paginator) {
-      this.paginator.pageSize = size;
-      this.paginator.pageIndex = 0; // Reset page
-      this.applySearchFilter(); // Reapply filter
-      this.dataSource.paginator = this.paginator; // Trigger paginator
-      console.log(this.paginator);
-    }
-    console.log(this.paginator);
-  }
   
   get pageIndex(): number {
     return this.paginator?.pageIndex ?? 0;
@@ -258,7 +244,7 @@ export class ViewEmployeeComponent {
 
   get getNumberOfPages(): number {
     if (!this.paginator || this.paginator.pageSize === 0) return 0;
-    return Math.ceil(this.paginator.length / this.paginator.pageSize); //HERE
+    return Math.ceil(this.paginator.length / this.paginator.pageSize);
   }
 
   get visiblePages(): number[] {
@@ -286,11 +272,21 @@ export class ViewEmployeeComponent {
       .updateRole(email, role)
       .pipe(
         tap(() => {
-          this.snackBarService.showSnackbar("Role changed successfully!", "snack-success");
+          this.toast.success({
+            detail: `Role changed successfully!`,
+            summary: 'Success',
+            duration: 5000,
+            position: 'topRight',
+          });
           this.getEmployees();
         }),
         catchError((error) => {
-          this.snackBarService.showSnackbar("Falied to change role", "snack-error");
+          this.toast.error({
+            detail: 'Failed to change role',
+            summary: 'Error',
+            duration: 10000,
+            position: 'topRight',
+          });
           return of(null);
         })
       )
@@ -302,7 +298,8 @@ export class ViewEmployeeComponent {
   }
 
   set pageSize(size: number) {
-    if (this.paginator) this.paginator.pageSize = size;
+      this.paginator.pageSize = size;
+      this.dataSource._updateChangeSubscription();
   }
 
   get start(): number {
