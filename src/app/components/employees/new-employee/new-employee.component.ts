@@ -510,7 +510,6 @@ export class NewEmployeeComponent implements OnInit {
 
   goToPreviousPage(){
     this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
-
   }
 
   getGenderBirthday(event: FocusEvent){
@@ -523,23 +522,11 @@ export class NewEmployeeComponent implements OnInit {
       let [year, month, day] = dobMatch;
       const currentYear= new Date().getFullYear().toString().slice(0, 2);
       let birthYear =(parseInt(year) < parseInt(currentYear)) ? ('20' + year) : ('19' + year);
-      // const dateObject = new Date(parseInt(birthYear), parseInt(month)-1, parseInt(day)+1);
-      // dateObject.setUTCHours(0, 0, 0, 0)
-      // this.newEmployeeForm.patchValue({dateOfBirth: dateObject.toISOString()})
       this.newEmployeeForm.patchValue({ dateOfBirth: new Date(Date.UTC(parseInt(birthYear), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0))
         .toISOString() });
-
-      // let dateObject2 = new Date(parseInt(birthYear), parseInt(month)-1, parseInt(day)+1).toISOString();
-      // console.log(dateObject)
-      // console.log(dateObject2)
-      // console.log(new Date(new Date(this.newEmployeeForm.value.dateOfBirth!).toISOString()))
-      // console.log((this.newEmployeeForm.value.dateOfBirth!))
-
     }
     if (gender){
       gender > 4999 ? this.newEmployeeForm.patchValue({gender: 1}) : this.newEmployeeForm.patchValue({gender: 2})
     }
   }
-
-
 }
