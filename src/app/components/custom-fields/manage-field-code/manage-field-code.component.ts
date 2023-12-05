@@ -6,6 +6,9 @@ import { FieldCode } from 'src/app/models/field-code.interface';
 import { Table } from 'primeng/table';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -26,10 +29,12 @@ export class ManageFieldCodeComponent {
   filterText: string = '';
   isUnique?: boolean = true;
 
-  // --------------------
-  activeTab: string = 'active';
+  activeTab: number = 0;
   selectedFields: number = 0;
-  // -------------------- 
+  activeFields: number = 0;
+  passiveFields: number = 0;
+
+  displayedColumns: string[] = ['ID', 'Name', 'Type', 'Status', 'Edit'];
 
   onRowSelect(fieldCode: FieldCode) {
     this.selectedFieldCode = fieldCode;
@@ -126,12 +131,20 @@ export class ManageFieldCodeComponent {
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: fieldCodes => {
         this.fieldCodes = fieldCodes;
-        this.filteredFieldCodes = this.fieldCodes;
+        this.filteredFieldCodes = this.fieldCodes.filter(field => field.status == 0);
+        this.getActivePassive();
       },
       error: error => {
         this.snackBarService.showSnackbar("Error loading Field Codes", "snack-error");
       }
     });
+  }
+
+  getActivePassive(){
+    this.fieldCodes.forEach(field => {
+      if(field.status == 0) this.activeFields++;
+      else this.passiveFields++;
+    })
   }
 
   onTypeChange() {
@@ -170,9 +183,8 @@ export class ManageFieldCodeComponent {
     this.cookieService.set('currentPage', 'Add new field code');
   }
 
-  // --------------
-  changeTab(tabName : string){
-    this.activeTab = tabName;
+  changeTab(tabIndex : number){
+    this.activeTab = tabIndex;
+    this.filteredFieldCodes = this.fieldCodes.filter(fieldCode => fieldCode.status == (this.activeTab == 0 ? 0 : -1));
   }
-  // --------------
 }
