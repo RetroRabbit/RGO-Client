@@ -127,8 +127,16 @@
   color: #0029c6;
 }
 
+
+.table-responsive,
+.card {
+    border-radius: 25px;
+    border-color: #E8EFFF;
+    overflow: hidden;
+}
+
 mat-header-row {
-  background-color: var(--background-light);
+    background-color: #d7dfffff;
 }
 
 #paginator-text {
@@ -155,6 +163,7 @@ mat-header-row {
   letter-spacing: .10px;
   word-wrap: break-word;
   position: relative;
+  font-size: 16px;
 }
 
 .paginator.active::after {
@@ -189,4 +198,16 @@ mat-header-row {
 
 .boldArrow .mat-sort-header-arrow.ng-trigger.ng-trigger-arrowPosition {
   opacity: 1 !important;
+}
+
+#cancel-button{
+  width: 110px !important;
+  display: flex;
+  height: 40px;
+  padding: 10px 24px 10px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  align-self: stretch;
 }

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { Router } from '@angular/router';
@@ -34,7 +34,19 @@ export class ManageFieldCodeComponent {
   activeFields: number = 0;
   passiveFields: number = 0;
 
-  displayedColumns: string[] = ['ID', 'Name', 'Type', 'Status', 'Edit'];
+  displayedColumns: string[] = ['id', 'name', 'description', 'status', 'edit'];
+
+  dataSource: MatTableDataSource<FieldCode> = new MatTableDataSource();
+
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  screenWidth: number = 992;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+  }
+  pageSizes: number[] = [1, 5, 10, 25, 100];
 
   onRowSelect(fieldCode: FieldCode) {
     this.selectedFieldCode = fieldCode;
@@ -132,6 +144,9 @@ export class ManageFieldCodeComponent {
       next: fieldCodes => {
         this.fieldCodes = fieldCodes;
         this.filteredFieldCodes = this.fieldCodes.filter(field => field.status == 0);
+        this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         this.getActivePassive();
       },
       error: error => {
@@ -140,9 +155,9 @@ export class ManageFieldCodeComponent {
     });
   }
 
-  getActivePassive(){
+  getActivePassive() {
     this.fieldCodes.forEach(field => {
-      if(field.status == 0) this.activeFields++;
+      if (field.status == 0) this.activeFields++;
       else this.passiveFields++;
     })
   }
@@ -183,8 +198,64 @@ export class ManageFieldCodeComponent {
     this.cookieService.set('currentPage', 'Add new field code');
   }
 
-  changeTab(tabIndex : number){
+  changeTab(tabIndex: number) {
     this.activeTab = tabIndex;
-    this.filteredFieldCodes = this.fieldCodes.filter(fieldCode => fieldCode.status == (this.activeTab == 0 ? 0 : -1));
+    this.filteredFieldCodes = this.fieldCodes.filter(fieldCode => fieldCode.status == this.activeTab);
+    this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
+  }
+
+  changePageSize(size: number) {
+    if (this.paginator) this.paginator.pageSize = size;
+    this.dataSource._updateChangeSubscription();
+  }
+
+  get pageIndex(): number {
+    return this.paginator?.pageIndex ?? 0;
+  }
+
+  get getNumberOfPages(): number {
+    if (!this.paginator || this.paginator.pageSize === 0) return 0;
+    return Math.ceil(this.paginator.length / this.paginator.pageSize);
+  }
+
+  get visiblePages(): number[] {
+    const totalPages = this.getNumberOfPages;
+
+    let maxVisiblePages = this.screenWidth <= 992 ? 2 : 4;
+
+    let startPage = Math.max(
+      this.paginator.pageIndex - Math.floor(maxVisiblePages / 2),
+      0
+    );
+    let endPage = Math.min(startPage + maxVisiblePages - 1, totalPages - 1);
+    startPage = Math.max(endPage - maxVisiblePages + 1, 0);
+
+    const pages: number[] = [];
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i + 1);
+    }
+
+    return pages;
+  }
+
+  get pageSize(): number {
+    return this.paginator ? this.paginator.pageSize : 1;
+  }
+
+  set pageSize(size: number) {
+    this.paginator.pageSize = size; this.dataSource._updateChangeSubscription();
+  }
+
+  get start(): number {
+    return this.paginator ? this.paginator.pageIndex * this.paginator.pageSize + 1 : 0;
+  }
+
+  get end(): number {
+    return this.paginator ? (this.paginator.pageIndex + 1) * this.paginator.pageSize : 0;
+  }
+
+  goToPage(page: number): void {
+    this.paginator.pageIndex = page - 1;
+    this.dataSource._updateChangeSubscription();
   }
 }
