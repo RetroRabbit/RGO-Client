@@ -39,6 +39,7 @@ export class NewFieldCodeComponent {
   isUnique?: boolean = true;
   newFieldCodeDto !: FieldCode;
   fieldCodeCapture: string = "";
+  showAdvanced: boolean = false;
 
   constructor(
     private fieldCodeService: FieldCodeService,
@@ -104,45 +105,7 @@ export class NewFieldCodeComponent {
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
       this.formatFieldCode(this.newFieldCodeForm.get('code')?.value);
-      // const { fieldCode } = this.newFieldCodeForm.value;
-      // const optionValue = fieldCode.option;
-      // const optionsArray = this.options.value.map((optionValue: any, index: number) => {
-      //   return {
-      //     id: index,
-      //     fieldCodeId: 0,
-      //     option: optionValue
-      //   };
-      // });
-      // this.newFieldCodeDto = {
-      //   id: 0,
-      //   code: fieldCode.code,
-      //   name: fieldCode.name,
-      //   description: fieldCode.description,
-      //   regex: fieldCode.regex,
-      //   type: parseInt(fieldCode.type),
-      //   status: parseInt(fieldCode.status),
-      //   internal: fieldCode.internal,
-      //   internalTable: fieldCode.internalTable,
-      //   options: optionsArray,
-      //   category: fieldCode.category
-      // };
 
-      //console.log(this.newFieldCodeDto);
-
-      // this.fieldCodeService.saveFieldCode(this.newFieldCodeDto).subscribe({
-      //   next: (data) => {
-      //     this.snackBarService.showSnackbar("Custom field saved", "snack-success");
-      //     this.newFieldCodeForm.disable();
-      //   },
-      //   error: (error) => {
-      //     if (error.error === "Field with that name found") {
-      //       this.isUnique = false;
-      //     }
-      //     else {
-      //       this.snackBarService.showSnackbar(error, "snack-error");
-      //     }
-      //   }
-      // });
       var formValues = this.newFieldCodeForm.value;
       const fieldCodeDto : FieldCode = {
         id: 0,
@@ -157,11 +120,11 @@ export class NewFieldCodeComponent {
         options: formValues['type'] == 4 ?  this.returnOptionsArray(formValues['options']): [],
         category: formValues['category'],
       }
-      console.log(fieldCodeDto);
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Custom field saved", "snack-success");
           this.newFieldCodeForm.disable();
+          this.cookieService.set('currentPage', 'Custom Field management');
         },
         error: (error) => {
           if (error.error === "Field with that name found") {
@@ -185,9 +148,8 @@ export class NewFieldCodeComponent {
     });
   }
 
-  back(event: any) {
-    const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('currentPage', 'Manage Field');
+  back() {
+    this.cookieService.set('currentPage', 'Custom Field management');
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -211,5 +173,9 @@ export class NewFieldCodeComponent {
       code = name.toLowerCase().replaceAll(/[^a-zA-Z0-9]/g, "");
     }
     this.newFieldCodeForm.patchValue({ code: code });
+  }
+
+  toggleshowAdvance(){
+    this.showAdvanced = !this.showAdvanced;
   }
 }
