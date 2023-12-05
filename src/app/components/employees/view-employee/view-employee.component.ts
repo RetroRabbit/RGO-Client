@@ -295,9 +295,7 @@ export class ViewEmployeeComponent {
   }
 
   goToPage(page: number): void {
-    if (this.paginator) {
-        this.paginator.pageIndex = page - 1;
-        this.dataSource._updateChangeSubscription();
-    }
+    this.paginator.pageIndex = page - 1;
+    this.dataSource._updateChangeSubscription();
   }
 }
