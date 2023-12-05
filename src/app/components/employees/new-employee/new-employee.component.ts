@@ -392,7 +392,7 @@ export class NewEmployeeComponent implements OnInit {
         } else if (error.status === 406) {
           message = 'User already exists';
         }
-        this.snackBarService.showSnackbar(`Error: ${message}`, "snackbar-success");
+        this.snackBarService.showSnackbar(`Error: ${message}`, "snack-error");
         this.isDirty = false;
       },
 

@@ -7,7 +7,7 @@
             <h2 class="text-center" id="createEmployee">Create employee profile</h2>
             <span class="text-center roboto-font" id="heading-text">
               <p>Please enter the employee’s information in</p>
-                <p>order to create a profile for them.</p> 
+                <p>order to create a profile for them.</p>
             </span>
           </div>
         </div>
@@ -86,7 +86,7 @@
                     <mat-error *ngIf="newEmployeeForm.controls['engagementDate'].hasError('required')">Engagement date is required</mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                    <mat-label>Date of Birth</mat-label> 
+                    <mat-label>Date of Birth</mat-label>
                     <input matInput formControlName="dateOfBirth" [matDatepicker]="dateOfBirthPicker" />
                     <mat-datepicker-toggle matSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle>
                     <mat-datepicker #dateOfBirthPicker></mat-datepicker>
@@ -118,7 +118,7 @@
                         <mat-label>Profile photo</mat-label>
                         <input matInput type="text" [value]="imageName" />
                         <span mat-icon-button matSuffix (click)="uploadFile.click()" class="pe-3">
-                          <mat-icon id="fileUploadCursor">file_upload</mat-icon> 
+                          <mat-icon id="fileUploadCursor">file_upload</mat-icon>
                           <input type="file" #uploadFile (change)="onFileChange($event)" hidden />
                         </span>
                       </mat-form-field>
@@ -126,7 +126,7 @@
                         <img [src]="imageUrl"/>
                       </div>
                     </div>
-                    <div class="row flex-column justify-content-center align-items-center col-lg-12 col-md-12 pb-3"> 
+                    <div class="row flex-column justify-content-center align-items-center col-lg-12 col-md-12 pb-3">
                       <span class="col-lg-7 fs-5 roboto-font pb-3">Gender</span>
                       <mat-radio-group class="col-lg-7" formControlName="gender">
                         <mat-radio-button *ngFor="let gender of genders; index as i" [value]="i">{{ gender }}</mat-radio-button>
@@ -139,7 +139,7 @@
                       </mat-select>
                     </mat-form-field>
                     <mat-form-field *ngIf="newEmployeeForm.controls['idNumber'].value === ''" appearance="outline" class="col-lg-7 col-md-12">
-                      <mat-label>Passport number</mat-label> 
+                      <mat-label>Passport number</mat-label>
                       <input matInput type="number" formControlName="passportNumber" />
                     </mat-form-field>
                     <mat-form-field *ngIf="newEmployeeForm.controls['idNumber'].value === ''" appearance="outline" class="col-lg-7 col-md-12">
@@ -149,7 +149,7 @@
                       <mat-datepicker #passportExpiryDate></mat-datepicker>
                     </mat-form-field>
                     <mat-form-field *ngIf="newEmployeeForm.controls['idNumber'].value === ''" appearance="outline" class="col-lg-7 col-md-12 custom-mat-select">
-                      <mat-label>Country of issue</mat-label> 
+                      <mat-label>Country of issue</mat-label>
                       <input matInput type="text" formControlName="passportCountryIssue" />
                       <mat-select #countrySelect formControlName="passportCountryIssue" hidden>
                         <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
@@ -171,7 +171,7 @@
                       <mat-label>Diability notes</mat-label> <textarea matInput type="text"
                         formControlName="disabilityNotes">
                       </textarea>
-                    </mat-form-field>           
+                    </mat-form-field>
                   </div>
                   <form [formGroup]="physicalAddress" class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mb-3">
                     <h1 class="col-lg-7 col-md-12 fs-1">Physical Address</h1>
@@ -268,7 +268,7 @@
                   </form>
                 </div>
               </div>
-          <div id="footer"> 
+          <div id="footer">
             <button id="cancel-button" (click)="goToPreviousPage()">Cancel</button>
             <button id="next-button" matStepperNext>Next</button>
           </div>
@@ -287,26 +287,45 @@
             </div>
             <div class="container upload-drop-container">
               <div class="row justify-content-center align-items-center">
-                <ngx-file-drop 
-                dropZoneClassName="upload-drop-section" 
-                contentClassName="" 
-                accept=".PDF,.PPT.PPTX,.Doc,.Docx" 
-                (onFileDrop)="dropped($event)" 
-                (onFileOver)="fileOver($event)" 
+                <ngx-file-drop
+                dropZoneClassName="upload-drop-section"
+                contentClassName=""
+                accept=".PDF,.PPT.PPTX,.Doc,.Docx"
+                (onFileDrop)="dropped($event)"
+                (onFileOver)="fileOver($event)"
                 (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true" multiple="true">
                     <div class="upload-drop-section row">
-                      <div class="justify-content-center align-items-center text-center p-2 m-2">
-                        <h2 class="">Drop your files here!</h2>
+                      <div class="justify-content-center align-items-center p-2 m-2">
+                        <mat-icon>done</mat-icon>
+                        <span class="roboto-font">
+                          Fixed-term contract
+                        </span>
+                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> Select file</button>
+                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
+                        <span class="roboto-font" id="document-text">
+                          <p>Please upload employee’s starter kit documents below</p>
+                        </span>
                       </div>
-                      <div class="justify-content-center text-center p-2 m-2"> 
-                        <img src="../../../../assets/img/file_upload.svg" /> 
+                    </div>
+                    <div class="upload-drop-section row">
+                      <div class="justify-content-center align-items-center p-2 m-2">
+                        <h2>Retirement Annuity</h2>
+                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> Select file</button>
+                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
                       </div>
-                      <div class="justify-content-center text-center p-2 m-2">
-                      <button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()"> Select file</button>
+                    </div>
+                    <div class="upload-drop-section row">
+                      <div class="justify-content-center align-items-center p-2 m-2">
+                        <h2>Medical Aid Application</h2>
+                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> Select file</button>
+                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
                       </div>
-                      <div class="upload-doc-section text-center p-2 m-2">
-                        <p>PDF, PPT, PPTX, Doc, Docx are supported</p>
+                    </div>
+                    <div class="upload-drop-section row">
+                      <div class="justify-content-center align-items-center p-2 m-2">
+                        <h2>MIE Consent Form</h2>
+                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
                       </div>
                     </div>
                   </ng-template>
@@ -315,12 +334,12 @@
             </div>
             <div class="row text-center p-2 m-2">
               <mat-chip-grid>
-                <mat-chip *ngFor="let file of files; let i = index" [removable]="true" (removed)="removeFileByIndex(i)"> {{ file.relativePath }} 
+                <mat-chip *ngFor="let file of files; let i = index" [removable]="true" (removed)="removeFileByIndex(i)"> {{ file.relativePath }}
                   <img matChipRemove src="../../../../assets/img/close_chip.svg" />
                 </mat-chip>
               </mat-chip-grid>
             </div>
-          <div id="footer"> 
+          <div id="footer">
             <button id="cancel-button" (click)="goToPreviousPage()">Cancel</button>
             <button id="save-add-button" (click)="saveAndAddAnother()">Save and add another</button>
             <button id="save-button" (click)="saveAndExit()">Save</button>
