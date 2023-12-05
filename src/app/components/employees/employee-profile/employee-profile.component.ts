@@ -608,6 +608,7 @@ saveAddressEdit() {
     this.editEmployee = false;
     if (this.employeeDetailsForm.valid) {
       const employeeDetailsForm = this.employeeDetailsForm.value;
+      const personalDetailsForm = this.personalDetailsForm.value;
 
       this.employeeType = this.employeeTypes.find((data: any) => {
         return data.name == employeeDetailsForm.employeeType
@@ -620,10 +621,15 @@ saveAddressEdit() {
       this.employeeProfileDto.level = employeeDetailsForm.level;
       this.employeeProfileDto.teamLead = this.employeeDetailsForm.controls["teamLead"].value == 0 ? null : this.employeeId;
       this.employeeProfileDto.peopleChampion = this.employeeDetailsForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
-      this.employeeProfileDto.dateOfBirth = employeeDetailsForm.dateOfBirth;
+      this.employeeProfileDto.dateOfBirth = this.employeeDetailsForm.value.dateOfBirth;
       this.employeeProfileDto.idNumber = employeeDetailsForm.idNumber;
-      this.employeeProfileDto.engagementDate = employeeDetailsForm.engagementDate;
-
+      this.employeeProfileDto.engagementDate = new Date(
+        new Date(this.employeeDetailsForm.value.engagementDate!)
+          .setUTCHours(0, 0, 0, 0)
+          + 24 * 60 * 60 * 1000
+      ).toISOString();
+      this.employeeProfileDto.gender = personalDetailsForm.gender;
+      
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Employee details updated", "snack-success");
@@ -1200,5 +1206,23 @@ getEmployeeDocuments() {
       case 12: return 'December'
     }
     return 'month';
+  }
+
+  getGenderBirthday(event: FocusEvent){
+    let idNo = (event.target as HTMLInputElement).value;
+    let dob = idNo.slice(0, 6);
+    let gender = parseInt(idNo.slice(6, 10));
+
+    let dobMatch = dob.match(/\d{2}/g)
+    if(dobMatch){
+      let [year, month, day] = dobMatch;
+      const currentYear= new Date().getFullYear().toString().slice(0, 2);
+      let birthYear =(parseInt(year) < parseInt(currentYear)) ? ('20' + year) : ('19' + year);
+      this.employeeDetailsForm.patchValue({ dateOfBirth: new Date(Date.UTC(parseInt(birthYear), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0))
+        .toISOString() });
+    }
+    if (gender){
+      gender > 4999 ? this.employeeDetailsForm.patchValue({gender: 1}) : this.employeeDetailsForm.patchValue({gender: 2})
+    }
   }
 }
