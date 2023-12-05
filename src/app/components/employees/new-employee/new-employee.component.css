@@ -248,4 +248,7 @@ main {
     margin-top: 70px;
 }
 
-
+#document-text{
+  color: blue;
+  line-height: 10px;
+}
