@@ -482,10 +482,13 @@
               <input matInput type="text" id="chartData" [(ngModel)]="chartName">
             </mat-form-field>
           </div>
+
           <div class="px-4 offset-1 col-10">
+
             <mat-form-field appearance="outline" style="width: 100%;">
               <mat-label>Select category</mat-label>
-              <mat-select [formControl]="categoryControl" (selectionChange)="onDropDownChange()" multiple>
+              <!-- <mat-select [formControl]="categoryControl" (selectionChange)="onDropDownChange($event)" multiple> -->
+                <mat-select [formControl]="categoryControl" multiple>
                 <mat-select-trigger></mat-select-trigger>
                 <mat-option *ngFor="let category of filteredCategories" [value]="category">
                   {{ category }}
@@ -507,7 +510,8 @@
 
             <mat-form-field appearance="outline" style="width: 100%;">
             <mat-label>Select role</mat-label>
-            <mat-select [formControl]="typeControl" (selectionChange)="onDropDownChange()" multiple>
+            <!-- <mat-select [formControl]="typeControl" (selectionChange)="onDropDownChange($event)" multiple> -->
+            <mat-select [formControl]="typeControl" multiple>
               <mat-select-trigger></mat-select-trigger>
               <mat-option *ngFor="let type of filteredTypes" [value]="type">
                 {{ type }}
