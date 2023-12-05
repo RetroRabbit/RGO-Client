@@ -98,11 +98,17 @@
         <button mat-icon-button (click)="paginator.previousPage()" [disabled]="!paginator.hasPreviousPage()">
           <mat-icon>arrow_left</mat-icon>
         </button>
-        <button mat-icon-button *ngFor="let page of visiblePages">
+        <!-- <button mat-icon-button *ngFor="let page of visiblePages">
           <span class="paginator" [ngClass]="{ active: page === pageIndex + 1 }">
             {{ page }}
           </span>
+        </button> -->
+        <button mat-icon-button *ngFor="let page of visiblePages" (click)="goToPage(page)">
+          <span class="paginator" [ngClass]="{ active: page === pageIndex + 1 }">
+              {{ page }}
+          </span>
         </button>
+      
         <button mat-icon-button (click)="paginator.nextPage()" [disabled]="!paginator.hasNextPage()">
           <mat-icon>arrow_right</mat-icon>
         </button>

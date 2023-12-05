@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { NgToastService } from 'ng-angular-popup';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { ClientService } from 'src/app/services/client.service';
 import { Client } from 'src/app/models/client.interface';
 import { EmployeeData } from 'src/app/models/employeedata.interface';
@@ -55,10 +55,10 @@ export class ViewEmployeeComponent {
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
     private clientService: ClientService,
-    private toast: NgToastService,
     private cookieService: CookieService,
     private ngZone: NgZone,
-    private hideNavService: HideNavService
+    private hideNavService: HideNavService,
+    private snackBarService: SnackbarService
   ) {}
 
   ngOnInit() {
@@ -90,12 +90,7 @@ export class ViewEmployeeComponent {
           this.combineEmployeesWithRolesAndClients(employees, clients$)
         ),
         catchError((error) => {
-          this.toast.error({
-            detail: `Error: ${error}`,
-            summary: 'Failed to load employees',
-            duration: 10000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Failed to load employees", "snack-error");
           return of([]);
         }),
         first()
@@ -233,11 +228,6 @@ export class ViewEmployeeComponent {
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
 
-  // changePageSize(size: number) {
-  //   if (this.paginator) this.paginator.pageSize = size;
-  //   this.dataSource._updateChangeSubscription(); //HERE  //ORIGINAL
-  // }
-  
   get pageIndex(): number {
     return this.paginator?.pageIndex ?? 0;
   }
@@ -272,21 +262,11 @@ export class ViewEmployeeComponent {
       .updateRole(email, role)
       .pipe(
         tap(() => {
-          this.toast.success({
-            detail: `Role changed successfully!`,
-            summary: 'Success',
-            duration: 5000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Role changed successfully!", "snack-success");
           this.getEmployees();
         }),
         catchError((error) => {
-          this.toast.error({
-            detail: 'Failed to change role',
-            summary: 'Error',
-            duration: 10000,
-            position: 'topRight',
-          });
+          this.snackBarService.showSnackbar("Falied to change role", "snack-error");
           return of(null);
         })
       )
@@ -312,5 +292,12 @@ export class ViewEmployeeComponent {
     return this.paginator
       ? (this.paginator.pageIndex + 1) * this.paginator.pageSize
       : 0;
+  }
+
+  goToPage(page: number): void {
+    if (this.paginator) {
+        this.paginator.pageIndex = page - 1;
+        this.dataSource._updateChangeSubscription();
+    }
   }
 }
