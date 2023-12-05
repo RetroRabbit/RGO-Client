@@ -14,8 +14,9 @@ export class ChartService {
     return this.httpClient.get<Chart[]>(`${API.HttpBaseURL}/chart/get`);
   }
 
-  createChart(dataType: string[], chartName: string, chartType: string): Observable<any> {
-    const queryParams = `?dataType=${dataType}&chartName=${chartName}&chartType=${chartType}`;
+  createChart(dataType: string[], roles: string[] ,chartName: string, chartType: string): Observable<any> {
+    console.log(roles);
+    const queryParams = `?dataType=${dataType}&roles=${roles}&chartName=${chartName}&chartType=${chartType}`;
     return this.httpClient.post(`${API.HttpBaseURL}/chart/create${queryParams}`, {});
   }
 

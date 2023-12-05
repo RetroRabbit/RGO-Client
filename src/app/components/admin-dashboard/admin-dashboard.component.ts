@@ -116,7 +116,7 @@ export class AdminDashboardComponent {
     });
 
     this.typeControl.valueChanges.subscribe(val => {
-      this.selectedTypes = val;
+      this.selectedTypes = val || [];
     });
 
     this.chartService.getColumns().subscribe({
@@ -125,6 +125,13 @@ export class AdminDashboardComponent {
         this.filteredCategories = this.categories.slice().sort((a, b) => a.localeCompare(b));
       }
     });
+
+    // this.employeeTypeService.getAllEmployeeTypes().subscribe({
+    //   next: (data: EmployeeType[]) => {
+    //     this.types = data.map(type => type.name || '');
+    //     this.filteredTypes = this.types;
+    //   }
+    // });
 
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
@@ -265,12 +272,14 @@ export class AdminDashboardComponent {
       return;
     }
 
-    this.chartService.createChart(this.selectedCategories, this.chartName, this.chartType)
-      .subscribe({
+    this.chartService.createChart(this.selectedCategories, this.selectedTypes, this.chartName, this.chartType)
+      .subscribe(
+        {
         next: response => {
           this.snackBarService.showSnackbar("Chart created", "snack-success");
           this.dialog.closeAll();
           this.selectedCategories = [];
+          this.selectedTypes = [];
           this.chartName = '';
           this.chartType = '';
           this.ngOnInit();
@@ -381,5 +390,14 @@ export class AdminDashboardComponent {
 
   ViewUser(email: string) {
     this.cookieService.set('selectedUser', email);
+  }
+
+  onRoleRemoved(role: string): void {
+    const roles = this.typeControl.value || [];
+    const index = roles.indexOf(role);
+    if (index >= 0) {
+      roles.splice(index, 1);
+      this.typeControl.setValue(roles); // This should update the select and chips
+    }
   }
 }
