@@ -60,7 +60,6 @@ export class AdminDashboardComponent {
   displayAllEmployees: boolean = false;
   roles: string[] = [];
 
-
   employeeType: { id: number; name: string } = {
     id: 0,
     name: '',
@@ -116,7 +115,7 @@ export class AdminDashboardComponent {
     });
 
     this.typeControl.valueChanges.subscribe(val => {
-      this.selectedTypes = val || [];
+      this.selectedTypes = val;
     });
 
     this.chartService.getColumns().subscribe({
@@ -126,18 +125,32 @@ export class AdminDashboardComponent {
       }
     });
 
-    // this.employeeTypeService.getAllEmployeeTypes().subscribe({
-    //   next: (data: EmployeeType[]) => {
-    //     this.types = data.map(type => type.name || '');
-    //     this.filteredTypes = this.types;
-    //   }
-    // });
-
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.types = data.map(type => type.name || '');
-        this.filteredTypes = this.types;
+        this.filteredTypes = ['All', ...this.types];
       }
+    });
+
+    /**
+     * If all is selected, make all the only selected types
+     * if another value is selected remove all from selected list
+     * If all is not selected continue normaly
+     * **/
+    this.typeControl.valueChanges.subscribe(selected => {
+      console.log(selected);
+      if (selected.includes('All')) {
+        if (selected.length > 1) {
+          this.selectedTypes = ['All'];
+          this.typeControl.setValue(['All'], { emitEvent: false });
+        } else if (this.selectedTypes.includes('All')) {
+          this.selectedTypes = selected.filter((item: string) => item !== 'All');
+          this.typeControl.setValue([...this.selectedTypes], { emitEvent: false });
+        }
+      } else {
+        this.selectedTypes = selected;
+      }
+
     });
   }
 
@@ -201,10 +214,29 @@ export class AdminDashboardComponent {
     this.searchResults = this.searchResults.slice(0, 3);
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.selectedCategories.push(event.option.viewValue);
-    this.categoryCtrl.setValue(null);
-  }
+  // selected(event: MatAutocompleteSelectedEvent): void {
+  //   this.selectedCategories.push(event.option.viewValue);
+  //   this.categoryCtrl.setValue(null);
+
+  //   const selectedType = event.option.viewValue;
+
+  //   if (selectedType === 'All') {
+  //     this.selectedTypes = ['All']; // Only 'All' remains selected
+  //   } else {
+  //     // Remove 'All' if other types are selected
+  //     const allIndex = this.selectedTypes.indexOf('All');
+  //     if (allIndex >= 0) {
+  //       this.selectedTypes.splice(allIndex, 1);
+  //       // If 'All' was previously selected, reset the control to current selectedTypes
+  //       this.typeControl.setValue([...this.selectedTypes]);
+  //     }
+  //     if (!this.selectedTypes.includes(selectedType)) {
+  //       this.selectedTypes.push(selectedType);
+  //     }
+  //   }
+
+  //   this.typeControl.setValue(null);
+  // }
 
   filterCategories(val: string): string[] {
     return this.categories.filter(category =>
@@ -250,11 +282,10 @@ export class AdminDashboardComponent {
   }
 
   onTypeRemoved(type: string): void {
-    const types = this.typeControl.value;
-    const index = types.indexOf(type);
+    const index = this.selectedTypes.indexOf(type);
     if (index >= 0) {
-      types.splice(index, 1);
-      this.typeControl.setValue(types);
+      this.selectedTypes.splice(index, 1);
+      this.typeControl.setValue(this.selectedTypes);
     }
   }
 
@@ -272,7 +303,12 @@ export class AdminDashboardComponent {
       return;
     }
 
-    this.chartService.createChart(this.selectedCategories, this.selectedTypes, this.chartName, this.chartType)
+    let combinedChartName = this.chartName;
+    if (this.selectedTypes.length > 0) {
+      combinedChartName += ` - ${this.selectedTypes.join(', ')}`;
+    }
+
+    this.chartService.createChart(this.selectedCategories, this.selectedTypes, combinedChartName, this.chartType)
       .subscribe(
         {
         next: response => {
@@ -291,9 +327,11 @@ export class AdminDashboardComponent {
       );
     this.selectedCategories = [];
     this.categoryControl.setValue(null);
+    this.selectedTypes = [];
+    this.typeControl.setValue(null);
   }
 
-  onDropDownChange() {
+  onDropDownChange(event : any) {
     if (this.selectedDataItems.length < 1) {
       return;
     }
@@ -306,6 +344,20 @@ export class AdminDashboardComponent {
         this.snackBarService.showSnackbar("Failed to get chart data", "snack-error");
       }
     });
+
+    const selected: string[] = event.value;
+    console.log(selected);
+    if (selected.includes('All')) {
+        this.selectedTypes = ['All'];
+        this.typeControl.setValue(['All']);
+    } else {
+        if (this.selectedTypes.includes('All')) {
+            this.selectedTypes = selected.filter(item => item !== 'All');
+            this.typeControl.setValue([...this.selectedTypes]);
+        } else {
+            this.selectedTypes = selected;
+        }
+    }
   }
 
   CaptureEventlast(event: any) {
