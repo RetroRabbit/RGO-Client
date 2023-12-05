@@ -57,11 +57,11 @@
     </div>
   </div>
   <div id="tab-buttons" class="mb-0">
-    <div id="tab" (click)="changeTab('active')" [ngClass]="activeTab == 'active' ? 'activeTab' : ''">
-      Active (2)
+    <div id="tab" (click)="changeTab(0)" [ngClass]="activeTab == 0 ? 'activeTab' : ''">
+      Active ({{activeFields}})
     </div>
-    <div (click)="changeTab('passive')" id="tab" [ngClass]="activeTab == 'passive' ? 'activeTab' : ''">
-      Archived (4)
+    <div id="tab" (click)="changeTab(-1)" [ngClass]="activeTab == -1 ? 'activeTab' : ''">
+      Archived ({{passiveFields}})
     </div>
   </div>
   <hr class="m-0 p-0">
@@ -85,8 +85,8 @@
         <ng-template pTemplate="body" let-fieldCode>
           <tr [ngClass]="{'selected-row': selectedFieldCode === fieldCode}" (click)="onRowSelect(fieldCode)">
             <td>{{ fieldCode.id }}</td>
-            <td>{{ fieldCode.code }}</td>
             <td>{{ fieldCode.name }}</td>
+            <td>{{ fieldCode.description }}</td>
             <td>{{fieldCode.status === 0 ? 'Active' : 'Archived'}}</td>
           </tr>
         </ng-template>

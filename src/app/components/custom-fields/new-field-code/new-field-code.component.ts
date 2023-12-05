@@ -67,32 +67,11 @@ export class NewFieldCodeComponent {
     this.hideNavService.showNavbar = true;
     this.hideNavService.showSystemNavbar = true;
   }
-  // private initializeForm() {
-  //   this.newFieldCodeForm = this.fb.group({
-  //     fieldCode: this.fb.group({
-  //       code: ['', Validators.required],
-  //       name: ['', [Validators.required]],
-  //       description: [''],
-  //       regex: [''],
-  //       type: [-1, Validators.required],
-  //       status: [-1, Validators.required],
-  //       option: [''],
-  //       internal: [false],
-  //       internalTable: [''],
-  //       options: this.fb.array([]),
-  //       category: [-1, Validators.required]
-  //     }),
-  //   });
-  //   this.isUnique = true;
-  // }
 
-  // get options() {
-  //   return (this.newFieldCodeForm.get('fieldCode.options') as FormArray);
-  // }
   get options() {
     return this.newFieldCodeForm.get('options') as FormArray;
   }
-
+  
   addOption() {
     const optionsArray = this.newFieldCodeForm.get('options') as FormArray;
     optionsArray.push(this.fb.control(''));
