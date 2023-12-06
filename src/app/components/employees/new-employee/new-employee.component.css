@@ -45,7 +45,7 @@ main {
 }
 
 #createEmployee {
-    font-size: 45px;
+    font-size: 36px;
     font-weight: 400;
     line-height: 52px;
 }
@@ -183,7 +183,9 @@ main {
 }
 
 #upload-button{
+    margin-top: 7px;
     padding: 10px 24px;
+    width: 132px;
     gap: 8px;
     background: #0029c6;
     border-radius: 30px;
@@ -196,10 +198,31 @@ main {
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0.1px;
+    justify-content: center;
+}
+
+#file-button{
+    margin-top: 7px;
+    padding: 10px 24px;
+    gap: 8px;
+    width: 132px;
+    border-radius: 30px;
+    border-color: red;
+    border-width: 1px;
+    background: white;
+    color: red;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    justify-content: center;
 }
 
 .upload-drop-container{
-    border-radius: 40px;
+    border-radius: 20px;
     background: #D7DFFF;
     justify-content: center;
     align-items: center;
@@ -208,12 +231,21 @@ main {
 
 .upload-drop-section{
     background: #D7DFFF;
-    border-radius: 40px;
+    border-radius: 15px;
     background: #FFF;
     margin: 10px;
     padding: auto;
     justify-content: center;
-    border: 1px dashed rgba(0, 0, 0, 0.40);
+    margin-bottom: 15px;
+}
+
+.upload-drop-mie{
+  background: #D7DFFF;
+  border-radius: 15px;
+  background: #FFF;
+  margin: 10px;
+  padding: auto;
+  justify-content: center;
 }
 
 .upload-doc-section{
@@ -250,5 +282,28 @@ main {
 
 #document-text{
   color: blue;
-  line-height: 10px;
+  font-size: 14px;
+}
+
+#icon{
+  margin-top: 15px;
+  color: rgb(11, 191, 11);
+}
+
+#align{
+  float: left;
+}
+
+#title{
+  font-size: 22px;
+}
+
+#drop-file{
+  margin-top: 30px;
+  font-weight: 500;
+}
+
+#supported{
+  font-size: 14px;
+  letter-spacing: 0.25px;
 }

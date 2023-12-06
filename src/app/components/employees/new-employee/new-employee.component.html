@@ -296,35 +296,61 @@
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true" multiple="true">
                     <div class="upload-drop-section row">
                       <div class="justify-content-center align-items-center p-2 m-2">
-                        <mat-icon>done</mat-icon>
-                        <span class="roboto-font">
-                          Fixed-term contract
-                        </span>
-                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> Select file</button>
-                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
-                        <span class="roboto-font" id="document-text">
-                          <p>Please upload employee’s starter kit documents below</p>
-                        </span>
+                          <div class="col-1" id="align">
+                            <mat-icon id="icon" color="green">check_circle</mat-icon>
+                          </div>
+                          <div class="roboto-font col-5" id="align">
+                            <p id="title">Fixed-term contract</p>
+                            <p id="document-text">Fixed_Term_Contract.Pdf</p>
+                          </div>
+                          <div id="align">
+                            <button id="file-button" class="mx-2" type="button">✖ Select file</button>
+                            <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
+                          </div>
                       </div>
                     </div>
                     <div class="upload-drop-section row">
                       <div class="justify-content-center align-items-center p-2 m-2">
-                        <h2>Retirement Annuity</h2>
-                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> Select file</button>
-                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
+                        <div class="col-1" id="align">
+                          <mat-icon id="icon">check_circle</mat-icon>
+                        </div>
+                        <div class="roboto-font col-5" id="align">
+                          <p id="title">Retirement Annuity</p>
+                          <p id="document-text">Retirement_Annuity.Pdf</p>
+                        </div>
+                        <div id="align">
+                          <button id="file-button" class="mx-2" type="button">✖ Select file</button>
+                          <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
+                        </div>
                       </div>
                     </div>
                     <div class="upload-drop-section row">
                       <div class="justify-content-center align-items-center p-2 m-2">
-                        <h2>Medical Aid Application</h2>
-                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> Select file</button>
-                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
+                        <div class="col-1" id="align">
+                          <mat-icon id="icon">check_circle</mat-icon>
+                        </div>
+                        <div class="roboto-font col-5" id="align">
+                          <p id="title">Medical Aid Application</p>
+                          <p id="document-text">Medical_Aid.Pdf</p>
+                        </div>
+                        <div id="align">
+                          <button id="file-button" class="mx-2" type="button">✖ Select file</button>
+                          <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
+                        </div>
                       </div>
                     </div>
-                    <div class="upload-drop-section row">
+                    <div class="upload-drop-mie row">
                       <div class="justify-content-center align-items-center p-2 m-2">
-                        <h2>MIE Consent Form</h2>
-                        <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
+                        <div class="roboto-font col-6" id="align">
+                          <p id="title">MIE Consent Form</p>
+                          <p id="supported">PDF,PPT,PPTX,Doc,Docx are supported</p>
+                        </div>
+                        <div class="col-3" id="align">
+                          <p id="drop-file">Drop your files here!</p>
+                        </div>
+                        <div id="align">
+                          <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
+                        </div>
                       </div>
                     </div>
                   </ng-template>
