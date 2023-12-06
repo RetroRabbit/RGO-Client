@@ -48,22 +48,6 @@
   margin: 1rem;
 }
 
-#save-button{
-  border: none;
-  border-radius: 2rem;
-  background-color: #0029C6;
-  color: white;
-  padding:1rem;
-}
-
-#cancel-button{
-  border: 1px solid #0029C6;
-  border-radius: 2rem;
-  background-color: white;
-  color: #0029C6;
-  padding:1rem;
-}
-
 #edit-chart-container {
   display: flex;
   align-items: center;
@@ -73,23 +57,4 @@
   margin: 0 auto;
 }
 
-.mat-mdc-radio-button.mat-accent {
-  --mdc-radio-disabled-selected-icon-color: #000;
-  --mdc-radio-disabled-unselected-icon-color: #000;
-  --mdc-radio-unselected-hover-icon-color: #212121;
-  --mdc-radio-unselected-icon-color: rgba(0, 0, 0, 0.54);
-  --mdc-radio-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
-  --mdc-radio-selected-focus-icon-color: #0029C6;
-  --mdc-radio-selected-hover-icon-color: #0029C6;
-  --mdc-radio-selected-icon-color: #0029C6;
-  --mdc-radio-selected-pressed-icon-color: #0029C6;
-  --mat-radio-ripple-color: #000;
-  --mat-radio-checked-ripple-color: #0029C6;
-  --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
-  --mat-radio-checked-label-color: #0029C6;
-}
-
-.mat-radio-button.mat-radio-checked .mat-radio-label-content {
-  color: #0029C6 !important;
-}
 
