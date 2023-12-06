@@ -1,33 +1,30 @@
-<div>
+<!-- <div>
     <div class="container-fluid">
         <form [formGroup]="newFieldCodeForm" (submit)="onSubmit(); $event.preventDefault()">
             <div class="row">
                 <div class="col-sm-6">
                     <div formGroupName="fieldCode">
-                        <!-- Name field -->
+
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
                             <input id="name" type="text" class="form-control" formControlName="name" />
                         </div>
                         <small *ngIf="newFieldCodeForm?.get('fieldCode.name')?.dirty || newFieldCodeForm.hasError('required', 'fieldCode.name')" class="text-danger">Name is required</small>
 
-                        <!-- Code field -->
                         <div class="mb-3">
                             <label for="code" class="form-label">Code</label>
                             <input id="code" type="text" class="form-control" formControlName="code" />
                         </div>
                         <small *ngIf="newFieldCodeForm?.get('fieldCode.code')?.dirty || newFieldCodeForm.hasError('required', 'fieldCode.code')" class="text-danger">Code is required</small>
-                        <!-- Description field -->
+
                         <div class="mb-3">
                             <label for="description" class="form-label">Description (optional)</label>
                             <input id="description" type="text" class="form-control" formControlName="description" />
                         </div>
-                        <!-- Regex field -->
                         <div class="mb-3">
                             <label for="regex" class="form-label">RegEx (optional)</label>
                             <input id="regex" type="text" class="form-control" formControlName="regex" />
                         </div>
-                        <!-- Status dropdown -->
                         <div class="mb-3">
                             <label for="status" class="form-label">Status</label>
                             <select id="status" class="form-control" formControlName="status">
@@ -36,7 +33,6 @@
                                 </option>
                             </select>
                         </div>
-                        <!-- Type dropdown -->
                         <div class="mb-3">
                             <label for="type" class="form-label">Type</label>
                             <select type="text" class="form-control" formControlName="type" [(ngModel)]="selectedType">
@@ -97,5 +93,93 @@
                 <button class="btn btn-primary">Back</button>
             </a>
         </div>
+    </div>
+</div> -->
+
+<div id="field-container" class="mb-4">
+    <div id="form-container" class="py-4">
+        <h3>Edit custom field</h3>
+        <form class="row mx-0" [formGroup]="newFieldCodeForm">
+            <div class="col-12">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" (input)="captureName()" [(ngModel)]="fieldCodeCapture">
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-radio-group aria-label="Category" formControlName="category">
+                    <mat-radio-button [value]=0>Profile Details</mat-radio-button> <br>
+                    <mat-radio-button [value]=1>Bank Information</mat-radio-button> <br>
+                    <mat-radio-button [value]=2>Career Summary</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="col-12 mt-4">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Description</mat-label>
+                    <input matInput formControlName="description">
+                </mat-form-field>
+            </div>
+            <div class="col-12">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Type</mat-label>
+                    <mat-select formControlName="type">
+                        <mat-option *ngFor="let type of dataTypes" [value]="type.id">{{type.value}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div id="type-info">
+                    <p><strong>String:</strong> is text or words</p>
+                    <p><strong>Integer:</strong> are whole numbers</p>
+                    <p><strong>Date:</strong> used to represent dates</p>
+                    <p><strong>Float:</strong> used to represent numbers that have a decimal point or integers</p>
+                    <p><strong>Options:</strong> refers to one or more choices, represented as strings or integers.</p>
+                </div>
+                <div *ngIf="newFieldCodeForm.get('type')?.value == 4 && newFieldCodeForm.get('options') as optionsArray" formArrayName="options" cdkDropList (cdkDropListDropped)="drop($event)">
+                    <div *ngFor="let option of options.controls; let i = index" class="row mx-0" cdkDrag>
+                        <div id="icon-circle" (click)="removeOption(i)" class="col-1">
+                            <mat-icon id="icon">close</mat-icon>
+                        </div>
+                        <div class="col-10">
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <mat-label>Option {{i + 1}}</mat-label>
+                                <input matInput [formControlName]="i">
+                            </mat-form-field>
+                        </div>
+                        <div id="drag-icon" class="col-1">
+                            <mat-icon>drag_indicator</mat-icon>
+                        </div>
+                    </div>
+                    <div>
+                        <button (click)="addOption()" id="add-button">+ Add Option</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12" id="toggle-advanced">
+                <mat-slide-toggle (toggleChange)="toggleshowAdvance()">Advance fields</mat-slide-toggle>
+            </div>
+            
+            <div *ngIf="showAdvanced">
+                <div class="col-12">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Code</mat-label>
+                        <input matInput formControlName="code" (input)="inputCodeChange()">
+                    </mat-form-field>
+                </div>
+                <div class="col-12">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>RegEx</mat-label>
+                        <input matInput formControlName="regex">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div id="button-container">
+                <div>
+                    <button id="save-button" (click)="onSubmit()">Save Update</button>
+                </div>
+                <div>
+                    <button id="cancel-button" (click)="back()">Cancel</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

@@ -6,7 +6,10 @@ import { statuses } from 'src/app/models/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
+import { CookieService } from 'ngx-cookie-service';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-update-field',
   templateUrl: './update-field.component.html',
@@ -14,45 +17,75 @@ import { FieldCodeService } from 'src/app/services/field-code.service';
 })
 export class UpdateFieldComponent {
 
-  @Input() selectedFieldCode?: FieldCode;
+  @Input() selectedFieldCode!: FieldCode;
   public statuses = statuses;
   public dataTypes = dataTypes;
   selectedType: any;
   isUpdateClicked: boolean = false;
   isArchiveClicked: boolean = false;
-  newFieldCodeForm!: FormGroup;
-
-  constructor(public router: Router, private fieldCodeService: FieldCodeService,
-    private fb: FormBuilder,
-    private snackBarService: SnackbarService) {
-    this.initializeForm();
+  fieldCodeCapture: string = "";
+  showAdvanced: boolean = false;
+  newFieldCodeForm: FormGroup = this.fb.group({
+    code: ['', Validators.required],
+    name: ['', [Validators.required]],
+    description: [''],
+    regex: [''],
+    type: [-1, Validators.required],
+    status: [-1, Validators.required],
+    internal: [false],
+    internalTable: [''],
+    options: this.fb.array([]),
+    category: [-1, Validators.required]
+  });
+  constructor(public router: Router,
+    private fieldCodeService: FieldCodeService,
+    private fb: FormBuilder, 
+    private snackBarService: SnackbarService, 
+    public cookieService: CookieService,
+    public hideNavService: HideNavService) {
   }
 
-  ngOnInit(): void {
-    this.newFieldCodeForm.disable();
+  ngOnInit() {
+    this.hideNavService.showNavbar = false;
+    this.hideNavService.showSystemNavbar = false;
+    if (this.selectedFieldCode) {
+      this.initializeForm();
+    }
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['selectedFieldCode'] && changes['selectedFieldCode'].currentValue) {
+      this.initializeForm();
+    }
+  }
+
+  ngOnDestroy() {
+    this.hideNavService.showNavbar = true;
+    this.hideNavService.showSystemNavbar = true;
+  }
+  
   private initializeForm() {
     this.selectedType = this.selectedFieldCode?.type;
+    const optionsControls = this.selectedFieldCode?.options?.map(option => this.fb.control(option.option)) || [];
+    this.fieldCodeCapture = this.selectedFieldCode.name as string;
     this.newFieldCodeForm = this.fb.group({
-      fieldCode: this.fb.group({
-        code: [this.selectedFieldCode?.code, Validators.required],
-        name: [this.selectedFieldCode?.name, Validators.required],
-        description: [this.selectedFieldCode?.description],
-        regex: [this.selectedFieldCode?.regex],
-        type: [this.selectedType],
-        status: [this.selectedFieldCode?.status],
-        option: [this.selectedFieldCode?.options ? this.selectedFieldCode.options.map(option => option.option) : []],
-        internal: [false],
-        internalTable: [''],
-        options: this.fb.array([])
-      }),
+      code: [this.selectedFieldCode?.code, Validators.required],
+      name: [this.selectedFieldCode?.name, Validators.required],
+      description: [this.selectedFieldCode?.description],
+      regex: [this.selectedFieldCode?.regex],
+      type: [this.selectedType, Validators.required],
+      status: [this.selectedFieldCode?.status, Validators.required],
+      internal: [this.selectedFieldCode?.internal],
+      internalTable: [this.selectedFieldCode?.internalTable],
+      options: this.fb.array(optionsControls),
+      category: [this.selectedFieldCode?.category, Validators.required]
     });
   }
+  
 
-  get options() {
-    return (this.newFieldCodeForm.get('fieldCode.options') as FormArray);
-  }
+  get options(): FormArray {
+    return this.newFieldCodeForm.get('options') as FormArray;
+  } 
 
   addOption() {
     this.options.push(this.fb.control(''));
@@ -82,18 +115,19 @@ export class UpdateFieldComponent {
       const existingOptions = this.selectedFieldCode?.options?.map(option => option.option) || [];
       const optionsToRemove = existingOptions.filter(option => !optionsArray.some((opt: any) => opt.option === option));
       const updatedOptions = optionsArray.filter((option: any) => !optionsToRemove.includes(option.option));
-
-      const fieldCodeDto = {
-        id: this.selectedFieldCode?.id,
-        code: fieldCode.code,
-        name: fieldCode.name,
-        description: fieldCode.description,
-        regex: fieldCode.regex,
-        type: parseInt(this.selectedType),
-        status: parseInt(fieldCode.status),
-        internal: fieldCode.internal,
-        internalTable: fieldCode.internalTable || '',
-        options: updatedOptions.map((opt: any) => opt)
+      var formValues = this.newFieldCodeForm.value;
+      const fieldCodeDto : FieldCode = {
+        id: 0,
+        code: formValues['code'],
+        name: formValues['name'],
+        description: formValues['description'],
+        regex: formValues['regex'],
+        type: formValues['type'],
+        status: formValues['status'],
+        internal: formValues['internal'],
+        internalTable: formValues['internalTable'],
+        options: formValues['type'] == 4 ?  this.returnOptionsArray(formValues['options']): [],
+        category: formValues['category'],
       }
 
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
@@ -101,6 +135,7 @@ export class UpdateFieldComponent {
           this.snackBarService.showSnackbar("Field details updated", "snack-success");
           this.selectedFieldCode = data;
           this.newFieldCodeForm.disable();
+          this.cookieService.set('currentPage', 'Custom Field management');
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -109,11 +144,19 @@ export class UpdateFieldComponent {
     }
   }
 
-  onCancel() {
-    this.isUpdateClicked = false;
-    this.newFieldCodeForm.reset();
-    this.initializeForm();
-    this.newFieldCodeForm.disable();
+
+  returnOptionsArray(array : any[]){
+    return this.options.value.map((optionValue: any, index: number) => {
+      return {
+        id: index,
+        fieldCodeId: 0,
+        option: optionValue
+      };
+    });
+  }
+  drop(event: CdkDragDrop<string[]>) {
+    const formArray = this.newFieldCodeForm.get('options') as FormArray;
+    moveItemInArray(formArray.controls, event.previousIndex, event.currentIndex);
   }
 
   archiveFieldCode() {
@@ -139,18 +182,29 @@ export class UpdateFieldComponent {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['selectedFieldCode']) {
-      this.newFieldCodeForm.reset();
-      this.initializeForm();
+  back() {
+    this.cookieService.set('currentPage', 'Custom Field management');
+  }
 
-      const optionsArray = this.newFieldCodeForm.get('fieldCode.options') as FormArray;
+  captureName() {
+    this.formatFieldCode();
+  }
 
-      if (this.selectedFieldCode?.options) {
-        this.selectedFieldCode.options.forEach(option => {
-          optionsArray.push(this.fb.control(option.option));
-        });
-      }
+  inputCodeChange() {
+    this.formatFieldCode(this.newFieldCodeForm.value('code'));
+  }
+
+  formatFieldCode(name: string = "") {
+    let code;
+    if (name == "") {
+      code = this.fieldCodeCapture.toLowerCase().replaceAll(/[^a-zA-Z0-9]/g, "");
+    } else {
+      code = name.toLowerCase().replaceAll(/[^a-zA-Z0-9]/g, "");
     }
+    this.newFieldCodeForm.patchValue({ code: code });
+  }
+
+  toggleshowAdvance(){
+    this.showAdvanced = !this.showAdvanced;
   }
 }

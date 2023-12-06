@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { Router } from '@angular/router';
@@ -20,11 +20,12 @@ import { Dialog } from 'src/app/models/confirm-modal.interface';
 export class ManageFieldCodeComponent {
   fieldCodes: FieldCode[] = [];
   filteredFieldCodes: FieldCode[] = [];
-  selectedFieldCode: FieldCode[] = [];
-  isClicked: boolean = false;
-  statuses: any[] = [];
+  selectedFieldCodes: FieldCode[] = [];
+  selectedFieldCode!: FieldCode;
+  // statuses: any[] = [];
   newFieldCodeForm!: FormGroup;
   searchTerm: string = '';
+
   @ViewChild('dataTable') dataTable: Table | undefined = undefined;
   filterText: string = '';
   isUnique?: boolean = true;
@@ -48,6 +49,8 @@ export class ManageFieldCodeComponent {
     this.screenWidth = window.innerWidth;
   }
   pageSizes: number[] = [1, 5, 10, 25, 100];
+
+  @Output() fieldCodeEmitter = new EventEmitter<FieldCode>();
 
   constructor(
     public router: Router,
@@ -76,23 +79,6 @@ export class ManageFieldCodeComponent {
       },
     })
   }
-
-  // private initializeForm() {
-  //   this.newFieldCodeForm = this.fb.group({
-  //     fieldCode: this.fb.group({
-  //       code: [''],
-  //       name: [''],
-  //       description: [''],
-  //       regex: [''],
-  //       type: [''],
-  //       status: [''],
-  //       option: [''],
-  //       internal: [false],
-  //       internalTable: [''],
-  //       options: this.fb.array([])
-  //     }),
-  //   });
-  // }
 
   get options() {
     return (this.newFieldCodeForm.get('fieldCode.options') as FormArray);
@@ -163,8 +149,8 @@ export class ManageFieldCodeComponent {
   }
 
   onTypeChange() {
-    this.isClicked = true;
-    this.selectedFieldCode = this.selectedFieldCode;
+    // this.isClicked = true;
+    this.selectedFieldCodes = this.selectedFieldCodes;
   }
 
   clear(table: Table) {
@@ -202,7 +188,7 @@ export class ManageFieldCodeComponent {
     this.activeTab = tabIndex;
     this.filteredFieldCodes = this.fieldCodes.filter(fieldCode => fieldCode.status == this.activeTab);
     this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
-    this.selectedFieldCode = [];
+    this.selectedFieldCodes = [];
   }
 
   changePageSize(size: number) {
@@ -261,11 +247,11 @@ export class ManageFieldCodeComponent {
   }
 
   onRowSelect(fieldCode: FieldCode) {
-    if(this.selectedFieldCode?.includes(fieldCode)){
-      this.selectedFieldCode.splice(this.selectedFieldCode.indexOf(fieldCode), 1);
+    if(this.selectedFieldCodes?.includes(fieldCode)){
+      this.selectedFieldCodes.splice(this.selectedFieldCodes.indexOf(fieldCode), 1);
     }
     else{
-      this.selectedFieldCode?.push(fieldCode);
+      this.selectedFieldCodes?.push(fieldCode);
     }
   }
 
@@ -287,13 +273,13 @@ export class ManageFieldCodeComponent {
   }
 
   hasSelected(){
-    return this.selectedFieldCode.length > 0;
+    return this.selectedFieldCodes.length > 0;
   }
 
   toggleSelectedFields(){
     let unsuccessfulSubmits = 0;
 
-    this.selectedFieldCode.forEach(element => {
+    this.selectedFieldCodes.forEach(element => {
       let updatedField = {...element}
       updatedField.status = updatedField.status == 0 ? -1 : 0;
       this.fieldCodeService.updateFieldCode(updatedField).subscribe({
@@ -333,5 +319,10 @@ export class ManageFieldCodeComponent {
     if (event) {
       this.toggleSelectedFields();
     }
+  }
+
+  EditField(field: FieldCode) {
+    // this.cookieService.set('currentPage', 'Add new field code');
+    this.fieldCodeEmitter.emit(field);
   }
 }

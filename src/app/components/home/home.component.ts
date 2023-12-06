@@ -10,6 +10,7 @@ import { ChartService } from 'src/app/services/charts.service';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { EmployeeDate } from 'src/app/models/employee-date.interface';
 import { HideNavService } from 'src/app/services/hide-nav.service';
+import { FieldCode } from 'src/app/models/field-code.interface';
 
 @Component({
   selector: 'app-home',
@@ -34,7 +35,7 @@ export class HomeComponent{
     id: 0,
     name: ''
   };
-
+  selectedFieldCode!: FieldCode;
   constructor(
     private employeeProfileService: EmployeeProfileService,
     private chartService: ChartService,
@@ -128,5 +129,10 @@ export class HomeComponent{
     this.selectedItem = target.innerText;
     this.selectedEmployee = null;
     this.shouldDisplayNewEmployee = false;
+  }
+
+  captureFieldCode(fieldCode : FieldCode){
+    this.selectedFieldCode = fieldCode;
+    this.cookieService.set('currentPage', 'Update Field Code')
   }
 }

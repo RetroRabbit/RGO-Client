@@ -1,6 +1,6 @@
-import { Component, Output,
-  EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { FieldCode } from 'src/app/models/field-code.interface';
 import { HideNavService } from 'src/app/services/hide-nav.service';
 @Component({
   selector: 'app-system-settings',
@@ -8,12 +8,12 @@ import { HideNavService } from 'src/app/services/hide-nav.service';
   styleUrls: ['./system-settings.component.css']
 })
 export class SystemSettingsComponent {
-  @Output() RoleManagementEvent = new EventEmitter<void>();
-  @Output() CustomFieldsEvent = new EventEmitter<void>();
-
+  // @Output() RoleManagementEvent = new EventEmitter<void>();
+  // @Output() CustomFieldsEvent = new EventEmitter<void>();
+  @Output() emitFieldCode = new EventEmitter<FieldCode>();
   clicked: string = "";
 
-  constructor (public cookieService: CookieService, public hideNavService: HideNavService){
+  constructor(public cookieService: CookieService, public hideNavService: HideNavService) {
 
   }
 
@@ -29,5 +29,9 @@ export class SystemSettingsComponent {
 
   displayEmployeeBanking() {
     this.cookieService.set('currentPage', 'Employee Banking');
+  }
+
+  captureFieldCode(event: FieldCode){
+    this.emitFieldCode.emit(event);
   }
 }

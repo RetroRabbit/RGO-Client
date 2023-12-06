@@ -1,13 +1,126 @@
-.custom-button {
-    background-color: rgb(244, 55, 55);
-    transition: background-color 0.3s, box-shadow 0.3s;
-
-    &:hover {
-        background-color: red;
-        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.1);
-    }
+#field-container {
+    background-color: white;
+    border-radius: 20px;
+    width: 884px;
+    min-height: 919px;
+    text-align: center;
+    margin: 0px auto;
 }
 
-#lblOption{
-    margin-right: 15px;
+#form-container>form {
+    width: 484px;
+    min-height: 623px;
+    margin: auto;
+    display: inline-block;
+    text-align: left !important;
+}
+
+#form-container > form > div{
+    margin: auto;
+    width: 400px;
+    padding: 0;
+}
+
+h3 {
+    color: var(--m-3-black, var(--colour-primary-0, #000));
+    font-family: Roboto;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 52px;
+    margin-bottom: 64px;
+}
+
+.mat-radio-button {
+    height: 48px;
+}
+
+#button-container>button {
+    border-radius: 100px;
+    background: var(--m-3-sys-light-primary, #0029C6);
+    border-width: 0;
+    color: white;
+    display: flex;
+    height: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+#button-container  {
+    width: 400px;
+}
+
+#button-container > div > button:first-child{
+    margin-bottom: 20px;
+}
+
+#save-button {
+    padding: 10px 24px;
+    width: 400px !important;
+}
+
+#cancel-button {
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border-radius: 30px;
+    border: 1px solid #0029c6;
+    color: #0029c6;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    width: 400px;
+}
+
+#icon-circle:hover, #drag-icon{
+    cursor: pointer;
+}
+
+#icon-circle{
+    color: #DC362E;
+}
+
+.mat-icon{
+    margin-top: 1rem ;
+}
+
+#add-button{
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #0029c6;
+    border-radius: 30px;
+    border: none;
+    color: #FFF;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    width: 137px;
+}
+
+#toggle-advanced{
+    margin-top: 30px !important;
+    margin-bottom: 30px !important;
+}
+
+#type-info{
+    margin: 0 0 10px 0;
+}
+
+#type-info > p{
+    margin: 0;
 }
