@@ -70,7 +70,6 @@ export class AdminDashboardComponent {
   searchResults: EmployeeProfile[] = [];
   allEmployees: EmployeeProfile[] = [];
 
-  CURRENT_PAGE = "currentPage";
   PREVIOUS_PAGE = "previousPage";
 
   constructor(
@@ -138,10 +137,6 @@ export class AdminDashboardComponent {
     return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
 
-  CaptureEventOld(event: any) {
-    this.cookieService.set(this.CURRENT_PAGE, "+ Add Graph");
-  }
-
   CaptureEvent(event: any) {
     let dialogRef = this.dialog.open(this.dialogTemplate, {
       width: '500px'
@@ -150,15 +145,16 @@ export class AdminDashboardComponent {
 
   AddNewHire(event: any) {
     const target = event.target as HTMLAnchorElement;
-    this.cookieService.set(this.PREVIOUS_PAGE, 'Dashboard');
-    this.cookieService.set(this.CURRENT_PAGE, target.innerText);
+    this.cookieService.set(this.PREVIOUS_PAGE, '/dashboard');
+    this.router.navigateByUrl('/create-employee');
+
   }
 
   viewMoreEmployees() {
     this.displayAllEmployees = true;
     this.expandSearch.emit(this.searchQuery);
-    this.cookieService.set(this.PREVIOUS_PAGE, 'Dashboard');
-    this.cookieService.set(this.CURRENT_PAGE, 'Employees');
+    this.cookieService.set(this.PREVIOUS_PAGE, '/dashboard');
+    this.router.navigateByUrl('/employees');
   }
 
   searchEmployees() {
@@ -299,11 +295,6 @@ export class AdminDashboardComponent {
     });
   }
 
-  CaptureEventlast(event: any) {
-    const target = event.target as HTMLAnchorElement;
-    this.cookieService.set(this.CURRENT_PAGE, target.innerText);
-  }
-
   recieveNumber(number: any) {
     this.chartService.getAllCharts().subscribe({
       next: data => this.charts = data,
@@ -374,9 +365,8 @@ export class AdminDashboardComponent {
 
   employeeClickEvent(employee: EmployeeProfile): void {
     this.selectedEmployee.emit(employee);
-    this.cookieService.set(this.CURRENT_PAGE, 'EmployeeProfile');
-    this.cookieService.set(this.PREVIOUS_PAGE, 'Dashboard');
-    console.log(employee);
+    this.cookieService.set(this.PREVIOUS_PAGE, '/dashboard');
+    this.router.navigateByUrl('/profile/' + employee.id);
   }
 
   ViewUser(email: string) {

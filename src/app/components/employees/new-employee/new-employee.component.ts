@@ -20,6 +20,7 @@ import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
 import { HideNavService } from 'src/app/services/hide-nav.service';
+import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 
 @Component({
@@ -35,11 +36,12 @@ export class NewEmployeeComponent implements OnInit {
     private employeeTypeService: EmployeeTypeService,
     private employeeAddressService: EmployeeAddressService,
     private cookieService: CookieService,
+    private router: Router,
+    private customValidationService: CustomvalidationService,
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
-    private hideNavService: HideNavService,
-    private customValidationService: CustomvalidationService
+    private hideNavService: HideNavService
   ) { }
 
    
@@ -79,7 +81,6 @@ export class NewEmployeeComponent implements OnInit {
   validImage: boolean = false;
   public files: NgxFileDropEntry[] = [];
   employeeDocumentModels: EmployeeDocument[] = [];
-  CURRENT_PAGE = 'currentPage';
   PREVIOUS_PAGE = 'previousPage';
   COMPANY_EMAIL = 'retrorabbit.co.za';
 
@@ -131,7 +132,6 @@ export class NewEmployeeComponent implements OnInit {
       new Date(Date.now()),
       Validators.required
     ),
-    
     idNumber: new FormControl<string>('', [Validators.required, this.customValidationService.idNumberValidator]),
     passportNumber: new FormControl<string>(''),
     passportExpiryDate: new FormControl<Date | string | null>(
@@ -253,7 +253,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndAddAnother(){
-    this.onUploadDocument('+ Add Employee');
+    this.onUploadDocument('/create-employee');
   }
 
   onUploadDocument(nextPage: string): void {
@@ -269,24 +269,21 @@ export class NewEmployeeComponent implements OnInit {
           this.newEmployeeEmail = "";
           this.files = [];
           this.myStepper.previous();
-          location.reload();
-          this.cookieService.set(this.CURRENT_PAGE, nextPage);
+          this.router.navigateByUrl(nextPage);
+          
         }
       });
     });
   }
 
   public fileOver(event: Event) {
-    console.log(event);
   }
   public fileLeave(event: Event) {
-    console.log(event);
   }
   public removeFileByIndex(index: number): void {
     if (index >= 0 && index < this.files.length) {
       this.files.splice(index, 1);
     }
-    console.log(index);
   }
 
   onFileChange(event: any): void {
@@ -365,17 +362,27 @@ export class NewEmployeeComponent implements OnInit {
       this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
       return;
     }
-
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
       employeeNumber: this.newEmployeeForm.value.surname?.substring(0, 3).toUpperCase() + '000',
-      engagementDate: new Date(this.newEmployeeForm.value.engagementDate!).toISOString().split('T')[0],
-      dateOfBirth: new Date(this.newEmployeeForm.value.dateOfBirth!).toISOString().split('T')[0],
+      engagementDate: new Date(
+        new Date(this.newEmployeeForm.value.engagementDate!)
+          .setUTCHours(0, 0, 0, 0)
+          + (
+            new Date(this.newEmployeeForm.value.engagementDate!).toDateString() ===
+            new Date().toDateString()
+                ? 0
+                : 24 * 60 * 60 * 1000
+            )
+      ).toISOString()
+   ,
+      dateOfBirth: this.newEmployeeForm.value.dateOfBirth,
       physicalAddress: this.physicalAddressObj,
       postalAddress: this.postalAddressObj,
       peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
     });
+   
     const employeeEmail: string = this.newEmployeeForm.value.email!;
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
@@ -402,7 +409,7 @@ export class NewEmployeeComponent implements OnInit {
   checkBlankRequiredFields() {
     this.newEmployeeForm.value.dateOfBirth = this.newEmployeeForm.value
       .dateOfBirth
-      ? this.newEmployeeForm.value.engagementDate
+      ? this.newEmployeeForm.value.dateOfBirth
       : new Date(Date.now());
     this.newEmployeeForm.value.countryOfBirth =
       this.newEmployeeForm.value.countryOfBirth === ''
@@ -508,7 +515,24 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   goToPreviousPage(){
-    this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
+    this.router.navigateByUrl(this.cookieService.get(this.PREVIOUS_PAGE));
+  }
 
+  getGenderBirthday(event: FocusEvent){
+    let idNo = (event.target as HTMLInputElement).value;
+    let dob = idNo.slice(0, 6);
+    let gender = parseInt(idNo.slice(6, 10));
+
+    let dobMatch = dob.match(/\d{2}/g)
+    if(dobMatch){
+      let [year, month, day] = dobMatch;
+      const currentYear= new Date().getFullYear().toString().slice(0, 2);
+      let birthYear =(parseInt(year) < parseInt(currentYear)) ? ('20' + year) : ('19' + year);
+      this.newEmployeeForm.patchValue({ dateOfBirth: new Date(Date.UTC(parseInt(birthYear), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0))
+        .toISOString() });
+    }
+    if (gender){
+      gender > 4999 ? this.newEmployeeForm.patchValue({gender: 1}) : this.newEmployeeForm.patchValue({gender: 2})
+    }
   }
 }

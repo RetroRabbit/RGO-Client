@@ -9,17 +9,25 @@ import { NewFieldCodeComponent } from './components/custom-fields/new-field-code
 import { UpdateFieldComponent } from './components/custom-fields/update-field/update-field.component';
 import { RouterModule, Routes } from '@angular/router';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
+import { ViewEmployeeComponent } from './components/employees/view-employee/view-employee.component';
+import { EmployeeProfileComponent } from './components/employees/employee-profile/employee-profile.component';
+import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
 
 
 
 const routes: Routes = [
   {path: '', component: SignInComponent},
-  {path: 'home', component: HomeComponent},
+  {path: 'dashboard', component: AdminDashboardComponent},
+  {path: 'employees', component: ViewEmployeeComponent},
+  {path: 'profile', component: EmployeeProfileComponent},
+  {path: 'profile/:id', component: EmployeeProfileComponent},
+  {path: 'system-settings', component: SystemSettingsComponent},
   {path: 'manage-field', component: ManageFieldCodeComponent},
   {path: 'charts', component: ChartComponent},
   {path: 'create-charts', component: CreateChartsComponent},
-  {path: 'new-employee', component: NewEmployeeComponent},
+  {path: 'create-employee', component: NewEmployeeComponent},
   {path: 'new-fieldcode', component: NewFieldCodeComponent},
   {path: 'update-fieldcode', component: UpdateFieldComponent},
   {path: 'employee-details', component: EmployeeDetailsComponent},

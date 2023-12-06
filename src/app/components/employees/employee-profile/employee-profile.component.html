@@ -1,12 +1,12 @@
 <div class="container mt-4">
     <div class="w-75 py-3">
         <button mat-button class="btn" id="back-button" (click)="goToEmployees()"
-            *ngIf="previousPage == 'Employees' && currentPage != 'Profile'">
+            *ngIf="previousPage == '/employees' && showBackButtons">
             <mat-icon>arrow_back</mat-icon>
             <span>Back to Employees</span>
         </button>
         <button mat-button class="btn" id="back-button" (click)="goToDashboard()"
-            *ngIf="previousPage == 'Dashboard'  &&  currentPage != 'Profile'">
+            *ngIf="previousPage == '/dashboard'  &&  showBackButtons">
             <mat-icon>arrow_back</mat-icon>
             <span>Back to Dashboard</span>
         </button>
@@ -32,7 +32,7 @@
                     {{employeeProfile?.employeeType?.name}} | Level {{employeeProfile?.level}}
                 </div>
                 <div class="col-12 my-2" id="header-based"
-                    *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ''">
+                    *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">
                     Based in {{employeePhysicalAddress.city}}
                 </div>
             </div>
@@ -89,7 +89,8 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">Start Date</div>
-                            <div id="header-value">{{employeeProfile?.engagementDate}}</div>
+                            <div id="header-value">{{ employeeDetailsForm.get('engagementDate')?.value | date:'d MMM yyyy' }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -309,22 +310,22 @@
                                         </div>
                                         <div class="col-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>I.D number</mat-label>
+                                                <input matInput formControlName="idNumber" (blur)="getGenderBirthday($event)">
+                                                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('required')"> ID number is required </mat-error>
+                                                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('invalidIdNumber') && !employeeDetailsForm.controls['idNumber'].hasError('required')">
+                                                 This is not a valid South African ID number
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Date of Birth</mat-label>
                                                 <input matInput [matDatepicker]="picker1" class="form-control"
                                                     formControlName="dateOfBirth">
                                                 <mat-datepicker-toggle matSuffix
                                                     [for]="picker1"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker1></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>I.D number</mat-label>
-                                                <input matInput formControlName="idNumber">
-                                                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('required')"> ID number is required </mat-error>
-                                                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('invalidIdNumber') && !employeeDetailsForm.controls['idNumber'].hasError('required')">
-                                                 This is not a valid South African ID number
-                                                </mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-6 my-2">
@@ -397,7 +398,7 @@
                                                 <mat-radio-button [value]=false>no</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
-                                        <div class="col-12" *ngIf="hasDisbility">
+                                        <div class="col-12" *ngIf="hasDisability">
                                             <div class="row">
                                                 <div class="col-4">
                                                     <mat-form-field appearance="outline" style="width: 100%;">
