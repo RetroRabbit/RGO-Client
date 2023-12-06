@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, HostListener, ViewChild, EventEmitter, Output, TemplateRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { Router } from '@angular/router';
@@ -11,6 +11,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { Dialog } from 'src/app/models/confirm-modal.interface';
+import { SystemNav } from 'src/app/services/system-nav.service';
+
 @Component({
   selector: 'app-manage-field-code',
   templateUrl: './manage-field-code.component.html',
@@ -49,15 +51,14 @@ export class ManageFieldCodeComponent {
     this.screenWidth = window.innerWidth;
   }
   pageSizes: number[] = [1, 5, 10, 25, 100];
-
-  @Output() fieldCodeEmitter = new EventEmitter<FieldCode>();
-
+  PREVIOUS_PAGE = "previousPage";
   constructor(
     public router: Router,
     private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
     public cookieService: CookieService,
-    private snackBarService: SnackbarService) {
+    private snackBarService: SnackbarService,
+    private systemService: SystemNav) {
   }
   ngOnInit(): void {
     this.fetchData();
@@ -181,7 +182,8 @@ export class ManageFieldCodeComponent {
   }
 
   AddNewField() {
-    this.cookieService.set('currentPage', 'Add new field code');
+    this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+    this.router.navigateByUrl('/new-fieldcode');
   }
 
   changeTab(tabIndex: number) {
@@ -321,8 +323,9 @@ export class ManageFieldCodeComponent {
     }
   }
 
-  EditField(field: FieldCode) {
-    // this.cookieService.set('currentPage', 'Add new field code');
-    this.fieldCodeEmitter.emit(field);
+  editField(field: FieldCode) {
+    this.systemService.selectedField = field;
+    this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+    this.router.navigateByUrl('/update-fieldcode');
   }
 }

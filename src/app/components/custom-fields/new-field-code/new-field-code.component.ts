@@ -11,6 +11,7 @@ import { HideNavService } from 'src/app/services/hide-nav.service';
 import { levels } from '../../../models/constants/levels.constants';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-field-code',
@@ -40,12 +41,14 @@ export class NewFieldCodeComponent {
   fieldCodeCapture: string = "";
   showAdvanced: boolean = false;
 
+  PREVIOUS_PAGE = "previousPage";
   constructor(
     private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
-    public hideNavService: HideNavService) {
+    public hideNavService: HideNavService,
+    public router: Router,) {
 
     // this.initializeForm();
   }
@@ -102,7 +105,8 @@ export class NewFieldCodeComponent {
         next: (data) => {
           this.snackBarService.showSnackbar("Custom field saved", "snack-success");
           this.newFieldCodeForm.disable();
-          this.cookieService.set('currentPage', 'Custom Field management');
+          this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+          this.router.navigateByUrl('/system-settings');
         },
         error: (error) => {
           if (error.error === "Field with that name found") {
@@ -127,7 +131,8 @@ export class NewFieldCodeComponent {
   }
 
   back() {
-    this.cookieService.set('currentPage', 'Custom Field management');
+    this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+    this.router.navigateByUrl('/system-settings');
   }
 
   drop(event: CdkDragDrop<string[]>) {
