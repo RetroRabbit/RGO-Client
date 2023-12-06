@@ -1,11 +1,11 @@
 
-import { Token } from "@angular/compiler";
 import { Component } from "@angular/core";
 import { AuthService } from "@auth0/auth0-angular";
 import { CookieService } from "ngx-cookie-service";
 import { HideNavService } from 'src/app/services/hide-nav.service';
 import { ChartService } from "src/app/services/charts.service";
 import { EmployeeProfileService } from "src/app/services/employee/employee-profile.service";
+import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeProfile } from "src/app/models/employee-profile.interface";
 import { Chart } from "chart.js";
 
@@ -35,6 +35,8 @@ export class NavBarComponent {
     private employeeProfileService: EmployeeProfileService,
     private chartService: ChartService,
     private auth: AuthService,
+    private route: ActivatedRoute,
+    public router: Router,
     public cookieService: CookieService,
     public hideNavService: HideNavService)
     {
@@ -52,10 +54,11 @@ export class NavBarComponent {
     this.roles = Object.keys(JSON.parse(types));
 
     this.employeeProfileService.GetEmployeeProfileByEmail(userEmail).subscribe({
-      next: data => {
+      next: (data) => {
         this.employeeProfile = data;
         this.profileImage = this.employeeProfile.photo;
         this.employeeType = this.employeeProfile.employeeType;
+        this.cookieService.set("userId", String(this.employeeProfile.id));
       }
     });
 
@@ -90,13 +93,5 @@ export class NavBarComponent {
     this.auth.logout({
       logoutParams: { returnTo: document.location.origin }
     });
-  }
-
-  CaptureEvent(event: any) {
-    const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('currentPage', target.innerText);
-    this.selectedItem = target.innerText;
-    // this.selectedEmployee = null;
-    // this.shouldDisplayNewEmployee = false;
   }
 }

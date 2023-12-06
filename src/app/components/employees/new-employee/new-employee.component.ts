@@ -277,16 +277,13 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   public fileOver(event: Event) {
-    console.log(event);
   }
   public fileLeave(event: Event) {
-    console.log(event);
   }
   public removeFileByIndex(index: number): void {
     if (index >= 0 && index < this.files.length) {
       this.files.splice(index, 1);
     }
-    console.log(index);
   }
 
   onFileChange(event: any): void {
@@ -365,7 +362,6 @@ export class NewEmployeeComponent implements OnInit {
       this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
       return;
     }
-    console.log(this.newEmployeeForm.value.engagementDate)
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
