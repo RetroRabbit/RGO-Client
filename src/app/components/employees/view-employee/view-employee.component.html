@@ -2,13 +2,13 @@
   <section class="container-fluid mt-4 mb-4 mx-0">
     <div class="d-flex justify-content-between gap-2">
       <div class="col-6 pl-0 d-flex align-items-center">
-        <div id="search-container" class="d-flex align-items-center rounded-pill w-100"
+        <div id="search-container" class=""
           [ngClass]="{ 'bg-white': searchQuery !== '' }">
           <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
             <mat-icon>arrow_back</mat-icon>
           </button>
           <input mat-Input [(ngModel)]="searchQuery" [ngClass]="{ 'no-text': searchQuery === '' }"
-            class="ms-4 bg-transparent" id="search-input" placeholder="Search for employee by name" autocomplete="off"/>
+            class="ms-5 bg-transparent" id="search-input" placeholder="Search for employee by name" autocomplete="off"/>
           <button mat-button id="search-button">
             <mat-icon>search</mat-icon>
           </button>
@@ -21,10 +21,8 @@
           <span>Add Employee</span>
         </button>
       </div>
-
     </div>
   </section>
-
   <div class="row">
     <div class="card px-0">
       <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
@@ -71,7 +69,6 @@
               </div>
             </mat-cell>
           </ng-container>
-
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns" (click)="employeeClickEvent(row)"></mat-row>
         </mat-table>
