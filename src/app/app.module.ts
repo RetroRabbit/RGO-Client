@@ -74,6 +74,7 @@ import { SystemSettingsComponent } from './components/system-settings/system-set
 
 
 import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
@@ -103,6 +104,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     AddEmployeeEventComponent,
     SystemSettingsComponent,
     ChartReportPdfComponent,
+    NavBarComponent,
     ConfirmDialogComponent
   ],
   imports: [

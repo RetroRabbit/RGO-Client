@@ -229,11 +229,6 @@ export class ChartComponent implements OnInit {
     }
   }
 
-  CaptureEvent(event: any) {
-    const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('currentPage', target.innerText);
-  }
-
   fetchPeopleChampionEmployees() {
     this.employeeProfile.filterEmployeesByType("People Champion").subscribe({
       next: (employees: EmployeeProfile[]) => {
