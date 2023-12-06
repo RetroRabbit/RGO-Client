@@ -7,6 +7,7 @@ import { Token } from '../../models/token.interface';
 import { map, switchMap, take, tap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -21,16 +22,18 @@ export class SignInComponent {
   private auth: Auth0.AuthService,
   private authService: AuthService,
   private router: Router,
-  private cookieService: CookieService
+  private cookieService: CookieService,
+  public hideNavService: HideNavService
   ) {}
   token: string | null = null;
   userEmail: string | null = null;
 
   ngOnInit(){
+    this.hideNavService.showNavbar = false;
     this.token = this.cookieService.get('userToken');
     this.userEmail = this.cookieService.get('userEmail');
   }
-
+  
   Login() {
     this.cookieService.deleteAll();
     this.auth
@@ -60,7 +63,10 @@ export class SignInComponent {
         };
         
         this.store.dispatch(GetLogin({ payload: googleID }));
-        this.router.navigateByUrl('/home');
+        this.hideNavService.showNavbar = true;
+        
+        this.router.navigateByUrl('/dashboard');
+
       },
       error:(error) => {
       }

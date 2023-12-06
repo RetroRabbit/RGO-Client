@@ -48,6 +48,7 @@ export class CreateChartsComponent {
       .subscribe({
         next : response => {
           this.snackBarService.showSnackbar("Chart created", "snack-success");
+          this.router.navigateByUrl('/charts')
           this.cookieService.set('currentPage', "Charts");
         },
         error: error => {
