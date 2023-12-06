@@ -119,6 +119,10 @@ export class AdminDashboardComponent {
       this.selectedCategories = val;
     });
 
+    this.typeControl.valueChanges.subscribe(val => {
+      this.selectedTypes = val;
+    });
+
     this.chartService.getColumns().subscribe({
       next: data => {
         this.categories = data;
@@ -382,24 +386,20 @@ export class AdminDashboardComponent {
       const index = roles.indexOf(role);
       if (index >= 0) {
         roles.splice(index, 1);
-        this.typeControl.setValue(roles); // This should update the select and chips
+        this.typeControl.setValue(roles);
         this.selectedTypes = roles;
       }
     }
   }
 
   onDropDownChange(event: any) {
-    if (event.value.includes('All')) {
-      if (event.value.includes('All') && !this.selectedTypes.includes('All')) {
-        this.selectedTypes = ['All'];
-        this.typeControl.setValue(['All'], { emitEvent: false });
-      }
-      else if (event.value.includes('All') && this.selectedTypes.includes('All')) {
-        this.selectedTypes = event.value.filter((item: string) => item !== 'All');
-        this.typeControl.setValue([...this.selectedTypes], { emitEvent: false });
-      }
-    } else {
-      this.selectedTypes = event.value;
+    if (event.value.includes("All")) {
+      this.filteredTypes = this.filteredTypes.filter((name: string) => name == "All");
+      this.typeControl.setValue(["All"]);
+    }
+    else {
+      this.filteredTypes = this.types;
+      this.typeControl.setValue(event.value);
     }
   }
 }
