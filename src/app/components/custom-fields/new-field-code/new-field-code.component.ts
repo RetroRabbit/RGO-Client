@@ -29,7 +29,7 @@ export class NewFieldCodeComponent {
     description: [''],
     regex: [''],
     type: [-1, Validators.required],
-    status: [-1, Validators.required],
+    status: [0, Validators.required],
     internal: [false],
     internalTable: [''],
     options: this.fb.array([]),
@@ -48,9 +48,7 @@ export class NewFieldCodeComponent {
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
     public hideNavService: HideNavService,
-    public router: Router,) {
-
-    // this.initializeForm();
+    public router: Router) {
   }
 
   ngOnInit(): void {
@@ -103,12 +101,13 @@ export class NewFieldCodeComponent {
       }
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Custom field saved", "snack-success");
+          this.snackBarService.showSnackbar("Custom field has been created successfully", "snack-success");
           this.newFieldCodeForm.disable();
           this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
           this.router.navigateByUrl('/system-settings');
         },
         error: (error) => {
+          this.snackBarService.showSnackbar(error, "snack-error");
           if (error.error === "Field with that name found") {
             this.isUnique = false;
           }
@@ -117,6 +116,9 @@ export class NewFieldCodeComponent {
           }
         }
       });
+    }
+    else{
+      this.snackBarService.showSnackbar("Oops some fields are still missing information", "snack-error");
     }
   }
 
