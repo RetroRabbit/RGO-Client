@@ -63,8 +63,10 @@ export class ViewEmployeeComponent {
   ) {}
 
   ngOnInit() {
+    this.dataSource.paginator = this.paginator;
+
     this.onResize();
-    if(this.cookieService.get(this.PREVIOUS_PAGE) != "Dashboard"){
+    if(this.cookieService.get(this.PREVIOUS_PAGE) != "Dashboard"){ 
       this._searchQuery = "";
     }
   }
@@ -226,11 +228,6 @@ export class ViewEmployeeComponent {
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
 
-  changePageSize(size: number) {
-    if (this.paginator) this.paginator.pageSize = size;
-    this.dataSource._updateChangeSubscription();
-  }
-
   get pageIndex(): number {
     return this.paginator?.pageIndex ?? 0;
   }
@@ -281,7 +278,8 @@ export class ViewEmployeeComponent {
   }
 
   set pageSize(size: number) {
-    if (this.paginator) this.paginator.pageSize = size;
+      this.paginator.pageSize = size;
+      this.dataSource._updateChangeSubscription();
   }
 
   get start(): number {
@@ -294,5 +292,10 @@ export class ViewEmployeeComponent {
     return this.paginator
       ? (this.paginator.pageIndex + 1) * this.paginator.pageSize
       : 0;
+  }
+
+  goToPage(page: number): void {
+    this.paginator.pageIndex = page - 1;
+    this.dataSource._updateChangeSubscription();
   }
 }
