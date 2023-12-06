@@ -226,3 +226,15 @@ mat-header-row {
 #move-to-active:hover{
   cursor: pointer;
 }
+
+#save-button{
+  min-width: 118px;
+  height: 40px;
+  padding: 10px 24px;
+}
+
+.inactive-tab-button{
+  background-color: #1D1B201F !important;
+  color: #1D1B201F !important;
+  border-color: #1D1B201F !important;
+}
