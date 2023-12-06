@@ -16,12 +16,19 @@ export class EmployeeProfileService {
   email: string = '';
   token: string = '';
   cookieEmail = this.cookieService.get('userEmail');
-  constructor(private client: HttpClient,private appStore:Store<{app:Token}>, private employeeStore:Store<{employees:EmployeeState}>, private cookieService: CookieService) { }
+  constructor(private client: HttpClient, private appStore:Store<{app:Token}>, private employeeStore:Store<{employees:EmployeeState}>, private cookieService: CookieService) { }
 
   GetEmployeeProfile(): Observable<EmployeeProfile> {
-
-    return this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/get`);
+    let result = this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/get`);
+    console.log(result)
+    return result;
   }
+
+  GetEmployeeProfileByEmail(email: string): Observable<EmployeeProfile> {
+    const queryParams = `?email=${email}`;
+    return this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/get${queryParams}`);
+  }
+
 
   getToken() {
     this.employeeStore.select('employees').subscribe(state => {
@@ -48,9 +55,8 @@ export class EmployeeProfileService {
     return this.client.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employee/search${queryParams}`);
   }
 
-  getEmployeeById(id: number): Observable<EmployeeProfile | undefined> {
-    return this.searchEmployees('').pipe(
-      map(employees => employees.find(employee => employee.id === id))
-    );
+  getEmployeeById(id: number): Observable<EmployeeProfile> {
+    const queryParams = `?id=${id}`;
+    return this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/id${queryParams}`);
   }
 }
