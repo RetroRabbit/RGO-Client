@@ -9,7 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-
+import { dataTypes } from 'src/app/models/constants/types.constants';
 @Component({
   selector: 'app-manage-field-code',
   templateUrl: './manage-field-code.component.html',
@@ -19,10 +19,9 @@ import { MatSort } from '@angular/material/sort';
 export class ManageFieldCodeComponent {
   fieldCodes: FieldCode[] = [];
   filteredFieldCodes: FieldCode[] = [];
-  selectedFieldCode?: FieldCode;
+  selectedFieldCode?: FieldCode[] = [];
   isClicked: boolean = false;
   statuses: any[] = [];
-  dataTypes: any[] = [];
   newFieldCodeForm!: FormGroup;
   searchTerm: string = '';
   @ViewChild('dataTable') dataTable: Table | undefined = undefined;
@@ -34,7 +33,7 @@ export class ManageFieldCodeComponent {
   activeFields: number = 0;
   passiveFields: number = 0;
 
-  displayedColumns: string[] = ['id', 'name', 'description', 'status', 'edit'];
+  displayedColumns: string[] = ['id', 'name', 'type', 'status', 'edit'];
 
   dataSource: MatTableDataSource<FieldCode> = new MatTableDataSource();
 
@@ -48,36 +47,52 @@ export class ManageFieldCodeComponent {
   }
   pageSizes: number[] = [1, 5, 10, 25, 100];
 
-  onRowSelect(fieldCode: FieldCode) {
-    this.selectedFieldCode = fieldCode;
-    this.isClicked = true;
-  }
-
   constructor(
     public router: Router,
     private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
     public cookieService: CookieService,
     private snackBarService: SnackbarService) {
-    this.initializeForm();
+    // this.initializeForm();
   }
-
-  private initializeForm() {
-    this.newFieldCodeForm = this.fb.group({
-      fieldCode: this.fb.group({
-        code: [''],
-        name: [''],
-        description: [''],
-        regex: [''],
-        type: [''],
-        status: [''],
-        option: [''],
-        internal: [false],
-        internalTable: [''],
-        options: this.fb.array([])
-      }),
+  ngOnInit(): void {
+    this.fieldCodeService.getAllFieldCodes().subscribe({
+      next: fieldCodes => {
+        this.fieldCodes = fieldCodes;
+      },
+      error: error => {
+        this.snackBarService.showSnackbar("Error loading Field Codes", "snack-error");
+      },
+      complete: () =>{
+          this.fetchData();
+      }
     });
   }
+
+  fetchData(){
+    this.filteredFieldCodes = this.fieldCodes.filter(field => field.status == 0);
+    this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.getActivePassive();
+  }
+
+  // private initializeForm() {
+  //   this.newFieldCodeForm = this.fb.group({
+  //     fieldCode: this.fb.group({
+  //       code: [''],
+  //       name: [''],
+  //       description: [''],
+  //       regex: [''],
+  //       type: [''],
+  //       status: [''],
+  //       option: [''],
+  //       internal: [false],
+  //       internalTable: [''],
+  //       options: this.fb.array([])
+  //     }),
+  //   });
+  // }
 
   get options() {
     return (this.newFieldCodeForm.get('fieldCode.options') as FormArray);
@@ -139,23 +154,8 @@ export class ManageFieldCodeComponent {
     this.newFieldCodeForm.markAllAsTouched();
   }
 
-  ngOnInit(): void {
-    this.fieldCodeService.getAllFieldCodes().subscribe({
-      next: fieldCodes => {
-        this.fieldCodes = fieldCodes;
-        this.filteredFieldCodes = this.fieldCodes.filter(field => field.status == 0);
-        this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.getActivePassive();
-      },
-      error: error => {
-        this.snackBarService.showSnackbar("Error loading Field Codes", "snack-error");
-      }
-    });
-  }
-
   getActivePassive() {
+    this.passiveFields = this.activeFields = 0;
     this.fieldCodes.forEach(field => {
       if (field.status == 0) this.activeFields++;
       else this.passiveFields++;
@@ -257,5 +257,31 @@ export class ManageFieldCodeComponent {
   goToPage(page: number): void {
     this.paginator.pageIndex = page - 1;
     this.dataSource._updateChangeSubscription();
+  }
+
+  onRowSelect(fieldCode: FieldCode) {
+    if(this.selectedFieldCode?.includes(fieldCode)){
+      this.selectedFieldCode.splice(this.selectedFieldCode.indexOf(fieldCode), 1);
+    }
+    else{
+      this.selectedFieldCode?.push(fieldCode);
+    }
+  }
+
+  moveToActive(field : FieldCode){
+    var updatedField = {...field};
+    updatedField.status = 0;
+    this.fieldCodeService.updateFieldCode(updatedField).subscribe({
+      next: (data) =>{
+        this.snackBarService.showSnackbar("Field code updated", "snack-success");
+        this.fetchData();
+      },error: (error) =>{
+        this.snackBarService.showSnackbar(error, "snack-error");
+      }
+    });
+  }
+
+  getType(id: number){
+    return dataTypes.find(type => type.id == id)?.value;
   }
 }
