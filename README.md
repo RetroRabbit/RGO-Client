@@ -15,7 +15,7 @@ git clone 'https://retro-rabbit@dev.azure.com/retro-rabbit/RetroGradOnboard/_git
 ### Open project
 Open folder "RGO-Client" in Visual Studio Code
 
-### Change to the Dev branch
+### Change to the develop branch
 Make sure to have Git installed to run any Git command lines.
 ```powershell
 #cd RGO-Client
