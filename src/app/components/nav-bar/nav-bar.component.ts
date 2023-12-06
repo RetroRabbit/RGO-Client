@@ -70,8 +70,8 @@ export class NavBarComponent {
     return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
 
-  isJourney(): boolean {
-    return this.roles.includes('Journey');
+  isTalent(): boolean {
+    return this.roles.includes('Talent');
   }
 
   isEmployee(): boolean {
