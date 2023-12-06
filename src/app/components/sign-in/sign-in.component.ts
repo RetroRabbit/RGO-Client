@@ -33,7 +33,7 @@ export class SignInComponent {
     this.token = this.cookieService.get('userToken');
     this.userEmail = this.cookieService.get('userEmail');
   }
-
+  
   Login() {
     this.cookieService.deleteAll();
     this.auth

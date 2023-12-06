@@ -16,10 +16,11 @@ import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { levels } from 'src/app/models/constants/levels.constants';
-
+import { ActivatedRoute } from '@angular/router';
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
 import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
+import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeBankingService } from 'src/app/services/employee/employee-banking.service';
@@ -34,7 +35,6 @@ import { FieldCodeService } from 'src/app/services/field-code.service';
 import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { category } from 'src/app/models/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
-import { Employee } from 'src/app/models/employee.interface';
 
 @Component({
   selector: 'app-employee-profile',
@@ -43,10 +43,8 @@ import { Employee } from 'src/app/models/employee.interface';
 })
 
 export class EmployeeProfileComponent {
-  @Input() selectedEmployee: EmployeeProfile | null = null;
-  employeeFields: Properties[] = [];
-  editFields: Properties[] = [];
-  employeeProfile: EmployeeProfile | null = null;
+  selectedEmployee!: EmployeeProfile;
+  employeeProfile!: EmployeeProfile;
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
   customFields: FieldCode[] = [];
@@ -56,29 +54,28 @@ export class EmployeeProfileComponent {
   employeeData: EmployeeData[] = [];
   employeeBanking !: EmployeeBanking;
 
+  employeeId = this.route.snapshot.params['id'];
+
   employeeProfileDto?: any;
   employeeType?: EmployeeType;
-  employeeAddressDto: any;
   employeeBankingDto !: any;
 
-  isEdit: boolean = false;
   selectedItem: string = 'Profile Details';
-  expandedIndex = 0;
   panelOpenState: boolean = false;
-  hasDisbility: boolean | undefined = false;
+  hasDisability: boolean | undefined = false;
   physicalEqualPostal: boolean = false;
 
-  public genders = genders;
-  public races = races;
-  public levels = levels;
-  public countries = countries;
-  public disabilities = disabilities;
-  public provinces = provinces;
-  public banks = banks;
-  public accountTypes = accountTypes;
-  public fileCategories = Document;
-  public category = category;
-  public fieldTypes = dataTypes;
+  genders = genders;
+  races = races;
+  levels = levels;
+  countries = countries;
+  disabilities = disabilities;
+  provinces = provinces;
+  banks = banks;
+  accountTypes = accountTypes;
+  fileCategories = Document;
+  category = category;
+  fieldTypes = dataTypes;
 
   editContact: boolean = false;
   editEmployee: boolean = false;
@@ -88,12 +85,10 @@ export class EmployeeProfileComponent {
   editBanking: boolean = false;
 
   isUpdated: boolean = false;
-  physicalCountryControl: string = "";
-  postalCountryControl: string = "";
 
-  employeeClient: EmployeeProfile | undefined;
-  employeeTeamLead: EmployeeProfile | undefined;
-  employeePeopleChampion: EmployeeProfile | undefined;
+  employeeClient!: EmployeeProfile;
+  employeeTeamLead!: EmployeeProfile;
+  employeePeopleChampion!: EmployeeProfile;
 
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
 
@@ -105,29 +100,56 @@ export class EmployeeProfileComponent {
   additionalFormProgress: number = 0;
   overallFormProgress: number = 0;
   documentFormProgress: number = 0;
-
   bankingFormProgress: number = 0;
-
-  careerSummaryProgress: number = 0;
   bankInformationProgress: number = 0;
   documentsProgress: number = 0;
+
   bankingId: number = 0;
   bankingStatus: number = 0;
-  bankingReason: string = "" ;
+  bankingReason: string = "";
 
-  bankingPDFName: string = "" ;
+  bankingPDFName: string = "";
   hasBankingData: boolean = false;
   hasFile: boolean = false;
 
-  displayedColumns: string[] = ['document', 'action', 'status'];
   dataSource = new MatTableDataSource<string>();
-  employeeDocuments : EmployeeDocument[] = [];
-  uploadButtonIndex : number= 0;
-  base64String : string = "";
-  documentsFileName : string = "";
+  employeeDocuments: EmployeeDocument[] = [];
+  uploadButtonIndex: number = 0;
+  base64String: string = "";
+  documentsFileName: string = "";
 
   bankingUpdate: string = "";
-  hasUpdatedBanking : boolean = false;
+  hasUpdatedBanking: boolean = false;
+
+  filteredEmployees: any = [];
+  filteredClients: any = [];
+  clientId?= null;
+  foundClient: any;
+  foundTeamLead: any;
+  filteredPeopleChamps: any = [];
+  peopleChampionId = null;
+  foundChampion: any;
+  client: string = '';
+  employeeDataDto!: EmployeeData;
+  filteredCountries: any[] = this.countries.slice();
+  previousPage: string = '';
+  currentPage: string = '';
+
+  PREVIOUS_PAGE = "previousPage";
+
+  constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
+    private employeeAddressService: EmployeeAddressService,
+    private clientService: ClientService,
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private employeeService: EmployeeService,
+    private employeeTypeService: EmployeeTypeService,
+    private employeeBankingService: EmployeeBankingService,
+    private employeeDocumentService: EmployeeDocumentService,
+    private fieldCodeService: FieldCodeService,
+    private employeeDataService: EmployeeDataService,
+    private snackBarService: SnackbarService) { }
 
   employeeDetailsForm: FormGroup = this.fb.group({
     name: { value: '', disabled: true },
@@ -184,67 +206,54 @@ export class EmployeeProfileComponent {
   employeeBankingsForm: FormGroup = this.fb.group({
     accountHolderName: [{ value: '', disabled: true }, Validators.required],
     accountType: [{ value: -1, disabled: true }, Validators.required],
-    bankName:[{ value: '', disabled: true }, Validators.required],
-    accountNo:  [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-    branch:[{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-    file:[{ value: '', disabled: true }, Validators.required],
+    bankName: [{ value: '', disabled: true }, Validators.required],
+    accountNo: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+    branch: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+    file: [{ value: '', disabled: true }, Validators.required],
   });
 
-  filteredEmployees: any = [];
-  filteredClients: any = [];
-  employeeId? = null;
-  clientId? = null;
-  foundClient: any;
-  foundTeamLead: any;
-  filteredPeopleChamps: any = [];
-  peopleChampionId = null;
-  foundChampion: any;
-  client: string = '';
-  employeeDataDto!: EmployeeData;
-  filteredCountries: any[] = this.countries.slice();
-  previousPage: string = '';
-  currentPage: string = '';
 
-  CURRENT_PAGE = "currentPage";
-  PREVIOUS_PAGE = "previousPage";
-
-  constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
-    private employeeAddressService: EmployeeAddressService,
-    private clientService: ClientService,
-    private fb: FormBuilder,
-    private employeeService: EmployeeService,
-    private employeeTypeService: EmployeeTypeService,
-    private employeeBankingService: EmployeeBankingService,
-    private employeeDocumentService: EmployeeDocumentService,
-    private fieldCodeService: FieldCodeService,
-    private employeeDataService: EmployeeDataService,
-    private snackBarService: SnackbarService) { }
 
   ngOnInit() {
-    this.getEmployeeFields();
+    this.getSelectedEmployee();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
-    this.currentPage = this.cookieService.get(this.CURRENT_PAGE);
   }
 
   goToEmployees() {
-    this.cookieService.set(this.CURRENT_PAGE, 'Employees');
+    this.router.navigateByUrl('/employees')
   }
 
   goToDashboard() {
-    this.cookieService.set(this.CURRENT_PAGE, 'Dashboard');
+    this.router.navigateByUrl('/dashboard')
   }
 
+  getSelectedEmployee(){
+    this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
+      next: (employee: any) => {
+        this.selectedEmployee = employee;
+        this.employeeProfile = employee;
+        console.log(employee);
+      }, 
+      error: (error) => {
+        this.snackBarService.showSnackbar(error, "snack-error");
+      },
+      complete: () => {
+        this.getEmployeeFields();
+      }
+    })
+  }
+
+
   getEmployeeFields() {
-    const employeeObservale = this.selectedEmployee ? of(this.selectedEmployee) : this.employeeProfileService.GetEmployeeProfile();
-    employeeObservale.subscribe({
+    this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
       next: data => {
         this.employeeProfile = data;
         this.employeePhysicalAddress = data.physicalAddress!;
         this.employeePostalAddress = data.postalAddress!;
-        this.hasDisbility = data.disability;
-        this.hasDisbility = this.employeeProfile!.disability;
+        this.hasDisability = data.disability;
+        this.hasDisability = this.employeeProfile!.disability;
 
-        this.employeeDataService.getEmployeeData(this.selectedEmployee ? this.selectedEmployee.id : this.employeeProfile?.id).subscribe({
+        this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
           next: data => {
             this.employeeData = data;
           }
@@ -252,6 +261,7 @@ export class EmployeeProfileComponent {
         this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
           next: (data) => {
             this.employeeBanking = data;
+            console.log(data);
             this.bankingId = this.employeeBanking.id;
             this.initializeBankingForm(this.employeeBanking);
 
@@ -366,7 +376,7 @@ export class EmployeeProfileComponent {
       return data.id == this.employeeProfile!.clientAllocated
     });
     this.foundChampion = this.employees.find((data: any) => {
-      if (this.employeeProfile?.peopleChampion != null){
+      if (this.employeeProfile?.peopleChampion != null) {
         return data.id == this.employeeProfile!.peopleChampion
       }
       else return null;
@@ -388,13 +398,13 @@ export class EmployeeProfileComponent {
     }
   }
 
-  checkAdditionalInformation(){
+  checkAdditionalInformation() {
     this.panelOpenState = true;
     const formGroupConfig: any = {};
     this.customFields.forEach(fieldName => {
       if (fieldName.code != null || fieldName.code != undefined) {
         const customData = this.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
-        formGroupConfig[fieldName.code] = new FormControl({value: customData[0] ? customData[0].value : '', disabled: true});
+        formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
         this.additionalInfoForm = this.fb.group(formGroupConfig);
         this.additionalInfoForm.disable();
       }
@@ -414,7 +424,7 @@ export class EmployeeProfileComponent {
   }
 
   setHasDisability(event: any) {
-    this.hasDisbility = event.value;
+    this.hasDisability = event.value;
   }
 
   editPersonalDetails() {
@@ -451,7 +461,7 @@ export class EmployeeProfileComponent {
 
   cancelPersonalEdit() {
     this.editPersonal = false;
-    this.hasDisbility = false;
+    this.hasDisability = false;
     this.initializeForm();
     this.personalDetailsForm.disable();
   }
@@ -461,63 +471,63 @@ export class EmployeeProfileComponent {
     this.addressDetailsForm.enable();
   }
 
-saveAddressEdit() {
-  this.editAddress = false;
-  if (this.addressDetailsForm.valid) {
-    const addressDetailFormValue = this.addressDetailsForm.value;
+  saveAddressEdit() {
+    this.editAddress = false;
+    if (this.addressDetailsForm.valid) {
+      const addressDetailFormValue = this.addressDetailsForm.value;
 
-    const physicalAddressDto: EmployeeAddress = {
-      id: this.employeeProfile!.physicalAddress?.id!,
-      unitNumber: addressDetailFormValue['physicalUnitNumber'],
-      complexName: addressDetailFormValue['physicalComplexName'],
-      streetNumber: addressDetailFormValue['physicalStreetNumber'],
-      suburbOrDistrict: addressDetailFormValue['physicalSuburb'],
-      city: addressDetailFormValue['physicalCity'],
-      country: addressDetailFormValue['physicalCountry'],
-      province: addressDetailFormValue['physicalProvince'],
-      postalCode: addressDetailFormValue['physicalPostalCode'],
-    };
+      const physicalAddressDto: EmployeeAddress = {
+        id: this.employeeProfile!.physicalAddress?.id!,
+        unitNumber: addressDetailFormValue['physicalUnitNumber'],
+        complexName: addressDetailFormValue['physicalComplexName'],
+        streetNumber: addressDetailFormValue['physicalStreetNumber'],
+        suburbOrDistrict: addressDetailFormValue['physicalSuburb'],
+        city: addressDetailFormValue['physicalCity'],
+        country: addressDetailFormValue['physicalCountry'],
+        province: addressDetailFormValue['physicalProvince'],
+        postalCode: addressDetailFormValue['physicalPostalCode'],
+      };
 
-    const postalAddressDto: EmployeeAddress = {
-      id: this.employeeProfile!.postalAddress?.id!,
-      unitNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalUnitNumber'] : addressDetailFormValue['postalUnitNumber'],
-      complexName: this.physicalEqualPostal ? addressDetailFormValue['physicalComplexName'] : addressDetailFormValue['postalComplexName'],
-      streetNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalStreetNumber'] : addressDetailFormValue['postalStreetNumber'],
-      suburbOrDistrict: this.physicalEqualPostal ? addressDetailFormValue['physicalSuburb'] : addressDetailFormValue['postalSuburb'],
-      city: this.physicalEqualPostal ? addressDetailFormValue['physicalCity'] : addressDetailFormValue['postalCity'],
-      country: this.physicalEqualPostal ? addressDetailFormValue['physicalCountry'] : addressDetailFormValue['postalCountry'],
-      province: this.physicalEqualPostal ? addressDetailFormValue['physicalProvince'] : addressDetailFormValue['postalProvince'],
-      postalCode: this.physicalEqualPostal ? addressDetailFormValue['physicalPostalCode'] : addressDetailFormValue['postalPostalCode'],
-    };
-    this.employeeAddressService.update(postalAddressDto).subscribe({
-      next: (postalData) => {
-        this.employeeProfile!.postalAddress = postalAddressDto;
-        this.snackBarService.showSnackbar("Postal Details updated", "snack-success");
-        this.employeeAddressService.update(physicalAddressDto).subscribe({
-          next: (data) => {
-            this.employeeProfile!.physicalAddress = physicalAddressDto;
-            this.snackBarService.showSnackbar("Physical address updated", "snack-success");
-            this.addressDetailsForm.disable();
-            this.checkAddressFormProgress();
-            this.totalProfileProgress();
-            this.getEmployeeFields();
-          },
-          error: (error: any) => {
-            this.snackBarService.showSnackbar(error, "snack-error");
-          },
-        });
-      },
-      error: (postalError: any) => {
-        this.snackBarService.showSnackbar(postalError, "snack-error");
-      },
-    });
-  } else {
-    this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+      const postalAddressDto: EmployeeAddress = {
+        id: this.employeeProfile!.postalAddress?.id!,
+        unitNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalUnitNumber'] : addressDetailFormValue['postalUnitNumber'],
+        complexName: this.physicalEqualPostal ? addressDetailFormValue['physicalComplexName'] : addressDetailFormValue['postalComplexName'],
+        streetNumber: this.physicalEqualPostal ? addressDetailFormValue['physicalStreetNumber'] : addressDetailFormValue['postalStreetNumber'],
+        suburbOrDistrict: this.physicalEqualPostal ? addressDetailFormValue['physicalSuburb'] : addressDetailFormValue['postalSuburb'],
+        city: this.physicalEqualPostal ? addressDetailFormValue['physicalCity'] : addressDetailFormValue['postalCity'],
+        country: this.physicalEqualPostal ? addressDetailFormValue['physicalCountry'] : addressDetailFormValue['postalCountry'],
+        province: this.physicalEqualPostal ? addressDetailFormValue['physicalProvince'] : addressDetailFormValue['postalProvince'],
+        postalCode: this.physicalEqualPostal ? addressDetailFormValue['physicalPostalCode'] : addressDetailFormValue['postalPostalCode'],
+      };
+      this.employeeAddressService.update(postalAddressDto).subscribe({
+        next: (postalData) => {
+          this.employeeProfile!.postalAddress = postalAddressDto;
+          this.snackBarService.showSnackbar("Postal Details updated", "snack-success");
+          this.employeeAddressService.update(physicalAddressDto).subscribe({
+            next: (data) => {
+              this.employeeProfile!.physicalAddress = physicalAddressDto;
+              this.snackBarService.showSnackbar("Physical address updated", "snack-success");
+              this.addressDetailsForm.disable();
+              this.checkAddressFormProgress();
+              this.totalProfileProgress();
+              this.getEmployeeFields();
+            },
+            error: (error: any) => {
+              this.snackBarService.showSnackbar(error, "snack-error");
+            },
+          });
+        },
+        error: (postalError: any) => {
+          this.snackBarService.showSnackbar(postalError, "snack-error");
+        },
+      });
+    } else {
+      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+    }
   }
-}
   cancelAddressEdit() {
     this.editAddress = false;
-    this.hasDisbility = false;
+    this.hasDisability = false;
     this.initializeForm();
     this.addressDetailsForm.disable();
   }
@@ -627,7 +637,7 @@ saveAddressEdit() {
           this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfileDto?.peopleChampion)[0];
           this.employeeDetailsForm.disable();
         },
-        error: (error) => { this.snackBarService.showSnackbar(error, "snack-error")},
+        error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
       });
     }
     else {
@@ -666,7 +676,7 @@ saveAddressEdit() {
           this.totalProfileProgress();
           this.employeeContactForm.disable();
         },
-        error: (error) => { this.snackBarService.showSnackbar(error, "snack-error")},
+        error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
       });
     }
     else {
@@ -681,7 +691,7 @@ saveAddressEdit() {
     this.employeeContactForm.disable();
   }
 
-  saveAdditionalEdit(){
+  saveAdditionalEdit() {
     this.editAdditional = false;
     for (const fieldcode of this.customFields) {
       const found = this.employeeData.find((data) => {
@@ -711,7 +721,7 @@ saveAddressEdit() {
         var formatFound: any = fieldcode?.code
         const employeeDataDto = {
           id: 0,
-          employeeId: this.selectedEmployee ? this.selectedEmployee.id: this.employeeProfile?.id,
+          employeeId: this.selectedEmployee ? this.selectedEmployee.id : this.employeeProfile?.id,
           fieldcodeId: fieldcode.id,
           value: this.additionalInfoForm.get(formatFound)?.value
         }
@@ -808,7 +818,7 @@ saveAddressEdit() {
     let totalFields = 0;
     const formControls = this.personalDetailsForm.controls;
 
-    if (this.hasDisbility) {
+    if (this.hasDisability) {
       totalFields = (Object.keys(this.personalDetailsForm.controls).length);
     }
     else {
@@ -817,10 +827,10 @@ saveAddressEdit() {
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (control.value != null && control.value != '' && this.hasDisbility != false && control.value != "na") {
+        if (control.value != null && control.value != '' && this.hasDisability != false && control.value != "na") {
           filledCount++;
         }
-        else if (controlName.includes("disability") && this.hasDisbility == false) {
+        else if (controlName.includes("disability") && this.hasDisability == false) {
           filledCount++;
         }
       }
@@ -868,7 +878,7 @@ saveAddressEdit() {
     this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
-  checkAdditionalFormProgress(){
+  checkAdditionalFormProgress() {
     let filledCount = 0;
     const formControls = this.additionalInfoForm.controls;
     let totalFields = Object.keys(this.additionalInfoForm.controls).length;
@@ -905,7 +915,7 @@ saveAddressEdit() {
     this.overallProgress();
   }
 
-  totalBankingProgress(){
+  totalBankingProgress() {
     this.bankInformationProgress = Math.floor(this.bankingFormProgress);
     this.overallProgress();
   }
@@ -945,23 +955,23 @@ saveAddressEdit() {
       file: employeeBankingFormValue.file
     }
 
-    if(this.hasBankingData){
+    if (this.hasBankingData) {
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {
-        this.snackBarService.showSnackbar("Banking details updated", "snack-success");
-        this.addressDetailsForm.disable();
-        this.checkAddressFormProgress();
-        this.totalBankingProgress();
-        this.getEmployeeFields();
-        this.checkBankingInformationProgress();
-        this.hasUpdatedBanking = true;
-      },
-      error: (error) => {
-        this.snackBarService.showSnackbar(error, "snack-error");
-      }
-    })
+          this.snackBarService.showSnackbar("Banking details updated", "snack-success");
+          this.addressDetailsForm.disable();
+          this.checkAddressFormProgress();
+          this.totalBankingProgress();
+          this.getEmployeeFields();
+          this.checkBankingInformationProgress();
+          this.hasUpdatedBanking = true;
+        },
+        error: (error) => {
+          this.snackBarService.showSnackbar(error, "snack-error");
+        }
+      })
     }
-    else{
+    else {
       this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Banking details added", "snack-success");
@@ -972,7 +982,7 @@ saveAddressEdit() {
           this.checkBankingInformationProgress();
           this.hasUpdatedBanking = true;
         }
-        ,error : (error) => {
+        , error: (error) => {
           this.snackBarService.showSnackbar("Failed to create banking information", "snack-error");
         }
       })
@@ -1022,19 +1032,19 @@ saveAddressEdit() {
     }
   }
 
-  captureUploadIndex(event : any){
+  captureUploadIndex(event: any) {
     this.uploadButtonIndex = event.srcElement.parentElement.id;
     const inputField = document.getElementById(`${this.uploadButtonIndex}-document`) as HTMLInputElement;
     inputField.click();
   }
 
-  uploadDocument(event: any){
+  uploadDocument(event: any) {
     this.selectedFile = event.target.files[0];
     this.documentsFileName = this.selectedFile.name;
     this.uploadProfileDocument();
   }
 
-  uploadProfileDocument(){
+  uploadProfileDocument() {
     if (this.selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -1044,7 +1054,7 @@ saveAddressEdit() {
     }
   }
 
-getEmployeeDocuments() {
+  getEmployeeDocuments() {
     this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile?.id as number).subscribe({
       next: data => {
         this.employeeDocuments = data;
@@ -1057,8 +1067,8 @@ getEmployeeDocuments() {
     })
   }
 
-  uploadDocumentDto(document : any){
-    if(document.id == 0){
+  uploadDocumentDto(document: any) {
+    if (document.id == 0) {
       const saveObj = {
         id: document.id,
         employeeId: document.employee.id,
@@ -1077,7 +1087,7 @@ getEmployeeDocuments() {
           this.snackBarService.showSnackbar(error, "snack-error");
         }
       });
-    }else{
+    } else {
       this.employeeDocumentService.updateEmployeeDocument(document).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Document updated", "snack-success");
@@ -1090,14 +1100,14 @@ getEmployeeDocuments() {
       });
     }
   }
-  buildDocumentDto(){
+  buildDocumentDto() {
     const existingValue = this.filterDocumentsByCategory();
     if (this.selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
         this.base64String = reader.result as string;
-        var newDto : {} = {
-          id: existingValue != undefined ?  existingValue?.id as number : 0,
+        var newDto: {} = {
+          id: existingValue != undefined ? existingValue?.id as number : 0,
           employee: this.employeeProfile,
           reference: "",
           fileName: this.documentsFileName,
@@ -1114,61 +1124,61 @@ getEmployeeDocuments() {
     }
   }
 
-  filterDocumentsByCategory() : EmployeeDocument | null{
-    var object  = this.employeeDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
-    if(object == null){
+  filterDocumentsByCategory(): EmployeeDocument | null {
+    var object = this.employeeDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
+    if (object == null) {
       return null;
     }
     return object[0];
   }
 
-  getFileName(index : number) : EmployeeDocument{
+  getFileName(index: number): EmployeeDocument {
     var docObj = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
     return docObj;
   }
 
-  downloadDocument(event: any){
+  downloadDocument(event: any) {
     const id = event.srcElement.parentElement.id;
     const docObj = this.employeeDocuments.find(document => document.fileCategory == id) as any;
-    if(docObj === undefined){
+    if (docObj === undefined) {
       // TODO: download clean slate form
     }
-    else{
-      if(docObj.status == 2){
-          // TODO: download clean slate form
-      }else{
+    else {
+      if (docObj.status == 2) {
+        // TODO: download clean slate form
+      } else {
         this.downloadFile(docObj?.blob as string, docObj?.fileName as string);
       }
     }
   }
 
-  disableButton(index: number):boolean{
+  disableButton(index: number): boolean {
     const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
-    if(docObj == undefined || docObj?.status == 2){
+    if (docObj == undefined || docObj?.status == 2) {
       return false;
     }
     return true;
   }
 
-  calculateDocumentProgress(){
+  calculateDocumentProgress() {
     const total = this.fileCategories.length;
     const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
-    this.documentFormProgress = fetchedDocuments/total * 100;
+    this.documentFormProgress = fetchedDocuments / total * 100;
     this.overallProgress();
   }
 
-  initializeBankingForm(bankingDetails : EmployeeBanking){
-    if(bankingDetails == null){
+  initializeBankingForm(bankingDetails: EmployeeBanking) {
+    if (bankingDetails == null) {
       this.hasBankingData = false;
       return;
     }
     this.employeeBankingsForm = this.fb.group({
       accountHolderName: [{ value: bankingDetails.accountHolderName, disabled: true }, Validators.required],
       accountType: [{ value: bankingDetails.accountType, disabled: true }, Validators.required],
-      bankName:[{ value: bankingDetails.bankName, disabled: true }, Validators.required],
-      accountNo:  [{ value: bankingDetails.accountNo, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      branch:[{ value: bankingDetails.branch, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      file:[{ value: bankingDetails.file, disabled: true }, Validators.required],
+      bankName: [{ value: bankingDetails.bankName, disabled: true }, Validators.required],
+      accountNo: [{ value: bankingDetails.accountNo, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      branch: [{ value: bankingDetails.branch, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      file: [{ value: bankingDetails.file, disabled: true }, Validators.required],
     });
     this.hasFile = bankingDetails.file.length > 0;
     this.hasBankingData = true;
@@ -1178,7 +1188,7 @@ getEmployeeDocuments() {
   }
 
   returnMonth(month: number): string {
-    switch(month) {
+    switch (month) {
       case 1: return 'January'
       case 2: return 'February'
       case 3: return 'March'

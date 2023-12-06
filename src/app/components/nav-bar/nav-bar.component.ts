@@ -16,6 +16,7 @@ import { Chart } from "chart.js";
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
+[x: string]: any;
 
   title = 'HRIS';
   showNav = this.hideNavService.showNavbar;
@@ -41,15 +42,16 @@ export class NavBarComponent {
   }
 
   ngOnInit() {
-    
+    this.signIn();
   }
 
   signIn(){
     this.hideNavService.showNavbar = true;
     const types: string = this.cookieService.get('userType');
+    const userEmail = this.cookieService.get('userEmail');
     this.roles = Object.keys(JSON.parse(types));
 
-    this.employeeProfileService.GetEmployeeProfile().subscribe({
+    this.employeeProfileService.GetEmployeeProfileByEmail(userEmail).subscribe({
       next: data => {
         this.employeeProfile = data;
         this.profileImage = this.employeeProfile.photo;

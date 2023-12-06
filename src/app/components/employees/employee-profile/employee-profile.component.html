@@ -1,12 +1,12 @@
 <div class="container mt-4">
     <div class="w-75 py-3">
         <button mat-button class="btn" id="back-button" (click)="goToEmployees()"
-            *ngIf="previousPage == 'Employees' && currentPage != 'Profile'">
+            *ngIf="previousPage == '/employees' && currentPage != 'Profile'">
             <mat-icon>arrow_back</mat-icon>
             <span>Back to Employees</span>
         </button>
         <button mat-button class="btn" id="back-button" (click)="goToDashboard()"
-            *ngIf="previousPage == 'Dashboard'  &&  currentPage != 'Profile'">
+            *ngIf="previousPage == '/dashboard'  &&  currentPage != 'Profile'">
             <mat-icon>arrow_back</mat-icon>
             <span>Back to Dashboard</span>
         </button>
@@ -32,7 +32,7 @@
                     {{employeeProfile?.employeeType?.name}} | Level {{employeeProfile?.level}}
                 </div>
                 <div class="col-12 my-2" id="header-based"
-                    *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ''">
+                    *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">
                     Based in {{employeePhysicalAddress.city}}
                 </div>
             </div>
@@ -384,7 +384,7 @@
                                                 <mat-radio-button [value]=false>no</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
-                                        <div class="col-12" *ngIf="hasDisbility">
+                                        <div class="col-12" *ngIf="hasDisability">
                                             <div class="row">
                                                 <div class="col-4">
                                                     <mat-form-field appearance="outline" style="width: 100%;">

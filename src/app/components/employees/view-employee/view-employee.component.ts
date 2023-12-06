@@ -4,6 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { ClientService } from 'src/app/services/client.service';
@@ -34,7 +35,6 @@ export class ViewEmployeeComponent {
     return this._searchQuery;
   }
 
-  CURRENT_PAGE = 'currentPage';
   PREVIOUS_PAGE = 'previousPage';
 
   roles: Observable<string[]> = this.employeeRoleService
@@ -47,8 +47,8 @@ export class ViewEmployeeComponent {
 
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
-    this.cookieService.set(this.PREVIOUS_PAGE, 'Employees');
-    this.cookieService.set(this.CURRENT_PAGE, '+ Add Employee');
+    this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
+    this.router.navigateByUrl('/create-employee');
   }
 
   constructor(
@@ -57,6 +57,7 @@ export class ViewEmployeeComponent {
     private clientService: ClientService,
     private cookieService: CookieService,
     private ngZone: NgZone,
+    private router: Router,
     private hideNavService: HideNavService,
     private snackBarService: SnackbarService
   ) {}
@@ -70,7 +71,7 @@ export class ViewEmployeeComponent {
 
   ngAfterViewInit() {
     this.getEmployees();
-    this.cookieService.set(this.PREVIOUS_PAGE, 'Employees');
+    this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
   }
 
   isLoading: boolean = true;
@@ -170,7 +171,6 @@ export class ViewEmployeeComponent {
 
   CaptureEvent(event: any) {
     const target = event.target as HTMLButtonElement;
-    this.cookieService.set(this.CURRENT_PAGE, target.innerText);
   }
 
   ViewUser(email: string) {
@@ -198,8 +198,8 @@ export class ViewEmployeeComponent {
         tap((data) => {
           this.selectedEmployee.emit(data);
           this._searchQuery = '';
-          this.cookieService.set(this.PREVIOUS_PAGE,'Employees');
-          this.cookieService.set(this.CURRENT_PAGE, 'EmployeeProfile');
+          this.router.navigateByUrl('/profile/' + data.id)
+          this.cookieService.set(this.PREVIOUS_PAGE,'/employees');
         }),
         first()
       )
