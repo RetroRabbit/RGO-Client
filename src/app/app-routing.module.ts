@@ -22,6 +22,7 @@ const routes: Routes = [
   {path: 'dashboard', component: AdminDashboardComponent},
   {path: 'employees', component: ViewEmployeeComponent},
   {path: 'profile', component: EmployeeProfileComponent},
+  {path: 'profile/:id', component: EmployeeProfileComponent},
   {path: 'system-settings', component: SystemSettingsComponent},
   {path: 'manage-field', component: ManageFieldCodeComponent},
   {path: 'charts', component: ChartComponent},

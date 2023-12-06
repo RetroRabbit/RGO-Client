@@ -366,7 +366,7 @@ export class AdminDashboardComponent {
   employeeClickEvent(employee: EmployeeProfile): void {
     this.selectedEmployee.emit(employee);
     this.cookieService.set(this.PREVIOUS_PAGE, '/dashboard');
-    this.router.navigateByUrl('/profile');
+    this.router.navigateByUrl('/profile/' + employee.id);
   }
 
   ViewUser(email: string) {

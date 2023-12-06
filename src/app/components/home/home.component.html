@@ -155,9 +155,9 @@
     <div *ngIf="cookieService.get('currentPage') == 'Profile'">
       <app-employee-profile></app-employee-profile>
     </div>
-    <div *ngIf="cookieService.get('currentPage') == 'EmployeeProfile'">
+    <!-- <div *ngIf="cookieService.get('currentPage') == 'EmployeeProfile'">
       <app-employee-profile [selectedEmployee]="selectedEmployee"></app-employee-profile>
-    </div>
+    </div> -->
     <div *ngIf="selectedItem == 'System Settings'">
       <app-system-settings></app-system-settings>
     </div>

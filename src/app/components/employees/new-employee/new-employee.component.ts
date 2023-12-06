@@ -75,7 +75,6 @@ export class NewEmployeeComponent implements OnInit {
   validImage: boolean = false;
   public files: NgxFileDropEntry[] = [];
   employeeDocumentModels: EmployeeDocument[] = [];
-  CURRENT_PAGE = 'currentPage';
   PREVIOUS_PAGE = 'previousPage';
   COMPANY_EMAIL = 'retrorabbit.co.za';
 
@@ -243,7 +242,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndAddAnother(){
-    this.onUploadDocument('+ Add Employee');
+    this.onUploadDocument('/create-employee');
   }
 
   onUploadDocument(nextPage: string): void {
@@ -259,8 +258,8 @@ export class NewEmployeeComponent implements OnInit {
           this.newEmployeeEmail = "";
           this.files = [];
           this.myStepper.previous();
-          location.reload();
-          this.cookieService.set(this.CURRENT_PAGE, nextPage);
+          this.router.navigateByUrl(nextPage);
+          
         }
       });
     });
@@ -499,6 +498,5 @@ export class NewEmployeeComponent implements OnInit {
 
   goToPreviousPage(){
     this.router.navigateByUrl(this.cookieService.get(this.PREVIOUS_PAGE));
-    //this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
   }
 }
