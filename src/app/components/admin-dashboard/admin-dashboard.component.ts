@@ -145,7 +145,6 @@ export class AdminDashboardComponent {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set(this.PREVIOUS_PAGE, '/dashboard');
     this.router.navigateByUrl('/create-employee');
-
   }
 
   viewMoreEmployees() {

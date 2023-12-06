@@ -8,8 +8,8 @@ import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { CookieService } from 'ngx-cookie-service';
 import { HideNavService } from 'src/app/services/hide-nav.service';
-
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { SystemNav } from 'src/app/services/system-nav.service';
 @Component({
   selector: 'app-update-field',
   templateUrl: './update-field.component.html',
@@ -17,7 +17,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 })
 export class UpdateFieldComponent {
 
-  @Input() selectedFieldCode!: FieldCode;
+  selectedFieldCode!: FieldCode;
   public statuses = statuses;
   public dataTypes = dataTypes;
   selectedType: any;
@@ -37,12 +37,16 @@ export class UpdateFieldComponent {
     options: this.fb.array([]),
     category: [-1, Validators.required]
   });
+
+  PREVIOUS_PAGE = "previousPage";
   constructor(public router: Router,
     private fieldCodeService: FieldCodeService,
     private fb: FormBuilder, 
     private snackBarService: SnackbarService, 
     public cookieService: CookieService,
-    public hideNavService: HideNavService) {
+    public hideNavService: HideNavService,
+    private systemService: SystemNav) {
+      this.selectedFieldCode = systemService.selectedField;
   }
 
   ngOnInit() {
@@ -135,7 +139,8 @@ export class UpdateFieldComponent {
           this.snackBarService.showSnackbar("Field details updated", "snack-success");
           this.selectedFieldCode = data;
           this.newFieldCodeForm.disable();
-          this.cookieService.set('currentPage', 'Custom Field management');
+          this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+          this.router.navigateByUrl('/system-settings');
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -183,7 +188,8 @@ export class UpdateFieldComponent {
   }
 
   back() {
-    this.cookieService.set('currentPage', 'Custom Field management');
+    this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+    this.router.navigateByUrl('/system-settings');
   }
 
   captureName() {

@@ -108,7 +108,7 @@
             <ng-container matColumnDef="edit">
               <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
               <mat-cell *matCellDef="let element">
-                <button *ngIf="activeTab == 0;" id="cancel-button" class="mt-1" (click)="EditField(element)">
+                <button *ngIf="activeTab == 0;" id="cancel-button" class="mt-1" (click)="editField(element)">
                   <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
                   Edit
                 </button>
