@@ -86,6 +86,7 @@ export class EmployeeProfileComponent {
   editBanking: boolean = false;
 
   isUpdated: boolean = false;
+  showBackButtons: boolean = true;
 
   employeeClient!: EmployeeProfile;
   employeeTeamLead!: EmployeeProfile;
@@ -139,20 +140,6 @@ export class EmployeeProfileComponent {
   currentPage: string = '';
 
   PREVIOUS_PAGE = "previousPage";
-
-  // constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
-  //   private employeeAddressService: EmployeeAddressService,
-  //   private clientService: ClientService,
-  //   private fb: FormBuilder,
-  //   private route: ActivatedRoute,
-  //   private router: Router,
-  //   private employeeService: EmployeeService,
-  //   private employeeTypeService: EmployeeTypeService,
-  //   private employeeBankingService: EmployeeBankingService,
-  //   private employeeDocumentService: EmployeeDocumentService,
-  //   private fieldCodeService: FieldCodeService,
-  //   private employeeDataService: EmployeeDataService,
-  //   private snackBarService: SnackbarService) { }
 
   employeeDetailsForm: FormGroup = this.fb.group({
     name: { value: '', disabled: true },
@@ -215,24 +202,6 @@ export class EmployeeProfileComponent {
     file: [{ value: '', disabled: true }, Validators.required],
   });
 
-  // filteredEmployees: any = [];
-  // filteredClients: any = [];
-  // employeeId? = null;
-  // clientId? = null;
-  // foundClient: any;
-  // foundTeamLead: any;
-  // filteredPeopleChamps: any = [];
-  // peopleChampionId = null;
-  // foundChampion: any;
-  // client: string = '';
-  // employeeDataDto!: EmployeeData;
-  // filteredCountries: any[] = this.countries.slice();
-  // previousPage: string = '';
-  // currentPage: string = '';
-
-  // CURRENT_PAGE = "currentPage";
-  // PREVIOUS_PAGE = "previousPage";
-
   constructor(private cookieService: CookieService, private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,
     private clientService: ClientService,
@@ -249,6 +218,11 @@ export class EmployeeProfileComponent {
     private customValidationService: CustomvalidationService) { }
 
   ngOnInit() {
+    this.employeeId = this.route.snapshot.params['id'];
+    if(this.employeeId == undefined){
+      this.showBackButtons = false;
+      this.employeeId = this.cookieService.get('userId');
+    }
     this.getSelectedEmployee();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
@@ -266,7 +240,6 @@ export class EmployeeProfileComponent {
       next: (employee: any) => {
         this.selectedEmployee = employee;
         this.employeeProfile = employee;
-        console.log(employee);
       }, 
       error: (error) => {
         this.snackBarService.showSnackbar(error, "snack-error");
@@ -295,7 +268,6 @@ export class EmployeeProfileComponent {
         this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
           next: (data) => {
             this.employeeBanking = data;
-            console.log(data);
             this.bankingId = this.employeeBanking.id;
             this.initializeBankingForm(this.employeeBanking);
 
