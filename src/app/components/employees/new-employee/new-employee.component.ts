@@ -20,6 +20,7 @@ import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
 import { HideNavService } from 'src/app/services/hide-nav.service';
+import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 
 @Component({
@@ -35,11 +36,12 @@ export class NewEmployeeComponent implements OnInit {
     private employeeTypeService: EmployeeTypeService,
     private employeeAddressService: EmployeeAddressService,
     private cookieService: CookieService,
+    private router: Router,
+    private customValidationService: CustomvalidationService,
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
-    private hideNavService: HideNavService,
-    private customValidationService: CustomvalidationService
+    private hideNavService: HideNavService
   ) { }
 
    
@@ -79,7 +81,6 @@ export class NewEmployeeComponent implements OnInit {
   validImage: boolean = false;
   public files: NgxFileDropEntry[] = [];
   employeeDocumentModels: EmployeeDocument[] = [];
-  CURRENT_PAGE = 'currentPage';
   PREVIOUS_PAGE = 'previousPage';
   COMPANY_EMAIL = 'retrorabbit.co.za';
 
@@ -252,7 +253,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndAddAnother(){
-    this.onUploadDocument('+ Add Employee');
+    this.onUploadDocument('/create-employee');
   }
 
   onUploadDocument(nextPage: string): void {
@@ -268,24 +269,21 @@ export class NewEmployeeComponent implements OnInit {
           this.newEmployeeEmail = "";
           this.files = [];
           this.myStepper.previous();
-          location.reload();
-          this.cookieService.set(this.CURRENT_PAGE, nextPage);
+          this.router.navigateByUrl(nextPage);
+          
         }
       });
     });
   }
 
   public fileOver(event: Event) {
-    console.log(event);
   }
   public fileLeave(event: Event) {
-    console.log(event);
   }
   public removeFileByIndex(index: number): void {
     if (index >= 0 && index < this.files.length) {
       this.files.splice(index, 1);
     }
-    console.log(index);
   }
 
   onFileChange(event: any): void {
@@ -364,7 +362,6 @@ export class NewEmployeeComponent implements OnInit {
       this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
       return;
     }
-    console.log(this.newEmployeeForm.value.engagementDate)
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
@@ -518,7 +515,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   goToPreviousPage(){
-    this.cookieService.set(this.CURRENT_PAGE, this.cookieService.get(this.PREVIOUS_PAGE));
+    this.router.navigateByUrl(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
   getGenderBirthday(event: FocusEvent){
