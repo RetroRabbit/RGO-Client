@@ -43,7 +43,7 @@
         </div>
         <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" >
           <div class="row">
-            <div class="col-2">
+            <div class="col-2" *ngIf="isAdmin() || isTalent()">
               <div id="nav-item-container" class="col-auto">
                 <div id="nav-item">
                   <div routerLink="/dashboard" [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
@@ -69,7 +69,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-2" *ngIf="isAdmin() || isTalent()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div routerLink="/employees" [ngClass]="router.url == '/employees' ? 'active' : 'idle'">
@@ -82,7 +82,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-3" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div routerLink="/system-settings" [ngClass]="router.url == '/system-settings' ? 'active' : 'idle'">
