@@ -86,10 +86,10 @@
             <div class="col-3" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
-                  <div (click)="CaptureEvent($event)" [ngClass]="cookieService.get('currentPage') == 'System Settings' || cookieService.get('currentPage') == 'Role Management' || cookieService.get('currentPage') == 'Custom Field management'  || cookieService.get('currentPage') == 'Role Management' || cookieService.get('currentPage') == 'Employee Banking' ? 'active' : 'idle'">
+                  <div (click)="CaptureEvent($event)" [ngClass]="cookieService.get('currentPage') == 'System Settings' || cookieService.get('currentPage') == 'Role Management' || cookieService.get('currentPage') == 'Custom Field management'  || cookieService.get('currentPage') == 'Role Management' || cookieService.get('currentPage') == 'Employee Banking' ? 'active' : 'idle' || cookieService.get('currentPage') == 'Update Field Code'">
                     System Settings
                   </div>
-                  <div *ngIf="cookieService.get('currentPage') == 'System Settings' || cookieService.get('currentPage') == 'Role Management' || cookieService.get('currentPage') == 'Custom Field management' || cookieService.get('currentPage') == 'Employee Banking'" id="selected-line-box">
+                  <div *ngIf="cookieService.get('currentPage') == 'System Settings' || cookieService.get('currentPage') == 'Role Management' || cookieService.get('currentPage') == 'Custom Field management' || cookieService.get('currentPage') == 'Employee Banking' || cookieService.get('currentPage') == 'Update Field Code'" id="selected-line-box">
                     <div id="selected-line">
                     </div>
                   </div>
@@ -159,7 +159,7 @@
       <app-employee-profile [selectedEmployee]="selectedEmployee"></app-employee-profile>
     </div>
     <div *ngIf="selectedItem == 'System Settings'">
-      <app-system-settings></app-system-settings>
+      <app-system-settings (emitFieldCode)="captureFieldCode($event)"></app-system-settings>
     </div>
     <div *ngIf="cookieService.get('currentPage') === 'Edit Dashboard'">
       <app-create-charts></app-create-charts>
@@ -191,6 +191,9 @@
     </div>
     <div *ngIf="cookieService.get('currentPage') == 'Employee Details'">
       <app-employee-details [selectedEmployee]="selectedEmployee"></app-employee-details>
+     </div>
+     <div *ngIf="cookieService.get('currentPage') == 'Update Field Code'">
+      <app-update-field [selectedFieldCode]="selectedFieldCode"></app-update-field>
      </div>
   </div>
 </div>

@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="col-9 ps-4 ms-3">
-    <app-manage-field-code *ngIf="cookieService.get('currentPage') === 'Custom Field management'"></app-manage-field-code>
+    <app-manage-field-code *ngIf="cookieService.get('currentPage') === 'Custom Field management'" (fieldCodeEmitter)="captureFieldCode($event)"></app-manage-field-code>
     <app-role-manager *ngIf="cookieService.get('currentPage') === 'Role Management'"></app-role-manager>
     <app-pending-bank-statements *ngIf="cookieService.get('currentPage') == 'Employee Banking'"></app-pending-bank-statements>
   </div>

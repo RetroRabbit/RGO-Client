@@ -29,7 +29,6 @@ export class NewFieldCodeComponent {
     regex: [''],
     type: [-1, Validators.required],
     status: [-1, Validators.required],
-    option: [''],
     internal: [false],
     internalTable: [''],
     options: this.fb.array([]),
