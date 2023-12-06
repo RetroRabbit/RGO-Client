@@ -47,6 +47,7 @@ export class UpdateFieldComponent {
     public hideNavService: HideNavService,
     private systemService: SystemNav) {
       this.selectedFieldCode = systemService.selectedField;
+      console.log(this.selectedFieldCode);
   }
 
   ngOnInit() {
@@ -121,7 +122,7 @@ export class UpdateFieldComponent {
       const updatedOptions = optionsArray.filter((option: any) => !optionsToRemove.includes(option.option));
       var formValues = this.newFieldCodeForm.value;
       const fieldCodeDto : FieldCode = {
-        id: 0,
+        id: this.selectedFieldCode.id,
         code: formValues['code'],
         name: formValues['name'],
         description: formValues['description'],
@@ -130,22 +131,24 @@ export class UpdateFieldComponent {
         status: formValues['status'],
         internal: formValues['internal'],
         internalTable: formValues['internalTable'],
-        options: formValues['type'] == 4 ?  this.returnOptionsArray(formValues['options']): [],
+        options: formValues['type'] == 4 ?  updatedOptions: [],
         category: formValues['category'],
       }
-
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Field details updated", "snack-success");
+          this.snackBarService.showSnackbar("Custom field has been updated successfully", "snack-success");
           this.selectedFieldCode = data;
           this.newFieldCodeForm.disable();
           this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
           this.router.navigateByUrl('/system-settings');
         },
         error: (error) => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar(error.error, "snack-error");
         }
       });
+    }
+    else{
+      this.snackBarService.showSnackbar("Oops some fields are still missing information", "snack-error");
     }
   }
 
