@@ -211,3 +211,18 @@ mat-header-row {
   flex-shrink: 0;
   align-self: stretch;
 }
+
+#move-to-active{
+  color: var(--m-3-sys-light-primary, #0029C6);
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  text-transform: capitalize;
+}
+
+#move-to-active:hover{
+  cursor: pointer;
+}

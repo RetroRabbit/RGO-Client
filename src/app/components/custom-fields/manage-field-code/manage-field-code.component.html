@@ -96,7 +96,9 @@
           <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
             <ng-container matColumnDef="id">
               <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-              <mat-cell *matCellDef="let element">{{ element.id }}</mat-cell>
+              <mat-cell *matCellDef="let element">
+                <mat-checkbox id="selected-row" (valueChange)="onRowSelect(element)">{{ element.id }}</mat-checkbox>
+              </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="name">
@@ -104,9 +106,9 @@
               <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="description">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
-              <mat-cell *matCellDef="let element">{{ element.description }}</mat-cell>
+            <ng-container matColumnDef="type">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{ getType(element.type) }}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="status">
@@ -117,10 +119,11 @@
             <ng-container matColumnDef="edit">
               <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
               <mat-cell *matCellDef="let element">
-                <button id="cancel-button" class="mt-1">
+                <button *ngIf="activeTab == 0;" id="cancel-button" class="mt-1">
                   <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
                   Edit
                 </button>
+                <span *ngIf="activeTab !== 0" id="move-to-active" (click)="moveToActive(element)">Move to active</span>
               </mat-cell>
             </ng-container>
 
