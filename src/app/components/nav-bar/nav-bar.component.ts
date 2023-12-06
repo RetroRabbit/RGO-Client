@@ -5,7 +5,7 @@ import { CookieService } from "ngx-cookie-service";
 import { HideNavService } from 'src/app/services/hide-nav.service';
 import { ChartService } from "src/app/services/charts.service";
 import { EmployeeProfileService } from "src/app/services/employee/employee-profile.service";
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { EmployeeProfile } from "src/app/models/employee-profile.interface";
 import { Chart } from "chart.js";
 
@@ -35,7 +35,6 @@ export class NavBarComponent {
     private employeeProfileService: EmployeeProfileService,
     private chartService: ChartService,
     private auth: AuthService,
-    private route: ActivatedRoute,
     public router: Router,
     public cookieService: CookieService,
     public hideNavService: HideNavService)
@@ -77,10 +76,6 @@ export class NavBarComponent {
 
   isEmployee(): boolean {
     return this.roles.includes('Employee');
-  }
-
-  handleSelectedEmp(item: any){
-   // this.selectedEmployee = item
   }
 
   searchQuery: string = '';
