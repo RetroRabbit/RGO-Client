@@ -482,13 +482,10 @@
               <input matInput type="text" id="chartData" [(ngModel)]="chartName">
             </mat-form-field>
           </div>
-
           <div class="px-4 offset-1 col-10">
-
             <mat-form-field appearance="outline" style="width: 100%;">
               <mat-label>Select category</mat-label>
-              <!-- <mat-select [formControl]="categoryControl" (selectionChange)="onDropDownChange($event)" multiple> -->
-                <mat-select [formControl]="categoryControl" multiple>
+              <mat-select [formControl]="categoryControl" multiple>
                 <mat-select-trigger></mat-select-trigger>
                 <mat-option *ngFor="let category of filteredCategories" [value]="category">
                   {{ category }}
@@ -509,28 +506,25 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline" style="width: 100%;">
-            <mat-label>Select role</mat-label>
-            <!-- <mat-select [formControl]="typeControl" (selectionChange)="onDropDownChange($event)" multiple> -->
-            <mat-select [formControl]="typeControl" multiple>
-              <mat-select-trigger></mat-select-trigger>
-              <mat-option *ngFor="let type of filteredTypes" [value]="type">
-                {{ type }}
-              </mat-option>
-            </mat-select>
-            <mat-chip-grid #chipList>
-              <mat-chip-row *ngFor="let type of selectedTypes" [removable]="true"
-                (removed)="onRoleRemoved(type)">
-                {{type}}
-                <svg matChipRemove width="19" height="18" viewBox="0 0 19 18" fill="none">
-                  <path
-                    d="M14.75 4.8075L13.6925 3.75L9.5 7.9425L5.3075 3.75L4.25 4.8075L8.4425 9L4.25 13.1925L5.3075 14.25L9.5 10.0575L13.6925 14.25L14.75 13.1925L10.5575 9L14.75 4.8075Z"
-                    fill="#0029C6" />
-                </svg>
-              </mat-chip-row>
-            </mat-chip-grid>
-            <mat-icon matSuffix>arrow_drop_down</mat-icon>
-          </mat-form-field>
-
+              <mat-label>Select role</mat-label>
+              <mat-select [formControl]="typeControl" (selectionChange)="onDropDownChange($event)" multiple>
+                <mat-select-trigger></mat-select-trigger>
+                <mat-option *ngFor="let type of filteredTypes" [value]="type">
+                  {{ type }}
+                </mat-option>
+              </mat-select>
+              <mat-chip-grid #chipList>
+                <mat-chip-row *ngFor="let type of selectedTypes" [removable]="true" (removed)="onRoleRemoved(type)">
+                  {{type}}
+                  <svg matChipRemove width="19" height="18" viewBox="0 0 19 18" fill="none">
+                    <path
+                      d="M14.75 4.8075L13.6925 3.75L9.5 7.9425L5.3075 3.75L4.25 4.8075L8.4425 9L4.25 13.1925L5.3075 14.25L9.5 10.0575L13.6925 14.25L14.75 13.1925L10.5575 9L14.75 4.8075Z"
+                      fill="#0029C6" />
+                  </svg>
+                </mat-chip-row>
+              </mat-chip-grid>
+              <mat-icon matSuffix>arrow_drop_down</mat-icon>
+            </mat-form-field>
           </div>
         </div>
       </div>

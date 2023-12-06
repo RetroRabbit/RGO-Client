@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, ViewChild, HostListener} from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 import { Chart } from 'src/app/models/charts.interface';
 import { ChartService } from 'src/app/services/charts.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -83,11 +83,16 @@ export class AdminDashboardComponent {
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
     private hideNavService: HideNavService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
+
+    this.fetchChartData();
+  }
+
+  fetchChartData() {
     this.employeeService.getAllProfiles().subscribe((data) => {
       if (Array.isArray(data)) {
         this.allEmployees = data;
@@ -101,7 +106,7 @@ export class AdminDashboardComponent {
       .searchEmployees(this.searchQuery)
       .subscribe((data) => {
         this.allEmployees = data;
-    });
+      });
 
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
@@ -114,10 +119,6 @@ export class AdminDashboardComponent {
       this.selectedCategories = val;
     });
 
-    this.typeControl.valueChanges.subscribe(val => {
-      this.selectedTypes = val;
-    });
-
     this.chartService.getColumns().subscribe({
       next: data => {
         this.categories = data;
@@ -127,30 +128,11 @@ export class AdminDashboardComponent {
 
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
-        this.types = data.map(type => type.name || '');
-        this.filteredTypes = ['All', ...this.types];
+        this.types = [];
+        this.types.push('All')
+        data.forEach(field => this.types.push(field.name as string));
+        this.filteredTypes = this.types;
       }
-    });
-
-    /**
-     * If all is selected, make all the only selected types
-     * if another value is selected remove all from selected list
-     * If all is not selected continue normaly
-     * **/
-    this.typeControl.valueChanges.subscribe(selected => {
-      console.log(selected);
-      if (selected.includes('All')) {
-        if (selected.length > 1) {
-          this.selectedTypes = ['All'];
-          this.typeControl.setValue(['All'], { emitEvent: false });
-        } else if (this.selectedTypes.includes('All')) {
-          this.selectedTypes = selected.filter((item: string) => item !== 'All');
-          this.typeControl.setValue([...this.selectedTypes], { emitEvent: false });
-        }
-      } else {
-        this.selectedTypes = selected;
-      }
-
     });
   }
 
@@ -213,30 +195,6 @@ export class AdminDashboardComponent {
     }
     this.searchResults = this.searchResults.slice(0, 3);
   }
-
-  // selected(event: MatAutocompleteSelectedEvent): void {
-  //   this.selectedCategories.push(event.option.viewValue);
-  //   this.categoryCtrl.setValue(null);
-
-  //   const selectedType = event.option.viewValue;
-
-  //   if (selectedType === 'All') {
-  //     this.selectedTypes = ['All']; // Only 'All' remains selected
-  //   } else {
-  //     // Remove 'All' if other types are selected
-  //     const allIndex = this.selectedTypes.indexOf('All');
-  //     if (allIndex >= 0) {
-  //       this.selectedTypes.splice(allIndex, 1);
-  //       // If 'All' was previously selected, reset the control to current selectedTypes
-  //       this.typeControl.setValue([...this.selectedTypes]);
-  //     }
-  //     if (!this.selectedTypes.includes(selectedType)) {
-  //       this.selectedTypes.push(selectedType);
-  //     }
-  //   }
-
-  //   this.typeControl.setValue(null);
-  // }
 
   filterCategories(val: string): string[] {
     return this.categories.filter(category =>
@@ -311,53 +269,24 @@ export class AdminDashboardComponent {
     this.chartService.createChart(this.selectedCategories, this.selectedTypes, combinedChartName, this.chartType)
       .subscribe(
         {
-        next: response => {
-          this.snackBarService.showSnackbar("Chart created", "snack-success");
-          this.dialog.closeAll();
-          this.selectedCategories = [];
-          this.selectedTypes = [];
-          this.chartName = '';
-          this.chartType = '';
-          this.ngOnInit();
-        },
-        error: error => {
-          this.snackBarService.showSnackbar("Failed to create chart", "snack-error");
+          next: response => {
+            this.snackBarService.showSnackbar("Chart created", "snack-success");
+            this.dialog.closeAll();
+            this.selectedCategories = [];
+            this.selectedTypes = [];
+            this.chartName = '';
+            this.chartType = '';
+            this.fetchChartData();
+          },
+          error: error => {
+            this.snackBarService.showSnackbar("Failed to create chart", "snack-error");
+          }
         }
-      }
       );
     this.selectedCategories = [];
     this.categoryControl.setValue(null);
     this.selectedTypes = [];
     this.typeControl.setValue(null);
-  }
-
-  onDropDownChange(event : any) {
-    if (this.selectedDataItems.length < 1) {
-      return;
-    }
-    this.chartService.getChartDataByType(this.selectedDataItems).subscribe({
-      next: data => {
-        this.chartData = data.data;
-        this.chartLabels = data.labels;
-      },
-      error: error => {
-        this.snackBarService.showSnackbar("Failed to get chart data", "snack-error");
-      }
-    });
-
-    const selected: string[] = event.value;
-    console.log(selected);
-    if (selected.includes('All')) {
-        this.selectedTypes = ['All'];
-        this.typeControl.setValue(['All']);
-    } else {
-        if (this.selectedTypes.includes('All')) {
-            this.selectedTypes = selected.filter(item => item !== 'All');
-            this.typeControl.setValue([...this.selectedTypes]);
-        } else {
-            this.selectedTypes = selected;
-        }
-    }
   }
 
   CaptureEventlast(event: any) {
@@ -429,7 +358,6 @@ export class AdminDashboardComponent {
   sortRoles(roles: string[]): string[] {
     const adminRoles = roles.filter(role => role.toLowerCase().includes('admin')).sort().reverse();
     const nonAdminRoles = roles.filter(role => !role.toLowerCase().includes('admin')).sort();
-
     return [...adminRoles, ...nonAdminRoles];
   }
 
@@ -445,11 +373,33 @@ export class AdminDashboardComponent {
   }
 
   onRoleRemoved(role: string): void {
-    const roles = this.typeControl.value || [];
-    const index = roles.indexOf(role);
-    if (index >= 0) {
-      roles.splice(index, 1);
-      this.typeControl.setValue(roles); // This should update the select and chips
+    if (role === 'All') {
+      this.typeControl.setValue([]);
+      this.selectedTypes = [];
+    }
+    else {
+      const roles = this.typeControl.value || [];
+      const index = roles.indexOf(role);
+      if (index >= 0) {
+        roles.splice(index, 1);
+        this.typeControl.setValue(roles); // This should update the select and chips
+        this.selectedTypes = roles;
+      }
+    }
+  }
+
+  onDropDownChange(event: any) {
+    if (event.value.includes('All')) {
+      if (event.value.includes('All') && !this.selectedTypes.includes('All')) {
+        this.selectedTypes = ['All'];
+        this.typeControl.setValue(['All'], { emitEvent: false });
+      }
+      else if (event.value.includes('All') && this.selectedTypes.includes('All')) {
+        this.selectedTypes = event.value.filter((item: string) => item !== 'All');
+        this.typeControl.setValue([...this.selectedTypes], { emitEvent: false });
+      }
+    } else {
+      this.selectedTypes = event.value;
     }
   }
 }
