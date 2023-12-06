@@ -41,6 +41,9 @@
     </div>
   </div>
 </div> -->
+
+<app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
+
 <div id="field-code-container" class="mt-4">
   <div id="interact-fields" class="justify-content-between ms-3">
     <div id="search-container" class="row">
@@ -67,10 +70,14 @@
   <hr class="m-0 p-0">
   <div id="field-table-container">
     <div id="table-buttons">
-      <button [ngClass]="selectedFields > 0 ? 'archive-active' : ''">Archive</button>
-    </div>
-    <div id="table-header" class="row">
-
+      <button (click)="showDialog(0)" [ngClass]="selectedFieldCode.length == 0 ? 'inactive-tab-button' : ''" id="save-button"
+        [disabled]="!hasSelected()" *ngIf="activeTab == 0" style="width: 118px;">
+        Archive {{selectedFieldCode.length == 0 ? '' : "(" + selectedFieldCode.length + ")"}}
+      </button>
+      <button (click)="showDialog(-1)" [ngClass]="selectedFieldCode.length == 0 ? 'inactive-tab-button' : ''" id="save-button"
+        [disabled]="!hasSelected()" *ngIf="activeTab != 0" style="width: 167px">
+        Move To Active {{selectedFieldCode.length == 0 ? '' :"(" + selectedFieldCode.length + ")"}}
+      </button>
     </div>
     <!-- <p-table [value]="filteredFieldCodes" [paginator]="true" [rows]="10">
     <ng-template pTemplate="header">

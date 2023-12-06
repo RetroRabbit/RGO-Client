@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { dataTypes } from 'src/app/models/constants/types.constants';
+import { Dialog } from 'src/app/models/confirm-modal.interface';
 @Component({
   selector: 'app-manage-field-code',
   templateUrl: './manage-field-code.component.html',
@@ -19,7 +20,7 @@ import { dataTypes } from 'src/app/models/constants/types.constants';
 export class ManageFieldCodeComponent {
   fieldCodes: FieldCode[] = [];
   filteredFieldCodes: FieldCode[] = [];
-  selectedFieldCode?: FieldCode[] = [];
+  selectedFieldCode: FieldCode[] = [];
   isClicked: boolean = false;
   statuses: any[] = [];
   newFieldCodeForm!: FormGroup;
@@ -34,9 +35,10 @@ export class ManageFieldCodeComponent {
   passiveFields: number = 0;
 
   displayedColumns: string[] = ['id', 'name', 'type', 'status', 'edit'];
+  showConfirmDialog: boolean = false;
 
   dataSource: MatTableDataSource<FieldCode> = new MatTableDataSource();
-
+  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: ''};
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -53,28 +55,26 @@ export class ManageFieldCodeComponent {
     private fb: FormBuilder,
     public cookieService: CookieService,
     private snackBarService: SnackbarService) {
-    // this.initializeForm();
   }
   ngOnInit(): void {
-    this.fieldCodeService.getAllFieldCodes().subscribe({
-      next: fieldCodes => {
-        this.fieldCodes = fieldCodes;
-      },
-      error: error => {
-        this.snackBarService.showSnackbar("Error loading Field Codes", "snack-error");
-      },
-      complete: () =>{
-          this.fetchData();
-      }
-    });
+    this.fetchData();
   }
 
-  fetchData(){
-    this.filteredFieldCodes = this.fieldCodes.filter(field => field.status == 0);
-    this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.getActivePassive();
+  fetchData(active : number =0){
+    this.fieldCodeService.getAllFieldCodes().subscribe({
+      next: fieldCodes =>{
+        this.fieldCodes = fieldCodes;
+        this.filteredFieldCodes = this.fieldCodes.filter(field => field.status == active);
+        this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.getActivePassive();
+        this.activeTab = active;
+      },
+      error: error => {
+        this.snackBarService.showSnackbar("Error fetching field codes", "snack-error");
+      },
+    })
   }
 
   // private initializeForm() {
@@ -202,6 +202,7 @@ export class ManageFieldCodeComponent {
     this.activeTab = tabIndex;
     this.filteredFieldCodes = this.fieldCodes.filter(fieldCode => fieldCode.status == this.activeTab);
     this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
+    this.selectedFieldCode = [];
   }
 
   changePageSize(size: number) {
@@ -274,7 +275,7 @@ export class ManageFieldCodeComponent {
     this.fieldCodeService.updateFieldCode(updatedField).subscribe({
       next: (data) =>{
         this.snackBarService.showSnackbar("Field code updated", "snack-success");
-        this.fetchData();
+        this.fetchData(this.activeTab);
       },error: (error) =>{
         this.snackBarService.showSnackbar(error, "snack-error");
       }
@@ -283,5 +284,54 @@ export class ManageFieldCodeComponent {
 
   getType(id: number){
     return dataTypes.find(type => type.id == id)?.value;
+  }
+
+  hasSelected(){
+    return this.selectedFieldCode.length > 0;
+  }
+
+  toggleSelectedFields(){
+    let unsuccessfulSubmits = 0;
+
+    this.selectedFieldCode.forEach(element => {
+      let updatedField = {...element}
+      updatedField.status = updatedField.status == 0 ? -1 : 0;
+      this.fieldCodeService.updateFieldCode(updatedField).subscribe({
+        next: () => {
+          this.fetchData(this.activeTab);
+        },
+        error: () => {
+          unsuccessfulSubmits++;
+        }
+      })
+    });
+    if(unsuccessfulSubmits == 0){
+      this.snackBarService.showSnackbar("Fields moved successfully", "snack-success");
+    }
+    else{
+      this.snackBarService.showSnackbar(`${unsuccessfulSubmits} failed to move`, "snack-error");
+    }
+  }
+
+  showDialog(status : number){
+    this.dialogTypeData.type = 'save';
+    this.dialogTypeData.confirmButtonText = 'Save';
+    this.dialogTypeData.denyButtonText = 'Cancel';
+    
+    if(status === 0){
+      this.dialogTypeData.title =  'Archive customs fields'
+      this.dialogTypeData.subtitle = 'Are you sure you want to archive these custom fields?';
+    }else{
+      this.dialogTypeData.title =  'Move to active'
+      this.dialogTypeData.subtitle = 'Are you sure you want to move these custom fields to active?';
+    }
+    this.showConfirmDialog = true;
+  }
+
+  dialogFeedBack(event: any) {
+    this.showConfirmDialog = false;
+    if (event) {
+      this.toggleSelectedFields();
+    }
   }
 }
