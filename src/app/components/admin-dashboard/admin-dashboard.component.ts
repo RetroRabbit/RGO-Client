@@ -367,33 +367,31 @@ export class AdminDashboardComponent {
   }
 
   onRoleRemoved(role: string): void {
+    const currentRoles = this.typeControl.value || [];
     if (role === 'All') {
-      this.typeControl.setValue([]);
-      this.selectedTypes = [];
+        this.typeControl.setValue([]);
+        this.selectedTypes = [];
+        this.allFlag = false;
+    } else {
+        const index = currentRoles.indexOf(role);
+        if (index >= 0) {
+            currentRoles.splice(index, 1);
+            if (currentRoles.includes('All')) {
+                const newSelection = currentRoles.filter((item: string) => item !== 'All');
+                this.typeControl.setValue(newSelection);
+                this.selectedTypes = newSelection;
+                this.allFlag = false;
+            } else {
+                this.typeControl.setValue(currentRoles);
+                this.selectedTypes = currentRoles;
+            }
+        }
     }
-    else {
-      const roles = this.typeControl.value || [];
-      const index = roles.indexOf(role);
-      if (index >= 0) {
-        roles.splice(index, 1);
-        this.typeControl.setValue(roles);
-        this.selectedTypes = roles;
-      }
-    }
-  }
+}
 
   onDropDownChange(event: any) {
-// types gets user types from database
-// typecontroll check boxes in drop down
-// selected types is the chips and gets passed to backend
-
-console.log(event.value);
-console.log(this.selectedTypes);
-
-
     if (event.value.includes('All'))
     {
-
       if (event.value.length == this.types.length-1 && this.allFlag == false) {
         this.allFlag = true;
         const newSelection = event.value.filter((item: string) => item !== 'All');
@@ -412,33 +410,5 @@ console.log(this.selectedTypes);
         this.typeControl.setValue(newSelection);
         this.selectedTypes = newSelection;
     }
-
-    // const allIndex = this.selectedTypes.indexOf('All');
-
-    // if (allIndex !== -1 && event.value.includes('All')) {
-    //         this.typeControl.setValue([...this.types]);
-    //   this.selectedTypes = this.types;
-    //   return;
-    // }
-
-    // if (event.value.includes('All')) {
-    //   // If 'All' is newly selected, select everything
-    //   this.typeControl.setValue([...this.types]);
-    //   this.selectedTypes = this.types;
-    // } else if (allIndex !== -1) {
-    //   // If 'All' was selected before but now it's not, remove 'All'
-    //   const newSelection = event.value.filter((item: string) => item !== 'All');
-    //   this.typeControl.setValue(newSelection);
-    //   this.selectedTypes = newSelection;
-
-    // }
-    // if (event.value.includes("All")) {
-    //   this.filteredTypes = this.filteredTypes.filter((name: string) => name == "All");
-    //   this.typeControl.setValue(["All"]);
-    // }
-    // else {
-    //   this.filteredTypes = this.types;
-    //   this.typeControl.setValue(event.value);
-    // }
   }
 }
