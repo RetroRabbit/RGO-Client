@@ -382,13 +382,45 @@ export class AdminDashboardComponent {
   }
 
   onDropDownChange(event: any) {
-    if (event.value.includes("All")) {
-      this.filteredTypes = this.filteredTypes.filter((name: string) => name == "All");
-      this.typeControl.setValue(["All"]);
+
+    if (event.value.includes('All') && event.value.length <= this.types.length-1)
+    {
+      this.typeControl.setValue([...this.types]);
+      this.selectedTypes = [...this.types];
     }
-    else {
-      this.filteredTypes = this.types;
-      this.typeControl.setValue(event.value);
+    else
+    {
+        const newSelection = event.value.filter((item: string) => item !== 'All');
+        this.typeControl.setValue(newSelection);
+        this.selectedTypes = newSelection;
     }
+
+    // const allIndex = this.selectedTypes.indexOf('All');
+
+    // if (allIndex !== -1 && event.value.includes('All')) {
+    //         this.typeControl.setValue([...this.types]);
+    //   this.selectedTypes = this.types;
+    //   return;
+    // }
+
+    // if (event.value.includes('All')) {
+    //   // If 'All' is newly selected, select everything
+    //   this.typeControl.setValue([...this.types]);
+    //   this.selectedTypes = this.types;
+    // } else if (allIndex !== -1) {
+    //   // If 'All' was selected before but now it's not, remove 'All'
+    //   const newSelection = event.value.filter((item: string) => item !== 'All');
+    //   this.typeControl.setValue(newSelection);
+    //   this.selectedTypes = newSelection;
+
+    // }
+    // if (event.value.includes("All")) {
+    //   this.filteredTypes = this.filteredTypes.filter((name: string) => name == "All");
+    //   this.typeControl.setValue(["All"]);
+    // }
+    // else {
+    //   this.filteredTypes = this.types;
+    //   this.typeControl.setValue(event.value);
+    // }
   }
 }
