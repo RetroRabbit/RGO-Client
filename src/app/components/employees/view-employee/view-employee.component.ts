@@ -174,7 +174,6 @@ export class ViewEmployeeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
-  //   const target = event.target as HTMLButtonElement;
   // }
 
   ViewUser(email: string) {
