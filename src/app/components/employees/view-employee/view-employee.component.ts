@@ -174,7 +174,6 @@ export class ViewEmployeeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
-  // CaptureEvent(event: any) {
   //   const target = event.target as HTMLButtonElement;
   // }
 
