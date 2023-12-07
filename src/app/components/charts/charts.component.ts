@@ -12,6 +12,7 @@ import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 
 @Component({
@@ -44,7 +45,10 @@ export class ChartComponent implements OnInit {
 
   selectedChartIndex: number = -1;
   constructor(private chartService: ChartService, private cookieService: CookieService, public dialog: MatDialog, private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document, private employeeProfile: EmployeeService, private snackBarService: SnackbarService) { }
+    @Inject(DOCUMENT) private document: Document, private employeeProfile: EmployeeService, private snackBarService: SnackbarService,
+    navService: HideNavService) {
+      navService.showNavbar = true;
+     }
 
   public barChartOptions: ChartConfiguration['options'] = {
     events: [],

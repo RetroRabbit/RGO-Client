@@ -19,7 +19,7 @@ import { TemplateRef } from '@angular/core';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
-
+import { HideNavService } from 'src/app/services/hide-nav.service';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -80,8 +80,11 @@ export class AdminDashboardComponent {
     private router: Router,
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
-    private employeeTypeService: EmployeeTypeService
-  ) {}
+    private employeeTypeService: EmployeeTypeService,
+    private navService: HideNavService
+  ) {
+    navService.showNavbar = true;
+  }
 
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
@@ -94,7 +97,7 @@ export class AdminDashboardComponent {
       }
       this.searchResults = [];
     });
-
+ 
     this.employeeProfileService
       .searchEmployees(this.searchQuery)
       .subscribe((data) => {

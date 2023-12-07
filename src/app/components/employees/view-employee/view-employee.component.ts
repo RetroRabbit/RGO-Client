@@ -60,7 +60,9 @@ export class ViewEmployeeComponent {
     private router: Router,
     private hideNavService: HideNavService,
     private snackBarService: SnackbarService
-  ) {}
+  ) {
+    hideNavService.showNavbar = true;
+  }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
@@ -171,9 +173,9 @@ export class ViewEmployeeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
-  CaptureEvent(event: any) {
-    const target = event.target as HTMLButtonElement;
-  }
+  // CaptureEvent(event: any) {
+  //   const target = event.target as HTMLButtonElement;
+  // }
 
   ViewUser(email: string) {
     this.cookieService.set('selectedUser', email);

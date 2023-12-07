@@ -1,47 +1,3 @@
-<!-- <div class="wrapper">
-  <div>
-    <div class="m-3 border-bottom">
-      <h1 class="page-heading">Manage Field Code</h1>
-    </div>
-    <div style="overflow: auto">
-      <div class="container-fluid">
-        <button class="btn btn-primary" (click)="CaptureEvent($event)">Add new field code</button>
-        <div style="padding-top: 30px;"></div>
-        <label>Custom Fields:</label><br>
-        <label>Search:</label>
-        <input pInputText type="text" [(ngModel)]="filterText" (input)="filterData()" /><br>
-        <div *ngIf="filteredFieldCodes" class="custom-table" style="overflow: auto">
-          <p-table [value]="filteredFieldCodes" [paginator]="true" [rows]="10">
-            <ng-template pTemplate="header">
-              <tr>
-                <th pSortableColumn="id">ID</th>
-                <th pSortableColumn="name">Name</th>
-                <th pSortableColumn="description">Description</th>
-                <th pSortableColumn="status">Status</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-fieldCode>
-              <tr [ngClass]="{'selected-row': selectedFieldCode === fieldCode}" (click)="onRowSelect(fieldCode)">
-                <td>{{ fieldCode.id }}</td>
-                <td>{{ fieldCode.code }}</td>
-                <td>{{ fieldCode.name }}</td>
-                <td>
-                  <ng-container *ngIf="fieldCode.status === 0; else archived">{{ 'Active' }}</ng-container>
-                  <ng-template #archived>Archived</ng-template>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-      </div>
-    </div>
-    <div style="padding-top: 30px;"></div>
-    <div *ngIf="selectedFieldCode != null" class="update-form">
-      <app-update-field [selectedFieldCode]="selectedFieldCode"></app-update-field>
-    </div>
-  </div>
-</div> -->
-
 <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
 <div id="field-code-container" class="mt-4">
   <div id="interact-fields" class="justify-content-between ms-3">
@@ -121,39 +77,39 @@
         </div>
       </div>
       <div class="d-flex flex-row justify-content-center align-items-center mt-3"
-        *ngIf="dataSource.filteredData.length > 0">
-        <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">
-          <span class="fw-medium">
-            Showing {{ start }}-{{ end }}
-          </span>
-          <span>of {{ paginator.length }} results</span>
-        </div>
-        <div class="col-lg-4 col-md-4 row justify-content-center">
-          <button mat-icon-button (click)="paginator.previousPage()" [disabled]="!paginator.hasPreviousPage()">
-            <mat-icon>arrow_left</mat-icon>
-          </button>
-          <button mat-icon-button *ngFor="let page of visiblePages" (click)="goToPage(page)">
-            <span class="paginator" [ngClass]="{ active: page === pageIndex + 1 }">
-              {{ page }}
-            </span>
-          </button>
-          <button mat-icon-button (click)="paginator.nextPage()" [disabled]="!paginator.hasNextPage()">
-            <mat-icon>arrow_right</mat-icon>
-          </button>
-        </div>
-        <div class="col-lg-4 col-md-4 row justify-content-end align-items-center" id="paginator-text">
-          <span class="col-lg-4 col-md-7 fw-medium"> Items per page </span>
-          <mat-form-field appearance="outline" class="col-lg-3 col-md-5" id="paginator-dropdown">
-            <input id="pageSize" matInput type="number" min="1" [(ngModel)]="pageSize"
-              (ngModelChange)="changePageSize(pageSize)" (focus)="pageNumber.open()" />
-            <mat-select #pageNumber [(ngModel)]="pageSize" hidden>
-              <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
-                {{ pageSize }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+      *ngIf="dataSource.filteredData.length > 0">
+      <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">
+        <span class="fw-medium">
+          Showing {{ start }}-{{ end }}
+        </span>
+        <span>of {{ paginator.length }} results</span>
       </div>
+      <div class="col-lg-4 col-md-4 row justify-content-center">
+        <button mat-icon-button (click)="paginator.previousPage()" [disabled]="!paginator.hasPreviousPage()">
+          <mat-icon>arrow_left</mat-icon>
+        </button>
+        <button mat-icon-button *ngFor="let page of visiblePages" (click)="goToPage(page)">
+          <span class="paginator" [ngClass]="{ active: page === pageIndex + 1 }">
+              {{ page }}
+          </span>
+        </button>
+        <button mat-icon-button (click)="paginator.nextPage()" [disabled]="!paginator.hasNextPage()">
+          <mat-icon>arrow_right</mat-icon>
+        </button>
+      </div>
+      <div class="col-lg-4 col-md-4 row justify-content-end align-items-center" id="paginator-text">
+        <span class="col-lg-4 col-md-7 fw-medium"> Items per page </span>
+        <mat-form-field appearance="outline" class="col-lg-3 col-md-5" id="paginator-dropdown">
+          <input id="pageSize" matInput type="number" min="1" [(ngModel)]="pageSize"
+             (focus)="pageNumber.open()" />
+          <mat-select #pageNumber [(ngModel)]="pageSize" hidden>
+            <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
+              {{ pageSize }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
     </div>
   </div>
 </div>

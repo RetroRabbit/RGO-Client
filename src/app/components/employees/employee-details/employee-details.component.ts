@@ -16,6 +16,7 @@ import { EmployeeRoleService } from 'src/app/services/employee/employee-role.ser
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { FieldCodeService } from 'src/app/services/field-code.service';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -58,8 +59,11 @@ export class EmployeeDetailsComponent implements OnInit {
     private cookieService: CookieService,
     private clientService: ClientService,
     private employeeRoleService: EmployeeRoleService,
-    private snackBarService: SnackbarService
-  ) { }
+    private snackBarService: SnackbarService,
+    private navService: HideNavService
+  ) {
+    navService.showNavbar = true;
+   }
 
   ngOnInit(): void {
     this.callService();
