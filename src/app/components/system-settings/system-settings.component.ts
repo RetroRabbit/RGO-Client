@@ -13,7 +13,7 @@ export class SystemSettingsComponent {
   clicked: string = "";
 
   constructor(public cookieService: CookieService, public hideNavService: HideNavService, public systemNavItemService: SystemNav) {
-
+    hideNavService.showNavbar = true;
   }
 
   displayRoleManagement(): void {

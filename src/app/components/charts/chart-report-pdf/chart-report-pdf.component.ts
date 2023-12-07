@@ -6,7 +6,7 @@ import html2canvas from 'html2canvas';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-
+import { HideNavService } from 'src/app/services/hide-nav.service';
 @Component({
   selector: 'app-chart-report-pdf',
   templateUrl: './chart-report-pdf.component.html',
@@ -24,7 +24,11 @@ export class ChartReportPdfComponent {
 
   ngOnInit() {
   }
-  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, private snackBarService: SnackbarService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, 
+  private snackBarService: SnackbarService,
+  private navService: HideNavService) {
+    navService.showNavbar = true;
+   }
 
   ngAfterViewInit() {
     if (this.canvas && this.canvas.nativeElement) {

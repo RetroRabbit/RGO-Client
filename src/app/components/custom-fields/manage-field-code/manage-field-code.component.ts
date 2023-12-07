@@ -12,6 +12,7 @@ import { MatSort } from '@angular/material/sort';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { Dialog } from 'src/app/models/confirm-modal.interface';
 import { SystemNav } from 'src/app/services/system-nav.service';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -59,14 +60,12 @@ export class ManageFieldCodeComponent {
     private fb: FormBuilder,
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
-    private systemService: SystemNav) {
+    private systemService: SystemNav,
+    private navService: HideNavService) {
+      navService.showNavbar = true;
   }
   ngOnInit(): void {
     this.fetchData();
-    // this.dataSource.filterPredicate = (data: FieldCode, filter: string) => {
-    //   return data.name.toLowerCase().includes(filter) || data.name.toLowerCase().includes(filter) || 
-    //          data.id.toString().includes(filter) || (data.status === 0 ? 'Active' : 'Archived').toLowerCase().includes(filter);
-    // };
   }
 
   fetchData(active: number = 0) {
@@ -171,14 +170,6 @@ export class ManageFieldCodeComponent {
       this.archiveFieldsSearch = 0;
     } else {
       this.activeFieldsSearch = this.archiveFieldsSearch = 0;
-      // const filteredActiveFields = this.fieldCodes.filter(field => field.status == 0); 
-      // filteredActiveFields.forEach(field => {
-      //   if(field.name?.trim().toLowerCase().includes(filterValue)) this.activeFieldsSearch++;
-      // })
-      // const filteredArchiveFields = this.fieldCodes.filter(field => field.status == -1);
-      // filteredArchiveFields.forEach(field => {
-      //   if(field.name?.trim().toLowerCase().includes(filterValue)) this.archiveFieldsSearch++;
-      // })
       this.dataSource.filteredData.forEach((field: FieldCode) => {
         if (field.status === 0) {
           this.activeFieldsSearch++;
@@ -214,11 +205,16 @@ export class ManageFieldCodeComponent {
     this.activeTab = tabIndex;
     this.filteredFieldCodes = this.fieldCodes.filter(fieldCode => fieldCode.status == this.activeTab);
     this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
+    this.dataSource._updateChangeSubscription(); 
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.paginator.pageIndex = 0;
     this.selectedFieldCodes = [];
+    this.filterText = "";
   }
 
   changePageSize(size: number) {
-    if (this.paginator) this.paginator.pageSize = size;
+    this.paginator.pageSize = size;
     this.dataSource._updateChangeSubscription();
   }
 
@@ -256,15 +252,20 @@ export class ManageFieldCodeComponent {
   }
 
   set pageSize(size: number) {
-    this.paginator.pageSize = size; this.dataSource._updateChangeSubscription();
+      this.paginator.pageSize = size;
+      this.dataSource._updateChangeSubscription();
   }
 
   get start(): number {
-    return this.paginator ? this.paginator.pageIndex * this.paginator.pageSize + 1 : 0;
+    return this.paginator
+      ? this.paginator.pageIndex * this.paginator.pageSize + 1
+      : 0;
   }
 
   get end(): number {
-    return this.paginator ? (this.paginator.pageIndex + 1) * this.paginator.pageSize : 0;
+    return this.paginator
+      ? (this.paginator.pageIndex + 1) * this.paginator.pageSize
+      : 0;
   }
 
   goToPage(page: number): void {

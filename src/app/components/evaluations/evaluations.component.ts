@@ -11,6 +11,7 @@ import { EvaluationInput } from 'src/app/models/evaluation-input.interface';
 import { EvaluationRatingInput } from 'src/app/models/evaluation-rating-input.interface';
 import { EvaluationAudienceService } from 'src/app/services/evaluations/evaluation-audience.service';
 import { EmployeeEvaluationsRatingService } from 'src/app/services/evaluations/employee-evaluations-rating.service';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-evaluations',
@@ -77,8 +78,11 @@ export class EvaluationsComponent {
     private evaluationtemplate: EvaluationTemplateService,
     private evaluationTemplateItemService: EvaluationTemplateItemService,
     private evaluationAudienceService: EvaluationAudienceService,
-    private cookieService: CookieService
-  ) {}
+    private cookieService: CookieService,
+    private navService: HideNavService
+  ) {
+    navService.showNavbar = true;
+  }
 
   fetchAudience(): void {
     const evaluationInput: EvaluationInput = {

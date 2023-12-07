@@ -36,6 +36,7 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 import { category } from 'src/app/models/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { CustomvalidationService } from 'src/app/services/idnumber-validator';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -215,7 +216,10 @@ export class EmployeeProfileComponent {
     private fieldCodeService: FieldCodeService,
     private employeeDataService: EmployeeDataService,
     private snackBarService: SnackbarService,
-    private customValidationService: CustomvalidationService) { }
+    private customValidationService: CustomvalidationService,
+    private navService: HideNavService) {
+      navService.showNavbar = true;
+     }
 
   ngOnInit() {
     this.employeeId = this.route.snapshot.params['id'];
