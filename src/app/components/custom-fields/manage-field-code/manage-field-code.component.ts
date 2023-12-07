@@ -25,7 +25,6 @@ export class ManageFieldCodeComponent {
   filteredFieldCodes: FieldCode[] = [];
   selectedFieldCodes: FieldCode[] = [];
   selectedFieldCode!: FieldCode;
-  // statuses: any[] = [];
   newFieldCodeForm!: FormGroup;
   searchTerm: string = '';
 
