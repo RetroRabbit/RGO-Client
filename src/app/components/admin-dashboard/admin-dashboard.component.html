@@ -2,7 +2,7 @@
   <div class="searchbar align-items-center justify-content-center p-0" [ngClass]="{'no-results': noResults}">
     <div id="leading-icon"></div>
     <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
-      [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off"/>
+      [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off" />
     <div id="search-icon" (click)="searchEmployees()">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -460,6 +460,7 @@
     </div>
   </ng-template>
 </div>
+
 <ng-template #dialogTemplate>
   <div class="container p-4">
     <div class="row">
@@ -484,7 +485,7 @@
           <div class="px-4 offset-1 col-10">
             <mat-form-field appearance="outline" style="width: 100%;">
               <mat-label>Select category</mat-label>
-              <mat-select [formControl]="categoryControl" (selectionChange)="onDropDownChange()" multiple>
+              <mat-select [formControl]="categoryControl" multiple>
                 <mat-select-trigger></mat-select-trigger>
                 <mat-option *ngFor="let category of filteredCategories" [value]="category">
                   {{ category }}
@@ -494,6 +495,27 @@
                 <mat-chip-row *ngFor="let category of selectedCategories" [removable]="true"
                   (removed)="onCategoryRemoved(category)">
                   {{category}}
+                  <svg matChipRemove width="19" height="18" viewBox="0 0 19 18" fill="none">
+                    <path
+                      d="M14.75 4.8075L13.6925 3.75L9.5 7.9425L5.3075 3.75L4.25 4.8075L8.4425 9L4.25 13.1925L5.3075 14.25L9.5 10.0575L13.6925 14.25L14.75 13.1925L10.5575 9L14.75 4.8075Z"
+                      fill="#0029C6" />
+                  </svg>
+                </mat-chip-row>
+              </mat-chip-grid>
+              <mat-icon matSuffix>arrow_drop_down</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-label>Select role</mat-label>
+              <mat-select [formControl]="typeControl" (selectionChange)="onDropDownChange($event)" multiple>
+                <mat-select-trigger></mat-select-trigger>
+                <mat-option *ngFor="let type of filteredTypes" [value]="type">
+                  {{ type }}
+                </mat-option>
+              </mat-select>
+              <mat-chip-grid #chipList>
+                <mat-chip-row *ngFor="let type of selectedTypes" [removable]="true" (removed)="onRoleRemoved(type)">
+                  {{type}}
                   <svg matChipRemove width="19" height="18" viewBox="0 0 19 18" fill="none">
                     <path
                       d="M14.75 4.8075L13.6925 3.75L9.5 7.9425L5.3075 3.75L4.25 4.8075L8.4425 9L4.25 13.1925L5.3075 14.25L9.5 10.0575L13.6925 14.25L14.75 13.1925L10.5575 9L14.75 4.8075Z"

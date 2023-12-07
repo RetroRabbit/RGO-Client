@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { SignInComponent } from './components/sign-in/sign-in.component';
-import { HomeComponent } from './components/home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
 import { StoreModule } from '@ngrx/store';
@@ -83,7 +82,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   declarations: [
     AppComponent,
     SignInComponent,
-    HomeComponent,
     EmployeeProfileComponent,
     ChartComponent,
     CreateChartsComponent,
@@ -171,7 +169,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   providers: [
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    HomeComponent,
   ],
   bootstrap: [AppComponent],
 })
