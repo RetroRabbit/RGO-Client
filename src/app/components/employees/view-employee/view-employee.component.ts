@@ -174,7 +174,6 @@ export class ViewEmployeeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
-  // }
 
   ViewUser(email: string) {
     this.cookieService.set('selectedUser', email);
