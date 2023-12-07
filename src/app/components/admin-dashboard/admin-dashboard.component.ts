@@ -67,6 +67,7 @@ export class AdminDashboardComponent {
   searchQuery: string = '';
   searchResults: EmployeeProfile[] = [];
   allEmployees: EmployeeProfile[] = [];
+  allFlag : boolean = false;
 
   PREVIOUS_PAGE = "previousPage";
 
@@ -382,11 +383,28 @@ export class AdminDashboardComponent {
   }
 
   onDropDownChange(event: any) {
+// types gets user types from database
+// typecontroll check boxes in drop down
+// selected types is the chips and gets passed to backend
 
-    if (event.value.includes('All') && event.value.length <= this.types.length-1)
+console.log(event.value);
+console.log(this.selectedTypes);
+
+
+    if (event.value.includes('All'))
     {
-      this.typeControl.setValue([...this.types]);
-      this.selectedTypes = [...this.types];
+
+      if (event.value.length == this.types.length-1 && this.allFlag == false) {
+        this.allFlag = true;
+        const newSelection = event.value.filter((item: string) => item !== 'All');
+        this.typeControl.setValue(newSelection);
+        this.selectedTypes = newSelection;
+      }
+      else if (event.value.length <= this.types.length-1) {
+        this.allFlag = false
+        this.typeControl.setValue([...this.types]);
+        this.selectedTypes = [...this.types];
+      }
     }
     else
     {
