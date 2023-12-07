@@ -66,8 +66,9 @@ export class ViewEmployeeComponent {
     this.dataSource.paginator = this.paginator;
 
     this.onResize();
-    if(this.cookieService.get(this.PREVIOUS_PAGE) != "Dashboard"){ 
-      this._searchQuery = "";
+    if(this.cookieService.get(this.PREVIOUS_PAGE) == "/dashboard"){ 
+      this._searchQuery = this.cookieService.get('searchString');
+  
     }
   }
 
