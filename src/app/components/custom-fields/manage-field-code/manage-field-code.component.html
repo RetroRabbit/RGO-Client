@@ -43,13 +43,11 @@
 </div> -->
 
 <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
-<!-- <app-update-field [selectedFieldCode]="selectedFieldCode"></app-update-field> -->
 <div id="field-code-container" class="mt-4">
   <div id="interact-fields" class="justify-content-between ms-3">
     <div id="search-container" class="row">
       <div class="col-10 ps-4">
-        <input pInputText [(ngModel)]="filterText" (input)="filterData()" type="text" placeholder="Search custom field"
-          class="w-100" id="search-field">
+          <input pInputText [(ngModel)]="filterText" (input)="filterData()" type="text" placeholder="Search custom field" class="w-100" id="search-field">
       </div>
       <div id="icon" class="col-1 pt-2 ps-4">
         <mat-icon>search</mat-icon>
@@ -61,10 +59,10 @@
   </div>
   <div id="tab-buttons" class="mb-0">
     <div id="tab" (click)="changeTab(0)" [ngClass]="activeTab == 0 ? 'activeTab' : ''">
-      Active ({{activeFields}})
+      Active ({{activeFieldsSearch == 0 ? activeFields : activeFieldsSearch}})
     </div>
     <div id="tab" (click)="changeTab(-1)" [ngClass]="activeTab == -1 ? 'activeTab' : ''">
-      Archived ({{passiveFields}})
+      Archived ({{archiveFieldsSearch ==0 ? passiveFields : archiveFieldsSearch}})
     </div>
   </div>
   <hr class="m-0 p-0">

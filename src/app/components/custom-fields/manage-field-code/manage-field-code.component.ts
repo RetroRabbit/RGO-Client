@@ -36,12 +36,13 @@ export class ManageFieldCodeComponent {
   selectedFields: number = 0;
   activeFields: number = 0;
   passiveFields: number = 0;
-
+  activeFieldsSearch: number = 0;
+  archiveFieldsSearch: number = 0;
   displayedColumns: string[] = ['id', 'name', 'type', 'status', 'edit'];
   showConfirmDialog: boolean = false;
 
   dataSource: MatTableDataSource<FieldCode> = new MatTableDataSource();
-  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: ''};
+  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -62,11 +63,15 @@ export class ManageFieldCodeComponent {
   }
   ngOnInit(): void {
     this.fetchData();
+    // this.dataSource.filterPredicate = (data: FieldCode, filter: string) => {
+    //   return data.name.toLowerCase().includes(filter) || data.name.toLowerCase().includes(filter) || 
+    //          data.id.toString().includes(filter) || (data.status === 0 ? 'Active' : 'Archived').toLowerCase().includes(filter);
+    // };
   }
 
-  fetchData(active : number =0){
+  fetchData(active: number = 0) {
     this.fieldCodeService.getAllFieldCodes().subscribe({
-      next: fieldCodes =>{
+      next: fieldCodes => {
         this.fieldCodes = fieldCodes;
         this.filteredFieldCodes = this.fieldCodes.filter(field => field.status == active);
         this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
@@ -150,7 +155,6 @@ export class ManageFieldCodeComponent {
   }
 
   onTypeChange() {
-    // this.isClicked = true;
     this.selectedFieldCodes = this.selectedFieldCodes;
   }
 
@@ -159,13 +163,33 @@ export class ManageFieldCodeComponent {
   }
 
   filterData() {
-    this.filteredFieldCodes = this.fieldCodes.filter(fieldCode =>
-      fieldCode.name && fieldCode.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
-      fieldCode.code && fieldCode.code.toLowerCase().includes(this.filterText.toLowerCase()) ||
-      fieldCode.id && fieldCode.id.toString().toLowerCase().includes(this.filterText.toLowerCase()) ||
-      fieldCode.status && (fieldCode.status === 0 ? 'Active' : 'Archived').toLowerCase().includes(this.filterText.toLowerCase())
-    );
+    const filterValue = this.filterText.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
+  
+    if (this.filterText === "") {
+      this.activeFieldsSearch = 0;
+      this.archiveFieldsSearch = 0;
+    } else {
+      this.activeFieldsSearch = this.archiveFieldsSearch = 0;
+      // const filteredActiveFields = this.fieldCodes.filter(field => field.status == 0); 
+      // filteredActiveFields.forEach(field => {
+      //   if(field.name?.trim().toLowerCase().includes(filterValue)) this.activeFieldsSearch++;
+      // })
+      // const filteredArchiveFields = this.fieldCodes.filter(field => field.status == -1);
+      // filteredArchiveFields.forEach(field => {
+      //   if(field.name?.trim().toLowerCase().includes(filterValue)) this.archiveFieldsSearch++;
+      // })
+      this.dataSource.filteredData.forEach((field: FieldCode) => {
+        if (field.status === 0) {
+          this.activeFieldsSearch++;
+        }
+        if (field.status === -1) {
+          this.archiveFieldsSearch++;
+        }
+      });
+    }
   }
+  
 
   onSearch(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
@@ -249,40 +273,40 @@ export class ManageFieldCodeComponent {
   }
 
   onRowSelect(fieldCode: FieldCode) {
-    if(this.selectedFieldCodes?.includes(fieldCode)){
+    if (this.selectedFieldCodes?.includes(fieldCode)) {
       this.selectedFieldCodes.splice(this.selectedFieldCodes.indexOf(fieldCode), 1);
     }
-    else{
+    else {
       this.selectedFieldCodes?.push(fieldCode);
     }
   }
 
-  moveToActive(field : FieldCode){
-    var updatedField = {...field};
+  moveToActive(field: FieldCode) {
+    var updatedField = { ...field };
     updatedField.status = 0;
     this.fieldCodeService.updateFieldCode(updatedField).subscribe({
-      next: (data) =>{
+      next: (data) => {
         this.snackBarService.showSnackbar("Field code updated", "snack-success");
         this.fetchData(this.activeTab);
-      },error: (error) =>{
+      }, error: (error) => {
         this.snackBarService.showSnackbar(error, "snack-error");
       }
     });
   }
 
-  getType(id: number){
+  getType(id: number) {
     return dataTypes.find(type => type.id == id)?.value;
   }
 
-  hasSelected(){
+  hasSelected() {
     return this.selectedFieldCodes.length > 0;
   }
 
-  toggleSelectedFields(){
+  toggleSelectedFields() {
     let unsuccessfulSubmits = 0;
 
     this.selectedFieldCodes.forEach(element => {
-      let updatedField = {...element}
+      let updatedField = { ...element }
       updatedField.status = updatedField.status == 0 ? -1 : 0;
       this.fieldCodeService.updateFieldCode(updatedField).subscribe({
         next: () => {
@@ -293,24 +317,24 @@ export class ManageFieldCodeComponent {
         }
       })
     });
-    if(unsuccessfulSubmits == 0){
+    if (unsuccessfulSubmits == 0) {
       this.snackBarService.showSnackbar("Fields moved successfully", "snack-success");
     }
-    else{
+    else {
       this.snackBarService.showSnackbar(`${unsuccessfulSubmits} failed to move`, "snack-error");
     }
   }
 
-  showDialog(status : number){
+  showDialog(status: number) {
     this.dialogTypeData.type = 'save';
     this.dialogTypeData.confirmButtonText = 'Save';
     this.dialogTypeData.denyButtonText = 'Cancel';
-    
-    if(status === 0){
-      this.dialogTypeData.title =  'Archive customs fields'
+
+    if (status === 0) {
+      this.dialogTypeData.title = 'Archive customs fields'
       this.dialogTypeData.subtitle = 'Are you sure you want to archive these custom fields?';
-    }else{
-      this.dialogTypeData.title =  'Move to active'
+    } else {
+      this.dialogTypeData.title = 'Move to active'
       this.dialogTypeData.subtitle = 'Are you sure you want to move these custom fields to active?';
     }
     this.showConfirmDialog = true;
