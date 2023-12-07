@@ -6,9 +6,8 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { Router } from '@angular/router';
-import { Observable, catchError, first, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { FormControl } from '@angular/forms';
@@ -158,7 +157,7 @@ export class AdminDashboardComponent {
 
   viewMoreEmployees() {
     this.displayAllEmployees = true;
-    this.expandSearch.emit(this.searchQuery);
+    this.cookieService.set('searchString', this.searchQuery);
     this.cookieService.set(this.PREVIOUS_PAGE, '/dashboard');
     this.router.navigateByUrl('/employees');
   }

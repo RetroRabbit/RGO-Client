@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { HomeComponent } from './components/home/home.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { ManageFieldCodeComponent } from './components/custom-fields/manage-field-code/manage-field-code.component';
 import { ChartComponent } from './components/charts/charts.component';
