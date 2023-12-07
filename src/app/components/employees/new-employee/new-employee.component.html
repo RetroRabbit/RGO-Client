@@ -286,84 +286,128 @@
             </div>
             <div class="container upload-drop-container">
               <div class="row justify-content-center align-items-center">
-                <ngx-file-drop
-                dropZoneClassName="upload-drop-section"
-                contentClassName=""
-                accept=".PDF,.PPT.PPTX,.Doc,.Docx"
-                (onFileDrop)="dropped($event)"
-                (onFileOver)="fileOver($event)"
-                (onFileLeave)="fileLeave($event)">
-                  <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true" multiple="true">
                     <div class="upload-drop-section row">
+                      <ngx-file-drop
+                      dropZoneClassName="upload-drop-section"
+                      contentClassName=""
+                      accept=".PDF,.PPT.PPTX,.Doc,.Docx"
+                      (onFileDrop)="dropped($event, 0)"
+                      (onFileOver)="fileOver($event)"
+                      (onFileLeave)="fileLeave($event)">
+                        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true" multiple="true">
                       <div class="justify-content-center align-items-center p-2 m-2">
                           <div class="col-1" id="align">
                             <mat-icon id="icon" color="green">check_circle</mat-icon>
                           </div>
                           <div class="roboto-font col-5" id="align">
                             <p id="title">Fixed-term contract</p>
-                            <p id="document-text">Fixed_Term_Contract.Pdf</p>
+                            <p id="document-text" *ngIf="categories[0].state == false">{{categories[0].name}}</p>
+                            <p id="supported" *ngIf="categories[0].state == true">PDF,PPT,PPTX,Doc,Docx are supported</p>
+                          </div>
+                          <div class="col-3" id="align" *ngIf="categories[0].state == true">
+                            <p id="drop-file">Drop your files here!</p>
                           </div>
                           <div id="align">
-                            <button id="file-button" class="mx-2" type="button">✖ Select file</button>
-                            <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
+                            <button id="file-button" *ngIf="categories[0].state == false" class="mx-2" type="button" (click)="removeByCategory(0)">✖ Remove</button>
+                            <button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()" [disabled]="categories[0].state == false"> + Upload</button>
                           </div>
                       </div>
+                      </ng-template>
+                      </ngx-file-drop>
                     </div>
                     <div class="upload-drop-section row">
+                      <ngx-file-drop
+                      dropZoneClassName="upload-drop-section"
+                      contentClassName=""
+                      accept=".PDF,.PPT.PPTX,.Doc,.Docx"
+                      (onFileDrop)="dropped($event, 1)"
+                      (onFileOver)="fileOver($event)"
+                      (onFileLeave)="fileLeave($event)">
+                        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true" multiple="true">
                       <div class="justify-content-center align-items-center p-2 m-2">
                         <div class="col-1" id="align">
                           <mat-icon id="icon">check_circle</mat-icon>
                         </div>
                         <div class="roboto-font col-5" id="align">
                           <p id="title">Retirement Annuity</p>
-                          <p id="document-text">Retirement_Annuity.Pdf</p>
+                          <p id="document-text" *ngIf="categories[1].state == false">{{categories[1].name}}</p>
+                          <p id="supported" *ngIf="categories[1].state == true">PDF,PPT,PPTX,Doc,Docx are supported</p>
+                        </div>
+                        <div class="col-3" id="align" *ngIf="categories[1].state == true">
+                          <p id="drop-file">Drop your files here!</p>
                         </div>
                         <div id="align">
-                          <button id="file-button" class="mx-2" type="button">✖ Select file</button>
-                          <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
+                          <button id="file-button" *ngIf="categories[1].state == false" class="mx-2" type="button" (click)="removeByCategory(1)">✖ Remove</button>
+                          <button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()" [disabled]="categories[1].state == false"> + Upload</button>
                         </div>
                       </div>
+                        </ng-template>
+                      </ngx-file-drop>
                     </div>
                     <div class="upload-drop-section row">
+                      <ngx-file-drop
+                      dropZoneClassName="upload-drop-section"
+                      contentClassName=""
+                      accept=".PDF,.PPT.PPTX,.Doc,.Docx"
+                      (onFileDrop)="dropped($event, 2)"
+                      (onFileOver)="fileOver($event)"
+                      (onFileLeave)="fileLeave($event)">
+                        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true" multiple="true">
                       <div class="justify-content-center align-items-center p-2 m-2">
                         <div class="col-1" id="align">
                           <mat-icon id="icon">check_circle</mat-icon>
                         </div>
                         <div class="roboto-font col-5" id="align">
                           <p id="title">Medical Aid Application</p>
-                          <p id="document-text">Medical_Aid.Pdf</p>
+                          <p id="document-text" *ngIf="categories[2].state == false">{{categories[2].name}}</p>
+                          <p id="supported" *ngIf="categories[2].state == true">PDF,PPT,PPTX,Doc,Docx are supported</p>
                         </div>
-                        <div id="align">
-                          <button id="file-button" class="mx-2" type="button">✖ Select file</button>
-                          <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="upload-drop-mie row">
-                      <div class="justify-content-center align-items-center p-2 m-2">
-                        <div class="roboto-font col-6" id="align">
-                          <p id="title">MIE Consent Form</p>
-                          <p id="supported">PDF,PPT,PPTX,Doc,Docx are supported</p>
-                        </div>
-                        <div class="col-3" id="align">
+                        <div class="col-3" id="align" *ngIf="categories[2].state == true">
                           <p id="drop-file">Drop your files here!</p>
                         </div>
                         <div id="align">
-                          <button id="upload-button" class="text-white border-primary mx-2" type="button"> + Upload</button>
+                          <button id="file-button" *ngIf="categories[2].state == false" class="mx-2" type="button" (click)="removeByCategory(2)">✖ Remove</button>
+                          <button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()" [disabled]="categories[2].state == false"> + Upload</button>
                         </div>
                       </div>
+                        </ng-template>
+                      </ngx-file-drop>
                     </div>
-                  </ng-template>
-                </ngx-file-drop>
+                    <div class="upload-drop-mie row">
+                      <ngx-file-drop
+                      dropZoneClassName="upload-drop-section"
+                      contentClassName=""
+                      accept=".PDF,.PPT.PPTX,.Doc,.Docx"
+                      (onFileDrop)="dropped($event, 3)"
+                      (onFileOver)="fileOver($event)"
+                      (onFileLeave)="fileLeave($event)">
+                        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true" multiple="true">
+                      <div class="justify-content-center align-items-center p-2 m-2">
+                        <div class="roboto-font col-6" id="align">
+                          <p id="title">MIE Consent Form</p>
+                          <p id="document-text" *ngIf="categories[3].state == false" >{{categories[3].name}}</p>
+                          <p id="supported" *ngIf="categories[3].state == true" >PDF,PPT,PPTX,Doc,Docx are supported</p>
+                        </div>
+                        <div class="col-3" id="align" *ngIf="categories[3].state == true">
+                          <p id="drop-file">Drop your files here!</p>
+                        </div>
+                        <div id="align">
+                          <button id="file-button" *ngIf="categories[3].state == false" class="mx-2" type="button" (click)="removeByCategory(3)">✖ Remove</button>
+                          <button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()" [disabled]="categories[3].state == false"> + Upload</button>
+                        </div>
+                      </div>
+                        </ng-template>
+                      </ngx-file-drop>
+                    </div>
               </div>
             </div>
-            <div class="row text-center p-2 m-2">
+            <!-- <div class="row text-center p-2 m-2">
               <mat-chip-grid>
                 <mat-chip *ngFor="let file of files; let i = index" [removable]="true" (removed)="removeFileByIndex(i)"> {{ file.relativePath }}
                   <img matChipRemove src="../../../../assets/img/close_chip.svg" />
                 </mat-chip>
               </mat-chip-grid>
-            </div>
+            </div> -->
           <div id="footer">
             <button id="cancel-button" (click)="goToPreviousPage()">Cancel</button>
             <button id="save-add-button" (click)="saveAndAddAnother()">Save and add another</button>
