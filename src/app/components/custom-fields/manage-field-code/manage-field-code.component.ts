@@ -312,6 +312,7 @@ export class ManageFieldCodeComponent {
       this.fieldCodeService.updateFieldCode(updatedField).subscribe({
         next: () => {
           this.fetchData(this.activeTab);
+          this.selectedFieldCodes = [];
         },
         error: () => {
           unsuccessfulSubmits++;
