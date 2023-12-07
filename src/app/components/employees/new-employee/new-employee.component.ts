@@ -44,8 +44,6 @@ export class NewEmployeeComponent implements OnInit {
     private hideNavService: HideNavService
   ) { }
 
-   
-
   firstFormGroup = this._formBuilder.group({
     firstCtrl: ['', Validators.required],
   });
@@ -87,7 +85,12 @@ export class NewEmployeeComponent implements OnInit {
   filteredPeopleChamps: any = [];
   peopleChampionId = null;
 
-  
+ categories: { [key: number]: { name: string, state: boolean } } = {
+    0: { name: '', state: true },
+    1: { name: '', state: true },
+    2: { name: '', state: true },
+    3: { name: '', state: true },
+  };
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
@@ -213,7 +216,8 @@ export class NewEmployeeComponent implements OnInit {
     }
   }
 
-  public dropped(files: NgxFileDropEntry[]) {
+  public dropped(files: NgxFileDropEntry[], category: number) {
+    
     this.files.push(...files);
     for (const droppedFile of files) {
       if (droppedFile.fileEntry.isFile) {
@@ -229,13 +233,15 @@ export class NewEmployeeComponent implements OnInit {
                   employeeId: employeeProfile.id as number,
                   reference: "",
                   fileName: file.name,
-                  fileCategory: -1,
+                  fileCategory: category,
                   file: base64String,
                   uploadDate: new Date(),
                   reason: "",
                   status: 1,
                 };
                 this.employeeDocumentModels.push(employeeDocument);
+                this.categories[category].state = false;
+                this.categories[category].name = file.name;
               },
               error: (error: any) => {
                 this.snackBarService.showSnackbar("Failed to compile documents", "snack-error");
@@ -244,6 +250,7 @@ export class NewEmployeeComponent implements OnInit {
           };
           reader.readAsDataURL(file);
         });
+        
       }
     }
   }
@@ -534,5 +541,10 @@ export class NewEmployeeComponent implements OnInit {
     if (gender){
       gender > 4999 ? this.newEmployeeForm.patchValue({gender: 1}) : this.newEmployeeForm.patchValue({gender: 2})
     }
+  }
+
+  removeByCategory(category: number): void {
+    this.employeeDocumentModels = this.employeeDocumentModels.filter(file => file.fileCategory !== category);
+    this.categories[category].state = true;
   }
 }
