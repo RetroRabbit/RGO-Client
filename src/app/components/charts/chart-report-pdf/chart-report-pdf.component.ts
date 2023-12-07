@@ -3,7 +3,7 @@ import { ChartService } from 'src/app/services/charts.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import { ChartConfiguration } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { HideNavService } from 'src/app/services/hide-nav.service';
