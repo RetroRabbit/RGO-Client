@@ -19,7 +19,6 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { HideNavService } from 'src/app/services/hide-nav.service';
-
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -82,7 +81,9 @@ export class AdminDashboardComponent {
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
     private hideNavService: HideNavService
-  ) { }
+  ) {
+    hideNavService.showNavbar = true;
+  }
 
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
@@ -100,7 +101,7 @@ export class AdminDashboardComponent {
       }
       this.searchResults = [];
     });
-
+ 
     this.employeeProfileService
       .searchEmployees(this.searchQuery)
       .subscribe((data) => {
@@ -153,7 +154,6 @@ export class AdminDashboardComponent {
     const target = event.target as HTMLAnchorElement;
     this.cookieService.set(this.PREVIOUS_PAGE, '/dashboard');
     this.router.navigateByUrl('/create-employee');
-
   }
 
   viewMoreEmployees() {

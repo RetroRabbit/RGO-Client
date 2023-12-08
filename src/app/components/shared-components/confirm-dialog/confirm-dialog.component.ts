@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-
+import { Dialog } from 'src/app/models/confirm-modal.interface';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 @Component({
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
@@ -8,24 +9,17 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ConfirmDialogComponent {
 
-  @Input() dialogType: { type: string, title: string, subtitle: string } = { type: '', title: '', subtitle: '' };
+  @Input() dialogType: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   @Output() confirmation = new EventEmitter<boolean>();
 
   @ViewChild('dialogSaveTemplate') dialogSaveTemplate!: TemplateRef<any>;
-  buttonText: string = '';
-  constructor(private dialog: MatDialog) { }
+  confirmButtonText: string = '';
+  cancelButtonText: string = '';
+  constructor(private dialog: MatDialog, private navService: HideNavService) {
+    navService.showNavbar = true;
+   }
 
   ngAfterViewInit() {
-    switch (this.dialogType.type) {
-      case 'save': {
-        this.buttonText= 'Save'
-        break;
-      }
-      case 'discard': {
-        this.buttonText= 'Discard'
-        break;
-      }
-    }
     this.dialog.open(this.dialogSaveTemplate);
   }
 
