@@ -9,7 +9,7 @@ import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeDate } from 'src/app/models/employee-date.interface';
-
+import { HideNavService } from 'src/app/services/hide-nav.service';
 @Component({
   selector: 'app-add-employee-event',
   templateUrl: './add-employee-event.component.html',
@@ -47,7 +47,10 @@ export class AddEmployeeEventComponent {
     private employeeDateService: EmployeeDateService,
     private notificationService: NotificationService,
     private cookieService: CookieService,
-    private snackBarService: SnackbarService) { }
+    private snackBarService: SnackbarService,
+    private navService : HideNavService) {
+      navService.showNavbar = true;
+     }
 
   ngOnInit(): void {
     if (this.selectedEvent) {

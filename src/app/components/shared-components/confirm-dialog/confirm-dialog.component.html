@@ -7,8 +7,8 @@
                     <h4 id="dialog-subtitle">{{dialogType.subtitle}}</h4>
                 </div>
                 <div id="button-container">
-                    <button mat-button mat-dialog-close id="save-button" (click)="captureResponse(true)">{{buttonText}}</button>
-                    <button mat-button mat-dialog-close id="cancel-button" (click)="captureResponse(false)">Back</button>
+                    <button mat-button mat-dialog-close id="save-button" (click)="captureResponse(true)">{{dialogType.confirmButtonText}}</button>
+                    <button mat-button mat-dialog-close id="cancel-button" (click)="captureResponse(false)">{{dialogType.denyButtonText}}</button>
                 </div>
             </div>
         </div>
