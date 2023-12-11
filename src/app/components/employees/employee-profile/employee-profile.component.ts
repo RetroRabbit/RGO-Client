@@ -128,7 +128,7 @@ export class EmployeeProfileComponent {
 
   filteredEmployees: any = [];
   filteredClients: any = [];
-  clientId?= null;
+  clientId? = null;
   foundClient: any;
   foundTeamLead: any;
   filteredPeopleChamps: any = [];
@@ -218,12 +218,12 @@ export class EmployeeProfileComponent {
     private snackBarService: SnackbarService,
     private customValidationService: CustomvalidationService,
     private navService: HideNavService) {
-      navService.showNavbar = true;
-     }
+    navService.showNavbar = true;
+  }
 
   ngOnInit() {
     this.employeeId = this.route.snapshot.params['id'];
-    if(this.employeeId == undefined){
+    if (this.employeeId == undefined) {
       this.showBackButtons = false;
       this.employeeId = this.cookieService.get('userId');
     }
@@ -239,12 +239,12 @@ export class EmployeeProfileComponent {
     this.router.navigateByUrl('/dashboard')
   }
 
-  getSelectedEmployee(){
+  getSelectedEmployee() {
     this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
       next: (employee: any) => {
         this.selectedEmployee = employee;
         this.employeeProfile = employee;
-      }, 
+      },
       error: (error) => {
         this.snackBarService.showSnackbar(error, "snack-error");
       },
@@ -313,10 +313,10 @@ export class EmployeeProfileComponent {
   initializeForm() {
     this.employeeDetailsForm = this.fb.group({
       name: [this.employeeProfile!.name, [Validators.required,
-        Validators.pattern(this.namePattern)]],
+      Validators.pattern(this.namePattern)]],
       surname: [this.employeeProfile!.surname, [Validators.required,
-        Validators.pattern(this.namePattern)]],
-      initials: [this.employeeProfile!.initials,[ Validators.pattern(this.initialsPattern)]],
+      Validators.pattern(this.namePattern)]],
+      initials: [this.employeeProfile!.initials, [Validators.pattern(this.initialsPattern)]],
       clientAllocated: this.employeeProfile!.clientAllocated,
       employeeType: this.employeeProfile!.employeeType!.name,
       level: this.employeeProfile!.level,
@@ -330,14 +330,10 @@ export class EmployeeProfileComponent {
     this.checkEmployeeFormProgress();
 
     this.employeeContactForm = this.fb.group({
-      email: [this.employeeProfile!.email, [Validators.required,
-      Validators.pattern(this.emailPattern)]],
+      email: [this.employeeProfile!.email, [Validators.required, Validators.pattern(this.emailPattern)]],
       personalEmail: [this.employeeProfile!.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
-      cellphoneNo: [this.employeeProfile!.cellphoneNo, [
-        Validators.required, Validators.maxLength(10),
-        Validators.pattern(/^[0-9]*$/),
-      ]],
-      houseNo: [this.employeeProfile!.houseNo, [Validators.required,Validators.minLength(4), Validators.pattern(/^[0-9]*$/)]],
+      cellphoneNo: [this.employeeProfile!.cellphoneNo, [Validators.required, Validators.maxLength(10), Validators.pattern(/^[0-9]*$/)]],
+      houseNo: [this.employeeProfile!.houseNo, [Validators.required, Validators.minLength(4), Validators.pattern(/^[0-9]*$/)]],
       emergencyContactName: [this.employeeProfile!.emergencyContactName, [Validators.required, Validators.pattern(this.namePattern)]],
       emergencyContactNo: [this.employeeProfile!.emergencyContactNo, [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(10)]]
     });
@@ -345,22 +341,22 @@ export class EmployeeProfileComponent {
     this.checkContactFormProgress();
 
     this.addressDetailsForm = this.fb.group({
-      physicalUnitNumber: [this.employeeProfile!.physicalAddress?.unitNumber, [Validators.required,Validators.pattern(/^[0-9]*$/)]],
-      physicalComplexName: [this.employeeProfile!.physicalAddress?.complexName, Validators.required],
-      physicalStreetNumber: [this.employeeProfile!.physicalAddress?.streetNumber, [Validators.required,Validators.pattern(/^[0-9]*$/)]],
-      physicalSuburb: [this.employeeProfile!.physicalAddress?.suburbOrDistrict, Validators.required],
-      physicalCity: [this.employeeProfile!.physicalAddress?.city, Validators.required],
-      physicalCountry: [this.employeeProfile!.physicalAddress?.country, Validators.required],
-      physicalProvince: [this.employeeProfile!.physicalAddress?.province, Validators.required],
-      physicalPostalCode: [this.employeeProfile!.physicalAddress?.postalCode, [Validators.required,Validators.pattern(/^[0-9]*$/),Validators.max(4)]],
-      postalUnitNumber: [this.employeeProfile!.postalAddress?.unitNumber, [Validators.required,Validators.pattern(/^[0-9]*$/)]],
-      postalComplexName: [this.employeeProfile!.postalAddress?.complexName, Validators.required],
-      postalStreetNumber: [this.employeeProfile!.postalAddress?.streetNumber, [Validators.required,Validators.pattern(/^[0-9]*$/)]],
-      postalSuburb: [this.employeeProfile!.postalAddress?.suburbOrDistrict, Validators.required],
-      postalCity: [this.employeeProfile!.postalAddress?.city, Validators.required],
-      postalCountry: [this.employeeProfile!.postalAddress?.country, Validators.required],
-      postalProvince: [this.employeeProfile!.postalAddress?.province, Validators.required],
-      postalPostalCode: [this.employeeProfile!.postalAddress?.postalCode, [Validators.required,Validators.pattern(/^[0-9]*$/),Validators.max(4)]]
+      physicalUnitNumber: [this.employeeProfile!.physicalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      physicalComplexName: [this.employeeProfile!.physicalAddress?.complexName?.trim(), Validators.required],
+      physicalStreetNumber: [this.employeeProfile!.physicalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      physicalSuburb: [this.employeeProfile!.physicalAddress?.suburbOrDistrict?.trim(), Validators.required],
+      physicalCity: [this.employeeProfile!.physicalAddress?.city?.trim(), Validators.required],
+      physicalCountry: [this.employeeProfile!.physicalAddress?.country?.trim(), Validators.required],
+      physicalProvince: [this.employeeProfile!.physicalAddress?.province?.trim(), Validators.required],
+      physicalPostalCode: [this.employeeProfile!.physicalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.max(4)]],
+      postalUnitNumber: [this.employeeProfile!.postalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      postalComplexName: [this.employeeProfile!.postalAddress?.complexName?.trim(), Validators.required],
+      postalStreetNumber: [this.employeeProfile!.postalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      postalSuburb: [this.employeeProfile!.postalAddress?.suburbOrDistrict?.trim(), Validators.required],
+      postalCity: [this.employeeProfile!.postalAddress?.city?.trim(), Validators.required],
+      postalCountry: [this.employeeProfile!.postalAddress?.country?.trim(), Validators.required],
+      postalProvince: [this.employeeProfile!.postalAddress?.province?.trim(), Validators.required],
+      postalPostalCode: [this.employeeProfile!.postalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.max(4)]]
     });
     this.addressDetailsForm.disable();
     this.checkAddressFormProgress();
@@ -370,7 +366,7 @@ export class EmployeeProfileComponent {
       race: [this.employeeProfile!.race, Validators.required],
       disability: [this.employeeProfile!.disability, Validators.required],
       disabilityList: "",
-      disabilityNotes: [this.employeeProfile!.disabilityNotes, Validators.required]
+      disabilityNotes: [this.employeeProfile!.disabilityNotes]
     });
 
     this.personalDetailsForm.disable();
@@ -445,7 +441,6 @@ export class EmployeeProfileComponent {
   }
 
   savePersonalEdit() {
-    this.editPersonal = false;
     if (this.personalDetailsForm.valid) {
       const personalDetailsFormValue = this.personalDetailsForm.value;
       this.employeeProfileDto.disability = personalDetailsFormValue.disability;
@@ -460,6 +455,7 @@ export class EmployeeProfileComponent {
           this.totalProfileProgress();
           this.getEmployeeFields();
           this.personalDetailsForm.disable();
+          this.editPersonal = false;
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -484,7 +480,19 @@ export class EmployeeProfileComponent {
   }
 
   saveAddressEdit() {
-    this.editAddress = false;
+    if(this.physicalEqualPostal) { 
+      this.addressDetailsForm.patchValue({
+        postalUnitNumber: this.addressDetailsForm.get('physicalUnitNumber')?.value,
+        postalComplexName: this.addressDetailsForm.get('physicalComplexName')?.value,
+        postalStreetNumber: this.addressDetailsForm.get('physicalStreetNumber')?.value,
+        postalSuburb: this.addressDetailsForm.get('physicalSuburb')?.value,
+        postalCity: this.addressDetailsForm.get('physicalCity')?.value,
+        postalCountry: this.addressDetailsForm.get('physicalCountry')?.value,
+        postalProvince: this.addressDetailsForm.get('physicalProvince')?.value,
+        postalPostalCode: this.addressDetailsForm.get('physicalPostalCode')?.value
+      });
+    }
+
     if (this.addressDetailsForm.valid) {
       const addressDetailFormValue = this.addressDetailsForm.value;
 
@@ -523,6 +531,7 @@ export class EmployeeProfileComponent {
               this.checkAddressFormProgress();
               this.totalProfileProgress();
               this.getEmployeeFields();
+              this.editAddress = false;
             },
             error: (error: any) => {
               this.snackBarService.showSnackbar(error, "snack-error");
@@ -620,7 +629,7 @@ export class EmployeeProfileComponent {
   }
 
   saveEmployeeEdit() {
-    this.editEmployee = false;
+
     if (this.employeeDetailsForm.valid) {
       const employeeDetailsForm = this.employeeDetailsForm.value;
       const personalDetailsForm = this.personalDetailsForm.value;
@@ -641,10 +650,10 @@ export class EmployeeProfileComponent {
       this.employeeProfileDto.engagementDate = new Date(
         new Date(this.employeeDetailsForm.value.engagementDate!)
           .setUTCHours(0, 0, 0, 0)
-          + 24 * 60 * 60 * 1000
+        + 24 * 60 * 60 * 1000
       ).toISOString();
       this.employeeProfileDto.gender = personalDetailsForm.gender;
-      
+
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Employee details updated", "snack-success");
@@ -653,6 +662,7 @@ export class EmployeeProfileComponent {
           this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfileDto?.clientAllocated)[0];
           this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfileDto?.teamLead)[0];
           this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfileDto?.peopleChampion)[0];
+          this.editEmployee = false;
           this.employeeDetailsForm.disable();
         },
         error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
@@ -665,7 +675,6 @@ export class EmployeeProfileComponent {
 
   cancelEmployeeEdit() {
     this.editEmployee = false;
-    this.employeeDetailsForm.reset();
     this.initializeForm();
     this.employeeDetailsForm.disable();
   }
@@ -676,7 +685,6 @@ export class EmployeeProfileComponent {
   }
 
   saveContactEdit() {
-    this.editContact = false;
     if (this.employeeContactForm.valid) {
       const employeeContactForm = this.employeeContactForm.value;
 
@@ -693,6 +701,7 @@ export class EmployeeProfileComponent {
           this.checkContactFormProgress();
           this.totalProfileProgress();
           this.employeeContactForm.disable();
+          this.editContact = false;
         },
         error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
       });
@@ -704,7 +713,7 @@ export class EmployeeProfileComponent {
 
   cancelContactEdit() {
     this.editContact = false;
-    this.employeeContactForm.reset();
+    // this.employeeContactForm.reset();
     this.initializeForm();
     this.employeeContactForm.disable();
   }
@@ -768,7 +777,7 @@ export class EmployeeProfileComponent {
 
   cancelAdditionalEdit() {
     this.editAdditional = false;
-    this.additionalInfoForm.reset();
+    // this.additionalInfoForm.reset();
     this.initializeForm();
     this.additionalInfoForm.disable();
   }
@@ -885,10 +894,10 @@ export class EmployeeProfileComponent {
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != " ") {
+        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != " " && control.value != "") {
           filledCount++;
         }
-        else if (!this.physicalEqualPostal && control.value != null && control.value != " ") {
+        else if (!this.physicalEqualPostal && control.value != null && control.value != " " && control.value != "") {
           filledCount++;
         }
       }
@@ -1223,21 +1232,23 @@ export class EmployeeProfileComponent {
     return 'month';
   }
 
-  getGenderBirthday(event: FocusEvent){
+  getGenderBirthday(event: FocusEvent) {
     let idNo = (event.target as HTMLInputElement).value;
     let dob = idNo.slice(0, 6);
     let gender = parseInt(idNo.slice(6, 10));
 
     let dobMatch = dob.match(/\d{2}/g)
-    if(dobMatch){
+    if (dobMatch) {
       let [year, month, day] = dobMatch;
-      const currentYear= new Date().getFullYear().toString().slice(0, 2);
-      let birthYear =(parseInt(year) < parseInt(currentYear)) ? ('20' + year) : ('19' + year);
-      this.employeeDetailsForm.patchValue({ dateOfBirth: new Date(Date.UTC(parseInt(birthYear), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0))
-        .toISOString() });
+      const currentYear = new Date().getFullYear().toString().slice(0, 2);
+      let birthYear = (parseInt(year) < parseInt(currentYear)) ? ('20' + year) : ('19' + year);
+      this.employeeDetailsForm.patchValue({
+        dateOfBirth: new Date(Date.UTC(parseInt(birthYear), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0))
+          .toISOString()
+      });
     }
-    if (gender){
-      gender > 4999 ? this.employeeDetailsForm.patchValue({gender: 1}) : this.employeeDetailsForm.patchValue({gender: 2})
+    if (gender) {
+      gender > 4999 ? this.employeeDetailsForm.patchValue({ gender: 1 }) : this.employeeDetailsForm.patchValue({ gender: 2 })
     }
   }
 }
