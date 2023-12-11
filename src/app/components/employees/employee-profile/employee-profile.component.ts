@@ -366,7 +366,7 @@ export class EmployeeProfileComponent {
       physicalCity: [this.employeeProfile!.physicalAddress?.city?.trim(), Validators.required],
       physicalCountry: [this.employeeProfile!.physicalAddress?.country?.trim(), Validators.required],
       physicalProvince: [this.employeeProfile!.physicalAddress?.province?.trim(), Validators.required],
-      physicalPostalCode: [this.employeeProfile!.physicalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4)]],
+      physicalPostalCode: [this.employeeProfile!.physicalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]],
       postalUnitNumber: [this.employeeProfile!.postalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       postalComplexName: [this.employeeProfile!.postalAddress?.complexName?.trim(), Validators.required],
       postalStreetNumber: [this.employeeProfile!.postalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
@@ -374,7 +374,7 @@ export class EmployeeProfileComponent {
       postalCity: [this.employeeProfile!.postalAddress?.city?.trim(), Validators.required],
       postalCountry: [this.employeeProfile!.postalAddress?.country?.trim(), Validators.required],
       postalProvince: [this.employeeProfile!.postalAddress?.province?.trim(), Validators.required],
-      postalPostalCode: [this.employeeProfile!.postalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4)]]
+      postalPostalCode: [this.employeeProfile!.postalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]]
     });
     this.addressDetailsForm.disable();
     this.checkAddressFormProgress();

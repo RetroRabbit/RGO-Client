@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie-service';
@@ -44,7 +44,7 @@ export class NewEmployeeComponent implements OnInit {
     private hideNavService: HideNavService
   ) { }
 
-   
+
 
   firstFormGroup = this._formBuilder.group({
     firstCtrl: ['', Validators.required],
@@ -58,7 +58,7 @@ export class NewEmployeeComponent implements OnInit {
   public newEmployeeEmail = "";
   public base64String = "";
   public filename = "";
-  imageName : string = "";
+  imageName: string = "";
   @ViewChild('stepper') private myStepper!: MatStepper;
 
   employeeTypes: EmployeeType[] = [];
@@ -87,7 +87,7 @@ export class NewEmployeeComponent implements OnInit {
   filteredPeopleChamps: any = [];
   peopleChampionId = null;
 
-  
+
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
@@ -95,10 +95,10 @@ export class NewEmployeeComponent implements OnInit {
       complexName: new FormControl<string | null>(" ", Validators.minLength(1)),
       suburbDistrict: new FormControl<string | null>(" ", Validators.minLength(1)),
       city: new FormControl<string | null>(" ", Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>(" ", [Validators.minLength(4),Validators.pattern(/^[0-9]*$/)]),
+      streetNumber: new FormControl<string | null>(" ", [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/^[0-9]*$/)]),
       country: new FormControl<string | null>(" ", Validators.minLength(1)),
       province: new FormControl<string | null>(" ", Validators.minLength(1)),
-      postalCode: new FormControl<string | null>(" ", [Validators.minLength(4),Validators.pattern(/^[0-9]*$/)]),
+      postalCode: new FormControl<string | null>(" ", [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/^[0-9]*$/)]),
     });
   }
 
@@ -122,12 +122,12 @@ export class NewEmployeeComponent implements OnInit {
     nationality: new FormControl<string>(''),
     level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
     employeeType: new FormControl<{ id: number; name: string } | null>(null, Validators.required),
-    name: new FormControl<string>('',[Validators.required,
-      Validators.pattern(this.namePattern)]),
-    initials: new FormControl<string>('', [ Validators.required,
-      Validators.pattern(this.initialsPattern)]),
+    name: new FormControl<string>('', [Validators.required,
+    Validators.pattern(this.namePattern)]),
+    initials: new FormControl<string>('', [Validators.required,
+    Validators.pattern(this.initialsPattern)]),
     surname: new FormControl<string>('', [Validators.required,
-      Validators.pattern(this.namePattern)]),
+    Validators.pattern(this.namePattern)]),
     dateOfBirth: new FormControl<Date | string>(
       new Date(Date.now()),
       Validators.required
@@ -143,7 +143,7 @@ export class NewEmployeeComponent implements OnInit {
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),
     ]),
     personalEmail: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]),
-    cellphoneNo: new FormControl('', [Validators.pattern(/^[0-9]*$/),Validators.maxLength(10)
+    cellphoneNo: new FormControl('', [Validators.pattern(/^[0-9]*$/), Validators.maxLength(10)
     ]),
     photo: new FormControl<string>(''),
     notes: new FormControl<string>(''),
@@ -190,7 +190,7 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
-      this.hideNavService.showNavbar = false;
+    this.hideNavService.showNavbar = false;
   }
 
   ngOnDestroy() {
@@ -248,11 +248,11 @@ export class NewEmployeeComponent implements OnInit {
     }
   }
 
-  saveAndExit(){
+  saveAndExit() {
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
-  saveAndAddAnother(){
+  saveAndAddAnother() {
     this.onUploadDocument('/create-employee');
   }
 
@@ -270,7 +270,7 @@ export class NewEmployeeComponent implements OnInit {
           this.files = [];
           this.myStepper.previous();
           this.router.navigateByUrl(nextPage);
-          
+
         }
       });
     });
@@ -287,10 +287,10 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   onFileChange(event: any): void {
-    if(event.target.files && event.target.files.length) {
+    if (event.target.files && event.target.files.length) {
       const file = event.target.files[0];
       this.imageName = file.name;
-      if(this.validateFile(file)) {
+      if (this.validateFile(file)) {
         this.imageConverter(file);
       } else {
         this.clearUpload();
@@ -351,10 +351,10 @@ export class NewEmployeeComponent implements OnInit {
   isDirty = false;
 
   onSubmit(reset: boolean = false): void {
-    if(this.isDirty == true)
+    if (this.isDirty == true)
       return;
 
-    if(this.isDirty == false)
+    if (this.isDirty == false)
       this.isDirty = true;
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
@@ -369,20 +369,20 @@ export class NewEmployeeComponent implements OnInit {
       engagementDate: new Date(
         new Date(this.newEmployeeForm.value.engagementDate!)
           .setUTCHours(0, 0, 0, 0)
-          + (
-            new Date(this.newEmployeeForm.value.engagementDate!).toDateString() ===
+        + (
+          new Date(this.newEmployeeForm.value.engagementDate!).toDateString() ===
             new Date().toDateString()
-                ? 0
-                : 24 * 60 * 60 * 1000
-            )
+            ? 0
+            : 24 * 60 * 60 * 1000
+        )
       ).toISOString()
-   ,
+      ,
       dateOfBirth: this.newEmployeeForm.value.dateOfBirth,
       physicalAddress: this.physicalAddressObj,
       postalAddress: this.postalAddressObj,
       peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
     });
-   
+
     const employeeEmail: string = this.newEmployeeForm.value.email!;
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
@@ -514,25 +514,27 @@ export class NewEmployeeComponent implements OnInit {
     this.newEmployeeForm.patchValue({ gender: +selectedValue });
   }
 
-  goToPreviousPage(){
+  goToPreviousPage() {
     this.router.navigateByUrl(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
-  getGenderBirthday(event: FocusEvent){
+  getGenderBirthday(event: FocusEvent) {
     let idNo = (event.target as HTMLInputElement).value;
     let dob = idNo.slice(0, 6);
     let gender = parseInt(idNo.slice(6, 10));
 
     let dobMatch = dob.match(/\d{2}/g)
-    if(dobMatch){
+    if (dobMatch) {
       let [year, month, day] = dobMatch;
-      const currentYear= new Date().getFullYear().toString().slice(0, 2);
-      let birthYear =(parseInt(year) < parseInt(currentYear)) ? ('20' + year) : ('19' + year);
-      this.newEmployeeForm.patchValue({ dateOfBirth: new Date(Date.UTC(parseInt(birthYear), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0))
-        .toISOString() });
+      const currentYear = new Date().getFullYear().toString().slice(0, 2);
+      let birthYear = (parseInt(year) < parseInt(currentYear)) ? ('20' + year) : ('19' + year);
+      this.newEmployeeForm.patchValue({
+        dateOfBirth: new Date(Date.UTC(parseInt(birthYear), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0))
+          .toISOString()
+      });
     }
-    if (gender){
-      gender > 4999 ? this.newEmployeeForm.patchValue({gender: 1}) : this.newEmployeeForm.patchValue({gender: 2})
+    if (gender) {
+      gender > 4999 ? this.newEmployeeForm.patchValue({ gender: 1 }) : this.newEmployeeForm.patchValue({ gender: 2 })
     }
   }
 }
