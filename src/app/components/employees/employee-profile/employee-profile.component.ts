@@ -263,53 +263,71 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
         this.hasDisability = data.disability;
         this.hasDisability = this.employeeProfile!.disability;
-
-        this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
-          next: data => {
-            this.employeeData = data;
-          }
-        });
-        this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
-          next: (data) => {
-            this.employeeBanking = data;
-            this.bankingId = this.employeeBanking.id;
-            this.initializeBankingForm(this.employeeBanking);
-
-          }
-        })
-        this.employeeService.getAllProfiles().subscribe({
-          next: data => {
-            this.employees = data;
-            this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
-            this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-            this.clientService.getAllClients().subscribe({
-              next: data => {
-                this.clients = data;
-                this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.clientAllocated)[0];
-              }
-            });
-          }
-        });
-        this.employeeTypeService.getAllEmployeeTypes().subscribe({
-          next: data => {
-            this.employeeTypes = data;
-            this.initializeEmployeeProfileDto();
-          }
-        });
-        this.fieldCodeService.getAllFieldCodes().subscribe({
-          next: data => {
-            this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id)
-            this.checkAdditionalInformation();
-            this.checkAdditionalFormProgress();
-            this.totalProfileProgress();
-          }
-        });
-        this.getEmployeeDocuments();
+      }, complete: () => {
+        this.getEmployeeData();
+        this.getEmployeeBankingData();
+        this.getAllEmployees();
+        this.getEmployeeTypes();
+        this.getEmployeeFieldCodes();
         this.initializeForm();
+      },error: () => {
+        this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
+      }
+    })
+  }
+  getEmployeeData(){
+    this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
+      next: data => {
+        this.employeeData = data;
       }
     });
   }
 
+  getEmployeeBankingData(){
+    this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
+      next: (data) => {
+        this.employeeBanking = data;
+        this.bankingId = this.employeeBanking.id;
+        this.initializeBankingForm(this.employeeBanking);
+      }
+    })
+  }
+
+  getAllEmployees(){
+    this.employeeService.getAllProfiles().subscribe({
+      next: data => {
+        this.employees = data;
+        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
+        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+        this.clientService.getAllClients().subscribe({
+          next: data => {
+            this.clients = data;
+            this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.clientAllocated)[0];
+          }
+        });
+      }
+    });
+  }
+
+  getEmployeeTypes(){
+    this.employeeTypeService.getAllEmployeeTypes().subscribe({
+      next: data => {
+        this.employeeTypes = data;
+        this.initializeEmployeeProfileDto();
+      }
+    });
+  }
+
+  getEmployeeFieldCodes(){
+    this.fieldCodeService.getAllFieldCodes().subscribe({
+      next: data => {
+        this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id)
+        this.checkAdditionalInformation();
+        this.checkAdditionalFormProgress();
+        this.totalProfileProgress();
+      }
+    })
+  }
   initializeForm() {
     this.employeeDetailsForm = this.fb.group({
       name: [this.employeeProfile!.name, [Validators.required,
@@ -348,7 +366,7 @@ export class EmployeeProfileComponent {
       physicalCity: [this.employeeProfile!.physicalAddress?.city?.trim(), Validators.required],
       physicalCountry: [this.employeeProfile!.physicalAddress?.country?.trim(), Validators.required],
       physicalProvince: [this.employeeProfile!.physicalAddress?.province?.trim(), Validators.required],
-      physicalPostalCode: [this.employeeProfile!.physicalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.max(4)]],
+      physicalPostalCode: [this.employeeProfile!.physicalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4)]],
       postalUnitNumber: [this.employeeProfile!.postalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       postalComplexName: [this.employeeProfile!.postalAddress?.complexName?.trim(), Validators.required],
       postalStreetNumber: [this.employeeProfile!.postalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
@@ -356,7 +374,7 @@ export class EmployeeProfileComponent {
       postalCity: [this.employeeProfile!.postalAddress?.city?.trim(), Validators.required],
       postalCountry: [this.employeeProfile!.postalAddress?.country?.trim(), Validators.required],
       postalProvince: [this.employeeProfile!.postalAddress?.province?.trim(), Validators.required],
-      postalPostalCode: [this.employeeProfile!.postalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.max(4)]]
+      postalPostalCode: [this.employeeProfile!.postalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4)]]
     });
     this.addressDetailsForm.disable();
     this.checkAddressFormProgress();
