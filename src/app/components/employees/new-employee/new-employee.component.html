@@ -276,7 +276,10 @@
       <mat-step [stepControl]="uploadDocumentForm" label="Upload Documents">
         <ng-template matStepLabel>Upload Documents</ng-template>
         <form [formGroup]="uploadDocumentForm">
-          <button id="back" matStepperPrevious>🡨 Back</button>
+            <button mat-button id="back" matStepperPrevious>
+              <mat-icon>arrow_back</mat-icon>
+              Back
+            </button>
             <div class="row justify-content-center align-items-center">
               <div class="col-md-12 col-lg-12">
                 <h2 class="text-center" id="createEmployee">Start Kit Documents</h2>
@@ -312,8 +315,14 @@
                             <p id="drop-file">Drop your files here!</p>
                           </div>
                           <div id="align">
-                            <button id="file-button" *ngIf="categories[0].state == false" class="mx-2" type="button" (click)="removeByCategory(0)">✖ Remove</button>
-                            <button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()" [disabled]="categories[0].state == false"> + Upload</button>
+                            <button mat-button id="file-button" *ngIf="categories[0].state == false" class="mx-2" type="button" (click)="removeByCategory(0)">
+                              <mat-icon>clear</mat-icon>
+                              Remove
+                            </button>
+                            <button mat-button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()" [disabled]="categories[0].state == false">
+                              <mat-icon>add</mat-icon>
+                              Upload
+                            </button>
                           </div>
                       </div>
                       </ng-template>
@@ -344,8 +353,14 @@
                           <p id="drop-file">Drop your files here!</p>
                         </div>
                         <div id="align">
-                          <button id="file-button" *ngIf="categories[1].state == false" class="mx-2" type="button" (click)="removeByCategory(1)">✖ Remove</button>
-                          <button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()" [disabled]="categories[1].state == false"> + Upload</button>
+                          <button mat-button id="file-button" *ngIf="categories[1].state == false" class="mx-2" type="button" (click)="removeByCategory(1)">
+                            <mat-icon>clear</mat-icon>
+                            Remove
+                          </button>
+                          <button mat-button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()" [disabled]="categories[1].state == false">
+                            <mat-icon>add</mat-icon>
+                            Upload
+                          </button>
                         </div>
                       </div>
                         </ng-template>
@@ -376,8 +391,14 @@
                           <p id="drop-file">Drop your files here!</p>
                         </div>
                         <div id="align">
-                          <button id="file-button" *ngIf="categories[2].state == false" class="mx-2" type="button" (click)="removeByCategory(2)">✖ Remove</button>
-                          <button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()" [disabled]="categories[1].state == false"> + Upload</button>
+                          <button mat-button id="file-button" *ngIf="categories[2].state == false" class="mx-2" type="button" (click)="removeByCategory(2)">
+                          <mat-icon>clear</mat-icon>
+                            Remove
+                          </button>
+                          <button mat-button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()" [disabled]="categories[1].state == false">
+                            <mat-icon>add</mat-icon>
+                            Upload
+                          </button>
                         </div>
                       </div>
                         </ng-template>
@@ -405,8 +426,14 @@
                           <p id="drop-file">Drop your files here!</p>
                         </div>
                         <div id="align">
-                          <button id="file-button" *ngIf="categories[3].state == false" class="mx-2" type="button" (click)="removeByCategory(3)">✖ Remove</button>
-                          <button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()" [disabled]="categories[3].state == false"> + Upload</button>
+                          <button mat-button id="file-button" *ngIf="categories[3].state == false" class="mx-2" type="button" (click)="removeByCategory(3)">
+                            <mat-icon>clear</mat-icon>
+                            Remove
+                          </button>
+                          <button mat-button id="upload-button" class="text-white border-primary mx-2" type="button" (click)="openFileSelector()" [disabled]="categories[3].state == false">
+                            <mat-icon>add</mat-icon>
+                            Upload
+                          </button>
                         </div>
                       </div>
                         </ng-template>

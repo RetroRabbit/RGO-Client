@@ -190,6 +190,7 @@ main {
 #upload-button{
     margin-top: 7px;
     padding: 10px 24px;
+    height: 40px;
     width: 132px;
     gap: 8px;
     background: #0029c6;
@@ -210,12 +211,14 @@ main {
     margin-top: 7px;
     padding: 10px 24px;
     gap: 8px;
+    height: 40px;
     width: 132px;
+    border-style: solid;
     border-radius: 30px;
-    border-color: red;
+    border-color: #B3261E;
     border-width: 1px;
     background: white;
-    color: red;
+    color: #B3261E;
     text-align: center;
     font-family: Roboto;
     font-size: 14px;
@@ -226,13 +229,13 @@ main {
 }
 
 #back{
-  text-align: center;
   border: none;
   font-family: Roboto;
+  text-align: justify;
   font-size: 14px;
   font-weight: 500;
-  width: 100px;
-  height: 50px;
+  width: 80px;
+  height: 30px;
   line-height: 20px;
   background-color: #FFF;
   color: #0029c6;
