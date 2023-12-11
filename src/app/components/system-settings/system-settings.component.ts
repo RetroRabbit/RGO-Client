@@ -23,9 +23,9 @@ export class SystemSettingsComponent {
   displayCustomFieldsManagement(): void {
     this.systemNavItemService.selectedMenuItem = "Custom Field management";
   }
-
+  
   displayEmployeeBanking() {
-    this.cookieService.set('currentPage', 'Employee Banking');
+    this.systemNavItemService.selectedMenuItem = "Employee Banking";
   }
 
   captureFieldCode(event: FieldCode){

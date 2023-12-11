@@ -26,6 +26,6 @@
   <div class="col-9 ps-4 ms-3">
     <app-manage-field-code *ngIf="systemNavItemService.selectedMenuItem === 'Custom Field management'"></app-manage-field-code>
     <app-role-manager *ngIf="systemNavItemService.selectedMenuItem === 'Role Management'"></app-role-manager>
-    <app-pending-bank-statements *ngIf="cookieService.get('currentPage') == 'Employee Banking'"></app-pending-bank-statements>
+    <app-pending-bank-statements *ngIf="systemNavItemService.selectedMenuItem === 'Employee Banking'"></app-pending-bank-statements>
   </div>
 </main>
