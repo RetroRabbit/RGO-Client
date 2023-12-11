@@ -60,14 +60,17 @@ export class ViewEmployeeComponent {
     private router: Router,
     private hideNavService: HideNavService,
     private snackBarService: SnackbarService
-  ) {}
+  ) {
+    hideNavService.showNavbar = true;
+  }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
 
     this.onResize();
-    if(this.cookieService.get(this.PREVIOUS_PAGE) != "Dashboard"){ 
-      this._searchQuery = "";
+    if(this.cookieService.get(this.PREVIOUS_PAGE) == "/dashboard"){ 
+      this._searchQuery = this.cookieService.get('searchString');
+  
     }
   }
 
@@ -171,9 +174,6 @@ export class ViewEmployeeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
-  CaptureEvent(event: any) {
-    const target = event.target as HTMLButtonElement;
-  }
 
   ViewUser(email: string) {
     this.cookieService.set('selectedUser', email);

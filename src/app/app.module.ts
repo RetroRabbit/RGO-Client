@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { SignInComponent } from './components/sign-in/sign-in.component';
-import { HomeComponent } from './components/home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
 import { StoreModule } from '@ngrx/store';
@@ -61,6 +60,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 import { PendingBankDetailsComponent } from './components/employees/pending-bank-details/pending-bank-details.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
 import { ManageEmployeeEventsComponent } from './components/manage-employee-events/manage-employee-events.component';
@@ -69,7 +72,6 @@ import { SystemSettingsComponent } from './components/system-settings/system-set
 
 
 
-import { MatChipsModule } from '@angular/material/chips';
 import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
@@ -80,7 +82,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   declarations: [
     AppComponent,
     SignInComponent,
-    HomeComponent,
     EmployeeProfileComponent,
     ChartComponent,
     CreateChartsComponent,
@@ -161,12 +162,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     TableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatButtonToggleModule,
+    DragDropModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    HomeComponent,
   ],
   bootstrap: [AppComponent],
 })

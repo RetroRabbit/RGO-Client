@@ -7,7 +7,8 @@ import { RoleAccessLink } from 'src/app/models/role-access-link.interface';
 import { RoleManagementService } from 'src/app/services/role-management.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { forkJoin } from 'rxjs';
-
+import { Dialog } from 'src/app/models/confirm-modal.interface';
+import { HideNavService } from 'src/app/services/hide-nav.service';
 @Component({
   selector: 'app-role-manager',
   templateUrl: './role-manager.component.html',
@@ -35,13 +36,16 @@ export class RoleManagerComponent implements OnInit {
   parentSelector: boolean = false;
 
   showConfirmDialog: boolean = false;
-  dialogTypeData: { type: string, title: string, subtitle: string } = { type: '', title: '', subtitle: '' };
+  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: ''  };
   constructor(
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
     private dialog: MatDialog,
-    private snackBarService: SnackbarService
-  ) { }
+    private snackBarService: SnackbarService,
+    private navService: HideNavService
+  ) { 
+    navService.showNavbar = true;
+  }
 
   ngOnInit() {
     forkJoin([
@@ -295,7 +299,7 @@ export class RoleManagerComponent implements OnInit {
   }
 
   openDialog(): void {
-    this.dialogTypeData = { type: 'save', title: 'Save Permissions', subtitle: 'Are you sure you want to save the permissions that you edited?' }
+    this.dialogTypeData = { type: 'save', title: 'Save Permissions', subtitle: 'Are you sure you want to save the permissions that you edited?', confirmButtonText: 'Save', denyButtonText: 'Back' }
     this.showConfirmDialog = true;
   }
 

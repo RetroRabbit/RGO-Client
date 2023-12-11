@@ -6,6 +6,12 @@ import { statuses } from 'src/app/models/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
+import { category } from '../../../models/constants/fieldcodeCategory.constants';
+import { HideNavService } from 'src/app/services/hide-nav.service';
+import { levels } from '../../../models/constants/levels.constants';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { map } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-field-code',
@@ -17,20 +23,37 @@ export class NewFieldCodeComponent {
   public statuses = statuses;
   public dataTypes = dataTypes;
   selectedType: any;
-  newFieldCodeForm!: FormGroup;
+  newFieldCodeForm: FormGroup = this.fb.group({
+    code: ['', Validators.required],
+    name: ['', [Validators.required]],
+    description: [''],
+    regex: [''],
+    type: [-1, Validators.required],
+    status: [0, Validators.required],
+    internal: [false],
+    internalTable: [''],
+    options: this.fb.array([]),
+    category: [-1, Validators.required]
+  });
   fieldCodes?: FieldCode[];
   isUnique?: boolean = true;
+  newFieldCodeDto !: FieldCode;
+  fieldCodeCapture: string = "";
+  showAdvanced: boolean = false;
 
+  PREVIOUS_PAGE = "previousPage";
   constructor(
     private fieldCodeService: FieldCodeService,
     private fb: FormBuilder,
     public cookieService: CookieService,
-    private snackBarService: SnackbarService) {
-
-    this.initializeForm();
+    private snackBarService: SnackbarService,
+    public hideNavService: HideNavService,
+    public router: Router) {
   }
 
   ngOnInit(): void {
+    this.hideNavService.showNavbar = false;
+    this.hideNavService.showSystemNavbar = false;
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: fieldCodes => {
         this.fieldCodes = fieldCodes;
@@ -40,30 +63,18 @@ export class NewFieldCodeComponent {
     });
   }
 
-  private initializeForm() {
-    this.newFieldCodeForm = this.fb.group({
-      fieldCode: this.fb.group({
-        code: ['', Validators.required],
-        name: ['', [Validators.required]],
-        description: [''],
-        regex: [''],
-        type: ['', Validators.required],
-        status: ['0', Validators.required],
-        option: [''],
-        internal: [false],
-        internalTable: [''],
-        options: this.fb.array([])
-      }),
-    });
-    this.isUnique = true;
+  ngOnDestroy() {
+    this.hideNavService.showNavbar = true;
+    this.hideNavService.showSystemNavbar = true;
   }
 
   get options() {
-    return (this.newFieldCodeForm.get('fieldCode.options') as FormArray);
+    return this.newFieldCodeForm.get('options') as FormArray;
   }
-
+  
   addOption() {
-    this.options.push(this.fb.control(''));
+    const optionsArray = this.newFieldCodeForm.get('options') as FormArray;
+    optionsArray.push(this.fb.control(''));
   }
 
   removeOption(index: number) {
@@ -72,48 +83,84 @@ export class NewFieldCodeComponent {
 
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
-      const { fieldCode } = this.newFieldCodeForm.value;
-      const optionValue = fieldCode.option;
-      const optionsArray = this.options.value.map((optionValue: any, index: number) => {
-        return {
-          id: index,
-          fieldCodeId: 0,
-          option: optionValue
-        };
-      });
-      const fieldCodeDto = {
+      this.formatFieldCode(this.newFieldCodeForm.get('code')?.value);
+
+      var formValues = this.newFieldCodeForm.value;
+      const fieldCodeDto : FieldCode = {
         id: 0,
-        code: fieldCode.code,
-        name: fieldCode.name,
-        description: fieldCode.description,
-        regex: fieldCode.regex,
-        type: parseInt(fieldCode.type),
-        status: parseInt(fieldCode.status),
-        internal: fieldCode.internal,
-        internalTable: fieldCode.internalTable,
-        options:optionsArray
-      };
-
-
+        code: formValues['code'],
+        name: formValues['name'],
+        description: formValues['description'],
+        regex: formValues['regex'],
+        type: formValues['type'],
+        status: formValues['status'],
+        internal: formValues['internal'],
+        internalTable: formValues['internalTable'],
+        options: formValues['type'] == 4 ?  this.returnOptionsArray(formValues['options']): [],
+        category: formValues['category'],
+      }
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
-              next: (data) => {
-                this.snackBarService.showSnackbar("Custom field saved", "snack-success");
-                this.newFieldCodeForm.disable();
-              },
-              error: (error) => {
-                if(error.error === "Field with that name found"){
-                  this.isUnique = false;
-                }
-                else {
-                  this.snackBarService.showSnackbar(error, "snack-error");
-                }
-              }
-            });
+        next: (data) => {
+          this.snackBarService.showSnackbar("Custom field has been created successfully", "snack-success");
+          this.newFieldCodeForm.disable();
+          this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+          this.router.navigateByUrl('/system-settings');
+        },
+        error: (error) => {
+          this.snackBarService.showSnackbar(error, "snack-error");
+          if (error.error === "Field with that name found") {
+            this.isUnique = false;
+          }
+          else {
+            this.snackBarService.showSnackbar(error, "snack-error");
+          }
+        }
+      });
+    }
+    else{
+      this.snackBarService.showSnackbar("Oops some fields are still missing information", "snack-error");
     }
   }
 
-  back(event: any) {
-    const target = event.target as HTMLAnchorElement;
-    this.cookieService.set('currentPage', 'Manage Field');
+  returnOptionsArray(array : any[]){
+    return this.options.value.map((optionValue: any, index: number) => {
+      return {
+        id: index,
+        fieldCodeId: 0,
+        option: optionValue
+      };
+    });
+  }
+
+  back() {
+    this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+    this.router.navigateByUrl('/system-settings');
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    const formArray = this.newFieldCodeForm.get('options') as FormArray;
+    moveItemInArray(formArray.controls, event.previousIndex, event.currentIndex);
+  }
+
+  captureName() {
+    this.formatFieldCode();
+  }
+
+  inputCodeChange() {
+    this.formatFieldCode(this.newFieldCodeForm.value('code'));
+  }
+
+  formatFieldCode(name: string = "") {
+    let code;
+    if (name == "") {
+      code = this.fieldCodeCapture.toLowerCase().replaceAll(/[^a-zA-Z0-9]/g, "");
+    } else {
+      code = name.toLowerCase().replaceAll(/[^a-zA-Z0-9]/g, "");
+    }
+    this.newFieldCodeForm.patchValue({ code: code });
+  }
+
+  toggleshowAdvance(){
+    this.showAdvanced = !this.showAdvanced;
   }
 }

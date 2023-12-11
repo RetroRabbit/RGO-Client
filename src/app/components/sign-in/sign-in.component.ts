@@ -29,7 +29,6 @@ export class SignInComponent {
   userEmail: string | null = null;
 
   ngOnInit(){
-    this.hideNavService.showNavbar = false;
     this.token = this.cookieService.get('userToken');
     this.userEmail = this.cookieService.get('userEmail');
   }
