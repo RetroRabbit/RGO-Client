@@ -2,8 +2,15 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .mat-mdc-radio-button.mat-accent {
   --mdc-radio-disabled-selected-icon-color: #000;
@@ -20,23 +27,25 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
   --mat-radio-checked-label-color: #0029C6;
 }
-.title{
+
+.title {
   text-align: center;
 }
-#save-button{
+
+#save-button {
   border: none;
   border-radius: 2rem;
   background-color: #0029C6;
   color: white;
-  padding:1rem;
+  padding: 1rem;
 }
 
-#cancel-button{
+#cancel-button {
   border: 1px solid #0029C6;
   border-radius: 2rem;
   background-color: white;
   color: #0029C6;
-  padding:1rem;
+  padding: 1rem;
 }
 
 #graphs-btn>button {
@@ -61,27 +70,29 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .custom-btn {
   border: 1px outset;
-  height:30px;
-  width:30px;
+  height: 30px;
+  width: 30px;
   border-radius: 20px;
   padding: 0;
   margin-left: 20px;
 }
 
-.ng-valid[required], .ng-valid.required  {
+.ng-valid[required],
+.ng-valid.required {
   border-left: 5px solid #42A948;
 }
 
-#btnRemoveOption, #btnAddOption {
+#btnRemoveOption,
+#btnAddOption {
   border: 1px outset;
-  height:30px;
-  width:30px;
+  height: 30px;
+  width: 30px;
   border-radius: 20px;
   padding: 0;
   margin-left: 20px;
 }
 
-#new-hire > button {
+#new-hire>button {
   background: #0029c6;
   border: none;
   border-radius: 4rem;
@@ -105,4 +116,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --mdc-snackbar-container-color: #0FAF4B;
   --mat-snack-bar-button-color: white;
   text-align: center;
+}
+
+
+.mdc-switch:enabled .mdc-switch__track::after {
+  background-color: #0029C6;
+}
+
+.mat-mdc-slide-toggle.mat-accent {
+  --mdc-switch-selected-focus-state-layer-color: #0029C6;
+  --mdc-switch-selected-handle-color: #0029C6;
+  --mdc-switch-selected-hover-state-layer-color: #0029C6;
+  --mdc-switch-selected-pressed-state-layer-color: #0029C6;
+  --mdc-switch-selected-focus-handle-color: #0029C6;
+  --mdc-switch-selected-hover-handle-color: #0029C6;
+  --mdc-switch-selected-pressed-handle-color: #0029C6;
+  --mdc-switch-selected-focus-track-color: #0029C6;
+  --mdc-switch-selected-hover-track-color: #0029C6;
+  --mdc-switch-selected-pressed-track-color: #0029C6;
+  --mdc-switch-selected-track-color: #0029C6;
 }
