@@ -3,10 +3,7 @@ import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { Document } from 'src/app/models/constants/documents.contants';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
-import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
-import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
 
