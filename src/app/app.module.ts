@@ -76,6 +76,9 @@ import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/ch
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AccordionProfileComponent } from './components/employees/employee-profile/accordions/accordion-profile/accordion-profile.component';
+import { AccordionBankingComponent } from './components/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
+import { AccordionDocumentsComponent } from './components/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
 
 
 @NgModule({
@@ -103,7 +106,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     SystemSettingsComponent,
     ChartReportPdfComponent,
     NavBarComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    AccordionProfileComponent,
+    AccordionBankingComponent,
+    AccordionDocumentsComponent
   ],
   imports: [
     BrowserModule,

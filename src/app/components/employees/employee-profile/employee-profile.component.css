@@ -1,8 +1,9 @@
-#header-name{
+#header-name {
     font-family: Poppins;
 }
 
-#header-role, #header-based{
+#header-role,
+#header-based {
     color: #555454;
     font-size: 16px;
     font-style: normal;
@@ -11,7 +12,7 @@
     letter-spacing: 0.25px;
 }
 
-#header-email{
+#header-email {
     color: #555454;
     text-align: right;
     font-family: Poppins;
@@ -22,18 +23,19 @@
     letter-spacing: 0.25px;
 }
 
-#header-email > .row{
-    display:flex;
+#header-email>.row {
+    display: flex;
     justify-content: flex-end;
 }
 
 
-#header-email-clip{
-    color:blue;
+#header-email-clip {
+    color: blue;
     transform: rotate(-45deg);
     width: 20px;
 }
-#header-label{
+
+#header-label {
     color: #555454;
     font-family: Roboto;
     font-size: 14px;
@@ -43,7 +45,7 @@
     letter-spacing: 0.1px;
 }
 
-#header-value{
+#header-value {
     color: #555454;
     font-family: Roboto;
     font-size: 12px;
@@ -52,16 +54,16 @@
     line-height: 16px;
 }
 
-.container-fluid{
+.container-fluid {
     border: 1px solid black;
 }
 
-#profile-header{
+#profile-header {
     background-color: white;
     border-radius: 2rem;
 }
 
-#profile-image{
+#profile-image {
     border-radius: 50%;
     overflow: hidden;
     height: 150px;
@@ -69,39 +71,39 @@
     width: 150px;
 }
 
-#profile-image > img{
+#profile-image>img {
     height: 100%;
     width: 100%;
 }
 
-#outer-icon-container{
+#outer-icon-container {
     padding: 0;
 }
 
-#outer-icon-container > div {
+#outer-icon-container>div {
     border-radius: 50%;
     background-color: #D7DFFF;
     color: #0029C6;
     display: table;
-    height:50px;
-    margin:0 auto;
+    height: 50px;
+    margin: 0 auto;
     text-align: center;
     width: 50px;
 }
 
-#outer-icon-container > div > mat-icon{
+#outer-icon-container>div>mat-icon {
     display: table-cell;
     text-align: center;
     vertical-align: middle;
 }
 
-#accordions-nav{
+#accordions-nav {
     background-color: #0029C6;
     border-radius: 1rem;
     padding-top: 1rem
 }
 
-#nav-item > div {
+#nav-item>div {
     text-align: center;
     color: white;
     font-size: 14px;
@@ -109,13 +111,13 @@
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0.1px;
-  }
+}
 
-  #nav-item > div:hover{
+#nav-item>div:hover {
     cursor: pointer;
-  }
+}
 
-  #nav-item > div.active {
+#nav-item>div.active {
     text-align: center;
     color: white;
     font-size: 14px;
@@ -123,16 +125,16 @@
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0.1px;
-  }
+}
 
-  #selected-line-box {
+#selected-line-box {
     width: 90px;
     height: 14px;
     position: relative;
     margin: 0 auto;
-  }
+}
 
-  #selected-line {
+#selected-line {
     width: 100%;
     height: 3px;
     left: 2px;
@@ -141,47 +143,50 @@
     background: white;
     border-top-left-radius: 100px;
     border-top-right-radius: 100px;
-  }
+}
 
-  .mat-expansion-panel {
+:host ::ng-deep .mat-expansion-panel {
     padding: 0;
-  }
+}
 
-  .mat-accordion .mat-expansion-panel, .mat-expanded, .mat-accordion .mat-expansion-panel, .mat-expansion-panel-spacing {
+:host ::ng-deep .mat-accordion .mat-expansion-panel,
+:host ::ng-deep .mat-expanded,
+:host ::ng-deep .mat-accordion .mat-expansion-panel,
+:host ::ng-deep .mat-expansion-panel-spacing {
     border-radius: 1rem;
     box-shadow: none;
 }
 
-.mat-expansion-panel-header-description{
+:host ::ng-deep .mat-expansion-panel-header-description {
     color: #B3261E;
-    display:flex;
+    display: flex;
     justify-content: flex-end;
     padding-right: 5rem;
 }
 
-#edit-button{
+:host ::ng-deep #edit-button {
     border: none;
     border-radius: 2rem;
     background-color: #D7DFFF;
     color: #0029C6;
-    padding:1rem;
+    padding: 1rem;
 }
 
-#edit-buttons {
+:host ::ng-deep #edit-buttons {
     display: flex;
     justify-content: flex-end;
 }
 
-#edit-buttons > button{
+:host ::ng-deep #edit-buttons>button {
     margin-right: 1rem;
 }
 
 
-#uploadfile:hover{
-  cursor: pointer;
+#uploadfile:hover {
+    cursor: pointer;
 }
 
-#profile-completion{
+#profile-completion {
     background-color: white;
     border-radius: 2rem;
 }
@@ -189,15 +194,15 @@
 #completion-header-container {
     display: flex;
     align-items: center;
-  }
+}
 
-#horizontal{
+#horizontal {
     height: 0px;
     margin: auto 0;
     padding: 0;
 }
 
-#progress-stats{
+#progress-stats {
     border-radius: 0.5rem;
     background-color: #d7dfff;
     color: #0029c6;
@@ -206,7 +211,7 @@
     vertical-align: middle;
 }
 
-#progress-stats > h5 {
+#progress-stats>h5 {
     font-family: Roboto;
     font-size: 14px;
     font-style: normal;
@@ -215,7 +220,7 @@
     margin: 0;
 }
 
-#overall-text > h4{
+#overall-text>h4 {
     font-family: Roboto;
     font-size: 16px;
     font-style: normal;
@@ -224,7 +229,7 @@
     letter-spacing: 0.15px;
 }
 
-#progress-require-message{
+#progress-require-message {
     color: #828282;
     font-family: Roboto;
     font-size: 14px;
@@ -234,7 +239,7 @@
     letter-spacing: 0.25px;
 }
 
-#back-button {
+:host ::ng-deep #back-button {
     color: #0029C6;
     font-size: 14px;
     font-family: Roboto;
@@ -244,30 +249,28 @@
     word-wrap: break-word;
 }
 
-#banking-field{
-  width: 100%;
-}
 
-#actionCellDownload>button {
-  border: 1px solid #0029C6;
-  border-radius: 2rem;
-  background-color: white;
-  color: #0029C6;
-  padding:0.5rem;
-  width: 8rem;
+
+/* #actionCellDownload>button {
+    border: 1px solid #0029C6;
+    border-radius: 2rem;
+    background-color: white;
+    color: #0029C6;
+    padding: 0.5rem;
+    width: 8rem;
 
 }
 
-#actionCellUpload>button{
-  background: #0029c6;
-  border: none;
-  border-radius: 4rem;
-  color: white;
-  padding: 0.5rem;
-  width: 8rem;
+#actionCellUpload>button {
+    background: #0029c6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    padding: 0.5rem;
+    width: 8rem;
 }
 
-#header-cell{
+#header-cell {
     color: black;
     font-size: 16px;
     font-family: Roboto;
@@ -279,17 +282,17 @@
     padding-left: 2rem;
 }
 
-#table{
+#table {
     background: #fdfdfe;
 }
 
-#table-header{
+#table-header {
     background: #D7DFFF;
     border-top-right-radius: 2rem;
     border-top-left-radius: 2rem;
 }
 
-#header-header > div{
+#header-header>div {
     color: black;
     font-size: 16px;
     font-family: Roboto;
@@ -298,48 +301,47 @@
     letter-spacing: 0.15px;
 }
 
-#document-row{
+#document-row {
     background-color: white;
     border-radius: 2rem;
 }
 
-#fileName{
+#fileName {
     color: grey;
-}
+} */
 
-#statuses > div{
-    color:white;
+:host ::ng-deep #statuses>div {
+    color: white;
     text-align: center;
     width: fit-content;
     border-radius: 0.3rem;
 }
 
-#status-0{
+:host ::ng-deep #status-0 {
     background: #0faf4bff;
     padding: 0.3rem 0.7rem;
 }
-#status-1{
+
+:host ::ng-deep #status-1 {
     background: #322f35ff;
     padding: 0.3rem 0.7rem;
 }
-#status-2{
+
+:host ::ng-deep #status-2 {
     background: #b3261eff;
     padding: 0.3rem 0.7rem;
 }
-#status-null{
+
+:host ::ng-deep #status-null {
     background: white;
     color: #0029c6;
     padding: 0.3rem 0.7rem;
 }
-#reject-reason{
+
+:host ::ng-deep #reject-reason {
     color: #b3261eff;
 }
 
-#svg-icon-w #icon-w {
-  fill: white;
-}
-
-
-#last-updated{
-    color: #666666ff
-}
+/* #svg-icon-w #icon-w {
+    fill: white;
+} */
