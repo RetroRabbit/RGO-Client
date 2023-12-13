@@ -35,7 +35,6 @@ export class AccordionProfileComponent {
   @Input() employeeProfile!: EmployeeProfile;
   
   employees: EmployeeProfile[] = [];
-
   clients: Client[] = [];
   employeeTypes: EmployeeType[] = [];
   filteredClients: any = [];
@@ -383,7 +382,6 @@ export class AccordionProfileComponent {
       gender > 4999 ? this.employeeDetailsForm.patchValue({ gender: 1 }) : this.employeeDetailsForm.patchValue({ gender: 2 })
     }
   }
-
 
   editEmployeeDetails() {
     this.employeeDetailsForm.enable();
