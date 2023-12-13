@@ -12,7 +12,6 @@ import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { TemplateRef } from '@angular/core';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -95,8 +94,6 @@ export class AdminDashboardComponent {
   }
 
   fetchChartData() {
-    // this.employeeService.getAllProfiles().subscribe((data) => {
-    // });
     this.employeeService.getAllProfiles().subscribe({
       next: data => {
         if (Array.isArray(data)) {
@@ -108,15 +105,14 @@ export class AdminDashboardComponent {
       }, complete: () => {
         this.loadCounter++;
       }
-    })
-    // this.employeeProfileService.searchEmployees(this.searchQuery).subscribe((data) => {
-    // });
+    });
+
     this.employeeProfileService.searchEmployees(this.searchQuery).subscribe({
       next: data => this.allEmployees = data
       , complete: () => {
         this.loadCounter++;
       }
-    })
+    });
 
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
