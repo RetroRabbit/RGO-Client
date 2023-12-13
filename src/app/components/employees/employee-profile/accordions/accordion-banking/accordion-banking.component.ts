@@ -16,8 +16,8 @@ export class AccordionBankingComponent {
 
   @Input() employeeProfile !: EmployeeProfile;
   @Output() updateBanking = new EventEmitter<{progress: number, status : number}>();
-  shouldUseSentInProfile: boolean = true;
 
+  shouldUseSentInProfile: boolean = true;
   panelOpenState: boolean = false;
   bankInformationProgress: number = 0;
   employeeBanking !: EmployeeBanking;
@@ -54,7 +54,6 @@ export class AccordionBankingComponent {
   ngOnInit() {
     this.getEmployeeBankingData();
   }
-
 
   getEmployeeBankingData() {
     this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
