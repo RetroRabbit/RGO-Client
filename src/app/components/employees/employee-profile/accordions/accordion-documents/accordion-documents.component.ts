@@ -55,11 +55,12 @@ export class AccordionDocumentsComponent {
     const byteString = atob(base64String);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const intArray = new Uint8Array(arrayBuffer);
+
     for (let i = 0; i < byteString.length; i++) {
       intArray[i] = byteString.charCodeAt(i);
     }
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
 
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.download = fileName;
@@ -185,8 +186,6 @@ export class AccordionDocumentsComponent {
       }
     }
   }
-
-
 
   disableButton(index: number): boolean {
     const docObj = this.employeeDocuments.find(document => document.fileCategory == index);

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AccordionProfileComponent } from './accordion-profile.component';
 
 describe('AccordionProfileComponent', () => {

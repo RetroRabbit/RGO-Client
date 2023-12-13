@@ -2,6 +2,10 @@
 This platform is, somewhat for making the grad onboarding process simpler. Also for creating a central location for tracking changes to personal information, certification, skills,project and etc.
 
 # Getting Started
+
+## Designs
+https://www.figma.com/file/rPWv2FIKByov9GdtHWbhFG/HRIS-Working-File?node-id=0%3A1&mode=dev
+
 ### Install software for the project
 - Microsoft Visual Studio Code
 - Node.js v18.17.1
