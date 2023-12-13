@@ -151,6 +151,7 @@ export class AccordionBankingComponent {
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Banking details updated", "snack-success");
+          this.getEmployeeBankingData();
           this.checkBankingInformationProgress();
           this.totalBankingProgress();
           this.hasUpdatedBanking = true;
@@ -166,6 +167,7 @@ export class AccordionBankingComponent {
       this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Banking details added", "snack-success");
+          this.getEmployeeBankingData();
           this.checkBankingInformationProgress();
           this.totalBankingProgress();
           this.hasUpdatedBanking = true;
