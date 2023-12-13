@@ -43,6 +43,8 @@ export class ManageFieldCodeComponent {
 
   dataSource: MatTableDataSource<FieldCode> = new MatTableDataSource();
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
+  isLoading: boolean = true;
+
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -80,7 +82,7 @@ export class ManageFieldCodeComponent {
       },
       error: error => {
         this.snackBarService.showSnackbar("Error fetching field codes", "snack-error");
-      },
+      }
     })
   }
 

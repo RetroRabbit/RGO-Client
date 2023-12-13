@@ -1,7 +1,7 @@
 <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
-
-<div class="row">
-  <div class="col-12" id="button-save-container">
+<app-loading-component *ngIf="isLoading"></app-loading-component>
+<div *ngIf="!isLoading" class="row">
+  <div class="col-12 mt-3" id="button-save-container">
     <button mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save
       Changes</button>
   </div>
