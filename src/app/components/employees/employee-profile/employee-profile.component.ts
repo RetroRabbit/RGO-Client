@@ -63,6 +63,8 @@ export class EmployeeProfileComponent {
   previousPage: string = '';
   currentPage: string = '';
 
+  isLoading: boolean = true;
+
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
 
@@ -137,6 +139,8 @@ export class EmployeeProfileComponent {
           next: data => {
             this.clients = data;
             this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.clientAllocated)[0];
+          }, complete: () => {
+            this.isLoading = false;
           }
         });
       }

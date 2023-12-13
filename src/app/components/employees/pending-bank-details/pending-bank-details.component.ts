@@ -17,7 +17,7 @@ export class PendingBankDetailsComponent {
   fileToUpload: File | null = null;
   copyOfSelected: EmployeeBanking | null = null;
   declineReason : string = "";
-
+  isLoading: boolean = true;
   constructor(
     private employeeBankingService: EmployeeBankingService,
     private snackBarService: SnackbarService,
@@ -31,8 +31,14 @@ export class PendingBankDetailsComponent {
   }
 
   fetchPending(){
-    this.employeeBankingService.getPending(1).subscribe(dataArray => {
-      this.pendingBankApplications = dataArray;
+    this.employeeBankingService.getPending(1).subscribe({
+      next: data => {
+        this.pendingBankApplications = data;
+      }, error: error=>{
+        this.snackBarService.showSnackbar("Failed to fetch", "snack-error");
+      }, complete: () => {
+        this.isLoading = false;
+      }
     })
   }
 

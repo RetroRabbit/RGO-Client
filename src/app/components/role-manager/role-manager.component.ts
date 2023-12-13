@@ -24,15 +24,12 @@ export class RoleManagerComponent implements OnInit {
   roles: Role[] = [];
 
   roleAccesses: RoleAccess[] = [];
-
   roleAccessLinks: RoleAccessLink[] = [];
-
   chartPermissions: RoleAccess[] = [];
-
   employeePermissions: RoleAccess[] = [];
-
   temporaryRoleAccessChanges: RoleAccessLink[] = [];
 
+  isLoading: boolean = true;
   parentSelector: boolean = false;
 
   showConfirmDialog: boolean = false;
@@ -94,6 +91,7 @@ export class RoleManagerComponent implements OnInit {
       );
       this.allEmployeeDataCheckboxesState[r.description] = hasLinks;
     }
+    this.isLoading = false;
   }
 
   updateChartAndEmployeeDataCheckboxStates() {

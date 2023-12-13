@@ -79,6 +79,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccordionProfileComponent } from './components/employees/employee-profile/accordions/accordion-profile/accordion-profile.component';
 import { AccordionBankingComponent } from './components/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
 import { AccordionDocumentsComponent } from './components/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
+import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 
 
 @NgModule({
@@ -109,7 +110,8 @@ import { AccordionDocumentsComponent } from './components/employees/employee-pro
     ConfirmDialogComponent,
     AccordionProfileComponent,
     AccordionBankingComponent,
-    AccordionDocumentsComponent
+    AccordionDocumentsComponent,
+    LoadingComponentComponent
   ],
   imports: [
     BrowserModule,

@@ -25,9 +25,7 @@
   </section>
   <div class="row">
     <div class="card px-0">
-      <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 200px;">
-        <mat-spinner></mat-spinner>
-      </div>
+      <app-loading-component *ngIf="isLoading"></app-loading-component>
       <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
         <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="Name">
