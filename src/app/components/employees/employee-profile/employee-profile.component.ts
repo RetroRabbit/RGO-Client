@@ -63,46 +63,10 @@ export class EmployeeProfileComponent {
   previousPage: string = '';
   currentPage: string = '';
 
+  isLoading: boolean = true;
+
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
-
-  employeeContactForm: FormGroup = this.fb.group({
-    email: { value: '', disabled: true },
-    personalEmail: { value: '', disabled: true },
-    cellphoneNo: { value: '', disabled: true },
-    houseNo: { value: '', disabled: true },
-    emergencyContactName: { value: '', disabled: true },
-    emergencyContactNo: { value: '', disabled: true }
-  });
-
-  personalDetailsForm: FormGroup = this.fb.group({
-    gender: { value: '', disabled: true },
-    race: { value: '', disabled: true },
-    disability: { value: '', disabled: true },
-    disabilityNotes: { value: '', disabled: true },
-    disabilityList: { value: '', disabled: true }
-  });
-
-  addressDetailsForm: FormGroup = this.fb.group({
-    physicalUnitNumber: { value: '', disabled: true },
-    physicalComplexName: { value: '', disabled: true },
-    physicalStreetNumber: { value: '', disabled: true },
-    physicalSuburb: { value: '', disabled: true },
-    physicalCity: { value: '', disabled: true },
-    physicalCountry: { value: '', disabled: true },
-    physicalProvince: { value: '', disabled: true },
-    physicalPostalCode: { value: '', disabled: true },
-    postalUnitNumber: { value: '', disabled: true },
-    postalComplexName: { value: '', disabled: true },
-    postalStreetNumber: { value: '', disabled: true },
-    postalSuburb: { value: '', disabled: true },
-    postalCity: { value: '', disabled: true },
-    postalCountry: { value: '', disabled: true },
-    postalProvince: { value: '', disabled: true },
-    postalPostalCode: { value: '', disabled: true }
-  });
-
-  additionalInfoForm: FormGroup = this.fb.group({});
 
 
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
@@ -176,6 +140,8 @@ export class EmployeeProfileComponent {
           next: data => {
             this.clients = data;
             this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.clientAllocated)[0];
+          }, complete: () => {
+            this.isLoading = false;
           }
         });
       }

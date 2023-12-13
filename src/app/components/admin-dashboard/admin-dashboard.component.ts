@@ -45,6 +45,8 @@ export class AdminDashboardComponent {
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
 
+  loadCounter: number = 0;
+
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
   charts: Chart[] = [];
   public showModal: boolean = false;
@@ -66,7 +68,7 @@ export class AdminDashboardComponent {
   searchQuery: string = '';
   searchResults: EmployeeProfile[] = [];
   allEmployees: EmployeeProfile[] = [];
-  allFlag : boolean = false;
+  allFlag: boolean = false;
 
   PREVIOUS_PAGE = "previousPage";
 
@@ -93,25 +95,35 @@ export class AdminDashboardComponent {
   }
 
   fetchChartData() {
-    this.employeeService.getAllProfiles().subscribe((data) => {
-      if (Array.isArray(data)) {
-        this.allEmployees = data;
-      } else if (data) {
-        this.allEmployees = [data];
+    // this.employeeService.getAllProfiles().subscribe((data) => {
+    // });
+    this.employeeService.getAllProfiles().subscribe({
+      next: data => {
+        if (Array.isArray(data)) {
+          this.allEmployees = data;
+        } else if (data) {
+          this.allEmployees = [data];
+        }
+        this.searchResults = [];
+      }, complete: () => {
+        this.loadCounter++;
       }
-      this.searchResults = [];
-    });
- 
-    this.employeeProfileService
-      .searchEmployees(this.searchQuery)
-      .subscribe((data) => {
-        this.allEmployees = data;
-      });
+    })
+    // this.employeeProfileService.searchEmployees(this.searchQuery).subscribe((data) => {
+    // });
+    this.employeeProfileService.searchEmployees(this.searchQuery).subscribe({
+      next: data => this.allEmployees = data
+      , complete: () => {
+        this.loadCounter++;
+      }
+    })
 
     this.chartService.getAllCharts().subscribe({
       next: (data) => (this.charts = data),
       error: (error) => {
         this.snackBarService.showSnackbar("Failed to fetch charts", "snack-error");
+      }, complete: () => {
+        this.loadCounter++;
       }
     });
 
@@ -127,6 +139,9 @@ export class AdminDashboardComponent {
       next: data => {
         this.categories = data;
         this.filteredCategories = this.categories.slice().sort((a, b) => a.localeCompare(b));
+      },
+      complete: () => {
+        this.loadCounter++;
       }
     });
 
@@ -136,6 +151,9 @@ export class AdminDashboardComponent {
         this.types.push('All')
         data.forEach(field => this.types.push(field.name as string));
         this.filteredTypes = this.types;
+      },
+      complete: () => {
+        this.loadCounter++;
       }
     });
   }
@@ -265,7 +283,7 @@ export class AdminDashboardComponent {
     if (this.selectedTypes.length > 0) {
       combinedChartName += ` - ${this.selectedTypes.join(', ')}`;
     }
-
+    this.loadCounter = 0;
     this.chartService.createChart(this.selectedCategories, this.selectedTypes, combinedChartName, this.chartType)
       .subscribe(
         {
@@ -369,46 +387,44 @@ export class AdminDashboardComponent {
   onRoleRemoved(role: string): void {
     const currentRoles = this.typeControl.value || [];
     if (role === 'All') {
-        this.typeControl.setValue([]);
-        this.selectedTypes = [];
-        this.allFlag = false;
+      this.typeControl.setValue([]);
+      this.selectedTypes = [];
+      this.allFlag = false;
     } else {
-        const index = currentRoles.indexOf(role);
-        if (index >= 0) {
-            currentRoles.splice(index, 1);
-            if (currentRoles.includes('All')) {
-                const newSelection = currentRoles.filter((item: string) => item !== 'All');
-                this.typeControl.setValue(newSelection);
-                this.selectedTypes = newSelection;
-                this.allFlag = false;
-            } else {
-                this.typeControl.setValue(currentRoles);
-                this.selectedTypes = currentRoles;
-            }
+      const index = currentRoles.indexOf(role);
+      if (index >= 0) {
+        currentRoles.splice(index, 1);
+        if (currentRoles.includes('All')) {
+          const newSelection = currentRoles.filter((item: string) => item !== 'All');
+          this.typeControl.setValue(newSelection);
+          this.selectedTypes = newSelection;
+          this.allFlag = false;
+        } else {
+          this.typeControl.setValue(currentRoles);
+          this.selectedTypes = currentRoles;
         }
+      }
     }
-}
+  }
 
   onDropDownChange(event: any) {
-    if (event.value.includes('All'))
-    {
-      if (event.value.length == this.types.length-1 && this.allFlag == false) {
+    if (event.value.includes('All')) {
+      if (event.value.length == this.types.length - 1 && this.allFlag == false) {
         this.allFlag = true;
         const newSelection = event.value.filter((item: string) => item !== 'All');
         this.typeControl.setValue(newSelection);
         this.selectedTypes = newSelection;
       }
-      else if (event.value.length <= this.types.length-1) {
+      else if (event.value.length <= this.types.length - 1) {
         this.allFlag = false
         this.typeControl.setValue([...this.types]);
         this.selectedTypes = [...this.types];
       }
     }
-    else
-    {
-        const newSelection = event.value.filter((item: string) => item !== 'All');
-        this.typeControl.setValue(newSelection);
-        this.selectedTypes = newSelection;
+    else {
+      const newSelection = event.value.filter((item: string) => item !== 'All');
+      this.typeControl.setValue(newSelection);
+      this.selectedTypes = newSelection;
     }
   }
 }
