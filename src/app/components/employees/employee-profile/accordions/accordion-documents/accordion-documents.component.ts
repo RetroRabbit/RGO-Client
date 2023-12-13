@@ -201,8 +201,6 @@ export class AccordionDocumentsComponent {
     const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
     this.documentFormProgress = fetchedDocuments / total * 100;
     this.updateDocument.emit(this.documentFormProgress);
-
-    // this.overallProgress();
   }
 
 }
