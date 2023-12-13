@@ -1,6 +1,8 @@
-<div class="container mt-4">
+<app-loading-component *ngIf="isLoading"></app-loading-component>
+<div *ngIf="!isLoading" class="container mt-4">
     <div *ngIf="!showDetailedEntry;else ShowDetails">
-        <p-table *ngIf="pendingBankApplications.length > 0;else NoBankApplications" [value]="pendingBankApplications" [tableStyle]="{ 'min-width': '50rem' }">
+        <p-table *ngIf="pendingBankApplications.length > 0;else NoBankApplications" [value]="pendingBankApplications"
+            [tableStyle]="{ 'min-width': '50rem' }">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Employee</th>
@@ -71,18 +73,18 @@
                         <mat-radio-group aria-label="Select status" (change)="setSelectedResponse($event)">
                             <mat-radio-button [value]=0>Approve</mat-radio-button>
                             <mat-radio-button [value]=2>Reject</mat-radio-button>
-                          </mat-radio-group>
+                        </mat-radio-group>
                     </div>
                     <div *ngIf="copyOfSelected?.status == 2" class="col-12 mx-2">
                         <mat-form-field appearance="outline" style="width: 100%;">
                             <mat-label>Reason</mat-label>
                             <input matInput [(ngModel)]="declineReason">
                             <mat-hint>Please provide a reason</mat-hint>
-                          </mat-form-field>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3"> 
+                    <div class="col-3">
                         <button mat-button (click)="updateEntry()">Submit</button>
                     </div>
                 </div>
