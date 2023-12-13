@@ -3,7 +3,7 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { Client } from 'src/app/models/client.interface';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
@@ -67,7 +67,6 @@ export class EmployeeProfileComponent {
 
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
-
 
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
   @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
