@@ -1,0 +1,11 @@
+#banking-field {
+    width: 100%;
+}
+
+#last-updated {
+    color: #666666ff
+}
+
+#uploadfile:hover {
+    cursor: pointer;
+}

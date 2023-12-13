@@ -1,0 +1,157 @@
+<div class="col-12" id="accordion-container">
+    <mat-accordion id="accordion" class="row">
+        <mat-expansion-panel class="mt-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Main Bank Account
+                </mat-panel-title>
+                <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking.status == 2">
+                    <mat-icon class="mx-1">error</mat-icon> Missing information
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <form [formGroup]="employeeBankingsForm">
+                <div class="row">
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="col-12 row my-3">
+                                <div class="col-7 my-2">
+                                    <div class="row">
+                                        <div class="col-12 ps-4 mt-1"
+                                            *ngIf="hasBankingData && employeeBanking.status > 0">
+                                            Last updated: {{employeeBanking.lastUpdateDate | date}}
+                                        </div>
+                                        <div class="col-11 px-4" *ngIf="hasBankingData && employeeBanking.status > 0">
+                                            <hr>
+                                        </div>
+                                        <div class="col-7 ps-4 pt-2" id="last-updated"
+                                            *ngIf="hasBankingData && employeeBanking.pendingUpdateDate">
+                                            Update submitted on {{employeeBanking.pendingUpdateDate | date}}
+                                        </div>
+                                        <div *ngIf="hasBankingData;else NoBankingInfo" class="col-4" id="statuses">
+                                            <div *ngIf="employeeBanking.status === 0" id="status-0">
+                                                <span>{{ 'Approved' }}</span>
+                                            </div>
+                                            <div *ngIf="employeeBanking.status === 2" id="status-2">
+                                                <span>{{ 'Rejected' }}</span>
+                                            </div>
+                                            <div *ngIf="employeeBanking.status === 1" id="status-1">
+                                                <span>{{ 'Pending Approval' }}</span>
+                                            </div>
+                                        </div>
+                                        <ng-template #NoBankingInfo>
+                                            <div id="status-null">
+                                                <span>{{ 'Action Required' }}</span>
+                                            </div>
+                                        </ng-template>
+                                        <div class="col-12" *ngIf="hasBankingData && employeeBanking.status ==2">
+                                            <div id="reject-reason" class="ps-3">
+                                                <h5>{{employeeBanking.declineReason}}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 my-2">
+                                <mat-form-field appearance="outline" id="banking-field">
+                                    <mat-label>Bank Account Owner</mat-label>
+                                    <input matInput placeholder="Enter name of owner"
+                                        formControlName="accountHolderName">
+                                    <mat-error
+                                        *ngIf="employeeBankingsForm.controls['accountHolderName'].hasError('required')">
+                                        Owner name is required</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6"></div>
+                            <div class="col-6 my-2">
+                                <mat-form-field appearance="outline" id="banking-field">
+                                    <mat-label>Account Type</mat-label>
+                                    <mat-select placeholder="Select Type" formControlName="accountType">
+                                        <mat-option *ngFor="let accountType of accountTypes" [value]="accountType.id">
+                                            {{accountType.value}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6 my-2">
+                                <mat-form-field appearance="outline" id="banking-field">
+                                    <mat-label>Bank Name</mat-label>
+                                    <mat-select placeholder="Select bank" formControlName="bankName">
+                                        <mat-option *ngFor="let bank of banks" [value]="bank.value">
+                                            {{bank.value}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6 my-2">
+                                <mat-form-field appearance="outline" id="banking-field">
+                                    <mat-label>Account Number</mat-label>
+                                    <input type="text" min="0" matInput placeholder="Enter account number"
+                                        formControlName="accountNo">
+                                    <mat-error
+                                        *ngIf="employeeBankingsForm.controls['accountNo'].hasError('required')">Account
+                                        number is required</mat-error>
+                                    <mat-error
+                                        *ngIf="employeeBankingsForm.controls['accountNo'].hasError('pattern') && !employeeBankingsForm.controls['accountNo'].hasError('required')">
+                                        Account number must contain only numbers</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6 my-2">
+                                <mat-form-field appearance="outline" id="banking-field">
+                                    <mat-label>Branch Code</mat-label>
+                                    <input type="text" min="0" matInput placeholder="Enter branch code"
+                                        formControlName="branch">
+                                    <mat-error
+                                        *ngIf="employeeBankingsForm.controls['branch'].hasError('required')">Branch code
+                                        is required</mat-error>
+                                    <mat-error
+                                        *ngIf="employeeBankingsForm.controls['branch'].hasError('pattern') && !employeeBankingsForm.controls['branch'].hasError('required')">
+                                        Branch Code must contain only numbers</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <p id="base64"></p>
+                            <div class="col-8 my-2">
+                                <mat-label [ngStyle]="{color: editBanking ? 'black' : 'grey'}">
+                                    Proof of account
+                                </mat-label>
+                                <div class="my-2">
+                                    <div class="row">
+                                        <div *ngIf="hasFile">
+                                            <button mat-button color="primary"
+                                                [hidden]="employeeBanking.file.length == 0"
+                                                (click)="convertFileToBase64()">Download</button>
+                                        </div>
+                                        <div class="col-5" [hidden]="!editBanking" class="row" id="uploadButton"
+                                            (click)="openFileInput()">
+                                            <div class="col" *ngIf="bankingPDFName.length > 1">
+                                                <p id="recently-uploaded">{{bankingPDFName}}</p>
+                                            </div>
+                                            <div class="col-1" style="color: blue" id="uploadfile">
+                                                <img src="../../../../assets/img/file_upload.svg" alt="">
+                                            </div>
+                                            <div class="col-5" id="uploadfile">
+                                                <h4>Upload document here</h4>
+                                                <input id="fileUpload" hidden type="file"
+                                                    (change)="onFileSelected($event)" accept=".pdf">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <button *ngIf="!editBanking" mat-button id="edit-button" (click)="editBankingDetails()">
+                            <mat-icon>edit</mat-icon>Edit
+                            Details</button>
+                    </div>
+                    <div class="col-12" id="edit-buttons">
+                        <button *ngIf="editBanking" mat-button id="cancel-button"
+                            (click)="cancelBankingDetails()">Cancel</button>
+                        <button *ngIf="editBanking" mat-button id="save-button" (click)="saveBankingDetails()">Save
+                            changes</button>
+                    </div>
+                </div>
+            </form>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

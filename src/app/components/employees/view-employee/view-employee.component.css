@@ -196,6 +196,7 @@ input[type="number"] {
 .role-text {
     flex-grow: 1;
     text-align: center;
+    color:white;
 }
 
 .role-btn mat-icon {
