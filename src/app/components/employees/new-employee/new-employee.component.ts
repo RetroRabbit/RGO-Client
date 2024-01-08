@@ -98,10 +98,10 @@ export class NewEmployeeComponent implements OnInit {
       complexName: new FormControl<string | null>(" ", Validators.minLength(1)),
       suburbDistrict: new FormControl<string | null>(" ", Validators.minLength(1)),
       city: new FormControl<string | null>(" ", Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>(" ", [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/^[0-9]*$/)]),
+      streetNumber: new FormControl<string | null>(" ", [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
       country: new FormControl<string | null>(" ", Validators.minLength(1)),
       province: new FormControl<string | null>(" ", Validators.minLength(1)),
-      postalCode: new FormControl<string | null>(" ", [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/^[0-9]*$/)]),
+      postalCode: new FormControl<string | null>(" ", [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
     });
   }
 
@@ -369,28 +369,8 @@ export class NewEmployeeComponent implements OnInit {
       this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
       return;
     }
-    this.newEmployeeForm.value.cellphoneNo =
-      this.newEmployeeForm.value.cellphoneNo?.toString().trim();
-    this.newEmployeeForm.patchValue({
-      employeeNumber: this.newEmployeeForm.value.surname?.substring(0, 3).toUpperCase() + '000',
-      engagementDate: new Date(
-        new Date(this.newEmployeeForm.value.engagementDate!)
-          .setUTCHours(0, 0, 0, 0)
-        + (
-          new Date(this.newEmployeeForm.value.engagementDate!).toDateString() ===
-            new Date().toDateString()
-            ? 0
-            : 24 * 60 * 60 * 1000
-        )
-      ).toISOString()
-      ,
-      dateOfBirth: this.newEmployeeForm.value.dateOfBirth,
-      physicalAddress: this.physicalAddressObj,
-      postalAddress: this.postalAddressObj,
-      peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
-    });
-
-    const employeeEmail: string = this.newEmployeeForm.value.email!;
+    
+    this.patchFromValues();
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
@@ -410,6 +390,28 @@ export class NewEmployeeComponent implements OnInit {
         this.isDirty = false;
       },
 
+    });
+  }
+
+  patchFromValues(){
+    this.newEmployeeForm.value.cellphoneNo = this.newEmployeeForm.value.cellphoneNo?.toString().trim();
+    this.newEmployeeForm.patchValue({
+      employeeNumber: this.newEmployeeForm.value.surname?.substring(0, 3).toUpperCase() + '000',
+      engagementDate: new Date(
+        new Date(this.newEmployeeForm.value.engagementDate!)
+          .setUTCHours(0, 0, 0, 0)
+        + (
+          new Date(this.newEmployeeForm.value.engagementDate!).toDateString() ===
+            new Date().toDateString()
+            ? 0
+            : 24 * 60 * 60 * 1000
+        )
+      ).toISOString()
+      ,
+      dateOfBirth: this.newEmployeeForm.value.dateOfBirth,
+      physicalAddress: this.physicalAddressObj,
+      postalAddress: this.postalAddressObj,
+      peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
     });
   }
 
