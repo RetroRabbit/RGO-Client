@@ -348,43 +348,6 @@
             </div>
             <div class="upload-drop-section row">
               <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                accept=".PDF,.PPT.PPTX,.Doc,.Docx" (onFileDrop)="dropped($event, 1)" (onFileOver)="fileOver($event)"
-                (onFileLeave)="fileLeave($event)">
-                <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
-                  multiple="true">
-                  <div class="justify-content-center align-items-center p-2 m-2">
-                    <div id="align">
-                      <mat-icon id="icon">check_circle</mat-icon>
-                    </div>
-                    <div class="roboto-font col-6" *ngIf="categories[1].state == true" id="align">
-                      <p id="title">Medical Aid</p>
-                      <p id="supported">PDF,PPT,PPTX,Doc,Docx are supported</p>
-                    </div>
-                    <div class="roboto-font col-7" *ngIf="categories[1].state == false" id="align">
-                      <p id="title">Medical Aid</p>
-                      <p id="document-text">{{categories[1].name}}</p>
-                    </div>
-                    <div class="file-mention col-3" id="align" *ngIf="categories[1].state == true">
-                      <p id="drop-file">Drop your files here!</p>
-                    </div>
-                    <div id="align">
-                      <button mat-button id="file-button" *ngIf="categories[1].state == false" class="mx-2"
-                        type="button" (click)="removeByCategory(1)">
-                        <mat-icon>clear</mat-icon>
-                        Remove
-                      </button>
-                      <button mat-button id="upload-button" class="text-white border-primary mx-2" type="button"
-                        (click)="openFileSelector()" [disabled]="categories[1].state == false">
-                        <mat-icon>add</mat-icon>
-                        Upload
-                      </button>
-                    </div>
-                  </div>
-                </ng-template>
-              </ngx-file-drop>
-            </div>
-            <div class="upload-drop-section row">
-              <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
                 accept=".PDF,.PPT.PPTX,.Doc,.Docx" (onFileDrop)="dropped($event, 2)" (onFileOver)="fileOver($event)"
                 (onFileLeave)="fileLeave($event)">
                 <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
@@ -394,11 +357,11 @@
                       <mat-icon id="icon">check_circle</mat-icon>
                     </div>
                     <div class="roboto-font col-6" *ngIf="categories[2].state == true" id="align">
-                      <p id="title">Retirement Annuity</p>
+                      <p id="title">Medical Aid</p>
                       <p id="supported">PDF,PPT,PPTX,Doc,Docx are supported</p>
                     </div>
                     <div class="roboto-font col-7" *ngIf="categories[2].state == false" id="align">
-                      <p id="title">Retirement Annuity</p>
+                      <p id="title">Medical Aid</p>
                       <p id="document-text">{{categories[2].name}}</p>
                     </div>
                     <div class="file-mention col-3" id="align" *ngIf="categories[2].state == true">
@@ -412,6 +375,43 @@
                       </button>
                       <button mat-button id="upload-button" class="text-white border-primary mx-2" type="button"
                         (click)="openFileSelector()" [disabled]="categories[2].state == false">
+                        <mat-icon>add</mat-icon>
+                        Upload
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngx-file-drop>
+            </div>
+            <div class="upload-drop-section row">
+              <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
+                accept=".PDF,.PPT.PPTX,.Doc,.Docx" (onFileDrop)="dropped($event, 1)" (onFileOver)="fileOver($event)"
+                (onFileLeave)="fileLeave($event)">
+                <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
+                  multiple="true">
+                  <div class="justify-content-center align-items-center p-2 m-2">
+                    <div id="align">
+                      <mat-icon id="icon">check_circle</mat-icon>
+                    </div>
+                    <div class="roboto-font col-6" *ngIf="categories[1].state == true" id="align">
+                      <p id="title">Retirement Annuity</p>
+                      <p id="supported">PDF,PPT,PPTX,Doc,Docx are supported</p>
+                    </div>
+                    <div class="roboto-font col-7" *ngIf="categories[1].state == false" id="align">
+                      <p id="title">Retirement Annuity</p>
+                      <p id="document-text">{{categories[1].name}}</p>
+                    </div>
+                    <div class="file-mention col-3" id="align" *ngIf="categories[1].state == true">
+                      <p id="drop-file">Drop your files here!</p>
+                    </div>
+                    <div id="align">
+                      <button mat-button id="file-button" *ngIf="categories[1].state == false" class="mx-2"
+                        type="button" (click)="removeByCategory(1)">
+                        <mat-icon>clear</mat-icon>
+                        Remove
+                      </button>
+                      <button mat-button id="upload-button" class="text-white border-primary mx-2" type="button"
+                        (click)="openFileSelector()" [disabled]="categories[1].state == false">
                         <mat-icon>add</mat-icon>
                         Upload
                       </button>
