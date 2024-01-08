@@ -11,7 +11,6 @@ import { EmployeeType } from 'src/app/models/employee-type.model';
 import { ChartService } from 'src/app/services/charts.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { Chart } from 'src/app/models/charts.interface';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatDialog } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { MatSort } from '@angular/material/sort';
@@ -31,32 +30,22 @@ export class AdminDashboardComponent {
 
   categoryControl = new FormControl();
   chartName: string = '';
-  selectedDataItems: string[] = [];
   chartType: any = '';
   chartData: number[] = [];
-  chartLabels: string[] = [];
   categories: string[] = [];
   filteredCategories: string[] = this.categories;
-  categoryCtrl = new FormControl();
   selectedCategories: string[] = [];
   noResults: boolean = false;
   typeControl = new FormControl();
   types: string[] = [];
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
-
   loadCounter: number = 0;
 
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
   charts: Chart[] = [];
-  public showModal: boolean = false;
-
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   selectedItem: string = 'Dashboard';
-  menuClicked: boolean = false;
-  profileImage: string | null = null;
-  initialDisplayCount: number = 3;
   displayAllEmployees: boolean = false;
   roles: string[] = [];
 
@@ -73,7 +62,6 @@ export class AdminDashboardComponent {
   PREVIOUS_PAGE = "previousPage";
 
   constructor(
-    private employeeProfileService: EmployeeProfileService,
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
     private chartService: ChartService,
@@ -90,7 +78,6 @@ export class AdminDashboardComponent {
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
-
     this.fetchChartData();
   }
 
