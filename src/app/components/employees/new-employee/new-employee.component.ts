@@ -62,7 +62,7 @@ export class NewEmployeeComponent implements OnInit {
   employeeTypes: EmployeeType[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   namePattern = /^[a-zA-Z\s'-]*$/;
-  initialsPattern = /^[A-Z]+$/;
+  initialsPattern = /^[A-Za-z]+$/;
   toggleAdditional: boolean = false;
 
   levels: number[] = levels.map((level) => level.value);
@@ -217,7 +217,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   public dropped(files: NgxFileDropEntry[], category: number) {
-    
+
     this.files.push(...files);
     for (const droppedFile of files) {
       if (droppedFile.fileEntry.isFile) {
@@ -250,7 +250,7 @@ export class NewEmployeeComponent implements OnInit {
           };
           reader.readAsDataURL(file);
         });
-        
+
       }
     }
   }
@@ -369,6 +369,7 @@ export class NewEmployeeComponent implements OnInit {
       this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
       return;
     }
+    this.newEmployeeForm.value.initials = this.newEmployeeForm.value.initials?.toUpperCase();
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
