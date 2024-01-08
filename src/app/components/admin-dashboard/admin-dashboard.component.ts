@@ -1,23 +1,23 @@
-import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
-import { Chart } from 'src/app/models/charts.interface';
-import { ChartService } from 'src/app/services/charts.service';
-import { CookieService } from 'ngx-cookie-service';
-import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { Router } from '@angular/router';
-import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { FormControl } from '@angular/forms';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatDialog } from '@angular/material/dialog';
-import { TemplateRef } from '@angular/core';
-import { SnackbarService } from 'src/app/services/snackbar.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
-import { EmployeeType } from 'src/app/models/employee-type.model';
+import { EmployeeService } from 'src/app/services/employee/employee.service';
+import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
+import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { HideNavService } from 'src/app/services/hide-nav.service';
+import { EmployeeType } from 'src/app/models/employee-type.model';
+import { ChartService } from 'src/app/services/charts.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { Chart } from 'src/app/models/charts.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { CookieService } from 'ngx-cookie-service';
+import { MatSort } from '@angular/material/sort';
+import { FormControl } from '@angular/forms';
+import { TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -30,32 +30,22 @@ export class AdminDashboardComponent {
 
   categoryControl = new FormControl();
   chartName: string = '';
-  selectedDataItems: string[] = [];
   chartType: any = '';
   chartData: number[] = [];
-  chartLabels: string[] = [];
   categories: string[] = [];
   filteredCategories: string[] = this.categories;
-  categoryCtrl = new FormControl();
   selectedCategories: string[] = [];
   noResults: boolean = false;
   typeControl = new FormControl();
   types: string[] = [];
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
-
   loadCounter: number = 0;
 
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
   charts: Chart[] = [];
-  public showModal: boolean = false;
-
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   selectedItem: string = 'Dashboard';
-  menuClicked: boolean = false;
-  profileImage: string | null = null;
-  initialDisplayCount: number = 3;
   displayAllEmployees: boolean = false;
   roles: string[] = [];
 
@@ -72,7 +62,6 @@ export class AdminDashboardComponent {
   PREVIOUS_PAGE = "previousPage";
 
   constructor(
-    private employeeProfileService: EmployeeProfileService,
     private employeeService: EmployeeService,
     private employeeRoleService: EmployeeRoleService,
     private chartService: ChartService,
@@ -89,7 +78,6 @@ export class AdminDashboardComponent {
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
-
     this.fetchChartData();
   }
 
@@ -103,13 +91,6 @@ export class AdminDashboardComponent {
         }
         this.searchResults = [];
       }, complete: () => {
-        this.loadCounter++;
-      }
-    });
-
-    this.employeeProfileService.searchEmployees(this.searchQuery).subscribe({
-      next: data => this.allEmployees = data
-      , complete: () => {
         this.loadCounter++;
       }
     });
