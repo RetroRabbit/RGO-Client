@@ -79,10 +79,13 @@
                             <div *ngIf="document.status === 1" id="status-1">
                                 <span>{{ 'Pending Approval' }}</span>
                             </div>
+                            <div *ngIf="document.status === 3" id="status-2">
+                              <span>{{ 'Action Required' }}</span>
+                          </div>
                         </div>
                         <ng-template #noDoc>
                             <div id="status-null">
-                                <span>{{ 'Action Required' }}</span>
+                                <span>{{ 'awaiting documents' }}</span>
                             </div>
                         </ng-template>
                     </div>
