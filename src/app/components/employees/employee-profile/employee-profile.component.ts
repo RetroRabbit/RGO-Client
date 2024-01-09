@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef,ViewChild } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -80,7 +80,8 @@ export class EmployeeProfileComponent {
     private router: Router,
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
-    private navService: HideNavService) {
+    private navService: HideNavService,
+    private changeDetectorRef: ChangeDetectorRef,) {
     navService.showNavbar = true;
   }
 
@@ -141,6 +142,7 @@ export class EmployeeProfileComponent {
             this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.clientAllocated)[0];
           }, complete: () => {
             this.isLoading = false;
+            this.changeDetectorRef.detectChanges();
           }
         });
       }
@@ -159,7 +161,6 @@ export class EmployeeProfileComponent {
 
   updateBankingProgress(update: any) {
     this.bankInformationProgress = update.progress;
-    console.log(update.status);
     this.bankStatus = update.status;
     this.overallProgress();
   }

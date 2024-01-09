@@ -59,7 +59,9 @@ export class AccordionBankingComponent {
     this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
       next: (data) => {
         this.employeeBanking = data;
-        this.bankingId = this.employeeBanking.id;
+        if(this.employeeBanking != null){
+          this.bankingId = this.employeeBanking.id;
+        }
         this.initializeBankingForm(this.employeeBanking);
       }
     })
