@@ -322,7 +322,7 @@
                   multiple="true">
                   <div class="justify-content-center align-items-center p-2 m-2">
                     <div id="align">
-                      <mat-icon id="icon">check_circle</mat-icon>
+                      <mat-icon *ngIf="categories[0].state == false" id="icon">check_circle</mat-icon>
                     </div>
                     <div class="roboto-font col-6" *ngIf="categories[0].state == true" id="align">
                       <p id="title">Fixed-term contract</p>
@@ -332,7 +332,7 @@
                       <p id="title">Fixed-term contract</p>
                       <p id="document-text">{{categories[0].name}}</p>
                     </div>
-                    <div class="file-mention col-3" id="align" *ngIf="categories[0].state == true">
+                    <div class="file-mention col-3" id="align-left" *ngIf="categories[0].state == true">
                       <p id="drop-file">Drop your files here!</p>
                     </div>
                     <div id="align">
@@ -359,7 +359,7 @@
                   multiple="true">
                   <div class="justify-content-center align-items-center p-2 m-2">
                     <div id="align">
-                      <mat-icon id="icon">check_circle</mat-icon>
+                      <mat-icon *ngIf="categories[2].state == false" id="icon">check_circle</mat-icon>
                     </div>
                     <div class="roboto-font col-6" *ngIf="categories[2].state == true" id="align">
                       <p id="title">Medical Aid</p>
@@ -369,7 +369,7 @@
                       <p id="title">Medical Aid</p>
                       <p id="document-text">{{categories[2].name}}</p>
                     </div>
-                    <div class="file-mention col-3" id="align" *ngIf="categories[2].state == true">
+                    <div class="file-mention col-3" id="align-left" *ngIf="categories[2].state == true">
                       <p id="drop-file">Drop your files here!</p>
                     </div>
                     <div id="align">
@@ -396,31 +396,31 @@
                   multiple="true">
                   <div class="justify-content-center align-items-center p-2 m-2">
                     <div id="align">
-                      <mat-icon id="icon">check_circle</mat-icon>
+                      <mat-icon *ngIf="categories[1].state == false" id="icon">check_circle</mat-icon>
                     </div>
-                    <div class="roboto-font col-6" *ngIf="categories[1].state == true" id="align">
-                      <p id="title">Retirement Annuity</p>
-                      <p id="supported">PDF,PPT,PPTX,Doc,Docx are supported</p>
-                    </div>
-                    <div class="roboto-font col-7" *ngIf="categories[1].state == false" id="align">
-                      <p id="title">Retirement Annuity</p>
-                      <p id="document-text">{{categories[1].name}}</p>
-                    </div>
-                    <div class="file-mention col-3" id="align" *ngIf="categories[1].state == true">
-                      <p id="drop-file">Drop your files here!</p>
-                    </div>
-                    <div id="align">
-                      <button mat-button id="file-button" *ngIf="categories[1].state == false" class="mx-2"
-                        type="button" (click)="removeByCategory(1)">
-                        <mat-icon>clear</mat-icon>
-                        Remove
-                      </button>
-                      <button mat-button id="upload-button" class="text-white border-primary mx-2" type="button"
-                        (click)="openFileSelector()" [disabled]="categories[1].state == false">
-                        <mat-icon>add</mat-icon>
-                        Upload
-                      </button>
-                    </div>
+                      <div class="roboto-font col-6" *ngIf="categories[1].state == true" id="align">
+                        <p id="title">Retirement Annuity</p>
+                        <p id="supported">PDF,PPT,PPTX,Doc,Docx are supported</p>
+                      </div>
+                      <div class="roboto-font col-7" *ngIf="categories[1].state == false" id="align">
+                        <p id="title">Retirement Annuity</p>
+                        <p id="document-text">{{categories[1].name}}</p>
+                      </div>
+                      <div class="file-mention col-3" id="align-left" *ngIf="categories[1].state == true">
+                        <p id="drop-file">Drop your files here!</p>
+                      </div>
+                      <div id="align">
+                        <button mat-button id="file-button" *ngIf="categories[1].state == false" class="mx-2"
+                          type="button" (click)="removeByCategory(1)">
+                          <mat-icon>clear</mat-icon>
+                          Remove
+                        </button>
+                        <button mat-button id="upload-button" class="text-white border-primary mx-2" type="button"
+                          (click)="openFileSelector()" [disabled]="categories[1].state == false">
+                          <mat-icon>add</mat-icon>
+                          Upload
+                        </button>
+                      </div>
                   </div>
                 </ng-template>
               </ngx-file-drop>
@@ -432,15 +432,18 @@
                 <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                   multiple="true">
                   <div class="justify-content-center align-items-center p-2 m-2">
+                    <div id="align">
+                      <mat-icon *ngIf="categories[3].state == false" id="icon">check_circle</mat-icon>
+                    </div>
                     <div class="roboto-font col-6" id="align" *ngIf="categories[3].state == true">
                       <p id="title">MIE Consent Form</p>
                       <p id="supported">PDF,PPT,PPTX,Doc,Docx are supported</p>
                     </div>
-                    <div class="roboto-font col-7" id="align-mie-two" *ngIf="categories[3].state == false">
+                    <div class="roboto-font col-7" id="align" *ngIf="categories[3].state == false">
                       <p id="title">MIE Consent Form</p>
                       <p id="document-text">{{categories[3].name}}</p>
                     </div>
-                    <div class="col-3" id="align-mie" *ngIf="categories[3].state == true">
+                    <div class="col-3" id="align-left" *ngIf="categories[3].state == true">
                       <p id="drop-file">Drop your files here!</p>
                     </div>
                     <div id="align">
