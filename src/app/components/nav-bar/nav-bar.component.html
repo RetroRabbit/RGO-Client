@@ -48,7 +48,6 @@
               <div id="nav-item-container" class="col-auto">
                 <div id="nav-item">
                   <div (click)="changeNav('/dashboard')"  [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
-                  <!-- <div routerLink="/dashboard" [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'"> -->
                     Dashboard
                   </div>
                   <div *ngIf="router.url == '/dashboard'" id="selected-line-box">
@@ -62,7 +61,6 @@
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="changeNav('/profile')" [ngClass]="router.url.includes('/profile') ? 'active' : 'idle'">
-                  <!-- <div routerLink="/profile" [ngClass]="router.url.includes('/profile') ? 'active' : 'idle'"> -->
                     Profile
                   </div>
                   <div *ngIf="router.url.includes('/profile')"  id="selected-line-box">
@@ -76,7 +74,6 @@
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="changeNav('/employees')" [ngClass]="router.url == '/employees' ? 'active' : 'idle'">
-                  <!-- <div routerLink="/employees" [ngClass]="router.url == '/employees' ? 'active' : 'idle'"> -->
                     Employees
                   </div>
                   <div *ngIf="router.url == '/employees'" id="selected-line-box">
@@ -90,7 +87,6 @@
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="changeNav('/system-settings')" [ngClass]="router.url == '/system-settings' ? 'active' : 'idle'">
-                  <!-- <div routerLink="/system-settings" [ngClass]="router.url == '/system-settings' ? 'active' : 'idle'"> -->
                     System Settings
                   </div>
                   <div *ngIf="router.url == '/system-settings'" id="selected-line-box">
