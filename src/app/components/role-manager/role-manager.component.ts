@@ -34,10 +34,10 @@ export class RoleManagerComponent implements OnInit {
 
   showConfirmDialog: boolean = false;
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: ''  };
+  
   constructor(
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
-    private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private navService: HideNavService
   ) { 
@@ -176,6 +176,7 @@ export class RoleManagerComponent implements OnInit {
         }
       }
     }
+    this.navService.unsavedChanges = true;
   }
   
   toggleAllEmployeeDataCheckboxes(roleDescription: string, event: any) {
@@ -227,6 +228,7 @@ export class RoleManagerComponent implements OnInit {
         }
       }
     }
+    this.navService.unsavedChanges = true;
   }
   
   onChangeRoleAccess($event: any, role: string, permission: string, grouping: string) {
@@ -253,9 +255,11 @@ export class RoleManagerComponent implements OnInit {
     }
 
     this.temporaryRoleAccessChanges.push(change);
+    this.navService.unsavedChanges = true;
   }
 
   saveChanges() {
+    this.navService.unsavedChanges = false;
     this.temporaryRoleAccessChanges.forEach((change) => {
       if (change.changeType === 'add') {
         this.onAdd(change.role.description, change.roleAccess.permission, change.roleAccess.grouping);
