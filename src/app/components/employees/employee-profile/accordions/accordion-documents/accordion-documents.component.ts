@@ -6,7 +6,9 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
-
+import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
+import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-accordion-documents',
   templateUrl: './accordion-documents.component.html',
@@ -30,15 +32,21 @@ export class AccordionDocumentsComponent {
   showBackButtons: boolean = true;
   dataSource = new MatTableDataSource<string>();
   selectedFile !: File;
+  roles: string[] = [];
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
+    private employeeRoleService: EmployeeRoleService,
+    private employeeProfileService: EmployeeProfileService,
+    private cookieService: CookieService
   ) { }
 
   ngOnInit() {
     this.getEmployeeDocuments();
+    const types: string = this.cookieService.get('userType');
+    this.roles = Object.keys(JSON.parse(types));
   }
 
   openFileInput() {
@@ -200,5 +208,17 @@ export class AccordionDocumentsComponent {
     const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
     this.documentFormProgress = fetchedDocuments / total * 100;
     this.updateDocument.emit(this.documentFormProgress);
+  }
+
+  isAdmin(): boolean {
+    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
+  }
+
+  disableDownload(index : number){
+    const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
+    if(docObj?.status == 2 || docObj?.status == 3){
+      return false;
+    }
+    return true;
   }
 }
