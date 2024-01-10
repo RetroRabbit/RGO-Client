@@ -52,6 +52,8 @@ export class NavBarComponent {
     const userEmail = this.cookieService.get('userEmail');
     this.roles = Object.keys(JSON.parse(types));
 
+    console.log("Roles:", this.roles);
+
     this.employeeProfileService.GetEmployeeProfileByEmail(userEmail).subscribe({
       next: (data) => {
         this.employeeProfile = data;
