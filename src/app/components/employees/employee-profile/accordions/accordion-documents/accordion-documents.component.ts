@@ -47,11 +47,6 @@ export class AccordionDocumentsComponent {
     this.getEmployeeDocuments();
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
-    console.log(this.employeeProfile.id)
-    // var employee = this.employeeProfileService.getEmployeeById(this.employeeId).subscribe(data =>{
-    //   console.log(data);
-    // });
-    // console.log(employee);
   }
 
   openFileInput() {
@@ -202,9 +197,6 @@ export class AccordionDocumentsComponent {
 
   disableButton(index: number): boolean {
     const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
-    // if(docObj?.status == 3){
-    //   return true;
-    // }
     if (docObj == undefined || docObj?.status == 2) {
       return false;
     }
