@@ -8,7 +8,7 @@ import { EmployeeProfileService } from "src/app/services/employee/employee-profi
 import { Router } from '@angular/router';
 import { EmployeeProfile } from "src/app/models/employee-profile.interface";
 import { Chart } from "chart.js";
-
+import { Dialog } from 'src/app/models/confirm-modal.interface';
 
 @Component({
   selector: 'app-nav-bar',
@@ -16,7 +16,7 @@ import { Chart } from "chart.js";
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
-[x: string]: any;
+  [x: string]: any;
 
   title = 'HRIS';
   showNav = this.hideNavService.showNavbar;
@@ -31,14 +31,16 @@ export class NavBarComponent {
     name: ''
   };
 
+  showConfirmDialog: boolean = false;
+  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
+  tempRoute: string = '';
   constructor(
     private employeeProfileService: EmployeeProfileService,
     private chartService: ChartService,
     private auth: AuthService,
     public router: Router,
     public cookieService: CookieService,
-    public hideNavService: HideNavService)
-    {
+    public hideNavService: HideNavService) {
     this.screenWidth = window.innerWidth;
   }
 
@@ -46,7 +48,7 @@ export class NavBarComponent {
     this.signIn();
   }
 
-  signIn(){
+  signIn() {
     this.hideNavService.showNavbar = true;
     const types: string = this.cookieService.get('userType');
     const userEmail = this.cookieService.get('userEmail');
@@ -90,4 +92,26 @@ export class NavBarComponent {
       logoutParams: { returnTo: document.location.origin }
     });
   }
+  
+  changeNav(route: string) {
+
+    if (this.hideNavService.unsavedChanges) {
+      this.tempRoute = route;
+      this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'DISCARD', denyButtonText: 'BACK' }
+
+      this.showConfirmDialog = true;
+    } else {
+      this.router.navigate([route]);
+    }
+  }
+
+  dialogFeedBack(event: any) {
+    this.showConfirmDialog = false;
+    if (event) {
+      this.hideNavService.unsavedChanges = false;
+      this.router.navigate([this.tempRoute]);
+    } else {
+    }
+  }
+
 }
