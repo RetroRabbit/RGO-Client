@@ -198,9 +198,6 @@ export class AccordionDocumentsComponent {
     }
   }
 
-
-  //Come back to this method
-  
   disableButton(index: number): boolean {
     const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
 
