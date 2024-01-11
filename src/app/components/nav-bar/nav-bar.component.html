@@ -1,3 +1,4 @@
+<app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
 <div class="col-12 row px-4" id="header" *ngIf="hideNavService.showNavbar">
     <div class="col-11 col-md-9 col-lg-8 mt-auto">
       <div class="row" id="left-column" >
@@ -46,7 +47,7 @@
             <div class="col-2" *ngIf="isAdmin() || isTalent()">
               <div id="nav-item-container" class="col-auto">
                 <div id="nav-item">
-                  <div routerLink="/dashboard" [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
+                  <div (click)="changeNav('/dashboard')"  [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
                     Dashboard
                   </div>
                   <div *ngIf="router.url == '/dashboard'" id="selected-line-box">
@@ -59,7 +60,7 @@
             <div class="col-2">
               <div id="nav-item-container">
                 <div id="nav-item">
-                  <div routerLink="/profile" [ngClass]="router.url.includes('/profile') ? 'active' : 'idle'">
+                  <div (click)="changeNav('/profile')" [ngClass]="router.url.includes('/profile') ? 'active' : 'idle'">
                     Profile
                   </div>
                   <div *ngIf="router.url.includes('/profile')"  id="selected-line-box">
@@ -72,7 +73,7 @@
             <div class="col-2" *ngIf="isAdmin() || isTalent()">
               <div id="nav-item-container">
                 <div id="nav-item">
-                  <div routerLink="/employees" [ngClass]="router.url == '/employees' ? 'active' : 'idle'">
+                  <div (click)="changeNav('/employees')" [ngClass]="router.url == '/employees' ? 'active' : 'idle'">
                     Employees
                   </div>
                   <div *ngIf="router.url == '/employees'" id="selected-line-box">
@@ -85,7 +86,7 @@
             <div class="col-3" *ngIf="isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
-                  <div routerLink="/system-settings" [ngClass]="router.url == '/system-settings' ? 'active' : 'idle'">
+                  <div (click)="changeNav('/system-settings')" [ngClass]="router.url == '/system-settings' ? 'active' : 'idle'">
                     System Settings
                   </div>
                   <div *ngIf="router.url == '/system-settings'" id="selected-line-box">
