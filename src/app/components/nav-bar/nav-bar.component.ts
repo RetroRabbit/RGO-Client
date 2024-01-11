@@ -2,7 +2,7 @@
 import { Component } from "@angular/core";
 import { AuthService } from "@auth0/auth0-angular";
 import { CookieService } from "ngx-cookie-service";
-import { HideNavService } from 'src/app/services/hide-nav.service'; // use this service
+import { HideNavService } from 'src/app/services/hide-nav.service';
 import { ChartService } from "src/app/services/charts.service";
 import { EmployeeProfileService } from "src/app/services/employee/employee-profile.service";
 import { Router } from '@angular/router';
