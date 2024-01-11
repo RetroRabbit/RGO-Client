@@ -17,7 +17,7 @@ import { MatSort } from '@angular/material/sort';
 import { FormControl } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { AuthAccessService } from 'src/app/services/auth-access.service';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -70,7 +70,8 @@ export class AdminDashboardComponent {
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
-    private hideNavService: HideNavService
+    private hideNavService: HideNavService,
+    public authAccessService: AuthAccessService
   ) {
     hideNavService.showNavbar = true;
   }
@@ -133,10 +134,6 @@ export class AdminDashboardComponent {
         this.loadCounter++;
       }
     });
-  }
-
-  isAdmin(): boolean {
-    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
 
   CaptureEvent(event: any) {
