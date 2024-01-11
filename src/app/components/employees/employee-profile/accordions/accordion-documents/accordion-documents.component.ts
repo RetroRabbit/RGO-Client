@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthAccessService } from 'src/app/services/auth-access.service';
 @Component({
   selector: 'app-accordion-documents',
   templateUrl: './accordion-documents.component.html',
@@ -40,7 +41,8 @@ export class AccordionDocumentsComponent {
     private snackBarService: SnackbarService,
     private employeeRoleService: EmployeeRoleService,
     private employeeProfileService: EmployeeProfileService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private authAccessService: AuthAccessService
   ) { }
 
   ngOnInit() {
@@ -143,6 +145,7 @@ export class AccordionDocumentsComponent {
       });
     }
   }
+  
   buildDocumentDto() {
     const existingValue = this.filterDocumentsByCategory();
     if (this.selectedFile) {
@@ -195,8 +198,15 @@ export class AccordionDocumentsComponent {
     }
   }
 
+
+  //Come back to this method
+  
   disableButton(index: number): boolean {
     const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
+
+    if(docObj == null && this.authAccessService.isAdmin() ||docObj == null && this.authAccessService.isSuperAdmin() ){
+      return false;
+    }
     if (docObj == undefined || docObj?.status == 2) {
       return false;
     }
@@ -208,10 +218,6 @@ export class AccordionDocumentsComponent {
     const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
     this.documentFormProgress = fetchedDocuments / total * 100;
     this.updateDocument.emit(this.documentFormProgress);
-  }
-
-  isAdmin(): boolean {
-    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
 
   disableDownload(index : number){
