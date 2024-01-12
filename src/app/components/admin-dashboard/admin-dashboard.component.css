@@ -339,13 +339,14 @@ word-wrap: break-word;
   border-radius: 28px 28px 28px 28px;
 }
 
-.datacardscontainer{
+#datacardscontainer{
   margin-top: 16px;
   margin-left: 12px;
 }
 
 #employeecount{
   margin-top: 20px;
+  margin-left:16px;
   background-color:white ;
   width: 500px;
   height: 180px;
@@ -353,6 +354,18 @@ word-wrap: break-word;
   border-radius: 12px;
   gap: 8px
 }
+
+#churnrate{
+  margin-top: 20px;
+  margin-left:16px;
+  background-color:white ;
+  width: 500px;
+  height: 180px;
+  padding: 16px;
+  border-radius: 12px;
+  gap: 8px
+}
+
 
 #menu-icon {
   color: #0029c6;
