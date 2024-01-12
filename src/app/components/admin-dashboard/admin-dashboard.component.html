@@ -3,6 +3,7 @@
     <div id="leading-icon"></div>
     <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
       [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off" />
+    
     <div id="search-icon" (click)="searchEmployees()">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -11,10 +12,38 @@
       </svg>
     </div>
   </div>
+ 
   <div id="new-hire">
     <button class="my-4" (click)="AddNewHire($event)" *ngIf="isAdmin()">+ Add Employee</button>
   </div>
 </div>
+
+<div class="datacardscontainer">
+  <div class="col-3 mb-md-2" id="employeecount">
+    <div class="row">
+      <div class="col-3" >
+        <div id="options-trigger">
+          <mat-icon id="menu-icon">person_outline_24px</mat-icon>
+        </div>
+      </div>
+      <div class="col-9 my-2">
+      <div id="header-label">Employee Count</div>
+      <div id="total-employees">Total employees:</div>
+      <hr>
+      <div class="row">
+        <div class="col">
+          <div id="subheaders">Developers:120</div>
+        </div>
+        <div class="col">
+          <div id="subheaders">Designers:120</div> 
+        </div>
+      </div>
+    </div>
+    </div>
+    <div id="increase"><mat-icon id="menu-icon">arrow_upward_24px</mat-icon>  <mat-icon id="menu-icon">add_24px</mat-icon>2 increase from last month </div>
+  </div>
+</div>
+
 <div id="search-results-container">
   <div *ngIf="searchResults.length > 0">
     <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
@@ -425,7 +454,9 @@
           </svg>
         </div>
       </div>
+    
       <div class="col-lg-6 col-md-6 col-sm-12">
+       
         <div>
           <h1>Start building your graph</h1>
         </div>

@@ -338,3 +338,96 @@ word-wrap: break-word;
 .searchbar.no-results {
   border-radius: 28px 28px 28px 28px;
 }
+
+.datacardscontainer{
+  margin-top: 16px;
+  margin-left: 12px;
+}
+
+#employeecount{
+  margin-top: 20px;
+  background-color:white ;
+  width: 500px;
+  height: 180px;
+  padding: 16px;
+  border-radius: 12px;
+  gap: 8px
+}
+
+#menu-icon {
+  color: #0029c6;
+  margin: 0 auto;
+  
+}
+
+#options-trigger {
+  align-items: center;
+  border-radius: 50%;
+  background-color: #b9c8ff;
+  display: flex;
+  padding: 0;
+  justify-content: center;
+  min-width: 0;
+  height: 50px;
+  width: 50px;
+}
+
+
+#header-label {
+font-family: Roboto;
+font-size: 14px;
+font-weight: 500;
+line-height: 20px;
+letter-spacing: 0.10000000149011612px;
+text-align: left;
+margin-bottom: 10px;
+
+}
+
+#total-employees{
+font-family: Roboto;
+font-size: 14px;
+font-weight: 400;
+line-height: 20px;
+letter-spacing: 0.25px;
+text-align: left;
+}
+
+#subheaders{
+  
+font-family: Roboto;
+font-size: 12px;
+font-weight: 500;
+line-height: 16px;
+letter-spacing: 0.5px;
+text-align: left;
+color:#625B71;
+
+}
+
+#outer-icon-container {
+  padding: 0;
+}
+
+#outer-icon-container>div {
+  border-radius: 50%;
+  background-color: #D7DFFF;
+  color: #0029C6;
+  display: table;
+  height: 50px;
+  margin: 0 auto;
+  text-align: center;
+  width: 50px;
+}
+
+#increase{
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
+  
+}
+
+
