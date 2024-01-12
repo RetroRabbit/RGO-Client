@@ -344,7 +344,7 @@ word-wrap: break-word;
   margin-left: 12px;
 }
 
-#employeecount{
+#datacard{
   margin-top: 20px;
   margin-left:16px;
   background-color:white ;
@@ -354,23 +354,10 @@ word-wrap: break-word;
   border-radius: 12px;
   gap: 8px
 }
-
-#churnrate{
-  margin-top: 20px;
-  margin-left:16px;
-  background-color:white ;
-  width: 500px;
-  height: 180px;
-  padding: 16px;
-  border-radius: 12px;
-  gap: 8px
-}
-
 
 #menu-icon {
   color: #0029c6;
   margin: 0 auto;
-  
 }
 
 #options-trigger {
