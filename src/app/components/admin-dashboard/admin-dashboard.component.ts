@@ -41,6 +41,7 @@ export class AdminDashboardComponent {
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
   loadCounter: number = 0;
+  totalnumberofEmployees: number = 0;
 
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
   charts: Chart[] = [];
@@ -131,6 +132,12 @@ export class AdminDashboardComponent {
       },
       complete: () => {
         this.loadCounter++;
+      }
+    });
+
+    this.chartService.getTotalEmployees().subscribe({
+      next: (data: any) => {
+        this.totalnumberofEmployees =data
       }
     });
   }
