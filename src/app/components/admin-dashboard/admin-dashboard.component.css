@@ -360,6 +360,11 @@ word-wrap: break-word;
   margin: 0 auto;
 }
 
+#arrow{
+  color: rgb(128, 0, 0);
+  margin: 0 auto;
+}
+
 #options-trigger {
   align-items: center;
   border-radius: 50%;
