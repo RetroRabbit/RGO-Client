@@ -17,6 +17,7 @@ import { MatSort } from '@angular/material/sort';
 import { FormControl } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { DevDesignerCount } from 'src/app/models/dev-designer-count.interface';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -45,6 +46,13 @@ export class AdminDashboardComponent {
 
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
   charts: Chart[] = [];
+
+  devsDesingersCount: DevDesignerCount = {
+    devsCount: 0,
+    designersCount: 0,
+    devsOnBenchCount: 0,
+    designersOnBenchCount: 0
+  };
 
   selectedItem: string = 'Dashboard';
   displayAllEmployees: boolean = false;
@@ -137,9 +145,15 @@ export class AdminDashboardComponent {
 
     this.chartService.getTotalEmployees().subscribe({
       next: (data: any) => {
-        this.totalnumberofEmployees =data
+        this.totalnumberofEmployees = data;
       }
     });
+
+    this.chartService.getDevsDesignerCount().subscribe({
+      next: (data:any) => {
+        this.devsDesingersCount = data
+      }
+    })
   }
 
   isAdmin(): boolean {

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Chart } from '../models/charts.interface';
 import { API } from '../models/constants/urls.constants';
+import { DevDesignerCount } from '../models/dev-designer-count.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class ChartService {
 
   getTotalEmployees(): Observable<number> {
     return this.httpClient.get<number>(`${API.HttpBaseURL}/chart/employees/total`);
+  }
+
+  getDevsDesignerCount(): Observable<DevDesignerCount> {
+    return this.httpClient.get<DevDesignerCount>(`${API.HttpBaseURL}/chart/employees/dev/desinger/total`);
   }
 
   getChartDataByType(dataType: string[]): Observable<any> {
