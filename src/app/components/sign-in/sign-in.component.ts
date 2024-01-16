@@ -63,6 +63,7 @@ export class SignInComponent {
             token: token,
             roles: roles
           };
+          this.authAccessService.setEmployeeEmail(user?.email as string)
           this.store.dispatch(GetLogin({ payload: googleID }));
           this.hideNavService.showNavbar = true;
           if(this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney() || this.authAccessService.isSuperAdmin()){
