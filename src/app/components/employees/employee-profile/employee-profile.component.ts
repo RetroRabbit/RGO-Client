@@ -18,6 +18,8 @@ import { ClientService } from 'src/app/services/client.service';
 import { AccordionBankingComponent } from './accordions/accordion-banking/accordion-banking.component';
 import { AccordionProfileComponent } from './accordions/accordion-profile/accordion-profile.component';
 import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents.component';
+import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -27,6 +29,7 @@ import { AccordionDocumentsComponent } from './accordions/accordion-documents/ac
 export class EmployeeProfileComponent {
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
+  simpleEmployee!: SimpleEmployee;
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
   clients: Client[] = [];
@@ -63,7 +66,8 @@ export class EmployeeProfileComponent {
   previousPage: string = '';
   currentPage: string = '';
 
-  isLoading: boolean = true;
+  // isLoading: boolean = true;
+  usingProfile: boolean = false;
 
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
@@ -81,7 +85,8 @@ export class EmployeeProfileComponent {
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
     private navService: HideNavService,
-    private changeDetectorRef: ChangeDetectorRef,) {
+    private changeDetectorRef: ChangeDetectorRef,
+    public authAccessService: AuthAccessService) {
     navService.showNavbar = true;
   }
 
@@ -91,7 +96,14 @@ export class EmployeeProfileComponent {
       this.showBackButtons = false;
       this.employeeId = this.cookieService.get('userId');
     }
-    this.getSelectedEmployee();
+    if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
+      this.getSelectedEmployee();
+      this.usingProfile = false;
+    }
+    else{
+      this.getSimpleEmployee();
+      this.usingProfile = true;
+    }
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
 
@@ -101,6 +113,19 @@ export class EmployeeProfileComponent {
 
   goToDashboard() {
     this.router.navigateByUrl('/dashboard')
+  }
+
+  getSimpleEmployee(){ 
+
+    this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
+      next: data => {
+        this.simpleEmployee = data;
+        console.log(this.simpleEmployee)
+        this.employeePhysicalAddress = this.simpleEmployee.physicalAddress!;
+        this.employeePostalAddress = this.simpleEmployee.postalAddress!;
+        this.filterClients(this.simpleEmployee?.clientAllocated as string);
+      }
+    })
   }
 
   getSelectedEmployee() {
@@ -136,17 +161,28 @@ export class EmployeeProfileComponent {
         this.employees = data;
         this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
         this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-        this.clientService.getAllClients().subscribe({
-          next: data => {
-            this.clients = data;
-            this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.clientAllocated)[0];
-          }, complete: () => {
-            this.isLoading = false;
-            this.changeDetectorRef.detectChanges();
-          }
-        });
+        this.filterClients(this.employeeProfile?.clientAllocated as string);
+        // this.clientService.getAllClients().subscribe({
+        //   next: data => {
+        //     this.clients = data;
+        //     this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.clientAllocated)[0];
+        //   }, complete: () => {
+        //     // this.isLoading = false;
+        //     this.changeDetectorRef.detectChanges();
+        //   }
+        // });
       }
     });
+  }
+
+  getClients(){
+    this.clientService.getAllClients().subscribe({
+      next: data => this.clients = data
+    })
+  }
+
+  filterClients(clientId: string){
+    this.employeeClient = this.clients.filter( client => clientId )[0];
   }
 
   CaptureEvent(event: any) {

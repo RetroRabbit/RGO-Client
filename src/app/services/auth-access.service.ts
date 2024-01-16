@@ -7,6 +7,16 @@ import { Injectable } from "@angular/core";
 export class AuthAccessService{
     private roles: string = '';
 
+    private employeeEmail: string = '';
+
+    setEmployeeEmail(email: string){
+        this.employeeEmail = email;
+    }
+
+    getEmployeeEmail(): string{
+        return this.employeeEmail;
+    }
+
     setRoles(roles: string){
         this.roles = roles;
     }
