@@ -170,7 +170,7 @@
                             <div class="col-12 my-2">
                                 <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
                                 <mat-radio-group aria-label="Select your gender" formControlName="gender"
-                                    [value]="employeeProfile?.gender">
+                                    [value]="employeeProfile?.employeeProfile?.gender">
                                     <mat-radio-button [value]=1>Male</mat-radio-button>
                                     <mat-radio-button [value]=2>Female</mat-radio-button>
                                     <mat-radio-button [value]=0>Unclassified</mat-radio-button>

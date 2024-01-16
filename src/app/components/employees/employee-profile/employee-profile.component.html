@@ -124,7 +124,7 @@
                     </div>
                 </div>
                 <div class="col-11 ps-0">
-                    <h4 style="margin:0"> {{employeeProfile?.name}}'s profile progess </h4>
+                    <h4 style="margin:0"> {{usingProfile ? simpleEmployee?.name :employeeProfile?.name}}'s profile progess </h4>
                 </div>
             </div>
         </div>
@@ -160,10 +160,10 @@
                         {{overallFormProgress}}% Overall Completed
                     </h4>
                 </div>
-                <!-- <div class="col-10 pt-3" id="progress-container">
+                <div class="col-10 pt-3" id="progress-container">
                     <mat-progress-bar mode="determinate" [value]=overallFormProgress
                         id="overall-progress-bar"></mat-progress-bar>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>
@@ -213,8 +213,8 @@
             </div>
         </div>
         <div id="accordions-body`" class="row" *ngIf="employeeProfile != undefined">
-            <!-- <app-accordion-profile [hidden]="selectedAccordion != 'Profile Details'" [employeeProfile]="employeeProfile" (updateProfile)="updateProfileProgress($event)"></app-accordion-profile>
-            <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile" (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
+            <app-accordion-profile [hidden]="selectedAccordion != 'Profile Details'" [employeeProfile]="{employeeProfile: employeeProfile, simpleEmployee: simpleEmployee}" (updateProfile)="updateProfileProgress($event)"></app-accordion-profile>
+            <!-- <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile" (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
             <app-accordion-documents [hidden]="selectedAccordion != 'Documents'"[employeeProfile]="employeeProfile" (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents> -->
         </div>
     </div>

@@ -10,6 +10,7 @@ import { EmployeeRoleService } from 'src/app/services/employee/employee-role.ser
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
 @Component({
   selector: 'app-accordion-documents',
   templateUrl: './accordion-documents.component.html',
@@ -17,7 +18,7 @@ import { AuthAccessService } from 'src/app/services/auth-access.service';
 })
 export class AccordionDocumentsComponent {
   @Output() updateDocument = new EventEmitter<number>();
-  @Input() employeeProfile!: EmployeeProfile;
+  @Input() employeeProfile!: EmployeeProfile | SimpleEmployee;
 
   selectedEmployee!: EmployeeProfile;
   fileCategories = Document;
