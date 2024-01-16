@@ -6,6 +6,7 @@ import { banks } from 'src/app/models/constants/banks.constants';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeBankingService } from 'src/app/services/employee/employee-banking.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
+import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
 
 @Component({
   selector: 'app-accordion-banking',
@@ -14,7 +15,7 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 })
 export class AccordionBankingComponent {
 
-  @Input() employeeProfile !: EmployeeProfile;
+  @Input() employeeProfile !: EmployeeProfile | SimpleEmployee;
   @Output() updateBanking = new EventEmitter<{progress: number, status : number}>();
 
   shouldUseSentInProfile: boolean = true;

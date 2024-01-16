@@ -92,6 +92,7 @@ export class EmployeeProfileComponent {
 
   ngOnInit() {
     this.employeeId = this.route.snapshot.params['id'];
+    this.getClients();
     if (this.employeeId == undefined) {
       this.showBackButtons = false;
       this.employeeId = this.cookieService.get('userId');
@@ -120,11 +121,10 @@ export class EmployeeProfileComponent {
     this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
       next: data => {
         this.simpleEmployee = data;
-        console.log(this.simpleEmployee)
         this.employeePhysicalAddress = this.simpleEmployee.physicalAddress!;
         this.employeePostalAddress = this.simpleEmployee.postalAddress!;
         this.filterClients(this.simpleEmployee?.clientAllocated as string);
-      }
+      }, complete: () => this.populateEmployeeAccordion(this.simpleEmployee)
     })
   }
 
@@ -175,9 +175,52 @@ export class EmployeeProfileComponent {
     });
   }
 
+  populateEmployeeAccordion(employee: SimpleEmployee){
+    this.employeeProfile = {}; 
+    this.employeeProfile.cellphoneNo = employee.cellphoneNo;
+    this.employeeProfile.clientAllocated = employee.clientAllocated;
+    this.employeeProfile.countryOfBirth = employee.countryOfBirth;
+    this.employeeProfile.dateOfBirth = employee.dateOfBirth;
+    this.employeeProfile.disability = employee.disability;
+    this.employeeProfile.disabilityNotes = employee.disabilityNotes;
+    this.employeeProfile.email = employee.email;
+    this.employeeProfile.emergencyContactName = employee.emergencyContactName; 
+    this.employeeProfile.emergencyContactNo = employee.emergencyContactNo;
+    this.employeeProfile.employeeNumber = employee.employeeNumber;
+    this.employeeProfile.employeeType = employee.employeeType;
+    this.employeeProfile.engagementDate = employee.engagementDate;
+    this.employeeProfile.gender = employee.gender;
+    this.employeeProfile.houseNo = employee.houseNo;
+    this.employeeProfile.id = employee.id;
+    this.employeeProfile.idNumber = employee.idNumber;
+    this.employeeProfile.initials = employee.initials;
+    this.employeeProfile.leaveInterval = employee.leaveInterval;
+    this.employeeProfile.level = employee.level;
+    this.employeeProfile.name = employee.name;
+    this.employeeProfile.nationality = employee.nationality;
+    this.employeeProfile.notes = employee.notes;
+    this.employeeProfile.passportCountryIssue = employee.passportCountryIssue;
+    this.employeeProfile.passportExpirationDate = employee.passportExpirationDate;
+    this.employeeProfile.passportNumber = employee.passportNumber;
+    this.employeeProfile.payRate = employee.payRate;
+    // this.employeeProfile.peopleChampion = employee.peopleChampion;
+    this.employeeProfile.personalEmail = employee.personalEmail;
+    this.employeeProfile.photo = employee.photo;
+    this.employeeProfile.physicalAddress = employee.physicalAddress;
+    this.employeeProfile.postalAddress = employee.postalAddress;
+    this.employeeProfile.race = employee.race;
+    this.employeeProfile.salary = employee.salary;
+    this.employeeProfile.salaryDays = employee.salaryDays;
+    this.employeeProfile.surname = employee.surname;
+    this.employeeProfile.taxNumber = employee.taxNumber;
+    // this.employeeProfile.teamLeader = employee.teamLeader;
+  }
+
   getClients(){
     this.clientService.getAllClients().subscribe({
-      next: data => this.clients = data
+      next: data => {
+        this.clients = data;
+      }
     })
   }
 
@@ -209,6 +252,9 @@ export class EmployeeProfileComponent {
   updateProfileProgress(progress: any) {
     this.profileFormProgress = progress;
     this.overallProgress();
-    this.getSelectedEmployee();
+    if(this.usingProfile)
+      this.getSelectedEmployee();
+    else
+      this.getSimpleEmployee()
   }
 }
