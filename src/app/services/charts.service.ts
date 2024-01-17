@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Chart } from '../models/charts.interface';
 import { API } from '../models/constants/urls.constants';
-import { DevDesignerCount } from '../models/dev-designer-count.interface';
+import { DevDesignerScrumCount } from '../models/dev-designer-count.interface';
+import { ChurnRate } from '../models/churnrate.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,12 @@ export class ChartService {
     return this.httpClient.get<number>(`${API.HttpBaseURL}/chart/employees/total`);
   }
 
-  getDevsDesignerCount(): Observable<DevDesignerCount> {
-    return this.httpClient.get<DevDesignerCount>(`${API.HttpBaseURL}/chart/employees/dev/desinger/total`);
+  getChurnRate(): Observable<ChurnRate> {
+    return this.httpClient.get<ChurnRate>(`${API.HttpBaseURL}/chart/employees/churnrate`);
+  }
+
+  getDevsDesignerCount(): Observable<DevDesignerScrumCount> {
+    return this.httpClient.get<DevDesignerScrumCount>(`${API.HttpBaseURL}/chart/employees/dev/desinger/total`);
   }
 
   getChartDataByType(dataType: string[]): Observable<any> {
@@ -37,7 +42,6 @@ export class ChartService {
 
     return this.httpClient.get<any>(`${API.HttpBaseURL}/chart/data/${queryParams}`);
   }
-
 
   updateChart(dataType: Chart): Observable<Chart> {
     return this.httpClient.put<Chart>(`${API.HttpBaseURL}/chart/update`, dataType);

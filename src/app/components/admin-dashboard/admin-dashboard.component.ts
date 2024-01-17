@@ -17,7 +17,8 @@ import { MatSort } from '@angular/material/sort';
 import { FormControl } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { DevDesignerCount } from 'src/app/models/dev-designer-count.interface';
+import { DevDesignerScrumCount } from 'src/app/models/dev-designer-count.interface';
+import { ChurnRate } from 'src/app/models/churnrate.interface';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -42,18 +43,26 @@ export class AdminDashboardComponent {
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
   loadCounter: number = 0;
-  totalnumberofEmployees: number = 0;
+  totalnumberofEmployees: number | null = null;
+ 
 
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
   charts: Chart[] = [];
 
-  devsDesingersCount: DevDesignerCount = {
+  devsDesingersCount: DevDesignerScrumCount = {
     devsCount: 0,
     designersCount: 0,
     devsOnBenchCount: 0,
-    designersOnBenchCount: 0
+    designersOnBenchCount: 0,
+    scrumMastersOnBenchCount: 0
   };
 
+  churnRate: ChurnRate = {
+    churnRate: 0,
+    month: '',
+    year: 0,
+  };
+  
   selectedItem: string = 'Dashboard';
   displayAllEmployees: boolean = false;
   roles: string[] = [];
@@ -69,6 +78,7 @@ export class AdminDashboardComponent {
   allFlag: boolean = false;
 
   PREVIOUS_PAGE = "previousPage";
+  monthYearLabel: any;
 
   constructor(
     private employeeService: EmployeeService,
@@ -153,7 +163,17 @@ export class AdminDashboardComponent {
       next: (data:any) => {
         this.devsDesingersCount = data
       }
-    })
+    });
+
+    // if(this.isStartOfNewMonth()){
+      this.chartService.getChurnRate().subscribe({
+        next: (data:any) => {
+          this.churnRate = data
+          console.log(this.churnRate);
+        }
+      });
+    // }
+    
   }
 
   isAdmin(): boolean {
@@ -425,4 +445,10 @@ export class AdminDashboardComponent {
       this.selectedTypes = newSelection;
     }
   }
+
+  isStartOfNewMonth(): boolean {
+    const currentDate = new Date();
+    return currentDate.getDate() === 1;
+  }
+
 }
