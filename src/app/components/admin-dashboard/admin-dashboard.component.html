@@ -46,19 +46,22 @@
   
     <div class="col-3 mb-md-2" id="datacard">
       <div class="row">
-        <div class="col-3" >
+        <div class="col-3">
           <div id="options-trigger">
-            <mat-icon id="menu-icon">arrow_upward_24px</mat-icon> <mat-icon id="menu-icon">arrow_downward_24px</mat-icon>
+            <mat-icon id="menu-icon">arrow_upward_24px</mat-icon>
+            <mat-icon id="menu-icon">arrow_downward_24px</mat-icon>
           </div>
         </div>
         <div class="col-9 my-2">
-        <div id="header-label">Churn Rate</div>
-        <div id="total-employees">2% over oct 2023</div>
+          <div id="header-label">Churn Rate</div>
+          <div id="total-employees">{{ churnRate.churnRate }} % over {{churnRate.month }} {{churnRate.year }} </div>
+        </div>
       </div>
+      <div id="increase">
+        <mat-icon id="menu-icon">arrow_downward_24px</mat-icon> {{ churnRate.churnRate }}% decrease from last month
       </div>
-      <div id="increase"><mat-icon id="menu-icon">arrow_downward_24px</mat-icon>  -2% decrease from last month </div>
     </div>
-
+    
     <div class="col-3 mb-md-2" id="datacard">
       <div class="row">
         <div class="col-3" >
@@ -75,6 +78,9 @@
             </div>
             <div class="col">
               <div id="subheaders">Designers: <b>{{devsDesingersCount.designersOnBenchCount}}</b></div> 
+            </div>
+            <div class="col">
+              <div id="subheaders">ScrumMaster: <b>{{devsDesingersCount.scrumMastersOnBenchCount}}</b></div> 
             </div>
           </div>
       </div>
