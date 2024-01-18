@@ -299,7 +299,7 @@ export class AccordionProfileComponent {
           this.editEmployee = false;
           this.employeeDetailsForm.disable();
         },
-        error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
+        error: (error) => { this.snackBarService.showSnackbar(error.error, "snack-error") },
       });
     }
     else {
@@ -482,7 +482,7 @@ export class AccordionProfileComponent {
           this.editPersonal = false;
         },
         error: (error) => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar(error.error, "snack-error");
         },
       });
     }
@@ -709,7 +709,7 @@ export class AccordionProfileComponent {
           this.employeeContactForm.disable();
           this.editContact = false;
         },
-        error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
+        error: (error) => { this.snackBarService.showSnackbar(error.error, "snack-error") },
       });
     }
     else {
@@ -787,7 +787,7 @@ export class AccordionProfileComponent {
               this.editAddress = false;
             },
             error: (error: any) => {
-              this.snackBarService.showSnackbar(error, "snack-error");
+              this.snackBarService.showSnackbar(error.error, "snack-error");
             },
           });
         },
@@ -856,7 +856,7 @@ export class AccordionProfileComponent {
               this.additionalInfoForm.disable();
             },
             error: (error) => {
-              this.snackBarService.showSnackbar(error, "snack-error");
+              this.snackBarService.showSnackbar(error.error, "snack-error");
             }
           });
         }
