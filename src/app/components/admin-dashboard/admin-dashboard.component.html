@@ -92,7 +92,25 @@
         <div class="col-9 my-2">
           <div id="header-label">Churn Rate</div>
           <div id="total-employees">{{ churnRate.churnRate }} % over {{churnRate.month }} {{churnRate.year }} </div>
+          <hr>
+          <div class="row"> 
+            <div class="col">
+              <div id="subheaders">Developers: <b>{{churnRate.developerChurnRate}}%</b></div>
+            </div>
+            <div class="col">
+              <div id="subheaders">Scrum Master: <b>{{churnRate.scrumMasterChurnRate}}%</b></div> 
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div id="subheaders">Designers: <b>{{churnRate.designerChurnRate}}%</b></div> 
+            </div>
+            <div class="col">
+              <div id="subheaders">Support: <b>{{churnRate.businessSupportChurnRate}}%</b></div> 
+            </div>
+          </div>
         </div>
+       
       </div>
       <div id="increase">
         <mat-icon id="menu-icon">arrow_downward_24px</mat-icon> {{ churnRate.churnRate }}% decrease from last month

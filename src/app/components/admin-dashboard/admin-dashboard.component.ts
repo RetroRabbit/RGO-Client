@@ -63,6 +63,10 @@ export class AdminDashboardComponent {
 
   churnRate: ChurnRate = {
     churnRate: 0,
+    developerChurnRate: 0,
+    designerChurnRate: 0,
+    scrumMasterChurnRate: 0,
+    businessSupportChurnRate: 0,
     month: '',
     year: 0,
   };
