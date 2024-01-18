@@ -44,7 +44,7 @@
         </div>
         <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" >
           <div class="row">
-            <div class="col-2" *ngIf="authAccessService.isAdmin() || authAccessService.isTalent()">
+            <div class="col-2" *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
               <div id="nav-item-container" class="col-auto">
                 <div id="nav-item">
                   <div (click)="changeNav('/dashboard')"  [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
@@ -70,7 +70,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-2" *ngIf="authAccessService.isAdmin() || authAccessService.isTalent()">
+            <div class="col-2" *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="changeNav('/employees')" [ngClass]="router.url == '/employees' ? 'active' : 'idle'">

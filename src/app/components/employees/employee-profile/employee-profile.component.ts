@@ -91,13 +91,18 @@ export class EmployeeProfileComponent {
   }
 
   ngOnInit() {
+    console.log(this.route.snapshot.params['id']);
     this.employeeId = this.route.snapshot.params['id'];
     this.getClients();
     if (this.employeeId == undefined) {
       this.showBackButtons = false;
       this.employeeId = this.cookieService.get('userId');
     }
-    if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
+    if(this.authAccessService.isAdmin() || 
+    this.authAccessService.isSuperAdmin() || 
+    this.authAccessService.isJourney() || 
+    this.authAccessService.isJourney() || 
+    this.authAccessService.isTalent()){
       this.getSelectedEmployee();
       this.usingSimpleProfile = false;
     }
@@ -132,7 +137,7 @@ export class EmployeeProfileComponent {
   }
 
   getSelectedEmployee() {
-    this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
+      this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
       next: (employee: any) => {
         this.selectedEmployee = employee;
         this.employeeProfile = employee;

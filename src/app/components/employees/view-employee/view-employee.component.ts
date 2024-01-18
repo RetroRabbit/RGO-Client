@@ -13,6 +13,7 @@ import { EmployeeData } from 'src/app/models/employeedata.interface';
 import { Component, Output, EventEmitter, ViewChild, HostListener, NgZone, Input } from '@angular/core';
 import { Observable, catchError, first, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { HideNavService } from 'src/app/services/hide-nav.service';
+import { AuthAccessService } from 'src/app/services/auth-access.service';
 
 @Component({
   selector: 'app-view-employee',
@@ -59,7 +60,8 @@ export class ViewEmployeeComponent {
     private ngZone: NgZone,
     private router: Router,
     private hideNavService: HideNavService,
-    private snackBarService: SnackbarService
+    private snackBarService: SnackbarService,
+    public authAccessService: AuthAccessService
   ) {
     hideNavService.showNavbar = true;
   }
@@ -200,6 +202,7 @@ export class ViewEmployeeComponent {
         tap((data) => {
           this.selectedEmployee.emit(data);
           this._searchQuery = '';
+          console.log(data.id);
           this.router.navigateByUrl('/profile/' + data.id)
           this.cookieService.set(this.PREVIOUS_PAGE,'/employees');
         }),
