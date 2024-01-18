@@ -5,5 +5,7 @@ export interface DevDesignerScrumCount{
     businessSupportCount: number,
     devsOnBenchCount: number,
     designersOnBenchCount: number,
-    scrumMastersOnBenchCount: number
+    scrumMastersOnBenchCount: number,
+    totalNumberOfEmployeesOnBench: number,
+    billableEmployeesPercentage: number
 }
