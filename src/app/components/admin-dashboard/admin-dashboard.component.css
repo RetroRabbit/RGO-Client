@@ -344,15 +344,26 @@ word-wrap: break-word;
   margin-left: 12px;
 }
 
-#datacard{
+/* #datacard{
   margin-top: 20px;
   margin-left:16px;
   background-color:white ;
-  width: 500px;
+  width: 363px;
   height: 180px;
   padding: 16px;
   border-radius: 12px;
   gap: 8px
+} */
+
+#datacard{
+  margin-top: 20px;
+  margin-left:16px;
+  background-color:white ;
+  width: Fixed (363px);
+  height: Fixed (131px);
+  padding: 16px;
+  border-radius: 12px;
+  gap: 23px; 
 }
 
 #menu-icon {

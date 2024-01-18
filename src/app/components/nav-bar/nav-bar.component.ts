@@ -97,7 +97,7 @@ export class NavBarComponent {
 
     if (this.hideNavService.unsavedChanges) {
       this.tempRoute = route;
-      this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'DISCARD', denyButtonText: 'BACK' }
+      this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
 
       this.showConfirmDialog = true;
     } else {
