@@ -67,8 +67,8 @@ export class EmployeeProfileComponent {
   currentPage: string = '';
 
   // isLoading: boolean = true;
-  usingProfile: boolean = false;
-
+  usingSimpleProfile: boolean = false;
+  teamLead : number | null = null;
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
 
@@ -99,11 +99,11 @@ export class EmployeeProfileComponent {
     }
     if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
       this.getSelectedEmployee();
-      this.usingProfile = false;
+      this.usingSimpleProfile = false;
     }
     else{
       this.getSimpleEmployee();
-      this.usingProfile = true;
+      this.usingSimpleProfile = true;
     }
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
@@ -123,8 +123,11 @@ export class EmployeeProfileComponent {
         this.simpleEmployee = data;
         this.employeePhysicalAddress = this.simpleEmployee.physicalAddress!;
         this.employeePostalAddress = this.simpleEmployee.postalAddress!;
-        this.filterClients(this.simpleEmployee?.clientAllocated as string);
-      }, complete: () => this.populateEmployeeAccordion(this.simpleEmployee)
+        this.filterClients(this.simpleEmployee?.clientAllocatedName as string);
+      }, complete: () => {
+        this.populateEmployeeAccordion(this.simpleEmployee);
+        this.changeDetectorRef.detectChanges();
+      }
     })
   }
 
@@ -137,7 +140,8 @@ export class EmployeeProfileComponent {
       },
       error: (error) => {
         this.snackBarService.showSnackbar(error, "snack-error");
-      }
+      },
+      complete: () => this.changeDetectorRef.detectChanges()
     })
   }
 
@@ -178,7 +182,7 @@ export class EmployeeProfileComponent {
   populateEmployeeAccordion(employee: SimpleEmployee){
     this.employeeProfile = {}; 
     this.employeeProfile.cellphoneNo = employee.cellphoneNo;
-    this.employeeProfile.clientAllocated = employee.clientAllocated;
+    this.employeeProfile.clientAllocated = employee.clientAllocatedName;
     this.employeeProfile.countryOfBirth = employee.countryOfBirth;
     this.employeeProfile.dateOfBirth = employee.dateOfBirth;
     this.employeeProfile.disability = employee.disability;
@@ -203,7 +207,7 @@ export class EmployeeProfileComponent {
     this.employeeProfile.passportExpirationDate = employee.passportExpirationDate;
     this.employeeProfile.passportNumber = employee.passportNumber;
     this.employeeProfile.payRate = employee.payRate;
-    // this.employeeProfile.peopleChampion = employee.peopleChampion;
+    this.employeeProfile.peopleChampion = employee.peopleChampionId;
     this.employeeProfile.personalEmail = employee.personalEmail;
     this.employeeProfile.photo = employee.photo;
     this.employeeProfile.physicalAddress = employee.physicalAddress;
@@ -213,7 +217,7 @@ export class EmployeeProfileComponent {
     this.employeeProfile.salaryDays = employee.salaryDays;
     this.employeeProfile.surname = employee.surname;
     this.employeeProfile.taxNumber = employee.taxNumber;
-    // this.employeeProfile.teamLeader = employee.teamLeader;
+    this.employeeProfile.teamLead = employee.teamLeadId;
   }
 
   getClients(){
@@ -252,9 +256,10 @@ export class EmployeeProfileComponent {
   updateProfileProgress(progress: any) {
     this.profileFormProgress = progress;
     this.overallProgress();
-    if(this.usingProfile)
-      this.getSelectedEmployee();
+    console.log(this.usingSimpleProfile);
+    if(this.usingSimpleProfile)
+      this.getSimpleEmployee();
     else
-      this.getSimpleEmployee()
+      this.getSelectedEmployee();
   }
 }
