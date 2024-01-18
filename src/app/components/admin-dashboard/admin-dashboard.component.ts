@@ -52,6 +52,8 @@ export class AdminDashboardComponent {
   devsDesingersCount: DevDesignerScrumCount = {
     devsCount: 0,
     designersCount: 0,
+    scrumMastersCount:0,
+    businessSupportCount: 0,
     devsOnBenchCount: 0,
     designersOnBenchCount: 0,
     scrumMastersOnBenchCount: 0
