@@ -56,7 +56,9 @@ export class AdminDashboardComponent {
     businessSupportCount: 0,
     devsOnBenchCount: 0,
     designersOnBenchCount: 0,
-    scrumMastersOnBenchCount: 0
+    scrumMastersOnBenchCount: 0,
+    totalNumberOfEmployeesOnBench: 0,
+    billableEmployeesPercentage: 0
   };
 
   churnRate: ChurnRate = {
