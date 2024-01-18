@@ -17,6 +17,40 @@ mat-header-row {
     background-color: var(--background-light);
 }
 
+
+/* .cdk-overlay-pane #cdk-overlay-0
+.mat-mdc-menu-panel
+.mat-mdc-menu-content */
+
+/* ::ng-deep #cdk-overlay-0.cdk-overlay-pane.mat-mdc-menu-panel.mat-mdc-menu-content {
+  min-width: 100% !important;
+} */
+
+/* ::ng-deep .cdk-overlay-pane {
+  min-width: 100% !important;
+  float: right !important;
+} */
+
+/* ::ng-deep .cdk-overlay-pane#cdk-overlay-0 {
+  min-width: 100% !important;
+}
+
+::ng-deep .cdk-overlay-pane#cdk-overlay-0 button {
+  width: 100% !important;
+  box-sizing: border-box;
+} */
+
+::ng-deep .cdk-overlay-pane {
+  min-width: 100% !important;
+  right: -77% !important;
+  transform: translateX(2%) !important;
+}
+
+::ng-deep .cdk-overlay-pane button {
+  width: 50% !important;
+  box-sizing: border-box;
+}
+
 #manage-permissions {
     height: fit-content;
     width: min-content;
