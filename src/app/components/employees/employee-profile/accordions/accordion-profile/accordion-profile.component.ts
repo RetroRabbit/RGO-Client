@@ -159,13 +159,12 @@ export class AccordionProfileComponent {
   usingProfile:boolean = true;
 
   ngOnInit() {
-    console.log(this.employeeProfile.employeeProfile);
-      this.usingProfile = this.employeeProfile!.simpleEmployee == undefined 
+    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined 
     this.initializeForm();
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();
     this.getClients();
-    // this.checkEmployeeDetails();
+    this.checkEmployeeDetails();
   }
 
   initializeForm() {
@@ -178,11 +177,11 @@ export class AccordionProfileComponent {
       clientAllocated: this.employeeProfile!.employeeProfile.clientAllocated,
       employeeType: this.employeeProfile!.employeeProfile.employeeType!.name,
       level: this.employeeProfile!.employeeProfile.level,
-      teamLead: this.usingProfile ? this.employeeProfile!.employeeProfile.teamLead : this.employeeProfile!.simpleEmployee.teamLead,
+      teamLead: this.usingProfile ? this.employeeProfile!.employeeProfile.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
       dateOfBirth: [this.employeeProfile!.employeeProfile.dateOfBirth, Validators.required],
       idNumber: [this.employeeProfile!.employeeProfile.idNumber, [Validators.required, this.customValidationService.idNumberValidator]],
       engagementDate: [this.employeeProfile!.employeeProfile.engagementDate, Validators.required],
-      peopleChampion: this.usingProfile ?  this.employeeProfile!.employeeProfile.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampion
+      peopleChampion: this.usingProfile ?  this.employeeProfile!.employeeProfile.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId
     });
     this.employeeDetailsForm.disable();
     this.checkEmployeeFormProgress();
@@ -473,7 +472,6 @@ export class AccordionProfileComponent {
       this.employeeProfileDto.disabilityNotes = personalDetailsFormValue.disabilityNotes;
       this.employeeProfileDto.race = personalDetailsFormValue.race;
       this.employeeProfileDto.gender = personalDetailsFormValue.gender;
-
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Personal details updated", "snack-success");
@@ -503,10 +501,9 @@ export class AccordionProfileComponent {
         this.hasDisability = this.employeeProfile!.employeeProfile.disability;
       }, complete: () => {
         this.getEmployeeData();
-        // this.getEmployeeBankingData();
+        this.getEmployeeTypes();
         if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
           this.getAllEmployees();
-          this.getEmployeeTypes();
         }
         this.getEmployeeFieldCodes();
         this.initializeForm();
@@ -546,14 +543,15 @@ export class AccordionProfileComponent {
     })
   }
   
-  getEmployeeClient(clientId: string){
-    this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.employeeProfile.clientAllocated)[0];
-  }
+  // getEmployeeClient(clientId: string){
+  //   this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.employeeProfile.clientAllocated)[0];
+  // }
 
   getEmployeeTypes() {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: data => {
         this.employeeTypes = data;
+        console.log(this.employeeTypes);
         this.initializeEmployeeProfileDto();
       }
     });
@@ -566,7 +564,7 @@ export class AccordionProfileComponent {
       taxNumber: this.employeeProfile!.employeeProfile.taxNumber,
       engagementDate: this.employeeProfile!.employeeProfile.engagementDate,
       terminationDate: this.employeeProfile!.employeeProfile.terminationDate,
-      peopleChampion: this.usingProfile ? this.employeeProfile!.employeeProfile.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampion,
+      peopleChampion: this.usingProfile ? this.employeeProfile!.employeeProfile.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId,
       disability: this.employeeProfile!.employeeProfile.disability,
       disabilityNotes: this.employeeProfile!.employeeProfile.disabilityNotes,
       countryOfBirth: this.employeeProfile!.employeeProfile.countryOfBirth,
@@ -596,7 +594,7 @@ export class AccordionProfileComponent {
       salaryDays: this.employeeProfile!.employeeProfile.salaryDays,
       payRate: this.employeeProfile!.employeeProfile.payRate,
       clientAllocated: this.employeeProfile!.employeeProfile.clientAllocated,
-      teamLead: this.usingProfile ? this.employeeProfile!.employeeProfile.teamLead : this.employeeProfile!.simpleEmployee.teamLead,
+      teamLead: this.usingProfile ? this.employeeProfile!.employeeProfile.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
       physicalAddress: {
         id: this.employeeProfile!.employeeProfile.physicalAddress?.id,
         unitNumber: this.employeeProfile!.employeeProfile.physicalAddress?.unitNumber,
