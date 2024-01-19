@@ -175,14 +175,12 @@ export class AdminDashboardComponent {
       }
     });
 
-    // if(this.isStartOfNewMonth()){
       this.chartService.getChurnRate().subscribe({
         next: (data:any) => {
           this.churnRate = data
           console.log(this.churnRate);
         }
       });
-    // }
     
   }
 
