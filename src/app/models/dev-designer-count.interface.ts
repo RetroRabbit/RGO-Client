@@ -8,4 +8,6 @@ export interface DevDesignerScrumCount{
     scrumMastersOnBenchCount: number,
     totalNumberOfEmployeesOnBench: number,
     billableEmployeesPercentage: number
+    employeeTotalDifference: number,
+    isIncrease: boolean
 }
