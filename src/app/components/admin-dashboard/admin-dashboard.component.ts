@@ -58,7 +58,9 @@ export class AdminDashboardComponent {
     designersOnBenchCount: 0,
     scrumMastersOnBenchCount: 0,
     totalNumberOfEmployeesOnBench: 0,
-    billableEmployeesPercentage: 0
+    billableEmployeesPercentage: 0,
+    employeeTotalDifference: 0,
+    isIncrease: false
   };
 
   churnRate: ChurnRate = {
