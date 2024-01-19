@@ -48,22 +48,22 @@
           </div>
         </div>
       </div>
+      </div>    
+      <div id="increase" *ngIf="devsDesingersCount.isIncrease === true">
+        <img src="../../../assets/img/arrow_up_24px.svg" alt="group" class="group"> <span style="color: #0FAF4B; margin-left: 20px;">+{{ devsDesingersCount.employeeTotalDifference }}</span>           increase from last month
       </div>
       
-      <div id="increase" *ngIf="devsDesingersCount.isIncrease === true">
-        <mat-icon id="arrow">arrow_upward_24px</mat-icon> +{{ devsDesingersCount.employeeTotalDifference }} increase from last month
-    </div>
-    
-    <div id="decrease" *ngIf="devsDesingersCount.isIncrease === false">
-        <mat-icon id="arrow">arrow_downward_24px</mat-icon> {{ devsDesingersCount.employeeTotalDifference }} decrease from last month
-    </div>    
+      <div id="decrease" *ngIf="devsDesingersCount.isIncrease === false">
+        <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group"> <span style="color: #B3261E; margin-left: 20px;">{{ devsDesingersCount.employeeTotalDifference }}</span>          decrease from last month
+      </div>
+        
     </div>
 
     <div class="col-3 mb-md-2" id="datacard">
       <div class="row">
         <div class="col-3" >
           <div id="options-trigger">
-            <mat-icon id="menu-icon">briefcase_24px</mat-icon> 
+            <img src="../../../assets/img/briefcase.svg" alt="briefcase" class="briefcase">
           </div>
         </div>
         <div class="col-9 my-2">
@@ -85,15 +85,17 @@
           </div>
       </div>
       </div>
-      <div id="increase"> {{devsDesingersCount.billableEmployeesPercentage}}% Billable </div>
+      <div id="increase"> <span style="font-family: Roboto; font-size: 12px; font-weight: 400; line-height: 16px; letter-spacing: 0em; text-align: left; fill:#1D1B20">
+        {{devsDesingersCount.billableEmployeesPercentage}}% Billable
+      </span>  
+     </div>
     </div>
   
     <div class="col-3 mb-md-2" id="datacard">
       <div class="row">
         <div class="col-3">
           <div id="options-trigger">
-            <mat-icon id="menu-icon">arrow_upward_24px</mat-icon>
-            <mat-icon id="menu-icon">arrow_downward_24px</mat-icon>
+            <img src="../../../assets/img/Group 26086141.svg" alt="group" class="group">
           </div>
         </div>
         <div class="col-9 my-2">
@@ -120,7 +122,7 @@
        
       </div>
       <div id="increase">
-        <mat-icon id="menu-icon">arrow_downward_24px</mat-icon> {{ churnRate.churnRate }}% decrease from last month
+        <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group">  <span style="color: #B3261E; margin-left: 20px;">{{ churnRate.churnRate }}%</span> decrease from last month
       </div>
     </div>
     

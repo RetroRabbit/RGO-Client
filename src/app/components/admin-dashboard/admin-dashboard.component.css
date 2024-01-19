@@ -371,11 +371,6 @@ word-wrap: break-word;
   margin: 0 auto;
 }
 
-#arrow{
-  color: rgb(128, 0, 0);
-  margin: 0 auto;
-}
-
 #options-trigger {
   align-items: center;
   border-radius: 50%;
@@ -388,7 +383,13 @@ word-wrap: break-word;
   width: 50px;
 }
 
+#increasenumber{
+color:#0FAF4B;
+}
 
+#decreasenumber{
+  color:#B3261E;
+}
 #header-label {
 font-family: Roboto;
 font-size: 14px;
@@ -410,7 +411,6 @@ text-align: left;
 }
 
 #subheaders{
-  
 font-family: Roboto;
 font-size: 12px;
 font-weight: 500;
@@ -443,7 +443,15 @@ color:#625B71;
   line-height: 16px;
   letter-spacing: 0em;
   text-align: left;
-  
+}
+
+#decrease{
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
 }
 
 
