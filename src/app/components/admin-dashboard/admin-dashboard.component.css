@@ -340,30 +340,22 @@ word-wrap: break-word;
 }
 
 #datacardscontainer{
+  display: flex;
+  width: 1136px;
   margin-top: 16px;
   margin-left: 12px;
 }
-
-/* #datacard{
-  margin-top: 20px;
-  margin-left:16px;
-  background-color:white ;
-  width: 363px;
-  height: 180px;
-  padding: 16px;
-  border-radius: 12px;
-  gap: 8px
-} */
 
 #datacard{
   margin-top: 20px;
   margin-left:16px;
   background-color:white ;
-  width: Fixed (363px);
-  height: Fixed (131px);
+  width: 390.67px;
+  height: 210.5px;
   padding: 16px;
   border-radius: 12px;
   gap: 23px; 
+  float: left;
 }
 
 #menu-icon {
@@ -412,6 +404,10 @@ letter-spacing: 0.5px;
 text-align: left;
 color:#625B71;
 
+}
+
+.col{
+  margin-bottom: 10px;
 }
 
 #outer-icon-container {

@@ -19,7 +19,6 @@
 </div>
 
 <div id="datacardscontainer">
-  <div class="row">
     <div class="col-3 mb-md-2" id="datacard">
       <div class="row">
         <div class="col-3" >
@@ -50,11 +49,15 @@
       </div>
       </div>    
       <div id="increase" *ngIf="devsDesingersCount.isIncrease === true">
-        <img src="../../../assets/img/arrow_up_24px.svg" alt="group" class="group"> <span style="color: #0FAF4B; margin-left: 20px;">+{{ devsDesingersCount.employeeTotalDifference }}</span>           increase from last month
+        <img src="../../../assets/img/arrow_up_24px.svg" alt="group" class="group" width="20px" height="20px">
+         <span style="color: #0FAF4B; margin-left: 10px; font-size: medium;" >+{{ devsDesingersCount.employeeTotalDifference }}</span> 
+         <span style="font-size: medium;  margin-left: 5px;">from last month</span> 
       </div>
       
       <div id="decrease" *ngIf="devsDesingersCount.isIncrease === false">
-        <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group"> <span style="color: #B3261E; margin-left: 20px;">{{ devsDesingersCount.employeeTotalDifference }}</span>          decrease from last month
+        <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group" width="25px" height="25px">
+         <span style="color: #B3261E; margin-left: 10px; font-size: medium;">{{ devsDesingersCount.employeeTotalDifference }}</span> 
+         <span style="font-size: medium;  margin-left: 5px;">decrease from last month</span>
       </div>
         
     </div>
@@ -85,7 +88,7 @@
           </div>
       </div>
       </div>
-      <div id="increase"> <span style="font-family: Roboto; font-size: 12px; font-weight: 400; line-height: 16px; letter-spacing: 0em; text-align: left; fill:#1D1B20">
+      <div id="increase"> <span style="font-family: Roboto; font-size: 16px; font-weight: 400; line-height: 16px; letter-spacing: 0em; text-align: left; fill:#1D1B20">
         {{devsDesingersCount.billableEmployeesPercentage}}% Billable
       </span>  
      </div>
@@ -100,7 +103,8 @@
         </div>
         <div class="col-9 my-2">
           <div id="header-label">Churn Rate</div>
-          <div id="total-employees">{{ churnRate.churnRate }} % over {{churnRate.month }} {{churnRate.year }} </div>
+          <div id="total-employees"><span style="font-size: 18px; font: Roboto;font-weight: 500; line-height: 20px; letter-spacing: 0.1 px;">
+            {{ churnRate.churnRate }}%</span> over{{churnRate.month }} {{churnRate.year }} </div>
           <hr>
           <div class="row"> 
             <div class="col">
@@ -115,19 +119,19 @@
               <div id="subheaders">Designers: <b>{{churnRate.designerChurnRate}}%</b></div> 
             </div>
             <div class="col">
-              <div id="subheaders">Support: <b>{{churnRate.businessSupportChurnRate}}%</b></div> 
+              <div id="subheaders">Support:<span style="font-family: Roboto; font-weight: 600; font-size: 12px;">
+                {{churnRate.businessSupportChurnRate}}%</span></div> 
             </div>
           </div>
         </div>
        
       </div>
       <div id="increase">
-        <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group">  <span style="color: #B3261E; margin-left: 20px;">{{ churnRate.churnRate }}%</span> decrease from last month
+        <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group" width="25px" height="25px">
+          <span style="color: #B3261E; margin-left: 10px; font-size: medium;">{{ churnRate.churnRate }}%</span>
+            <span style="font-size: medium; margin-left: 5px;">decrease from last month</span>
       </div>
     </div>
-    
-    
-  </div>
 </div>
 
 <div id="search-results-container">
