@@ -1,5 +1,6 @@
 #graph-container {
   margin: 0;
+  margin-bottom: 40px;
 }
 
 #new-hire {
@@ -343,11 +344,9 @@ word-wrap: break-word;
   display: flex;
   width: 1136px;
   margin-top: 16px;
-  margin-left: 12px;
 }
 
 #datacard{
-  margin-top: 20px;
   margin-left:16px;
   background-color:white ;
   width: 390.67px;

@@ -454,9 +454,4 @@ export class AdminDashboardComponent {
     }
   }
 
-  isStartOfNewMonth(): boolean {
-    const currentDate = new Date();
-    return currentDate.getDate() === 1;
-  }
-
 }
