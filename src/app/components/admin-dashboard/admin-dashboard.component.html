@@ -47,7 +47,8 @@
           </div>
         </div>
       </div>
-      </div>    
+      </div>
+
       <div id="increase" *ngIf="devsDesingersCount.isIncrease === true">
         <img src="../../../assets/img/arrow_up_24px.svg" alt="group" class="group" width="20px" height="20px">
          <span style="color: #0FAF4B; margin-left: 10px; font-size: medium;" >+{{ devsDesingersCount.employeeTotalDifference }}</span> 
@@ -58,8 +59,7 @@
         <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group" width="25px" height="25px">
          <span style="color: #B3261E; margin-left: 10px; font-size: medium;">{{ devsDesingersCount.employeeTotalDifference }}</span> 
          <span style="font-size: medium;  margin-left: 5px;">decrease from last month</span>
-      </div>
-        
+      </div>  
     </div>
 
     <div class="col-3 mb-md-2" id="datacard">
@@ -88,7 +88,8 @@
           </div>
       </div>
       </div>
-      <div id="increase"> <span style="font-family: Roboto; font-size: 16px; font-weight: 400; line-height: 16px; letter-spacing: 0em; text-align: left; fill:#1D1B20">
+      <div> 
+        <span style="font-family: Roboto; font-size: 16px; font-weight: 400; line-height: 16px; letter-spacing: 0em; text-align: left; fill:#1D1B20">
         {{devsDesingersCount.billableEmployeesPercentage}}% Billable
       </span>  
      </div>
@@ -126,7 +127,7 @@
         </div>
        
       </div>
-      <div id="increase">
+      <div>
         <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group" width="25px" height="25px">
           <span style="color: #B3261E; margin-left: 10px; font-size: medium;">{{ churnRate.churnRate }}%</span>
             <span style="font-size: medium; margin-left: 5px;">decrease from last month</span>
