@@ -180,7 +180,6 @@ export class AdminDashboardComponent {
           this.churnRate = data
         }
       });
-    
   }
 
   isAdmin(): boolean {
