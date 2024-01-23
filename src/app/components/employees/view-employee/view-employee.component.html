@@ -16,9 +16,9 @@
       </div>
       <div class="col-6 pr-0 d-flex justify-content-end align-items-center gap-3" *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">
         <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
-          class="col-lg-4 col-md-6 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
+          class="col-lg-4 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
           <mat-icon>add</mat-icon>
-          <span>Add Employee</span>
+          <span class="add-employee-span">Add Employee</span>
         </button>
       </div>
     </div>
@@ -53,13 +53,13 @@
           <ng-container matColumnDef="Roles">
             <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
             <mat-cell *matCellDef="let employee" class="row justify-content-start">
-              <div (click)="$event.stopPropagation()" class="row col-9">
+              <div (click)="$event.stopPropagation()" class="row col-12 px-0">
                 <button mat-button [matMenuTriggerFor]="roleMenu" type="button" class="role-btn col-12">
                   <span class="role-text">{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</span>
                   <mat-icon>arrow_drop_down</mat-icon>
                 </button>
-                <mat-menu #roleMenu>
-                  <button mat-menu-item *ngFor="let role of roles | async" [value]="role"
+                <mat-menu #roleMenu class="col-12">
+                  <button mat-menu-item *ngFor="let role of roles | async" [value]="role" class="menu-item-button"
                     (click)="changeRole(employee.Email, role)">
                     {{ role }}
                   </button>
