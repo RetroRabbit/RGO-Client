@@ -175,6 +175,10 @@ input[type="number"] {
     align-self: flex-end;
 }
 
+.add-employee-span {
+  margin-right: 3%;
+}
+
 #add-employee-button mat-icon {
     color: white;
 }
