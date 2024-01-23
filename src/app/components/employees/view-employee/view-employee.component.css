@@ -173,6 +173,7 @@ input[type="number"] {
     padding: 10px 16px;
     background: var(--primary-color);
     align-self: flex-end;
+    width: 224px;
 }
 
 .add-employee-span {
