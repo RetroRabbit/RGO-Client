@@ -175,10 +175,12 @@ input[type="number"] {
     align-self: flex-end;
     width: 224px;
     height: 40px;
+    max-width: 53%
 }
 
 .add-employee-span {
   margin-right: 3%;
+  font-size: var(--font-size-1);
 }
 
 #add-employee-button mat-icon {
@@ -194,28 +196,16 @@ input[type="number"] {
     padding: 10px 16px;
     background: var(--primary-color);
     color: white;
-    font-weight: 500;
     font-size: var(--font-size-1);
     border-radius: 8px;
     width: 194px;
     height: 32px;
 }
 
-::ng-deep .cdk-overlay-pane {
-  max-width: 30% !important;
-  min-width: 20% !important;
-  position: relative !important;
-}
-
-::ng-deep .mat-mdc-menu-panel {
-  width: 70%!important;
-  position: relative !important;
-  margin-left: 30%;
-}
-
 .role-text {
     flex-grow: 1;
     text-align: center;
+    font-weight: 400;
     color:white;
 }
 
