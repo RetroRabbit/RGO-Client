@@ -453,5 +453,4 @@ export class AdminDashboardComponent {
       this.selectedTypes = newSelection;
     }
   }
-
 }
