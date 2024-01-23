@@ -182,15 +182,26 @@ input[type="number"] {
 .role-btn {
     display: flex;
     min-width: 75%;
+    max-width: 100%;
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
     background: var(--primary-color);
     color: white;
-    min-width: 75%;
     font-weight: 500;
     font-size: var(--font-size-1);
     border-radius: 8px;
+}
+
+::ng-deep .cdk-overlay-pane {
+  max-width: 22% !important;
+  min-width: 18% !important;
+  position: relative !important;
+}
+
+::ng-deep .mat-mdc-menu-panel {
+  width: 100%!important;
+  position: relative !important;
 }
 
 .role-text {
