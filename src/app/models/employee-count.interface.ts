@@ -1,4 +1,4 @@
-export interface DevDesignerScrumCount{
+export interface EmployeeCount{
     devsCount: number,
     designersCount: number,
     scrumMastersCount: number,

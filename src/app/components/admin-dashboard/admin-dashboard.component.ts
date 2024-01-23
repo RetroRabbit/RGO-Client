@@ -17,7 +17,7 @@ import { MatSort } from '@angular/material/sort';
 import { FormControl } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { DevDesignerScrumCount } from 'src/app/models/dev-designer-count.interface';
+import { EmployeeCount } from 'src/app/models/employee-count.interface';
 import { ChurnRate } from 'src/app/models/churnrate.interface';
 
 @Component({
@@ -49,7 +49,7 @@ export class AdminDashboardComponent {
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
   charts: Chart[] = [];
 
-  devsDesingersCount: DevDesignerScrumCount = {
+  employeeCount: EmployeeCount = {
     devsCount: 0,
     designersCount: 0,
     scrumMastersCount:0,
@@ -171,7 +171,7 @@ export class AdminDashboardComponent {
 
     this.chartService.getDevsDesignerCount().subscribe({
       next: (data:any) => {
-        this.devsDesingersCount = data
+        this.employeeCount= data
       }
     });
 
