@@ -91,7 +91,6 @@ export class EmployeeProfileComponent {
   }
 
   ngOnInit() {
-    console.log(this.route.snapshot.params['id']);
     this.employeeId = this.route.snapshot.params['id'];
     this.getClients();
     if (this.employeeId == undefined) {
@@ -142,8 +141,10 @@ export class EmployeeProfileComponent {
         this.selectedEmployee = employee;
         this.employeeProfile = employee;
         this.getEmployeeFields();
+        this.filterClients(this.employeeProfile.clientAllocated as string)
       },
       error: (error) => {
+        console.log("ID")
         this.snackBarService.showSnackbar(error, "snack-error");
       },
       complete: () => this.changeDetectorRef.detectChanges()
@@ -159,6 +160,7 @@ export class EmployeeProfileComponent {
       }, complete: () => {
         this.getAllEmployees();
       },error: () => {
+        console.log("ID2")
         this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
       }
     })
@@ -234,7 +236,7 @@ export class EmployeeProfileComponent {
   }
 
   filterClients(clientId: string){
-    this.employeeClient = this.clients.filter( client => clientId )[0];
+    this.employeeClient = this.clients.filter( client => +clientId == client.id )[0];
   }
 
   CaptureEvent(event: any) {
@@ -261,8 +263,7 @@ export class EmployeeProfileComponent {
   updateProfileProgress(progress: any) {
     this.profileFormProgress = progress;
     this.overallProgress();
-    console.log(this.usingSimpleProfile);
-    if(this.usingSimpleProfile)
+    if(this.authAccessService.isEmployee())
       this.getSimpleEmployee();
     else
       this.getSelectedEmployee();
