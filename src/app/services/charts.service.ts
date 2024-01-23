@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Chart } from '../models/charts.interface';
 import { API } from '../models/constants/urls.constants';
-import { DevDesignerScrumCount } from '../models/dev-designer-count.interface';
+import { EmployeeCount } from '../models/employee-count.interface';
 import { ChurnRate } from '../models/churnrate.interface';
 
 @Injectable({
@@ -30,8 +30,8 @@ export class ChartService {
     return this.httpClient.get<ChurnRate>(`${API.HttpBaseURL}/chart/employees/churnrate`);
   }
 
-  getDevsDesignerCount(): Observable<DevDesignerScrumCount> {
-    return this.httpClient.get<DevDesignerScrumCount>(`${API.HttpBaseURL}/chart/employees/dev/designer/total`);
+  getDevsDesignerCount(): Observable<EmployeeCount> {
+    return this.httpClient.get<EmployeeCount>(`${API.HttpBaseURL}/chart/employees/count`);
   }
 
   getChartDataByType(dataType: string[]): Observable<any> {
