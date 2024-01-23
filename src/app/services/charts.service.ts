@@ -31,7 +31,7 @@ export class ChartService {
   }
 
   getDevsDesignerCount(): Observable<DevDesignerScrumCount> {
-    return this.httpClient.get<DevDesignerScrumCount>(`${API.HttpBaseURL}/chart/employees/dev/desinger/total`);
+    return this.httpClient.get<DevDesignerScrumCount>(`${API.HttpBaseURL}/chart/employees/dev/designer/total`);
   }
 
   getChartDataByType(dataType: string[]): Observable<any> {
