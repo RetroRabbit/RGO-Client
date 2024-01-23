@@ -178,7 +178,6 @@ export class AdminDashboardComponent {
       this.chartService.getChurnRate().subscribe({
         next: (data:any) => {
           this.churnRate = data
-          console.log(this.churnRate);
         }
       });
     
