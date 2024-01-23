@@ -35,7 +35,7 @@ export class AccordionProfileComponent {
 
   @Output() updateProfile = new EventEmitter<number>();
   // @Input() employeeProfile!: EmployeeProfile | SimpleEmployee;
-  @Input() employeeProfile!: {employeeProfile: EmployeeProfile, simpleEmployee: SimpleEmployee}
+  @Input() employeeProfile!: { employeeProfile: EmployeeProfile, simpleEmployee: SimpleEmployee }
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
   employeeTypes: EmployeeType[] = [];
@@ -156,10 +156,10 @@ export class AccordionProfileComponent {
     public authAccessService: AuthAccessService) {
   }
 
-  usingProfile:boolean = true;
+  usingProfile: boolean = true;
 
   ngOnInit() {
-    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined 
+    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();
@@ -181,7 +181,7 @@ export class AccordionProfileComponent {
       dateOfBirth: [this.employeeProfile!.employeeProfile.dateOfBirth, Validators.required],
       idNumber: [this.employeeProfile!.employeeProfile.idNumber, [Validators.required, this.customValidationService.idNumberValidator]],
       engagementDate: [this.employeeProfile!.employeeProfile.engagementDate, Validators.required],
-      peopleChampion: this.usingProfile ?  this.employeeProfile!.employeeProfile.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId
+      peopleChampion: this.usingProfile ? this.employeeProfile!.employeeProfile.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId
     });
     this.employeeDetailsForm.disable();
     this.checkEmployeeFormProgress();
@@ -477,7 +477,7 @@ export class AccordionProfileComponent {
           this.snackBarService.showSnackbar("Personal details updated", "snack-success");
           this.checkPersonalFormProgress();
           this.totalProfileProgress();
-          this.getEmployeeFields();
+          // this.getEmployeeFields();
           this.personalDetailsForm.disable();
           this.editPersonal = false;
         },
@@ -492,25 +492,39 @@ export class AccordionProfileComponent {
   }
 
   getEmployeeFields() {
-    this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeProfile.id as number).subscribe({
-      next: data => {
-        this.employeeProfile.employeeProfile = data;
-        this.employeePhysicalAddress = data.physicalAddress!;
-        this.employeePostalAddress = data.postalAddress!;
-        this.hasDisability = data.disability;
-        this.hasDisability = this.employeeProfile!.employeeProfile.disability;
-      }, complete: () => {
-        this.getEmployeeData();
-        this.getEmployeeTypes();
-        if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
-          this.getAllEmployees();
-        }
+    this.employeePhysicalAddress = this.employeeProfile.employeeProfile.physicalAddress!;
+    this.employeePostalAddress = this.employeeProfile.employeeProfile.postalAddress!;
+    this.hasDisability = this.employeeProfile.employeeProfile.disability;
+    this.hasDisability = this.employeeProfile!.employeeProfile.disability;
+    this.getEmployeeData();
+    this.getEmployeeTypes();
+    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
+      this.getAllEmployees();
+    }
+    this.getEmployeeFieldCodes();
+    this.initializeForm();
+    if(!this.authAccessService.isEmployee()){
+
+      this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeProfile.id as number).subscribe({
+        next: data => {
+          this.employeeProfile.employeeProfile = data;
+          this.employeePhysicalAddress = data.physicalAddress!;
+          this.employeePostalAddress = data.postalAddress!;
+          this.hasDisability = data.disability;
+          this.hasDisability = this.employeeProfile!.employeeProfile.disability;
+        }, complete: () => {
+          this.getEmployeeData();
+          this.getEmployeeTypes();
+          if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
+            this.getAllEmployees();
+          }
         this.getEmployeeFieldCodes();
         this.initializeForm();
       }, error: () => {
         this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
       }
     })
+  }
   }
 
   getEmployeeData() {
@@ -527,31 +541,30 @@ export class AccordionProfileComponent {
         this.employees = data;
         this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeProfile.teamLead)[0];
         this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeProfile.peopleChampion)[0];
-        // this.clientService.getAllClients().subscribe({
-        //   next: data => {
-        //     this.clients = data;
-        //     this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.employeeProfile.clientAllocated)[0];
-        //   }
-        // });
+        this.clientService.getAllClients().subscribe({
+          next: data => {
+            this.clients = data;
+            this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.employeeProfile.clientAllocated)[0];
+          }
+        });
       }
     });
   }
 
-  getClients(){
+  getClients() {
     this.clientService.getAllClients().subscribe({
       next: data => this.clients = data
     })
   }
-  
-  // getEmployeeClient(clientId: string){
-  //   this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.employeeProfile.clientAllocated)[0];
-  // }
+
+  getEmployeeClient(clientId: string) {
+    this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.employeeProfile.clientAllocated)[0];
+  }
 
   getEmployeeTypes() {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: data => {
         this.employeeTypes = data;
-        console.log(this.employeeTypes);
         this.initializeEmployeeProfileDto();
       }
     });
@@ -693,7 +706,7 @@ export class AccordionProfileComponent {
   saveContactEdit() {
     if (this.employeeContactForm.valid) {
       const employeeContactFormValues = this.employeeContactForm.value;
-    
+
       this.employeeProfileDto.personalEmail = employeeContactFormValues.personalEmail;
       this.employeeProfileDto.email = employeeContactFormValues.email;
       this.employeeProfileDto.cellphoneNo = employeeContactFormValues.cellphoneNo;
