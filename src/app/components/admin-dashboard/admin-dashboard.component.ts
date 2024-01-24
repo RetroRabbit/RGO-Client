@@ -43,7 +43,7 @@ export class AdminDashboardComponent {
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
   loadCounter: number = 0;
-  totalnumberofEmployees: number | null = null;
+  totalNumberOfEmployees: number = 0;
  
 
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
@@ -165,7 +165,7 @@ export class AdminDashboardComponent {
 
     this.chartService.getTotalEmployees().subscribe({
       next: (data: any) => {
-        this.totalnumberofEmployees = data;
+        this.totalNumberOfEmployees= data;
       }
     });
 
