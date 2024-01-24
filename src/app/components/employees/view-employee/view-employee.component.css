@@ -174,7 +174,9 @@ input[type="number"] {
     background: var(--primary-color);
     align-self: flex-end;
     width: 224px;
-    max-width: 53%
+    height: 40px;
+    max-width: 53%;
+    border: none;
 }
 
 .add-employee-span {
@@ -197,17 +199,8 @@ input[type="number"] {
     color: white;
     font-size: var(--font-size-1);
     border-radius: 8px;
-}
-
-::ng-deep .cdk-overlay-pane {
-  max-width: 22% !important;
-  min-width: 18% !important;
-  position: relative !important;
-}
-
-::ng-deep .mat-mdc-menu-panel {
-  width: 100%!important;
-  position: relative !important;
+    width: 194px;
+    height: 32px;
 }
 
 .role-text {
@@ -221,6 +214,10 @@ input[type="number"] {
     color: white;
     margin-left: auto;
     order: 2;
+}
+
+.mat-icon-hide {
+  display: none !important;
 }
 
 .d-flex.justify-content-between.align-items-center.gap-2 {

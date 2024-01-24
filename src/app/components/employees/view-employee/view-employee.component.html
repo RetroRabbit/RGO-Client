@@ -54,9 +54,9 @@
             <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
             <mat-cell *matCellDef="let employee" class="row justify-content-start">
               <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-                <button mat-button [matMenuTriggerFor]="roleMenu" type="button" class="role-btn col-12">
+                <button mat-button [matMenuTriggerFor]="roleMenu" type="button" class="role-btn col-12" (menuOpened)="onMenuOpened()">
                   <span class="role-text">{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</span>
-                  <mat-icon>arrow_drop_down</mat-icon>
+                  <mat-icon [ngClass]="screenWidth <= 992 ? 'mat-icon-hide' : ''">arrow_drop_down</mat-icon>
                 </button>
                 <mat-menu #roleMenu class="col-12">
                   <button mat-menu-item *ngFor="let role of roles | async" [value]="role" class="menu-item-button"
