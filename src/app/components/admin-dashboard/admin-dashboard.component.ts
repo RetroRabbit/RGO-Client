@@ -88,7 +88,6 @@ export class AdminDashboardComponent {
   allFlag: boolean = false;
 
   PREVIOUS_PAGE = "previousPage";
-  monthYearLabel: any;
 
   constructor(
     private employeeService: EmployeeService,
