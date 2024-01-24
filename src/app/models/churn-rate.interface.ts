@@ -5,5 +5,5 @@ export interface ChurnRate {
   scrumMasterChurnRate: number,
   businessSupportChurnRate: number,
   month: string,
-  year: number;
+  year: number
 }
