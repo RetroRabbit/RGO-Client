@@ -22,17 +22,6 @@ export class ChartService {
     return this.httpClient.post(`${API.HttpBaseURL}/chart/create${queryParams}`, {});
   }
 
-  getTotalEmployees(): Observable<number> {
-    return this.httpClient.get<number>(`${API.HttpBaseURL}/chart/employees/total`);
-  }
-
-  getChurnRate(): Observable<ChurnRate> {
-    return this.httpClient.get<ChurnRate>(`${API.HttpBaseURL}/chart/employees/churnrate`);
-  }
-
-  getDevsDesignerCount(): Observable<EmployeeCount> {
-    return this.httpClient.get<EmployeeCount>(`${API.HttpBaseURL}/chart/employees/count`);
-  }
 
   getChartDataByType(dataType: string[]): Observable<any> {
 
