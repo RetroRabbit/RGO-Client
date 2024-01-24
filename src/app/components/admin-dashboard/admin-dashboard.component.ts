@@ -162,19 +162,19 @@ export class AdminDashboardComponent {
       }
     });
 
-    this.chartService.getTotalEmployees().subscribe({
+    this.employeeService.getTotalEmployees().subscribe({
       next: (data: any) => {
         this.totalNumberOfEmployees= data;
       }
     });
 
-    this.chartService.getDevsDesignerCount().subscribe({
+    this.employeeService.getDevsDesignerCount().subscribe({
       next: (data:any) => {
         this.employeeCount= data
       }
     });
 
-      this.chartService.getChurnRate().subscribe({
+      this.employeeService.getChurnRate().subscribe({
         next: (data:any) => {
           this.churnRate = data
         }
