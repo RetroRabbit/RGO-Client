@@ -175,7 +175,8 @@ input[type="number"] {
     align-self: flex-end;
     width: 224px;
     height: 40px;
-    max-width: 53%
+    max-width: 53%;
+    border: none;
 }
 
 .add-employee-span {
@@ -213,6 +214,10 @@ input[type="number"] {
     color: white;
     margin-left: auto;
     order: 2;
+}
+
+.mat-icon-hide {
+  display: none !important;
 }
 
 .d-flex.justify-content-between.align-items-center.gap-2 {
