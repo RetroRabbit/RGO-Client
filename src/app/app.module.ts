@@ -170,7 +170,7 @@ import { LoadingComponentComponent } from './components/shared-components/loadin
     MatSortModule,
     MatButtonToggleModule,
     DragDropModule,
-    NgxSkeletonLoaderModule,
+    NgxSkeletonLoaderModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [

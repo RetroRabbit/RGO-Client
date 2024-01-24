@@ -17,7 +17,6 @@ import { Dialog } from 'src/app/models/confirm-modal.interface';
 })
 export class NavBarComponent {
   [x: string]: any;
-
   title = 'HRIS';
   showNav = this.hideNavService.showNavbar;
   screenWidth !: number;
@@ -30,7 +29,7 @@ export class NavBarComponent {
     id: 0,
     name: ''
   };
-
+  isLoading: boolean = false; // bool to check if loading
   showConfirmDialog: boolean = false;
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   tempRoute: string = '';
@@ -54,13 +53,18 @@ export class NavBarComponent {
     const userEmail = this.cookieService.get('userEmail');
     this.roles = Object.keys(JSON.parse(types));
 
-
+    this.isLoading = true; //Start loading
     this.employeeProfileService.GetEmployeeProfileByEmail(userEmail).subscribe({
       next: (data) => {
         this.employeeProfile = data;
         this.profileImage = this.employeeProfile.photo;
         this.employeeType = this.employeeProfile.employeeType;
         this.cookieService.set("userId", String(this.employeeProfile.id));
+        this.isLoading = false; //Stop loading
+      },
+      error: (error) => {
+        console.log(error);
+        this.isLoading = false; //Stop loading
       }
     });
 

@@ -1,5 +1,6 @@
-<app-loading-component *ngIf="isLoading"></app-loading-component>
-<div *ngIf="!isLoading" class="container mt-4">
+<!-- <app-loading-component *ngIf="isLoading"></app-loading-component> -->
+
+<div class="container mt-4">
     <div class="w-75 py-3">
         <button mat-button class="btn" id="back-button" (click)="goToEmployees()"
             *ngIf="previousPage == '/employees' && showBackButtons">
@@ -12,10 +13,19 @@
             <span>Back to Dashboard</span>
         </button>
     </div>
-    <div id="profile-header" class="row p-2">
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+        'background-color': '#D7DFFF',
+        'border': '2px solid #D7DFFF',
+        'border-radius': '2rem',
+        'height': '300px',
+        width: '100%',
+        
+      }">
+    </ngx-skeleton-loader>
+    <div id="profile-header" *ngIf="!isLoading" class="row p-2">
         <div class="col-2 mt-4">
             <div id="profile-image">
-                <img [src]="employeeProfile?.photo" alt="">
+                <img src="{{employeeProfile.photo}}" alt="">
             </div>
         </div>
         <div class="col-md-8 offset-md-2 offset-lg-0 col-lg-10 mt-4">
@@ -99,7 +109,15 @@
         </div>
     </div>
 
-    <div id="profile-completion" class="row my-4 p-2">
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+        'background-color': '#D7DFFF',
+        'border': '2px solid #D7DFFF',
+        'border-radius': '2rem',
+        'height': '250px',
+        width: '100%',
+        
+      }"/>
+    <div id="profile-completion" *ngIf="!isLoading" class="row my-4 p-2">
         <div class="col-12 mt-2" id="completion-header">
             <div class="row" id="completion-header-container">
                 <div class="col-1">
@@ -154,7 +172,15 @@
         </div>
     </div>
 
-    <div id="profile-accordions">
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+        'background-color': '#D7DFFF',
+        'border': '2px solid #D7DFFF',
+        'border-radius': '2rem',
+        'height': '380px',
+        width: '100%',
+        
+      }"/>
+    <div id="profile-accordions" *ngIf="!isLoading">
         <div id="accordions-nav" class="row">
             <div class="col-4">
                 <div id="nav-item-container" class="col-auto">
@@ -198,7 +224,7 @@
                 </div>
             </div>
         </div>
-        <div id="accordions-body`" class="row" *ngIf="employeeProfile != undefined">
+        <div id="accordions-body`" class="row pb-4" *ngIf="employeeProfile != undefined">
             <app-accordion-profile [hidden]="selectedAccordion != 'Profile Details'" [employeeProfile]="employeeProfile" (updateProfile)="updateProfileProgress($event)"></app-accordion-profile>
             <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile" (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
             <app-accordion-documents [hidden]="selectedAccordion != 'Documents'"[employeeProfile]="employeeProfile" (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents>
