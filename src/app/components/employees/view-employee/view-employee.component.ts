@@ -274,10 +274,10 @@ export class ViewEmployeeComponent {
   }
 
   onMenuOpened() {
-    var buttonWidth = document.querySelector<HTMLElement>(".role-btn")?.offsetWidth;
-    var elements = document.getElementsByClassName('mat-mdc-menu-panel');
+    const buttonWidth = document.querySelector<HTMLElement>(".role-btn")?.offsetWidth;
+    const elements = document.getElementsByClassName('mat-mdc-menu-panel');
 
-    for(var i = 0; i < elements.length; i++) {
+    for (let i = 0; i < elements.length; i++) {
       (elements[i]  as HTMLElement).style.width = `${buttonWidth}px`;
     }
   }
