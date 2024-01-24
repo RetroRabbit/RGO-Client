@@ -18,7 +18,7 @@ import { FormControl } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmployeeCount } from 'src/app/models/employee-count.interface';
-import { ChurnRate } from 'src/app/models/churnrate.interface';
+import { ChurnRate } from 'src/app/models/churn-rate.interface';
 
 @Component({
   selector: 'app-admin-dashboard',

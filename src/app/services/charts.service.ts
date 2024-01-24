@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Chart } from '../models/charts.interface';
 import { API } from '../models/constants/urls.constants';
 import { EmployeeCount } from '../models/employee-count.interface';
-import { ChurnRate } from '../models/churnrate.interface';
+import { ChurnRate } from '../models/churn-rate.interface';
 
 @Injectable({
   providedIn: 'root'
