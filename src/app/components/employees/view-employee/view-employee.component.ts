@@ -273,6 +273,15 @@ export class ViewEmployeeComponent {
       .subscribe();
   }
 
+  onMenuOpened() {
+    const buttonWidth = document.querySelector<HTMLElement>(".role-btn")?.offsetWidth;
+    const elements = document.getElementsByClassName('mat-mdc-menu-panel');
+
+    for (let i = 0; i < elements.length; i++) {
+      (elements[i]  as HTMLElement).style.width = `${buttonWidth}px`;
+    }
+  }
+
   get pageSize(): number {
     return this.paginator ? this.paginator.pageSize : 1;
   }
