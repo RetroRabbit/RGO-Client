@@ -7,7 +7,7 @@ export interface EmployeeCount{
     designersOnBenchCount: number,
     scrumMastersOnBenchCount: number,
     totalNumberOfEmployeesOnBench: number,
-    billableEmployeesPercentage: number
+    billableEmployeesPercentage: number,
     employeeTotalDifference: number,
     isIncrease: boolean
 }
