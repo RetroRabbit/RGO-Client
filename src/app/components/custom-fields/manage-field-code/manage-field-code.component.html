@@ -40,7 +40,7 @@
             <ng-container matColumnDef="id">
               <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
               <mat-cell *matCellDef="let element">
-                <mat-checkbox id="selected-row" (change)="onRowSelect(element)">{{ element.id }}</mat-checkbox>
+                <mat-checkbox color="primary"   id="selected-row" (change)="onRowSelect(element)">{{ element.id }}</mat-checkbox>
               </mat-cell>
             </ng-container>
 
