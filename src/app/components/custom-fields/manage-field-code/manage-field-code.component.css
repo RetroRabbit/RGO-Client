@@ -209,7 +209,7 @@ mat-header-row {
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-  align-self: stretch;
+  align-self: right;
 }
 
 #move-to-active{
