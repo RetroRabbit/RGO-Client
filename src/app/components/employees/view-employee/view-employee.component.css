@@ -281,11 +281,11 @@ mat-cell {
     word-wrap: break-word;
 }
 
-.container-fluid-desktop {
+.desktop-section-fluid {
   margin-left: -1.5% !important;
 }
 
-.container-fluid-mobile {
+.mobile-section-fluid {
   margin-left: -3% !important;
 }
 
