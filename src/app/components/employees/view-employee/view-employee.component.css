@@ -280,3 +280,19 @@ mat-cell {
     line-height: 28px;
     word-wrap: break-word;
 }
+
+.desktop-section-fluid {
+  margin-left: -1.5% !important;
+}
+
+.mobile-section-fluid {
+  margin-left: -3% !important;
+}
+
+.align-add-button {
+  min-width: 52.5% !important;
+}
+
+.align-add-mobile {
+  min-width: 55% !important;
+}

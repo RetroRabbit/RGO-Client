@@ -1,5 +1,6 @@
 <main class="container-fluid mt-3 px-5">
-  <section class="container-fluid mt-4 mb-4 mx-0">
+  <section class="container-fluid mt-4 mb-4 mx-0"
+  [ngClass]="screenWidth <= 992 ? 'mobile-section-fluid' : 'desktop-section-fluid'">
     <div class="d-flex justify-content-between gap-2">
       <div class="col-6 pl-0 d-flex align-items-center">
         <div id="search-container" class=""
@@ -14,7 +15,8 @@
           </button>
         </div>
       </div>
-      <div class="col-6 pr-0 d-flex justify-content-end align-items-center gap-3">
+      <div class="col-6 pr-0 d-flex justify-content-end align-items-center gap-3"
+      [ngClass]="screenWidth <= 992 ? 'align-add-mobile' : 'align-add-button'">
         <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
           class="col-lg-4 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
           <mat-icon>add</mat-icon>
