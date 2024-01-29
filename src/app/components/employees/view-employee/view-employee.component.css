@@ -205,6 +205,10 @@ input[type="number"] {
   border: none;
 }
 
+::ng-deep .mat-mdc-menu-panel {
+  min-width: 50% !important;
+}
+
 #btn-text-container {
   text-align: left;
 }
