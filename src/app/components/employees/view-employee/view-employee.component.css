@@ -202,6 +202,7 @@ input[type="number"] {
   font-size: var(--font-size-1);
   border-radius: 8px;
   font-weight: 400;
+  border: none;
 }
 
 #btn-text-container {
