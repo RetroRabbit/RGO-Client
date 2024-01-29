@@ -6,6 +6,7 @@ import { banks } from 'src/app/models/constants/banks.constants';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeBankingService } from 'src/app/services/employee/employee-banking.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
+import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
 
 @Component({
   selector: 'app-accordion-banking',
@@ -14,8 +15,8 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 })
 export class AccordionBankingComponent {
 
-  @Input() employeeProfile !: EmployeeProfile;
-  @Output() updateBanking = new EventEmitter<{progress: number, status : number}>();
+  @Input() employeeProfile !: EmployeeProfile | SimpleEmployee;
+  @Output() updateBanking = new EventEmitter<{ progress: number, status: number }>();
 
   shouldUseSentInProfile: boolean = true;
   panelOpenState: boolean = false;
@@ -59,7 +60,7 @@ export class AccordionBankingComponent {
     this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
       next: (data) => {
         this.employeeBanking = data;
-        if(this.employeeBanking != null){
+        if (this.employeeBanking != null) {
           this.bankingId = this.employeeBanking.id;
         }
         this.initializeBankingForm(this.employeeBanking);
@@ -184,7 +185,7 @@ export class AccordionBankingComponent {
 
   totalBankingProgress() {
     this.bankInformationProgress = Math.floor(this.bankingFormProgress);
-    this.updateBanking.emit({progress: this.bankInformationProgress, status: this.employeeBanking.status});
+    this.updateBanking.emit({ progress: this.bankInformationProgress, status: this.employeeBanking?.status });
   }
 
   checkBankingInformationProgress() {

@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
 import { EmployeeProfile } from "src/app/models/employee-profile.interface";
 import { Chart } from "chart.js";
 import { Dialog } from 'src/app/models/confirm-modal.interface';
-
+import { AuthAccessService } from "src/app/services/auth-access.service";
+import { EmployeeService } from "src/app/services/employee/employee.service";
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -40,7 +41,8 @@ export class NavBarComponent {
     private auth: AuthService,
     public router: Router,
     public cookieService: CookieService,
-    public hideNavService: HideNavService) {
+    public hideNavService: HideNavService,
+    public authAccessService: AuthAccessService,) {
     this.screenWidth = window.innerWidth;
   }
 
@@ -54,8 +56,8 @@ export class NavBarComponent {
     const userEmail = this.cookieService.get('userEmail');
     this.roles = Object.keys(JSON.parse(types));
 
-
-    this.employeeProfileService.GetEmployeeProfileByEmail(userEmail).subscribe({
+    this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
+    //this.employeeProfileService.GetEmployeeProfileByEmail(userEmail).subscribe({
       next: (data) => {
         this.employeeProfile = data;
         this.profileImage = this.employeeProfile.photo;
@@ -67,18 +69,6 @@ export class NavBarComponent {
     this.chartService.getAllCharts().subscribe({
       next: (data: any) => this.charts = data
     });
-  }
-
-  isAdmin(): boolean {
-    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
-  }
-
-  isTalent(): boolean {
-    return this.roles.includes('Talent');
-  }
-
-  isEmployee(): boolean {
-    return this.roles.includes('Employee');
   }
 
   searchQuery: string = '';
