@@ -1,22 +1,22 @@
 <main class="container-fluid mt-3 px-5">
   <section class="container-fluid mt-4 mb-4 mx-0"
-  [ngClass]="screenWidth <= 992 ? 'mobile-section-fluid' : 'desktop-section-fluid'">
+    [ngClass]="screenWidth <= 992 ? 'mobile-section-fluid' : 'desktop-section-fluid'">
     <div class="d-flex justify-content-between gap-2">
       <div class="col-6 pl-0 d-flex align-items-center">
-        <div id="search-container" class=""
-          [ngClass]="{ 'bg-white': searchQuery !== '' }">
+        <div id="search-container" class="" [ngClass]="{ 'bg-white': searchQuery !== '' }">
           <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
             <mat-icon>arrow_back</mat-icon>
           </button>
           <input mat-Input [(ngModel)]="searchQuery" [ngClass]="{ 'no-text': searchQuery === '' }"
-            class="ms-5 bg-transparent" id="search-input" placeholder="Search for employee by name" autocomplete="off"/>
+            class="ms-5 bg-transparent" id="search-input" placeholder="Search for employee by name"
+            autocomplete="off" />
           <button mat-button id="search-button">
             <mat-icon>search</mat-icon>
           </button>
         </div>
       </div>
       <div class="col-6 pr-0 d-flex justify-content-end align-items-center gap-3"
-      [ngClass]="screenWidth <= 992 ? 'align-add-mobile' : 'align-add-button'">
+        *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">
         <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
           class="col-lg-4 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
           <mat-icon>add</mat-icon>
@@ -56,7 +56,8 @@
             <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
             <mat-cell *matCellDef="let employee" class="row justify-content-start">
               <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-                <button mat-button [matMenuTriggerFor]="roleMenu" type="button" class="role-btn col-12" (menuOpened)="onMenuOpened()">
+                <button mat-button [matMenuTriggerFor]="roleMenu" type="button" class="role-btn col-12"
+                  (menuOpened)="onMenuOpened()">
                   <span class="role-text">{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</span>
                   <mat-icon [ngClass]="screenWidth <= 992 ? 'mat-icon-hide' : ''">arrow_drop_down</mat-icon>
                 </button>
@@ -97,7 +98,7 @@
         </button>
         <button mat-icon-button *ngFor="let page of visiblePages" (click)="goToPage(page)">
           <span class="paginator" [ngClass]="{ active: page === pageIndex + 1 }">
-              {{ page }}
+            {{ page }}
           </span>
         </button>
         <button mat-icon-button (click)="paginator.nextPage()" [disabled]="!paginator.hasNextPage()">
@@ -107,8 +108,7 @@
       <div class="col-lg-4 col-md-4 row justify-content-end align-items-center" id="paginator-text">
         <span class="col-lg-4 col-md-7 fw-medium"> Items per page </span>
         <mat-form-field appearance="outline" class="col-lg-3 col-md-5" id="paginator-dropdown">
-          <input id="pageSize" matInput type="number" min="1" [(ngModel)]="pageSize"
-             (focus)="pageNumber.open()" />
+          <input id="pageSize" matInput type="number" min="1" [(ngModel)]="pageSize" (focus)="pageNumber.open()" />
           <mat-select #pageNumber [(ngModel)]="pageSize" hidden>
             <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
               {{ pageSize }}

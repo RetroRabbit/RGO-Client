@@ -9,6 +9,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
 @Component({
   selector: 'app-accordion-documents',
   templateUrl: './accordion-documents.component.html',
@@ -40,13 +42,15 @@ export class AccordionDocumentsComponent {
     private snackBarService: SnackbarService,
     private employeeRoleService: EmployeeRoleService,
     private employeeProfileService: EmployeeProfileService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private authAccessService: AuthAccessService
   ) { }
 
   ngOnInit() {
     this.getEmployeeDocuments();
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
+    // console.log(this.employeeProfileService.getEmployee);
   }
 
   openFileInput() {
@@ -118,7 +122,8 @@ export class AccordionDocumentsComponent {
         fileName: document.fileName,
         file: this.base64String,
         fileCategory: document.fileCategory,
-        uploadDate: document.uploadDate
+        uploadDate: document.uploadDate,
+        status: document.status
       }
       this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
         next: () => {
@@ -143,6 +148,7 @@ export class AccordionDocumentsComponent {
       });
     }
   }
+  
   buildDocumentDto() {
     const existingValue = this.filterDocumentsByCategory();
     if (this.selectedFile) {
@@ -156,7 +162,7 @@ export class AccordionDocumentsComponent {
           fileName: this.documentsFileName,
           fileCategory: +this.uploadButtonIndex,
           blob: this.base64String,
-          status: 1,
+          status: this.authAccessService.isAdmin() ? 3 :1,
           uploadDate: new Date(),
           reason: '',
         };
@@ -197,8 +203,29 @@ export class AccordionDocumentsComponent {
 
   disableButton(index: number): boolean {
     const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
-    if (docObj == undefined || docObj?.status == 2) {
+    if(docObj == null && this.authAccessService.isAdmin() || docObj == null && this.authAccessService.isSuperAdmin() ){
+      console.log("1");
       return false;
+    }
+    // else if(docObj?.status == 3 && this.authAccessService.isAdmin()){
+    //   console.log("2");
+    //   return false;
+    // }else if(docObj?.status == 3 && !this.authAccessService.isAdmin()){
+    //   console.log("3");
+    //   return true;
+    // }else if (docObj == undefined || docObj?.status == 2) {
+    //   console.log("4");
+    //   return false;
+    // }
+
+    else if (docObj?.status == 3){
+      if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
+        console.log("2");
+        return false;
+      }else{
+        console.log("3");
+        // return true;
+      }
     }
     return true;
   }
@@ -208,10 +235,6 @@ export class AccordionDocumentsComponent {
     const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
     this.documentFormProgress = fetchedDocuments / total * 100;
     this.updateDocument.emit(this.documentFormProgress);
-  }
-
-  isAdmin(): boolean {
-    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
 
   disableDownload(index : number){
