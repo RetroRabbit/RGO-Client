@@ -206,7 +206,7 @@ input[type="number"] {
 }
 
 ::ng-deep .mat-mdc-menu-panel {
-  min-width: 50% !important;
+  min-width: 100% !important;
 }
 
 #btn-text-container {
