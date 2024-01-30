@@ -53,7 +53,7 @@
                                 {{employeeTeamLead ? employeeTeamLead.name + ' ' + employeeTeamLead.surname : 'Not assigned'}}
                             </div>
                             <ng-template #NonAdminTeamLead>
-                                {{simpleEmployee?.teamLeadName }}
+                                {{simpleEmployee.teamLeadId ? simpleEmployee?.teamLeadName : 'Not assigned'}}
                             </ng-template>
                         </div>
                     </div>

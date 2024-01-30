@@ -89,6 +89,10 @@
                                     <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput" type="text" placeholder="" matInput formControlName="teamLead"
                                         [matAutocomplete]="autoLead" (input)="filterEmployees($event)">
                                     <mat-autocomplete #autoLead="matAutocomplete">
+                                        <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput"
+                                            type="text" placeholder="" matInput formControlName="teamLead"
+                                            [matAutocomplete]="autoLead"
+                                            (input)="filterEmployees($event)">
                                         <mat-option *ngFor="let employee of filteredEmployees"
                                             [value]="employee.name + ' ' + employee.surname"
                                             (onSelectionChange)="getId(employee, 'employee')">
