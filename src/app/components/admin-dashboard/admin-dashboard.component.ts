@@ -252,7 +252,11 @@ export class AdminDashboardComponent {
       this.snackBarService.showSnackbar("Missing chart category", "snack-error");
       return;
     }
-
+    if(this.selectedTypes.length < 1){
+      this.snackBarService.showSnackbar("Missing chart category", "snack-error");
+      return;
+    }
+    
     let combinedChartName = this.chartName;
     if (this.selectedTypes.length > 0) {
       combinedChartName += ` - ${this.selectedTypes.join(', ')}`;
