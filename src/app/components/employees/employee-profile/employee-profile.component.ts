@@ -144,7 +144,6 @@ export class EmployeeProfileComponent {
         this.filterClients(this.employeeProfile.clientAllocated as string)
       },
       error: (error) => {
-        console.log("ID")
         this.snackBarService.showSnackbar(error, "snack-error");
       },
       complete: () => this.changeDetectorRef.detectChanges()
@@ -160,7 +159,6 @@ export class EmployeeProfileComponent {
       }, complete: () => {
         this.getAllEmployees();
       },error: () => {
-        console.log("ID2")
         this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
       }
     })
@@ -263,9 +261,12 @@ export class EmployeeProfileComponent {
   updateProfileProgress(progress: any) {
     this.profileFormProgress = progress;
     this.overallProgress();
-    if(this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney())
+    if(this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney()){
+      console.log("Admin")
       this.getSelectedEmployee();
+    }
     else{      
+      console.log("Employee")
       this.getSimpleEmployee();
     }
   }

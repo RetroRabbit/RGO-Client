@@ -34,7 +34,6 @@ import { AuthAccessService } from 'src/app/services/auth-access.service';
 export class AccordionProfileComponent {
 
   @Output() updateProfile = new EventEmitter<number>();
-  // @Input() employeeProfile!: EmployeeProfile | SimpleEmployee;
   @Input() employeeProfile!: { employeeProfile: EmployeeProfile, simpleEmployee: SimpleEmployee }
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
@@ -49,8 +48,8 @@ export class AccordionProfileComponent {
   foundTeamLead: any;
   foundChampion: any;
   employeeProfileDto?: any;
-  clientId? = null;
-  peopleChampionId = null;
+  clientId !: number;
+  peopleChampionId !: number;
 
   panelOpenState: boolean = false;
   physicalEqualPostal: boolean = false;
@@ -233,6 +232,14 @@ export class AccordionProfileComponent {
   }
 
   checkEmployeeDetails() {
+    
+    if(this.usingProfile)
+      this.checkEmployeeDetailsUsingEmployees()
+    else
+      this.checkEmployeeDetailsNotUsingEmployees()
+  }
+  
+  checkEmployeeDetailsUsingEmployees(){
     this.foundTeamLead = this.employees.find((data: any) => {
       return data.id == this.employeeProfile!.employeeProfile.teamLead
     });
@@ -245,29 +252,44 @@ export class AccordionProfileComponent {
       }
       else return null;
     });
-
+    
     if (this.foundTeamLead != null) {
       this.employeeDetailsForm.get('teamLead')?.setValue(this.foundTeamLead.name + ' ' + this.foundTeamLead.surname);
       this.employeeProfile.employeeProfile.id = this.foundTeamLead.id
     }
-
+    
     if (this.foundClient != null) {
       this.employeeDetailsForm.get('clientAllocated')?.setValue(this.foundClient.name);
       this.clientId = this.foundClient.id
     }
-
+    
     if (this.foundChampion != null) {
       this.employeeDetailsForm.get('peopleChampion')?.setValue(this.foundChampion.name + ' ' + this.foundChampion.surname);
       this.peopleChampionId = this.foundChampion.id
+    }    
+  }
+  
+  checkEmployeeDetailsNotUsingEmployees(){
+    if(this.employeeProfile.simpleEmployee.teamLeadId !== null){
+      this.foundTeamLead = this.employeeProfile.simpleEmployee.teamLeadId;
+      this.employeeDetailsForm.get('teamLead')?.setValue(this.employeeProfile.simpleEmployee.teamLeadName);
     }
+    if(this.employeeProfile.simpleEmployee.peopleChampionId !== null){
+      this.employeeDetailsForm.get('peopleChampion')?.setValue(this.employeeProfile.simpleEmployee.peopleChampionName);
+      this.peopleChampionId = this.employeeProfile.simpleEmployee.peopleChampionId as number;
+    }
+    if(this.employeeProfile.simpleEmployee.clientAllocatedId !== null){
+      this.employeeDetailsForm.get('clientAllocated')?.setValue(this.employeeProfile.simpleEmployee.clientAllocatedName);
+      this.clientId = this.employeeProfile.simpleEmployee.clientAllocatedId as number;
+    }
+
+    
   }
 
   saveEmployeeEdit() {
-
     if (this.employeeDetailsForm.valid) {
       const employeeDetailsForm = this.employeeDetailsForm.value;
       const personalDetailsForm = this.personalDetailsForm.value;
-
       this.employeeType = this.employeeTypes.find((data: any) => {
         return data.name == employeeDetailsForm.employeeType
       });
@@ -277,7 +299,7 @@ export class AccordionProfileComponent {
       this.employeeProfileDto.employeeType.id = this.employeeType !== null ? this.employeeType?.id : this.employeeProfile!.employeeProfile.employeeType!.id;
       this.employeeProfileDto.employeeType.name = this.employeeType !== null ? this.employeeType?.name : this.employeeProfile!.employeeProfile.employeeType!.name;
       this.employeeProfileDto.level = employeeDetailsForm.level;
-      this.employeeProfileDto.teamLead = this.employeeDetailsForm.controls["teamLead"].value == 0 ? null : this.employeeProfile.employeeProfile.id;
+      this.employeeProfileDto.teamLead = this.employeeDetailsForm.controls["teamLead"].value == 0 ? null : this.employeeProfile.employeeProfile.teamLead;
       this.employeeProfileDto.peopleChampion = this.employeeDetailsForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
       this.employeeProfileDto.dateOfBirth = this.employeeDetailsForm.value.dateOfBirth;
       this.employeeProfileDto.idNumber = employeeDetailsForm.idNumber;
@@ -287,7 +309,7 @@ export class AccordionProfileComponent {
         + 24 * 60 * 60 * 1000
       ).toISOString();
       this.employeeProfileDto.gender = personalDetailsForm.gender;
-
+      
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Employee details updated", "snack-success");
@@ -477,7 +499,6 @@ export class AccordionProfileComponent {
           this.snackBarService.showSnackbar("Personal details updated", "snack-success");
           this.checkPersonalFormProgress();
           this.totalProfileProgress();
-          // this.getEmployeeFields();
           this.personalDetailsForm.disable();
           this.editPersonal = false;
         },
@@ -698,7 +719,6 @@ export class AccordionProfileComponent {
 
   cancelContactEdit() {
     this.editContact = false;
-    // this.employeeContactForm.reset();
     this.initializeForm();
     this.employeeContactForm.disable();
   }

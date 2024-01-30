@@ -50,7 +50,6 @@ export class AccordionDocumentsComponent {
     this.getEmployeeDocuments();
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
-    // console.log(this.employeeProfileService.getEmployee);
   }
 
   openFileInput() {
@@ -204,7 +203,6 @@ export class AccordionDocumentsComponent {
   disableButton(index: number): boolean {
     const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
     if(docObj == null && this.authAccessService.isAdmin() || docObj == null && this.authAccessService.isSuperAdmin() ){
-      console.log("1");
       return false;
     }
     // else if(docObj?.status == 3 && this.authAccessService.isAdmin()){
@@ -220,11 +218,8 @@ export class AccordionDocumentsComponent {
 
     else if (docObj?.status == 3){
       if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
-        console.log("2");
         return false;
       }else{
-        console.log("3");
-        // return true;
       }
     }
     return true;
