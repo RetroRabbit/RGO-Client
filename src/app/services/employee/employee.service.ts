@@ -41,4 +41,8 @@ export class EmployeeService {
   filterEmployeesByType(type: string): Observable<EmployeeProfile[]> {
     return this.httpClient.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employee/employees/filterbytype?type=${encodeURIComponent(type)}`)
   }
+  
+  getEmployeeProfilesByPeopleChampion(championID: number): Observable<EmployeeProfile[]> {
+    return this.httpClient.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employee/filter-by-pc?PeopleChampId=${encodeURIComponent(championID)}`);
+  }
 }

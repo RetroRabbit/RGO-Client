@@ -15,6 +15,21 @@
           </button>
         </div>
       </div>
+      <div class="col-2 pl-0 d-flex align-items-center">
+        <div (click)="$event.stopPropagation()" class="row col-12 px-0">
+          <button mat-button [matMenuTriggerFor]="roleMenu" type="button" class="role-btn col-12"
+            (menuOpened)="onMenuOpened()">
+            <span class="role-text">{{ currentChampionName }}</span>
+            <mat-icon [ngClass]="screenWidth <= 992 ? 'mat-icon-hide' : ''">arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #roleMenu class="col-12">
+            <button mat-menu-item *ngFor="let champion of peopleChampions | async" [value]="champion.id"
+              class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
+              {{ champion.name }}
+            </button>
+          </mat-menu>
+        </div>
+      </div>
       <div class="col-6 pr-0 d-flex justify-content-end align-items-center gap-3"
         *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">
         <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"

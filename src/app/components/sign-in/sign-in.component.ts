@@ -12,10 +12,9 @@ import { AuthAccessService } from 'src/app/services/auth-access.service';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.css']
+  styleUrls: ['./sign-in.component.css'],
 })
 export class SignInComponent {
-
   user: Token | undefined;
   token: string | null = null;
   userEmail: string | null = null;
@@ -28,7 +27,7 @@ export class SignInComponent {
     private cookieService: CookieService,
     public hideNavService: HideNavService,
     private authAccessService: AuthAccessService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.token = this.cookieService.get('userToken');
@@ -55,25 +54,30 @@ export class SignInComponent {
             map((roles) => ({ user, token, roles }))
           )
         )
-      ).subscribe({
+      )
+      .subscribe({
         next: ({ user, token, roles }) => {
           this.authAccessService.setRoles(roles);
           const googleID: Token = {
             email: user?.email,
             token: token,
-            roles: roles
+            roles: roles,
           };
-          this.authAccessService.setEmployeeEmail(user?.email as string)
+          this.authAccessService.setEmployeeEmail(user?.email as string);
           this.store.dispatch(GetLogin({ payload: googleID }));
           this.hideNavService.showNavbar = true;
-          if(this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney() || this.authAccessService.isSuperAdmin()){
+          if (
+            this.authAccessService.isAdmin() ||
+            this.authAccessService.isTalent() ||
+            this.authAccessService.isJourney() ||
+            this.authAccessService.isSuperAdmin()
+          ) {
             this.router.navigateByUrl('/dashboard');
-          }else{
+          } else {
             this.router.navigateByUrl('/profile');
           }
         },
-        error: (error) => {
-        }
-      })
+        error: (error) => {},
+      });
   }
 }
