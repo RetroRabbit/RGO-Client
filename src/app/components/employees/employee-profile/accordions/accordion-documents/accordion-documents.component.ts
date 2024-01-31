@@ -205,16 +205,6 @@ export class AccordionDocumentsComponent {
     if(docObj == null && this.authAccessService.isAdmin() || docObj == null && this.authAccessService.isSuperAdmin() ){
       return false;
     }
-    // else if(docObj?.status == 3 && this.authAccessService.isAdmin()){
-    //   console.log("2");
-    //   return false;
-    // }else if(docObj?.status == 3 && !this.authAccessService.isAdmin()){
-    //   console.log("3");
-    //   return true;
-    // }else if (docObj == undefined || docObj?.status == 2) {
-    //   console.log("4");
-    //   return false;
-    // }
 
     else if (docObj?.status == 3){
       if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
