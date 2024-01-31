@@ -29,7 +29,7 @@ export class NavBarComponent {
     id: 0,
     name: ''
   };
-  isLoading: boolean = false; // bool to check if loading
+  isLoading: boolean = false;
   showConfirmDialog: boolean = false;
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   tempRoute: string = '';
