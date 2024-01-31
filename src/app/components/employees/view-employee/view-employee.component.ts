@@ -10,8 +10,25 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { ClientService } from 'src/app/services/client.service';
 import { Client } from 'src/app/models/client.interface';
 import { EmployeeData } from 'src/app/models/employeedata.interface';
-import { Component, Output, EventEmitter, ViewChild, HostListener, NgZone, Input } from '@angular/core';
-import { Observable, catchError, first, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  ViewChild,
+  HostListener,
+  NgZone,
+  Input,
+} from '@angular/core';
+import {
+  Observable,
+  catchError,
+  first,
+  forkJoin,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { HideNavService } from 'src/app/services/hide-nav.service';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
 
@@ -38,13 +55,15 @@ export class ViewEmployeeComponent {
 
   PREVIOUS_PAGE = 'previousPage';
 
-  roles: Observable<string[]> = this.employeeRoleService
-    .getAllRoles()
-    .pipe(
-      map((roles: string[]) => roles.filter((role) => !role.includes('SuperAdmin'))),
-      first()
-    );
+  roles: Observable<string[]> = this.employeeRoleService.getAllRoles().pipe(
+    map((roles: string[]) =>
+      roles.filter((role) => !role.includes('SuperAdmin'))
+    ),
+    first()
+  );
 
+  peopleChampions: Observable<{ id: number; name: string }[]>;
+  currentChampionName: string = 'All';
 
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
@@ -64,15 +83,23 @@ export class ViewEmployeeComponent {
     public authAccessService: AuthAccessService
   ) {
     hideNavService.showNavbar = true;
+    this.peopleChampions = new Observable((observer) => {
+      const userId = +this.authAccessService.getUserId();
+      const items = [
+        { id: 0, name: 'All' },
+        { id: userId, name: 'Mine' },
+      ];
+      observer.next(items);
+      observer.complete();
+    });
   }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
 
     this.onResize();
-    if(this.cookieService.get(this.PREVIOUS_PAGE) == "/dashboard"){ 
+    if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
       this._searchQuery = this.cookieService.get('searchString');
-  
     }
   }
 
@@ -96,13 +123,16 @@ export class ViewEmployeeComponent {
           this.combineEmployeesWithRolesAndClients(employees, clients$)
         ),
         catchError((error) => {
-          this.snackBarService.showSnackbar("Failed to load employees", "snack-error");
+          this.snackBarService.showSnackbar(
+            'Failed to load employees',
+            'snack-error'
+          );
           return of([]);
         }),
         first()
       )
       .subscribe((data) => {
-        this.setupDataSource(data)
+        this.setupDataSource(data);
         this.isLoading = false;
         this.applySearchFilter();
       });
@@ -155,7 +185,7 @@ export class ViewEmployeeComponent {
     this.ngZone.run(() => {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-    })
+    });
     this.dataSource._updateChangeSubscription();
   }
 
@@ -175,7 +205,6 @@ export class ViewEmployeeComponent {
     this.dataSource.filter = '';
     this.dataSource._updateChangeSubscription();
   }
-
 
   ViewUser(email: string) {
     this.cookieService.set('selectedUser', email);
@@ -203,8 +232,8 @@ export class ViewEmployeeComponent {
           this.selectedEmployee.emit(data);
           this._searchQuery = '';
           console.log(data.id);
-          this.router.navigateByUrl('/profile/' + data.id)
-          this.cookieService.set(this.PREVIOUS_PAGE,'/employees');
+          this.router.navigateByUrl('/profile/' + data.id);
+          this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
         }),
         first()
       )
@@ -225,8 +254,8 @@ export class ViewEmployeeComponent {
   }
 
   applySearchFilter() {
-      this.dataSource.filter = this.searchQuery.trim().toLowerCase();
-      this.dataSource._updateChangeSubscription();
+    this.dataSource.filter = this.searchQuery.trim().toLowerCase();
+    this.dataSource._updateChangeSubscription();
   }
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
@@ -265,11 +294,17 @@ export class ViewEmployeeComponent {
       .updateRole(email, role)
       .pipe(
         tap(() => {
-          this.snackBarService.showSnackbar("Role changed successfully!", "snack-success");
+          this.snackBarService.showSnackbar(
+            'Role changed successfully!',
+            'snack-success'
+          );
           this.getEmployees();
         }),
         catchError((error) => {
-          this.snackBarService.showSnackbar("Falied to change role", "snack-error");
+          this.snackBarService.showSnackbar(
+            'Falied to change role',
+            'snack-error'
+          );
           return of(null);
         })
       )
@@ -277,11 +312,12 @@ export class ViewEmployeeComponent {
   }
 
   onMenuOpened() {
-    const buttonWidth = document.querySelector<HTMLElement>(".role-btn")?.offsetWidth;
+    const buttonWidth =
+      document.querySelector<HTMLElement>('.role-btn')?.offsetWidth;
     const elements = document.getElementsByClassName('mat-mdc-menu-panel');
 
     for (let i = 0; i < elements.length; i++) {
-      (elements[i]  as HTMLElement).style.width = `${buttonWidth}px`;
+      (elements[i] as HTMLElement).style.width = `${buttonWidth}px`;
     }
   }
 
@@ -290,8 +326,8 @@ export class ViewEmployeeComponent {
   }
 
   set pageSize(size: number) {
-      this.paginator.pageSize = size;
-      this.dataSource._updateChangeSubscription();
+    this.paginator.pageSize = size;
+    this.dataSource._updateChangeSubscription();
   }
 
   get start(): number {
@@ -309,5 +345,35 @@ export class ViewEmployeeComponent {
   goToPage(page: number): void {
     this.paginator.pageIndex = page - 1;
     this.dataSource._updateChangeSubscription();
+  }
+
+  changePeopleChampionFilter(champion: { id: number; name: string }) {
+    this.currentChampionName = champion.name;
+
+    this.isLoading = true;
+    const clients$: Observable<Client[]> = this.clientService
+      .getAllClients()
+      .pipe(catchError(() => of([] as Client[])));
+
+    this.employeeService
+      .getEmployeeProfilesByPeopleChampion(champion.id)
+      .pipe(
+        switchMap((employees: EmployeeProfile[]) =>
+          this.combineEmployeesWithRolesAndClients(employees, clients$)
+        ),
+        catchError((error) => {
+          this.snackBarService.showSnackbar(
+            'Failed to load employees',
+            'snack-error'
+          );
+          return of([]);
+        }),
+        first()
+      )
+      .subscribe((data) => {
+        this.setupDataSource(data);
+        this.isLoading = false;
+        this.applySearchFilter();
+      });
   }
 }
