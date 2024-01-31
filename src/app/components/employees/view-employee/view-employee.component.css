@@ -188,37 +188,20 @@ input[type="number"] {
     color: white;
 }
 
-.role-btn {
-  min-width: 75%;
-  max-width: 100%;
-  display: block;
-  background: var(--primary-color);
-  color: white !important;
-  width: 194px;
-  height: 32px;
-  align-items: center;
-  gap: 2px;
-  padding: 5px 8px;
-  font-size: var(--font-size-1);
-  border-radius: 8px;
-  font-weight: 400;
+:host {
+  .mat-mdc-text-field-wrapper {
+    min-width: 100%;
+    max-width: 100%;
+    width: 194px !important;
+    height: 56px !important;
+    align-items: center;
+    font-size: var(--font-size-1);
+    font-weight: 400;
+  }
 }
 
-#btn-text-container {
-  text-align: left;
-}
-
-#btn-text-container > p {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 90%;
-}
-
-.role-btn mat-icon {
-    color: white;
-    margin-left: auto;
-    order: 2;
+.roles-input-mobile {
+  min-width: 120% !important;
 }
 
 .mat-icon-hide {
@@ -264,7 +247,6 @@ input[type="number"] {
 }
 
 mat-row:hover {
-    background-color: rgba(0, 0, 0, 0.05);
     cursor: pointer;
 }
 
