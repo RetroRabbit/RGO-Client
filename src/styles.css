@@ -1,0 +1,138 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-mdc-radio-button.mat-accent {
+  --mdc-radio-disabled-selected-icon-color: #000;
+  --mdc-radio-disabled-unselected-icon-color: #000;
+  --mdc-radio-unselected-hover-icon-color: #212121;
+  --mdc-radio-unselected-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-radio-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-radio-selected-focus-icon-color: #0029C6;
+  --mdc-radio-selected-hover-icon-color: #0029C6;
+  --mdc-radio-selected-icon-color: #0029C6;
+  --mdc-radio-selected-pressed-icon-color: #0029C6;
+  --mat-radio-ripple-color: #000;
+  --mat-radio-checked-ripple-color: #0029C6;
+  --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
+  --mat-radio-checked-label-color: #0029C6;
+}
+
+.title {
+  text-align: center;
+}
+
+#save-button {
+  border: none;
+  border-radius: 2rem;
+  background-color: #0029C6;
+  color: white;
+  padding: 1rem;
+}
+
+#cancel-button {
+  border: 1px solid #0029C6;
+  border-radius: 2rem;
+  background-color: white;
+  color: #0029C6;
+  padding: 1rem;
+}
+
+#graphs-btn>button {
+  background: #0029c6;
+  border: none;
+  border-radius: 4rem;
+  color: white;
+  padding: 0.5rem;
+  width: 12rem;
+}
+
+#no-graphs {
+  background-color: white;
+  border-radius: 2rem;
+  min-height: 75vh;
+  text-align: center;
+}
+
+.mat-radio-button.mat-radio-checked .mat-radio-label-content {
+  color: #0029C6 !important;
+}
+
+.custom-btn {
+  border: 1px outset;
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  padding: 0;
+  margin-left: 20px;
+}
+
+.ng-valid[required],
+.ng-valid.required {
+  border-left: 5px solid #42A948;
+}
+
+#btnRemoveOption,
+#btnAddOption {
+  border: 1px outset;
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  padding: 0;
+  margin-left: 20px;
+}
+
+#new-hire>button {
+  background: #0029c6;
+  border: none;
+  border-radius: 4rem;
+  color: white;
+  margin-right: 4rem;
+  padding: 0.5rem;
+  width: 12rem;
+}
+
+.snack-error {
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mdc-snackbar-supporting-text-line-height: 50px;
+  --mdc-snackbar-container-color: #B3261E;
+  --mat-snack-bar-button-color: white;
+  text-align: center;
+}
+
+.snack-success {
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mdc-snackbar-supporting-text-line-height: 50px;
+  --mdc-snackbar-container-color: #0FAF4B;
+  --mat-snack-bar-button-color: white;
+  text-align: center;
+}
+
+
+.mdc-switch:enabled .mdc-switch__track::after {
+  background-color: #0029C6;
+}
+
+.mat-mdc-slide-toggle.mat-accent {
+  --mdc-switch-selected-focus-state-layer-color: #0029C6;
+  --mdc-switch-selected-handle-color: #0029C6;
+  --mdc-switch-selected-hover-state-layer-color: #0029C6;
+  --mdc-switch-selected-pressed-state-layer-color: #0029C6;
+  --mdc-switch-selected-focus-handle-color: #0029C6;
+  --mdc-switch-selected-hover-handle-color: #0029C6;
+  --mdc-switch-selected-pressed-handle-color: #0029C6;
+  --mdc-switch-selected-focus-track-color: #0029C6;
+  --mdc-switch-selected-hover-track-color: #0029C6;
+  --mdc-switch-selected-pressed-track-color: #0029C6;
+  --mdc-switch-selected-track-color: #0029C6;
+}

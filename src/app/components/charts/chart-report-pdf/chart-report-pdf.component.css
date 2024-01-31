@@ -1,0 +1,20 @@
+#button-container {
+  text-align: center;
+}
+
+#edit-chart-container{
+  text-align: center;
+  width: 85%;
+  margin: 0 auto;
+}
+
+#edit-chart-container>canvas{
+  margin: 0 auto;
+  width: 40vw;
+}
+
+#oveflow-contianer{
+  height: 95vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}

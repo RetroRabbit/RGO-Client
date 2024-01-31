@@ -1,20 +1,42 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Introduction
+This platform is, somewhat for making the grad onboarding process simpler. Also for creating a central location for tracking changes to personal information, certification, skills,project and etc.
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Designs
+https://www.figma.com/file/rPWv2FIKByov9GdtHWbhFG/HRIS-Working-File?node-id=0%3A1&mode=dev
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+### Install software for the project
+- Microsoft Visual Studio Code
+- Node.js v18.17.1
+- Make sure to check version if you are using nvm
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+### Cloning the [repository](https://retro-rabbit@dev.azure.com/retro-rabbit/RetroGradOnboard/_git/RGO-Client)
+```powershell /cmd / internal terminal
+git clone 'https://retro-rabbit@dev.azure.com/retro-rabbit/RetroGradOnboard/_git/RGO-Client'
+```
+
+### Open project
+Open folder "RGO-Client" in Visual Studio Code
+
+### Change to the develop branch
+Make sure to have Git installed to run any Git command lines.
+```powershell
+#cd RGO-Client
+git checkout develop
+```
+
+### Install dependencies for the project
+```powershell / cmd / internal terminal
+#cd RGO-Client
+npm install
+npm install ngx-file-drop
+```
+
+### Running
+```powershell
+#cd RGO-Client
+ng serve (run 'npm start' if the command does not work.)
+```
+
+Runs on [this](http:/localhost:4200) location

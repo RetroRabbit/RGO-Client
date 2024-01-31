@@ -1,0 +1,330 @@
+<div class="col-12">
+    <div class="m-3 border-bottom">
+      <h2 class="page-heading border-bottom">Employee</h2>
+      <div style="overflow: auto">
+        <div class="container-fluid">
+          <form [formGroup]="employeeForm" (submit)="onSubmit();  $event.preventDefault()">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">First Name</label>
+                    <input type="text" class="form-control" formControlName="name" />
+                  </div>
+                  <small *ngIf="employeeForm?.get('name')?.dirty || employeeForm.hasError('required', 'employeeForm.name')" class="text-danger">Name is required</small>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Initials</label>
+                    <input type="text" class="form-control" formControlName="initials" />
+                  </div>
+                  <small *ngIf="employeeForm?.get('initials')?.dirty || employeeForm.hasError('required', 'employeeForm.initials')" class="text-danger">Initials are required</small>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Surname</label>
+                    <input type="text" class="form-control" formControlName="surname" />
+                  </div>
+                  <small *ngIf="employeeForm?.get('surname')?.dirty || employeeForm.hasError('required', 'employeeForm.surname')" class="text-danger">Surname is required</small>
+                </div>
+                <div class="mb-3 row">
+                <div class="col-sm-12">
+                  <label class="col-form-label">Gender</label> 
+                    <select class="form-control" formControlName="gender">
+                  <option *ngFor="let gender of genders" [ngValue]="gender.id">
+                    {{gender.value}}
+                  </option>
+                </select>
+                </div>
+                <small *ngIf="employeeForm?.get('gender')?.touched || employeeForm.hasError('required', 'employeeForm.gender')" class="text-danger">Gender is required</small>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-12">
+                        <label class="col-form-label">Race</label> 
+                        <select class="form-control" formControlName="race">
+                      <option *ngFor="let race of races" [ngValue]="race.id">
+                        {{race.value}}
+                      </option>
+                    </select>
+                    </div>
+                    <small *ngIf="employeeForm?.get('race')?.touched || employeeForm.hasError('required', 'employeeForm.race')" class="text-danger">Race is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Employee Type</label> 
+                      <select class="form-control" formControlName="employeeType">
+                        <option *ngFor="let type of employeeTypes" [ngValue]="type.name">
+                          {{type.name}}
+                        </option>
+                      </select>
+                    </div>
+                    <small *ngIf="employeeForm?.get('employeeType')?.touched || employeeForm.hasError('required', 'employeeForm.employeeType')" class="text-danger">Employee Type is required</small>
+                  </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Personal Email</label>
+                      <input type="email" class="form-control" formControlName="personalEmail" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('personalEmail')?.dirty || employeeForm.hasError('required', 'employeeForm.personalEmail')" class="text-danger">Personal Email is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Termination Date</label>
+                      <input type="date" class="form-control" formControlName="terminationDate" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Nationality</label>
+                      <input type="text" class="form-control" formControlName="nationality" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('nationality')?.dirty || employeeForm.hasError('required', 'employeeForm.nationality')" class="text-danger">Nationality is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Identity Number</label>
+                      <input type="text" class="form-control" formControlName="idNumber" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('idNumber')?.dirty || employeeForm.hasError('required', 'employeeForm.idNumber')" class="text-danger">ID number is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Passport Expiration Date</label>
+                      <input type="date" class="form-control" formControlName="passportExpirationDate" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Payrate</label>
+                      <input type="text" class="form-control" formControlName="payRate" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('payRate')?.dirty || employeeForm.hasError('required', 'employeeForm.payRate')" class="text-danger">Payrate is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Salary Days</label>
+                      <input type="text" class="form-control" formControlName="salaryDays" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('salaryDays')?.dirty || employeeForm.hasError('required', 'employeeForm.salaryDays')" class="text-danger">Salary Days is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Disability Notes</label>
+                      <input type="text" class="form-control" formControlName="disabilityNotes" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('disabilityNotes')?.dirty || employeeForm.hasError('required', 'employeeForm.disabilityNotes')" class="text-danger">Disability notes is required</small>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Email</label>
+                    <input type="text" class="form-control" formControlName="email" />
+                  </div>
+                  <small *ngIf="employeeForm?.get('email')?.dirty || employeeForm.hasError('required', 'employeeForm.email')" class="text-danger">Email is required</small>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Cellphone Number</label>
+                    <input type="text" class="form-control" formControlName="cellphoneNo" />
+                  </div>
+                  <small *ngIf="employeeForm?.get('cellphoneNo')?.dirty || employeeForm.hasError('required', 'employeeForm.cellphoneNo')" class="text-danger">Cellphone number is required</small>
+                </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Employee Number</label>
+                      <input type="text" class="form-control" formControlName="employeeNumber" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('employeeNumber')?.dirty || employeeForm.hasError('required', 'employeeForm.employeeNumber')" class="text-danger">Employee number is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Date of Birth</label>
+                      <input type="date" class="form-control" formControlName="dateOfBirth" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('dateOfBirth')?.dirty || employeeForm.hasError('required', 'employeeForm.dateOfBirth')" class="text-danger">Date of Birth is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Level</label> 
+                      <select class="form-control" formControlName="level">
+                    <option *ngFor="let level of levels" [ngValue]="level.value">
+                      {{level.value}}
+                    </option>
+                  </select>
+                  </div>
+                  <small *ngIf="employeeForm?.get('level')?.touched || employeeForm.hasError('required', 'employeeForm.level')" class="text-danger">Level is required</small>
+                  </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-12">
+                    <label class="col-form-label">Engagement Date</label>
+                    <input type="date" class="form-control" formControlName="engagementDate" />
+                  </div>
+                  <small *ngIf="employeeForm?.get('engagementDate')?.dirty || employeeForm.hasError('required', 'employeeForm.engagementDate')" class="text-danger">Engagement Date is required</small>
+                </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Country of Birth</label>
+                      <input type="text" class="form-control" formControlName="countryOfBirth" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('countryOfBirth')?.dirty || employeeForm.hasError('required', 'employeeForm.countryOfBirth')" class="text-danger">Country of Birth is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Passport Country Issue</label>
+                      <input type="text" class="form-control" formControlName="passportCountryIssue" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Passport Number</label>
+                      <input type="text" class="form-control" formControlName="passportNumber" />
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Tax Number</label>
+                      <input type="text" class="form-control" formControlName="taxNumber" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('taxNumber')?.dirty || employeeForm.hasError('required', 'employeeForm.taxNumber')" class="text-danger">Tax number is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Salary</label>
+                      <input type="text" class="form-control" formControlName="salary" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('salary')?.dirty || employeeForm.hasError('required', 'employeeForm.salary')" class="text-danger">Salary is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Leave Interval</label>
+                      <input type="text" class="form-control" formControlName="leaveInterval" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('leaveInterval')?.dirty || employeeForm.hasError('required', 'employeeForm.leaveInterval')" class="text-danger">Leave interval is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Disability</label> 
+                        <select class="form-control" formControlName="disability">
+                      <option *ngFor="let response of general" [ngValue]="response.id">
+                        {{response.value}}
+                      </option>
+                    </select>
+                    </div>
+                    <small *ngIf="employeeForm?.get('disability')?.touched || employeeForm.hasError('required', 'employeeForm.disability')" class="text-danger">Disability is required</small>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Photo</label>
+                      <input type="text" class="form-control" formControlName="photo" />
+                    </div>
+                    <small *ngIf="employeeForm?.get('photo')?.dirty || employeeForm.hasError('required', 'employeeForm.photo')" class="text-danger">Photo is required</small>
+                  </div>                  
+              </div>
+            <div class="col-sm-12">
+              <div class="mb-3 row" *ngIf="!viewMoreInfo">
+                <div class="col-sm-12">
+                <br><br>
+                  <button type="button" (click) = "viewMore()" class="form-control">View more info</button>
+                </div>
+              </div>
+              <ng-container *ngIf="viewMoreInfo">
+                <div class="row">
+                  <div class="col-sm-6">
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Client Assigned</label> 
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <mat-form-field>
+                        <input type="text" placeholder="" matInput formControlName="clientAllocated" [matAutocomplete]="autoClient" (input)="filterClients($event)">
+                        <mat-autocomplete #autoClient="matAutocomplete">
+                          <mat-option *ngFor="let client of filteredClients" [value]="client.name" (onSelectionChange)="getId(client, 'client')">
+                            {{ client.name }} 
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">People's Champion</label>
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <mat-form-field>
+                        <input type="text" placeholder="" matInput formControlName="peopleChampion" [matAutocomplete]="autoChampion" (input)="filterChampions($event)">
+                        <mat-autocomplete #autoChampion="matAutocomplete">
+                          <mat-option *ngFor="let people of filteredPeopleChamps" [value]="people.employee.name + ' ' + people.employee.surname" (onSelectionChange)="getId(people, 'champion')">
+                            {{ people.employee.name }} 
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  </div>
+                  <div class="col-sm-6">
+                  <div class="mb-3 row">
+                    <div class="col-sm-12">
+                      <label class="col-form-label">Team Lead</label> 
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <div class="col-12">
+                      <mat-form-field>
+                        <input type="text" placeholder="" matInput  formControlName="teamLead" [matAutocomplete]="autoLead" (input)="filterEmployees($event)">
+                        <mat-autocomplete #autoLead="matAutocomplete">
+                          <mat-option *ngFor="let employee of filteredEmployees" [value]="employee.name + ' ' + employee.surname" (onSelectionChange)="getId(employee, 'employee')">
+                            {{ employee.name }} {{ employee.surname }}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  </div>
+                  <ng-container *ngFor="let fieldcode of fieldcodes; let i = index">
+                    <div class="col-sm-6">
+                      <div class="mb-3 row">
+                        <div class="col-sm-12" *ngIf="fieldcode.options?.length === 0">
+                          <label class="col-form-label">{{ fieldcode.name }}</label>
+                          <input type="text" class="form-control" formControlName="{{formatString(fieldcode.name)}}" />
+                        </div>
+                        <div class="col-sm-12" *ngIf="fieldcode.options && fieldcode.options.length > 0">
+                          <label class="col-form-label">{{ fieldcode.name }}</label>
+                          <select class="form-control" formControlName="{{formatString(fieldcode.name)}}">
+                            <option *ngFor="let option of fieldcode.options" [ngValue]="option.option">
+                              {{option.option}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
+              <div class="mb-3 row" *ngIf="viewMoreInfo && !toEdit">
+                <div class="col-sm-12">
+                <br><br>
+                <button type="button" (click)="editDetails()" class="form-control">Edit</button>
+                </div>
+              </div>
+              <div class="mb-3 row" *ngIf="viewMoreInfo && toEdit ">
+                <div class="col-sm-12">
+                <br><br>
+                <button type="submit" class="form-control" [disabled]="!employeeForm.valid">Submit</button>
+                </div>
+              </div>
+            </div>
+            </div>
+          </form>
+          <br>
+          <button type="button" (click)="cancelAction()" class="form-control">Back</button>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+  

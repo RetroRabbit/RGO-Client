@@ -1,0 +1,24 @@
+#button-container {
+  text-align: center;
+}
+
+.pie-chart {
+  width: 100%;
+  height: 450px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+
+.bar-chart {
+ width: 85%;
+ max-height: 450px;
+ margin: auto;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+
+
+

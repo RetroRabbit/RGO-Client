@@ -1,0 +1,95 @@
+<app-loading-component *ngIf="isLoading"></app-loading-component>
+<div *ngIf="!isLoading" class="container mt-4">
+    <div *ngIf="!showDetailedEntry;else ShowDetails">
+        <p-table *ngIf="pendingBankApplications.length > 0;else NoBankApplications" [value]="pendingBankApplications"
+            [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Employee</th>
+                    <th>Bank Name</th>
+                    <th>Account Type</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-entry>
+                <tr>
+                    <td>{{ entry.employee?.name }} ({{entry.employee?.initials}}) {{ entry.employee?.surname }}</td>
+                    <td>{{ entry?.bankName }}</td>
+                    <td>{{ entry?.accountType == 1 ? 'Savings' : 'Cheque' }}</td>
+                    <td>{{ entry?.status == 1 ? 'Pending' : 'Approved' }}</td>
+                    <td>
+                        <button mat-raised-button (click)="viewEntry(entry)" id="edit-icon-button">
+                            <mat-icon matSuffix id="edit-icon">edit</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <ng-template #NoBankApplications>
+            <div style="text-align: center;">
+                <h1>No pending application</h1>
+            </div>
+        </ng-template>
+    </div>
+    <ng-template #ShowDetails>
+        <button mat-raised-button color="warn" (click)="showTable()">Back</button>
+        <div class="row p-4">
+            <div class="py-2 col-md-3">
+                <label class="form-label">Account Holder</label>
+                <input readonly class="form-control" type="text" [value]="selectedApplication?.accountHolderName">
+            </div>
+            <div class="py-2 col-md-3">
+                <label class="form-label">Bank Name</label>
+                <input readonly class="form-control" type="text" [value]="selectedApplication?.bankName">
+            </div>
+            <div class="py-2 col-md-3">
+                <label class="form-label">Branch</label>
+                <input readonly class="form-control" type="text" [value]="selectedApplication?.branch">
+            </div>
+            <div class="py-2 col-md-3">
+                <label class="form-label">Account Number</label>
+                <input readonly class="form-control" type="text" [value]="selectedApplication?.accountNo">
+            </div>
+            <div class="py-2 col-md-3">
+                <label class="form-label">Account Type</label>
+                <input readonly class="form-control" type="text"
+                    [value]="selectedApplication?.accountType == 1 ? 'Savings' : 'Cheque'">
+            </div>
+            <div class="py-2 col-md-3">
+                <label class="form-label">Status</label>
+                <input readonly class="form-control" type="text"
+                    [value]="selectedApplication?.status == 1 ? 'Pending' : 'Approved'">
+            </div>
+            <div class="py-2 col-md-3">
+                <label class="form-label">Proof of Account</label> <br>
+                <button mat-button color="primary" (click)="convertFileToBase64()">Download</button>
+            </div>
+
+            <div class="col-12" id="acceptance-container">
+                <h3>Accept or Reject Application</h3>
+                <div class="row">
+                    <div class="col-12 mx-2">
+                        <mat-radio-group aria-label="Select status" (change)="setSelectedResponse($event)">
+                            <mat-radio-button [value]=0>Approve</mat-radio-button>
+                            <mat-radio-button [value]=2>Reject</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div *ngIf="copyOfSelected?.status == 2" class="col-12 mx-2">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Reason</mat-label>
+                            <input matInput [(ngModel)]="declineReason">
+                            <mat-hint>Please provide a reason</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <button mat-button (click)="updateEntry()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ng-template>
+</div>

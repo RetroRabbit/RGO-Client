@@ -1,0 +1,347 @@
+#header-name {
+    font-family: Poppins;
+}
+
+#header-role,
+#header-based {
+    color: #555454;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+}
+
+#header-email {
+    color: #555454;
+    text-align: right;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+}
+
+#header-email>.row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+#header-email-clip {
+    color: blue;
+    transform: rotate(-45deg);
+    width: 20px;
+}
+
+#header-label {
+    color: #555454;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#header-value {
+    color: #555454;
+    font-family: Roboto;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.container-fluid {
+    border: 1px solid black;
+}
+
+#profile-header {
+    background-color: white;
+    border-radius: 2rem;
+}
+
+#profile-image {
+    border-radius: 50%;
+    overflow: hidden;
+    height: 150px;
+    margin: 0 auto;
+    width: 150px;
+}
+
+#profile-image>img {
+    height: 100%;
+    width: 100%;
+}
+
+#outer-icon-container {
+    padding: 0;
+}
+
+#outer-icon-container>div {
+    border-radius: 50%;
+    background-color: #D7DFFF;
+    color: #0029C6;
+    display: table;
+    height: 50px;
+    margin: 0 auto;
+    text-align: center;
+    width: 50px;
+}
+
+#outer-icon-container>div>mat-icon {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#accordions-nav {
+    background-color: #0029C6;
+    border-radius: 1rem;
+    padding-top: 1rem
+}
+
+#nav-item>div {
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#nav-item>div:hover {
+    cursor: pointer;
+}
+
+#nav-item>div.active {
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#selected-line-box {
+    width: 90px;
+    height: 14px;
+    position: relative;
+    margin: 0 auto;
+}
+
+#selected-line {
+    width: 100%;
+    height: 3px;
+    left: 2px;
+    top: 11px;
+    position: absolute;
+    background: white;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+}
+
+:host ::ng-deep .mat-expansion-panel {
+    padding: 0;
+}
+
+:host ::ng-deep .mat-accordion .mat-expansion-panel,
+:host ::ng-deep .mat-expanded,
+:host ::ng-deep .mat-accordion .mat-expansion-panel,
+:host ::ng-deep .mat-expansion-panel-spacing {
+    border-radius: 1rem;
+    box-shadow: none;
+}
+
+:host ::ng-deep .mat-expansion-panel-header-description {
+    color: #B3261E;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 5rem;
+}
+
+:host ::ng-deep #edit-button {
+    border: none;
+    border-radius: 2rem;
+    background-color: #D7DFFF;
+    color: #0029C6;
+    padding: 1rem;
+}
+
+:host ::ng-deep #edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+:host ::ng-deep #edit-buttons>button {
+    margin-right: 1rem;
+}
+
+
+#uploadfile:hover {
+    cursor: pointer;
+}
+
+#profile-completion {
+    background-color: white;
+    border-radius: 2rem;
+}
+
+#completion-header-container {
+    display: flex;
+    align-items: center;
+}
+
+#horizontal {
+    height: 0px;
+    margin: auto 0;
+    padding: 0;
+}
+
+#progress-stats {
+    border-radius: 0.5rem;
+    background-color: #d7dfff;
+    color: #0029c6;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#progress-stats>h5 {
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    margin: 0;
+}
+
+#overall-text>h4 {
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+}
+
+#progress-require-message {
+    color: #828282;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+}
+
+:host ::ng-deep #back-button {
+    color: #0029C6;
+    font-size: 14px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.10px;
+    word-wrap: break-word;
+}
+
+
+
+/* #actionCellDownload>button {
+    border: 1px solid #0029C6;
+    border-radius: 2rem;
+    background-color: white;
+    color: #0029C6;
+    padding: 0.5rem;
+    width: 8rem;
+
+}
+
+#actionCellUpload>button {
+    background: #0029c6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    padding: 0.5rem;
+    width: 8rem;
+}
+
+#header-cell {
+    color: black;
+    font-size: 16px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    word-wrap: break-word;
+
+    padding-left: 2rem;
+}
+
+#table {
+    background: #fdfdfe;
+}
+
+#table-header {
+    background: #D7DFFF;
+    border-top-right-radius: 2rem;
+    border-top-left-radius: 2rem;
+}
+
+#header-header>div {
+    color: black;
+    font-size: 16px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+}
+
+#document-row {
+    background-color: white;
+    border-radius: 2rem;
+}
+
+#fileName {
+    color: grey;
+} */
+
+:host ::ng-deep #statuses>div {
+    color: white;
+    text-align: center;
+    width: fit-content;
+    border-radius: 0.3rem;
+}
+
+:host ::ng-deep #status-0 {
+    background: #0faf4bff;
+    padding: 0.3rem 0.7rem;
+}
+
+:host ::ng-deep #status-1 {
+    background: #322f35ff;
+    padding: 0.3rem 0.7rem;
+}
+
+:host ::ng-deep #status-2 {
+    background: #b3261eff;
+    padding: 0.3rem 0.7rem;
+}
+
+:host ::ng-deep #status-null {
+    background: white;
+    color: #0029c6;
+    padding: 0.3rem 0.7rem;
+}
+
+:host ::ng-deep #reject-reason {
+    color: #b3261eff;
+}
+
+/* #svg-icon-w #icon-w {
+    fill: white;
+} */
