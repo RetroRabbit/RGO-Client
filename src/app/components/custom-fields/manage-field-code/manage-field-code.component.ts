@@ -31,7 +31,7 @@ export class ManageFieldCodeComponent {
   @ViewChild('dataTable') dataTable: Table | undefined = undefined;
   filterText: string = '';
   isUnique?: boolean = true;
-
+  
   activeTab: number = 0;
   selectedFields: number = 0;
   activeFields: number = 0;
@@ -70,6 +70,7 @@ export class ManageFieldCodeComponent {
   }
 
   fetchData(active: number = 0) {
+    this.isLoading = true;
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: fieldCodes => {
         this.fieldCodes = fieldCodes;
@@ -79,9 +80,11 @@ export class ManageFieldCodeComponent {
         this.dataSource.sort = this.sort;
         this.getActivePassive();
         this.activeTab = active;
+        this.isLoading = false;
       },
-      error: error => {
+      error: () => {
         this.snackBarService.showSnackbar("Error fetching field codes", "snack-error");
+        this.isLoading = false;
       }
     })
   }
