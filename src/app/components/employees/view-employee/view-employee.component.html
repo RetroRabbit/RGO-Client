@@ -26,8 +26,15 @@
     </div>
   </section>
   <div class="row">
-    <div class="card px-0">
-      <app-loading-component *ngIf="isLoading"></app-loading-component>
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+      'background-color': '#D7DFFF',
+      'border': '2px solid #D7DFFF',
+      'border-radius': '2rem',
+      'height': '580px',
+      width: '100%',
+    }">
+  </ngx-skeleton-loader>
+    <div class="card px-0">      
       <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
         <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="Name">
@@ -56,24 +63,16 @@
             <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
             <mat-cell *matCellDef="let employee" class="row justify-content-start">
               <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-                <button mat-button [matMenuTriggerFor]="roleMenu" type="button" class="role-btn col-12" (menuOpened)="onMenuOpened()">
-                  <div class="row">
-                    <div [ngClass]="screenWidth <= 992 ? 'col-12' : 'col-8'" id="btn-text-container">
-                      <p class="role-text">
-                        {{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}
-                      </p>
-                    </div>
-                    <div class="col-4">
-                      <mat-icon [ngClass]="screenWidth <= 992 ? 'mat-icon-hide col-2' : ''">arrow_drop_down</mat-icon>
-                    </div>
-                  </div>
-                </button>
-                <mat-menu #roleMenu class="col-12">
-                  <button mat-menu-item *ngFor="let role of roles | async" [value]="role" class="menu-item-button"
+                <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
+                [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''" >
+                  <mat-label>{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor="let role of roles | async" [value]="role"
                     (click)="changeRole(employee.Email, role)">
-                    {{ role }}
-                  </button>
-                </mat-menu>
+                      {{ role }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
             </mat-cell>
           </ng-container>
@@ -91,6 +90,14 @@
         </span>
       </div>
     </div>
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+      'background-color': '#D6DFFF',
+      'border': '2px solid #D6DFFF',
+      'border-radius': '10px',
+      'height': '60px',
+      width: '100%',
+    }">
+    </ngx-skeleton-loader>
     <div class="d-flex flex-row justify-content-center align-items-center mt-3"
       *ngIf="!isLoading && dataSource.filteredData.length > 0">
       <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">
