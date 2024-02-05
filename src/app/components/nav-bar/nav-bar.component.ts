@@ -18,7 +18,6 @@ import { EmployeeService } from "src/app/services/employee/employee.service";
 })
 export class NavBarComponent {
   [x: string]: any;
-
   title = 'HRIS';
   showNav = this.hideNavService.showNavbar;
   screenWidth !: number;
@@ -31,7 +30,7 @@ export class NavBarComponent {
     id: 0,
     name: ''
   };
-
+  isLoading: boolean = false;
   showConfirmDialog: boolean = false;
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   tempRoute: string = '';
@@ -56,13 +55,19 @@ export class NavBarComponent {
     const userEmail = this.cookieService.get('userEmail');
     this.roles = Object.keys(JSON.parse(types));
 
-    this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
-    //this.employeeProfileService.GetEmployeeProfileByEmail(userEmail).subscribe({
+    this.isLoading = true; //Start loading
+    // this.employeeProfileService.GetEmployeeProfileByEmail(userEmail).subscribe({
+      this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
       next: (data) => {
         this.employeeProfile = data;
         this.profileImage = this.employeeProfile.photo;
         this.employeeType = this.employeeProfile.employeeType;
         this.cookieService.set("userId", String(this.employeeProfile.id));
+        this.isLoading = false; //Stop loading
+      },
+      error: (error) => {
+        console.log(error);
+        this.isLoading = false; //Stop loading
       }
     });
 
