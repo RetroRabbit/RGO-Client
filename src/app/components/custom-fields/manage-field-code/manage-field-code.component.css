@@ -253,8 +253,8 @@ mat-header-row {
     background: rgb(0, 41, 198);
   }
 
-  .p-focus {
-    background: none;
+  .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+    box-shadow: none;
   }
 }
 
