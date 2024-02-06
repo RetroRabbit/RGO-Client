@@ -33,14 +33,21 @@
         Move To Active {{selectedFieldCodes.length == 0 ? '' :"(" + selectedFieldCodes.length + ")"}}
       </button>
     </div>
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+      'background-color': '#D7DFFF',
+      'border': '2px solid #D7DFFF',
+      'border-radius': '2rem',
+      'height': '80vh',
+      width: '100%',
+    }"/>
     <div id="table-body" class="row">
       <div class="card px-0">
         <div class="table-responsive p-0 m-0">
-          <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+          <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" *ngIf="!isLoading">
             <ng-container matColumnDef="id">
               <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
               <mat-cell *matCellDef="let element">
-                <mat-checkbox id="selected-row" (change)="onRowSelect(element)">{{ element.id }}</mat-checkbox>
+                <mat-checkbox color="primary"   id="selected-row" (change)="onRowSelect(element)">{{ element.id }}</mat-checkbox>
               </mat-cell>
             </ng-container>
 
