@@ -282,8 +282,6 @@ export class AccordionProfileComponent {
       this.employeeDetailsForm.get('clientAllocated')?.setValue(this.employeeProfile.simpleEmployee.clientAllocatedName);
       this.clientId = this.employeeProfile.simpleEmployee.clientAllocatedId as number;
     }
-
-    
   }
 
   saveEmployeeEdit() {
