@@ -12,18 +12,21 @@ export class EmployeeDocumentService {
     constructor(private httpClient: HttpClient) { }
 
     getAllEmployeeDocuments(employeeId: number): Observable<EmployeeDocument[]> {
-        return this.httpClient.get<EmployeeDocument[]>(`${API.HttpsBaseURL}/employeedocument/all/?employeeId= ${employeeId}`);
+        return this.httpClient.get<EmployeeDocument[]>(`${API.HttpsBaseURL}/employee-documents/${employeeId}`);
     }
     saveEmployeeDocument(employeeDocument: any): Observable<EmployeeDocument> {
-        return this.httpClient.post<EmployeeDocument>(`${API.HttpsBaseURL}/employeedocument/save`, employeeDocument);
+        return this.httpClient.post<EmployeeDocument>(`${API.HttpsBaseURL}/employee-documents`, employeeDocument);
     }
     getEmployeeDocument(employeeId: number, filename: string): Observable<EmployeeDocument> {
-        return this.httpClient.get<EmployeeDocument>(`${API.HttpsBaseURL}/employeedocument/get/${employeeId}/${filename}`);
+        return this.httpClient.get<EmployeeDocument>(`${API.HttpsBaseURL}/employee-documents/${employeeId}/${filename}`);
     }
     updateEmployeeDocument(employeeDocument: EmployeeDocument): Observable<EmployeeDocument> {
-        return this.httpClient.put<EmployeeDocument>(`${API.HttpsBaseURL}/employeedocument/update`, employeeDocument);
+        return this.httpClient.put<EmployeeDocument>(`${API.HttpsBaseURL}/employee-documents/`, employeeDocument);
     }
     deleteEmployeeDocument(employeeDocument: EmployeeDocument): Observable<void> {
-        return this.httpClient.delete<void>(`${API.HttpsBaseURL}/employeedocument/delete/${employeeDocument.id}`);
+        return this.httpClient.delete<void>(`${API.HttpsBaseURL}/employee-documents/${employeeDocument.id}`);
+    }
+    getEmployeeDocumentsByStatus(employeeId: number, status: number): Observable<EmployeeDocument[]> {
+        return this.httpClient.get<EmployeeDocument[]>(`${API.HttpsBaseURL}/employee-documents/${employeeId}/${status}`)
     }
 };

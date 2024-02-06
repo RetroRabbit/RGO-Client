@@ -1,5 +1,6 @@
 <main class="container-fluid mt-3 px-5">
-  <section class="container-fluid mt-4 mb-4 mx-0">
+  <section class="container-fluid mt-4 mb-4 mx-0"
+  [ngClass]="screenWidth <= 992 ? 'mobile-section-fluid' : 'desktop-section-fluid'">
     <div class="d-flex justify-content-between gap-2">
       <div class="col-6 pl-0 d-flex align-items-center">
         <div id="search-container" class=""
@@ -14,7 +15,8 @@
           </button>
         </div>
       </div>
-      <div class="col-6 pr-0 d-flex justify-content-end align-items-center gap-3">
+      <div class="col-6 pr-0 d-flex justify-content-end align-items-center gap-3"
+      [ngClass]="screenWidth <= 992 ? 'align-add-mobile' : 'align-add-button'">
         <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
           class="col-lg-4 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
           <mat-icon>add</mat-icon>
@@ -24,8 +26,15 @@
     </div>
   </section>
   <div class="row">
-    <div class="card px-0">
-      <app-loading-component *ngIf="isLoading"></app-loading-component>
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+      'background-color': '#D7DFFF',
+      'border': '2px solid #D7DFFF',
+      'border-radius': '2rem',
+      'height': '580px',
+      width: '100%',
+    }">
+  </ngx-skeleton-loader>
+    <div class="card px-0">      
       <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
         <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="Name">
@@ -54,16 +63,16 @@
             <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
             <mat-cell *matCellDef="let employee" class="row justify-content-start">
               <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-                <button mat-button [matMenuTriggerFor]="roleMenu" type="button" class="role-btn col-12" (menuOpened)="onMenuOpened()">
-                  <span class="role-text">{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</span>
-                  <mat-icon [ngClass]="screenWidth <= 992 ? 'mat-icon-hide' : ''">arrow_drop_down</mat-icon>
-                </button>
-                <mat-menu #roleMenu class="col-12">
-                  <button mat-menu-item *ngFor="let role of roles | async" [value]="role" class="menu-item-button"
+                <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
+                [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''" >
+                  <mat-label>{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor="let role of roles | async" [value]="role"
                     (click)="changeRole(employee.Email, role)">
-                    {{ role }}
-                  </button>
-                </mat-menu>
+                      {{ role }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
             </mat-cell>
           </ng-container>
@@ -81,6 +90,14 @@
         </span>
       </div>
     </div>
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+      'background-color': '#D6DFFF',
+      'border': '2px solid #D6DFFF',
+      'border-radius': '10px',
+      'height': '60px',
+      width: '100%',
+    }">
+    </ngx-skeleton-loader>
     <div class="d-flex flex-row justify-content-center align-items-center mt-3"
       *ngIf="!isLoading && dataSource.filteredData.length > 0">
       <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">
