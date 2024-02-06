@@ -55,19 +55,17 @@ export class NavBarComponent {
     const userEmail = this.cookieService.get('userEmail');
     this.roles = Object.keys(JSON.parse(types));
 
-    this.isLoading = true; //Start loading
-    // this.employeeProfileService.GetEmployeeProfileByEmail(userEmail).subscribe({
+    this.isLoading = true; 
       this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
       next: (data) => {
         this.employeeProfile = data;
         this.profileImage = this.employeeProfile.photo;
         this.employeeType = this.employeeProfile.employeeType;
         this.cookieService.set("userId", String(this.employeeProfile.id));
-        this.isLoading = false; //Stop loading
+        this.isLoading = false;
       },
       error: (error) => {
-        console.log(error);
-        this.isLoading = false; //Stop loading
+        this.isLoading = false;
       }
     });
 

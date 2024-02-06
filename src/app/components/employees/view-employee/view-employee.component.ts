@@ -202,7 +202,6 @@ export class ViewEmployeeComponent {
         tap((data) => {
           this.selectedEmployee.emit(data);
           this._searchQuery = '';
-          console.log(data.id);
           this.router.navigateByUrl('/profile/' + data.id)
           this.cookieService.set(this.PREVIOUS_PAGE,'/employees');
         }),
