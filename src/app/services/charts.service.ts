@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Chart } from '../models/charts.interface';
 import { API } from '../models/constants/urls.constants';
-import { EmployeeCount } from '../models/employee-count.interface';
-import { ChurnRate } from '../models/churn-rate.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +14,10 @@ export class ChartService {
     return this.httpClient.get<Chart[]>(`${API.HttpBaseURL}/chart/get`);
   }
 
-
   createChart(dataType: string[], roles: string[] ,chartName: string, chartType: string): Observable<any> {
     const queryParams = `?dataType=${dataType}&roles=${roles}&chartName=${chartName}&chartType=${chartType}`;
     return this.httpClient.post(`${API.HttpBaseURL}/chart/create${queryParams}`, {});
   }
-
 
   getChartDataByType(dataType: string[]): Observable<any> {
 

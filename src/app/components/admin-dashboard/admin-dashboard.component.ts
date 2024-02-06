@@ -17,8 +17,9 @@ import { MatSort } from '@angular/material/sort';
 import { FormControl } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { EmployeeCount } from 'src/app/models/employee-count.interface';
-import { ChurnRate } from 'src/app/models/churn-rate.interface';
+import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
+import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
+
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -49,7 +50,7 @@ export class AdminDashboardComponent {
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
   charts: Chart[] = [];
 
-  employeeCount: EmployeeCount = {
+  employeeCount: EmployeeCountDataCard = {
     devsCount: 0,
     designersCount: 0,
     scrumMastersCount:0,
@@ -63,7 +64,7 @@ export class AdminDashboardComponent {
     isIncrease: false
   };
 
-  churnRate: ChurnRate = {
+  churnRate: ChurnRateDataCard = {
     churnRate: 0,
     developerChurnRate: 0,
     designerChurnRate: 0,
