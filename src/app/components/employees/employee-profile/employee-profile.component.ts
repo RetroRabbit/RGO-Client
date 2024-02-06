@@ -254,13 +254,9 @@ export class EmployeeProfileComponent {
   updateProfileProgress(progress: any) {
     this.profileFormProgress = progress;
     this.overallProgress();
-    if(this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney()){
-      console.log("Admin")
+    if(this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney())
       this.getSelectedEmployee();
-    }
-    else{      
-      console.log("Employee")
+    else
       this.getSimpleEmployee();
-    }
   }
 }

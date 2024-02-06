@@ -842,7 +842,6 @@ export class AccordionProfileComponent {
 
   cancelAdditionalEdit() {
     this.editAdditional = false;
-    // this.additionalInfoForm.reset();
     this.initializeForm();
     this.additionalInfoForm.disable();
   }
