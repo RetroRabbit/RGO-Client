@@ -95,7 +95,7 @@
                                             (input)="filterEmployees($event)">
                                         <mat-option *ngFor="let employee of filteredEmployees"
                                             [value]="employee.name + ' ' + employee.surname"
-                                            (onSelectionChange)="getId(employee, 'employee')">
+                                            (onSelectionChange)="getId(employee, 'teamLead')">
                                             {{ employee.name }} {{ employee.surname }}</mat-option>
                                     </mat-autocomplete>
                                     <ng-template #NonAdminTeamLeadInput>

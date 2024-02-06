@@ -234,12 +234,12 @@ export class AccordionProfileComponent {
   checkEmployeeDetails() {
     
     if(this.usingProfile)
-      this.checkEmployeeDetailsUsingEmployees()
+      this.checkEmployeeDetailsUsingEmployeeProfile()
     else
-      this.checkEmployeeDetailsNotUsingEmployees()
+      this.checkEmployeeDetailsNotUsingEmployeeProfile()
   }
   
-  checkEmployeeDetailsUsingEmployees(){
+  checkEmployeeDetailsUsingEmployeeProfile(){
     this.foundTeamLead = this.employees.find((data: any) => {
       return data.id == this.employeeProfile!.employeeProfile.teamLead
     });
@@ -269,7 +269,7 @@ export class AccordionProfileComponent {
     }    
   }
   
-  checkEmployeeDetailsNotUsingEmployees(){
+  checkEmployeeDetailsNotUsingEmployeeProfile(){
     if(this.employeeProfile.simpleEmployee.teamLeadId !== null){
       this.foundTeamLead = this.employeeProfile.simpleEmployee.teamLeadId;
       this.employeeDetailsForm.get('teamLead')?.setValue(this.employeeProfile.simpleEmployee.teamLeadName);
@@ -307,7 +307,6 @@ export class AccordionProfileComponent {
         + 24 * 60 * 60 * 1000
       ).toISOString();
       this.employeeProfileDto.gender = personalDetailsForm.gender;
-      
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Employee details updated", "snack-success");
@@ -358,14 +357,19 @@ export class AccordionProfileComponent {
   }
 
   getId(data: any, name: string) {
-    if (name == 'employee') {
-      this.employeeProfile.employeeProfile.id = data.id;
-    }
-    else if (name == 'client') {
-      this.clientId = data.id;
-    }
-    else if (name == 'champion') {
-      this.peopleChampionId = data.id;
+    switch (name) {
+      case 'teamLead':
+        this.employeeProfile.employeeProfile.teamLead = data.id;
+        break;
+      case 'employee':
+        this.employeeProfile.employeeProfile.id = data.id;
+        break;
+      case 'client':
+        this.clientId = data.id;
+        break;
+      case 'champion':
+        this.peopleChampionId = data.id;
+        break;
     }
   }
 
