@@ -1,4 +1,4 @@
-export interface EmployeeCount{
+export interface EmployeeCountDataCard{
     devsCount: number,
     designersCount: number,
     scrumMastersCount: number,

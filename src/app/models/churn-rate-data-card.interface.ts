@@ -1,4 +1,4 @@
-export interface ChurnRate {
+export interface ChurnRateDataCard {
   churnRate: number;
   developerChurnRate: number,
   designerChurnRate: number,
