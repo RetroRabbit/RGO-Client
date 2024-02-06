@@ -79,7 +79,7 @@
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
-  
+
   letter-spacing: 0.1px;
   text-transform: capitalize;
 }
@@ -104,7 +104,7 @@
 
 .mat-icon{
   color:#0029C6;
-} 
+}
 
 #search-field {
   background-color: #d7dfffff;
@@ -237,4 +237,15 @@ mat-header-row {
   background-color: #1D1B201F !important;
   color: #1D1B201F !important;
   border-color: #1D1B201F !important;
+}
+
+:host {
+  .p-checkbox .p-checkbox-box {
+    border-radius: 0px !important;
+    border: 2px solid #000000;
+  }
+}
+
+.justify-edit-end {
+  justify-content: flex-end;
 }
