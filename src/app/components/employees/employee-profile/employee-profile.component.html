@@ -234,7 +234,7 @@
             </div>
         </div>
         <div id="accordions-body`" class="row" *ngIf="employeeProfile">
-            <app-accordion-profile [hidden]="selectedAccordion != 'Profile Details'" [employeeProfile]="{employeeProfile: employeeProfile, simpleEmployee: simpleEmployee}" (updateProfile)="updateProfileProgress($event)"></app-accordion-profile>
+            <app-accordion-profile [hidden]="selectedAccordion != 'Profile Details'" [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}" (updateProfile)="updateProfileProgress($event)"></app-accordion-profile>
             <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile" (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
             <app-accordion-documents [hidden]="selectedAccordion != 'Documents'"[employeeProfile]="employeeProfile" (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents>
         </div>
