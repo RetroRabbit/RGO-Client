@@ -31,7 +31,7 @@ export class ManageFieldCodeComponent {
   @ViewChild('dataTable') dataTable: Table | undefined = undefined;
   filterText: string = '';
   isUnique?: boolean = true;
-  
+
   activeTab: number = 0;
   selectedFields: number = 0;
   activeFields: number = 0;
@@ -123,7 +123,8 @@ export class ManageFieldCodeComponent {
         status: parseInt(fieldCode.status),
         internal: fieldCode.internal,
         internalTable: fieldCode.internalTable,
-        options: optionsArray
+        options: optionsArray,
+        required: fieldCode.required
       };
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
@@ -168,7 +169,7 @@ export class ManageFieldCodeComponent {
   filterData() {
     const filterValue = this.filterText.trim().toLowerCase();
     this.dataSource.filter = filterValue;
-  
+
     if (this.filterText === "") {
       this.activeFieldsSearch = 0;
       this.archiveFieldsSearch = 0;
@@ -184,7 +185,7 @@ export class ManageFieldCodeComponent {
       });
     }
   }
-  
+
 
   onSearch(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
@@ -209,7 +210,7 @@ export class ManageFieldCodeComponent {
     this.activeTab = tabIndex;
     this.filteredFieldCodes = this.fieldCodes.filter(fieldCode => fieldCode.status == this.activeTab);
     this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
-    this.dataSource._updateChangeSubscription(); 
+    this.dataSource._updateChangeSubscription();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.paginator.pageIndex = 0;
