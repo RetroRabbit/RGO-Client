@@ -34,6 +34,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { TableModule } from 'primeng/table';
+import { CheckboxModule } from 'primeng/checkbox';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -166,6 +167,7 @@ import { LoadingComponentComponent } from './components/shared-components/loadin
     NgxFileDropModule,
     MatStepperModule,
     TableModule,
+    CheckboxModule,
     MatPaginatorModule,
     MatSortModule,
     MatButtonToggleModule,

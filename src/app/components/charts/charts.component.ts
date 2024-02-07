@@ -45,7 +45,7 @@ export class ChartComponent implements OnInit {
 
   selectedChartIndex: number = -1;
   constructor(private chartService: ChartService, private cookieService: CookieService, public dialog: MatDialog, private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document, private employeeProfile: EmployeeService, private snackBarService: SnackbarService,
+    @Inject(DOCUMENT) private document: Document, private employeeService: EmployeeService, private snackBarService: SnackbarService,
     navService: HideNavService) {
       navService.showNavbar = true;
      }
@@ -160,7 +160,7 @@ export class ChartComponent implements OnInit {
   }
 
   getNumberOfEmployees(): void {
-    this.chartService.getTotalEmployees().subscribe({
+    this.employeeService.getTotalEmployees().subscribe({
       next: data => {
         this.numberOfEmployees = data;
       }
@@ -234,7 +234,7 @@ export class ChartComponent implements OnInit {
   }
 
   fetchPeopleChampionEmployees() {
-    this.employeeProfile.filterEmployeesByType("People Champion").subscribe({
+    this.employeeService.filterEmployeesByType("People Champion").subscribe({
       next: (employees: EmployeeProfile[]) => {
         employees.forEach((employee) => {
           if (employee.id) {
