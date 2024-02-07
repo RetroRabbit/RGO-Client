@@ -223,8 +223,8 @@ export class AccordionDocumentsComponent {
   }
 
   disableDownload(index : number){
-    const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
-    if(docObj?.status == 2 || docObj?.status == 3){
+    const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
+    if(documentObject?.status == 2 || documentObject?.status == 3){
       return false;
     }
     return true;
