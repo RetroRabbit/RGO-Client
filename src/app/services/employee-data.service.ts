@@ -8,19 +8,22 @@ import { EmployeeData } from '../models/employee-data.interface';
   providedIn: 'root'
 })
 export class EmployeeDataService {
-
-  constructor(private httpClient: HttpClient) { }
+  baseUrl: string;
+  
+  constructor(private httpClient: HttpClient) { 
+    this.baseUrl =`${API.HttpsBaseURL}/employee-data`
+  }
 
   getEmployeeData(employeeId: number | undefined): Observable<EmployeeData[]>{
     const queryParams = `?id=${employeeId}`;
-    return this.httpClient.get<EmployeeData[]>(`${API.HttpsBaseURL}/employeedata/get${queryParams}`);
+    return this.httpClient.get<EmployeeData[]>(`${this.baseUrl}${queryParams}`);
   }
 
   updateEmployeeData(employeeData: EmployeeData): Observable<EmployeeData>{
-    return this.httpClient.put<EmployeeData>(`${API.HttpsBaseURL}/employeedata/update`, employeeData)
+    return this.httpClient.put<EmployeeData>(`${this.baseUrl}`, employeeData)
   }
 
   saveEmployeeData(employeeData: any): Observable<EmployeeData>{
-    return this.httpClient.post<EmployeeData>(`${API.HttpsBaseURL}/employeedata/save`, employeeData)
+    return this.httpClient.post<EmployeeData>(`${this.baseUrl}`, employeeData)
   }
 }

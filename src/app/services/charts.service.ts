@@ -8,20 +8,19 @@ import { API } from '../models/constants/urls.constants';
   providedIn: 'root'
 })
 export class ChartService {
-  constructor(private httpClient: HttpClient) { }
-
-  getAllCharts(): Observable<Chart[]> {
-    return this.httpClient.get<Chart[]>(`${API.HttpBaseURL}/chart/get`);
+  baseUrl: string;
+    
+  constructor(private httpClient: HttpClient) { 
+      this.baseUrl =`${API.HttpsBaseURL}/charts`
   }
 
+  getAllCharts(): Observable<Chart[]> {
+    return this.httpClient.get<Chart[]>(`${this.baseUrl}`);
+  }
 
   createChart(dataType: string[], roles: string[] ,chartName: string, chartType: string): Observable<any> {
     const queryParams = `?dataType=${dataType}&roles=${roles}&chartName=${chartName}&chartType=${chartType}`;
-    return this.httpClient.post(`${API.HttpBaseURL}/chart/create${queryParams}`, {});
-  }
-
-  getTotalEmployees(): Observable<number> {
-    return this.httpClient.get<number>(`${API.HttpBaseURL}/chart/employees/total`);
+    return this.httpClient.post(`${this.baseUrl}${queryParams}`, {});
   }
 
   getChartDataByType(dataType: string[]): Observable<any> {
@@ -30,26 +29,26 @@ export class ChartService {
 
     const queryParams = `?dataTypes=${dataTypeString}`;
 
-    return this.httpClient.get<any>(`${API.HttpBaseURL}/chart/data/${queryParams}`);
+    return this.httpClient.get<any>(`${this.baseUrl}/data/${queryParams}`);
   }
 
 
   updateChart(dataType: Chart): Observable<Chart> {
-    return this.httpClient.put<Chart>(`${API.HttpBaseURL}/chart/update`, dataType);
+    return this.httpClient.put<Chart>(`${this.baseUrl}`, dataType);
   }
 
   deleteChart(chartId: number): Observable<any> {
     const queryParams = `?Id=${chartId}`;
-    return this.httpClient.delete<any>(`${API.HttpBaseURL}/chart/delete${queryParams}`);
+    return this.httpClient.delete<any>(`${this.baseUrl}${queryParams}`);
   }
 
   getColumns(): Observable<string[]> {
-    return this.httpClient.get<string[]>(`${API.HttpBaseURL}/chart/column`);
+    return this.httpClient.get<string[]>(`${this.baseUrl}/column`);
   }
 
   downloadCSV(dataTypes: string[]): Observable<ArrayBuffer> {
     const queryParams = `?dataTypes=${dataTypes}`;
-    return this.httpClient.get(`${API.HttpBaseURL}/chart/report/export${queryParams}`, {
+    return this.httpClient.get(`${this.baseUrl}/report/export${queryParams}`, {
       responseType: 'arraybuffer'
     });
   }
