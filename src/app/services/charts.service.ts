@@ -32,7 +32,6 @@ export class ChartService {
     return this.httpClient.get<any>(`${this.baseUrl}/data/${queryParams}`);
   }
 
-
   updateChart(dataType: Chart): Observable<Chart> {
     return this.httpClient.put<Chart>(`${this.baseUrl}`, dataType);
   }

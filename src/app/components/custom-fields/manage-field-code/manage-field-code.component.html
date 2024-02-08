@@ -33,14 +33,21 @@
         Move To Active {{selectedFieldCodes.length == 0 ? '' :"(" + selectedFieldCodes.length + ")"}}
       </button>
     </div>
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
+      'background-color': '#D7DFFF',
+      'border': '2px solid #D7DFFF',
+      'border-radius': '2rem',
+      'height': '80vh',
+      width: '100%',
+    }"/>
     <div id="table-body" class="row">
       <div class="card px-0">
         <div class="table-responsive p-0 m-0">
-          <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+          <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" *ngIf="!isLoading">
             <ng-container matColumnDef="id">
               <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
               <mat-cell *matCellDef="let element">
-                <mat-checkbox color="primary"   id="selected-row" (change)="onRowSelect(element)">{{ element.id }}</mat-checkbox>
+                <p-checkbox label="{{element.id}}" name="selected-row" value="{{element.id}}" [(ngModel)]="element.isSelected" (onChange)="onRowSelect(element)"></p-checkbox>
               </mat-cell>
             </ng-container>
 
@@ -61,7 +68,7 @@
 
             <ng-container matColumnDef="edit">
               <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
-              <mat-cell *matCellDef="let element">
+              <mat-cell *matCellDef="let element" class="justify-edit-end">
                 <button *ngIf="activeTab == 0;" id="cancel-button" class="mt-1" (click)="editField(element)">
                   <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
                   Edit

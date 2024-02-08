@@ -1,31 +1,51 @@
-<app-loading-component *ngIf="isLoading"></app-loading-component>
+<ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+    'background-color': '#D7DFFF',
+    'border': '2px solid #D7DFFF',
+    'border-radius': '4rem',
+    'padding': '2rem',
+    'margin': '2rem',
+    'top': '10px',
+    'height': '80vh',
+    width: '100%',
+  }"/>
 <div *ngIf="!isLoading" class="container mt-4">
     <div *ngIf="!showDetailedEntry;else ShowDetails">
-        <p-table *ngIf="pendingBankApplications.length > 0;else NoBankApplications" [value]="pendingBankApplications"
-            [tableStyle]="{ 'min-width': '50rem' }">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Employee</th>
-                    <th>Bank Name</th>
-                    <th>Account Type</th>
-                    <th>Status</th>
-                    <th>Edit</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-entry>
-                <tr>
-                    <td>{{ entry.employee?.name }} ({{entry.employee?.initials}}) {{ entry.employee?.surname }}</td>
-                    <td>{{ entry?.bankName }}</td>
-                    <td>{{ entry?.accountType == 1 ? 'Savings' : 'Cheque' }}</td>
-                    <td>{{ entry?.status == 1 ? 'Pending' : 'Approved' }}</td>
-                    <td>
-                        <button mat-raised-button (click)="viewEntry(entry)" id="edit-icon-button">
+        <ng-container *ngIf="pendingBankApplications.length > 0; else NoBankApplications">
+            <table mat-table [dataSource]="pendingBankApplications" class="mat-elevation-z8" [style.min-width]="'50rem'">
+
+                <ng-container matColumnDef="employee">
+                    <th mat-header-cell *matHeaderCellDef> Employee </th>
+                    <td mat-cell *matCellDef="let entry"> {{ entry.employee?.name }} ({{entry.employee?.initials}}) {{ entry.employee?.surname }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="bankName">
+                    <th mat-header-cell *matHeaderCellDef> Bank Name </th>
+                    <td mat-cell *matCellDef="let entry"> {{ entry?.bankName }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="accountType">
+                    <th mat-header-cell *matHeaderCellDef> Account Type </th>
+                    <td mat-cell *matCellDef="let entry"> {{ entry?.accountType == 1 ? 'Savings' : 'Cheque' }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let entry"> {{ entry?.status == 1 ? 'Pending' : 'Approved' }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="edit">
+                    <th mat-header-cell *matHeaderCellDef> Edit </th>
+                    <td mat-cell *matCellDef="let entry">
+                        <button mat-icon-button (click)="viewEntry(entry)" id="edit-icon-button">
                             <mat-icon matSuffix id="edit-icon">edit</mat-icon>
                         </button>
                     </td>
-                </tr>
-            </ng-template>
-        </p-table>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="['employee', 'bankName', 'accountType', 'status', 'edit']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['employee', 'bankName', 'accountType', 'status', 'edit'];"></tr>
+            </table>
+        </ng-container>
         <ng-template #NoBankApplications>
             <div style="text-align: center;">
                 <h1>No pending application</h1>
