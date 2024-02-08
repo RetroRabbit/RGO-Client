@@ -45,7 +45,6 @@ export class EmployeeService {
   }
 
   getTotalEmployees(): Observable<number> {
-    // return this.httpClient.get<number>(`$/employee/employees/count`);
     return this.httpClient.get<number>(`${API.HttpsBaseURL}/employee/employees/count`);
   }
 

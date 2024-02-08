@@ -100,7 +100,6 @@ export class EmployeeProfileComponent {
     if(this.authAccessService.isAdmin() || 
     this.authAccessService.isSuperAdmin() || 
     this.authAccessService.isJourney() || 
-    this.authAccessService.isJourney() || 
     this.authAccessService.isTalent()){
       this.getSelectedEmployee();
       this.usingSimpleProfile = false;
