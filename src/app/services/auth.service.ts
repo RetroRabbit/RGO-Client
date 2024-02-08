@@ -10,10 +10,15 @@ import { Token } from '../models/token.interface';
   providedIn: 'root'
 })
 export class AuthService {
+  baseUrl: string;
+
   constructor(
     private auth: Auth0.AuthService,
     private client: HttpClient,
-    private store: Store<{ app: Token }>) { }
+    private store: Store<{ app: Token }>) 
+    { 
+      this.baseUrl =`${API.HttpsBaseURL}/auth`
+    }
 
   isAuthenticated(): Observable<boolean> {
     return this.auth.isAuthenticated$.pipe(take(1))
@@ -23,7 +28,7 @@ export class AuthService {
     let header: HttpHeaders = new HttpHeaders();
     return this.client
       .post(
-        `${API.HttpsBaseURL}/auth/login?email=${encodeURIComponent(employeeEmail ?? "")}`,
+        `${this.baseUrl}/login?email=${encodeURIComponent(employeeEmail ?? "")}`,
         "",
         { headers: header, responseType: 'text' })
       .pipe(
@@ -42,7 +47,7 @@ export class AuthService {
     header.append('Content-Type', 'application/json')
     return this.client
       .get(
-        `${API.HttpsBaseURL}/auth/roles?email=${encodeURIComponent(employeeEmail ?? "")}`,
+        `${this.baseUrl}/roles?email=${encodeURIComponent(employeeEmail ?? "")}`,
         { headers: header, responseType: 'text' })
       .pipe(
         map(type => type),
