@@ -309,8 +309,6 @@ export class RoleManagerComponent implements OnInit {
     this.showConfirmDialog = false;
     if (event) {
       this.saveChanges();
-    } else {
-      this.discardChanges();
-    }
+    } 
   }
 }
