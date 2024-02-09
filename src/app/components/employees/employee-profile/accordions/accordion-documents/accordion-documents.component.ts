@@ -205,7 +205,6 @@ export class AccordionDocumentsComponent {
     if(documentObject == null && this.authAccessService.isAdmin() || documentObject == null && this.authAccessService.isSuperAdmin() ){
       return false;
     }
-
     else if (documentObject?.status == 3){
       if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
         return false;
