@@ -202,7 +202,7 @@ export class AccordionDocumentsComponent {
 
   disableButton(index: number): boolean {
     const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
-    if(documentObject == null && this.authAccessService.isAdmin() || documentObject == null && this.authAccessService.isSuperAdmin() ){
+    if(documentObject == null && (this.authAccessService.isAdmin() ||  this.authAccessService.isSuperAdmin()) ){
       return false;
     }
 
