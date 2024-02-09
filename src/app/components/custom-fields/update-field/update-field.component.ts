@@ -47,7 +47,6 @@ export class UpdateFieldComponent {
     public hideNavService: HideNavService,
     private systemService: SystemNav) {
       this.selectedFieldCode = systemService.selectedField;
-      console.log(this.selectedFieldCode);
   }
 
   ngOnInit() {

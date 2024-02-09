@@ -86,28 +86,39 @@
                             <div class="col-6 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Team Lead</mat-label>
-                                    <input type="text" placeholder="" matInput formControlName="teamLead"
+                                    <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput" type="text" placeholder="" matInput formControlName="teamLead"
                                         [matAutocomplete]="autoLead" (input)="filterEmployees($event)">
                                     <mat-autocomplete #autoLead="matAutocomplete">
+                                        <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput"
+                                            type="text" placeholder="" matInput formControlName="teamLead"
+                                            [matAutocomplete]="autoLead"
+                                            (input)="filterEmployees($event)">
                                         <mat-option *ngFor="let employee of filteredEmployees"
                                             [value]="employee.name + ' ' + employee.surname"
-                                            (onSelectionChange)="getId(employee, 'employee')">
+                                            (onSelectionChange)="getId(employee, 'teamLead')">
                                             {{ employee.name }} {{ employee.surname }}</mat-option>
                                     </mat-autocomplete>
+                                    <ng-template #NonAdminTeamLeadInput>
+                                        <input matInput type="text" [value]="employeeProfile.simpleEmployee.teamLeadName" [disabled]="true">
+                                    </ng-template>
                                 </mat-form-field>
                             </div>
                             <div class="col-6 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>People's Champion</mat-label>
-                                    <input type="text" placeholder="" matInput formControlName="peopleChampion"
-                                        [matAutocomplete]="autoChampion" (input)="filterChampions($event)">
+                                    <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminPeopleChampionInput" 
+                                    type="text" placeholder="" matInput formControlName="peopleChampion"
+                                    [matAutocomplete]="autoChampion" (input)="filterChampions($event)">
                                     <mat-autocomplete #autoChampion="matAutocomplete">
                                         <mat-option *ngFor="let peopleChampion of filteredPeopleChamps"
                                             [value]="peopleChampion.name + ' ' + peopleChampion.surname"
                                             (onSelectionChange)="getId(peopleChampion, 'champion')">
                                             {{ peopleChampion.name }}
                                             {{ peopleChampion.surname }}</mat-option>
-                                    </mat-autocomplete>
+                                        </mat-autocomplete>
+                                        <ng-template #NonAdminPeopleChampionInput>
+                                            <input matInput type="text" [value]="employeeProfile.simpleEmployee.peopleChampionName ?? 'Unassigned'" [disabled]="true">
+                                        </ng-template>
                                 </mat-form-field>
                             </div>
                             <div class="col-6 my-2">
@@ -163,14 +174,14 @@
                     <mat-icon class="mx-1">error</mat-icon> Missing information
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <form [formGroup]="personalDetailsForm" (submit)="savePersonalEdit()">
+            <form [formGroup]="personalDetailsForm">
                 <div class="row">
                     <div class="col-10">
                         <div class="row">
                             <div class="col-12 my-2">
                                 <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
                                 <mat-radio-group aria-label="Select your gender" formControlName="gender"
-                                    [value]="employeeProfile?.gender">
+                                    [value]="employeeProfile.employeeDetails.gender">
                                     <mat-radio-button [value]=1>Male</mat-radio-button>
                                     <mat-radio-button [value]=2>Female</mat-radio-button>
                                     <mat-radio-button [value]=0>Unclassified</mat-radio-button>
