@@ -9,6 +9,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
 @Component({
   selector: 'app-accordion-documents',
   templateUrl: './accordion-documents.component.html',
@@ -40,7 +42,8 @@ export class AccordionDocumentsComponent {
     private snackBarService: SnackbarService,
     private employeeRoleService: EmployeeRoleService,
     private employeeProfileService: EmployeeProfileService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private authAccessService: AuthAccessService
   ) { }
 
   ngOnInit() {
@@ -118,7 +121,8 @@ export class AccordionDocumentsComponent {
         fileName: document.fileName,
         file: this.base64String,
         fileCategory: document.fileCategory,
-        uploadDate: document.uploadDate
+        uploadDate: document.uploadDate,
+        status: document.status
       }
       this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
         next: () => {
@@ -143,6 +147,7 @@ export class AccordionDocumentsComponent {
       });
     }
   }
+  
   buildDocumentDto() {
     const existingValue = this.filterDocumentsByCategory();
     if (this.selectedFile) {
@@ -156,7 +161,7 @@ export class AccordionDocumentsComponent {
           fileName: this.documentsFileName,
           fileCategory: +this.uploadButtonIndex,
           blob: this.base64String,
-          status: 1,
+          status: this.authAccessService.isAdmin() ? 3 :1,
           uploadDate: new Date(),
           reason: '',
         };
@@ -176,29 +181,35 @@ export class AccordionDocumentsComponent {
   }
 
   getFileName(index: number): EmployeeDocument {
-    var docObj = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
-    return docObj;
+    var documentObject = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
+    return documentObject;
   }
 
   downloadDocument(event: any) {
     const id = event.srcElement.parentElement.id;
-    const docObj = this.employeeDocuments.find(document => document.fileCategory == id) as any;
-    if (docObj === undefined) {
+    const documentObject = this.employeeDocuments.find(document => document.fileCategory == id) as any;
+    if (documentObject === undefined) {
       // TODO: download clean slate form
     }
     else {
-      if (docObj.status == 2) {
+      if (documentObject.status == 2) {
         // TODO: download clean slate form
       } else {
-        this.downloadFile(docObj?.blob as string, docObj?.fileName as string);
+        this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
       }
     }
   }
 
   disableButton(index: number): boolean {
-    const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
-    if (docObj == undefined || docObj?.status == 2) {
+    const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
+    if(documentObject == null && (this.authAccessService.isAdmin() ||  this.authAccessService.isSuperAdmin()) ){
       return false;
+    }
+    else if (documentObject?.status == 3){
+      if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
+        return false;
+      }else{
+      }
     }
     return true;
   }
@@ -210,13 +221,9 @@ export class AccordionDocumentsComponent {
     this.updateDocument.emit(this.documentFormProgress);
   }
 
-  isAdmin(): boolean {
-    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
-  }
-
   disableDownload(index : number){
-    const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
-    if(docObj?.status == 2 || docObj?.status == 3){
+    const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
+    if(documentObject?.status == 2 || documentObject?.status == 3){
       return false;
     }
     return true;

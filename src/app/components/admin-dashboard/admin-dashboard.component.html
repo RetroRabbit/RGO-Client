@@ -14,7 +14,7 @@
   </div>
 
   <div id="new-hire">
-    <button class="my-4" (click)="AddNewHire($event)" *ngIf="isAdmin()">+ Add Employee</button>
+    <button class="my-4" (click)="AddNewHire($event)" *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">+ Add Employee</button>
   </div>
 </div>
 
