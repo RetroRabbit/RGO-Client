@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { EmployeeState } from '../../store/reducers/employee.reducer';
 import { CookieService } from 'ngx-cookie-service';
 import { map } from 'rxjs';
+import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,6 @@ export class EmployeeProfileService {
 
   GetEmployeeProfile(): Observable<EmployeeProfile> {
     let result = this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/get`);
-    console.log(result)
     return result;
   }
 
@@ -58,5 +58,10 @@ export class EmployeeProfileService {
   getEmployeeById(id: number): Observable<EmployeeProfile> {
     const queryParams = `?id=${id}`;
     return this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/id${queryParams}`);
+  }
+
+  getSimpleEmployee(employeeEmail : string): Observable<SimpleEmployee> {
+    const queryParams = `?employeeEmail=${employeeEmail}`;
+    return this.client.get<SimpleEmployee>(`${API.HttpsBaseURL}/employee/simple-profile/${queryParams}`);
   }
 }

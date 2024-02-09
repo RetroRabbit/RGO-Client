@@ -21,7 +21,6 @@ export class ConvertToPdfService {
 
     const base64Pdf = pdf.output('datauristring');
 
-    // Extract base64 data without the metadata
     const base64Data = base64Pdf.split(',')[1];
     return base64Data;
   }
