@@ -18,6 +18,10 @@ import { FormControl } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
+import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
+
+
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -41,10 +45,36 @@ export class AdminDashboardComponent {
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
   loadCounter: number = 0;
+  totalNumberOfEmployees: number = 0;
+ 
 
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
   charts: Chart[] = [];
 
+  employeeCount: EmployeeCountDataCard = {
+    devsCount: 0,
+    designersCount: 0,
+    scrumMastersCount:0,
+    businessSupportCount: 0,
+    devsOnBenchCount: 0,
+    designersOnBenchCount: 0,
+    scrumMastersOnBenchCount: 0,
+    totalNumberOfEmployeesOnBench: 0,
+    billableEmployeesPercentage: 0,
+    employeeTotalDifference: 0,
+    isIncrease: false
+  };
+
+  churnRate: ChurnRateDataCard = {
+    churnRate: 0,
+    developerChurnRate: 0,
+    designerChurnRate: 0,
+    scrumMasterChurnRate: 0,
+    businessSupportChurnRate: 0,
+    month: '',
+    year: 0,
+  };
+  
   selectedItem: string = 'Dashboard';
   displayAllEmployees: boolean = false;
   roles: string[] = [];
@@ -134,6 +164,24 @@ export class AdminDashboardComponent {
         this.loadCounter++;
       }
     });
+
+    this.employeeService.getTotalEmployees().subscribe({
+      next: (data: any) => {
+        this.totalNumberOfEmployees= data;
+      }
+    });
+
+    this.employeeService.getDevsDesignerCount().subscribe({
+      next: (data:any) => {
+        this.employeeCount= data
+      }
+    });
+
+      this.employeeService.getChurnRate().subscribe({
+        next: (data:any) => {
+          this.churnRate = data
+        }
+      });
   }
 
   CaptureEvent(event: any) {
@@ -252,7 +300,11 @@ export class AdminDashboardComponent {
       this.snackBarService.showSnackbar("Missing chart category", "snack-error");
       return;
     }
-
+    if(this.selectedTypes.length < 1){
+      this.snackBarService.showSnackbar("Missing chart category", "snack-error");
+      return;
+    }
+    
     let combinedChartName = this.chartName;
     if (this.selectedTypes.length > 0) {
       combinedChartName += ` - ${this.selectedTypes.join(', ')}`;

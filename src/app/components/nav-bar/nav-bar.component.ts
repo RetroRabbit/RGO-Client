@@ -17,7 +17,6 @@ import { EmployeeService } from 'src/app/services/employee/employee.service';
 })
 export class NavBarComponent {
   [x: string]: any;
-
   title = 'HRIS';
   showNav = this.hideNavService.showNavbar;
   screenWidth!: number;
@@ -30,7 +29,7 @@ export class NavBarComponent {
     id: 0,
     name: '',
   };
-
+  isLoading: boolean = false;
   showConfirmDialog: boolean = false;
   dialogTypeData: Dialog = {
     type: '',
@@ -62,18 +61,20 @@ export class NavBarComponent {
     const userEmail = this.cookieService.get('userEmail');
     this.roles = Object.keys(JSON.parse(types));
 
-    this.employeeProfileService
-      .getSimpleEmployee(this.authAccessService.getEmployeeEmail())
-      .subscribe({
-        //this.employeeProfileService.GetEmployeeProfileByEmail(userEmail).subscribe({
-        next: (data) => {
-          this.employeeProfile = data;
-          this.profileImage = this.employeeProfile.photo;
-          this.employeeType = this.employeeProfile.employeeType;
-          this.cookieService.set('userId', String(this.employeeProfile.id));
-          this.authAccessService.setUserId(Number(this.employeeProfile.id));
-        },
-      });
+    this.isLoading = true; 
+      this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
+      next: (data) => {
+        this.employeeProfile = data;
+        this.profileImage = this.employeeProfile.photo;
+        this.employeeType = this.employeeProfile.employeeType;
+        this.cookieService.set("userId", String(this.employeeProfile.id));
+        this.isLoading = false;
+        this.authAccessService.setUserId(Number(this.employeeProfile.id));
+      },
+      error: (error) => {
+        this.isLoading = false;
+      }
+    });
 
     this.chartService.getAllCharts().subscribe({
       next: (data: any) => (this.charts = data),
@@ -95,13 +96,7 @@ export class NavBarComponent {
   changeNav(route: string) {
     if (this.hideNavService.unsavedChanges) {
       this.tempRoute = route;
-      this.dialogTypeData = {
-        type: 'save',
-        title: 'Discard unsaved changes?',
-        subtitle: '',
-        confirmButtonText: 'DISCARD',
-        denyButtonText: 'BACK',
-      };
+      this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
 
       this.showConfirmDialog = true;
     } else {

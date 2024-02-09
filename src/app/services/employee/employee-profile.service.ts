@@ -62,6 +62,6 @@ export class EmployeeProfileService {
 
   getSimpleEmployee(employeeEmail : string): Observable<SimpleEmployee> {
     const queryParams = `?employeeEmail=${employeeEmail}`;
-    return this.client.get<SimpleEmployee>(`${API.HttpsBaseURL}/employee/getSimple/${queryParams}`);
+    return this.client.get<SimpleEmployee>(`${API.HttpsBaseURL}/employee/simple-profile/${queryParams}`);
   }
 }

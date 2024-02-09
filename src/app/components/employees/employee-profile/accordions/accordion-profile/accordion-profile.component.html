@@ -89,9 +89,13 @@
                                     <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput" type="text" placeholder="" matInput formControlName="teamLead"
                                         [matAutocomplete]="autoLead" (input)="filterEmployees($event)">
                                     <mat-autocomplete #autoLead="matAutocomplete">
+                                        <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput"
+                                            type="text" placeholder="" matInput formControlName="teamLead"
+                                            [matAutocomplete]="autoLead"
+                                            (input)="filterEmployees($event)">
                                         <mat-option *ngFor="let employee of filteredEmployees"
                                             [value]="employee.name + ' ' + employee.surname"
-                                            (onSelectionChange)="getId(employee, 'employee')">
+                                            (onSelectionChange)="getId(employee, 'teamLead')">
                                             {{ employee.name }} {{ employee.surname }}</mat-option>
                                     </mat-autocomplete>
                                     <ng-template #NonAdminTeamLeadInput>
@@ -177,7 +181,7 @@
                             <div class="col-12 my-2">
                                 <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
                                 <mat-radio-group aria-label="Select your gender" formControlName="gender"
-                                    [value]="employeeProfile?.employeeProfile?.gender">
+                                    [value]="employeeProfile.employeeDetails.gender">
                                     <mat-radio-button [value]=1>Male</mat-radio-button>
                                     <mat-radio-button [value]=2>Female</mat-radio-button>
                                     <mat-radio-button [value]=0>Unclassified</mat-radio-button>

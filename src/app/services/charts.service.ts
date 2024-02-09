@@ -14,14 +14,9 @@ export class ChartService {
     return this.httpClient.get<Chart[]>(`${API.HttpBaseURL}/chart/get`);
   }
 
-
   createChart(dataType: string[], roles: string[] ,chartName: string, chartType: string): Observable<any> {
     const queryParams = `?dataType=${dataType}&roles=${roles}&chartName=${chartName}&chartType=${chartType}`;
     return this.httpClient.post(`${API.HttpBaseURL}/chart/create${queryParams}`, {});
-  }
-
-  getTotalEmployees(): Observable<number> {
-    return this.httpClient.get<number>(`${API.HttpBaseURL}/chart/employees/total`);
   }
 
   getChartDataByType(dataType: string[]): Observable<any> {
@@ -32,7 +27,6 @@ export class ChartService {
 
     return this.httpClient.get<any>(`${API.HttpBaseURL}/chart/data/${queryParams}`);
   }
-
 
   updateChart(dataType: Chart): Observable<Chart> {
     return this.httpClient.put<Chart>(`${API.HttpBaseURL}/chart/update`, dataType);

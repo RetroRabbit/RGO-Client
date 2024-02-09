@@ -34,6 +34,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { TableModule } from 'primeng/table';
+import { CheckboxModule } from 'primeng/checkbox';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -63,14 +64,13 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 import { PendingBankDetailsComponent } from './components/employees/pending-bank-details/pending-bank-details.component';
 import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
 import { ManageEmployeeEventsComponent } from './components/manage-employee-events/manage-employee-events.component';
 import { AddEmployeeEventComponent } from './components/manage-employee-events/add-employee-event/add-employee-event.component';
 import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
-
-
 
 import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -80,7 +80,6 @@ import { AccordionProfileComponent } from './components/employees/employee-profi
 import { AccordionBankingComponent } from './components/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
 import { AccordionDocumentsComponent } from './components/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
-
 
 @NgModule({
   declarations: [
@@ -127,10 +126,10 @@ import { LoadingComponentComponent } from './components/shared-components/loadin
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),
     AuthModule.forRoot({
-      domain: environment.AUTH0_Domain_key, // domain
-      clientId: environment.AUTH0_CLIENT_ID, // clientId
+      domain: environment.AUTH0_Domain_key,
+      clientId: environment.AUTH0_CLIENT_ID,
       authorizationParams: {
-        redirect_uri: 'http://localhost:4200', //window.location.origin //env redirect uri
+        redirect_uri: 'http://localhost:4200',
       },
     }),
     HttpClientModule,
@@ -168,10 +167,12 @@ import { LoadingComponentComponent } from './components/shared-components/loadin
     NgxFileDropModule,
     MatStepperModule,
     TableModule,
+    CheckboxModule,
     MatPaginatorModule,
     MatSortModule,
     MatButtonToggleModule,
     DragDropModule,
+    NgxSkeletonLoaderModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
