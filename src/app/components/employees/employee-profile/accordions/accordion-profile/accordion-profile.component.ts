@@ -14,7 +14,7 @@ import { provinces } from 'src/app/models/constants/provinces.constants';
 import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
-import { EmployeeDataService } from 'src/app/services/employee-data.service';
+import { EmployeeDataService } from 'src/app/services/employee/employee-data.service';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
 import { ClientService } from 'src/app/services/client.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { API } from '../models/constants/urls.constants';
-import { EmployeeData } from '../models/employee-data.interface';
+import { API } from '../../models/constants/urls.constants';
+import { EmployeeData } from '../../models/employee-data.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -26,4 +26,8 @@ export class EmployeeDataService {
   saveEmployeeData(employeeData: any): Observable<EmployeeData>{
     return this.httpClient.post<EmployeeData>(`${this.baseUrl}`, employeeData)
   }
+
+  deleteEmployeeDocument(employeeDataId: number): Observable<EmployeeData> {
+    return this.httpClient.delete<EmployeeData>(`${this.baseUrl}/${employeeDataId}`);
+}
 }

@@ -58,15 +58,11 @@ export class EmployeeService {
     return this.httpClient.get<number>(`${this.baseUrl}/count`);
   }
 
-  getTotalEmployees(): Observable<number> {
-    return this.httpClient.get<number>(`${API.HttpBaseURL}/employee/employees/count`);
-  }
-
   getChurnRate(): Observable<ChurnRateDataCard> {
-    return this.httpClient.get<ChurnRateDataCard>(`${API.HttpBaseURL}/employee/employees/churnrate`);
+    return this.httpClient.get<ChurnRateDataCard>(`${this.baseUrl}/churn-rate`);
   }
 
   getDevsDesignerCount(): Observable<EmployeeCountDataCard> {
-    return this.httpClient.get<EmployeeCountDataCard>(`${API.HttpBaseURL}/employee/employees/data/count`);
+    return this.httpClient.get<EmployeeCountDataCard>(`${this.baseUrl}/card-count`);
   }
 }
