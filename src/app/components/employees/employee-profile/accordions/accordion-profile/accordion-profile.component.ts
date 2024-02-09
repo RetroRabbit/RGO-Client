@@ -33,7 +33,7 @@ export class AccordionProfileComponent {
 
   @Output() updateProfile = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
-  
+
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
   employeeTypes: EmployeeType[] = [];
@@ -609,7 +609,7 @@ export class AccordionProfileComponent {
   getEmployeeFieldCodes() {
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: data => {
-        this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id)
+        this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id);
         this.checkAdditionalInformation();
         this.checkAdditionalFormProgress();
         this.totalProfileProgress();
@@ -624,6 +624,9 @@ export class AccordionProfileComponent {
         const customData = this.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
         formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
         this.additionalInfoForm = this.fb.group(formGroupConfig);
+        if (fieldName.required == true) {
+          this.additionalInfoForm.controls[fieldName.code].setValidators(Validators.required);
+        }
         this.additionalInfoForm.disable();
       }
     });
@@ -676,7 +679,7 @@ export class AccordionProfileComponent {
   saveContactEdit() {
     if (this.employeeContactForm.valid) {
       const employeeContactFormValues = this.employeeContactForm.value;
-    
+
       this.employeeProfileDto.personalEmail = employeeContactFormValues.personalEmail;
       this.employeeProfileDto.email = employeeContactFormValues.email;
       this.employeeProfileDto.cellphoneNo = employeeContactFormValues.cellphoneNo;
@@ -796,7 +799,6 @@ export class AccordionProfileComponent {
   }
 
   saveAdditionalEdit() {
-    this.editAdditional = false;
     for (const fieldcode of this.customFields) {
       const found = this.employeeData.find((data) => {
         return fieldcode.id == data.fieldCodeId
@@ -817,8 +819,9 @@ export class AccordionProfileComponent {
             this.checkAdditionalFormProgress();
             this.totalProfileProgress();
             this.additionalInfoForm.disable();
+            this.editAdditional = false;
           },
-          error: (error) => { },
+          error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
         });
       }
       else if (found == null) {
@@ -837,6 +840,7 @@ export class AccordionProfileComponent {
               this.checkAdditionalFormProgress();
               this.totalProfileProgress();
               this.additionalInfoForm.disable();
+              this.editAdditional = false;
             },
             error: (error) => {
               this.snackBarService.showSnackbar(error, "snack-error");
