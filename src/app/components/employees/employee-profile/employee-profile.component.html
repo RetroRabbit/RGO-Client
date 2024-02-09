@@ -1,4 +1,3 @@
-<!-- <app-loading-component *ngIf="isLoading"></app-loading-component> -->
 <div class="container mt-4">
     <div class="w-75 py-3">
         <button mat-button class="btn" id="back-button" (click)="goToEmployees()"
@@ -12,25 +11,33 @@
             <span>Back to Dashboard</span>
         </button>
     </div>
-    <div id="profile-header" class="row p-2">
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+        'background-color': '#D7DFFF',
+        'border': '2px solid #D7DFFF',
+        'border-radius': '2rem',
+        'height': '300px',
+        width: '100%',
+      }">
+    </ngx-skeleton-loader>
+    <div id="profile-header" *ngIf="!isLoading" class="row p-2">
         <div class="col-2 mt-4">
             <div id="profile-image">
-                <img [src]="usingSimpleProfile ? simpleEmployee?.photo : employeeProfile?.photo" alt="">
+                <img [src]="usingSimpleProfile ? simpleEmployee.photo : employeeProfile.photo" alt="">
             </div>
         </div>
         <div class="col-md-8 offset-md-2 offset-lg-0 col-lg-10 mt-4">
             <div class="row mt-3">
                 <div class="col-6 col-md-8" id="header-name">
-                    <h1>{{usingSimpleProfile ? simpleEmployee?.name :employeeProfile?.name}} {{usingSimpleProfile ? simpleEmployee?.surname : employeeProfile?.surname}}</h1>
+                    <h1>{{usingSimpleProfile ? simpleEmployee.name :employeeProfile.name}} {{usingSimpleProfile ? simpleEmployee.surname : employeeProfile.surname}}</h1>
                 </div>
                 <div class="col-6 col-md-4" id="header-email">
                     <div class="row me-4">
-                        <div class="col-auto">{{usingSimpleProfile ? simpleEmployee?.email : employeeProfile?.email}}</div>
+                        <div class="col-auto">{{usingSimpleProfile ? simpleEmployee.email : employeeProfile.email}}</div>
                         <div class="col-1 mt-2" id="header-email-clip"><mat-icon>attachment</mat-icon></div>
                     </div>
                 </div>
                 <div class="col-12 my-2" id="header-role">
-                    {{usingSimpleProfile ? simpleEmployee?.employeeType?.name :employeeProfile?.employeeType?.name}} | Level {{usingSimpleProfile ? simpleEmployee?.level :employeeProfile?.level}}
+                    {{usingSimpleProfile ? simpleEmployee.employeeType?.name :employeeProfile.employeeType?.name}} | Level {{usingSimpleProfile ? simpleEmployee.level :employeeProfile.level}}
                 </div>
                 <div class="col-12 my-2" id="header-based"
                     *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">
@@ -53,7 +60,7 @@
                                 {{employeeTeamLead ? employeeTeamLead.name + ' ' + employeeTeamLead.surname : 'Not assigned'}}
                             </div>
                             <ng-template #NonAdminTeamLead>
-                                {{simpleEmployee?.teamLeadName }}
+                                {{simpleEmployee.teamLeadId ? simpleEmployee.teamLeadName : 'Not assigned'}}
                             </ng-template>
                         </div>
                     </div>
@@ -71,7 +78,7 @@
                                 {{employeePeopleChampion ? employeePeopleChampion.name + ' ' + employeePeopleChampion.surname: 'Not assigned'}}
                             </div>
                             <ng-template #NonAdminPeopleChampion>
-                                {{simpleEmployee?.peopleChampionName}}
+                                {{simpleEmployee.peopleChampionName}}
                             </ng-template>
                         </div>
                     </div>
@@ -85,8 +92,8 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">Client Allocated</div>
-                            <div id="header-value">
-                                {{employeeClient?.name ?? 'Bench'}}
+                            <div id="header-value" *ngIf="employeeClient !== undefined">
+                                {{employeeClient.name ?? 'Bench'}}
                             </div>
                         </div>
                     </div>
@@ -101,10 +108,10 @@
                         <div class="col-9 my-2">
                             <div id="header-label">Start Date</div>
                             <div *ngIf="!usingSimpleProfile;else NonAdminEngagementDate" id="header-value">
-                                {{ employeeProfile?.engagementDate| date:'d MMM yyyy' }}
+                                {{ employeeProfile.engagementDate| date:'d MMM yyyy' }}
                             </div>
                             <ng-template #NonAdminEngagementDate>
-                                {{simpleEmployee?.engagementDate| date:'d MMM yyyy'}}
+                                {{simpleEmployee.engagementDate| date:'d MMM yyyy'}}
                             </ng-template>
                         </div>
                     </div>
@@ -113,7 +120,14 @@
         </div>
     </div>
 
-    <div id="profile-completion" class="row my-4 p-2">
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+        'background-color': '#D7DFFF',
+        'border': '2px solid #D7DFFF',
+        'border-radius': '2rem',
+        'height': '250px',
+        width: '100%',
+      }"/>
+    <div id="profile-completion" *ngIf="!isLoading" class="row my-4 p-2">
         <div class="col-12 mt-2" id="completion-header">
             <div class="row" id="completion-header-container">
                 <div class="col-1">
@@ -124,7 +138,7 @@
                     </div>
                 </div>
                 <div class="col-11 ps-0">
-                    <h4 style="margin:0"> {{usingSimpleProfile ? simpleEmployee?.name :employeeProfile?.name}}'s profile progess </h4>
+                    <h4 style="margin:0"> {{usingSimpleProfile ? simpleEmployee.name :employeeProfile.name}}'s profile progess </h4>
                 </div>
             </div>
         </div>
@@ -168,7 +182,14 @@
         </div>
     </div>
 
-    <div id="profile-accordions">
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+        'background-color': '#D7DFFF',
+        'border': '2px solid #D7DFFF',
+        'border-radius': '2rem',
+        'height': '380px',
+        width: '100%',
+      }"/>
+    <div id="profile-accordions" *ngIf="!isLoading">
         <div id="accordions-nav" class="row">
             <div class="col-4">
                 <div id="nav-item-container" class="col-auto">
@@ -213,7 +234,7 @@
             </div>
         </div>
         <div id="accordions-body`" class="row" *ngIf="employeeProfile">
-            <app-accordion-profile [hidden]="selectedAccordion != 'Profile Details'" [employeeProfile]="{employeeProfile: employeeProfile, simpleEmployee: simpleEmployee}" (updateProfile)="updateProfileProgress($event)"></app-accordion-profile>
+            <app-accordion-profile [hidden]="selectedAccordion != 'Profile Details'" [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}" (updateProfile)="updateProfileProgress($event)"></app-accordion-profile>
             <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile" (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
             <app-accordion-documents [hidden]="selectedAccordion != 'Documents'"[employeeProfile]="employeeProfile" (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents>
         </div>

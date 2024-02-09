@@ -1,11 +1,16 @@
 <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
-<app-loading-component *ngIf="isLoading"></app-loading-component>
-<div *ngIf="!isLoading" class="row">
+<div class="row">
   <div class="col-12 mt-3" id="button-save-container">
-    <button mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save
-      Changes</button>
+    <button mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save Changes</button>
   </div>
-  <table>
+  <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+    'background-color': '#D7DFFF',
+    'border': '2px solid #D7DFFF',
+    'border-radius': '10px',
+    'height': '80vh',
+    width: '100%',
+  }"/>
+  <table *ngIf="!isLoading">
     <thead id="tableheader">
       <th id="table-header" class="px-2">Permissions</th>
       <th *ngFor="let p of roles" id="table-header" class="px-2">

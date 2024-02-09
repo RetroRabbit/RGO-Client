@@ -50,7 +50,6 @@ export class AccordionDocumentsComponent {
     this.getEmployeeDocuments();
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
-    // console.log(this.employeeProfileService.getEmployee);
   }
 
   openFileInput() {
@@ -182,49 +181,34 @@ export class AccordionDocumentsComponent {
   }
 
   getFileName(index: number): EmployeeDocument {
-    var docObj = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
-    return docObj;
+    var documentObject = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
+    return documentObject;
   }
 
   downloadDocument(event: any) {
     const id = event.srcElement.parentElement.id;
-    const docObj = this.employeeDocuments.find(document => document.fileCategory == id) as any;
-    if (docObj === undefined) {
+    const documentObject = this.employeeDocuments.find(document => document.fileCategory == id) as any;
+    if (documentObject === undefined) {
       // TODO: download clean slate form
     }
     else {
-      if (docObj.status == 2) {
+      if (documentObject.status == 2) {
         // TODO: download clean slate form
       } else {
-        this.downloadFile(docObj?.blob as string, docObj?.fileName as string);
+        this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
       }
     }
   }
 
   disableButton(index: number): boolean {
-    const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
-    if(docObj == null && this.authAccessService.isAdmin() || docObj == null && this.authAccessService.isSuperAdmin() ){
-      console.log("1");
+    const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
+    if(documentObject == null && (this.authAccessService.isAdmin() ||  this.authAccessService.isSuperAdmin()) ){
       return false;
     }
-    // else if(docObj?.status == 3 && this.authAccessService.isAdmin()){
-    //   console.log("2");
-    //   return false;
-    // }else if(docObj?.status == 3 && !this.authAccessService.isAdmin()){
-    //   console.log("3");
-    //   return true;
-    // }else if (docObj == undefined || docObj?.status == 2) {
-    //   console.log("4");
-    //   return false;
-    // }
-
-    else if (docObj?.status == 3){
+    else if (documentObject?.status == 3){
       if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
-        console.log("2");
         return false;
       }else{
-        console.log("3");
-        // return true;
       }
     }
     return true;
@@ -238,8 +222,8 @@ export class AccordionDocumentsComponent {
   }
 
   disableDownload(index : number){
-    const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
-    if(docObj?.status == 2 || docObj?.status == 3){
+    const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
+    if(documentObject?.status == 2 || documentObject?.status == 3){
       return false;
     }
     return true;

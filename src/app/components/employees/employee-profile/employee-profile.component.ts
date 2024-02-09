@@ -66,7 +66,7 @@ export class EmployeeProfileComponent {
   previousPage: string = '';
   currentPage: string = '';
 
-  // isLoading: boolean = true;
+  isLoading: boolean = true;
   usingSimpleProfile: boolean = false;
   teamLead : number | null = null;
   PREVIOUS_PAGE = "previousPage";
@@ -100,7 +100,6 @@ export class EmployeeProfileComponent {
     if(this.authAccessService.isAdmin() || 
     this.authAccessService.isSuperAdmin() || 
     this.authAccessService.isJourney() || 
-    this.authAccessService.isJourney() || 
     this.authAccessService.isTalent()){
       this.getSelectedEmployee();
       this.usingSimpleProfile = false;
@@ -128,6 +127,7 @@ export class EmployeeProfileComponent {
         this.employeePhysicalAddress = this.simpleEmployee.physicalAddress!;
         this.employeePostalAddress = this.simpleEmployee.postalAddress!;
         this.filterClients(this.simpleEmployee?.clientAllocatedName as string);
+        this.isLoading = false;
       }, complete: () => {
         this.populateEmployeeAccordion(this.simpleEmployee);
         this.changeDetectorRef.detectChanges();
@@ -142,9 +142,9 @@ export class EmployeeProfileComponent {
         this.employeeProfile = employee;
         this.getEmployeeFields();
         this.filterClients(this.employeeProfile.clientAllocated as string)
+        this.isLoading = false;
       },
       error: (error) => {
-        console.log("ID")
         this.snackBarService.showSnackbar(error, "snack-error");
       },
       complete: () => this.changeDetectorRef.detectChanges()
@@ -160,7 +160,6 @@ export class EmployeeProfileComponent {
       }, complete: () => {
         this.getAllEmployees();
       },error: () => {
-        console.log("ID2")
         this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
       }
     })
@@ -173,15 +172,6 @@ export class EmployeeProfileComponent {
         this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
         this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
         this.filterClients(this.employeeProfile?.clientAllocated as string);
-        // this.clientService.getAllClients().subscribe({
-        //   next: data => {
-        //     this.clients = data;
-        //     this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.clientAllocated)[0];
-        //   }, complete: () => {
-        //     // this.isLoading = false;
-        //     this.changeDetectorRef.detectChanges();
-        //   }
-        // });
       }
     });
   }
@@ -263,9 +253,9 @@ export class EmployeeProfileComponent {
   updateProfileProgress(progress: any) {
     this.profileFormProgress = progress;
     this.overallProgress();
-    if(this.authAccessService.isEmployee())
-      this.getSimpleEmployee();
-    else
+    if(this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney())
       this.getSelectedEmployee();
+    else
+      this.getSimpleEmployee();
   }
 }

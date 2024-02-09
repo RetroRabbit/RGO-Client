@@ -31,11 +31,11 @@
         </div>
       </div>
       <div class="col-6 pr-0 d-flex justify-content-end align-items-center gap-3"
-        *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">
-        <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
-          class="col-lg-4 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
-          <mat-icon>add</mat-icon>
-          <span class="add-employee-span">Add Employee</span>
+        *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()" <button
+        (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
+        class="col-lg-4 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
+        <mat-icon>add</mat-icon>
+        <span class="add-employee-span">Add Employee</span>
         </button>
       </div>
     </div>
@@ -99,6 +99,14 @@
         </span>
       </div>
     </div>
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+      'background-color': '#D6DFFF',
+      'border': '2px solid #D6DFFF',
+      'border-radius': '10px',
+      'height': '60px',
+      width: '100%',
+    }">
+    </ngx-skeleton-loader>
     <div class="d-flex flex-row justify-content-center align-items-center mt-3"
       *ngIf="!isLoading && dataSource.filteredData.length > 0">
       <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">

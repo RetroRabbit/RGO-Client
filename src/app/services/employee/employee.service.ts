@@ -5,6 +5,8 @@ import { Employee } from '../../models/employee.interface';
 import { EmployeeProfile } from '../../models/employee-profile.interface';
 import { API } from '../../models/constants/urls.constants';
 import { AuthAccessService } from '../auth-access.service';
+import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
+import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -44,5 +46,17 @@ export class EmployeeService {
   
   getEmployeeProfilesByPeopleChampion(championID: number): Observable<EmployeeProfile[]> {
     return this.httpClient.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employee/filter-by-pc?PeopleChampId=${encodeURIComponent(championID)}`);
+  }
+  
+  getTotalEmployees(): Observable<number> {
+    return this.httpClient.get<number>(`${API.HttpsBaseURL}/employee/employees/count`);
+  }
+
+  getChurnRate(): Observable<ChurnRateDataCard> {
+    return this.httpClient.get<ChurnRateDataCard>(`${API.HttpBaseURL}/employee/employees/churnrate`);
+  }
+
+  getDevsDesignerCount(): Observable<EmployeeCountDataCard> {
+    return this.httpClient.get<EmployeeCountDataCard>(`${API.HttpBaseURL}/employee/employees/data/count`);
   }
 }
