@@ -51,3 +51,11 @@ button:hover {
   height: 100vh;
   padding: 0;
 }
+
+.mobile-back-change {
+  background-image: url("../../../assets/img/Image_1.png");
+}
+
+.mobile-back-normal {
+  background-color: #ffffff;
+}

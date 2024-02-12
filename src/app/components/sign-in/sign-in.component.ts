@@ -34,7 +34,7 @@ export class SignInComponent {
     this.token = this.cookieService.get('userToken');
     this.userEmail = this.cookieService.get('userEmail');
   }
-
+  screenWidth: number = 992;
   Login() {
     this.cookieService.deleteAll();
     this.auth
