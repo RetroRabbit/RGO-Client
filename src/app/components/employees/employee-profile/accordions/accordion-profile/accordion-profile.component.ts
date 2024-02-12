@@ -677,16 +677,9 @@ export class AccordionProfileComponent {
         const customData = this.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
         formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
         this.additionalInfoForm = this.fb.group(formGroupConfig);
-        this.additionalInfoForm.get("fieldName.code").valueChanges.subscribe(val => {
-          if (fieldName.required && fieldName.code != undefined) {
-            this.additionalInfoForm.controls[fieldName.code].setValidators([Validators.required]);
-            this.additionalInfoForm.controls[fieldName.code].updateValueAndValidity();
-          } else if (fieldName.code != undefined) {
-            this.additionalInfoForm.controls[fieldName.code].clearValidators();
-            this.additionalInfoForm.controls[fieldName.code].updateValueAndValidity();
-          }
-          //this.additionalInfoForm.controls[fieldName.code].updateValueAndValidity();
-        });
+        if (fieldName.required == true) {
+          this.additionalInfoForm.controls[fieldName.code].setValidators(Validators.required);
+        }
         this.additionalInfoForm.disable();
       }
     });
@@ -901,9 +894,11 @@ export class AccordionProfileComponent {
               this.editAdditional = false;
             },
             error: (error) => {
-              this.snackBarService.showSnackbar(error.error, "snack-error");
+              this.snackBarService.showSnackbar(error, "snack-error");
             }
           });
+        } else {
+          this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
         }
       }
     }
