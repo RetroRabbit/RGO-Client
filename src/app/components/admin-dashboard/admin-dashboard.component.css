@@ -131,7 +131,7 @@
 
 #group {
   display: flex;
-  width: 1136px;
+  width: auto;
   align-items: center;
   gap: 433px;
   margin-top: 40px;
@@ -347,19 +347,27 @@ div#results-container {
 
 #data-cards-container {
   display: flex;
-  width: 1136px;
+  flex-wrap: wrap;
+  justify-content: center; 
+  max-width: 100%;
   margin-top: 16px;
 }
 
-#data-card {
-  margin-left: 16px;
+@media screen and (max-width: 768px) {
+  #data-cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.data-card {
   background-color: white;
-  width: 390.67px;
-  height: 210.5px;
+  width: calc(33.33% - 32px); 
+  margin: 0 16px 16px 16px; 
   padding: 16px;
   border-radius: 12px;
+  box-sizing: border-box;
   gap: 23px;
-  float: left;
 }
 
 #menu-icon {
@@ -445,4 +453,14 @@ div#results-container {
   line-height: 16px;
   letter-spacing: 0em;
   text-align: left;
+}
+.employee-count {
+  color: #0FAF4B;
+  margin-left: 10px;
+  font-size: medium;
+}
+
+.card-info {
+  font-size: medium;
+  margin-left: 5px;
 }

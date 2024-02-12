@@ -1,4 +1,4 @@
-<div id="group">
+<div id="group" style="border: 1px solid red;">
   <div class="searchbar align-items-center justify-content-center p-0" [ngClass]="{'no-results': noResults}">
     <div id="leading-icon"></div>
     <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
@@ -79,154 +79,156 @@
   </div>
 </div>
 
-<div id="data-cards-container">
-  <div class="col-3 mb-md-2" id="data-card">
-    <div class="row">
-      <div class="col-3">
-        <div id="options-trigger">
-          <mat-icon id="menu-icon">person_outline_24px</mat-icon>
+
+  <div id="data-cards-container" class="row" style="border: solid 1px red;">
+    <div class="col-lg-4 col-md-8 col-sm-12 mb-md-2 data-card" >
+      <div class="row">
+        <div class="col-3">
+          <div id="options-trigger">
+            <mat-icon id="menu-icon">person_outline_24px</mat-icon>
+          </div>
+        </div>
+        <div class="col-9 my-2">
+          <div id="header-label">
+            Employee Count
+          </div>
+          <div id="total-employees">
+            Total employees: <b>{{totalNumberOfEmployees}}</b>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <div id="subheaders">
+                Developers: <b>{{employeeCount.devsCount}}</b>
+              </div>
+            </div>
+            <div class="col">
+              <div id="subheaders">
+                Scrum Masters: <b>{{employeeCount.scrumMastersCount}}</b>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div id="subheaders">
+                Designers: <b>{{employeeCount.designersCount}}</b>
+              </div>
+            </div>
+            <div class="col">
+              <div id="subheaders">
+                Support: <b>{{employeeCount.businessSupportCount}}</b>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-9 my-2">
-        <div id="header-label">
-          Employee Count
-        </div>
-        <div id="total-employees">
-          Total employees: <b>{{totalNumberOfEmployees}}</b>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col">
-            <div id="subheaders">
-              Developers: <b>{{employeeCount.devsCount}}</b>
-            </div>
-          </div>
-          <div class="col">
-            <div id="subheaders">
-              Scrum Masters: <b>{{employeeCount.scrumMastersCount}}</b>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div id="subheaders">
-              Designers: <b>{{employeeCount.designersCount}}</b>
-            </div>
-          </div>
-          <div class="col">
-            <div id="subheaders">
-              Support: <b>{{employeeCount.businessSupportCount}}</b>
-            </div>
-          </div>
-        </div>
+
+      <div id="increase" *ngIf="employeeCount.isIncrease === true">
+        <img src="../../../assets/img/arrow_up_24px.svg" alt="group" class="group" width="20px" height="20px">
+        <span class="employee-count">+{{ employeeCount.employeeTotalDifference
+          }}</span>
+        <span class="card-info">from last month</span>
+      </div>
+
+      <div id="decrease" *ngIf="employeeCount.isIncrease === false">
+        <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group" width="25px" height="25px">
+        <span style="color: #B3261E; margin-left: 10px; font-size: medium;">{{ employeeCount.employeeTotalDifference
+          }}</span>
+        <span class="card-info">decrease from last month</span>
       </div>
     </div>
 
-    <div id="increase" *ngIf="employeeCount.isIncrease === true">
-      <img src="../../../assets/img/arrow_up_24px.svg" alt="group" class="group" width="20px" height="20px">
-      <span style="color: #0FAF4B; margin-left: 10px; font-size: medium;">+{{ employeeCount.employeeTotalDifference
-        }}</span>
-      <span style="font-size: medium;  margin-left: 5px;">from last month</span>
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-md-2 data-card">
+      <div class="row">
+        <div class="col-3">
+          <div id="options-trigger">
+            <img src="../../../assets/img/briefcase.svg" alt="briefcase" class="briefcase">
+          </div>
+        </div>
+        <div class="col-9 my-2">
+          <div id="header-label">Project Allocation</div>
+          <div id="total-employees">
+            On Bench: <b>{{employeeCount.totalNumberOfEmployeesOnBench}}</b>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <div id="subheaders">
+                Developers: <b>{{employeeCount.devsOnBenchCount}}</b>
+              </div>
+            </div>
+            <div class="col">
+              <div id="subheaders">
+                Scrum Masters: <b>{{employeeCount.scrumMastersOnBenchCount}}</b>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div id="subheaders">
+                Designers: <b>{{employeeCount.designersOnBenchCount}}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span
+          style="font-family: Roboto; font-size: 16px; font-weight: 400; line-height: 16px; letter-spacing: 0em; text-align: left; fill:#1D1B20">
+          {{employeeCount.billableEmployeesPercentage}}% Billable
+        </span>
+      </div>
     </div>
 
-    <div id="decrease" *ngIf="employeeCount.isIncrease === false">
-      <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group" width="25px" height="25px">
-      <span style="color: #B3261E; margin-left: 10px; font-size: medium;">{{ employeeCount.employeeTotalDifference
-        }}</span>
-      <span style="font-size: medium;  margin-left: 5px;">decrease from last month</span>
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-md-2 data-card" >
+      <div class="row">
+        <div class="col-3">
+          <div id="options-trigger">
+            <img src="../../../assets/img/Group 26086141.svg" alt="group" class="group">
+          </div>
+        </div>
+        <div class="col-9 my-2">
+          <div id="header-label">
+            Churn Rate
+          </div>
+          <div id="total-employees">
+            <span style="font-size: 18px; font: Roboto;font-weight: 500; line-height: 20px; letter-spacing: 0.1 px;">
+              {{ churnRate.churnRate }}%</span> over {{churnRate.month }} {{churnRate.year }}
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <div id="subheaders">
+                Developers: <b>{{churnRate.developerChurnRate}}%</b>
+              </div>
+            </div>
+            <div class="col">
+              <div id="subheaders">
+                Scrum Masters: <b>{{churnRate.scrumMasterChurnRate}}%</b>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div id="subheaders">
+                Designers: <b>{{churnRate.designerChurnRate}}%</b>
+              </div>
+            </div>
+            <div class="col">
+              <div id="subheaders">Support:<span style="font-family: Roboto; font-weight: 600; font-size: 12px;">
+                  {{churnRate.businessSupportChurnRate}}%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group" width="25px" height="25px">
+        <span style="color: #B3261E; margin-left: 10px; font-size: medium;">{{ churnRate.churnRate }}%</span>
+        <span class="card-info">decrease from last month</span>
+      </div>
     </div>
   </div>
 
-  <div class="col-3 mb-md-2" id="data-card">
-    <div class="row">
-      <div class="col-3">
-        <div id="options-trigger">
-          <img src="../../../assets/img/briefcase.svg" alt="briefcase" class="briefcase">
-        </div>
-      </div>
-      <div class="col-9 my-2">
-        <div id="header-label">Project Allocation</div>
-        <div id="total-employees">
-          On Bench: <b>{{employeeCount.totalNumberOfEmployeesOnBench}}</b>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col">
-            <div id="subheaders">
-              Developers: <b>{{employeeCount.devsOnBenchCount}}</b>
-            </div>
-          </div>
-          <div class="col">
-            <div id="subheaders">
-              Scrum Masters: <b>{{employeeCount.scrumMastersOnBenchCount}}</b>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div id="subheaders">
-              Designers: <b>{{employeeCount.designersOnBenchCount}}</b>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <span
-        style="font-family: Roboto; font-size: 16px; font-weight: 400; line-height: 16px; letter-spacing: 0em; text-align: left; fill:#1D1B20">
-        {{employeeCount.billableEmployeesPercentage}}% Billable
-      </span>
-    </div>
-  </div>
-
-  <div class="col-3 mb-md-2" id="data-card">
-    <div class="row">
-      <div class="col-3">
-        <div id="options-trigger">
-          <img src="../../../assets/img/Group 26086141.svg" alt="group" class="group">
-        </div>
-      </div>
-      <div class="col-9 my-2">
-        <div id="header-label">
-          Churn Rate
-        </div>
-        <div id="total-employees">
-          <span style="font-size: 18px; font: Roboto;font-weight: 500; line-height: 20px; letter-spacing: 0.1 px;">
-            {{ churnRate.churnRate }}%</span> over {{churnRate.month }} {{churnRate.year }}
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col">
-            <div id="subheaders">
-              Developers: <b>{{churnRate.developerChurnRate}}%</b>
-            </div>
-          </div>
-          <div class="col">
-            <div id="subheaders">
-              Scrum Masters: <b>{{churnRate.scrumMasterChurnRate}}%</b>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div id="subheaders">
-              Designers: <b>{{churnRate.designerChurnRate}}%</b>
-            </div>
-          </div>
-          <div class="col">
-            <div id="subheaders">Support:<span style="font-family: Roboto; font-weight: 600; font-size: 12px;">
-                {{churnRate.businessSupportChurnRate}}%</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group" width="25px" height="25px">
-      <span style="color: #B3261E; margin-left: 10px; font-size: medium;">{{ churnRate.churnRate }}%</span>
-      <span style="font-size: medium; margin-left: 5px;">decrease from last month</span>
-    </div>
-  </div>
-</div>
 
 <div class="px-4 container-fluid pt-4" id="graph-container">
   <ngx-skeleton-loader count="1" appearance="line" animation="pulse" *ngIf="loadCounter < 4" 
