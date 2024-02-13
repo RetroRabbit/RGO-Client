@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { GetLogin } from '../../store/actions/login-in.actions';
@@ -34,7 +34,12 @@ export class SignInComponent {
     this.token = this.cookieService.get('userToken');
     this.userEmail = this.cookieService.get('userEmail');
   }
-  screenWidth: number = 992;
+  screenWidth: number = 0;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+  }
+  
   Login() {
     this.cookieService.deleteAll();
     this.auth
