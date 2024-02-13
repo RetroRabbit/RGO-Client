@@ -7,18 +7,21 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EvaluationTemplateService {
-
-  constructor(private httpClient: HttpClient) { }
+  baseUrl: string;
+    
+  constructor(private httpClient: HttpClient) { 
+      this.baseUrl =`${API.HttpsBaseURL}/evaluation-template`
+  }
 
   save(template:string): Observable<any> {
-    return this.httpClient.post<any>(`${API.HttpBaseURL}/evaluationtemplate/save?template=${template}`, {})
+    return this.httpClient.post<any>(`${this.baseUrl}?template=${template}`, {})
   }
 
   delete(template:string): Observable<any> {
-    return this.httpClient.delete<any>(`${API.HttpBaseURL}/evaluationtemplate/delete?template=${template}`)
+    return this.httpClient.delete<any>(`${this.baseUrl}?template=${template}`)
   }
 
   getAll() {
-    return this.httpClient.get<any[]>(`${API.HttpBaseURL}/evaluationtemplate/getall`)
+    return this.httpClient.get<any[]>(`${this.baseUrl}`)
   }
 }
