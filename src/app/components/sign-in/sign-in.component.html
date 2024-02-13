@@ -1,9 +1,9 @@
 <main class="bg-white">
-  <!--[ngClass]="screenWidth <= 992 ? 'mobile-back-change' : 'mobile-back-normal'"
-  ngStyle-->
-  <!-- <div class="row">
+  <!--[ngClass]="screenWidth <= 992 ? 'mobile-back-change' : 'mobile-back-normal'"-->
+  <article class="row">
 
-    <div class="col-md-6 col-12 half-screen-col d-flex flex-column justify-content-center align-self-center">
+    <div class="col-md-6 half-screen-col d-flex flex-column justify-content-center align-self-center">
+
       <form (ngSubmit)="Login()" class="mx-auto p-5">
         <h2 class="fw-normal fs-1 font-sans-serif">Sign in</h2>
         <p class="text-primary fw-normal font-sans-serif lh-base">Sign in with your Retro Rabbit email</p>
@@ -11,35 +11,14 @@
           <img src="../../../assets/img/Google_Logo.svg" alt="Google Logo" class="google-logo"> Sign in with Google
         </button>
       </form>
-    </div>
-    
-    <div class="col-md-6 col-12 half-screen-col right-side d-none d-md-block">
-      <div class="right-side-content">
-        <img src="../../../assets/img/RR Logo.svg" alt="Retro Rabbit Logo" class="retro-logo">
-      </div>
-    </div>
-    
-  </div> -->
 
-  <div class="row">
-
-    <div class="col-md-6 col-12 half-screen-col"
-    [ngClass]="screenWidth <= 992 ? 'left-side' : ''">
-      <form (ngSubmit)="Login()" class="mx-auto p-5">
-        <h2 class="fw-normal fs-1 font-sans-serif">Sign in</h2>
-        <p class="text-primary fw-normal font-sans-serif lh-base">Sign in with your Retro Rabbit email</p>
-        <button tabindex="0" type="submit" aria-label="Sign in with Google" class="rounded-pill signin-btn text-primary fw-medium text-uppercase bg-white">
-          <img src="../../../assets/img/Google_Logo.svg" alt="Google Logo" class="google-logo"> Sign in with Google
-        </button>
-      </form>
     </div>
     
-    <div class="col-md-6 col-12 half-screen-col right-side d-none d-md-block">
-      <div class="right-side-content">
-        <img src="../../../assets/img/RR Logo.svg" alt="Retro Rabbit Logo" class="retro-logo">
-      </div>
+    <div class="col-md-6 half-screen-col right-side">
+
+      <img src="../../../assets/img/RR Logo.svg" alt="Retro Rabbit Logo" class="retro-logo">
+
     </div>
     
-  </div>
-
+  </article>
 </main>
