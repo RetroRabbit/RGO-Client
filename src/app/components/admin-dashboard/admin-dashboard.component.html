@@ -95,55 +95,6 @@
     </div>
   </div>
 </div>
-<div id="search-results-container">
-  <div *ngIf="searchResults.length > 0">
-    <div
-      class="row"
-      id="search-results"
-      *ngFor="let employee of searchResults; let i = index"
-    >
-      <div class="col-12 px-4">
-        <div class="row px-4">
-          <div class="col-2">
-            <div
-              (click)="CaptureEvent($event)"
-              [ngClass]="selectedItem == 'Employees' ? 'active' : 'idle'"
-            >
-              <img id="avatar" src="{{ employee?.photo }}" alt="X" />
-            </div>
-          </div>
-
-          <div class="col-9 pt-1 px-4">
-            <div (click)="employeeClickEvent(employee)">
-              <div>
-                {{ employee.employeeType?.name }} - L{{ employee?.level }}
-              </div>
-              <div>{{ employee?.name }} {{ employee?.surname }}</div>
-            </div>
-          </div>
-          <div id="search-arrow" class="col-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path d="M10 17L15 12L10 7V17Z" fill="#0029C6" />
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      id="view-more-container"
-      *ngIf="!displayAllEmployees"
-      style="margin-top: 0"
-    >
-      <div (click)="viewMoreEmployees()">View more employees</div>
-    </div>
-  </div>
-</div>
 
 <div id="data-cards-container" class="row">
   <div class="col-lg-4 col-md-8 col-sm-12 mb-md-2 data-card">
