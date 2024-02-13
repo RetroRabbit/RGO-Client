@@ -17,6 +17,7 @@ import { MatSort } from '@angular/material/sort';
 import { FormControl } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthAccessService } from 'src/app/services/auth-access.service';
 import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
 
@@ -99,7 +100,8 @@ export class AdminDashboardComponent {
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
-    private hideNavService: HideNavService
+    private hideNavService: HideNavService,
+    public authAccessService: AuthAccessService
   ) {
     hideNavService.showNavbar = true;
   }
@@ -180,10 +182,6 @@ export class AdminDashboardComponent {
           this.churnRate = data
         }
       });
-  }
-
-  isAdmin(): boolean {
-    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
   }
 
   CaptureEvent(event: any) {
@@ -302,7 +300,11 @@ export class AdminDashboardComponent {
       this.snackBarService.showSnackbar("Missing chart category", "snack-error");
       return;
     }
-
+    if(this.selectedTypes.length < 1){
+      this.snackBarService.showSnackbar("Missing chart category", "snack-error");
+      return;
+    }
+    
     let combinedChartName = this.chartName;
     if (this.selectedTypes.length > 0) {
       combinedChartName += ` - ${this.selectedTypes.join(', ')}`;

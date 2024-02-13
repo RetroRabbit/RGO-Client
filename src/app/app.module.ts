@@ -126,10 +126,10 @@ import { LoadingComponentComponent } from './components/shared-components/loadin
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),
     AuthModule.forRoot({
-      domain: environment.AUTH0_Domain_key, // domain
-      clientId: environment.AUTH0_CLIENT_ID, // clientId
+      domain: environment.AUTH0_Domain_key,
+      clientId: environment.AUTH0_CLIENT_ID,
       authorizationParams: {
-        redirect_uri: 'http://localhost:4200', //window.location.origin //env redirect uri
+        redirect_uri: 'http://localhost:4200',
       },
     }),
     HttpClientModule,
