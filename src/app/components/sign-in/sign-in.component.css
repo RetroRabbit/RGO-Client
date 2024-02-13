@@ -52,10 +52,15 @@ button:hover {
   padding: 0;
 }
 
-.mobile-back-change {
-  background-image: url("../../../assets/img/Image_1.png");
+/* @media (max-width: 992px) {
+  .half-screen-col {
+    width: 100%;
+  }
+  .right-side {
+    display: none;
+  }
 }
 
-.mobile-back-normal {
-  background-color: #ffffff;
-}
+.mobile-back-change {
+  background-image: url("../../../assets/img/Image_1.png");
+} */
