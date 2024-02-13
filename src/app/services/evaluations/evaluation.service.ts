@@ -15,7 +15,7 @@ export class EvaluationService {
   }
 
   getAll(email: string): Observable<any[]> {
-    return this.httpClient.get<any[]>(`${this.baseUrl}?email=${encodeURIComponent(email)}`)
+    return this.httpClient.get<any[]>(`${this.baseUrl}/all?email=${encodeURIComponent(email)}`)
   }
 
   get(employeeEmail: string, ownerEmail: string, template: string, subject: string): Observable<any> {
