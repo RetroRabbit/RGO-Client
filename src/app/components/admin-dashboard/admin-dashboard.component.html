@@ -14,7 +14,7 @@
   </div>
 
   <div id="new-hire">
-    <button class="my-4" (click)="AddNewHire($event)" *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">+ Add Employee</button>
+    <button class="my-4" (click)="AddEmployee()" *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">+ Add Employee</button>
   </div>
 </div>
 
@@ -24,7 +24,7 @@
       <div class="col-12 px-4">
         <div class="row px-4">
           <div class="col-2">
-            <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Employees' ? 'active' : 'idle'">
+            <div>
               <img id="avatar" src={{employee?.photo}} alt="X">
             </div>
           </div>
@@ -206,7 +206,6 @@
     'border-radius': '2rem',
     height: '100vh',
     width: '100%',
-    
   }"/>
 
   <div id="graphs" *ngIf="loadCounter == 4">
@@ -566,7 +565,7 @@
         </div>
         <div>
           <div id="add-graph">
-            <button (click)="CaptureEvent($event)">+ Add Graph</button>
+            <button (click)="showAddGraphModal()">+ Add Graph</button>
           </div>
         </div>
       </div>
@@ -584,11 +583,11 @@
           </div>
         </div>
         <div class="col-2" id="graphs-btn">
-          <button class="ml-auto" (click)="CaptureEvent($event)">+ Add Graph</button>
+          <button class="ml-auto" (click)="showAddGraphModal()">+ Add Graph</button>
         </div>
       </div>
       <div>
-        <app-chart (captureCharts)="recieveNumber($event)" [chartsArray]="charts"></app-chart>
+        <app-chart (captureCharts)="getCharts()" [chartsArray]="charts"></app-chart>
       </div>
     </div>
   </ng-template>
@@ -626,7 +625,7 @@
               </mat-select>
               <mat-chip-grid #chipList>
                 <mat-chip-row *ngFor="let category of selectedCategories" [removable]="true"
-                  (removed)="onCategoryRemoved(category)">
+                  (removed)="removeChartCategory(category)">
                   {{category}}
                   <svg matChipRemove width="19" height="18" viewBox="0 0 19 18" fill="none">
                     <path
@@ -640,7 +639,7 @@
 
             <mat-form-field appearance="outline" style="width: 100%;">
               <mat-label>Select role</mat-label>
-              <mat-select [formControl]="typeControl" (selectionChange)="onDropDownChange($event)" multiple>
+              <mat-select [formControl]="typeControl" (selectionChange)="changeEmployeeRolesOnNewChart($event)" multiple>
                 <mat-select-trigger></mat-select-trigger>
                 <mat-option *ngFor="let type of filteredTypes" [value]="type">
                   {{ type }}
