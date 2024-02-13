@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Employee } from '../../models/employee.interface';
 import { EmployeeProfile } from '../../models/employee-profile.interface';
 import { API } from '../../models/constants/urls.constants';
+import { AuthAccessService } from '../auth-access.service';
 import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
 import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
 @Injectable({
@@ -47,7 +48,8 @@ export class EmployeeService {
   }
 
   updateEmployee(employee: any): Observable<any>{
-    return this.httpClient.put<any>(`${this.baseUrl}`, employee)
+    const queryParams = `?userEmail=${this.authAccessService.getEmployeeEmail()}`
+    return this.httpClient.put<any>(`${API.HttpsBaseURL}/employee/update/${queryParams}`, employee)
   }
 
   filterEmployeesByType(type: string): Observable<EmployeeProfile[]> {
