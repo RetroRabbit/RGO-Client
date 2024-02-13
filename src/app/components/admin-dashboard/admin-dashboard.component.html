@@ -1,5 +1,5 @@
-<div id="group" style="border: 1px solid red;">
-  <div class="searchbar align-items-center justify-content-center p-0" [ngClass]="{'no-results': noResults}">
+<div id="group" class="d-flex flex-column flex-md-row" >
+  <div class="searchbar align-items-center justify-content-center p-0 mb-3 mb-md-0">
     <div id="leading-icon"></div>
     <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
       [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off" />
@@ -13,10 +13,11 @@
     </div>
   </div>
 
-  <div id="new-hire">
-    <button class="my-4" (click)="AddNewHire($event)" *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">+ Add Employee</button>
+  <div id="new-hire" class="ml-md-3">
+    <button class="my-4 btn btn-primary" (click)="AddNewHire($event)" *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">+ Add Employee</button>
   </div>
 </div>
+
 
 <div id="search-results-container">
   <div *ngIf="searchResults.length > 0">
@@ -80,7 +81,7 @@
 </div>
 
 
-  <div id="data-cards-container" class="row" style="border: solid 1px red;">
+  <div id="data-cards-container" class="row">
     <div class="col-lg-4 col-md-8 col-sm-12 mb-md-2 data-card" >
       <div class="row">
         <div class="col-3">
@@ -627,9 +628,9 @@
 </div>
 
 <ng-template #dialogTemplate>
-  <div class="container p-4">
-    <div class="row">
-      <div class="col-12" id="dialog-header">
+  <div class="container-fluid p-4">
+    <div class="row ">
+      <div class="col-lg-12 col-md-12 col-sm-12 " id="dialog-header">
         <h2 mat-dialog-title id="dialog-title">Add graph</h2>
         <h5 id="dialog-subtitle">Create a graph based on your needs by using the options below</h5>
       </div>
