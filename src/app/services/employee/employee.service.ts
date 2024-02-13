@@ -13,7 +13,8 @@ import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.i
 export class EmployeeService {
   baseUrl: string;
   
-  constructor(private httpClient: HttpClient) { 
+  constructor(private httpClient: HttpClient,
+    private authAccessService: AuthAccessService) { 
     this.baseUrl =`${API.HttpsBaseURL}/employees`
   }
 
@@ -49,7 +50,7 @@ export class EmployeeService {
 
   updateEmployee(employee: any): Observable<any>{
     const queryParams = `?userEmail=${this.authAccessService.getEmployeeEmail()}`
-    return this.httpClient.put<any>(`${API.HttpsBaseURL}/employee/update/${queryParams}`, employee)
+    return this.httpClient.put<any>(`${this.baseUrl}/update/${queryParams}`, employee)
   }
 
   filterEmployeesByType(type: string): Observable<EmployeeProfile[]> {
