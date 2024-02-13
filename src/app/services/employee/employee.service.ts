@@ -8,6 +8,7 @@ import { AuthAccessService } from '../auth-access.service';
 import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
 import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
 
+
 @Injectable({
   providedIn: 'root'
 })
