@@ -13,6 +13,7 @@ export class ClientService {
   constructor(private httpClient: HttpClient) { 
       this.baseUrl =`${API.HttpsBaseURL}/clients`
   }
+
   getAllClients(): Observable<Client[]>{
     return this.httpClient.get<Client[]>(`${this.baseUrl}`);
   }
