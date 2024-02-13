@@ -8,26 +8,29 @@ import { EvaluationInput } from '../../models/evaluation-input.interface';
   providedIn: 'root'
 })
 export class EvaluationService {
-
-  constructor(private httpClient: HttpClient) { }
+  baseUrl: string;
+    
+  constructor(private httpClient: HttpClient) { 
+      this.baseUrl =`${API.HttpsBaseURL}/evaluation`
+  }
 
   getAll(email: string): Observable<any[]> {
-    return this.httpClient.get<any[]>(`${API.HttpBaseURL}/evaluation/getall?email=${encodeURIComponent(email)}`)
+    return this.httpClient.get<any[]>(`${this.baseUrl}?email=${encodeURIComponent(email)}`)
   }
 
   get(employeeEmail: string, ownerEmail: string, template: string, subject: string): Observable<any> {
-    return this.httpClient.get<any>(`${API.HttpBaseURL}/evaluation/get?employeeEmail=${encodeURIComponent(employeeEmail)}&ownerEmail=${encodeURIComponent(ownerEmail)}&template=${encodeURIComponent(template)}&subject=${encodeURIComponent(subject)}`)
+    return this.httpClient.get<any>(`${this.baseUrl}?employeeEmail=${encodeURIComponent(employeeEmail)}&ownerEmail=${encodeURIComponent(ownerEmail)}&template=${encodeURIComponent(template)}&subject=${encodeURIComponent(subject)}`)
   }
 
   save(evaluationInput: EvaluationInput): Observable<any> {
-    return this.httpClient.post<any>(`${API.HttpBaseURL}/evaluation/save`, evaluationInput)
+    return this.httpClient.post<any>(`$${this.baseUrl}`, evaluationInput)
   }
 
   delete(evaluationInput: EvaluationInput): Observable<any> {
-    return this.httpClient.delete<any>(`${API.HttpBaseURL}/evaluation/delete`, { body: evaluationInput })
+    return this.httpClient.delete<any>(`${this.baseUrl}`, { body: evaluationInput })
   }
 
   update(evaluationInputs: EvaluationInput[]): Observable<any> {
-    return this.httpClient.put<any>(`${API.HttpBaseURL}/evaluation/update`, evaluationInputs)
+    return this.httpClient.put<any>(`${this.baseUrl}`, evaluationInputs)
   }
 }
