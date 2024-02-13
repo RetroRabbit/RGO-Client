@@ -16,7 +16,7 @@ export class EmployeeEvaluationsRatingService {
       this.baseUrl =`${API.HttpsBaseURL}/evaluation-rating`
   }
   getall(evaluation: EvaluationInput): Observable<any[]> {
-    return this.httpClient.post<any[]>(`${this.baseUrl}`, evaluation)
+    return this.httpClient.post<any[]>(`${this.baseUrl}/all`, evaluation)
   }
 
   save(evaluationRating: EvaluationRatingInput): Observable<any> {

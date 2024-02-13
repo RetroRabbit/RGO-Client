@@ -24,7 +24,7 @@ export class EmployeeBankingService{
     }
 
     getBankingDetails(id: number | undefined): Observable<EmployeeBanking> {
-      return this.httpClient.get<EmployeeBanking>(`${this.baseUrl}?id=${id}`)
+      return this.httpClient.get<EmployeeBanking>(`${this.baseUrl}/details?id=${id}`)
     }
 
     addBankingDetails(newEntry : EmployeeBanking): Observable<EmployeeBanking> {
