@@ -4,6 +4,18 @@
   margin-right: 0.5rem;
 }
 
+.left-side {
+  position: relative;
+  background-color: #ffffff;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url("../../../assets/img/Image_1.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-clip: content-box;
+}
+
 .right-side {
   position: relative;
   background-color: #ffffff;
@@ -50,6 +62,23 @@ button:hover {
   width: 50%;
   height: 100vh;
   padding: 0;
+}
+
+.main-background {
+  background-color: white;
+}
+
+.right-side-content {
+  height: 100%;
+}
+
+@media (max-width: 992px) {
+  .half-screen-col {
+    width: 100%;
+  }
+  .right-side {
+    display: none;
+  }
 }
 
 /* @media (max-width: 992px) {
