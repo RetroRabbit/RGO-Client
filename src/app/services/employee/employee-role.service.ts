@@ -13,7 +13,7 @@ export class EmployeeRoleService {
       this.baseUrl =`${API.HttpsBaseURL}/employee-role-manager`
   }
   getAllRoles(): Observable<string[]> {
-    return this.httpClient.get<string[]>(`${this.baseUrl}`);
+    return this.httpClient.get<string[]>(`${this.baseUrl}/all`);
   }
 
   getRoles(email: string): Observable<string[]> {
@@ -34,6 +34,6 @@ export class EmployeeRoleService {
   }
 
   updateRole(email: string, role: string): Observable<any> {
-    return this.httpClient.post<any>(`${this.baseUrl}?email=${encodeURIComponent(email)}&role=${encodeURIComponent(role)}`, {});
+    return this.httpClient.put<any>(`${this.baseUrl}?email=${encodeURIComponent(email)}&role=${encodeURIComponent(role)}`, {});
   }
 }
