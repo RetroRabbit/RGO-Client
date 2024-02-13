@@ -15,7 +15,7 @@ export class EvaluationAudienceService {
   }
 
   getAll(evaluationInput: EvaluationInput): Observable<any[]> {
-    return this.httpClient.post<any[]>(`${this.baseUrl}`, evaluationInput)
+    return this.httpClient.post<any[]>(`${this.baseUrl}/all`, evaluationInput)
   }
 
   save(email: string, evaluationInput: EvaluationInput): Observable<any> {
