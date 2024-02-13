@@ -4,7 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { EmployeeDateInput } from 'src/app/models/employe-date.interface';
 import { Employee } from 'src/app/models/employee.interface';
-import { EmployeeDateService } from 'src/app/services/employee-date.service';
+import { EmployeeDateService } from 'src/app/services/employee/employee-date.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';

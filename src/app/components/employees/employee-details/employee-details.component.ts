@@ -11,7 +11,7 @@ import { EmployeeData } from 'src/app/models/employee-data.interface';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { ClientService } from 'src/app/services/client.service';
-import { EmployeeDataService } from 'src/app/services/employee-data.service';
+import { EmployeeDataService } from 'src/app/services/employee/employee-data.service';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
