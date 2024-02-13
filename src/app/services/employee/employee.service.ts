@@ -31,7 +31,7 @@ export class EmployeeService {
  * @returns List of Basic Employee objects.
  */
   getAll(): Observable<Employee[]>{
-    return this.httpClient.get<Employee[]>(`${this.baseUrl}`);
+    return this.httpClient.get<Employee[]>(`${this.baseUrl}/all`);
   }
   /**
  * @summary  Gets all the Full Employee DTO and information
@@ -39,7 +39,7 @@ export class EmployeeService {
  * @returns List of Employee DTO objects.
  */
   getAllProfiles(): Observable<EmployeeProfile[]>{
-    return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}`);
+    return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/all`);
   }
 
   addEmployee(newEmployee: any): Observable<any>{
@@ -47,7 +47,7 @@ export class EmployeeService {
   }
 
   get(email: string): Observable<EmployeeProfile> {
-    return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}?email=${encodeURIComponent(email)}`);
+    return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}/by-email?email=${encodeURIComponent(email)}`);
   }
 
   updateEmployee(employee: any): Observable<any>{

@@ -22,6 +22,6 @@ export class EvaluationTemplateService {
   }
 
   getAll() {
-    return this.httpClient.get<any[]>(`${this.baseUrl}`)
+    return this.httpClient.get<any[]>(`${this.baseUrl}/all`)
   }
 }
