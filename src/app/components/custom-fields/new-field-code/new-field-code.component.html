@@ -57,7 +57,7 @@
                 </div>
             </div>
 
-            <mat-checkbox (change)="toggleRequired()" formControlName="required">Make field required</mat-checkbox>
+            <p-checkbox label="Make custom field mandatory" (change)="toggleRequired()" formControlName="required" [binary]="true"></p-checkbox>
             <div class="col-12" id="toggle-advanced">
                 <mat-slide-toggle (toggleChange)="toggleshowAdvance()">Advance fields</mat-slide-toggle>
             </div>
