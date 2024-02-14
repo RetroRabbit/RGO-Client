@@ -373,16 +373,6 @@ div#results-container {
   margin-top: 16px;
 }
 
-@media screen and (max-width: 768px) {
-  #data-cards-container {
-    flex-direction: column;
-    align-items: center;
-  }
-  .data-card {
-    width: calc(80% - 32px) !important;
-  }
-}
-
 .data-card {
   background-color: white;
   width: calc(33.33% - 32px);
