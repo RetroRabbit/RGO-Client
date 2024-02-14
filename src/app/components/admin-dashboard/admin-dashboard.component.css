@@ -261,17 +261,6 @@ div#results-container {
   z-index: 99999;
 }
 
-@media screen and (min-width: 768px) {
-  .fullscreen-modal {
-    position: relative;
-    width: auto;
-    height: auto;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    display: inline-block;
-  }
-}
 
 #dialog-save > button {
   background: #0029c6;
