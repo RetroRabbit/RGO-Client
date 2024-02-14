@@ -15,8 +15,9 @@
 
   <div id="new-hire">
     <button class="my-4" (click)="AddEmployee()"
-      *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">+ Add
-      Employee</button>
+      *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || .isTalent()">
+      + Add Employee
+</button>
   </div>
 </div>
 
