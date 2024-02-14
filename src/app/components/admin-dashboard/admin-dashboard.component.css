@@ -383,12 +383,18 @@ div#results-container {
   fill: #1d1b20;
 }
 
-.span-churnrate{
+.span-churn-rate{
   font-size: 18px;
   font: Roboto;
   font-weight: 500;
   line-height: 20px;
   letter-spacing: 0.1 px;
+}
+
+.card-style{
+  color: #b3261e;
+  margin-left: 10px;
+  font-size: medium;
 }
 
 .data-card {
