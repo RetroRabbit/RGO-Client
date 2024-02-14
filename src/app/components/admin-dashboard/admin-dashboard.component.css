@@ -391,6 +391,12 @@ div#results-container {
   letter-spacing: 0.1 px;
 }
 
+.churn-rate-info{
+  font-family: Roboto;
+  font-weight: 600;
+  font-size: 12px;
+}
+
 .card-style{
   color: #b3261e;
   margin-left: 10px;
