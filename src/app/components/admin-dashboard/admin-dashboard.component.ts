@@ -30,6 +30,11 @@ export class AdminDashboardComponent {
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() expandSearch = new EventEmitter<string>();
 
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.isMobileScreen = window.innerWidth < 768;
+  }
+
   categoryControl = new FormControl();
   chartName: string = '';
   chartType: any = '';
@@ -52,11 +57,6 @@ export class AdminDashboardComponent {
   allFlag: boolean = false;
 
   PREVIOUS_PAGE: string = 'previousPage';
-
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.isMobileScreen = window.innerWidth < 768;
-  }
 
   employeeCount: EmployeeCountDataCard = new EmployeeCountDataCard();
   churnRate: ChurnRateDataCard = new ChurnRateDataCard();
@@ -88,9 +88,9 @@ export class AdminDashboardComponent {
     hideNavService.showNavbar = true;
   }
 
-  CaptureEventDialog(event: any) {
+  CaptureEventDialog() {
     if (this.isMobileScreen) {
-      let dialogRef = this.dialog.open(this.dialogTemplate, {
+      this.dialog.open(this.dialogTemplate, {
         width: '100vw',
         height: '100vh',
         maxWidth: '100%',
@@ -98,7 +98,7 @@ export class AdminDashboardComponent {
         panelClass: 'fullscreen-modal',
       });
     } else {
-      let dialogRef = this.dialog.open(this.dialogTemplate, {
+      this.dialog.open(this.dialogTemplate, {
         width: '90%',
       });
     }
