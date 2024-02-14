@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
 import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
-
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -25,11 +25,17 @@ import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface
   styleUrls: ['./admin-dashboard.component.css'],
 })
 
+
 export class AdminDashboardComponent {
-  @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
+  @ViewChild('dialogTemplate', { static: true })
+  dialogTemplate!: TemplateRef<any>;
   @ViewChild(MatSort) sort!: MatSort;
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() expandSearch = new EventEmitter<string>();
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.isMobileScreen = window.innerWidth < 768;
+  }
 
   categoryControl = new FormControl();
   chartName: string = '';
@@ -44,6 +50,7 @@ export class AdminDashboardComponent {
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
   loadCounter: number = 0;
+  isMobileScreen = false;
   totalNumberOfEmployees: number = 0;
   charts: Chart[] = [];
   searchQuery: string = '';
@@ -51,7 +58,7 @@ export class AdminDashboardComponent {
   employeeProfiles: EmployeeProfile[] = [];
   allFlag: boolean = false;
 
-  PREVIOUS_PAGE: string = "previousPage";
+  PREVIOUS_PAGE: string = 'previousPage';
 
   employeeCount: EmployeeCountDataCard = new EmployeeCountDataCard();
   churnRate: ChurnRateDataCard = new ChurnRateDataCard();
@@ -83,6 +90,22 @@ export class AdminDashboardComponent {
     hideNavService.showNavbar = true;
   }
 
+  EventOpenDialog() {
+    if (this.isMobileScreen) {
+      this.dialog.open(this.dialogTemplate, {
+        width: '100vw',
+        height: '100vh',
+        maxWidth: '100%',
+        maxHeight: '100%',
+        panelClass: 'fullscreen-modal',
+      });
+    } else {
+      this.dialog.open(this.dialogTemplate, {
+        width: '90%',
+      });
+    }
+  }
+
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
@@ -96,45 +119,46 @@ export class AdminDashboardComponent {
     this.getEmployeeTableColumns();
     this.getDataCardsData();
 
-    this.categoryControl.valueChanges.subscribe(value => {
+    this.categoryControl.valueChanges.subscribe((value) => {
       this.selectedCategories = value;
     });
 
-    this.typeControl.valueChanges.subscribe(value => {
+    this.typeControl.valueChanges.subscribe((value) => {
       this.selectedTypes = value;
     });
-
   }
 
-  getDataCardsData(){
+  getDataCardsData() {
     this.employeeService.getTotalEmployees().subscribe({
       next: (data: number) => {
         this.totalNumberOfEmployees = data;
-      }
+      },
     });
 
     this.employeeService.getEmployeeCountData().subscribe({
       next: (data: EmployeeCountDataCard) => {
-        this.employeeCount = data
-      }
+        this.employeeCount = data;
+      },
     });
 
     this.employeeService.getChurnRate().subscribe({
       next: (data: ChurnRateDataCard) => {
-        this.churnRate = data
-      }
+        this.churnRate = data;
+      },
     });
   }
 
   getEmployeeTableColumns() {
     this.chartService.getEmployeeTableColumns().subscribe({
-      next: data => {
+      next: (data) => {
         this.categories = data;
-        this.filteredCategories = this.categories.slice().sort((a, b) => a.localeCompare(b));
+        this.filteredCategories = this.categories
+          .slice()
+          .sort((a, b) => a.localeCompare(b));
       },
       complete: () => {
         this.loadCounter++;
-      }
+      },
     });
   }
 
@@ -143,12 +167,16 @@ export class AdminDashboardComponent {
       next: (data: EmployeeProfile[]) => {
         this.employeeProfiles = data;
         this.searchResults = [];
-      }, error: () => {
-        this.snackBarService.showSnackbar("Failed to fetch employees", "snack-error");
+      },
+      error: () => {
+        this.snackBarService.showSnackbar(
+          'Failed to fetch employees',
+          'snack-error'
+        );
       },
       complete: () => {
         this.loadCounter++;
-      }
+      },
     });
   }
 
@@ -158,11 +186,14 @@ export class AdminDashboardComponent {
         this.charts = data;
       },
       error: () => {
-      this.snackBarService.showSnackbar("Failed to fetch charts", "snack-error");
+        this.snackBarService.showSnackbar(
+          'Failed to fetch charts',
+          'snack-error'
+        );
       },
       complete: () => {
         this.loadCounter++;
-      }
+      },
     });
   }
 
@@ -170,19 +201,19 @@ export class AdminDashboardComponent {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.types = [];
-        this.types.push('All')
-        data.forEach(field => this.types.push(field.name as string));
+        this.types.push('All');
+        data.forEach((field) => this.types.push(field.name as string));
         this.filteredTypes = this.types;
       },
       complete: () => {
         this.loadCounter++;
-      }
+      },
     });
   }
 
   showAddGraphModal() {
     this.dialog.open(this.dialogTemplate, {
-      width: '500px'
+      width: '500px',
     });
   }
 
@@ -203,12 +234,16 @@ export class AdminDashboardComponent {
       this.searchResults = this.employeeProfiles
         .filter(
           (employee) =>
-            employee.name &&
-            employee.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-            employee.surname &&
-            employee.surname.toLowerCase().includes(this.searchQuery.toLowerCase())
+            (employee.name &&
+              employee.name
+                .toLowerCase()
+                .includes(this.searchQuery.toLowerCase())) ||
+            (employee.surname &&
+              employee.surname
+                .toLowerCase()
+                .includes(this.searchQuery.toLowerCase()))
         )
-        .filter(employee => employee.name !== undefined)
+        .filter((employee) => employee.name !== undefined)
         .sort((a, b) => {
           if (a.name && b.name) {
             return a.name.localeCompare(b.name);
@@ -232,8 +267,9 @@ export class AdminDashboardComponent {
   }
 
   filterCategories(val: string): string[] {
-    return this.categories.filter(category =>
-      category.toLowerCase().includes(val.toLowerCase()));
+    return this.categories.filter((category) =>
+      category.toLowerCase().includes(val.toLowerCase())
+    );
   }
 
   isSelected(category: string): boolean {
@@ -261,19 +297,31 @@ export class AdminDashboardComponent {
 
   createChart() {
     if (!this.chartType) {
-      this.snackBarService.showSnackbar("Please select a chart type", "snack-error");
+      this.snackBarService.showSnackbar(
+        'Please select a chart type',
+        'snack-error'
+      );
       return;
     }
     if (!this.chartName) {
-      this.snackBarService.showSnackbar("Please enter a chart name", "snack-error");
+      this.snackBarService.showSnackbar(
+        'Please enter a chart name',
+        'snack-error'
+      );
       return;
     }
     if (this.selectedCategories.length < 1) {
-      this.snackBarService.showSnackbar("Please select a category", "snack-error");
+      this.snackBarService.showSnackbar(
+        'Please select a category',
+        'snack-error'
+      );
       return;
     }
     if (this.selectedTypes.length < 1) {
-      this.snackBarService.showSnackbar("Please select at least one employee role", "snack-error");
+      this.snackBarService.showSnackbar(
+        'Please select at least one employee role',
+        'snack-error'
+      );
       return;
     }
 
@@ -282,29 +330,35 @@ export class AdminDashboardComponent {
       combinedChartName += ` - ${this.selectedTypes.join(', ')}`;
     }
     this.loadCounter = 0;
-    this.chartService.createChart(this.selectedCategories, this.selectedTypes, combinedChartName, this.chartType)
-      .subscribe(
-        {
-          next: () => {
-            this.snackBarService.showSnackbar("Chart created", "snack-success");
-            this.dialog.closeAll();
-            this.selectedCategories = [];
-            this.selectedTypes = [];
-            this.chartName = '';
-            this.chartType = '';
-            this.configureDashboardData();
-          },
-          error: () => {
-            this.snackBarService.showSnackbar("Failed to create chart", "snack-error");
-          }
-        }
-      );
+    this.chartService
+      .createChart(
+        this.selectedCategories,
+        this.selectedTypes,
+        combinedChartName,
+        this.chartType
+      )
+      .subscribe({
+        next: () => {
+          this.snackBarService.showSnackbar('Chart created', 'snack-success');
+          this.dialog.closeAll();
+          this.selectedCategories = [];
+          this.selectedTypes = [];
+          this.chartName = '';
+          this.chartType = '';
+          this.configureDashboardData();
+        },
+        error: () => {
+          this.snackBarService.showSnackbar(
+            'Failed to create chart',
+            'snack-error'
+          );
+        },
+      });
     this.selectedCategories = [];
     this.categoryControl.setValue(null);
     this.selectedTypes = [];
     this.typeControl.setValue(null);
   }
-
 
   activateSearchBar() {
     const searchBar = document.querySelector('.searchbar');
@@ -318,11 +372,14 @@ export class AdminDashboardComponent {
     searchBar?.classList.add('no-results');
   }
 
-  
-
   sortRoles(roles: string[]): string[] {
-    const adminRoles = roles.filter(role => role.toLowerCase().includes('admin')).sort().reverse();
-    const nonAdminRoles = roles.filter(role => !role.toLowerCase().includes('admin')).sort();
+    const adminRoles = roles
+      .filter((role) => role.toLowerCase().includes('admin'))
+      .sort()
+      .reverse();
+    const nonAdminRoles = roles
+      .filter((role) => !role.toLowerCase().includes('admin'))
+      .sort();
     return [...adminRoles, ...nonAdminRoles];
   }
 
@@ -347,7 +404,9 @@ export class AdminDashboardComponent {
       if (index >= 0) {
         currentRoles.splice(index, 1);
         if (currentRoles.includes('All')) {
-          const newSelection = currentRoles.filter((item: string) => item !== 'All');
+          const newSelection = currentRoles.filter(
+            (item: string) => item !== 'All'
+          );
           this.typeControl.setValue(newSelection);
           this.selectedTypes = newSelection;
           this.allFlag = false;
@@ -361,19 +420,22 @@ export class AdminDashboardComponent {
 
   changeEmployeeRolesOnNewChart(event: any) {
     if (event.value.includes('All')) {
-      if (event.value.length == this.types.length - 1 && this.allFlag == false) {
+      if (
+        event.value.length == this.types.length - 1 &&
+        this.allFlag == false
+      ) {
         this.allFlag = true;
-        const newSelection = event.value.filter((item: string) => item !== 'All');
+        const newSelection = event.value.filter(
+          (item: string) => item !== 'All'
+        );
         this.typeControl.setValue(newSelection);
         this.selectedTypes = newSelection;
-      }
-      else if (event.value.length <= this.types.length - 1) {
-        this.allFlag = false
+      } else if (event.value.length <= this.types.length - 1) {
+        this.allFlag = false;
         this.typeControl.setValue([...this.types]);
         this.selectedTypes = [...this.types];
       }
-    }
-    else {
+    } else {
       const newSelection = event.value.filter((item: string) => item !== 'All');
       this.typeControl.setValue(newSelection);
       this.selectedTypes = newSelection;
