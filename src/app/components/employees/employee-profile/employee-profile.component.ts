@@ -166,7 +166,7 @@ export class EmployeeProfileComponent {
   }
 
   getAllEmployees() {
-    this.employeeService.getAllProfiles().subscribe({
+    this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
         this.employees = data;
         this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];

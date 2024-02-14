@@ -12,7 +12,7 @@ export class EmployeeEffects{
         this.actions$.pipe(
             ofType(getAllEmployees),
             exhaustMap(()=>
-                this.employeeService.getAllEmployees().pipe(
+                this.employeeService.getAll().pipe(
                     map(employees => getAllEmployeesSuccess({AllEmployees : employees}))
                 )
             )

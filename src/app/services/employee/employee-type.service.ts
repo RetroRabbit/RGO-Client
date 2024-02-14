@@ -9,9 +9,13 @@ import { API } from '../../models/constants/urls.constants';
 })
 export class EmployeeTypeService {
 
-  constructor(private httpClient: HttpClient) {}
+  baseUrl: string;
+    
+  constructor(private httpClient: HttpClient) { 
+      this.baseUrl =`${API.HttpsBaseURL}/employee-types`
+  }
 
     getAllEmployeeTypes(): Observable<EmployeeType[]>{
-      return this.httpClient.get<EmployeeType[]>(`${API.HttpsBaseURL}/employeetype/types`);
+      return this.httpClient.get<EmployeeType[]>(`${this.baseUrl}`);
     }
 }
