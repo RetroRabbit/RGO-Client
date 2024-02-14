@@ -88,7 +88,7 @@ export class AdminDashboardComponent {
     hideNavService.showNavbar = true;
   }
 
-  CaptureEventDialog() {
+  EventOpenDialog() {
     if (this.isMobileScreen) {
       this.dialog.open(this.dialogTemplate, {
         width: '100vw',
