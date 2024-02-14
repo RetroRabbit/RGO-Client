@@ -82,4 +82,14 @@ button:hover {
 
 .formatting-logo {
   text-align: center;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 114px;
+  left: 0;
+}
+
+.left-side .retro-logo {
+  height: 43px;
+  width: 300px;
 }
