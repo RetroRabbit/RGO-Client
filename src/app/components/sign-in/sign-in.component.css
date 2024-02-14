@@ -78,6 +78,8 @@ button:hover {
 .formatting-form {
   color: white;
   text-align: center;
+  position: relative;
+  bottom: 100px;
 }
 
 .formatting-logo {
@@ -92,4 +94,17 @@ button:hover {
 .left-side .retro-logo {
   height: 43px;
   width: 300px;
+}
+
+.formatting-button {
+  text-align: center;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  bottom: 75px;
+  left: 0;
+}
+
+.formatting-button .google-logo {
+  width: auto;
 }

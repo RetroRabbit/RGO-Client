@@ -12,9 +12,11 @@
         <h2 class="fw-normal fs-1 font-sans-serif"
         [ngClass]="screenWidth <= 767 ? 'formatting-form' : ''">Sign in</h2>
         <p class="text-primary fw-normal font-sans-serif lh-base d-none d-md-flex">Sign in with your Retro Rabbit email</p>
-        <button tabindex="0" type="submit" aria-label="Sign in with Google" class="rounded-pill signin-btn text-primary fw-medium text-uppercase bg-white">
-          <img src="../../../assets/img/Google_Logo.svg" alt="Google Logo" class="google-logo"> Sign in with Google
-        </button>
+        <div [ngClass]="screenWidth <= 767 ? 'formatting-button' : ''">
+          <button tabindex="0" type="submit" aria-label="Sign in with Google" class="rounded-pill signin-btn text-primary fw-medium text-uppercase bg-white">
+            <img src="../../../assets/img/Google_Logo.svg" alt="Google Logo" class="google-logo"> Sign in with Google
+          </button>
+        </div>
       </form>
 
     </div>
