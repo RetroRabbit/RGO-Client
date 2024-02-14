@@ -3,12 +3,12 @@
   <div class="row">
 
     <div class="col-md-6 d-flex flex-column justify-content-center align-self-center"
-    [ngClass]="screenWidth <= 768 ? 'left-side px-0' : 'half-screen-col'">
+    [ngClass]="screenWidth <= 767 ? 'left-side px-0' : 'half-screen-col'">
 
       <form (ngSubmit)="Login()" class="mx-auto p-5">
-        <img src="../../../assets/img/RR Logo.svg" alt="Retro Rabbit Logo" class="retro-logo d-sm-block d-md-non d-lg-none">
+        <img src="../../../assets/img/RR Logo.svg" alt="Retro Rabbit Logo" class="retro-logo d-sm-block d-md-none d-lg-none ">
         <h2 class="fw-normal fs-1 font-sans-serif">Sign in</h2>
-        <p class="text-primary fw-normal font-sans-serif lh-base">Sign in with your Retro Rabbit email</p>
+        <p class="text-primary fw-normal font-sans-serif lh-base d-none d-md-flex">Sign in with your Retro Rabbit email</p>
         <button tabindex="0" type="submit" aria-label="Sign in with Google" class="rounded-pill signin-btn text-primary fw-medium text-uppercase bg-white">
           <img src="../../../assets/img/Google_Logo.svg" alt="Google Logo" class="google-logo"> Sign in with Google
         </button>
@@ -17,7 +17,7 @@
     </div>
     
     <div class="col-md-6 right-side d-none d-md-block px-0"
-    [ngClass]="screenWidth <= 768 ? 'right-side-gone hide-login-image' : 'half-screen-col'">
+    [ngClass]="screenWidth <= 767 ? 'right-side-gone hide-login-image' : 'half-screen-col'">
 
       <img src="../../../assets/img/RR Logo.svg" alt="Retro Rabbit Logo" class="retro-logo">
 
