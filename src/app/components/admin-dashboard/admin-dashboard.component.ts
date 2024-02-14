@@ -25,7 +25,8 @@ import { HostListener } from '@angular/core';
   styleUrls: ['./admin-dashboard.component.css'],
 })
 export class AdminDashboardComponent {
-  @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
+  @ViewChild('dialogTemplate', { static: true })
+  dialogTemplate!: TemplateRef<any>;
   @ViewChild(MatSort) sort!: MatSort;
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() expandSearch = new EventEmitter<string>();
@@ -117,39 +118,38 @@ export class AdminDashboardComponent {
     this.getEmployeeTableColumns();
     this.getDataCardsData();
 
-    this.categoryControl.valueChanges.subscribe(value => {
+    this.categoryControl.valueChanges.subscribe((value) => {
       this.selectedCategories = value;
     });
 
-    this.typeControl.valueChanges.subscribe(value => {
+    this.typeControl.valueChanges.subscribe((value) => {
       this.selectedTypes = value;
     });
-
   }
 
-  getDataCardsData(){
+  getDataCardsData() {
     this.employeeService.getTotalEmployees().subscribe({
       next: (data: number) => {
         this.totalNumberOfEmployees = data;
-      }
+      },
     });
 
     this.employeeService.getEmployeeCountData().subscribe({
       next: (data: EmployeeCountDataCard) => {
-        this.employeeCount = data
-      }
+        this.employeeCount = data;
+      },
     });
 
     this.employeeService.getChurnRate().subscribe({
       next: (data: ChurnRateDataCard) => {
-        this.churnRate = data
-      }
+        this.churnRate = data;
+      },
     });
   }
 
   getEmployeeTableColumns() {
     this.chartService.getEmployeeTableColumns().subscribe({
-      next: data => {
+      next: (data) => {
         this.categories = data;
         this.filteredCategories = this.categories
           .slice()
@@ -166,12 +166,16 @@ export class AdminDashboardComponent {
       next: (data: EmployeeProfile[]) => {
         this.employeeProfiles = data;
         this.searchResults = [];
-      }, error: () => {
-        this.snackBarService.showSnackbar("Failed to fetch employees", "snack-error");
+      },
+      error: () => {
+        this.snackBarService.showSnackbar(
+          'Failed to fetch employees',
+          'snack-error'
+        );
       },
       complete: () => {
         this.loadCounter++;
-      }
+      },
     });
   }
 
@@ -181,11 +185,14 @@ export class AdminDashboardComponent {
         this.charts = data;
       },
       error: () => {
-      this.snackBarService.showSnackbar("Failed to fetch charts", "snack-error");
+        this.snackBarService.showSnackbar(
+          'Failed to fetch charts',
+          'snack-error'
+        );
       },
       complete: () => {
         this.loadCounter++;
-      }
+      },
     });
   }
 
@@ -199,13 +206,13 @@ export class AdminDashboardComponent {
       },
       complete: () => {
         this.loadCounter++;
-      }
+      },
     });
   }
 
   showAddGraphModal() {
     this.dialog.open(this.dialogTemplate, {
-      width: '500px'
+      width: '500px',
     });
   }
 
@@ -303,11 +310,17 @@ export class AdminDashboardComponent {
       return;
     }
     if (this.selectedCategories.length < 1) {
-      this.snackBarService.showSnackbar("Please select a category", "snack-error");
+      this.snackBarService.showSnackbar(
+        'Please select a category',
+        'snack-error'
+      );
       return;
     }
     if (this.selectedTypes.length < 1) {
-      this.snackBarService.showSnackbar("Please select at least one employee role", "snack-error");
+      this.snackBarService.showSnackbar(
+        'Please select at least one employee role',
+        'snack-error'
+      );
       return;
     }
 
@@ -316,29 +329,35 @@ export class AdminDashboardComponent {
       combinedChartName += ` - ${this.selectedTypes.join(', ')}`;
     }
     this.loadCounter = 0;
-    this.chartService.createChart(this.selectedCategories, this.selectedTypes, combinedChartName, this.chartType)
-      .subscribe(
-        {
-          next: () => {
-            this.snackBarService.showSnackbar("Chart created", "snack-success");
-            this.dialog.closeAll();
-            this.selectedCategories = [];
-            this.selectedTypes = [];
-            this.chartName = '';
-            this.chartType = '';
-            this.configureDashboardData();
-          },
-          error: () => {
-            this.snackBarService.showSnackbar("Failed to create chart", "snack-error");
-          }
-        }
-      );
+    this.chartService
+      .createChart(
+        this.selectedCategories,
+        this.selectedTypes,
+        combinedChartName,
+        this.chartType
+      )
+      .subscribe({
+        next: () => {
+          this.snackBarService.showSnackbar('Chart created', 'snack-success');
+          this.dialog.closeAll();
+          this.selectedCategories = [];
+          this.selectedTypes = [];
+          this.chartName = '';
+          this.chartType = '';
+          this.configureDashboardData();
+        },
+        error: () => {
+          this.snackBarService.showSnackbar(
+            'Failed to create chart',
+            'snack-error'
+          );
+        },
+      });
     this.selectedCategories = [];
     this.categoryControl.setValue(null);
     this.selectedTypes = [];
     this.typeControl.setValue(null);
   }
-
 
   activateSearchBar() {
     const searchBar = document.querySelector('.searchbar');
@@ -351,8 +370,6 @@ export class AdminDashboardComponent {
     searchBar?.classList.remove('active');
     searchBar?.classList.add('no-results');
   }
-
-  
 
   sortRoles(roles: string[]): string[] {
     const adminRoles = roles
