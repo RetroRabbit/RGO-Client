@@ -373,6 +373,24 @@ div#results-container {
   margin-top: 16px;
 }
 
+.span-billable{
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
+  fill: #1d1b20;
+}
+
+.span-churnrate{
+  font-size: 18px;
+  font: Roboto;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.1 px;
+}
+
 .data-card {
   background-color: white;
   width: calc(33.33% - 32px);
