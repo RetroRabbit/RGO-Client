@@ -37,11 +37,11 @@ export class ChartService {
   }
 
   deleteChart(chartId: number): Observable<any> {
-    const queryParams = `?Id=${chartId}`;
+    const queryParams = `?chartId=${chartId}`;
     return this.httpClient.delete<any>(`${this.baseUrl}${queryParams}`);
   }
 
-  getColumns(): Observable<string[]> {
+  getEmployeeTableColumns(): Observable<string[]> {
     return this.httpClient.get<string[]>(`${this.baseUrl}/column`);
   }
 
