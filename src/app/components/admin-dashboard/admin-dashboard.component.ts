@@ -30,7 +30,6 @@ export class AdminDashboardComponent {
   @ViewChild(MatSort) sort!: MatSort;
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() expandSearch = new EventEmitter<string>();
-
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
