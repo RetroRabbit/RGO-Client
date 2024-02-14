@@ -959,7 +959,7 @@
 </div>
 
 <ng-template #dialogTemplate>
-  <div class="container-fluid p-2.5 fullscreen-modal">
+  <div class="container-fluid p-2.5" [ngClass]="{'fullscreen-modal': isMobileScreen}">
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12" id="dialog-header">
         <h2 mat-dialog-title id="dialog-title">Add Information graph</h2>
