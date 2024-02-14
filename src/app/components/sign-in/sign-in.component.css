@@ -65,7 +65,14 @@ button:hover {
 .half-screen-col {
   width: 50%;
   height: 100vh;
-  padding: 0;
+}
+
+.full-screen-col {
+  width: 100%;
+}
+
+.hide-login-image {
+  width: 0%;
 }
 
 /* .main-background {

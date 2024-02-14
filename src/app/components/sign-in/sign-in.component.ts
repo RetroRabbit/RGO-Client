@@ -34,7 +34,7 @@ export class SignInComponent {
     this.token = this.cookieService.get('userToken');
     this.userEmail = this.cookieService.get('userEmail');
   }
-  screenWidth: number = 0;
+  screenWidth: number = 993;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;

@@ -2,8 +2,8 @@
   <!--[ngClass]="screenWidth <= 992 ? 'mobile-back-change' : 'mobile-back-normal'"-->
   <div class="row">
 
-    <div class="col-md-6 half-screen-col d-flex flex-column justify-content-center align-self-center"
-    [ngClass]="screenWidth <= 992 ? 'left-side' : ''">
+    <div class="col-md-6 d-flex flex-column justify-content-center align-self-center"
+    [ngClass]="screenWidth <= 768 ? 'left-side px-0' : 'half-screen-col'">
 
       <form (ngSubmit)="Login()" class="mx-auto p-5">
         <h2 class="fw-normal fs-1 font-sans-serif">Sign in</h2>
@@ -15,8 +15,8 @@
 
     </div>
     
-    <div class="col-md-6 half-screen-col right-side d-none d-md-block"
-    [ngClass]="screenWidth <= 992 ? 'right-side-gone' : ''">
+    <div class="col-md-6 right-side d-none d-md-block"
+    [ngClass]="screenWidth <= 768 ? 'right-side-gone hide-login-image' : 'half-screen-col'">
 
       <img src="../../../assets/img/RR Logo.svg" alt="Retro Rabbit Logo" class="retro-logo">
 
