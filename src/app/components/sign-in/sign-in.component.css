@@ -74,3 +74,12 @@ button:hover {
 .hide-login-image {
   width: 0%;
 }
+
+.formatting-form {
+  color: white;
+  text-align: center;
+}
+
+.formatting-logo {
+  text-align: center;
+}
