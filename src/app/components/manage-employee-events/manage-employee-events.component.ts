@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, map, startWith } from 'rxjs';
 import { EmployeeDate } from 'src/app/models/employee-date.interface';
-import { EmployeeDateService } from 'src/app/services/employee-date.service';
+import { EmployeeDateService } from 'src/app/services/employee/employee-date.service';
 import { HideNavService } from 'src/app/services/hide-nav.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -67,13 +67,14 @@ export class ManageEmployeeEventsComponent {
 
   deleteEvent(event: EmployeeDate): void {
     const employeeDateInput = {
+      id: event.employee.id,
       email: event.employee.email,
       subject: event.subject,
       note: event.note,
       date: event.date
     }
 
-    this.employeeDateService.deleteEmployeeDate(employeeDateInput).subscribe(
+    this.employeeDateService.deleteEmployeeDate(employeeDateInput.id).subscribe(
       () => {
         this.updateEvents({})
         this.snackBarService.showSnackbar("Event deleted succesfully", "snack-success")

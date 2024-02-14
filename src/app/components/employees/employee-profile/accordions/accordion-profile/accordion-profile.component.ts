@@ -14,7 +14,7 @@ import { provinces } from 'src/app/models/constants/provinces.constants';
 import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { EmployeeAddress } from 'src/app/models/employee-address.interface';
-import { EmployeeDataService } from 'src/app/services/employee-data.service';
+import { EmployeeDataService } from 'src/app/services/employee/employee-data.service';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
 import { ClientService } from 'src/app/services/client.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
@@ -232,13 +232,13 @@ export class AccordionProfileComponent {
   }
 
   checkEmployeeDetails() {
-    
+
     if(this.usingProfile)
       this.checkEmployeeDetailsUsingEmployeeProfile()
     else
       this.checkEmployeeDetailsNotUsingEmployeeProfile()
   }
-  
+
   checkEmployeeDetailsUsingEmployeeProfile(){
     this.foundTeamLead = this.employees.find((data: any) => {
       return data.id == this.employeeProfile!.employeeDetails.teamLead
@@ -252,23 +252,23 @@ export class AccordionProfileComponent {
       }
       else return null;
     });
-    
+
     if (this.foundTeamLead != null) {
       this.employeeDetailsForm.get('teamLead')?.setValue(this.foundTeamLead.name + ' ' + this.foundTeamLead.surname);
       this.employeeProfile.employeeDetails.id = this.foundTeamLead.id
     }
-    
+
     if (this.foundClient != null) {
       this.employeeDetailsForm.get('clientAllocated')?.setValue(this.foundClient.name);
       this.clientId = this.foundClient.id
     }
-    
+
     if (this.foundChampion != null) {
       this.employeeDetailsForm.get('peopleChampion')?.setValue(this.foundChampion.name + ' ' + this.foundChampion.surname);
       this.peopleChampionId = this.foundChampion.id
-    }    
+    }
   }
-  
+
   checkEmployeeDetailsNotUsingEmployeeProfile(){
     if(this.employeeProfile.simpleEmployee.teamLeadId !== null){
       this.foundTeamLead = this.employeeProfile.simpleEmployee.teamLeadId;
@@ -559,7 +559,7 @@ export class AccordionProfileComponent {
   }
 
   getAllEmployees() {
-    this.employeeService.getAllProfiles().subscribe({
+    this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
         this.employees = data;
         this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
@@ -662,7 +662,7 @@ export class AccordionProfileComponent {
   getEmployeeFieldCodes() {
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: data => {
-        this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id)
+        this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id);
         this.checkAdditionalInformation();
         this.checkAdditionalFormProgress();
         this.totalProfileProgress();
@@ -677,6 +677,9 @@ export class AccordionProfileComponent {
         const customData = this.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
         formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
         this.additionalInfoForm = this.fb.group(formGroupConfig);
+        if (fieldName.required == true) {
+          this.additionalInfoForm.controls[fieldName.code].setValidators(Validators.required);
+        }
         this.additionalInfoForm.disable();
       }
     });
@@ -847,7 +850,6 @@ export class AccordionProfileComponent {
   }
 
   saveAdditionalEdit() {
-    this.editAdditional = false;
     for (const fieldcode of this.customFields) {
       const found = this.employeeData.find((data) => {
         return fieldcode.id == data.fieldCodeId
@@ -868,8 +870,9 @@ export class AccordionProfileComponent {
             this.checkAdditionalFormProgress();
             this.totalProfileProgress();
             this.additionalInfoForm.disable();
+            this.editAdditional = false;
           },
-          error: (error) => { },
+          error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
         });
       }
       else if (found == null) {
@@ -888,11 +891,14 @@ export class AccordionProfileComponent {
               this.checkAdditionalFormProgress();
               this.totalProfileProgress();
               this.additionalInfoForm.disable();
+              this.editAdditional = false;
             },
             error: (error) => {
-              this.snackBarService.showSnackbar(error.error, "snack-error");
+              this.snackBarService.showSnackbar(error, "snack-error");
             }
           });
+        } else {
+          this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
         }
       }
     }

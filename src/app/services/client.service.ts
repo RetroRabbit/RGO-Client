@@ -8,10 +8,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ClientService {
+  baseUrl: string;
+    
+  constructor(private httpClient: HttpClient) { 
+      this.baseUrl =`${API.HttpsBaseURL}/clients`
+  }
 
-  constructor(private httpClient: HttpClient) { }
 
   getAllClients(): Observable<Client[]>{
-    return this.httpClient.get<Client[]>(`${API.HttpBaseURL}/client/get`);
+    return this.httpClient.get<Client[]>(`${this.baseUrl}`);
   }
 }

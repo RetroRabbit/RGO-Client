@@ -117,7 +117,7 @@ export class ViewEmployeeComponent {
       .pipe(catchError(() => of([] as Client[])));
 
     this.employeeService
-      .getAllProfiles()
+      .getEmployeeProfiles()
       .pipe(
         switchMap((employees: EmployeeProfile[]) =>
           this.combineEmployeesWithRolesAndClients(employees, clients$)
@@ -219,7 +219,7 @@ export class ViewEmployeeComponent {
     Email: string | undefined;
   }): void {
     this.employeeService
-      .getAllProfiles()
+      .getEmployeeProfiles()
       .pipe(
         map(
           (employees: EmployeeProfile[]) =>
