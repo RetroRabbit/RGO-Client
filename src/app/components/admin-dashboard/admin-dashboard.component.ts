@@ -24,6 +24,7 @@ import { HostListener } from '@angular/core';
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css'],
 })
+
 export class AdminDashboardComponent {
   @ViewChild('dialogTemplate', { static: true })
   dialogTemplate!: TemplateRef<any>;
