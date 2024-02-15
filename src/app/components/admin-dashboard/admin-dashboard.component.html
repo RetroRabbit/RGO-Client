@@ -54,7 +54,7 @@
 </div>
 
 
-<div class="data-cards-container-desktop" [ngClass]="screenWidth <= 767 ? 'data-cards-container-mobile' : (screenWidth <= 991 ? 'data-cards-container-tablet' : 'data-cards-container-desktop')">
+<div  [ngClass]="screenWidth <= 767 ? 'data-cards-container-mobile' : (screenWidth <= 991 ? 'data-cards-container-tablet' : 'data-cards-container-desktop')">
   <div class="data-card" [ngClass]="screenWidth <= 991 ? 'data-card-tablet' : 'data-card-mobile'">
     <div class="row">
       <div class="col-3">
@@ -62,7 +62,7 @@
           <mat-icon id="menu-icon">person_outline_24px</mat-icon>
         </div>
       </div>
-      <div class="col-9 my-2">
+      <div class="col-9 my-2" style="justify-content: left;">
         <div id="header-label">Employee Count</div>
         <div id="total-employees">
           Total employees: <b>{{ totalNumberOfEmployees }}</b>
