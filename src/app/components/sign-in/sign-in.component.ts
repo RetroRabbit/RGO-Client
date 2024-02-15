@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { GetLogin } from '../../store/actions/login-in.actions';
@@ -34,6 +34,12 @@ export class SignInComponent {
     this.token = this.cookieService.get('userToken');
     this.userEmail = this.cookieService.get('userEmail');
   }
+  screenWidth: number = 993;
+  @HostListener('window:resize', ['$event'])
+
+  onResize() {
+    this.screenWidth = window.innerWidth;
+  }
 
   Login() {
     this.cookieService.deleteAll();
@@ -66,9 +72,9 @@ export class SignInComponent {
           this.authAccessService.setEmployeeEmail(user?.email as string)
           this.store.dispatch(GetLogin({ payload: googleID }));
           this.hideNavService.showNavbar = true;
-          if(this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney() || this.authAccessService.isSuperAdmin()){
+          if (this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney() || this.authAccessService.isSuperAdmin()) {
             this.router.navigateByUrl('/dashboard');
-          }else{
+          } else {
             this.router.navigateByUrl('/profile');
           }
         },
