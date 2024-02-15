@@ -25,16 +25,18 @@ import { HostListener } from '@angular/core';
   styleUrls: ['./admin-dashboard.component.css'],
 })
 
-
 export class AdminDashboardComponent {
   @ViewChild('dialogTemplate', { static: true })
   dialogTemplate!: TemplateRef<any>;
   @ViewChild(MatSort) sort!: MatSort;
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() expandSearch = new EventEmitter<string>();
+
+  screenWidth: number = 993;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
+    this.screenWidth = window.innerWidth;
   }
 
   categoryControl = new FormControl();
