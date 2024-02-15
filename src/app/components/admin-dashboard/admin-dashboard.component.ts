@@ -32,7 +32,7 @@ export class AdminDashboardComponent {
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() expandSearch = new EventEmitter<string>();
 
-  screenWidth: number = 993;
+  screenWidth= window.innerWidth;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
