@@ -31,6 +31,8 @@ import {
 } from 'rxjs';
 import { HideNavService } from 'src/app/services/hide-nav.service';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { EmployeeType } from 'src/app/models/constants/employeeTypes.constants';
+import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 
 @Component({
   selector: 'app-view-employee',
@@ -62,8 +64,10 @@ export class ViewEmployeeComponent {
     first()
   );
 
-  peopleChampions: Observable<{ id: number; name: string }[]>;
-  currentChampionName: string = 'All';
+  peopleChampions: Observable<{ id: number; name: string }[]> = this.getPeopleChampionsForFilter();
+  usertypes: Observable<{ id: number; name: string }[]> = this.getUserTypesForFilter();
+  currentChampionFilter: { id: number; name: string } = {id:0,name:'All'};
+  currentUserTypeFilter: { id: number; name: string } = {id:0,name:'All'};
 
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
@@ -80,18 +84,10 @@ export class ViewEmployeeComponent {
     private router: Router,
     private hideNavService: HideNavService,
     private snackBarService: SnackbarService,
-    public authAccessService: AuthAccessService
+    public authAccessService: AuthAccessService,
+    private employeeTypeService: EmployeeTypeService
   ) {
     hideNavService.showNavbar = true;
-    this.peopleChampions = new Observable((observer) => {
-      const userId = +this.authAccessService.getUserId();
-      const items = [
-        { id: 0, name: 'All' },
-        { id: userId, name: 'Mine' },
-      ];
-      observer.next(items);
-      observer.complete();
-    });
   }
 
   ngOnInit() {
@@ -347,15 +343,25 @@ export class ViewEmployeeComponent {
   }
 
   changePeopleChampionFilter(champion: { id: number; name: string }) {
-    this.currentChampionName = champion.name;
+    this.currentChampionFilter = champion;
+    this.filterEmployeeTable();   
+  }
 
+  changeUserTypeFilter(employeeType: { id: number; name: string })
+  {
+    this.currentUserTypeFilter = employeeType;
+    this.filterEmployeeTable();
+  }
+
+  filterEmployeeTable()
+  {
     this.isLoading = true;
     const clients$: Observable<Client[]> = this.clientService
       .getAllClients()
       .pipe(catchError(() => of([] as Client[])));
 
     this.employeeService
-      .getEmployeeProfilesByPeopleChampion(champion.id)
+      .filterEmployeeTable(this.currentChampionFilter.id, this.currentUserTypeFilter.id)
       .pipe(
         switchMap((employees: EmployeeProfile[]) =>
           this.combineEmployeesWithRolesAndClients(employees, clients$)
@@ -374,5 +380,31 @@ export class ViewEmployeeComponent {
         this.isLoading = false;
         this.applySearchFilter();
       });
+  }
+  
+  getPeopleChampionsForFilter(): Observable<{ id: number; name: string }[]> {
+    return this.employeeService.filterEmployeesByType(EmployeeType.People_Champion).pipe(
+      map(employees => {
+        const champions = employees.map(employee => ({
+          id: employee.id || 0,
+          name: employee.name || 'Unknown'
+        }));
+        champions.unshift({ id: 0, name: 'All' });
+        return champions;
+      })
+    );
+  }
+
+  getUserTypesForFilter(): Observable<{ id: number; name: string }[]> {
+    return this.employeeTypeService.getAllEmployeeTypes().pipe(
+      map(types => {
+        const userTypes = types.map(type => ({
+          id: type.id || 0,
+          name: type.name || 'Unknown'
+        }));
+        userTypes.unshift({ id: 0, name: 'All' });
+        return userTypes;
+      })
+    );
   }
 }

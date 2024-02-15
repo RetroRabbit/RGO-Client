@@ -56,12 +56,8 @@ export class EmployeeService {
     return this.httpClient.put<any>(`${this.baseUrl}/update/${queryParams}`, employee)
   }
 
-  filterEmployeesByType(type: string): Observable<EmployeeProfile[]> {
+  filterEmployeesByType(type: number): Observable<EmployeeProfile[]> {
     return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/filter-by-type?type=${encodeURIComponent(type)}`)
-  }
-  
-  getEmployeeProfilesByPeopleChampion(championID: number): Observable<EmployeeProfile[]> {
-    return this.httpClient.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employee/filter-by-pc?PeopleChampId=${encodeURIComponent(championID)}`);
   }
   
   getTotalEmployees(): Observable<number> {
@@ -74,5 +70,11 @@ export class EmployeeService {
 
   getEmployeeCountData(): Observable<EmployeeCountDataCard> {
     return this.httpClient.get<EmployeeCountDataCard>(`${this.baseUrl}/card-count`);
+  }
+
+  filterEmployeeTable(championID: number, employeeType: number): Observable<EmployeeProfile[]> {
+    var queryParams = `?PeopleChampId=${encodeURIComponent(championID)}`
+    queryParams += `&employeeType=${encodeURIComponent(employeeType)}`
+    return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/filter-employees${queryParams}`);
   }
 }

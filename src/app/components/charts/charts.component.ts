@@ -13,7 +13,7 @@ import { DOCUMENT } from '@angular/common';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { HideNavService } from 'src/app/services/hide-nav.service';
-
+import { EmployeeType } from 'src/app/models/constants/employeeTypes.constants';
 
 @Component({
   selector: 'app-chart',
@@ -234,7 +234,7 @@ export class ChartComponent implements OnInit {
   }
 
   fetchPeopleChampionEmployees() {
-    this.employeeService.filterEmployeesByType("People Champion").subscribe({
+    this.employeeService.filterEmployeesByType(EmployeeType.People_Champion).subscribe({
       next: (employees: EmployeeProfile[]) => {
         employees.forEach((employee) => {
           if (employee.id) {
