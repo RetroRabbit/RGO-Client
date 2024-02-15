@@ -101,7 +101,7 @@ export class AccordionDocumentsComponent {
   }
 
   getEmployeeDocuments() {
-    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile?.id as number).subscribe({
+    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number).subscribe({
       next: data => {
         this.employeeDocuments = data;
         this.dataSource.data = this.fileCategories;
@@ -161,7 +161,7 @@ export class AccordionDocumentsComponent {
           fileName: this.documentsFileName,
           fileCategory: +this.uploadButtonIndex,
           blob: this.base64String,
-          status: this.authAccessService.isAdmin() ? 3 :1,
+          status: 1,
           uploadDate: new Date(),
           reason: '',
         };
