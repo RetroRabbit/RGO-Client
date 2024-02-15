@@ -16,7 +16,7 @@
   flex-shrink: 0;
 }
 
-#new-hire > button {
+#new-hire>button {
   background: #0029c6;
   border: none;
   border-radius: 4rem;
@@ -33,7 +33,7 @@
   text-align: right;
 }
 
-#add-graph > button {
+#add-graph>button {
   background: #0029c6;
   border: none;
   border-radius: 4rem;
@@ -191,7 +191,7 @@ div#results-container {
   margin-left: 12px;
 }
 
-#search-results > div {
+#search-results>div {
   flex: 1;
   min-width: 481px;
 }
@@ -262,7 +262,7 @@ div#results-container {
 }
 
 
-#dialog-save > button {
+#dialog-save>button {
   background: #0029c6;
   border: none;
   border-radius: 4rem;
@@ -271,7 +271,7 @@ div#results-container {
   width: 80%;
 }
 
-#dialog-close > button {
+#dialog-close>button {
   border: 1px solid #0029c6;
   border-radius: 2rem;
   background-color: white;
@@ -299,7 +299,7 @@ div#results-container {
   padding: 20px 24px 0px 24px;
 }
 
-#graph-heading > h3 {
+#graph-heading>h3 {
   color: #212121;
   font-size: 22px;
   font-weight: 400;
@@ -309,7 +309,7 @@ div#results-container {
   margin: 0 0 0;
 }
 
-#graph-subheading > h5 {
+#graph-subheading>h5 {
   color: #7e7e7e;
   font-size: 14px;
   font-family: Roboto;
@@ -319,7 +319,7 @@ div#results-container {
   word-wrap: break-word;
 }
 
-.mat-form-field.mat-select > #edit-button.mat-select-value {
+.mat-form-field.mat-select>#edit-button.mat-select-value {
   border: none;
   border-radius: 2rem;
   background-color: #d7dfff;
@@ -367,9 +367,9 @@ div#results-container {
 
 .data-cards-container-desktop {
   display: flex;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   flex-wrap: nowrap;
-  overflow-x:auto;
+  overflow-x: auto;
   justify-content: center;
   max-width: 100%;
   margin-top: 16px;
@@ -380,7 +380,7 @@ div#results-container {
 
 .data-cards-container-tablet {
   display: flex;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   flex-wrap: nowrap;
   overflow-x: scroll;
   max-width: 100%;
@@ -391,7 +391,7 @@ div#results-container {
 
 .data-cards-container-mobile {
   display: flex;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   overflow-x: scroll;
   align-items: center;
   max-width: 400px;
@@ -402,7 +402,7 @@ div#results-container {
 
 .data-card {
   background-color: white;
-  width:400px;
+  width: 400px;
   flex-shrink: 0;
   padding: 10px;
   padding-left: 10px;
@@ -411,33 +411,34 @@ div#results-container {
   box-sizing: border-box;
   flex-grow: 1;
 }
-.data-card-mobile{
-background-color: white;
-width: 360px;
-flex-shrink: 0; 
-max-width: calc(95% - 20px); 
-padding: 8px;
-padding-left: 10px;
-border-radius: 12px;
-box-sizing: border-box;
-gap: 15px;
+
+.data-card-mobile {
+  background-color: white;
+  width: 360px;
+  flex-shrink: 0;
+  max-width: calc(95% - 20px);
+  padding: 8px;
+  padding-left: 10px;
+  border-radius: 12px;
+  box-sizing: border-box;
+  gap: 15px;
 }
 
-.data-card-tablet{
+.data-card-tablet {
   background-color: white;
   width: 350px;
   flex-shrink: 0;
   /*max-width: calc(50% - 20px); */
-  margin-right: 10px; 
+  margin-right: 10px;
   margin-left: 10px;
   padding: 8px;
   padding-left: 10px;
   border-radius: 12px;
   box-sizing: border-box;
   gap: 15px;
-  }
+}
 
-.span-billable{
+.span-billable {
   font-family: Roboto;
   font-size: 16px;
   font-weight: 400;
@@ -447,7 +448,7 @@ gap: 15px;
   fill: #1d1b20;
 }
 
-.span-churn-rate{
+.span-churn-rate {
   font-size: 18px;
   font: Roboto;
   font-weight: 500;
@@ -455,13 +456,13 @@ gap: 15px;
   letter-spacing: 0.1 px;
 }
 
-.churn-rate-info{
+.churn-rate-info {
   font-family: Roboto;
   font-weight: 600;
   font-size: 12px;
 }
 
-.card-style{
+.card-style {
   color: #b3261e;
   margin-left: 10px;
   font-size: medium;
@@ -521,7 +522,7 @@ gap: 15px;
   padding: 0;
 }
 
-#outer-icon-container > div {
+#outer-icon-container>div {
   border-radius: 50%;
   background-color: #d7dfff;
   color: #0029c6;
@@ -549,6 +550,7 @@ gap: 15px;
   letter-spacing: 0em;
   text-align: left;
 }
+
 .employee-count {
   color: #0faf4b;
   margin-left: 10px;
