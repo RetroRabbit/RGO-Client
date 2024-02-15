@@ -39,7 +39,7 @@ export class SignInComponent {
   onResize() {
     this.screenWidth = window.innerWidth;
   }
-  
+
   Login() {
     this.cookieService.deleteAll();
     this.auth
@@ -71,9 +71,9 @@ export class SignInComponent {
           this.authAccessService.setEmployeeEmail(user?.email as string)
           this.store.dispatch(GetLogin({ payload: googleID }));
           this.hideNavService.showNavbar = true;
-          if(this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney() || this.authAccessService.isSuperAdmin()){
+          if (this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney() || this.authAccessService.isSuperAdmin()) {
             this.router.navigateByUrl('/dashboard');
-          }else{
+          } else {
             this.router.navigateByUrl('/profile');
           }
         },
