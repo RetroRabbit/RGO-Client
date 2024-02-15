@@ -16,7 +16,7 @@ export class EmployeeDocumentService {
     }
 
     getAllEmployeeDocuments(employeeId: number): Observable<EmployeeDocument[]> {
-        return this.httpClient.get<EmployeeDocument[]>(`${this.baseUrl}?employeeId= ${employeeId}`);
+        return this.httpClient.get<EmployeeDocument[]>(`${this.baseUrl}/${employeeId}`);
     }
     saveEmployeeDocument(employeeDocument: any): Observable<EmployeeDocument> {
         return this.httpClient.post<EmployeeDocument>(`${this.baseUrl}`, employeeDocument);
