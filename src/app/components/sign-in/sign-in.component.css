@@ -108,3 +108,13 @@ button:hover {
 .formatting-button .google-logo {
   width: auto;
 }
+
+.mobile-button-width {
+  border: 1px solid #17a2b8;
+  border-radius: 0.25rem;
+  padding: 0.5rem 2rem;
+  text-transform: uppercase;
+  font-weight: 500;
+  background-color: white;
+  width: 85%;
+}
