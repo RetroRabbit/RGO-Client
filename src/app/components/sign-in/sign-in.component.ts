@@ -36,6 +36,7 @@ export class SignInComponent {
   }
   screenWidth: number = 993;
   @HostListener('window:resize', ['$event'])
+
   onResize() {
     this.screenWidth = window.innerWidth;
   }
