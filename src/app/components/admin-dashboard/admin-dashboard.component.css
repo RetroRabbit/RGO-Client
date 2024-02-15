@@ -428,7 +428,6 @@ div#results-container {
   background-color: white;
   width: 350px;
   flex-shrink: 0;
-  /*max-width: calc(50% - 20px); */
   margin-right: 10px;
   margin-left: 10px;
   padding: 8px;
