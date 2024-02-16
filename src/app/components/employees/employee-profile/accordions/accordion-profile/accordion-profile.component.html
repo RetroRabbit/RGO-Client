@@ -2,18 +2,22 @@
     <mat-accordion id="accordion" class="row">
         <mat-expansion-panel class="mt-3" (opened)="checkEmployeeDetails()" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
-                <mat-panel-title>
+                <mat-panel-title class="col-6">
                     Employee Details
                 </mat-panel-title>
                 <mat-panel-description *ngIf="employeeFormProgress != 100">
-                    <mat-icon class="mx-1">error</mat-icon> Missing information
+                    <mat-icon class="mx-1">error</mat-icon> <a class=""> Missing information</a>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeDetailsForm" (submit)="saveEmployeeEdit()">
+                <div class="col-12 mb-2">
+                    <button *ngIf="!editEmployee" mat-button id="edit-button" (click)="editEmployeeDetails()" class="col-12">
+                        <mat-icon>edit</mat-icon>Edit Details</button>
+                </div>
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col-12">
                         <div class="row">
-                            <div class="col-6 my-2">
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Full Names</mat-label>
                                     <input matInput formControlName="name">
@@ -24,7 +28,7 @@
                                         Full name must not contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Last Name</mat-label>
                                     <input matInput formControlName="surname">
@@ -35,7 +39,7 @@
                                         Last name must not contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Initials</mat-label>
                                     <input matInput formControlName="initials">
@@ -47,8 +51,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6 my-2">
+                        <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Client Allocated</mat-label>
                                     <input type="text" placeholder="" matInput formControlName="clientAllocated"
@@ -60,10 +63,9 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
-                            </div>
                         </div>
                         <div class="row">
-                            <div class="col-6 my-2">
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Role</mat-label>
                                     <mat-select formControlName="employeeType">
@@ -73,7 +75,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Level</mat-label>
                                     <mat-select formControlName="level">
@@ -83,7 +85,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Team Lead</mat-label>
                                     <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput" type="text" placeholder="" matInput formControlName="teamLead"
@@ -103,7 +105,7 @@
                                     </ng-template>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>People's Champion</mat-label>
                                     <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminPeopleChampionInput" 
@@ -121,7 +123,7 @@
                                         </ng-template>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>I.D number</mat-label>
                                     <input matInput formControlName="idNumber" (blur)="getGenderBirthday($event)">
@@ -133,7 +135,7 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Date of Birth</mat-label>
                                     <input matInput [matDatepicker]="picker1" class="form-control"
@@ -142,7 +144,7 @@
                                     <mat-datepicker #picker1></mat-datepicker>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Start Date</mat-label>
                                     <input matInput [matDatepicker]="picker2" formControlName="engagementDate">
@@ -152,14 +154,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-2">
-                        <button *ngIf="!editEmployee" mat-button id="edit-button" (click)="editEmployeeDetails()">
-                            <mat-icon>edit</mat-icon>Edit Details</button>
-                    </div>
-                    <div class="col-12" id="edit-buttons">
+                    <div class="col-12 d-flex" id="edit-buttons">
                         <button *ngIf="editEmployee" mat-button id="cancel-button"
-                            (click)="cancelEmployeeEdit()">Cancel</button>
-                        <button *ngIf="editEmployee" mat-button id="save-button" type="submit">Save
+                            (click)="cancelEmployeeEdit()" class="order-2 order-md-1 order-lg-1 col-12">Cancel</button>
+                        <button *ngIf="editEmployee" mat-button id="save-button" type="submit" class="order-1 order-md-2 order-lg-2 col-12">Save
                             changes</button>
                     </div>
                 </div>
@@ -174,7 +172,11 @@
                     <mat-icon class="mx-1">error</mat-icon> Missing information
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <form [formGroup]="personalDetailsForm">
+            <form [formGroup]="personalDetailsForm"> 
+                    <div class="col-12 mb-2">
+                        <button *ngIf="!editPersonal" mat-button id="edit-button" (click)="editPersonalDetails()" class="col-12">
+                            <mat-icon>edit</mat-icon>Edit Details</button>
+                    </div>
                 <div class="row">
                     <div class="col-10">
                         <div class="row">
@@ -230,10 +232,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-2">
-                        <button *ngIf="!editPersonal" mat-button id="edit-button" (click)="editPersonalDetails()">
-                            <mat-icon>edit</mat-icon>Edit Details</button>
-                    </div>
+
                     <div class="col-12" id="edit-buttons">
                         <button *ngIf="editPersonal" mat-button id="cancel-button"
                             (click)="cancelPersonalEdit()">Cancel</button>
@@ -253,6 +252,10 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeContactForm">
+                <div class="col-12 mb-2">
+                    <button *ngIf="!editContact" mat-button id="edit-button" (click)="editContactDetails()" class="col-12">
+                        <mat-icon>edit</mat-icon>Edit Details</button>
+                </div>                
                 <div class="row">
                     <div class="col-10">
                         <div class="row">
@@ -331,10 +334,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-2">
-                        <button *ngIf="!editContact" mat-button id="edit-button" (click)="editContactDetails()">
-                            <mat-icon>edit</mat-icon>Edit Details</button>
-                    </div>
+
                     <div class="col-12" id="edit-buttons">
                         <button *ngIf="editContact" mat-button id="cancel-button"
                             (click)="cancelContactEdit()">Cancel</button>
@@ -355,6 +355,11 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="addressDetailsForm">
+                <div class="col-12 mb-2">
+                    <button *ngIf="!editAddress" mat-button id="edit-button" (click)="editAddressDetails()" class="col-12">
+                        <mat-icon>edit</mat-icon>Edit Details
+                    </button>
+                </div>
                 <div class="row">
                     <div class="col-10">
                         <div class="row">
@@ -499,11 +504,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-2">
-                        <button *ngIf="!editAddress" mat-button id="edit-button" (click)="editAddressDetails()">
-                            <mat-icon>edit</mat-icon>Edit Details
-                        </button>
-                    </div>
                     <div class="col-12" id="edit-buttons">
                         <button *ngIf="editAddress" mat-button id="cancel-button"
                             (click)="cancelAddressEdit()">Cancel</button>
@@ -524,6 +524,11 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="additionalInfoForm">
+                <div class="col-12 mb-2">
+                    <button *ngIf="!editAdditional" mat-button id="edit-button" (click)="editAdditionalDetails()" class="col-12">
+                        <mat-icon>edit</mat-icon>Edit
+                        Details</button>
+                </div>
                 <div class="row">
                     <div class="col-10">
                         <div class="col-6 my-2" *ngFor="let fieldcode of customFields">
@@ -541,11 +546,6 @@
                                 </div>
                             </mat-form-field>
                         </div>
-                    </div>
-                    <div class="col-2">
-                        <button *ngIf="!editAdditional" mat-button id="edit-button" (click)="editAdditionalDetails()">
-                            <mat-icon>edit</mat-icon>Edit
-                            Details</button>
                     </div>
                     <div class="col-12" id="edit-buttons">
                         <button *ngIf="editAdditional" mat-button id="cancel-button"

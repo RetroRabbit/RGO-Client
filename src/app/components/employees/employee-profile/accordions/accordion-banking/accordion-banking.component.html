@@ -10,8 +10,13 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeBankingsForm">
+                <div class="col-12 mb-2">
+                    <button *ngIf="!editBanking" mat-button id="edit-button" (click)="editBankingDetails()" class="col-12">
+                        <mat-icon>edit</mat-icon>Edit
+                        Details</button>
+                </div>
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col-12">
                         <div class="row">
                             <div class="col-12 row my-3">
                                 <div class="col-7 my-2">
@@ -51,7 +56,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Bank Account Owner</mat-label>
                                     <input matInput placeholder="Enter name of owner"
@@ -61,8 +66,8 @@
                                         Owner name is required</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6"></div>
-                            <div class="col-6 my-2">
+                            <div class="col-0 col-md-6 col-lg-6"></div>
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Account Type</mat-label>
                                     <mat-select placeholder="Select Type" formControlName="accountType">
@@ -72,7 +77,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Bank Name</mat-label>
                                     <mat-select placeholder="Select bank" formControlName="bankName">
@@ -82,7 +87,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Account Number</mat-label>
                                     <input type="text" min="0" matInput placeholder="Enter account number"
@@ -95,7 +100,7 @@
                                         Account number must contain only numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Branch Code</mat-label>
                                     <input type="text" min="0" matInput placeholder="Enter branch code"
@@ -109,7 +114,7 @@
                                 </mat-form-field>
                             </div>
                             <p id="base64"></p>
-                            <div class="col-8 my-2">
+                            <div class="col-12 my-2">
                                 <mat-label [ngStyle]="{color: editBanking ? 'black' : 'grey'}">
                                     Proof of account
                                 </mat-label>
@@ -138,11 +143,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-2">
-                        <button *ngIf="!editBanking" mat-button id="edit-button" (click)="editBankingDetails()">
-                            <mat-icon>edit</mat-icon>Edit
-                            Details</button>
                     </div>
                     <div class="col-12" id="edit-buttons">
                         <button *ngIf="editBanking" mat-button id="cancel-button"
