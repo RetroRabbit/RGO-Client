@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
 import { Chart } from 'src/app/models/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
@@ -40,6 +40,12 @@ export class ChartComponent implements OnInit {
   coloursArray: string[] = colours;
   chartCanvasArray: any[] = [];
 
+  screenWidth: number = 600;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+  }
+
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
 
@@ -63,20 +69,21 @@ export class ChartComponent implements OnInit {
           color: '#black',
           font: {
             family: 'Roboto',
-            size: 20,
+            size: 14,
             style: 'normal',
             lineHeight: 1.2
           },
         }
       }
     },
+    
     plugins: {
       legend: {
         display: true,
         position: 'bottom',
         labels:{
           font: {
-            size: 16
+            size: 14
           }
         }
       },
@@ -103,7 +110,7 @@ export class ChartComponent implements OnInit {
         position: 'right',
         labels:{
           font: {
-            size: 16
+            size: 14
           }
         }
       },
@@ -114,6 +121,15 @@ export class ChartComponent implements OnInit {
       } as any,
     },
   };
+ 
+  // Conditionally set options based on chart type
+  getChartOptions(chartType: string) {
+    return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
+    // Add more conditions for other chart types if needed
+  }
+
+  //get screen size
+  //if screen is mobile, set mobilebarchartoptions
 
   resetPage() {
     this.displayChart = false

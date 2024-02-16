@@ -81,6 +81,7 @@ import { AccordionBankingComponent } from './components/employees/employee-profi
 import { AccordionDocumentsComponent } from './components/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -110,7 +111,9 @@ import { LoadingComponentComponent } from './components/shared-components/loadin
     AccordionProfileComponent,
     AccordionBankingComponent,
     AccordionDocumentsComponent,
-    LoadingComponentComponent
+    LoadingComponentComponent,
+  
+    
   ],
   imports: [
     BrowserModule,
