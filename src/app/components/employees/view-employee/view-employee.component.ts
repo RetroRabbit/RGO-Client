@@ -361,7 +361,7 @@ export class ViewEmployeeComponent {
       .pipe(catchError(() => of([] as Client[])));
 
     this.employeeService
-      .filterEmployeeTable(this.currentChampionFilter.id, this.currentUserTypeFilter.id)
+      .filterEmployees(this.currentChampionFilter.id, this.currentUserTypeFilter.id)
       .pipe(
         switchMap((employees: EmployeeProfile[]) =>
           this.combineEmployeesWithRolesAndClients(employees, clients$)
@@ -383,7 +383,7 @@ export class ViewEmployeeComponent {
   }
   
   getPeopleChampionsForFilter(): Observable<{ id: number; name: string }[]> {
-    return this.employeeService.filterEmployeesByType(EmployeeType.People_Champion).pipe(
+    return this.employeeService.filterEmployees(0, EmployeeType.People_Champion).pipe(
       map(employees => {
         const champions = employees.map(employee => ({
           id: employee.id || 0,
