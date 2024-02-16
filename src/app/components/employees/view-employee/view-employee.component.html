@@ -3,7 +3,7 @@
     [ngClass]="screenWidth <= 992 ? 'mobile-section-fluid' : 'desktop-section-fluid'">
     <div class="d-flex justify-content-between gap-2">
       <div class="col-6 pl-0 d-flex align-items-center">
-        <div id="search-container" class="" [ngClass]="{ 'bg-white': searchQuery !== '' }">
+        <div id="search-container" [ngClass]="{ 'bg-white': searchQuery !== '' }">
           <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
             <mat-icon>arrow_back</mat-icon>
           </button>
