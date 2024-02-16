@@ -55,7 +55,14 @@
   </section>
   <div class="row">
     <div class="card px-0">
-      <app-loading-component *ngIf="isLoading"></app-loading-component>
+      <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+        'background-color': '#D7DFFF',
+        'border': '2px solid #D7DFFF',
+        'border-radius': '2rem',
+        'height': '580px',
+        width: '100%',
+      }">
+      </ngx-skeleton-loader>
       <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
         <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="Name">
