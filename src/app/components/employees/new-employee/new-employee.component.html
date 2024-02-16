@@ -236,12 +236,11 @@
                 <mat-error *ngIf="physicalAddress.controls['postalCode'].hasError('pattern')">
                   Postal code must contain only numbers.
                 </mat-error>
-              </mat-form-field>
-              <form [formGroup]="postalAddressForm" class="col-lg-7 col-md-12">
-                <mat-checkbox color="primary" formControlName="sameAsPhysicalAddress" (change)="postalSameAsPhysicalAddress()">
-                  Postal address is the same as physical address
-                </mat-checkbox>
-              </form>
+              </mat-form-field>             
+              <form class="col-lg-7 col-md-12 mt-2" [formGroup]="postalAddressForm">
+                <p-checkbox class="ml-10" value="Postal address is the same as physical address" inputId="checkbox"></p-checkbox>
+                <label class="ml-10" for="checkbox" style="margin-left: 10px;">Postal address is the same as physical address</label>
+             </form>
             </form>
             <form [formGroup]="postalAddress" *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value"
               class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mt-5">
