@@ -53,15 +53,16 @@
   </div>
 </div>
 
-<div id="data-cards-container" class="row">
-  <div class="col-lg-4 col-md-8 col-sm-12 mb-md-2 data-card">
+
+<div  [ngClass]="screenWidth <= 767 ? 'data-cards-container-mobile' : (screenWidth <= 991 ? 'data-cards-container-tablet' : 'data-cards-container-desktop')">
+  <div class="data-card" [ngClass]="screenWidth <= 991 ? 'data-card-tablet' : 'data-card-mobile'">
     <div class="row">
       <div class="col-3">
         <div id="options-trigger">
           <mat-icon id="menu-icon">person_outline_24px</mat-icon>
         </div>
       </div>
-      <div class="col-9 my-2">
+      <div class="col-9 my-2" style="justify-content: left;">
         <div id="header-label">Employee Count</div>
         <div id="total-employees">
           Total employees: <b>{{ totalNumberOfEmployees }}</b>
@@ -94,13 +95,13 @@
       </div>
     </div>
 
-    <div id="increase" *ngIf="employeeCount.isIncrease === true">
+    <div id="increase" *ngIf="employeeCount.isIncrease === true && screenWidth <= 767">
       <img src="../../../assets/img/arrow_up_24px.svg" alt="group" class="group" width="20px" height="20px" />
       <span class="employee-count">+{{ employeeCount.employeeTotalDifference }}</span>
       <span class="card-info">from last month</span>
     </div>
 
-    <div id="decrease" *ngIf="employeeCount.isIncrease === false">
+    <div id="decrease" *ngIf="employeeCount.isIncrease === false && screenWidth <= 767">
       <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group" width="25px" height="25px" />
       <span class="card-style">{{
         employeeCount.employeeTotalDifference
@@ -109,7 +110,7 @@
     </div>
   </div>
 
-  <div class="col-lg-4 col-md-6 col-sm-12 mb-md-2 data-card">
+  <div class="data-card" [ngClass]="screenWidth <= 991 ? 'data-card-tablet' : 'data-card-mobile'">
     <div class="row">
       <div class="col-3">
         <div id="options-trigger">
@@ -150,7 +151,7 @@
     </div>
   </div>
 
-  <div class="col-lg-4 col-md-6 col-sm-12 mb-md-2 data-card">
+  <div class="data-card" [ngClass]="screenWidth <= 991 ? 'data-card-tablet' : 'data-card-mobile'">
     <div class="row">
       <div class="col-3">
         <div id="options-trigger">
@@ -192,7 +193,7 @@
         </div>
       </div>
     </div>
-    <div>
+    <div *ngIf="screenWidth <= 767">
       <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group" width="25px" height="25px" />
       <span class="card-style">{{ churnRate.churnRate }}%</span>
       <span class="card-info">decrease from last month</span>
