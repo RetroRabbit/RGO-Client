@@ -83,7 +83,6 @@ export class SignInComponent {
             this.router.navigateByUrl('/profile');
           }
         },
-        error: (error) => {},
       });
   }
 }

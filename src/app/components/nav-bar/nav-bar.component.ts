@@ -9,7 +9,6 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { Chart } from 'chart.js';
 import { Dialog } from 'src/app/models/confirm-modal.interface';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
