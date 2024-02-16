@@ -33,6 +33,7 @@ import { HideNavService } from 'src/app/services/hide-nav.service';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
 import { EmployeeType } from 'src/app/models/constants/employeeTypes.constants';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
+import { GenericDropDownObject } from 'src/app/models/generic-drop-down-object.interface';
 
 @Component({
   selector: 'app-view-employee',
@@ -64,10 +65,10 @@ export class ViewEmployeeComponent {
     first()
   );
 
-  peopleChampions: Observable<{ id: number; name: string }[]> = this.getPeopleChampionsForFilter();
-  usertypes: Observable<{ id: number; name: string }[]> = this.getUserTypesForFilter();
-  currentChampionFilter: { id: number; name: string } = {id:0,name:'All'};
-  currentUserTypeFilter: { id: number; name: string } = {id:0,name:'All'};
+  peopleChampions: Observable< GenericDropDownObject[]> = this.getPeopleChampionsForFilter();
+  usertypes: Observable< GenericDropDownObject[]> = this.getUserTypesForFilter();
+  currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
+  currentUserTypeFilter: GenericDropDownObject = new GenericDropDownObject;
 
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
@@ -342,12 +343,12 @@ export class ViewEmployeeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
-  changePeopleChampionFilter(champion: { id: number; name: string }) {
+  changePeopleChampionFilter(champion: GenericDropDownObject) {
     this.currentChampionFilter = champion;
     this.filterEmployeeTable();   
   }
 
-  changeUserTypeFilter(employeeType: { id: number; name: string })
+  changeUserTypeFilter(employeeType: GenericDropDownObject)
   {
     this.currentUserTypeFilter = employeeType;
     this.filterEmployeeTable();
@@ -361,7 +362,7 @@ export class ViewEmployeeComponent {
       .pipe(catchError(() => of([] as Client[])));
 
     this.employeeService
-      .filterEmployees(this.currentChampionFilter.id, this.currentUserTypeFilter.id)
+      .filterEmployees(this.currentChampionFilter.id || 0, this.currentUserTypeFilter.id || 0)
       .pipe(
         switchMap((employees: EmployeeProfile[]) =>
           this.combineEmployeesWithRolesAndClients(employees, clients$)
@@ -382,10 +383,10 @@ export class ViewEmployeeComponent {
       });
   }
   
-  getPeopleChampionsForFilter(): Observable<{ id: number; name: string }[]> {
-    return this.employeeService.filterEmployees(0, EmployeeType.People_Champion).pipe(
+  getPeopleChampionsForFilter(): Observable<GenericDropDownObject[]> {
+    return this.employeeService.filterEmployees(0, EmployeeType.PeopleChampion).pipe(
       map(employees => {
-        const champions = employees.map(employee => ({
+        const champions: GenericDropDownObject[] = employees.map(employee => ({
           id: employee.id || 0,
           name: employee.name || 'Unknown'
         }));
@@ -395,13 +396,13 @@ export class ViewEmployeeComponent {
     );
   }
 
-  getUserTypesForFilter(): Observable<{ id: number; name: string }[]> {
+  getUserTypesForFilter(): Observable<GenericDropDownObject[]> {
     return this.employeeTypeService.getAllEmployeeTypes().pipe(
       map(types => {
-        const userTypes = types.map(type => ({
+        const userTypes: GenericDropDownObject[] = types.map(type => ({
           id: type.id || 0,
           name: type.name || 'Unknown'
-        }));
+      }));
         userTypes.unshift({ id: 0, name: 'All' });
         return userTypes;
       })
