@@ -3,7 +3,7 @@ import { EmployeeRoleService } from 'src/app/services/employee/employee-role.ser
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
-import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { HideNavService } from 'src/app/services/hide-nav.service';
@@ -47,6 +47,12 @@ export class AdminDashboardComponent {
   loadCounter: number = 0;
   totalNumberOfEmployees: number = 0;
  
+
+  screenWidth: number = 900;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+  }
 
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
   charts: Chart[] = [];
