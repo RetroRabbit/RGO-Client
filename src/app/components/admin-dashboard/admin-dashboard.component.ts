@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
 import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
-import { HostListener } from '@angular/core';
+
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -57,13 +57,8 @@ export class AdminDashboardComponent {
   totalNumberOfEmployees: number = 0;
  
 
-  screenWidth: number = 900;
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.screenWidth = window.innerWidth;
-  }
-
-  @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
+  
+ 
   charts: Chart[] = [];
   searchQuery: string = '';
   searchResults: EmployeeProfile[] = [];
@@ -102,21 +97,6 @@ export class AdminDashboardComponent {
     hideNavService.showNavbar = true;
   }
 
-  EventOpenDialog() {
-    if (this.isMobileScreen) {
-      this.dialog.open(this.dialogTemplate, {
-        width: '100vw',
-        height: '100vh',
-        maxWidth: '100%',
-        maxHeight: '100%',
-        panelClass: 'fullscreen-modal',
-      });
-    } else {
-      this.dialog.open(this.dialogTemplate, {
-        width: '90%',
-      });
-    }
-  }
 
   ngOnInit() {
     const types: string = this.cookieService.get('userType');

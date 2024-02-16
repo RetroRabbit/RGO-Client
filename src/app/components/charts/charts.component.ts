@@ -40,7 +40,7 @@ export class ChartComponent implements OnInit {
   coloursArray: string[] = colours;
   chartCanvasArray: any[] = [];
 
-  screenWidth: number = 600;
+  screenWidth: number = 767;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
