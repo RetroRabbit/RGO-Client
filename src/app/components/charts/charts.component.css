@@ -12,9 +12,10 @@
 }
 .chart-width-tablet{
   border-radius: 1rem;
-  min-height: 30vh !important;
-  max-width:40% !important;
-  margin-left:25px;
+  min-height: 30% !important;
+  max-width:45% !important;
+  margin-left:10px;
+
  
 }
 #chart-header{
@@ -23,7 +24,7 @@
   font-family: Poppins;
   font-size: 18px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 800;
   line-height: 21px;
 }
 
@@ -59,7 +60,8 @@
   width: 3rem !important;
 }
 .Icon-width-tablet{
-  width: 5rem !important;
+  width: 90px !important;
+  height:1rem !important;
 }
 
 #edit-controls > button{
@@ -75,12 +77,14 @@
   margin: 0 auto;
 }
 
-
-
 #custom-width {
   width: 10%;
 }
 
 #regular-width {
   width: fit-content;
+}
+
+h4{
+  font-weight:500;
 }

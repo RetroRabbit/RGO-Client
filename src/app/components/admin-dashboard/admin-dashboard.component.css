@@ -302,7 +302,7 @@ div#results-container {
 #graph-heading>h3 {
   color: #212121;
   font-size:  clamp(10px,4vw,22px);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 28px;
   font-family: Roboto, sans-serif;
   letter-spacing: 0.009375em;
@@ -564,5 +564,16 @@ div#results-container {
 
 
 .button-width-mobile{
- width: 100px !important;
+ width: 140px !important;
 }
+
+.button-width-tablet{
+  width: 150px !important;
+  margin-left:140px !important;
+ }
+
+ .Add-Button-mobile{
+  width: 340px !important;
+  margin-right:1rem !important;
+  
+ }

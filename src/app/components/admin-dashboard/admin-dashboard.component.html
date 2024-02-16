@@ -13,9 +13,9 @@
     </div>
   </div>
 
-  <div id="new-hire">
+  <div id="new-hire" class="d-sm-flex justify-content-sm-center">
     <button class="my-4" (click)="AddEmployee()"
-      *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">+ Add
+      *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()"  [ngClass]="screenWidth >= 767 ? 'Add-Button-tablet' : 'Add-Button-mobile'">+ Add
       Employee</button>
   </div>
 </div>
@@ -578,8 +578,8 @@
   </div>
   <ng-template #ShowCharts>
     <div class="row p-lg-4 p-md-4 p-sm-2" id="no-graphs">
-      <div class="row justify-content-center d-flex flex-nowrap" id="graph-header ">
-        <div class="col-md-8 d-inline-block ">
+      <div class="row" id="graph-header ">
+        <div class="col-6 d-inline-block mt-3  ms-md-4 ">
           <div class="d-md-flex justify-content-md-start" id="graph-heading">
             <h3 >Graphs Overview</h3>
           </div>
@@ -587,8 +587,8 @@
             <h5>Your recent graphs</h5>
           </div>
         </div>
-        <div class="col-md-2  d-inline-block" id="graphs-btn">
-          <button class="btn-sm" (click)="showAddGraphModal()"  [ngClass]="screenWidth <= 900 ? 'button-width-mobile' : 'button-width-tablet'">+ Add Graph</button>
+        <div class="col-2 d-inline-block" id="graphs-btn">
+          <button class="btn-sm ms-sm-3 mt-4 ms-md-8" (click)="showAddGraphModal()"  [ngClass]="screenWidth >= 767 ? 'button-width-tablet' : 'button-width-mobile'">+ Add Graph</button>
         </div>
       </div>
       <div>
