@@ -3,7 +3,7 @@
     [ngClass]="screenWidth <= 992 ? 'mobile-section-fluid' : 'desktop-section-fluid'">
     <div class="d-flex justify-content-between gap-2">
       <div class="col-6 pl-0 d-flex align-items-center">
-        <div id="search-container" class="" [ngClass]="{ 'bg-white': searchQuery !== '' }">
+        <div id="search-container" [ngClass]="{ 'bg-white': searchQuery !== '' }">
           <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
             <mat-icon>arrow_back</mat-icon>
           </button>
@@ -15,7 +15,7 @@
           </button>
         </div>
       </div>
-      <div class="col-2 pl-0 d-flex align-items-center">
+      <div class="col-2 ps-0 d-flex align-items-center">
         <div (click)="$event.stopPropagation()" class="row col-12 px-0">
           <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
             [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
@@ -29,7 +29,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="col-2 pl-0 d-flex align-items-center">
+      <div class="col-2 ps-0 d-flex align-items-center">
         <div (click)="$event.stopPropagation()" class="row col-12 px-0">
           <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
             [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
@@ -43,7 +43,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="col-2 pr-0 d-flex justify-content-end align-items-center gap-3"
+      <div class="col-2 pe-0 d-flex justify-content-end align-items-center gap-3"
         *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">
         <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
           class="col-lg-4 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
