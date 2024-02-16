@@ -7,21 +7,23 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EvaluationTemplateItemService {
-
-  constructor(private httpClient: HttpClient) { }
-
+  baseUrl: string;
+    
+  constructor(private httpClient: HttpClient) { 
+      this.baseUrl =`${API.HttpsBaseURL}/template-item`
+  }
   getAll(template: string | null = null): Observable<any[]> {
     if (template!== null)
-      return this.httpClient.get<any[]>(`${API.HttpBaseURL}/templateitem/getall?template=${encodeURIComponent(template)}`)
+      return this.httpClient.get<any[]>(`${this.baseUrl}?template=${encodeURIComponent(template)}`)
 
-    return this.httpClient.get<any[]>(`${API.HttpBaseURL}/templateitem/getall`)
+    return this.httpClient.get<any[]>(`${this.baseUrl}`)
   }
   
   save(template: string, section: string, question: string): Observable<any> {
-    return this.httpClient.post<any>(`${API.HttpBaseURL}/templateitem/save?template=${encodeURIComponent(template)}&section=${encodeURIComponent(section)}&question=${encodeURIComponent(question)}`, { })
+    return this.httpClient.post<any>(`${this.baseUrl}?template=${encodeURIComponent(template)}&section=${encodeURIComponent(section)}&question=${encodeURIComponent(question)}`, { })
   }
 
   delete(template: string, section: string, question: string): Observable<any> {
-    return this.httpClient.delete<any>(`${API.HttpBaseURL}/templateitem/delete?template=${encodeURIComponent(template)}&section=${encodeURIComponent(section)}&question=${encodeURIComponent(question)}`)
+    return this.httpClient.delete<any>(`${this.baseUrl}?template=${encodeURIComponent(template)}&section=${encodeURIComponent(section)}&question=${encodeURIComponent(question)}`)
   }
 }

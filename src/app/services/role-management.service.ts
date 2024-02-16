@@ -11,18 +11,22 @@ import { RoleAccessLink } from '../models/role-access-link.interface';
 })
 export class RoleManagementService {
 
-  constructor(private httpClient: HttpClient) { }
+  baseUrl: string;
+    
+  constructor(private httpClient: HttpClient) { 
+      this.baseUrl =`${API.HttpsBaseURL}/role-manager`
+    }
 
   getAllRoles(): Observable<Role[]> {
-    return this.httpClient.get<Role[]>(`${API.HttpsBaseURL}/rolemanage/getallroles`);
+    return this.httpClient.get<Role[]>(`${this.baseUrl}/roles`);
   }
 
   getAllRoleAccesses(): Observable<RoleAccess[]> {
-    return this.httpClient.get<RoleAccess[]>(`${API.HttpsBaseURL}/rolemanage/getallroleaccesses`);
+    return this.httpClient.get<RoleAccess[]>(`${this.baseUrl}/role-accesses`);
   }
 
   getAllRoleAccesssLinks(): Observable<RoleAccessLink[]> {
-    return this.httpClient.get<RoleAccessLink[]>(`${API.HttpsBaseURL}/rolemanage/getallroleaccesslinks`);
+    return this.httpClient.get<RoleAccessLink[]>(`${this.baseUrl}/role-access-links`);
   }
 
 }
