@@ -75,6 +75,7 @@ main {
     word-wrap: break-word;
 }
 
+
 .mat-mdc-standard-chip {
     --mdc-chip-label-text-font: Roboto, normal;
     --mdc-chip-label-text-color: #000;
@@ -329,3 +330,4 @@ main {
   font-size: 14px;
   letter-spacing: 0.25px;
 }
+
