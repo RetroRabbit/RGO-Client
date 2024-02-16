@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { API } from '../../models/constants/urls.constants';
+import { environment } from '../../../enviroment/environment';
 import { EmployeeDateInput } from '../../models/employe-date.interface';
 import { EmployeeDate } from '../../models/employee-date.interface';
 
@@ -12,7 +12,7 @@ export class EmployeeDateService {
   baseUrl: string;
   
   constructor(private httpClient: HttpClient) { 
-    this.baseUrl =`${API.HttpsBaseURL}/employee-date`
+    this.baseUrl =`${environment.Https_Base_URL}/employee-date`
   }
 
   saveEmployeeDate(employeeDateInput: EmployeeDateInput): Observable<any> {

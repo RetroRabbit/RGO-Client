@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { API } from '../../models/constants/urls.constants';
+import { environment } from '../../../enviroment/environment';
 import { EvaluationInput } from '../../models/evaluation-input.interface';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class EvaluationService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${API.HttpsBaseURL}/evaluation`
+      this.baseUrl =`${environment.Https_Base_URL}/evaluation`
   }
 
   getAll(email: string): Observable<any[]> {
