@@ -40,3 +40,44 @@ ng serve (run 'npm start' if the command does not work.)
 ```
 
 Runs on [this](http:/localhost:4200) location
+
+
+# Naming Conventions
+## Endpoints
+Use forward slash
+Use forward slashes for resource hierarchy and to separate URI resources.
+Example: "/employee/{id}"
+
+
+## Use nouns, not verbs
+When naming the URIs, you should use nouns to describe what the resource is and not what it does. For example:
+Wrong:   "getEmployees/"
+Correct: "employees/"
+
+## Use plural nouns
+This makes it clear that there is more than one resource within a collection. Using singular nouns can be confusing. For example:
+Wrong:  "chart/{id}"
+Correct: "charts/{id}"
+
+## Lowercase letters
+As a standard, URLs are typed in lowercase. The same applies to API URIs.
+
+
+## Use hyphens to separate words
+When chaining words together, hyphens are the most user-friendly way and are a better choice than underscores.
+For example: "employee-documents/10"
+
+
+## Endpoint strings can be the same provided that the Request Mapping is different:
+PUT "employee/{id}"
+GET "employee/{id}"
+
+## Variables
+All variables in methods must be in camelCase
+
+Anything referenced by a service should prefixed with an underscore, to indicate that it is a reference to a service 
+
+All Method names must be PascalCase
+ ie: SaveEmployeeDocument(SimpleEmployeeDocumentDto employeeDocDto)
+
+PS: When naming and endpoint, variable or method make the name as descriptive as possible. The only exception is for small scopes like a lambda.

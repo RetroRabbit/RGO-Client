@@ -8,17 +8,21 @@ import { API } from '../../models/constants/urls.constants';
   providedIn: 'root'
 })
 export class EvaluationAudienceService {
-  constructor(private httpClient: HttpClient) { }
+  baseUrl: string;
+    
+  constructor(private httpClient: HttpClient) { 
+      this.baseUrl =`${API.HttpsBaseURL}/evaluation-audience`
+  }
 
   getAll(evaluationInput: EvaluationInput): Observable<any[]> {
-    return this.httpClient.post<any[]>(`${API.HttpBaseURL}/evaluationaudience/getall`, evaluationInput)
+    return this.httpClient.post<any[]>(`${this.baseUrl}/all`, evaluationInput)
   }
 
   save(email: string, evaluationInput: EvaluationInput): Observable<any> {
-    return this.httpClient.post<any>(`${API.HttpBaseURL}/evaluationaudience/save?email=${encodeURIComponent(email)}`, evaluationInput)
+    return this.httpClient.post<any>(`${this.baseUrl}?email=${encodeURIComponent(email)}`, evaluationInput)
   }
 
   delete(email: string, evaluationInput: EvaluationInput): Observable<any> {
-    return this.httpClient.delete<any>(`${API.HttpBaseURL}/evaluationaudience/delete?email=${encodeURIComponent(email)}`, { body: evaluationInput })
+    return this.httpClient.delete<any>(`${this.baseUrl}?email=${encodeURIComponent(email)}`, { body: evaluationInput })
   }
 }

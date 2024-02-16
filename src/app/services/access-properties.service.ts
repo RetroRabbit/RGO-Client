@@ -10,17 +10,20 @@ import { Observable } from "rxjs"
 
 export class AccessPropertiesService{
     
-    constructor(private client : HttpClient ){}
-
+  baseUrl: string;
+    
+  constructor(private httpClient: HttpClient) { 
+      this.baseUrl =`${API.HttpsBaseURL}/access`
+  }
     GetAccessProperties(email : string) : Observable<Properties[]>{
-      return this.client.get<Properties[]> (
-        `${API.HttpsBaseURL}/access/get?email=${email}`
+      return this.httpClient.get<Properties[]> (
+        `${this.baseUrl}?email=${email}`
       );
     }
 
     UpdateProperties(email : string, payload : any): any{
-        return this.client.put<any>(
-            `${API.HttpBaseURL}/access/update?email=${email}`, payload
+        return this.httpClient.put<any>(
+            `${this.baseUrl}?email=${email}`, payload
         );
     }
 }

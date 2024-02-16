@@ -40,7 +40,7 @@ export class CreateChartsComponent {
 
   ngOnInit() : void {
     this.getChartData();
-    this.ChartService.getColumns().subscribe({
+    this.ChartService.getEmployeeTableColumns().subscribe({
       next: options => { this.columns = options; }
     });
   }

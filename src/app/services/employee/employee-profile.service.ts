@@ -20,13 +20,13 @@ export class EmployeeProfileService {
   constructor(private client: HttpClient, private appStore:Store<{app:Token}>, private employeeStore:Store<{employees:EmployeeState}>, private cookieService: CookieService) { }
 
   GetEmployeeProfile(): Observable<EmployeeProfile> {
-    let result = this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/get`);
+    let result = this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employees`);
     return result;
   }
 
   GetEmployeeProfileByEmail(email: string): Observable<EmployeeProfile> {
     const queryParams = `?email=${email}`;
-    return this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/get${queryParams}`);
+    return this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employees/by-email${queryParams}`);
   }
 
 
@@ -46,22 +46,22 @@ export class EmployeeProfileService {
 
   UpdateEmployeeProfile(profileUpdate: any): Observable<any> {
     return this.client.put<any>(
-      `${API.HttpsBaseURL}/employee/update?email=${profileUpdate.updatedProfile.email}`, profileUpdate.updatedProfile
+      `${API.HttpsBaseURL}/employees?email=${profileUpdate.updatedProfile.email}`, profileUpdate.updatedProfile
     );
   }
 
   searchEmployees(name: string): Observable<EmployeeProfile[]> {
     const queryParams = `?name=${name}`;
-    return this.client.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employee/search${queryParams}`);
+    return this.client.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employees${queryParams}`);
   }
 
   getEmployeeById(id: number): Observable<EmployeeProfile> {
     const queryParams = `?id=${id}`;
-    return this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/id${queryParams}`);
+    return this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employees${queryParams}`);
   }
 
   getSimpleEmployee(employeeEmail : string): Observable<SimpleEmployee> {
     const queryParams = `?employeeEmail=${employeeEmail}`;
-    return this.client.get<SimpleEmployee>(`${API.HttpsBaseURL}/employee/simple-profile/${queryParams}`);
+    return this.client.get<SimpleEmployee>(`${API.HttpsBaseURL}/employees/simple-profile/${queryParams}`);
   }
 }

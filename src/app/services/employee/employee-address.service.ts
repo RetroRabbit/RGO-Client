@@ -9,21 +9,25 @@ import { EmployeeAddress } from 'src/app/models/employee-address.interface';
 })
 export class EmployeeAddressService {
 
-  constructor(private client: HttpClient) { }
+ baseUrl: string;
+    
+    constructor(private httpClient: HttpClient) { 
+        this.baseUrl =`${API.HttpsBaseURL}/employee-documents`
+    }
 
   getall(): Observable<EmployeeAddress[]> {
-    return this.client.get<EmployeeAddress[]>(`${API.HttpsBaseURL}/employeeaddress/getall`);
+    return this.httpClient.get<EmployeeAddress[]>(`${this.baseUrl}`);
   }
 
   save(address: EmployeeAddress): Observable<EmployeeAddress> {
-    return this.client.post<EmployeeAddress>(`${API.HttpsBaseURL}/employeeaddress/save`, address);
+    return this.httpClient.post<EmployeeAddress>(`${this.baseUrl}`, address);
   }
 
   update(address: EmployeeAddress): Observable<EmployeeAddress> {
-    return this.client.put<EmployeeAddress>(`${API.HttpsBaseURL}/employeeaddress/update`, address);
+    return this.httpClient.put<EmployeeAddress>(`${this.baseUrl}`, address);
   }
 
-  delete(address: EmployeeAddress): Observable<EmployeeAddress> {
-    return this.client.delete<EmployeeAddress>(`${API.HttpsBaseURL}/employeeaddress/delete/`, { body: address });
+  delete(addressId: EmployeeAddress): Observable<EmployeeAddress> {
+    return this.httpClient.delete<EmployeeAddress>(`${this.baseUrl}/${addressId}`);
   }
 }

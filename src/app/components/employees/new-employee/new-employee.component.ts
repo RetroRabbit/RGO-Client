@@ -189,7 +189,7 @@ export class NewEmployeeComponent implements OnInit {
       },
     });
     this.employeeService
-      .getAllProfiles()
+      .getEmployeeProfiles()
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });

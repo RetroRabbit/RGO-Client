@@ -1,5 +1,3 @@
-import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
-import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
@@ -20,7 +18,7 @@ import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
 import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
-
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -29,8 +27,18 @@ import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface
 })
 
 export class AdminDashboardComponent {
+  @ViewChild('dialogTemplate', { static: true })
+  dialogTemplate!: TemplateRef<any>;
+  @ViewChild(MatSort) sort!: MatSort;
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() expandSearch = new EventEmitter<string>();
+
+  screenWidth= window.innerWidth;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.isMobileScreen = window.innerWidth < 768;
+    this.screenWidth = window.innerWidth;
+  }
 
   categoryControl = new FormControl();
   chartName: string = '';
@@ -45,6 +53,7 @@ export class AdminDashboardComponent {
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
   loadCounter: number = 0;
+  isMobileScreen = false;
   totalNumberOfEmployees: number = 0;
  
 
@@ -56,50 +65,31 @@ export class AdminDashboardComponent {
 
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
   charts: Chart[] = [];
+  searchQuery: string = '';
+  searchResults: EmployeeProfile[] = [];
+  employeeProfiles: EmployeeProfile[] = [];
+  allFlag: boolean = false;
 
-  employeeCount: EmployeeCountDataCard = {
-    devsCount: 0,
-    designersCount: 0,
-    scrumMastersCount:0,
-    businessSupportCount: 0,
-    devsOnBenchCount: 0,
-    designersOnBenchCount: 0,
-    scrumMastersOnBenchCount: 0,
-    totalNumberOfEmployeesOnBench: 0,
-    billableEmployeesPercentage: 0,
-    employeeTotalDifference: 0,
-    isIncrease: false
-  };
+  PREVIOUS_PAGE: string = 'previousPage';
 
-  churnRate: ChurnRateDataCard = {
-    churnRate: 0,
-    developerChurnRate: 0,
-    designerChurnRate: 0,
-    scrumMasterChurnRate: 0,
-    businessSupportChurnRate: 0,
-    month: '',
-    year: 0,
-  };
-  
-  selectedItem: string = 'Dashboard';
+  employeeCount: EmployeeCountDataCard = new EmployeeCountDataCard();
+  churnRate: ChurnRateDataCard = new ChurnRateDataCard();
+  employeeType: EmployeeType = new EmployeeType();
+
   displayAllEmployees: boolean = false;
   roles: string[] = [];
 
-  employeeType: { id: number; name: string } = {
-    id: 0,
-    name: '',
-  };
-
-  searchQuery: string = '';
-  searchResults: EmployeeProfile[] = [];
-  allEmployees: EmployeeProfile[] = [];
-  allFlag: boolean = false;
-
-  PREVIOUS_PAGE = "previousPage";
+  dataSource: MatTableDataSource<{
+    Name: string;
+    Position: string | undefined;
+    Level: number | undefined;
+    Client: string;
+    Roles: string[];
+    Email: string | undefined;
+  }> = new MatTableDataSource();
 
   constructor(
     private employeeService: EmployeeService,
-    private employeeRoleService: EmployeeRoleService,
     private chartService: ChartService,
     private cookieService: CookieService,
     private router: Router,
@@ -112,92 +102,134 @@ export class AdminDashboardComponent {
     hideNavService.showNavbar = true;
   }
 
+  EventOpenDialog() {
+    if (this.isMobileScreen) {
+      this.dialog.open(this.dialogTemplate, {
+        width: '100vw',
+        height: '100vh',
+        maxWidth: '100%',
+        maxHeight: '100%',
+        panelClass: 'fullscreen-modal',
+      });
+    } else {
+      this.dialog.open(this.dialogTemplate, {
+        width: '90%',
+      });
+    }
+  }
+
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
-    this.fetchChartData();
+    this.configureDashboardData();
   }
 
-  fetchChartData() {
-    this.employeeService.getAllProfiles().subscribe({
-      next: data => {
-        if (Array.isArray(data)) {
-          this.allEmployees = data;
-        } else if (data) {
-          this.allEmployees = [data];
-        }
-        this.searchResults = [];
-      }, complete: () => {
-        this.loadCounter++;
-      }
+  configureDashboardData() {
+    this.getEmployeeProfiles();
+    this.getCharts();
+    this.getEmployeeTypes();
+    this.getEmployeeTableColumns();
+    this.getDataCardsData();
+
+    this.categoryControl.valueChanges.subscribe((value) => {
+      this.selectedCategories = value;
     });
 
-    this.chartService.getAllCharts().subscribe({
-      next: (data) => (this.charts = data),
-      error: (error) => {
-        this.snackBarService.showSnackbar("Failed to fetch charts", "snack-error");
-      }, complete: () => {
-        this.loadCounter++;
-      }
+    this.typeControl.valueChanges.subscribe((value) => {
+      this.selectedTypes = value;
+    });
+  }
+
+  getDataCardsData() {
+    this.employeeService.getTotalEmployees().subscribe({
+      next: (data: number) => {
+        this.totalNumberOfEmployees = data;
+      },
     });
 
-    this.categoryControl.valueChanges.subscribe(val => {
-      this.selectedCategories = val;
+    this.employeeService.getEmployeeCountData().subscribe({
+      next: (data: EmployeeCountDataCard) => {
+        this.employeeCount = data;
+      },
     });
 
-    this.typeControl.valueChanges.subscribe(val => {
-      this.selectedTypes = val;
+    this.employeeService.getChurnRate().subscribe({
+      next: (data: ChurnRateDataCard) => {
+        this.churnRate = data;
+      },
     });
+  }
 
-    this.chartService.getColumns().subscribe({
-      next: data => {
+  getEmployeeTableColumns() {
+    this.chartService.getEmployeeTableColumns().subscribe({
+      next: (data) => {
         this.categories = data;
-        this.filteredCategories = this.categories.slice().sort((a, b) => a.localeCompare(b));
+        this.filteredCategories = this.categories
+          .slice()
+          .sort((a, b) => a.localeCompare(b));
       },
       complete: () => {
         this.loadCounter++;
-      }
+      },
     });
+  }
 
+  getEmployeeProfiles() {
+    this.employeeService.getEmployeeProfiles().subscribe({
+      next: (data: EmployeeProfile[]) => {
+        this.employeeProfiles = data;
+        this.searchResults = [];
+      },
+      error: () => {
+        this.snackBarService.showSnackbar(
+          'Failed to fetch employees',
+          'snack-error'
+        );
+      },
+      complete: () => {
+        this.loadCounter++;
+      },
+    });
+  }
+
+  getCharts() {
+    this.chartService.getAllCharts().subscribe({
+      next: (data) => {
+        this.charts = data;
+      },
+      error: () => {
+        this.snackBarService.showSnackbar(
+          'Failed to fetch charts',
+          'snack-error'
+        );
+      },
+      complete: () => {
+        this.loadCounter++;
+      },
+    });
+  }
+
+  getEmployeeTypes() {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.types = [];
-        this.types.push('All')
-        data.forEach(field => this.types.push(field.name as string));
+        this.types.push('All');
+        data.forEach((field) => this.types.push(field.name as string));
         this.filteredTypes = this.types;
       },
       complete: () => {
         this.loadCounter++;
-      }
-    });
-
-    this.employeeService.getTotalEmployees().subscribe({
-      next: (data: any) => {
-        this.totalNumberOfEmployees= data;
-      }
-    });
-
-    this.employeeService.getDevsDesignerCount().subscribe({
-      next: (data:any) => {
-        this.employeeCount= data
-      }
-    });
-
-      this.employeeService.getChurnRate().subscribe({
-        next: (data:any) => {
-          this.churnRate = data
-        }
-      });
-  }
-
-  CaptureEvent(event: any) {
-    let dialogRef = this.dialog.open(this.dialogTemplate, {
-      width: '500px'
+      },
     });
   }
 
-  AddNewHire(event: any) {
-    const target = event.target as HTMLAnchorElement;
+  showAddGraphModal() {
+    this.dialog.open(this.dialogTemplate, {
+      width: '500px',
+    });
+  }
+
+  AddEmployee() {
     this.cookieService.set(this.PREVIOUS_PAGE, '/dashboard');
     this.router.navigateByUrl('/create-employee');
   }
@@ -211,15 +243,19 @@ export class AdminDashboardComponent {
 
   searchEmployees() {
     if (this.searchQuery) {
-      this.searchResults = this.allEmployees
+      this.searchResults = this.employeeProfiles
         .filter(
           (employee) =>
-            employee.name &&
-            employee.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-            employee.surname &&
-            employee.surname.toLowerCase().includes(this.searchQuery.toLowerCase())
+            (employee.name &&
+              employee.name
+                .toLowerCase()
+                .includes(this.searchQuery.toLowerCase())) ||
+            (employee.surname &&
+              employee.surname
+                .toLowerCase()
+                .includes(this.searchQuery.toLowerCase()))
         )
-        .filter(employee => employee.name !== undefined)
+        .filter((employee) => employee.name !== undefined)
         .sort((a, b) => {
           if (a.name && b.name) {
             return a.name.localeCompare(b.name);
@@ -243,8 +279,9 @@ export class AdminDashboardComponent {
   }
 
   filterCategories(val: string): string[] {
-    return this.categories.filter(category =>
-      category.toLowerCase().includes(val.toLowerCase()));
+    return this.categories.filter((category) =>
+      category.toLowerCase().includes(val.toLowerCase())
+    );
   }
 
   isSelected(category: string): boolean {
@@ -261,7 +298,7 @@ export class AdminDashboardComponent {
     this.categoryControl.setValue(null);
   }
 
-  onCategoryRemoved(category: string): void {
+  removeChartCategory(category: string): void {
     const categories = this.categoryControl.value;
     const index = categories.indexOf(category);
     if (index >= 0) {
@@ -270,80 +307,69 @@ export class AdminDashboardComponent {
     }
   }
 
-  TypeCtrlValueChanges() {
-    this.typeControl.valueChanges.subscribe(val => {
-      if (val) {
-        this.filteredTypes = this.filterTypes(val);
-      } else {
-        this.filteredTypes = this.types;
-      }
-    });
-  }
-
-  filterTypes(val: string): string[] {
-    return this.types.filter(types =>
-      types.toLowerCase().includes(val.toLowerCase()));
-  }
-
-  onTypeRemoved(type: string): void {
-    const index = this.selectedTypes.indexOf(type);
-    if (index >= 0) {
-      this.selectedTypes.splice(index, 1);
-      this.typeControl.setValue(this.selectedTypes);
-    }
-  }
-
   createChart() {
     if (!this.chartType) {
-      this.snackBarService.showSnackbar("Please select a chart type", "snack-error");
+      this.snackBarService.showSnackbar(
+        'Please select a chart type',
+        'snack-error'
+      );
       return;
     }
     if (!this.chartName) {
-      this.snackBarService.showSnackbar("Please enter a chart name", "snack-error");
+      this.snackBarService.showSnackbar(
+        'Please enter a chart name',
+        'snack-error'
+      );
       return;
     }
     if (this.selectedCategories.length < 1) {
-      this.snackBarService.showSnackbar("Missing chart category", "snack-error");
+      this.snackBarService.showSnackbar(
+        'Please select a category',
+        'snack-error'
+      );
       return;
     }
-    if(this.selectedTypes.length < 1){
-      this.snackBarService.showSnackbar("Missing chart category", "snack-error");
+    if (this.selectedTypes.length < 1) {
+      this.snackBarService.showSnackbar(
+        'Please select at least one employee role',
+        'snack-error'
+      );
       return;
     }
-    
+
     let combinedChartName = this.chartName;
     if (this.selectedTypes.length > 0) {
       combinedChartName += ` - ${this.selectedTypes.join(', ')}`;
     }
     this.loadCounter = 0;
-    this.chartService.createChart(this.selectedCategories, this.selectedTypes, combinedChartName, this.chartType)
-      .subscribe(
-        {
-          next: response => {
-            this.snackBarService.showSnackbar("Chart created", "snack-success");
-            this.dialog.closeAll();
-            this.selectedCategories = [];
-            this.selectedTypes = [];
-            this.chartName = '';
-            this.chartType = '';
-            this.fetchChartData();
-          },
-          error: error => {
-            this.snackBarService.showSnackbar("Failed to create chart", "snack-error");
-          }
-        }
-      );
+    this.chartService
+      .createChart(
+        this.selectedCategories,
+        this.selectedTypes,
+        combinedChartName,
+        this.chartType
+      )
+      .subscribe({
+        next: () => {
+          this.snackBarService.showSnackbar('Chart created', 'snack-success');
+          this.dialog.closeAll();
+          this.selectedCategories = [];
+          this.selectedTypes = [];
+          this.chartName = '';
+          this.chartType = '';
+          this.configureDashboardData();
+        },
+        error: () => {
+          this.snackBarService.showSnackbar(
+            'Failed to create chart',
+            'snack-error'
+          );
+        },
+      });
     this.selectedCategories = [];
     this.categoryControl.setValue(null);
     this.selectedTypes = [];
     this.typeControl.setValue(null);
-  }
-
-  recieveNumber(number: any) {
-    this.chartService.getAllCharts().subscribe({
-      next: data => this.charts = data,
-      error: error => this.snackBarService.showSnackbar("Failed to get charts", "snack-error")
-    })
   }
 
   activateSearchBar() {
@@ -358,51 +384,14 @@ export class AdminDashboardComponent {
     searchBar?.classList.add('no-results');
   }
 
-  dataSource: MatTableDataSource<{
-    Name: string;
-    Position: string | undefined;
-    Level: number | undefined;
-    Client: string;
-    Roles: string[];
-    Email: string | undefined;
-  }> = new MatTableDataSource();
-
-  @ViewChild(MatSort) sort!: MatSort;
-
-  getEmployees() {
-    this.employeeService
-      .getAllProfiles()
-      .pipe(
-        switchMap((employees: EmployeeProfile[]) => {
-          const modifiedEmployees$ = employees.map((employee: EmployeeProfile) => {
-            return this.employeeRoleService.getRoles(employee.email!).pipe(
-              map((roles) => ({
-                Name: `${employee.name} ${employee.surname}`,
-                Position: employee.employeeType!.name,
-                Level: employee.level,
-                Client: employee.clientAllocated ? employee.clientAllocated : 'Bench',
-                Roles: this.sortRoles(roles),
-                Email: employee.email,
-              }))
-            );
-          });
-          return forkJoin(modifiedEmployees$);
-        }),
-        tap((data) => {
-          this.dataSource = new MatTableDataSource(data);
-          this.dataSource.sort = this.sort;
-        }),
-        catchError((error) => {
-          this.snackBarService.showSnackbar("Failed to load employees", "snack-error");
-          return of([]);
-        })
-      )
-      .subscribe();
-  }
-
   sortRoles(roles: string[]): string[] {
-    const adminRoles = roles.filter(role => role.toLowerCase().includes('admin')).sort().reverse();
-    const nonAdminRoles = roles.filter(role => !role.toLowerCase().includes('admin')).sort();
+    const adminRoles = roles
+      .filter((role) => role.toLowerCase().includes('admin'))
+      .sort()
+      .reverse();
+    const nonAdminRoles = roles
+      .filter((role) => !role.toLowerCase().includes('admin'))
+      .sort();
     return [...adminRoles, ...nonAdminRoles];
   }
 
@@ -427,7 +416,9 @@ export class AdminDashboardComponent {
       if (index >= 0) {
         currentRoles.splice(index, 1);
         if (currentRoles.includes('All')) {
-          const newSelection = currentRoles.filter((item: string) => item !== 'All');
+          const newSelection = currentRoles.filter(
+            (item: string) => item !== 'All'
+          );
           this.typeControl.setValue(newSelection);
           this.selectedTypes = newSelection;
           this.allFlag = false;
@@ -439,21 +430,24 @@ export class AdminDashboardComponent {
     }
   }
 
-  onDropDownChange(event: any) {
+  changeEmployeeRolesOnNewChart(event: any) {
     if (event.value.includes('All')) {
-      if (event.value.length == this.types.length - 1 && this.allFlag == false) {
+      if (
+        event.value.length == this.types.length - 1 &&
+        this.allFlag == false
+      ) {
         this.allFlag = true;
-        const newSelection = event.value.filter((item: string) => item !== 'All');
+        const newSelection = event.value.filter(
+          (item: string) => item !== 'All'
+        );
         this.typeControl.setValue(newSelection);
         this.selectedTypes = newSelection;
-      }
-      else if (event.value.length <= this.types.length - 1) {
-        this.allFlag = false
+      } else if (event.value.length <= this.types.length - 1) {
+        this.allFlag = false;
         this.typeControl.setValue([...this.types]);
         this.selectedTypes = [...this.types];
       }
-    }
-    else {
+    } else {
       const newSelection = event.value.filter((item: string) => item !== 'All');
       this.typeControl.setValue(newSelection);
       this.selectedTypes = newSelection;
