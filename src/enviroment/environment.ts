@@ -4,5 +4,7 @@ export const environment = {
   AUTH0_Domain_key: 'dev-lo44tfx8p4oswi5b.us.auth0.com',
   Security_Audience: 'Https://Abstract_layer_api/',
   Main_redirect_URL: 'http://localhost:4200/',
-  Abstract_Layer_URL: 'https://529b-105-186-112-70.ap.ngrok.io/api/'
+  Abstract_Layer_URL: 'https://529b-105-186-112-70.ap.ngrok.io/api/',
+  Https_Base_URL: 'https://localhost:7026',
+  //test the base url for https or http
 };
