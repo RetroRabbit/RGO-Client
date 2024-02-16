@@ -114,16 +114,17 @@ export class AccordionDocumentsComponent {
   }
 
   uploadDocumentDto(document: any) {
+    const saveObj = {
+      id: document.id,
+      employeeId: document.employee.id,
+      fileName: document.fileName,
+      blob: this.base64String,
+      fileCategory: document.fileCategory,
+      uploadDate: document.uploadDate,
+      status: (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) ? 3 : 1
+    }
+    console.log(saveObj);
     if (document.id == 0) {
-      const saveObj = {
-        id: document.id,
-        employeeId: document.employee.id,
-        fileName: document.fileName,
-        file: this.base64String,
-        fileCategory: document.fileCategory,
-        uploadDate: document.uploadDate,
-        status: document.status
-      }
       this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Document added", "snack-success");
@@ -135,7 +136,20 @@ export class AccordionDocumentsComponent {
         }
       });
     } else {
-      this.employeeDocumentService.updateEmployeeDocument(document).subscribe({
+      const updatedDocument = {
+        id: document.id,
+        employeeId: document.employee.id,
+        reference: document.reference,
+        fileName: document.fileName,
+        fileCategory: document.fileCategory,
+        blob: document.blob,
+        uploadDate: document.uploadDate,
+        reason: document.reason,
+        status: (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) ? 3 : 1,
+        counterSign: false
+      }
+      console.log(updatedDocument);
+      this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getEmployeeDocuments();
@@ -147,7 +161,7 @@ export class AccordionDocumentsComponent {
       });
     }
   }
-  
+
   buildDocumentDto() {
     const existingValue = this.filterDocumentsByCategory();
     if (this.selectedFile) {
@@ -161,10 +175,12 @@ export class AccordionDocumentsComponent {
           fileName: this.documentsFileName,
           fileCategory: +this.uploadButtonIndex,
           blob: this.base64String,
-          status: 1,
+          status: (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) ? 3 : 1,
           uploadDate: new Date(),
           reason: '',
+          counterSign: false
         };
+        console.log(newDto);
         this.uploadDocumentDto(newDto);
 
       };
@@ -200,15 +216,17 @@ export class AccordionDocumentsComponent {
     }
   }
 
-  disableButton(index: number): boolean {
+  disableUploadButton(index: number): boolean {
     const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
-    if(documentObject == null && (this.authAccessService.isAdmin() ||  this.authAccessService.isSuperAdmin()) ){
+    if (this.authAccessService.isEmployee()) {
       return false;
     }
-    else if (documentObject?.status == 3){
+    else if(documentObject == null && (this.authAccessService.isAdmin() ||  this.authAccessService.isSuperAdmin()) ){
+      return false;
+    }
+    else if (documentObject?.status as number > 0) {
       if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
         return false;
-      }else{
       }
     }
     return true;

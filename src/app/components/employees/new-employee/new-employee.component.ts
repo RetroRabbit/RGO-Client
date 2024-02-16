@@ -234,10 +234,11 @@ export class NewEmployeeComponent implements OnInit {
                   reference: "",
                   fileName: file.name,
                   fileCategory: category,
-                  file: base64String,
+                  blob: base64String,
                   uploadDate: new Date(),
                   reason: "",
                   status: 3,
+                  counterSign: false
                 };
                 this.employeeDocumentModels.push(employeeDocument);
                 this.categories[category].state = false;
