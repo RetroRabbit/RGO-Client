@@ -234,7 +234,7 @@ export class ChartComponent implements OnInit {
   }
 
   fetchPeopleChampionEmployees() {
-    this.employeeService.filterEmployees(0, EmployeeType.People_Champion).subscribe({
+    this.employeeService.filterEmployees(0, EmployeeType.PeopleChampion).subscribe({
       next: (employees: EmployeeProfile[]) => {
         employees.forEach((employee) => {
           if (employee.id) {
