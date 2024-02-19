@@ -1,23 +1,36 @@
 #chart-item {
   background-color: white;
   border-radius: 1rem;
-  min-height: 30vh;
-  max-width:90%;
+  min-height: 50vh;
+  max-width: 90%;
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.30), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
 }
 
-#chart-header{
+.chart-width-mobile {
+  min-height: 30vh !important;
+  max-width: 90% !important;
+}
+
+.chart-width-tablet {
+  border-radius: 1rem;
+  min-height: 30% !important;
+  max-width: 45% !important;
+  margin-left: 10px;
+}
+
+#chart-header {
   text-align: left;
   color: #0029C6;
   font-family: Poppins;
   font-size: 18px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 800;
   line-height: 21px;
 }
 
-#canvas-container{
+#canvas-container {
   max-height: 50vh;
+  max-width: 50vh;
   text-align: center;
   margin: 0 auto;
 }
@@ -44,7 +57,16 @@
   transform: rotate(180deg);
 }
 
-#edit-controls > button{
+.icon-width-mobile {
+  width: 3rem !important;
+}
+
+.icon-width-tablet {
+  width: 90px !important;
+  height: 1rem !important;
+}
+
+#edit-controls>button {
   margin: 1rem;
 }
 
@@ -57,4 +79,14 @@
   margin: 0 auto;
 }
 
+#custom-width {
+  width: 10%;
+}
 
+#regular-width {
+  width: fit-content;
+}
+
+h4 {
+  font-weight: 500;
+}
