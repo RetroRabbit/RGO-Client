@@ -1,47 +1,56 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
+export class AuthAccessService {
+  private roles: string = '';
 
-export class AuthAccessService{
-    private roles: string = 'SuperAdmin';
+  private employeeEmail: string = '';
 
-    private employeeEmail: string = 'mshongwe@retrorabbit.co.za';
+  private userId: number = 0;
 
-    setEmployeeEmail(email: string){
-        this.employeeEmail = email;
-    }
+  setEmployeeEmail(email: string) {
+    this.employeeEmail = email;
+  }
 
-    getEmployeeEmail(): string{
-        return this.employeeEmail;
-    }
+  getEmployeeEmail(): string {
+    return this.employeeEmail;
+  }
 
-    setRoles(roles: string){
-        this.roles = roles;
-    }
+  setRoles(roles: string) {
+    this.roles = roles;
+  }
 
-    getRoles(){
-        return this.roles;
-    }
+  getRoles() {
+    return this.roles;
+  }
 
-    isAdmin(){
-        return this.roles.includes('Admin');
-    }
+  isAdmin() {
+    return this.roles.includes('Admin');
+  }
 
-    isSuperAdmin(){
-        return this.roles.includes('SuperAdmin');
-    }
+  isSuperAdmin() {
+    return this.roles.includes('SuperAdmin');
+  }
 
-    isTalent(){
-        return this.roles.includes('Talent');
-    }
+  isTalent() {
+    return this.roles.includes('Talent');
+  }
 
-    isJourney(){
-        return this.roles.includes('Journey');
-    }
+  isJourney() {
+    return this.roles.includes('Journey');
+  }
 
-    isEmployee(){
-        return this.roles.includes('Employee');
-    }
+  isEmployee() {
+    return this.roles.includes('Employee');
+  }
+
+  setUserId(Id: number) {
+    this.userId = Id;
+  }
+
+  getUserId(): number {
+    return this.userId;
+  }
 }
