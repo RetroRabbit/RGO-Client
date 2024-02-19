@@ -77,7 +77,6 @@ export class EmployeeProfileComponent {
   @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
   @ViewChild(AccordionDocumentsComponent) documentAccordion!: AccordionDocumentsComponent;
 
-  validateFile: any;
   imageUrl!: string;
 
   constructor(private cookieService: CookieService,
@@ -265,9 +264,10 @@ export class EmployeeProfileComponent {
 
   onFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
-      const file = event.target.files[ 0 ];
+      const file = event.target.files[0];
       this.employeeProfile.photo = file;
-      if (this.validateFile) {
+
+      if (this.validateFile(file)) {
         this.imageConverter(file);
         this.updateProfilePhoto();
       } else {
@@ -276,12 +276,20 @@ export class EmployeeProfileComponent {
     }
   }
 
+  validateFile(file: File): boolean {
+    if (file.size > 4194304) {
+      return false;
+    }
+    return true;
+  }
+
   imageConverter(file: File) {
     const reader = new FileReader();
-    reader.addEventListener('loadend', () => {
-      this.base64Image = this.convertTobase64(reader.result as string);
-    });
 
+    reader.addEventListener('loadend', () => {
+      let imgResult = reader.result as string;
+      this.base64Image = this.convertTobase64(imgResult);
+    });
     reader.readAsDataURL(file);
   }
 
@@ -296,7 +304,7 @@ export class EmployeeProfileComponent {
     let employee = this.employeeProfile;
     employee.photo = this.base64Image;
 
-    this.employeeProfileService.UpdateEmployeeProfile(employee).subscribe({
+    this.employeeService.updateEmployee(employee.id).subscribe({
       next: () => {
         if (this.authAccessService.isAdmin() ||
           this.authAccessService.isSuperAdmin() ||
