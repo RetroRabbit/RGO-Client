@@ -25,7 +25,7 @@ export class EmployeeProfileEffects {
   updateEmployeeProfile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EmployeeProfile.UpdateEmployeeProfile),
-      exhaustMap((UpdatedProfile) =>
+      exhaustMap((UpdatedProfile: any) =>
         this.employeeProfileService.UpdateEmployeeProfile(UpdatedProfile).pipe(
           map(response => EmployeeProfile.UpdateEmployeeProfileSuccess({ response })),
         )

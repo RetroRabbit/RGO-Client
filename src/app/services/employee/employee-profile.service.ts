@@ -29,7 +29,6 @@ export class EmployeeProfileService {
     return this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employees/by-email${queryParams}`);
   }
 
-
   getToken() {
     this.employeeStore.select('employees').subscribe(state => {
         this.email = state.selectedEmployee.email!;
@@ -44,9 +43,12 @@ export class EmployeeProfileService {
     })
   }
 
-  UpdateEmployeeProfile(profileUpdate: any): Observable<any> {
-    return this.client.put<any>(
-      `${API.HttpsBaseURL}/employees?email=${profileUpdate.updatedProfile.email}`, profileUpdate.updatedProfile
+  UpdateEmployeeProfile(profileUpdate: EmployeeProfile): Observable<any> {
+    return this.client.put<EmployeeProfile>(
+      `${API.HttpsBaseURL}/employees?userEmail=${profileUpdate.email}`, profileUpdate
+    );
+  }
+
     );
   }
 
