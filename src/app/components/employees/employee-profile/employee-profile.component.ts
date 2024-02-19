@@ -23,7 +23,7 @@ import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
-  styleUrls: ['./employee-profile.component.css']
+  styleUrls: [ './employee-profile.component.css' ]
 })
 
 export class EmployeeProfileComponent {
@@ -36,7 +36,7 @@ export class EmployeeProfileComponent {
   employees: EmployeeProfile[] = [];
   employeeBanking !: EmployeeBanking;
 
-  employeeId = this.route.snapshot.params['id'];
+  employeeId = this.route.snapshot.params[ 'id' ];
 
   selectedAccordion: string = 'Profile Details';
   selectedItem: string = 'Profile Details';
@@ -71,6 +71,7 @@ export class EmployeeProfileComponent {
   teamLead: number | null = null;
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
+  base64Image: string = '';
 
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
   @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
@@ -94,7 +95,7 @@ export class EmployeeProfileComponent {
   }
 
   ngOnInit() {
-    this.employeeId = this.route.snapshot.params['id'];
+    this.employeeId = this.route.snapshot.params[ 'id' ];
     this.getClients();
     if (this.employeeId == undefined) {
       this.showBackButtons = false;
@@ -172,8 +173,8 @@ export class EmployeeProfileComponent {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
         this.employees = data;
-        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
-        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[ 0 ];
+        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[ 0 ];
         this.filterClients(this.employeeProfile?.clientAllocated as string);
       }
     });
@@ -229,7 +230,7 @@ export class EmployeeProfileComponent {
   }
 
   filterClients(clientId: string) {
-    this.employeeClient = this.clients.filter(client => +clientId == client.id)[0];
+    this.employeeClient = this.clients.filter(client => +clientId == client.id)[ 0 ];
   }
 
   CaptureEvent(event: any) {
@@ -264,16 +265,53 @@ export class EmployeeProfileComponent {
 
   onFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
-      const file = event.target.files[0];
+      const file = event.target.files[ 0 ];
       this.employeeProfile.photo = file;
-      if(this.validateFile) {
-        this.imageUrl = file;
-      }else{
-        this.uploadFile();
+      if (this.validateFile) {
+        this.imageConverter(file);
+        this.updateProfilePhoto();
+      } else {
+        this.snackBarService.showSnackbar("Error processing profile picture", "snack-error")
       }
     }
   }
-  uploadFile() {
-    throw new Error('filed to upload image');
+
+  imageConverter(file: File) {
+    const reader = new FileReader();
+    reader.addEventListener('loadend', () => {
+      this.base64Image = this.convertTobase64(reader.result as string);
+    });
+
+    reader.readAsDataURL(file);
+  }
+
+  convertTobase64(dataURI: string): string {
+    const base64index = dataURI.indexOf(';base64,') + ';base64,'.length;
+    const base64 = dataURI.substring(base64index);
+    return base64;
+  }
+
+  // Not supposed to be in service for employees
+  updateProfilePhoto() {
+    let employee = this.employeeProfile;
+    employee.photo = this.base64Image;
+
+    this.employeeProfileService.UpdateEmployeeProfile(employee).subscribe({
+      next: () => {
+        if (this.authAccessService.isAdmin() ||
+          this.authAccessService.isSuperAdmin() ||
+          this.authAccessService.isJourney() ||
+          this.authAccessService.isTalent()) {
+
+          this.getSelectedEmployee()
+          this.usingSimpleProfile = false;
+        } else {
+          this.getSimpleEmployee();
+          this.usingSimpleProfile = true;
+        }
+      },
+      error: () =>
+        this.snackBarService.showSnackbar("Error updating profile", "snack-error")
+    })
   }
 }

@@ -65,27 +65,6 @@ export class EmployeeProfileService {
     return this.client.get<SimpleEmployee>(`${API.HttpsBaseURL}/employees/simple-profile/${queryParams}`);
   }
 
-  updateProfilePhoto() {
-    this.employeeProfile.photo = "";
-
-    this.employeeProfileService.UpdateEmployeeProfile(this.GetEmployeeProfile).subscribe({
-      next: () => {
-       if(this.authAccessService.isAdmin() ||
-          this.authAccessService.isSuperAdmin() ||
-          this.authAccessService.isJourney() ||
-          this.authAccessService.isTalent() ){
-             
-            this.getSelectedEmployee()
-            this.usingSimpleProfile = false;
-          } else {
-            this.getSimpleEmployee();
-            this.usingSimpleProfile = true;
-          }
-      },
-      error: () =>
-      this.snackBarService.showSnackbar("Erro updating profile", "snack-error")
-    })
-  }
   getSelectedEmployee() {
     throw new Error('Method not implemented.');
   }
