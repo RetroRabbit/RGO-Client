@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
 import { Chart } from 'src/app/models/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
@@ -13,7 +13,7 @@ import { DOCUMENT } from '@angular/common';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { HideNavService } from 'src/app/services/hide-nav.service';
-
+import { EmployeeType } from 'src/app/models/constants/employeeTypes.constants';
 
 @Component({
   selector: 'app-chart',
@@ -40,6 +40,12 @@ export class ChartComponent implements OnInit {
   coloursArray: string[] = colours;
   chartCanvasArray: any[] = [];
 
+  screenWidth: number = 767;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+  }
+
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
 
@@ -63,7 +69,7 @@ export class ChartComponent implements OnInit {
           color: '#black',
           font: {
             family: 'Roboto',
-            size: 20,
+            size: 14,
             style: 'normal',
             lineHeight: 1.2
           },
@@ -76,7 +82,7 @@ export class ChartComponent implements OnInit {
         position: 'bottom',
         labels:{
           font: {
-            size: 16
+            size: 14
           }
         }
       },
@@ -103,7 +109,7 @@ export class ChartComponent implements OnInit {
         position: 'right',
         labels:{
           font: {
-            size: 16
+            size: 14
           }
         }
       },
@@ -114,6 +120,10 @@ export class ChartComponent implements OnInit {
       } as any,
     },
   };
+ 
+  getChartOptions(chartType: string) {
+    return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
+  }
 
   resetPage() {
     this.displayChart = false
@@ -234,7 +244,7 @@ export class ChartComponent implements OnInit {
   }
 
   fetchPeopleChampionEmployees() {
-    this.employeeService.filterEmployeesByType("People Champion").subscribe({
+    this.employeeService.filterEmployees(0, EmployeeType.PeopleChampion).subscribe({
       next: (employees: EmployeeProfile[]) => {
         employees.forEach((employee) => {
           if (employee.id) {
