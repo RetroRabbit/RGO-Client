@@ -76,7 +76,7 @@ export class EmployeeProfileComponent {
   @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
   @ViewChild(AccordionDocumentsComponent) documentAccordion!: AccordionDocumentsComponent;
 
-  selectedImage: any;
+  validateFile: any;
   imageUrl!: string;
 
   constructor(private cookieService: CookieService,
@@ -262,16 +262,18 @@ export class EmployeeProfileComponent {
       this.getSimpleEmployee();
   }
 
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedImage = file;
-      const reader = new FileReader();
-      reader.onload = (e: any) => this.imageUrl = e.target.result;
-      reader.readAsDataURL(file);
-
-      //  this.uploadProfile(file)
+  onFileChange(event: any): void {
+    if (event.target.files && event.target.files.length) {
+      const file = event.target.files[0];
+      this.employeeProfile.photo = file;
+      if(this.validateFile) {
+        this.imageUrl = file;
+      }else{
+        this.uploadFile();
+      }
     }
   }
-
+  uploadFile() {
+    throw new Error('');
+  }
 }
