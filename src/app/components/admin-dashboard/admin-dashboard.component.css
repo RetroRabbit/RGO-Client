@@ -301,12 +301,12 @@ div#results-container {
 
 #graph-heading>h3 {
   color: #212121;
-  font-size: 22px;
-  font-weight: 400;
+  font-size: clamp(10px, 4vw, 22px);
+  font-weight: 500;
   line-height: 28px;
   font-family: Roboto, sans-serif;
   letter-spacing: 0.009375em;
-  margin: 0 0 0;
+  margin: 0px;
 }
 
 #graph-subheading>h5 {
@@ -559,4 +559,23 @@ div#results-container {
 .card-info {
   font-size: medium;
   margin-left: 5px;
+}
+
+
+.button-width-mobile {
+  width: 140px !important;
+}
+
+.button-width-tablet {
+  width: 150px !important;
+  margin-left: 140px !important;
+}
+
+.Add-Button-mobile {
+  width: 340px !important;
+  margin-right: 1rem !important;
+}
+
+.heading-width-desktop {
+  margin-left: 900px
 }

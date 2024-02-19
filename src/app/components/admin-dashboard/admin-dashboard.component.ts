@@ -1,7 +1,8 @@
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
-import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
+import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { HideNavService } from 'src/app/services/hide-nav.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
@@ -17,7 +18,6 @@ import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
 import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
-import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -92,21 +92,6 @@ export class AdminDashboardComponent {
     hideNavService.showNavbar = true;
   }
 
-  EventOpenDialog() {
-    if (this.isMobileScreen) {
-      this.dialog.open(this.dialogTemplate, {
-        width: '100vw',
-        height: '100vh',
-        maxWidth: '100%',
-        maxHeight: '100%',
-        panelClass: 'fullscreen-modal',
-      });
-    } else {
-      this.dialog.open(this.dialogTemplate, {
-        width: '90%',
-      });
-    }
-  }
 
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
