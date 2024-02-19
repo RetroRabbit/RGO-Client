@@ -123,7 +123,6 @@ export class AccordionDocumentsComponent {
       uploadDate: document.uploadDate,
       status: 1
     }
-    console.log(saveObj);
     if (document.id == 0) {
       this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
         next: () => {
@@ -180,7 +179,6 @@ export class AccordionDocumentsComponent {
           reason: '',
           counterSign: false
         };
-        console.log(newDto);
         this.uploadDocumentDto(newDto);
 
       };
@@ -221,7 +219,7 @@ export class AccordionDocumentsComponent {
     if (this.authAccessService.isEmployee()) {
       return false;
     }
-    else if(documentObject == null && (this.authAccessService.isAdmin() ||  this.authAccessService.isSuperAdmin()) ){
+    else if(documentObject == null && (this.authAccessService.isAdmin() ||  this.authAccessService.isSuperAdmin())){
       return false;
     }
     else if (documentObject?.status as number > 1) {
