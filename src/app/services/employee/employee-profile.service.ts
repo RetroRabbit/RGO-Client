@@ -17,7 +17,10 @@ export class EmployeeProfileService {
   email: string = '';
   token: string = '';
   cookieEmail = this.cookieService.get('userEmail');
-  constructor(private client: HttpClient, private appStore:Store<{app:Token}>, private employeeStore:Store<{employees:EmployeeState}>, private cookieService: CookieService) { }
+  constructor(private client: HttpClient, 
+              private appStore:Store<{app:Token}>, 
+              private employeeStore:Store<{employees:EmployeeState}>, 
+              private cookieService: CookieService) { }
 
   GetEmployeeProfile(): Observable<EmployeeProfile> {
     let result = this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employees`);
@@ -65,6 +68,14 @@ export class EmployeeProfileService {
     return this.client.get<SimpleEmployee>(`${API.HttpsBaseURL}/employees/simple-profile/${queryParams}`);
   }
 
+  /*updateProfilePhoto(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.client.post<any>(`${API.HttpsBaseURL}/employees/update-photo`, formData);
+  }
+}*/
+/*
   updateProfilePhoto() {
     this.employeeProfile.photo = "";
 
@@ -89,4 +100,5 @@ export class EmployeeProfileService {
   getSelectedEmployee() {
     throw new Error('Method not implemented.');
   }
+  */
 }
