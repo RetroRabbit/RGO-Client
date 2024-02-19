@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FieldCode } from '../models/field-code.interface';
-import { API } from '../models/constants/urls.constants';
+import { environment } from '../../enviroment/environment';
 
 @Injectable({
     providedIn: 'root',
@@ -11,7 +11,7 @@ export class FieldCodeService {
     baseUrl: string;
     
     constructor(private httpClient: HttpClient) { 
-        this.baseUrl =`${API.HttpsBaseURL}/field-code`
+        this.baseUrl =`${environment.HttpsBaseURL}/field-code`
     }
 
     getAllFieldCodes(): Observable<FieldCode[]> {
