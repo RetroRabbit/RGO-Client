@@ -121,7 +121,7 @@ export class AccordionDocumentsComponent {
       blob: this.base64String,
       fileCategory: document.fileCategory,
       uploadDate: document.uploadDate,
-      status: (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) ? 3 : 1
+      status: 1
     }
     console.log(saveObj);
     if (document.id == 0) {
@@ -145,7 +145,7 @@ export class AccordionDocumentsComponent {
         blob: document.blob,
         uploadDate: document.uploadDate,
         reason: document.reason,
-        status: (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) ? 3 : 1,
+        status: 1,
         counterSign: false
       }
       console.log(updatedDocument);
@@ -175,7 +175,7 @@ export class AccordionDocumentsComponent {
           fileName: this.documentsFileName,
           fileCategory: +this.uploadButtonIndex,
           blob: this.base64String,
-          status: (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) ? 3 : 1,
+          status: 1,
           uploadDate: new Date(),
           reason: '',
           counterSign: false
@@ -224,7 +224,7 @@ export class AccordionDocumentsComponent {
     else if(documentObject == null && (this.authAccessService.isAdmin() ||  this.authAccessService.isSuperAdmin()) ){
       return false;
     }
-    else if (documentObject?.status as number > 0) {
+    else if (documentObject?.status as number > 1) {
       if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
         return false;
       }
@@ -241,7 +241,10 @@ export class AccordionDocumentsComponent {
 
   disableDownload(index : number){
     const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
-    if(documentObject?.status == 2 || documentObject?.status == 3){
+    if (this.authAccessService.isEmployee()) {
+      return false;
+    }
+    else if(documentObject?.status == 2 || documentObject?.status == 3){
       return false;
     }
     return true;
