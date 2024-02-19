@@ -6,7 +6,7 @@ import { StoreModule } from '@ngrx/store';
 import { LoginReducer } from './store/reducers/login.reducer';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
-import { environment } from 'src/enviroment/env';
+import { environment } from 'src/enviroment/environment';
 import { LoginEffects } from './store/effects/app.effects';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './interceptor/auth0.interceptor';
