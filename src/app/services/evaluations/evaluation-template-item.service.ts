@@ -10,7 +10,7 @@ export class EvaluationTemplateItemService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${environment.Https_Base_URL}/template-item`
+      this.baseUrl =`${environment.HttpsBaseURL}/template-item`
   }
   getAll(template: string | null = null): Observable<any[]> {
     if (template!== null)

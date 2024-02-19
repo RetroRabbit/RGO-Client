@@ -11,7 +11,7 @@ export class FieldCodeService {
     baseUrl: string;
     
     constructor(private httpClient: HttpClient) { 
-        this.baseUrl =`${environment.Https_Base_URL}/field-code`
+        this.baseUrl =`${environment.HttpsBaseURL}/field-code`
     }
 
     getAllFieldCodes(): Observable<FieldCode[]> {

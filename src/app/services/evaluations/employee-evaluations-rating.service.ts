@@ -13,7 +13,7 @@ export class EmployeeEvaluationsRatingService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${environment.Https_Base_URL}/evaluation-rating`
+      this.baseUrl =`${environment.HttpsBaseURL}/evaluation-rating`
   }
   getall(evaluation: EvaluationInput): Observable<any[]> {
     return this.httpClient.post<any[]>(`${this.baseUrl}/all`, evaluation)

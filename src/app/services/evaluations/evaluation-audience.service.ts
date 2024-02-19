@@ -11,7 +11,7 @@ export class EvaluationAudienceService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${environment.Https_Base_URL}/evaluation-audience`
+      this.baseUrl =`${environment.HttpsBaseURL}/evaluation-audience`
   }
 
   getAll(evaluationInput: EvaluationInput): Observable<any[]> {

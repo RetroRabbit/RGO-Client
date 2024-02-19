@@ -12,7 +12,7 @@ export class EmployeeBankingService{
   baseUrl: string;
   
     constructor(private httpClient : HttpClient){
-      this.baseUrl =`${environment.Https_Base_URL}/employee-banking`
+      this.baseUrl =`${environment.HttpsBaseURL}/employee-banking`
     }
 
     getPending(status : number): Observable<EmployeeBanking[]>{
