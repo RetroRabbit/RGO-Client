@@ -44,7 +44,7 @@
             <div class="col-2 mt-4">
                 <div id="profile-image">
                     <img (click)="uploadFile.click()"
-                        [src]="usingSimpleProfile ? simpleEmployee.photo : employeeProfile.photo" alt="Profile img">
+                        [src]="url" alt="Profile img">
                     <input type="file" #uploadFile (change)="onFileChange($event)" hidden>
                 </div>
             </div>

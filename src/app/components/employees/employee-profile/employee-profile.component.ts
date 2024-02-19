@@ -76,8 +76,8 @@ export class EmployeeProfileComponent {
   @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
   @ViewChild(AccordionDocumentsComponent) documentAccordion!: AccordionDocumentsComponent;
 
-  validateFile: any;
   imageUrl!: string;
+  validateFile: any;
 
   constructor(private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
@@ -262,7 +262,19 @@ export class EmployeeProfileComponent {
       this.getSimpleEmployee();
   }
 
-  onFileChange(event: any): void {
+  url="";
+
+  onFileChange(e: any) {
+   if(e.target.files) {
+    const file = new FileReader();
+    file.readAsDataURL(e.target.files[0]);
+    file.onload=(event: any)=>{
+     this.url = event.target.result;
+    }
+   }
+  }
+
+  /*onFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
       const file = event.target.files[0];
       this.employeeProfile.photo = file;
@@ -275,5 +287,5 @@ export class EmployeeProfileComponent {
   }
   uploadFile() {
     throw new Error('filed to upload image');
-  }
+  }*/
 }
