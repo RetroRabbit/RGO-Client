@@ -241,10 +241,7 @@ export class AccordionDocumentsComponent {
 
   disableDownload(index : number){
     const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
-    if (this.authAccessService.isEmployee()) {
-      return false;
-    }
-    else if(documentObject?.status == 2 || documentObject?.status == 3){
+    if(documentObject?.status == 2 || documentObject?.status == 3){
       return false;
     }
     return true;
