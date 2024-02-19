@@ -329,6 +329,7 @@ main {
   font-size: 14px;
   letter-spacing: 0.25px;
 }
+
 :host {
     .p-checkbox .p-checkbox-box {
       border-radius: 3px !important;
