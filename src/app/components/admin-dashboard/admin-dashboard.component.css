@@ -306,8 +306,7 @@ div#results-container {
   line-height: 28px;
   font-family: Roboto, sans-serif;
   letter-spacing: 0.009375em;
-  margin: 0 0 0;
-  
+  margin: 0px;
 }
 
 #graph-subheading>h5 {
@@ -563,7 +562,7 @@ div#results-container {
 }
 
 
-.button-width-mobile{
+.button-width-mobile {
  width: 140px !important;
 }
 
@@ -575,7 +574,6 @@ div#results-container {
  .Add-Button-mobile{
   width: 340px !important;
   margin-right:1rem !important;
-  
  }
 
  .heading-width-desktop{
