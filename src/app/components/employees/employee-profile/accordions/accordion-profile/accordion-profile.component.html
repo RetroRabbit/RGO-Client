@@ -6,7 +6,7 @@
                     Employee Details
                 </mat-panel-title>
                 <mat-panel-description *ngIf="employeeFormProgress != 100">
-                    <mat-icon class="mx-1">error</mat-icon> <a class=""> Missing information</a>
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeDetailsForm" (submit)="saveEmployeeEdit()">
@@ -169,7 +169,7 @@
                     Personal Details
                 </mat-panel-title>
                 <mat-panel-description *ngIf="personalFormProgress != 100">
-                    <mat-icon class="mx-1">error</mat-icon> Missing information
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="personalDetailsForm"> 
@@ -248,7 +248,7 @@
                     Contact Details
                 </mat-panel-title>
                 <mat-panel-description *ngIf="contactFormProgress != 100">
-                    <mat-icon class="mx-1">error</mat-icon> Missing information
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeContactForm">
@@ -351,7 +351,7 @@
                     Address Details
                 </mat-panel-title>
                 <mat-panel-description *ngIf="addressFormProgress != 100">
-                    <mat-icon class="mx-1">error</mat-icon> Missing information
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="addressDetailsForm">
@@ -520,7 +520,7 @@
                     Additional Information
                 </mat-panel-title>
                 <mat-panel-description *ngIf="additionalFormProgress != 100">
-                    <mat-icon class="mx-1">error</mat-icon> Missing information
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="additionalInfoForm">
