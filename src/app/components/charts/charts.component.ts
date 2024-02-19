@@ -121,12 +121,9 @@ export class ChartComponent implements OnInit {
     },
   };
  
-
   getChartOptions(chartType: string) {
     return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
   }
-
- 
 
   resetPage() {
     this.displayChart = false
