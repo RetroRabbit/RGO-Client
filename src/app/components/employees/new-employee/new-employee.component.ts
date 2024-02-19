@@ -411,7 +411,6 @@ export class NewEmployeeComponent implements OnInit {
         this.snackBarService.showSnackbar(`Error: ${message}`, "snack-error");
         this.isDirty = false;
       },
-
     });
   }
 
