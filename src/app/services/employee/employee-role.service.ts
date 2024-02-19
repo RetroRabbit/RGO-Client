@@ -10,7 +10,7 @@ export class EmployeeRoleService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${environment.Https_Base_URL}/employee-role-manager`
+      this.baseUrl =`${environment.HttpsBaseURL}/employee-role-manager`
   }
   getAllRoles(): Observable<string[]> {
     return this.httpClient.get<string[]>(`${this.baseUrl}/all`);

@@ -10,7 +10,7 @@ export class EvaluationTemplateService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${environment.Https_Base_URL}/evaluation-template`
+      this.baseUrl =`${environment.HttpsBaseURL}/evaluation-template`
   }
 
   save(template:string): Observable<any> {

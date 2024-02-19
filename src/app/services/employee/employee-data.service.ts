@@ -11,7 +11,7 @@ export class EmployeeDataService {
   baseUrl: string;
   
   constructor(private httpClient: HttpClient) { 
-    this.baseUrl =`${environment.Https_Base_URL}/employee-data`
+    this.baseUrl =`${environment.HttpsBaseURL}/employee-data`
   }
 
   getEmployeeData(employeeId: number | undefined): Observable<EmployeeData[]>{

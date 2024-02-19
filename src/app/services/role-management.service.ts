@@ -14,7 +14,7 @@ export class RoleManagementService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${environment.Https_Base_URL}/role-manager`
+      this.baseUrl =`${environment.HttpsBaseURL}/role-manager`
     }
 
   getAllRoles(): Observable<Role[]> {

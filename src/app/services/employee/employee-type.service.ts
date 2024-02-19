@@ -12,7 +12,7 @@ export class EmployeeTypeService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${environment.Https_Base_URL}/employee-types`
+      this.baseUrl =`${environment.HttpsBaseURL}/employee-types`
   }
 
     getAllEmployeeTypes(): Observable<EmployeeType[]>{

@@ -11,7 +11,7 @@ export class ChartService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${environment.Https_Base_URL}/charts`
+      this.baseUrl =`${environment.HttpsBaseURL}/charts`
   }
 
   getAllCharts(): Observable<Chart[]> {

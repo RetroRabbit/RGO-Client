@@ -13,7 +13,7 @@ export class AccessPropertiesService{
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${environment.Https_Base_URL}/access`
+      this.baseUrl =`${environment.HttpsBaseURL}/access`
   }
     GetAccessProperties(email : string) : Observable<Properties[]>{
       return this.httpClient.get<Properties[]> (

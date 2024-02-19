@@ -12,7 +12,7 @@ export class EmployeeDateService {
   baseUrl: string;
   
   constructor(private httpClient: HttpClient) { 
-    this.baseUrl =`${environment.Https_Base_URL}/employee-date`
+    this.baseUrl =`${environment.HttpsBaseURL}/employee-date`
   }
 
   saveEmployeeDate(employeeDateInput: EmployeeDateInput): Observable<any> {

@@ -11,7 +11,7 @@ export class ClientService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${environment.Https_Base_URL}/clients`
+      this.baseUrl =`${environment.HttpsBaseURL}/clients`
   }
 
 
