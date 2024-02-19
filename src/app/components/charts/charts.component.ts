@@ -76,7 +76,6 @@ export class ChartComponent implements OnInit {
         }
       }
     },
-    
     plugins: {
       legend: {
         display: true,
