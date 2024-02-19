@@ -56,10 +56,10 @@
 #chart-icon-menu {
   transform: rotate(180deg);
 }
-.Icon-width-mobile{
+.icon-width-mobile{
   width: 3rem !important;
 }
-.Icon-width-tablet{
+.icon-width-tablet{
   width: 90px !important;
   height:1rem !important;
 }
