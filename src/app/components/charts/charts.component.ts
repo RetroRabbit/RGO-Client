@@ -122,14 +122,13 @@ export class ChartComponent implements OnInit {
     },
   };
  
-  // Conditionally set options based on chart type
+
   getChartOptions(chartType: string) {
     return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
-    // Add more conditions for other chart types if needed
+ 
   }
 
-  //get screen size
-  //if screen is mobile, set mobilebarchartoptions
+ 
 
   resetPage() {
     this.displayChart = false
