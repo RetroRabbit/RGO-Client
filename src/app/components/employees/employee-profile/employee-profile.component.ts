@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef,ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef,ViewChild, HostListener } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -71,10 +71,16 @@ export class EmployeeProfileComponent {
   teamLead : number | null = null;
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
+  screenWidth = window.innerWidth;
 
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
   @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
   @ViewChild(AccordionDocumentsComponent) documentAccordion!: AccordionDocumentsComponent;
+  
+  @HostListener('window:resize',['$event'])
+  onResize(){
+    this.screenWidth = window.innerWidth;
+  }
 
   constructor(private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,

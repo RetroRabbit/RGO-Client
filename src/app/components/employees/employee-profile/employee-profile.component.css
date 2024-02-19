@@ -98,7 +98,8 @@
 
 #accordions-nav {
     background-color: #0029C6;
-    padding-top: 1rem
+    padding-top: 1rem;
+    display: flex;
 }
 
 #nav-item>div {
@@ -123,6 +124,15 @@
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0.1px;
+}
+
+.nav-item-mobile{
+  width: 150px;
+  max-width: 100%;
+  overflow-x: scroll;
+  flex-shrink: 0;
+  display: flex;
+  margin-left: 7%;
 }
 
 #selected-line-box {

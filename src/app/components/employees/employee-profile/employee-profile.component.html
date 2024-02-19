@@ -242,8 +242,8 @@
         width: '100%',
       }" />
     <div id="profile-accordions" *ngIf="!isLoading">
-        <div id="accordions-nav" class="row col-12 ms-0">
-            <div class="col-4">
+        <div id="accordions-nav" [ngClass]="screenWidth <= 767 ?'col-12 ms-0 d-flex overflow-x-scroll rounded-3':'row col-12 ms-0'" >
+            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-4'">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
                         <div (click)="CaptureEvent($event)"
@@ -257,7 +257,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-4'">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
                         <div (click)="CaptureEvent($event)"
@@ -271,7 +271,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-4'">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
                         <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Documents' ? 'active' : 'idle'">
