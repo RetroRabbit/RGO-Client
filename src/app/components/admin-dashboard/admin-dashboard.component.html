@@ -15,7 +15,7 @@
 
   <div id="new-hire" class="d-sm-flex justify-content-sm-center">
     <button class="my-4" (click)="AddEmployee()"
-      *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()"  [ngClass]="screenWidth >= 767 ? 'Add-Button-tablet' : 'Add-Button-mobile'">+ Add
+      *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()"  [ngClass]="screenWidth >= 767 ? 'add-button-tablet' : 'add-button-mobile'">+ Add
       Employee</button>
   </div>
 </div>
