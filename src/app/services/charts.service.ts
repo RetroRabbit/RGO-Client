@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Chart } from '../models/charts.interface';
-import { API } from '../models/constants/urls.constants';
+import { environment } from '../../enviroment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class ChartService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${API.HttpsBaseURL}/charts`
+      this.baseUrl =`${environment.HttpsBaseURL}/charts`
   }
 
   getAllCharts(): Observable<Chart[]> {

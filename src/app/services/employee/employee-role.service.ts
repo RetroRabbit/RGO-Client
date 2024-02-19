@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { API } from '../../models/constants/urls.constants';
+import { environment } from '../../../enviroment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class EmployeeRoleService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${API.HttpsBaseURL}/employee-role-manager`
+      this.baseUrl =`${environment.HttpsBaseURL}/employee-role-manager`
   }
   getAllRoles(): Observable<string[]> {
     return this.httpClient.get<string[]>(`${this.baseUrl}/all`);
