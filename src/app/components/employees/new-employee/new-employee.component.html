@@ -24,7 +24,8 @@
               <mat-error *ngIf="newEmployeeForm.controls['name'].hasError('required')">
                 Full name is required
               </mat-error>
-              <mat-error *ngIf="newEmployeeForm.controls['name'].hasError('pattern') && !newEmployeeForm.controls['name'].hasError('required') ">
+              <mat-error
+                *ngIf="newEmployeeForm.controls['name'].hasError('pattern') && !newEmployeeForm.controls['name'].hasError('required') ">
                 Full name must not contain numbers
               </mat-error>
             </mat-form-field>
@@ -34,7 +35,8 @@
               <mat-error *ngIf="newEmployeeForm.controls['surname'].hasError('required')">
                 Last name is required
               </mat-error>
-              <mat-error *ngIf="newEmployeeForm.controls['surname'].hasError('pattern') && !newEmployeeForm.controls['surname'].hasError('required') ">
+              <mat-error
+                *ngIf="newEmployeeForm.controls['surname'].hasError('pattern') && !newEmployeeForm.controls['surname'].hasError('required') ">
                 Last name must not contain numbers
               </mat-error>
             </mat-form-field>
@@ -44,7 +46,8 @@
               <mat-error *ngIf="newEmployeeForm.controls['initials'].hasError('required')">
                 Initials are required
               </mat-error>
-              <mat-error *ngIf="newEmployeeForm.controls['initials'].hasError('pattern') && !newEmployeeForm.controls['initials'].hasError('required')">
+              <mat-error
+                *ngIf="newEmployeeForm.controls['initials'].hasError('pattern') && !newEmployeeForm.controls['initials'].hasError('required')">
                 Initials must not contain numbers
               </mat-error>
             </mat-form-field>
@@ -54,7 +57,8 @@
               <mat-error *ngIf="newEmployeeForm.controls['email'].hasError('required')">
                 Work email is required
               </mat-error>
-              <mat-error *ngIf="newEmployeeForm.controls['email'].hasError('pattern') && !newEmployeeForm.controls['email'].hasError('required')">
+              <mat-error
+                *ngIf="newEmployeeForm.controls['email'].hasError('pattern') && !newEmployeeForm.controls['email'].hasError('required')">
                 Work email must end with @retrorabbit.co.za
               </mat-error>
             </mat-form-field>
@@ -64,7 +68,8 @@
               <mat-error *ngIf="newEmployeeForm.controls['personalEmail'].hasError('required')">
                 Personal email is required
               </mat-error>
-              <mat-error *ngIf="newEmployeeForm.controls['personalEmail'].hasError('pattern') && !newEmployeeForm.controls['personalEmail'].hasError('required')">
+              <mat-error
+                *ngIf="newEmployeeForm.controls['personalEmail'].hasError('pattern') && !newEmployeeForm.controls['personalEmail'].hasError('required')">
                 This is not a valid email
               </mat-error>
             </mat-form-field>
@@ -104,7 +109,8 @@
             <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
               <mat-label>ID number</mat-label>
               <input matInput type="text" formControlName="idNumber" (blur)="getGenderBirthday($event)" />
-              <mat-error *ngIf="newEmployeeForm.controls['idNumber'].hasError('invalidIdNumber') && !newEmployeeForm.controls['idNumber'].hasError('required')">
+              <mat-error
+                *ngIf="newEmployeeForm.controls['idNumber'].hasError('invalidIdNumber') && !newEmployeeForm.controls['idNumber'].hasError('required')">
                 Not a valid South African ID number
               </mat-error>
             </mat-form-field>
@@ -179,21 +185,23 @@
               </mat-form-field>
               <mat-form-field appearance="outline" class="col-lg-7 col-md-12"
                 *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value">
-                <mat-label>Notes</mat-label> 
+                <mat-label>Notes</mat-label>
                 <textarea matInput type="text" formControlName="notes"> </textarea>
               </mat-form-field>
               <div class="col-lg-7 col-md-12"> <span class="roboto-font pb-3">Do you have any disabilities ?</span>
                 <mat-radio-group formControlName="disability">
-                  <mat-radio-button *ngFor="let check of [true, false]" [value]="check">{{ check ? "Yes" : "No"}}</mat-radio-button>
+                  <mat-radio-button *ngFor="let check of [true, false]" [value]="check">{{ check ? "Yes" :
+                    "No"}}</mat-radio-button>
                 </mat-radio-group>
               </div>
               <mat-form-field appearance="outline" class="col-lg-7 col-md-12"
                 *ngIf="newEmployeeForm.controls['disability'].value">
-                <mat-label>Disability notes</mat-label> 
-                <textarea matInput type="text"formControlName="disabilityNotes"></textarea>
+                <mat-label>Disability notes</mat-label>
+                <textarea matInput type="text" formControlName="disabilityNotes"></textarea>
               </mat-form-field>
             </div>
-            <form [formGroup]="physicalAddress" class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mb-3">
+            <form [formGroup]="physicalAddress"
+              class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mb-3">
               <h1 class="col-lg-7 col-md-12 fs-1">Physical Address</h1>
               <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                 <mat-label>Unit Number</mat-label>
@@ -237,10 +245,10 @@
                   Postal code must contain only numbers.
                 </mat-error>
               </mat-form-field>
-              <form [formGroup]="postalAddressForm" class="col-lg-7 col-md-12">
-                <mat-checkbox formControlName="sameAsPhysicalAddress" (change)="postalSameAsPhysicalAddress()">
-                  Postal address is the same as physical address
-                </mat-checkbox>
+              <form class="col-lg-7 col-md-12 mt-2" [formGroup]="postalAddressForm">
+                <p-checkbox value="Postal address is the same as physical address" inputId="checkbox" (onChange)="postalSameAsPhysicalAddress()"></p-checkbox>
+                <label class="ms-1" for="checkbox">Postal address is the same as physical
+                  address</label>
               </form>
             </form>
             <form [formGroup]="postalAddress" *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value"
@@ -398,29 +406,29 @@
                     <div id="align">
                       <mat-icon *ngIf="categories[1].state == false" id="icon">check_circle</mat-icon>
                     </div>
-                      <div class="roboto-font col-6" *ngIf="categories[1].state == true" id="align">
-                        <p id="title">Retirement Annuity</p>
-                        <p id="supported">PDF,PPT,PPTX,Doc,Docx are supported</p>
-                      </div>
-                      <div class="roboto-font col-7" *ngIf="categories[1].state == false" id="align">
-                        <p id="title">Retirement Annuity</p>
-                        <p id="document-text">{{categories[1].name}}</p>
-                      </div>
-                      <div class="file-mention col-3" id="align-left" *ngIf="categories[1].state == true">
-                        <p id="drop-file">Drop your files here!</p>
-                      </div>
-                      <div id="align">
-                        <button mat-button id="file-button" *ngIf="categories[1].state == false" class="mx-2"
-                          type="button" (click)="removeByCategory(1)">
-                          <mat-icon>clear</mat-icon>
-                          Remove
-                        </button>
-                        <button mat-button id="upload-button" class="text-white border-primary mx-2" type="button"
-                          (click)="openFileSelector()" [disabled]="categories[1].state == false">
-                          <mat-icon>add</mat-icon>
-                          Upload
-                        </button>
-                      </div>
+                    <div class="roboto-font col-6" *ngIf="categories[1].state == true" id="align">
+                      <p id="title">Retirement Annuity</p>
+                      <p id="supported">PDF,PPT,PPTX,Doc,Docx are supported</p>
+                    </div>
+                    <div class="roboto-font col-7" *ngIf="categories[1].state == false" id="align">
+                      <p id="title">Retirement Annuity</p>
+                      <p id="document-text">{{categories[1].name}}</p>
+                    </div>
+                    <div class="file-mention col-3" id="align-left" *ngIf="categories[1].state == true">
+                      <p id="drop-file">Drop your files here!</p>
+                    </div>
+                    <div id="align">
+                      <button mat-button id="file-button" *ngIf="categories[1].state == false" class="mx-2"
+                        type="button" (click)="removeByCategory(1)">
+                        <mat-icon>clear</mat-icon>
+                        Remove
+                      </button>
+                      <button mat-button id="upload-button" class="text-white border-primary mx-2" type="button"
+                        (click)="openFileSelector()" [disabled]="categories[1].state == false">
+                        <mat-icon>add</mat-icon>
+                        Upload
+                      </button>
+                    </div>
                   </div>
                 </ng-template>
               </ngx-file-drop>
