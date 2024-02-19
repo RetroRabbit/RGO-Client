@@ -274,6 +274,6 @@ export class EmployeeProfileComponent {
     }
   }
   uploadFile() {
-    throw new Error('');
+    throw new Error('filed to upload image');
   }
 }
