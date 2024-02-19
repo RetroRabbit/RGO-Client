@@ -301,7 +301,7 @@ div#results-container {
 
 #graph-heading>h3 {
   color: #212121;
-  font-size:  clamp(10px,4vw,22px);
+  font-size: clamp(10px, 4vw, 22px);
   font-weight: 500;
   line-height: 28px;
   font-family: Roboto, sans-serif;
@@ -563,20 +563,19 @@ div#results-container {
 
 
 .button-width-mobile {
- width: 140px !important;
+  width: 140px !important;
 }
 
-.button-width-tablet{
+.button-width-tablet {
   width: 150px !important;
-  margin-left:140px !important;
- }
+  margin-left: 140px !important;
+}
 
- .Add-Button-mobile{
+.Add-Button-mobile {
   width: 340px !important;
-  margin-right:1rem !important;
- }
+  margin-right: 1rem !important;
+}
 
- .heading-width-desktop{
-  margin-left:900px
- }
- 
+.heading-width-desktop {
+  margin-left: 900px
+}

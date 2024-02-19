@@ -2,23 +2,24 @@
   background-color: white;
   border-radius: 1rem;
   min-height: 50vh;
-  max-width:90%;
+  max-width: 90%;
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.30), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
 }
 
-.chart-width-mobile{
+.chart-width-mobile {
   min-height: 30vh !important;
-  max-width:90% !important;
+  max-width: 90% !important;
 }
 
-.chart-width-tablet{
+.chart-width-tablet {
   border-radius: 1rem;
   min-height: 30% !important;
-  max-width:45% !important;
-  margin-left:10px;
+  max-width: 45% !important;
+  margin-left: 10px;
 
 }
-#chart-header{
+
+#chart-header {
   text-align: left;
   color: #0029C6;
   font-family: Poppins;
@@ -28,7 +29,7 @@
   line-height: 21px;
 }
 
-#canvas-container{
+#canvas-container {
   max-height: 50vh;
   max-width: 50vh;
   text-align: center;
@@ -57,16 +58,16 @@
   transform: rotate(180deg);
 }
 
-.icon-width-mobile{
+.icon-width-mobile {
   width: 3rem !important;
 }
 
-.icon-width-tablet{
+.icon-width-tablet {
   width: 90px !important;
-  height:1rem !important;
+  height: 1rem !important;
 }
 
-#edit-controls > button{
+#edit-controls>button {
   margin: 1rem;
 }
 
@@ -87,6 +88,6 @@
   width: fit-content;
 }
 
-h4{
-  font-weight:500;
+h4 {
+  font-weight: 500;
 }
