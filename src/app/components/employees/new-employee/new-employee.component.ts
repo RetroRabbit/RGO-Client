@@ -391,27 +391,28 @@ export class NewEmployeeComponent implements OnInit {
       peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
     });
 
-    const employeeEmail: string = this.newEmployeeForm.value.email!;
-    this.checkBlankRequiredFields();
-    this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
-      next: () => {
-        this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
-        this.myStepper.next();
-        this.isDirty = false;
-      },
+    // const employeeEmail: string = this.newEmployeeForm.value.email!;
+    // this.checkBlankRequiredFields();
+    // this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
+    //   next: () => {
+    //     this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
+    //     this.myStepper.next();
+    //     this.isDirty = false;
+    //   },
 
-      error: (error: any) => {
-        let message = '';
-        if (error.status === 400) {
-          message = 'Incorrect form values';
-        } else if (error.status === 406) {
-          message = 'User already exists';
-        }
-        this.snackBarService.showSnackbar(`Error: ${message}`, "snack-error");
-        this.isDirty = false;
-      },
+    //   error: (error: any) => {
+    //     let message = '';
+    //     if (error.status === 400) {
+    //       message = 'Incorrect form values';
+    //     } else if (error.status === 406) {
+    //       message = 'User already exists';
+    //     }
+    //     this.snackBarService.showSnackbar(`Error: ${message}`, "snack-error");
+    //     this.isDirty = false;
+    //   },
 
-    });
+    // });
+    console.log(this.newEmployeeForm.value);
   }
 
   checkBlankRequiredFields() {

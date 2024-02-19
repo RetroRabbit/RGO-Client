@@ -246,8 +246,7 @@
                 </mat-error>
               </mat-form-field>
               <form class="col-lg-7 col-md-12 mt-2" [formGroup]="postalAddressForm">
-                <p-checkbox value="Postal address is the same as physical address"
-                  inputId="checkbox"></p-checkbox>
+                <p-checkbox value="Postal address is the same as physical address" inputId="checkbox" (onChange)="postalSameAsPhysicalAddress()"></p-checkbox>
                 <label class="ms-1" for="checkbox">Postal address is the same as physical
                   address</label>
               </form>
