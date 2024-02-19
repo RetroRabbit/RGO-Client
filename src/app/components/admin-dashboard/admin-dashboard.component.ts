@@ -55,10 +55,6 @@ export class AdminDashboardComponent {
   loadCounter: number = 0;
   isMobileScreen = false;
   totalNumberOfEmployees: number = 0;
- 
-
-  
- 
   charts: Chart[] = [];
   searchQuery: string = '';
   searchResults: EmployeeProfile[] = [];
