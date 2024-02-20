@@ -248,7 +248,7 @@
                         <button class="col-12 mb-2" *ngIf="editPersonal" mat-button id="save-button" (click)="savePersonalEdit()">
                             Save changes
                         </button>
-                        <button class="col-12 mb-2" *ngIf="editPersonal" mat-button id="cancel-button"
+                        <button class="col-12" *ngIf="editPersonal" mat-button id="cancel-button"
                             (click)="cancelPersonalEdit()">
                             Cancel
                         </button>
@@ -368,11 +368,11 @@
                         </button>
                     </div>
                     <div class="col-12 d-block d-md-none" id="edit-buttons">
-                        <button *ngIf="editContact" mat-button id="save-button" type="submit" class="col-12 mb-3"
+                        <button *ngIf="editContact" mat-button id="save-button" type="submit" class="col-12 mb-2"
                         (click)="saveContactEdit()">
                         Save changes
                         </button>
-                        <button *ngIf="editContact" mat-button id="cancel-button" class="col-12 mb-3"
+                        <button *ngIf="editContact" mat-button id="cancel-button" class="col-12"
                             (click)="cancelContactEdit()">
                             Cancel
                         </button>
@@ -396,9 +396,9 @@
                     </button>
                 </div>
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col-12">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Unit Number</mat-label>
                                     <input matInput formControlName="physicalUnitNumber">
@@ -410,7 +410,7 @@
                                         Unit number must only contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Complex Name</mat-label>
                                     <input matInput formControlName="physicalComplexName">
@@ -419,13 +419,13 @@
                                         name is required</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Suburb/District</mat-label>
                                     <input matInput formControlName="physicalSuburb">
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Street Number</mat-label>
                                     <input matInput formControlName="physicalStreetNumber">
@@ -437,13 +437,13 @@
                                         Street Number must only contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>City/Town</mat-label>
                                     <input matInput formControlName="physicalCity">
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Country</mat-label>
                                     <mat-select formControlName="physicalCountry">
@@ -453,7 +453,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Province</mat-label>
                                     <mat-select formControlName="physicalProvince">
@@ -463,7 +463,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Postal Code</mat-label>
                                     <input matInput formControlName="physicalPostalCode">
@@ -481,37 +481,37 @@
                             </div>
                         </div>
                         <div *ngIf="!physicalEqualPostal" class="row mt-4">
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Unit Number</mat-label>
                                     <input matInput formControlName="postalUnitNumber">
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Complex Name</mat-label>
                                     <input matInput formControlName="postalComplexName">
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Suburb/District</mat-label>
                                     <input matInput formControlName="postalSuburb">
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Street Number</mat-label>
                                     <input matInput formControlName="postalStreetNumber">
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>City/Town</mat-label>
                                     <input matInput formControlName="postalCity">
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Country</mat-label>
                                     <mat-select formControlName="postalCountry">
@@ -521,7 +521,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Province</mat-label>
                                     <mat-select formControlName="postalProvince">
@@ -531,7 +531,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Postal Code</mat-label>
                                     <input matInput formControlName="postalPostalCode">
@@ -539,12 +539,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12" id="edit-buttons">
-                        <button *ngIf="editAddress" mat-button id="cancel-button"
-                            (click)="cancelAddressEdit()">Cancel</button>
-                        <button *ngIf="editAddress" mat-button id="save-button" type="submit"
-                            (click)="saveAddressEdit()">Save
-                            changes</button>
+                    <div class="col-12 d-block d-md-none" id="edit-buttons">
+                        <button *ngIf="editAddress" mat-button id="save-button" type="submit" (click)="saveAddressEdit()" class="col-12 mb-2">
+                            Save changes
+                        </button>
+                        <button *ngIf="editAddress" mat-button id="cancel-button" (click)="cancelAddressEdit()" class="col-12">
+                            Cancel
+                        </button>
+                    </div>
+                    <div class="col-12 d-none d-md-flex" id="edit-buttons">
+                        <button *ngIf="editAddress" mat-button id="cancel-button" (click)="cancelAddressEdit()">
+                            Cancel
+                        </button>
+                        <button *ngIf="editAddress" mat-button id="save-button" type="submit" (click)="saveAddressEdit()">
+                            Save changes
+                        </button>
                     </div>
                 </div>
             </form>
@@ -565,8 +574,8 @@
                         Details</button>
                 </div>
                 <div class="row">
-                    <div class="col-10">
-                        <div class="col-6 my-2" *ngFor="let fieldcode of customFields">
+                    <div class="col-12 row">
+                        <div class="col-12 col-md-6 my-2" *ngFor="let fieldcode of customFields">
                             <mat-form-field appearance="outline" style="width: 100%;">
                                 <mat-label>{{fieldcode.name}}</mat-label>
                                 <div *ngIf="fieldcode.type == fieldTypes[4].id">
@@ -582,12 +591,21 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="col-12" id="edit-buttons">
-                        <button *ngIf="editAdditional" mat-button id="cancel-button"
-                            (click)="cancelAdditionalEdit()">Cancel</button>
-                        <button *ngIf="editAdditional" mat-button id="save-button" type="submit"
-                            (click)="saveAdditionalEdit()">Save
-                            changes</button>
+                    <div class="col-12 d-block d-md-none" id="edit-buttons">
+                        <button *ngIf="editAdditional" mat-button id="save-button" type="submit" (click)="saveAdditionalEdit" class="col-12 mb-2">
+                            Save changes
+                        </button>
+                        <button *ngIf="editAdditional" mat-button id="cancel-button" (click)="cancelAdditionalEdit()" class="col-12">
+                            Cancel
+                        </button>
+                    </div>
+                    <div class="col-12 d-none d-md-flex" id="edit-buttons">
+                        <button *ngIf="editAdditional" mat-button id="cancel-button" (click)="cancelAdditionalEdit()">
+                            Cancel
+                        </button>
+                        <button *ngIf="editAdditional" mat-button id="save-button" type="submit" (click)="saveAdditionalEdit()">
+                            Save changes
+                        </button>
                     </div>
                 </div>
             </form>
