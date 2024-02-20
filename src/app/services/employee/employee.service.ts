@@ -53,7 +53,7 @@ export class EmployeeService {
 
   updateEmployee(employee: any): Observable<any> {
     const queryParams = `?userEmail=${this.authAccessService.getEmployeeEmail()}`
-    return this.httpClient.put<any>(`${this.baseUrl}/update${queryParams}`, employee)
+    return this.httpClient.put<any>(`${this.baseUrl}${queryParams}`, employee)
   }
 
   getTotalEmployees(): Observable<number> {
