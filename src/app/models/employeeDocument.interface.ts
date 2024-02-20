@@ -4,8 +4,9 @@ export interface EmployeeDocument {
     reference: string,
     fileName: string,
     fileCategory: number,
-    file: string,
+    blob: string,
     uploadDate: Date,
     reason: string,
-    status : number
+    status: number,
+    counterSign: boolean
 }
