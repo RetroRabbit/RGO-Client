@@ -349,6 +349,15 @@
 :host ::ng-deep #reject-reason {
     color: #b3261eff;
 }
+  .col-2>#line{
+    min-height: 2rem;
+    width:0px;
+    border: 1px solid grey;
+  }
+  
+  div.row{
+    padding:0;
+  }
 
 /* #svg-icon-w #icon-w {
     fill: white;

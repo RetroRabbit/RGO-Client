@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="col-7 mt-4 col-md-9 mt-md-0">
-            <div class="row mt-3 mt-md-0">
+            <div class="row mt-3 mt-md-0 mt-lg-3">
                 <div class="col-12 text-center col-md-6 text-md-start" id="header-name">
                     <h1 class="mb-0">{{usingSimpleProfile ? simpleEmployee.name :employeeProfile.name}}
                         {{usingSimpleProfile ? simpleEmployee.surname : employeeProfile.surname}}</h1>
@@ -155,7 +155,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-11 px-4 d-none d-md-block col-md-12 mb-md-3">
+        <div class="col-11 px-4 d-none d-md-block col-md-12 mb-md-3 mb-lg-0">
             <div class="row " id="accordion-progress">
                 <div class="col-2 py-3 col-md-3" id="progress-stats"
                     style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
@@ -173,64 +173,70 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 border-top pt-3">
+        <div [ngClass]="screenWidth <= 767 ?'col-12 border-top pt-3':'col-12 pt-3'">
             <div class="row">
                 <div class="col-12 pt-1 col-md-auto" id="overall-text">
                     <h4>
                         {{overallFormProgress}}% Overall Completed
                     </h4>
                 </div>
-                <div class="col-12 mb-2 col-md-8 mt-md-3" id="progress-container">
+                <div class="col-12 mb-2 col-md-8 mt-md-3 col-lg-9" id="progress-container">
                     <mat-progress-bar mode="determinate" [value]=overallFormProgress
                         id="overall-progress-bar"></mat-progress-bar>
                 </div>
             </div>
         </div>
-        <div class="col-12 d-block d-md-none mt-3">
+        <div class="col-12 d-block d-md-none mt-3 mb-3">
             <div class="col-12" id="accordion-progress">
-                <div class="row">
-                    <div class="col-2">
+                <div class="row ms-0 col-12">
+                    <div class="col-2 d-flex justify-content-center">
                         <div id="outer-icon-container">
                             <div id="icon-container" class="me-0 pe-0"
                                 style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
-                                <mat-icon>person_outline</mat-icon>
+                                <mat-icon>person_search</mat-icon>
                             </div>
                         </div>
                     </div>
-                    <div class="col-10 ms-0 row">
+                    <div class="col-10 ms-0 mt-2 row d-flex align-content-center">
                         <h5 class="col-10">Profile Details </h5>
                         <h5 class="col-2">{{ profileFormProgress }}%</h5>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-2">
+                <div class="col-2 d-flex justify-content-center">
+                    <div id="line"></div>
+                  </div>
+                <div class="row ms-0 col-12">
+                    <div class="col-2 d-flex justify-content-center">
                         <div id="outer-icon-container">
                             <div id="icon-container" class="me-0 pe-0"
                                 style="background-color: {{ bankInformationProgress === 100 && bankStatus == 0 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 && bankStatus == 0 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 && bankStatus == 0 ? '1px solid #0029c6' : '1px solid grey' }}">
-                                <mat-icon>person_outline</mat-icon>
+                                <mat-icon>account_balance</mat-icon>
                             </div>
                         </div>
                     </div>
-                    <div class="col-10 ms-0 row">
+                    <div class="col-10 ms-0 mt-2 row d-flex align-content-center">
                         <h5 class="col-10">Bank Information </h5>
                         <h5 class="col-2">{{bankInformationProgress}}%</h5>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-2">
+                <div class="col-2 d-flex justify-content-center">
+                    <div id="line"></div>
+                  </div>
+                <div class="row ms-0 col-12">
+                    <div class="col-2 d-flex justify-content-center">
                         <div id="outer-icon-container">
                             <div id="icon-container" class="me-0 pe-0"
                                 style="background-color: {{ documentFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ documentFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ documentFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
-                                <mat-icon>person_outline</mat-icon>
+                                <mat-icon>assignment</mat-icon>
                             </div>
                         </div>
                     </div>
-                    <div class="col-10 ms-0 row">
+                    <div class="col-10 ms-0 mt-2 row d-fle align-content-center">
                         <h5 class="col-10">Documents </h5>
                         <h5 class="col-2">{{documentFormProgress}}%</h5>
                     </div>
                 </div>
-            </div>
+         </div>
         </div>
     </div>
 
@@ -242,7 +248,7 @@
         width: '100%',
       }" />
     <div id="profile-accordions" *ngIf="!isLoading">
-        <div id="accordions-nav" [ngClass]="screenWidth <= 767 ?'col-12 ms-0 d-flex overflow-x-scroll rounded-3':'row col-12 ms-0'" >
+        <div id="accordions-nav" [ngClass]="screenWidth <= 767 ?'col-12 ms-0 d-flex overflow-x-scroll rounded-3':'row col-12 ms-0 rounded-3'" >
             <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-4'">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">

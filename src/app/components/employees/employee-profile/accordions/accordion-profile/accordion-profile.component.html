@@ -1,6 +1,6 @@
 <div class="col-12" id="accordion-container">
     <mat-accordion id="accordion" class="row">
-        <mat-expansion-panel class="mt-3" (opened)="checkEmployeeDetails()" (closed)="panelOpenState = false">
+        <mat-expansion-panel class="mt-3 rounded-3" (opened)="checkEmployeeDetails()" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title class="col-6">
                     Employee Details
@@ -10,14 +10,14 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeDetailsForm" (submit)="saveEmployeeEdit()">
-                <div class="col-12 mb-2">
-                    <button *ngIf="!editEmployee" mat-button id="edit-button" (click)="editEmployeeDetails()" class="col-12">
+                <div class="col-12 mb-2 d-flex justify-content-end">
+                    <button *ngIf="!editEmployee" mat-button id="edit-button" (click)="editEmployeeDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''" >
                         <mat-icon>edit</mat-icon>Edit Details</button>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
-                            <div class="col-12 my-2">
+                            <div class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Full Names</mat-label>
                                     <input matInput formControlName="name">
@@ -28,7 +28,7 @@
                                         Full name must not contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2">
+                            <div class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Last Name</mat-label>
                                     <input matInput formControlName="surname">
@@ -39,7 +39,7 @@
                                         Last name must not contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2">
+                            <div class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Initials</mat-label>
                                     <input matInput formControlName="initials">
@@ -51,7 +51,8 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="col-12 my-2">
+                        <div class="row">
+                            <div class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Client Allocated</mat-label>
                                     <input type="text" placeholder="" matInput formControlName="clientAllocated"
@@ -63,9 +64,10 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 my-2">
+                            <div class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Role</mat-label>
                                     <mat-select formControlName="employeeType">
@@ -75,7 +77,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2">
+                            <div class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Level</mat-label>
                                     <mat-select formControlName="level">
@@ -85,7 +87,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2">
+                            <div class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Team Lead</mat-label>
                                     <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput" type="text" placeholder="" matInput formControlName="teamLead"
@@ -105,7 +107,7 @@
                                     </ng-template>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2">
+                            <div class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>People's Champion</mat-label>
                                     <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminPeopleChampionInput" 
@@ -123,7 +125,7 @@
                                         </ng-template>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2">
+                            <div class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>I.D number</mat-label>
                                     <input matInput formControlName="idNumber" (blur)="getGenderBirthday($event)">
@@ -135,7 +137,7 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2">
+                            <div class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Date of Birth</mat-label>
                                     <input matInput [matDatepicker]="picker1" class="form-control"
@@ -144,7 +146,7 @@
                                     <mat-datepicker #picker1></mat-datepicker>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Start Date</mat-label>
                                     <input matInput [matDatepicker]="picker2" formControlName="engagementDate">
@@ -154,16 +156,26 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 d-flex" id="edit-buttons">
-                        <button *ngIf="editEmployee" mat-button id="cancel-button"
-                            (click)="cancelEmployeeEdit()" class="order-2 order-md-1 order-lg-1 col-12">Cancel</button>
-                        <button *ngIf="editEmployee" mat-button id="save-button" type="submit" class="order-1 order-md-2 order-lg-2 col-12">Save
-                            changes</button>
+                    <div class="col-12 d-none d-md-flex d-lg-flex justify-content-end" id="edit-buttons">
+                        <button *ngIf="editEmployee" mat-button id="cancel-button" (click)="cancelEmployeeEdit()">
+                            Cancel
+                        </button>
+                        <button *ngIf="editEmployee" mat-button id="save-button" type="submit">
+                            Save changes
+                        </button>
+                    </div>
+                    <div class="col-12 d-block d-md-none d-lg-none" id="edit-buttons">
+                        <button *ngIf="editEmployee" mat-button id="save-button" type="submit" class="col-12 mb-2">
+                            Save changes
+                        </button>                        
+                        <button *ngIf="editEmployee" mat-button id="cancel-button" (click)="cancelEmployeeEdit()" class="col-12">
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </form>
         </mat-expansion-panel>
-        <mat-expansion-panel class="mt-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel class="mt-3 rounded-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Personal Details
@@ -173,23 +185,23 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="personalDetailsForm"> 
-                    <div class="col-12 mb-2">
-                        <button *ngIf="!editPersonal" mat-button id="edit-button" (click)="editPersonalDetails()" class="col-12">
+                    <div class="col-12 mb-2 d-flex justify-content-end">
+                        <button *ngIf="!editPersonal" mat-button id="edit-button" (click)="editPersonalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
                             <mat-icon>edit</mat-icon>Edit Details</button>
                     </div>
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col-12">
                         <div class="row">
-                            <div class="col-12 my-2">
+                            <div class="col-11 my-2">
                                 <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
-                                <mat-radio-group aria-label="Select your gender" formControlName="gender"
+                                <mat-radio-group aria-label="Select your gender" formControlName="gender" class="row col-12 col-md-7 col-lg-5" 
                                     [value]="employeeProfile.employeeDetails.gender">
-                                    <mat-radio-button [value]=1>Male</mat-radio-button>
-                                    <mat-radio-button [value]=2>Female</mat-radio-button>
-                                    <mat-radio-button [value]=0>Unclassified</mat-radio-button>
+                                    <mat-radio-button [value]=1 class="col-4">Male</mat-radio-button>
+                                    <mat-radio-button [value]=2 class="col-4">Female</mat-radio-button>
+                                    <mat-radio-button [value]=0 class="col-4">Unclassified</mat-radio-button>
                                 </mat-radio-group>
                             </div>
-                            <div class="col-6 my-2">
+                            <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Race</mat-label>
                                     <mat-select formControlName="race">
@@ -199,10 +211,9 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 mt-1"></div>
-                            <div class="col-6  my-1">
+                            <div class="col-12 my-1">
                                 <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any
-                                    disabilities that you are aware of?</h3>
+                                    disabilities?</h3>
                                 <mat-radio-group aria-label="Select status" (change)="setHasDisability($event)"
                                     formControlName="disability">
                                     <mat-radio-button [value]=true>yes</mat-radio-button>
@@ -211,7 +222,7 @@
                             </div>
                             <div class="col-12" *ngIf="hasDisability">
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div class="col-12 col-md-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Disability</mat-label>
                                             <mat-select formControlName="disabilityList">
@@ -222,8 +233,8 @@
                                             </mat-select>
                                         </mat-form-field>
                                     </div>
-                                    <div class="col-6">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                    <div class="col-12 col-md-6">
+                                        <mat-form-field id="mat-field" appearance="outline" style="width: 100%;min-height: 230px;" class="disability-description">
                                             <textarea matInput placeholder="Disability Notes"
                                                 formControlName="disabilityNotes"></textarea>
                                         </mat-form-field>
@@ -233,16 +244,28 @@
                         </div>
                     </div>
 
-                    <div class="col-12" id="edit-buttons">
+                    <div class="col-12 d-block d-md-none" id="edit-buttons">
+                        <button class="col-12 mb-2" *ngIf="editPersonal" mat-button id="save-button" (click)="savePersonalEdit()">
+                            Save changes
+                        </button>
+                        <button class="col-12 mb-2" *ngIf="editPersonal" mat-button id="cancel-button"
+                            (click)="cancelPersonalEdit()">
+                            Cancel
+                        </button>
+                    </div>
+                    <div class="col-12 d-none d-md-flex" id="edit-buttons">
                         <button *ngIf="editPersonal" mat-button id="cancel-button"
-                            (click)="cancelPersonalEdit()">Cancel</button>
-                        <button *ngIf="editPersonal" mat-button id="save-button" (click)="savePersonalEdit()">Save
-                            changes</button>
+                            (click)="cancelPersonalEdit()">
+                            Cancel
+                        </button>
+                        <button *ngIf="editPersonal" mat-button id="save-button" (click)="savePersonalEdit()">
+                            Save changes
+                        </button>
                     </div>
                 </div>
             </form>
         </mat-expansion-panel>
-        <mat-expansion-panel class="mt-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel class="mt-3 rounded-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Contact Details
@@ -252,8 +275,8 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeContactForm">
-                <div class="col-12 mb-2">
-                    <button *ngIf="!editContact" mat-button id="edit-button" (click)="editContactDetails()" class="col-12">
+                <div class="col-12 mb-2 d-flex justify-content-end">
+                    <button *ngIf="!editContact" mat-button id="edit-button" (click)="editContactDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
                         <mat-icon>edit</mat-icon>Edit Details</button>
                 </div>                
                 <div class="row">
@@ -345,7 +368,7 @@
                 </div>
             </form>
         </mat-expansion-panel>
-        <mat-expansion-panel class="mt-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel class="mt-3 rounded-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Address Details
@@ -355,8 +378,8 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="addressDetailsForm">
-                <div class="col-12 mb-2">
-                    <button *ngIf="!editAddress" mat-button id="edit-button" (click)="editAddressDetails()" class="col-12">
+                <div class="col-12 mb-2 d-flex justify-content-end">
+                    <button *ngIf="!editAddress" mat-button id="edit-button" (click)="editAddressDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
                         <mat-icon>edit</mat-icon>Edit Details
                     </button>
                 </div>
@@ -514,7 +537,7 @@
                 </div>
             </form>
         </mat-expansion-panel>
-        <mat-expansion-panel class="mt-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel class="mt-3 rounded-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Additional Information
@@ -524,8 +547,8 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="additionalInfoForm">
-                <div class="col-12 mb-2">
-                    <button *ngIf="!editAdditional" mat-button id="edit-button" (click)="editAdditionalDetails()" class="col-12">
+                <div class="col-12 mb-2 d-flex justify-content-end">
+                    <button *ngIf="!editAdditional" mat-button id="edit-button" (click)="editAdditionalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
                         <mat-icon>edit</mat-icon>Edit
                         Details</button>
                 </div>

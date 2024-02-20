@@ -20,6 +20,7 @@ import { AccordionProfileComponent } from './accordions/accordion-profile/accord
 import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents.component';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
 import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
+
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -76,7 +77,7 @@ export class EmployeeProfileComponent {
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
   @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
   @ViewChild(AccordionDocumentsComponent) documentAccordion!: AccordionDocumentsComponent;
-  
+
   @HostListener('window:resize',['$event'])
   onResize(){
     this.screenWidth = window.innerWidth;
