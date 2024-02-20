@@ -329,3 +329,23 @@ main {
   font-size: 14px;
   letter-spacing: 0.25px;
 }
+
+:host {
+    .p-checkbox .p-checkbox-box {
+      border-radius: 3px !important;
+    }
+  
+    .p-checkbox .p-checkbox-box:not(.p-highlight) {
+      border: 1px solid #49454F;
+    }
+  
+    .p-checkbox .p-checkbox-box.p-highlight {
+      border: 1px solid rgb(0, 41, 198);
+      background: rgb(0, 41, 198);
+    }
+  
+    .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+      box-shadow: none;
+    }
+  }
+

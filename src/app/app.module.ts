@@ -110,7 +110,7 @@ import { LoadingComponentComponent } from './components/shared-components/loadin
     AccordionProfileComponent,
     AccordionBankingComponent,
     AccordionDocumentsComponent,
-    LoadingComponentComponent
+    LoadingComponentComponent,
   ],
   imports: [
     BrowserModule,

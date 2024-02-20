@@ -15,7 +15,7 @@
     text-align: left !important;
 }
 
-#form-container > form > div{
+#form-container>form>div {
     margin: auto;
     width: 400px;
     padding: 0;
@@ -37,7 +37,7 @@ h3 {
 
 #button-container>button {
     border-radius: 100px;
-    background: var(--m-3-sys-light-primary, #0029C6);
+    background: var(--m-3-sys-light-primary, #0029c6);
     border-width: 0;
     color: white;
     display: flex;
@@ -48,11 +48,11 @@ h3 {
     gap: 8px;
 }
 
-#button-container  {
+#button-container {
     width: 400px;
 }
 
-#button-container > div > button:first-child{
+#button-container>div>button:first-child {
     margin-bottom: 20px;
 }
 
@@ -81,19 +81,20 @@ h3 {
     width: 400px;
 }
 
-#icon-circle:hover, #drag-icon{
+#icon-circle:hover,
+#drag-icon {
     cursor: pointer;
 }
 
-#icon-circle{
-    color: #DC362E;
+#icon-circle {
+    color: #dc362e;
 }
 
-.mat-icon{
-    margin-top: 1rem ;
+.mat-icon {
+    margin-top: 1rem;
 }
 
-#add-button{
+#add-button {
     padding: 10px 24px;
     justify-content: center;
     align-items: center;
@@ -101,7 +102,7 @@ h3 {
     background: #0029c6;
     border-radius: 30px;
     border: none;
-    color: #FFF;
+    color: #fff;
     text-align: center;
     font-family: Roboto;
     font-size: 14px;
@@ -112,37 +113,38 @@ h3 {
     width: 137px;
 }
 
-#toggle-advanced{
+#toggle-advanced {
     margin-top: 30px !important;
     margin-bottom: 30px !important;
 }
 
-#type-info{
+#type-info {
     margin: 0 0 10px 0;
 }
 
-#type-info > p{
+#type-info>p {
     margin: 0;
 }
 
 :host {
-  .p-checkbox{
-    margin-left: 29px;
-  }
-  .p-checkbox .p-checkbox-box {
-    border-radius: 0px !important;
-  }
+    .p-checkbox {
+        margin-left: 29px;
+    }
 
-  .p-checkbox .p-checkbox-box:not(.p-highlight) {
-    border: 2px solid #49454F;
-  }
+    .p-checkbox .p-checkbox-box {
+        border-radius: 0px !important;
+    }
 
-  .p-checkbox .p-checkbox-box.p-highlight {
-    border: 2px solid rgb(0, 41, 198);
-    background: rgb(0, 41, 198);
-  }
+    .p-checkbox .p-checkbox-box:not(.p-highlight) {
+        border: 2px solid #49454f;
+    }
 
-  .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
-    box-shadow: none;
-  }
+    .p-checkbox .p-checkbox-box.p-highlight {
+        border: 2px solid rgb(0, 41, 198);
+        background: rgb(0, 41, 198);
+    }
+
+    .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+        box-shadow: none;
+    }
 }
