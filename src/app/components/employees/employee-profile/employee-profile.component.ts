@@ -71,6 +71,7 @@ export class EmployeeProfileComponent {
   teamLead: number | null = null;
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
+  base64Image: string = '';
 
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
   @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
@@ -262,30 +263,31 @@ export class EmployeeProfileComponent {
       this.getSimpleEmployee();
   }
 
-  url="";
-
   onFileChange(e: any) {
-   if(e.target.files) {
-    const file = new FileReader();
-    file.readAsDataURL(e.target.files[0]);
-    file.onload=(event: any)=>{
-     this.url = event.target.result;
-    }
-   }
-  }
-
-  /*onFileChange(event: any): void {
-    if (event.target.files && event.target.files.length) {
-      const file = event.target.files[0];
-      this.employeeProfile.photo = file;
-      if(this.validateFile) {
-        this.imageUrl = file;
-      }else{
-        this.uploadFile();
+    if (e.target.files) {
+      const file = new FileReader();
+      file.readAsDataURL(e.target.files[0]);
+      file.onload = (event: any) => {
+        this.employeeProfile.photo = event.target.result;
+        this.updateUser();
       }
     }
   }
-  uploadFile() {
-    throw new Error('filed to upload image');
-  }*/
+
+  updateUser() {
+    let updatedEmp = { ...this.employeeProfile };
+
+    updatedEmp.photo = this.base64Image;
+
+    this.employeeService.updateEmployee(updatedEmp)
+      .subscribe({
+        next: () => {
+          this.getSelectedEmployee()
+        },
+        error: () => {
+        this.snackBarService.showSnackbar("Failed to update employee profile picture", "snack-error");
+          }
+        });
+  }
+
 }
