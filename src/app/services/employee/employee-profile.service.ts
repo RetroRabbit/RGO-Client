@@ -14,6 +14,9 @@ import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface
   providedIn: 'root'
 })
 export class EmployeeProfileService {
+  updateProfilePhoto(email: string | undefined, photo: string) {
+    throw new Error('Method not implemented.');
+  }
   email: string = '';
   token: string = '';
   cookieEmail = this.cookieService.get('userEmail');
