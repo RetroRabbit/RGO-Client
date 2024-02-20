@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { API } from '../models/constants/urls.constants';
+import { environment } from '../../enviroment/environment';
 import { Client } from '../models/client.interface';
 import { Observable } from 'rxjs';
 
@@ -11,7 +11,7 @@ export class ClientService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${API.HttpsBaseURL}/clients`
+      this.baseUrl =`${environment.HttpsBaseURL}/clients`
   }
 
 

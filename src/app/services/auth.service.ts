@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Observable, firstValueFrom, take, EMPTY, catchError, map } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { API } from '../models/constants/urls.constants';
+import { environment } from '../../enviroment/environment';
 import { Store } from '@ngrx/store';
 import { Token } from '../models/token.interface';
 
@@ -17,7 +17,7 @@ export class AuthService {
     private client: HttpClient,
     private store: Store<{ app: Token }>) 
     { 
-      this.baseUrl =`${API.HttpsBaseURL}/auth`
+      this.baseUrl =`${environment.HttpsBaseURL}/auth`
     }
 
   isAuthenticated(): Observable<boolean> {

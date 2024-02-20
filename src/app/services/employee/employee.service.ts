@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Employee } from '../../models/employee.interface';
 import { EmployeeProfile } from '../../models/employee-profile.interface';
-import { API } from '../../models/constants/urls.constants';
+import { environment } from '../../../enviroment/environment';
 import { AuthAccessService } from '../auth-access.service';
 import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
 import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
@@ -17,7 +17,7 @@ export class EmployeeService {
 
   constructor(private httpClient: HttpClient,
     private authAccessService: AuthAccessService) {
-    this.baseUrl = `${API.HttpsBaseURL}/employees`
+    this.baseUrl = `${environment.HttpsBaseURL}/employees`
   }
 
   /**
