@@ -3,8 +3,10 @@
     <div class="col-md-6 d-flex flex-column justify-content-center align-self-center"
       [ngClass]="screenWidth <= 767 ? 'left-side px-0' : 'half-screen-col'">
       <form (ngSubmit)="Login()" class="mx-auto p-5">
-        <div [ngClass]="screenWidth <= 767 ? 'formatting-logo' : ''" [ngClass]="screenWidth >= 576 ? 'center-logo-tab' : ''">
-          <img src="../../../assets/img/RR Logo.svg" alt="Retro Rabbit Logo" class="retro-logo d-sm-block d-md-none d-lg-none">
+        <div class="container">
+          <div [ngClass]="screenWidth <= 767 ? 'formatting-logo' : ''" class="d-flex justify-content-center">
+            <img src="../../../assets/img/RR Logo.svg" alt="Retro Rabbit Logo" class="retro-logo d-sm-block d-md-none d-lg-none">
+          </div>
         </div>
         <h2 class="fw-normal fs-1 font-sans-serif" [ngClass]="screenWidth <= 767 ? 'formatting-form' : ''">Sign in</h2>
         <p class="text-primary fw-normal font-sans-serif lh-base d-none d-md-flex">Sign in with your Retro Rabbit email</p>
