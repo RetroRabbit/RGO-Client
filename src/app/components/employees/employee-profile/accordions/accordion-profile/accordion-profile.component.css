@@ -1,5 +1,3 @@
-:host(.disability-description){
-    .mat-mdc-text-field-wrapper{
-        min-height: 230px;
-    }
+:host .disability-description {
+    min-height: 230px;
 }
