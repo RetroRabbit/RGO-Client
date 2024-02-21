@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { EmployeeDocument } from "src/app/models/employeeDocument.interface";
 import { HttpClient } from '@angular/common/http';
-import { API } from '../../models/constants/urls.constants';
+import { environment } from '../../../enviroment/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +12,7 @@ export class EmployeeDocumentService {
     baseUrl: string;
     
     constructor(private httpClient: HttpClient) { 
-        this.baseUrl =`${API.HttpsBaseURL}/employee-documents`
+        this.baseUrl =`${environment.HttpsBaseURL}/employee-documents`
     }
 
     getAllEmployeeDocuments(employeeId: number): Observable<EmployeeDocument[]> {
