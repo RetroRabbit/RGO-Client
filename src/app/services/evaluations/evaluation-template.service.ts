@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { API } from '../../models/constants/urls.constants';
+import { environment } from '../../../enviroment/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class EvaluationTemplateService {
   baseUrl: string;
     
   constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${API.HttpsBaseURL}/evaluation-template`
+      this.baseUrl =`${environment.HttpsBaseURL}/evaluation-template`
   }
 
   save(template:string): Observable<any> {
