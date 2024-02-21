@@ -14,10 +14,16 @@ import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface
   providedIn: 'root'
 })
 export class EmployeeProfileService {
+  updateProfilePhoto(email: string | undefined, photo: string) {
+    throw new Error('Method not implemented.');
+  }
   email: string = '';
   token: string = '';
   cookieEmail = this.cookieService.get('userEmail');
-  constructor(private client: HttpClient, private appStore:Store<{app:Token}>, private employeeStore:Store<{employees:EmployeeState}>, private cookieService: CookieService) { }
+  constructor(private client: HttpClient, 
+              private appStore:Store<{app:Token}>, 
+              private employeeStore:Store<{employees:EmployeeState}>, 
+              private cookieService: CookieService) { }
 
   GetEmployeeProfile(): Observable<EmployeeProfile> {
     let result = this.client.get<EmployeeProfile>(`${environment.HttpsBaseURL}/employees`);
