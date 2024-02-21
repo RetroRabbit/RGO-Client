@@ -5,7 +5,7 @@
                 <mat-panel-title>
                     Main Bank Account
                 </mat-panel-title>
-                <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking?.status == 2">
+                <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking?.status == 2" class="pe-0 pe-md-5">
                     <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
@@ -119,24 +119,29 @@
                                     Proof of account
                                 </mat-label>
                                 <div class="my-2">
-                                    <div class="row">
+                                    <div [ngClass]="screenWidth <= 767 ?'':'row'">
                                         <div *ngIf="hasFile">
                                             <button mat-button color="primary"
                                                 [hidden]="employeeBanking.file.length == 0"
                                                 (click)="convertFileToBase64()">Download</button>
                                         </div>
-                                        <div class="col-5" [hidden]="!editBanking" class="row" id="uploadButton"
+                                        <div class="col-12 row d-flex justify-content-center align-content-center" [hidden]="!editBanking"
                                             (click)="openFileInput()">
-                                            <div class="col" *ngIf="bankingPDFName.length > 1">
-                                                <p id="recently-uploaded">{{bankingPDFName}}</p>
+                                            <div class="col-12 row ms-1" *ngIf="bankingPDFName.length > 1">
+                                                <div class="col-1 p-0" style="color: red;">
+                                                <img  id="pdf-icon" alt="pdf-icon" src="../../../../../../assets/img/pdf-icon.svg" >
+                                                </div>
+                                                <p class="col-11" id="recently-uploaded">{{bankingPDFName}}</p>
                                             </div>
-                                            <div class="col-1" style="color: blue" id="uploadfile">
-                                                <img src="../../../../assets/img/file_upload.svg" alt="">
-                                            </div>
-                                            <div class="col-5" id="uploadfile">
-                                                <h4>Upload document here</h4>
-                                                <input id="fileUpload" hidden type="file"
-                                                    (change)="onFileSelected($event)" accept=".pdf">
+                                            <div class="col-12 rounded-5 bg-light d-flex justify-content-center align-content-center align-items-center ms-4">
+                                                <div class="col-1" style="color: blue" id="uploadfile">
+                                                    <img src="../../../../assets/img/file_upload.svg" alt="">
+                                                </div>
+                                                <div class="col-auto" id="uploadfile">
+                                                    <h4 class="m-2">Upload document here</h4>
+                                                    <input id="fileUpload" hidden type="file"
+                                                        (change)="onFileSelected($event)" accept=".pdf">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

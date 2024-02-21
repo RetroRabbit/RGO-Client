@@ -362,3 +362,7 @@
 /* #svg-icon-w #icon-w {
     fill: white;
 } */
+
+#overall-progress-bar{
+    border-color: #0029C6;
+}
