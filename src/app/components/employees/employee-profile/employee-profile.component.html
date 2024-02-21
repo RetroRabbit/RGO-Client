@@ -97,9 +97,10 @@
                 </div>
               </div>
               <div class="col-9 my-2">
-                <div id="header-label">Client Allocated</div>
-                <div id="header-value" *ngIf="employeeClient !== undefined">
-                  {{employeeClient.name ?? 'Bench'}}
+                <div id="header-label" *ngIf="employeeClient !== undefined; else NoAllocation">Client Allocated</div>
+                <ng-template #NoAllocation>No Client Allocated</ng-template>
+                <div id="header-value">
+                  {{employeeClient ? employeeClient.name : 'On The Bench'}}
                 </div>
               </div>
             </div>
@@ -249,4 +250,3 @@
       </div>
     </div>
   </div>
- 
