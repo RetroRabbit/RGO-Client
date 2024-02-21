@@ -233,13 +233,13 @@ export class AccordionProfileComponent {
 
   checkEmployeeDetails() {
 
-    if(this.usingProfile)
+    if (this.usingProfile)
       this.checkEmployeeDetailsUsingEmployeeProfile()
     else
       this.checkEmployeeDetailsNotUsingEmployeeProfile()
   }
 
-  checkEmployeeDetailsUsingEmployeeProfile(){
+  checkEmployeeDetailsUsingEmployeeProfile() {
     this.foundTeamLead = this.employees.find((data: any) => {
       return data.id == this.employeeProfile!.employeeDetails.teamLead
     });
@@ -269,16 +269,16 @@ export class AccordionProfileComponent {
     }
   }
 
-  checkEmployeeDetailsNotUsingEmployeeProfile(){
-    if(this.employeeProfile.simpleEmployee.teamLeadId !== null){
+  checkEmployeeDetailsNotUsingEmployeeProfile() {
+    if (this.employeeProfile.simpleEmployee.teamLeadId !== null) {
       this.foundTeamLead = this.employeeProfile.simpleEmployee.teamLeadId;
       this.employeeDetailsForm.get('teamLead')?.setValue(this.employeeProfile.simpleEmployee.teamLeadName);
     }
-    if(this.employeeProfile.simpleEmployee.peopleChampionId !== null){
+    if (this.employeeProfile.simpleEmployee.peopleChampionId !== null) {
       this.employeeDetailsForm.get('peopleChampion')?.setValue(this.employeeProfile.simpleEmployee.peopleChampionName);
       this.peopleChampionId = this.employeeProfile.simpleEmployee.peopleChampionId as number;
     }
-    if(this.employeeProfile.simpleEmployee.clientAllocatedId !== null){
+    if (this.employeeProfile.simpleEmployee.clientAllocatedId !== null) {
       this.employeeDetailsForm.get('clientAllocated')?.setValue(this.employeeProfile.simpleEmployee.clientAllocatedName);
       this.clientId = this.employeeProfile.simpleEmployee.clientAllocatedId as number;
     }
@@ -291,8 +291,10 @@ export class AccordionProfileComponent {
       this.employeeType = this.employeeTypes.find((data: any) => {
         return data.name == employeeDetailsForm.employeeType
       });
+
       this.employeeProfileDto.name = employeeDetailsForm.name;
       this.employeeProfileDto.surname = employeeDetailsForm.surname;
+      this.employeeProfileDto.initials = employeeDetailsForm.initials;
       this.employeeProfileDto.clientAllocated = this.employeeDetailsForm.controls["clientAllocated"].value == "" ? null : this.clientId;
       this.employeeProfileDto.employeeType.id = this.employeeType !== null ? this.employeeType?.id : this.employeeProfile!.employeeDetails.employeeType!.id;
       this.employeeProfileDto.employeeType.name = this.employeeType !== null ? this.employeeType?.name : this.employeeProfile!.employeeDetails.employeeType!.name;
@@ -318,7 +320,6 @@ export class AccordionProfileComponent {
           this.editEmployee = false;
           this.employeeDetailsForm.disable();
         },
-        error: (error) => { this.snackBarService.showSnackbar(error.error, "snack-error") },
       });
     }
     else {
@@ -526,7 +527,7 @@ export class AccordionProfileComponent {
     }
     this.getEmployeeFieldCodes();
     this.initializeForm();
-    if(!this.authAccessService.isEmployee()){
+    if (!this.authAccessService.isEmployee()) {
 
       this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
         next: data => {
@@ -541,13 +542,13 @@ export class AccordionProfileComponent {
           if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
             this.getAllEmployees();
           }
-        this.getEmployeeFieldCodes();
-        this.initializeForm();
-      }, error: () => {
-        this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
-      }
-    })
-  }
+          this.getEmployeeFieldCodes();
+          this.initializeForm();
+        }, error: () => {
+          this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
+        }
+      })
+    }
   }
 
   getEmployeeData() {
