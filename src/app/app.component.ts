@@ -30,6 +30,8 @@ export class AppComponent {
     public hideNavService: HideNavService)
     {
     this.screenWidth = window.innerWidth;
+    console.log(process.env['AUTH0_CLIENT_ID']);
+    console.log(process.env['AUTH0_Domain_key']);
   }
 
   isAdmin(): boolean {
