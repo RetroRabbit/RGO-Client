@@ -1,24 +1,3 @@
-<div class="container mt-4">
-  <div class="w-75 py-3">
-    <button mat-button class="btn" id="back-button" (click)="goToEmployees()"
-      *ngIf="previousPage == '/employees' && showBackButtons">
-      <mat-icon>arrow_back</mat-icon>
-      <span>Back to Employees</span>
-    </button>
-    <button mat-button class="btn" id="back-button" (click)="goToDashboard()"
-      *ngIf="previousPage == '/dashboard'  &&  showBackButtons">
-      <mat-icon>arrow_back</mat-icon>
-      <span>Back to Dashboard</span>
-    </button>
-  </div>
-  <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
-        'background-color': '#D7DFFF',
-        'border': '2px solid #D7DFFF',
-        'border-radius': '2rem',
-        'height': '300px',
-        width: '100%',
-      }">
-  </ngx-skeleton-loader>
   <div class="container mt-4">
     <div class="w-75 py-3">
       <button mat-button class="btn" id="back-button" (click)="goToEmployees()"
@@ -270,4 +249,4 @@
       </div>
     </div>
   </div>
-  </div>
+ 
