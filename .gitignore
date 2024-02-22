@@ -45,3 +45,4 @@ Frontend/RGO-Frontend/.vscode/*
 # System files
 .DS_Store
 Thumbs.db
+.env
