@@ -133,7 +133,17 @@
                                                 </div>
                                                 <p class="col-11" id="recently-uploaded">{{bankingPDFName}}</p>
                                             </div>
-                                            <div class="col-12 rounded-5 bg-light d-flex justify-content-center align-content-center align-items-center ms-4">
+                                            <div *ngIf="!editBanking" class="col-12 rounded-5 bg-light d-flex justify-content-center align-content-center align-items-center ms-4">
+                                                <div class="col-1" style="color: blue" id="uploadfile">
+                                                    <img src="../../../../assets/img/file_upload.svg" alt="">
+                                                </div>
+                                                <div class="col-auto" id="uploadfile">
+                                                    <h4 class="m-2">Upload document here</h4>
+                                                    <input id="fileUpload" hidden type="file"
+                                                        (change)="onFileSelected($event)" accept=".pdf">
+                                                </div>
+                                            </div>
+                                            <div *ngIf="editBanking" style="background-color:#0029C6; color: white;" class="col-12 rounded-5 d-flex justify-content-center align-content-center align-items-center ms-4">
                                                 <div class="col-1" style="color: blue" id="uploadfile">
                                                     <img src="../../../../assets/img/file_upload.svg" alt="">
                                                 </div>
