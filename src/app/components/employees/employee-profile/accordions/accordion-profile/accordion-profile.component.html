@@ -479,9 +479,13 @@
                                 
                             </div>
                             <div class="col-12">
-                                <mat-checkbox (change)="toggleEqualFields()" [disabled]="!editAddress">Is
-                                    the postal address the same as physical address?</mat-checkbox>
-                            </div>
+                                <p-checkbox value="Postal address is the same as physical address" inputId="checkbox" (onChange)="toggleEqualFields()"
+                                [disabled]="!editAddress">
+                                    Is
+                                    the postal address the same as physical address?</p-checkbox>
+                                    <label class="ms-1" for="checkbox">Is the postal address the same as the physical
+                                        address?</label>
+                                    </div>
                         </div>
                         <div *ngIf="!physicalEqualPostal" class="row mt-4">
                             <div class="col-12 col-md-6">
