@@ -13,6 +13,7 @@ import { dataTypes } from 'src/app/models/constants/types.constants';
 import { Dialog } from 'src/app/models/confirm-modal.interface';
 import { SystemNav } from 'src/app/services/system-nav.service';
 import { HideNavService } from 'src/app/services/hide-nav.service';
+import { AuthAccessService } from 'src/app/services/auth-access.service';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -62,11 +63,17 @@ export class ManageFieldCodeComponent {
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
     private systemService: SystemNav,
-    private navService: HideNavService) {
-      navService.showNavbar = true;
+    private navService: HideNavService,
+    private authAccessService: AuthAccessService) {
+    navService.showNavbar = true;
   }
   ngOnInit(): void {
-    this.fetchData();
+    if (this.authAccessService.isAdmin() ||
+      this.authAccessService.isSuperAdmin() ||
+      this.authAccessService.isTalent() ||
+      this.authAccessService.isJourney()) {
+      this.fetchData();
+    }
   }
 
   fetchData(active: number = 0) {
@@ -257,8 +264,8 @@ export class ManageFieldCodeComponent {
   }
 
   set pageSize(size: number) {
-      this.paginator.pageSize = size;
-      this.dataSource._updateChangeSubscription();
+    this.paginator.pageSize = size;
+    this.dataSource._updateChangeSubscription();
   }
 
   get start(): number {
