@@ -53,8 +53,8 @@ export class ChartComponent implements OnInit {
   constructor(private chartService: ChartService, private cookieService: CookieService, public dialog: MatDialog, private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document, private employeeService: EmployeeService, private snackBarService: SnackbarService,
     navService: HideNavService) {
-      navService.showNavbar = true;
-     }
+    navService.showNavbar = true;
+  }
 
   public barChartOptions: ChartConfiguration['options'] = {
     events: [],
@@ -80,7 +80,7 @@ export class ChartComponent implements OnInit {
       legend: {
         display: true,
         position: 'bottom',
-        labels:{
+        labels: {
           font: {
             size: 14
           }
@@ -98,8 +98,8 @@ export class ChartComponent implements OnInit {
   public pieChartOptions: ChartConfiguration['options'] = {
     events: [],
     responsive: true,
-    layout:{
-      padding:{
+    layout: {
+      padding: {
         left: 20
       }
     },
@@ -107,7 +107,7 @@ export class ChartComponent implements OnInit {
       legend: {
         display: true,
         position: 'right',
-        labels:{
+        labels: {
           font: {
             size: 14
           }
@@ -120,7 +120,7 @@ export class ChartComponent implements OnInit {
       } as any,
     },
   };
- 
+
   getChartOptions(chartType: string) {
     return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
   }
@@ -165,8 +165,8 @@ export class ChartComponent implements OnInit {
       },
       error: error => {
         this.snackBarService.showSnackbar("Chart display unsuccessful", "snack-error");
-       }
-  });
+      }
+    });
   }
 
   getNumberOfEmployees(): void {
@@ -230,8 +230,10 @@ export class ChartComponent implements OnInit {
 
   deleteChart(selectedIndex: number): void {
     if (this.chartData[selectedIndex]) {
+      console.log("Delete Chart")
       this.chartService.deleteChart(this.chartData[selectedIndex].id).subscribe({
         next: () => {
+          console.log("Delete Chart")
           this.snackBarService.showSnackbar("Delete successful", "snack-success");
           this.resetPage();
           this.createAndDisplayChart();
@@ -251,15 +253,16 @@ export class ChartComponent implements OnInit {
             this.employeeNames[employee.id] = `${employee.name} ${employee.surname}`;
           }
         });
-  }, error: (error) => {
+      }, error: (error) => {
 
-    this.snackBarService.showSnackbar("Failed to fetch people champion", "snack-error");
+        this.snackBarService.showSnackbar("Failed to fetch people champion", "snack-error");
 
       }, complete: () => {
         this.createAndDisplayChart();
       },
 
-});}
+    });
+  }
 
   getEmployeeName(employeeId: string | undefined): string {
 
