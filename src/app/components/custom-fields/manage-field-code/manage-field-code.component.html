@@ -18,7 +18,7 @@
       Active ({{activeFieldsSearch == 0 ? activeFields : activeFieldsSearch}})
     </div>
     <div id="tab" (click)="changeTab(-1)" [ngClass]="activeTab == -1 ? 'activeTab' : ''">
-      Archived ({{archiveFieldsSearch ==0 ? passiveFields : archiveFieldsSearch}})
+      Archived ({{archiveFieldsSearch == 0 ? passiveFields : archiveFieldsSearch}})
     </div>
   </div>
   <hr class="m-0 p-0">
@@ -47,7 +47,7 @@
             <ng-container matColumnDef="id">
               <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
               <mat-cell *matCellDef="let element">
-                <p-checkbox label="{{element.id}}" name="selected-row" value="{{element.id}}" [(ngModel)]="element.isSelected" (onChange)="onRowSelect(element)"></p-checkbox>
+                <p-checkbox label="{{element.id}}" name="selected-row" value="{{element.id}}" [(ngModel)]="element.isSelected" (onChange)="onRowSelect(element,$event)"></p-checkbox>
               </mat-cell>
             </ng-container>
 
