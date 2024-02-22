@@ -121,6 +121,7 @@ input[type="number"] {
     width: 481px;
     height: 40px;
     min-width: 360px;
+    margin-top: 20px;
     align-items: center;
     flex-shrink: 0;
     border-radius: 28px;

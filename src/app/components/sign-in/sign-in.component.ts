@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { GetLogin } from '../../store/actions/login-in.actions';
@@ -26,17 +26,26 @@ export class SignInComponent {
     private router: Router,
     private cookieService: CookieService,
     public hideNavService: HideNavService,
-    private authAccessService: AuthAccessService
+    private authAccessService: AuthAccessService,
+    private NgZone: NgZone
   ) {}
 
   ngOnInit() {
     this.token = this.cookieService.get('userToken');
     this.userEmail = this.cookieService.get('userEmail');
   }
-  screenWidth: number = 993;
+
+  screenWidth: number = window.innerWidth;
   @HostListener('window:resize', ['$event'])
 
   onResize() {
+    this.NgZone.run(() => {
+      this.screenWidth = window.innerWidth;
+      this.checkIfMobile();
+    });
+  }
+
+  private checkIfMobile() {
     this.screenWidth = window.innerWidth;
   }
 
