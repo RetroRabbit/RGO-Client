@@ -121,6 +121,7 @@ input[type="number"] {
     width: 481px;
     height: 40px;
     min-width: 360px;
+    margin-top: 20px;
     align-items: center;
     flex-shrink: 0;
     border-radius: 28px;
@@ -169,14 +170,18 @@ input[type="number"] {
 }
 
 #add-employee-button {
-    gap: 8px;
-    padding: 10px 16px;
-    background: var(--primary-color);
-    align-self: flex-end;
-    width: 224px;
-    height: 40px;
-    max-width: 53%;
+    background: #0029c6;
     border: none;
+    border-radius: 4rem;
+    color: white;
+    margin: 0px auto;
+    width: 12rem;
+    margin-right: 2rem;
+    padding: 0.5rem;
+    right: 0px;
+    position: absolute;
+    margin-top: 1.5rem!important;
+    margin-bottom: 1.5rem!important;
 }
 
 .add-employee-span {
