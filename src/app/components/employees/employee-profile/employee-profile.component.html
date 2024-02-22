@@ -20,12 +20,12 @@
       }">
     </ngx-skeleton-loader>
     <div id="profile-header" *ngIf="!isLoading" class="row p-2 m-2 p-md-4 m-md-0">
-        <div class="col-4 ms-2 mt-3 col-md-3 ms-md-0 mt-md-0">
+        <div class="col-4 ms-2 mt-3 col-md-3 ms-md-0 mt-md-0 col-lg-2">
             <div id="profile-image">
                 <img [src]="usingSimpleProfile ? simpleEmployee.photo : employeeProfile.photo" alt="">
             </div>
         </div>
-        <div class="col-7 mt-4 col-md-9 mt-md-0">
+        <div class="col-7 mt-4 col-md-9 mt-md-0 col-lg-10">
             <div class="row mt-3 mt-md-0 mt-lg-3">
                 <div class="col-12 text-center col-md-6 text-md-start" id="header-name">
                     <h1 class="mb-0">{{usingSimpleProfile ? simpleEmployee.name :employeeProfile.name}}
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 my-4 col-md-9 mb-md-0 offset-md-3">
+        <div class="col-12 my-4 col-md-9 mb-md-0 offset-md-3 col-lg-10 offset-lg-2">
             <div class="row" id="quick-info">
                 <div class="col-12 mb-2 col-md-6 col-lg-3">
                     <div class="row">
