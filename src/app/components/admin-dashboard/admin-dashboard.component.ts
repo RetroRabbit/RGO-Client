@@ -32,7 +32,7 @@ export class AdminDashboardComponent {
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() expandSearch = new EventEmitter<string>();
 
-  screenWidth= window.innerWidth;
+  screenWidth = window.innerWidth;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
@@ -59,6 +59,7 @@ export class AdminDashboardComponent {
   searchResults: EmployeeProfile[] = [];
   employeeProfiles: EmployeeProfile[] = [];
   allFlag: boolean = false;
+  isLoading: boolean = true;
 
   PREVIOUS_PAGE: string = 'previousPage';
 
@@ -87,8 +88,7 @@ export class AdminDashboardComponent {
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
     private hideNavService: HideNavService,
-    public authAccessService: AuthAccessService
-  ) {
+    public authAccessService: AuthAccessService) {
     hideNavService.showNavbar = true;
   }
 
@@ -96,7 +96,12 @@ export class AdminDashboardComponent {
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
-    this.configureDashboardData();
+    if (this.authAccessService.isAdmin() ||
+      this.authAccessService.isSuperAdmin() ||
+      this.authAccessService.isTalent() ||
+      this.authAccessService.isJourney()) {
+      this.configureDashboardData();
+    }
   }
 
   configureDashboardData() {
@@ -116,6 +121,7 @@ export class AdminDashboardComponent {
   }
 
   getDataCardsData() {
+    this.isLoading = false;
     this.employeeService.getTotalEmployees().subscribe({
       next: (data: number) => {
         this.totalNumberOfEmployees = data;
