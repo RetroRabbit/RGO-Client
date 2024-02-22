@@ -230,10 +230,8 @@ export class ChartComponent implements OnInit {
 
   deleteChart(selectedIndex: number): void {
     if (this.chartData[selectedIndex]) {
-      console.log("Delete Chart")
       this.chartService.deleteChart(this.chartData[selectedIndex].id).subscribe({
         next: () => {
-          console.log("Delete Chart")
           this.snackBarService.showSnackbar("Delete successful", "snack-success");
           this.resetPage();
           this.createAndDisplayChart();
