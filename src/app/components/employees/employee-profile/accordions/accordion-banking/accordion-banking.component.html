@@ -128,14 +128,14 @@
                                         <div class="col-12 row d-flex justify-content-center align-content-center" [hidden]="!editBanking"
                                             (click)="openFileInput()">
                                             <div class="col-12 row ms-1" *ngIf="bankingPDFName.length > 1">
-                                                <div class="col-1 p-0" style="color: red;">
+                                                <div class="col-1 p-0">
                                                 <img  id="pdf-icon" alt="pdf-icon" src="../../../../../../assets/img/pdf-icon.svg" >
                                                 </div>
                                                 <p class="col-11" id="recently-uploaded">{{bankingPDFName}}</p>
                                             </div>
                                             <div *ngIf="!editBanking" class="col-12 rounded-5 bg-light d-flex justify-content-center align-content-center align-items-center ms-4">
-                                                <div class="col-1" style="color: blue" id="uploadfile">
-                                                    <img src="../../../../assets/img/file_upload.svg" alt="">
+                                                <div class="col-1" id="uploadfile">
+                                                    <img src="../../../../assets/img/file_upload_grey.svg" alt="">
                                                 </div>
                                                 <div class="col-auto" id="uploadfile">
                                                     <h4 class="m-2">Upload document here</h4>
@@ -143,12 +143,12 @@
                                                         (change)="onFileSelected($event)" accept=".pdf">
                                                 </div>
                                             </div>
-                                            <div *ngIf="editBanking" style="background-color:#0029C6; color: white;" class="col-12 rounded-5 d-flex justify-content-center align-content-center align-items-center ms-4">
-                                                <div class="col-1" style="color: blue" id="uploadfile">
+                                            <div *ngIf="editBanking" style="background-color:#D7DFFF;" class="col-12 rounded-5 d-flex justify-content-center align-content-center align-items-center ms-4">
+                                                <div class="col-1" id="uploadfile">
                                                     <img src="../../../../assets/img/file_upload.svg" alt="">
                                                 </div>
                                                 <div class="col-auto" id="uploadfile">
-                                                    <h4 class="m-2">Upload document here</h4>
+                                                    <h4 class="m-2" style="color: #0029C6;">Upload document here</h4>
                                                     <input id="fileUpload" hidden type="file"
                                                         (change)="onFileSelected($event)" accept=".pdf">
                                                 </div>

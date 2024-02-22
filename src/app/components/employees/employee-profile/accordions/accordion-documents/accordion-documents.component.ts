@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { Document } from 'src/app/models/constants/documents.contants';
@@ -19,6 +19,13 @@ import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface
 export class AccordionDocumentsComponent {
   @Output() updateDocument = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
+
+  screenWidth = window.innerWidth;
+  
+  @HostListener('window:resize',['$event'])
+  onResize(){
+    this.screenWidth = window.innerWidth;
+  }
 
   selectedEmployee!: EmployeeProfile;
   fileCategories = Document;
