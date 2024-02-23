@@ -67,3 +67,7 @@
     padding: 0.5rem;
     width: 8rem;
 }
+
+:host .upload-download-button {
+    width: 100%!important;
+}

@@ -9,3 +9,8 @@
 #uploadfile:hover {
     cursor: pointer;
 }
+
+#pdf-icon{
+    width: 14px;
+    height: 18px;
+}
