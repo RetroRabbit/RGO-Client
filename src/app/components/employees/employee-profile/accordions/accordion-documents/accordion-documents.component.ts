@@ -246,9 +246,12 @@ export class AccordionDocumentsComponent {
 
   disableDownload(index : number){
     const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
-    if(documentObject?.status == 2 || documentObject?.status == 3){
+
+    if(documentObject == undefined)
       return false;
-    }
+
+    if(documentObject?.status == 0 || documentObject?.status == 1)
+      return false;
     return true;
   }
 }

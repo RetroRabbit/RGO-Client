@@ -19,36 +19,50 @@
             width: '100%',
           }">
     </ngx-skeleton-loader>
-    <div id="profile-header" *ngIf="!isLoading" class="row p-2">
-        <div class="col-2 mt-4">
-          <div id="profile-image">
-            <img (click)="uploadFile.click()" [src]="employeeProfile.photo" alt="Profile img">
-            <input type="file" #uploadFile (change)="onFileChange($event)" hidden>
-          </div>
+    <div id="profile-header" *ngIf="!isLoading" class="row p-2 m-1">
+        <div class="col-4 col-md-2 mt-4">
+            <div id="profile-image">
+                <img (click)="uploadFile.click()" [src]="employeeProfile.photo" alt="Profile img">
+                <input type="file" #uploadFile (change)="onFileChange($event)" hidden>
+            </div>
         </div>
-        <div class="col-md-8 offset-md-2 offset-lg-0 col-lg-10 mt-4">
+        <div class="col-8 col-md-10 offset-lg-0 col-lg-10 mt-3">
             <div class="row mt-3">
-                <div class="col-6 col-md-8" id="header-name">
-                    <h1>{{usingSimpleProfile ? simpleEmployee.name :employeeProfile.name}} {{usingSimpleProfile ? simpleEmployee.surname : employeeProfile.surname}}</h1>
+                <div class="col-12 col-md-6" id="header-name">
+                    <h1 class="mb-0">{{usingSimpleProfile ? simpleEmployee.name :employeeProfile.name}}
+                        {{usingSimpleProfile ?
+                        simpleEmployee.surname : employeeProfile.surname}}</h1>
                 </div>
-                <div class="col-6 col-md-4" id="header-email">
-                    <div class="row me-4">
-                        <div class="col-auto">{{usingSimpleProfile ? simpleEmployee.email : employeeProfile.email}}</div>
+                <div class="col-12 col-md-6 mt-md-1" id="header-email">
+                    <div class="row me-4 d-flex justify-content-start d-md-flex justify-content-md-end">
+                        <div class="col-auto">{{usingSimpleProfile ? simpleEmployee.email : employeeProfile.email}}
+                        </div>
                         <div class="col-1 mt-2" id="header-email-clip"><mat-icon>attachment</mat-icon></div>
                     </div>
                 </div>
-                <div class="col-12 my-2" id="header-role">
-                    {{usingSimpleProfile ? simpleEmployee.employeeType?.name :employeeProfile.employeeType?.name}} | Level {{usingSimpleProfile ? simpleEmployee.level :employeeProfile.level}}
+                <div class="col-12 my-2 d-none d-md-block" id="header-role">
+                    {{usingSimpleProfile ? simpleEmployee.employeeType?.name :employeeProfile.employeeType?.name}} |
+                    Level {{usingSimpleProfile ? simpleEmployee.level :employeeProfile.level}}
                 </div>
-                <div class="col-12 my-2" id="header-based"
+                <div class="col-12 my-2 d-none d-md-block" id="header-based"
                     *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">
                     Based in {{employeePhysicalAddress.city}}
                 </div>
             </div>
         </div>
-        <div class="col-12 col-lg-10 offset-lg-2 my-4">
+        <div class=" d-block d-md-none d-flex justify-content-center mt-2">
+            <div class="col-auto" id="header-role">
+                {{usingSimpleProfile ? simpleEmployee.employeeType?.name :employeeProfile.employeeType?.name}} | Level
+                {{usingSimpleProfile ? simpleEmployee.level :employeeProfile.level}}
+            </div>
+            <div class="col-auto" id="header-based"
+                *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">
+                Based in {{employeePhysicalAddress.city}}
+            </div>
+        </div>
+        <div class="col-12 col-md-10 offset-md-2 my-2">
             <div class="row" id="quick-info">
-                <div class="col-3 mb-md-2">
+                <div class="col-12 col-md-6 col-lg-3 mb-2">
                     <div class="row">
                         <div class="col-3" id="outer-icon-container">
                             <div id="icon-container">
@@ -58,7 +72,8 @@
                         <div class="col-9 my-2">
                             <div id="header-label">Team Lead</div>
                             <div id="header-value" *ngIf="!usingSimpleProfile;else NonAdminTeamLead">
-                                {{employeeTeamLead ? employeeTeamLead.name + ' ' + employeeTeamLead.surname : 'Not assigned'}}
+                                {{employeeTeamLead ? employeeTeamLead.name + ' ' + employeeTeamLead.surname : 'Not
+                                assigned'}}
                             </div>
                             <ng-template #NonAdminTeamLead>
                                 {{simpleEmployee.teamLeadId ? simpleEmployee.teamLeadName : 'Not assigned'}}
@@ -66,7 +81,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3 mb-md-2">
+                <div class="col-12 col-md-6 col-lg-3 mb-2">
                     <div class="row">
                         <div class="col-3" id="outer-icon-container">
                             <div id="icon-container">
@@ -76,7 +91,8 @@
                         <div class="col-9 my-2">
                             <div id="header-label">People Champion</div>
                             <div id="header-value" *ngIf="!usingSimpleProfile;else NonAdminPeopleChampion">
-                                {{employeePeopleChampion ? employeePeopleChampion.name + ' ' + employeePeopleChampion.surname: 'Not assigned'}}
+                                {{employeePeopleChampion ? employeePeopleChampion.name + ' ' +
+                                employeePeopleChampion.surname: 'Not assigned'}}
                             </div>
                             <ng-template #NonAdminPeopleChampion>
                                 {{simpleEmployee.peopleChampionName}}
@@ -84,7 +100,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3 mb-md-2">
+                <div class="col-12 col-md-6 col-lg-3 mb-2">
                     <div class="row">
                         <div class="col-3" id="outer-icon-container">
                             <div id="icon-container">
@@ -99,7 +115,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3 mb-md-2">
+                <div class="col-12 col-md-6 col-lg-3">
                     <div class="row">
                         <div class="col-3" id="outer-icon-container">
                             <div id="icon-container">
@@ -144,7 +160,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-9 offset-2 offset-md-0 mt-md-2">
+        <div class="col offset-2 offset-md-0 mt-md-2">
             <div class="row">
                 <div class="col-12">
                     <h3 id="progress-require-message">Add all required information to complete profile</h3>
@@ -157,12 +173,12 @@
                     style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Profile Details {{ profileFormProgress }}%</h5>
                 </div>
-                <div class="col-1 border" id="horizontal"></div>
-                <div class="col-2 py-3 col-md-3" id="progress-stats"
+                <div class="col border" id="horizontal"></div>
+                <div class="col-2 py-3 col-md-4 col-lg-3" id="progress-stats"
                     style="background-color: {{ bankInformationProgress === 100 && bankStatus == 0 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 && bankStatus == 0 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 && bankStatus == 0 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Bank Information {{bankInformationProgress}}%</h5>
                 </div>
-                <div class="col-1 border" id="horizontal"></div>
+                <div class="col border" id="horizontal"></div>
                 <div class="col-2 py-3 col-md-3" id="progress-stats"
                     style="background-color: {{ documentFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ documentFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ documentFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
                     <h5>Documents {{documentFormProgress}}%</h5>
@@ -176,9 +192,9 @@
                         {{overallFormProgress}}% Overall Completed
                     </h4>
                 </div>
-                <div class="col-12 mb-2 col-md-8 mt-md-3 col-lg-9" id="progress-container">
-                    <mat-progress-bar mode="determinate" [value]=overallFormProgress
-                        id="overall-progress-bar" style="border: blue;"></mat-progress-bar>
+                <div class="col-12 mb-2 col-md-8 mt-md-3 col-lg p-0" id="progress-container">
+                    <mat-progress-bar mode="determinate" [value]=overallFormProgress id="overall-progress-bar"
+                        style="border: blue;"></mat-progress-bar>
                 </div>
             </div>
         </div>
@@ -200,7 +216,7 @@
                 </div>
                 <div class="col-2 d-flex justify-content-center">
                     <div id="line"></div>
-                  </div>
+                </div>
                 <div class="row ms-0 col-12">
                     <div class="col-2 d-flex justify-content-center">
                         <div id="outer-icon-container">
@@ -217,7 +233,7 @@
                 </div>
                 <div class="col-2 d-flex justify-content-center">
                     <div id="line"></div>
-                  </div>
+                </div>
                 <div class="row ms-0 col-12">
                     <div class="col-2 d-flex justify-content-center">
                         <div id="outer-icon-container">
@@ -232,7 +248,7 @@
                         <h5 class="col-2">{{documentFormProgress}}%</h5>
                     </div>
                 </div>
-         </div>
+            </div>
         </div>
     </div>
 
@@ -244,7 +260,8 @@
         width: '100%',
       }" />
     <div id="profile-accordions" *ngIf="!isLoading">
-        <div id="accordions-nav" [ngClass]="screenWidth <= 767 ?'col-12 ms-0 d-flex overflow-x-scroll rounded-3':'row col-12 ms-0 rounded-3'" >
+        <div id="accordions-nav"
+            [ngClass]="screenWidth <= 767 ?'col-12 ms-0 d-flex overflow-x-scroll rounded-3':'row col-12 ms-0 rounded-3'">
             <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-4'">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
