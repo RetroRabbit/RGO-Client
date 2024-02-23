@@ -1,32 +1,38 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { API } from '../../models/constants/urls.constants';
+import { environment } from '../../../enviroment/environment';
 import { EmployeeProfile } from '../../models/employee-profile.interface';
 import { Token } from '../../models/token.interface';
 import { Store } from '@ngrx/store';
 import { EmployeeState } from '../../store/reducers/employee.reducer';
 import { CookieService } from 'ngx-cookie-service';
 import { map } from 'rxjs';
+import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeProfileService {
+  updateProfilePhoto(email: string | undefined, photo: string) {
+    throw new Error('Method not implemented.');
+  }
   email: string = '';
   token: string = '';
   cookieEmail = this.cookieService.get('userEmail');
-  constructor(private client: HttpClient, private appStore:Store<{app:Token}>, private employeeStore:Store<{employees:EmployeeState}>, private cookieService: CookieService) { }
+  constructor(private client: HttpClient, 
+              private appStore:Store<{app:Token}>, 
+              private employeeStore:Store<{employees:EmployeeState}>, 
+              private cookieService: CookieService) { }
 
   GetEmployeeProfile(): Observable<EmployeeProfile> {
-    let result = this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/get`);
-    console.log(result)
+    let result = this.client.get<EmployeeProfile>(`${environment.HttpsBaseURL}/employees`);
     return result;
   }
 
   GetEmployeeProfileByEmail(email: string): Observable<EmployeeProfile> {
     const queryParams = `?email=${email}`;
-    return this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/get${queryParams}`);
+    return this.client.get<EmployeeProfile>(`${environment.HttpsBaseURL}/employees/by-email${queryParams}`);
   }
 
 
@@ -46,17 +52,22 @@ export class EmployeeProfileService {
 
   UpdateEmployeeProfile(profileUpdate: any): Observable<any> {
     return this.client.put<any>(
-      `${API.HttpsBaseURL}/employee/update?email=${profileUpdate.updatedProfile.email}`, profileUpdate.updatedProfile
+      `${environment.HttpsBaseURL}/employees?email=${profileUpdate.updatedProfile.email}`, profileUpdate.updatedProfile
     );
   }
 
   searchEmployees(name: string): Observable<EmployeeProfile[]> {
     const queryParams = `?name=${name}`;
-    return this.client.get<EmployeeProfile[]>(`${API.HttpsBaseURL}/employee/search${queryParams}`);
+    return this.client.get<EmployeeProfile[]>(`${environment.HttpsBaseURL}/employees${queryParams}`);
   }
 
   getEmployeeById(id: number): Observable<EmployeeProfile> {
     const queryParams = `?id=${id}`;
-    return this.client.get<EmployeeProfile>(`${API.HttpsBaseURL}/employee/id${queryParams}`);
+    return this.client.get<EmployeeProfile>(`${environment.HttpsBaseURL}/employees${queryParams}`);
+  }
+
+  getSimpleEmployee(employeeEmail : string): Observable<SimpleEmployee> {
+    const queryParams = `?employeeEmail=${employeeEmail}`;
+    return this.client.get<SimpleEmployee>(`${environment.HttpsBaseURL}/employees/simple-profile/${queryParams}`);
   }
 }

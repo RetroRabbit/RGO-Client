@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
 import { Chart } from 'src/app/models/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
@@ -13,7 +13,7 @@ import { DOCUMENT } from '@angular/common';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { HideNavService } from 'src/app/services/hide-nav.service';
-
+import { EmployeeType } from 'src/app/models/constants/employeeTypes.constants';
 
 @Component({
   selector: 'app-chart',
@@ -40,15 +40,21 @@ export class ChartComponent implements OnInit {
   coloursArray: string[] = colours;
   chartCanvasArray: any[] = [];
 
+  screenWidth: number = 767;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+  }
+
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
 
   selectedChartIndex: number = -1;
   constructor(private chartService: ChartService, private cookieService: CookieService, public dialog: MatDialog, private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document, private employeeProfile: EmployeeService, private snackBarService: SnackbarService,
+    @Inject(DOCUMENT) private document: Document, private employeeService: EmployeeService, private snackBarService: SnackbarService,
     navService: HideNavService) {
-      navService.showNavbar = true;
-     }
+    navService.showNavbar = true;
+  }
 
   public barChartOptions: ChartConfiguration['options'] = {
     events: [],
@@ -63,7 +69,7 @@ export class ChartComponent implements OnInit {
           color: '#black',
           font: {
             family: 'Roboto',
-            size: 20,
+            size: 14,
             style: 'normal',
             lineHeight: 1.2
           },
@@ -74,9 +80,9 @@ export class ChartComponent implements OnInit {
       legend: {
         display: true,
         position: 'bottom',
-        labels:{
+        labels: {
           font: {
-            size: 16
+            size: 14
           }
         }
       },
@@ -92,8 +98,8 @@ export class ChartComponent implements OnInit {
   public pieChartOptions: ChartConfiguration['options'] = {
     events: [],
     responsive: true,
-    layout:{
-      padding:{
+    layout: {
+      padding: {
         left: 20
       }
     },
@@ -101,9 +107,9 @@ export class ChartComponent implements OnInit {
       legend: {
         display: true,
         position: 'right',
-        labels:{
+        labels: {
           font: {
-            size: 16
+            size: 14
           }
         }
       },
@@ -114,6 +120,10 @@ export class ChartComponent implements OnInit {
       } as any,
     },
   };
+
+  getChartOptions(chartType: string) {
+    return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
+  }
 
   resetPage() {
     this.displayChart = false
@@ -155,12 +165,12 @@ export class ChartComponent implements OnInit {
       },
       error: error => {
         this.snackBarService.showSnackbar("Chart display unsuccessful", "snack-error");
-       }
-  });
+      }
+    });
   }
 
   getNumberOfEmployees(): void {
-    this.chartService.getTotalEmployees().subscribe({
+    this.employeeService.getTotalEmployees().subscribe({
       next: data => {
         this.numberOfEmployees = data;
       }
@@ -234,22 +244,23 @@ export class ChartComponent implements OnInit {
   }
 
   fetchPeopleChampionEmployees() {
-    this.employeeProfile.filterEmployeesByType("People Champion").subscribe({
+    this.employeeService.filterEmployees(0, EmployeeType.PeopleChampion).subscribe({
       next: (employees: EmployeeProfile[]) => {
         employees.forEach((employee) => {
           if (employee.id) {
             this.employeeNames[employee.id] = `${employee.name} ${employee.surname}`;
           }
         });
-  }, error: (error) => {
+      }, error: (error) => {
 
-    this.snackBarService.showSnackbar("Failed to fetch people champion", "snack-error");
+        this.snackBarService.showSnackbar("Failed to fetch people champion", "snack-error");
 
       }, complete: () => {
         this.createAndDisplayChart();
       },
 
-});}
+    });
+  }
 
   getEmployeeName(employeeId: string | undefined): string {
 

@@ -2,28 +2,32 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { EmployeeDocument } from "src/app/models/employeeDocument.interface";
 import { HttpClient } from '@angular/common/http';
-import { API } from '../../models/constants/urls.constants';
+import { environment } from '../../../enviroment/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class EmployeeDocumentService {
-    constructor(private httpClient: HttpClient) { }
+    baseUrl: string;
+    
+    constructor(private httpClient: HttpClient) { 
+        this.baseUrl =`${environment.HttpsBaseURL}/employee-documents`
+    }
 
     getAllEmployeeDocuments(employeeId: number): Observable<EmployeeDocument[]> {
-        return this.httpClient.get<EmployeeDocument[]>(`${API.HttpsBaseURL}/employeedocument/all/?employeeId= ${employeeId}`);
+        return this.httpClient.get<EmployeeDocument[]>(`${this.baseUrl}/${employeeId}`);
     }
     saveEmployeeDocument(employeeDocument: any): Observable<EmployeeDocument> {
-        return this.httpClient.post<EmployeeDocument>(`${API.HttpsBaseURL}/employeedocument/save`, employeeDocument);
+        return this.httpClient.post<EmployeeDocument>(`${this.baseUrl}`, employeeDocument);
     }
     getEmployeeDocument(employeeId: number, filename: string): Observable<EmployeeDocument> {
-        return this.httpClient.get<EmployeeDocument>(`${API.HttpsBaseURL}/employeedocument/get/${employeeId}/${filename}`);
+        return this.httpClient.get<EmployeeDocument>(`${this.baseUrl}?employeeId=${employeeId}?filename=${filename}`);
     }
     updateEmployeeDocument(employeeDocument: EmployeeDocument): Observable<EmployeeDocument> {
-        return this.httpClient.put<EmployeeDocument>(`${API.HttpsBaseURL}/employeedocument/update`, employeeDocument);
+        return this.httpClient.put<EmployeeDocument>(`${this.baseUrl}`, employeeDocument);
     }
-    deleteEmployeeDocument(employeeDocument: EmployeeDocument): Observable<void> {
-        return this.httpClient.delete<void>(`${API.HttpsBaseURL}/employeedocument/delete/${employeeDocument.id}`);
+    deleteEmployeeDocument(employeeDocumentId: number): Observable<EmployeeDocument> {
+        return this.httpClient.delete<EmployeeDocument>(`${this.baseUrl}/${employeeDocumentId}`);
     }
 };

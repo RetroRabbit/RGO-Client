@@ -44,7 +44,7 @@
         </div>
         <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" >
           <div class="row">
-            <div class="col-2" *ngIf="isAdmin() || isTalent()">
+            <div class="col-2" *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
               <div id="nav-item-container" class="col-auto">
                 <div id="nav-item">
                   <div (click)="changeNav('/dashboard')"  [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
@@ -70,7 +70,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-2" *ngIf="isAdmin() || isTalent()">
+            <div class="col-2" *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="changeNav('/employees')" [ngClass]="router.url == '/employees' ? 'active' : 'idle'">
@@ -83,7 +83,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3" *ngIf="isAdmin()">
+            <div class="col-3" *ngIf="authAccessService.isAdmin()">
               <div id="nav-item-container">
                 <div id="nav-item">
                   <div (click)="changeNav('/system-settings')" [ngClass]="router.url == '/system-settings' ? 'active' : 'idle'">
@@ -109,14 +109,23 @@
           <mat-menu #menu="matMenu">
             <button mat-menu-item id="menu-info" *ngIf="screenWidth < 993">
               <div id="menu-image-container">
-                <img *ngIf="profileImage !== '';else NoProfile" [src]="profileImage!" alt="">
-                <ng-template #NoProfile>
-                  <img src="../../../assets/img/profile.png" alt="Employee Profile Photo">
+                <ngx-skeleton-loader *ngIf="isLoading; else ProfileImage" appearance="circle"></ngx-skeleton-loader>
+                <ng-template #ProfileImage>
+                  <img *ngIf="profileImage !== '';else NoProfile" [src]="profileImage!" alt="">
+                  <ng-template #NoProfile>
+                    <img src="../../../assets/img/profile.png" alt="Employee Profile Photo">
+                  </ng-template>
                 </ng-template>
               </div>
               <div id="menu-quick-info">
-                <div>{{employeeProfile?.name }}</div>
-                <div>{{employeeType?.name}}</div>
+                <ngx-skeleton-loader *ngIf="isLoading; else ProfileName" appearance="line"></ngx-skeleton-loader>
+                  <ng-template #ProfileName>
+                    <div>{{employeeProfile?.name }}</div>
+                  </ng-template>
+                <ngx-skeleton-loader *ngIf="isLoading; else ProfileType" appearance="line"></ngx-skeleton-loader>
+                  <ng-template #ProfileType>
+                    <div>{{employeeType?.name}}</div>
+                  </ng-template>
               </div>
               <hr>
             </button>
@@ -124,15 +133,29 @@
             <button mat-menu-item (click)="logout()">Logout</button>
           </mat-menu>
         </div>
-        <div class="col-auto ms-4" id="employee-info">
-          <div>{{employeeProfile?.name + ' ' + employeeProfile?.surname}}</div>
-          <div>{{employeeType?.name}}</div>
+        <div class="col-auto ms-4" id="employee-info" style="height: 18px; width: 140px;">
+          <div *ngIf="isLoading; else ProfileNameSurname" style="height: 18px; width: 140px;">
+            <ngx-skeleton-loader appearance="line" count="1" [theme]="{color: '#E0E0E0', borderRadius: '4px'}"></ngx-skeleton-loader>
+          </div>
+          <ng-template #ProfileNameSurname>
+            <div>{{employeeProfile?.name + ' ' + employeeProfile?.surname}}</div>
+          </ng-template>
+        
+          <div *ngIf="isLoading; else ProfileType">
+            <ngx-skeleton-loader appearance="line" count="1" [theme]="{color: '#E0E0E0', borderRadius: '4px'}"></ngx-skeleton-loader>
+          </div>
+          <ng-template #ProfileType>
+            <div>{{employeeType?.name}}</div>
+          </ng-template>
         </div>
         <div class="col-auto" id="employee-photo">
           <div id="image-container">
-            <img *ngIf="profileImage !== '';else NoProfile" [src]="profileImage" alt="">
-            <ng-template #NoProfile>
-              <img src="../../../assets/img/profile.png" alt="Employee Profile Photo">
+            <ngx-skeleton-loader *ngIf="isLoading; else ProfileImage" appearance="circle" count="1" animation="pulse" [theme]="{color: '#E0E0E0'}"></ngx-skeleton-loader>
+            <ng-template #ProfileImage>
+              <img *ngIf="profileImage !== '';else NoProfile" [src]="profileImage" alt="">
+              <ng-template #NoProfile>
+                <img src="../../../assets/img/profile.png" alt="Employee Profile Photo">
+              </ng-template>
             </ng-template>
           </div>
         </div>

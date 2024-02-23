@@ -41,13 +41,12 @@ export class UpdateFieldComponent {
   PREVIOUS_PAGE = "previousPage";
   constructor(public router: Router,
     private fieldCodeService: FieldCodeService,
-    private fb: FormBuilder, 
-    private snackBarService: SnackbarService, 
+    private fb: FormBuilder,
+    private snackBarService: SnackbarService,
     public cookieService: CookieService,
     public hideNavService: HideNavService,
     private systemService: SystemNav) {
       this.selectedFieldCode = systemService.selectedField;
-      console.log(this.selectedFieldCode);
   }
 
   ngOnInit() {
@@ -68,7 +67,7 @@ export class UpdateFieldComponent {
     this.hideNavService.showNavbar = true;
     this.hideNavService.showSystemNavbar = true;
   }
-  
+
   private initializeForm() {
     this.selectedType = this.selectedFieldCode?.type;
     const optionsControls = this.selectedFieldCode?.options?.map(option => this.fb.control(option.option)) || [];
@@ -86,11 +85,11 @@ export class UpdateFieldComponent {
       category: [this.selectedFieldCode?.category, Validators.required]
     });
   }
-  
+
 
   get options(): FormArray {
     return this.newFieldCodeForm.get('options') as FormArray;
-  } 
+  }
 
   addOption() {
     this.options.push(this.fb.control(''));
@@ -133,6 +132,7 @@ export class UpdateFieldComponent {
         internalTable: formValues['internalTable'],
         options: formValues['type'] == 4 ?  updatedOptions: [],
         category: formValues['category'],
+        required: formValues['required']
       }
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
         next: (data) => {

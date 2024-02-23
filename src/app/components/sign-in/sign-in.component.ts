@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { GetLogin } from '../../store/actions/login-in.actions';
@@ -8,31 +8,47 @@ import { map, switchMap, take, tap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { HideNavService } from 'src/app/services/hide-nav.service';
+import { AuthAccessService } from 'src/app/services/auth-access.service';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.css']
+  styleUrls: ['./sign-in.component.css'],
 })
 export class SignInComponent {
-
   user: Token | undefined;
-
-  constructor(
-  private store: Store<Auth0.AppState>,
-  private auth: Auth0.AuthService,
-  private authService: AuthService,
-  private router: Router,
-  private cookieService: CookieService,
-  public hideNavService: HideNavService
-  ) {}
   token: string | null = null;
   userEmail: string | null = null;
 
-  ngOnInit(){
+  constructor(
+    private store: Store<Auth0.AppState>,
+    private auth: Auth0.AuthService,
+    private authService: AuthService,
+    private router: Router,
+    private cookieService: CookieService,
+    public hideNavService: HideNavService,
+    private authAccessService: AuthAccessService,
+    private NgZone: NgZone
+  ) {}
+
+  ngOnInit() {
     this.token = this.cookieService.get('userToken');
     this.userEmail = this.cookieService.get('userEmail');
   }
-  
+
+  screenWidth: number = window.innerWidth;
+  @HostListener('window:resize', ['$event'])
+
+  onResize() {
+    this.NgZone.run(() => {
+      this.screenWidth = window.innerWidth;
+      this.checkIfMobile();
+    });
+  }
+
+  private checkIfMobile() {
+    this.screenWidth = window.innerWidth;
+  }
+
   Login() {
     this.cookieService.deleteAll();
     this.auth
@@ -47,28 +63,35 @@ export class SignInComponent {
             map((token) => ({ user, token }))
           );
         }),
-        switchMap(({ user, token }) => 
+        switchMap(({ user, token }) =>
           this.authService.FetchRoles(user?.email).pipe(
             tap((roles) => this.cookieService.set('userType', roles)),
             map((roles) => ({ user, token, roles }))
           )
         )
-      ).subscribe({
+      )
+      .subscribe({
         next: ({ user, token, roles }) => {
-        const googleID: Token = {
-          email: user?.email,
-          token: token,
-          roles: roles
-        };
-        
-        this.store.dispatch(GetLogin({ payload: googleID }));
-        this.hideNavService.showNavbar = true;
-        
-        this.router.navigateByUrl('/dashboard');
-
-      },
-      error:(error) => {
-      }
-    })
+          this.authAccessService.setRoles(roles);
+          const googleID: Token = {
+            email: user?.email,
+            token: token,
+            roles: roles,
+          };
+          this.authAccessService.setEmployeeEmail(user?.email as string);
+          this.store.dispatch(GetLogin({ payload: googleID }));
+          this.hideNavService.showNavbar = true;
+          if (
+            this.authAccessService.isAdmin() ||
+            this.authAccessService.isTalent() ||
+            this.authAccessService.isJourney() ||
+            this.authAccessService.isSuperAdmin()
+          ) {
+            this.router.navigateByUrl('/dashboard');
+          } else {
+            this.router.navigateByUrl('/profile');
+          }
+        },
+      });
   }
 }

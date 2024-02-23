@@ -13,6 +13,7 @@ import { dataTypes } from 'src/app/models/constants/types.constants';
 import { Dialog } from 'src/app/models/confirm-modal.interface';
 import { SystemNav } from 'src/app/services/system-nav.service';
 import { HideNavService } from 'src/app/services/hide-nav.service';
+import { AuthAccessService } from 'src/app/services/auth-access.service';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -62,14 +63,21 @@ export class ManageFieldCodeComponent {
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
     private systemService: SystemNav,
-    private navService: HideNavService) {
-      navService.showNavbar = true;
+    private navService: HideNavService,
+    private authAccessService: AuthAccessService) {
+    navService.showNavbar = true;
   }
   ngOnInit(): void {
-    this.fetchData();
+    if (this.authAccessService.isAdmin() ||
+      this.authAccessService.isSuperAdmin() ||
+      this.authAccessService.isTalent() ||
+      this.authAccessService.isJourney()) {
+      this.fetchData();
+    }
   }
 
   fetchData(active: number = 0) {
+    this.isLoading = true;
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: fieldCodes => {
         this.fieldCodes = fieldCodes;
@@ -79,9 +87,11 @@ export class ManageFieldCodeComponent {
         this.dataSource.sort = this.sort;
         this.getActivePassive();
         this.activeTab = active;
+        this.isLoading = false;
       },
-      error: error => {
+      error: () => {
         this.snackBarService.showSnackbar("Error fetching field codes", "snack-error");
+        this.isLoading = false;
       }
     })
   }
@@ -120,7 +130,8 @@ export class ManageFieldCodeComponent {
         status: parseInt(fieldCode.status),
         internal: fieldCode.internal,
         internalTable: fieldCode.internalTable,
-        options: optionsArray
+        options: optionsArray,
+        required: fieldCode.required
       };
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
@@ -165,7 +176,7 @@ export class ManageFieldCodeComponent {
   filterData() {
     const filterValue = this.filterText.trim().toLowerCase();
     this.dataSource.filter = filterValue;
-  
+
     if (this.filterText === "") {
       this.activeFieldsSearch = 0;
       this.archiveFieldsSearch = 0;
@@ -181,7 +192,7 @@ export class ManageFieldCodeComponent {
       });
     }
   }
-  
+
 
   onSearch(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
@@ -206,7 +217,7 @@ export class ManageFieldCodeComponent {
     this.activeTab = tabIndex;
     this.filteredFieldCodes = this.fieldCodes.filter(fieldCode => fieldCode.status == this.activeTab);
     this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
-    this.dataSource._updateChangeSubscription(); 
+    this.dataSource._updateChangeSubscription();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.paginator.pageIndex = 0;
@@ -253,8 +264,8 @@ export class ManageFieldCodeComponent {
   }
 
   set pageSize(size: number) {
-      this.paginator.pageSize = size;
-      this.dataSource._updateChangeSubscription();
+    this.paginator.pageSize = size;
+    this.dataSource._updateChangeSubscription();
   }
 
   get start(): number {

@@ -33,10 +33,12 @@ export class NewFieldCodeComponent {
     internal: [false],
     internalTable: [''],
     options: this.fb.array([]),
-    category: [-1, Validators.required]
+    category: [-1, Validators.required],
+    required: [false]
   });
   fieldCodes?: FieldCode[];
   isUnique?: boolean = true;
+  isRequired: boolean = false;
   newFieldCodeDto !: FieldCode;
   fieldCodeCapture: string = "";
   showAdvanced: boolean = false;
@@ -71,7 +73,7 @@ export class NewFieldCodeComponent {
   get options() {
     return this.newFieldCodeForm.get('options') as FormArray;
   }
-  
+
   addOption() {
     const optionsArray = this.newFieldCodeForm.get('options') as FormArray;
     optionsArray.push(this.fb.control(''));
@@ -98,6 +100,7 @@ export class NewFieldCodeComponent {
         internalTable: formValues['internalTable'],
         options: formValues['type'] == 4 ?  this.returnOptionsArray(formValues['options']): [],
         category: formValues['category'],
+        required: formValues['required']
       }
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
@@ -162,5 +165,9 @@ export class NewFieldCodeComponent {
 
   toggleshowAdvance(){
     this.showAdvanced = !this.showAdvanced;
+  }
+
+  toggleRequired(){
+    this.isRequired = !this.isRequired;
   }
 }

@@ -5,7 +5,7 @@
                 <mat-panel-title>
                     Main Bank Account
                 </mat-panel-title>
-                <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking.status == 2">
+                <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking?.status == 2">
                     <mat-icon class="mx-1">error</mat-icon> Missing information
                 </mat-panel-description>
             </mat-expansion-panel-header>

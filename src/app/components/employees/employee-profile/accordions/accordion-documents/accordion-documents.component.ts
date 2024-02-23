@@ -9,6 +9,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
 @Component({
   selector: 'app-accordion-documents',
   templateUrl: './accordion-documents.component.html',
@@ -40,7 +42,8 @@ export class AccordionDocumentsComponent {
     private snackBarService: SnackbarService,
     private employeeRoleService: EmployeeRoleService,
     private employeeProfileService: EmployeeProfileService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private authAccessService: AuthAccessService
   ) { }
 
   ngOnInit() {
@@ -98,7 +101,7 @@ export class AccordionDocumentsComponent {
   }
 
   getEmployeeDocuments() {
-    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile?.id as number).subscribe({
+    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number).subscribe({
       next: data => {
         this.employeeDocuments = data;
         this.dataSource.data = this.fileCategories;
@@ -111,15 +114,16 @@ export class AccordionDocumentsComponent {
   }
 
   uploadDocumentDto(document: any) {
+    const saveObj = {
+      id: document.id,
+      employeeId: document.employee.id,
+      fileName: document.fileName,
+      blob: this.base64String,
+      fileCategory: document.fileCategory,
+      uploadDate: document.uploadDate,
+      status: 1
+    }
     if (document.id == 0) {
-      const saveObj = {
-        id: document.id,
-        employeeId: document.employee.id,
-        fileName: document.fileName,
-        file: this.base64String,
-        fileCategory: document.fileCategory,
-        uploadDate: document.uploadDate
-      }
       this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Document added", "snack-success");
@@ -131,7 +135,20 @@ export class AccordionDocumentsComponent {
         }
       });
     } else {
-      this.employeeDocumentService.updateEmployeeDocument(document).subscribe({
+      const updatedDocument = {
+        id: document.id,
+        employeeId: document.employee.id,
+        reference: document.reference,
+        fileName: document.fileName,
+        fileCategory: document.fileCategory,
+        blob: document.blob,
+        uploadDate: document.uploadDate,
+        reason: document.reason,
+        status: 1,
+        counterSign: false
+      }
+      console.log(updatedDocument);
+      this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getEmployeeDocuments();
@@ -143,6 +160,7 @@ export class AccordionDocumentsComponent {
       });
     }
   }
+
   buildDocumentDto() {
     const existingValue = this.filterDocumentsByCategory();
     if (this.selectedFile) {
@@ -159,6 +177,7 @@ export class AccordionDocumentsComponent {
           status: 1,
           uploadDate: new Date(),
           reason: '',
+          counterSign: false
         };
         this.uploadDocumentDto(newDto);
 
@@ -176,29 +195,37 @@ export class AccordionDocumentsComponent {
   }
 
   getFileName(index: number): EmployeeDocument {
-    var docObj = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
-    return docObj;
+    var documentObject = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
+    return documentObject;
   }
 
   downloadDocument(event: any) {
     const id = event.srcElement.parentElement.id;
-    const docObj = this.employeeDocuments.find(document => document.fileCategory == id) as any;
-    if (docObj === undefined) {
+    const documentObject = this.employeeDocuments.find(document => document.fileCategory == id) as any;
+    if (documentObject === undefined) {
       // TODO: download clean slate form
     }
     else {
-      if (docObj.status == 2) {
+      if (documentObject.status == 2) {
         // TODO: download clean slate form
       } else {
-        this.downloadFile(docObj?.blob as string, docObj?.fileName as string);
+        this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
       }
     }
   }
 
-  disableButton(index: number): boolean {
-    const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
-    if (docObj == undefined || docObj?.status == 2) {
+  disableUploadButton(index: number): boolean {
+    const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
+    if (this.authAccessService.isEmployee()) {
       return false;
+    }
+    else if(documentObject == null && (this.authAccessService.isAdmin() ||  this.authAccessService.isSuperAdmin())){
+      return false;
+    }
+    else if (documentObject?.status as number > 1) {
+      if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
+        return false;
+      }
     }
     return true;
   }
@@ -210,13 +237,9 @@ export class AccordionDocumentsComponent {
     this.updateDocument.emit(this.documentFormProgress);
   }
 
-  isAdmin(): boolean {
-    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
-  }
-
   disableDownload(index : number){
-    const docObj = this.employeeDocuments.find(document => document.fileCategory == index);
-    if(docObj?.status == 2 || docObj?.status == 3){
+    const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
+    if(documentObject?.status == 2 || documentObject?.status == 3){
       return false;
     }
     return true;

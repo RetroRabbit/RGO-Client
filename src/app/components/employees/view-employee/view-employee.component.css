@@ -121,6 +121,7 @@ input[type="number"] {
     width: 481px;
     height: 40px;
     min-width: 360px;
+    margin-top: 20px;
     align-items: center;
     flex-shrink: 0;
     border-radius: 28px;
@@ -169,19 +170,23 @@ input[type="number"] {
 }
 
 #add-employee-button {
-    gap: 8px;
-    padding: 10px 16px;
-    background: var(--primary-color);
-    align-self: flex-end;
-    width: 224px;
-    height: 40px;
-    max-width: 53%;
+    background: #0029c6;
     border: none;
+    border-radius: 4rem;
+    color: white;
+    margin: 0px auto;
+    width: 12rem;
+    margin-right: 2rem;
+    padding: 0.5rem;
+    right: 0px;
+    position: absolute;
+    margin-top: 1.5rem!important;
+    margin-bottom: 1.5rem!important;
 }
 
 .add-employee-span {
-  margin-right: 3%;
-  font-size: var(--font-size-1);
+    margin-right: 3%;
+    font-size: var(--font-size-1);
 }
 
 #add-employee-button mat-icon {
@@ -189,23 +194,23 @@ input[type="number"] {
 }
 
 :host {
-  .mat-mdc-text-field-wrapper {
-    min-width: 100%;
-    max-width: 100%;
-    width: 194px !important;
-    height: 56px !important;
-    align-items: center;
-    font-size: var(--font-size-1);
-    font-weight: 400;
-  }
+    .mat-mdc-text-field-wrapper {
+        min-width: 100%;
+        max-width: 100%;
+        width: 194px !important;
+        height: 56px !important;
+        align-items: center;
+        font-size: var(--font-size-1);
+        font-weight: 400;
+    }
 }
 
 .roles-input-mobile {
-  min-width: 120% !important;
+    min-width: 120% !important;
 }
 
 .mat-icon-hide {
-  display: none !important;
+    display: none !important;
 }
 
 .d-flex.justify-content-between.align-items-center.gap-2 {
@@ -238,6 +243,7 @@ input[type="number"] {
     margin-right: 12px;
 }
 
+
 .role-select-panel {
     font-size: var(--font-size-1);
 }
@@ -251,7 +257,7 @@ mat-row:hover {
 }
 
 mat-cell {
-  max-width: 20%;
+    max-width: 20%;
 }
 
 #noResults h1 {
@@ -269,17 +275,40 @@ mat-cell {
 }
 
 .desktop-section-fluid {
-  margin-left: -1.5% !important;
+    margin-left: -1.5% !important;
 }
 
 .mobile-section-fluid {
-  margin-left: -3% !important;
+    margin-left: -3% !important;
 }
 
 .align-add-button {
-  min-width: 52.5% !important;
+    min-width: 52.5% !important;
 }
 
 .align-add-mobile {
-  min-width: 55% !important;
+    min-width: 55% !important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+    max-height: 40px;
+}
+
+::ng-deep .mat-mdc-form-field {
+    max-height: 60px;
+}
+
+mat-label {
+    font-size: 14px;
+    padding-bottom: 10px;
+}
+
+::ng-deep .mat-mdc-form-field:not(.mat-form-field-disabled) .mdc-floating-label {
+    position: relative;
+    top: 18px;
+}
+
+::ng-deep .mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
+    position: relative;
+    top: 28px;
 }

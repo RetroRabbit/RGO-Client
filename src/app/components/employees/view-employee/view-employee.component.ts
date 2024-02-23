@@ -10,9 +10,30 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { ClientService } from 'src/app/services/client.service';
 import { Client } from 'src/app/models/client.interface';
 import { EmployeeData } from 'src/app/models/employeedata.interface';
-import { Component, Output, EventEmitter, ViewChild, HostListener, NgZone, Input } from '@angular/core';
-import { Observable, catchError, first, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  ViewChild,
+  HostListener,
+  NgZone,
+  Input,
+} from '@angular/core';
+import {
+  Observable,
+  catchError,
+  first,
+  forkJoin,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { HideNavService } from 'src/app/services/hide-nav.service';
+import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { EmployeeType } from 'src/app/models/constants/employeeTypes.constants';
+import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
+import { GenericDropDownObject } from 'src/app/models/generic-drop-down-object.interface';
 
 @Component({
   selector: 'app-view-employee',
@@ -37,13 +58,17 @@ export class ViewEmployeeComponent {
 
   PREVIOUS_PAGE = 'previousPage';
 
-  roles: Observable<string[]> = this.employeeRoleService
-    .getAllRoles()
-    .pipe(
-      map((roles: string[]) => roles.filter((role) => !role.includes('SuperAdmin'))),
-      first()
-    );
+  roles: Observable<string[]> = this.employeeRoleService.getAllRoles().pipe(
+    map((roles: string[]) =>
+      roles.filter((role) => !role.includes('SuperAdmin'))
+    ),
+    first()
+  );
 
+  peopleChampions: Observable< GenericDropDownObject[]> = this.getPeopleChampionsForFilter();
+  usertypes: Observable< GenericDropDownObject[]> = this.getUserTypesForFilter();
+  currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
+  currentUserTypeFilter: GenericDropDownObject = new GenericDropDownObject;
 
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
@@ -59,7 +84,9 @@ export class ViewEmployeeComponent {
     private ngZone: NgZone,
     private router: Router,
     private hideNavService: HideNavService,
-    private snackBarService: SnackbarService
+    private snackBarService: SnackbarService,
+    public authAccessService: AuthAccessService,
+    private employeeTypeService: EmployeeTypeService
   ) {
     hideNavService.showNavbar = true;
   }
@@ -68,9 +95,8 @@ export class ViewEmployeeComponent {
     this.dataSource.paginator = this.paginator;
 
     this.onResize();
-    if(this.cookieService.get(this.PREVIOUS_PAGE) == "/dashboard"){ 
+    if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
       this._searchQuery = this.cookieService.get('searchString');
-  
     }
   }
 
@@ -88,19 +114,22 @@ export class ViewEmployeeComponent {
       .pipe(catchError(() => of([] as Client[])));
 
     this.employeeService
-      .getAllProfiles()
+      .getEmployeeProfiles()
       .pipe(
         switchMap((employees: EmployeeProfile[]) =>
           this.combineEmployeesWithRolesAndClients(employees, clients$)
         ),
         catchError((error) => {
-          this.snackBarService.showSnackbar("Failed to load employees", "snack-error");
+          this.snackBarService.showSnackbar(
+            'Failed to load employees',
+            'snack-error'
+          );
           return of([]);
         }),
         first()
       )
       .subscribe((data) => {
-        this.setupDataSource(data)
+        this.setupDataSource(data);
         this.isLoading = false;
         this.applySearchFilter();
       });
@@ -153,7 +182,7 @@ export class ViewEmployeeComponent {
     this.ngZone.run(() => {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-    })
+    });
     this.dataSource._updateChangeSubscription();
   }
 
@@ -174,7 +203,6 @@ export class ViewEmployeeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
-
   ViewUser(email: string) {
     this.cookieService.set('selectedUser', email);
   }
@@ -188,7 +216,7 @@ export class ViewEmployeeComponent {
     Email: string | undefined;
   }): void {
     this.employeeService
-      .getAllProfiles()
+      .getEmployeeProfiles()
       .pipe(
         map(
           (employees: EmployeeProfile[]) =>
@@ -222,8 +250,8 @@ export class ViewEmployeeComponent {
   }
 
   applySearchFilter() {
-      this.dataSource.filter = this.searchQuery.trim().toLowerCase();
-      this.dataSource._updateChangeSubscription();
+    this.dataSource.filter = this.searchQuery.trim().toLowerCase();
+    this.dataSource._updateChangeSubscription();
   }
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
@@ -262,11 +290,17 @@ export class ViewEmployeeComponent {
       .updateRole(email, role)
       .pipe(
         tap(() => {
-          this.snackBarService.showSnackbar("Role changed successfully!", "snack-success");
+          this.snackBarService.showSnackbar(
+            'Role changed successfully!',
+            'snack-success'
+          );
           this.getEmployees();
         }),
         catchError((error) => {
-          this.snackBarService.showSnackbar("Falied to change role", "snack-error");
+          this.snackBarService.showSnackbar(
+            'Falied to change role',
+            'snack-error'
+          );
           return of(null);
         })
       )
@@ -274,11 +308,12 @@ export class ViewEmployeeComponent {
   }
 
   onMenuOpened() {
-    const buttonWidth = document.querySelector<HTMLElement>(".role-btn")?.offsetWidth;
+    const buttonWidth =
+      document.querySelector<HTMLElement>('.role-btn')?.offsetWidth;
     const elements = document.getElementsByClassName('mat-mdc-menu-panel');
 
     for (let i = 0; i < elements.length; i++) {
-      (elements[i]  as HTMLElement).style.width = `${buttonWidth}px`;
+      (elements[i] as HTMLElement).style.width = `${buttonWidth}px`;
     }
   }
 
@@ -287,8 +322,8 @@ export class ViewEmployeeComponent {
   }
 
   set pageSize(size: number) {
-      this.paginator.pageSize = size;
-      this.dataSource._updateChangeSubscription();
+    this.paginator.pageSize = size;
+    this.dataSource._updateChangeSubscription();
   }
 
   get start(): number {
@@ -306,5 +341,71 @@ export class ViewEmployeeComponent {
   goToPage(page: number): void {
     this.paginator.pageIndex = page - 1;
     this.dataSource._updateChangeSubscription();
+  }
+
+  changePeopleChampionFilter(champion: GenericDropDownObject) {
+    this.currentChampionFilter = champion;
+    this.filterEmployeeTable();   
+  }
+
+  changeUserTypeFilter(employeeType: GenericDropDownObject)
+  {
+    this.currentUserTypeFilter = employeeType;
+    this.filterEmployeeTable();
+  }
+
+  filterEmployeeTable()
+  {
+    this.isLoading = true;
+    const clients$: Observable<Client[]> = this.clientService
+      .getAllClients()
+      .pipe(catchError(() => of([] as Client[])));
+
+    this.employeeService
+      .filterEmployees(this.currentChampionFilter.id || 0, this.currentUserTypeFilter.id || 0)
+      .pipe(
+        switchMap((employees: EmployeeProfile[]) =>
+          this.combineEmployeesWithRolesAndClients(employees, clients$)
+        ),
+        catchError((error) => {
+          this.snackBarService.showSnackbar(
+            'Failed to load employees',
+            'snack-error'
+          );
+          return of([]);
+        }),
+        first()
+      )
+      .subscribe((data) => {
+        this.setupDataSource(data);
+        this.isLoading = false;
+        this.applySearchFilter();
+      });
+  }
+  
+  getPeopleChampionsForFilter(): Observable<GenericDropDownObject[]> {
+    return this.employeeService.filterEmployees(0, EmployeeType.PeopleChampion).pipe(
+      map(employees => {
+        const champions: GenericDropDownObject[] = employees.map(employee => ({
+          id: employee.id || 0,
+          name: employee.name || 'Unknown'
+        }));
+        champions.unshift({ id: 0, name: 'All' });
+        return champions;
+      })
+    );
+  }
+
+  getUserTypesForFilter(): Observable<GenericDropDownObject[]> {
+    return this.employeeTypeService.getAllEmployeeTypes().pipe(
+      map(types => {
+        const userTypes: GenericDropDownObject[] = types.map(type => ({
+          id: type.id || 0,
+          name: type.name || 'Unknown'
+      }));
+        userTypes.unshift({ id: 0, name: 'All' });
+        return userTypes;
+      })
+    );
   }
 }

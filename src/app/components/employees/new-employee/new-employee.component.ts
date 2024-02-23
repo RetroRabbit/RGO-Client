@@ -98,10 +98,10 @@ export class NewEmployeeComponent implements OnInit {
       complexName: new FormControl<string | null>(" ", Validators.minLength(1)),
       suburbDistrict: new FormControl<string | null>(" ", Validators.minLength(1)),
       city: new FormControl<string | null>(" ", Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>(" ", [Validators.maxLength(4), Validators.minLength(1), Validators.pattern(/(^\d+$)|(^$)/)]),
+      streetNumber: new FormControl<string | null>("", [Validators.maxLength(4), Validators.minLength(1), Validators.pattern(/(^\d+$)|(^$)/)]),
       country: new FormControl<string | null>(" ", Validators.minLength(1)),
       province: new FormControl<string | null>(" ", Validators.minLength(1)),
-      postalCode: new FormControl<string | null>(" ", [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
+      postalCode: new FormControl<string | null>("", [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
     });
   }
 
@@ -189,7 +189,7 @@ export class NewEmployeeComponent implements OnInit {
       },
     });
     this.employeeService
-      .getAllProfiles()
+      .getEmployeeProfiles()
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
@@ -234,10 +234,11 @@ export class NewEmployeeComponent implements OnInit {
                   reference: "",
                   fileName: file.name,
                   fileCategory: category,
-                  file: base64String,
+                  blob: base64String,
                   uploadDate: new Date(),
                   reason: "",
                   status: 3,
+                  counterSign: false
                 };
                 this.employeeDocumentModels.push(employeeDocument);
                 this.categories[category].state = false;
@@ -410,7 +411,6 @@ export class NewEmployeeComponent implements OnInit {
         this.snackBarService.showSnackbar(`Error: ${message}`, "snack-error");
         this.isDirty = false;
       },
-
     });
   }
 

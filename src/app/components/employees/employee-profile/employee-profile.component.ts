@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef,ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -18,6 +18,8 @@ import { ClientService } from 'src/app/services/client.service';
 import { AccordionBankingComponent } from './accordions/accordion-banking/accordion-banking.component';
 import { AccordionProfileComponent } from './accordions/accordion-profile/accordion-profile.component';
 import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents.component';
+import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -27,6 +29,7 @@ import { AccordionDocumentsComponent } from './accordions/accordion-documents/ac
 export class EmployeeProfileComponent {
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
+  simpleEmployee!: SimpleEmployee;
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
   clients: Client[] = [];
@@ -64,13 +67,18 @@ export class EmployeeProfileComponent {
   currentPage: string = '';
 
   isLoading: boolean = true;
-
+  usingSimpleProfile: boolean = false;
+  teamLead: number | null = null;
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
+  base64Image: string = '';
 
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
   @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
   @ViewChild(AccordionDocumentsComponent) documentAccordion!: AccordionDocumentsComponent;
+
+  imageUrl!: string;
+  validateFile: any;
 
   constructor(private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
@@ -81,17 +89,29 @@ export class EmployeeProfileComponent {
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
     private navService: HideNavService,
-    private changeDetectorRef: ChangeDetectorRef,) {
+    private changeDetectorRef: ChangeDetectorRef,
+    public authAccessService: AuthAccessService) {
     navService.showNavbar = true;
   }
 
   ngOnInit() {
     this.employeeId = this.route.snapshot.params['id'];
+    this.getClients();
     if (this.employeeId == undefined) {
       this.showBackButtons = false;
       this.employeeId = this.cookieService.get('userId');
     }
-    this.getSelectedEmployee();
+    if (this.authAccessService.isAdmin() ||
+      this.authAccessService.isSuperAdmin() ||
+      this.authAccessService.isJourney() ||
+      this.authAccessService.isTalent()) {
+      this.getSelectedEmployee();
+      this.usingSimpleProfile = false;
+    }
+    else {
+      this.getSimpleEmployee();
+      this.usingSimpleProfile = true;
+    }
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
 
@@ -103,16 +123,35 @@ export class EmployeeProfileComponent {
     this.router.navigateByUrl('/dashboard')
   }
 
+  getSimpleEmployee() {
+
+    this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
+      next: data => {
+        this.simpleEmployee = data;
+        this.employeePhysicalAddress = this.simpleEmployee.physicalAddress!;
+        this.employeePostalAddress = this.simpleEmployee.postalAddress!;
+        this.filterClients(this.simpleEmployee?.clientAllocatedName as string);
+        this.isLoading = false;
+      }, complete: () => {
+        this.populateEmployeeAccordion(this.simpleEmployee);
+        this.changeDetectorRef.detectChanges();
+      }
+    })
+  }
+
   getSelectedEmployee() {
     this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
       next: (employee: any) => {
         this.selectedEmployee = employee;
         this.employeeProfile = employee;
         this.getEmployeeFields();
+        this.filterClients(this.employeeProfile.clientAllocated as string)
+        this.isLoading = false;
       },
       error: (error) => {
         this.snackBarService.showSnackbar(error, "snack-error");
-      }
+      },
+      complete: () => this.changeDetectorRef.detectChanges()
     })
   }
 
@@ -124,29 +163,74 @@ export class EmployeeProfileComponent {
         this.employeePostalAddress = data.postalAddress!;
       }, complete: () => {
         this.getAllEmployees();
-      },error: () => {
+      }, error: () => {
         this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
       }
     })
   }
 
   getAllEmployees() {
-    this.employeeService.getAllProfiles().subscribe({
+    this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
         this.employees = data;
         this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
         this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-        this.clientService.getAllClients().subscribe({
-          next: data => {
-            this.clients = data;
-            this.employeeClient = this.clients.filter((client: any) => client.id === this.employeeProfile?.clientAllocated)[0];
-          }, complete: () => {
-            this.isLoading = false;
-            this.changeDetectorRef.detectChanges();
-          }
-        });
+        this.filterClients(this.employeeProfile?.clientAllocated as string);
       }
     });
+  }
+
+  populateEmployeeAccordion(employee: SimpleEmployee) {
+    this.employeeProfile = {};
+    this.employeeProfile.cellphoneNo = employee.cellphoneNo;
+    this.employeeProfile.clientAllocated = employee.clientAllocatedName;
+    this.employeeProfile.countryOfBirth = employee.countryOfBirth;
+    this.employeeProfile.dateOfBirth = employee.dateOfBirth;
+    this.employeeProfile.disability = employee.disability;
+    this.employeeProfile.disabilityNotes = employee.disabilityNotes;
+    this.employeeProfile.email = employee.email;
+    this.employeeProfile.emergencyContactName = employee.emergencyContactName;
+    this.employeeProfile.emergencyContactNo = employee.emergencyContactNo;
+    this.employeeProfile.employeeNumber = employee.employeeNumber;
+    this.employeeProfile.employeeType = employee.employeeType;
+    this.employeeProfile.engagementDate = employee.engagementDate;
+    this.employeeProfile.gender = employee.gender;
+    this.employeeProfile.houseNo = employee.houseNo;
+    this.employeeProfile.id = employee.id;
+    this.employeeProfile.idNumber = employee.idNumber;
+    this.employeeProfile.initials = employee.initials;
+    this.employeeProfile.leaveInterval = employee.leaveInterval;
+    this.employeeProfile.level = employee.level;
+    this.employeeProfile.name = employee.name;
+    this.employeeProfile.nationality = employee.nationality;
+    this.employeeProfile.notes = employee.notes;
+    this.employeeProfile.passportCountryIssue = employee.passportCountryIssue;
+    this.employeeProfile.passportExpirationDate = employee.passportExpirationDate;
+    this.employeeProfile.passportNumber = employee.passportNumber;
+    this.employeeProfile.payRate = employee.payRate;
+    this.employeeProfile.peopleChampion = employee.peopleChampionId;
+    this.employeeProfile.personalEmail = employee.personalEmail;
+    this.employeeProfile.photo = employee.photo;
+    this.employeeProfile.physicalAddress = employee.physicalAddress;
+    this.employeeProfile.postalAddress = employee.postalAddress;
+    this.employeeProfile.race = employee.race;
+    this.employeeProfile.salary = employee.salary;
+    this.employeeProfile.salaryDays = employee.salaryDays;
+    this.employeeProfile.surname = employee.surname;
+    this.employeeProfile.taxNumber = employee.taxNumber;
+    this.employeeProfile.teamLead = employee.teamLeadId;
+  }
+
+  getClients() {
+    this.clientService.getAllClients().subscribe({
+      next: data => {
+        this.clients = data;
+      }
+    })
+  }
+
+  filterClients(clientId: string) {
+    this.employeeClient = this.clients.filter(client => +clientId == client.id)[0];
   }
 
   CaptureEvent(event: any) {
@@ -173,6 +257,38 @@ export class EmployeeProfileComponent {
   updateProfileProgress(progress: any) {
     this.profileFormProgress = progress;
     this.overallProgress();
-    this.getSelectedEmployee();
+    if (this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney())
+      this.getSelectedEmployee();
+    else
+      this.getSimpleEmployee();
   }
+
+  onFileChange(e: any) {
+    if (e.target.files) {
+      const file = new FileReader();
+      file.readAsDataURL(e.target.files[0]);
+      file.onload = (event: any) => {
+        this.employeeProfile.photo = event.target.result;
+        this.base64Image = event.target.result;
+        this.updateUser();
+      }
+    }
+  }
+
+  updateUser() {
+    let updatedEmp = { ...this.employeeProfile };
+
+    updatedEmp.photo = this.base64Image;
+
+    this.employeeService.updateEmployee(updatedEmp)
+      .subscribe({
+        next: () => {
+          this.getSelectedEmployee()
+        },
+        error: () => {
+        this.snackBarService.showSnackbar("Failed to update employee profile picture", "snack-error");
+          }
+        });
+  }
+
 }

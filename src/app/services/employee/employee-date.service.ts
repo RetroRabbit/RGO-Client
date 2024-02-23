@@ -1,27 +1,30 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { API } from '../models/constants/urls.constants';
-import { EmployeeDateInput } from '../models/employe-date.interface';
-import { EmployeeDate } from '../models/employee-date.interface';
+import { environment } from '../../../enviroment/environment';
+import { EmployeeDateInput } from '../../models/employe-date.interface';
+import { EmployeeDate } from '../../models/employee-date.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeDateService {
-
-  constructor(private httpClient: HttpClient) { }
-
-  saveEmployeeDate(employeeDateInput: EmployeeDateInput): Observable<any> {
-    return this.httpClient.post<any>(`${API.HttpsBaseURL}/employeedate/save`, employeeDateInput);
+  baseUrl: string;
+  
+  constructor(private httpClient: HttpClient) { 
+    this.baseUrl =`${environment.HttpsBaseURL}/employee-date`
   }
 
-  deleteEmployeeDate(employeeDateInput: EmployeeDateInput): Observable<any> {
-    return this.httpClient.delete<any>(`${API.HttpsBaseURL}/employeedate/delete`, { body: employeeDateInput });
+  saveEmployeeDate(employeeDateInput: EmployeeDateInput): Observable<any> {
+    return this.httpClient.post<any>(`${this.baseUrl}`, employeeDateInput);
+  }
+
+  deleteEmployeeDate(employeeDateId: number): Observable<any> {
+    return this.httpClient.delete<any>(`${this.baseUrl}?employeeDateId=${employeeDateId}`);
   }
 
   updateEmployeeDate(employeeDate: EmployeeDate): Observable<any> {
-    return this.httpClient.put<any>(`${API.HttpsBaseURL}/employeedate/update`, employeeDate);
+    return this.httpClient.put<any>(`${this.baseUrl}`, employeeDate);
   }
 
   getall(email: string | null = null, subject: string | null = null, date: Date | null = null): Observable<EmployeeDate[]> {
@@ -32,6 +35,6 @@ export class EmployeeDateService {
     if (date !== null) queryParams.push(`date=${date.toISOString().split('T')[0]}`);
 
     const queryString = queryParams.length ? '?' + queryParams.join('&') : '';
-    return this.httpClient.get<any[]>(`${API.HttpsBaseURL}/employeedate/getall${queryString}`);
+    return this.httpClient.get<any[]>(`${this.baseUrl}/${queryString}`);
   }
 }
