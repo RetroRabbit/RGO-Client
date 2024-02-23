@@ -1,5 +1,13 @@
 <div id="group" class="d-flex flex-column flex-md-row">
-  <div class="searchbar align-items-center justify-content-center p-0 mb-3 mb-md-0">
+  <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
+    'background-color': '#D7DFFF',
+    'border': '2px solid #D7DFFF',
+    'border-radius': '2rem',
+    'height': '0px',
+    'width': '0%'
+  }">
+  </ngx-skeleton-loader>
+  <div *ngIf="!isLoading" class="searchbar align-items-center justify-content-center p-0 mb-3 mb-md-0">
     <div id="leading-icon"></div>
     <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
       [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off" />
@@ -19,7 +27,6 @@
       Employee</button>
   </div>
 </div>
-
 <div id="search-results-container">
   <div *ngIf="searchResults.length > 0">
     <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
@@ -53,8 +60,16 @@
   </div>
 </div>
 
+<ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
+  'background-color': '#D7DFFF',
+  'border': '2px solid #D7DFFF',
+  'border-radius': '2rem',
+  'height': '300px',
+  'width': '100%',
+}">
+</ngx-skeleton-loader>
 
-<div [ngClass]="screenWidth <= 767 ? 'data-cards-container-mobile' : (screenWidth <= 991 ? 'data-cards-container-tablet' : 'data-cards-container-desktop')">
+<div  *ngIf="!isLoading" [ngClass]="screenWidth <= 767 ? 'data-cards-container-mobile' : (screenWidth <= 991 ? 'data-cards-container-tablet' : 'data-cards-container-desktop')">
   <div class="data-card" [ngClass]="screenWidth <= 991 ? 'data-card-tablet' : 'data-card-mobile'">
     <div class="row">
       <div class="col-3">
@@ -202,7 +217,7 @@
 </div>
 
 <div class="px-4 container-fluid pt-4" id="graph-container">
-  <ngx-skeleton-loader count="1" appearance="line" animation="pulse" *ngIf="loadCounter < 4" [theme]="{ 
+  <ngx-skeleton-loader count="1" appearance="line" animation="pulse" *ngIf="loadCounter < 4" [theme]="{
     'background-color': '#D7DFFF',
     'border': '2px solid #D7DFFF',
     'border-radius': '2rem',
