@@ -8,7 +8,7 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { Dialog } from 'src/app/models/confirm-modal.interface';
 import { SystemNav } from 'src/app/services/system-nav.service';
@@ -88,6 +88,7 @@ export class ManageFieldCodeComponent {
         this.getActivePassive();
         this.activeTab = active;
         this.isLoading = false;
+        this.sortByIdDefault(this.dataSource.sort);
       },
       error: () => {
         this.snackBarService.showSnackbar("Error fetching field codes", "snack-error");
@@ -223,6 +224,16 @@ export class ManageFieldCodeComponent {
     this.paginator.pageIndex = 0;
     this.selectedFieldCodes = [];
     this.filterText = "";
+    this.sortByIdDefault(this.sort);
+  }
+
+  sortByIdDefault(sort: MatSort) {
+    const sortState: Sort = {active: 'id', direction: 'asc'};
+    if (sort) {
+      sort.active = sortState.active;
+      sort.direction = sortState.direction;
+      sort.sortChange.emit(sortState);
+    }
   }
 
   changePageSize(size: number) {
