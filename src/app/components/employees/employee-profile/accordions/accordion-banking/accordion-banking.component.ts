@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
 import { accountTypes } from 'src/app/models/constants/accountTypes.constants';
@@ -15,6 +15,13 @@ import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface
 })
 export class AccordionBankingComponent {
 
+  screenWidth = window.innerWidth;
+
+  @HostListener('window:resize',['$event'])
+  onResize(){
+    this.screenWidth = window.innerWidth;
+  }
+  
   @Input() employeeProfile !: EmployeeProfile | SimpleEmployee;
   @Output() updateBanking = new EventEmitter<{ progress: number, status: number }>();
 

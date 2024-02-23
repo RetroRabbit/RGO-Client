@@ -66,9 +66,7 @@
 #profile-image {
     border-radius: 50%;
     overflow: hidden;
-    height: 150px;
     margin: 0 auto;
-    width: 150px;
 }
 
 #profile-image>img {
@@ -100,8 +98,8 @@
 
 #accordions-nav {
     background-color: #0029C6;
-    border-radius: 1rem;
-    padding-top: 1rem
+    padding-top: 1rem;
+    display: flex;
 }
 
 #nav-item>div {
@@ -126,6 +124,15 @@
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0.1px;
+}
+
+.nav-item-mobile{
+  width: 150px;
+  max-width: 100%;
+  overflow-x: scroll;
+  flex-shrink: 0;
+  display: flex;
+  margin-left: 7%;
 }
 
 #selected-line-box {
@@ -342,7 +349,20 @@
 :host ::ng-deep #reject-reason {
     color: #b3261eff;
 }
+  .col-2>#line{
+    min-height: 2rem;
+    width:0px;
+    border: 1px solid grey;
+  }
+  
+  div.row{
+    padding:0;
+  }
 
 /* #svg-icon-w #icon-w {
     fill: white;
 } */
+
+#overall-progress-bar{
+    border-color: #0029C6;
+}
