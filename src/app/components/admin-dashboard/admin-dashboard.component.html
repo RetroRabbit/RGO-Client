@@ -1,5 +1,14 @@
 <div id="group" class="d-flex flex-column flex-md-row">
   <div class="searchbar align-items-center justify-content-center p-0 mb-3 mb-md-0">
+  <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
+    'background-color': '#D7DFFF',
+    'border': '2px solid #D7DFFF',
+    'border-radius': '2rem',
+    'height': '0px',
+    'width': '0%'
+  }">
+  </ngx-skeleton-loader>
+  <div *ngIf="!isLoading" class="searchbar align-items-center justify-content-center p-0 mb-3 mb-md-0">
     <div id="leading-icon"></div>
     <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
       [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off" />
@@ -19,7 +28,6 @@
       Employee</button>
   </div>
 </div>
-
 <div id="search-results-container">
   <div *ngIf="searchResults.length > 0">
     <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
@@ -59,8 +67,6 @@
   'border-radius': '2rem',
   'height': '300px',
   'width': '100%',
-
-
 }">
 </ngx-skeleton-loader>
 
