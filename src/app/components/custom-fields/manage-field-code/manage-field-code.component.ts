@@ -285,9 +285,14 @@ export class ManageFieldCodeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
-  onRowSelect(fieldCode: FieldCode) {
+  onRowSelect(fieldCode: FieldCode, event: any) {
     if (this.selectedFieldCodes?.includes(fieldCode)) {
       this.selectedFieldCodes.splice(this.selectedFieldCodes.indexOf(fieldCode), 1);
+      if (Array.isArray(event.checked) && !event.checked.includes(true)) {
+        this.passiveFields--;
+      } else {
+        this.passiveFields++;
+      }
     }
     else {
       this.selectedFieldCodes?.push(fieldCode);
