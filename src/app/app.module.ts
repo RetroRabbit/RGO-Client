@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthModule } from '@auth0/auth0-angular';
+import { AuthConfigService, AuthModule } from '@auth0/auth0-angular';
 import { StoreModule } from '@ngrx/store';
 import { LoginReducer } from './store/reducers/login.reducer';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
-import { environment } from 'src/enviroment/environment';
+import { environment } from 'src/environments/environment';
 import { LoginEffects } from './store/effects/app.effects';
-import { AuthService } from './services/auth.service';
+import { AuthServices } from './services/auth.service';
 import { AuthInterceptor } from './interceptor/auth0.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EmployeeProfileComponent } from './components/employees/employee-profile/employee-profile.component';
@@ -71,7 +71,6 @@ import { EmployeeDetailsComponent } from './components/employees/employee-detail
 import { ManageEmployeeEventsComponent } from './components/manage-employee-events/manage-employee-events.component';
 import { AddEmployeeEventComponent } from './components/manage-employee-events/add-employee-event/add-employee-event.component';
 import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
-
 import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
@@ -80,6 +79,33 @@ import { AccordionProfileComponent } from './components/employees/employee-profi
 import { AccordionBankingComponent } from './components/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
 import { AccordionDocumentsComponent } from './components/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
+import { firstValueFrom } from 'rxjs';
+
+// export function initConfig(authService: AuthServices) {
+//   return () => authService.getConfig().toPromise().then((config) => {
+//     AuthModule.forRoot({
+//       domain: environment.DomainKey,
+//       clientId: environment.ClientId,
+//       authorizationParams: {
+//         redirect_uri: environment.redirect_uri,
+//       },
+//     });
+//   });
+// }
+
+
+export function provideConfig(authService: AuthServices) {
+  const config = authService.getConfig();
+  return {
+      domain: environment.DomainKey,
+      clientId: environment.ClientId,
+      authorizationParams: {
+        redirect_uri: environment.redirect_uri,
+      },
+  };
+}
+
+
 
 @NgModule({
   declarations: [
@@ -125,13 +151,13 @@ import { LoadingComponentComponent } from './components/shared-components/loadin
       employee: EmployeeProfileReducer,
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),
-    AuthModule.forRoot({
-      domain: process.env['AUTH0_Domain_key'] || 'null',
-      clientId: process.env['AUTH0_CLIENT_ID'] || 'null',
-      authorizationParams: {
-        redirect_uri: 'http://localhost:4200',
-      },
-    }),
+    AuthModule.forRoot(),
+    //   domain: environment.DomainKey,
+    //   clientId: environment.ClientId,
+    //   authorizationParams: {
+    //     redirect_uri: environment.redirect_uri,
+    //   },
+    // }),
     HttpClientModule,
     BrowserAnimationsModule,
 
@@ -176,8 +202,19 @@ import { LoadingComponentComponent } from './components/shared-components/loadin
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
-    AuthService,
+    AuthServices,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: provideConfig,
+      deps: [AuthServices],
+      multi: true
+    },
+    {
+      provide: AuthConfigService,
+      useFactory: provideConfig,
+      deps: [AuthServices],
+    },
   ],
   bootstrap: [AppComponent],
 })

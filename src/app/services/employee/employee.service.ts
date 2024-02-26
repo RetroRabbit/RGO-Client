@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Employee } from '../../models/employee.interface';
 import { EmployeeProfile } from '../../models/employee-profile.interface';
-import { environment } from '../../../enviroment/environment';
+import { environment } from '../../../environments/environment';
 import { AuthAccessService } from '../auth-access.service';
 import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
 import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
