@@ -7,7 +7,7 @@ import { Token } from '../../models/token.interface';
 import { map, switchMap, take, tap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
 @Component({
   selector: 'app-sign-in',
@@ -25,7 +25,7 @@ export class SignInComponent {
     private authService: AuthService,
     private router: Router,
     private cookieService: CookieService,
-    public hideNavService: HideNavService,
+    public navService: NavService,
     private authAccessService: AuthAccessService,
     private NgZone: NgZone
   ) {}
@@ -80,7 +80,7 @@ export class SignInComponent {
           };
           this.authAccessService.setEmployeeEmail(user?.email as string);
           this.store.dispatch(GetLogin({ payload: googleID }));
-          this.hideNavService.showNavbar = true;
+          this.navService.showNavbar = true;
           if (
             this.authAccessService.isAdmin() ||
             this.authAccessService.isTalent() ||

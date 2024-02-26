@@ -16,7 +16,7 @@ import { EmployeeRoleService } from 'src/app/services/employee/employee-role.ser
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { FieldCodeService } from 'src/app/services/field-code.service';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -60,7 +60,7 @@ export class EmployeeDetailsComponent implements OnInit {
     private clientService: ClientService,
     private employeeRoleService: EmployeeRoleService,
     private snackBarService: SnackbarService,
-    private navService: HideNavService
+    private navService: NavService
   ) {
     navService.showNavbar = true;
    }

@@ -7,7 +7,7 @@ import { dataTypes } from 'src/app/models/constants/types.constants';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { CookieService } from 'ngx-cookie-service';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SystemNav } from 'src/app/services/system-nav.service';
 @Component({
@@ -44,14 +44,14 @@ export class UpdateFieldComponent {
     private fb: FormBuilder,
     private snackBarService: SnackbarService,
     public cookieService: CookieService,
-    public hideNavService: HideNavService,
+    public navService: NavService,
     private systemService: SystemNav) {
       this.selectedFieldCode = systemService.selectedField;
   }
 
   ngOnInit() {
-    this.hideNavService.showNavbar = false;
-    this.hideNavService.showSystemNavbar = false;
+    this.navService.showNavbar = false;
+    this.navService.showSystemNavbar = false;
     if (this.selectedFieldCode) {
       this.initializeForm();
     }
@@ -64,8 +64,8 @@ export class UpdateFieldComponent {
   }
 
   ngOnDestroy() {
-    this.hideNavService.showNavbar = true;
-    this.hideNavService.showSystemNavbar = true;
+    this.navService.showNavbar = true;
+    this.navService.showSystemNavbar = true;
   }
 
   private initializeForm() {

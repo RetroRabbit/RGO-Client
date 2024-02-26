@@ -4,8 +4,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 
-export class HideNavService {
+export class NavService {
   public showNavbar: boolean = false;
   public showSystemNavbar: boolean = true;
   public unsavedChanges: boolean = false;
+  public isHris: boolean = true;
 }
