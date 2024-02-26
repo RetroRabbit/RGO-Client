@@ -8,7 +8,11 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+<<<<<<< HEAD
 import { MatSort } from '@angular/material/sort';
+=======
+import { MatSort, Sort } from '@angular/material/sort';
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { Dialog } from 'src/app/models/confirm-modal.interface';
 import { SystemNav } from 'src/app/services/system-nav.service';
@@ -88,6 +92,10 @@ export class ManageFieldCodeComponent {
         this.getActivePassive();
         this.activeTab = active;
         this.isLoading = false;
+<<<<<<< HEAD
+=======
+        this.sortByIdDefault(this.dataSource.sort);
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
       },
       error: () => {
         this.snackBarService.showSnackbar("Error fetching field codes", "snack-error");
@@ -223,6 +231,19 @@ export class ManageFieldCodeComponent {
     this.paginator.pageIndex = 0;
     this.selectedFieldCodes = [];
     this.filterText = "";
+<<<<<<< HEAD
+=======
+    this.sortByIdDefault(this.sort);
+  }
+
+  sortByIdDefault(sort: MatSort) {
+    const sortState: Sort = {active: 'id', direction: 'asc'};
+    if (sort) {
+      sort.active = sortState.active;
+      sort.direction = sortState.direction;
+      sort.sortChange.emit(sortState);
+    }
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
   }
 
   changePageSize(size: number) {
@@ -285,9 +306,20 @@ export class ManageFieldCodeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
+<<<<<<< HEAD
   onRowSelect(fieldCode: FieldCode) {
     if (this.selectedFieldCodes?.includes(fieldCode)) {
       this.selectedFieldCodes.splice(this.selectedFieldCodes.indexOf(fieldCode), 1);
+=======
+  onRowSelect(fieldCode: FieldCode, event: any) {
+    if (this.selectedFieldCodes?.includes(fieldCode)) {
+      this.selectedFieldCodes.splice(this.selectedFieldCodes.indexOf(fieldCode), 1);
+      if (Array.isArray(event.checked) && !event.checked.includes(true)) {
+        this.passiveFields--;
+      } else {
+        this.passiveFields++;
+      }
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
     }
     else {
       this.selectedFieldCodes?.push(fieldCode);

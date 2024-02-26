@@ -1,3 +1,4 @@
+<<<<<<< HEAD
   <div class="container mt-4">
     <div class="w-75 py-3">
       <button mat-button class="btn" id="back-button" (click)="goToEmployees()"
@@ -10,6 +11,20 @@
         <mat-icon>arrow_back</mat-icon>
         <span>Back to Dashboard</span>
       </button>
+=======
+<div class="container">
+    <div class="py-3">
+        <button mat-button class="btn" id="back-button" (click)="goToEmployees()"
+            *ngIf="previousPage == '/employees' && showBackButtons">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Back to Employees</span>
+        </button>
+        <button mat-button class="btn" id="back-button" (click)="goToDashboard()"
+            *ngIf="previousPage == '/dashboard'  &&  showBackButtons">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Back to Dashboard</span>
+        </button>
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
     </div>
     <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
             'background-color': '#D7DFFF',
@@ -19,6 +34,7 @@
             width: '100%',
           }">
     </ngx-skeleton-loader>
+<<<<<<< HEAD
     <div id="profile-header" *ngIf="!isLoading" class="row p-2">
       <div class="col-2 mt-4">
         <div id="profile-image">
@@ -248,3 +264,302 @@
       </div>
     </div>
   </div>
+=======
+    <div id="profile-header" *ngIf="!isLoading" class="row p-2 m-1">
+        <div class="col-4 col-md-2 mt-4">
+            <div id="profile-image">
+                <img (click)="uploadFile.click()" [src]="employeeProfile.photo" alt="Profile img">
+                <input type="file" #uploadFile (change)="onFileChange($event)" hidden>
+            </div>
+        </div>
+        <div class="col-8 col-md-10 offset-lg-0 col-lg-10 mt-3">
+            <div class="row mt-3">
+                <div class="col-12 col-md-6" id="header-name">
+                    <h1 class="mb-0">{{usingSimpleProfile ? simpleEmployee.name :employeeProfile.name}}
+                        {{usingSimpleProfile ?
+                        simpleEmployee.surname : employeeProfile.surname}}</h1>
+                </div>
+                <div class="col-12 col-md-6 mt-md-1" id="header-email">
+                    <div class="row me-4 d-flex justify-content-start d-md-flex justify-content-md-end">
+                        <div class="col-auto">{{usingSimpleProfile ? simpleEmployee.email : employeeProfile.email}}
+                        </div>
+                        <div class="col-1 mt-2" id="header-email-clip"><mat-icon>attachment</mat-icon></div>
+                    </div>
+                </div>
+                <div class="col-12 my-2 d-none d-md-block" id="header-role">
+                    {{usingSimpleProfile ? simpleEmployee.employeeType?.name :employeeProfile.employeeType?.name}} |
+                    Level {{usingSimpleProfile ? simpleEmployee.level :employeeProfile.level}}
+                </div>
+                <div class="col-12 my-2 d-none d-md-block" id="header-based"
+                    *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">
+                    Based in {{employeePhysicalAddress.city}}
+                </div>
+            </div>
+        </div>
+        <div class=" d-block d-md-none d-flex justify-content-center mt-2">
+            <div class="col-auto" id="header-role">
+                {{usingSimpleProfile ? simpleEmployee.employeeType?.name :employeeProfile.employeeType?.name}} | Level
+                {{usingSimpleProfile ? simpleEmployee.level :employeeProfile.level}}
+            </div>
+            <div class="col-auto" id="header-based"
+                *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">
+                Based in {{employeePhysicalAddress.city}}
+            </div>
+        </div>
+        <div class="col-12 col-md-10 offset-md-2 my-2">
+            <div class="row" id="quick-info">
+                <div class="col-12 col-md-6 col-lg-3 mb-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>people_outline</mat-icon>
+                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">Team Lead</div>
+                            <div id="header-value" *ngIf="!usingSimpleProfile;else NonAdminTeamLead">
+                                {{employeeTeamLead ? employeeTeamLead.name + ' ' + employeeTeamLead.surname : 'Not
+                                assigned'}}
+                            </div>
+                            <ng-template #NonAdminTeamLead>
+                                {{simpleEmployee.teamLeadId ? simpleEmployee.teamLeadName : 'Not assigned'}}
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 mb-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>card_membership</mat-icon>
+                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">People Champion</div>
+                            <div id="header-value" *ngIf="!usingSimpleProfile;else NonAdminPeopleChampion">
+                                {{employeePeopleChampion ? employeePeopleChampion.name + ' ' +
+                                employeePeopleChampion.surname: 'Not assigned'}}
+                            </div>
+                            <ng-template #NonAdminPeopleChampion>
+                                {{simpleEmployee.peopleChampionName}}
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 mb-2">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>business_center</mat-icon>
+                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">Client Allocated</div>
+                            <div id="header-value" *ngIf="employeeClient !== undefined">
+                                {{employeeClient.name ?? 'Bench'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="row">
+                        <div class="col-3" id="outer-icon-container">
+                            <div id="icon-container">
+                                <mat-icon>date_range</mat-icon>
+                            </div>
+                        </div>
+                        <div class="col-9 my-2">
+                            <div id="header-label">Start Date</div>
+                            <div *ngIf="!usingSimpleProfile;else NonAdminEngagementDate" id="header-value">
+                                {{ employeeProfile.engagementDate| date:'d MMM yyyy' }}
+                            </div>
+                            <ng-template #NonAdminEngagementDate>
+                                {{simpleEmployee.engagementDate| date:'d MMM yyyy'}}
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+        'background-color': '#D7DFFF',
+        'border': '2px solid #D7DFFF',
+        'border-radius': '2rem',
+        'height': '250px',
+        width: '100%',
+      }" />
+    <div id="profile-completion" *ngIf="!isLoading" class="row my-4 p-3 m-2 m-md-0 p-md-4 mt-md-4 mb-md-4 ">
+        <div class="col-12 mt-2" id="completion-header">
+            <div class="row" id="completion-header-container">
+                <div class="col-2 col-md-1 d-lg-flex">
+                    <div id="outer-icon-container">
+                        <div id="icon-container" class="me-0 pe-0">
+                            <mat-icon>person_outline</mat-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <h4 style="margin:0"> {{usingSimpleProfile ? simpleEmployee.name :employeeProfile.name}}'s profile
+                        progess </h4>
+                </div>
+            </div>
+        </div>
+        <div class="col offset-2 offset-md-0 mt-md-2">
+            <div class="row">
+                <div class="col-12">
+                    <h3 id="progress-require-message">Add all required information to complete profile</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-11 px-4 d-none d-md-block col-md-12 mb-md-3 mb-lg-0">
+            <div class="row " id="accordion-progress">
+                <div class="col-2 py-3 col-md-3" id="progress-stats"
+                    style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                    <h5>Profile Details {{ profileFormProgress }}%</h5>
+                </div>
+                <div class="col border" id="horizontal"></div>
+                <div class="col-2 py-3 col-md-4 col-lg-3" id="progress-stats"
+                    style="background-color: {{ bankInformationProgress === 100 && bankStatus == 0 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 && bankStatus == 0 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 && bankStatus == 0 ? '1px solid #0029c6' : '1px solid grey' }}">
+                    <h5>Bank Information {{bankInformationProgress}}%</h5>
+                </div>
+                <div class="col border" id="horizontal"></div>
+                <div class="col-2 py-3 col-md-3" id="progress-stats"
+                    style="background-color: {{ documentFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ documentFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ documentFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                    <h5>Documents {{documentFormProgress}}%</h5>
+                </div>
+            </div>
+        </div>
+        <div [ngClass]="screenWidth <= 767 ?'col-12 border-top pt-3':'col-12 pt-3'">
+            <div class="row">
+                <div class="col-12 pt-1 col-md-auto" id="overall-text">
+                    <h4>
+                        {{overallFormProgress}}% Overall Completed
+                    </h4>
+                </div>
+                <div class="col-12 mb-2 col-md-8 mt-md-3 col-lg p-0" id="progress-container">
+                    <mat-progress-bar mode="determinate" [value]=overallFormProgress id="overall-progress-bar"
+                        style="border: blue;"></mat-progress-bar>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 d-block d-md-none mt-3 mb-3">
+            <div class="col-12" id="accordion-progress">
+                <div class="row ms-0 col-12">
+                    <div class="col-2 d-flex justify-content-center">
+                        <div id="outer-icon-container">
+                            <div id="icon-container" class="me-0 pe-0"
+                                style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                                <mat-icon>person_search</mat-icon>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-10 ms-0 mt-2 row d-flex align-content-center">
+                        <h5 class="col-10">Profile Details </h5>
+                        <h5 class="col-2">{{ profileFormProgress }}%</h5>
+                    </div>
+                </div>
+                <div class="col-2 d-flex justify-content-center">
+                    <div id="line"></div>
+                </div>
+                <div class="row ms-0 col-12">
+                    <div class="col-2 d-flex justify-content-center">
+                        <div id="outer-icon-container">
+                            <div id="icon-container" class="me-0 pe-0"
+                                style="background-color: {{ bankInformationProgress === 100 && bankStatus == 0 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 && bankStatus == 0 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 && bankStatus == 0 ? '1px solid #0029c6' : '1px solid grey' }}">
+                                <mat-icon>account_balance</mat-icon>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-10 ms-0 mt-2 row d-flex align-content-center">
+                        <h5 class="col-10">Bank Information </h5>
+                        <h5 class="col-2">{{bankInformationProgress}}%</h5>
+                    </div>
+                </div>
+                <div class="col-2 d-flex justify-content-center">
+                    <div id="line"></div>
+                </div>
+                <div class="row ms-0 col-12">
+                    <div class="col-2 d-flex justify-content-center">
+                        <div id="outer-icon-container">
+                            <div id="icon-container" class="me-0 pe-0"
+                                style="background-color: {{ documentFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ documentFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ documentFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+                                <mat-icon>assignment</mat-icon>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-10 ms-0 mt-2 row d-fle align-content-center">
+                        <h5 class="col-10">Documents </h5>
+                        <h5 class="col-2">{{documentFormProgress}}%</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+        'background-color': '#D7DFFF',
+        'border': '2px solid #D7DFFF',
+        'border-radius': '2rem',
+        'height': '380px',
+        width: '100%',
+      }" />
+    <div id="profile-accordions" *ngIf="!isLoading">
+        <div id="accordions-nav"
+            [ngClass]="screenWidth <= 767 ?'col-12 ms-0 d-flex overflow-x-scroll rounded-3':'row col-12 ms-0 rounded-3'">
+            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-4'">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)"
+                            [ngClass]="selectedItem == 'Profile Details' ? 'active' : 'idle'">
+                            Profile Details
+                        </div>
+                        <div *ngIf="selectedItem == 'Profile Details'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-4'">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)"
+                            [ngClass]="selectedItem == 'Bank Information' ? 'active' : 'idle'">
+                            Bank Information
+                        </div>
+                        <div *ngIf="selectedItem == 'Bank Information'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-4'">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Documents' ? 'active' : 'idle'">
+                            Documents
+                        </div>
+                        <div *ngIf="selectedItem == 'Documents'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="accordions-body`" class="row m-2" *ngIf="employeeProfile">
+            <app-accordion-profile [hidden]="selectedAccordion != 'Profile Details'"
+                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile>
+            <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"
+                [employeeProfile]="employeeProfile"
+                (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
+            <app-accordion-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
+                (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents>
+        </div>
+    </div>
+</div>
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c

@@ -32,7 +32,11 @@ export class AdminDashboardComponent {
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() expandSearch = new EventEmitter<string>();
 
+<<<<<<< HEAD
   screenWidth= window.innerWidth;
+=======
+  screenWidth = window.innerWidth;
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
@@ -59,6 +63,10 @@ export class AdminDashboardComponent {
   searchResults: EmployeeProfile[] = [];
   employeeProfiles: EmployeeProfile[] = [];
   allFlag: boolean = false;
+<<<<<<< HEAD
+=======
+  isLoading: boolean = true;
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 
   PREVIOUS_PAGE: string = 'previousPage';
 
@@ -87,8 +95,12 @@ export class AdminDashboardComponent {
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
     private hideNavService: HideNavService,
+<<<<<<< HEAD
     public authAccessService: AuthAccessService
   ) {
+=======
+    public authAccessService: AuthAccessService) {
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
     hideNavService.showNavbar = true;
   }
 
@@ -96,7 +108,16 @@ export class AdminDashboardComponent {
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
+<<<<<<< HEAD
     this.configureDashboardData();
+=======
+    if (this.authAccessService.isAdmin() ||
+      this.authAccessService.isSuperAdmin() ||
+      this.authAccessService.isTalent() ||
+      this.authAccessService.isJourney()) {
+      this.configureDashboardData();
+    }
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
   }
 
   configureDashboardData() {
@@ -116,6 +137,10 @@ export class AdminDashboardComponent {
   }
 
   getDataCardsData() {
+<<<<<<< HEAD
+=======
+    this.isLoading = false;
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
     this.employeeService.getTotalEmployees().subscribe({
       next: (data: number) => {
         this.totalNumberOfEmployees = data;

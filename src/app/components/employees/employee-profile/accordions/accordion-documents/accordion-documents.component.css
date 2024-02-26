@@ -67,3 +67,10 @@
     padding: 0.5rem;
     width: 8rem;
 }
+<<<<<<< HEAD
+=======
+
+:host .upload-download-button {
+    width: 100%!important;
+}
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c

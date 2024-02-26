@@ -53,8 +53,13 @@ export class ChartComponent implements OnInit {
   constructor(private chartService: ChartService, private cookieService: CookieService, public dialog: MatDialog, private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document, private employeeService: EmployeeService, private snackBarService: SnackbarService,
     navService: HideNavService) {
+<<<<<<< HEAD
       navService.showNavbar = true;
      }
+=======
+    navService.showNavbar = true;
+  }
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 
   public barChartOptions: ChartConfiguration['options'] = {
     events: [],
@@ -80,7 +85,11 @@ export class ChartComponent implements OnInit {
       legend: {
         display: true,
         position: 'bottom',
+<<<<<<< HEAD
         labels:{
+=======
+        labels: {
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
           font: {
             size: 14
           }
@@ -98,8 +107,13 @@ export class ChartComponent implements OnInit {
   public pieChartOptions: ChartConfiguration['options'] = {
     events: [],
     responsive: true,
+<<<<<<< HEAD
     layout:{
       padding:{
+=======
+    layout: {
+      padding: {
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
         left: 20
       }
     },
@@ -107,7 +121,11 @@ export class ChartComponent implements OnInit {
       legend: {
         display: true,
         position: 'right',
+<<<<<<< HEAD
         labels:{
+=======
+        labels: {
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
           font: {
             size: 14
           }
@@ -120,7 +138,11 @@ export class ChartComponent implements OnInit {
       } as any,
     },
   };
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
   getChartOptions(chartType: string) {
     return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
   }
@@ -165,8 +187,13 @@ export class ChartComponent implements OnInit {
       },
       error: error => {
         this.snackBarService.showSnackbar("Chart display unsuccessful", "snack-error");
+<<<<<<< HEAD
        }
   });
+=======
+      }
+    });
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
   }
 
   getNumberOfEmployees(): void {
@@ -251,15 +278,26 @@ export class ChartComponent implements OnInit {
             this.employeeNames[employee.id] = `${employee.name} ${employee.surname}`;
           }
         });
+<<<<<<< HEAD
   }, error: (error) => {
 
     this.snackBarService.showSnackbar("Failed to fetch people champion", "snack-error");
+=======
+      }, error: (error) => {
+
+        this.snackBarService.showSnackbar("Failed to fetch people champion", "snack-error");
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 
       }, complete: () => {
         this.createAndDisplayChart();
       },
 
+<<<<<<< HEAD
 });}
+=======
+    });
+  }
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 
   getEmployeeName(employeeId: string | undefined): string {
 

@@ -3,7 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Employee } from '../../models/employee.interface';
 import { EmployeeProfile } from '../../models/employee-profile.interface';
+<<<<<<< HEAD
 import { environment } from '../../../environments/environment';
+=======
+import { environment } from '../../../enviroment/environment';
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 import { AuthAccessService } from '../auth-access.service';
 import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
 import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';

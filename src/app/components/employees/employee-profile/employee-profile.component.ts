@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
+=======
+import { Component, ChangeDetectorRef,ViewChild, HostListener } from '@angular/core';
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -20,6 +24,10 @@ import { AccordionProfileComponent } from './accordions/accordion-profile/accord
 import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents.component';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
 import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
+<<<<<<< HEAD
+=======
+
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
@@ -72,7 +80,12 @@ export class EmployeeProfileComponent {
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
   base64Image: string = '';
+<<<<<<< HEAD
 
+=======
+  screenWidth = window.innerWidth;
+  
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
   @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
   @ViewChild(AccordionDocumentsComponent) documentAccordion!: AccordionDocumentsComponent;
@@ -80,6 +93,14 @@ export class EmployeeProfileComponent {
   imageUrl!: string;
   validateFile: any;
 
+<<<<<<< HEAD
+=======
+  @HostListener('window:resize',['$event'])
+  onResize(){
+    this.screenWidth = window.innerWidth;
+  }
+
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
   constructor(private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
     private clientService: ClientService,

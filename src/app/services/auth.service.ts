@@ -2,15 +2,25 @@ import { Injectable } from '@angular/core';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Observable, firstValueFrom, take, EMPTY, catchError, map } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+<<<<<<< HEAD
 import { environment } from '../../environments/environment';
 import { Store } from '@ngrx/store';
 import { Token } from '../models/token.interface';
 import { tap } from 'rxjs/operators';
+=======
+import { environment } from '../../enviroment/environment';
+import { Store } from '@ngrx/store';
+import { Token } from '../models/token.interface';
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 
 @Injectable({
   providedIn: 'root'
 })
+<<<<<<< HEAD
 export class AuthServices {
+=======
+export class AuthService {
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
   baseUrl: string;
 
   constructor(
@@ -25,6 +35,7 @@ export class AuthServices {
     return this.auth.isAuthenticated$.pipe(take(1))
   }
 
+<<<<<<< HEAD
 
   getConfig() {
 
@@ -40,6 +51,8 @@ export class AuthServices {
     return EMPTY
 }
 
+=======
+>>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
   login(employeeEmail: string | undefined): Observable<string> {
     let header: HttpHeaders = new HttpHeaders();
     return this.client
