@@ -4,7 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Observable, map, startWith } from 'rxjs';
 import { EmployeeDate } from 'src/app/models/employee-date.interface';
 import { EmployeeDateService } from 'src/app/services/employee/employee-date.service';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 
@@ -34,7 +34,7 @@ export class ManageEmployeeEventsComponent {
     private notificationService: NotificationService,
     private cookieService: CookieService,
     private snackBarService: SnackbarService,
-    private navService: HideNavService) {
+    private navService: NavService) {
       navService.showNavbar = true;
      }
 

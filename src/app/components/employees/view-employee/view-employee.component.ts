@@ -29,7 +29,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
 import { EmployeeType } from 'src/app/models/constants/employeeTypes.constants';
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
@@ -83,12 +83,12 @@ export class ViewEmployeeComponent {
     private cookieService: CookieService,
     private ngZone: NgZone,
     private router: Router,
-    private hideNavService: HideNavService,
+    private navService: NavService,
     private snackBarService: SnackbarService,
     public authAccessService: AuthAccessService,
     private employeeTypeService: EmployeeTypeService
   ) {
-    hideNavService.showNavbar = true;
+    navService.showNavbar = true;
   }
 
   ngOnInit() {

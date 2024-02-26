@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { CookieService } from 'ngx-cookie-service';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { ChartService } from 'src/app/services/charts.service';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { Router } from '@angular/router';
@@ -17,7 +17,8 @@ import { AuthAccessService } from 'src/app/services/auth-access.service';
 export class NavBarComponent {
   [x: string]: any;
   title = 'HRIS';
-  showNav = this.hideNavService.showNavbar;
+  showNav = this.navService.showNavbar;
+  isHris = this.navService.isHris;
   screenWidth!: number;
   roles!: string[];
   employeeProfile: EmployeeProfile | undefined;
@@ -44,7 +45,7 @@ export class NavBarComponent {
     private auth: AuthService,
     public router: Router,
     public cookieService: CookieService,
-    public hideNavService: HideNavService,
+    public navService: NavService,
     public authAccessService: AuthAccessService
   ) {
     this.screenWidth = window.innerWidth;
@@ -55,7 +56,7 @@ export class NavBarComponent {
   }
 
   signIn() {
-    this.hideNavService.showNavbar = true;
+    this.navService.showNavbar = true;
     const types: string = this.cookieService.get('userType');
     const userEmail = this.cookieService.get('userEmail');
     this.roles = Object.keys(JSON.parse(types));
@@ -86,14 +87,14 @@ export class NavBarComponent {
   }
 
   logout() {
-    this.hideNavService.showNavbar = false;
+    this.navService.showNavbar = false;
     this.auth.logout({
       logoutParams: { returnTo: document.location.origin },
     });
   }
 
   changeNav(route: string) {
-    if (this.hideNavService.unsavedChanges) {
+    if (this.navService.unsavedChanges) {
       this.tempRoute = route;
       this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
 
@@ -103,10 +104,33 @@ export class NavBarComponent {
     }
   }
 
+  switchAts(route: string){
+    if (this.navService.unsavedChanges) {
+      this.tempRoute = route;
+      this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
+
+      this.showConfirmDialog = true;
+    } else {
+      this.isHris =false;
+      this.router.navigate([route]);
+    }
+  }
+  switchHris(route: string){
+    if (this.navService.unsavedChanges) {
+      this.tempRoute = route;
+      this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
+
+      this.showConfirmDialog = true;
+    } else {
+      this.isHris =true;
+      this.router.navigate([route]);
+    }
+  }
+
   dialogFeedBack(event: any) {
     this.showConfirmDialog = false;
     if (event) {
-      this.hideNavService.unsavedChanges = false;
+      this.navService.unsavedChanges = false;
       this.router.navigate([this.tempRoute]);
     } else {
     }

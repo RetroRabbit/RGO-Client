@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { FieldCode } from 'src/app/models/field-code.interface';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { SystemNav } from 'src/app/services/system-nav.service';
 @Component({
   selector: 'app-system-settings',
@@ -12,8 +12,8 @@ export class SystemSettingsComponent {
   @Output() emitFieldCode = new EventEmitter<FieldCode>();
   clicked: string = "";
 
-  constructor(public cookieService: CookieService, public hideNavService: HideNavService, public systemNavItemService: SystemNav) {
-    hideNavService.showNavbar = true;
+  constructor(public cookieService: CookieService, public navService: NavService, public systemNavItemService: SystemNav) {
+    navService.showNavbar = true;
   }
 
   displayRoleManagement(): void {

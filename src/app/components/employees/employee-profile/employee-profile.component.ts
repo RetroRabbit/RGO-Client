@@ -13,7 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
 import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { Document } from 'src/app/models/constants/documents.contants';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { ClientService } from 'src/app/services/client.service';
 import { AccordionBankingComponent } from './accordions/accordion-banking/accordion-banking.component';
 import { AccordionProfileComponent } from './accordions/accordion-profile/accordion-profile.component';
@@ -95,7 +95,7 @@ export class EmployeeProfileComponent {
     private router: Router,
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
-    private navService: HideNavService,
+    private navService: NavService,
     private changeDetectorRef: ChangeDetectorRef,
     public authAccessService: AuthAccessService) {
     navService.showNavbar = true;
