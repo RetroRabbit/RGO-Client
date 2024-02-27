@@ -1,0 +1,32 @@
+#nav-item>div {
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#nav-item>div:hover {
+    cursor: pointer;
+}
+
+#nav-item>div.active {
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+.nav-item-mobile{
+  width: 150px;
+  max-width: 100%;
+  overflow-x: scroll;
+  flex-shrink: 0;
+  display: flex;
+  margin-left: 7%;
+}

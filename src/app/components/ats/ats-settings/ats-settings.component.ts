@@ -3,12 +3,11 @@ import { FormBuilder } from '@angular/forms';
 import { NavService } from 'src/app/services/nav.service';
 
 @Component({
-  selector: 'app-ats-dashboard',
-  templateUrl: './ats-dashboard.component.html',
-  styleUrls: ['./ats-dashboard.component.css']
+  selector: 'app-ats-settings',
+  templateUrl: './ats-settings.component.html',
+  styleUrls: ['./ats-settings.component.css']
 })
-export class AtsDashboardComponent {
-  
+export class AtsSettingsComponent {
   constructor(private fb: FormBuilder,
     private navService: NavService
   ) {

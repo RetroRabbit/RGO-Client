@@ -99,6 +99,19 @@
     width: 2.5rem;
   }
 
+  #options-trigger-upsidedown {
+    align-items: center;
+    border-radius: 50%;
+    background-color: #b9c8ff;
+    display: flex;
+    padding: 0;
+    justify-content: center;
+    min-width: 0;
+    height: 2.5rem;
+    width: 2.5rem;
+    rotate: 180deg;
+  }
+
   #menu-icon {
     color: #0029c6;
     margin: 0 auto;
@@ -180,4 +193,8 @@
   }
   #info-menu > #nav-item-container > button:hover{
     cursor: pointer;
+  }
+
+  #dropdown-buttons:hover{
+    background-color: #b9c8ff;
   }
