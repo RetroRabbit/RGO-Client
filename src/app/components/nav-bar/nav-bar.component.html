@@ -121,52 +121,11 @@
           <div class="col-2">
             <div id="nav-item-container">
               <div id="nav-item">
-                <div (click)="changeNav('/ats-profile')" [ngClass]="router.url.includes('/ats-profile') ? 'active' : 'idle'">
+                <div (click)="changeNav('/profile')"
+                  [ngClass]="router.url.includes('/profile') ? 'active' : 'idle'">
                   Profile
                 </div>
-                <div *ngIf="router.url.includes('/ats-profile')" id="selected-line-box">
-                  <div id="selected-line">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-2"
-            *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
-            <div id="nav-item-container">
-              <div id="nav-item">
-                <div (click)="changeNav('/ats-applicants')" [ngClass]="router.url == '/ats-applicants' ? 'active' : 'idle'">
-                  Applicants
-                </div>
-                <div *ngIf="router.url == '/ats-applicants'" id="selected-line-box">
-                  <div id="selected-line">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-2"
-          *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
-          <div id="nav-item-container">
-            <div id="nav-item">
-              <div (click)="changeNav('/ats-reports')" [ngClass]="router.url == '/ats-reports' ? 'active' : 'idle'">
-                Reports
-              </div>
-              <div *ngIf="router.url == '/ats-reports'" id="selected-line-box">
-                <div id="selected-line">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-          <div class="col-3" *ngIf="authAccessService.isAdmin()">
-            <div id="nav-item-container">
-              <div id="nav-item">
-                <div (click)="changeNav('/ats-settings')"
-                  [ngClass]="router.url == '/ats-settings' ? 'active' : 'idle'">
-                  Settings
-                </div>
-                <div *ngIf="router.url == '/ats-settings'" id="selected-line-box">
+                <div *ngIf="router.url.includes('/profile')" id="selected-line-box">
                   <div id="selected-line">
                   </div>
                 </div>
@@ -212,7 +171,8 @@
               </div>
             </div>
           </button>
-          <button mat-menu-item *ngIf="isHris" (click)="switchAts('/ats-dashboard')" id="dropdown-buttons" class="rounded-5 row mb-2">
+          <button mat-menu-item *ngIf="isHris" (click)="switchAts('/ats-dashboard')" id="dropdown-buttons"
+            class="rounded-5 row mb-2">
             <div class="row d-flex justify-content-center align-items-center align-content-center">
               <div class="col-2 mt-2">
                 <mat-icon>compare_arrows</mat-icon>
@@ -223,7 +183,8 @@
               </div>
             </div>
           </button>
-          <button mat-menu-item *ngIf="!isHris" (click)="switchHris('/dashboard')" id="dropdown-buttons" class="rounded-5 row mb-2">
+          <button mat-menu-item *ngIf="!isHris" (click)="switchHris('/dashboard')" id="dropdown-buttons"
+            class="rounded-5 row mb-2">
             <div class="row d-flex justify-content-center align-items-center align-content-center">
               <div class="col-2 mt-2">
                 <mat-icon>compare_arrows</mat-icon>

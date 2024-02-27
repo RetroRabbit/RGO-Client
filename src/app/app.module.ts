@@ -81,10 +81,6 @@ import { AccordionBankingComponent } from './components/employees/employee-profi
 import { AccordionDocumentsComponent } from './components/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
-import { AtsProfileComponent } from './components/ats/ats-profile/ats-profile.component';
-import { AtsApplicantsComponent } from './components/ats/ats-applicants/ats-applicants.component';
-import { AtsReportsComponent } from './components/ats/ats-reports/ats-reports.component';
-import { AtsSettingsComponent } from './components/ats/ats-settings/ats-settings.component';
 
 @NgModule({
   declarations: [
@@ -117,10 +113,6 @@ import { AtsSettingsComponent } from './components/ats/ats-settings/ats-settings
     AccordionDocumentsComponent,
     LoadingComponentComponent,
     AtsDashboardComponent,
-    AtsProfileComponent,
-    AtsApplicantsComponent,
-    AtsReportsComponent,
-    AtsSettingsComponent,
   ],
   imports: [
     BrowserModule,

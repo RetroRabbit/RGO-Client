@@ -13,10 +13,6 @@ import { EmployeeProfileComponent } from './components/employees/employee-profil
 import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
-import { AtsProfileComponent } from './components/ats/ats-profile/ats-profile.component';
-import { AtsApplicantsComponent } from './components/ats/ats-applicants/ats-applicants.component';
-import { AtsSettingsComponent } from './components/ats/ats-settings/ats-settings.component';
-import { AtsReportsComponent } from './components/ats/ats-reports/ats-reports.component';
 
 
 
@@ -36,10 +32,6 @@ const routes: Routes = [
   {path: 'update-fieldcode', component: UpdateFieldComponent},
   {path: 'employee-details', component: EmployeeDetailsComponent},
   {path: 'ats-dashboard', component: AtsDashboardComponent},
-  {path: 'ats-profile', component: AtsProfileComponent},
-  {path: 'ats-applicants', component: AtsApplicantsComponent},
-  {path: 'ats-reports', component: AtsReportsComponent},
-  {path: 'ats-settings', component: AtsSettingsComponent},
 ];
 
 @NgModule({
