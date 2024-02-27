@@ -31,7 +31,7 @@ const routes: Routes = [
   {path: 'new-fieldcode', component: NewFieldCodeComponent},
   {path: 'update-fieldcode', component: UpdateFieldComponent},
   {path: 'employee-details', component: EmployeeDetailsComponent},
-  {path: 'ats-dashboard', component: AtsDashboardComponent}
+  {path: 'ats-dashboard', component: AtsDashboardComponent},
 ];
 
 @NgModule({

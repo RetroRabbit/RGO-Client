@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { NavService } from 'src/app/services/nav.service';
 
 @Component({
   selector: 'app-ats-dashboard',
@@ -6,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./ats-dashboard.component.css']
 })
 export class AtsDashboardComponent {
-
+  
+  constructor(private fb: FormBuilder,
+    private navService: NavService
+  ) {
+    navService.showNavbar = true;
+    navService.isHris = false;
+  }
 }
