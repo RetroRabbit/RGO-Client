@@ -1,11 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-<<<<<<< HEAD
 import { environment } from '../../../environments/environment';
-=======
-import { environment } from '../../../enviroment/environment';
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 import { EmployeeProfile } from '../../models/employee-profile.interface';
 import { Token } from '../../models/token.interface';
 import { Store } from '@ngrx/store';

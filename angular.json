@@ -13,10 +13,6 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-<<<<<<< HEAD
-=======
-            "customWebpackConfig": { "path": "src/custom-webpack.config.ts" },
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
             "outputPath": "dist/rgo-client",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -43,13 +39,8 @@
               "budgets": [
                 {
                   "type": "initial",
-<<<<<<< HEAD
                   "maximumWarning": "4mb",
                   "maximumError": "8mb"
-=======
-                  "maximumWarning": "2mb",
-                  "maximumError": "4mb"
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
                 },
                 {
                   "type": "anyComponentStyle",

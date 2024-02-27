@@ -1,7 +1,4 @@
 <div id="group" class="d-flex flex-column flex-md-row">
-<<<<<<< HEAD
-  <div class="searchbar align-items-center justify-content-center p-0 mb-3 mb-md-0">
-=======
   <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
     'background-color': '#D7DFFF',
     'border': '2px solid #D7DFFF',
@@ -11,7 +8,6 @@
   }">
   </ngx-skeleton-loader>
   <div *ngIf="!isLoading" class="searchbar align-items-center justify-content-center p-0 mb-3 mb-md-0">
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
     <div id="leading-icon"></div>
     <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
       [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off" />
@@ -31,10 +27,6 @@
       Employee</button>
   </div>
 </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 <div id="search-results-container">
   <div *ngIf="searchResults.length > 0">
     <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
@@ -68,10 +60,6 @@
   </div>
 </div>
 
-<<<<<<< HEAD
-
-<div  [ngClass]="screenWidth <= 767 ? 'data-cards-container-mobile' : (screenWidth <= 991 ? 'data-cards-container-tablet' : 'data-cards-container-desktop')">
-=======
 <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
   'background-color': '#D7DFFF',
   'border': '2px solid #D7DFFF',
@@ -82,7 +70,6 @@
 </ngx-skeleton-loader>
 
 <div  *ngIf="!isLoading" [ngClass]="screenWidth <= 767 ? 'data-cards-container-mobile' : (screenWidth <= 991 ? 'data-cards-container-tablet' : 'data-cards-container-desktop')">
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
   <div class="data-card" [ngClass]="screenWidth <= 991 ? 'data-card-tablet' : 'data-card-mobile'">
     <div class="row">
       <div class="col-3">
@@ -230,11 +217,7 @@
 </div>
 
 <div class="px-4 container-fluid pt-4" id="graph-container">
-<<<<<<< HEAD
-  <ngx-skeleton-loader count="1" appearance="line" animation="pulse" *ngIf="loadCounter < 4" [theme]="{ 
-=======
   <ngx-skeleton-loader count="1" appearance="line" animation="pulse" *ngIf="loadCounter < 4" [theme]="{
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
     'background-color': '#D7DFFF',
     'border': '2px solid #D7DFFF',
     'border-radius': '2rem',
@@ -242,11 +225,7 @@
     width: '100%',
   }" />
 
-<<<<<<< HEAD
-  <div id="graphs" *ngIf="loadCounter == 4">
-=======
   <div id="graphs" *ngIf="loadCounter >= 4">
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
     <div *ngIf="charts.length < 1; else ShowCharts" class="py-4 row justify-content-center align-items-center"
       id="no-graphs">
       <div class="col-lg-6 col-md-6 col-sm-12">

@@ -2,11 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Chart } from '../models/charts.interface';
-<<<<<<< HEAD
-import { environment } from '../../environments/environment';
-=======
 import { environment } from '../../enviroment/environment';
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 
 @Injectable({
   providedIn: 'root'

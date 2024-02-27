@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-=======
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Client } from 'src/app/models/client.interface';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
@@ -37,8 +33,6 @@ import { AuthAccessService } from 'src/app/services/auth-access.service';
 })
 export class AccordionProfileComponent {
 
-<<<<<<< HEAD
-=======
   screenWidth = window.innerWidth;
 
   @HostListener('window:resize',['$event'])
@@ -46,7 +40,6 @@ export class AccordionProfileComponent {
     this.screenWidth = window.innerWidth;
   }
 
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
   @Output() updateProfile = new EventEmitter<number>();
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
   employees: EmployeeProfile[] = [];

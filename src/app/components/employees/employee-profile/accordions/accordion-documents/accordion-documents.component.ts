@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-=======
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { Document } from 'src/app/models/constants/documents.contants';
@@ -24,8 +20,6 @@ export class AccordionDocumentsComponent {
   @Output() updateDocument = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
 
-<<<<<<< HEAD
-=======
   screenWidth = window.innerWidth;
   
   @HostListener('window:resize',['$event'])
@@ -33,7 +27,6 @@ export class AccordionDocumentsComponent {
     this.screenWidth = window.innerWidth;
   }
 
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
   selectedEmployee!: EmployeeProfile;
   fileCategories = Document;
   documentFormProgress: number = 0;
@@ -253,18 +246,12 @@ export class AccordionDocumentsComponent {
 
   disableDownload(index : number){
     const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
-<<<<<<< HEAD
-    if(documentObject?.status == 2 || documentObject?.status == 3){
-      return false;
-    }
-=======
 
     if(documentObject == undefined)
       return false;
 
     if(documentObject?.status == 0 || documentObject?.status == 1)
       return false;
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
     return true;
   }
 }

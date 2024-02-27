@@ -66,13 +66,7 @@
 #profile-image {
     border-radius: 50%;
     overflow: hidden;
-<<<<<<< HEAD
-    height: 150px;
     margin: 0 auto;
-    width: 150px;
-=======
-    margin: 0 auto;
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 }
 
 #profile-image>img {
@@ -104,13 +98,8 @@
 
 #accordions-nav {
     background-color: #0029C6;
-<<<<<<< HEAD
-    border-radius: 1rem;
-    padding-top: 1rem
-=======
     padding-top: 1rem;
     display: flex;
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 }
 
 #nav-item>div {
@@ -137,8 +126,6 @@
     letter-spacing: 0.1px;
 }
 
-<<<<<<< HEAD
-=======
 .nav-item-mobile{
   width: 150px;
   max-width: 100%;
@@ -148,7 +135,6 @@
   margin-left: 7%;
 }
 
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
 #selected-line-box {
     width: 90px;
     height: 14px;
@@ -363,12 +349,6 @@
 :host ::ng-deep #reject-reason {
     color: #b3261eff;
 }
-<<<<<<< HEAD
-
-/* #svg-icon-w #icon-w {
-    fill: white;
-} */
-=======
   .col-2>#line{
     min-height: 2rem;
     width:0px;
@@ -386,4 +366,3 @@
 #overall-progress-bar{
     border-color: #0029C6;
 }
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
