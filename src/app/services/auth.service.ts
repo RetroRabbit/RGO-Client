@@ -10,7 +10,7 @@ import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthServices {
+export class AuthService {
   baseUrl: string;
 
   constructor(

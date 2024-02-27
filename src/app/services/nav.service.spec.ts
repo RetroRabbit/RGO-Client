@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HideNavService } from './hide-nav.service';
+import { NavService } from './nav.service';
 
-describe('HideNavService', () => {
-  let service: HideNavService;
+describe('NavService', () => {
+  let service: NavService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(HideNavService);
+    service = TestBed.inject(NavService);
   });
 
   it('should be created', () => {

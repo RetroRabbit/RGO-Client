@@ -8,7 +8,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 import { environment } from 'src/environments/environment';
 import { LoginEffects } from './store/effects/app.effects';
-import { AuthServices } from './services/auth.service';
+import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './interceptor/auth0.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EmployeeProfileComponent } from './components/employees/employee-profile/employee-profile.component';
@@ -94,7 +94,7 @@ import { firstValueFrom } from 'rxjs';
 // }
 
 
-export function provideConfig(authService: AuthServices) {
+export function provideConfig(authService: AuthService) {
   const config = authService.getConfig();
   return {
       domain: environment.DomainKey,
@@ -202,18 +202,18 @@ export function provideConfig(authService: AuthServices) {
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
-    AuthServices,
+    AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     {
       provide: APP_INITIALIZER,
       useFactory: provideConfig,
-      deps: [AuthServices],
+      deps: [AuthService],
       multi: true
     },
     {
       provide: AuthConfigService,
       useFactory: provideConfig,
-      deps: [AuthServices],
+      deps: [AuthService],
     },
   ],
   bootstrap: [AppComponent],
