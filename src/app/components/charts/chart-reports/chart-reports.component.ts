@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ChartService } from 'src/app/services/charts.service';
 import { ChartConfiguration } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 @Component({
   selector: 'app-report',
   templateUrl: './chart-reports.component.html',
@@ -18,7 +18,7 @@ export class ReportComponent {
 
   ngOnInit(){
   }
-  constructor(private chartService: ChartService, navService: HideNavService) {
+  constructor(private chartService: ChartService, navService: NavService) {
     navService.showNavbar = true;
   }
 

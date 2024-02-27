@@ -1,23 +1,10 @@
 <div class="col-12" id="accordion-container">
     <mat-accordion id="accordion" class="row">
-<<<<<<< HEAD
-        <mat-expansion-panel class="mt-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-=======
         <mat-expansion-panel class="mt-3 rounded-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Main Bank Account
                 </mat-panel-title>
-<<<<<<< HEAD
-                <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking?.status == 2">
-                    <mat-icon class="mx-1">error</mat-icon> Missing information
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <form [formGroup]="employeeBankingsForm">
-                <div class="row">
-                    <div class="col-10">
-=======
                 <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking?.status == 2" class="pe-0 pe-md-5">
                     <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
                 </mat-panel-description>
@@ -30,7 +17,6 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
                         <div class="row">
                             <div class="col-12 row my-3">
                                 <div class="col-7 my-2">
@@ -70,11 +56,7 @@
                                     </div>
                                 </div>
                             </div>
-<<<<<<< HEAD
-                            <div class="col-6 my-2">
-=======
                             <div class="col-12 col-md-6 my-2">
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Bank Account Owner</mat-label>
                                     <input matInput placeholder="Enter name of owner"
@@ -84,13 +66,8 @@
                                         Owner name is required</mat-error>
                                 </mat-form-field>
                             </div>
-<<<<<<< HEAD
-                            <div class="col-6"></div>
-                            <div class="col-6 my-2">
-=======
                             <div class="col-0 col-md-6 col-lg-6"></div>
                             <div class="col-12 col-md-6 my-2">
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Account Type</mat-label>
                                     <mat-select placeholder="Select Type" formControlName="accountType">
@@ -100,11 +77,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-<<<<<<< HEAD
-                            <div class="col-6 my-2">
-=======
                             <div class="col-12 col-md-6 my-2">
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Bank Name</mat-label>
                                     <mat-select placeholder="Select bank" formControlName="bankName">
@@ -114,11 +87,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-<<<<<<< HEAD
-                            <div class="col-6 my-2">
-=======
                             <div class="col-12 col-md-6 my-2">
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Account Number</mat-label>
                                     <input type="text" min="0" matInput placeholder="Enter account number"
@@ -131,11 +100,7 @@
                                         Account number must contain only numbers</mat-error>
                                 </mat-form-field>
                             </div>
-<<<<<<< HEAD
-                            <div class="col-6 my-2">
-=======
                             <div class="col-12 col-md-6">
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Branch Code</mat-label>
                                     <input type="text" min="0" matInput placeholder="Enter branch code"
@@ -149,39 +114,17 @@
                                 </mat-form-field>
                             </div>
                             <p id="base64"></p>
-<<<<<<< HEAD
-                            <div class="col-8 my-2">
-=======
                             <div class="col-12  col-md-5 my-2">
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
                                 <mat-label [ngStyle]="{color: editBanking ? 'black' : 'grey'}">
                                     Proof of account
                                 </mat-label>
                                 <div class="my-2">
-<<<<<<< HEAD
-                                    <div class="row">
-=======
                                     <div [ngClass]="screenWidth <= 767 ?'':'row'">
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
                                         <div *ngIf="hasFile">
                                             <button mat-button color="primary"
                                                 [hidden]="employeeBanking.file.length == 0"
                                                 (click)="convertFileToBase64()">Download</button>
                                         </div>
-<<<<<<< HEAD
-                                        <div class="col-5" [hidden]="!editBanking" class="row" id="uploadButton"
-                                            (click)="openFileInput()">
-                                            <div class="col" *ngIf="bankingPDFName.length > 1">
-                                                <p id="recently-uploaded">{{bankingPDFName}}</p>
-                                            </div>
-                                            <div class="col-1" style="color: blue" id="uploadfile">
-                                                <img src="../../../../assets/img/file_upload.svg" alt="">
-                                            </div>
-                                            <div class="col-5" id="uploadfile">
-                                                <h4>Upload document here</h4>
-                                                <input id="fileUpload" hidden type="file"
-                                                    (change)="onFileSelected($event)" accept=".pdf">
-=======
                                         <div class="col-12 row d-flex justify-content-center align-content-center" [hidden]="!editBanking"
                                             (click)="openFileInput()">
                                             <div class="col-12 row ms-1" *ngIf="bankingPDFName.length > 1">
@@ -209,7 +152,6 @@
                                                     <input id="fileUpload" hidden type="file"
                                                         (change)="onFileSelected($event)" accept=".pdf">
                                                 </div>
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
                                             </div>
                                         </div>
                                     </div>
@@ -217,18 +159,6 @@
                             </div>
                         </div>
                     </div>
-<<<<<<< HEAD
-                    <div class="col-2">
-                        <button *ngIf="!editBanking" mat-button id="edit-button" (click)="editBankingDetails()">
-                            <mat-icon>edit</mat-icon>Edit
-                            Details</button>
-                    </div>
-                    <div class="col-12" id="edit-buttons">
-                        <button *ngIf="editBanking" mat-button id="cancel-button"
-                            (click)="cancelBankingDetails()">Cancel</button>
-                        <button *ngIf="editBanking" mat-button id="save-button" (click)="saveBankingDetails()">Save
-                            changes</button>
-=======
                     <div class="col-12 d-block d-md-none" id="edit-buttons">
                         <button *ngIf="editBanking" mat-button id="save-button" (click)="saveBankingDetails()" class="col-12 mb-2">
                             Save changes
@@ -244,7 +174,6 @@
                         <button *ngIf="editBanking" mat-button id="save-button" (click)="saveBankingDetails()">
                             Save changes
                         </button>
->>>>>>> b4b664c65a016479c675288e5b00e3785d0c808c
                     </div>
                 </div>
             </form>

@@ -12,7 +12,7 @@ import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { EmployeeType } from 'src/app/models/constants/employeeTypes.constants';
 
 @Component({
@@ -52,9 +52,9 @@ export class ChartComponent implements OnInit {
   selectedChartIndex: number = -1;
   constructor(private chartService: ChartService, private cookieService: CookieService, public dialog: MatDialog, private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document, private employeeService: EmployeeService, private snackBarService: SnackbarService,
-    navService: HideNavService) {
-      navService.showNavbar = true;
-     }
+    navService: NavService) {
+    navService.showNavbar = true;
+  }
 
   public barChartOptions: ChartConfiguration['options'] = {
     events: [],
@@ -80,7 +80,7 @@ export class ChartComponent implements OnInit {
       legend: {
         display: true,
         position: 'bottom',
-        labels:{
+        labels: {
           font: {
             size: 14
           }
@@ -120,6 +120,7 @@ export class ChartComponent implements OnInit {
       } as any,
     },
   };
+
   getChartOptions(chartType: string) {
     return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
   }

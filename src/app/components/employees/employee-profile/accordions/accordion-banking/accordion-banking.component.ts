@@ -17,9 +17,15 @@ export class AccordionBankingComponent {
 
   screenWidth = window.innerWidth;
 
+  @HostListener('window:resize',['$event'])
+  onResize(){
+    this.screenWidth = window.innerWidth;
+  }
   
   @Input() employeeProfile !: EmployeeProfile | SimpleEmployee;
+  @Output() updateBanking = new EventEmitter<{ progress: number, status: number }>();
 
+  shouldUseSentInProfile: boolean = true;
   panelOpenState: boolean = false;
   bankInformationProgress: number = 0;
   employeeBanking !: EmployeeBanking;

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
 import { EmployeeBankingService } from 'src/app/services/employee/employee-banking.service';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 @Component({
   selector: 'app-pending-bank-statements',
@@ -21,7 +21,7 @@ export class PendingBankDetailsComponent {
   constructor(
     private employeeBankingService: EmployeeBankingService,
     private snackBarService: SnackbarService,
-    private navService: HideNavService) {
+    private navService: NavService) {
       navService.showNavbar = true;
      }
 

@@ -12,7 +12,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { dataTypes } from 'src/app/models/constants/types.constants';
 import { Dialog } from 'src/app/models/confirm-modal.interface';
 import { SystemNav } from 'src/app/services/system-nav.service';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
 
 @Component({
@@ -63,7 +63,7 @@ export class ManageFieldCodeComponent {
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
     private systemService: SystemNav,
-    private navService: HideNavService,
+    private navService: NavService,
     private authAccessService: AuthAccessService) {
     navService.showNavbar = true;
   }

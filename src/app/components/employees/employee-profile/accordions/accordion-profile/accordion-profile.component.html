@@ -305,9 +305,11 @@
                                         Work email must end with @retrorabbit.co.za </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6 my-2">
                             <div class="col-12 col-md-6 my-2">
+                                <mat-form-field appearance="outline" style="width: 100%;">
+                                    <mat-label>Cellphone Number</mat-label>
                                     <input matInput formControlName="cellphoneNo">
+                                    <mat-error *ngIf="employeeContactForm.controls['cellphoneNo'].hasError('required')">
                                         Cellphone number is required</mat-error>
                                     <mat-error
                                         *ngIf="employeeContactForm.controls['cellphoneNo'].hasError('pattern') && !employeeContactForm.controls['cellphoneNo'].hasError('required')">
@@ -318,7 +320,11 @@
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Home Number</mat-label>
                                     <input matInput formControlName="houseNo">
+                                    <mat-error *ngIf="employeeContactForm.controls['houseNo'].hasError('required')">
+                                        Home number is required</mat-error>
+                                    <mat-error
                                         *ngIf="employeeContactForm.controls['houseNo'].hasError('pattern') && !employeeContactForm.controls['cellphoneNo'].hasError('required')">
+                                        Home number must only contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
                             <div class="col-12">
@@ -379,9 +385,10 @@
                 <mat-panel-title>
                     Address Details
                 </mat-panel-title>
-                <mat-panel-description *ngIf="addressFormProgress != 100">
-                    <mat-icon class="mx-1">error</mat-icon> Missing information
+                <mat-panel-description *ngIf="addressFormProgress != 100" class="pe-0 pe-md-5">
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
                 </mat-panel-description>
+            </mat-expansion-panel-header>
             <form [formGroup]="addressDetailsForm">
                 <div class="col-12 mb-2 d-flex justify-content-end">
                     <button *ngIf="!editAddress" mat-button id="edit-button" (click)="editAddressDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
@@ -395,6 +402,7 @@
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Unit Number</mat-label>
                                     <input matInput formControlName="physicalUnitNumber">
+                                    <mat-error
                                         *ngIf="addressDetailsForm.controls['physicalUnitNumber'].hasError('required')">
                                         Unit number is required</mat-error>
                                     <mat-error
@@ -402,6 +410,8 @@
                                         Unit number must only contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
+                            <div class="col-12 col-md-6">
+                                <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Complex Name</mat-label>
                                     <input matInput formControlName="physicalComplexName">
                                     <mat-error
@@ -507,9 +517,11 @@
                                     <input matInput formControlName="postalCity">
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
                             <div class="col-12 col-md-6">
+                                <mat-form-field appearance="outline" style="width: 100%;">
+                                    <mat-label>Country</mat-label>
                                     <mat-select formControlName="postalCountry">
+                                        <mat-option *ngFor="let country of filteredCountries" [value]="country">
                                             {{ country }}
                                         </mat-option>
                                     </mat-select>
@@ -525,9 +537,11 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
                             <div class="col-12 col-md-6">
+                                <mat-form-field appearance="outline" style="width: 100%;">
+                                    <mat-label>Postal Code</mat-label>
                                     <input matInput formControlName="postalPostalCode">
+                                </mat-form-field>
                             </div>
                         </div>
                     </div>
@@ -555,9 +569,10 @@
                 <mat-panel-title>
                     Additional Information
                 </mat-panel-title>
-                <mat-panel-description *ngIf="additionalFormProgress != 100">
-                    <mat-icon class="mx-1">error</mat-icon> Missing information
+                <mat-panel-description *ngIf="additionalFormProgress != 100" class="pe-0 pe-md-5">
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
                 </mat-panel-description>
+            </mat-expansion-panel-header>
             <form [formGroup]="additionalInfoForm">
                 <div class="col-12 mb-2 d-flex justify-content-end">
                     <button *ngIf="!editAdditional" mat-button id="edit-button" (click)="editAdditionalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
@@ -570,6 +585,7 @@
                             <mat-form-field appearance="outline" style="width: 100%;">
                                 <mat-label>{{fieldcode.name}}</mat-label>
                                 <div *ngIf="fieldcode.type == fieldTypes[4].id">
+                                    <mat-select formControlName="{{fieldcode.code}}">
                                         <mat-option *ngFor="let option of fieldcode.options" [value]="option.option">
                                             {{option.option}}
                                         </mat-option>

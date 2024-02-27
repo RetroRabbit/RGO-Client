@@ -7,7 +7,7 @@ import { dataTypes } from 'src/app/models/constants/types.constants';
 import { FieldCode } from 'src/app/models/field-code.interface';
 import { FieldCodeService } from 'src/app/services/field-code.service';
 import { category } from '../../../models/constants/fieldcodeCategory.constants';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { levels } from '../../../models/constants/levels.constants';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs';
@@ -49,13 +49,13 @@ export class NewFieldCodeComponent {
     private fb: FormBuilder,
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
-    public hideNavService: HideNavService,
+    public navService: NavService,
     public router: Router) {
   }
 
   ngOnInit(): void {
-    this.hideNavService.showNavbar = false;
-    this.hideNavService.showSystemNavbar = false;
+    this.navService.showNavbar = false;
+    this.navService.showSystemNavbar = false;
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: fieldCodes => {
         this.fieldCodes = fieldCodes;
@@ -66,8 +66,8 @@ export class NewFieldCodeComponent {
   }
 
   ngOnDestroy() {
-    this.hideNavService.showNavbar = true;
-    this.hideNavService.showSystemNavbar = true;
+    this.navService.showNavbar = true;
+    this.navService.showSystemNavbar = true;
   }
 
   get options() {

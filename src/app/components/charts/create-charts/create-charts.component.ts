@@ -3,7 +3,7 @@ import { ChartService } from 'src/app/services/charts.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 
 
 @Component({
@@ -34,7 +34,7 @@ export class CreateChartsComponent {
     enableSearchFilter: true,
   };
 
-  constructor(private ChartService: ChartService, private router: Router,private cookieService: CookieService,private snackBarService: SnackbarService, navService : HideNavService) {
+  constructor(private ChartService: ChartService, private router: Router,private cookieService: CookieService,private snackBarService: SnackbarService, navService : NavService) {
     navService.showNavbar = true;
   }
 

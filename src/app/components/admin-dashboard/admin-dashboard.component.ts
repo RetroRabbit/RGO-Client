@@ -4,7 +4,7 @@ import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { ChartService } from 'src/app/services/charts.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -87,9 +87,9 @@ export class AdminDashboardComponent {
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
-    private hideNavService: HideNavService,
+    private navService: NavService,
     public authAccessService: AuthAccessService) {
-    hideNavService.showNavbar = true;
+    navService.showNavbar = true;
   }
 
 

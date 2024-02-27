@@ -5,12 +5,10 @@ import { GetLogin } from '../../store/actions/login-in.actions';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../../models/token.interface';
 import { map, switchMap, take, tap } from 'rxjs';
-import { AuthServices } from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
-import { environment } from 'src/environments/environment';
-
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -20,15 +18,14 @@ export class SignInComponent {
   user: Token | undefined;
   token: string | null = null;
   userEmail: string | null = null;
-  config: any;
 
   constructor(
     private store: Store<Auth0.AppState>,
     private auth: Auth0.AuthService,
-    private authService: AuthServices,
+    private authService: AuthService,
     private router: Router,
     private cookieService: CookieService,
-    public hideNavService: HideNavService,
+    public navService: NavService,
     private authAccessService: AuthAccessService,
     private NgZone: NgZone
   ) {}
@@ -83,7 +80,7 @@ export class SignInComponent {
           };
           this.authAccessService.setEmployeeEmail(user?.email as string);
           this.store.dispatch(GetLogin({ payload: googleID }));
-          this.hideNavService.showNavbar = true;
+          this.navService.showNavbar = true;
           if (
             this.authAccessService.isAdmin() ||
             this.authAccessService.isTalent() ||

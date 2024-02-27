@@ -19,7 +19,7 @@ import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 
@@ -41,7 +41,7 @@ export class NewEmployeeComponent implements OnInit {
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
-    private hideNavService: HideNavService
+    private navService: NavService
   ) { }
 
   firstFormGroup = this._formBuilder.group({
@@ -193,11 +193,11 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
-    this.hideNavService.showNavbar = false;
+    this.navService.showNavbar = false;
   }
 
   ngOnDestroy() {
-    this.hideNavService.showNavbar = true;
+    this.navService.showNavbar = true;
   }
 
   filterChampions(event: any) {

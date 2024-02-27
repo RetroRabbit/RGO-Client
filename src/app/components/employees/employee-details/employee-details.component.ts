@@ -6,7 +6,7 @@ import { Client } from 'src/app/models/client.interface';
 import { genders } from 'src/app/models/constants/genders.constants';
 import { general } from 'src/app/models/constants/general.constants';
 import { levels } from 'src/app/models/constants/levels.constants';
-import { races} from 'src/app/models/constants/races.constants';
+import { races } from 'src/app/models/constants/races.constants';
 import { EmployeeData } from 'src/app/models/employee-data.interface';
 import { EmployeeType } from 'src/app/models/employee-type.model';
 import { FieldCode } from 'src/app/models/field-code.interface';
@@ -16,7 +16,7 @@ import { EmployeeRoleService } from 'src/app/services/employee/employee-role.ser
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { FieldCodeService } from 'src/app/services/field-code.service';
-import { HideNavService } from 'src/app/services/hide-nav.service';
+import { NavService } from 'src/app/services/nav.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -60,10 +60,10 @@ export class EmployeeDetailsComponent implements OnInit {
     private clientService: ClientService,
     private employeeRoleService: EmployeeRoleService,
     private snackBarService: SnackbarService,
-    private navService: HideNavService
+    private navService: NavService
   ) {
     navService.showNavbar = true;
-   }
+  }
 
   ngOnInit(): void {
     this.callService();
@@ -129,10 +129,10 @@ export class EmployeeDetailsComponent implements OnInit {
       passportNumber: this.selectedEmployee.passportNumber,
       payRate: [this.selectedEmployee.payRate, Validators.required],
       photo: [this.selectedEmployee.photo, Validators.required],
-      race: [this.selectedEmployee.race,Validators.required],
+      race: [this.selectedEmployee.race, Validators.required],
       peopleChampion: this.selectedEmployee.peopleChampion,
-      salary: [this.selectedEmployee.salary,Validators.required],
-      salaryDays: [this.selectedEmployee.salaryDays,Validators.required],
+      salary: [this.selectedEmployee.salary, Validators.required],
+      salaryDays: [this.selectedEmployee.salaryDays, Validators.required],
       terminationDate: this.selectedEmployee.terminationDate,
       dateOfBirth: [this.selectedEmployee.dateOfBirth, Validators.required],
       clientAllocated: this.selectedEmployee.clientAllocated,
@@ -160,17 +160,17 @@ export class EmployeeDetailsComponent implements OnInit {
       return data.employee.id == this.selectedEmployee.peopleChampion
     });
 
-    if(this.foundTeamLead != null ){
+    if (this.foundTeamLead != null) {
       this.employeeForm.get('teamLead')?.setValue(this.foundTeamLead.name + ' ' + this.foundTeamLead.surname);
       this.employeeId = this.foundTeamLead.id
     }
 
-    if(this.foundClient != null){
+    if (this.foundClient != null) {
       this.employeeForm.get('clientAllocated')?.setValue(this.foundClient.name);
       this.clientId = this.foundClient.id
     }
 
-    if(this.foundChampion != null){
+    if (this.foundChampion != null) {
       this.employeeForm.get('peopleChampion')?.setValue(this.foundChampion.employee.name + ' ' + this.foundChampion.employee.surname);
       this.peopleChampionId = this.foundChampion.employee.id
     }
@@ -221,11 +221,11 @@ export class EmployeeDetailsComponent implements OnInit {
       }
       this.employeeService.updateEmployee(employeeProfileDto).subscribe({
         next: (data) => {
-        this.cookieService.set('currentPage', 'Employees');
-        this.saveEmployeeCustomData();
-        this.snackBarService.showSnackbar("Employee details updated", "snack-success");
-      },
-        error: (error) => {this.snackBarService.showSnackbar(error, "snack-error")},
+          this.cookieService.set('currentPage', 'Employees');
+          this.saveEmployeeCustomData();
+          this.snackBarService.showSnackbar("Employee details updated", "snack-success");
+        },
+        error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
       });
     }
   }
@@ -297,11 +297,11 @@ export class EmployeeDetailsComponent implements OnInit {
     else return '';
   }
 
-  cancelAction(){
+  cancelAction() {
     this.cookieService.set('currentPage', 'Employees');
   }
 
-  filterEmployees(event: any){
+  filterEmployees(event: any) {
     if (event) {
       this.filteredEmployees = this.employees.filter((employee: { name: string; }) =>
         employee.name.toLowerCase().includes(event.target.value.toLowerCase())
@@ -312,7 +312,7 @@ export class EmployeeDetailsComponent implements OnInit {
     }
   }
 
-  filterClients(event: any){
+  filterClients(event: any) {
     if (event) {
       this.filteredClients = this.clients.filter((client: { name: string; }) =>
         client.name.toLowerCase().includes(event.target.value.toLowerCase())
@@ -323,25 +323,25 @@ export class EmployeeDetailsComponent implements OnInit {
     }
   }
 
-  filterChampions(event: any){
+  filterChampions(event: any) {
     if (event) {
       this.filteredPeopleChamps = this.employeeRoles.filter((champs: any) =>
         champs.employee.name.toLowerCase().includes(event.target.value.toLowerCase())
 
       );
     } else {
-      this.filteredPeopleChamps= this.employeeRoles.employee.name;
+      this.filteredPeopleChamps = this.employeeRoles.employee.name;
     }
   }
 
-  getId(data: any, name: string){
-    if (name == 'employee'){
+  getId(data: any, type: string) {
+    if (type == 'employee') {
       this.employeeId = data.id
     }
-    else if (name == 'client'){
+    else if (type == 'client') {
       this.clientId = data.id
     }
-    else if (name == 'champion'){
+    else if (type == 'champion') {
       this.peopleChampionId = data.employee.id
     }
   }
