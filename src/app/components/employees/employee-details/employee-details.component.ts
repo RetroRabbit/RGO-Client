@@ -334,14 +334,14 @@ export class EmployeeDetailsComponent implements OnInit {
     }
   }
 
-  getId(data: any, name: string) {
-    if (name == 'employee') {
+  getId(data: any, type: string) {
+    if (type == 'employee') {
       this.employeeId = data.id
     }
-    else if (name == 'client') {
+    else if (type == 'client') {
       this.clientId = data.id
     }
-    else if (name == 'champion') {
+    else if (type == 'champion') {
       this.peopleChampionId = data.employee.id
     }
   }
