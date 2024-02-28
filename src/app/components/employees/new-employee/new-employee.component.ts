@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie-service';
@@ -30,6 +30,13 @@ import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 })
 
 export class NewEmployeeComponent implements OnInit {
+
+  screenWidth= window.innerWidth;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.isMobileScreen = window.innerWidth < 768;
+    this.screenWidth = window.innerWidth;
+  }
 
   constructor(
     private employeeService: EmployeeService,
@@ -84,6 +91,7 @@ export class NewEmployeeComponent implements OnInit {
 
   filteredPeopleChamps: any = [];
   peopleChampionId = null;
+  isMobileScreen = false;
 
  categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
