@@ -713,9 +713,10 @@ main {
     margin-bottom: 20px;
 }
 
-.button-next-top {
+.button-top {
     order: -1;
 }
+
 
 .title-mobile {
     font-family: Roboto;
@@ -801,18 +802,17 @@ main {
     }
 
     .upload-drop-section {
-        padding-bottom: 15px;
         margin-bottom: 10px;
-    }
-
-    .upload-drop-mie {
-        padding-bottom: 15px;
     }
 
     #remove-upload-button-container {
         display: flex;
         justify-content: unset;
         flex-direction: column;
+    }
+
+    #cancel-button{
+        order: +2;
     }
 
 }
