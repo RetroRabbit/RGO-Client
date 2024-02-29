@@ -26,7 +26,7 @@ main {
     width: 100%;
 }
 
-#fileUploadCursor {
+#file-upload-cursor {
     cursor: pointer;
     color: #0029c6;
     background-color: #d7dfff;
@@ -44,7 +44,7 @@ main {
     line-height: 0.5rem;
 }
 
-#createEmployee {
+#create-employee {
     margin-top: 30px;
     font-size: 36px;
     font-weight: 400;
@@ -378,7 +378,7 @@ main {
     width: 100%;
 }
 
-#fileUploadCursor {
+#file-upload-cursor {
     cursor: pointer;
     color: #0029c6;
     background-color: #d7dfff;
@@ -394,13 +394,6 @@ main {
 
 .title-line-height {
     line-height: 0.5rem;
-}
-
-#createEmployee {
-    margin-top: 30px;
-    font-size: 36px;
-    font-weight: 400;
-    line-height: 52px;
 }
 
 #heading {
@@ -628,7 +621,6 @@ main {
     width: 50%;
 }
 
-
 .mat-stepper-vertical,
 .mat-stepper-horizontal {
     width: 80%;
@@ -754,7 +746,7 @@ main {
         text-align: left;
     }
 
-    #createEmployee {
+    #create-employee {
         font-family: Roboto;
         font-size: 24px;
         font-weight: 400;
@@ -811,7 +803,7 @@ main {
         flex-direction: column;
     }
 
-    #cancel-button{
+    #cancel-button {
         order: +2;
     }
 
