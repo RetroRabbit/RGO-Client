@@ -91,6 +91,7 @@ td {
 }
 
 th#table-header,
+label,
 th#subheader {
   font-style: normal;
   font-size: 16px;
