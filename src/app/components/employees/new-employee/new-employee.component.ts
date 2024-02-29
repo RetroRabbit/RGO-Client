@@ -31,7 +31,7 @@ import { CustomvalidationService } from 'src/app/services/idnumber-validator';
 
 export class NewEmployeeComponent implements OnInit {
 
-  screenWidth= window.innerWidth;
+  screenWidth = window.innerWidth;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
