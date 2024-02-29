@@ -14,7 +14,7 @@
     <thead id="tableheader">
       <th id="table-header" class="px-3">Permissions</th>
       <th *ngFor="let p of roles" id="table-header" class="px-3">
-        {{ p.description }}
+        {{ p.description === "SuperAdmin" ? "Super Admin" : p.description }}
       </th>
     </thead>
     <tbody>
