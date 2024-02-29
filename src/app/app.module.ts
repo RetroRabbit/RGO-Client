@@ -151,13 +151,13 @@ export function provideConfig(authService: AuthService) {
       employee: EmployeeProfileReducer,
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),
-    AuthModule.forRoot(),
-    //   domain: environment.DomainKey,
-    //   clientId: environment.ClientId,
-    //   authorizationParams: {
-    //     redirect_uri: environment.redirect_uri,
-    //   },
-    // }),
+    AuthModule.forRoot({
+      domain: environment.DomainKey,
+      clientId: environment.ClientId,
+      authorizationParams: {
+        redirect_uri: environment.redirect_uri,
+      },
+    }),
     HttpClientModule,
     BrowserAnimationsModule,
 
@@ -203,18 +203,13 @@ export function provideConfig(authService: AuthService) {
   ],
   providers: [
     AuthService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: provideConfig,
-      deps: [AuthService],
-      multi: true
-    },
-    {
-      provide: AuthConfigService,
-      useFactory: provideConfig,
-      deps: [AuthService],
-    },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: provideConfig,
+    //   deps: [AuthService],
+    //   multi: true
+    // }
   ],
   bootstrap: [AppComponent],
 })
