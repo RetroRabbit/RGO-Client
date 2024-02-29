@@ -90,6 +90,21 @@ td {
   border-bottom: 1px solid #ccc;
 }
 
+th#table-header,
+th#subheader {
+  font-style: normal;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+th#table-header:first-child {
+  border-top-left-radius: 20px;
+}
+
+th#table-header:last-child {
+  border-top-right-radius: 20px;
+}
+
 tr:last-child th:first-child {
   border-bottom-left-radius: 20px;
 }
