@@ -126,25 +126,6 @@ h3 {
     margin: 0;
 }
 
-:host {
-    .p-checkbox {
-        margin-left: 29px;
-    }
-
-    .p-checkbox .p-checkbox-box {
-        border-radius: 0px !important;
-    }
-
-    .p-checkbox .p-checkbox-box:not(.p-highlight) {
-        border: 2px solid #49454f;
-    }
-
-    .p-checkbox .p-checkbox-box.p-highlight {
-        border: 2px solid rgb(0, 41, 198);
-        background: rgb(0, 41, 198);
-    }
-
-    .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
-        box-shadow: none;
-    }
+mat-checkbox {
+  margin-left: 6%;
 }
