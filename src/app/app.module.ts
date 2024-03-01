@@ -20,7 +20,7 @@ import { CreateChartsComponent } from './components/charts/create-charts/create-
 
 import { ReportComponent } from './components/charts/chart-reports/chart-reports.component';
 import { RoleManagerComponent } from './components/role-manager/role-manager.component';
-import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin-dashboard.component';
 import { NewEmployeeComponent } from './components/employees/new-employee/new-employee.component';
 import { ManageFieldCodeComponent } from './components/custom-fields/manage-field-code/manage-field-code.component';
 import { ViewEmployeeComponent } from './components/employees/view-employee/view-employee.component';

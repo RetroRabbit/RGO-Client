@@ -11,7 +11,7 @@ import { EmployeeDetailsComponent } from './components/employees/employee-detail
 import { ViewEmployeeComponent } from './components/employees/view-employee/view-employee.component';
 import { EmployeeProfileComponent } from './components/employees/employee-profile/employee-profile.component';
 import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
-import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin-dashboard.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 
 
