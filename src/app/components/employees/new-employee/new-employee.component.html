@@ -5,7 +5,7 @@
         <ng-template matStepLabel>Basic Information</ng-template>
         <div class="row justify-content-center align-items-center">
           <div class="col-12">
-            <h2 class="text-center" id="createEmployee">Create employee profile</h2>
+            <h2 class="text-center" id="create-employee">Create employee profile</h2>
             <span class="text-center roboto-font" id="heading-text">
               <p>Please enter the employee’s information in</p>
               <p>order to create a profile for them.</p>
@@ -247,8 +247,9 @@
                   </mat-error>
                 </mat-form-field>
                 <form class="col-lg-7 col-md-12 mt-2" [formGroup]="postalAddressForm">
-                  <p-checkbox value="Postal address is the same as physical address" inputId="checkbox"
-                    (onChange)="postalSameAsPhysicalAddress()"></p-checkbox>
+                <mat-checkbox value="Postal address is the same as physical address" inputId="checkbox"
+                  (change)="postalSameAsPhysicalAddress()">
+                </mat-checkbox>
                   <label class="ms-1" for="checkbox">Postal address is the same as physical
                     address</label>
                 </form>
