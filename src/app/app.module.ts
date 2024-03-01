@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { SignInComponent } from './components/sign-in/sign-in.component';
+import { SignInComponent } from './components/hris/sign-in/sign-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
 import { StoreModule } from '@ngrx/store';

@@ -9,7 +9,7 @@
   background-color: #ffffff;
   height: 100vh;
   overflow: hidden;
-  background-image: url("../../../assets/img/Image_1.png");
+  background-image: url("../../../../assets/img/Image_1.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -21,7 +21,7 @@
   background-color: #ffffff;
   height: 50vh;
   overflow: hidden;
-  background-image: url("../../../assets/img/Image_1.png");
+  background-image: url("../../../../assets/img/Image_1.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
