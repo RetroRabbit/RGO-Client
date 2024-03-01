@@ -94,6 +94,13 @@ import { firstValueFrom } from 'rxjs';
 // }
 
 
+// function initializeApp(): Promise<any> {
+//   return new Promise((resolve, reject) => {
+//     // Do some asynchronous stuff
+//     resolve();
+//   });
+// }
+
 export function provideConfig(authService: AuthService) {
   const config = authService.getConfig();
   return {
