@@ -299,13 +299,14 @@ export class ManageFieldCodeComponent {
   onRowSelect(fieldCode: FieldCode, event: any) {
     if (this.selectedFieldCodes?.includes(fieldCode)) {
       this.selectedFieldCodes.splice(this.selectedFieldCodes.indexOf(fieldCode), 1);
-      if (Array.isArray(event.checked) && !event.checked.includes(true)) {
+      if (!event.checked) {
         this.passiveFields--;
-      } else {
-        this.passiveFields++;
       }
     }
     else {
+      if (event.checked && (this.passiveFields === this.selectedFieldCodes.length)) {
+        this.passiveFields++;
+      }
       this.selectedFieldCodes?.push(fieldCode);
     }
   }
