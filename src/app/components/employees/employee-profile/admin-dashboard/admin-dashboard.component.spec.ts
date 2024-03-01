@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AdminDashboardComponent } from '../hris/admin-dashboard/admin-dashboard.component';
+import { AdminDashboardComponent } from './admin-dashboard.component';
 
 describe('AdminDashboardComponent', () => {
   let component: AdminDashboardComponent;

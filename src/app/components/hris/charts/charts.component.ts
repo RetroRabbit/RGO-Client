@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostList
 import { ChartService } from 'src/app/services/charts.service';
 import { Chart } from 'src/app/models/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
-import { colours } from '../../models/constants/colours.constants';
+import { colours } from '../../../models/constants/colours.constants';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';

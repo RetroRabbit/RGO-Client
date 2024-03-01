@@ -15,17 +15,17 @@ import { EmployeeProfileComponent } from './components/employees/employee-profil
 import { EmployeeProfileReducer } from './store/reducers/employee-profile.reducer';
 import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects';
 import { NgChartsModule } from 'ng2-charts';
-import { ChartComponent } from './components/charts/charts.component';
-import { CreateChartsComponent } from './components/charts/create-charts/create-charts.component';
+import { ChartComponent } from './components/hris/charts/charts.component';
+import { CreateChartsComponent } from './components/hris/charts/create-charts/create-charts.component';
 
-import { ReportComponent } from './components/charts/chart-reports/chart-reports.component';
+import { ReportComponent } from './components/hris/charts/chart-reports/chart-reports.component';
 import { RoleManagerComponent } from './components/role-manager/role-manager.component';
-import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin-dashboard.component';
+import { AdminDashboardComponent } from './components/employees/employee-profile/admin-dashboard/admin-dashboard.component';
 import { NewEmployeeComponent } from './components/employees/new-employee/new-employee.component';
-import { ManageFieldCodeComponent } from './components/custom-fields/manage-field-code/manage-field-code.component';
+import { ManageFieldCodeComponent } from './components/hris/custom-fields/manage-field-code/manage-field-code.component';
 import { ViewEmployeeComponent } from './components/employees/view-employee/view-employee.component';
-import { NewFieldCodeComponent } from './components/custom-fields/new-field-code/new-field-code.component';
-import { UpdateFieldComponent } from './components/custom-fields/update-field/update-field.component';
+import { NewFieldCodeComponent } from './components/hris/custom-fields/new-field-code/new-field-code.component';
+import { UpdateFieldComponent } from './components/hris/custom-fields/update-field/update-field.component';
 import { EvaluationsComponent } from './components/evaluations/evaluations.component';
 import { EmployeeEvaluationsComponent } from './components/evaluations/employee-evaluations/employee-evaluations.component';
 import { TemplateItemsComponent } from './components/evaluations/template-items/template-items.component';
@@ -71,7 +71,7 @@ import { ManageEmployeeEventsComponent } from './components/manage-employee-even
 import { AddEmployeeEventComponent } from './components/manage-employee-events/add-employee-event/add-employee-event.component';
 import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
 
-import { ChartReportPdfComponent } from './components/charts/chart-report-pdf/chart-report-pdf.component';
+import { ChartReportPdfComponent } from './components/hris/charts/chart-report-pdf/chart-report-pdf.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
