@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { TemplateItem } from 'src/app/models/hris/templateItem.interface';
 import { Observable } from 'rxjs';
-import { EvaluationTemplateItemService } from 'src/app/services/evaluations/evaluation-template-item.service';
-import { EvaluationTemplateService } from 'src/app/services/evaluations/evaluation-template.service';
+import { EvaluationTemplateItemService } from 'src/app/services/hris/evaluations/evaluation-template-item.service';
+import { EvaluationTemplateService } from 'src/app/services/hris/evaluations/evaluation-template.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({

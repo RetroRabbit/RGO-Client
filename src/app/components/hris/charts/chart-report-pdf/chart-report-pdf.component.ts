@@ -1,12 +1,12 @@
 import { Component, Input, Inject, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { ChartService } from 'src/app/services/charts.service';
+import { ChartService } from 'src/app/services/hris/charts.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { ChartConfiguration } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { SnackbarService } from 'src/app/services/snackbar.service';
-import { NavService } from 'src/app/services/nav.service';
+import { SnackbarService } from 'src/app/services/hris/snackbar.service';
+import { NavService } from 'src/app/services/hris/nav.service';
 @Component({
   selector: 'app-chart-report-pdf',
   templateUrl: './chart-report-pdf.component.html',

@@ -3,25 +3,25 @@ import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, Valid
 import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { SnackbarService } from 'src/app/services/snackbar.service';
+import { SnackbarService } from 'src/app/services/hris/snackbar.service';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
-import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
+import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
+import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
 import { combineLatest, first } from 'rxjs';
 import { countries } from 'src/app/models/hris/constants/countries.constants';
 import { provinces } from 'src/app/models/hris/constants/provinces.constants';
-import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
+import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
 import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
-import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
+import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
-import { NavService } from 'src/app/services/nav.service';
+import { NavService } from 'src/app/services/hris/nav.service';
 import { Router } from '@angular/router';
-import { CustomvalidationService } from 'src/app/services/idnumber-validator';
+import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
 
 @Component({
   selector: 'app-new-employee',

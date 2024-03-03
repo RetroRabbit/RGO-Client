@@ -8,7 +8,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 import { environment } from 'src/enviroment/environment';
 import { LoginEffects } from './components/shared-components/store/effects/app.effects';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/hris/auth.service';
 import { AuthInterceptor } from './components/shared-components/interceptor/auth0.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EmployeeProfileComponent } from './components/hris/employees/employee-profile/employee-profile.component';

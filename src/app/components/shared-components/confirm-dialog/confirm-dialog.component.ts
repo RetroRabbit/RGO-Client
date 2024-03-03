@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
-import { NavService } from 'src/app/services/nav.service';
+import { NavService } from 'src/app/services/hris/nav.service';
 @Component({
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',

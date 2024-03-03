@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SnackbarService } from 'src/app/services/snackbar.service';
+import { SnackbarService } from 'src/app/services/hris/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Client } from 'src/app/models/hris/client.interface';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
@@ -10,13 +10,13 @@ import { races } from 'src/app/models/hris/constants/races.constants';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { FieldCode } from 'src/app/models/hris/field-code.interface';
-import { ClientService } from 'src/app/services/client.service';
-import { EmployeeDataService } from 'src/app/services/employee/employee-data.service';
-import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { FieldCodeService } from 'src/app/services/field-code.service';
-import { NavService } from 'src/app/services/nav.service';
+import { ClientService } from 'src/app/services/hris/client.service';
+import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
+import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
+import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
+import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
+import { FieldCodeService } from 'src/app/services/hris/field-code.service';
+import { NavService } from 'src/app/services/hris/nav.service';
 
 @Component({
   selector: 'app-employee-details',

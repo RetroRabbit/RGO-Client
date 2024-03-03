@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Employee } from '../../models/hris/employee.interface';
-import { EmployeeProfile } from '../../models/hris/employee-profile.interface';
-import { environment } from '../../../enviroment/environment';
+import { Employee } from '../../../models/hris/employee.interface';
+import { EmployeeProfile } from '../../../models/hris/employee-profile.interface';
+import { environment } from '../../../../enviroment/environment';
 import { AuthAccessService } from '../auth-access.service';
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
 import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';

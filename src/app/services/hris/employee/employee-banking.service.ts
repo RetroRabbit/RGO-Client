@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { EmployeeBanking } from "src/app/models/hris/employee-banking.interface";
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../enviroment/environment';
+import { environment } from '../../../../enviroment/environment';
 
 @Injectable({
     providedIn: 'root'

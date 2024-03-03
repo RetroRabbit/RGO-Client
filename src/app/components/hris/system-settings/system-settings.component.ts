@@ -1,8 +1,8 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { FieldCode } from 'src/app/models/hris/field-code.interface';
-import { NavService } from 'src/app/services/nav.service';
-import { SystemNav } from 'src/app/services/system-nav.service';
+import { NavService } from 'src/app/services/hris/nav.service';
+import { SystemNav } from 'src/app/services/hris/system-nav.service';
 @Component({
   selector: 'app-system-settings',
   templateUrl: './system-settings.component.html',

@@ -2,16 +2,16 @@ import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, catchError, map, of } from 'rxjs';
 import { Employee } from 'src/app/models/hris/employee.interface';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { EvaluationService } from 'src/app/services/evaluations/evaluation.service';
+import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
+import { EvaluationService } from 'src/app/services/hris/evaluations/evaluation.service';
 import { CookieService } from 'ngx-cookie-service';
-import { EvaluationTemplateService } from 'src/app/services/evaluations/evaluation-template.service';
-import { EvaluationTemplateItemService } from 'src/app/services/evaluations/evaluation-template-item.service';
+import { EvaluationTemplateService } from 'src/app/services/hris/evaluations/evaluation-template.service';
+import { EvaluationTemplateItemService } from 'src/app/services/hris/evaluations/evaluation-template-item.service';
 import { EvaluationInput } from 'src/app/models/hris/evaluation-input.interface';
 import { EvaluationRatingInput } from 'src/app/models/hris/evaluation-rating-input.interface';
-import { EvaluationAudienceService } from 'src/app/services/evaluations/evaluation-audience.service';
-import { EmployeeEvaluationsRatingService } from 'src/app/services/evaluations/employee-evaluations-rating.service';
-import { NavService } from 'src/app/services/nav.service';
+import { EvaluationAudienceService } from 'src/app/services/hris/evaluations/evaluation-audience.service';
+import { EmployeeEvaluationsRatingService } from 'src/app/services/hris/evaluations/employee-evaluations-rating.service';
+import { NavService } from 'src/app/services/hris/nav.service';
 
 @Component({
   selector: 'app-evaluations',

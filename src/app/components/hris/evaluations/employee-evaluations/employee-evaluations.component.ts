@@ -2,8 +2,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { Employee } from 'src/app/models/hris/employee.interface';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { EvaluationService } from 'src/app/services/evaluations/evaluation.service';
+import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
+import { EvaluationService } from 'src/app/services/hris/evaluations/evaluation.service';
 
 @Component({
   selector: 'app-employee-evaluations',

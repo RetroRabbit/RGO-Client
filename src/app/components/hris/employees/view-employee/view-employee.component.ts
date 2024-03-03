@@ -1,13 +1,13 @@
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
+import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { EmployeeRoleService } from 'src/app/services/employee/employee-role.service';
-import { SnackbarService } from 'src/app/services/snackbar.service';
-import { ClientService } from 'src/app/services/client.service';
+import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
+import { SnackbarService } from 'src/app/services/hris/snackbar.service';
+import { ClientService } from 'src/app/services/hris/client.service';
 import { Client } from 'src/app/models/hris/client.interface';
 import { EmployeeData } from 'src/app/models/hris/employeedata.interface';
 import {
@@ -29,10 +29,10 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { NavService } from 'src/app/services/nav.service';
-import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { NavService } from 'src/app/services/hris/nav.service';
+import { AuthAccessService } from 'src/app/services/hris/auth-access.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
-import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
+import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
 
 @Component({

@@ -3,10 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, map, startWith } from 'rxjs';
 import { EmployeeDate } from 'src/app/models/hris/employee-date.interface';
-import { EmployeeDateService } from 'src/app/services/employee/employee-date.service';
-import { NavService } from 'src/app/services/nav.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { SnackbarService } from 'src/app/services/snackbar.service';
+import { EmployeeDateService } from 'src/app/services/hris/employee/employee-date.service';
+import { NavService } from 'src/app/services/hris/nav.service';
+import { NotificationService } from 'src/app/services/hris/notification.service';
+import { SnackbarService } from 'src/app/services/hris/snackbar.service';
 
 @Component({
   selector: 'app-manage-employee-events',

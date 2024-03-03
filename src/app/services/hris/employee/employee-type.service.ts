@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EmployeeType } from '../../models/hris/employee-type.model';
+import { EmployeeType } from '../../../models/hris/employee-type.model';
 import { Observable } from 'rxjs';
-import { environment } from '../../../enviroment/environment';
+import { environment } from '../../../../enviroment/environment';
 
 @Injectable({
   providedIn: 'root'

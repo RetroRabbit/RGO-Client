@@ -1,9 +1,9 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
-import { ChartService } from 'src/app/services/charts.service';
+import { ChartService } from 'src/app/services/hris/charts.service';
 import { Chart } from 'src/app/models/hris/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { colours } from '../../../models/hris/constants/colours.constants';
-import { SnackbarService } from 'src/app/services/snackbar.service';
+import { SnackbarService } from 'src/app/services/hris/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';
 import { ChartConfiguration, ChartType } from 'chart.js';
@@ -11,8 +11,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { NavService } from 'src/app/services/nav.service';
+import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
+import { NavService } from 'src/app/services/hris/nav.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 
 @Component({

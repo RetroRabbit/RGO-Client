@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { CookieService } from 'ngx-cookie-service';
-import { NavService } from 'src/app/services/nav.service';
-import { ChartService } from 'src/app/services/charts.service';
-import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
+import { NavService } from 'src/app/services/hris/nav.service';
+import { ChartService } from 'src/app/services/hris/charts.service';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { Router } from '@angular/router';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { Chart } from 'chart.js';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
-import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { AuthAccessService } from 'src/app/services/hris/auth-access.service';
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',

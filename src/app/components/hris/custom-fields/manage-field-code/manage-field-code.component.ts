@@ -1,19 +1,19 @@
 import { Component, HostListener, ViewChild, EventEmitter, Output, TemplateRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { FieldCodeService } from 'src/app/services/field-code.service';
+import { FieldCodeService } from 'src/app/services/hris/field-code.service';
 import { Router } from '@angular/router';
 import { FieldCode } from 'src/app/models/hris/field-code.interface';
 import { Table } from 'primeng/table';
-import { SnackbarService } from 'src/app/services/snackbar.service';
+import { SnackbarService } from 'src/app/services/hris/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
-import { SystemNav } from 'src/app/services/system-nav.service';
-import { NavService } from 'src/app/services/nav.service';
-import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { SystemNav } from 'src/app/services/hris/system-nav.service';
+import { NavService } from 'src/app/services/hris/nav.service';
+import { AuthAccessService } from 'src/app/services/hris/auth-access.service';
 
 @Component({
   selector: 'app-manage-field-code',

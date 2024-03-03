@@ -1,15 +1,15 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SnackbarService } from 'src/app/services/snackbar.service';
+import { SnackbarService } from 'src/app/services/hris/snackbar.service';
 import { statuses } from 'src/app/models/hris/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { FieldCode } from 'src/app/models/hris/field-code.interface';
-import { FieldCodeService } from 'src/app/services/field-code.service';
+import { FieldCodeService } from 'src/app/services/hris/field-code.service';
 import { CookieService } from 'ngx-cookie-service';
-import { NavService } from 'src/app/services/nav.service';
+import { NavService } from 'src/app/services/hris/nav.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { SystemNav } from 'src/app/services/system-nav.service';
+import { SystemNav } from 'src/app/services/hris/system-nav.service';
 @Component({
   selector: 'app-update-field',
   templateUrl: './update-field.component.html',

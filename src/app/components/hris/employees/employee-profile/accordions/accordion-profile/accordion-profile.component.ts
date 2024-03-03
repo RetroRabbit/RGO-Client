@@ -3,28 +3,28 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Client } from 'src/app/models/hris/client.interface';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
-import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { SnackbarService } from 'src/app/services/snackbar.service';
+import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
+import { SnackbarService } from 'src/app/services/hris/snackbar.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
 import { countries } from 'src/app/models/hris/constants/countries.constants';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
 import { provinces } from 'src/app/models/hris/constants/provinces.constants';
-import { CustomvalidationService } from 'src/app/services/idnumber-validator';
-import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
+import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
-import { EmployeeDataService } from 'src/app/services/employee/employee-data.service';
+import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
-import { ClientService } from 'src/app/services/client.service';
-import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
-import { FieldCodeService } from 'src/app/services/field-code.service';
+import { ClientService } from 'src/app/services/hris/client.service';
+import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
+import { FieldCodeService } from 'src/app/services/hris/field-code.service';
 import { FieldCode } from 'src/app/models/hris/field-code.interface';
 import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
-import { EmployeeAddressService } from 'src/app/services/employee/employee-address.service';
+import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { AuthAccessService } from 'src/app/services/hris/auth-access.service';
 
 @Component({
   selector: 'app-accordion-profile',
