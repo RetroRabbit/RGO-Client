@@ -72,7 +72,7 @@ import { AddEmployeeEventComponent } from './components/hris/manage-employee-eve
 import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
 
 import { ChartReportPdfComponent } from './components/hris/charts/chart-report-pdf/chart-report-pdf.component';
-import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { NavBarComponent } from './components/hris/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccordionProfileComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile.component';
