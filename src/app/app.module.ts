@@ -19,7 +19,7 @@ import { ChartComponent } from './components/hris/charts/charts.component';
 import { CreateChartsComponent } from './components/hris/charts/create-charts/create-charts.component';
 
 import { ReportComponent } from './components/hris/charts/chart-reports/chart-reports.component';
-import { RoleManagerComponent } from './components/role-manager/role-manager.component';
+import { RoleManagerComponent } from './components/hris/role-manager/role-manager.component';
 import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin-dashboard.component';
 import { NewEmployeeComponent } from './components/hris/employees/new-employee/new-employee.component';
 import { ManageFieldCodeComponent } from './components/hris/custom-fields/manage-field-code/manage-field-code.component';
