@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { GetEmployeeProfile, GetEmployeeProfileSuccess, } from '../actions/employee-profile.actions';
-import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 
 export interface EmployeeProfileState {
   employeeProfile: EmployeeProfile

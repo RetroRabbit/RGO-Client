@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../enviroment/environment';
-import { EmployeeProfile } from '../../models/employee-profile.interface';
-import { Token } from '../../models/token.interface';
+import { EmployeeProfile } from '../../models/hris/employee-profile.interface';
+import { Token } from '../../models/hris/token.interface';
 import { Store } from '@ngrx/store';
 import { EmployeeState } from '../../components/shared-components/store/reducers/employee.reducer';
 import { CookieService } from 'ngx-cookie-service';
 import { map } from 'rxjs';
-import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
+import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 
 @Injectable({
   providedIn: 'root'

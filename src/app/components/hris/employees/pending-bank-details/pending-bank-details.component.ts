@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
+import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { EmployeeBankingService } from 'src/app/services/employee/employee-banking.service';
 import { NavService } from 'src/app/services/nav.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';

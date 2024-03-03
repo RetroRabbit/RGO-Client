@@ -1,12 +1,12 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
-import { accountTypes } from 'src/app/models/constants/accountTypes.constants';
-import { banks } from 'src/app/models/constants/banks.constants';
-import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
+import { accountTypes } from 'src/app/models/hris/constants/accountTypes.constants';
+import { banks } from 'src/app/models/hris/constants/banks.constants';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeBankingService } from 'src/app/services/employee/employee-banking.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
+import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 
 @Component({
   selector: 'app-accordion-banking',

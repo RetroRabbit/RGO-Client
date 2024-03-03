@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../../enviroment/environment';
-import { EvaluationInput } from '../../models/evaluation-input.interface';
+import { EvaluationInput } from '../../models/hris/evaluation-input.interface';
 
 @Injectable({
   providedIn: 'root'

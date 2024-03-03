@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../enviroment/environment';
-import { EmployeeDateInput } from '../../models/employe-date.interface';
-import { EmployeeDate } from '../../models/employee-date.interface';
+import { EmployeeDateInput } from '../../models/hris/employe-date.interface';
+import { EmployeeDate } from '../../models/hris/employee-date.interface';
 
 @Injectable({
   providedIn: 'root'

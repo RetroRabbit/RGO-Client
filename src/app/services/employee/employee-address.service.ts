@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../enviroment/environment';
-import { EmployeeAddress } from 'src/app/models/employee-address.interface';
+import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
 
 @Injectable({
   providedIn: 'root'

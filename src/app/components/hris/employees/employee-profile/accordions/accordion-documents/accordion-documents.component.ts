@@ -1,8 +1,8 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
+import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/employee/employee-document.service';
-import { Document } from 'src/app/models/constants/documents.contants';
-import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { Document } from 'src/app/models/hris/constants/documents.contants';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,7 +10,7 @@ import { EmployeeRoleService } from 'src/app/services/employee/employee-role.ser
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
-import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
+import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 @Component({
   selector: 'app-accordion-documents',
   templateUrl: './accordion-documents.component.html',

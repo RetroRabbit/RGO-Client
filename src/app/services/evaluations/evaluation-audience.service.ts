@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EvaluationInput } from '../../models/evaluation-input.interface';
+import { EvaluationInput } from '../../models/hris/evaluation-input.interface';
 import { Observable } from 'rxjs';
 import { environment } from '../../../enviroment/environment';
 

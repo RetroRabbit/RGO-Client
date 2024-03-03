@@ -4,7 +4,7 @@ import { Observable, firstValueFrom, take, EMPTY, catchError, map } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../enviroment/environment';
 import { Store } from '@ngrx/store';
-import { Token } from '../models/token.interface';
+import { Token } from '../models/hris/token.interface';
 
 @Injectable({
   providedIn: 'root'

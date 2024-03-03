@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { Employee } from '../../../../models/employee.interface';
+import { Employee } from '../../../../models/hris/employee.interface';
 import { getAllEmployees, getAllEmployeesSuccess, getSelectedEmployee } from '../actions/employee.actions';
 
 

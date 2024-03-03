@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FieldCode } from '../models/field-code.interface';
+import { FieldCode } from '../models/hris/field-code.interface';
 
 @Injectable({
   providedIn: 'root'

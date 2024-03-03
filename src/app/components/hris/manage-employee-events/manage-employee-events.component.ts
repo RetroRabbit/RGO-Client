@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, map, startWith } from 'rxjs';
-import { EmployeeDate } from 'src/app/models/employee-date.interface';
+import { EmployeeDate } from 'src/app/models/hris/employee-date.interface';
 import { EmployeeDateService } from 'src/app/services/employee/employee-date.service';
 import { NavService } from 'src/app/services/nav.service';
 import { NotificationService } from 'src/app/services/notification.service';

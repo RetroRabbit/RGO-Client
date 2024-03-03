@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../enviroment/environment';
-import { Role } from '../models/role.interface';
-import { RoleAccess } from '../models/role-access.interface';
-import { RoleAccessLink } from '../models/role-access-link.interface';
+import { Role } from '../models/hris/role.interface';
+import { RoleAccess } from '../models/hris/role-access.interface';
+import { RoleAccessLink } from '../models/hris/role-access-link.interface';
 
 @Injectable({
   providedIn: 'root'

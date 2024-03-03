@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../enviroment/environment';
-import { EvaluationRatingInput } from '../../models/evaluation-rating-input.interface';
-import { EvaluationInput } from '../../models/evaluation-input.interface';
+import { EvaluationRatingInput } from '../../models/hris/evaluation-rating-input.interface';
+import { EvaluationInput } from '../../models/hris/evaluation-input.interface';
 
 @Injectable({
   providedIn: 'root'

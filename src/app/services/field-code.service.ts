@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FieldCode } from '../models/field-code.interface';
+import { FieldCode } from '../models/hris/field-code.interface';
 import { environment } from '../../enviroment/environment';
 
 @Injectable({

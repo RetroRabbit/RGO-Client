@@ -1,14 +1,14 @@
 import { EmployeeTypeService } from 'src/app/services/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
-import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { NavService } from 'src/app/services/nav.service';
-import { EmployeeType } from 'src/app/models/employee-type.model';
+import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { ChartService } from 'src/app/services/charts.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { Chart } from 'src/app/models/charts.interface';
+import { Chart } from 'src/app/models/hris/charts.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { MatSort } from '@angular/material/sort';
@@ -16,8 +16,8 @@ import { FormControl } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
-import { EmployeeCountDataCard } from 'src/app/models/employee-count-data-card.interface';
-import { ChurnRateDataCard } from 'src/app/models/churn-rate-data-card.interface';
+import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
+import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
 
 @Component({
   selector: 'app-admin-dashboard',

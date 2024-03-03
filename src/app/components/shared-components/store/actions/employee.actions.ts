@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { Employee } from "src/app/models/employee.interface";
+import { Employee } from "src/app/models/hris/employee.interface";
 
 export const getAllEmployees = createAction(
     '[User] Get All Employees'

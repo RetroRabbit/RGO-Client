@@ -1,13 +1,13 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { RoleService } from 'src/app/services/role.service';
-import { RoleAccess } from 'src/app/models/role-access.interface';
-import { Role } from 'src/app/models/role.interface';
+import { RoleAccess } from 'src/app/models/hris/role-access.interface';
+import { Role } from 'src/app/models/hris/role.interface';
 import { MatDialog } from '@angular/material/dialog';
-import { RoleAccessLink } from 'src/app/models/role-access-link.interface';
+import { RoleAccessLink } from 'src/app/models/hris/role-access-link.interface';
 import { RoleManagementService } from 'src/app/services/role-management.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { forkJoin } from 'rxjs';
-import { Dialog } from 'src/app/models/confirm-modal.interface';
+import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { NavService } from 'src/app/services/nav.service';
 @Component({
   selector: 'app-role-manager',

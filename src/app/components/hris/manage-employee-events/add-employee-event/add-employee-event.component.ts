@@ -2,13 +2,13 @@ import { Component, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
-import { EmployeeDateInput } from 'src/app/models/employe-date.interface';
-import { Employee } from 'src/app/models/employee.interface';
+import { EmployeeDateInput } from 'src/app/models/hris/employe-date.interface';
+import { Employee } from 'src/app/models/hris/employee.interface';
 import { EmployeeDateService } from 'src/app/services/employee/employee-date.service';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-import { EmployeeDate } from 'src/app/models/employee-date.interface';
+import { EmployeeDate } from 'src/app/models/hris/employee-date.interface';
 import { NavService } from 'src/app/services/nav.service';
 @Component({
   selector: 'app-add-employee-event',

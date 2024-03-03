@@ -1,25 +1,25 @@
 import { Component, ChangeDetectorRef,ViewChild, HostListener } from '@angular/core';
-import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-import { Client } from 'src/app/models/client.interface';
+import { Client } from 'src/app/models/hris/client.interface';
 import { FormBuilder } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { ActivatedRoute } from '@angular/router';
-import { EmployeeAddress } from 'src/app/models/employee-address.interface';
-import { EmployeeData } from 'src/app/models/employee-data.interface';
+import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
+import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { EmployeeBanking } from 'src/app/models/employee-banking.interface';
-import { EmployeeDocument } from 'src/app/models/employeeDocument.interface';
-import { Document } from 'src/app/models/constants/documents.contants';
+import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
+import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
+import { Document } from 'src/app/models/hris/constants/documents.contants';
 import { NavService } from 'src/app/services/nav.service';
 import { ClientService } from 'src/app/services/client.service';
 import { AccordionBankingComponent } from './accordions/accordion-banking/accordion-banking.component';
 import { AccordionProfileComponent } from './accordions/accordion-profile/accordion-profile.component';
 import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents.component';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
-import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
+import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 
 @Component({
   selector: 'app-employee-profile',

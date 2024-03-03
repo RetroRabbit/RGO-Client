@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { GetLogin } from '../../shared-components/store/actions/login-in.actions';
 import * as Auth0 from '@auth0/auth0-angular';
-import { Token } from '../../../models/token.interface';
+import { Token } from '../../../models/hris/token.interface';
 import { map, switchMap, take, tap } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
