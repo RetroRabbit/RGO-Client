@@ -10,7 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { EmployeeDetailsComponent } from './components/hris/employees/employee-details/employee-details.component';
 import { ViewEmployeeComponent } from './components/hris/employees/view-employee/view-employee.component';
 import { EmployeeProfileComponent } from './components/hris/employees/employee-profile/employee-profile.component';
-import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
+import { SystemSettingsComponent } from './components/hris/system-settings/system-settings.component';
 import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin-dashboard.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 

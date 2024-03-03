@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { Token } from '../models/token.interface';
+import { Token } from '../../../models/token.interface';
 import { tap } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 import { NgToastService } from 'ng-angular-popup';

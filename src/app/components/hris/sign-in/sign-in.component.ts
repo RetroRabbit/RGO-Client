@@ -1,7 +1,7 @@
 import { Component, HostListener, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { GetLogin } from '../../../store/actions/login-in.actions';
+import { GetLogin } from '../../shared-components/store/actions/login-in.actions';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../../../models/token.interface';
 import { map, switchMap, take, tap } from 'rxjs';

@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { Token } from "../../models/token.interface";
+import { Token } from "../../../../models/token.interface";
 import { GetLogin } from '../actions/login-in.actions';
 
 export const initialState: Token = {

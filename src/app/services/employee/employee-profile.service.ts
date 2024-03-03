@@ -5,7 +5,7 @@ import { environment } from '../../../enviroment/environment';
 import { EmployeeProfile } from '../../models/employee-profile.interface';
 import { Token } from '../../models/token.interface';
 import { Store } from '@ngrx/store';
-import { EmployeeState } from '../../store/reducers/employee.reducer';
+import { EmployeeState } from '../../components/shared-components/store/reducers/employee.reducer';
 import { CookieService } from 'ngx-cookie-service';
 import { map } from 'rxjs';
 import { SimpleEmployee } from 'src/app/models/simple-employee-profile.interface';
