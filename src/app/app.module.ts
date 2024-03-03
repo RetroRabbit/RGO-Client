@@ -26,9 +26,9 @@ import { ManageFieldCodeComponent } from './components/hris/custom-fields/manage
 import { ViewEmployeeComponent } from './components/hris/employees/view-employee/view-employee.component';
 import { NewFieldCodeComponent } from './components/hris/custom-fields/new-field-code/new-field-code.component';
 import { UpdateFieldComponent } from './components/hris/custom-fields/update-field/update-field.component';
-import { EvaluationsComponent } from './components/evaluations/evaluations.component';
-import { EmployeeEvaluationsComponent } from './components/evaluations/employee-evaluations/employee-evaluations.component';
-import { TemplateItemsComponent } from './components/evaluations/template-items/template-items.component';
+import { EvaluationsComponent } from './components/hris/evaluations/evaluations.component';
+import { EmployeeEvaluationsComponent } from './components/hris/evaluations/employee-evaluations/employee-evaluations.component';
+import { TemplateItemsComponent } from './components/hris/evaluations/template-items/template-items.component';
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
