@@ -11,7 +11,7 @@ import { LoginEffects } from './store/effects/app.effects';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './interceptor/auth0.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EmployeeProfileComponent } from './components/employees/employee-profile/employee-profile.component';
+import { EmployeeProfileComponent } from './components/hris/employees/employee-profile/employee-profile.component';
 import { EmployeeProfileReducer } from './store/reducers/employee-profile.reducer';
 import { EmployeeProfileEffects } from './store/effects/employeeprofile.effects';
 import { NgChartsModule } from 'ng2-charts';
@@ -20,10 +20,10 @@ import { CreateChartsComponent } from './components/hris/charts/create-charts/cr
 
 import { ReportComponent } from './components/hris/charts/chart-reports/chart-reports.component';
 import { RoleManagerComponent } from './components/role-manager/role-manager.component';
-import { AdminDashboardComponent } from './components/employees/employee-profile/admin-dashboard/admin-dashboard.component';
-import { NewEmployeeComponent } from './components/employees/new-employee/new-employee.component';
+import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin-dashboard.component';
+import { NewEmployeeComponent } from './components/hris/employees/new-employee/new-employee.component';
 import { ManageFieldCodeComponent } from './components/hris/custom-fields/manage-field-code/manage-field-code.component';
-import { ViewEmployeeComponent } from './components/employees/view-employee/view-employee.component';
+import { ViewEmployeeComponent } from './components/hris/employees/view-employee/view-employee.component';
 import { NewFieldCodeComponent } from './components/hris/custom-fields/new-field-code/new-field-code.component';
 import { UpdateFieldComponent } from './components/hris/custom-fields/update-field/update-field.component';
 import { EvaluationsComponent } from './components/evaluations/evaluations.component';
@@ -65,8 +65,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
-import { PendingBankDetailsComponent } from './components/employees/pending-bank-details/pending-bank-details.component';
-import { EmployeeDetailsComponent } from './components/employees/employee-details/employee-details.component';
+import { PendingBankDetailsComponent } from './components/hris/employees/pending-bank-details/pending-bank-details.component';
+import { EmployeeDetailsComponent } from './components/hris/employees/employee-details/employee-details.component';
 import { ManageEmployeeEventsComponent } from './components/manage-employee-events/manage-employee-events.component';
 import { AddEmployeeEventComponent } from './components/manage-employee-events/add-employee-event/add-employee-event.component';
 import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
@@ -75,9 +75,9 @@ import { ChartReportPdfComponent } from './components/hris/charts/chart-report-p
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AccordionProfileComponent } from './components/employees/employee-profile/accordions/accordion-profile/accordion-profile.component';
-import { AccordionBankingComponent } from './components/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
-import { AccordionDocumentsComponent } from './components/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
+import { AccordionProfileComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile.component';
+import { AccordionBankingComponent } from './components/hris/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
+import { AccordionDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 
