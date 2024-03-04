@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
 import { AuthService } from "@auth0/auth0-angular";
 import { CookieService } from "ngx-cookie-service";
-import { NavService } from 'src/app/services/nav.service';
-import { EmployeeProfile } from "./models/employee-profile.interface";
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { EmployeeProfile } from "./models/hris/employee-profile.interface";
 import { Chart } from "chart.js";
 
 @Component({
