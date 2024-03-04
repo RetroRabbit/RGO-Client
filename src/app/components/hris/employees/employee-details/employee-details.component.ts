@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Client } from 'src/app/models/hris/client.interface';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
@@ -16,7 +16,7 @@ import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-rol
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { FieldCodeService } from 'src/app/services/hris/field-code.service';
-import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 
 @Component({
   selector: 'app-employee-details',

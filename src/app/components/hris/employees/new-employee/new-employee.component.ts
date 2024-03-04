@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, Valid
 import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
@@ -19,7 +19,7 @@ import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { MatStepper } from '@angular/material/stepper';
-import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
 

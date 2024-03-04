@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { statuses } from 'src/app/models/hris/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { FieldCode } from 'src/app/models/hris/field-code.interface';
 import { FieldCodeService } from 'src/app/services/hris/field-code.service';
 import { category } from '../../../../models/hris/constants/fieldcodeCategory.constants';
-import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { levels } from '../../../../models/hris/constants/levels.constants';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs';

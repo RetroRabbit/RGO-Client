@@ -5,10 +5,10 @@ import { GetLogin } from '../../shared-components/store/actions/login-in.actions
 import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../../../models/hris/token.interface';
 import { map, switchMap, take, tap } from 'rxjs';
-import { AuthService } from '../../shared-components/auth-access/auth.service';
+import { AuthService } from '../../../services/shared-services/auth-access/auth.service';
 import { CookieService } from 'ngx-cookie-service';
-import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
-import { AuthAccessService } from 'src/app/components/shared-components/auth-access/auth-access.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',

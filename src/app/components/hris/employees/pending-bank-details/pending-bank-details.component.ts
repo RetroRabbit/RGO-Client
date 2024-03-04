@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-banking.service';
-import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
-import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 @Component({
   selector: 'app-pending-bank-statements',
   templateUrl: './pending-bank-details.component.html',

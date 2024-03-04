@@ -1,13 +1,13 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { statuses } from 'src/app/models/hris/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { FieldCode } from 'src/app/models/hris/field-code.interface';
 import { FieldCodeService } from 'src/app/services/hris/field-code.service';
 import { CookieService } from 'ngx-cookie-service';
-import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 @Component({

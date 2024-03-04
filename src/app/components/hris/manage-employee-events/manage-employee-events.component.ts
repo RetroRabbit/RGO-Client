@@ -4,9 +4,9 @@ import { CookieService } from 'ngx-cookie-service';
 import { Observable, map, startWith } from 'rxjs';
 import { EmployeeDate } from 'src/app/models/hris/employee-date.interface';
 import { EmployeeDateService } from 'src/app/services/hris/employee/employee-date.service';
-import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { NotificationService } from 'src/app/services/hris/notification.service';
-import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 
 @Component({
   selector: 'app-manage-employee-events',

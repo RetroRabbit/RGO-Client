@@ -4,12 +4,12 @@ import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee
 import { Document } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { ActivatedRoute } from '@angular/router';
-import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
-import { AuthAccessService } from 'src/app/components/shared-components/auth-access/auth-access.service';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 @Component({
   selector: 'app-accordion-documents',

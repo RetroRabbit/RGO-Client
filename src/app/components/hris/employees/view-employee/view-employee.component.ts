@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
-import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { Client } from 'src/app/models/hris/client.interface';
 import { EmployeeData } from 'src/app/models/hris/employeedata.interface';
@@ -29,8 +29,8 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
-import { AuthAccessService } from 'src/app/components/shared-components/auth-access/auth-access.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';

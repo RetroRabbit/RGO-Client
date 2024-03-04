@@ -4,7 +4,7 @@ import { Client } from 'src/app/models/hris/client.interface';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
-import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
@@ -24,7 +24,7 @@ import { category } from 'src/app/models/hris/constants/fieldcodeCategory.consta
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { AuthAccessService } from 'src/app/components/shared-components/auth-access/auth-access.service';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 
 @Component({
   selector: 'app-accordion-profile',

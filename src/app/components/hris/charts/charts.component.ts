@@ -3,7 +3,7 @@ import { ChartService } from 'src/app/services/hris/charts.service';
 import { Chart } from 'src/app/models/hris/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { colours } from '../../../models/hris/constants/colours.constants';
-import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';
 import { ChartConfiguration, ChartType } from 'chart.js';
@@ -12,7 +12,7 @@ import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
-import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 
 @Component({
