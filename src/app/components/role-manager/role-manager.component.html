@@ -3,7 +3,7 @@
   <div class="col-12 mt-3" id="button-save-container">
     <button mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save Changes</button>
   </div>
-  <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+  <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
     'background-color': '#D7DFFF',
     'border': '2px solid #D7DFFF',
     'border-radius': '10px',
@@ -12,53 +12,53 @@
   }"/>
   <table *ngIf="!isLoading">
     <thead id="tableheader">
-      <th id="table-header" class="px-2">Permissions</th>
-      <th *ngFor="let p of roles" id="table-header" class="px-2">
-        {{ p.description }}
+      <th id="table-header" class="px-3">Permissions</th>
+      <th *ngFor="let p of roles" id="table-header" class="px-3">
+        {{ p.description === "SuperAdmin" ? "Super Admin" : p.description }}
       </th>
     </thead>
     <tbody>
       <tr>
-        <th class="py-2 px-2" scope="row" id="subheader">
+        <th class="py-2 px-3" scope="row" id="subheader">
           Charts
         </th>
-        <th class="py-2 px-2" scope="row" *ngFor="let r of roles" id="allsubheader">
-          <mat-checkbox color="primary" [(ngModel)]="allCheckboxesState[r.description]"
+        <th class="py-2 px-3" scope="row" *ngFor="let r of roles" id="allsubheader">
+          <mat-checkbox [(ngModel)]="allCheckboxesState[r.description]"
             (change)="toggleAllCheckboxes(r.description, $event)">
-            All
+            <label class="ps-3">All</label>
           </mat-checkbox>
         </th>
       </tr>
       <tr *ngFor="let n of chartPermissions">
-        <th class="py-2 px-2" scope="row" id="permissions">
+        <th class="py-2 px-3" scope="row" id="permissions">
           {{ n.permission }}
         </th>
-        <th class="py-2 px-2" *ngFor="let r of roles">
-          <mat-checkbox color="primary" [(ngModel)]="checkboxStates[r.description + n.permission]"
+        <td class="py-2 px-3" *ngFor="let r of roles">
+          <mat-checkbox [(ngModel)]="checkboxStates[r.description + n.permission]"
             (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)">
           </mat-checkbox>
-        </th>
+        </td>
       </tr>
       <tr>
-        <th class="py-2 px-2" scope="row" id="subheader">
+        <th class="py-2 px-3" scope="row" id="subheader">
           Employee Data
         </th>
-        <th class="py-2 px-2" scope="row" *ngFor="let r of roles" id="allsubheader">
-          <mat-checkbox color="primary" [(ngModel)]="allEmployeeDataCheckboxesState[r.description]"
+        <th class="py-2 px-3" scope="row" *ngFor="let r of roles" id="allsubheader">
+          <mat-checkbox [(ngModel)]="allEmployeeDataCheckboxesState[r.description]"
             (change)="toggleAllEmployeeDataCheckboxes(r.description, $event)">
-            All
+            <label class="ps-3">All</label>
           </mat-checkbox>
         </th>
       </tr>
       <tr *ngFor="let n of employeePermissions">
-        <th class="py-2 px-2" scope="row" id="permissions">
+        <th class="py-2 px-3" scope="row" id="permissions">
           {{n.permission}}
         </th>
-        <th class="py-2 px-2" *ngFor="let r of roles">
-          <mat-checkbox color="primary" [(ngModel)]="checkboxStatesEmployeePermissions[r.description + n.permission]"
+        <td class="py-2 px-3" *ngFor="let r of roles">
+          <mat-checkbox [(ngModel)]="checkboxStatesEmployeePermissions[r.description + n.permission]"
             (change)="onChangeRoleAccess($event, r.description, n.permission, n.grouping)">
           </mat-checkbox>
-        </th>
+        </td>
       </tr>
     </tbody>
   </table>

@@ -12,6 +12,7 @@ import { ViewEmployeeComponent } from './components/employees/view-employee/view
 import { EmployeeProfileComponent } from './components/employees/employee-profile/employee-profile.component';
 import { SystemSettingsComponent } from './components/system-settings/system-settings.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 
 
 
@@ -30,6 +31,7 @@ const routes: Routes = [
   {path: 'new-fieldcode', component: NewFieldCodeComponent},
   {path: 'update-fieldcode', component: UpdateFieldComponent},
   {path: 'employee-details', component: EmployeeDetailsComponent},
+  {path: 'ats-dashboard', component: AtsDashboardComponent},
 ];
 
 @NgModule({

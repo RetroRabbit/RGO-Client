@@ -34,7 +34,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { TableModule } from 'primeng/table';
-import { CheckboxModule } from 'primeng/checkbox';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -79,7 +78,7 @@ import { AccordionProfileComponent } from './components/employees/employee-profi
 import { AccordionBankingComponent } from './components/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
 import { AccordionDocumentsComponent } from './components/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
-import { firstValueFrom } from 'rxjs';
+import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -111,6 +110,7 @@ import { firstValueFrom } from 'rxjs';
     AccordionBankingComponent,
     AccordionDocumentsComponent,
     LoadingComponentComponent,
+    AtsDashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -167,7 +167,6 @@ import { firstValueFrom } from 'rxjs';
     NgxFileDropModule,
     MatStepperModule,
     TableModule,
-    CheckboxModule,
     MatPaginatorModule,
     MatSortModule,
     MatButtonToggleModule,
