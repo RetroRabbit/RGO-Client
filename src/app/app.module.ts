@@ -81,39 +81,6 @@ import { AccordionDocumentsComponent } from './components/employees/employee-pro
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 import { firstValueFrom } from 'rxjs';
 
-// export function initConfig(authService: AuthServices) {
-//   return () => authService.getConfig().toPromise().then((config) => {
-//     AuthModule.forRoot({
-//       domain: environment.DomainKey,
-//       clientId: environment.ClientId,
-//       authorizationParams: {
-//         redirect_uri: environment.redirect_uri,
-//       },
-//     });
-//   });
-// }
-
-
-// function initializeApp(): Promise<any> {
-//   return new Promise((resolve, reject) => {
-//     // Do some asynchronous stuff
-//     resolve();
-//   });
-// }
-
-export function provideConfig(authService: AuthService) {
-  const config = authService.getConfig();
-  return {
-      domain: environment.DomainKey,
-      clientId: environment.ClientId,
-      authorizationParams: {
-        redirect_uri: environment.redirect_uri,
-      },
-  };
-}
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -159,8 +126,8 @@ export function provideConfig(authService: AuthService) {
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),
     AuthModule.forRoot({
-      domain: environment.DomainKey,
-      clientId: environment.ClientId,
+      domain: process.env['AUTH0_Domain_key'] || 'null',
+      clientId: process.env['AUTH0_CLIENT_ID'] || 'null',
       authorizationParams: {
         redirect_uri: environment.redirect_uri,
       },
@@ -211,12 +178,6 @@ export function provideConfig(authService: AuthService) {
   providers: [
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: provideConfig,
-    //   deps: [AuthService],
-    //   multi: true
-    // }
   ],
   bootstrap: [AppComponent],
 })

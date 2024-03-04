@@ -25,17 +25,6 @@ export class AuthService {
     return this.auth.isAuthenticated$.pipe(take(1))
   }
 
-
-  getConfig(): Promise<void> {
-    return this.client.get(`${this.baseUrl}/config`)
-      .pipe(map((config: any) => {
-        environment.DomainKey = config.domainKey;
-        environment.ClientId = config.clientId;
-        console.log(environment);
-        console.log(config);
-      })).toPromise();
-  }
-
   login(employeeEmail: string | undefined): Observable<string> {
     let header: HttpHeaders = new HttpHeaders();
     return this.client
