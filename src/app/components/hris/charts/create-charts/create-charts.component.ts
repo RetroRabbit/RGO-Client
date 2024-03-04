@@ -1,9 +1,9 @@
 import { Component,Output, EventEmitter } from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
-import { SnackbarService } from 'src/app/services/hris/snackbar.service';
+import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { NavService } from 'src/app/services/hris/nav.service';
+import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
 
 
 @Component({

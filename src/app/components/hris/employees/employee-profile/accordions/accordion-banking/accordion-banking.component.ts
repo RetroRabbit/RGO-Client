@@ -5,7 +5,7 @@ import { accountTypes } from 'src/app/models/hris/constants/accountTypes.constan
 import { banks } from 'src/app/models/hris/constants/banks.constants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-banking.service';
-import { SnackbarService } from 'src/app/services/hris/snackbar.service';
+import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 
 @Component({

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { ChartConfiguration } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'
-import { NavService } from 'src/app/services/hris/nav.service';
+import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
 @Component({
   selector: 'app-report',
   templateUrl: './chart-reports.component.html',

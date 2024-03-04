@@ -3,8 +3,8 @@ import { EmployeeService } from 'src/app/services/hris/employee/employee.service
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
-import { SnackbarService } from 'src/app/services/hris/snackbar.service';
-import { NavService } from 'src/app/services/hris/nav.service';
+import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
+import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -15,7 +15,7 @@ import { MatSort } from '@angular/material/sort';
 import { FormControl } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthAccessService } from 'src/app/services/hris/auth-access.service';
+import { AuthAccessService } from 'src/app/components/shared-components/auth-access/auth-access.service';
 import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
 

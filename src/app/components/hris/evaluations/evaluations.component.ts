@@ -11,7 +11,7 @@ import { EvaluationInput } from 'src/app/models/hris/evaluation-input.interface'
 import { EvaluationRatingInput } from 'src/app/models/hris/evaluation-rating-input.interface';
 import { EvaluationAudienceService } from 'src/app/services/hris/evaluations/evaluation-audience.service';
 import { EmployeeEvaluationsRatingService } from 'src/app/services/hris/evaluations/employee-evaluations-rating.service';
-import { NavService } from 'src/app/services/hris/nav.service';
+import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
 
 @Component({
   selector: 'app-evaluations',

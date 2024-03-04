@@ -5,8 +5,8 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { ChartConfiguration } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { SnackbarService } from 'src/app/services/hris/snackbar.service';
-import { NavService } from 'src/app/services/hris/nav.service';
+import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
+import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
 @Component({
   selector: 'app-chart-report-pdf',
   templateUrl: './chart-report-pdf.component.html',

@@ -4,7 +4,7 @@ import { FieldCodeService } from 'src/app/services/hris/field-code.service';
 import { Router } from '@angular/router';
 import { FieldCode } from 'src/app/models/hris/field-code.interface';
 import { Table } from 'primeng/table';
-import { SnackbarService } from 'src/app/services/hris/snackbar.service';
+import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,8 +12,8 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
-import { NavService } from 'src/app/services/hris/nav.service';
-import { AuthAccessService } from 'src/app/services/hris/auth-access.service';
+import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
+import { AuthAccessService } from 'src/app/components/shared-components/auth-access/auth-access.service';
 
 @Component({
   selector: 'app-manage-field-code',

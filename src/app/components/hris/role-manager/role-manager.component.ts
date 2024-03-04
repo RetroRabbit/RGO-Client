@@ -5,10 +5,10 @@ import { Role } from 'src/app/models/hris/role.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { RoleAccessLink } from 'src/app/models/hris/role-access-link.interface';
 import { RoleManagementService } from 'src/app/services/hris/role-management.service';
-import { SnackbarService } from 'src/app/services/hris/snackbar.service';
+import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
 import { forkJoin } from 'rxjs';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
-import { NavService } from 'src/app/services/hris/nav.service';
+import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
 @Component({
   selector: 'app-role-manager',
   templateUrl: './role-manager.component.html',

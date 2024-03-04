@@ -7,9 +7,9 @@ import { Employee } from 'src/app/models/hris/employee.interface';
 import { EmployeeDateService } from 'src/app/services/hris/employee/employee-date.service';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { NotificationService } from 'src/app/services/hris/notification.service';
-import { SnackbarService } from 'src/app/services/hris/snackbar.service';
+import { SnackbarService } from 'src/app/components/shared-components/snackbar-service/snackbar.service';
 import { EmployeeDate } from 'src/app/models/hris/employee-date.interface';
-import { NavService } from 'src/app/services/hris/nav.service';
+import { NavService } from 'src/app/components/shared-components/nav-service/nav.service';
 @Component({
   selector: 'app-add-employee-event',
   templateUrl: './add-employee-event.component.html',
