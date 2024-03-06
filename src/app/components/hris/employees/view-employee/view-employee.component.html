@@ -54,7 +54,7 @@
   </section>
   <div class="row">
     <div class="card px-0">
-      <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+      <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
         'background-color': '#D7DFFF',
         'border': '2px solid #D7DFFF',
         'border-radius': '2rem',
@@ -66,27 +66,27 @@
         <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="Name">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Name</mat-header-cell>
-            <mat-cell *matCellDef="let employee">{{ employee.Name }}</mat-cell>
+            <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '20%' : '25%'}">{{ employee.Name }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Position">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Position</mat-header-cell>
-            <mat-cell *matCellDef="let employee">{{
+            <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '20%' : '25%'}">{{
               employee.Position
               }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Level">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Level</mat-header-cell>
-            <mat-cell *matCellDef="let employee">{{
+            <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '20%' : '25%'}">{{
               employee.Level == 0 ? "N/A" : employee.Level
               }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Client">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Client</mat-header-cell>
-            <mat-cell *matCellDef="let employee">{{
+            <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '20%' : '25%'}">{{
               employee.Client
               }}</mat-cell>
           </ng-container>
-          <ng-container matColumnDef="Roles">
+          <ng-container matColumnDef="Roles" [class.hide-column]="!isAdminOrSuperAdmin">
             <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
             <mat-cell *matCellDef="let employee" class="row justify-content-start">
               <div (click)="$event.stopPropagation()" class="row col-12 px-0">
@@ -117,7 +117,7 @@
         </span>
       </div>
     </div>
-    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
       'background-color': '#D6DFFF',
       'border': '2px solid #D6DFFF',
       'border-radius': '10px',
