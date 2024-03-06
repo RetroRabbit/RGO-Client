@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { SignInComponent } from './components/hris/sign-in/sign-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthModule } from '@auth0/auth0-angular';
+import { AuthConfigService, AuthModule } from '@auth0/auth0-angular';
 import { StoreModule } from '@ngrx/store';
 import { LoginReducer } from './components/shared-components/store/reducers/login.reducer';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
-import { environment } from 'src/enviroment/environment';
+import { environment } from 'src/environments/environment';
 import { LoginEffects } from './components/shared-components/store/effects/app.effects';
 import { AuthService } from './services/shared-services/auth-access/auth.service';
 import { AuthInterceptor } from './components/shared-components/interceptor/auth0.interceptor';
@@ -130,7 +130,7 @@ import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashbo
       domain: process.env['AUTH0_Domain_key'] || 'null',
       clientId: process.env['AUTH0_CLIENT_ID'] || 'null',
       authorizationParams: {
-        redirect_uri: 'http://localhost:4200',
+        redirect_uri: environment.redirect_uri,
       },
     }),
     HttpClientModule,
@@ -177,7 +177,7 @@ import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashbo
   ],
   providers: [
     AuthService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
 })

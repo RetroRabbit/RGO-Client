@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../enviroment/environment';
+import { environment } from '../../../../environments/environment';
 import { EmployeeProfile } from '../../../models/hris/employee-profile.interface';
 import { Token } from '../../../models/hris/token.interface';
 import { Store } from '@ngrx/store';
