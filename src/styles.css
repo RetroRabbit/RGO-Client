@@ -136,3 +136,15 @@ body {
   --mdc-switch-selected-pressed-track-color: #0029C6;
   --mdc-switch-selected-track-color: #0029C6;
 }
+
+.mat-mdc-checkbox {
+  --mdc-checkbox-state-layer-size: 16px;
+  --mdc-checkbox-selected-checkmark-color: #fff;
+
+  &.mat-accent {
+    --mdc-checkbox-selected-focus-icon-color: #0029C6 !important;
+    --mdc-checkbox-selected-hover-icon-color: #0029C6 !important;
+    --mdc-checkbox-selected-icon-color: #0029C6 !important;
+    --mdc-checkbox-selected-pressed-icon-color: #0029C6 !important;
+  }
+}
