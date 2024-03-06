@@ -62,7 +62,7 @@ export class NavBarComponent {
     this.roles = Object.keys(JSON.parse(types));
 
     this.isLoading = true; 
-      this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
+      this.employeeProfileService.getSimpleEmployee(userEmail).subscribe({
       next: (data) => {
         this.employeeProfile = data;
         this.profileImage = this.employeeProfile.photo;

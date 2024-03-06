@@ -139,13 +139,13 @@
   <div class="col-1 col-md-3 col-lg-4 mt-4" id="right-column">
     <div class="row justify-content-end">
       <div class="col-1" id="info-menu">
-        <button mat-button [matMenuTriggerFor]="menu" id="options-trigger">
+        <button mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu" id="options-trigger">
           <mat-icon id="menu-icon">play_arrow</mat-icon>
         </button>
         <mat-menu #menu="matMenu" class="p-2 rounded-4">
           <button mat-menu-item id="menu-info">
             <div class="row">
-              <button mat-button [matMenuTriggerFor]="menu" id="options-trigger-upsidedown" class="col-2">
+              <button mat-button (click)="menuTrigger.openMenu()" id="options-trigger-upsidedown" class="col-2">
                 <mat-icon id="menu-icon">play_arrow</mat-icon>
               </button>
               <div id="menu-quick-info" class="col text-start">

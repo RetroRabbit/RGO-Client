@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Observable, firstValueFrom, take, EMPTY, catchError, map } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../../enviroment/environment';
+import { environment } from '../../../../environments/environment';
 import { Store } from '@ngrx/store';
 import { Token } from '../../../models/hris/token.interface';
 
