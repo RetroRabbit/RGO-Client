@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild,HostListener } from '@angular/core';
 import { RoleService } from 'src/app/services/hris/role.service';
 import { RoleAccess } from 'src/app/models/hris/role-access.interface';
 import { Role } from 'src/app/models/hris/role.interface';
@@ -35,6 +35,14 @@ export class RoleManagerComponent implements OnInit {
   showConfirmDialog: boolean = false;
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: ''  };
   
+  screenWidth = window.innerWidth;
+
+  @HostListener('window:resize',['$event'])
+  onResize(){
+    this.screenWidth = window.innerWidth;
+    console.log(window.innerWidth)
+    console.log(this.screenWidth)
+  }
   constructor(
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
@@ -57,6 +65,9 @@ export class RoleManagerComponent implements OnInit {
       this.roleAccessLinks = roleAccessLinks;
       this.updateChartAndEmployeeDataCheckboxStates();
     });
+    this.onResize();
+    console.log(window.innerWidth)
+    console.log(this.screenWidth)
   }
 
   areAllCheckboxesSelected(columnKey: string): boolean {

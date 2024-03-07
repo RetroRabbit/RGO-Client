@@ -64,6 +64,8 @@ div .d-flex {
   font-weight: 400;
   line-height: 24px;
   letter-spacing: 0.5px;
+  display: flex;
+  justify-content: space-between;
 }
 
 #allsubheader {
@@ -112,4 +114,15 @@ tr:last-child th:first-child {
 
 tr:last-child td:last-child {
   border-bottom-right-radius: 20px;
+}
+
+.px-3-display-none{
+  display: none;
+}
+
+.px-3-borders-right{
+  border-top-right-radius: 20px;
+}
+.align-icon {
+  display: flex !important;
 }
