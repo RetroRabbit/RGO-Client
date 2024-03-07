@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
-import { routeGuardGuard } from './route-guard.guard';
+import { routeGuardGuard } from './hris-guard.guard';
 
 describe('routeGuardGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) => 

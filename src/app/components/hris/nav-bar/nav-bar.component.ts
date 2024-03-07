@@ -118,7 +118,7 @@ export class NavBarComponent {
   switchHris(route: string){
     if (this.navService.unsavedChanges) {
       this.tempRoute = route;
-      this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
+     this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
 
       this.showConfirmDialog = true;
     } else {

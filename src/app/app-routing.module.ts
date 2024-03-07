@@ -13,14 +13,14 @@ import { EmployeeProfileComponent } from './components/hris/employees/employee-p
 import { SystemSettingsComponent } from './components/hris/system-settings/system-settings.component';
 import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin-dashboard.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
-import { HrisPageGuard } from './route-guard.guard';
+import { HrisPageGuard } from './hris-guard.guard';
 import { AtsPageGuard } from './ats-guard.guard';
 
 const routes: Routes = [
   { path: '', component: SignInComponent },
   { path: 'dashboard', component: AdminDashboardComponent, canActivate: [HrisPageGuard] },
   { path: 'employees', component: ViewEmployeeComponent, canActivate: [HrisPageGuard] },
-  { path: 'profile', component: EmployeeProfileComponent, canActivate: [HrisPageGuard] },
+  { path: 'profile', component: EmployeeProfileComponent },
   { path: 'profile/:id', component: EmployeeProfileComponent, canActivate: [HrisPageGuard] },
   { path: 'system-settings', component: SystemSettingsComponent, canActivate: [HrisPageGuard] },
   { path: 'manage-field', component: ManageFieldCodeComponent, canActivate: [HrisPageGuard] },
@@ -30,8 +30,7 @@ const routes: Routes = [
   { path: 'new-fieldcode', component: NewFieldCodeComponent, canActivate: [HrisPageGuard] },
   { path: 'update-fieldcode', component: UpdateFieldComponent, canActivate: [HrisPageGuard] },
   { path: 'employee-details', component: EmployeeDetailsComponent, canActivate: [HrisPageGuard] },
-  { path: 'ats-dashboard', component: AtsDashboardComponent , canActivate: [AtsPageGuard]},
-  { path: '**', redirectTo: 'ats-dashboard', pathMatch: 'full' }
+  { path: 'ats-dashboard', component: AtsDashboardComponent}
 ];
 
 @NgModule({

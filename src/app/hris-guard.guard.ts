@@ -9,13 +9,11 @@ import { NavService } from './services/shared-services/nav-service/nav.service';
 export class HrisPageGuard {
   constructor(private router: Router, private navService: NavService) {}
 
-  canActivate: CanActivateFn = (
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot) => {
+  canActivate: CanActivateFn = () => {
     if (this.navService.isHris) {
       return true;
     }
-    this.router.navigateByUrl('/ats-dashboard');
+    this.router.navigateByUrl('/dashboard');
     return false;
   };
 }
