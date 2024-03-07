@@ -18,7 +18,7 @@ import { AtsPageGuard } from './ats-guard.guard';
 
 const routes: Routes = [
   { path: '', component: SignInComponent },
-  { path: 'dashboard', component: AdminDashboardComponent, canActivate: [HrisPageGuard] },
+  { path: 'dashboard', component: AdminDashboardComponent},
   { path: 'employees', component: ViewEmployeeComponent, canActivate: [HrisPageGuard] },
   { path: 'profile', component: EmployeeProfileComponent },
   { path: 'profile/:id', component: EmployeeProfileComponent, canActivate: [HrisPageGuard] },

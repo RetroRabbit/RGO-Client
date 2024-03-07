@@ -100,6 +100,7 @@ export class NavBarComponent {
 
       this.showConfirmDialog = true;
     } else {
+      console.log(this.isHris);
       this.router.navigate([route]);
     }
   }
@@ -111,8 +112,9 @@ export class NavBarComponent {
 
       this.showConfirmDialog = true;
     } else {
-      this.isHris =false;
+      this.isHris = false;
       this.router.navigate([route]);
+      console.log(this.isHris);
     }
   }
   switchHris(route: string){
@@ -122,8 +124,9 @@ export class NavBarComponent {
 
       this.showConfirmDialog = true;
     } else {
-      this.isHris =true;
+      this.isHris = true;
       this.router.navigate([route]);
+      console.log(this.isHris);
     }
   }
 

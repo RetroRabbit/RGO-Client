@@ -13,6 +13,7 @@ export class AtsPageGuard {
       if (!this.navService.isHris) {
         return true;
       }
+      
       this.router.navigateByUrl('/ats-dashboard');
       return false;
     };
