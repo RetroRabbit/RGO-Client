@@ -127,6 +127,10 @@ export class NavBarComponent {
     }
   }
 
+  hasAccess(): boolean {
+    return this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney();
+  }
+
   dialogFeedBack(event: any) {
     this.showConfirmDialog = false;
     if (event) {

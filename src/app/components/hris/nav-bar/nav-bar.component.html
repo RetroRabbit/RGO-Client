@@ -171,8 +171,8 @@
               </div>
             </div>
           </button>
-          <button mat-menu-item *ngIf="isHris" (click)="switchAts('/ats-dashboard')" id="dropdown-buttons"
-            class="rounded-5 row mb-2">
+          <button mat-menu-item *ngIf="hasAccess() && isHris" (click)="switchAts('/ats-dashboard')"
+          id="dropdown-buttons" class="rounded-5 row mb-2">
             <div class="row d-flex justify-content-center align-items-center align-content-center">
               <div class="col-2 mt-2">
                 <mat-icon>compare_arrows</mat-icon>
