@@ -1,7 +1,7 @@
 <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
 <div class='row'>
   <div class="col-12 mt-3" id="button-save-container">
-    <button mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save Changes</button>
+    <button *ngIf="screenWidth > 767" mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save Changes</button>
   </div>
   <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
     'background-color': '#D7DFFF',
