@@ -56,6 +56,10 @@ export class ViewEmployeeComponent {
     return this._searchQuery;
   }
 
+  get isAdminOrSuperAdmin() {
+    return this.authAccessService.isSuperAdmin() || this.authAccessService.isAdmin();
+  }
+
   PREVIOUS_PAGE = 'previousPage';
 
   roles: Observable<string[]> = this.employeeRoleService.getAllRoles().pipe(
@@ -97,6 +101,10 @@ export class ViewEmployeeComponent {
     this.onResize();
     if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
       this._searchQuery = this.cookieService.get('searchString');
+    }
+
+    if (!this.isAdminOrSuperAdmin) {
+      this.displayedColumns = ['Name', 'Position', 'Level', 'Client'];
     }
   }
 
@@ -345,7 +353,7 @@ export class ViewEmployeeComponent {
 
   changePeopleChampionFilter(champion: GenericDropDownObject) {
     this.currentChampionFilter = champion;
-    this.filterEmployeeTable();   
+    this.filterEmployeeTable();
   }
 
   changeUserTypeFilter(employeeType: GenericDropDownObject)
@@ -382,7 +390,7 @@ export class ViewEmployeeComponent {
         this.applySearchFilter();
       });
   }
-  
+
   getPeopleChampionsForFilter(): Observable<GenericDropDownObject[]> {
     return this.employeeService.filterEmployees(0, EmployeeType.PeopleChampion).pipe(
       map(employees => {

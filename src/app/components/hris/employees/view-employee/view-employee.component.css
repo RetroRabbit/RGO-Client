@@ -312,3 +312,7 @@ mat-label {
     position: relative;
     top: 28px;
 }
+
+.hide-column {
+  display: none;
+}
