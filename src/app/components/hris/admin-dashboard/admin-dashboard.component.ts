@@ -93,6 +93,7 @@ export class AdminDashboardComponent {
   }
 
   ngOnInit() {
+    this.navService.isHris=true;
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
     if (this.authAccessService.isAdmin() ||
