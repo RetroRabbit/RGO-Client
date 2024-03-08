@@ -74,13 +74,18 @@ export class SharedPropprtyAccessService {
 
     public checkPermission(tablename: string, fieldname: string): PropertyAccessLevel {
         const matchingAccess = this.accessProperties.find(access => access.table === tablename && access.field === fieldname);
-        return matchingAccess ? matchingAccess.accessLevel : PropertyAccessLevel.read;
+        return matchingAccess ? matchingAccess.accessLevel : PropertyAccessLevel.write;
     }
 
     public setAccessProperties() {
-        this.accessPropertiesService.GetAccessProperties(this.userId).subscribe({
-            next: (data) => {
-                this.accessProperties = data;
+        this.accessPropertiesService.FetchUserId(this.authAccessService.getEmployeeEmail()).subscribe({
+            next: (userId) => {
+                this.userId = userId;
+                this.accessPropertiesService.GetAccessProperties(userId).subscribe({
+                    next: (accessProperties) => {
+                        this.accessProperties = accessProperties;
+                    }
+                });
             }
         });
     }

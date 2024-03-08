@@ -15,10 +15,9 @@ export class AuthService {
   constructor(
     private auth: Auth0.AuthService,
     private client: HttpClient,
-    private store: Store<{ app: Token }>) 
-    { 
-      this.baseUrl =`${environment.HttpsBaseURL}/auth`
-    }
+    private store: Store<{ app: Token }>) {
+    this.baseUrl = `${environment.HttpsBaseURL}/auth`
+  }
 
   isAuthenticated(): Observable<boolean> {
     return this.auth.isAuthenticated$.pipe(take(1))
@@ -60,7 +59,5 @@ export class AuthService {
       );
   }
 
-  async getToken() {
-    return await firstValueFrom(this.store.select('app'))
-  }
+
 }

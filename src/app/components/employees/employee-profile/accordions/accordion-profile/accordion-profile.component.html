@@ -6,18 +6,21 @@
                     Employee Details
                 </mat-panel-title>
                 <mat-panel-description *ngIf="employeeFormProgress != 100" class="pe-0 pe-md-5">
-                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing
+                        information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeDetailsForm" (submit)="saveEmployeeEdit()">
                 <div class="col-12 mb-2 d-flex justify-content-end">
-                    <button *ngIf="!editEmployee" mat-button id="edit-button" (click)="editEmployeeDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''" >
+                    <button *ngIf="!editEmployee" mat-button id="edit-button" (click)="editEmployeeDetails()"
+                        [ngClass]="screenWidth <= 767 ?'col-12':''">
                         <mat-icon>edit</mat-icon>Edit Details</button>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
-                            <div class="col-12 my-2 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.name"
+                                class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Full Names</mat-label>
                                     <input matInput formControlName="name">
@@ -28,7 +31,8 @@
                                         Full name must not contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.surname"
+                                class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Last Name</mat-label>
                                     <input matInput formControlName="surname">
@@ -39,7 +43,8 @@
                                         Last name must not contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.initials"
+                                class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Initials</mat-label>
                                     <input matInput formControlName="initials">
@@ -51,7 +56,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="row">
+                        <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.clientAllocated" class="row">
                             <div class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Client Allocated</mat-label>
@@ -67,7 +72,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 my-2 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.employeeType"
+                                class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Role</mat-label>
                                     <mat-select formControlName="employeeType">
@@ -77,7 +83,8 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.level"
+                                class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Level</mat-label>
                                     <mat-select formControlName="level">
@@ -87,45 +94,54 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.teamLead"
+                                class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Team Lead</mat-label>
-                                    <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput" type="text" placeholder="" matInput formControlName="teamLead"
+                                    <input
+                                        *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput"
+                                        type="text" placeholder="" matInput formControlName="teamLead"
                                         [matAutocomplete]="autoLead" (input)="filterEmployees($event)">
                                     <mat-autocomplete #autoLead="matAutocomplete">
-                                        <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput"
+                                        <input
+                                            *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput"
                                             type="text" placeholder="" matInput formControlName="teamLead"
-                                            [matAutocomplete]="autoLead"
-                                            (input)="filterEmployees($event)">
+                                            [matAutocomplete]="autoLead" (input)="filterEmployees($event)">
                                         <mat-option *ngFor="let employee of filteredEmployees"
                                             [value]="employee.name + ' ' + employee.surname"
                                             (onSelectionChange)="getId(employee, 'teamLead')">
                                             {{ employee.name }} {{ employee.surname }}</mat-option>
                                     </mat-autocomplete>
                                     <ng-template #NonAdminTeamLeadInput>
-                                        <input matInput type="text" [value]="employeeProfile.simpleEmployee.teamLeadName" [disabled]="true">
+                                        <input matInput type="text"
+                                            [value]="employeeProfile.simpleEmployee.teamLeadName" [disabled]="true">
                                     </ng-template>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.peopleChampion"
+                                class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>People's Champion</mat-label>
-                                    <input *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminPeopleChampionInput" 
-                                    type="text" placeholder="" matInput formControlName="peopleChampion"
-                                    [matAutocomplete]="autoChampion" (input)="filterChampions($event)">
+                                    <input
+                                        *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminPeopleChampionInput"
+                                        type="text" placeholder="" matInput formControlName="peopleChampion"
+                                        [matAutocomplete]="autoChampion" (input)="filterChampions($event)">
                                     <mat-autocomplete #autoChampion="matAutocomplete">
                                         <mat-option *ngFor="let peopleChampion of filteredPeopleChamps"
                                             [value]="peopleChampion.name + ' ' + peopleChampion.surname"
                                             (onSelectionChange)="getId(peopleChampion, 'champion')">
                                             {{ peopleChampion.name }}
                                             {{ peopleChampion.surname }}</mat-option>
-                                        </mat-autocomplete>
-                                        <ng-template #NonAdminPeopleChampionInput>
-                                            <input matInput type="text" [value]="employeeProfile.simpleEmployee.peopleChampionName ?? 'Unassigned'" [disabled]="true">
-                                        </ng-template>
+                                    </mat-autocomplete>
+                                    <ng-template #NonAdminPeopleChampionInput>
+                                        <input matInput type="text"
+                                            [value]="employeeProfile.simpleEmployee.peopleChampionName ?? 'Unassigned'"
+                                            [disabled]="true">
+                                    </ng-template>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.idNumber"
+                                class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>I.D number</mat-label>
                                     <input matInput formControlName="idNumber" (blur)="getGenderBirthday($event)">
@@ -137,7 +153,8 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-2 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.dateOfBirth"
+                                class="col-12 my-2 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Date of Birth</mat-label>
                                     <input matInput [matDatepicker]="picker1" class="form-control"
@@ -146,7 +163,8 @@
                                     <mat-datepicker #picker1></mat-datepicker>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.engagementDate"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Start Date</mat-label>
                                     <input matInput [matDatepicker]="picker2" formControlName="engagementDate">
@@ -168,7 +186,8 @@
                         <button *ngIf="editEmployee" mat-button id="save-button" type="submit" class="col-12 mb-2">
                             Save changes
                         </button>
-                        <button *ngIf="editEmployee" mat-button id="cancel-button" (click)="cancelEmployeeEdit()" class="col-12">
+                        <button *ngIf="editEmployee" mat-button id="cancel-button" (click)="cancelEmployeeEdit()"
+                            class="col-12">
                             Cancel
                         </button>
                     </div>
@@ -181,27 +200,34 @@
                     Personal Details
                 </mat-panel-title>
                 <mat-panel-description *ngIf="personalFormProgress != 100" class="pe-0 pe-md-5">
-                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
+                    <mat-icon class="mx-1">error</mat-icon>
+                    <span class="d-none d-md-block d-lg-block">
+                        Missing information
+                    </span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <form [formGroup]="personalDetailsForm"> 
-                    <div class="col-12 mb-2 d-flex justify-content-end">
-                        <button *ngIf="!editPersonal" mat-button id="edit-button" (click)="editPersonalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
-                            <mat-icon>edit</mat-icon>Edit Details</button>
-                    </div>
+            <form [formGroup]="personalDetailsForm">
+                <div class="col-12 mb-2 d-flex justify-content-end">
+                    <button *ngIf="!editPersonal" mat-button id="edit-button" (click)="editPersonalDetails()"
+                        [ngClass]="screenWidth <= 767 ?'col-12':''">
+                        <mat-icon>edit</mat-icon>Edit Details</button>
+                </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
-                            <div class="col-11 my-2">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.gender"
+                                class="col-11 my-2">
                                 <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
-                                <mat-radio-group aria-label="Select your gender" formControlName="gender" class="row col-12 col-md-7 col-lg-5" 
+                                <mat-radio-group aria-label="Select your gender" formControlName="gender"
+                                    class="row col-12 col-md-7 col-lg-5"
                                     [value]="employeeProfile.employeeDetails.gender">
                                     <mat-radio-button [value]=1 class="col-4">Male</mat-radio-button>
                                     <mat-radio-button [value]=2 class="col-4">Female</mat-radio-button>
                                     <mat-radio-button [value]=0 class="col-4">Unclassified</mat-radio-button>
                                 </mat-radio-group>
                             </div>
-                            <div class="col-12 col-md-6 my-2">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.race"
+                                class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Race</mat-label>
                                     <mat-select formControlName="race">
@@ -211,7 +237,8 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 my-1">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.disability"
+                                class="col-12 my-1">
                                 <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Do you have any
                                     disabilities?</h3>
                                 <mat-radio-group aria-label="Select status" (change)="setHasDisability($event)"
@@ -220,7 +247,8 @@
                                     <mat-radio-button [value]=false>no</mat-radio-button>
                                 </mat-radio-group>
                             </div>
-                            <div class="col-12" *ngIf="hasDisability">
+                            <div class="col-12"
+                                *ngIf="hasDisability && sharedPropprtyAccessService.employeeProfilePermissions.disability">
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <mat-form-field appearance="outline" style="width: 100%;">
@@ -234,7 +262,8 @@
                                         </mat-form-field>
                                     </div>
                                     <div class="col-12 col-md-6">
-                                        <mat-form-field id="mat-field" appearance="outline" style="width: 100%;" class="disability-description">
+                                        <mat-form-field id="mat-field" appearance="outline" style="width: 100%;"
+                                            class="disability-description">
                                             <textarea matInput placeholder="Disability Notes"
                                                 formControlName="disabilityNotes"></textarea>
                                         </mat-form-field>
@@ -245,7 +274,8 @@
                     </div>
 
                     <div class="col-12 d-block d-md-none" id="edit-buttons">
-                        <button class="col-12 mb-2" *ngIf="editPersonal" mat-button id="save-button" (click)="savePersonalEdit()">
+                        <button class="col-12 mb-2" *ngIf="editPersonal" mat-button id="save-button"
+                            (click)="savePersonalEdit()">
                             Save changes
                         </button>
                         <button class="col-12" *ngIf="editPersonal" mat-button id="cancel-button"
@@ -254,8 +284,7 @@
                         </button>
                     </div>
                     <div class="col-12 d-none d-md-flex" id="edit-buttons">
-                        <button *ngIf="editPersonal" mat-button id="cancel-button"
-                            (click)="cancelPersonalEdit()">
+                        <button *ngIf="editPersonal" mat-button id="cancel-button" (click)="cancelPersonalEdit()">
                             Cancel
                         </button>
                         <button *ngIf="editPersonal" mat-button id="save-button" (click)="savePersonalEdit()">
@@ -271,18 +300,21 @@
                     Contact Details
                 </mat-panel-title>
                 <mat-panel-description *ngIf="contactFormProgress != 100" class="pe-0 pe-md-5">
-                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing
+                        information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeContactForm">
                 <div class="col-12 mb-2 d-flex justify-content-end">
-                    <button *ngIf="!editContact" mat-button id="edit-button" (click)="editContactDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
+                    <button *ngIf="!editContact" mat-button id="edit-button" (click)="editContactDetails()"
+                        [ngClass]="screenWidth <= 767 ?'col-12':''">
                         <mat-icon>edit</mat-icon>Edit Details</button>
-                </div>                
+                </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
-                            <div class="col-12 col-md-6 my-2">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.personalEmail"
+                                class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Personal Email</mat-label>
                                     <input matInput formControlName="personalEmail">
@@ -294,7 +326,8 @@
                                         This is not a valid email</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6 my-2">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.email"
+                                class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Work email</mat-label>
                                     <input matInput formControlName="email">
@@ -305,7 +338,8 @@
                                         Work email must end with @retrorabbit.co.za </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6 my-2">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.cellphoneNo"
+                                class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Cellphone Number</mat-label>
                                     <input matInput formControlName="cellphoneNo">
@@ -316,7 +350,8 @@
                                         Cell Phone number must only contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6 my-2">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.houseNo"
+                                class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Home Number</mat-label>
                                     <input matInput formControlName="houseNo">
@@ -331,7 +366,8 @@
                                 <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Emergency Contact
                                 </h3>
                             </div>
-                            <div class="col-12 col-md-6 my-2">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.emergencyContactName"
+                                class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Emergency contact name</mat-label>
                                     <input matInput formControlName="emergencyContactName">
@@ -343,7 +379,8 @@
                                         Contact name must not contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6 my-2">
+                            <div *ngIf="sharedPropprtyAccessService.employeeProfilePermissions.emergencyContactNo"
+                                class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Emergency contact number</mat-label>
                                     <input matInput formControlName="emergencyContactNo">
@@ -358,8 +395,7 @@
                         </div>
                     </div>
                     <div class="col-12 d-none d-md-flex" id="edit-buttons">
-                        <button *ngIf="editContact" mat-button id="cancel-button"
-                            (click)="cancelContactEdit()">
+                        <button *ngIf="editContact" mat-button id="cancel-button" (click)="cancelContactEdit()">
                             Cancel
                         </button>
                         <button *ngIf="editContact" mat-button id="save-button" type="submit"
@@ -369,8 +405,8 @@
                     </div>
                     <div class="col-12 d-block d-md-none" id="edit-buttons">
                         <button *ngIf="editContact" mat-button id="save-button" type="submit" class="col-12 mb-2"
-                        (click)="saveContactEdit()">
-                        Save changes
+                            (click)="saveContactEdit()">
+                            Save changes
                         </button>
                         <button *ngIf="editContact" mat-button id="cancel-button" class="col-12"
                             (click)="cancelContactEdit()">
@@ -386,19 +422,22 @@
                     Address Details
                 </mat-panel-title>
                 <mat-panel-description *ngIf="addressFormProgress != 100" class="pe-0 pe-md-5">
-                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing
+                        information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="addressDetailsForm">
                 <div class="col-12 mb-2 d-flex justify-content-end">
-                    <button *ngIf="!editAddress" mat-button id="edit-button" (click)="editAddressDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
+                    <button *ngIf="!editAddress" mat-button id="edit-button" (click)="editAddressDetails()"
+                        [ngClass]="screenWidth <= 767 ?'col-12':''">
                         <mat-icon>edit</mat-icon>Edit Details
                     </button>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.unitNumber"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Unit Number</mat-label>
                                     <input matInput formControlName="physicalUnitNumber">
@@ -410,7 +449,8 @@
                                         Unit number must only contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.complexName"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Complex Name</mat-label>
                                     <input matInput formControlName="physicalComplexName">
@@ -419,13 +459,15 @@
                                         name is required</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.suburbOrDistrict"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Suburb/District</mat-label>
                                     <input matInput formControlName="physicalSuburb">
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.streetNumber"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Street Number</mat-label>
                                     <input matInput formControlName="physicalStreetNumber">
@@ -437,13 +479,15 @@
                                         Street Number must only contain numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.city"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>City/Town</mat-label>
                                     <input matInput formControlName="physicalCity">
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.country"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Country</mat-label>
                                     <mat-select formControlName="physicalCountry">
@@ -453,7 +497,8 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.province"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Province</mat-label>
                                     <mat-select formControlName="physicalProvince">
@@ -463,7 +508,8 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.postalCode"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Postal Code</mat-label>
                                     <input matInput formControlName="physicalPostalCode">
@@ -476,48 +522,54 @@
                                 </mat-form-field>
                             </div>
                             <div class="col-12">
-                                
+
                             </div>
                             <div class="col-12">
-                                <p-checkbox value="Postal address is the same as physical address" inputId="checkbox" (onChange)="toggleEqualFields()"
-                                [disabled]="!editAddress">
+                                <p-checkbox value="Postal address is the same as physical address" inputId="checkbox"
+                                    (onChange)="toggleEqualFields()" [disabled]="!editAddress">
                                     Is the postal address the same as physical address?</p-checkbox>
-                                    <label class="ms-1" for="checkbox">Is the postal address the same as the physical
-                                        address?</label>
-                                    </div>
+                                <label class="ms-1" for="checkbox">Is the postal address the same as the physical
+                                    address?</label>
+                            </div>
                         </div>
                         <div *ngIf="!physicalEqualPostal" class="row mt-4">
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.unitNumber"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Unit Number</mat-label>
                                     <input matInput formControlName="postalUnitNumber">
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.complexName"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Complex Name</mat-label>
                                     <input matInput formControlName="postalComplexName">
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.suburbOrDistrict"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Suburb/District</mat-label>
                                     <input matInput formControlName="postalSuburb">
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.streetNumber"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Street Number</mat-label>
                                     <input matInput formControlName="postalStreetNumber">
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.city"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>City/Town</mat-label>
                                     <input matInput formControlName="postalCity">
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.country"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Country</mat-label>
                                     <mat-select formControlName="postalCountry">
@@ -527,7 +579,8 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.province"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Province</mat-label>
                                     <mat-select formControlName="postalProvince">
@@ -537,7 +590,8 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div *ngIf="sharedPropprtyAccessService.employeeAddressPermissions.postalCode"
+                                class="col-12 col-md-6">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Postal Code</mat-label>
                                     <input matInput formControlName="postalPostalCode">
@@ -546,10 +600,12 @@
                         </div>
                     </div>
                     <div class="col-12 d-block d-md-none" id="edit-buttons">
-                        <button *ngIf="editAddress" mat-button id="save-button" type="submit" (click)="saveAddressEdit()" class="col-12 mb-2">
+                        <button *ngIf="editAddress" mat-button id="save-button" type="submit"
+                            (click)="saveAddressEdit()" class="col-12 mb-2">
                             Save changes
                         </button>
-                        <button *ngIf="editAddress" mat-button id="cancel-button" (click)="cancelAddressEdit()" class="col-12">
+                        <button *ngIf="editAddress" mat-button id="cancel-button" (click)="cancelAddressEdit()"
+                            class="col-12">
                             Cancel
                         </button>
                     </div>
@@ -557,7 +613,8 @@
                         <button *ngIf="editAddress" mat-button id="cancel-button" (click)="cancelAddressEdit()">
                             Cancel
                         </button>
-                        <button *ngIf="editAddress" mat-button id="save-button" type="submit" (click)="saveAddressEdit()">
+                        <button *ngIf="editAddress" mat-button id="save-button" type="submit"
+                            (click)="saveAddressEdit()">
                             Save changes
                         </button>
                     </div>
@@ -570,12 +627,14 @@
                     Additional Information
                 </mat-panel-title>
                 <mat-panel-description *ngIf="additionalFormProgress != 100" class="pe-0 pe-md-5">
-                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing
+                        information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="additionalInfoForm">
                 <div class="col-12 mb-2 d-flex justify-content-end">
-                    <button *ngIf="!editAdditional" mat-button id="edit-button" (click)="editAdditionalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
+                    <button *ngIf="!editAdditional" mat-button id="edit-button" (click)="editAdditionalDetails()"
+                        [ngClass]="screenWidth <= 767 ?'col-12':''">
                         <mat-icon>edit</mat-icon>Edit
                         Details</button>
                 </div>
@@ -598,10 +657,12 @@
                         </div>
                     </div>
                     <div class="col-12 d-block d-md-none" id="edit-buttons">
-                        <button *ngIf="editAdditional" mat-button id="save-button" type="submit" (click)="saveAdditionalEdit" class="col-12 mb-2">
+                        <button *ngIf="editAdditional" mat-button id="save-button" type="submit"
+                            (click)="saveAdditionalEdit" class="col-12 mb-2">
                             Save changes
                         </button>
-                        <button *ngIf="editAdditional" mat-button id="cancel-button" (click)="cancelAdditionalEdit()" class="col-12">
+                        <button *ngIf="editAdditional" mat-button id="cancel-button" (click)="cancelAdditionalEdit()"
+                            class="col-12">
                             Cancel
                         </button>
                     </div>
@@ -609,7 +670,8 @@
                         <button *ngIf="editAdditional" mat-button id="cancel-button" (click)="cancelAdditionalEdit()">
                             Cancel
                         </button>
-                        <button *ngIf="editAdditional" mat-button id="save-button" type="submit" (click)="saveAdditionalEdit()">
+                        <button *ngIf="editAdditional" mat-button id="save-button" type="submit"
+                            (click)="saveAdditionalEdit()">
                             Save changes
                         </button>
                     </div>
