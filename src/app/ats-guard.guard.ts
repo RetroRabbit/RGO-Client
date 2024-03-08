@@ -17,7 +17,7 @@ export class AtsPageGuard {
         return true;
       }
       
-      if(this.navService.isHris == undefined){
+      if(this.navService.isHris === undefined){
         this.authService.logout()
       }
       return false;
