@@ -42,6 +42,12 @@ export class AuthService {
       );
   }
 
+  logout() {
+    this.auth.logout({
+      logoutParams: { returnTo: document.location.origin },
+    });
+  }
+
   FetchRoles(employeeEmail: string | undefined): Observable<string> {
     let header: HttpHeaders = new HttpHeaders()
     header.append('Content-Type', 'application/json')

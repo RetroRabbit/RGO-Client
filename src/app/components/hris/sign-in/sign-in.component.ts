@@ -81,14 +81,17 @@ export class SignInComponent {
           this.authAccessService.setEmployeeEmail(user?.email as string);
           this.store.dispatch(GetLogin({ payload: googleID }));
           this.navService.showNavbar = true;
-          if(
-            this.authAccessService.isTalent()
-          ) {this.navService.isHris = false; this.router.navigateByUrl('/ats-dashboard'); }
+          
+          if(this.authAccessService.isTalent()) {
+            this.navService.isHris = false; 
+            this.router.navigateByUrl('/ats-dashboard'); 
+          }
           if (
             this.authAccessService.isAdmin() ||
             this.authAccessService.isJourney() ||
             this.authAccessService.isSuperAdmin()
           ) {
+            this.navService.isHris = true;
             this.router.navigateByUrl('/dashboard');
           }
           else if(this.authAccessService.isEmployee()){this.router.navigateByUrl('/profile');}
