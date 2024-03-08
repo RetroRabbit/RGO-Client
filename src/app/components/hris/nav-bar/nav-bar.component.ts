@@ -17,8 +17,6 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 export class NavBarComponent {
   [x: string]: any;
   title = 'HRIS';
-  showNav = this.navService.showNavbar;
-  isHris = this.navService.isHris;
   screenWidth!: number;
   roles!: string[];
   employeeProfile: EmployeeProfile | undefined;
@@ -100,33 +98,32 @@ export class NavBarComponent {
 
       this.showConfirmDialog = true;
     } else {
-      console.log(this.isHris);
       this.router.navigate([route]);
     }
   }
 
-  switchAts(route: string){
+  switchToAts(route: string){
     if (this.navService.unsavedChanges) {
       this.tempRoute = route;
       this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
 
       this.showConfirmDialog = true;
-    } else {
-      this.isHris = false;
+    } else {  
+      this.navService.isHris = false;
+      this.cookieService.set("isHris", String(this.navService.isHris));
       this.router.navigate([route]);
-      console.log(this.isHris);
     }
   }
-  switchHris(route: string){
+  switchToHris(route: string){
     if (this.navService.unsavedChanges) {
       this.tempRoute = route;
      this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
 
       this.showConfirmDialog = true;
     } else {
-      this.isHris = true;
+      this.navService.isHris = true;
+      this.cookieService.set("isHris", String(this.navService.isHris));
       this.router.navigate([route]);
-      console.log(this.isHris);
     }
   }
 
