@@ -13,7 +13,7 @@ export class AtsPageGuard {
 
     canActivate: CanActivateFn = () => { 
 
-      if (this.navService.isHris == false) {
+      if (this.navService.isHris === false) {
         return true;
       }
       
