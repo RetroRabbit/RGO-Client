@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
 import { AuthService } from "@auth0/auth0-angular";
 import { CookieService } from "ngx-cookie-service";
-import { HideNavService } from 'src/app/services/hide-nav.service';
-import { EmployeeProfile } from "./models/employee-profile.interface";
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { EmployeeProfile } from "./models/hris/employee-profile.interface";
 import { Chart } from "chart.js";
 
 @Component({
@@ -12,7 +12,7 @@ import { Chart } from "chart.js";
 })
 export class AppComponent {
   title = 'HRIS';
-  showNav = this.hideNavService.showNavbar;
+  showNav = this.navService.showNavbar;
   screenWidth !: number;
   roles!: string[];
   employeeProfile: EmployeeProfile | undefined;
@@ -27,7 +27,7 @@ export class AppComponent {
   constructor(
     private auth: AuthService,
     public cookieService: CookieService,
-    public hideNavService: HideNavService)
+    public navService: NavService)
     {
     this.screenWidth = window.innerWidth;
   }
@@ -50,7 +50,7 @@ export class AppComponent {
   }
 
   logout() {
-    this.hideNavService.showNavbar = false;
+    this.navService.showNavbar = false;
     this.auth.logout({
       logoutParams: { returnTo: document.location.origin }
     });

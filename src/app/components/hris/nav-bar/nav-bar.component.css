@@ -1,0 +1,200 @@
+@media only screen and (max-width: 992px) {
+    #employee-info,
+    #employee-photo {
+      display: none;
+    }
+  }
+  #menu-image{
+    text-align: center;
+    width: 100%;
+  }
+
+  #menu-image-container{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+
+  #menu-image-container > img{
+    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+  }
+  #menu-quick-info{
+    width: 100%;
+    text-align: center;
+  }
+
+  #container {
+    margin: 0;
+  }
+
+  #header {
+    height: auto;
+    min-height: 10vh;
+    position: relative;
+  }
+
+  #navigation {
+    padding-bottom: 0;
+    bottom: 0;
+  }
+
+  #navigation > div {
+    margin-top: 1rem;
+  }
+
+  #nav-item > div {
+    text-align: center;
+    color: #49454f;
+    font-size: 14px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+  }
+
+  #nav-item > div:hover{
+    cursor: pointer;
+  }
+
+  #nav-item > div.active {
+    text-align: center;
+    color: #0029c6;
+    font-size: 14px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+  }
+
+  #selected-line-box {
+    width: 69px;
+    height: 14px;
+    position: relative;
+    margin: 0 auto;
+  }
+
+  #selected-line {
+    width: 65px;
+    height: 3px;
+    left: 2px;
+    top: 11px;
+    position: absolute;
+    background: #0029c6;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+  }
+
+  #options-trigger {
+    align-items: center;
+    border-radius: 50%;
+    background-color: #b9c8ff;
+    display: flex;
+    padding: 0;
+    justify-content: center;
+    min-width: 0;
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+
+  #options-trigger-upsidedown {
+    align-items: center;
+    border-radius: 50%;
+    background-color: #b9c8ff;
+    display: flex;
+    padding: 0;
+    justify-content: center;
+    min-width: 0;
+    height: 2.5rem;
+    width: 2.5rem;
+    rotate: 180deg;
+  }
+
+  #menu-icon {
+    color: #0029c6;
+    margin: 0 auto;
+    transform: rotate(90deg);
+  }
+
+  #employee-info > div:nth-child(1) {
+    color: #0029c6;
+    font-size: 16px;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    word-wrap: break-word;
+  }
+
+  #employee-info > h5:nth-child(2) {
+    color: #6d6d6d;
+    font-size: 12px;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 16px;
+    word-wrap: break-word;
+  }
+
+  #image-container {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  #image-container > img {
+    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+  }
+
+  #new-hire {
+    text-align: right;
+  }
+
+  #content {
+    background-color: #E8EFFF;
+    min-height: 90vh;
+    max-height: auto;
+    margin: 0;
+    padding: 0;
+  }
+
+  #new-hire > button {
+    background: #0029c6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    margin-right: 4rem;
+    padding: 0.5rem;
+    width: 12rem;
+  }
+
+  #no-graphs {
+    background-color: white;
+    border-radius: 2rem;
+    height: 75vh;
+    text-align: center;
+  }
+
+  #add-graph > button {
+    background: #0029c6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    padding: 0.5rem;
+    width: 12rem;
+  }
+  
+  #info-menu > #nav-item-container > button{
+    padding:0;
+    height :auto;
+  }
+  #info-menu > #nav-item-container > button:hover{
+    cursor: pointer;
+  }
+
+  #dropdown-buttons:hover{
+    background-color: #b9c8ff;
+  }

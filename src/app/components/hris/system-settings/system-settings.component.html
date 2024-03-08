@@ -1,0 +1,31 @@
+<main class="row mx-0 my-4">
+  <div class="col-2 mt-4" id="side-menu" *ngIf="navService.showSystemNavbar">
+    <h1>System Settings</h1>
+    <h5>Manage system settings</h5>
+    <div id="button-container">
+      <div id="icon-text-container" (click)="displayCustomFieldsManagement()" [ngClass]="systemNavItemService.selectedMenuItem =='Custom Field management' ? 'active' : ''">
+        <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
+        <span>Custom Field Management</span>
+      </div>
+    </div>
+    <div id="button-container">
+      <div id="icon-text-container" (click)="displayRoleManagement()" [ngClass]="systemNavItemService.selectedMenuItem =='Role Management' ? 'active' : ''">
+        <mat-icon id="mat-icon">person_outline_24px</mat-icon>
+        <span>Role Management</span>
+      </div>
+    </div>
+    <div>
+      <button mat-button [matMenuTriggerFor]="menu" id="nav-item">
+        More
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item  (click)="displayEmployeeBanking()">Employee Banking</button>
+      </mat-menu>
+    </div>
+  </div>
+  <div class="col-9 ps-4 ms-3">
+    <app-manage-field-code *ngIf="systemNavItemService.selectedMenuItem === 'Custom Field management'"></app-manage-field-code>
+    <app-role-manager *ngIf="systemNavItemService.selectedMenuItem === 'Role Management'"></app-role-manager>
+    <app-pending-bank-statements *ngIf="systemNavItemService.selectedMenuItem === 'Employee Banking'"></app-pending-bank-statements>
+  </div>
+</main>
