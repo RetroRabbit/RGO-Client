@@ -127,7 +127,7 @@ export class NavBarComponent {
     }
   }
 
-  hasAccess(): boolean {
+  hasAccessToAts(): boolean {
     return this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney();
   }
 
