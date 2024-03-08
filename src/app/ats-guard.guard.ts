@@ -19,7 +19,7 @@ export class AtsPageGuard {
       
       if(this.navService.isHris == undefined){
         this.authService.logout()
-     }
+      }
       return false;
     };
 }
