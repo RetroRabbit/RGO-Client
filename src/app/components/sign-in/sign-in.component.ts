@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/nav.service';
 import { AuthAccessService } from 'src/app/services/auth-access.service';
+import { SharedPropprtyAccessService } from 'src/app/services/shared-property-access.service';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -27,8 +28,9 @@ export class SignInComponent {
     private cookieService: CookieService,
     public navService: NavService,
     private authAccessService: AuthAccessService,
-    private NgZone: NgZone
-  ) {}
+    private NgZone: NgZone,
+    private sharedPropprtyAccessService: SharedPropprtyAccessService
+  ) { }
 
   ngOnInit() {
     this.token = this.cookieService.get('userToken');
@@ -81,6 +83,7 @@ export class SignInComponent {
           this.authAccessService.setEmployeeEmail(user?.email as string);
           this.store.dispatch(GetLogin({ payload: googleID }));
           this.navService.showNavbar = true;
+          this.sharedPropprtyAccessService.setAccessProperties();
           if (
             this.authAccessService.isAdmin() ||
             this.authAccessService.isTalent() ||

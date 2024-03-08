@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef,ViewChild, HostListener } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, HostListener } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -74,7 +74,7 @@ export class EmployeeProfileComponent {
   bankStatus: number = 0;
   base64Image: string = '';
   screenWidth = window.innerWidth;
-  
+
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
   @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
   @ViewChild(AccordionDocumentsComponent) documentAccordion!: AccordionDocumentsComponent;
@@ -82,8 +82,8 @@ export class EmployeeProfileComponent {
   imageUrl!: string;
   validateFile: any;
 
-  @HostListener('window:resize',['$event'])
-  onResize(){
+  @HostListener('window:resize', ['$event'])
+  onResize() {
     this.screenWidth = window.innerWidth;
   }
 
@@ -293,9 +293,9 @@ export class EmployeeProfileComponent {
           this.getSelectedEmployee()
         },
         error: () => {
-        this.snackBarService.showSnackbar("Failed to update employee profile picture", "snack-error");
-          }
-        });
+          this.snackBarService.showSnackbar("Failed to update employee profile picture", "snack-error");
+        }
+      });
   }
 
 }

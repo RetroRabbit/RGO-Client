@@ -13,7 +13,7 @@ import { DOCUMENT } from '@angular/common';
 import { EmployeeProfile } from 'src/app/models/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
 import { NavService } from 'src/app/services/nav.service';
-import { EmployeeType } from 'src/app/models/constants/employeeTypes.constants';
+import { EmployeeType } from 'src/app/models/constants/enums/employeeTypes.enum';
 
 @Component({
   selector: 'app-chart',
