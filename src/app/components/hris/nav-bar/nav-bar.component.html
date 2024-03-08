@@ -157,7 +157,7 @@
               </div>
             </div>
           </button>
-          <button mat-menu-item *ngIf="hasAccess() && navService.isHris" (click)="switchToAts('/ats-dashboard')"
+          <button mat-menu-item *ngIf="hasAccessToAts() && navService.isHris" (click)="switchToAts('/ats-dashboard')"
           id="dropdown-buttons" class="rounded-5 row mb-2">
             <div class="row d-flex justify-content-center align-items-center align-content-center">
               <div class="col-2 mt-2">
