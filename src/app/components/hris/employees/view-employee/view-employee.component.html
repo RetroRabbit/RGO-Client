@@ -1,8 +1,7 @@
 <main class="container-fluid mt-3 px-5">
-  <section class="container-fluid mt-4 mb-4 mx-0"
-    [ngClass]="screenWidth <= 992 ? 'mobile-section-fluid' : 'desktop-section-fluid'">
-    <div class="d-flex justify-content-between gap-2">
-      <div class="col-6 pl-0 d-flex align-items-center">
+  <div class="container-fluid mt-4 mb-4 mx-0">
+    <div [ngClass]="screenWidth <= 767 ? 'col-12' : 'row'">
+      <div class="col-12 pl-0">
         <div id="search-container" [ngClass]="{ 'bg-white': searchQuery !== '' }">
           <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
             <mat-icon>arrow_back</mat-icon>
@@ -15,7 +14,7 @@
           </button>
         </div>
       </div>
-      <div class="col-2 ps-0 d-flex align-items-center">
+      <div class="col-2 p-6 mb-2 d-none d-md-block">
         <div (click)="$event.stopPropagation()" class="row col-12 px-0">
           <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
             [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
@@ -29,7 +28,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="col-2 ps-0 d-flex align-items-center">
+      <div class="col-2 ps-0  d-none d-md-block">
         <div (click)="$event.stopPropagation()" class="row col-12 px-0">
           <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
             [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
@@ -43,15 +42,15 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="col-2 pe-0 d-flex justify-content-end align-items-center gap-3"
+      <div class="col-12 pe-0"
         *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">
         <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
-          class="col-lg-4 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
+          class="col-12 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
           <span class="add-employee-span">+ Add Employee</span>
         </button>
       </div>
     </div>
-  </section>
+  </div>
   <div class="row">
     <div class="card px-0">
       <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
@@ -69,20 +68,20 @@
             <mat-cell *matCellDef="let employee">{{ employee.Name }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Position">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Position</mat-header-cell>
-            <mat-cell *matCellDef="let employee">{{
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow d-none d-md-flex">Position</mat-header-cell>
+            <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
               employee.Position
               }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Level">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Level</mat-header-cell>
-            <mat-cell *matCellDef="let employee">{{
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow d-none d-md-flex">Level</mat-header-cell>
+            <mat-cell *matCellDef="let employee"  class="d-none d-md-flex">{{
               employee.Level == 0 ? "N/A" : employee.Level
               }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Client">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Client</mat-header-cell>
-            <mat-cell *matCellDef="let employee">{{
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow d-none d-md-flex">Client</mat-header-cell>
+            <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
               employee.Client
               }}</mat-cell>
           </ng-container>
@@ -104,7 +103,7 @@
             </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns" (click)="employeeClickEvent(row)"></mat-row>
+          <mat-row class="rows" *matRowDef="let row; columns: displayedColumns" (click)="employeeClickEvent(row)"></mat-row>
         </mat-table>
         <mat-paginator hidden></mat-paginator>
       </div>
@@ -127,13 +126,13 @@
     </ngx-skeleton-loader>
     <div class="d-flex flex-row justify-content-center align-items-center mt-3"
       *ngIf="!isLoading && dataSource.filteredData.length > 0">
-      <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">
-        <span class="fw-medium">
+      <div class="col-lg-4 col-md-4 fs-6 d-none d-md-flex" id="paginatorText">
+        <span class="fw-medium d-none d-md-flex">
           Showing {{ start }}-{{ end }}
         </span>
         <span>of {{ paginator.length }} results</span>
       </div>
-      <div class="col-lg-4 col-md-4 row justify-content-center">
+      <div class="col-lg-4 col-md-4 d-flex">
         <button mat-icon-button (click)="paginator.previousPage()" [disabled]="!paginator.hasPreviousPage()">
           <mat-icon>arrow_left</mat-icon>
         </button>
@@ -146,8 +145,8 @@
           <mat-icon>arrow_right</mat-icon>
         </button>
       </div>
-      <div class="col-lg-4 col-md-4 row justify-content-end align-items-center" id="paginator-text">
-        <span class="col-lg-4 col-md-7 fw-medium"> Items per page </span>
+      <div class="col-lg-4 col-md-4 row justify-content-end align-items-center d-none d-md-flex" id="paginator-text">
+        <span class="col-lg-4 col-md-7 fw-medium d-none d-md-flex"> Items per page </span>
         <mat-form-field appearance="outline" class="col-lg-3 col-md-5" id="paginator-dropdown">
           <input id="pageSize" matInput type="number" min="1" [(ngModel)]="pageSize" (focus)="pageNumber.open()" />
           <mat-select #pageNumber [(ngModel)]="pageSize" hidden>
