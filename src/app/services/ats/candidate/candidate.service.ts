@@ -15,6 +15,6 @@ export class CandidateService {
 
   constructor(private httpClient: HttpClient,
     private authAccessService: AuthAccessService) {
-    this.baseUrl = `${environment.HttpsBaseURL}/employees`
+    this.baseUrl = `${environment.HttpsBaseURL}/candidates`
   }
 }

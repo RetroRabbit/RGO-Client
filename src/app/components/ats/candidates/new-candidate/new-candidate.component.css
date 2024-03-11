@@ -1,0 +1,153 @@
+main {
+    width: 100%;
+    background: hsl(222, 100%, 95%);
+}
+
+.roboto-font {
+    font-family: "Roboto", sans-serif;
+}
+
+.heading-text {
+    width: 332px;
+    text-align: center;
+    color: #0029c6;
+    font-size: 16px;
+    font-family: Inter;
+    font-weight: 400;
+    line-height: 22px;
+    word-wrap: break-word;
+}
+
+.no-border {
+    border: none;
+}
+
+#next-button {
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #0029c6;
+    border-radius: 30px;
+    border: none;
+    color: #FFF;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#save-button {
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #0029c6;
+    border-radius: 30px;
+    border: none;
+    color: #FFF;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#cancel-button {
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border-radius: 30px;
+    border: 1px solid #0029c6;
+    color: #0029c6;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#save-add-button {
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border-radius: 30px;
+    border: 1px solid #0029c6;
+    color: #0029c6;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#upload-button {
+    margin-top: 7px;
+    padding: 10px 24px;
+    height: 40px;
+    width: 132px;
+    gap: 8px;
+    background: #0029c6;
+    border-radius: 30px;
+    border: none;
+    color: #FFF;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    justify-content: center;
+}
+
+#file-button {
+    margin-top: 7px;
+    padding: 10px 24px;
+    gap: 8px;
+    height: 40px;
+    width: 132px;
+    border-style: solid;
+    border-radius: 30px;
+    border-color: #B3261E;
+    border-width: 1px;
+    background: white;
+    color: #B3261E;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#back {
+    border: none;
+    font-family: Roboto;
+    text-align: justify;
+    font-size: 14px;
+    font-weight: 500;
+    width: 80px;
+    height: 30px;
+    line-height: 20px;
+    background-color: #FFF;
+    color: #0029c6;
+}
