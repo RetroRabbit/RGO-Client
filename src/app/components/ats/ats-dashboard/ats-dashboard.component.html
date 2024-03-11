@@ -1,6 +1,14 @@
-<div style="height: 1000px; width: 100%; margin: auto; background-color: red;">
+<div style="height: 1000px; width: 100%; margin: auto; background-color: #D7DFFF;">
     <h1>THIS MIGHT BE THE ATS DASHBOARD</h1>
-    <div id="new-hire" class="d-sm-flex justify-content-sm-center">
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
+      'background-color': '#D7DFFF',
+      'border': '2px solid #D7DFFF',
+      'border-radius': '2rem',
+      'height': '0px',
+      'width': '0%'
+    }">
+    </ngx-skeleton-loader>
+    <div id="new-candidate" class="d-sm-flex justify-content-sm-center">
         <button class="my-4" (click)="AddCandidate()"
           *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">+ Add Candidate
         </button>

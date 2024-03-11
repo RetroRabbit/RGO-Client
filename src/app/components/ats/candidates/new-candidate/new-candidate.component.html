@@ -1,25 +1,24 @@
 <div class="container">
-    <div class="container-fluid p-4">
+    <div class="container-fluid p-4" [ngClass]="{'fullscreen-modal': isMobileScreen}">
         <div class="row justify-content-center align-items-center">
             <div class="col-12">
-                <h2 class="text-center" id="create-employee">Add a new Candidate</h2>
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Profile photo</mat-label>
-                    <input matInput type="text" [value]="imageName" />
-                    <span mat-icon-button matSuffix (click)="uploadFile.click()" class="pe-3">
-                      <mat-icon id="file-upload-cursor">file_upload</mat-icon>
-                      <input type="file" #uploadFile (change)="onFileChange($event)" hidden />
-                    </span>
-                  </mat-form-field>
+                <h1 class="text-center" id="create-candidate">Add a new Candidate</h1>
             </div>
         </div>
         <form [formGroup]="newcandidateForm" (ngSubmit)="onSubmit(false)" id="newcandidateForm">
             <div class="row justify-content-center align-items-center">
-                <div class="row justify-content-center align-items-center roboto-font col-md-12 pb-3">
-                    <h1 class="col-lg-7 col-md-12" id="heading">Employee Details</h1>
-                    <p class="col-lg-7 col-md-12">Note: *The asterisk indicates required fields</p>
+                <div id="profile-image">
+                    <img src="assets/profile-image" alt="Profile Photo" class="profile-image">
+                    <input type="file" #uploadFile (change)="onFileChange($event)" hidden />
                 </div>
-                <div class="row flex-column justify-content-center align-items-center col-md-12">
+                <button id="upload-button" mat-icon-button matSuffix (click)="uploadFile.click()" class="upload-button">
+                    Upload Picture
+                </button>
+                <div class="col-12 text-center roboto-font pb-3">
+                    <h3 class="text-center">Profile Picture</h3>
+                    <p class="text-center">Note: *The asterisk indicates required fields</p>
+                </div>
+                <div class="col-md-12 text-center">
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                         <mat-label>First name</mat-label>
                         <input matInput type="text" formControlName="name" />
@@ -50,15 +49,15 @@
                         </mat-error>
                         <mat-error
                             *ngIf="newcandidateForm.controls['email'].hasError('pattern') && !newcandidateForm.controls['email'].hasError('required')">
-                            Work email must be valid
+                            Email must be valid
                         </mat-error>
                     </mat-form-field>
-                    <div id="footer">
-                        <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
-                            (click)="goToPreviousPage()">Cancel</button>
-                        <button id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
-                            matStepperNext>Next</button>
-                    </div>
+                </div>
+                <div id="footer">
+                    <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
+                        (click)="goToPreviousPage()">Cancel</button>
+                    <button id="next-button"
+                        [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''">Next</button>
                 </div>
             </div>
         </form>

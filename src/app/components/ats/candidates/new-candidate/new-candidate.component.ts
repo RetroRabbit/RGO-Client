@@ -49,6 +49,15 @@ export class NewCandidateComponent {
     }
   )
 
+  ngOnInit(): void {
+    this.navService.showNavbar = false;
+  }
+
+  ngOnDestroy() {
+    this.navService.showNavbar = true;
+  }
+
+
   onSubmit(reset: boolean = false): void {
   }
 
