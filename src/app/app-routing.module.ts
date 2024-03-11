@@ -15,7 +15,7 @@ import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 import { HrisPageGuard } from './hris-guard.guard';
 import { AtsPageGuard } from './ats-guard.guard';
-import { NewcandidateComponentComponent } from './components/ats/candidates/new-candidates/newcandidate-component/newcandidate-component.component';
+import { NewcandidateComponentComponent } from './components/ats/candidates/new-candidate/new-candidate-component.component';
 
 
 const routes: Routes = [

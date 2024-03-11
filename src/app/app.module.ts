@@ -80,7 +80,7 @@ import { AccordionBankingComponent } from './components/hris/employees/employee-
 import { AccordionDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
-import { NewcandidateComponentComponent } from './components/ats/candidates/new-candidates/newcandidate-component/newcandidate-component.component';
+import { NewcandidateComponentComponent } from './components/ats/candidates/new-candidate/new-candidate-component.component';
 
 @NgModule({
   declarations: [
