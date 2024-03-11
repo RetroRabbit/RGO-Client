@@ -53,7 +53,6 @@ export class PropertyAccessComponent {
     ngOnInit() {
         this.dataSource.paginator = this.paginator;
         this.getAccessProperties();
-
     }
 
     ngAfterViewInit() {
