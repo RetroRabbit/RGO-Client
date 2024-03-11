@@ -94,7 +94,6 @@ export class PropertyAccessComponent {
         this.ngZone.run(() => {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
-
         });
         this.dataSource._updateChangeSubscription();
     }
