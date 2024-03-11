@@ -2,7 +2,7 @@
     <h1>THIS MIGHT BE THE ATS DASHBOARD</h1>
     <div id="new-hire" class="d-sm-flex justify-content-sm-center">
         <button class="my-4" (click)="AddCandidate()"
-          *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()"  [ngClass]="screenWidth >= 767 ? 'add-button-tablet' : 'add-button-mobile'">+ Add Candidate
+          *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">+ Add Candidate
         </button>
       </div>
 </div>
