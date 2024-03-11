@@ -43,7 +43,7 @@
             fill="black" />
         </svg>
       </div>
-      <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" *ngIf="isHris">
+      <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" *ngIf="navService.isHris">
         <div class="row">
           <div class="col-2"
             *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
@@ -102,7 +102,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" *ngIf="!isHris">
+      <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" *ngIf="!navService.isHris">
         <div class="row">
           <div class="col-2"
             *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
@@ -112,20 +112,6 @@
                   Dashboard
                 </div>
                 <div *ngIf="router.url == '/ats-dashboard'" id="selected-line-box">
-                  <div id="selected-line">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-2">
-            <div id="nav-item-container">
-              <div id="nav-item">
-                <div (click)="changeNav('/profile')"
-                  [ngClass]="router.url.includes('/profile') ? 'active' : 'idle'">
-                  Profile
-                </div>
-                <div *ngIf="router.url.includes('/profile')" id="selected-line-box">
                   <div id="selected-line">
                   </div>
                 </div>
@@ -171,8 +157,8 @@
               </div>
             </div>
           </button>
-          <button mat-menu-item *ngIf="isHris" (click)="switchAts('/ats-dashboard')" id="dropdown-buttons"
-            class="rounded-5 row mb-2">
+          <button mat-menu-item *ngIf="hasAccessToAts() && navService.isHris" (click)="switchToAts('/ats-dashboard')"
+          id="dropdown-buttons" class="rounded-5 row mb-2">
             <div class="row d-flex justify-content-center align-items-center align-content-center">
               <div class="col-2 mt-2">
                 <mat-icon>compare_arrows</mat-icon>
@@ -183,7 +169,7 @@
               </div>
             </div>
           </button>
-          <button mat-menu-item *ngIf="!isHris" (click)="switchHris('/dashboard')" id="dropdown-buttons"
+          <button mat-menu-item *ngIf="!navService.isHris" (click)="switchToHris('/dashboard')" id="dropdown-buttons"
             class="rounded-5 row mb-2">
             <div class="row d-flex justify-content-center align-items-center align-content-center">
               <div class="col-2 mt-2">

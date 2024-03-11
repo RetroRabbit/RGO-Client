@@ -3,6 +3,7 @@
     background: var(--m-3-sys-light-primary-container, #D7DFFF);
     padding: 12px;
     min-height: 80vh;
+    width: 19.8%;
 }
 
 h1{

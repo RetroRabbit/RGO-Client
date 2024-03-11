@@ -1,5 +1,5 @@
 <main class="row mx-0 my-4">
-  <div class="col-2 mt-4" id="side-menu" *ngIf="navService.showSystemNavbar">
+  <div class="col-3 mt-4" id="side-menu" *ngIf="navService.showSystemNavbar">
     <h1>System Settings</h1>
     <h5>Manage system settings</h5>
     <div id="button-container">
@@ -32,7 +32,7 @@
       </mat-menu>
     </div>
   </div>
-  <div class="col-9 ps-4 ms-3">
+  <div class="col-8 ps-4 ms-3">
     <app-manage-field-code
       *ngIf="systemNavItemService.selectedMenuItem === 'Custom Field management'"></app-manage-field-code>
     <app-role-manager *ngIf="systemNavItemService.selectedMenuItem === 'Role Management'"></app-role-manager>
