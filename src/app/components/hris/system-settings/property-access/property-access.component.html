@@ -1,0 +1,138 @@
+<main class="container-fluid mt-3">
+    <section class="header-section mt-4 mb-4 "
+        [ngClass]="screenWidth <= 992 ? 'mobile-section-fluid' : 'desktop-section-fluid'">
+        <div class="d-flex justify-content-between gap-2">
+            <div class="col-6 pl-0 d-flex align-items-center">
+                <div id="search-container" [ngClass]="{ 'bg-white': searchQuery !== '' }">
+                    <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+                    <input mat-Input [(ngModel)]="searchQuery" [ngClass]="{ 'no-text': searchQuery === '' }"
+                        class="ms-5 bg-transparent" id="search-input" placeholder="Search for permission by name"
+                        autocomplete="off" />
+                    <button mat-button id="search-button">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="col-2 pe-0 d-flex justify-content-end align-items-center gap-3">
+                <button mat-button id="refresh-code-button" class="btn btn-primary rounded-pill"
+                    (click)="SeedCodes()">Refresh Codes
+                </button>
+            </div>
+        </div>
+    </section>
+    <div class="row mx-0">
+        <div class="card px-0">
+            <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+          'background-color': '#D7DFFF',
+          'border': '2px solid #D7DFFF',
+          'border-radius': '2rem',
+          'height': '580px',
+          width: '100%',
+        }">
+            </ngx-skeleton-loader>
+            <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
+                <mat-table [dataSource]="dataSource" matSort>
+                    <ng-container matColumnDef="id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Id</mat-header-cell>
+                        <mat-cell *matCellDef="let permission">
+                            {{ permission.id }}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="role">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Role</mat-header-cell>
+                        <mat-cell *matCellDef="let permission">
+                            {{splitAndCapitalizeCamelCase(permission.role.description)}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="table">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Table</mat-header-cell>
+                        <mat-cell *matCellDef="let permission">
+                            {{splitAndCapitalizeCamelCase(permission.table)}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="field">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Field</mat-header-cell>
+                        <mat-cell *matCellDef="let permission">
+                            {{splitAndCapitalizeCamelCase(permission.field)}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="accessLevel">
+                        <mat-header-cell *matHeaderCellDef>Permission</mat-header-cell>
+                        <mat-cell *matCellDef="let permission" class="row justify-content-start">
+                            <div (click)="$event.stopPropagation()" class="row col-12 px-0">
+                                <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
+                                    [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
+                                    <mat-label>
+                                        {{splitAndCapitalizeCamelCase(getEnumKey(permission.accessLevel))}}
+                                    </mat-label>
+                                    <mat-select>
+                                        <mat-option *ngFor="let perm of permissions | async" [value]="permission.name"
+                                            (click)="changePermissions(permission.id, perm)">
+                                            {{ perm.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                </mat-table>
+                <mat-paginator hidden></mat-paginator>
+            </div>
+            <div *ngIf="!isLoading && dataSource.filteredData.length <= 0"
+                class="d-flex flex-row justify-content-center align-items-center">
+                <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
+                <span id="noResults" class="col-6 d-flex flex-column justify-content-center align-items-center">
+                    <h1>Oops!</h1>
+                    <h2>No results on your search</h2>
+                </span>
+            </div>
+            <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+                'background-color': '#D6DFFF',
+                'border': '2px solid #D6DFFF',
+                'border-radius': '10px',
+                'height': '60px',
+                width: '100%',
+              }">
+            </ngx-skeleton-loader>
+            <div class="d-flex flex-row justify-content-center align-items-center mt-3"
+                *ngIf="!isLoading && dataSource.filteredData.length > 0">
+                <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">
+                    <span class="fw-medium">
+                        Showing {{ start }}-{{ end }}
+                    </span>
+                    <span>of {{ paginator.length }} results</span>
+                </div>
+                <div class="col-lg-4 col-md-4 row justify-content-center">
+                    <button mat-icon-button (click)="paginator.previousPage()"
+                        [disabled]="!paginator.hasPreviousPage()">
+                        <mat-icon>arrow_left</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngFor="let page of visiblePages" (click)="goToPage(page)">
+                        <span class="paginator" [ngClass]="{ active: page === pageIndex + 1 }">
+                            {{ page }}
+                        </span>
+                    </button>
+                    <button mat-icon-button (click)="paginator.nextPage()" [disabled]="!paginator.hasNextPage()">
+                        <mat-icon>arrow_right</mat-icon>
+                    </button>
+                </div>
+                <div class="col-lg-4 col-md-4 row justify-content-end align-items-center" id="paginator-text">
+                    <span class="col-lg-4 col-md-7 fw-medium"> Items per page </span>
+                    <mat-form-field appearance="outline" class="col-lg-3 col-md-5" id="paginator-dropdown">
+                        <input id="pageSize" matInput type="number" min="1" [(ngModel)]="pageSize"
+                            (focus)="pageNumber.open()" />
+                        <mat-select #pageNumber [(ngModel)]="pageSize" hidden>
+                            <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
+                                {{ pageSize }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
