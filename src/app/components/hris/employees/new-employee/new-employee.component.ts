@@ -93,7 +93,7 @@ export class NewEmployeeComponent implements OnInit {
   peopleChampionId = null;
   isMobileScreen = false;
 
- categories: { [key: number]: { name: string, state: boolean } } = {
+  categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
     1: { name: '', state: true },
     2: { name: '', state: true },
@@ -409,12 +409,15 @@ export class NewEmployeeComponent implements OnInit {
         this.isDirty = false;
       },
 
-      error: (error: any) => {
+      error: (error: any, stepper?: MatStepper) => {
         let message = '';
         if (error.status === 400) {
           message = 'Incorrect form values';
         } else if (error.status === 406) {
           message = 'User already exists';
+        }
+        else if (error.status === 200) {
+          stepper?.next();
         }
         this.snackBarService.showSnackbar(`Error: ${message}`, "snack-error");
         this.isDirty = false;
