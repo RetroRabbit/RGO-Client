@@ -1,3 +1,8 @@
 <div style="height: 1000px; width: 100%; margin: auto; background-color: red;">
     <h1>THIS MIGHT BE THE ATS DASHBOARD</h1>
+    <div id="new-hire" class="d-sm-flex justify-content-sm-center">
+        <button class="my-4" (click)="AddCandidate()"
+          *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()"  [ngClass]="screenWidth >= 767 ? 'add-button-tablet' : 'add-button-mobile'">+ Add Candidate
+        </button>
+      </div>
 </div>

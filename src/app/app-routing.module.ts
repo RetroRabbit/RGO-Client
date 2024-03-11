@@ -31,7 +31,8 @@ const routes: Routes = [
   { path: 'new-fieldcode', component: NewFieldCodeComponent, canActivate: [HrisPageGuard] },
   { path: 'update-fieldcode', component: UpdateFieldComponent, canActivate: [HrisPageGuard] },
   { path: 'employee-details', component: EmployeeDetailsComponent, canActivate: [HrisPageGuard] },
-  { path: 'ats-dashboard', component: AtsDashboardComponent, canActivate: [AtsPageGuard]}
+  { path: 'ats-dashboard', component: AtsDashboardComponent, canActivate: [AtsPageGuard]},
+  { path: 'create-candidate', component: NewEmployeeComponent, canActivate: [AtsPageGuard] },
 ];
 
 @NgModule({
