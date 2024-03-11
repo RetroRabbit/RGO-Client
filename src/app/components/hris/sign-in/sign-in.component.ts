@@ -9,7 +9,7 @@ import { AuthService } from '../../../services/shared-services/auth-access/auth.
 import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
-import { SharedPropprtyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -29,7 +29,7 @@ export class SignInComponent {
     public navService: NavService,
     private authAccessService: AuthAccessService,
     private NgZone: NgZone,
-    private sharedPropprtyAccessService: SharedPropprtyAccessService
+    private sharedPropprtyAccessService: SharedPropertyAccessService
   ) { }
 
   ngOnInit() {

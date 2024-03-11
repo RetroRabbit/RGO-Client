@@ -11,7 +11,7 @@ import { PropertyAccess } from "src/app/models/hris/properties.interface";
     providedIn: 'root'
 })
 
-export class SharedPropprtyAccessService {
+export class SharedPropertyAccessService {
     userId = this.authAccessService.getUserId();
     accessProperties!: PropertyAccess[];
 

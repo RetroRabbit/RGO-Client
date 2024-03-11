@@ -25,7 +25,7 @@ import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
-import { SharedPropprtyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { EmployeeProfilePermissions } from 'src/app/models/hris/property-access/employee-profile-properties.interface';
 import { EmployeeAddressPermissions } from 'src/app/models/hris/property-access/employee-address-properties.interface';
@@ -164,7 +164,7 @@ export class AccordionProfileComponent {
     private fieldCodeService: FieldCodeService,
     private employeeAddressService: EmployeeAddressService,
     public authAccessService: AuthAccessService,
-    public sharedPropprtyAccessService: SharedPropprtyAccessService) {
+    public sharedPropertyAccessService: SharedPropertyAccessService) {
   }
 
   usingProfile: boolean = true;
@@ -948,21 +948,21 @@ export class AccordionProfileComponent {
       }
 
       if (control) {
-        switch (this.sharedPropprtyAccessService.checkPermission(table, fieldName)) {
+        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
           case PropertyAccessLevel.none:
             if (!initialLoad)
               control.disable();
-            this.sharedPropprtyAccessService.employeeProfilePermissions[fieldName] = false;
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
             break;
           case PropertyAccessLevel.read:
             if (!initialLoad)
               control.disable();
-            this.sharedPropprtyAccessService.employeeProfilePermissions[fieldName] = true;
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
             break;
           case PropertyAccessLevel.write:
             if (!initialLoad)
               control.enable();
-            this.sharedPropprtyAccessService.employeeProfilePermissions[fieldName] = true;
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
             break;
           default:
             if (!initialLoad)
