@@ -92,7 +92,6 @@ export class AdminDashboardComponent {
     navService.showNavbar = true;
   }
 
-
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
