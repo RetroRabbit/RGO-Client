@@ -5,6 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CandidateService } from 'src/app/services/ats/candidate/candidate.service';
+import { levels } from 'src/app/models/hris/constants/levels.constants';
 
 @Component({
   selector: 'app-new-candidate',
@@ -29,6 +30,8 @@ export class NewCandidateComponent {
     private navService: NavService
   ) { }
 
+  levels: number[] = levels.map((level) => level.value);
+
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
   imageUrl: string = '';
@@ -47,6 +50,12 @@ export class NewCandidateComponent {
       Validators.pattern(this.namePattern)]),
       email: new FormControl<string>('', [Validators.required, 
       Validators.email, Validators.pattern(this.emailPattern)]),
+      potentiallevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
+      location: new FormControl<string | null>(''),
+      linkedInProfile: new FormControl<string | null>(''),
+      cvFile: new FormControl<string | null>(''),
+      portfolioLink: new FormControl<string | null>(''),
+      portfolioFile: new FormControl<string | null>(''),
     }
   )
 
