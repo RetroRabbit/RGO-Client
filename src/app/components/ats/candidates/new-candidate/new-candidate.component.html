@@ -25,83 +25,78 @@
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                         <mat-label>First name</mat-label>
                         <input matInput type="text" formControlName="name" />
-                        <mat-error *ngIf="newcandidateForm.controls['name'].hasError('required')">
-                            First name is required
-                        </mat-error>
-                        <mat-error
-                            *ngIf="newcandidateForm.controls['name'].hasError('pattern') && !newcandidateForm.controls['name'].hasError('required')">
-                            First name must not contain numbers
-                        </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                         <mat-label>Last name</mat-label>
                         <input matInput type="text" formControlName="surname" />
-                        <mat-error *ngIf="newcandidateForm.controls['surname'].hasError('required')">
-                            Last name is required
-                        </mat-error>
-                        <mat-error
-                            *ngIf="newcandidateForm.controls['surname'].hasError('pattern') && !newcandidateForm.controls['surname'].hasError('required')">
-                            Last name must not contain numbers
-                        </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                         <mat-label>Email</mat-label>
-                        <input matInput type="email" formControlName="email" />
-                        <mat-error *ngIf="newcandidateForm.controls['email'].hasError('required')">
-                            Email is required
-                        </mat-error>
-                        <mat-error
-                            *ngIf="newcandidateForm.controls['email'].hasError('pattern') && !newcandidateForm.controls['email'].hasError('required')">
-                            Email must be valid
-                        </mat-error>
+                        <input matInput type="text" formControlName="email" />
                     </mat-form-field>
-                    <div  class="row flex-column justify-content-center align-items-center col-md-12"  *ngIf="isValidEmail">
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                            <mat-label>Role</mat-label>
-                            <mat-radio-group formControlName="role">
-                                <mat-radio-button value="UI/UX Designer">UI/UX Designer</mat-radio-button>
-                                <mat-radio-button value="Developer">Developer</mat-radio-button>
-                                <mat-radio-button value="Business Support">Business Support</mat-radio-button>
-                                <mat-radio-button value="Scrum Master">Scrum Master</mat-radio-button>
-                            </mat-radio-group>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                            <mat-label>Select level</mat-label>
-                            <mat-select formControlName="potentiallevel">
-                                <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                            <mat-label>Loaction</mat-label>
-                            <input matInput type="text" formControlName="location" />
-                           
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                            <mat-label>LinkedIn Profile</mat-label>
-                            <input matInput type="text" formControlName="linkedInProfile" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                            <mat-label>CV (File Upload)</mat-label>
-                            <input type="file" formControlName="cvFile" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                            <mat-label>Portfolio (Website Link)</mat-label>
-                            <input matInput type="text" formControlName="portfolioLink" />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                            <mat-label>Upload Portfolio File</mat-label>
-                            <input type="file" formControlName="portfolioFile" />
-                        </mat-form-field>
-                        <div class="col-lg-7"> <label class="fw-base pe-3" id="additional-fields-label"
-                            for="additionalFieldsToggle">Additional fields</label>
-                            <mat-slide-toggle color="primary" id="additionalFieldsToggle"
-                            formControlName="toggleAdditionalFields"></mat-slide-toggle>
-                        </div>
-                    </div>
                 </div>
-                <div id="footer">
+                <!-- Other Fields -->
+                <div *ngIf="isValidEmail" class="row col-md-12 flex-column justify-content-center align-items-center">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                        <mat-label>Contact number</mat-label>
+                        <input matInput type="text" formControlName="contactNumber" />
+                    </mat-form-field>
+                    
+                    <mat-radio-group formControlName="role">
+                        <mat-radio-button value="UI/UX Designer">UI/UX Designer</mat-radio-button>
+                        <mat-radio-button value="Developer">Developer</mat-radio-button>
+                        <mat-radio-button value="Business Support">Business Support</mat-radio-button>
+                        <mat-radio-button value="Scrum Master">Scrum Master</mat-radio-button>
+                    </mat-radio-group>
+                    
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                        <mat-label>Select level</mat-label>
+                        <mat-select formControlName="potentialLevel">
+                            <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                        <mat-label>Location</mat-label>
+                        <input matInput type="text" formControlName="location" />
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                        <mat-label>LinkedIn Profile</mat-label>
+                        <input matInput type="text" formControlName="linkedInProfile" />
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                        <mat-label>CV</mat-label>
+                        <input matInput type="text" formControlName="cvFile" />
+                    </mat-form-field>
+                    <p class="profile-text">PDF,PPT,PPTX,doc,Docx are supported</p>
+                    <p class="profile-text">10 MB Max limit size</p>
+                    
+                    <h4 class="col-md-12 col-lg-7 info-text">Portfolio</h4>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                        <mat-label>Website</mat-label>
+                        <input matInput type="text" formControlName="portfolioLink" />
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                        <mat-label>PDF</mat-label>
+                        <input matInput type="text" formControlName="portfolioFile" />
+                    </mat-form-field>
+                    <p class="col-md-12 col-lg-7">PDF,PPT,PPTX,doc,Docx are supported</p>
+                    <p class="col-md-12 col-lg-7">10 MB Max limit size</p>
+                    <label class="fw-base pe-3" id="additional-fields-label" for="additionalFieldsToggle">
+                        Additional fields
+                    </label>
+                    <mat-slide-toggle color="primary" id="additionalFieldsToggle"></mat-slide-toggle>
+                    
+                </div>
+                <div id="footer" class="col-md-12">
                     <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''" (click)="goToPreviousPage()">Cancel</button>
-                    <button id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''" (click)="checkEmailValidity()">Next</button>
+                    <button *ngIf="!isValidEmail" id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''" (click)="checkEmailValidity()">Next</button>
+                    <button *ngIf="isValidEmail" id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''" >Save & Add Another</button>
+                    <button *ngIf="isValidEmail" id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''" >Save</button>
+
                 </div>
             </div>
         </form>

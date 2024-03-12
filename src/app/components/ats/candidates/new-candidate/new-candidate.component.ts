@@ -44,18 +44,17 @@ export class NewCandidateComponent {
   isValidEmail=false;
 
   newcandidateForm = new FormGroup({
-      name: new FormControl<string>('', [Validators.required,
-      Validators.pattern(this.namePattern)]), 
-      surname: new FormControl<string>('', [Validators.required,
-      Validators.pattern(this.namePattern)]),
-      email: new FormControl<string>('', [Validators.required, 
-      Validators.email, Validators.pattern(this.emailPattern)]),
-      potentiallevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
+      name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]), 
+      surname: new FormControl<string>('', [Validators.required,Validators.pattern(this.namePattern)]),
+      email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]),
+      contactNumber: new FormControl<string>('', Validators.pattern(/^[0-9]*$/)),
+      potentialLevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
+      role: new FormControl<string >(''),
       location: new FormControl<string | null>(''),
-      linkedInProfile: new FormControl<string | null>(''),
-      cvFile: new FormControl<string | null>(''),
-      portfolioLink: new FormControl<string | null>(''),
-      portfolioFile: new FormControl<string | null>(''),
+      linkedInProfile: new FormControl<string>(''),
+      cvFile: new FormControl<string>(''),
+      portfolioLink: new FormControl<string>(''),
+      portfolioFile: new FormControl<string>(''),
     }
   )
 
@@ -92,12 +91,15 @@ export class NewCandidateComponent {
     if (email !== null) {
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         this.isValidEmail = emailPattern.test(email);
-        console.log(this.isValidEmail);
+        
+        if (!this.isValidEmail) {
+            this.snackBarService.showSnackbar("Please enter a valid email address", "snack-error");
+        }
     } else {
-        this.isValidEmail = false; 
-        console.log(this.isValidEmail);
+        this.snackBarService.showSnackbar("Please enter an email address", "snack-error");
     }
 }
+
 
 
   imageConverter(file: File) {
@@ -119,7 +121,7 @@ export class NewCandidateComponent {
   }
 
   employeeProfile = {
-    photo: 'assets/img/ProfileAts.png' // Default image path
+    photo: 'assets/img/ProfileAts.png' 
   };
   
   onFileChange(event: any): void {
