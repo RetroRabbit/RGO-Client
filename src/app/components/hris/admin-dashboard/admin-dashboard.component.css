@@ -44,7 +44,7 @@
 
 .searchbar {
   display: flex;
-  width: 350px;
+  width: 360px;
   height: 40px;
   min-width: 200px;
   align-items: center;
@@ -82,7 +82,6 @@
   border-radius: 28px 28px 0px 0px;
   background: var(--m-3-white, #fff);
   border: 0px;
-  box-shadow: 0px 0px 50px 0px rgba(0, 41, 198, 0.08);
   clip-path: inset(0px -5px -50px);
 
   display: flex;
@@ -178,7 +177,7 @@ div#results-container {
   flex-wrap: wrap;
   gap: 16px;
   align-self: stretch;
-  width: 481px;
+  width: 360px;
   min-width: 360px;
   flex-shrink: 0;
   background: var(--m-3-white, #fff);
@@ -188,22 +187,21 @@ div#results-container {
   min-height: 88px;
   flex-direction: column;
   margin: 0px 0px 0px 0px;
-  margin-left: 12px;
+  margin-left: 25px;
 }
 
 #search-results>div {
   flex: 1;
-  min-width: 481px;
+  min-width: 360px;
 }
 
 #search-results-container {
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 481px;
+  width: 360px;
   z-index: 1000;
   position: absolute;
-  box-shadow: 0px 5px 50px 0px rgba(0, 41, 198, 0.08);
 }
 
 #view-more-container {
@@ -212,8 +210,8 @@ div#results-container {
   display: flex;
   height: 72px;
   min-height: 56px;
-  width: 481px;
-  min-width: 481px;
+  width: 360px;
+  min-width: 360px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -225,7 +223,7 @@ div#results-container {
   border-top: 1px #0029c6 solid;
 
   margin-top: 16px;
-  margin-left: 12px;
+  margin-left: 25px;
 }
 
 .mat-mdc-select {

@@ -222,7 +222,7 @@ export class AdminDashboardComponent {
   }
 
   searchEmployees() {
-    if (this.searchQuery) {
+    if (this.searchQuery && this.searchQuery.length >= 3) {
       this.searchResults = this.employeeProfiles
         .filter(
           (employee) =>
