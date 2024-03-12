@@ -10,6 +10,14 @@ main {
 .container{
     background-color: white;
     border-radius: 20px;
+    width: 70%;
+    margin-top: 70px;
+    margin-bottom: 70px;
+}
+
+.center-bold{
+    font-weight: bold;
+    text-align: center;
 }
 
 .heading-text {
@@ -27,18 +35,18 @@ main {
     border: none;
 }
 
-#profile-image {
-    border-radius: 50%;
-    overflow: hidden;
+
+.profile-photo {
+    width: 150px; 
+    height: 150px;
     margin: 0 auto;
-    justify-content: center;
+    overflow: hidden;
 }
 
-#profile-image>img {
-    height: 100%;
+.profile-img {
     width: 100%;
-    cursor: pointer;
-    justify-content: center;
+    height: 100%;
+    object-fit: cover;
 }
 
 
@@ -47,7 +55,9 @@ main {
     padding: 10px 24px;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    width: 140px;
+    height: 40px;
+    margin-left: 12px;
     background: #0029c6;
     border-radius: 30px;
     border: none;
@@ -92,7 +102,8 @@ main {
     padding: 10px 24px;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    width: 140px;
+    height: 40px;
     background: #fff;
     border-radius: 30px;
     border: 1px solid #0029c6;
@@ -111,7 +122,6 @@ main {
     padding: 10px 24px;
     justify-content: center;
     align-items: center;
-    gap: 8px;
     background: #fff;
     border-radius: 30px;
     border: 1px solid #0029c6;
@@ -127,10 +137,12 @@ main {
 
 #upload-button {
     margin-top: 7px;
-    padding: 10px 24px;
+    margin-bottom: 20px;
+    padding: 10px;
     height: 40px;
-    width: 150px;
+    width: 180px;
     gap: 8px;
+    overflow: hidden;
     background: #0029c6;
     border-radius: 30px;
     border: none;
@@ -144,6 +156,23 @@ main {
     line-height: 20px;
     letter-spacing: 0.1px;
     justify-content: center;
+}
+
+.button-text {
+    margin-left: 5px; 
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.profile-text{
+    color: #625B71;
+    text-align: center;
+}
+
+.info-text{
+    text-align: left;
+    margin-left: 25%;
+    font-weight:500;
 }
 
 #file-button {
@@ -183,14 +212,11 @@ main {
 
 #footer {
     display: flex;
-    margin-top: 40px;
+    margin-top: 20px;
     height: 0%;
     justify-content: unset;
-    gap: 0px;
-}
-
-.container {
-    margin-top: 70px;
+    gap: 12;
+    margin-left: 45%;
 }
 
 #new-candidate {
