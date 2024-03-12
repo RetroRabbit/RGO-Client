@@ -94,8 +94,10 @@
                     <p class="col-md-12 col-lg-7">PDF,PPT,PPTX,doc,Docx are supported</p>
                     <p class="col-md-12 col-lg-7">10 MB Max limit size</p>
 
-                    <mat-slide-toggle class="col-md-12 col-lg-7 mb-3" color="primary"
-                        id="additionalFieldsToggle">Additional fields</mat-slide-toggle>
+                    <mat-slide-toggle class="col-md-12 col-lg-7 mb-3" color="primary" id="additionalFieldsToggle" (click)="toggleAdditionalFields()">
+                        Additional fields
+                    </mat-slide-toggle>                           
+                <div *ngIf="additionalFieldsVisible" class="row col-md-12 flex-column justify-content-center align-items-center">
                     <mat-radio-group formControlName="role" class="col-md-12 col-lg-7 my-1 info-text">
                         <p class="col-md-12 col-lg-7 info-text">Gender:</p>
                         <mat-radio-button value="Unclassified">Unclassified</mat-radio-button> <br />
@@ -117,6 +119,7 @@
                         <mat-label>Referral</mat-label>
                         <input matInput type="text" formControlName="referral">
                     </mat-form-field>          
+                    <h4 class="col-md-12 col-lg-7 mb-2 info-text">Qualifications</h4>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>Highest Qualification</mat-label>
                         <input matInput type="text" formControlName="highestQualification"/>
@@ -134,7 +137,8 @@
                         <mat-label>End Date</mat-label>
                         <input matInput type="text" formControlName="endDate" />
                     </mat-form-field>
-                    <h4 class="col-md-12 col-lg-7 mb-2 info-text">Qualifications</h4>
+                </div>
+                    
                 </div>
                 <div id="footer" class="col-md-12">
                     <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"

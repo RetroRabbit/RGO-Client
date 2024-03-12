@@ -43,6 +43,7 @@ export class NewCandidateComponent {
   screenWidth = window.innerWidth;
   PREVIOUS_PAGE = 'previousPage';
   isValidEmail=false;
+  additionalFieldsVisible: boolean = false;
 
   newcandidateForm = new FormGroup({
       name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]), 
@@ -95,6 +96,10 @@ export class NewCandidateComponent {
     var input = document.getElementById('imageUpload') as HTMLInputElement;
     input.value = '';
   }
+
+  toggleAdditionalFields(): void {
+    this.additionalFieldsVisible = !this.additionalFieldsVisible; // Toggle the boolean value
+}
 
   checkEmailValidity(): void {
     const email = this.newcandidateForm.controls.email.value;
