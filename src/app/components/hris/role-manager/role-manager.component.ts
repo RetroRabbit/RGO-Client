@@ -40,18 +40,21 @@ export class RoleManagerComponent implements OnInit {
   @HostListener('window:resize',['$event'])
   onResize(){
     this.screenWidth = window.innerWidth;
-    console.log(window.innerWidth)
-    console.log(this.screenWidth)
   }
+  @ViewChild('mobileRoleManagement')
+  mobileRoleManagement!: TemplateRef<any>;
+  
+  permissisonsObj : RoleAccess = {grouping : '',id : 0 ,permission: ''};
   constructor(
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
     private snackBarService: SnackbarService,
-    private navService: NavService
+    private navService: NavService,
+    private dialog: MatDialog,
   ) { 
     navService.showNavbar = true;
   }
-
+ 
   ngOnInit() {
     forkJoin([
       this.roleManagementService.getAllRoles(),
@@ -66,10 +69,8 @@ export class RoleManagerComponent implements OnInit {
       this.updateChartAndEmployeeDataCheckboxStates();
     });
     this.onResize();
-    console.log(window.innerWidth)
-    console.log(this.screenWidth)
   }
-
+  
   areAllCheckboxesSelected(columnKey: string): boolean {
     return this.roles.every((r) => this.checkboxStates[r.description + columnKey]);
   }
@@ -266,6 +267,7 @@ export class RoleManagerComponent implements OnInit {
     }
 
     this.temporaryRoleAccessChanges.push(change);
+    console.log(this.temporaryRoleAccessChanges)
     this.navService.unsavedChanges = true;
   }
 
@@ -321,5 +323,13 @@ export class RoleManagerComponent implements OnInit {
     if (event) {
       this.saveChanges();
     } 
+  }
+
+  openMobileDialog(roleAccess: RoleAccess){
+    console.log(roleAccess)
+    this.permissisonsObj = roleAccess;
+    this.dialog.open(this.mobileRoleManagement, {
+      width: '500px',
+    });
   }
 }

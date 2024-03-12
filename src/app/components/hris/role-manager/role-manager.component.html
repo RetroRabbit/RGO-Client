@@ -32,7 +32,7 @@
       <tr *ngFor="let n of chartPermissions">
         <th class='py-2 px-3' scope="row" id="permissions">
           {{ n.permission }}
-          <mat-icon *ngIf="screenWidth <= 767">more_vert</mat-icon>
+          <mat-icon *ngIf="screenWidth <= 767" (click)="this.openMobileDialog(n)">more_vert</mat-icon>
         </th>
         <td [ngClass]="screenWidth <= 767 ? 'px-3-display-none' : 'py-2 px-3'" *ngFor="let r of roles">
           <mat-checkbox [(ngModel)]="checkboxStates[r.description + n.permission]"
@@ -65,3 +65,20 @@
     </tbody>
   </table>
 </div>
+<ng-template #mobileRoleManagement>
+  <table *ngIf="!isLoading">
+      <th id="table-header" class="px-3">
+        {{this.permissisonsObj.permission}}
+      </th>
+    <tbody>
+      <tr *ngFor="let r of roles">
+        <td>{{r.description}}</td>
+        <td class='py-2 px-3'>
+          <mat-checkbox [(ngModel)]="checkboxStates[r.description + this.permissisonsObj.permission]"
+            (change)="onChangeRoleAccess($event, r.description, this.permissisonsObj.permission, this.permissisonsObj.grouping)">
+          </mat-checkbox>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
