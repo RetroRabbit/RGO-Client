@@ -1,7 +1,7 @@
 <main class="container-fluid mt-3 px-4">
   <div class="container-fluid mt-4 mb-4 mx-0">
     <div [ngClass]="screenWidth <= 767 ? 'col-12' : 'row'">
-      <div class="col-12 pl-0">
+      <div [ngClass]="screenWidth < 992 ? 'col-12 pl-0' : 'col-6 pl-0'">
         <div id="search-container" [ngClass]="{ 'bg-white': searchQuery !== '' }">
           <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
             <mat-icon>arrow_back</mat-icon>
@@ -14,36 +14,38 @@
           </button>
         </div>
       </div>
-      <div class="row d-flex justify-content-space-between">
-      <div class="col-6 p-6 mb-2  d-md-block">
-        <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-          <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
-            [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-            <mat-label>People Champion Filter</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
-                class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
-                {{ champion.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+      <div [ngClass]="screenWidth <992 ? 
+            'col-12 row d-flex justify-content-space-between' : 
+            'col-6 row d-flex justify-content-space-between'">
+        <div class="col-6 p-6 mb-2  d-md-block">
+          <div (click)="$event.stopPropagation()" class="row col-12 px-0">
+            <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
+              [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
+              <mat-label>People Champion Filter</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
+                  class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
+                  {{ champion.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-6 ps-0  d-md-block">
+          <div (click)="$event.stopPropagation()" class="row col-12 px-0">
+            <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
+              [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
+              <mat-label>User Type Filter</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let userType of usertypes | async" [value]="userType.id" class="menu-item-button"
+                  (click)="changeUserTypeFilter(userType)">
+                  {{ userType.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
       </div>
-      <div class="col-6 ps-0  d-md-block">
-        <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-          <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
-            [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-            <mat-label>User Type Filter</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let userType of usertypes | async" [value]="userType.id" class="menu-item-button"
-                (click)="changeUserTypeFilter(userType)">
-                {{ userType.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-    </div>
       <div class="col-12 pe-0"
         *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">
         <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
@@ -70,19 +72,22 @@
             <mat-cell *matCellDef="let employee">{{ employee.Name }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Position">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow d-none d-md-flex">Position</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header
+              class="boldArrow d-none d-md-flex">Position</mat-header-cell>
             <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
               employee.Position
               }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Level">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow d-none d-md-flex">Level</mat-header-cell>
-            <mat-cell *matCellDef="let employee"  class="d-none d-md-flex">{{
+            <mat-header-cell *matHeaderCellDef mat-sort-header
+              class="boldArrow d-none d-md-flex">Level</mat-header-cell>
+            <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
               employee.Level == 0 ? "N/A" : employee.Level
               }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Client">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow d-none d-md-flex">Client</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header
+              class="boldArrow d-none d-md-flex">Client</mat-header-cell>
             <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
               employee.Client
               }}</mat-cell>
@@ -105,7 +110,8 @@
             </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row class="rows" *matRowDef="let row; columns: displayedColumns" (click)="employeeClickEvent(row)"></mat-row>
+          <mat-row class="rows" *matRowDef="let row; columns: displayedColumns"
+            (click)="employeeClickEvent(row)"></mat-row>
         </mat-table>
         <mat-paginator hidden></mat-paginator>
       </div>
