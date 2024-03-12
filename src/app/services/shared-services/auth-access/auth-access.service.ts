@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class AuthAccessService {
-  private roles: string = 'SuperAdmin';
+  private roles: string = '';
 
-  private employeeEmail: string = 'jkayemba@retrorabbit.co.za';
+  private employeeEmail: string = '';
 
   private userId: number = 0;
 
