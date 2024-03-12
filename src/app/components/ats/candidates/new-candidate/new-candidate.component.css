@@ -37,8 +37,9 @@ main {
 
 
 .profile-photo {
-    width: 150px; 
-    height: 150px;
+    width: 200px; 
+    height: 180px;
+    border-radius: 100px;
     margin: 0 auto;
     overflow: hidden;
 }
@@ -170,8 +171,6 @@ main {
 }
 
 .info-text{
-    text-align: left;
-    margin-left: 25%;
     font-weight:500;
 }
 
@@ -213,6 +212,7 @@ main {
 #footer {
     display: flex;
     margin-top: 20px;
+    margin-bottom: 30px;
     height: 0%;
     justify-content: unset;
     gap: 12;
