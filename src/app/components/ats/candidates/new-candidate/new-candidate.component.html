@@ -60,8 +60,19 @@
                 <div id="footer">
                     <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
                         (click)="goToPreviousPage()">Cancel</button>
-                    <button id="next-button"
-                        [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''">Next</button>
+                        <button id="next-button"
+                        [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
+                        (click)="checkEmailValidity()">Next</button>                
+                </div>
+                <div *ngIf="isValidEmail">   
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                        <mat-label>Additional Field 1</mat-label>
+                        <input matInput type="text" formControlName="additionalField1" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                        <mat-label>Additional Field 2</mat-label>
+                        <input matInput type="text" formControlName="additionalField2" />
+                    </mat-form-field>
                 </div>
             </div>
         </form>

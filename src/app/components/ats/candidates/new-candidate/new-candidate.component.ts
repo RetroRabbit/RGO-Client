@@ -33,11 +33,12 @@ export class NewCandidateComponent {
   previewImage: string = '';
   imageUrl: string = '';
   imageName: string = "";
-  emailPattern = /^[A-Za-z0-9._%+-]+@$/;
+  emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
   namePattern = /^[a-zA-Z\s'-]*$/;
   isMobileScreen = false;
   screenWidth = window.innerWidth;
   PREVIOUS_PAGE = 'previousPage';
+  isValidEmail=false;
 
   newcandidateForm = new FormGroup({
       name: new FormControl<string>('', [Validators.required,
@@ -76,6 +77,19 @@ export class NewCandidateComponent {
     var input = document.getElementById('imageUpload') as HTMLInputElement;
     input.value = '';
   }
+
+  checkEmailValidity(): void {
+    const email = this.newcandidateForm.controls.email.value;
+    if (email !== null) {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        this.isValidEmail = emailPattern.test(email);
+        console.log(this.isValidEmail);
+    } else {
+        this.isValidEmail = false; 
+        console.log(this.isValidEmail);
+    }
+}
+
 
   imageConverter(file: File) {
     const reader = new FileReader();
