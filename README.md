@@ -36,6 +36,7 @@ npm install ngx-file-drop
 ### Running
 ```powershell
 #cd RGO-Client
+ng add @angular/pwa
 ng serve (run 'npm start' if the command does not work.)
 ```
 
