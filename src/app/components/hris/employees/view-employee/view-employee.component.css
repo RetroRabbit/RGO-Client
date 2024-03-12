@@ -193,16 +193,11 @@ input[type="number"] {
 :host {
     .mat-mdc-text-field-wrapper {
         min-width: 100%;
-        width: 194px !important;
         height: 56px !important;
         align-items: center;
         font-size: var(--font-size-1);
         font-weight: 400;
     }
-}
-
-.roles-input-mobile {
-    min-width: 120% !important;
 }
 
 .mat-icon-hide {
@@ -239,7 +234,6 @@ input[type="number"] {
     margin-right: 12px;
 }
 
-
 .role-select-panel {
     font-size: var(--font-size-1);
 }
@@ -253,7 +247,7 @@ mat-row:hover {
 }
 
 mat-cell {
-    max-width: 20%;
+    max-width: 50%;
 }
 
 #noResults h1 {

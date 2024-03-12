@@ -1,4 +1,4 @@
-<main class="container-fluid mt-3 px-5">
+<main class="container-fluid mt-3 px-4">
   <div class="container-fluid mt-4 mb-4 mx-0">
     <div [ngClass]="screenWidth <= 767 ? 'col-12' : 'row'">
       <div class="col-12 pl-0">
@@ -14,7 +14,8 @@
           </button>
         </div>
       </div>
-      <div class="col-2 p-6 mb-2 d-none d-md-block">
+      <div class="row d-flex justify-content-space-between">
+      <div class="col-6 p-6 mb-2  d-md-block">
         <div (click)="$event.stopPropagation()" class="row col-12 px-0">
           <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
             [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
@@ -28,7 +29,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="col-2 ps-0  d-none d-md-block">
+      <div class="col-6 ps-0  d-md-block">
         <div (click)="$event.stopPropagation()" class="row col-12 px-0">
           <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
             [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
@@ -42,10 +43,11 @@
           </mat-form-field>
         </div>
       </div>
+    </div>
       <div class="col-12 pe-0"
         *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">
         <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
-          class="col-12 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
+          class="col-12 btn btn-primary rounded-pill d-none d-flex justify-content-center align-items-center">
           <span class="add-employee-span">+ Add Employee</span>
         </button>
       </div>
