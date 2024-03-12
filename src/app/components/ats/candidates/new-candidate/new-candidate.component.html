@@ -14,11 +14,13 @@
                     <h2 class="center-bold">Profile Picture</h2>
                     <p class="profile-text">PNG, JPG, SVG</p>
                     <p class="profile-text">10 MB Max limit size</p>
-                    <button id="upload-button" mat-icon-button>
-                      <mat-icon>file_upload</mat-icon>
-                      <input type="file" (change)="onFileChange($event)" hidden>
-                      Upload Picture
-                    </button>                                                               
+                    <button id="upload-button" mat-icon-button (click)="onFileChange($event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                            <path
+                                d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
+                        </svg>
+                        Upload Picture Here
+                    </button>
                     <p class="col-md-12 col-lg-7 info-text">*Required fields</p>
                 </div>
                 <div class="row flex-column justify-content-center align-items-center col-md-12">
@@ -35,67 +37,115 @@
                         <input matInput type="text" formControlName="email" />
                     </mat-form-field>
                 </div>
-                <!-- Other Fields -->
+                <!-- *ngIf="isValidEmail" -->
                 <div *ngIf="isValidEmail" class="row col-md-12 flex-column justify-content-center align-items-center">
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>Contact number</mat-label>
                         <input matInput type="text" formControlName="contactNumber" />
                     </mat-form-field>
-                    
-                    <mat-radio-group formControlName="role">
-                        <mat-radio-button value="UI/UX Designer">UI/UX Designer</mat-radio-button>
-                        <mat-radio-button value="Developer">Developer</mat-radio-button>
-                        <mat-radio-button value="Business Support">Business Support</mat-radio-button>
+
+                    <mat-radio-group formControlName="role" class="col-md-12 col-lg-7 my-1 info-text">
+                        <p class="col-md-12 col-lg-7 info-text">Role:</p>
+                        <mat-radio-button value="UI/UX Designer">UI/UX Designer</mat-radio-button> <br />
+                        <mat-radio-button value="Developer">Developer</mat-radio-button> <br />
+                        <mat-radio-button value="Business Support">Business Support</mat-radio-button> <br />
                         <mat-radio-button value="Scrum Master">Scrum Master</mat-radio-button>
                     </mat-radio-group>
-                    
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>Select level</mat-label>
                         <mat-select formControlName="potentialLevel">
                             <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                        <mat-label>Location</mat-label>
+
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-label>e.g Johannesburg, Gauteng</mat-label>
                         <input matInput type="text" formControlName="location" />
                     </mat-form-field>
-                    
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                        <mat-label>LinkedIn Profile</mat-label>
+
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-label>Attach link</mat-label>
                         <input matInput type="text" formControlName="linkedInProfile" />
+                        <mat-icon matSuffix>link</mat-icon>
                     </mat-form-field>
-                    
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                        <mat-label>CV</mat-label>
+
+
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-label>Attach CV</mat-label>
                         <input matInput type="text" formControlName="cvFile" />
-                    </mat-form-field>
-                    <p class="profile-text">PDF,PPT,PPTX,doc,Docx are supported</p>
-                    <p class="profile-text">10 MB Max limit size</p>
-                    
-                    <h4 class="col-md-12 col-lg-7 info-text">Portfolio</h4>
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                        <mat-label>Website</mat-label>
-                        <input matInput type="text" formControlName="portfolioLink" />
-                    </mat-form-field>
-                    
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                        <mat-label>PDF</mat-label>
-                        <input matInput type="text" formControlName="portfolioFile" />
+                        <mat-icon matSuffix>attach_file</mat-icon>
                     </mat-form-field>
                     <p class="col-md-12 col-lg-7">PDF,PPT,PPTX,doc,Docx are supported</p>
                     <p class="col-md-12 col-lg-7">10 MB Max limit size</p>
-                    <label class="fw-base pe-3" id="additional-fields-label" for="additionalFieldsToggle">
-                        Additional fields
-                    </label>
-                    <mat-slide-toggle color="primary" id="additionalFieldsToggle"></mat-slide-toggle>
-                    
+
+                    <h4 class="col-md-12 col-lg-7 info-text">Portfolio</h4>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-label>Attach website link</mat-label>
+                        <input matInput type="text" formControlName="portfolioLink" />
+                        <mat-icon matSuffix>link</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-label>PDF</mat-label>
+                        <input matInput type="text" formControlName="portfolioFile" />
+                        <mat-icon matSuffix>attach_file</mat-icon>
+                    </mat-form-field>
+                    <p class="col-md-12 col-lg-7">PDF,PPT,PPTX,doc,Docx are supported</p>
+                    <p class="col-md-12 col-lg-7">10 MB Max limit size</p>
+
+                    <mat-slide-toggle class="col-md-12 col-lg-7 mb-3" color="primary"
+                        id="additionalFieldsToggle">Additional fields</mat-slide-toggle>
+                    <mat-radio-group formControlName="role" class="col-md-12 col-lg-7 my-1 info-text">
+                        <p class="col-md-12 col-lg-7 info-text">Gender:</p>
+                        <mat-radio-button value="Unclassified">Unclassified</mat-radio-button> <br />
+                        <mat-radio-button value="Male">Male</mat-radio-button> <br />
+                        <mat-radio-button value="Female">Female</mat-radio-button> <br />
+                    </mat-radio-group>
+                    <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
+                        <mat-label>Race</mat-label>
+                        <mat-select formControlName="race">
+                            <mat-option *ngFor="let race of races; index as i" [value]="i">{{ race }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-label>ID Number/ Passport</mat-label>
+                        <input matInput type="text" formControlName="idNumber" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-icon matPrefix>search</mat-icon>
+                        <mat-label>Referral</mat-label>
+                        <input matInput type="text" formControlName="referral">
+                    </mat-form-field>          
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-label>Highest Qualification</mat-label>
+                        <input matInput type="text" formControlName="highestQualification"/>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-icon matPrefix>search</mat-icon>
+                        <mat-label>School</mat-label>
+                        <input matInput type="text" formControlName="school" />
+                    </mat-form-field>                    
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-label>Start Date</mat-label>
+                        <input matInput type="text" formControlName="startDate" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-label>End Date</mat-label>
+                        <input matInput type="text" formControlName="endDate" />
+                    </mat-form-field>
+                    <h4 class="col-md-12 col-lg-7 mb-2 info-text">Qualifications</h4>
                 </div>
                 <div id="footer" class="col-md-12">
-                    <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''" (click)="goToPreviousPage()">Cancel</button>
-                    <button *ngIf="!isValidEmail" id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''" (click)="checkEmailValidity()">Next</button>
-                    <button *ngIf="isValidEmail" id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''" >Save & Add Another</button>
-                    <button *ngIf="isValidEmail" id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''" >Save</button>
+                    <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
+                        (click)="goToPreviousPage()">Cancel</button>
+                    <button *ngIf="!isValidEmail" id="next-button"
+                        [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
+                        (click)="checkEmailValidity()">Next</button>
+                    <button *ngIf="isValidEmail" id="next-button"
+                        [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''">Save & Add Another</button>
+                    <button *ngIf="isValidEmail" id="next-button"
+                        [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''">Save</button>
 
                 </div>
             </div>

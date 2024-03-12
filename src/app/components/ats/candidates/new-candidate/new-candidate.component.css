@@ -138,7 +138,6 @@ main {
 
 #upload-button {
     margin-top: 7px;
-    margin-bottom: 20px;
     padding: 10px;
     height: 40px;
     width: 180px;
@@ -168,6 +167,14 @@ main {
 .profile-text{
     color: #625B71;
     text-align: center;
+}
+
+p{
+    color: #625B71;
+}
+
+.info-text{
+    font-weight: 500;
 }
 
 #file-button {

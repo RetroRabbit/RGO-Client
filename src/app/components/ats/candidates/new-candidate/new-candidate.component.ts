@@ -6,6 +6,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CandidateService } from 'src/app/services/ats/candidate/candidate.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
+import { races } from 'src/app/models/hris/constants/races.constants';
 
 @Component({
   selector: 'app-new-candidate',
@@ -31,7 +32,7 @@ export class NewCandidateComponent {
   ) { }
 
   levels: number[] = levels.map((level) => level.value);
-
+  races: string[] = races.map((race) => race.value);
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
   imageUrl: string = '';
@@ -55,6 +56,15 @@ export class NewCandidateComponent {
       cvFile: new FormControl<string>(''),
       portfolioLink: new FormControl<string>(''),
       portfolioFile: new FormControl<string>(''),
+      gender: new FormControl<string >(''),
+      idNumber: new FormControl<string >(''),
+      referral: new FormControl<string >(''),
+      highestQualification: new FormControl<string >(''),
+      school: new FormControl<string >(''),
+      fieldOfStudy: new FormControl<string >(''),
+      startDate: new FormControl<string >(''),
+      endDate: new FormControl<string >(''),
+      race: new FormControl<string >(''),
     }
   )
 
@@ -99,8 +109,6 @@ export class NewCandidateComponent {
         this.snackBarService.showSnackbar("Please enter an email address", "snack-error");
     }
 }
-
-
 
   imageConverter(file: File) {
     const reader = new FileReader();
