@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../enviroment/environment';
+import { environment } from '../../../environments/environment';
 import { Role } from '../../models/hris/role.interface';
 import { RoleAccess } from '../../models/hris/role-access.interface';
 import { RoleAccessLink } from '../../models/hris/role-access-link.interface';

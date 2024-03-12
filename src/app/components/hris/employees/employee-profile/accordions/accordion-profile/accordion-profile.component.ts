@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Client } from 'src/app/models/hris/client.interface';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
@@ -25,6 +25,10 @@ import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
+import { EmployeeProfilePermissions } from 'src/app/models/hris/property-access/employee-profile-properties.interface';
+import { EmployeeAddressPermissions } from 'src/app/models/hris/property-access/employee-address-properties.interface';
 
 @Component({
   selector: 'app-accordion-profile',
@@ -35,8 +39,8 @@ export class AccordionProfileComponent {
 
   screenWidth = window.innerWidth;
 
-  @HostListener('window:resize',['$event'])
-  onResize(){
+  @HostListener('window:resize', ['$event'])
+  onResize() {
     this.screenWidth = window.innerWidth;
   }
 
@@ -159,7 +163,8 @@ export class AccordionProfileComponent {
     private employeeTypeService: EmployeeTypeService,
     private fieldCodeService: FieldCodeService,
     private employeeAddressService: EmployeeAddressService,
-    public authAccessService: AuthAccessService) {
+    public authAccessService: AuthAccessService,
+    public sharedPropertyAccessService: SharedPropertyAccessService) {
   }
 
   usingProfile: boolean = true;
@@ -191,6 +196,8 @@ export class AccordionProfileComponent {
     });
     this.employeeDetailsForm.disable();
     this.checkEmployeeFormProgress();
+    this.checkPropertyPermissions(Object.keys(this.employeeDetailsForm.controls), "Employee", "employeeDetailsForm", true)
+
 
     this.employeeContactForm = this.fb.group({
       email: [this.employeeProfile!.employeeDetails.email, [Validators.required, Validators.pattern(this.emailPattern)]],
@@ -202,6 +209,8 @@ export class AccordionProfileComponent {
     });
     this.employeeContactForm.disable();
     this.checkContactFormProgress();
+    this.checkPropertyPermissions(Object.keys(this.employeeContactForm.controls), "Employee", "employeeContactForm", true)
+
 
     this.addressDetailsForm = this.fb.group({
       physicalUnitNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
@@ -223,6 +232,8 @@ export class AccordionProfileComponent {
     });
     this.addressDetailsForm.disable();
     this.checkAddressFormProgress();
+    this.checkPropertyPermissions(Object.keys(this.addressDetailsForm.controls), "EmployeeAddress", "addressDetailsForm", true)
+
 
     this.personalDetailsForm = this.fb.group({
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
@@ -236,6 +247,7 @@ export class AccordionProfileComponent {
     this.checkPersonalFormProgress();
     this.totalProfileProgress();
     this.checkEmployeeDetails();
+    this.checkPropertyPermissions(Object.keys(this.personalDetailsForm.controls), "Employee", "personalDetailsForm", true)
   }
 
   checkEmployeeDetails() {
@@ -424,6 +436,7 @@ export class AccordionProfileComponent {
   editEmployeeDetails() {
     this.employeeDetailsForm.enable();
     this.editEmployee = true;
+    this.checkPropertyPermissions(Object.keys(this.employeeDetailsForm.controls), "Employee", "employeeDetailsForm", false)
   }
 
   cancelEmployeeEdit() {
@@ -728,6 +741,7 @@ export class AccordionProfileComponent {
   editContactDetails() {
     this.employeeContactForm.enable();
     this.editContact = true;
+    this.checkPropertyPermissions(Object.keys(this.employeeContactForm.controls), "Employee", "employeeContactForm", false)
   }
 
   cancelContactEdit() {
@@ -770,6 +784,7 @@ export class AccordionProfileComponent {
   editAddressDetails() {
     this.editAddress = true;
     this.addressDetailsForm.enable();
+    this.checkPropertyPermissions(Object.keys(this.addressDetailsForm.controls), "EmployeeAddress", "addressDetailsForm", false)
   }
 
   cancelAddressEdit() {
@@ -849,6 +864,7 @@ export class AccordionProfileComponent {
   editAdditionalDetails() {
     this.additionalInfoForm.enable();
     this.editAdditional = true;
+    this.checkPropertyPermissions(Object.keys(this.additionalInfoForm.controls), "Employee", "additionalInfoForm", false)
   }
 
   cancelAdditionalEdit() {
@@ -910,5 +926,49 @@ export class AccordionProfileComponent {
         }
       }
     }
+  }
+
+  checkPropertyPermissions(fieldNames: string[], table: string, form: string, initialLoad: boolean): void {
+    fieldNames.forEach(fieldName => {
+      let control: AbstractControl<any, any> | null = null;
+
+      switch (form) {
+        case "employeeDetailsForm":
+          control = this.employeeDetailsForm.get(fieldName);
+          break;
+        case "employeeContactForm":
+          control = this.employeeContactForm.get(fieldName);
+          break;
+        case "addressDetailsForm":
+          control = this.addressDetailsForm.get(fieldName);
+          break;
+        case "additionalInfoForm":
+          control = this.additionalInfoForm.get(fieldName);
+          break;
+      }
+
+      if (control) {
+        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
+          case PropertyAccessLevel.none:
+            if (!initialLoad)
+              control.disable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
+            break;
+          case PropertyAccessLevel.read:
+            if (!initialLoad)
+              control.disable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+            break;
+          case PropertyAccessLevel.write:
+            if (!initialLoad)
+              control.enable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+            break;
+          default:
+            if (!initialLoad)
+              control.enable();
+        }
+      }
+    });
   }
 }
