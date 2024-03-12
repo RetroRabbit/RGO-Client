@@ -206,7 +206,7 @@ div#results-container {
   width: 360px;
   z-index: 1000;
   position: absolute;
-  box-shadow: 0px 5px 50px 0px rgba(0, 41, 198, 0.08);
+  /* box-shadow: 0px 5px 50px 0px rgba(0, 41, 198, 0.08); */
   /*this is the div container*/
 }
 
