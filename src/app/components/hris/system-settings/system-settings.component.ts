@@ -23,12 +23,16 @@ export class SystemSettingsComponent {
   displayCustomFieldsManagement(): void {
     this.systemNavItemService.selectedMenuItem = "Custom Field management";
   }
-  
+
   displayEmployeeBanking() {
     this.systemNavItemService.selectedMenuItem = "Employee Banking";
   }
 
-  captureFieldCode(event: FieldCode){
+  displayPropertyAccessManagement() {
+    this.systemNavItemService.selectedMenuItem = "Property Access Management";
+  }
+
+  captureFieldCode(event: FieldCode) {
     this.emitFieldCode.emit(event);
   }
 }
