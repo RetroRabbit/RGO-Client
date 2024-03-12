@@ -76,12 +76,14 @@ import { NavBarComponent } from './components/hris/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccordionProfileComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile.component';
+
 import { AccordionBankingComponent } from './components/hris/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
 import { AccordionDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PropertyAccessComponent } from './components/hris/system-settings/property-access/property-access.component';
+import { AccordionProfileEmployeeComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile-details/accordion-profile-employee/accordion-profile-employee.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +117,7 @@ import { PropertyAccessComponent } from './components/hris/system-settings/prope
     LoadingComponentComponent,
     AtsDashboardComponent,
     PropertyAccessComponent,
+    AccordionProfileEmployeeComponent,
   ],
   imports: [
     BrowserModule,
