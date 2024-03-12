@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { SignInComponent } from './components/hris/sign-in/sign-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthConfigService, AuthModule } from '@auth0/auth0-angular';
@@ -82,6 +82,8 @@ import { LoadingComponentComponent } from './components/shared-components/loadin
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 import { NewCandidateComponent } from './components/ats/candidates/new-candidate/new-candidate.component';
 
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { PropertyAccessComponent } from './components/hris/system-settings/property-access/property-access.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +117,7 @@ import { NewCandidateComponent } from './components/ats/candidates/new-candidate
     LoadingComponentComponent,
     AtsDashboardComponent,
     NewCandidateComponent,
+    PropertyAccessComponent,
   ],
   imports: [
     BrowserModule,
@@ -176,7 +179,11 @@ import { NewCandidateComponent } from './components/ats/candidates/new-candidate
     MatButtonToggleModule,
     DragDropModule,
     NgxSkeletonLoaderModule.forRoot(),
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     AuthService,
