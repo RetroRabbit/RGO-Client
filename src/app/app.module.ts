@@ -81,6 +81,7 @@ import { AccordionDocumentsComponent } from './components/hris/employees/employe
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { PropertyAccessComponent } from './components/hris/system-settings/property-access/property-access.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +114,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AccordionDocumentsComponent,
     LoadingComponentComponent,
     AtsDashboardComponent,
+    PropertyAccessComponent,
   ],
   imports: [
     BrowserModule,
