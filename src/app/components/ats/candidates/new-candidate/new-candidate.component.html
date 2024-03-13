@@ -8,7 +8,8 @@
         <form [formGroup]="newcandidateForm" (ngSubmit)="onSubmit(false)" id="newcandidateForm">
             <div class="row justify-content-center align-items-center">
                 <div class="profile-photo">
-                    <img id="imageUpload" [src]="employeeProfile.photo" alt="Profile Photo" class="rounded-circle profile-img">
+                    <img id="imageUpload" [src]="employeeProfile.photo" alt="Profile Photo"
+                        class="rounded-circle profile-img">
                 </div>
                 <div class="col-12 text-center roboto-font pb-3">
                     <h2 class="center-bold">Profile Picture</h2>
@@ -30,10 +31,16 @@
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                         <mat-label>First name</mat-label>
                         <input matInput type="text" formControlName="name" />
+                        <mat-error *ngIf="newcandidateForm.controls['name'].hasError('required')">
+                            Full name is required
+                        </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                         <mat-label>Last name</mat-label>
                         <input matInput type="text" formControlName="surname" />
+                        <mat-error *ngIf="newcandidateForm.controls['surname'].hasError('required')">
+                            Last name is required
+                        </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                         <mat-label>Email</mat-label>
@@ -70,23 +77,29 @@
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>Attach link</mat-label>
                         <input matInput type="text" formControlName="linkedInProfile" />
+                        <mat-error *ngIf="newcandidateForm.controls['linkedInProfile'].hasError('required')">
+                            Valid linkedIn Profile link is required
+                        </mat-error>
                         <mat-icon matSuffix>link</mat-icon>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1" >
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>CV</mat-label>
                         <input matInput type="text" [value]="cvFilename" />
                         <span mat-icon-button matSuffix class="pe-3">
-                            <mat-icon *ngIf="isValidCVFile" (click)="uploadCVFile.click()" id="file-upload-cursor">attach_file</mat-icon>
-                            <mat-icon *ngIf="!isValidCVFile" (click)="clearCVFileUpload()" class="change-close-color" >close</mat-icon>
+                            <mat-icon *ngIf="isValidCVFile" (click)="uploadCVFile.click()"
+                                id="file-upload-cursor">attach_file</mat-icon>
+                            <mat-icon *ngIf="!isValidCVFile" (click)="clearCVFileUpload()"
+                                class="change-close-color">close</mat-icon>
                         </span>
-                        <input type="file" #uploadCVFile (change)="onCVFileChange($event)" hidden accept=".pdf,.ppt,.pptx,.doc,.docx" />
+                        <input type="file" #uploadCVFile (change)="onCVFileChange($event)" hidden
+                            accept=".pdf,.ppt,.pptx,.doc,.docx" />
                     </mat-form-field>
-                    
+
                     <div *ngIf="cvUrl !== ''">
                         <p>Selected CV: {{ cvFilename }}</p>
                     </div>
-                    
-    
+
+
                     <p class="col-md-12 col-lg-7">PDF,PPT,PPTX,doc,Docx are supported</p>
                     <p class="col-md-12 col-lg-7">10 MB Max limit size</p>
 
@@ -95,16 +108,22 @@
                         <mat-label>Attach website link</mat-label>
                         <input matInput type="text" formControlName="portfolioLink" />
                         <mat-icon matSuffix>link</mat-icon>
+                        <mat-error *ngIf="newcandidateForm.controls['portfolioLink'].hasError('required')">
+                            valid website link is required.
+                        </mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1" >
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>PDF</mat-label>
                         <input matInput type="text" [value]="portfolioFilename" />
                         <span mat-icon-button matSuffix class="pe-3">
-                            <mat-icon *ngIf="isValidPortfolioFile" (click)="uploadPortfolioFile.click()" id="file-upload-cursor">attach_file</mat-icon>
-                            <mat-icon *ngIf="!isValidPortfolioFile" (click)="clearPortfolioFileUpload()" class="change-close-color">close</mat-icon>
+                            <mat-icon *ngIf="isValidPortfolioFile" (click)="uploadPortfolioFile.click()"
+                                id="file-upload-cursor">attach_file</mat-icon>
+                            <mat-icon *ngIf="!isValidPortfolioFile" (click)="clearPortfolioFileUpload()"
+                                class="change-close-color">close</mat-icon>
                         </span>
-                        <input type="file" #uploadPortfolioFile (change)="onPortfolioFileChange($event)" hidden accept=".pdf,.ppt,.pptx,.doc,.docx"/>
+                        <input type="file" #uploadPortfolioFile (change)="onPortfolioFileChange($event)" hidden
+                            accept=".pdf,.ppt,.pptx,.doc,.docx" />
                     </mat-form-field>
                     <div *ngIf="portfolioUrl!== ''">
                         <p>Selected CV: {{ portfolioFilename }}</p>
@@ -144,14 +163,16 @@
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>Highest Qualification</mat-label>
                             <mat-select formControlName="race">
-                                <mat-option *ngFor="let qualification of qualifications; index as i" [value]="i">{{ qualification }}</mat-option>
+                                <mat-option *ngFor="let qualification of qualifications; index as i" [value]="i">{{
+                                    qualification }}</mat-option>
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>School</mat-label>
                             <mat-select formControlName="race">
-                                <mat-option *ngFor="let school of schools; index as i" [value]="i">{{ school }}</mat-option>
+                                <mat-option *ngFor="let school of schools; index as i" [value]="i">{{ school
+                                    }}</mat-option>
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
