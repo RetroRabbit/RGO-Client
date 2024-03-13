@@ -7,6 +7,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { CandidateService } from 'src/app/services/ats/candidate/candidate.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
+import { candidateDocument } from 'src/app/models/ats/candidateDocument.interface';
 
 @Component({
   selector: 'app-new-candidate',
@@ -41,6 +42,7 @@ export class NewCandidateComponent {
   namePattern = /^[a-zA-Z\s'-]*$/;
   isMobileScreen = false;
   screenWidth = window.innerWidth;
+  candidateDocumentModels: candidateDocument[] = [];
   PREVIOUS_PAGE = 'previousPage';
   isValidEmail=false;
   additionalFieldsVisible: boolean = false;
@@ -85,6 +87,17 @@ export class NewCandidateComponent {
     this.router.navigateByUrl(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
+  setSelectedRace(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    this.newEmployeeForm.patchValue({ race: +selectedValue });
+  }
+
+
+  setSelectedGender(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    this.newEmployeeForm.patchValue({ gender: +selectedValue });
+  }
+
   validateFile(file: File): boolean {
     if (file.size > 4194304) {
       return false;
@@ -98,7 +111,7 @@ export class NewCandidateComponent {
   }
 
   toggleAdditionalFields(): void {
-    this.additionalFieldsVisible = !this.additionalFieldsVisible; // Toggle the boolean value
+    this.additionalFieldsVisible = !this.additionalFieldsVisible;
 }
 
   checkEmailValidity(): void {
