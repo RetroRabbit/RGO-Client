@@ -81,6 +81,7 @@ export class NewCandidateComponent {
       startDate: new FormControl<string >(''),
       endDate: new FormControl<string >(''),
       race: new FormControl<string >(''),
+      photo: new FormControl<string>(''),
     }
   )
 
@@ -153,17 +154,22 @@ export class NewCandidateComponent {
     }
 }
 
-  imageConverter(file: File) {
-    const reader = new FileReader();
-    reader.addEventListener('loadend', () => {
-      this.imagePreview = reader.result as string;
-      const base64Image = this.convertTobase64(this.imagePreview);
-      this.newEmployeeForm.patchValue({ 'photo': 'data:image/jpeg;base64,' + base64Image });
-      this.getImageFromBase64(base64Image);
-    });
+imageConverter(file: File) {
+  const reader = new FileReader();
+  reader.addEventListener('loadend', () => {
+    const base64Image = reader.result as string; 
+    this.imagePreview = base64Image;
+    this.newEmployeeForm.patchValue({ 'photo': base64Image });
+    this.getImageFromBase64(base64Image);
+  });
+  reader.readAsDataURL(file);
+}
 
-    reader.readAsDataURL(file);
-  }
+
+clearUpload() {
+  var input = document.getElementById('imageUpload') as HTMLInputElement;
+  input.value = '';
+}
 
   fileConverter(file: File) {
     const reader = new FileReader();
@@ -201,10 +207,10 @@ export class NewCandidateComponent {
     if (event.target.files && event.target.files.length) {
       const file = event.target.files[0];
       this.imageName = file.name;
-      if (this.validateCVFile(file)) {
+      if (this.validateFile(file)) {
         this.imageConverter(file);
       } else {
-        this.clearCVFileUpload();
+        this.clearUpload();
       }
     }
   }
