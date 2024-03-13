@@ -8,6 +8,8 @@ import { CandidateService } from 'src/app/services/ats/candidate/candidate.servi
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { candidateDocument } from 'src/app/models/ats/candidateDocument.interface';
+import { schools } from 'src/app/models/ats/schools.constants';
+import { qualifications } from 'src/app/models/ats/qualifications.constants';
 
 @Component({
   selector: 'app-new-candidate',
@@ -34,6 +36,9 @@ export class NewCandidateComponent {
 
   levels: number[] = levels.map((level) => level.value);
   races: string[] = races.map((race) => race.value);
+  schools: string[] = schools.map((school) => school.value);
+  qualifications: string[] = qualifications.map((qualification) => qualification.value);
+  years: number[] = [];
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
   imageUrl: string = '';
@@ -52,6 +57,7 @@ export class NewCandidateComponent {
   isValidCVFile = true;
   isValidPortfolioFile = true;
   additionalFieldsVisible: boolean = false;
+  
 
   newcandidateForm = new FormGroup({
       name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]), 
@@ -79,6 +85,7 @@ export class NewCandidateComponent {
 
   ngOnInit(): void {
     this.navService.showNavbar = false;
+    this.populateYears();
   }
 
   ngOnDestroy() {
@@ -98,10 +105,18 @@ export class NewCandidateComponent {
     this.newEmployeeForm.patchValue({ race: +selectedValue });
   }
 
-
   setSelectedGender(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
     this.newEmployeeForm.patchValue({ gender: +selectedValue });
+  }
+
+  populateYears(){
+    const currentYear = new Date().getFullYear();
+    const earliestYear = 1970;
+    for (let year = currentYear; year>= earliestYear; year--){
+      this.years.push(year);
+    }
+
   }
 
   validateFile(file: File): boolean {
@@ -150,7 +165,6 @@ export class NewCandidateComponent {
     reader.readAsDataURL(file);
   }
   
-  
   convertFileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -173,7 +187,6 @@ export class NewCandidateComponent {
   employeeProfile = {
     photo: 'assets/img/ProfileAts.png' 
   };
-
   
   onFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
@@ -217,8 +230,6 @@ export class NewCandidateComponent {
         uploadCVInputElement.value = '';
     }
 }
-
-
 
 clearPortfolioFileUpload() {
   this.portfolioFilename = ''; 

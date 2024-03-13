@@ -79,7 +79,7 @@
                             <mat-icon *ngIf="isValidCVFile" (click)="uploadCVFile.click()" id="file-upload-cursor">attach_file</mat-icon>
                             <mat-icon *ngIf="!isValidCVFile" (click)="clearCVFileUpload()" class="change-close-color" >close</mat-icon>
                         </span>
-                        <input type="file" #uploadCVFile (change)="onCVFileChange($event)" hidden />
+                        <input type="file" #uploadCVFile (change)="onCVFileChange($event)" hidden accept=".pdf,.ppt,.pptx,.doc,.docx" />
                     </mat-form-field>
                     
                     <div *ngIf="cvUrl !== ''">
@@ -104,7 +104,7 @@
                             <mat-icon *ngIf="isValidPortfolioFile" (click)="uploadPortfolioFile.click()" id="file-upload-cursor">attach_file</mat-icon>
                             <mat-icon *ngIf="!isValidPortfolioFile" (click)="clearPortfolioFileUpload()" class="change-close-color">close</mat-icon>
                         </span>
-                        <input type="file" #uploadPortfolioFile (change)="onPortfolioFileChange($event)" hidden />
+                        <input type="file" #uploadPortfolioFile (change)="onPortfolioFileChange($event)" hidden accept=".pdf,.ppt,.pptx,.doc,.docx"/>
                     </mat-form-field>
                     <div *ngIf="portfolioUrl!== ''">
                         <p>Selected CV: {{ portfolioFilename }}</p>
@@ -141,21 +141,30 @@
                         </mat-form-field>
                         <h4 class="col-md-12 col-lg-7 mb-2 info-text">Qualifications</h4>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                            <mat-icon matPrefix>search</mat-icon>
                             <mat-label>Highest Qualification</mat-label>
-                            <input matInput type="text" formControlName="highestQualification" />
+                            <mat-select formControlName="race">
+                                <mat-option *ngFor="let qualification of qualifications; index as i" [value]="i">{{ qualification }}</mat-option>
+                            </mat-select>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>School</mat-label>
-                            <input matInput type="text" formControlName="school" />
+                            <mat-select formControlName="race">
+                                <mat-option *ngFor="let school of schools; index as i" [value]="i">{{ school }}</mat-option>
+                            </mat-select>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-label>Start Date</mat-label>
-                            <input matInput type="text" formControlName="startDate" />
+                            <mat-select formControlName="startDate" placeholder="Select start year">
+                                <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                            </mat-select>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-label>End Date</mat-label>
-                            <input matInput type="text" formControlName="endDate" />
+                            <mat-select formControlName="startDate" placeholder="Select start year">
+                                <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </div>
 
