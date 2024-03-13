@@ -1,5 +1,5 @@
 <main class="row mx-0 my-4">
-  <div class="col-3 mt-4" id="side-menu" *ngIf="navService.showSystemNavbar">
+  <div class="col-3 mt-4" id="side-menu" *ngIf="navService.showSystemNavbar && screenWidth > 767">
     <h1>System Settings</h1>
     <h5>Manage system settings</h5>
     <div id="button-container">
@@ -32,7 +32,19 @@
       </mat-menu>
     </div>
   </div>
-  <div class="col-8 ps-4 ms-3">
+  <div class="col-3 mt-4" id="bottom-menu" *ngIf="navService.showSystemNavbar && screenWidth <= 767">
+    <div class="mobile-icon-text-container" (click)="displayCustomFieldsManagement()"
+    [ngClass]="systemNavItemService.selectedMenuItem =='Custom Field management' ? 'active' : ''">
+    <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
+    <span>Custom Field</span>
+    </div>
+    <div class="mobile-icon-text-container" (click)="displayRoleManagement()"
+    [ngClass]="systemNavItemService.selectedMenuItem =='Role Management' ? 'active' : ''">
+    <mat-icon id="mat-icon">person_outline_24px</mat-icon>
+    <span>Role Management</span>
+  </div>
+  </div>
+  <div [ngClass]="screenWidth <= 767 ? 'col-12' : 'col-8 ps-4 ms-3'">
     <app-manage-field-code
       *ngIf="systemNavItemService.selectedMenuItem === 'Custom Field management'"></app-manage-field-code>
     <app-role-manager *ngIf="systemNavItemService.selectedMenuItem === 'Role Management'"></app-role-manager>

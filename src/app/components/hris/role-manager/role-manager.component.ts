@@ -329,6 +329,9 @@ export class RoleManagerComponent implements OnInit {
     console.log(roleAccess)
     this.permissisonsObj = roleAccess;
     this.dialog.open(this.mobileRoleManagement, {
+      width :'600px',
+      height : '450px',
+      panelClass: 'custom-style'
     });
   }
 }

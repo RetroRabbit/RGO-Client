@@ -85,3 +85,36 @@ h5{
 
     background: var(--m-3-sys-light-primary-container, #ffffff);
 }
+.mobile-icon-text-container.active,
+.mobile-icon-text-container.active span{
+    color: var(--m-3-sys-light-primary, #0029C6);
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    border-radius: 100px;
+
+    background: var(--m-3-sys-light-primary-container, #ffffff);
+}
+#bottom-menu{
+    position: fixed;
+    background: var(--m-3-sys-light-primary-container, #D7DFFF);
+    height: 55px;
+    width: 100%;
+    top: auto;
+    bottom: 0;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-around;
+}
+
+.mobile-icon-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-content: center; */
+    align-items: center;
+    font-size: xx-small;
+}
