@@ -49,13 +49,16 @@ export class NewCandidateComponent {
   portfolioUrl: string = '';
   emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
   namePattern = /^[a-zA-Z\s'-]*$/;
+  linkedInPattern = '^https?://(?:www\\.)?linkedin\\.com/in/[a-zA-Z0-9-]+$';
   isMobileScreen = false;
   screenWidth = window.innerWidth;
   candidateDocumentModels: candidateDocument[] = [];
   PREVIOUS_PAGE = 'previousPage';
+  websiteLinkPattern = '^(https?://)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(\\S*)?$';
   isValidEmail = false;
   isValidCVFile = true;
   isValidPortfolioFile = true;
+  IdPattern = /^\d{13}$/;
   optionIsOther = false;
   additionalFieldsVisible: boolean = false;
   
@@ -68,12 +71,12 @@ export class NewCandidateComponent {
       potentialLevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
       role: new FormControl<string >(''),
       location: new FormControl<string | null>(''),
-      linkedInProfile: new FormControl<string>('', [Validators.pattern('^https?://(?:www\\.)?linkedin\\.com/in/[a-zA-Z0-9-]+$'), Validators.required]),
+      linkedInProfile: new FormControl<string>('', [Validators.pattern(this.linkedInPattern), Validators.required]),
       cvFile: new FormControl<string>(''),
-      portfolioLink: new FormControl<string>('', [Validators.pattern('^(https?://)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(\\S*)?$'), Validators.required]),
+      portfolioLink: new FormControl<string>('', [Validators.pattern(this.websiteLinkPattern), Validators.required]),
       portfolioFile: new FormControl<string>(''),
       gender: new FormControl<string >(''),
-      idNumber: new FormControl<string >(''),
+      idNumber: new FormControl<string >('', [Validators.pattern(this.IdPattern), Validators.required]),
       referral: new FormControl<string >(''),
       highestQualification: new FormControl<string >(''),
       school: new FormControl<string >(''),
