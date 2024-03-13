@@ -32,7 +32,7 @@
                         <mat-label>First name</mat-label>
                         <input matInput type="text" formControlName="name" />
                         <mat-error *ngIf="newcandidateForm.controls['name'].hasError('required')">
-                            Full name is required
+                            First name is required
                         </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
@@ -45,10 +45,13 @@
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                         <mat-label>Email</mat-label>
                         <input matInput type="text" formControlName="email" />
+                        <mat-error *ngIf="newcandidateForm.controls['email'].hasError('required')">
+                            valid Email is required
+                        </mat-error>
                     </mat-form-field>
                 </div>
                 <!-- *ngIf="isValidEmail"  -->
-                <div class="row col-md-12 flex-column justify-content-center align-items-center">
+                <div *ngIf="isValidEmail" class="row col-md-12 flex-column justify-content-center align-items-center">
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>Contact number</mat-label>
                         <input matInput type="text" formControlName="contactNumber" />
