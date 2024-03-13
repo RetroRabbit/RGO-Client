@@ -1,4 +1,3 @@
-
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Client } from 'src/app/models/hris/client.interface';
@@ -34,9 +33,9 @@ import { EmployeeAddressPermissions } from 'src/app/models/hris/property-access/
 @Component({
   selector: 'app-accordion-profile-employee',
   templateUrl: './accordion-profile-employee.component.html',
-  styleUrls: ['./accordion-profile-employee.component.css']
+  styleUrls: ['./accordion-profile.component-employee.css']
 })
-export class AccordionProfileEmployeeComponent {
+export class AccordionProfileComponent {
 
   screenWidth = window.innerWidth;
 

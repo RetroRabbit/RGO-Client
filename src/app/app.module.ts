@@ -118,6 +118,7 @@ import { AccordionProfileEmployeeComponent } from './components/hris/employees/e
     AtsDashboardComponent,
     PropertyAccessComponent,
     AccordionProfileEmployeeComponent,
+
   ],
   imports: [
     BrowserModule,

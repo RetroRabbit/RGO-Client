@@ -137,7 +137,7 @@
         </div>
     </div>
 
-    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
         'background-color': '#D7DFFF',
         'border': '2px solid #D7DFFF',
         'border-radius': '2rem',
@@ -252,7 +252,7 @@
         </div>
     </div>
 
-    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
         'background-color': '#D7DFFF',
         'border': '2px solid #D7DFFF',
         'border-radius': '2rem',
@@ -305,9 +305,10 @@
             </div>
         </div>
         <div id="accordions-body`" class="row m-2" *ngIf="employeeProfile">
-            <app-accordion-profile-employee [hidden]="selectedAccordion != 'Profile Details'"
+            <app-accordion-profile [hidden]="selectedAccordion != 'Profile Details'"
                 [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
-                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-employee>
+                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile>
+
             <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"
                 [employeeProfile]="employeeProfile"
                 (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
