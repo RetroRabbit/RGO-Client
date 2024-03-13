@@ -8,7 +8,7 @@
         <form [formGroup]="newcandidateForm" (ngSubmit)="onSubmit(false)" id="newcandidateForm">
             <div class="row justify-content-center align-items-center">
                 <div class="profile-photo">
-                    <img [src]="employeeProfile.photo" alt="Profile Photo" class="rounded-circle profile-img">
+                    <img id="imageUpload" [src]="employeeProfile.photo" alt="Profile Photo" class="rounded-circle profile-img">
                 </div>
                 <div class="col-12 text-center roboto-font pb-3">
                     <h2 class="center-bold">Profile Picture</h2>
@@ -63,7 +63,7 @@
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
-                        <mat-label>e.g Johannesburg, Gauteng</mat-label>
+                        <mat-label>e.g Johannesburg, Gauteng </mat-label>
                         <input matInput type="text" formControlName="location" />
                     </mat-form-field>
 
@@ -72,13 +72,21 @@
                         <input matInput type="text" formControlName="linkedInProfile" />
                         <mat-icon matSuffix>link</mat-icon>
                     </mat-form-field>
-
-
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
-                        <mat-label>Attach CV</mat-label>
-                        <input matInput type="text" formControlName="cvFile" />
-                        <mat-icon matSuffix>attach_file</mat-icon>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1" >
+                        <mat-label>CV</mat-label>
+                        <input matInput type="text" [value]="cvFilename" />
+                        <span mat-icon-button matSuffix class="pe-3">
+                            <mat-icon *ngIf="isValidCVFile" (click)="uploadCVFile.click()" id="file-upload-cursor">attach_file</mat-icon>
+                            <mat-icon *ngIf="!isValidCVFile" (click)="clearCVFileUpload()" class="change-close-color" >close</mat-icon>
+                        </span>
+                        <input type="file" #uploadCVFile (change)="onCVFileChange($event)" hidden />
                     </mat-form-field>
+                    
+                    <div *ngIf="cvUrl !== ''">
+                        <p>Selected CV: {{ cvFilename }}</p>
+                    </div>
+                    
+    
                     <p class="col-md-12 col-lg-7">PDF,PPT,PPTX,doc,Docx are supported</p>
                     <p class="col-md-12 col-lg-7">10 MB Max limit size</p>
 
@@ -89,11 +97,18 @@
                         <mat-icon matSuffix>link</mat-icon>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1" >
                         <mat-label>PDF</mat-label>
-                        <input matInput type="text" formControlName="portfolioFile" />
-                        <mat-icon matSuffix>attach_file</mat-icon>
+                        <input matInput type="text" [value]="portfolioFilename" />
+                        <span mat-icon-button matSuffix class="pe-3">
+                            <mat-icon *ngIf="isValidPortfolioFile" (click)="uploadPortfolioFile.click()" id="file-upload-cursor">attach_file</mat-icon>
+                            <mat-icon *ngIf="!isValidPortfolioFile" (click)="clearPortfolioFileUpload()" class="change-close-color">close</mat-icon>
+                        </span>
+                        <input type="file" #uploadPortfolioFile (change)="onPortfolioFileChange($event)" hidden />
                     </mat-form-field>
+                    <div *ngIf="portfolioUrl!== ''">
+                        <p>Selected CV: {{ portfolioFilename }}</p>
+                    </div>
                     <p class="col-md-12 col-lg-7">PDF,PPT,PPTX,doc,Docx are supported</p>
                     <p class="col-md-12 col-lg-7">10 MB Max limit size</p>
 

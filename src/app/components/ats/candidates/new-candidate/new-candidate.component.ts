@@ -38,13 +38,19 @@ export class NewCandidateComponent {
   previewImage: string = '';
   imageUrl: string = '';
   imageName: string = "";
+  cvFilename: string = "";
+  portfolioFilename: string = "";
+  cvUrl: string = '';
+  portfolioUrl: string = '';
   emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
   namePattern = /^[a-zA-Z\s'-]*$/;
   isMobileScreen = false;
   screenWidth = window.innerWidth;
   candidateDocumentModels: candidateDocument[] = [];
   PREVIOUS_PAGE = 'previousPage';
-  isValidEmail=false;
+  isValidEmail = false;
+  isValidCVFile = true;
+  isValidPortfolioFile = true;
   additionalFieldsVisible: boolean = false;
 
   newcandidateForm = new FormGroup({
@@ -105,11 +111,6 @@ export class NewCandidateComponent {
     return true;
   }
 
-  clearUpload() {
-    var input = document.getElementById('imageUpload') as HTMLInputElement;
-    input.value = '';
-  }
-
   toggleAdditionalFields(): void {
     this.additionalFieldsVisible = !this.additionalFieldsVisible;
 }
@@ -139,6 +140,29 @@ export class NewCandidateComponent {
 
     reader.readAsDataURL(file);
   }
+
+  fileConverter(file: File) {
+    const reader = new FileReader();
+    reader.addEventListener('loadend', () => {
+      const base64CV = reader.result as string; 
+      this.newEmployeeForm.patchValue({ 'cv': base64CV });  
+    });
+    reader.readAsDataURL(file);
+  }
+  
+  
+  convertFileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        resolve(base64String.split(',')[1]); 
+      };
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
+    });
+  }
+
   convertTobase64(imagePreview: string) {
     throw new Error('Method not implemented.');
   }
@@ -149,15 +173,81 @@ export class NewCandidateComponent {
   employeeProfile = {
     photo: 'assets/img/ProfileAts.png' 
   };
+
   
   onFileChange(event: any): void {
-    if (event.target.files && event.target.files.length > 0) {
+    if (event.target.files && event.target.files.length) {
       const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.employeeProfile.photo = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      this.imageName = file.name;
+      if (this.validateCVFile(file)) {
+        this.imageConverter(file);
+      } else {
+        this.clearCVFileUpload();
+      }
+    }
+  }
+
+  validateCVFile(file: File): boolean {
+    const allowedTypes = ['application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    if (file.size > 4194304 || !allowedTypes.includes(file.type)) {
+      this.isValidCVFile = false;
+      this.snackBarService.showSnackbar("File Type or size invalid", "snack-error");
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+  validatePortfolioFile(file: File): boolean {
+    const allowedTypes = ['application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    if (file.size > 4194304 || !allowedTypes.includes(file.type)) {
+      this.snackBarService.showSnackbar("File Type or size invalid", "snack-error");
+      this.isValidPortfolioFile = false;
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+  clearCVFileUpload() {
+    this.cvFilename = ''; 
+    this.isValidCVFile= true;
+    const uploadCVInputElement = document.getElementById('uploadCVFile') as HTMLInputElement;
+    if (uploadCVInputElement) {
+        uploadCVInputElement.value = '';
+    }
+}
+
+
+
+clearPortfolioFileUpload() {
+  this.portfolioFilename = ''; 
+  this.isValidPortfolioFile= true;
+  const uploadCVInputElement = document.getElementById('uploadPortfolioFile') as HTMLInputElement;
+  if (uploadCVInputElement) {
+      uploadCVInputElement.value = '';
+  }
+}
+
+onPortfolioFileChange(event: any): void {
+  if (event.target.files && event.target.files.length) {
+    const file = event.target.files[0];
+    this.portfolioFilename = file.name;
+    if (this.validatePortfolioFile(file)) {
+      this.fileConverter(file);
+    } 
+  }
+}
+
+  onCVFileChange(event: any): void {
+    if (event.target.files && event.target.files.length) {
+      const file = event.target.files[0];
+      this.cvFilename = file.name;
+      if (this.validateCVFile(file)) {
+        this.fileConverter(file);
+      } 
     }
   }
 }
+
+

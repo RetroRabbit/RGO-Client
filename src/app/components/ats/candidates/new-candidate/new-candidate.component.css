@@ -169,6 +169,10 @@ main {
     text-align: center;
 }
 
+.change-close-color{
+    color: #B3261E;
+}
+
 p{
     color: #625B71;
 }
