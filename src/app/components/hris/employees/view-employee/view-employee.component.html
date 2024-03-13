@@ -1,6 +1,6 @@
 <main class="container-fluid mt-3 px-4">
   <div class="container-fluid mt-4 mb-4 mx-0">
-    <div [ngStyle]="{'display': 'flex', 'flex-direction': screenWidth < 992 ? 'column' : 'row'}">
+    <div [ngStyle]="{'display': 'flex', 'flex-direction': screenWidth < 992 ? 'column' : ''}">
       <div [ngClass]="screenWidth < 992 ? 'col-12 pl-0' : 'col-6 pl-0'">
         <div id="search-container" [ngClass]="{ 'bg-white': searchQuery !== '' }">
           <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
@@ -69,7 +69,7 @@
         <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="Name">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Name</mat-header-cell>
-            <mat-cell *matCellDef="let employee">{{ employee.Name }}</mat-cell>
+            <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '50%' : '25%'}">{{ employee.Name }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Position">
             <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -92,7 +92,7 @@
               employee.Client
               }}</mat-cell>
           </ng-container>
-          <ng-container matColumnDef="Roles">
+          <ng-container matColumnDef="Roles" [class.hide-column]="!isAdminOrSuperAdmin">
             <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
             <mat-cell *matCellDef="let employee" class="row justify-content-start">
               <div (click)="$event.stopPropagation()" class="row col-12 px-0">
@@ -110,7 +110,7 @@
             </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row class="rows" *matRowDef="let row; columns: displayedColumns"
+          <mat-row class="rows" [ngStyle]="{'width': screenWidth < 992 ? '100%' : '98%'}" *matRowDef="let row; columns: displayedColumns"
             (click)="employeeClickEvent(row)"></mat-row>
         </mat-table>
         <mat-paginator hidden></mat-paginator>

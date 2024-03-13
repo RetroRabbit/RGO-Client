@@ -200,6 +200,14 @@ input[type="number"] {
     align-items: center;
     justify-content: space-between;
 }
+
+.roles-input-mobile {
+    width: 120% !important;
+}
+.mat-icon-hide {
+    display: none !important;
+}
+
 .role-select-field.mat-select-value.mat-select-arrow {
     color: white;
     margin-right: 12px;
@@ -262,7 +270,7 @@ mat-label {
   display: flex;
   text-align: start;
   flex: 1;
-  width: 100%;
+  width: 98%;
   height: 50px;
   top: 34px;
   left: 20px;
