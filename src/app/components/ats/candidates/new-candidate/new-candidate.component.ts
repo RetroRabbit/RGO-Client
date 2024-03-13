@@ -56,6 +56,7 @@ export class NewCandidateComponent {
   isValidEmail = false;
   isValidCVFile = true;
   isValidPortfolioFile = true;
+  optionIsOther = false;
   additionalFieldsVisible: boolean = false;
   
 
@@ -118,6 +119,14 @@ export class NewCandidateComponent {
     }
 
   }
+
+  toggleOtherSchoolField(event: any) {
+    this.optionIsOther = event.value === 'Other';
+    if (!this.optionIsOther) {
+      this.newcandidateForm.controls.school.setValue('');
+      this.optionIsOther = true; 
+    }
+}
 
   validateFile(file: File): boolean {
     if (file.size > 4194304) {

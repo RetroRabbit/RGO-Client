@@ -162,7 +162,7 @@
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>Highest Qualification</mat-label>
-                            <mat-select formControlName="race">
+                            <mat-select formControlName="highestQualification">
                                 <mat-option *ngFor="let qualification of qualifications; index as i" [value]="i">{{
                                     qualification }}</mat-option>
                             </mat-select>
@@ -170,10 +170,11 @@
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>School</mat-label>
-                            <mat-select formControlName="race">
-                                <mat-option *ngFor="let school of schools; index as i" [value]="i">{{ school
-                                    }}</mat-option>
+                            <mat-select *ngIf="!optionIsOther" formControlName="school" (selectionChange)="toggleOtherSchoolField($event)">
+                                <mat-option *ngFor="let school of schools; index as i" [value]="i">{{ school }}</mat-option>
+                                
                             </mat-select>
+                            <input *ngIf="optionIsOther" matInput type="text" formControlName="school" placeholder="Enter other school">
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-label>Start Date</mat-label>
