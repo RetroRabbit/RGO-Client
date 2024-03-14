@@ -160,9 +160,10 @@ export class NewCandidateComponent {
       map(employees => {
         const mappedEmployees: GenericDropDownObject[] = employees.map(employee => ({
           id: employee.id || 0,
-          name: employee.name || 'Unknown'
+          name: employee.name || 'Unknown',
+          surname: employee.surname  || 'unknown'
         }));
-        mappedEmployees.unshift({ id: 0, name: 'All' });
+        mappedEmployees.unshift({ });
         return mappedEmployees;
       })
     );
@@ -311,6 +312,10 @@ export class NewCandidateComponent {
 
   saveCanidateAndExit() {
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
+  }
+
+  saveAndAddAnotherCandidate() {
+    this.onUploadDocument('/create-candidate');
   }
 
   onUploadDocument(nextPage: string): void {

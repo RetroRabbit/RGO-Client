@@ -51,7 +51,7 @@
                     </mat-form-field>
                 </div>
                 <!-- *ngIf="isValidEmail"  -->
-                <div class="row col-md-12 flex-column justify-content-center align-items-center">
+                <div *ngIf="isValidEmail" class="row col-md-12 flex-column justify-content-center align-items-center">
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>Contact number</mat-label>
                         <input matInput type="text" formControlName="contactNumber" />
@@ -153,7 +153,7 @@
                                 [matAutocomplete]="auto">
                             <mat-autocomplete #auto="matAutocomplete">
                                 <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee.id">
-                                    {{ employee.name }}
+                                    {{ employee.name }} {{ employee.surname}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
