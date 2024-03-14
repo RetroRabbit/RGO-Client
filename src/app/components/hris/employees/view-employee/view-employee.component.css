@@ -118,9 +118,11 @@ input[type="number"] {
     align-self: flex-start;
     transition: background 0.3s ease;
     display: flex;
-    width: 350px;
+    width: 380px;
     height: 40px;
     margin-top: 20px;
+    margin-left: -2%;
+    margin-right: 20px;
     align-items: center;
     flex-shrink: 0;
     border-radius: 28px;
@@ -315,7 +317,6 @@ mat-label {
 .hide-column {
     display: none;
 }
-
 
 .rows {
     display: flex;

@@ -1,5 +1,5 @@
 <main class="container-fluid mt-3 px-4">
-  <div class="container-fluid mt-4 mb-4 mx-0">
+  <div class="mt-4 mb-4 mx-0 px-0">
     <div [ngStyle]="{'display': 'flex', 'flex-direction': screenWidth < 992 ? 'column' : ''}">
       <div [ngClass]="screenWidth < 992 ? 'col-12 pl-0' : 'col-6 pl-0'">
         <div id="search-container" [ngClass]="{ 'bg-white': searchQuery !== '' }">
@@ -16,10 +16,10 @@
       </div>
       <div [ngClass]="screenWidth < 992 ? 
       'col-12 row d-flex justify-content-space-between' : 
-      'col-6 row d-flex justify-content-space-between'">
+      'col-6 row d-flex justify-content-space-between pt-1'">
         <div class="col-6 p-6 mb-2  d-md-block">
           <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
+            <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
               [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
               <mat-label>People Champion Filter</mat-label>
               <mat-select>
@@ -33,7 +33,7 @@
         </div>
         <div class="col-6 ps-0  d-md-block">
           <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
+            <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 ms-5"
               [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
               <mat-label>User Type Filter</mat-label>
               <mat-select>
