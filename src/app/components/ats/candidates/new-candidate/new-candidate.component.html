@@ -166,17 +166,14 @@
                                     qualification }}</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>School</mat-label>
-                            <input matInput placeholder="Enter School" [formControl]="schoolControl">
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySchool">
-                                <mat-option *ngFor="let school of filteredSchool | async" [value]="school">
-                                    {{ school.name }}
-                                </mat-option>
-                            </mat-autocomplete>
+                            <mat-select *ngIf="!optionIsOther" formControlName="school" (selectionChange)="toggleOtherSchoolField($event)">
+                                <mat-option *ngFor="let school of schools; index as i" [value]="i">{{ school }}</mat-option>                       
+                            </mat-select>
+                            <input *ngIf="optionIsOther" matInput type="text" formControlName="school" placeholder="Enter other school">
                         </mat-form-field>
-                        
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                             <mat-label>Date Obtained</mat-label>
                             <mat-select formControlName="startDate" placeholder="Select start year">
