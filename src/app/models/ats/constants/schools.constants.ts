@@ -4,5 +4,6 @@ export const schools = [
     {id: 2, value: 'University of Limpopo'},
     {id: 3, value: 'University of the Western Cape'},
     {id: 4, value: 'University of the Witwatersrand'},
-    {id: 5, value: 'Other'}
+    {id: 5, value: 'University of Pretoria'},
+    {id: 6, value: 'Other'}
 ]

@@ -25,7 +25,7 @@
                         </span>
                         <input type="file" #uploadFile (change)="onFileChange($event)" hidden />
                     </button>
-                    <p class="col-md-12 col-lg-7 info-text">*Required fields</p>
+                    <p class="col-md-12 col-lg-7 mt-5 info-text">*Required fields</p>
                 </div>
                 <div class="row flex-column justify-content-center align-items-center col-md-12">
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
@@ -35,14 +35,14 @@
                             First name is required
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Last name</mat-label>
                         <input matInput type="text" formControlName="surname" />
                         <mat-error *ngIf="newcandidateForm.controls['surname'].hasError('required')">
                             Last name is required
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>Email</mat-label>
                         <input matInput type="text" formControlName="email" />
                         <mat-error *ngIf="newcandidateForm.controls['email'].hasError('required')">
@@ -51,29 +51,29 @@
                     </mat-form-field>
                 </div>
                 <!-- *ngIf="isValidEmail"  -->
-                <div *ngIf="isValidEmail" class="row col-md-12 flex-column justify-content-center align-items-center">
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                <div class="row col-md-12 flex-column justify-content-center align-items-center">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Contact number</mat-label>
                         <input matInput type="text" formControlName="contactNumber" />
                     </mat-form-field>
-                    <mat-radio-group formControlName="role" class="col-md-12 col-lg-7 my-1 info-text">
+                    <mat-radio-group formControlName="role" class="col-md-12 col-lg-7 my-2 info-text">
                         <p class="col-md-12 col-lg-7 info-text">Role:</p>
                         <mat-radio-button value="UI/UX Designer">UI/UX Designer</mat-radio-button> <br />
                         <mat-radio-button value="Developer">Developer</mat-radio-button> <br />
                         <mat-radio-button value="Business Support">Business Support</mat-radio-button> <br />
                         <mat-radio-button value="Scrum Master">Scrum Master</mat-radio-button>
                     </mat-radio-group>
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Select level</mat-label>
                         <mat-select formControlName="potentialLevel">
                             <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
-                        <mat-label>e.g Johannesburg, Gauteng </mat-label>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                        <mat-label>Location</mat-label>
                         <input matInput type="text" formControlName="location" />
                     </mat-form-field>
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Attach link</mat-label>
                         <input matInput type="text" formControlName="linkedInProfile" />
                         <mat-error *ngIf="newcandidateForm.controls['linkedInProfile'].hasError('required')">
@@ -81,7 +81,7 @@
                         </mat-error>
                         <mat-icon matSuffix>link</mat-icon>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>CV</mat-label>
                         <input matInput type="text" [value]="cvFilename" />
                         <span mat-icon-button matSuffix class="pe-3">
@@ -100,7 +100,7 @@
                     <p class="col-md-12 col-lg-7">10 MB Max limit size</p>
 
                     <h4 class="col-md-12 col-lg-7 info-text">Portfolio</h4>
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Attach website link</mat-label>
                         <input matInput type="text" formControlName="portfolioLink" />
                         <mat-icon matSuffix>link</mat-icon>
@@ -108,7 +108,7 @@
                             valid website link is required.
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>PDF</mat-label>
                         <input matInput type="text" [value]="portfolioFilename" />
                         <span mat-icon-button matSuffix class="pe-3">
@@ -131,7 +131,7 @@
                     </mat-slide-toggle>
                     <div *ngIf="additionalFieldsVisible"
                         class="row col-md-12 flex-column justify-content-center align-items-center">
-                        <mat-radio-group formControlName="role" class="col-md-12 col-lg-7 my-1 info-text">
+                        <mat-radio-group formControlName="role" class="col-md-12 col-lg-7 my-2 info-text">
                             <p class="col-md-12 col-lg-7 info-text">Gender:</p>
                             <mat-radio-button value="Unclassified">Unclassified</mat-radio-button> <br />
                             <mat-radio-button value="Male">Male</mat-radio-button> <br />
@@ -143,7 +143,7 @@
                                 <mat-option *ngFor="let race of races; index as i" [value]="i">{{ race }}</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                             <mat-label>ID Number/ Passport</mat-label>
                             <input matInput type="text" formControlName="idNumber" />
                         </mat-form-field>
@@ -158,7 +158,7 @@
                             </mat-autocomplete>
                         </mat-form-field>
                         <h4 class="col-md-12 col-lg-7 mb-2 info-text">Qualifications</h4>
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>Highest Qualification</mat-label>
                             <mat-select formControlName="highestQualification">
@@ -166,18 +166,18 @@
                                     qualification }}</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>School</mat-label>
-                            <mat-select *ngIf="!optionIsOther" formControlName="school"
-                                (selectionChange)="toggleOtherSchoolField($event)">
-                                <mat-option *ngFor="let school of schools; index as i" [value]="i">{{ school
-                                    }}</mat-option>
-                            </mat-select>
-                            <input *ngIf="optionIsOther" matInput type="text" formControlName="school"
-                                placeholder="Enter other school">
+                            <input matInput placeholder="Enter School" [formControl]="schoolControl">
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySchool">
+                                <mat-option *ngFor="let school of filteredSchool | async" [value]="school">
+                                    {{ school.name }}
+                                </mat-option>
+                            </mat-autocomplete>
                         </mat-form-field>
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        
+                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                             <mat-label>Date Obtained</mat-label>
                             <mat-select formControlName="startDate" placeholder="Select start year">
                                 <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
