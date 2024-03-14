@@ -69,31 +69,31 @@ export class NewCandidateComponent {
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
   employeesReferrals: Observable<GenericDropDownObject[]> = this.getEmployees();
   filteredEmployees!: Observable<GenericDropDownObject[]>;
-  
+
 
   newcandidateForm = new FormGroup({
-      name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]), 
-      surname: new FormControl<string>('', [Validators.required,Validators.pattern(this.namePattern)]),
-      email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]),
-      contactNumber: new FormControl<string>('', Validators.pattern(/^[0-9]*$/)),
-      potentialLevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
-      role: new FormControl<string >(''),
-      location: new FormControl<string | null>(''),
-      linkedInProfile: new FormControl<string>('', [Validators.pattern(this.linkedInPattern), Validators.required]),
-      cvFile: new FormControl<string>(''),
-      portfolioLink: new FormControl<string>('', [Validators.pattern(this.websiteLinkPattern), Validators.required]),
-      portfolioFile: new FormControl<string>(''),
-      gender: new FormControl<string >(''),
-      idNumber: new FormControl<string >('', [Validators.pattern(this.IdPattern), Validators.required]),
-      referral: new FormControl<string >(''),
-      highestQualification: new FormControl<string >(''),
-      school: new FormControl<string >(''),
-      fieldOfStudy: new FormControl<string >(''),
-      startDate: new FormControl<string >(''),
-      endDate: new FormControl<string >(''),
-      race: new FormControl<string >(''),
-      photo: new FormControl<string>(''),
-    }
+    name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
+    surname: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
+    email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]),
+    contactNumber: new FormControl<string>('', Validators.pattern(/^[0-9]*$/)),
+    potentialLevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
+    role: new FormControl<string>(''),
+    location: new FormControl<string | null>(''),
+    linkedInProfile: new FormControl<string>('', [Validators.pattern(this.linkedInPattern), Validators.required]),
+    cvFile: new FormControl<string>(''),
+    portfolioLink: new FormControl<string>('', [Validators.pattern(this.websiteLinkPattern), Validators.required]),
+    portfolioFile: new FormControl<string>(''),
+    gender: new FormControl<string>(''),
+    idNumber: new FormControl<string>('', [Validators.pattern(this.IdPattern), Validators.required]),
+    referral: new FormControl<string>(''),
+    highestQualification: new FormControl<string>(''),
+    school: new FormControl<string>(''),
+    fieldOfStudy: new FormControl<string>(''),
+    startDate: new FormControl<string>(''),
+    endDate: new FormControl<string>(''),
+    race: new FormControl<string>(''),
+    photo: new FormControl<string>(''),
+  }
   )
 
   ngOnInit(): void {
@@ -130,10 +130,10 @@ export class NewCandidateComponent {
     this.newEmployeeForm.patchValue({ gender: +selectedValue });
   }
 
-  populateYears(){
+  populateYears() {
     const currentYear = new Date().getFullYear();
     const earliestYear = 1970;
-    for (let year = currentYear; year>= earliestYear; year--){
+    for (let year = currentYear; year >= earliestYear; year--) {
       this.years.push(year);
     }
   }
@@ -142,9 +142,9 @@ export class NewCandidateComponent {
     this.optionIsOther = event.value === 'Other';
     if (!this.optionIsOther) {
       this.newcandidateForm.controls.school.setValue('');
-      this.optionIsOther = true; 
+      this.optionIsOther = true;
     }
-}
+  }
 
   validateFile(file: File): boolean {
     if (file.size > 4194304) {
@@ -155,74 +155,74 @@ export class NewCandidateComponent {
 
   toggleAdditionalFields(): void {
     this.additionalFieldsVisible = !this.additionalFieldsVisible;
-}
+  }
 
-getEmployees(): Observable<GenericDropDownObject[]> {
-  return this.employeeService.getAll().pipe(
-    map(employees => {
-      const mappedEmployees: GenericDropDownObject[] = employees.map(employee => ({
-        id: employee.id || 0,
-        name: employee.name || 'Unknown'
-      }));
-      mappedEmployees.unshift({ id: 0, name: 'All' });
-      return mappedEmployees;
-    })
-  );
-}
+  getEmployees(): Observable<GenericDropDownObject[]> {
+    return this.employeeService.getAll().pipe(
+      map(employees => {
+        const mappedEmployees: GenericDropDownObject[] = employees.map(employee => ({
+          id: employee.id || 0,
+          name: employee.name || 'Unknown'
+        }));
+        mappedEmployees.unshift({ id: 0, name: 'All' });
+        return mappedEmployees;
+      })
+    );
+  }
 
-filterEmployees(value: string): Observable<GenericDropDownObject[]> {
-  const searchValue = value.toLowerCase();
-  return this.employeesReferrals.pipe(
-    map(employees => employees.filter(employee => employee.name?.toLowerCase().includes(searchValue)))
-  );
-}
+  filterEmployees(value: string): Observable<GenericDropDownObject[]> {
+    const searchValue = value.toLowerCase();
+    return this.employeesReferrals.pipe(
+      map(employees => employees.filter(employee => employee.name?.toLowerCase().includes(searchValue)))
+    );
+  }
 
   checkEmailValidity(): void {
     const email = this.newcandidateForm.controls.email.value;
     if (email !== null) {
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        this.isValidEmail = emailPattern.test(email);
-        
-        if (!this.isValidEmail) {
-            this.snackBarService.showSnackbar("Please enter a valid email address", "snack-error");
-        }
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      this.isValidEmail = emailPattern.test(email);
+
+      if (!this.isValidEmail) {
+        this.snackBarService.showSnackbar("Please enter a valid email address", "snack-error");
+      }
     } else {
-        this.snackBarService.showSnackbar("Please enter an email address", "snack-error");
+      this.snackBarService.showSnackbar("Please enter an email address", "snack-error");
     }
-}
+  }
 
-imageConverter(file: File) {
-  const reader = new FileReader();
-  reader.addEventListener('loadend', () => {
-    const base64Image = reader.result as string; 
-    this.imagePreview = base64Image;
-    this.newEmployeeForm.patchValue({ 'photo': base64Image });
-    this.getImageFromBase64(base64Image);
-  });
-  reader.readAsDataURL(file);
-}
+  imageConverter(file: File) {
+    const reader = new FileReader();
+    reader.addEventListener('loadend', () => {
+      const base64Image = reader.result as string;
+      this.imagePreview = base64Image;
+      this.newEmployeeForm.patchValue({ 'photo': base64Image });
+      this.getImageFromBase64(base64Image);
+    });
+    reader.readAsDataURL(file);
+  }
 
 
-clearUpload() {
-  var input = document.getElementById('imageUpload') as HTMLInputElement;
-  input.value = '';
-}
+  clearUpload() {
+    var input = document.getElementById('imageUpload') as HTMLInputElement;
+    input.value = '';
+  }
 
   fileConverter(file: File) {
     const reader = new FileReader();
     reader.addEventListener('loadend', () => {
-      const base64CV = reader.result as string; 
-      this.newEmployeeForm.patchValue({ 'cv': base64CV });  
+      const base64CV = reader.result as string;
+      this.newEmployeeForm.patchValue({ 'cv': base64CV });
     });
     reader.readAsDataURL(file);
   }
-  
+
   convertFileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
         const base64String = reader.result as string;
-        resolve(base64String.split(',')[1]); 
+        resolve(base64String.split(',')[1]);
       };
       reader.onerror = error => reject(error);
       reader.readAsDataURL(file);
@@ -237,9 +237,9 @@ clearUpload() {
   }
 
   employeeProfile = {
-    photo: 'assets/img/ProfileAts.png' 
+    photo: 'assets/img/ProfileAts.png'
   };
-  
+
   onFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
       const file = event.target.files[0];
@@ -258,7 +258,7 @@ clearUpload() {
       this.isValidCVFile = false;
       this.snackBarService.showSnackbar("File Type or size invalid", "snack-error");
       return false;
-    }else{
+    } else {
       return true;
     }
   }
@@ -269,38 +269,38 @@ clearUpload() {
       this.snackBarService.showSnackbar("File Type or size invalid", "snack-error");
       this.isValidPortfolioFile = false;
       return false;
-    }else{
+    } else {
       return true;
     }
   }
 
   clearCVFileUpload() {
-    this.cvFilename = ''; 
-    this.isValidCVFile= true;
+    this.cvFilename = '';
+    this.isValidCVFile = true;
     const uploadCVInputElement = document.getElementById('uploadCVFile') as HTMLInputElement;
     if (uploadCVInputElement) {
-        uploadCVInputElement.value = '';
-    }
-}
-
-clearPortfolioFileUpload() {
-  this.portfolioFilename = ''; 
-  this.isValidPortfolioFile= true;
-  const uploadCVInputElement = document.getElementById('uploadPortfolioFile') as HTMLInputElement;
-  if (uploadCVInputElement) {
       uploadCVInputElement.value = '';
+    }
   }
-}
 
-onPortfolioFileChange(event: any): void {
-  if (event.target.files && event.target.files.length) {
-    const file = event.target.files[0];
-    this.portfolioFilename = file.name;
-    if (this.validatePortfolioFile(file)) {
-      this.fileConverter(file);
-    } 
+  clearPortfolioFileUpload() {
+    this.portfolioFilename = '';
+    this.isValidPortfolioFile = true;
+    const uploadCVInputElement = document.getElementById('uploadPortfolioFile') as HTMLInputElement;
+    if (uploadCVInputElement) {
+      uploadCVInputElement.value = '';
+    }
   }
-}
+
+  onPortfolioFileChange(event: any): void {
+    if (event.target.files && event.target.files.length) {
+      const file = event.target.files[0];
+      this.portfolioFilename = file.name;
+      if (this.validatePortfolioFile(file)) {
+        this.fileConverter(file);
+      }
+    }
+  }
 
   onCVFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
@@ -308,7 +308,7 @@ onPortfolioFileChange(event: any): void {
       this.cvFilename = file.name;
       if (this.validateCVFile(file)) {
         this.fileConverter(file);
-      } 
+      }
     }
   }
 }

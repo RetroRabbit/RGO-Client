@@ -24,7 +24,7 @@
                             Upload Picture Here
                         </span>
                         <input type="file" #uploadFile (change)="onFileChange($event)" hidden />
-                    </button>                    
+                    </button>
                     <p class="col-md-12 col-lg-7 info-text">*Required fields</p>
                 </div>
                 <div class="row flex-column justify-content-center align-items-center col-md-12">
@@ -158,13 +158,14 @@
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
                             <mat-label>Referral</mat-label>
-                            <input matInput placeholder="Referral" [formControl]="searchControl" [matAutocomplete]="auto">
+                            <input matInput placeholder="Referral" [formControl]="searchControl"
+                                [matAutocomplete]="auto">
                             <mat-autocomplete #auto="matAutocomplete">
-                              <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee.id">
-                                {{ employee.name }}
-                              </mat-option>
+                                <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee.id">
+                                    {{ employee.name }}
+                                </mat-option>
                             </mat-autocomplete>
-                          </mat-form-field>
+                        </mat-form-field>
                         <h4 class="col-md-12 col-lg-7 mb-2 info-text">Qualifications</h4>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-icon matPrefix>search</mat-icon>
@@ -177,11 +178,14 @@
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>School</mat-label>
-                            <mat-select *ngIf="!optionIsOther" formControlName="school" (selectionChange)="toggleOtherSchoolField($event)">
-                                <mat-option *ngFor="let school of schools; index as i" [value]="i">{{ school }}</mat-option>
-                                
+                            <mat-select *ngIf="!optionIsOther" formControlName="school"
+                                (selectionChange)="toggleOtherSchoolField($event)">
+                                <mat-option *ngFor="let school of schools; index as i" [value]="i">{{ school
+                                    }}</mat-option>
+
                             </mat-select>
-                            <input *ngIf="optionIsOther" matInput type="text" formControlName="school" placeholder="Enter other school">
+                            <input *ngIf="optionIsOther" matInput type="text" formControlName="school"
+                                placeholder="Enter other school">
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-label>Date Obtained</mat-label>
