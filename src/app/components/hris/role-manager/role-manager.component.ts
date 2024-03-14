@@ -267,7 +267,6 @@ export class RoleManagerComponent implements OnInit {
     }
 
     this.temporaryRoleAccessChanges.push(change);
-    console.log(this.temporaryRoleAccessChanges)
     this.navService.unsavedChanges = true;
   }
 
@@ -326,7 +325,6 @@ export class RoleManagerComponent implements OnInit {
   }
 
   openMobileDialog(roleAccess: RoleAccess){
-    console.log(roleAccess)
     this.permissisonsObj = roleAccess;
     this.dialog.open(this.mobileRoleManagement, {
       width :'600px',
