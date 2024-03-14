@@ -83,7 +83,7 @@ import { LoadingComponentComponent } from './components/shared-components/loadin
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PropertyAccessComponent } from './components/hris/system-settings/property-access/property-access.component';
-import { AccordionProfileEmployeeComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile-details/accordion-profile-employee/accordion-profile-employee.component';
+import { AccordionProfileEmployeeDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-employee-details/accordion-profile-employee-details.component';
 
 @NgModule({
   declarations: [
@@ -117,7 +117,7 @@ import { AccordionProfileEmployeeComponent } from './components/hris/employees/e
     LoadingComponentComponent,
     AtsDashboardComponent,
     PropertyAccessComponent,
-    AccordionProfileEmployeeComponent,
+    AccordionProfileEmployeeDetailsComponent,
 
   ],
   imports: [
