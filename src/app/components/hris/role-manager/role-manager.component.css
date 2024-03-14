@@ -148,11 +148,11 @@ tr:last-child td:last-child {
   /* border-radius: 100px; */
  }
 
- .mat-dialog-container {
+ /* .mat-dialog-container {
   overflow: hidden !important;
   border-radius: 5px !important;
   padding: 5px !important;
-}
+} */
 .mobile-cancel , .mobile-save {
   background: none;
   border: none;

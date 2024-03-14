@@ -334,4 +334,7 @@ export class RoleManagerComponent implements OnInit {
       panelClass: 'custom-style'
     });
   }
+  closeMobileDialog(){
+    this.dialog.closeAll()
+  }
 }

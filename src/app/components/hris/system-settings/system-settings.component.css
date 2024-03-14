@@ -85,19 +85,18 @@ h5{
 
     background: var(--m-3-sys-light-primary-container, #ffffff);
 }
-.mobile-icon-text-container.active,
-.mobile-icon-text-container.active span{
+
+#mobile-icon-text-container mat-icon.active {
+    border-radius: 100px;
+    background: var(--m-3-sys-light-primary-container, #ffffff);
+}
+
+span.active {
     color: var(--m-3-sys-light-primary, #0029C6);
     font-family: Roboto;
     font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: 0.1px;
-    border-radius: 100px;
-
-    background: var(--m-3-sys-light-primary-container, #ffffff);
 }
+
 #bottom-menu{
     position: fixed;
     background: var(--m-3-sys-light-primary-container, #D7DFFF);
@@ -110,7 +109,7 @@ h5{
     justify-content: space-around;
 }
 
-.mobile-icon-text-container {
+#mobile-icon-text-container {
     display: flex;
     flex-direction: column;
     justify-content: center;

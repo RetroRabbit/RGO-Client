@@ -33,15 +33,13 @@
     </div>
   </div>
   <div class="col-3 mt-4" id="bottom-menu" *ngIf="navService.showSystemNavbar && screenWidth <= 767">
-    <div class="mobile-icon-text-container" (click)="displayCustomFieldsManagement()"
-    [ngClass]="systemNavItemService.selectedMenuItem =='Custom Field management' ? 'active' : ''">
-    <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
-    <span>Custom Field</span>
+    <div id="mobile-icon-text-container" (click)="displayCustomFieldsManagement()">
+    <mat-icon [ngClass]="systemNavItemService.selectedMenuItem =='Custom Field management' ? 'active' : ''" id="mat-icon" >mode_edit_24px</mat-icon>
+    <span [ngClass]="systemNavItemService.selectedMenuItem =='Custom Field management' ? 'active' : ''">Custom Field</span>
     </div>
-    <div class="mobile-icon-text-container" (click)="displayRoleManagement()"
-    [ngClass]="systemNavItemService.selectedMenuItem =='Role Management' ? 'active' : ''">
-    <mat-icon id="mat-icon">person_outline_24px</mat-icon>
-    <span>Role Management</span>
+    <div id="mobile-icon-text-container" (click)="displayRoleManagement()">
+    <mat-icon [ngClass]="systemNavItemService.selectedMenuItem =='Role Management' ? 'active' : ''" id="mat-icon">person_outline_24px</mat-icon>
+    <span [ngClass]="systemNavItemService.selectedMenuItem =='Role Management' ? 'active' : ''">Role Management</span>
   </div>
   </div>
   <div [ngClass]="screenWidth <= 767 ? 'col-12' : 'col-8 ps-4 ms-3'">
