@@ -56,7 +56,6 @@
                         <mat-label>Contact number</mat-label>
                         <input matInput type="text" formControlName="contactNumber" />
                     </mat-form-field>
-
                     <mat-radio-group formControlName="role" class="col-md-12 col-lg-7 my-1 info-text">
                         <p class="col-md-12 col-lg-7 info-text">Role:</p>
                         <mat-radio-button value="UI/UX Designer">UI/UX Designer</mat-radio-button> <br />
@@ -64,19 +63,16 @@
                         <mat-radio-button value="Business Support">Business Support</mat-radio-button> <br />
                         <mat-radio-button value="Scrum Master">Scrum Master</mat-radio-button>
                     </mat-radio-group>
-
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>Select level</mat-label>
                         <mat-select formControlName="potentialLevel">
                             <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
                         </mat-select>
                     </mat-form-field>
-
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>e.g Johannesburg, Gauteng </mat-label>
                         <input matInput type="text" formControlName="location" />
                     </mat-form-field>
-
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>Attach link</mat-label>
                         <input matInput type="text" formControlName="linkedInProfile" />
@@ -97,12 +93,9 @@
                         <input type="file" #uploadCVFile (change)="onCVFileChange($event)" hidden
                             accept=".pdf,.ppt,.pptx,.doc,.docx" />
                     </mat-form-field>
-
                     <div *ngIf="cvUrl !== ''">
                         <p>Selected CV: {{ cvFilename }}</p>
                     </div>
-
-
                     <p class="col-md-12 col-lg-7">PDF,PPT,PPTX,doc,Docx are supported</p>
                     <p class="col-md-12 col-lg-7">10 MB Max limit size</p>
 
@@ -115,7 +108,6 @@
                             valid website link is required.
                         </mat-error>
                     </mat-form-field>
-
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>PDF</mat-label>
                         <input matInput type="text" [value]="portfolioFilename" />
@@ -133,7 +125,6 @@
                     </div>
                     <p class="col-md-12 col-lg-7">PDF,PPT,PPTX,doc,Docx are supported</p>
                     <p class="col-md-12 col-lg-7">10 MB Max limit size</p>
-
                     <mat-slide-toggle class="col-md-12 col-lg-7 mb-3" color="primary" id="additionalFieldsToggle"
                         (click)="toggleAdditionalFields()">
                         Additional fields
@@ -182,7 +173,6 @@
                                 (selectionChange)="toggleOtherSchoolField($event)">
                                 <mat-option *ngFor="let school of schools; index as i" [value]="i">{{ school
                                     }}</mat-option>
-
                             </mat-select>
                             <input *ngIf="optionIsOther" matInput type="text" formControlName="school"
                                 placeholder="Enter other school">
@@ -194,7 +184,6 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-
                 </div>
                 <div id="footer" class="col-md-12">
                     <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
@@ -202,10 +191,14 @@
                     <button *ngIf="!isValidEmail" id="next-button"
                         [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
                         (click)="checkEmailValidity()">Next</button>
+
                     <button *ngIf="isValidEmail" id="save-add-button"
-                        [ngClass]="screenWidth < 768 ? 'button-mobile' : ''">Save and add another</button>
+                        [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
+                        (click)="checkEmailValidity()">Save and add another</button>
+
                     <button *ngIf="isValidEmail" id="save-button"
-                        [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''">Save</button>
+                        [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
+                        (click)="checkEmailValidity()">Save</button>
                 </div>
             </div>
         </form>

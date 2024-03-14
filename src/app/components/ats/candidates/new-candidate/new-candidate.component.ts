@@ -70,7 +70,6 @@ export class NewCandidateComponent {
   employeesReferrals: Observable<GenericDropDownObject[]> = this.getEmployees();
   filteredEmployees!: Observable<GenericDropDownObject[]>;
 
-
   newcandidateForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
     surname: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
@@ -111,7 +110,6 @@ export class NewCandidateComponent {
   ngOnDestroy() {
     this.navService.showNavbar = true;
   }
-
 
   onSubmit(reset: boolean = false): void {
   }
@@ -201,7 +199,6 @@ export class NewCandidateComponent {
     });
     reader.readAsDataURL(file);
   }
-
 
   clearUpload() {
     var input = document.getElementById('imageUpload') as HTMLInputElement;
