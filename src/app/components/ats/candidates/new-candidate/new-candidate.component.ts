@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { CandidateService } from 'src/app/services/ats/candidate/candidate.service';
+import { CandidateService } from 'src/app/services/ats/candidate/candidate-document.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
-import { candidateDocument } from 'src/app/models/ats/candidateDocument.interface';
+import { CandidateDocument } from 'src/app/models/ats/candidateDocument.interface';
 import { schools } from 'src/app/models/ats/constants/schools.constants';
 import { qualifications } from 'src/app/models/ats/constants/qualifications.constants';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
@@ -44,7 +44,7 @@ export class NewCandidateComponent {
   schools: string[] = schools.map((school) => school.value);
   qualifications: string[] = qualifications.map((qualification) => qualification.value);
   years: number[] = [];
-  candidateDocumentModels: candidateDocument[] = [];
+  candidateDocumentModels: CandidateDocument[] = [];
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
   imageUrl: string = '';
@@ -163,7 +163,7 @@ export class NewCandidateComponent {
           name: employee.name || 'Unknown',
           surname: employee.surname  || 'unknown'
         }));
-        mappedEmployees.unshift({ });
+        mappedEmployees.unshift({});
         return mappedEmployees;
       })
     );

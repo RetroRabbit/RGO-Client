@@ -1,4 +1,4 @@
-export interface candidateDocument{
+export interface CandidateDocument{
     id: number,
     name: string,
     surname: string,

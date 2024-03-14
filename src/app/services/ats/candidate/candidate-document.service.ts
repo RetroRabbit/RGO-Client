@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { AuthAccessService } from '../../shared-services/auth-access/auth-access.service';
 import { Observable } from 'rxjs';
-import { candidateDocument } from 'src/app/models/ats/candidateDocument.interface';
+import { CandidateDocument } from 'src/app/models/ats/candidateDocument.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class CandidateService {
     this.baseUrl = `${environment.HttpsBaseURL}/candidates`
   }
 
-  saveCandidateDocument(candidateDocument: any): Observable<candidateDocument> {
-    return this.httpClient.post<candidateDocument>(`${this.baseUrl}`, candidateDocument);
+  saveCandidateDocument(candidateDocument: CandidateDocument): Observable<CandidateDocument> {
+    return this.httpClient.post<CandidateDocument>(`${this.baseUrl}`, candidateDocument);
   }
 };
