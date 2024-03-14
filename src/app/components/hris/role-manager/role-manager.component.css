@@ -174,3 +174,6 @@ tfoot {
   width: 100%;
 }
 
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 20px !important;
+}
