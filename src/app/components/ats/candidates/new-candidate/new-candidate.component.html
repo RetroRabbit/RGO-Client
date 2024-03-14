@@ -156,11 +156,15 @@
                             <mat-label>ID Number/ Passport</mat-label>
                             <input matInput type="text" formControlName="idNumber" />
                         </mat-form-field>
-                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
-                            <mat-icon matPrefix>search</mat-icon>
+                        <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
                             <mat-label>Referral</mat-label>
-                            <input matInput type="text" formControlName="referral">
-                        </mat-form-field>
+                            <input matInput placeholder="Referral" [formControl]="searchControl" [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete">
+                              <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee.id">
+                                {{ employee.name }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
                         <h4 class="col-md-12 col-lg-7 mb-2 info-text">Qualifications</h4>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-icon matPrefix>search</mat-icon>

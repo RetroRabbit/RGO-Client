@@ -10,6 +10,9 @@ import { races } from 'src/app/models/hris/constants/races.constants';
 import { candidateDocument } from 'src/app/models/ats/candidateDocument.interface';
 import { schools } from 'src/app/models/ats/schools.constants';
 import { qualifications } from 'src/app/models/ats/qualifications.constants';
+import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
+import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
+import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-new-candidate',
@@ -18,6 +21,7 @@ import { qualifications } from 'src/app/models/ats/qualifications.constants';
 })
 export class NewCandidateComponent {
   newEmployeeForm: any;
+  searchControl: FormControl = new FormControl('');
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -31,7 +35,8 @@ export class NewCandidateComponent {
     private router: Router,
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
-    private navService: NavService
+    private navService: NavService,
+    public employeeService: EmployeeService
   ) { }
 
   levels: number[] = levels.map((level) => level.value);
@@ -61,6 +66,9 @@ export class NewCandidateComponent {
   IdPattern = /^\d{13}$/;
   optionIsOther = false;
   additionalFieldsVisible: boolean = false;
+  currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
+  employeesReferrals: Observable<GenericDropDownObject[]> = this.getEmployees();
+  filteredEmployees!: Observable<GenericDropDownObject[]>;
   
 
   newcandidateForm = new FormGroup({
@@ -91,6 +99,13 @@ export class NewCandidateComponent {
   ngOnInit(): void {
     this.navService.showNavbar = false;
     this.populateYears();
+    this.searchControl = new FormControl('');
+    this.filteredEmployees = this.searchControl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(value => this.filterEmployees(value))
+    );
   }
 
   ngOnDestroy() {
@@ -121,7 +136,6 @@ export class NewCandidateComponent {
     for (let year = currentYear; year>= earliestYear; year--){
       this.years.push(year);
     }
-
   }
 
   toggleOtherSchoolField(event: any) {
@@ -141,6 +155,26 @@ export class NewCandidateComponent {
 
   toggleAdditionalFields(): void {
     this.additionalFieldsVisible = !this.additionalFieldsVisible;
+}
+
+getEmployees(): Observable<GenericDropDownObject[]> {
+  return this.employeeService.getAll().pipe(
+    map(employees => {
+      const mappedEmployees: GenericDropDownObject[] = employees.map(employee => ({
+        id: employee.id || 0,
+        name: employee.name || 'Unknown'
+      }));
+      mappedEmployees.unshift({ id: 0, name: 'All' });
+      return mappedEmployees;
+    })
+  );
+}
+
+filterEmployees(value: string): Observable<GenericDropDownObject[]> {
+  const searchValue = value.toLowerCase();
+  return this.employeesReferrals.pipe(
+    map(employees => employees.filter(employee => employee.name?.toLowerCase().includes(searchValue)))
+  );
 }
 
   checkEmailValidity(): void {
