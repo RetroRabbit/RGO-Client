@@ -8,8 +8,8 @@ import { CandidateService } from 'src/app/services/ats/candidate/candidate.servi
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { candidateDocument } from 'src/app/models/ats/candidateDocument.interface';
-import { schools } from 'src/app/models/ats/schools.constants';
-import { qualifications } from 'src/app/models/ats/qualifications.constants';
+import { schools } from 'src/app/models/ats/constants/schools.constants';
+import { qualifications } from 'src/app/models/ats/constants/qualifications.constants';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
 import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
@@ -44,6 +44,7 @@ export class NewCandidateComponent {
   schools: string[] = schools.map((school) => school.value);
   qualifications: string[] = qualifications.map((qualification) => qualification.value);
   years: number[] = [];
+  candidateDocumentModels: candidateDocument[] = [];
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
   imageUrl: string = '';
@@ -57,7 +58,6 @@ export class NewCandidateComponent {
   linkedInPattern = '^https?://(?:www\\.)?linkedin\\.com/in/[a-zA-Z0-9-]+$';
   isMobileScreen = false;
   screenWidth = window.innerWidth;
-  candidateDocumentModels: candidateDocument[] = [];
   PREVIOUS_PAGE = 'previousPage';
   websiteLinkPattern = '^(https?://)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(\\S*)?$';
   isValidEmail = false;
@@ -308,6 +308,26 @@ export class NewCandidateComponent {
       }
     }
   }
+
+  saveCanidateAndExit() {
+    this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
+  }
+
+  onUploadDocument(nextPage: string): void {
+    this.candidateDocumentModels.forEach((documentModel) => {
+      this.candidateService.saveCandidateDocument(documentModel).subscribe({
+        next: () => {
+          this.snackBarService.showSnackbar("Candidate has been saved", "snack-success");
+        },
+        error: (error: any) => {
+          this.snackBarService.showSnackbar("Failed to save candidate", "snack-error");
+        }, complete: () => {
+          this.candidateDocumentModels = [];
+        }
+      });
+    });
+  }
+
 }
 
 
