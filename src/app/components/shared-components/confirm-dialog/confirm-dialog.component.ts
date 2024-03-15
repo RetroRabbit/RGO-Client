@@ -29,6 +29,7 @@ export class ConfirmDialogComponent {
   ngOnInit() {
     this.onResize();
   }
+  
   ngAfterViewInit() {
     if (this.screenWidth > 767) {
       this.dialog.open(this.dialogSaveTemplate);
