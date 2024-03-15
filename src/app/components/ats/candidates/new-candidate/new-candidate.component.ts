@@ -146,7 +146,7 @@ export class NewCandidateComponent {
     }
   }
 
-  onFileChange(event: any): void {
+  onImageChange(event: any): void {
     if (event.target.files && event.target.files.length) {
       const file = event.target.files[0];
       this.imageName = file.name;
