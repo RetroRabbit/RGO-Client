@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, TemplateRef, ViewChild, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
@@ -13,14 +13,28 @@ export class ConfirmDialogComponent {
   @Output() confirmation = new EventEmitter<boolean>();
 
   @ViewChild('dialogSaveTemplate') dialogSaveTemplate!: TemplateRef<any>;
+  @ViewChild('dialogSaveTemplateMobile') dialogSaveTemplateMobile!: TemplateRef<any>;
+
   confirmButtonText: string = '';
   cancelButtonText: string = '';
+  screenWidth = window.innerWidth;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+  }
   constructor(private dialog: MatDialog, private navService: NavService) {
     navService.showNavbar = true;
-   }
-
+  }
+  ngOnInit() {
+    this.onResize();
+  }
   ngAfterViewInit() {
-    this.dialog.open(this.dialogSaveTemplate);
+    if (this.screenWidth > 767) {
+      this.dialog.open(this.dialogSaveTemplate);
+    }
+    else if (this.screenWidth <= 767) {
+      this.dialog.open(this.dialogSaveTemplateMobile);
+    }
   }
 
   captureResponse(event: any) {
