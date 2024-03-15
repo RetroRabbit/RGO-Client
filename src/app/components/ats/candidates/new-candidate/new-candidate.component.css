@@ -169,8 +169,13 @@ main {
     text-align: center;
 }
 
-.change-close-color{
+#change-close-color{
     color: #B3261E;
+}
+
+#change-color-heading{
+    color: #B3261E;
+    font-weight: bold;
 }
 
 p{

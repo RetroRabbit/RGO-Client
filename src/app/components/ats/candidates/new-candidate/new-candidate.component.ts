@@ -47,8 +47,9 @@ export class NewCandidateComponent {
   candidateDocumentModels: CandidateDocument[] = [];
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
+  imageName: string ='';
   imageUrl: string = '';
-  imageName: string = "";
+  base64Image: string = "";
   cvFilename: string = "";
   portfolioFilename: string = "";
   cvUrl: string = '';
@@ -62,6 +63,7 @@ export class NewCandidateComponent {
   websiteLinkPattern = '^(https?://)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(\\S*)?$';
   isValidEmail = false;
   isValidCVFile = true;
+  isValidProfileImage = true;
   isValidPortfolioFile = true;
   IdPattern = /^\d{13}$/;
   optionIsOther = false;
@@ -144,11 +146,60 @@ export class NewCandidateComponent {
     }
   }
 
+  onFileChange(event: any): void {
+    if (event.target.files && event.target.files.length) {
+      const file = event.target.files[0];
+      this.imageName = file.name;
+      if (this.validateFile(file)) {
+        console.log("about to convert")
+        this.imageConverter(file);
+      } else {
+        this.isValidProfileImage = false;
+        this.clearUpload();
+      }
+    }
+  }
+
   validateFile(file: File): boolean {
+    console.log("Hit validator")
     if (file.size > 4194304) {
+      console.log("File invalid");
       return false;
     }
+    console.log("File Valid")
     return true;
+  }
+
+  imageConverter(file: File) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+      const base64Image = this.convertTobase64(this.imagePreview);
+      this.newcandidateForm.patchValue({ 'photo': 'data:image/jpeg;base64,' + base64Image });
+      this.getImageFromBase64(base64Image);
+      console.log(this.newcandidateForm.value['photo'])
+    };
+    reader.readAsDataURL(file);
+  }
+  
+
+  convertTobase64(dataURI: string): string {
+    const base64index = dataURI.indexOf(';base64,') + ';base64,'.length;
+    const base64 = dataURI.substring(base64index);
+    return base64;
+  }
+
+  getImageFromBase64(base64Image: string) {
+    const byteArray = atob(base64Image);
+    const byteNumbers = new Array(byteArray.length);
+
+    for (let i = 0; i < byteArray.length; i++) {
+      byteNumbers[i] = byteArray.charCodeAt(i);
+    }
+
+    const byteArrayBuffer = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArrayBuffer], { type: 'image/jpeg' });
+    this.imageUrl = URL.createObjectURL(blob);
   }
 
   toggleAdditionalFields(): void {
@@ -190,27 +241,17 @@ export class NewCandidateComponent {
     }
   }
 
-  imageConverter(file: File) {
-    const reader = new FileReader();
-    reader.addEventListener('loadend', () => {
-      const base64Image = reader.result as string;
-      this.imagePreview = base64Image;
-      this.newEmployeeForm.patchValue({ 'photo': base64Image });
-      this.getImageFromBase64(base64Image);
-    });
-    reader.readAsDataURL(file);
-  }
 
   clearUpload() {
     var input = document.getElementById('imageUpload') as HTMLInputElement;
     input.value = '';
   }
 
-  fileConverter(file: File) {
+  fileConverter(file: File, controlName: string) {
     const reader = new FileReader();
     reader.addEventListener('loadend', () => {
-      const base64CV = reader.result as string;
-      this.newEmployeeForm.patchValue({ 'cv': base64CV });
+      const base64Data = reader.result as string;
+      this.newcandidateForm.patchValue({ [controlName]: base64Data });
     });
     reader.readAsDataURL(file);
   }
@@ -227,34 +268,15 @@ export class NewCandidateComponent {
     });
   }
 
-  convertTobase64(imagePreview: string) {
-    throw new Error('Method not implemented.');
-  }
-  getImageFromBase64(base64Image: any) {
-    throw new Error('Method not implemented.');
-  }
-
   employeeProfile = {
     photo: 'assets/img/ProfileAts.png'
   };
 
-  onFileChange(event: any): void {
-    if (event.target.files && event.target.files.length) {
-      const file = event.target.files[0];
-      this.imageName = file.name;
-      if (this.validateFile(file)) {
-        this.imageConverter(file);
-      } else {
-        this.clearUpload();
-      }
-    }
-  }
 
   validateCVFile(file: File): boolean {
     const allowedTypes = ['application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
     if (file.size > 4194304 || !allowedTypes.includes(file.type)) {
       this.isValidCVFile = false;
-      this.snackBarService.showSnackbar("File Type or size invalid", "snack-error");
       return false;
     } else {
       return true;
@@ -264,7 +286,6 @@ export class NewCandidateComponent {
   validatePortfolioFile(file: File): boolean {
     const allowedTypes = ['application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
     if (file.size > 4194304 || !allowedTypes.includes(file.type)) {
-      this.snackBarService.showSnackbar("File Type or size invalid", "snack-error");
       this.isValidPortfolioFile = false;
       return false;
     } else {
@@ -295,17 +316,17 @@ export class NewCandidateComponent {
       const file = event.target.files[0];
       this.portfolioFilename = file.name;
       if (this.validatePortfolioFile(file)) {
-        this.fileConverter(file);
+        this.fileConverter(file, 'portfolio');
       }
     }
   }
-
+  
   onCVFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
       const file = event.target.files[0];
       this.cvFilename = file.name;
       if (this.validateCVFile(file)) {
-        this.fileConverter(file);
+        this.fileConverter(file, 'cv'); 
       }
     }
   }
