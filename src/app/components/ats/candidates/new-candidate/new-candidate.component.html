@@ -9,19 +9,19 @@
             <div class="row justify-content-center align-items-center">
                 <div class="row justify-content-center align-items-center">
                     <div class="profile-photo">
-                      <img *ngIf="base64Image !== ''" [src]="base64Image" alt="Profile Photo" class="rounded-circle profile-img">
-                      <img *ngIf="base64Image === ''" [src]="employeeProfile.photo" alt="Profile Photo" class="rounded-circle profile-img">
+                      <img *ngIf="imageUrl !== ''" [src]="imageUrl" alt="Profile Photo" class="rounded-circle profile-img">
+                      <img *ngIf="imageUrl === ''" [src]="employeeProfile.photo" alt="Default Profile Photo" class="rounded-circle profile-img">
                     </div>
                     <div class="col-12 text-center roboto-font pb-3">
-                      <h2 class="center-bold">Profile Picture</h2>
-                      <p class="profile-text">PNG, JPG, SVG</p>
-                      <p class="profile-text">10 MB Max limit size</p>
-                      <p id="change-color-heading" *ngIf="!isValidProfileImage" class="profile-text">File size exceeded. Maximum limit is 10 MB.</p>
-                      <p *ngIf="!isValidProfileImage" id='change-close-color'>File size exceeds the max 10MB limit</p>
-                      <button id="upload-button" mat-icon-button (click)="uploadFile.click()">
-                        <span mat-icon-button matSuffix class="pe-3">Upload Picture Here</span>
+                      <h2 *ngIf="imageUrl === ''"class="center-bold">Profile Picture</h2>
+                      <p *ngIf="imageUrl === ''"class="profile-text">PNG, JPG, SVG</p>
+                      <p *ngIf="imageUrl === ''" class="profile-text">10 MB Max limit size</p>
+                      <p id="change-color-heading" *ngIf="imageUrl !== ''" class="profile-text">File size exceeded. Maximum limit is 10 MB.</p>
+                      <p *ngIf="imageUrl !== ''" id='change-close-color'>File size exceeds the max 10MB limit</p>
+                      <button id="upload-button" mat-icon-button (click)="uploadFile.click()" class="pe-3">
+                        <mat-icon id="file-upload-cursor">file_upload</mat-icon>Upload Picture
                       </button>
-                      <input type="file" #uploadFile (change)="onFileChange($event)" hidden />
+                      <input  type="file" #uploadFile (change)="onFileChange($event)" hidden />
                       <p class="col-md-12 col-lg-7 mt-5 info-text">*Required fields</p>
                     </div>
                   </div>

@@ -178,11 +178,11 @@ export class NewCandidateComponent {
       this.newcandidateForm.patchValue({ 'photo': 'data:image/jpeg;base64,' + base64Image });
       this.getImageFromBase64(base64Image);
       console.log(this.newcandidateForm.value['photo'])
+      this.base64Image = base64Image;
     };
     reader.readAsDataURL(file);
   }
   
-
   convertTobase64(dataURI: string): string {
     const base64index = dataURI.indexOf(';base64,') + ';base64,'.length;
     const base64 = dataURI.substring(base64index);
