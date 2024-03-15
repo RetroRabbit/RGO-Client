@@ -137,8 +137,7 @@ main {
 }
 
 #upload-button {
-    margin-top: 7px;
-    padding: 10px;
+    padding: auto;
     height: 40px;
     width: 180px;
     gap: 8px;
