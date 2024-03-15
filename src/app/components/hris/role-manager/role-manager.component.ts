@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild,HostListener } from '@angular/core';
 import { RoleService } from 'src/app/services/hris/role.service';
 import { RoleAccess } from 'src/app/models/hris/role-access.interface';
 import { Role } from 'src/app/models/hris/role.interface';
@@ -35,15 +35,26 @@ export class RoleManagerComponent implements OnInit {
   showConfirmDialog: boolean = false;
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: ''  };
   
+  screenWidth = window.innerWidth;
+
+  @HostListener('window:resize',['$event'])
+  onResize(){
+    this.screenWidth = window.innerWidth;
+  }
+  @ViewChild('mobileRoleManagement')
+  mobileRoleManagement!: TemplateRef<any>;
+  
+  permissisonsObj : RoleAccess = {grouping : '',id : 0 ,permission: ''};
   constructor(
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
     private snackBarService: SnackbarService,
-    private navService: NavService
+    private navService: NavService,
+    private dialog: MatDialog,
   ) { 
     navService.showNavbar = true;
   }
-
+ 
   ngOnInit() {
     forkJoin([
       this.roleManagementService.getAllRoles(),
@@ -57,8 +68,9 @@ export class RoleManagerComponent implements OnInit {
       this.roleAccessLinks = roleAccessLinks;
       this.updateChartAndEmployeeDataCheckboxStates();
     });
+    this.onResize();
   }
-
+  
   areAllCheckboxesSelected(columnKey: string): boolean {
     return this.roles.every((r) => this.checkboxStates[r.description + columnKey]);
   }
@@ -310,5 +322,17 @@ export class RoleManagerComponent implements OnInit {
     if (event) {
       this.saveChanges();
     } 
+  }
+
+  openMobileDialog(roleAccess: RoleAccess){
+    this.permissisonsObj = roleAccess;
+    this.dialog.open(this.mobileRoleManagement, {
+      width :'600px',
+      height : '450px',
+      panelClass: 'custom-style'
+    });
+  }
+  closeMobileDialog(){
+    this.dialog.closeAll()
   }
 }
