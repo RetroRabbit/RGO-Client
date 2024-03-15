@@ -1,12 +1,11 @@
-export interface Properties {
+import { PropertyAccessLevel } from "./constants/enums/property-access-levels.enum";
+import { Role } from "./role.interface";
+
+export interface PropertyAccess {
     id: number,
-    condition: number,
-    internal: boolean,
-    propName: string,
-    label: string,
-    type: string,
-    description: string | null,
-    regex: string | null,
-    options: string[],
-    value: string | number
+    roleId: number,
+    role: Role,
+    table: string,
+    field: string,
+    accessLevel: PropertyAccessLevel
 }
