@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { AccordionProfileComponent } from '../accordion-profile.component';
-import { OnInit } from '@angular/core';
-
 
 @Component({
   selector: 'app-accordion-profile-employee-details',
@@ -11,6 +9,7 @@ import { OnInit } from '@angular/core';
 export class AccordionProfileEmployeeDetailsComponent extends AccordionProfileComponent {
   override ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
+
     this.initializeForm();
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();

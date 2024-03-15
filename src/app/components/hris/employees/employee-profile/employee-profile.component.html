@@ -308,7 +308,6 @@
             <app-accordion-profile [hidden]="selectedAccordion != 'Profile Details'"
                 [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
                 (updateProfile)="updateProfileProgress($event)"></app-accordion-profile>
-
             <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"
                 [employeeProfile]="employeeProfile"
                 (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
