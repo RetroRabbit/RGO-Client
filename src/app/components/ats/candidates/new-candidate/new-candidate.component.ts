@@ -151,24 +151,25 @@ export class NewCandidateComponent {
       const file = event.target.files[0];
       this.imageName = file.name;
       if (this.validateFile(file)) {
-        console.log("about to convert")
         this.imageConverter(file);
       } else {
-        this.isValidProfileImage = false;
         this.clearUpload();
       }
     }
   }
 
   validateFile(file: File): boolean {
-    console.log("Hit validator")
-    if (file.size > 4194304) {
-      console.log("File invalid");
+    const allowedExtensions = ['png', 'jpg', 'jpeg', 'svg'];
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    if (file.size > 4194304 || !allowedExtensions.includes(fileExtension || '')) {
+      this.isValidProfileImage = false;
+      console.log(this.isValidProfileImage);
       return false;
     }
-    console.log("File Valid")
+    this.isValidProfileImage = true;
     return true;
   }
+  
 
   imageConverter(file: File) {
     const reader = new FileReader();
@@ -177,7 +178,6 @@ export class NewCandidateComponent {
       const base64Image = this.convertTobase64(this.imagePreview);
       this.newcandidateForm.patchValue({ 'photo': 'data:image/jpeg;base64,' + base64Image });
       this.getImageFromBase64(base64Image);
-      console.log(this.newcandidateForm.value['photo'])
       this.base64Image = base64Image;
     };
     reader.readAsDataURL(file);
