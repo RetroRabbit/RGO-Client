@@ -7,7 +7,7 @@
     'width': '0%'
   }">
   </ngx-skeleton-loader>
-  <div *ngIf="!isLoading" class="searchbar align-items-center justify-content-center p-0 mb-3 mb-md-0">
+  <div *ngIf="!isLoading" [ngClass]="searchQuery.length >= 3 && searchResults.length !== 0 ? ' searchbar active' : 'searchbar align-items-center justify-content-center p-0 mb-3 mb-md-0'">
     <div id="leading-icon" *ngIf="searchQuery === ''"></div>
     <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
       <mat-icon>arrow_back</mat-icon>
@@ -22,8 +22,8 @@
           fill="#0029C6" />
       </svg>
     </div>
-    <div class="blue-cross-border py-1 px-1" *ngIf="searchQuery !== '' && searchQuery.length >= 3" class="me-4">
-      <img src="/assets/img/Icon_Close_Blue.svg" alt="Close Search" (click)="clearSearchField()">
+    <div class="blue-cross-border py-1 px-1 me-4" *ngIf="searchQuery !== '' && searchQuery.length >= 3" (click)="clearSearchField()">
+      <img src="/assets/img/Icon_Close_Blue.svg" alt="Close-Search">
     </div>
   </div>
 
@@ -34,7 +34,7 @@
   </div>
 </div>
 <div id="search-results-container">
-  <div *ngIf="searchResults.length > 0">
+  <div *ngIf="searchResults.length > 0 && searchQuery !== ''">
     <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
       <div class="col-12 ps-4 padding-right-search-div">
         <div class="row">
@@ -61,6 +61,7 @@
       </div>
     </div>
     <div id="view-more-container" *ngIf="!displayAllEmployees" class="mt-0">
+      <!-- <mat-divider class="view-divider"></mat-divider> -->
       <div (click)="viewMoreEmployees()">View more employees</div>
     </div>
   </div>
