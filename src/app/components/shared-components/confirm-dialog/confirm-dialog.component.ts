@@ -25,6 +25,7 @@ export class ConfirmDialogComponent {
   constructor(private dialog: MatDialog, private navService: NavService) {
     navService.showNavbar = true;
   }
+  
   ngOnInit() {
     this.onResize();
   }
