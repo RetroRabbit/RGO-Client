@@ -52,7 +52,7 @@
                     </mat-form-field>
                 </div>
                 <!-- *ngIf="isValidEmail"  -->
-                <div  class="row col-md-12 flex-column justify-content-center align-items-center">
+                <div *ngIf="isValidEmail"  class="row col-md-12 flex-column justify-content-center align-items-center">
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Contact number</mat-label>
                         <input matInput type="text" formControlName="contactNumber" />
@@ -77,7 +77,7 @@
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Attach link</mat-label>
                         <input matInput type="text" formControlName="linkedInProfile" />
-                        <mat-error *ngIf="newcandidateForm.controls['linkedInProfile'].hasError('required')">
+                        <mat-error *ngIf="newcandidateForm.controls['linkedInProfile'].hasError('pattern')">
                             Valid linkedIn Profile link is required
                         </mat-error>
                         <mat-icon matSuffix>link</mat-icon>
@@ -110,7 +110,7 @@
                         <mat-label>Attach website link</mat-label>
                         <input matInput type="text" formControlName="portfolioLink" />
                         <mat-icon matSuffix>link</mat-icon>
-                        <mat-error *ngIf="newcandidateForm.controls['portfolioLink'].hasError('required')">
+                        <mat-error *ngIf="newcandidateForm.controls['portfolioLink'].hasError('pattern')">
                             valid website link is required.
                         </mat-error>
                     </mat-form-field>

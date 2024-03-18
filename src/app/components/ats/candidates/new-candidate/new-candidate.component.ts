@@ -20,7 +20,7 @@ import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchM
   styleUrls: ['./new-candidate.component.css']
 })
 export class NewCandidateComponent {
-  newEmployeeForm: any;
+  newCandidateForm: any;
   searchControl: FormControl = new FormControl('');
 
   @HostListener('window:resize', ['$event'])
@@ -56,7 +56,6 @@ export class NewCandidateComponent {
   portfolioUrl: string = '';
   emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
   namePattern = /^[a-zA-Z\s'-]*$/;
-  linkedInPattern = '^https?://(?:www\\.)?linkedin\\.com/in/[a-zA-Z0-9-]+$';
   isMobileScreen = false;
   screenWidth = window.innerWidth;
   PREVIOUS_PAGE = 'previousPage';
@@ -80,7 +79,7 @@ export class NewCandidateComponent {
     potentialLevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
     role: new FormControl<string>(''),
     location: new FormControl<string | null>(''),
-    linkedInProfile: new FormControl<string>('', [Validators.pattern(this.linkedInPattern), Validators.required]),
+    linkedInProfile: new FormControl<string>(''),
     cvFile: new FormControl<string>(''),
     portfolioLink: new FormControl<string>('', [Validators.pattern(this.websiteLinkPattern), Validators.required]),
     portfolioFile: new FormControl<string>(''),
@@ -122,12 +121,12 @@ export class NewCandidateComponent {
 
   setSelectedRace(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    this.newEmployeeForm.patchValue({ race: +selectedValue });
+    this.newCandidateForm.patchValue({ race: +selectedValue });
   }
 
   setSelectedGender(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    this.newEmployeeForm.patchValue({ gender: +selectedValue });
+    this.newCandidateForm.patchValue({ gender: +selectedValue });
   }
 
   populateYears() {
@@ -332,11 +331,26 @@ export class NewCandidateComponent {
   }
 
   saveCanidateAndExit() {
-    this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
+    this.onUploadDocument('/ats-dashboard');
   }
 
   saveAndAddAnotherCandidate() {
     this.onUploadDocument('/create-candidate');
+  }
+
+  checkBlankRequiredFields() {
+    this.newCandidateForm.value.name = this.newCandidateForm.value
+      .name
+      ? 'TBA'
+      : this.newcandidateForm.value.surname?.trim();
+      this.newCandidateForm.value.surname = this.newCandidateForm.value
+      .surname
+      ? 'TBA'
+      : this.newcandidateForm.value.surname?.trim();
+    this.newCandidateForm.value.email =
+      this.newCandidateForm.value.email === ''
+        ? 'TBA'
+        : this.newCandidateForm.value.email?.trim();
   }
 
   onUploadDocument(nextPage: string): void {
