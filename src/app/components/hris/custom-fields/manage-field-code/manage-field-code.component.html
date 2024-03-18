@@ -47,11 +47,10 @@
         <div class="table-responsive p-0 m-0">
           <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" *ngIf="!isLoading">
             <ng-container matColumnDef="id">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
               <mat-cell *matCellDef="let element">
                 <mat-checkbox [(ngModel)]="element.isSelected"
                   (change)="onRowSelect(element,$event)">
-                  {{element.id}}
                 </mat-checkbox>
               </mat-cell>
             </ng-container>
