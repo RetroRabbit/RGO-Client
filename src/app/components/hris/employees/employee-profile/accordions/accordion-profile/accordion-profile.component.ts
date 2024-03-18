@@ -123,8 +123,8 @@ export class AccordionProfileComponent {
     gender: { value: '', disabled: true },
     race: { value: '', disabled: true },
     disability: { value: '', disabled: true },
-    disabilityNotes: { value: '', disabled: true },
-    disabilityList: { value: '', disabled: true }
+    disabilityNotes: { value: '', disabled: true},
+    disabilityList: { value: '', disabled: true}
   });
 
   employeeContactForm: FormGroup = this.fb.group({
