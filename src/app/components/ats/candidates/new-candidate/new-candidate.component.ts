@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { CandidateService } from 'src/app/services/ats/candidate/candidate-document.service';
+import { CandidateDocumentService } from 'src/app/services/ats/candidate/candidate-document.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { CandidateDocument } from 'src/app/models/ats/candidateDocument.interface';
@@ -30,7 +30,7 @@ export class NewCandidateComponent {
   }
 
   constructor(
-    private candidateService: CandidateService,
+    private candidateDocumentService: CandidateDocumentService,
     private cookieService: CookieService,
     private router: Router,
     private snackBarService: SnackbarService,
@@ -359,7 +359,7 @@ export class NewCandidateComponent {
     console.log('hit on upload')
     this.candidateDocumentModels.forEach((documentModel) => {
       console.log('in for each')
-      this.candidateService.saveCandidateDocument(documentModel).subscribe({
+      this.candidateDocumentService.saveCandidateDocument(documentModel).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Candidate has been saved", "snack-success");
           console.log("hit succesfull on upload")

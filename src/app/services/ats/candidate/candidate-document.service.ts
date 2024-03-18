@@ -8,7 +8,7 @@ import { CandidateDocument } from 'src/app/models/ats/candidateDocument.interfac
   providedIn: 'root'
 })
 
-export class CandidateService {
+export class CandidateDocumentService {
   baseUrl: string;
 
   constructor(private httpClient: HttpClient) {
