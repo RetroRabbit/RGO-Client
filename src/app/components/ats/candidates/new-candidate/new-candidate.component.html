@@ -52,7 +52,7 @@
                     </mat-form-field>
                 </div>
                 <!-- *ngIf="isValidEmail"  -->
-                <div *ngIf="isValidEmail"  class="row col-md-12 flex-column justify-content-center align-items-center">
+                <div *ngIf="isValidEmail"    class="row col-md-12 flex-column justify-content-center align-items-center">
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Contact number</mat-label>
                         <input matInput type="text" formControlName="contactNumber" />
@@ -175,13 +175,10 @@
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>School</mat-label>
-                            <mat-select *ngIf="!optionIsOther" formControlName="school"
-                                (selectionChange)="toggleOtherSchoolField($event)">
-                                <mat-option *ngFor="let school of schools; index as i" [value]="i">{{ school
-                                    }}</mat-option>
+                            <mat-select *ngIf="!optionIsOther" formControlName="school" (selectionChange)="toggleOtherSchoolField($event, schools)">
+                                <mat-option *ngFor="let school of schools; index as i" [value]="school">{{ school }}</mat-option>
                             </mat-select>
-                            <input *ngIf="optionIsOther" matInput type="text" formControlName="school"
-                                placeholder="Enter other school">
+                            <input *ngIf="optionIsOther" matInput type="text" formControlName="school" placeholder="Enter other school">
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                             <mat-label>Date Obtained</mat-label>
@@ -194,16 +191,11 @@
                 <div id="footer" class="col-md-12">
                     <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
                         (click)="goToPreviousPage()">Cancel</button>
-                    <button *ngIf="!isValidEmail" id="next-button"
-                        [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
+                    <button *ngIf="!isValidEmail" id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
                         (click)="checkEmailValidity()">Next</button>
-
-                    <button *ngIf="isValidEmail" id="save-add-button"
-                        [ngClass]="screenWidth < 768 ? 'button-mobile' : ''" (click)="checkEmailValidity()">Save and add
+                    <button *ngIf="isValidEmail" id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''" (click)="checkEmailValidity()">Save and add
                         another</button>
-
-                    <button *ngIf="isValidEmail" id="save-button"
-                        [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
+                    <button *ngIf="isValidEmail" id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
                         (click)="saveCanidateAndExit()">Save</button>
                 </div>
             </div>

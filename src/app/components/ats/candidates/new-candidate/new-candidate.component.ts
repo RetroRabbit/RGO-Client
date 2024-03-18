@@ -137,13 +137,14 @@ export class NewCandidateComponent {
     }
   }
 
-  toggleOtherSchoolField(event: any) {
-    this.optionIsOther = event.value === 'Other';
+  toggleOtherSchoolField(event: any, schools: any[]) {
+    const selectedSchool = event.value;
+    this.optionIsOther = selectedSchool === 'Other';
     if (!this.optionIsOther) {
-      this.newcandidateForm.controls.school.setValue('');
-      this.optionIsOther = true;
+        this.newcandidateForm.controls.school.setValue(selectedSchool);
     }
-  }
+}
+
 
   onImageChange(event: any): void {
     if (event.target.files && event.target.files.length) {
@@ -220,7 +221,7 @@ export class NewCandidateComponent {
   }
 
   filterEmployees(value: string): Observable<GenericDropDownObject[]> {
-    const searchValue = value.toLowerCase();
+    const searchValue = value;
     return this.employeesReferrals.pipe(
       map(employees => employees.filter(employee => employee.name?.toLowerCase().includes(searchValue)))
     );
@@ -331,11 +332,12 @@ export class NewCandidateComponent {
   }
 
   saveCanidateAndExit() {
-    this.onUploadDocument('/ats-dashboard');
+    console.log("hit save and exit")
+    this.onUploadCandidateDocument(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
   saveAndAddAnotherCandidate() {
-    this.onUploadDocument('/create-candidate');
+    this.onUploadCandidateDocument('/create-candidate');
   }
 
   checkBlankRequiredFields() {
@@ -353,13 +355,18 @@ export class NewCandidateComponent {
         : this.newCandidateForm.value.email?.trim();
   }
 
-  onUploadDocument(nextPage: string): void {
+  onUploadCandidateDocument(nextPage: string): void {
+    console.log('hit on upload')
     this.candidateDocumentModels.forEach((documentModel) => {
+      console.log('in for each')
       this.candidateService.saveCandidateDocument(documentModel).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Candidate has been saved", "snack-success");
+          console.log("hit succesfull on upload")
+          this.router.navigateByUrl(nextPage);
         },
         error: (error: any) => {
+          console.log("hit fail on upload")
           this.snackBarService.showSnackbar("Failed to save candidate", "snack-error");
         }, complete: () => {
           this.candidateDocumentModels = [];

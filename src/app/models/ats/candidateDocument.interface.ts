@@ -19,5 +19,7 @@ export interface CandidateDocument{
     highestQualification: string,
     school: string,
     fieldOfstudy: string,
-    qualificationEndDate : Date
+    qualificationEndDate : Date,
+    blackListed : Boolean,
+    blackListedReason : string
 }
