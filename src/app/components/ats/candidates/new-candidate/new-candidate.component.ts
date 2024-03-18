@@ -75,7 +75,7 @@ export class NewCandidateComponent {
     name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
     surname: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]),
-    contactNumber: new FormControl<string>('', Validators.pattern(/^[0-9]*$/)),
+    contactNumber: new FormControl<string>('+27', [Validators.required, Validators.pattern(/^\+27\d{9}$/)]),
     potentialLevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
     role: new FormControl<string>(''),
     location: new FormControl<string | null>(''),
