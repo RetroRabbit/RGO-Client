@@ -141,7 +141,12 @@ input[type="search"]::-webkit-search-results-decoration {
 .blue-cross-border {
   background-color: #D7DFFF;
   border-radius: 50%;
-  height: 30px;
+  height: 24px;
+  width: 24px;
+}
+
+.cross-margins {
+  margin-bottom: 6px;
 }
 
 #group {

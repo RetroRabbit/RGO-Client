@@ -22,8 +22,8 @@
           fill="#0029C6" />
       </svg>
     </div>
-    <div class="blue-cross-border py-1 px-1 me-4" *ngIf="searchQuery !== '' && searchQuery.length >= 3" (click)="clearSearchField()">
-      <img src="/assets/img/Icon_Close_Blue.svg" alt="Close-Search">
+    <div class="blue-cross-border py-1 px-1" *ngIf="searchQuery !== '' && searchQuery.length >= 3" (click)="clearSearchField()">
+      <img src="/assets/img/Icon_Close_Blue.svg" alt="Close-Search" height="16" class="cross-margins" width="16">
     </div>
   </div>
 
