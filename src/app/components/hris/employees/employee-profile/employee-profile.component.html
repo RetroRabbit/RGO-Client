@@ -22,7 +22,7 @@
     <div id="profile-header" *ngIf="!isLoading" class="row p-2 m-1">
         <div class="col-4 col-md-2 mt-4">
             <div id="profile-image">
-                <img (click)="uploadFile.click()" [src]="employeeProfile.photo" alt="Profile img">
+                <img (click)="uploadFile.click()" [src]="employeeProfile.photo || '/assets/img/profile.png'" alt="Profile img" class="rounded-circle profile-img">
                 <input type="file" #uploadFile (change)="onFileChange($event)" hidden>
             </div>
         </div>
@@ -137,7 +137,7 @@
         </div>
     </div>
 
-    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
         'background-color': '#D7DFFF',
         'border': '2px solid #D7DFFF',
         'border-radius': '2rem',
@@ -252,7 +252,7 @@
         </div>
     </div>
 
-    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
         'background-color': '#D7DFFF',
         'border': '2px solid #D7DFFF',
         'border-radius': '2rem',
