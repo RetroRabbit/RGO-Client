@@ -18,7 +18,6 @@ export interface Candidate{
     referral: number,
     highestQualification: string,
     school: string,
-    fieldOfstudy: string,
     qualificationEndDate : Date,
     blackListed : Boolean,
     blackListedReason : string

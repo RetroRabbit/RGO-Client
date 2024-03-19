@@ -137,7 +137,7 @@
                     </mat-slide-toggle>
                     <div *ngIf="additionalFieldsVisible"
                         class="row col-md-12 flex-column justify-content-center align-items-center">
-                        <mat-radio-group formControlName="role" class="col-md-12 col-lg-7 my-2 info-text">
+                        <mat-radio-group formControlName="gender" class="col-md-12 col-lg-7 my-2 info-text">
                             <p class="col-md-12 col-lg-7 info-text">Gender:</p>
                             <mat-radio-button value="Unclassified">Unclassified</mat-radio-button> <br />
                             <mat-radio-button value="Male">Male</mat-radio-button> <br />
@@ -156,11 +156,10 @@
                         <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
                             <mat-label>Referral</mat-label>
                             <input matInput placeholder="Referral" [formControl]="searchControl"
-                                [matAutocomplete]="auto" formControlName="referral" >
+                                [matAutocomplete]="auto">
                             <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option *ngFor="let employee of filteredEmployees | async" [value]='employee.name + " " + employee.surname' (onSelectionChange)="showSelected($event)">
+                                <mat-option *ngFor="let employee of allEmployees" [value]='employee.name + " " + employee.surname' (onSelectionChange)="showSelectedReferral($event)">
                                     {{ employee.name }} {{ employee.surname}}
-
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
@@ -177,7 +176,7 @@
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>School</mat-label>
                             <mat-select *ngIf="!optionIsOther" formControlName="school" (selectionChange)="toggleOtherSchoolField($event, schools)">
-                                <mat-option *ngFor="let school of schools; index as i" [value]="school">{{ school }}</mat-option>
+                                <mat-option *ngFor="let school of schools; index as i" [value]="i">{{ school }}</mat-option>
                             </mat-select>
                             <input *ngIf="optionIsOther" matInput type="text" formControlName="school" placeholder="Enter other school">
                         </mat-form-field>

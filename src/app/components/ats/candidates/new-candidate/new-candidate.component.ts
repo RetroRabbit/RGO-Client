@@ -13,6 +13,7 @@ import { qualifications } from 'src/app/models/ats/constants/qualifications.cons
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
 import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 
 @Component({
   selector: 'app-new-candidate',
@@ -69,7 +70,8 @@ export class NewCandidateComponent {
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
   employeesReferrals: Observable<GenericDropDownObject[]> = this.getEmployees();
   filteredEmployees!: Observable<GenericDropDownObject[]>;
-
+  allEmployees : EmployeeProfile[] = [];
+   
   ngOnInit(): void {
     this.initializeForm();
     this.navService.showNavbar = false;
@@ -81,6 +83,14 @@ export class NewCandidateComponent {
       distinctUntilChanged(),
       switchMap(value => this.filterEmployees(value))
     );
+    this.getAllEmployees();
+  }
+
+  getAllEmployees(){
+    this.employeeService.getAll().subscribe({
+      next: employeesArray => this.allEmployees = employeesArray,
+      error: error => this.snackBarService.showSnackbar(error, "error")
+    })
   }
 
   initializeForm(){
@@ -96,12 +106,11 @@ export class NewCandidateComponent {
       cvFile: new FormControl<string>(''),
       portfolioLink: new FormControl<string>('', [Validators.pattern(this.websiteLinkPattern)]),
       portfolioFile: new FormControl<string>(''),
-      gender: new FormControl<number | null>(null),
+      gender: new FormControl<string>(''),
       idNumber: new FormControl<string>('', [Validators.pattern(this.IdPattern)]),
       referral: new FormControl<number | null>(null),
       highestQualification: new FormControl<string>(''),
       school: new FormControl<string>(''),
-      fieldOfStudy: new FormControl<string>(''),
       endDate: new FormControl<string>(''),
       race: new FormControl<number | null>(null),
       photo: new FormControl<string>(''),
@@ -348,28 +357,26 @@ export class NewCandidateComponent {
       
       // let candidateObject = [...this.newCandidateForm.value[0]]
       // candidateObject[0].id = 0;
-      console.log(this.newCandidateForm.get('refferal')?.value)
       const candidateDto = {
         id: 0,
         name: newCandidateForm.name,
         surname:newCandidateForm.surname,
         personalEmail: newCandidateForm.email,
-        potentialLevel: parseInt(newCandidateForm.level),
-        jobPosition: parseInt(newCandidateForm.role),
+        potentialLevel:newCandidateForm.potentialLevel,
+        jobPosition: newCandidateForm.jobPosition,
         linkedIn: newCandidateForm.linkedInProfile,
-        profilePicture: newCandidateForm.profilePicture,
+        profilePicture: this.base64Image,
         cellphone: newCandidateForm.contactNumber,
         location: newCandidateForm.location,
-        cv: newCandidateForm.file,
+        cv: this.cvFilename,
         portfolioLink: newCandidateForm.portfolioLink,
-        portfolioPdf: newCandidateForm,
-        gender: parseInt(newCandidateForm.gender),
-        race: parseInt(newCandidateForm.race),
+        portfolioPdf: this.portfolioFilename,
+        gender: newCandidateForm.gender,
+        race: newCandidateForm.race,
         idNumber: newCandidateForm.idNumber,
-        referral: parseInt(newCandidateForm.employee),
-        highestQualification: newCandidateForm.qualification,
+        referral: newCandidateForm.referral,
+        highestQualification: newCandidateForm.highestQualification,
         school: newCandidateForm.school,
-        fieldOfstudy: newCandidateForm.fieldOfStudy,
         qualificationEndDate : newCandidateForm.endDate,
         blackListed : false,
         blackListedReason : ''
@@ -378,6 +385,7 @@ export class NewCandidateComponent {
       this.candidateService.saveCandidate(candidateDto).subscribe({
         next: (data) => 
           this.snackBarService.showSnackbar("Candidate added successfully", "snack-success")
+          
         ,
         error: (error) => 
           this.snackBarService.showSnackbar(error, "snack-error")
@@ -385,10 +393,13 @@ export class NewCandidateComponent {
       }
     }
 
-    showSelected(event: any){
-      
-      this.newCandidateForm.get('referral')?.patchValue(event.source.value)
-      console.log(this.newCandidateForm.get('referral')?.value)
+    showSelectedReferral(event: any){
+      this.allEmployees.forEach(employee => {
+        let fullName = `${employee.name} ${employee.surname}`;
+        if(fullName == event.source.value){
+          this.newCandidateForm.get('referral')?.patchValue(employee.id)
+        }
+      })
     }
   }
 
