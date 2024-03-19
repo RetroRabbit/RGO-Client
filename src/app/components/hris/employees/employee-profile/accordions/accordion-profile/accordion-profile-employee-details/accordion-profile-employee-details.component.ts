@@ -19,9 +19,11 @@ import { AccordionProfileComponent } from '../accordion-profile.component';
   styleUrls: ['./accordion-profile-employee-details.component.css']
 })
 export class AccordionProfileEmployeeDetailsComponent {
+
   @Output() updateProfile = new EventEmitter<number>();
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
+  foundTeamLead: any;
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
@@ -50,22 +52,25 @@ export class AccordionProfileEmployeeDetailsComponent {
   }
 
   checkEmployeeDetailsUsingEmployeeProfile() {
-    this.sharedAccordionFunctionality.foundTeamLead = this.sharedAccordionFunctionality.employees.find((data: any) => {
-      return data.id == this.sharedAccordionFunctionality.employeeProfile!.employeeDetails.teamLead
+    this.foundTeamLead = this.sharedAccordionFunctionality.employees.find((data: any) => {
+      return data.id == this.employeeProfile!.employeeDetails.teamLead
+      //console.log(data.id);
     });
+    console.log(this.foundTeamLead)
+
     this.sharedAccordionFunctionality.foundClient = this.sharedAccordionFunctionality.clients.find((data: any) => {
-      return data.id == this.sharedAccordionFunctionality.employeeProfile!.employeeDetails.clientAllocated
+      return data.id == this.employeeProfile!.employeeDetails.clientAllocated
     });
     this.sharedAccordionFunctionality.foundChampion = this.sharedAccordionFunctionality.employees.find((data: any) => {
-      if (this.sharedAccordionFunctionality.employeeProfile?.employeeDetails.peopleChampion != null) {
-        return data.id == this.sharedAccordionFunctionality.employeeProfile!.employeeDetails.peopleChampion
+      if (this.employeeProfile?.employeeDetails.peopleChampion != null) {
+        return data.id == this.employeeProfile!.employeeDetails.peopleChampion
       }
       else return null;
     });
 
-    if (this.sharedAccordionFunctionality.foundTeamLead != null) {
+    if (this.foundTeamLead != null) {
       this.sharedAccordionFunctionality.employeeDetailsForm.get('teamLead')?.setValue(this.sharedAccordionFunctionality.foundTeamLead.name + ' ' + this.sharedAccordionFunctionality.foundTeamLead.surname);
-      this.sharedAccordionFunctionality.employeeProfile.employeeDetails.id = this.sharedAccordionFunctionality.foundTeamLead.id
+      this.employeeProfile.employeeDetails.id = this.foundTeamLead.id
     }
 
     if (this.sharedAccordionFunctionality.foundClient != null) {
@@ -81,7 +86,7 @@ export class AccordionProfileEmployeeDetailsComponent {
 
   checkEmployeeDetailsNotUsingEmployeeProfile() {
     if (this.sharedAccordionFunctionality.employeeProfile.simpleEmployee.teamLeadId !== null) {
-      this.sharedAccordionFunctionality.foundTeamLead = this.sharedAccordionFunctionality.employeeProfile.simpleEmployee.teamLeadId;
+      this.foundTeamLead = this.sharedAccordionFunctionality.employeeProfile.simpleEmployee.teamLeadId;
       this.sharedAccordionFunctionality.employeeDetailsForm.get('teamLead')?.setValue(this.sharedAccordionFunctionality.employeeProfile.simpleEmployee.teamLeadName);
     }
     if (this.sharedAccordionFunctionality.employeeProfile.simpleEmployee.peopleChampionId !== null) {
@@ -235,8 +240,8 @@ export class AccordionProfileEmployeeDetailsComponent {
   getEmployeeFields() {
     // this.employeePhysicalAddress = this.employeeProfile.employeeDetails.physicalAddress!;
     // this.employeePostalAddress = this.employeeProfile.employeeDetails.postalAddress!;
-    this.sharedAccordionFunctionality.hasDisability = this.sharedAccordionFunctionality.employeeProfile.employeeDetails.disability;
-    this.sharedAccordionFunctionality.hasDisability = this.sharedAccordionFunctionality.employeeProfile!.employeeDetails.disability;
+    // this.sharedAccordionFunctionality.hasDisability = this.sharedAccordionFunctionality.employeeProfile.employeeDetails.disability;
+    // this.sharedAccordionFunctionality.hasDisability = this.sharedAccordionFunctionality.employeeProfile!.employeeDetails.disability;
     this.getEmployeeData();
     this.getEmployeeTypes();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {

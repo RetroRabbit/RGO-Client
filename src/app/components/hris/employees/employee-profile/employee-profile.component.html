@@ -305,9 +305,9 @@
             </div>
         </div>
         <div id="accordions-body`" class="row m-2" *ngIf="employeeProfile">
-            <app-accordion-profile [hidden]="selectedAccordion != 'Profile Details'"
+            <app-accordion-profile-employee-details [hidden]="selectedAccordion != 'Profile Details'"
                 [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
-                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile>
+                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-employee-details>
             <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"
                 [employeeProfile]="employeeProfile"
                 (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output, NgModule } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Client } from 'src/app/models/hris/client.interface';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
@@ -29,14 +29,12 @@ import { SharedPropertyAccessService } from 'src/app/services/hris/shared-proper
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { EmployeeProfilePermissions } from 'src/app/models/hris/property-access/employee-profile-properties.interface';
 import { EmployeeAddressPermissions } from 'src/app/models/hris/property-access/employee-address-properties.interface';
-import { AccordionProfileEmployeeDetailsComponent } from './accordion-profile-employee-details/accordion-profile-employee-details.component';
 
 @Component({
   selector: 'app-accordion-profile',
   templateUrl: './accordion-profile.component.html',
   styleUrls: ['./accordion-profile.component.css']
 })
-
 export class AccordionProfileComponent {
 
   screenWidth = window.innerWidth;
@@ -46,10 +44,8 @@ export class AccordionProfileComponent {
     this.screenWidth = window.innerWidth;
   }
 
-
   @Output() updateProfile = new EventEmitter<number>();
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
-
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
   employeeTypes: EmployeeType[] = [];
@@ -123,8 +119,8 @@ export class AccordionProfileComponent {
     gender: { value: '', disabled: true },
     race: { value: '', disabled: true },
     disability: { value: '', disabled: true },
-    disabilityNotes: { value: '', disabled: true},
-    disabilityList: { value: '', disabled: true}
+    disabilityNotes: { value: '', disabled: true },
+    disabilityList: { value: '', disabled: true }
   });
 
   employeeContactForm: FormGroup = this.fb.group({
@@ -682,6 +678,7 @@ export class AccordionProfileComponent {
       emergencyContactName: this.employeeProfile?.employeeDetails.emergencyContactName,
       emergencyContactNo: this.employeeProfile?.employeeDetails.emergencyContactNo
     }
+    console.log(this.employeeProfileDto);
   }
 
   getEmployeeFieldCodes() {
