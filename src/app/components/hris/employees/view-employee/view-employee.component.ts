@@ -58,7 +58,7 @@ export class ViewEmployeeComponent {
 
   get isAdminOrSuperAdmin() {
     return this.authAccessService.isSuperAdmin || this.authAccessService.isAdmin();
-  }
+  };
 
   PREVIOUS_PAGE = 'previousPage';
 
