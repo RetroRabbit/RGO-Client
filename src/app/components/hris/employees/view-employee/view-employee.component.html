@@ -69,7 +69,7 @@
         <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="Name">
             <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Name</mat-header-cell>
-            <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin() ? '50%' : '25%'}">{{
+            <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '50%' : '25%'}">{{
               employee.Name }}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="Position">
