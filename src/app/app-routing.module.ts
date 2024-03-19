@@ -17,7 +17,7 @@ import { AuthGuard } from '@auth0/auth0-angular';
 
 const routes: Routes = [
   { path: '', component: SignInComponent },
-  { path: 'dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard]},
+  { path: 'dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard] },
   { path: 'employees', component: ViewEmployeeComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: EmployeeProfileComponent, canActivate: [AuthGuard] },
   { path: 'profile/:id', component: EmployeeProfileComponent, canActivate: [AuthGuard] },
@@ -29,7 +29,7 @@ const routes: Routes = [
   { path: 'new-fieldcode', component: NewFieldCodeComponent, canActivate: [AuthGuard] },
   { path: 'update-fieldcode', component: UpdateFieldComponent, canActivate: [AuthGuard] },
   { path: 'employee-details', component: EmployeeDetailsComponent, canActivate: [AuthGuard] },
-  { path: 'ats-dashboard', component: AtsDashboardComponent, canActivate: [AuthGuard]}
+  { path: 'ats-dashboard', component: AtsDashboardComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
