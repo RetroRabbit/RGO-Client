@@ -43,41 +43,44 @@ Runs on [this](http:/localhost:4200) location
 
 
 # Naming Conventions
-## Endpoints
-Use forward slash
-Use forward slashes for resource hierarchy and to separate URI resources.
-Example: "/employee/{id}"
 
+This section outlines the best practices for naming APIs, variables, and methods. Following these conventions ensures consistency, readability, and ease of understanding in your API design.
 
-## Use nouns, not verbs
-When naming the URIs, you should use nouns to describe what the resource is and not what it does. For example:
-Wrong:   "getEmployees/"
-Correct: "employees/"
+### Endpoints
+- **Use forward slash**: For resource hierarchy and separation of URI resources.
+- **Use nouns, not verbs**: To describe resources.
+- **Use plural nouns**: To indicate collections.
+- **Lowercase letters**: URLs should be typed in lowercase.
+- **Use hyphens to separate words**: For readability and SEO benefits.
+- **Endpoint strings can be the same with different Request Mapping**: Different HTTP methods can operate on the same URI.
 
-## Use plural nouns
-This makes it clear that there is more than one resource within a collection. Using singular nouns can be confusing. For example:
-Wrong:  "chart/{id}"
-Correct: "charts/{id}"
+#### Correct and Incorrect Examples
+| Aspect                                               | Correct Example            | Incorrect Example   |
+|------------------------------------------------------|----------------------------|---------------------|
+| **Use forward slash**                                | `/resource/subresource`    | `resource_subresource` |
+| **Use nouns, not verbs**                             | `/users`                   | `/getUsers`         |
+| **Use plural nouns**                                 | `/orders`                  | `/order`            |
+| **Lowercase letters**                                | `/user-profile`            | `/User-Profile`     |
+| **Use hyphens to separate words**                    | `/user-profile`            | `/user_profile`     |
+| **Endpoint strings can be the same with different Request Mapping** | Different methods for `/employees/{id}` (PUT, GET) | Separate endpoints for each action |
 
-## Lowercase letters
-As a standard, URLs are typed in lowercase. The same applies to API URIs.
+### Variables
+- **All variables in camelCase**: For consistency and readability in code.
+- **Service references with underscore**: To indicate a service or injected dependency.
 
+#### Correct and Incorrect Examples
+| Aspect                                               | Correct Example            | Incorrect Example   |
+|------------------------------------------------------|----------------------------|---------------------|
+| **All variables in camelCase**                       | `employeeId`               | `EmployeeID` or `employee_id` |
+| **Service references with underscore**               | `_employeeService`         | `employeeService`   |
 
-## Use hyphens to separate words
-When chaining words together, hyphens are the most user-friendly way and are a better choice than underscores.
-For example: "employee-documents/10"
+### Methods
+- **Method names in PascalCase**: For clear identification as methods or actions.
+- **Descriptive names, except in lambdas**: Names should clearly describe the method's purpose.
 
+#### Correct and Incorrect Examples
+| Aspect                                               | Correct Example            | Incorrect Example   |
+|------------------------------------------------------|----------------------------|---------------------|
+| **Method names in PascalCase**                       | `SaveEmployeeDocument`     | `saveEmployeeDocument` |
+| **Descriptive names, except in lambdas**             | `CalculateAnnualSalary`    | `CalcSalary` or `CS` |
 
-## Endpoint strings can be the same provided that the Request Mapping is different:
-PUT "employee/{id}"
-GET "employee/{id}"
-
-## Variables
-All variables in methods must be in camelCase
-
-Anything referenced by a service should prefixed with an underscore, to indicate that it is a reference to a service 
-
-All Method names must be PascalCase
- ie: SaveEmployeeDocument(SimpleEmployeeDocumentDto employeeDocDto)
-
-PS: When naming and endpoint, variable or method make the name as descriptive as possible. The only exception is for small scopes like a lambda.

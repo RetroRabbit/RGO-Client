@@ -43,7 +43,7 @@
             fill="black" />
         </svg>
       </div>
-      <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" *ngIf="isHris">
+      <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" *ngIf="navService.isHris">
         <div class="row">
           <div class="col-2"
             *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
@@ -102,7 +102,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" *ngIf="!isHris">
+      <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" *ngIf="!navService.isHris">
         <div class="row">
           <div class="col-2"
             *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
@@ -118,20 +118,6 @@
               </div>
             </div>
           </div>
-          <div class="col-2">
-            <div id="nav-item-container">
-              <div id="nav-item">
-                <div (click)="changeNav('/profile')"
-                  [ngClass]="router.url.includes('/profile') ? 'active' : 'idle'">
-                  Profile
-                </div>
-                <div *ngIf="router.url.includes('/profile')" id="selected-line-box">
-                  <div id="selected-line">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -139,13 +125,13 @@
   <div class="col-1 col-md-3 col-lg-4 mt-4" id="right-column">
     <div class="row justify-content-end">
       <div class="col-1" id="info-menu">
-        <button mat-button [matMenuTriggerFor]="menu" id="options-trigger">
+        <button mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu" id="options-trigger">
           <mat-icon id="menu-icon">play_arrow</mat-icon>
         </button>
         <mat-menu #menu="matMenu" class="p-2 rounded-4">
           <button mat-menu-item id="menu-info">
             <div class="row">
-              <button mat-button [matMenuTriggerFor]="menu" id="options-trigger-upsidedown" class="col-2">
+              <button mat-button (click)="menuTrigger.openMenu()" id="options-trigger-upsidedown" class="col-2">
                 <mat-icon id="menu-icon">play_arrow</mat-icon>
               </button>
               <div id="menu-quick-info" class="col text-start">
@@ -171,8 +157,8 @@
               </div>
             </div>
           </button>
-          <button mat-menu-item *ngIf="isHris" (click)="switchAts('/ats-dashboard')" id="dropdown-buttons"
-            class="rounded-5 row mb-2">
+          <button mat-menu-item *ngIf="hasAccessToAts() && navService.isHris" (click)="switchToAts('/ats-dashboard')"
+          id="dropdown-buttons" class="rounded-5 row mb-2">
             <div class="row d-flex justify-content-center align-items-center align-content-center">
               <div class="col-2 mt-2">
                 <mat-icon>compare_arrows</mat-icon>
@@ -183,7 +169,7 @@
               </div>
             </div>
           </button>
-          <button mat-menu-item *ngIf="!isHris" (click)="switchHris('/dashboard')" id="dropdown-buttons"
+          <button mat-menu-item *ngIf="!navService.isHris" (click)="switchToHris('/dashboard')" id="dropdown-buttons"
             class="rounded-5 row mb-2">
             <div class="row d-flex justify-content-center align-items-center align-content-center">
               <div class="col-2 mt-2">

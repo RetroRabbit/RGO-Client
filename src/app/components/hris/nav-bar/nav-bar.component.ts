@@ -17,8 +17,6 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 export class NavBarComponent {
   [x: string]: any;
   title = 'HRIS';
-  showNav = this.navService.showNavbar;
-  isHris = this.navService.isHris;
   screenWidth!: number;
   roles!: string[];
   employeeProfile: EmployeeProfile | undefined;
@@ -62,7 +60,7 @@ export class NavBarComponent {
     this.roles = Object.keys(JSON.parse(types));
 
     this.isLoading = true; 
-      this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
+      this.employeeProfileService.getSimpleEmployee(userEmail).subscribe({
       next: (data) => {
         this.employeeProfile = data;
         this.profileImage = this.employeeProfile.photo;
@@ -104,27 +102,33 @@ export class NavBarComponent {
     }
   }
 
-  switchAts(route: string){
+  switchToAts(route: string){
     if (this.navService.unsavedChanges) {
       this.tempRoute = route;
       this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
 
       this.showConfirmDialog = true;
-    } else {
-      this.isHris =false;
+    } else {  
+      this.navService.isHris = false;
+      this.cookieService.set("isHris", String(this.navService.isHris));
       this.router.navigate([route]);
     }
   }
-  switchHris(route: string){
+  switchToHris(route: string){
     if (this.navService.unsavedChanges) {
       this.tempRoute = route;
-      this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
+     this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
 
       this.showConfirmDialog = true;
     } else {
-      this.isHris =true;
+      this.navService.isHris = true;
+      this.cookieService.set("isHris", String(this.navService.isHris));
       this.router.navigate([route]);
     }
+  }
+
+  hasAccessToAts(): boolean {
+    return this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney();
   }
 
   dialogFeedBack(event: any) {

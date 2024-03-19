@@ -3,6 +3,7 @@
     background: var(--m-3-sys-light-primary-container, #D7DFFF);
     padding: 12px;
     min-height: 80vh;
+    width: 19.8%;
 }
 
 h1{
@@ -83,4 +84,35 @@ h5{
     border-radius: 100px;
 
     background: var(--m-3-sys-light-primary-container, #ffffff);
+}
+
+#mobile-icon-text-container mat-icon.active {
+    border-radius: 100px;
+    background: var(--m-3-sys-light-primary-container, #ffffff);
+}
+
+span.active {
+    color: var(--m-3-sys-light-primary, #0029C6);
+    font-family: Roboto;
+    font-size: 14px;
+}
+
+#bottom-menu{
+    position: fixed;
+    background: var(--m-3-sys-light-primary-container, #D7DFFF);
+    height: 55px;
+    width: 100%;
+    top: auto;
+    bottom: 0;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-around;
+}
+
+#mobile-icon-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-small;
 }

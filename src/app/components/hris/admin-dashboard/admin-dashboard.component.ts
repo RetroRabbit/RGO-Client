@@ -92,7 +92,6 @@ export class AdminDashboardComponent {
     navService.showNavbar = true;
   }
 
-
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
@@ -222,8 +221,12 @@ export class AdminDashboardComponent {
     this.router.navigateByUrl('/employees');
   }
 
+  clearSearchField() {
+    this.searchQuery = '';
+  }
+
   searchEmployees() {
-    if (this.searchQuery) {
+    if (this.searchQuery && this.searchQuery.length >= 3) {
       this.searchResults = this.employeeProfiles
         .filter(
           (employee) =>

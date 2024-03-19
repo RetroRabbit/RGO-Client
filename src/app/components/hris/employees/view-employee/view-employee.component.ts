@@ -69,8 +69,8 @@ export class ViewEmployeeComponent {
     first()
   );
 
-  peopleChampions: Observable< GenericDropDownObject[]> = this.getPeopleChampionsForFilter();
-  usertypes: Observable< GenericDropDownObject[]> = this.getUserTypesForFilter();
+  peopleChampions: Observable<GenericDropDownObject[]> = this.getPeopleChampionsForFilter();
+  usertypes: Observable<GenericDropDownObject[]> = this.getUserTypesForFilter();
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
   currentUserTypeFilter: GenericDropDownObject = new GenericDropDownObject;
 
@@ -101,6 +101,10 @@ export class ViewEmployeeComponent {
     this.onResize();
     if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
       this._searchQuery = this.cookieService.get('searchString');
+    }
+
+    if (!this.isAdminOrSuperAdmin) {
+      this.displayedColumns = ['Name', 'Position', 'Level', 'Client'];
     }
   }
 
@@ -233,7 +237,7 @@ export class ViewEmployeeComponent {
           this.selectedEmployee.emit(data);
           this._searchQuery = '';
           this.router.navigateByUrl('/profile/' + data.id)
-          this.cookieService.set(this.PREVIOUS_PAGE,'/employees');
+          this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
         }),
         first()
       )
@@ -349,17 +353,15 @@ export class ViewEmployeeComponent {
 
   changePeopleChampionFilter(champion: GenericDropDownObject) {
     this.currentChampionFilter = champion;
-    this.filterEmployeeTable();   
+    this.filterEmployeeTable();
   }
 
-  changeUserTypeFilter(employeeType: GenericDropDownObject)
-  {
+  changeUserTypeFilter(employeeType: GenericDropDownObject) {
     this.currentUserTypeFilter = employeeType;
     this.filterEmployeeTable();
   }
 
-  filterEmployeeTable()
-  {
+  filterEmployeeTable() {
     this.isLoading = true;
     const clients$: Observable<Client[]> = this.clientService
       .getAllClients()
@@ -386,7 +388,7 @@ export class ViewEmployeeComponent {
         this.applySearchFilter();
       });
   }
-  
+
   getPeopleChampionsForFilter(): Observable<GenericDropDownObject[]> {
     return this.employeeService.filterEmployees(0, EmployeeType.PeopleChampion).pipe(
       map(employees => {
@@ -406,7 +408,7 @@ export class ViewEmployeeComponent {
         const userTypes: GenericDropDownObject[] = types.map(type => ({
           id: type.id || 0,
           name: type.name || 'Unknown'
-      }));
+        }));
         userTypes.unshift({ id: 0, name: 'All' });
         return userTypes;
       })

@@ -9,6 +9,7 @@ import { AuthService } from '../../../services/shared-services/auth-access/auth.
 import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -27,8 +28,9 @@ export class SignInComponent {
     private cookieService: CookieService,
     public navService: NavService,
     private authAccessService: AuthAccessService,
-    private NgZone: NgZone
-  ) {}
+    private NgZone: NgZone,
+    private sharedPropprtyAccessService: SharedPropertyAccessService
+  ) { }
 
   ngOnInit() {
     this.token = this.cookieService.get('userToken');
@@ -81,17 +83,20 @@ export class SignInComponent {
           this.authAccessService.setEmployeeEmail(user?.email as string);
           this.store.dispatch(GetLogin({ payload: googleID }));
           this.navService.showNavbar = true;
-          if(
-            this.authAccessService.isTalent()
-          ) {this.navService.isHris = false; this.router.navigateByUrl('/ats-dashboard'); }
+          this.sharedPropprtyAccessService.setAccessProperties();
+          if (this.authAccessService.isTalent()) {
+            this.navService.isHris = false;
+            this.router.navigateByUrl('/ats-dashboard');
+          }
           if (
             this.authAccessService.isAdmin() ||
             this.authAccessService.isJourney() ||
             this.authAccessService.isSuperAdmin()
           ) {
+            this.navService.isHris = true;
             this.router.navigateByUrl('/dashboard');
           }
-          else if(this.authAccessService.isEmployee()){this.router.navigateByUrl('/profile');}
+          else if (this.authAccessService.isEmployee()) { this.router.navigateByUrl('/profile'); }
         },
       });
   }
