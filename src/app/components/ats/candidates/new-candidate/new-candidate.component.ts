@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { CandidateDocumentService } from 'src/app/services/ats/candidate/candidate-document.service';
+import { CandidateService } from 'src/app/services/ats/candidate/candidate.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
-import { CandidateDocument } from 'src/app/models/ats/candidateDocument.interface';
+import { Candidate } from 'src/app/models/ats/candidate.interface';
 import { schools } from 'src/app/models/ats/constants/schools.constants';
 import { qualifications } from 'src/app/models/ats/constants/qualifications.constants';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
@@ -20,7 +20,7 @@ import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchM
   styleUrls: ['./new-candidate.component.css']
 })
 export class NewCandidateComponent {
-  newCandidateForm: any;
+  newCandidateForm!: FormGroup;
   searchControl: FormControl = new FormControl('');
 
   @HostListener('window:resize', ['$event'])
@@ -30,13 +30,13 @@ export class NewCandidateComponent {
   }
 
   constructor(
-    private candidateDocumentService: CandidateDocumentService,
     private cookieService: CookieService,
+    private candidateService: CandidateService,
     private router: Router,
     private snackBarService: SnackbarService,
-    private _formBuilder: FormBuilder,
     private navService: NavService,
-    public employeeService: EmployeeService
+    public employeeService: EmployeeService,
+    private fb: FormBuilder
   ) { }
 
   levels: number[] = levels.map((level) => level.value);
@@ -44,7 +44,6 @@ export class NewCandidateComponent {
   schools: string[] = schools.map((school) => school.value);
   qualifications: string[] = qualifications.map((qualification) => qualification.value);
   years: number[] = [];
-  candidateDocumentModels: CandidateDocument[] = [];
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
   imageName: string ='';
@@ -71,32 +70,8 @@ export class NewCandidateComponent {
   employeesReferrals: Observable<GenericDropDownObject[]> = this.getEmployees();
   filteredEmployees!: Observable<GenericDropDownObject[]>;
 
-  newcandidateForm = new FormGroup({
-    name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
-    surname: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
-    email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]),
-    contactNumber: new FormControl<string>('+27', [Validators.required, Validators.pattern(/^\+27\d{9}$/)]),
-    potentialLevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
-    role: new FormControl<string>(''),
-    location: new FormControl<string | null>(''),
-    linkedInProfile: new FormControl<string>(''),
-    cvFile: new FormControl<string>(''),
-    portfolioLink: new FormControl<string>('', [Validators.pattern(this.websiteLinkPattern), Validators.required]),
-    portfolioFile: new FormControl<string>(''),
-    gender: new FormControl<string>(''),
-    idNumber: new FormControl<string>('', [Validators.pattern(this.IdPattern), Validators.required]),
-    referral: new FormControl<string>(''),
-    highestQualification: new FormControl<string>(''),
-    school: new FormControl<string>(''),
-    fieldOfStudy: new FormControl<string>(''),
-    startDate: new FormControl<string>(''),
-    endDate: new FormControl<string>(''),
-    race: new FormControl<string>(''),
-    photo: new FormControl<string>(''),
-  }
-  )
-
   ngOnInit(): void {
+    this.initializeForm();
     this.navService.showNavbar = false;
     this.populateYears();
     this.searchControl = new FormControl('');
@@ -106,6 +81,31 @@ export class NewCandidateComponent {
       distinctUntilChanged(),
       switchMap(value => this.filterEmployees(value))
     );
+  }
+
+  initializeForm(){
+    this.newCandidateForm = this.fb.group({
+      name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
+      surname: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
+      email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]),
+      contactNumber: new FormControl<string>('+27', [Validators.pattern(/^\+27\d{9}$/)]),
+      potentialLevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
+      role: new FormControl<string>(''),
+      location: new FormControl<string | null>(''),
+      linkedInProfile: new FormControl<string>(''),
+      cvFile: new FormControl<string>(''),
+      portfolioLink: new FormControl<string>('', [Validators.pattern(this.websiteLinkPattern)]),
+      portfolioFile: new FormControl<string>(''),
+      gender: new FormControl<number | null>(null),
+      idNumber: new FormControl<string>('', [Validators.pattern(this.IdPattern)]),
+      referral: new FormControl<number | null>(null),
+      highestQualification: new FormControl<string>(''),
+      school: new FormControl<string>(''),
+      fieldOfStudy: new FormControl<string>(''),
+      endDate: new FormControl<string>(''),
+      race: new FormControl<number | null>(null),
+      photo: new FormControl<string>(''),
+    })
   }
 
   ngOnDestroy() {
@@ -141,7 +141,8 @@ export class NewCandidateComponent {
     const selectedSchool = event.value;
     this.optionIsOther = selectedSchool === 'Other';
     if (!this.optionIsOther) {
-        this.newcandidateForm.controls.school.setValue(selectedSchool);
+        //this.newCandidateForm.get('school')?.setValue("piesang")
+        this.newCandidateForm.setValue({selectedSchool:selectedSchool});
     }
 }
 
@@ -176,7 +177,7 @@ export class NewCandidateComponent {
     reader.onload = () => {
       this.imagePreview = reader.result as string;
       const base64Image = this.convertTobase64(this.imagePreview);
-      this.newcandidateForm.patchValue({ 'photo': 'data:image/jpeg;base64,' + base64Image });
+      this.newCandidateForm.patchValue({ 'photo': 'data:image/jpeg;base64,' + base64Image });
       this.getImageFromBase64(base64Image);
       this.base64Image = base64Image;
     };
@@ -228,7 +229,7 @@ export class NewCandidateComponent {
   }
 
   checkEmailValidity(): void {
-    const email = this.newcandidateForm.controls.email.value;
+    const email = this.newCandidateForm.get('email')?.value as string
     if (email !== null) {
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       this.isValidEmail = emailPattern.test(email);
@@ -251,7 +252,7 @@ export class NewCandidateComponent {
     const reader = new FileReader();
     reader.addEventListener('loadend', () => {
       const base64Data = reader.result as string;
-      this.newcandidateForm.patchValue({ [controlName]: base64Data });
+      this.newCandidateForm.patchValue({ [controlName]: base64Data });
     });
     reader.readAsDataURL(file);
   }
@@ -333,48 +334,63 @@ export class NewCandidateComponent {
 
   saveCanidateAndExit() {
     console.log("hit save and exit")
-    this.onUploadCandidateDocument(this.cookieService.get(this.PREVIOUS_PAGE));
+    this.onSubmitCandidate(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
   saveAndAddAnotherCandidate() {
-    this.onUploadCandidateDocument('/create-candidate');
+    this.onSubmitCandidate('/create-candidate');
   }
 
-  checkBlankRequiredFields() {
-    this.newCandidateForm.value.name = this.newCandidateForm.value
-      .name
-      ? 'TBA'
-      : this.newcandidateForm.value.surname?.trim();
-      this.newCandidateForm.value.surname = this.newCandidateForm.value
-      .surname
-      ? 'TBA'
-      : this.newcandidateForm.value.surname?.trim();
-    this.newCandidateForm.value.email =
-      this.newCandidateForm.value.email === ''
-        ? 'TBA'
-        : this.newCandidateForm.value.email?.trim();
-  }
 
-  onUploadCandidateDocument(nextPage: string): void {
-    console.log('hit on upload')
-    this.candidateDocumentModels.forEach((documentModel) => {
-      console.log('in for each')
-      this.candidateDocumentService.saveCandidateDocument(documentModel).subscribe({
-        next: () => {
-          this.snackBarService.showSnackbar("Candidate has been saved", "snack-success");
-          console.log("hit succesfull on upload")
-          this.router.navigateByUrl(nextPage);
-        },
-        error: (error: any) => {
-          console.log("hit fail on upload")
-          this.snackBarService.showSnackbar("Failed to save candidate", "snack-error");
-        }, complete: () => {
-          this.candidateDocumentModels = [];
-        }
+  onSubmitCandidate(nextPage: string): void {
+    if(this.newCandidateForm.valid){
+      const newCandidateForm = this.newCandidateForm.value;
+      
+      // let candidateObject = [...this.newCandidateForm.value[0]]
+      // candidateObject[0].id = 0;
+      console.log(this.newCandidateForm.get('refferal')?.value)
+      const candidateDto = {
+        id: 0,
+        name: newCandidateForm.name,
+        surname:newCandidateForm.surname,
+        personalEmail: newCandidateForm.email,
+        potentialLevel: parseInt(newCandidateForm.level),
+        jobPosition: parseInt(newCandidateForm.role),
+        linkedIn: newCandidateForm.linkedInProfile,
+        profilePicture: newCandidateForm.profilePicture,
+        cellphone: newCandidateForm.contactNumber,
+        location: newCandidateForm.location,
+        cv: newCandidateForm.file,
+        portfolioLink: newCandidateForm.portfolioLink,
+        portfolioPdf: newCandidateForm,
+        gender: parseInt(newCandidateForm.gender),
+        race: parseInt(newCandidateForm.race),
+        idNumber: newCandidateForm.idNumber,
+        referral: parseInt(newCandidateForm.employee),
+        highestQualification: newCandidateForm.qualification,
+        school: newCandidateForm.school,
+        fieldOfstudy: newCandidateForm.fieldOfStudy,
+        qualificationEndDate : newCandidateForm.endDate,
+        blackListed : false,
+        blackListedReason : ''
+      }
+      console.log(candidateDto)
+      this.candidateService.saveCandidate(candidateDto).subscribe({
+        next: (data) => 
+          this.snackBarService.showSnackbar("Candidate added successfully", "snack-success")
+        ,
+        error: (error) => 
+          this.snackBarService.showSnackbar(error, "snack-error")
       });
-    });
+      }
+    }
+
+    showSelected(event: any){
+      
+      this.newCandidateForm.get('referral')?.patchValue(event.source.value)
+      console.log(this.newCandidateForm.get('referral')?.value)
+    }
   }
 
-}
 
 
