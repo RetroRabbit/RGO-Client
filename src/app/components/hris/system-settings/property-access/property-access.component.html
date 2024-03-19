@@ -24,7 +24,7 @@
     </section>
     <div class="row mx-0">
         <div class="card px-0">
-            <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+            <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
           'background-color': '#D7DFFF',
           'border': '2px solid #D7DFFF',
           'border-radius': '2rem',
@@ -35,32 +35,31 @@
             <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
                 <mat-table [dataSource]="dataSource" matSort>
                     <ng-container matColumnDef="id">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Id</mat-header-cell>
-                        <mat-cell *matCellDef="let permission">
-                            {{ permission.id }}
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow hide-id-column"></mat-header-cell>
+                        <mat-cell *matCellDef="let permission" class="hide-id-column">
                         </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="role">
                         <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Role</mat-header-cell>
-                        <mat-cell *matCellDef="let permission">
+                        <mat-cell *matCellDef="let permission" class="roles-width">
                             {{splitAndCapitalizeCamelCase(permission.role.description)}}
                         </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="table">
                         <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Table</mat-header-cell>
-                        <mat-cell *matCellDef="let permission">
+                        <mat-cell *matCellDef="let permission" class="permissions-width">
                             {{splitAndCapitalizeCamelCase(permission.table)}}
                         </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="field">
                         <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Field</mat-header-cell>
-                        <mat-cell *matCellDef="let permission">
+                        <mat-cell *matCellDef="let permission" class="fields-width">
                             {{splitAndCapitalizeCamelCase(permission.field)}}
                         </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="accessLevel">
                         <mat-header-cell *matHeaderCellDef>Permission</mat-header-cell>
-                        <mat-cell *matCellDef="let permission" class="row justify-content-start">
+                        <mat-cell *matCellDef="let permission" class="row justify-content-start permissions-select-width">
                             <div (click)="$event.stopPropagation()" class="row col-12 px-0">
                                 <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
                                     [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
@@ -90,7 +89,7 @@
                     <h2>No results on your search</h2>
                 </span>
             </div>
-            <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+            <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
                 'background-color': '#D6DFFF',
                 'border': '2px solid #D6DFFF',
                 'border-radius': '10px',
