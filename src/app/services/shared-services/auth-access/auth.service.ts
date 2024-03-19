@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Observable, firstValueFrom, take, EMPTY, catchError, map } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../../enviroment/environment';
+import { environment } from '../../../../environments/environment';
 import { Store } from '@ngrx/store';
 import { Token } from '../../../models/hris/token.interface';
 
@@ -15,10 +15,9 @@ export class AuthService {
   constructor(
     private auth: Auth0.AuthService,
     private client: HttpClient,
-    private store: Store<{ app: Token }>) 
-    { 
-      this.baseUrl =`${environment.HttpsBaseURL}/auth`
-    }
+    private store: Store<{ app: Token }>) {
+    this.baseUrl = `${environment.HttpsBaseURL}/auth`
+  }
 
   isAuthenticated(): Observable<boolean> {
     return this.auth.isAuthenticated$.pipe(take(1))
@@ -42,6 +41,12 @@ export class AuthService {
       );
   }
 
+  logout() {
+    this.auth.logout({
+      logoutParams: { returnTo: document.location.origin },
+    });
+  }
+
   FetchRoles(employeeEmail: string | undefined): Observable<string> {
     let header: HttpHeaders = new HttpHeaders()
     header.append('Content-Type', 'application/json')
@@ -60,7 +65,5 @@ export class AuthService {
       );
   }
 
-  async getToken() {
-    return await firstValueFrom(this.store.select('app'))
-  }
+
 }

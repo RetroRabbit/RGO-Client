@@ -8,7 +8,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
   styleUrls: ['./ats-dashboard.component.css']
 })
 export class AtsDashboardComponent {
-  
+
   constructor(private fb: FormBuilder,
     private navService: NavService
   ) {
