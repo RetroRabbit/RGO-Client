@@ -100,7 +100,7 @@ export class NewCandidateComponent {
       email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]),
       contactNumber: new FormControl<string>('+27', [Validators.pattern(/^\+27\d{9}$/)]),
       potentialLevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
-      role: new FormControl<string>(''),
+      jobPosition: new FormControl<string>(''),
       location: new FormControl<string | null>(''),
       linkedInProfile: new FormControl<string>(''),
       cvFile: new FormControl<string>(''),
