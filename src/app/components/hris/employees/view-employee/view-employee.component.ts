@@ -56,6 +56,10 @@ export class ViewEmployeeComponent {
     return this._searchQuery;
   }
 
+  get isAdminOrSuperAdmin() {
+    return this.authAccessService.isSuperAdmin || this.authAccessService.isAdmin();
+  }
+
   PREVIOUS_PAGE = 'previousPage';
 
   roles: Observable<string[]> = this.employeeRoleService.getAllRoles().pipe(

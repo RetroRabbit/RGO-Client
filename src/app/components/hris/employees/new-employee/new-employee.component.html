@@ -20,14 +20,14 @@
             </div>
             <div class="row flex-column justify-content-center align-items-center col-md-12">
               <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
-                <mat-label>Full name</mat-label>
-                <input matInput type="text" formControlName="name" />
+                <mat-label>First name</mat-label>
+                <input matInput type="text" formControlName="Firstname" />
                 <mat-error *ngIf="newEmployeeForm.controls['name'].hasError('required')">
-                  Full name is required
+                  First name is required
                 </mat-error>
                 <mat-error
                   *ngIf="newEmployeeForm.controls['name'].hasError('pattern') && !newEmployeeForm.controls['name'].hasError('required') ">
-                  Full name must not contain numbers
+                  First name must not contain numbers
                 </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
@@ -319,9 +319,9 @@
         <form [formGroup]="uploadDocumentForm">
           <div class="row justify-content-center align-items-center">
             <div class="col-md-12 col-lg-12">
-              <h2 class="text-center" id="create-employee">Start Kit Documents</h2>
+              <h2 class="text-center" id="create-employee">Starter kits</h2>
               <span class="text-center roboto-font" id="heading-text">
-                <p>Please upload employee’s starter kit documents below</p>
+                <p>Please upload employee’s starter kits below</p>
               </span>
             </div>
           </div>
@@ -340,11 +340,11 @@
                             <mat-icon *ngIf="categories[0].state == false" id="icon">check_circle</mat-icon>
                           </div>
                           <div class="roboto-font" *ngIf="categories[0].state == true" id="align">
-                            <p id="title">Fixed-term contract</p>
+                            <p id="title">Employment contract</p>
                             <p id="supported">PDF, PPT, PPTX, Doc, Docx are supported</p>
                           </div>
                           <div class="roboto-font" *ngIf="categories[0].state == false" id="align">
-                            <p id="title">Fixed-term contract</p>
+                            <p id="title">Employment contract</p>
                             <p id="document-text">{{categories[0].name}}</p>
                           </div>
                         </div>
