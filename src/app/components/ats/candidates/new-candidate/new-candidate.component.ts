@@ -59,7 +59,6 @@ export class NewCandidateComponent {
   isMobileScreen = false;
   screenWidth = window.innerWidth;
   PREVIOUS_PAGE = 'previousPage';
-  websiteLinkPattern = '^(https?://)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(\\S*)?$';
   isValidEmail = false;
   isValidCVFile = true;
   isValidProfileImage = true;
@@ -106,7 +105,7 @@ export class NewCandidateComponent {
       location: new FormControl<string | null>(''),
       linkedInProfile: new FormControl<string>(''),
       cvFile: new FormControl<string>(''),
-      portfolioLink: new FormControl<string>('', [Validators.pattern(this.websiteLinkPattern)]),
+      portfolioLink: new FormControl<string>(''),
       portfolioFile: new FormControl<string>(''),
       gender: new FormControl<number | null>(null),
       idNumber: new FormControl<string>('', [Validators.pattern(this.IdPattern)]),
