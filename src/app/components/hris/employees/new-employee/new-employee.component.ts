@@ -150,7 +150,7 @@ export class NewEmployeeComponent implements OnInit {
       new Date(Date.now())
     ),
     passportCountryIssue: new FormControl<string>(''),
-    race: new FormControl<number>(0),
+    race: new FormControl<number>(-1),
     gender: new FormControl<number>(0),
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),
     ]),
