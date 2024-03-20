@@ -247,14 +247,14 @@
                   </mat-error>
                 </mat-form-field>
                 <form class="col-lg-7 col-md-12 mt-2" [formGroup]="postalAddressForm">
-                <mat-checkbox checked="isSameAddress" value="isSameAddress" inputId="checkbox"
-                  (click)="postalSameAsPhysicalAddress($event)">
+                <mat-checkbox [checked]="isSameAddress" value="isSameAddress" inputId="checkbox"
+                  (change)="postalSameAsPhysicalAddress($event.checked)">
                 </mat-checkbox>
                   <label class="ms-1" for="checkbox">Postal address is the same as physical
                     address</label>
                 </form>
               </form>
-              <form [formGroup]="postalAddress" *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value"
+              <form [formGroup]="postalAddress" *ngIf="!isSameAddress"
                 class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mt-5">
                 <h1 class="col-lg-7 col-md-12 fs-1">Postal Address</h1>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
