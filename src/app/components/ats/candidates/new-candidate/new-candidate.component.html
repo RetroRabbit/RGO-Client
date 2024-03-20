@@ -120,7 +120,7 @@
                         <mat-label>Portfolio PDF</mat-label>
                         <input matInput type="text" [value]="portfolioFilename" />
                         <span mat-icon-button matSuffix class="pe-3">
-                            <mat-icon *ngIf="!isValidPortfolioFile" (click)="uploadPortfolioFile.click()"
+                            <mat-icon *ngIf="!portfolioFileUploaded" (click)="uploadPortfolioFile.click()"
                                 id="file-upload-cursor">attach_file</mat-icon>
                                 <mat-icon *ngIf="portfolioFileUploaded" id="change-close-color"
                                 (click)="clearPortfolioFileUpload()">close</mat-icon>
