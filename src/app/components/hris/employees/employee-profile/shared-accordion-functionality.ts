@@ -13,6 +13,7 @@ import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { FieldCode } from 'src/app/models/hris/field-code.interface';
 import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -68,7 +69,61 @@ export class SharedAccordionFunctionality {
   initialsPattern = /^[A-Z]+$/;
   namePattern = /^[a-zA-Z\s'-]*$/
 
+  constructor(
+    private fb: FormBuilder
+) { }
 
+  personalDetailsForm: FormGroup = this.fb.group({
+    gender: { value: '', disabled: true },
+    race: { value: '', disabled: true },
+    disability: { value: '', disabled: true },
+    disabilityNotes: { value: '', disabled: true },
+    disabilityList: { value: '', disabled: true }
+  });
+
+  employeeContactForm: FormGroup = this.fb.group({
+    email: { value: '', disabled: true },
+    personalEmail: { value: '', disabled: true },
+    cellphoneNo: { value: '', disabled: true },
+    houseNo: { value: '', disabled: true },
+    emergencyContactName: { value: '', disabled: true },
+    emergencyContactNo: { value: '', disabled: true }
+  });
+
+  employeeDetailsForm: FormGroup = this.fb.group({
+    name: { value: '', disabled: true },
+    surname: { value: '', disabled: true },
+    initials: { value: '', disabled: true },
+    clientAllocated: { value: '', disabled: true },
+    employeeType: { value: '', disabled: true },
+    level: { value: '', disabled: true },
+    teamLead: { value: '', disabled: true },
+    dateOfBirth: { value: '', disabled: true },
+    idNumber: { value: '', disabled: true },
+    engagementDate: { value: '', disabled: true },
+    peopleChampion: { value: '', disabled: true }
+  });
+
+  addressDetailsForm: FormGroup = this.fb.group({
+    physicalUnitNumber: { value: '', disabled: true },
+    physicalComplexName: { value: '', disabled: true },
+    physicalStreetNumber: { value: '', disabled: true },
+    physicalSuburb: { value: '', disabled: true },
+    physicalCity: { value: '', disabled: true },
+    physicalCountry: { value: '', disabled: true },
+    physicalProvince: { value: '', disabled: true },
+    physicalPostalCode: { value: '', disabled: true },
+    postalUnitNumber: { value: '', disabled: true },
+    postalComplexName: { value: '', disabled: true },
+    postalStreetNumber: { value: '', disabled: true },
+    postalSuburb: { value: '', disabled: true },
+    postalCity: { value: '', disabled: true },
+    postalCountry: { value: '', disabled: true },
+    postalProvince: { value: '', disabled: true },
+    postalPostalCode: { value: '', disabled: true }
+  });
+
+  additionalInfoForm: FormGroup = this.fb.group({});
 
   totalProfileProgress() {
     //   this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress + this.additionalFormProgress) / 5);
