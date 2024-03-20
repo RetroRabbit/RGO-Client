@@ -12,7 +12,7 @@
                         <img *ngIf="imageUrl !== ''" [src]="imageUrl" [alt]="employeeProfile.photo"
                             class="rounded-circle profile-img">
                         <img *ngIf="imageUrl === ''" [src]="employeeProfile.photo" [alt]="employeeProfile.photo"
-                            class="rounded-circle profile-img">
+                            class="rounded-circle profile-img"  accept=".png, .svg,.jpg">
                     </div>
                     <div class="col-12 text-center roboto-font pb-3 mt-3">
                         <h2 *ngIf="isValidProfileImage" class="center-bold">Profile Picture</h2>
