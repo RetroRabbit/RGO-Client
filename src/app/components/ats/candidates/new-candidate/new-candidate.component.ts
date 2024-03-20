@@ -244,7 +244,7 @@ export class NewCandidateComponent {
         this.snackBarService.showSnackbar("Please enter a valid email address", "snack-error");
       }
     } else {
-      this.snackBarService.showSnackbar("Please enter an email address", "snack-error");
+      this.snackBarService.showSnackbar("Oops, some fields are still missing information", "snack-error");
     }
   }
 

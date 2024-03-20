@@ -14,7 +14,7 @@
                         <img *ngIf="imageUrl === ''" [src]="employeeProfile.photo" [alt]="employeeProfile.photo"
                             class="rounded-circle profile-img">
                     </div>
-                    <div class="col-12 text-center roboto-font pb-3">
+                    <div class="col-12 text-center roboto-font pb-3 mt-3">
                         <h2 *ngIf="isValidProfileImage" class="center-bold">Profile Picture</h2>
                         <p *ngIf="isValidProfileImage" class="profile-text">PNG, JPG, SVG</p>
                         <p *ngIf="isValidProfileImage" class="profile-text">10 MB Max limit size</p>
@@ -52,7 +52,7 @@
                     </mat-form-field>
                 </div>
                 <!-- *ngIf="isValidEmail"  -->
-                <div class="row col-md-12 flex-column justify-content-center align-items-center">
+                <div *ngIf="isValidEmail" class="row col-md-12 flex-column justify-content-center align-items-center">
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Contact number</mat-label>
                         <input matInput type="text" formControlName="cellphoneNumber" pattern="^\+27\d{9}$" placeholder="+27XXXXXXXXX"/>
