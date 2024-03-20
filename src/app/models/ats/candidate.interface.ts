@@ -7,7 +7,7 @@ export interface Candidate{
     jobPosition: number,
     linkedIn: string,
     profilePicture: string,
-    cellphone: string,
+    cellphoneNumber: string,
     location: string,
     cv: string,
     portfolioLink: string,

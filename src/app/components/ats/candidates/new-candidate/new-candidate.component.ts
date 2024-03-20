@@ -98,7 +98,7 @@ export class NewCandidateComponent {
       name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
       surname: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
       email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]),
-      contactNumber: new FormControl<string>('+27', [Validators.pattern(/^\+27\d{9}$/)]),
+      cellphoneNumber: new FormControl<string>('+27', [Validators.pattern(/^\+27\d{9}$/)]),
       potentialLevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
       jobPosition: new FormControl<number | null>(null),
       location: new FormControl<string | null>(''),
@@ -150,11 +150,9 @@ export class NewCandidateComponent {
     const selectedSchool = event.value;
     this.optionIsOther = selectedSchool === 'Other';
     if (!this.optionIsOther) {
-        //this.newCandidateForm.get('school')?.setValue("piesang")
         this.newCandidateForm.setValue({selectedSchool:selectedSchool});
     }
 }
-
 
   onImageChange(event: any): void {
     if (event.target.files && event.target.files.length) {
@@ -179,7 +177,6 @@ export class NewCandidateComponent {
     this.isValidProfileImage = true;
     return true;
   }
-  
 
   imageConverter(file: File) {
     const reader = new FileReader();
@@ -355,8 +352,6 @@ export class NewCandidateComponent {
     if(this.newCandidateForm.valid){
       const newCandidateForm = this.newCandidateForm.value;
       
-      // let candidateObject = [...this.newCandidateForm.value[0]]
-      // candidateObject[0].id = 0;
       const candidateDto = {
         id: 0,
         name: newCandidateForm.name,
@@ -366,7 +361,7 @@ export class NewCandidateComponent {
         jobPosition: newCandidateForm.jobPosition,
         linkedIn: newCandidateForm.linkedInProfile,
         profilePicture: this.base64Image,
-        cellphone: newCandidateForm.contactNumber,
+        cellphoneNumber: newCandidateForm.cellphoneNumber,
         location: newCandidateForm.location,
         cv: this.cvFilename,
         portfolioLink: newCandidateForm.portfolioLink,
@@ -384,9 +379,7 @@ export class NewCandidateComponent {
       console.log(candidateDto)
       this.candidateService.saveCandidate(candidateDto).subscribe({
         next: (data) => 
-          this.snackBarService.showSnackbar("Candidate added successfully", "snack-success")
-          
-        ,
+          this.snackBarService.showSnackbar("Candidate added successfully", "snack-success"),
         error: (error) => 
           this.snackBarService.showSnackbar(error, "snack-error")
       });
