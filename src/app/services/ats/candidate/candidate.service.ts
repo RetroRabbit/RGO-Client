@@ -15,11 +15,15 @@ export class CandidateService {
     this.baseUrl = `${environment.HttpsBaseURL}/candidates`
   }
 
-  saveCandidate(newcandidate: Candidate): Observable<Candidate> {
+  addCandidate(newcandidate: Candidate): Observable<Candidate> {
     console.log('hit save in candidate service')
     return this.httpClient.post<Candidate>(`${this.baseUrl}`, newcandidate);
   }
-  getEmployeeDocument(candidateId: number, filename: string): Observable<Candidate> {
-        return this.httpClient.get<Candidate>(`${this.baseUrl}?candidateId=${candidateId}?filename=${filename}`);
+  
+  /**@returns List of Basic Employee objects.*/
+
+    getAll(): Observable<Candidate[]> {
+      return this.httpClient.get<Candidate[]>(`${this.baseUrl}/all`);
     }
+
 };

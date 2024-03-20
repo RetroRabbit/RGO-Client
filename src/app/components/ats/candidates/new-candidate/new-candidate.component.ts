@@ -383,7 +383,7 @@ export class NewCandidateComponent {
         blackListedReason : ''
       }
       console.log(candidateDto)
-      this.candidateService.saveCandidate(candidateDto).subscribe({
+      this.candidateService.addCandidate(candidateDto).subscribe({
         next: (data) => 
           this.snackBarService.showSnackbar("Candidate added successfully", "snack-success"),
         error: (error) => 
