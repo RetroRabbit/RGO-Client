@@ -92,6 +92,7 @@ export class NewEmployeeComponent implements OnInit {
   filteredPeopleChamps: any = [];
   peopleChampionId = null;
   isMobileScreen = false;
+  isLoadingAddEmployee: boolean = false;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -265,6 +266,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndExit() {
+    this.isLoadingAddEmployee = true;
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
@@ -414,7 +416,7 @@ export class NewEmployeeComponent implements OnInit {
         if (error.status === 400) {
           message = 'Incorrect form values';
         } else if (error.status === 406) {
-          message = 'User already exists';
+          this.isLoadingAddEmployee = false;
         }
         else if (error.status === 200) {
           stepper?.next();
