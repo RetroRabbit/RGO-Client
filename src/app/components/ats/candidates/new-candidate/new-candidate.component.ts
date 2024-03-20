@@ -323,8 +323,8 @@ export class NewCandidateComponent {
   }
 
   onPortfolioFileChange(event: any): void {
-    this.portfolioFileUploaded = true;
     if (event.target.files && event.target.files.length) {
+      this.portfolioFileUploaded = true;
       const file = event.target.files[0];
       this.portfolioFilename = file.name;
       if (this.validatePortfolioFile(file)) {
