@@ -92,6 +92,7 @@ export class NewEmployeeComponent implements OnInit {
   filteredPeopleChamps: any = [];
   peopleChampionId = null;
   isMobileScreen = false;
+  isSameAddress: boolean = true;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -314,8 +315,10 @@ export class NewEmployeeComponent implements OnInit {
     }
   }
 
-  postalSameAsPhysicalAddress() {
-    if (this.postalAddressForm.value.sameAsPhysicalAddress) {
+  postalSameAsPhysicalAddress(event: any) {
+    this.isSameAddress = !event.checked;
+
+    if (this.postalAddressForm.value.sameAsPhysicalAddress && event.checked) {
       this.postalAddress.patchValue({
         unitNumber: this.physicalAddress.value.unitNumber,
         complexName: this.physicalAddress.value.complexName,

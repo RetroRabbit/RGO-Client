@@ -247,8 +247,8 @@
                   </mat-error>
                 </mat-form-field>
                 <form class="col-lg-7 col-md-12 mt-2" [formGroup]="postalAddressForm">
-                <mat-checkbox value="Postal address is the same as physical address" inputId="checkbox"
-                  (change)="postalSameAsPhysicalAddress()">
+                <mat-checkbox checked="isSameAddress" value="isSameAddress" inputId="checkbox"
+                  (click)="postalSameAsPhysicalAddress($event)">
                 </mat-checkbox>
                   <label class="ms-1" for="checkbox">Postal address is the same as physical
                     address</label>
