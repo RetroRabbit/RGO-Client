@@ -159,7 +159,7 @@
                 </div>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
                   <mat-label>Select Race</mat-label>
-                  <mat-select formControlName="race">
+                  <mat-select formControlName="race" placeholder="Select race">
                     <mat-option *ngFor="let race of races; index as i" [value]="i">{{ race }}</mat-option>
                   </mat-select>
                 </mat-form-field>
