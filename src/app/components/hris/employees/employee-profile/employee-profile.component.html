@@ -308,7 +308,12 @@
             <app-accordion-profile-employee-details [hidden]="selectedAccordion != 'Profile Details'"
                 [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
                 (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-employee-details>
-            <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"
+            <app-accordion-profile-contact-details [hidden]="selectedAccordion != 'Profile Details'"
+                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-contact-details>
+
+
+                <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"
                 [employeeProfile]="employeeProfile"
                 (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
             <app-accordion-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"

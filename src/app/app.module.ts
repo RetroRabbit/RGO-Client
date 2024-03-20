@@ -84,6 +84,7 @@ import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashbo
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PropertyAccessComponent } from './components/hris/system-settings/property-access/property-access.component';
 import { AccordionProfileEmployeeDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-employee-details/accordion-profile-employee-details.component';
+import { AccordionProfileContactDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-contact-details/accordion-profile-contact-details.component';
 
 @NgModule({
   declarations: [
@@ -118,6 +119,7 @@ import { AccordionProfileEmployeeDetailsComponent } from './components/hris/empl
     AtsDashboardComponent,
     PropertyAccessComponent,
     AccordionProfileEmployeeDetailsComponent,
+    AccordionProfileContactDetailsComponent,
 
   ],
   imports: [
