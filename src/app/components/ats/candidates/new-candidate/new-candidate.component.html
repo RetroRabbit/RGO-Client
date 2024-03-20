@@ -20,10 +20,10 @@
                         <p *ngIf="isValidProfileImage" class="profile-text">10 MB Max limit size</p>
                         <p id="change-color-heading" *ngIf="!isValidProfileImage" class="profile-text">File size
                             exceeded. Maximum limit is 10 MB.</p>
-                            <button id="upload-button" mat-icon-button (click)="uploadFile.click()" class="upload-button">
-                                <mat-icon id="file-upload-cursor">file_upload</mat-icon>
-                                <span class="button-text">Upload Picture</span>
-                              </button>                              
+                        <button id="upload-button" mat-icon-button (click)="uploadFile.click()" class="upload-button">
+                            <mat-icon id="file-upload-cursor">file_upload</mat-icon>
+                            <span class="button-text">Upload Picture</span>
+                        </button>
                         <input type="file" #uploadFile (change)="onImageChange($event)" hidden />
                         <p class="col-md-12 col-lg-7 mt-5 info-text">*Required fields</p>
                     </div>
@@ -52,10 +52,11 @@
                     </mat-form-field>
                 </div>
                 <!-- *ngIf="isValidEmail"  -->
-                <div *ngIf="isValidEmail" class="row col-md-12 flex-column justify-content-center align-items-center">
+                <div class="row col-md-12 flex-column justify-content-center align-items-center">
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Contact number</mat-label>
-                        <input matInput type="text" formControlName="cellphoneNumber" pattern="^\+27\d{9}$" placeholder="+27XXXXXXXXX"/>
+                        <input matInput type="text" formControlName="cellphoneNumber" pattern="^\+27\d{9}$"
+                            placeholder="+27XXXXXXXXX" />
                     </mat-form-field>
                     <mat-radio-group formControlName="jobPosition" class="col-md-12 col-lg-7 my-2 info-text">
                         <p class="col-md-12 col-lg-7 info-text">Role:</p>
@@ -86,13 +87,14 @@
                         <mat-label>CV</mat-label>
                         <input matInput type="text" [value]="cvFilename" />
                         <span mat-icon-button matSuffix class="pe-3">
-                            <mat-icon *ngIf="isValidCVFile" (click)="uploadCVFile.click()"
+                            <mat-icon *ngIf="!cvFileUploaded" (click)="uploadCVFile.click()"
                                 id="file-upload-cursor">attach_file</mat-icon>
+                            <mat-icon *ngIf="cvFileUploaded" id="change-close-color"
+                                (click)="clearCVFileUpload()">close</mat-icon>
                             <mat-icon *ngIf="!isValidCVFile" (click)="clearCVFileUpload()"
                                 id="change-close-color">error</mat-icon>
                         </span>
-                        <input type="file" #uploadCVFile (change)="onCVFileChange($event)" hidden
-                            accept=".pdf" />
+                        <input type="file" #uploadCVFile (change)="onCVFileChange($event)" hidden accept=".pdf" />
                     </mat-form-field>
                     <div *ngIf="cvUrl !== ''">
                         <p>Selected CV: {{ cvFilename }}</p>
@@ -103,7 +105,8 @@
                         format :</h3>
                     <p id="change-close-color" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7">The selected file type
                         is not supported.</p>
-                    <p id="change-close-color" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7"> Please upload a PDF</p>
+                    <p id="change-close-color" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7"> Please upload a PDF
+                    </p>
                     <h4 class="col-md-12 col-lg-7 info-text">Portfolio</h4>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Attach website link</mat-label>
@@ -117,8 +120,10 @@
                         <mat-label>Portfolio PDF</mat-label>
                         <input matInput type="text" [value]="portfolioFilename" />
                         <span mat-icon-button matSuffix class="pe-3">
-                            <mat-icon *ngIf="isValidPortfolioFile" (click)="uploadPortfolioFile.click()"
+                            <mat-icon *ngIf="!isValidPortfolioFile" (click)="uploadPortfolioFile.click()"
                                 id="file-upload-cursor">attach_file</mat-icon>
+                                <mat-icon *ngIf="portfolioFileUploaded" id="change-close-color"
+                                (click)="clearPortfolioFileUpload()">close</mat-icon>
                             <mat-icon *ngIf="!isValidPortfolioFile" (click)="clearPortfolioFileUpload()"
                                 id="change-close-color">error</mat-icon>
                         </span>
@@ -157,7 +162,9 @@
                             <input matInput placeholder="Referral" [formControl]="searchControl"
                                 [matAutocomplete]="auto">
                             <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option *ngFor="let employee of allEmployees" [value]='employee.name + " " + employee.surname' (onSelectionChange)="showSelectedReferral($event)">
+                                <mat-option *ngFor="let employee of allEmployees"
+                                    [value]='employee.name + " " + employee.surname'
+                                    (onSelectionChange)="showSelectedReferral($event)">
                                     {{ employee.name }} {{ employee.surname}}
                                 </mat-option>
                             </mat-autocomplete>
@@ -167,17 +174,21 @@
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>Highest Qualification</mat-label>
                             <mat-select formControlName="highestQualification">
-                                <mat-option *ngFor="let qualification of qualifications; index as i" [value]="qualification">{{
+                                <mat-option *ngFor="let qualification of qualifications; index as i"
+                                    [value]="qualification">{{
                                     qualification }}</mat-option>
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>School</mat-label>
-                            <mat-select *ngIf="!optionIsOther" formControlName="school" (selectionChange)="toggleOtherSchoolField($event, schools)">
-                                <mat-option *ngFor="let school of schools; index as i" [value]="school">{{ school }}</mat-option>
+                            <mat-select *ngIf="!optionIsOther" formControlName="school"
+                                (selectionChange)="toggleOtherSchoolField($event, schools)">
+                                <mat-option *ngFor="let school of schools; index as i" [value]="school">{{ school
+                                    }}</mat-option>
                             </mat-select>
-                            <input *ngIf="optionIsOther" matInput type="text" formControlName="school" placeholder="Enter other school">
+                            <input *ngIf="optionIsOther" matInput type="text" formControlName="school"
+                                placeholder="Enter other school">
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                             <mat-label>Date Obtained</mat-label>
@@ -190,11 +201,15 @@
                 <div id="footer" class="col-md-12">
                     <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
                         (click)="goToPreviousPage()">Cancel</button>
-                    <button *ngIf="!isValidEmail" id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
+                    <button *ngIf="!isValidEmail" id="next-button"
+                        [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
                         (click)="checkEmailValidity()">Next</button>
-                    <button *ngIf="isValidEmail" id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''" (click)="saveAndAddAnotherCandidate()">Save and add
+                    <button *ngIf="isValidEmail" id="save-add-button"
+                        [ngClass]="screenWidth < 768 ? 'button-mobile' : ''" (click)="saveAndAddAnotherCandidate()">Save
+                        and add
                         another</button>
-                    <button *ngIf="isValidEmail" id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
+                    <button *ngIf="isValidEmail" id="save-button"
+                        [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
                         (click)="saveCanidateAndExit()">Save</button>
                 </div>
             </div>

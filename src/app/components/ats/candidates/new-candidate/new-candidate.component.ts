@@ -64,6 +64,8 @@ export class NewCandidateComponent {
   isValidCVFile = true;
   isValidProfileImage = true;
   isValidPortfolioFile = true;
+  cvFileUploaded = false;
+  portfolioFileUploaded = false;
   IdPattern = /^\d{13}$/;
   optionIsOther = false;
   additionalFieldsVisible: boolean = false;
@@ -303,6 +305,7 @@ export class NewCandidateComponent {
   clearCVFileUpload() {
     this.cvFilename = '';
     this.isValidCVFile = true;
+    this.cvFileUploaded = false;
     const uploadCVInputElement = document.getElementById('uploadCVFile') as HTMLInputElement;
     if (uploadCVInputElement) {
       uploadCVInputElement.value = '';
@@ -312,6 +315,7 @@ export class NewCandidateComponent {
   clearPortfolioFileUpload() {
     this.portfolioFilename = '';
     this.isValidPortfolioFile = true;
+    this.portfolioFileUploaded = false;
     const uploadCVInputElement = document.getElementById('uploadPortfolioFile') as HTMLInputElement;
     if (uploadCVInputElement) {
       uploadCVInputElement.value = '';
@@ -319,6 +323,7 @@ export class NewCandidateComponent {
   }
 
   onPortfolioFileChange(event: any): void {
+    this.portfolioFileUploaded = true;
     if (event.target.files && event.target.files.length) {
       const file = event.target.files[0];
       this.portfolioFilename = file.name;
@@ -330,6 +335,7 @@ export class NewCandidateComponent {
   
   onCVFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
+      this.cvFileUploaded = true;
       const file = event.target.files[0];
       this.cvFilename = file.name;
       if (this.validateCVFile(file)) {
