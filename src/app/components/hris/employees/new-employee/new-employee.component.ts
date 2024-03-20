@@ -317,7 +317,7 @@ export class NewEmployeeComponent implements OnInit {
 
   postalSameAsPhysicalAddress(event: boolean) {
     this.isSameAddress = event;
-    console.log(event);
+
     if (this.postalAddressForm.value.sameAsPhysicalAddress && event) {
       this.postalAddress.patchValue({
         unitNumber: this.physicalAddress.value.unitNumber,
