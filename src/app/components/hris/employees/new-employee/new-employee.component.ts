@@ -92,6 +92,7 @@ export class NewEmployeeComponent implements OnInit {
   filteredPeopleChamps: any = [];
   peopleChampionId = null;
   isMobileScreen = false;
+  isSameAddress: boolean = true;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -102,14 +103,14 @@ export class NewEmployeeComponent implements OnInit {
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
-      unitNumber: new FormControl<string | null>(" ", Validators.minLength(1)),
-      complexName: new FormControl<string | null>(" ", Validators.minLength(1)),
-      suburbDistrict: new FormControl<string | null>(" ", Validators.minLength(1)),
-      city: new FormControl<string | null>(" ", Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>("", [Validators.maxLength(4), Validators.minLength(1), Validators.pattern(/(^\d+$)|(^$)/)]),
-      country: new FormControl<string | null>(" ", Validators.minLength(1)),
-      province: new FormControl<string | null>(" ", Validators.minLength(1)),
-      postalCode: new FormControl<string | null>("", [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
+      unitNumber: new FormControl<string | null>('', Validators.minLength(1)),
+      complexName: new FormControl<string | null>('', Validators.minLength(1)),
+      suburbDistrict: new FormControl<string | null>('', Validators.minLength(1)),
+      city: new FormControl<string | null>('', Validators.minLength(1)),
+      streetNumber: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(1), Validators.pattern(/(^\d+$)|(^$)/)]),
+      country: new FormControl<string | null>('', Validators.minLength(1)),
+      province: new FormControl<string | null>('', Validators.minLength(1)),
+      postalCode: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
     });
   }
 
@@ -149,7 +150,7 @@ export class NewEmployeeComponent implements OnInit {
       new Date(Date.now())
     ),
     passportCountryIssue: new FormControl<string>(''),
-    race: new FormControl<number>(0),
+    race: new FormControl<number>(-1),
     gender: new FormControl<number>(0),
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),
     ]),
@@ -314,8 +315,10 @@ export class NewEmployeeComponent implements OnInit {
     }
   }
 
-  postalSameAsPhysicalAddress() {
-    if (this.postalAddressForm.value.sameAsPhysicalAddress) {
+  postalSameAsPhysicalAddress(event: any) {
+    this.isSameAddress = !event.checked;
+
+    if (this.postalAddressForm.value.sameAsPhysicalAddress && event.checked) {
       this.postalAddress.patchValue({
         unitNumber: this.physicalAddress.value.unitNumber,
         complexName: this.physicalAddress.value.complexName,
