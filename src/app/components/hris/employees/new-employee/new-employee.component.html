@@ -152,7 +152,7 @@
                 </div>
                 <div class="row flex-column justify-content-center align-items-center col-lg-12 col-md-12 pb-3">
                   <span class="col-lg-7 fs-5 roboto-font pb-3">Gender</span>
-                  <mat-radio-group class="col-lg-7" formControlName="gender" placeholder="Gender">
+                  <mat-radio-group class="col-lg-7" formControlName="gender" >
                     <mat-radio-button *ngFor="let gender of genders; index as i" [value]="i">{{ gender
                       }}</mat-radio-button>
                   </mat-radio-group>
@@ -166,7 +166,7 @@
                 <mat-form-field *ngIf="newEmployeeForm.controls['idNumber'].value === ''" appearance="outline"
                   class="col-lg-7 col-md-12">
                   <mat-label>Passport Number</mat-label>
-                  <input matInput type="number" formControlName="passportNumber"  placeholder="Passport Number" />
+                  <input matInput type="number" formControlName="passportNumber" />
                 </mat-form-field>
                 <mat-form-field *ngIf="newEmployeeForm.controls['idNumber'].value === ''" appearance="outline"
                   class="col-lg-7 col-md-12">
