@@ -281,7 +281,7 @@ export class NewCandidateComponent {
 
 
   validateCVFile(file: File): boolean {
-    const allowedTypes = ['application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    const allowedTypes = ['application/pdf'];
     if (file.size > 4194304 || !allowedTypes.includes(file.type)) {
       this.isValidCVFile = false;
       return false;
@@ -291,7 +291,7 @@ export class NewCandidateComponent {
   }
 
   validatePortfolioFile(file: File): boolean {
-    const allowedTypes = ['application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    const allowedTypes = ['application/pdf'];
     if (file.size > 4194304 || !allowedTypes.includes(file.type)) {
       this.isValidPortfolioFile = false;
       return false;
