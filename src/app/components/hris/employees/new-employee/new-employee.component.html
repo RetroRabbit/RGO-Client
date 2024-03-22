@@ -159,7 +159,7 @@
                 </div>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
                   <mat-label>Select Race</mat-label>
-                  <mat-select formControlName="race">
+                  <mat-select formControlName="race" placeholder="Select race">
                     <mat-option *ngFor="let race of races; index as i" [value]="i">{{ race }}</mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -247,14 +247,14 @@
                   </mat-error>
                 </mat-form-field>
                 <form class="col-lg-7 col-md-12 mt-2" [formGroup]="postalAddressForm">
-                <mat-checkbox value="Postal address is the same as physical address" inputId="checkbox"
-                  (change)="postalSameAsPhysicalAddress()">
+                <mat-checkbox [checked]="isSameAddress" value="isSameAddress" inputId="checkbox"
+                  (change)="postalSameAsPhysicalAddress($event.checked)">
                 </mat-checkbox>
                   <label class="ms-1" for="checkbox">Postal address is the same as physical
                     address</label>
                 </form>
               </form>
-              <form [formGroup]="postalAddress" *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value"
+              <form [formGroup]="postalAddress" *ngIf="!isSameAddress"
                 class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mt-5">
                 <h1 class="col-lg-7 col-md-12 fs-1">Postal Address</h1>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
@@ -305,7 +305,7 @@
           <div id="footer">
             <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="goToPreviousPage()">Cancel</button>
-            <button id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''">Next</button>
+            <button id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''" matStepperNext>Next</button>
           </div>
         </form>
       </mat-step>
