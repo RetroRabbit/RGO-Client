@@ -261,17 +261,15 @@ export class NewCandidateComponent {
           switch (candidate.blacklisted) {
             case 0:
               console.log('in case 0');
-              this.snackBarService.showSnackbar("This email already exists in our records.", "snack-info");
               this.candidateExists = true;
               break;
             case 1:
               console.log('in case 1');
-              this.snackBarService.showSnackbar("This email is in warning.", "snack-warning");
               this.candidateWarning = true;
               break;
             case 2:
               console.log('in case 2');
-              this.snackBarService.showSnackbar("This email is blacklisted.", "snack-error");
+
               this.isblacklisted = true;
               break;
             default:

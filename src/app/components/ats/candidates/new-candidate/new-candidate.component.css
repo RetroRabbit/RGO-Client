@@ -35,6 +35,10 @@ main {
     border: none;
 }
 
+.warning-message{
+    color: #B3261E;
+    font-weight: bold;
+}
 
 .profile-photo {
     width: 200px; 

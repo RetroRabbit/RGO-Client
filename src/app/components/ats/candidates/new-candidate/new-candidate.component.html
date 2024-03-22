@@ -12,7 +12,7 @@
                         <img *ngIf="imageUrl !== ''" [src]="imageUrl" [alt]="employeeProfile.photo"
                             class="rounded-circle profile-img">
                         <img *ngIf="imageUrl === ''" [src]="employeeProfile.photo" [alt]="employeeProfile.photo"
-                            class="rounded-circle profile-img"  accept=".png, .svg,.jpg">
+                            class="rounded-circle profile-img" accept=".png, .svg,.jpg">
                     </div>
                     <div class="col-12 text-center roboto-font pb-3 mt-3">
                         <h2 *ngIf="isValidProfileImage" class="center-bold">Profile Picture</h2>
@@ -50,9 +50,17 @@
                             Please enter a valid email address
                         </mat-error>
                     </mat-form-field>
+                    <h3 *ngIf="candidateExists" class="warning-message">Duplicate canidate found</h3>
+                    <h3 *ngIf="isblacklisted" class="warning-message">Duplicate canidate found</h3>
+                    <h3 *ngIf="candidateWarning" class="warning-message">This candidate has a warning</h3>
+                    <p *ngIf="isblacklisted">This candidate has been blacklisted from the company.<br>Go to their
+                        profile to see the reason or lift the blacklisting</p>
+                    <p *ngIf="candidateExists">The candidate already exists in our system</p>
+                    <p *ngIf="candidateWarning">This candidate has recieved a warning in the system</p>
                 </div>
                 <!-- *ngIf="isValidEmail"  -->
-                <div *ngIf="isValidEmail" class="row col-md-12 flex-column justify-content-center align-items-center">
+                <div *ngIf="isValidEmail && !isblacklisted && !candidateExists && !candidateWarning"
+                    class="row col-md-12 flex-column justify-content-center align-items-center">
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Contact number</mat-label>
                         <input matInput type="text" formControlName="cellphoneNumber" pattern="^\+27\d{9}$"
@@ -85,10 +93,9 @@
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>CV</mat-label>
-                        <input matInput type="text" [value]="cvFilename"(click)="uploadCVFile.click()" />
+                        <input matInput type="text" [value]="cvFilename" (click)="uploadCVFile.click()" />
                         <span mat-icon-button matSuffix class="pe-3">
-                            <mat-icon *ngIf="!cvFileUploaded"
-                                id="file-upload-cursor">attach_file</mat-icon>
+                            <mat-icon *ngIf="!cvFileUploaded" id="file-upload-cursor">attach_file</mat-icon>
                             <mat-icon *ngIf="cvFileUploaded && isValidCVFile" id="change-close-color"
                                 (click)="clearCVFileUpload()">close</mat-icon>
                             <mat-icon *ngIf="!isValidCVFile" (click)="clearCVFileUpload()"
@@ -118,11 +125,10 @@
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Portfolio PDF</mat-label>
-                        <input matInput type="text" [value]="portfolioFilename" (click)="uploadPortfolioFile.click()"/>
+                        <input matInput type="text" [value]="portfolioFilename" (click)="uploadPortfolioFile.click()" />
                         <span mat-icon-button matSuffix class="pe-3">
-                            <mat-icon *ngIf="!portfolioFileUploaded" 
-                                id="file-upload-cursor">attach_file</mat-icon>
-                                <mat-icon *ngIf="portfolioFileUploaded && isValidPortfolioFile" id="change-close-color"
+                            <mat-icon *ngIf="!portfolioFileUploaded" id="file-upload-cursor">attach_file</mat-icon>
+                            <mat-icon *ngIf="portfolioFileUploaded && isValidPortfolioFile" id="change-close-color"
                                 (click)="clearPortfolioFileUpload()">close</mat-icon>
                             <mat-icon *ngIf="!isValidPortfolioFile" (click)="clearPortfolioFileUpload()"
                                 id="change-close-color">error</mat-icon>
@@ -135,11 +141,14 @@
                     </div>
                     <p *ngIf="isValidPortfolioFile" class="col-md-12 col-lg-7">Please upload a PDF</p>
                     <p *ngIf="isValidPortfolioFile" class="col-md-12 col-lg-7">10 MB Max limit size</p>
-                    <h3 id="change-color-heading" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">Unsupported file
+                    <h3 id="change-color-heading" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">Unsupported
+                        file
                         format :</h3>
-                    <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">The selected file type
+                    <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">The selected
+                        file type
                         is not supported.</p>
-                    <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7"> Please upload a PDF</p>
+                    <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7"> Please upload a
+                        PDF</p>
                     <mat-slide-toggle class="col-md-12 col-lg-7 mb-3" color="primary" id="additionalFieldsToggle"
                         (click)="toggleAdditionalFields()">
                         Additional fields
@@ -209,11 +218,13 @@
                     <button *ngIf="!isValidEmail" id="next-button"
                         [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
                         (click)="validateAndCheckCandidateEmail()">Next</button>
-                    <button *ngIf="isValidEmail" id="save-add-button"
+                    <button *ngIf="isValidEmail && !isblacklisted && !candidateExists && ! candidateWarning" id="save-add-button"
                         [ngClass]="screenWidth < 768 ? 'button-mobile' : ''" (click)="saveAndAddAnotherCandidate()">Save
                         and add
                         another</button>
-                    <button *ngIf="isValidEmail" id="save-button"
+                    <button *ngIf="isblacklisted || candidateWarning || candidateExists" id="save-button">Go to
+                        Profile</button>
+                    <button *ngIf="isValidEmail && !isblacklisted && !candidateExists && !candidateWarning" id="save-button"
                         [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
                         (click)="saveCanidateAndExit()">Save</button>
                 </div>
