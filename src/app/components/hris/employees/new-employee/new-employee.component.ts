@@ -271,6 +271,7 @@ export class NewEmployeeComponent implements OnInit {
 
   saveAndAddAnother() {
     this.onUploadDocument('/create-employee');
+    this.newEmployeeForm.reset();
   }
 
   onUploadDocument(nextPage: string): void {
