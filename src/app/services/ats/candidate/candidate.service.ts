@@ -16,7 +16,6 @@ export class CandidateService {
   }
 
   addCandidate(newcandidate: Candidate): Observable<Candidate> {
-    console.log('hit save in candidate service')
     return this.httpClient.post<Candidate>(`${this.baseUrl}`, newcandidate);
   }
   

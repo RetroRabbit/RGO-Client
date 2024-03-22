@@ -235,20 +235,47 @@ export class NewCandidateComponent {
     );
   }
 
-  checkEmailValidity(): void {
-    const email = this.newCandidateForm.get('email')?.value as string
-    if (email !== null) {
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      this.isValidEmail = emailPattern.test(email);
 
-      if (!this.isValidEmail) {
-        this.snackBarService.showSnackbar("Please enter a valid email address", "snack-error");
-      }
-    } else {
+  validateAndCheckCandidateEmail(): void {
+    const email = this.newCandidateForm.get('email')?.value as string;
+    
+    if (!email) {
       this.snackBarService.showSnackbar("Oops, some fields are still missing information", "snack-error");
+      return;
     }
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    this.isValidEmail = emailPattern.test(email);
+  
+    if (!this.isValidEmail) {
+      this.snackBarService.showSnackbar("Please enter a valid email address", "snack-error");
+      return;
+    }
+  
+    this.candidateService.getAll().subscribe({
+      next: (candidates) => {
+        const candidate = candidates.find(c => c.personalEmail === email);
+        if (candidate) {
+          console.log('in if')
+          if (candidate.blackListed === 0) {
+            console.log('in exists')
+            this.snackBarService.showSnackbar("This email exists ", "snack-success");
+          } else if (candidate.blackListed === 1) {
+            console.log('in warning')
+            this.snackBarService.showSnackbar("This email is in warning.", "snack-error");
+          } else if (candidate.blackListed === 2) {
+            console.log('in blacklisted')
+            this.snackBarService.showSnackbar("This email is blacklisted.", "snack-error");
+          }
+        } else {
+          this.snackBarService.showSnackbar("Email does not exist in our records.", "snack-info");
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        this.snackBarService.showSnackbar("Failed to fetch candidates.", "snack-error");
+      }
+    });
   }
-
 
   clearUpload() {
     var input = document.getElementById('imageUpload') as HTMLInputElement;
@@ -378,7 +405,7 @@ export class NewCandidateComponent {
         highestQualification: newCandidateForm.highestQualification,
         school: newCandidateForm.school,
         qualificationEndDate : newCandidateForm.endDate,
-        blackListed : false,
+        blackListed : 0,
         blackListedReason : ''
       }
       console.log(candidateDto)
