@@ -1,14 +1,8 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { ClientService } from 'src/app/services/hris/client.service';
-import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
-import { FieldCodeService } from 'src/app/services/hris/field-code.service';
-import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -28,6 +22,12 @@ export class AccordionProfilePersonalDetailsComponent {
   onResize() {
     this.screenWidth = window.innerWidth;
   }
+
+  ngOnInit() {
+    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
+    this.initializeForm();
+  }
+
   @Output() updateProfile = new EventEmitter<number>();
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
@@ -39,62 +39,6 @@ export class AccordionProfilePersonalDetailsComponent {
   usingProfile: boolean = true;
 
   initializeForm() {
-    this.sharedAccordionFunctionality.employeeDetailsForm = this.fb.group({
-      name: [this.employeeProfile!.employeeDetails.name, [Validators.required,
-      Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
-      surname: [this.employeeProfile!.employeeDetails.surname, [Validators.required,
-      Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
-      initials: [this.employeeProfile!.employeeDetails.initials, [Validators.pattern(this.sharedAccordionFunctionality.initialsPattern)]],
-      clientAllocated: this.employeeProfile!.employeeDetails.clientAllocated,
-      employeeType: this.employeeProfile!.employeeDetails.employeeType!.name,
-      level: this.employeeProfile!.employeeDetails.level,
-      teamLead: this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
-      dateOfBirth: [this.employeeProfile!.employeeDetails.dateOfBirth, Validators.required],
-      idNumber: [this.employeeProfile!.employeeDetails.idNumber, [Validators.required, this.customValidationService.idNumberValidator]],
-      engagementDate: [this.employeeProfile!.employeeDetails.engagementDate, Validators.required],
-      peopleChampion: this.usingProfile ? this.employeeProfile!.employeeDetails.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId
-    });
-    this.sharedAccordionFunctionality.employeeDetailsForm.disable();
-    this.checkEmployeeFormProgress();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", "employeeDetailsForm", true)
-
-
-    this.sharedAccordionFunctionality.employeeContactForm = this.fb.group({
-      email: [this.employeeProfile!.employeeDetails.email, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.emailPattern)]],
-      personalEmail: [this.employeeProfile!.employeeDetails.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
-      cellphoneNo: [this.employeeProfile!.employeeDetails.cellphoneNo, [Validators.required, Validators.maxLength(10), Validators.pattern(/^[0-9]*$/)]],
-      houseNo: [this.employeeProfile!.employeeDetails.houseNo, [Validators.required, Validators.minLength(4), Validators.pattern(/^[0-9]*$/)]],
-      emergencyContactName: [this.employeeProfile!.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
-      emergencyContactNo: [this.employeeProfile!.employeeDetails.emergencyContactNo, [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(10)]]
-    });
-    this.sharedAccordionFunctionality.employeeContactForm.disable();
-    this.checkContactFormProgress();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", "employeeContactForm", true)
-
-
-    this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
-      physicalUnitNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      physicalComplexName: [this.employeeProfile!.employeeDetails.physicalAddress?.complexName?.trim(), Validators.required],
-      physicalStreetNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      physicalSuburb: [this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict?.trim(), Validators.required],
-      physicalCity: [this.employeeProfile!.employeeDetails.physicalAddress?.city?.trim(), Validators.required],
-      physicalCountry: [this.employeeProfile!.employeeDetails.physicalAddress?.country?.trim(), Validators.required],
-      physicalProvince: [this.employeeProfile!.employeeDetails.physicalAddress?.province?.trim(), Validators.required],
-      physicalPostalCode: [this.employeeProfile!.employeeDetails.physicalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]],
-      postalUnitNumber: [this.employeeProfile!.employeeDetails.postalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      postalComplexName: [this.employeeProfile!.employeeDetails.postalAddress?.complexName?.trim(), Validators.required],
-      postalStreetNumber: [this.employeeProfile!.employeeDetails.postalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      postalSuburb: [this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict?.trim(), Validators.required],
-      postalCity: [this.employeeProfile!.employeeDetails.postalAddress?.city?.trim(), Validators.required],
-      postalCountry: [this.employeeProfile!.employeeDetails.postalAddress?.country?.trim(), Validators.required],
-      postalProvince: [this.employeeProfile!.employeeDetails.postalAddress?.province?.trim(), Validators.required],
-      postalPostalCode: [this.employeeProfile!.employeeDetails.postalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]]
-    });
-    this.sharedAccordionFunctionality.addressDetailsForm.disable();
-    this.checkAddressFormProgress();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", "addressDetailsForm", true)
-
-
     this.sharedAccordionFunctionality.personalDetailsForm = this.fb.group({
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
@@ -105,21 +49,14 @@ export class AccordionProfilePersonalDetailsComponent {
 
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
     this.checkPersonalFormProgress();
-    this.sharedAccordionFunctionality.totalProfileProgress();
     this.checkEmployeeDetails();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", "personalDetailsForm", true)
+    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", true)
   }
 
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
-    private customValidationService: CustomvalidationService,
-    private employeeProfileService: EmployeeProfileService,
-    private employeeDataService: EmployeeDataService,
-    private clientService: ClientService,
-    private employeeTypeService: EmployeeTypeService,
-    private fieldCodeService: FieldCodeService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
@@ -235,31 +172,7 @@ export class AccordionProfilePersonalDetailsComponent {
       }
     }
     this.personalFormProgress = Math.round((filledCount / totalFields) * 100);
-  }
-
-  checkAddressFormProgress() {
-    let filledCount = 0;
-    const formControls = this.sharedAccordionFunctionality.addressDetailsForm.controls;
-    let totalFields = 0;
-    if (this.sharedAccordionFunctionality.physicalEqualPostal) {
-      totalFields = (Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls).length) / 2;
-    }
-    else if (!this.sharedAccordionFunctionality.physicalEqualPostal) {
-      totalFields = (Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls).length);
-    }
-
-    for (const controlName in formControls) {
-      if (formControls.hasOwnProperty(controlName)) {
-        const control = formControls[controlName];
-        if (this.sharedAccordionFunctionality.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != " " && control.value != "") {
-          filledCount++;
-        }
-        else if (!this.sharedAccordionFunctionality.physicalEqualPostal && control.value != null && control.value != " " && control.value != "") {
-          filledCount++;
-        }
-      }
-    }
-    this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
+    this.updateProfile.emit(this.personalFormProgress);
   }
 
   cancelPersonalEdit() {
@@ -269,55 +182,10 @@ export class AccordionProfilePersonalDetailsComponent {
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
   }
 
-  checkEmployeeFormProgress() {
-    let filledCount = 0;
-    const formControls = this.sharedAccordionFunctionality.employeeDetailsForm.controls;
-    const totalFields = Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls).length;
-    for (const controlName in formControls) {
-      if (formControls.hasOwnProperty(controlName)) {
-        const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
-          filledCount++;
-        }
-      }
-    }
-    this.employeeFormProgress = Math.round((filledCount / totalFields) * 100);
-    this.updateProfile.emit(this.employeeFormProgress);
-  }
-
-  checkContactFormProgress() {
-    let filledCount = 0;
-    const formControls = this.sharedAccordionFunctionality.employeeContactForm.controls;
-    const totalFields = Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls).length;
-    for (const controlName in formControls) {
-      if (formControls.hasOwnProperty(controlName)) {
-        const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
-          filledCount++;
-        }
-      }
-    }
-    this.contactFormProgress = Math.round((filledCount / totalFields) * 100);
-  }
-
-  checkPropertyPermissions(fieldNames: string[], table: string, form: string, initialLoad: boolean): void {
+  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     fieldNames.forEach(fieldName => {
       let control: AbstractControl<any, any> | null = null;
-
-      switch (form) {
-        case "employeeDetailsForm":
-          control = this.sharedAccordionFunctionality.employeeDetailsForm.get(fieldName);
-          break;
-        case "employeeContactForm":
-          control = this.sharedAccordionFunctionality.employeeContactForm.get(fieldName);
-          break;
-        case "addressDetailsForm":
-          control = this.sharedAccordionFunctionality.addressDetailsForm.get(fieldName);
-          break;
-        case "additionalInfoForm":
-          control = this.sharedAccordionFunctionality.additionalInfoForm.get(fieldName);
-          break;
-      }
+      control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
 
       if (control) {
         switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
