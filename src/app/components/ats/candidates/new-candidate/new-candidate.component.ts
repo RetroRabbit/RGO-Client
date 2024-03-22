@@ -47,7 +47,7 @@ export class NewCandidateComponent {
   years: number[] = [];
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
-  imageName: string ='';
+  imageName: string = '';
   imageUrl: string = '';
   base64Image: string = "";
   cvFilename: string = "";
@@ -63,6 +63,9 @@ export class NewCandidateComponent {
   isValidCVFile = true;
   isValidProfileImage = true;
   isValidPortfolioFile = true;
+  isblacklisted = false;
+  candidateExists = false;
+  candidateWarning = false;
   cvFileUploaded = false;
   portfolioFileUploaded = false;
   IdPattern = /^\d{13}$/;
@@ -71,8 +74,8 @@ export class NewCandidateComponent {
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
   employeesReferrals: Observable<GenericDropDownObject[]> = this.getEmployees();
   filteredEmployees!: Observable<GenericDropDownObject[]>;
-  allEmployees : EmployeeProfile[] = [];
-   
+  allEmployees: EmployeeProfile[] = [];
+
   ngOnInit(): void {
     this.initializeForm();
     this.navService.showNavbar = false;
@@ -87,14 +90,14 @@ export class NewCandidateComponent {
     this.getAllEmployees();
   }
 
-  getAllEmployees(){
+  getAllEmployees() {
     this.employeeService.getAll().subscribe({
       next: employeesArray => this.allEmployees = employeesArray,
       error: error => this.snackBarService.showSnackbar(error, "error")
     })
   }
 
-  initializeForm(){
+  initializeForm() {
     this.newCandidateForm = this.fb.group({
       name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
       surname: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
@@ -151,9 +154,9 @@ export class NewCandidateComponent {
     const selectedSchool = event.value;
     this.optionIsOther = selectedSchool === 'Other';
     if (!this.optionIsOther) {
-        this.newCandidateForm.setValue({selectedSchool:selectedSchool});
+      this.newCandidateForm.setValue({ selectedSchool: selectedSchool });
     }
-}
+  }
 
   onImageChange(event: any): void {
     if (event.target.files && event.target.files.length) {
@@ -190,7 +193,7 @@ export class NewCandidateComponent {
     };
     reader.readAsDataURL(file);
   }
-  
+
   convertTobase64(dataURI: string): string {
     const base64index = dataURI.indexOf(';base64,') + ';base64,'.length;
     const base64 = dataURI.substring(base64index);
@@ -220,7 +223,7 @@ export class NewCandidateComponent {
         const mappedEmployees: GenericDropDownObject[] = employees.map(employee => ({
           id: employee.id || 0,
           name: employee.name || 'Unknown',
-          surname: employee.surname  || 'unknown'
+          surname: employee.surname || 'unknown'
         }));
         mappedEmployees.unshift({});
         return mappedEmployees;
@@ -235,39 +238,48 @@ export class NewCandidateComponent {
     );
   }
 
-
   validateAndCheckCandidateEmail(): void {
     const email = this.newCandidateForm.get('email')?.value as string;
-    
+
     if (!email) {
-      this.snackBarService.showSnackbar("Oops, some fields are still missing information", "snack-error");
+      this.snackBarService.showSnackbar("Oops, some fields are still missing information.", "snack-error");
       return;
     }
+
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     this.isValidEmail = emailPattern.test(email);
-  
+
     if (!this.isValidEmail) {
       this.snackBarService.showSnackbar("Please enter a valid email address", "snack-error");
       return;
     }
-  
+
     this.candidateService.getAll().subscribe({
       next: (candidates) => {
         const candidate = candidates.find(c => c.personalEmail === email);
         if (candidate) {
-          console.log('in if')
-          if (candidate.blackListed === 0) {
-            console.log('in exists')
-            this.snackBarService.showSnackbar("This email exists ", "snack-success");
-          } else if (candidate.blackListed === 1) {
-            console.log('in warning')
-            this.snackBarService.showSnackbar("This email is in warning.", "snack-error");
-          } else if (candidate.blackListed === 2) {
-            console.log('in blacklisted')
-            this.snackBarService.showSnackbar("This email is blacklisted.", "snack-error");
+          switch (candidate.blacklisted) {
+            case 0:
+              console.log('in case 0');
+              this.snackBarService.showSnackbar("This email already exists in our records.", "snack-info");
+              this.candidateExists = true;
+              break;
+            case 1:
+              console.log('in case 1');
+              this.snackBarService.showSnackbar("This email is in warning.", "snack-warning");
+              this.candidateWarning = true;
+              break;
+            case 2:
+              console.log('in case 2');
+              this.snackBarService.showSnackbar("This email is blacklisted.", "snack-error");
+              this.isblacklisted = true;
+              break;
+            default:
+              console.log('in default');
+              this.snackBarService.showSnackbar("This email already exists in our records.", "snack-info");
           }
         } else {
-          this.snackBarService.showSnackbar("Email does not exist in our records.", "snack-info");
+          this.snackBarService.showSnackbar("This email does not exist in our records. You can proceed to add it.", "snack-success");
         }
       },
       error: (err) => {
@@ -358,14 +370,14 @@ export class NewCandidateComponent {
       }
     }
   }
-  
+
   onCVFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
       this.cvFileUploaded = true;
       const file = event.target.files[0];
       this.cvFilename = file.name;
       if (this.validateCVFile(file)) {
-        this.fileConverter(file, 'cv'); 
+        this.fileConverter(file, 'cv');
       }
     }
   }
@@ -381,15 +393,15 @@ export class NewCandidateComponent {
 
 
   onSubmitCandidate(nextPage: string): void {
-    if(this.newCandidateForm.valid){
+    if (this.newCandidateForm.valid) {
       const newCandidateForm = this.newCandidateForm.value;
-      
+
       const candidateDto = {
         id: 0,
         name: newCandidateForm.name,
-        surname:newCandidateForm.surname,
+        surname: newCandidateForm.surname,
         personalEmail: newCandidateForm.email,
-        potentialLevel:newCandidateForm.potentialLevel,
+        potentialLevel: newCandidateForm.potentialLevel,
         jobPosition: newCandidateForm.jobPosition,
         linkedIn: newCandidateForm.linkedInProfile,
         profilePicture: this.base64Image,
@@ -404,29 +416,29 @@ export class NewCandidateComponent {
         referral: newCandidateForm.referral,
         highestQualification: newCandidateForm.highestQualification,
         school: newCandidateForm.school,
-        qualificationEndDate : newCandidateForm.endDate,
-        blackListed : 0,
-        blackListedReason : ''
+        qualificationEndDate: newCandidateForm.endDate,
+        blacklisted: 0,
+        blackListedReason: ''
       }
       console.log(candidateDto)
       this.candidateService.addCandidate(candidateDto).subscribe({
-        next: (data) => 
+        next: (data) =>
           this.snackBarService.showSnackbar("Candidate added successfully", "snack-success"),
-        error: (error) => 
+        error: (error) =>
           this.snackBarService.showSnackbar(error, "snack-error")
       });
-      }
-    }
-
-    showSelectedReferral(event: any){
-      this.allEmployees.forEach(employee => {
-        let fullName = `${employee.name} ${employee.surname}`;
-        if(fullName == event.source.value){
-          this.newCandidateForm.get('referral')?.patchValue(employee.id)
-        }
-      })
     }
   }
+
+  showSelectedReferral(event: any) {
+    this.allEmployees.forEach(employee => {
+      let fullName = `${employee.name} ${employee.surname}`;
+      if (fullName == event.source.value) {
+        this.newCandidateForm.get('referral')?.patchValue(employee.id)
+      }
+    })
+  }
+}
 
 
 
