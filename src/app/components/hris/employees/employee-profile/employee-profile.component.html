@@ -311,9 +311,14 @@
             <app-accordion-profile-personal-details [hidden]="selectedAccordion != 'Profile Details'"
                 [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
                 (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-personal-details>
+            <app-accordion-profile-address-details [hidden]="selectedAccordion != 'Profile Details'"
+                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-address-details>
+
             <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"
                 [employeeProfile]="employeeProfile"
                 (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
+
             <app-accordion-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
                 (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents>
         </div>
