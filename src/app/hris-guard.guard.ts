@@ -18,7 +18,7 @@ export class HrisPageGuard {
       return true;
     }
 
-    if (this.navService.isHris = environment.development && this.navService.isHris == undefined) {
+    if (this.navService.isHris == environment.development && this.navService.isHris == undefined) {
       this.navService.isHris = environment.development;
     } else {
       this.authService.logout()
