@@ -22,6 +22,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
+import { color } from 'html2canvas/dist/types/css/types/color';
 
 @Component({
   selector: 'app-new-employee',
@@ -267,20 +268,18 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndExit() {
-    this.isLoadingAddEmployee = true;
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
   saveAndAddAnother() {
-    this.isLoadingAddEmployee = true;
     this.onUploadDocument('/create-employee');
   }
 
   onUploadDocument(nextPage: string): void {
+    this.isLoadingAddEmployee = true;
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
         next: () => {
-          console.log(this.isLoadingAddEmployee)
           this.snackBarService.showSnackbar("Files have been uploaded", "snack-success");
           this.isLoadingAddEmployee = false;
         },
@@ -297,7 +296,6 @@ export class NewEmployeeComponent implements OnInit {
         }
       });
     });
-    this.isLoadingAddEmployee = false;
   }
 
   public fileOver(event: Event) {
