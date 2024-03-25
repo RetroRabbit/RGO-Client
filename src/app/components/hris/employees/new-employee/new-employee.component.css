@@ -373,6 +373,19 @@ main {
     letter-spacing: 0.10000000149011612px;
     text-align: left;
 }
+  
+.spinner-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 @media (max-width: 767px) {
 

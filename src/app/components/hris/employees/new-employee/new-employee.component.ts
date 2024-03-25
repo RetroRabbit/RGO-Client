@@ -272,6 +272,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndAddAnother() {
+    this.isLoadingAddEmployee = true;
     this.onUploadDocument('/create-employee');
   }
 
@@ -279,20 +280,24 @@ export class NewEmployeeComponent implements OnInit {
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
         next: () => {
+          console.log(this.isLoadingAddEmployee)
           this.snackBarService.showSnackbar("Files have been uploaded", "snack-success");
+          this.isLoadingAddEmployee = false;
         },
         error: (error: any) => {
           this.snackBarService.showSnackbar("Failed to save documents", "snack-error");
+          this.isLoadingAddEmployee = false;
         }, complete: () => {
           this.employeeDocumentModels = [];
           this.newEmployeeEmail = "";
           this.files = [];
           this.myStepper.previous();
           this.router.navigateByUrl(nextPage);
-
+          this.isLoadingAddEmployee = false;
         }
       });
     });
+    this.isLoadingAddEmployee = false;
   }
 
   public fileOver(event: Event) {
