@@ -387,6 +387,10 @@ main {
     align-items: center;
 }
 
+.mat-mdc-progress-spinner {
+    --mdc-circular-progress-active-indicator-color: #0029C6 !important;
+  }
+  
 @media (max-width: 767px) {
 
     .container {

@@ -42,6 +42,7 @@ export class AccordionDocumentsComponent {
   dataSource = new MatTableDataSource<string>();
   selectedFile !: File;
   roles: string[] = [];
+  isLoadingUpload : boolean = false;
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
@@ -92,6 +93,7 @@ export class AccordionDocumentsComponent {
   }
 
   uploadDocument(event: any) {
+    this.isLoadingUpload = true;
     this.selectedFile = event.target.files[0];
     this.documentsFileName = this.selectedFile.name;
     this.uploadProfileDocument();
@@ -133,12 +135,15 @@ export class AccordionDocumentsComponent {
     if (document.id == 0) {
       this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
         next: () => {
+          this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getEmployeeDocuments();
           this.calculateDocumentProgress();
         },
         error: (error) => {
+          this.isLoadingUpload = false;
           this.snackBarService.showSnackbar(error, "snack-error");
+
         }
       });
     } else {
@@ -157,12 +162,15 @@ export class AccordionDocumentsComponent {
       console.log(updatedDocument);
       this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
         next: () => {
+          this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getEmployeeDocuments();
           this.calculateDocumentProgress();
+
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
+          this.isLoadingUpload = false;
         }
       });
     }
