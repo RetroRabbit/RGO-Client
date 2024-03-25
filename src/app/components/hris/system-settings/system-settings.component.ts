@@ -18,7 +18,7 @@ export class SystemSettingsComponent {
   }
   constructor(public cookieService: CookieService, public navService: NavService, public systemNavItemService: SystemNav) {
     navService.showNavbar = true;
-    this.systemNavItemService.selectedMenuItem = "Role Management";
+    this.systemNavItemService.selectedMenuItem = "Custom Field management";
   }
   ngOnInit() {
     this.onResize();
