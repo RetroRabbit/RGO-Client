@@ -19,7 +19,7 @@ export class CandidateService {
     return this.httpClient.post<Candidate>(`${this.baseUrl}`, newcandidate);
   }
   
-  /**@returns List of Basic Employee objects.*/
+  /**@returns List of Basic candidate objects.*/
 
     getAll(): Observable<Candidate[]> {
       return this.httpClient.get<Candidate[]>(`${this.baseUrl}/all`);
