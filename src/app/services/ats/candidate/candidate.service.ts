@@ -24,5 +24,4 @@ export class CandidateService {
     getAll(): Observable<Candidate[]> {
       return this.httpClient.get<Candidate[]>(`${this.baseUrl}/all`);
     }
-
 };
