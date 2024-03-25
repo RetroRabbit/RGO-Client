@@ -1,4 +1,4 @@
-import { CanActivateFn } from '@angular/router';
+import { CanActivateFn} from '@angular/router';
 import { Injectable } from '@angular/core';
 import { NavService } from './services/shared-services/nav-service/nav.service';
 import { AuthService } from './services/shared-services/auth-access/auth.service';
@@ -9,20 +9,22 @@ import { environment } from 'src/environments/environment';
 })
 
 export class HrisPageGuard {
-  constructor(private navService: NavService,
+  constructor( private navService: NavService,
     private authService: AuthService
-  ) { }
+    ) {}
 
   canActivate: CanActivateFn = () => {
     if (this.navService.isHris) {
       return true;
     }
 
-    if (this.navService.isHris == environment.development && this.navService.isHris == undefined) {
-      this.navService.isHris = environment.development;
-    } else {
+    if(this.navService.isHris == undefined){
       this.authService.logout()
-    }
+   }
+
+   if(environment.development && this.navService.isHris == undefined){
+    this.navService.isHris = environment.development
+ }
     return false;
   };
 }
