@@ -71,3 +71,34 @@
 :host .upload-download-button {
     width: 100%!important;
 }
+
+.row {
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.statuses {
+    padding: 5px;
+}
+
+#status-0 {
+    background-color: #008000;
+}
+
+#status-1 {
+    background: #008000;
+}
+
+#status-2 {
+    background: #ff0000;
+    height: 50px;
+}
+
+#status-3 {
+    background: #0000;
+}
+
+#accordion {
+    margin-right: -2%;
+    margin-left: -2%;
+}
