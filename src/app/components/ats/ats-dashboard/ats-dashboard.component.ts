@@ -13,21 +13,12 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 })
 
 export class AtsDashboardComponent {
-  @ViewChild('dialogTemplate', { static: true })
-  dialogTemplate!: TemplateRef<any>;
-  @ViewChild(MatSort) sort!: MatSort;
-  @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
-  @Output() expandSearch = new EventEmitter<string>();
-
   isLoading: boolean = true;
   isMobileScreen = false;
-  PREVIOUS_PAGE: string = 'previousPage';
   
-
   constructor(
-    private cookieService: CookieService,
     private router: Router,
-    private navService: NavService,
+    navService: NavService,
     public authAccessService: AuthAccessService) {
     navService.showNavbar = true;
   }
