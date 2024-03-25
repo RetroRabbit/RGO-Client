@@ -379,7 +379,7 @@
           <div>
             <mat-spinner *ngIf="isLoadingAddEmployee == true"></mat-spinner>
           </div>
-          <div>
+          <div *ngIf="isLoadingAddEmployee == false">
             <div class="container upload-drop-container">
               <div class="row justify-content-center align-items-center">
                 <div class="upload-drop-section row">
