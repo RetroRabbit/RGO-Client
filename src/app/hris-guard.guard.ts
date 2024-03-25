@@ -2,6 +2,7 @@ import { CanActivateFn} from '@angular/router';
 import { Injectable } from '@angular/core';
 import { NavService } from './services/shared-services/nav-service/nav.service';
 import { AuthService } from './services/shared-services/auth-access/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class HrisPageGuard {
     }
 
     if(this.navService.isHris == undefined){
+      this.navService.isHris = environment.development;
       this.authService.logout()
    }
     return false;
