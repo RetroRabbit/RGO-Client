@@ -128,16 +128,6 @@ export class NewCandidateComponent {
     this.router.navigateByUrl(this.cookieService.get(this.PREVIOUS_PAGE));
   }
 
-  setSelectedRace(event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    this.newCandidateForm.patchValue({ race: +selectedValue });
-  }
-
-  setSelectedGender(event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    this.newCandidateForm.patchValue({ gender: +selectedValue });
-  }
-
   populateYears() {
     const currentYear = new Date().getFullYear();
     const earliestYear = 1970;

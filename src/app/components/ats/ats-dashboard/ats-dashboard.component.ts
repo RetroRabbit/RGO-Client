@@ -39,4 +39,7 @@ export class AtsDashboardComponent {
     this.screenWidth = window.innerWidth;
   }
 
+  AddCandidate() {
+    this.router.navigateByUrl('/create-candidate');
+  }
 }
