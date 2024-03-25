@@ -73,12 +73,8 @@
 }
 
 .row {
-    margin-left: 25px;
-    margin-right: 25px;
-}
-
-.statuses {
-    padding: 5px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 #status-0 {
@@ -86,16 +82,11 @@
 }
 
 #status-1 {
-    background: #008000;
+    background: #ff0000;;
 }
 
 #status-2 {
-    background: #ff0000;
-    height: 50px;
-}
-
-#status-3 {
-    background: #0000;
+    background: #808080;
 }
 
 #accordion {
