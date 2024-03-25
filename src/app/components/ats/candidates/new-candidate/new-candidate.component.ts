@@ -393,7 +393,7 @@ export class NewCandidateComponent {
         school: newCandidateForm.school,
         qualificationEndDate: newCandidateForm.endDate,
         blacklistedStatus: 0,
-        blackListedReason: ''
+        blacklistedReason: ''
       }
       this.candidateService.addCandidate(candidateDto).subscribe({
         next: (data) =>
