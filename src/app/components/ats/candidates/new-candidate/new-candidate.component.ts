@@ -67,7 +67,7 @@ export class NewCandidateComponent {
   candidateWarning = false;
   cvFileUploaded = false;
   portfolioFileUploaded = false;
-  IdPattern = /^\d{13}$/;
+  idPattern = /^\d{13}$/;
   optionIsOther = false;
   additionalFieldsVisible: boolean = false;
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
