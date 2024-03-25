@@ -7,8 +7,28 @@
                     <h4 id="dialog-subtitle">{{dialogType.subtitle}}</h4>
                 </div>
                 <div id="button-container">
-                    <button mat-button mat-dialog-close id="save-button" (click)="captureResponse(true)">{{dialogType.confirmButtonText}}</button>
-                    <button mat-button mat-dialog-close id="cancel-button" (click)="captureResponse(false)">{{dialogType.denyButtonText}}</button>
+                    <button mat-button mat-dialog-close id="save-button"
+                        (click)="captureResponse(true)">{{dialogType.confirmButtonText}}</button>
+                    <button mat-button mat-dialog-close id="cancel-button"
+                        (click)="captureResponse(false)">{{dialogType.denyButtonText}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #dialogSaveTemplateMobile>
+    <div id="dialog-content-mobile">
+        <div>
+            <div id="dialog-container-mobile">
+                <div id="dialog-header-mobile">
+                    <h2 mat-dialog-title id="dialog-title-mobile">{{dialogType.title}}</h2>
+                    <h4 id="dialog-subtitle">{{dialogType.subtitle}}</h4>
+                </div>
+                <div id="button-container-mobile">
+                    <button mat-button mat-dialog-close id="save-button-mobile"
+                        (click)="captureResponse(true)">{{dialogType.confirmButtonText}}</button>
+                    <button mat-button mat-dialog-close id="cancel-button-mobile"
+                        (click)="captureResponse(false)">{{dialogType.denyButtonText}}</button>
                 </div>
             </div>
         </div>

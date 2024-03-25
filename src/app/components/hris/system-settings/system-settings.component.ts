@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter,HostListener } from '@angular/core';
+import { Component, Output, EventEmitter, HostListener } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { FieldCode } from 'src/app/models/hris/field-code.interface';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
@@ -12,13 +12,13 @@ export class SystemSettingsComponent {
   @Output() emitFieldCode = new EventEmitter<FieldCode>();
   clicked: string = "";
   screenWidth = window.innerWidth;
-  @HostListener('window:resize',['$event'])
-  onResize(){
+  @HostListener('window:resize', ['$event'])
+  onResize() {
     this.screenWidth = window.innerWidth;
   }
   constructor(public cookieService: CookieService, public navService: NavService, public systemNavItemService: SystemNav) {
     navService.showNavbar = true;
-    this.systemNavItemService.selectedMenuItem = "Role Management";
+    this.systemNavItemService.selectedMenuItem = "Custom Field management";
   }
   ngOnInit() {
     this.onResize();
