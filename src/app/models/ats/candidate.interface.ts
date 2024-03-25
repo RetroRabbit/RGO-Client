@@ -20,5 +20,5 @@ export interface Candidate{
     school: string,
     qualificationEndDate : Date,
     blacklistedStatus : number,
-    blackListedReason : string
+    blacklistedReason : string
 }
