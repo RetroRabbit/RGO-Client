@@ -371,7 +371,7 @@ export class NewCandidateComponent {
     }
   }
 
-  saveCanidateAndExit() {
+  saveCandidateAndExit() {
     this.onSubmitCandidate('/ats-dashboard');
   }
 

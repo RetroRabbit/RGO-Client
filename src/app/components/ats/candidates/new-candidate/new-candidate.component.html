@@ -9,10 +9,8 @@
             <div class="row justify-content-center align-items-center">
                 <div class="row justify-content-center align-items-center">
                     <div class="profile-photo">
-                        <img *ngIf="imageUrl !== ''" [src]="imageUrl" [alt]="employeeProfile.photo"
-                            class="rounded-circle profile-img">
-                        <img *ngIf="imageUrl === ''" [src]="employeeProfile.photo" [alt]="employeeProfile.photo"
-                            class="rounded-circle profile-img" accept=".png, .svg,.jpg">
+                        <img *ngIf="imageUrl !== ''" [src]="imageUrl" [alt]="employeeProfile.photo" class="rounded-circle profile-img">
+                        <img *ngIf="imageUrl === ''" [src]="employeeProfile.photo" [alt]="employeeProfile.photo" class="rounded-circle profile-img" accept=".png, .svg,.jpg">
                     </div>
                     <div class="col-12 text-center roboto-font pb-3 mt-3">
                         <h2 *ngIf="isValidProfileImage" class="center-bold">Profile Picture</h2>
@@ -64,8 +62,7 @@
                         <h3 *ngIf="candidateExists" class="warning-message">Duplicate Canidate found</h3>
                         <h3 *ngIf="isblacklisted" class="warning-message">Blacklisted Canidate</h3>
                         <h3 *ngIf="candidateWarning" class="warning-message">This candidate has a warning</h3>
-                        <p *ngIf="isblacklisted">This candidate has been blacklisted from the company.<br>Go to their
-                            profile to see the reason or lift the blacklisting</p>
+                        <p *ngIf="isblacklisted">This candidate has been blacklisted from the company.<br>Go to their profile to see the reason or lift the blacklisting</p>
                         <p *ngIf="candidateExists">The candidate already exists in our system</p>
                         <p *ngIf="candidateWarning">This candidate has recieved a warning in the system</p>
                     </div>
@@ -107,10 +104,8 @@
                         <input matInput type="text" [value]="cvFilename" (click)="uploadCVFile.click()" />
                         <span mat-icon-button matSuffix class="pe-3">
                             <mat-icon *ngIf="!cvFileUploaded" id="file-upload-cursor">attach_file</mat-icon>
-                            <mat-icon *ngIf="cvFileUploaded && isValidCVFile" id="change-close-color"
-                                (click)="clearCVFileUpload()">close</mat-icon>
-                            <mat-icon *ngIf="!isValidCVFile" (click)="clearCVFileUpload()"
-                                id="change-close-color">error</mat-icon>
+                            <mat-icon *ngIf="cvFileUploaded && isValidCVFile" id="change-close-color" (click)="clearCVFileUpload()">close</mat-icon>
+                            <mat-icon *ngIf="!isValidCVFile" (click)="clearCVFileUpload()" id="change-close-color">error</mat-icon>
                         </span>
                         <input type="file" #uploadCVFile (change)="onCVFileChange($event)" hidden accept=".pdf" />
                     </mat-form-field>
@@ -119,12 +114,8 @@
                     </div>
                     <p *ngIf="isValidCVFile" class="col-md-12 col-lg-7">Please upload a PDF</p>
                     <p *ngIf="isValidCVFile" class="col-md-12 col-lg-7">10 MB Max limit size</p>
-                    <h3 id="change-color-heading" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7">Unsupported file
-                        format :</h3>
-                    <p id="change-close-color" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7">The selected file type
-                        is not supported.</p>
-                    <p id="change-close-color" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7"> Please upload a PDF
-                    </p>
+                    <h3 id="change-color-heading" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7">Unsupported file format :</h3>
+                    <p id="change-close-color" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7">The selected file type is not supported. <br> Please upload a PDF</p>
                     <h4 class="col-md-12 col-lg-7 info-text">Portfolio</h4>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Attach website link</mat-label>
@@ -141,8 +132,7 @@
                             <mat-icon *ngIf="!portfolioFileUploaded" id="file-upload-cursor">attach_file</mat-icon>
                             <mat-icon *ngIf="portfolioFileUploaded && isValidPortfolioFile" id="change-close-color"
                                 (click)="clearPortfolioFileUpload()">close</mat-icon>
-                            <mat-icon *ngIf="!isValidPortfolioFile" (click)="clearPortfolioFileUpload()"
-                                id="change-close-color">error</mat-icon>
+                            <mat-icon *ngIf="!isValidPortfolioFile" (click)="clearPortfolioFileUpload()" id="change-close-color">error</mat-icon>
                         </span>
                         <input type="file" #uploadPortfolioFile (change)="onPortfolioFileChange($event)" hidden
                             accept=".pdf" />
@@ -152,16 +142,9 @@
                     </div>
                     <p *ngIf="isValidPortfolioFile" class="col-md-12 col-lg-7">Please upload a PDF</p>
                     <p *ngIf="isValidPortfolioFile" class="col-md-12 col-lg-7">10 MB Max limit size</p>
-                    <h3 id="change-color-heading" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">Unsupported
-                        file
-                        format :</h3>
-                    <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">The selected
-                        file type
-                        is not supported.</p>
-                    <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7"> Please upload a
-                        PDF</p>
-                    <mat-slide-toggle class="col-md-12 col-lg-7 mb-3" color="primary" id="additionalFieldsToggle"
-                        (click)="toggleAdditionalFields()">
+                    <h3 id="change-color-heading" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">Unsupported file format :</h3>
+                    <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">The selected file type is not supported.<br> Please upload a PDF</p>
+                    <mat-slide-toggle class="col-md-12 col-lg-7 mb-3" color="primary" id="additionalFieldsToggle" (click)="toggleAdditionalFields()">
                         Additional fields
                     </mat-slide-toggle>
                     <div *ngIf="additionalFieldsVisible"
@@ -187,10 +170,8 @@
                             <input matInput placeholder="Referral" [formControl]="searchControl"
                                 [matAutocomplete]="auto">
                             <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option *ngFor="let employee of allEmployees"
-                                    [value]='employee.name + " " + employee.surname'
-                                    (onSelectionChange)="showSelectedReferral($event)">
-                                    {{ employee.name }} {{ employee.surname}}
+                                <mat-option *ngFor="let employee of allEmployees" [value]='employee.name + " " + employee.surname'
+                                    (onSelectionChange)="showSelectedReferral($event)">{{ employee.name }} {{ employee.surname}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
@@ -199,9 +180,7 @@
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>Highest Qualification</mat-label>
                             <mat-select formControlName="highestQualification">
-                                <mat-option *ngFor="let qualification of qualifications; index as i"
-                                    [value]="qualification">{{
-                                    qualification }}</mat-option>
+                                <mat-option *ngFor="let qualification of qualifications; index as i" [value]="qualification">{{qualification }}</mat-option>
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
@@ -209,8 +188,7 @@
                             <mat-label>School</mat-label>
                             <mat-select *ngIf="!optionIsOther" formControlName="school"
                                 (selectionChange)="toggleOtherSchoolField($event, schools)">
-                                <mat-option *ngFor="let school of schools; index as i" [value]="school">{{ school
-                                    }}</mat-option>
+                                <mat-option *ngFor="let school of schools; index as i" [value]="school">{{school}}</mat-option>
                             </mat-select>
                             <input *ngIf="optionIsOther" matInput type="text" formControlName="school"
                                 placeholder="Enter other school">
@@ -238,7 +216,7 @@
                         Profile</button>
                     <button *ngIf="isValidEmail && !isblacklisted && !candidateExists && !candidateWarning"
                         id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
-                        (click)="saveCanidateAndExit()">Save</button>
+                        (click)="saveCandidateAndExit()">Save</button>
                 </div>
             </div>
         </form>
