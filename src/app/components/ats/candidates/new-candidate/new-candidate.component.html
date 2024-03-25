@@ -20,10 +20,6 @@
                         <p *ngIf="isValidProfileImage" class="profile-text">10 MB Max limit size</p>
                         <p id="change-color-heading" *ngIf="!isValidProfileImage" class="profile-text">File size
                             exceeded. Maximum limit is 10 MB.</p>
-                        <!-- <button id="upload-button" mat-icon-button (click)="uploadFile.click()" class="upload-button">
-                            <mat-icon id="file-upload-cursor">file_upload</mat-icon>
-                            <span class="button-text">Upload Picture</span>
-                        </button> -->
                         <div id="actionCellUpload" class="col-12 col-md-auto">
                             <button (click)="uploadFile.click()" [ngStyle]="{'color': '#F8F8F8', 'background-color': '#0029C6'}" [ngClass]="screenWidth <= 767 ? 'upload-download-button' : ''">
                                 <svg id="svg-icon-w" width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg">
@@ -32,8 +28,7 @@
                                     </g>
                                 </svg> Upload Picture
                             </button>
-                        </div>
-                        
+                        </div>                       
                         <input type="file" #uploadFile (change)="onImageChange($event)" hidden />
                         <p class="col-md-12 col-lg-7 mt-5 info-text">*Required fields</p>
                     </div>
@@ -60,13 +55,15 @@
                             Please enter a valid email address
                         </mat-error>
                     </mat-form-field>
-                    <h3 *ngIf="candidateExists" class="warning-message">Duplicate canidate found</h3>
-                    <h3 *ngIf="isblacklisted" class="warning-message">Duplicate canidate found</h3>
+                  <div class="col-md-12 col-lg-7 my-1">
+                    <h3 *ngIf="candidateExists" class="warning-message">Duplicate Canidate found</h3>
+                    <h3 *ngIf="isblacklisted" class="warning-message">Blacklisted Canidate</h3>
                     <h3 *ngIf="candidateWarning" class="warning-message">This candidate has a warning</h3>
                     <p *ngIf="isblacklisted">This candidate has been blacklisted from the company.<br>Go to their
                         profile to see the reason or lift the blacklisting</p>
                     <p *ngIf="candidateExists">The candidate already exists in our system</p>
                     <p *ngIf="candidateWarning">This candidate has recieved a warning in the system</p>
+                  </div>
                 </div>
                 <!-- *ngIf="isValidEmail"  -->
                 <div *ngIf="isValidEmail && !isblacklisted && !candidateExists && !candidateWarning"
