@@ -16,8 +16,7 @@
                         <h2 *ngIf="isValidProfileImage" class="center-bold">Profile Picture</h2>
                         <p *ngIf="isValidProfileImage" class="profile-text">PNG, JPG, SVG</p>
                         <p *ngIf="isValidProfileImage" class="profile-text">10 MB Max limit size</p>
-                        <p id="change-color-heading" *ngIf="!isValidProfileImage" class="profile-text">File size
-                            exceeded. Maximum limit is 10 MB.</p>
+                        <p id="change-color-heading" *ngIf="!isValidProfileImage" class="profile-text">File size exceeded. Maximum limit is 10 MB.</p>
                         <div id="actionCellUpload" class="col-12 col-md-auto">
                             <button (click)="uploadFile.click()"
                                 [ngStyle]="{'color': '#F8F8F8', 'background-color': '#0029C6'}"
@@ -209,9 +208,7 @@
                         (click)="validateAndCheckCandidateEmail()">Next</button>
                     <button *ngIf="isValidEmail && !isBlacklisted && !candidateExists && ! candidateWarning"
                         id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
-                        (click)="saveAndAddAnotherCandidate()">Save
-                        and add
-                        another</button>
+                        (click)="saveAndAddAnotherCandidate()">Save and add another</button>
                     <button *ngIf="isBlacklisted || candidateWarning || candidateExists" id="save-button">Go to
                         Profile</button>
                     <button *ngIf="isValidEmail && !isBlacklisted && !candidateExists && !candidateWarning"
