@@ -129,7 +129,4 @@ export class SharedAccordionFunctionality {
     //   this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress + this.additionalFormProgress) / 5);
     //   this.updateProfile.emit(this.profileFormProgress);
   }
-
-
-
 }
