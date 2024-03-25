@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Input, Output } from '@angular/core';
 import { Client } from 'src/app/models/hris/client.interface';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
@@ -13,11 +13,15 @@ import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { FieldCode } from 'src/app/models/hris/field-code.interface';
 import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
+import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class SharedAccordionFunctionality {
+  @Output() updateProfile = new EventEmitter<number>();
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
@@ -63,12 +67,11 @@ export class SharedAccordionFunctionality {
   fieldTypes = dataTypes;
 
   filteredCountries: any[] = this.countries.slice();
+  usingProfile: boolean = true;
 
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   initialsPattern = /^[A-Z]+$/;
   namePattern = /^[a-zA-Z\s'-]*$/
-
-
 
   totalProfileProgress() {
     //   this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress + this.additionalFormProgress) / 5);

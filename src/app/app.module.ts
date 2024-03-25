@@ -85,6 +85,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { PropertyAccessComponent } from './components/hris/system-settings/property-access/property-access.component';
 import { AccordionProfileEmployeeDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-employee-details/accordion-profile-employee-details.component';
 import { AccordionProfileContactDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-contact-details/accordion-profile-contact-details.component';
+import { AccordionProfileAdditionalComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
 
 @NgModule({
   declarations: [
@@ -120,6 +121,7 @@ import { AccordionProfileContactDetailsComponent } from './components/hris/emplo
     PropertyAccessComponent,
     AccordionProfileEmployeeDetailsComponent,
     AccordionProfileContactDetailsComponent,
+    AccordionProfileAdditionalComponent,
 
   ],
   imports: [

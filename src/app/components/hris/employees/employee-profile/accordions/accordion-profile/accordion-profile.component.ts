@@ -152,6 +152,8 @@ export class AccordionProfileComponent {
   });
 
   additionalInfoForm: FormGroup = this.fb.group({});
+
+
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,

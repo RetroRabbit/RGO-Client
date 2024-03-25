@@ -1,33 +1,14 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Client } from 'src/app/models/hris/client.interface';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { levels } from 'src/app/models/hris/constants/levels.constants';
-import { races } from 'src/app/models/hris/constants/races.constants';
-import { genders } from 'src/app/models/hris/constants/genders.constants';
-import { countries } from 'src/app/models/hris/constants/countries.constants';
-import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
-import { provinces } from 'src/app/models/hris/constants/provinces.constants';
-import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
-import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
-import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
-import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
-import { ClientService } from 'src/app/services/hris/client.service';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { FieldCodeService } from 'src/app/services/hris/field-code.service';
-import { FieldCode } from 'src/app/models/hris/field-code.interface';
-import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
-import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
-import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
+
 @Component({
   selector: 'app-accordion-profile-contact-details',
   templateUrl: './accordion-profile-contact-details.component.html',
@@ -56,33 +37,21 @@ export class AccordionProfileContactDetailsComponent {
     emergencyContactNo: { value: '', disabled: true }
   });
 
-
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
-    private customValidationService: CustomvalidationService,
-    private employeeProfileService: EmployeeProfileService,
-    private employeeDataService: EmployeeDataService,
-    private clientService: ClientService,
-    private employeeTypeService: EmployeeTypeService,
-    private fieldCodeService: FieldCodeService,
-    private employeeAddressService: EmployeeAddressService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
-
   }
+
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
-    // this.initializeEmployeeProfileDto();
-    // this.getEmployeeFields();
-    // this.getClients();
-    // this.checkEmployeeDetails();
   }
-  initializeForm() {
 
+  initializeForm() {
 
     this.employeeContactForm = this.fb.group({
       email: [this.employeeProfile!.employeeDetails.email, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.emailPattern)]],
@@ -95,8 +64,6 @@ export class AccordionProfileContactDetailsComponent {
     this.employeeContactForm.disable();
     this.checkContactFormProgress();
     this.checkPropertyPermissions(Object.keys(this.employeeContactForm.controls), "Employee", true)
-
-
   }
 
   editContactDetails() {
@@ -110,7 +77,6 @@ export class AccordionProfileContactDetailsComponent {
     this.initializeForm();
     this.employeeContactForm.disable();
   }
-
   saveContactEdit() {
     if (this.employeeContactForm.valid) {
       const employeeContactFormValues = this.employeeContactForm.value;
@@ -150,6 +116,8 @@ export class AccordionProfileContactDetailsComponent {
       }
     }
     this.contactFormProgress = Math.round((filledCount / totalFields) * 100);
+    this.updateProfile.emit(this.contactFormProgress);
+
   }
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     fieldNames.forEach(fieldName => {

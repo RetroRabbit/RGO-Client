@@ -311,6 +311,9 @@
             <app-accordion-profile-contact-details [hidden]="selectedAccordion != 'Profile Details'"
                 [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
                 (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-contact-details>
+                <app-accordion-profile-additional [hidden]="selectedAccordion != 'Profile Details'"
+                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-additional>
 
 
                 <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"

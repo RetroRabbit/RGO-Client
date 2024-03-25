@@ -110,6 +110,73 @@ export class AccordionProfileEmployeeDetailsComponent {
     });
   }
 
+  initializeEmployeeProfileDto() {
+    this.sharedAccordionFunctionality.employeeProfileDto = {
+      id: this.employeeProfile!.employeeDetails.id,
+      employeeNumber: this.employeeProfile!.employeeDetails.employeeNumber,
+      taxNumber: this.employeeProfile!.employeeDetails.taxNumber,
+      engagementDate: this.employeeProfile!.employeeDetails.engagementDate,
+      terminationDate: this.employeeProfile!.employeeDetails.terminationDate,
+      peopleChampion: this.usingProfile ? this.employeeProfile!.employeeDetails.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId,
+      disability: this.employeeProfile!.employeeDetails.disability,
+      disabilityNotes: this.employeeProfile!.employeeDetails.disabilityNotes,
+      countryOfBirth: this.employeeProfile!.employeeDetails.countryOfBirth,
+      nationality: this.employeeProfile!.employeeDetails.nationality,
+      level: this.employeeProfile!.employeeDetails.level,
+      employeeType: {
+        id: this.employeeProfile!.employeeDetails.employeeType!.id,
+        name: this.employeeProfile!.employeeDetails.employeeType!.name,
+      },
+      name: this.employeeProfile!.employeeDetails.name,
+      initials: this.employeeProfile!.employeeDetails.initials,
+      surname: this.employeeProfile!.employeeDetails.surname,
+      dateOfBirth: this.employeeProfile!.employeeDetails.dateOfBirth,
+      idNumber: this.employeeProfile!.employeeDetails.idNumber,
+      passportNumber: this.employeeProfile!.employeeDetails.passportNumber,
+      passportExpirationDate: this.employeeProfile!.employeeDetails.passportExpirationDate,
+      passportCountryIssue: this.employeeProfile!.employeeDetails.passportCountryIssue,
+      race: this.employeeProfile!.employeeDetails.race,
+      gender: this.employeeProfile!.employeeDetails.gender,
+      email: this.employeeProfile!.employeeDetails.email,
+      personalEmail: this.employeeProfile!.employeeDetails.personalEmail,
+      cellphoneNo: this.employeeProfile!.employeeDetails.cellphoneNo,
+      photo: this.employeeProfile!.employeeDetails.photo,
+      notes: '',
+      leaveInterval: this.employeeProfile!.employeeDetails.leaveInterval,
+      salary: this.employeeProfile!.employeeDetails.salary,
+      salaryDays: this.employeeProfile!.employeeDetails.salaryDays,
+      payRate: this.employeeProfile!.employeeDetails.payRate,
+      clientAllocated: this.employeeProfile!.employeeDetails.clientAllocated,
+      teamLead: this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
+      physicalAddress: {
+        id: this.employeeProfile!.employeeDetails.physicalAddress?.id,
+        unitNumber: this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber,
+        complexName: this.employeeProfile!.employeeDetails.physicalAddress?.complexName,
+        streetNumber: this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber,
+        suburbOrDistrict: this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict,
+        city: this.employeeProfile!.employeeDetails.physicalAddress?.city,
+        country: this.employeeProfile!.employeeDetails.physicalAddress?.country,
+        province: this.employeeProfile!.employeeDetails.physicalAddress?.province,
+        postalCode: this.employeeProfile!.employeeDetails.physicalAddress?.postalCode,
+      },
+      postalAddress: {
+        id: this.employeeProfile!.employeeDetails.postalAddress?.id,
+        unitNumber: this.employeeProfile!.employeeDetails.postalAddress?.unitNumber,
+        complexName: this.employeeProfile!.employeeDetails.postalAddress?.complexName,
+        streetNumber: this.employeeProfile!.employeeDetails.postalAddress?.streetNumber,
+        suburbOrDistrict: this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict,
+        city: this.employeeProfile!.employeeDetails.postalAddress?.city,
+        country: this.employeeProfile!.employeeDetails.postalAddress?.country,
+        province: this.employeeProfile!.employeeDetails.postalAddress?.province,
+        postalCode: this.employeeProfile!.employeeDetails.postalAddress?.postalCode,
+      },
+      houseNo: this.employeeProfile?.employeeDetails.houseNo,
+      emergencyContactName: this.employeeProfile?.employeeDetails.emergencyContactName,
+      emergencyContactNo: this.employeeProfile?.employeeDetails.emergencyContactNo
+    }
+    console.log(this.sharedAccordionFunctionality.employeeProfileDto);
+  }
+
   checkEmployeeDetails() {
 
     if (this.usingProfile)
@@ -192,7 +259,7 @@ export class AccordionProfileEmployeeDetailsComponent {
         next: (data) => {
           this.snackBarService.showSnackbar("Employee details updated", "snack-success");
           this.checkEmployeeFormProgress();
-          // this.totalProfileProgress();
+
           this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.sharedAccordionFunctionality.employeeProfileDto?.clientAllocated)[0];
           this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.teamLead)[0];
           this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.peopleChampion)[0];
@@ -221,8 +288,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.employeeFormProgress = Math.round((filledCount / totalFields) * 100);
     this.updateProfile.emit(this.employeeFormProgress);
   }
-
-
 
   filterClients(event: any) {
     if (event) {
@@ -384,78 +449,10 @@ export class AccordionProfileEmployeeDetailsComponent {
     });
   }
 
-  initializeEmployeeProfileDto() {
-    this.sharedAccordionFunctionality.employeeProfileDto = {
-      id: this.employeeProfile!.employeeDetails.id,
-      employeeNumber: this.employeeProfile!.employeeDetails.employeeNumber,
-      taxNumber: this.employeeProfile!.employeeDetails.taxNumber,
-      engagementDate: this.employeeProfile!.employeeDetails.engagementDate,
-      terminationDate: this.employeeProfile!.employeeDetails.terminationDate,
-      peopleChampion: this.usingProfile ? this.employeeProfile!.employeeDetails.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId,
-      disability: this.employeeProfile!.employeeDetails.disability,
-      disabilityNotes: this.employeeProfile!.employeeDetails.disabilityNotes,
-      countryOfBirth: this.employeeProfile!.employeeDetails.countryOfBirth,
-      nationality: this.employeeProfile!.employeeDetails.nationality,
-      level: this.employeeProfile!.employeeDetails.level,
-      employeeType: {
-        id: this.employeeProfile!.employeeDetails.employeeType!.id,
-        name: this.employeeProfile!.employeeDetails.employeeType!.name,
-      },
-      name: this.employeeProfile!.employeeDetails.name,
-      initials: this.employeeProfile!.employeeDetails.initials,
-      surname: this.employeeProfile!.employeeDetails.surname,
-      dateOfBirth: this.employeeProfile!.employeeDetails.dateOfBirth,
-      idNumber: this.employeeProfile!.employeeDetails.idNumber,
-      passportNumber: this.employeeProfile!.employeeDetails.passportNumber,
-      passportExpirationDate: this.employeeProfile!.employeeDetails.passportExpirationDate,
-      passportCountryIssue: this.employeeProfile!.employeeDetails.passportCountryIssue,
-      race: this.employeeProfile!.employeeDetails.race,
-      gender: this.employeeProfile!.employeeDetails.gender,
-      email: this.employeeProfile!.employeeDetails.email,
-      personalEmail: this.employeeProfile!.employeeDetails.personalEmail,
-      cellphoneNo: this.employeeProfile!.employeeDetails.cellphoneNo,
-      photo: this.employeeProfile!.employeeDetails.photo,
-      notes: '',
-      leaveInterval: this.employeeProfile!.employeeDetails.leaveInterval,
-      salary: this.employeeProfile!.employeeDetails.salary,
-      salaryDays: this.employeeProfile!.employeeDetails.salaryDays,
-      payRate: this.employeeProfile!.employeeDetails.payRate,
-      clientAllocated: this.employeeProfile!.employeeDetails.clientAllocated,
-      teamLead: this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
-      physicalAddress: {
-        id: this.employeeProfile!.employeeDetails.physicalAddress?.id,
-        unitNumber: this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber,
-        complexName: this.employeeProfile!.employeeDetails.physicalAddress?.complexName,
-        streetNumber: this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber,
-        suburbOrDistrict: this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict,
-        city: this.employeeProfile!.employeeDetails.physicalAddress?.city,
-        country: this.employeeProfile!.employeeDetails.physicalAddress?.country,
-        province: this.employeeProfile!.employeeDetails.physicalAddress?.province,
-        postalCode: this.employeeProfile!.employeeDetails.physicalAddress?.postalCode,
-      },
-      postalAddress: {
-        id: this.employeeProfile!.employeeDetails.postalAddress?.id,
-        unitNumber: this.employeeProfile!.employeeDetails.postalAddress?.unitNumber,
-        complexName: this.employeeProfile!.employeeDetails.postalAddress?.complexName,
-        streetNumber: this.employeeProfile!.employeeDetails.postalAddress?.streetNumber,
-        suburbOrDistrict: this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict,
-        city: this.employeeProfile!.employeeDetails.postalAddress?.city,
-        country: this.employeeProfile!.employeeDetails.postalAddress?.country,
-        province: this.employeeProfile!.employeeDetails.postalAddress?.province,
-        postalCode: this.employeeProfile!.employeeDetails.postalAddress?.postalCode,
-      },
-      houseNo: this.employeeProfile?.employeeDetails.houseNo,
-      emergencyContactName: this.employeeProfile?.employeeDetails.emergencyContactName,
-      emergencyContactNo: this.employeeProfile?.employeeDetails.emergencyContactNo
-    }
-    console.log(this.sharedAccordionFunctionality.employeeProfileDto);
-  }
-
   getEmployeeFieldCodes() {
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: data => {
         this.sharedAccordionFunctionality.customFields = data.filter((data: FieldCode) => data.category === this.sharedAccordionFunctionality.category[0].id);
-
       }
     })
   }
