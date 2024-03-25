@@ -91,7 +91,7 @@ export class NewCandidateComponent {
 
   getAllEmployees() {
     this.employeeService.getAll().subscribe({
-      next: employeesArray => this.allEmployees = employeesArray,
+      next: data => this.allEmployees = data,
       error: error => this.snackBarService.showSnackbar(error, "error")
     })
   }
@@ -122,9 +122,6 @@ export class NewCandidateComponent {
 
   ngOnDestroy() {
     this.navService.showNavbar = true;
-  }
-
-  onSubmit(reset: boolean = false): void {
   }
 
   goToPreviousPage() {
