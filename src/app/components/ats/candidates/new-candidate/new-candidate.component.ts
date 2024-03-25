@@ -62,12 +62,12 @@ export class NewCandidateComponent {
   isValidCVFile = true;
   isValidProfileImage = true;
   isValidPortfolioFile = true;
-  isblacklisted = false;
+  isBlacklisted = false;
   candidateExists = false;
   candidateWarning = false;
   cvFileUploaded = false;
   portfolioFileUploaded = false;
-  IdPattern = /^\d{13}$/;
+  idPattern = /^\d{13}$/;
   optionIsOther = false;
   additionalFieldsVisible: boolean = false;
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
