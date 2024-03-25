@@ -7,7 +7,6 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { CandidateService } from 'src/app/services/ats/candidate/candidate.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
-import { Candidate } from 'src/app/models/ats/candidate.interface';
 import { schools } from 'src/app/models/ats/constants/schools.constants';
 import { qualifications } from 'src/app/models/ats/constants/qualifications.constants';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
@@ -258,30 +257,23 @@ export class NewCandidateComponent {
       next: (candidates) => {
         const candidate = candidates.find(c => c.personalEmail === email);
         if (candidate) {
-          switch (candidate.blacklisted) {
+          switch (candidate.BlacklistedStatus) {
             case 0:
-              console.log('in case 0');
               this.candidateExists = true;
               break;
             case 1:
-              console.log('in case 1');
               this.candidateWarning = true;
               break;
             case 2:
-              console.log('in case 2');
-
               this.isblacklisted = true;
               break;
             default:
-              console.log('in default');
               this.snackBarService.showSnackbar("This email already exists in our records.", "snack-info");
           }
         } else {
-          this.snackBarService.showSnackbar("This email does not exist in our records. You can proceed to add it.", "snack-success");
         }
       },
       error: (err) => {
-        console.error(err);
         this.snackBarService.showSnackbar("Failed to fetch candidates.", "snack-error");
       }
     });
@@ -316,7 +308,6 @@ export class NewCandidateComponent {
   employeeProfile = {
     photo: 'assets/img/ProfileAts.png'
   };
-
 
   validateCVFile(file: File): boolean {
     const allowedTypes = ['application/pdf'];
@@ -381,8 +372,7 @@ export class NewCandidateComponent {
   }
 
   saveCanidateAndExit() {
-    console.log("hit save and exit")
-    this.onSubmitCandidate(this.cookieService.get(this.PREVIOUS_PAGE));
+    this.onSubmitCandidate('/ats-dashboard');
   }
 
   saveAndAddAnotherCandidate() {
@@ -415,7 +405,7 @@ export class NewCandidateComponent {
         highestQualification: newCandidateForm.highestQualification,
         school: newCandidateForm.school,
         qualificationEndDate: newCandidateForm.endDate,
-        blacklisted: 0,
+        BlacklistedStatus: 0,
         blackListedReason: ''
       }
       console.log(candidateDto)
