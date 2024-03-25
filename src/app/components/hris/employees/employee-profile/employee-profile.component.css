@@ -28,7 +28,6 @@
     justify-content: flex-end;
 }
 
-
 #header-email-clip {
     color: blue;
     transform: rotate(-45deg);
@@ -190,7 +189,6 @@
 :host ::ng-deep #edit-buttons>button {
     margin-right: 1rem;
 }
-
 
 #uploadfile:hover {
     cursor: pointer;
