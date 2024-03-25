@@ -15,24 +15,22 @@ import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 import { HrisPageGuard } from './hris-guard.guard';
 import { AtsPageGuard } from './ats-guard.guard';
-import { AuthGuard } from '@auth0/auth0-angular';
-import { environment } from 'src/environments/environment';
 
 const routes: Routes = [
   { path: '', component: SignInComponent },
-  { path: 'dashboard', component: AdminDashboardComponent, canActivate: [environment.development ? AuthGuard : HrisPageGuard] },
-  { path: 'employees', component: ViewEmployeeComponent, canActivate: [environment.development ? AuthGuard : HrisPageGuard] },
-  { path: 'profile', component: EmployeeProfileComponent, canActivate: [environment.development ? AuthGuard : HrisPageGuard] },
-  { path: 'profile/:id', component: EmployeeProfileComponent, canActivate: [environment.development ? AuthGuard : HrisPageGuard] },
-  { path: 'system-settings', component: SystemSettingsComponent, canActivate: [environment.development ? AuthGuard : HrisPageGuard] },
-  { path: 'manage-field', component: ManageFieldCodeComponent, canActivate: [environment.development ? AuthGuard : HrisPageGuard] },
-  { path: 'charts', component: ChartComponent, canActivate: [environment.development ? AuthGuard : HrisPageGuard] },
-  { path: 'create-charts', component: CreateChartsComponent, canActivate: [environment.development ? AuthGuard : HrisPageGuard] },
-  { path: 'create-employee', component: NewEmployeeComponent, canActivate: [environment.development ? AuthGuard : HrisPageGuard] },
-  { path: 'new-fieldcode', component: NewFieldCodeComponent, canActivate: [environment.development ? AuthGuard : HrisPageGuard] },
-  { path: 'update-fieldcode', component: UpdateFieldComponent, canActivate: [environment.development ? AuthGuard : HrisPageGuard] },
-  { path: 'employee-details', component: EmployeeDetailsComponent, canActivate: [environment.development ? AuthGuard : HrisPageGuard] },
-  { path: 'ats-dashboard', component: AtsDashboardComponent, canActivate: [environment.development ? AuthGuard : AtsPageGuard] }
+  { path: 'dashboard', component: AdminDashboardComponent, canActivate: [HrisPageGuard] },
+  { path: 'employees', component: ViewEmployeeComponent, canActivate: [HrisPageGuard] },
+  { path: 'profile', component: EmployeeProfileComponent, canActivate: [HrisPageGuard] },
+  { path: 'profile/:id', component: EmployeeProfileComponent, canActivate: [HrisPageGuard] },
+  { path: 'system-settings', component: SystemSettingsComponent, canActivate: [HrisPageGuard] },
+  { path: 'manage-field', component: ManageFieldCodeComponent, canActivate: [HrisPageGuard] },
+  { path: 'charts', component: ChartComponent, canActivate: [HrisPageGuard] },
+  { path: 'create-charts', component: CreateChartsComponent, canActivate: [HrisPageGuard] },
+  { path: 'create-employee', component: NewEmployeeComponent, canActivate: [HrisPageGuard] },
+  { path: 'new-fieldcode', component: NewFieldCodeComponent, canActivate: [HrisPageGuard] },
+  { path: 'update-fieldcode', component: UpdateFieldComponent, canActivate: [HrisPageGuard] },
+  { path: 'employee-details', component: EmployeeDetailsComponent, canActivate: [HrisPageGuard] },
+  { path: 'ats-dashboard', component: AtsDashboardComponent, canActivate: [AtsPageGuard] }
 ];
 
 @NgModule({
