@@ -81,6 +81,7 @@ import { AccordionBankingComponent } from './components/hris/employees/employee-
 import { AccordionDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
+import { NewCandidateComponent } from './components/ats/candidates/new-candidate/new-candidate.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PropertyAccessComponent } from './components/hris/system-settings/property-access/property-access.component';
 import { AccordionProfileEmployeeDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-employee-details/accordion-profile-employee-details.component';
@@ -118,6 +119,7 @@ import { AccordionProfileAdditionalComponent } from './components/hris/employees
     AccordionDocumentsComponent,
     LoadingComponentComponent,
     AtsDashboardComponent,
+    NewCandidateComponent,
     PropertyAccessComponent,
     AccordionProfileEmployeeDetailsComponent,
     AccordionProfileContactDetailsComponent,
@@ -156,14 +158,12 @@ import { AccordionProfileAdditionalComponent } from './components/hris/employees
     MatInputModule,
     MatRadioModule,
     MatTableModule,
-    MatInputModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
     MatAutocompleteModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
     MatDatepickerModule,
