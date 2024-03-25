@@ -405,7 +405,6 @@ export class NewCandidateComponent {
         BlacklistedStatus: 0,
         blackListedReason: ''
       }
-      console.log(candidateDto)
       this.candidateService.addCandidate(candidateDto).subscribe({
         next: (data) =>
           this.snackBarService.showSnackbar("Candidate added successfully", "snack-success"),

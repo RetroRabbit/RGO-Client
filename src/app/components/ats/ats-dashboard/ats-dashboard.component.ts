@@ -39,8 +39,4 @@ export class AtsDashboardComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  AddCandidate() {
-    this.cookieService.set(this.PREVIOUS_PAGE, '/ats-dashboard');
-    this.router.navigateByUrl('/create-candidate');
-  }
 }
