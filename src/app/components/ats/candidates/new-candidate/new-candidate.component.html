@@ -1,0 +1,218 @@
+<div class="container">
+    <div class="container-fluid p-4" [ngClass]="{'fullscreen-modal': isMobileScreen}">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12">
+                <h1 class="text-center" id="create-candidate">Add a new Candidate</h1>
+            </div>
+        </div>
+        <form [formGroup]="newCandidateForm" id="newcandidateForm">
+            <div class="row justify-content-center align-items-center">
+                <div class="row justify-content-center align-items-center">
+                    <div class="profile-photo">
+                        <img *ngIf="imageUrl !== ''" [src]="imageUrl" [alt]="employeeProfile.photo" class="rounded-circle profile-img">
+                        <img *ngIf="imageUrl === ''" [src]="employeeProfile.photo" [alt]="employeeProfile.photo" class="rounded-circle profile-img" accept=".png, .svg,.jpg">
+                    </div>
+                    <div class="col-12 text-center roboto-font pb-3 mt-3">
+                        <h2 *ngIf="isValidProfileImage" class="center-bold">Profile Picture</h2>
+                        <p *ngIf="isValidProfileImage" class="profile-text">PNG, JPG, SVG</p>
+                        <p *ngIf="isValidProfileImage" class="profile-text">10 MB Max limit size</p>
+                        <p id="change-color-heading" *ngIf="!isValidProfileImage" class="profile-text">File size exceeded. Maximum limit is 10 MB.</p>
+                        <div id="actionCellUpload" class="col-12 col-md-auto">
+                            <button (click)="uploadFile.click()"
+                                [ngStyle]="{'color': '#F8F8F8', 'background-color': '#0029C6'}"
+                                [ngClass]="screenWidth <= 767 ? 'upload-download-button' : ''">
+                                <svg id="svg-icon-w" width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="Icons/file_upload">
+                                        <path id="icon-w" d="M18 15V18H6V15H4V18C4 19.1 4.9 20 6 20H18C19.1 20, 20 19.1 20 18V15H18ZM7 9L8.41 10.41L11 7.83V16H13V7.83L15.59 10.41L17 9L12 4L7 9Z"fill="currentColor" />
+                                    </g>
+                                </svg> Upload Picture
+                            </button>
+                        </div>
+                        <input type="file" #uploadFile (change)="onImageChange($event)" hidden />
+                        <p class="col-md-12 col-lg-7 mt-5 info-text">*Required fields</p>
+                    </div>
+                </div>
+                <div class="row flex-column justify-content-center align-items-center col-md-12">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+                        <mat-label>First name</mat-label>
+                        <input matInput type="text" formControlName="name" />
+                        <mat-error *ngIf="newCandidateForm.controls['name'].hasError('required')">
+                            First name is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                        <mat-label>Last name</mat-label>
+                        <input matInput type="text" formControlName="surname" />
+                        <mat-error *ngIf="newCandidateForm.controls['surname'].hasError('required')">
+                            Last name is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" formControlName="email" />
+                        <mat-error *ngIf="newCandidateForm.controls['email'].hasError('required')">
+                            Please enter a valid email address
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="col-md-12 col-lg-7 my-1">
+                        <h3 *ngIf="candidateExists" class="warning-message">Duplicate Canidate found</h3>
+                        <h3 *ngIf="isBlacklisted" class="warning-message">Blacklisted Canidate</h3>
+                        <h3 *ngIf="candidateWarning" class="warning-message">This candidate has a warning</h3>
+                        <p *ngIf="isBlacklisted">This candidate has been blacklisted from the company.<br>Go to their profile to see the reason or lift the blacklisting</p>
+                        <p *ngIf="candidateExists">The candidate already exists in our system</p>
+                        <p *ngIf="candidateWarning">This candidate has recieved a warning in the system</p>
+                    </div>
+                </div>
+                <div *ngIf="isValidEmail && !isBlacklisted && !candidateExists && !candidateWarning"
+                    class="row col-md-12 flex-column justify-content-center align-items-center">
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                        <mat-label>Contact number</mat-label>
+                        <input matInput type="text" formControlName="cellphoneNumber" pattern="^\+27\d{9}$"
+                            placeholder="+27XXXXXXXXX" />
+                    </mat-form-field>
+                    <mat-radio-group formControlName="jobPosition" class="col-md-12 col-lg-7 my-2 info-text">
+                        <p class="col-md-12 col-lg-7 info-text">Role:</p>
+                        <mat-radio-button [value]=0>UI/UX Designer</mat-radio-button> <br />
+                        <mat-radio-button [value]=1>Developer</mat-radio-button> <br />
+                        <mat-radio-button [value]=2>Business Support</mat-radio-button> <br />
+                        <mat-radio-button [value]=3>Scrum Master</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                        <mat-label>Select level</mat-label>
+                        <mat-select formControlName="potentialLevel">
+                            <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                        <mat-label>Location</mat-label>
+                        <input matInput type="text" formControlName="location" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                        <mat-label>Attach link</mat-label>
+                        <input matInput type="text" formControlName="linkedInProfile" />
+                        <mat-error *ngIf="newCandidateForm.controls['linkedInProfile'].hasError('pattern')">
+                            Valid LinkedIn Profile link is required
+                        </mat-error>
+                        <mat-icon matSuffix>link</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                        <mat-label>CV</mat-label>
+                        <input matInput type="text" [value]="cvFilename" (click)="uploadCVFile.click()" />
+                        <span mat-icon-button matSuffix class="pe-3">
+                            <mat-icon *ngIf="!cvFileUploaded" id="file-upload-cursor">attach_file</mat-icon>
+                            <mat-icon *ngIf="cvFileUploaded && isValidCVFile" id="change-close-color" (click)="clearCVFileUpload()">close</mat-icon>
+                            <mat-icon *ngIf="!isValidCVFile" (click)="clearCVFileUpload()" id="change-close-color">error</mat-icon>
+                        </span>
+                        <input type="file" #uploadCVFile (change)="onCVFileChange($event)" hidden accept=".pdf" />
+                    </mat-form-field>
+                    <div *ngIf="cvUrl !== ''">
+                        <p>Selected CV: {{ cvFilename }}</p>
+                    </div>
+                    <p *ngIf="isValidCVFile" class="col-md-12 col-lg-7">Please upload a PDF</p>
+                    <p *ngIf="isValidCVFile" class="col-md-12 col-lg-7">10 MB Max limit size</p>
+                    <h3 id="change-color-heading" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7">Unsupported file format :</h3>
+                    <p id="change-close-color" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7">The selected file type is not supported. <br> Please upload a PDF</p>
+                    <h4 class="col-md-12 col-lg-7 info-text">Portfolio</h4>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                        <mat-label>Attach website link</mat-label>
+                        <input matInput type="text" formControlName="portfolioLink" />
+                        <mat-icon matSuffix>link</mat-icon>
+                        <mat-error *ngIf="newCandidateForm.controls['portfolioLink'].hasError('pattern')">
+                            valid website link is required.
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                        <mat-label>Portfolio PDF</mat-label>
+                        <input matInput type="text" [value]="portfolioFilename" (click)="uploadPortfolioFile.click()" />
+                        <span mat-icon-button matSuffix class="pe-3">
+                            <mat-icon *ngIf="!portfolioFileUploaded" id="file-upload-cursor">attach_file</mat-icon>
+                            <mat-icon *ngIf="portfolioFileUploaded && isValidPortfolioFile" id="change-close-color"
+                                (click)="clearPortfolioFileUpload()">close</mat-icon>
+                            <mat-icon *ngIf="!isValidPortfolioFile" (click)="clearPortfolioFileUpload()" id="change-close-color">error</mat-icon>
+                        </span>
+                        <input type="file" #uploadPortfolioFile (change)="onPortfolioFileChange($event)" hidden
+                            accept=".pdf" />
+                    </mat-form-field>
+                    <div *ngIf="portfolioUrl!== ''">
+                        <p>Selected CV: {{ portfolioFilename }}</p>
+                    </div>
+                    <p *ngIf="isValidPortfolioFile" class="col-md-12 col-lg-7">Please upload a PDF</p>
+                    <p *ngIf="isValidPortfolioFile" class="col-md-12 col-lg-7">10 MB Max limit size</p>
+                    <h3 id="change-color-heading" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">Unsupported file format :</h3>
+                    <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">The selected file type is not supported.<br> Please upload a PDF</p>
+                    <mat-slide-toggle class="col-md-12 col-lg-7 mb-3" color="primary" id="additionalFieldsToggle" (click)="toggleAdditionalFields()">
+                        Additional fields
+                    </mat-slide-toggle>
+                    <div *ngIf="additionalFieldsVisible"
+                        class="row col-md-12 flex-column justify-content-center align-items-center">
+                        <mat-radio-group formControlName="gender" class="col-md-12 col-lg-7 my-2 info-text">
+                            <p class="col-md-12 col-lg-7 info-text">Gender:</p>
+                            <mat-radio-button [value]=0>Unclassified</mat-radio-button> <br />
+                            <mat-radio-button [value]=1>Male</mat-radio-button> <br />
+                            <mat-radio-button [value]=2>Female</mat-radio-button> <br />
+                        </mat-radio-group>
+                        <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
+                            <mat-label>Race</mat-label>
+                            <mat-select formControlName="race">
+                                <mat-option *ngFor="let race of races; index as i" [value]="i">{{ race }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                            <mat-label>ID Number/ Passport</mat-label>
+                            <input matInput type="text" formControlName="idNumber" />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
+                            <mat-label>Referral</mat-label>
+                            <input matInput placeholder="Referral" [formControl]="searchControl"
+                                [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let employee of allEmployees" [value]='employee.name + " " + employee.surname'
+                                    (onSelectionChange)="showSelectedReferral($event)">{{ employee.name }} {{ employee.surname}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <h4 class="col-md-12 col-lg-7 mb-2 info-text">Qualifications</h4>
+                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                            <mat-icon matPrefix>search</mat-icon>
+                            <mat-label>Highest Qualification</mat-label>
+                            <mat-select formControlName="highestQualification">
+                                <mat-option *ngFor="let qualification of qualifications; index as i" [value]="qualification">{{qualification }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
+                            <mat-icon matPrefix>search</mat-icon>
+                            <mat-label>School</mat-label>
+                            <mat-select *ngIf="!optionIsOther" formControlName="school"
+                                (selectionChange)="toggleOtherSchoolField($event, schools)">
+                                <mat-option *ngFor="let school of schools; index as i" [value]="school">{{school}}</mat-option>
+                            </mat-select>
+                            <input *ngIf="optionIsOther" matInput type="text" formControlName="school"
+                                placeholder="Enter other school">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                            <mat-label>Date Obtained</mat-label>
+                            <mat-select formControlName="endDate" placeholder="Select start year">
+                                <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div id="footer" class="col-md-12">
+                    <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
+                        (click)="goToPreviousPage()">Cancel</button>
+                    <button *ngIf="!isValidEmail" id="next-button"
+                        [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
+                        (click)="validateAndCheckCandidateEmail()">Next</button>
+                    <button *ngIf="isValidEmail && !isBlacklisted && !candidateExists && ! candidateWarning"
+                        id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
+                        (click)="saveAndAddAnotherCandidate()">Save and add another</button>
+                    <button *ngIf="isBlacklisted || candidateWarning || candidateExists" id="save-button">Go to
+                        Profile</button>
+                    <button *ngIf="isValidEmail && !isBlacklisted && !candidateExists && !candidateWarning"
+                        id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
+                        (click)="saveCandidateAndExit()">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
