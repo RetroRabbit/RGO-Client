@@ -62,7 +62,7 @@ export class NewCandidateComponent {
   isValidCVFile = true;
   isValidProfileImage = true;
   isValidPortfolioFile = true;
-  isblacklisted = false;
+  isBlacklisted = false;
   candidateExists = false;
   candidateWarning = false;
   cvFileUploaded = false;
