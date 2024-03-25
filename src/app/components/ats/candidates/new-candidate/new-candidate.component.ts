@@ -110,7 +110,7 @@ export class NewCandidateComponent {
       portfolioLink: new FormControl<string>(''),
       portfolioFile: new FormControl<string>(''),
       gender: new FormControl<number | null>(null),
-      idNumber: new FormControl<string>('', [Validators.pattern(this.IdPattern)]),
+      idNumber: new FormControl<string>('', [Validators.pattern(this.idPattern)]),
       referral: new FormControl<number | null>(null),
       highestQualification: new FormControl<string>(''),
       school: new FormControl<string>(''),
@@ -265,7 +265,7 @@ export class NewCandidateComponent {
               this.candidateWarning = true;
               break;
             case 2:
-              this.isblacklisted = true;
+              this.isBlacklisted = true;
               break;
             default:
               this.snackBarService.showSnackbar("This email already exists in our records.", "snack-info");

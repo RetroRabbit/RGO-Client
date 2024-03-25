@@ -60,14 +60,14 @@
                     </mat-form-field>
                     <div class="col-md-12 col-lg-7 my-1">
                         <h3 *ngIf="candidateExists" class="warning-message">Duplicate Canidate found</h3>
-                        <h3 *ngIf="isblacklisted" class="warning-message">Blacklisted Canidate</h3>
+                        <h3 *ngIf="isBlacklisted" class="warning-message">Blacklisted Canidate</h3>
                         <h3 *ngIf="candidateWarning" class="warning-message">This candidate has a warning</h3>
-                        <p *ngIf="isblacklisted">This candidate has been blacklisted from the company.<br>Go to their profile to see the reason or lift the blacklisting</p>
+                        <p *ngIf="isBlacklisted">This candidate has been blacklisted from the company.<br>Go to their profile to see the reason or lift the blacklisting</p>
                         <p *ngIf="candidateExists">The candidate already exists in our system</p>
                         <p *ngIf="candidateWarning">This candidate has recieved a warning in the system</p>
                     </div>
                 </div>
-                <div *ngIf="isValidEmail && !isblacklisted && !candidateExists && !candidateWarning"
+                <div *ngIf="isValidEmail && !isBlacklisted && !candidateExists && !candidateWarning"
                     class="row col-md-12 flex-column justify-content-center align-items-center">
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Contact number</mat-label>
@@ -207,14 +207,14 @@
                     <button *ngIf="!isValidEmail" id="next-button"
                         [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
                         (click)="validateAndCheckCandidateEmail()">Next</button>
-                    <button *ngIf="isValidEmail && !isblacklisted && !candidateExists && ! candidateWarning"
+                    <button *ngIf="isValidEmail && !isBlacklisted && !candidateExists && ! candidateWarning"
                         id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
                         (click)="saveAndAddAnotherCandidate()">Save
                         and add
                         another</button>
-                    <button *ngIf="isblacklisted || candidateWarning || candidateExists" id="save-button">Go to
+                    <button *ngIf="isBlacklisted || candidateWarning || candidateExists" id="save-button">Go to
                         Profile</button>
-                    <button *ngIf="isValidEmail && !isblacklisted && !candidateExists && !candidateWarning"
+                    <button *ngIf="isValidEmail && !isBlacklisted && !candidateExists && !candidateWarning"
                         id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
                         (click)="saveCandidateAndExit()">Save</button>
                 </div>
