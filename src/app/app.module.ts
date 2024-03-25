@@ -81,7 +81,6 @@ import { AccordionDocumentsComponent } from './components/hris/employees/employe
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 import { NewCandidateComponent } from './components/ats/candidates/new-candidate/new-candidate.component';
-
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PropertyAccessComponent } from './components/hris/system-settings/property-access/property-access.component';
 
