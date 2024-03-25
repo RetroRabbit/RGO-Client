@@ -244,7 +244,7 @@ export class NewCandidateComponent {
       next: (candidates) => {
         const candidate = candidates.find(c => c.personalEmail === email);
         if (candidate) {
-          switch (candidate.BlacklistedStatus) {
+          switch (candidate.blacklistedStatus) {
             case 0:
               this.candidateExists = true;
               break;
@@ -392,7 +392,7 @@ export class NewCandidateComponent {
         highestQualification: newCandidateForm.highestQualification,
         school: newCandidateForm.school,
         qualificationEndDate: newCandidateForm.endDate,
-        BlacklistedStatus: 0,
+        blacklistedStatus: 0,
         blackListedReason: ''
       }
       this.candidateService.addCandidate(candidateDto).subscribe({
