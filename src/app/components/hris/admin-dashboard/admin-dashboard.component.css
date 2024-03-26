@@ -310,10 +310,9 @@ div#results-container {
 
 #dialog-save>button {
   background: #0029c6;
-  border: 1px solid transparent;
   border-radius: 4rem;
   color: white;
-  padding: 0.5rem;
+  padding: 7px;
   width: 80%;
 }
 
