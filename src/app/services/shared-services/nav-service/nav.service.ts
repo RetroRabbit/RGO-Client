@@ -8,4 +8,5 @@ export class NavService {
   public showSystemNavbar: boolean = true;
   public unsavedChanges: boolean = false;
   public isHris?: boolean;
+  static showNavbar: boolean;
 }
