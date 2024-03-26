@@ -214,7 +214,6 @@ export class ManageFieldCodeComponent {
     }
   }
 
-
   onSearch(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
 
@@ -235,7 +234,6 @@ export class ManageFieldCodeComponent {
   }
 
   changeTab(tabIndex: number) {
-
     this.activeTab = tabIndex;
     this.filteredFieldCodes = this.fieldCodes.filter(fieldCode => fieldCode.status == this.activeTab);
     this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
