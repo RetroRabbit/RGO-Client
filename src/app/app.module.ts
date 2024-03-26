@@ -87,6 +87,8 @@ import { PropertyAccessComponent } from './components/hris/system-settings/prope
 import { AccordionProfileEmployeeDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-employee-details/accordion-profile-employee-details.component';
 import { AccordionProfileContactDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-contact-details/accordion-profile-contact-details.component';
 import { AccordionProfileAdditionalComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
+import { AccordionProfilePersonalDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
+import { AccordionProfileAddressDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
 
 @NgModule({
   declarations: [
@@ -122,8 +124,6 @@ import { AccordionProfileAdditionalComponent } from './components/hris/employees
     NewCandidateComponent,
     PropertyAccessComponent,
     AccordionProfileEmployeeDetailsComponent,
-    AccordionProfileContactDetailsComponent,
-    AccordionProfileAdditionalComponent,
 
   ],
   imports: [

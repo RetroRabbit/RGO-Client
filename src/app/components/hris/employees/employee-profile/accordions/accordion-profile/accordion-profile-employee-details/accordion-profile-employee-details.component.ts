@@ -47,6 +47,7 @@ export class AccordionProfileEmployeeDetailsComponent {
     engagementDate: { value: '', disabled: true },
     peopleChampion: { value: '', disabled: true }
   });
+  
   personalDetailsForm: FormGroup = this.fb.group({
     gender: { value: '', disabled: true },
     race: { value: '', disabled: true },
