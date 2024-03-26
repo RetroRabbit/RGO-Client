@@ -68,11 +68,20 @@ export class ManageFieldCodeComponent {
     navService.showNavbar = true;
   }
 
+  ngOnInit(): void {
+    if (this.authAccessService.isAdmin() ||
+      this.authAccessService.isSuperAdmin() ||
+      this.authAccessService.isTalent() ||
+      this.authAccessService.isJourney()) {
+      this.fetchData();
+    }
+  }
+
   ngAfterViewInit(): void {
     if (this.authAccessService.isAdmin() ||
-        this.authAccessService.isSuperAdmin() ||
-        this.authAccessService.isTalent() ||
-        this.authAccessService.isJourney()) {
+      this.authAccessService.isSuperAdmin() ||
+      this.authAccessService.isTalent() ||
+      this.authAccessService.isJourney()) {
       this.fetchData();
     }
   }
@@ -101,7 +110,7 @@ export class ManageFieldCodeComponent {
 
   applySorting(): void {
     if (this.sort && this.dataSource) {
-      const sortState: Sort = {active: 'id', direction: 'asc'};
+      const sortState: Sort = { active: 'id', direction: 'asc' };
       this.sort.active = sortState.active;
       this.sort.direction = sortState.direction;
       this.sort.sortChange.emit(sortState);
@@ -244,7 +253,7 @@ export class ManageFieldCodeComponent {
   }
 
   sortByIdDefault(sort: MatSort) {
-    const sortState: Sort = {active: 'id', direction: 'asc'};
+    const sortState: Sort = { active: 'id', direction: 'asc' };
     if (sort) {
       sort.active = sortState.active;
       sort.direction = sortState.direction;
