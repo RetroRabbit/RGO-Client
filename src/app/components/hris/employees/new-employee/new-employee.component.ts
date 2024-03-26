@@ -375,6 +375,7 @@ export class NewEmployeeComponent implements OnInit {
   isDirty = false;
 
   onSubmit(reset: boolean = false): void {
+    this.isLoadingAddEmployee = true;
     if (this.isDirty == true)
       return;
 
@@ -384,6 +385,7 @@ export class NewEmployeeComponent implements OnInit {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
       this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
+      this.isLoadingAddEmployee = false;
       return;
     }
     this.newEmployeeForm.value.initials = this.newEmployeeForm.value.initials?.toUpperCase();
@@ -415,20 +417,24 @@ export class NewEmployeeComponent implements OnInit {
         this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
         this.myStepper.next();
         this.isDirty = false;
+        this.isLoadingAddEmployee = false;
       },
 
       error: (error: any, stepper?: MatStepper) => {
         let message = '';
         if (error.status === 400) {
           message = 'Incorrect form values';
+          this.isLoadingAddEmployee = false;
         } else if (error.status === 406) {
           this.isLoadingAddEmployee = false;
         }
         else if (error.status === 200) {
           stepper?.next();
+          this.isLoadingAddEmployee = false;
         }
         this.snackBarService.showSnackbar(`Error: ${message}`, "snack-error");
         this.isDirty = false;
+        this.isLoadingAddEmployee = false;
       },
     });
   }
