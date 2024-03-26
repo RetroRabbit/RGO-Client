@@ -375,6 +375,23 @@ main {
     letter-spacing: 0.10000000149011612px;
     text-align: left;
 }
+  
+.spinner-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mat-mdc-progress-spinner {
+    --mdc-circular-progress-active-indicator-color: #0029C6 !important;
+}
 
 @media (max-width: 767px) {
 
