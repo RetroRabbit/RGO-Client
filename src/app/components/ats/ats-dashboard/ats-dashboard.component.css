@@ -30,3 +30,29 @@
   display: flex;
   margin-left: 7%;
 }
+
+#new-candidate {
+    text-align: center;
+    display: flex;
+    margin: 0px auto;
+    width: 223px;
+    height: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  
+  #new-candidate>button {
+    background: #0029c6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    margin: 0px auto;
+    width: 12rem;
+    margin-right: 2rem;
+    padding: 0.5rem;
+    right: 0px;
+    position: absolute;
+  }

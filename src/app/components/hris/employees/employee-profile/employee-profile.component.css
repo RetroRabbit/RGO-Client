@@ -28,7 +28,6 @@
     justify-content: flex-end;
 }
 
-
 #header-email-clip {
     color: blue;
     transform: rotate(-45deg);
@@ -67,12 +66,14 @@
     border-radius: 50%;
     overflow: hidden;
     margin: 0 auto;
+    text-align: center;
 }
 
 #profile-image>img {
     height: 100%;
     width: 100%;
     cursor: pointer;
+    justify-content: center;
 }
 
 #outer-icon-container {
@@ -188,7 +189,6 @@
 :host ::ng-deep #edit-buttons>button {
     margin-right: 1rem;
 }
-
 
 #uploadfile:hover {
     cursor: pointer;
@@ -356,7 +356,7 @@
   }
   
   div.row{
-    padding:0;
+    padding: 0;
   }
 
 /* #svg-icon-w #icon-w {
