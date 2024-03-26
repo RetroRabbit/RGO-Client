@@ -22,6 +22,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
+import { color } from 'html2canvas/dist/types/css/types/color';
 
 @Component({
   selector: 'app-new-employee',
@@ -92,6 +93,7 @@ export class NewEmployeeComponent implements OnInit {
   filteredPeopleChamps: any = [];
   peopleChampionId = null;
   isMobileScreen = false;
+  isLoadingAddEmployee: boolean = false;
   isSameAddress: boolean = true;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
@@ -297,20 +299,23 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   onUploadDocument(nextPage: string): void {
+    this.isLoadingAddEmployee = true;
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Files have been uploaded", "snack-success");
+          this.isLoadingAddEmployee = false;
         },
         error: (error: any) => {
           this.snackBarService.showSnackbar("Failed to save documents", "snack-error");
+          this.isLoadingAddEmployee = false;
         }, complete: () => {
           this.employeeDocumentModels = [];
           this.newEmployeeEmail = "";
           this.files = [];
           this.myStepper.previous();
           this.router.navigateByUrl(nextPage);
-
+          this.isLoadingAddEmployee = false;
         }
       });
     });
@@ -393,6 +398,7 @@ export class NewEmployeeComponent implements OnInit {
   isDirty = false;
 
   onSubmit(reset: boolean = false): void {
+    this.isLoadingAddEmployee = true;
     if (this.isDirty == true)
       return;
 
@@ -400,6 +406,7 @@ export class NewEmployeeComponent implements OnInit {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
       this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
+      this.isLoadingAddEmployee = false;
       return;
     }
     this.newEmployeeForm.patchValue({id: 0});
@@ -432,20 +439,24 @@ export class NewEmployeeComponent implements OnInit {
         this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
         this.myStepper.next();
         this.isDirty = false;
+        this.isLoadingAddEmployee = false;
       },
 
       error: (error: any, stepper?: MatStepper) => {
         let message = '';
         if (error.status === 400) {
           message = 'Incorrect form values';
+          this.isLoadingAddEmployee = false;
         } else if (error.status === 406) {
-          message = 'User already exists';
+          this.isLoadingAddEmployee = false;
         }
         else if (error.status === 200) {
           stepper?.next();
+          this.isLoadingAddEmployee = false;
         }
         this.snackBarService.showSnackbar(`Error: ${message}`, "snack-error");
         this.isDirty = false;
+        this.isLoadingAddEmployee = false;
       },
     });
   }
