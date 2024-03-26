@@ -279,7 +279,12 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndExit() {
+    this.clearFormErrorsAndValues(this.newEmployeeForm);
+    this.clearFormErrorsAndValues(this.uploadDocumentForm);
+    this.clearFormErrorsAndValues(this.physicalAddress);
+    this.clearFormErrorsAndValues(this.postalAddressForm);
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
+    this.removeAllDocuments();
   }
 
   saveAndAddAnother() {
