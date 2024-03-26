@@ -310,7 +310,7 @@ div#results-container {
 
 #dialog-save>button {
   background: #0029c6;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 4rem;
   color: white;
   padding: 0.5rem;
@@ -319,7 +319,7 @@ div#results-container {
 
 #dialog-close>button {
   border: 1px solid #0029c6;
-  border-radius: 2rem;
+  border-radius: 4rem;
   background-color: white;
   color: #0029c6;
   padding: 0.5rem;
