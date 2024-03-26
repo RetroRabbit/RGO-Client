@@ -67,11 +67,12 @@ export class ManageFieldCodeComponent {
     private authAccessService: AuthAccessService) {
     navService.showNavbar = true;
   }
-  ngOnInit(): void {
+
+  ngAfterViewInit(): void {
     if (this.authAccessService.isAdmin() ||
-      this.authAccessService.isSuperAdmin() ||
-      this.authAccessService.isTalent() ||
-      this.authAccessService.isJourney()) {
+        this.authAccessService.isSuperAdmin() ||
+        this.authAccessService.isTalent() ||
+        this.authAccessService.isJourney()) {
       this.fetchData();
     }
   }
@@ -89,12 +90,22 @@ export class ManageFieldCodeComponent {
         this.activeTab = active;
         this.isLoading = false;
         this.sortByIdDefault(this.dataSource.sort);
+        this.applySorting();
       },
       error: () => {
         this.snackBarService.showSnackbar("Error fetching field codes", "snack-error");
         this.isLoading = false;
       }
     })
+  }
+
+  applySorting(): void {
+    if (this.sort && this.dataSource) {
+      const sortState: Sort = {active: 'id', direction: 'asc'};
+      this.sort.active = sortState.active;
+      this.sort.direction = sortState.direction;
+      this.sort.sortChange.emit(sortState);
+    }
   }
 
   get options() {
@@ -215,6 +226,7 @@ export class ManageFieldCodeComponent {
   }
 
   changeTab(tabIndex: number) {
+
     this.activeTab = tabIndex;
     this.filteredFieldCodes = this.fieldCodes.filter(fieldCode => fieldCode.status == this.activeTab);
     this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
@@ -225,6 +237,10 @@ export class ManageFieldCodeComponent {
     this.selectedFieldCodes = [];
     this.filterText = "";
     this.sortByIdDefault(this.sort);
+    console.log(this.fieldCodes)
+    console.log(this.activeTab)
+    console.log(this.sort)
+    console.log(this.dataSource)
   }
 
   sortByIdDefault(sort: MatSort) {
