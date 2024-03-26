@@ -76,7 +76,7 @@
               </mat-form-field>
               <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                 <mat-label>Role</mat-label>
-                <mat-select formControlName="employeeType">
+                <mat-select formControlName="employeeType" hideSingleSelectionIndicator="true">
                   <mat-option *ngFor="let type of employeeTypes" [value]="type">{{ type.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -94,7 +94,7 @@
               </mat-form-field>
               <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                 <mat-label>Select Level</mat-label>
-                <mat-select formControlName="level">
+                <mat-select formControlName="level" hideSingleSelectionIndicator="true">
                   <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -159,7 +159,7 @@
                 </div>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
                   <mat-label>Select Race</mat-label>
-                  <mat-select formControlName="race" placeholder="Select race">
+                  <mat-select formControlName="race" placeholder="Select race" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let race of races; index as i" [value]="i">{{ race }}</mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -179,7 +179,7 @@
                   class="col-lg-7 col-md-12 custom-mat-select">
                   <mat-label>Country of Issue</mat-label>
                   <input matInput type="text" formControlName="passportCountryIssue" />
-                  <mat-select #countrySelect formControlName="passportCountryIssue" hidden>
+                  <mat-select #countrySelect formControlName="passportCountryIssue" hidden hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
                   </mat-select>
                   <mat-icon matSuffix (click)="countrySelect.open()">Search</mat-icon>
@@ -229,13 +229,13 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Country</mat-label>
-                  <mat-select formControlName="country">
+                  <mat-select formControlName="country" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Province</mat-label>
-                  <mat-select formControlName="province">
+                  <mat-select formControlName="province" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -282,13 +282,13 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Country</mat-label>
-                  <mat-select formControlName="country">
+                  <mat-select formControlName="country" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Province</mat-label>
-                  <mat-select formControlName="province">
+                  <mat-select formControlName="province" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
                   </mat-select>
                 </mat-form-field>
