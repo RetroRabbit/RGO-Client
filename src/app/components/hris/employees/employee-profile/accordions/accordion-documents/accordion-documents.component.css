@@ -71,3 +71,45 @@
 :host .upload-download-button {
     width: 100%!important;
 }
+
+.row {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#status-0 {
+    background-color: #008000;
+    position: relative;
+    right: 5px;
+    margin-right: 15px;
+    float: right;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+#status-1 {
+    background: #ff0000;
+    position: relative;
+    right: 5px;
+    margin-right: 15px;
+    float: right;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-right: 40px;
+    width: 20%;
+}
+
+#status-2 {
+    background: #808080;
+    position: relative;
+    right: 5px;
+    margin-right: 15px;
+    float: right;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+#accordion {
+    margin-right: -2%;
+    margin-left: -2%;
+}
