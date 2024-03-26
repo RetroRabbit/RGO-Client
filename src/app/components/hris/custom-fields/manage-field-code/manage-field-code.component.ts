@@ -246,10 +246,6 @@ export class ManageFieldCodeComponent {
     this.selectedFieldCodes = [];
     this.filterText = "";
     this.sortByIdDefault(this.sort);
-    console.log(this.fieldCodes)
-    console.log(this.activeTab)
-    console.log(this.sort)
-    console.log(this.dataSource)
   }
 
   sortByIdDefault(sort: MatSort) {
