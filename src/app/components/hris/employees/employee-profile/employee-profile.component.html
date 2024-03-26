@@ -305,23 +305,21 @@
             </div>
         </div>
         <div id="accordions-body`" class="row m-2" *ngIf="employeeProfile">
-            <app-accordion-profile-employee-details [hidden]="selectedAccordion != 'Profile Details'"
+               <app-accordion-profile-employee-details [hidden]="selectedAccordion != 'Profile Details'"
                 [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
                 (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-employee-details>
-            <app-accordion-profile-contact-details [hidden]="selectedAccordion != 'Profile Details'"
-                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
-                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-contact-details>
-                <app-accordion-profile-additional [hidden]="selectedAccordion != 'Profile Details'"
-                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
-                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-additional>
-
-
                 <app-accordion-profile-personal-details [hidden]="selectedAccordion != 'Profile Details'"
                 [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
                 (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-personal-details>
-            <app-accordion-profile-address-details [hidden]="selectedAccordion != 'Profile Details'"
+                <app-accordion-profile-contact-details [hidden]="selectedAccordion != 'Profile Details'"
+                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-contact-details>
+                <app-accordion-profile-address-details [hidden]="selectedAccordion != 'Profile Details'"
                 [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
                 (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-address-details>
+                <app-accordion-profile-additional [hidden]="selectedAccordion != 'Profile Details'"
+                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile-additional>
 
             <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"
                 [employeeProfile]="employeeProfile"

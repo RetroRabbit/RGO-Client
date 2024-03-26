@@ -32,9 +32,7 @@ export class AccordionProfilePersonalDetailsComponent {
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
   personalFormProgress: number = 0;
-  employeeFormProgress: number = 0;
-  addressFormProgress: number = 0;
-  contactFormProgress: number = 0;
+
 
   usingProfile: boolean = true;
 

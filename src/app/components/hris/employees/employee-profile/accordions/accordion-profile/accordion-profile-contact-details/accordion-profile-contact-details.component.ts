@@ -28,14 +28,7 @@ export class AccordionProfileContactDetailsComponent {
   contactFormProgress: number = 0;
   usingProfile: boolean = true;
 
-  employeeContactForm: FormGroup = this.fb.group({
-    email: { value: '', disabled: true },
-    personalEmail: { value: '', disabled: true },
-    cellphoneNo: { value: '', disabled: true },
-    houseNo: { value: '', disabled: true },
-    emergencyContactName: { value: '', disabled: true },
-    emergencyContactNo: { value: '', disabled: true }
-  });
+
 
   constructor(
     private fb: FormBuilder,
@@ -53,7 +46,7 @@ export class AccordionProfileContactDetailsComponent {
 
   initializeForm() {
 
-    this.employeeContactForm = this.fb.group({
+    this.sharedAccordionFunctionality.employeeContactForm = this.fb.group({
       email: [this.employeeProfile!.employeeDetails.email, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.emailPattern)]],
       personalEmail: [this.employeeProfile!.employeeDetails.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
       cellphoneNo: [this.employeeProfile!.employeeDetails.cellphoneNo, [Validators.required, Validators.maxLength(10), Validators.pattern(/^[0-9]*$/)]],
@@ -61,25 +54,25 @@ export class AccordionProfileContactDetailsComponent {
       emergencyContactName: [this.employeeProfile!.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
       emergencyContactNo: [this.employeeProfile!.employeeDetails.emergencyContactNo, [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(10)]]
     });
-    this.employeeContactForm.disable();
+    this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.checkContactFormProgress();
-    this.checkPropertyPermissions(Object.keys(this.employeeContactForm.controls), "Employee", true)
+    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", true)
   }
 
   editContactDetails() {
-    this.employeeContactForm.enable();
+    this.sharedAccordionFunctionality.employeeContactForm.enable();
     this.sharedAccordionFunctionality.editContact = true;
-    this.checkPropertyPermissions(Object.keys(this.employeeContactForm.controls), "Employee", false)
+    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", false)
   }
 
   cancelContactEdit() {
     this.sharedAccordionFunctionality.editContact = false;
     this.initializeForm();
-    this.employeeContactForm.disable();
+    this.sharedAccordionFunctionality.employeeContactForm.disable();
   }
   saveContactEdit() {
-    if (this.employeeContactForm.valid) {
-      const employeeContactFormValues = this.employeeContactForm.value;
+    if (this.sharedAccordionFunctionality.employeeContactForm.valid) {
+      const employeeContactFormValues = this.sharedAccordionFunctionality.employeeContactForm.value;
 
       this.sharedAccordionFunctionality.employeeProfileDto.personalEmail = employeeContactFormValues.personalEmail;
       this.sharedAccordionFunctionality.employeeProfileDto.email = employeeContactFormValues.email;
@@ -93,7 +86,7 @@ export class AccordionProfileContactDetailsComponent {
           this.snackBarService.showSnackbar("Contact details updated", "snack-success");
           this.checkContactFormProgress();
           // this.totalProfileProgress();
-          this.employeeContactForm.disable();
+          this.sharedAccordionFunctionality.employeeContactForm.disable();
           this.sharedAccordionFunctionality.editContact = false;
         },
         error: (error) => { this.snackBarService.showSnackbar(error.error, "snack-error") },
@@ -105,8 +98,8 @@ export class AccordionProfileContactDetailsComponent {
   }
   checkContactFormProgress() {
     let filledCount = 0;
-    const formControls = this.employeeContactForm.controls;
-    const totalFields = Object.keys(this.employeeContactForm.controls).length;
+    const formControls = this.sharedAccordionFunctionality.employeeContactForm.controls;
+    const totalFields = Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls).length;
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
@@ -122,7 +115,7 @@ export class AccordionProfileContactDetailsComponent {
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     fieldNames.forEach(fieldName => {
       let control: AbstractControl<any, any> | null = null;
-      control = this.employeeContactForm.get(fieldName);
+      control = this.sharedAccordionFunctionality.employeeContactForm.get(fieldName);
 
       if (control) {
         switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
