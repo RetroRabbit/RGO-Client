@@ -328,7 +328,7 @@
             <div class="row justify-content-center align-items-center">
               <div class="upload-drop-section row">
                 <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                  accept=".PDF,." (onFileDrop)="dropped($event, 0)" (onFileOver)="fileOver($event)"
+                  accept=".PDF" (onFileDrop)="dropped($event, 0)" (onFileOver)="fileOver($event)"
                   (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                     multiple="true">
@@ -340,7 +340,7 @@
                           </div>
                           <div class="roboto-font" *ngIf="categories[0].state == true" id="align">
                             <p id="title">Employment Contract</p>
-                            <p id="supported">PDF, Docx are supported</p>
+                            <p id="supported">PDF is supported</p>
                           </div>
                           <div class="roboto-font" *ngIf="categories[0].state == false" id="align">
                             <p id="title">Employment contract</p>
@@ -374,7 +374,7 @@
               </div>
               <div class="upload-drop-section row">
                 <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                  accept=".PDF,." (onFileDrop)="dropped($event, 2)" (onFileOver)="fileOver($event)"
+                  accept=".PDF" (onFileDrop)="dropped($event, 2)" (onFileOver)="fileOver($event)"
                   (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                     multiple="true">
@@ -386,7 +386,7 @@
                           </div>
                           <div class="roboto-font" *ngIf="categories[2].state == true" id="align">
                             <p id="title">Medical Aid</p>
-                            <p id="supported">PDF, Docx are supported</p>
+                            <p id="supported">PDF is supported</p>
                           </div>
                           <div class="roboto-font" *ngIf="categories[2].state == false" id="align">
                             <p id="title">Medical Aid</p>
@@ -420,7 +420,7 @@
               </div>
               <div class="upload-drop-section row">
                 <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                  accept=".PDF,." (onFileDrop)="dropped($event, 1)" (onFileOver)="fileOver($event)"
+                  accept=".PDF" (onFileDrop)="dropped($event, 1)" (onFileOver)="fileOver($event)"
                   (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                     multiple="true">
@@ -432,7 +432,7 @@
                           </div>
                           <div class="roboto-font" *ngIf="categories[1].state == true" id="align">
                             <p id="title">Retirement Annuity</p>
-                            <p id="supported">PDF, Docx are supported</p>
+                            <p id="supported">PDF is supported</p>
                           </div>
                           <div class="roboto-font" *ngIf="categories[1].state == false" id="align">
                             <p id="title">Retirement Annuity</p>
@@ -466,7 +466,7 @@
               </div>
               <div class="upload-drop-mie row">
                 <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                  accept=".PDF,." (onFileDrop)="dropped($event, 3)" (onFileOver)="fileOver($event)"
+                  accept=".PDF" (onFileDrop)="dropped($event, 3)" (onFileOver)="fileOver($event)"
                   (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                     multiple="true">
@@ -478,7 +478,7 @@
                           </div>
                           <div class="roboto-font" id="align" *ngIf="categories[3].state == true">
                             <p id="title">MIE Consent Form</p>
-                            <p id="supported">PDF, Docx are supported</p>
+                            <p id="supported">PDF is supported</p>
                           </div>
                           <div class="roboto-font" id="align" *ngIf="categories[3].state == false">
                             <p id="title">MIE Consent Form</p>
