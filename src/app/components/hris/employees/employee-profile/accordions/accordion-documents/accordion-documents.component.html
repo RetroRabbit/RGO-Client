@@ -1,4 +1,4 @@
-<div class="col-12" id="accordion-container">
+<div class="col-12 mb-5" id="accordion-container">
 
     <mat-accordion id="accordion" class="row">
         <mat-expansion-panel class="mt-3 rounded-3">
@@ -86,19 +86,19 @@
                                 <div *ngIf="document.status === 0" id="status-0">
                                     <span>{{ 'Approved' }}</span>
                                 </div>
-                                <div *ngIf="document.status === 2" id="status-2">
+                                <div *ngIf="document.status === 2" id="status-1">
                                     <span>{{ 'Rejected' }}</span>
                                 </div>
-                                <div *ngIf="document.status === 1" id="status-1">
+                                <div *ngIf="document.status === 1" id="status-2">
                                     <span>{{ 'Pending Approval' }}</span>
                                 </div>
-                                <div *ngIf="document.status === 3" id="status-2">
+                                <div *ngIf="document.status === 3" id="status-3">
                                     <span>{{ 'Action Required' }}</span>
                                 </div>
                             </div>
                             <ng-template #noDoc>
                                 <div id="status-null">
-                                    <span>{{ 'awaiting documents' }}</span>
+                                    <span>{{ 'Awaiting Documents' }}</span>
                                 </div>
                             </ng-template>
                         </div>
