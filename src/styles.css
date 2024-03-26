@@ -149,9 +149,7 @@ body {
   }
 }
 
-.mat-pseudo-checkbox-checked,
-.mat-pseudo-checkbox-indeterminate,
-.mat-accent .mat-pseudo-checkbox-checked,
-.mat-accent .mat-pseudo-checkbox-indeterminate {
-  background: #0029C6 !important;
-}
+.mat-pseudo-checkbox-checked::after,
+.mat-pseudo-checkbox-indeterminate::after {
+    display: none;
+} 

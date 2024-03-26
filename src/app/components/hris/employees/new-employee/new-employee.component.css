@@ -4,6 +4,11 @@ main {
     background: hsl(222, 100%, 95%);
 }
 
+.mat-pseudo-checkbox-checked::after,
+.mat-pseudo-checkbox-indeterminate::after {
+    display: none;
+}
+
 .roboto-font {
     font-family: "Roboto", sans-serif;
 }
