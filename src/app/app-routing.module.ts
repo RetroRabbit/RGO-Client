@@ -15,6 +15,7 @@ import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 import { HrisPageGuard } from './hris-guard.guard';
 import { AtsPageGuard } from './ats-guard.guard';
+import { NewCandidateComponent } from './components/ats/candidates/new-candidate/new-candidate.component';
 
 
 const routes: Routes = [
@@ -31,7 +32,8 @@ const routes: Routes = [
   { path: 'new-fieldcode', component: NewFieldCodeComponent, canActivate: [HrisPageGuard] },
   { path: 'update-fieldcode', component: UpdateFieldComponent, canActivate: [HrisPageGuard] },
   { path: 'employee-details', component: EmployeeDetailsComponent, canActivate: [HrisPageGuard] },
-  { path: 'ats-dashboard', component: AtsDashboardComponent, canActivate: [AtsPageGuard]}
+  { path: 'ats-dashboard', component: AtsDashboardComponent, canActivate: [AtsPageGuard]},
+  { path: 'create-candidate', component: NewCandidateComponent, canActivate: [AtsPageGuard]}, 
 ];
 
 @NgModule({

@@ -68,6 +68,7 @@ export class NewEmployeeComponent implements OnInit {
   @ViewChild('stepper') private myStepper!: MatStepper;
 
   employeeTypes: EmployeeType[] = [];
+  employeeDocumentModels: EmployeeDocument[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   namePattern = /^[a-zA-Z\s'-]*$/;
   initialsPattern = /^[A-Za-z]+$/;
@@ -86,7 +87,6 @@ export class NewEmployeeComponent implements OnInit {
   selectedEmployee!: EmployeeProfile;
   validImage: boolean = false;
   public files: NgxFileDropEntry[] = [];
-  employeeDocumentModels: EmployeeDocument[] = [];
   PREVIOUS_PAGE = 'previousPage';
   COMPANY_EMAIL = 'retrorabbit.co.za';
 
