@@ -267,12 +267,35 @@ export class NewEmployeeComponent implements OnInit {
     }
   }
 
+  clearFormErrorsAndValues(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(controlName => {
+      const control = formGroup.get(controlName);
+      if (control instanceof FormControl) {
+        control.clearValidators();
+        control.updateValueAndValidity();
+        control.reset();
+      } else if (control instanceof FormGroup) {
+        this.clearFormErrorsAndValues(control);
+      }
+    });
+  }
+
   saveAndExit() {
+    this.clearFormErrorsAndValues(this.newEmployeeForm);
+    this.clearFormErrorsAndValues(this.uploadDocumentForm);
+    this.clearFormErrorsAndValues(this.physicalAddress);
+    this.clearFormErrorsAndValues(this.postalAddressForm);
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
+    this.removeAllDocuments();
   }
 
   saveAndAddAnother() {
+    this.clearFormErrorsAndValues(this.newEmployeeForm);
+    this.clearFormErrorsAndValues(this.uploadDocumentForm);
+    this.clearFormErrorsAndValues(this.physicalAddress);
+    this.clearFormErrorsAndValues(this.postalAddressForm);
     this.onUploadDocument('/create-employee');
+    this.removeAllDocuments();
   }
 
   onUploadDocument(nextPage: string): void {
@@ -379,8 +402,6 @@ export class NewEmployeeComponent implements OnInit {
     if (this.isDirty == true)
       return;
 
-    if (this.isDirty == false)
-      this.isDirty = true;
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
@@ -388,6 +409,7 @@ export class NewEmployeeComponent implements OnInit {
       this.isLoadingAddEmployee = false;
       return;
     }
+    this.newEmployeeForm.patchValue({id: 0});
     this.newEmployeeForm.value.initials = this.newEmployeeForm.value.initials?.toUpperCase();
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
@@ -575,4 +597,13 @@ export class NewEmployeeComponent implements OnInit {
     this.employeeDocumentModels = this.employeeDocumentModels.filter(file => file.fileCategory !== category);
     this.categories[category].state = true;
   }
+
+  removeAllDocuments(): void {
+    Object.keys(this.categories).forEach(catKey => {
+      const catNum = parseInt(catKey, 10);
+      this.employeeDocumentModels = this.employeeDocumentModels.filter(file => file.fileCategory !== catNum);
+      this.categories[catNum].state = true;
+    });
+  }
+
 }
