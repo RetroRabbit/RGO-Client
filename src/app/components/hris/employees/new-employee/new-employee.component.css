@@ -19,6 +19,10 @@ main {
     word-wrap: break-word;
 }
 
+.custom-padding {
+    padding: 0 132px;
+}
+
 .no-border {
     border: none;
 }
