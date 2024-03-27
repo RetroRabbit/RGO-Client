@@ -19,7 +19,7 @@
               <p class="col-lg-7 col-md-12">Note: *The asterisk indicates required fields</p>
             </div>
             <div class="row flex-column justify-content-center align-items-center col-md-12">
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>First name</mat-label>
                 <input matInput type="text" formControlName="name" />
                 <mat-error *ngIf="newEmployeeForm.controls['name'].hasError('required')">
@@ -30,7 +30,7 @@
                   First name must not contain numbers
                 </mat-error>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>Last name</mat-label>
                 <input matInput type="text" formControlName="surname" />
                 <mat-error *ngIf="newEmployeeForm.controls['surname'].hasError('required')">
@@ -41,18 +41,18 @@
                   Last name must not contain numbers
                 </mat-error>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>Initials</mat-label>
                 <input matInput type="text" formControlName="initials" />
                 <mat-error *ngIf="newEmployeeForm.controls['initials'].hasError('required')">
                   Initials are required
                 </mat-error>
-                <mat-error
+                <mat-error class="mat-error"
                   *ngIf="newEmployeeForm.controls['initials'].hasError('pattern') && !newEmployeeForm.controls['initials'].hasError('required')">
                   Initials must not contain numbers
                 </mat-error>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>Work Email</mat-label>
                 <input matInput type="email" formControlName="email" />
                 <mat-error *ngIf="newEmployeeForm.controls['email'].hasError('required')">
@@ -63,7 +63,7 @@
                   Work email must end with @retrorabbit.co.za
                 </mat-error>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>Personal Email</mat-label>
                 <input matInput type="email" formControlName="personalEmail" />
                 <mat-error *ngIf="newEmployeeForm.controls['personalEmail'].hasError('required')">
@@ -74,13 +74,13 @@
                   This is not a valid email
                 </mat-error>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>Role</mat-label>
-                <mat-select formControlName="employeeType">
+                <mat-select formControlName="employeeType" hideSingleSelectionIndicator="true">
                   <mat-option *ngFor="let type of employeeTypes" [value]="type">{{ type.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>People's Champion</mat-label>
                 <input type="text" placeholder="" matInput formControlName="peopleChampion"
                   [matAutocomplete]="autoChampion" (input)="filterChampions($event)">
@@ -92,13 +92,13 @@
                     {{ peopleChampion.surname }}</mat-option>
                 </mat-autocomplete>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>Select Level</mat-label>
-                <mat-select formControlName="level">
+                <mat-select formControlName="level" hideSingleSelectionIndicator="true">
                   <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>Start Date</mat-label>
                 <input matInput formControlName="engagementDate" [matDatepicker]="engagementDatePicker" />
                 <mat-datepicker-toggle matSuffix [for]="engagementDatePicker"></mat-datepicker-toggle>
@@ -107,7 +107,7 @@
                   Engagement date is required
                 </mat-error>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>ID Number</mat-label>
                 <input matInput type="text" formControlName="idNumber" (blur)="getGenderBirthday($event)" />
                 <mat-error
@@ -115,7 +115,7 @@
                   Not a valid South African ID number
                 </mat-error>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>Date of Birth</mat-label>
                 <input matInput formControlName="dateOfBirth" [matDatepicker]="dateOfBirthPicker" />
                 <mat-datepicker-toggle matSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle>
@@ -159,7 +159,7 @@
                 </div>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
                   <mat-label>Select Race</mat-label>
-                  <mat-select formControlName="race" placeholder="Select race">
+                  <mat-select formControlName="race" placeholder="Select race" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let race of races; index as i" [value]="i">{{ race }}</mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -179,7 +179,7 @@
                   class="col-lg-7 col-md-12 custom-mat-select">
                   <mat-label>Country of Issue</mat-label>
                   <input matInput type="text" formControlName="passportCountryIssue" />
-                  <mat-select #countrySelect formControlName="passportCountryIssue" hidden>
+                  <mat-select #countrySelect formControlName="passportCountryIssue" hidden hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
                   </mat-select>
                   <mat-icon matSuffix (click)="countrySelect.open()">Search</mat-icon>
@@ -229,13 +229,13 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Country</mat-label>
-                  <mat-select formControlName="country">
+                  <mat-select formControlName="country" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Province</mat-label>
-                  <mat-select formControlName="province">
+                  <mat-select formControlName="province" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -282,13 +282,13 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Country</mat-label>
-                  <mat-select formControlName="country">
+                  <mat-select formControlName="country" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Province</mat-label>
-                  <mat-select formControlName="province">
+                  <mat-select formControlName="province" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
                   </mat-select>
                 </mat-form-field>

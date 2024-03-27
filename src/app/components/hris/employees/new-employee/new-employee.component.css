@@ -8,6 +8,13 @@ main {
     font-family: "Roboto", sans-serif;
 }
 
+.mat-pseudo-checkbox-checked,
+.mat-pseudo-checkbox-indeterminate,
+.mat-accent .mat-pseudo-checkbox-checked,
+.mat-accent .mat-pseudo-checkbox-indeterminate {
+  background: #0029C6 !important;
+}
+
 .heading-text {
     width: 332px;
     text-align: center;
@@ -22,8 +29,6 @@ main {
 .no-border {
     border: none;
 }
-
-
 
 .form-buttons button {
     width: 100%;
