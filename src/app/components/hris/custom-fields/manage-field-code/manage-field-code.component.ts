@@ -46,7 +46,7 @@ export class ManageFieldCodeComponent {
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   isLoading: boolean = true;
   runCounter: number = 0;
-  private runThreshold = 2;
+  runThreshold = 2;
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -114,11 +114,11 @@ export class ManageFieldCodeComponent {
     })
   }
 
-  private shouldReset(): boolean {
+  shouldReset(): boolean {
     return this.runCounter >= this.runThreshold;
   }
 
-  private resetRunCounter(){
+  resetRunCounter(){
     return this.runCounter = 0;
   }
 
