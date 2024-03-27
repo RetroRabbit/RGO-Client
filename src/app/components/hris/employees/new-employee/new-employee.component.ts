@@ -273,40 +273,6 @@ export class NewEmployeeComponent implements OnInit {
     this.onUploadDocument('/create-employee');
   }
 
-  // uploadDocumentValidationErrors(form: FormGroup) {
-  //   const result = [];
-  //   Object.keys(form.controls).forEach(key => {
-
-  //     const controlErrors: ValidationErrors = form.get(key).errors;
-  //     if (controlErrors) {
-  //       Object.keys(controlErrors).forEach(keyError => {
-  //         result.push({
-  //           'control': key,
-  //           'error': keyError,
-  //           'value': controlErrors[keyError]
-  //         });
-  //       });
-  //     }
-  //   });
-  //   return result;
-  // }
-  uploadDocumentValidationErrors() : number {
-    let totalErrors = 0;
-    const errorObj = [];
-
-    Object.keys(this.uploadDocumentForm.controls).forEach(key => {
-      const controlErrors: ValidationErrors | null = this.uploadDocumentForm.get(key)!.errors;
-      if (controlErrors != null) {
-         totalErrors++;
-         Object.keys(controlErrors).forEach(keyError => {
-            errorObj.push({key,keyError});
-        });
-      }
-    });
-
-    return totalErrors;
-  }
-
   onUploadDocument(nextPage: string): void {
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({

@@ -515,7 +515,7 @@
           <div id="footer">
             <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="goToPreviousPage()">Cancel</button>
-            <button [disabled]="uploadDocumentValidationErrors() > 0" id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
+            <button id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="saveAndAddAnother()">Save and add another</button>
             <button id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
               (click)="saveAndExit()">Save</button>
