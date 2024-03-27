@@ -45,6 +45,7 @@ export class ManageFieldCodeComponent {
   dataSource: MatTableDataSource<FieldCode> = new MatTableDataSource();
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   isLoading: boolean = true;
+  timesRun: number = 0;
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -89,17 +90,21 @@ export class ManageFieldCodeComponent {
   fetchData(active: number = 0) {
     this.isLoading = true;
     this.fieldCodeService.getAllFieldCodes().subscribe({
-      next: fieldCodes => {
+      next: fieldCodes => {        
+        this.activeTab = active;
         this.fieldCodes = fieldCodes;
         this.filteredFieldCodes = this.fieldCodes.filter(field => field.status == active);
         this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.getActivePassive();
-        this.activeTab = active;
-        this.isLoading = false;
         this.sortByIdDefault(this.dataSource.sort);
         this.applySorting();
+        this.timesRun++;
+        if(this.timesRun >= 2){
+          this.isLoading = false
+          this.timesRun = 0;
+        }
       },
       error: () => {
         this.snackBarService.showSnackbar("Error fetching field codes", "snack-error");
@@ -234,6 +239,9 @@ export class ManageFieldCodeComponent {
   }
 
   changeTab(tabIndex: number) {
+    if(this.isLoading == true){
+      return;
+    }
     this.activeTab = tabIndex;
     this.filteredFieldCodes = this.fieldCodes.filter(fieldCode => fieldCode.status == this.activeTab);
     this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
