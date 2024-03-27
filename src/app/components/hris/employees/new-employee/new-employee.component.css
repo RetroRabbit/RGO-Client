@@ -19,10 +19,6 @@ main {
     word-wrap: break-word;
 }
 
-.custom-padding {
-    padding: 32px;
-}
-
 .no-border {
     border: none;
 }
