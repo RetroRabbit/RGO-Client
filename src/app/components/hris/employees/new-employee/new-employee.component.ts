@@ -95,6 +95,7 @@ export class NewEmployeeComponent implements OnInit {
   isMobileScreen = false;
   isLoadingAddEmployee: boolean = false;
   isSameAddress: boolean = true;
+  isSavedEmployee: boolean = false;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -281,6 +282,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndExit() {
+    this.isSavedEmployee = false;
     this.clearFormErrorsAndValues(this.newEmployeeForm);
     this.clearFormErrorsAndValues(this.uploadDocumentForm);
     this.clearFormErrorsAndValues(this.physicalAddress);
@@ -290,6 +292,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndAddAnother() {
+    this.isSavedEmployee = false;
     this.clearFormErrorsAndValues(this.newEmployeeForm);
     this.clearFormErrorsAndValues(this.uploadDocumentForm);
     this.clearFormErrorsAndValues(this.physicalAddress);
@@ -436,6 +439,7 @@ export class NewEmployeeComponent implements OnInit {
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
+        this.isSavedEmployee = true;
         this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
         this.myStepper.next();
         this.isDirty = false;
@@ -454,7 +458,7 @@ export class NewEmployeeComponent implements OnInit {
           stepper?.next();
           this.isLoadingAddEmployee = false;
         }
-        this.snackBarService.showSnackbar(`Error: ${message}`, "snack-error");
+        this.snackBarService.showSnackbar(`Error: ${message}. Failed to save employee`, "snack-error");
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
       },
