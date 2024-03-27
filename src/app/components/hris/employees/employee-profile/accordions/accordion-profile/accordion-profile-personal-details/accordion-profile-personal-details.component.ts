@@ -32,8 +32,6 @@ export class AccordionProfilePersonalDetailsComponent {
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
   personalFormProgress: number = 0;
-
-
   usingProfile: boolean = true;
 
   initializeForm() {
@@ -48,7 +46,8 @@ export class AccordionProfilePersonalDetailsComponent {
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
     this.checkPersonalFormProgress();
     this.checkEmployeeDetails();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", true)
+    this.sharedAccordionFunctionality.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "personalDetailsForm", "Employee", true)
+
   }
 
   constructor(
@@ -180,34 +179,34 @@ export class AccordionProfilePersonalDetailsComponent {
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
   }
 
-  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
-    fieldNames.forEach(fieldName => {
-      let control: AbstractControl<any, any> | null = null;
-      control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
+  // checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
+  //   fieldNames.forEach(fieldName => {
+  //     let control: AbstractControl<any, any> | null = null;
+  //     control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
 
-      if (control) {
-        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
-          case PropertyAccessLevel.none:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
-            break;
-          case PropertyAccessLevel.read:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          case PropertyAccessLevel.write:
-            if (!initialLoad)
-              control.enable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          default:
-            if (!initialLoad)
-              control.enable();
-        }
-      }
-    });
-  }
+  //     if (control) {
+  //       switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
+  //         case PropertyAccessLevel.none:
+  //           if (!initialLoad)
+  //             control.disable();
+  //           this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
+  //           break;
+  //         case PropertyAccessLevel.read:
+  //           if (!initialLoad)
+  //             control.disable();
+  //           this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+  //           break;
+  //         case PropertyAccessLevel.write:
+  //           if (!initialLoad)
+  //             control.enable();
+  //           this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+  //           break;
+  //         default:
+  //           if (!initialLoad)
+  //             control.enable();
+  //       }
+  //     }
+  //   });
+  // }
 
 }

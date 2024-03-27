@@ -54,7 +54,7 @@ export class AccordionProfileAddressDetailsComponent {
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeAddressService: EmployeeAddressService,
-    ) {
+  ) {
   }
 
   usingProfile: boolean = true;
@@ -82,7 +82,7 @@ export class AccordionProfileAddressDetailsComponent {
     this.sharedAccordionFunctionality.addressDetailsForm.disable();
     this.checkAddressFormProgress();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", true)
-    }
+  }
 
   saveAddressEdit() {
     if (this.sharedAccordionFunctionality.physicalEqualPostal) {
@@ -269,6 +269,8 @@ export class AccordionProfileAddressDetailsComponent {
       }
     }
     this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
+    //this.updateProfile.emit(this.addressFormProgress);
+
   }
 
   checkEmployeeDetails() {

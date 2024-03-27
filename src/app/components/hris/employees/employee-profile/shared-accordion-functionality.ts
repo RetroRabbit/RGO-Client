@@ -14,7 +14,10 @@ import { FieldCode } from 'src/app/models/hris/field-code.interface';
 import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { AccordionProfilePersonalDetailsComponent } from './accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
+import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +27,7 @@ export class SharedAccordionFunctionality {
   @Output() updateProfile = new EventEmitter<number>();
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
+  // this.employeeFormProgress
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
   employeeTypes: EmployeeType[] = [];
@@ -57,6 +61,12 @@ export class SharedAccordionFunctionality {
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
 
+  employeeFormProgress: number = 0;
+  profileFormProgress: number = 0;
+  personalFormProgress: number = 0;
+  contactFormProgress: number = 0;
+  addressFormProgress: number = 0;
+  additionalFormProgress: number = 0;
 
   genders = genders;
   races = races;
@@ -75,8 +85,8 @@ export class SharedAccordionFunctionality {
   namePattern = /^[a-zA-Z\s'-]*$/
 
   constructor(
-    private fb: FormBuilder
-  ) { }
+    private fb: FormBuilder,
+    public sharedPropertyAccessService: SharedPropertyAccessService) { }
 
   personalDetailsForm: FormGroup = this.fb.group({
     gender: { value: '', disabled: true },
@@ -131,7 +141,50 @@ export class SharedAccordionFunctionality {
   additionalInfoForm: FormGroup = this.fb.group({});
 
   totalProfileProgress() {
-    //   this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress + this.additionalFormProgress) / 5);
-    //   this.updateProfile.emit(this.profileFormProgress);
+    // this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress + this.additionalFormProgress) / 5);
+    // this.updateProfile.emit(this.profileFormProgress);
+  }
+  checkPropertyPermissions(fieldNames: string[], table: string, form: string, initialLoad: boolean): void {
+    fieldNames.forEach(fieldName => {
+      let control: AbstractControl<any, any> | null = null;
+
+      switch (form) {
+        case "employeeDetailsForm":
+          control = this.employeeDetailsForm.get(fieldName);
+          break;
+        case "employeeContactForm":
+          control = this.employeeContactForm.get(fieldName);
+          break;
+        case "addressDetailsForm":
+          control = this.addressDetailsForm.get(fieldName);
+          break;
+        case "additionalInfoForm":
+          control = this.additionalInfoForm.get(fieldName);
+          break;
+      }
+
+      if (control) {
+        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
+          case PropertyAccessLevel.none:
+            if (!initialLoad)
+              control.disable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
+            break;
+          case PropertyAccessLevel.read:
+            if (!initialLoad)
+              control.disable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+            break;
+          case PropertyAccessLevel.write:
+            if (!initialLoad)
+              control.enable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+            break;
+          default:
+            if (!initialLoad)
+              control.enable();
+        }
+      }
+    });
   }
 }

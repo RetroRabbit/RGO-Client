@@ -16,7 +16,12 @@ import { Document } from 'src/app/models/hris/constants/documents.contants';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { AccordionBankingComponent } from './accordions/accordion-banking/accordion-banking.component';
-import { AccordionProfileComponent } from './accordions/accordion-profile/accordion-profile.component';
+// import { AccordionProfileComponent } from './accordions/accordion-profile/accordion-profile.component';
+import { AccordionProfileAdditionalComponent } from './accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
+import { AccordionProfileAddressDetailsComponent } from './accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
+import { AccordionProfileContactDetailsComponent } from './accordions/accordion-profile/accordion-profile-contact-details/accordion-profile-contact-details.component';
+import { AccordionProfileEmployeeDetailsComponent } from './accordions/accordion-profile/accordion-profile-employee-details/accordion-profile-employee-details.component';
+import { AccordionProfilePersonalDetailsComponent } from './accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
 import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents.component';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
@@ -76,7 +81,12 @@ export class EmployeeProfileComponent {
   screenWidth = window.innerWidth;
 
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
-  @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
+  // @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
+  @ViewChild(AccordionProfileAddressDetailsComponent) adressAccordion!: AccordionProfileAddressDetailsComponent;
+  @ViewChild(AccordionProfileAdditionalComponent) additionalAccordion!: AccordionProfileAdditionalComponent;
+  @ViewChild(AccordionProfileContactDetailsComponent) contactAccordion!: AccordionProfileContactDetailsComponent;
+  @ViewChild(AccordionProfileEmployeeDetailsComponent) employeeAccordion!: AccordionProfileEmployeeDetailsComponent;
+  @ViewChild(AccordionProfilePersonalDetailsComponent) personalAccordion!: AccordionProfilePersonalDetailsComponent;
   @ViewChild(AccordionDocumentsComponent) documentAccordion!: AccordionDocumentsComponent;
 
   imageUrl!: string;

@@ -59,7 +59,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.getClients();
     this.checkEmployeeDetails();
   }
-
   initializeForm() {
     this.sharedAccordionFunctionality.employeeDetailsForm = this.fb.group({
       name: [this.employeeProfile!.employeeDetails.name, [Validators.required,
@@ -78,7 +77,7 @@ export class AccordionProfileEmployeeDetailsComponent {
     });
     this.sharedAccordionFunctionality.employeeDetailsForm.disable();
     this.checkEmployeeFormProgress();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", true)
+    this.sharedAccordionFunctionality.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", "employeeDetailsForm", true)
 
     this.sharedAccordionFunctionality.personalDetailsForm = this.fb.group({
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
@@ -338,7 +337,8 @@ export class AccordionProfileEmployeeDetailsComponent {
   editEmployeeDetails() {
     this.sharedAccordionFunctionality.employeeDetailsForm.enable();
     this.sharedAccordionFunctionality.editEmployee = true;
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", false)
+    this.sharedAccordionFunctionality.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", "employeeDetailsForm", false)
+
   }
 
   cancelEmployeeEdit() {
@@ -444,33 +444,5 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.sharedAccordionFunctionality.physicalEqualPostal = !this.sharedAccordionFunctionality.physicalEqualPostal;
   }
 
-  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
-    fieldNames.forEach(fieldName => {
-      let control: AbstractControl<any, any> | null = null;
-      control = this.sharedAccordionFunctionality.employeeDetailsForm.get(fieldName);
 
-      if (control) {
-        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
-          case PropertyAccessLevel.none:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
-            break;
-          case PropertyAccessLevel.read:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          case PropertyAccessLevel.write:
-            if (!initialLoad)
-              control.enable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          default:
-            if (!initialLoad)
-              control.enable();
-        }
-      }
-    });
-  }
 }

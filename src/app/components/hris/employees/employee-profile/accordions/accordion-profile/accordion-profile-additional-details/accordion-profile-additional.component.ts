@@ -1,34 +1,21 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Client } from 'src/app/models/hris/client.interface';
+import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { levels } from 'src/app/models/hris/constants/levels.constants';
-import { races } from 'src/app/models/hris/constants/races.constants';
-import { genders } from 'src/app/models/hris/constants/genders.constants';
-import { countries } from 'src/app/models/hris/constants/countries.constants';
-import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
-import { provinces } from 'src/app/models/hris/constants/provinces.constants';
 import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
-import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { FieldCodeService } from 'src/app/services/hris/field-code.service';
 import { FieldCode } from 'src/app/models/hris/field-code.interface';
-import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
-import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
-import { EmployeeProfilePermissions } from 'src/app/models/hris/property-access/employee-profile-properties.interface';
-import { EmployeeAddressPermissions } from 'src/app/models/hris/property-access/employee-address-properties.interface';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 
 @Component({
@@ -46,7 +33,7 @@ export class AccordionProfileAdditionalComponent {
   @Output() updateProfile = new EventEmitter<number>();
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
-
+  customFields: FieldCode[] = [];
   additionalFormProgress: number = 0;
 
   constructor(
@@ -59,7 +46,6 @@ export class AccordionProfileAdditionalComponent {
     private clientService: ClientService,
     private employeeTypeService: EmployeeTypeService,
     private fieldCodeService: FieldCodeService,
-    private employeeAddressService: EmployeeAddressService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
@@ -73,7 +59,6 @@ export class AccordionProfileAdditionalComponent {
     this.getEmployeeFields();
     this.getClients();
   }
-
   initializeForm() {
     this.sharedAccordionFunctionality.employeeDetailsForm = this.fb.group({
       name: [this.employeeProfile!.employeeDetails.name, [Validators.required,
@@ -175,7 +160,7 @@ export class AccordionProfileAdditionalComponent {
   getEmployeeFieldCodes() {
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.customFields = data.filter((data: FieldCode) => data.category === this.sharedAccordionFunctionality.category[0].id);
+        this.customFields = data.filter((data: FieldCode) => data.category === this.sharedAccordionFunctionality.category[0].id);
         this.checkAdditionalInformation();
         this.checkAdditionalFormProgress();
       }
@@ -184,7 +169,7 @@ export class AccordionProfileAdditionalComponent {
 
   checkAdditionalInformation() {
     const formGroupConfig: any = {};
-    this.sharedAccordionFunctionality.customFields.forEach(fieldName => {
+    this.customFields.forEach(fieldName => {
       if (fieldName.code != null || fieldName.code != undefined) {
         const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
         formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
@@ -211,6 +196,8 @@ export class AccordionProfileAdditionalComponent {
       }
     }
     this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
+    //this.updateProfile.emit(this.additionalFormProgress);
+
   }
 
 
@@ -227,7 +214,7 @@ export class AccordionProfileAdditionalComponent {
   }
 
   saveAdditionalEdit() {
-    for (const fieldcode of this.sharedAccordionFunctionality.customFields) {
+    for (const fieldcode of this.customFields) {
       const found = this.sharedAccordionFunctionality.employeeData.find((data) => {
         return fieldcode.id == data.fieldCodeId
       });

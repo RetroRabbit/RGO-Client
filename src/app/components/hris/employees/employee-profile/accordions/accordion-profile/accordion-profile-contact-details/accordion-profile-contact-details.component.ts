@@ -29,7 +29,6 @@ export class AccordionProfileContactDetailsComponent {
   usingProfile: boolean = true;
 
 
-
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,

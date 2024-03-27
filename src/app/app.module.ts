@@ -75,7 +75,7 @@ import { ChartReportPdfComponent } from './components/hris/charts/chart-report-p
 import { NavBarComponent } from './components/hris/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AccordionProfileComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile.component';
+// import { AccordionProfileComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile.component';
 
 import { AccordionBankingComponent } from './components/hris/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
 import { AccordionDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
@@ -116,7 +116,7 @@ import { AccordionProfileAddressDetailsComponent } from './components/hris/emplo
     ChartReportPdfComponent,
     NavBarComponent,
     ConfirmDialogComponent,
-    AccordionProfileComponent,
+    // AccordionProfileComponent,
     AccordionBankingComponent,
     AccordionDocumentsComponent,
     LoadingComponentComponent,
@@ -124,6 +124,10 @@ import { AccordionProfileAddressDetailsComponent } from './components/hris/emplo
     NewCandidateComponent,
     PropertyAccessComponent,
     AccordionProfileEmployeeDetailsComponent,
+    AccordionProfileContactDetailsComponent,
+    AccordionProfileAdditionalComponent,
+    AccordionProfilePersonalDetailsComponent,
+    AccordionProfileAddressDetailsComponent,
 
   ],
   imports: [

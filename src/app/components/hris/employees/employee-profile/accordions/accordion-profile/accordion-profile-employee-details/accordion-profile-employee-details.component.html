@@ -9,7 +9,7 @@
         <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing information</span>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <form [formGroup]="employeeDetailsForm" (submit)="saveEmployeeEdit()">
+    <form [formGroup]="sharedAccordionFunctionality.employeeDetailsForm" (submit)="saveEmployeeEdit()">
       <div class="col-12 mb-2 d-flex justify-content-end">
         <button *ngIf="!sharedAccordionFunctionality.editEmployee" mat-button id="edit-button" (click)="editEmployeeDetails()"
           [ngClass]="screenWidth <= 767 ?'col-12':''">
@@ -22,10 +22,10 @@
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>Full Names</mat-label>
                 <input matInput formControlName="name">
-                <mat-error *ngIf="employeeDetailsForm.controls['name'].hasError('required')"> Full
+                <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('required')"> Full
                   name is required</mat-error>
                 <mat-error
-                  *ngIf="employeeDetailsForm.controls['name'].hasError('pattern') && !employeeDetailsForm.controls['name'].hasError('required') ">
+                  *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('pattern') && !sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('required') ">
                   Full name must not contain numbers</mat-error>
               </mat-form-field>
             </div>
@@ -33,10 +33,10 @@
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>Last Name</mat-label>
                 <input matInput formControlName="surname">
-                <mat-error *ngIf="employeeDetailsForm.controls['surname'].hasError('required')">
+                <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['surname'].hasError('required')">
                   Last name is required</mat-error>
                 <mat-error
-                  *ngIf="employeeDetailsForm.controls['surname'].hasError('pattern') && !employeeDetailsForm.controls['surname'].hasError('required') ">
+                  *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['surname'].hasError('pattern') && !sharedAccordionFunctionality.employeeDetailsForm.controls['surname'].hasError('required') ">
                   Last name must not contain numbers</mat-error>
               </mat-form-field>
             </div>
@@ -44,10 +44,10 @@
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>Initials</mat-label>
                 <input matInput formControlName="initials">
-                <mat-error *ngIf="employeeDetailsForm.controls['initials'].hasError('required')">
+                <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['initials'].hasError('required')">
                   Initials are required</mat-error>
                 <mat-error
-                  *ngIf="employeeDetailsForm.controls['initials'].hasError('pattern') && !employeeDetailsForm.controls['initials'].hasError('required')">
+                  *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['initials'].hasError('pattern') && !sharedAccordionFunctionality.employeeDetailsForm.controls['initials'].hasError('required')">
                   Initials must not contain numbers</mat-error>
               </mat-form-field>
             </div>
@@ -136,10 +136,10 @@
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>I.D number</mat-label>
                 <input matInput formControlName="idNumber" (blur)="getGenderBirthday($event)">
-                <mat-error *ngIf="employeeDetailsForm.controls['idNumber'].hasError('required')"> ID
+                <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['idNumber'].hasError('required')"> ID
                   number is required </mat-error>
                 <mat-error
-                  *ngIf="employeeDetailsForm.controls['idNumber'].hasError('invalidIdNumber') && !employeeDetailsForm.controls['idNumber'].hasError('required')">
+                  *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['idNumber'].hasError('invalidIdNumber') && !sharedAccordionFunctionality.employeeDetailsForm.controls['idNumber'].hasError('required')">
                   This is not a valid South African ID number
                 </mat-error>
               </mat-form-field>
@@ -168,7 +168,7 @@
           <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="cancel-button" (click)="cancelEmployeeEdit()">
             Cancel
           </button>
-          <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="save-button" type="submit">
+          <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="save-button" type="submit"  >
             Save changes
           </button>
         </div>
