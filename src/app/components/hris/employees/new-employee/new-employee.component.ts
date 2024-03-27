@@ -458,7 +458,7 @@ export class NewEmployeeComponent implements OnInit {
           stepper?.next();
           this.isLoadingAddEmployee = false;
         }
-        this.snackBarService.showSnackbar(`Error: ${message}. Failed to save employee`, "snack-error");
+        this.snackBarService.showSnackbar(`${message} Failed to save employee`, "snack-error");
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
       },
