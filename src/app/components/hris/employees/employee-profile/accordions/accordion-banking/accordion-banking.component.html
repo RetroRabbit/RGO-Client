@@ -78,14 +78,16 @@
                                 </mat-form-field>
                             </div>
                             <div class="col-12 col-md-6 my-2">
+
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Bank Name</mat-label>
                                     <mat-select placeholder="Select bank" formControlName="bankName">
-                                        <mat-option *ngFor="let bank of banks" [value]="bank.value">
+                                        <mat-option *ngFor="let bank of sortedBanks" [value]="bank.value">
                                             {{bank.value}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
+
                             </div>
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">

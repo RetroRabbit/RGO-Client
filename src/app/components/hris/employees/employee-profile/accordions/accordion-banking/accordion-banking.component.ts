@@ -59,6 +59,10 @@ export class AccordionBankingComponent {
     private snackBarService: SnackbarService) {
   }
 
+  get sortedBanks(){
+    return this.banks.slice().sort((a,b) => a.value.localeCompare(b.value))
+  }
+
   ngOnInit() {
     this.getEmployeeBankingData();
   }
