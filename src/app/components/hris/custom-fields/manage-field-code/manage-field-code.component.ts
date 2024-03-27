@@ -46,7 +46,7 @@ export class ManageFieldCodeComponent {
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   isLoading: boolean = true;
   runCounter: number = 0;
-  runThreshold = 2;
+  runThreshold: number = 2;
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
