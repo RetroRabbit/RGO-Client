@@ -45,7 +45,8 @@ export class ManageFieldCodeComponent {
   dataSource: MatTableDataSource<FieldCode> = new MatTableDataSource();
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   isLoading: boolean = true;
-  timesRun: number = 0;
+  runCounter: number = 0;
+  private runThreshold = 2;
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -100,10 +101,10 @@ export class ManageFieldCodeComponent {
         this.getActivePassive();
         this.sortByIdDefault(this.dataSource.sort);
         this.applySorting();
-        this.timesRun++;
-        if(this.timesRun >= 2){
-          this.isLoading = false
-          this.timesRun = 0;
+        this.runCounter++;
+        if (this.shouldReset()) {
+          this.isLoading = false;
+          this.resetRunCounter();
         }
       },
       error: () => {
@@ -111,6 +112,14 @@ export class ManageFieldCodeComponent {
         this.isLoading = false;
       }
     })
+  }
+
+  private shouldReset(): boolean {
+    return this.runCounter >= this.runThreshold;
+  }
+
+  private resetRunCounter(){
+    return this.runCounter = 0;
   }
 
   applySorting(): void {
