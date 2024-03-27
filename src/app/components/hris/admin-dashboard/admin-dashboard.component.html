@@ -623,7 +623,7 @@
 
 <ng-template #dialogTemplate>
   <div class="container-fluid p-4" [ngClass]="isLoadingChart == true ? 'fullscreen-modal-transparent' : {'fullscreen-modal': isMobileScreen}">
-    <div class="align-content-center align-items-center col-12 d-flex justify-content-center">
+    <div class="align-content-center align-items-center d-flex justify-content-center">
       <mat-spinner *ngIf="isLoadingChart == true"></mat-spinner>
     </div>
     <div class="row"  *ngIf="isLoadingChart == false">
