@@ -27,7 +27,8 @@ export class SaveCustomFieldComponent {
   showAdvanced: boolean = false;
   isRequired: boolean = false;
   PREVIOUS_PAGE = "previousPage";
-  newFieldCodeForm: FormGroup = this.fb.group({
+
+  customFieldForm: FormGroup = this.fb.group({
     code: ['', Validators.required],
     name: ['', [Validators.required]],
     description: [''],
@@ -48,14 +49,14 @@ export class SaveCustomFieldComponent {
     public cookieService: CookieService,
     public navService: NavService,
     private systemService: SystemNav) {
-      this.selectedCustomField = systemService.selectedField;
+    this.selectedCustomField = systemService.selectedField;
   }
 
   ngOnInit() {
     this.navService.showNavbar = false;
     this.navService.showSystemNavbar = false;
     if (this.selectedCustomField) {
-      this.initializeForm();
+      this.populateCustomFieldForm();
     }
   }
 
@@ -64,11 +65,11 @@ export class SaveCustomFieldComponent {
     this.navService.showSystemNavbar = true;
   }
 
-  private initializeForm() {
+  private populateCustomFieldForm() {
     this.selectedType = this.selectedCustomField?.type;
     const optionsControls = this.selectedCustomField?.options?.map(option => this.fb.control(option.option)) || [];
     this.fieldCodeCapture = this.selectedCustomField.name as string;
-    this.newFieldCodeForm = this.fb.group({
+    this.customFieldForm = this.fb.group({
       code: [this.selectedCustomField?.code, Validators.required],
       name: [this.selectedCustomField?.name, Validators.required],
       description: [this.selectedCustomField?.description],
@@ -79,13 +80,12 @@ export class SaveCustomFieldComponent {
       internalTable: [this.selectedCustomField?.internalTable],
       options: this.fb.array(optionsControls),
       category: [this.selectedCustomField?.category, Validators.required],
-      required:[this.selectedCustomField?.required, Validators.required],
+      required: [this.selectedCustomField?.required, Validators.required],
     });
   }
 
-
   get options(): FormArray {
-    return this.newFieldCodeForm.get('options') as FormArray;
+    return this.customFieldForm.get('options') as FormArray;
   }
 
   addOption() {
@@ -96,15 +96,8 @@ export class SaveCustomFieldComponent {
     this.options.removeAt(index);
   }
 
-  onClick() {
-    this.isUpdateClicked = true;
-    this.newFieldCodeForm.enable();
-  }
-
   onSubmit() {
-    if (this.newFieldCodeForm.valid) {
-      const { fieldCode } = this.newFieldCodeForm.value;
-
+    if (this.customFieldForm.valid) {
       const optionsArray = this.options.value.map((optionValue: any) => {
         return {
           id: 0,
@@ -116,26 +109,26 @@ export class SaveCustomFieldComponent {
       const existingOptions = this.selectedCustomField?.options?.map(option => option.option) || [];
       const optionsToRemove = existingOptions.filter(option => !optionsArray.some((opt: any) => opt.option === option));
       const updatedOptions = optionsArray.filter((option: any) => !optionsToRemove.includes(option.option));
-      var formValues = this.newFieldCodeForm.value;
+      var formValues = this.customFieldForm.value;
       var customField = new CustomField();
-      customField.id = this.selectedCustomField? this.selectedCustomField.id : 0,
-      customField.code = formValues['code'],
-      customField.name = formValues['name'],
-      customField.description = formValues['description'],
-      customField.regex =  formValues['regex'],
-      customField.type = formValues['type'],
-      customField.status = formValues['status'],
-      customField.internal = formValues['internal'],
-      customField.internalTable = formValues['internalTable'],
-      customField.options = formValues['type'] == 4 ?  updatedOptions: [],
-      customField.category = formValues['category'],
-      customField.required = formValues['required']
-      
+      customField.id = this.selectedCustomField ? this.selectedCustomField.id : 0,
+        customField.code = formValues['code'],
+        customField.name = formValues['name'],
+        customField.description = formValues['description'],
+        customField.regex = formValues['regex'],
+        customField.type = formValues['type'],
+        customField.status = formValues['status'],
+        customField.internal = formValues['internal'],
+        customField.internalTable = formValues['internalTable'],
+        customField.options = formValues['type'] == 4 ? updatedOptions : [],
+        customField.category = formValues['category'],
+        customField.required = formValues['required']
+
       this.customFieldService.saveFieldCode(customField).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
           this.selectedCustomField = data;
-          this.newFieldCodeForm.disable();
+          this.customFieldForm.disable();
           this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
           this.router.navigateByUrl('/system-settings');
         },
@@ -144,47 +137,14 @@ export class SaveCustomFieldComponent {
         }
       });
     }
-    else{
+    else {
       this.snackBarService.showSnackbar("Some fields are still missing information", "snack-error");
     }
   }
 
-  returnOptionsArray(){
-    return this.options.value.map((optionValue: any, index: number) => {
-      return {
-        id: index,
-        fieldCodeId: 0,
-        option: optionValue
-      };
-    });
-  }
-
   drop(event: CdkDragDrop<string[]>) {
-    const formArray = this.newFieldCodeForm.get('options') as FormArray;
+    const formArray = this.customFieldForm.get('options') as FormArray;
     moveItemInArray(formArray.controls, event.previousIndex, event.currentIndex);
-  }
-
-  archiveFieldCode() {
-    if (this.selectedCustomField) {
-      this.customFieldService.deleteFieldCode(this.selectedCustomField).subscribe({
-        next: () => {
-          this.snackBarService.showSnackbar("Custom field archived", "snack-success");
-          this.newFieldCodeForm.disable();
-        },
-        error: (error) => {
-          this.snackBarService.showSnackbar(error, "snack-error");
-        }
-      });
-    }
-  }
-
-  confirmArchive(event: Event) {
-    const confirmation = window.confirm('Are you sure you want to archive this field code?');
-    if (confirmation) {
-      this.archiveFieldCode();
-    } else {
-      event.preventDefault();
-    }
   }
 
   back() {
@@ -192,29 +152,21 @@ export class SaveCustomFieldComponent {
     this.router.navigateByUrl('/system-settings');
   }
 
-  captureName() {
-    this.formatFieldCode();
-  }
-
-  inputCodeChange() {
-    this.formatFieldCode(this.newFieldCodeForm.value('code'));
-  }
-
-  formatFieldCode(name: string = "") {
+  formatCustomFieldCodeFromName(name: string = "") {
     let code;
     if (name == "") {
       code = this.fieldCodeCapture.toLowerCase().replaceAll(/[^a-zA-Z0-9]/g, "");
     } else {
       code = name.toLowerCase().replaceAll(/[^a-zA-Z0-9]/g, "");
     }
-    this.newFieldCodeForm.patchValue({ code: code });
+    this.customFieldForm.patchValue({ code: code });
   }
 
-  toggleShowAdvance(){
+  toggleShowAdvance() {
     this.showAdvanced = !this.showAdvanced;
   }
 
-  toggleRequired(){
+  toggleRequired() {
     this.isRequired = !this.isRequired;
   }
 }
