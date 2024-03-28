@@ -18,8 +18,8 @@ import { EmployeeDataService } from 'src/app/services/hris/employee/employee-dat
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { FieldCodeService } from 'src/app/services/hris/field-code.service';
-import { FieldCode } from 'src/app/models/hris/field-code.interface';
+import { CustomFieldService } from 'src/app/services/hris/field-code.service';
+import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
@@ -53,7 +53,7 @@ export class AccordionProfileComponent {
   filteredEmployees: any = [];
   filteredPeopleChamps: any = [];
   employeeData: EmployeeData[] = [];
-  customFields: FieldCode[] = [];
+  customFields: CustomField[] = [];
 
   foundClient: any;
   foundTeamLead: any;
@@ -161,7 +161,7 @@ export class AccordionProfileComponent {
     private employeeDataService: EmployeeDataService,
     private clientService: ClientService,
     private employeeTypeService: EmployeeTypeService,
-    private fieldCodeService: FieldCodeService,
+    private fieldCodeService: CustomFieldService,
     private employeeAddressService: EmployeeAddressService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService) {
@@ -683,7 +683,7 @@ export class AccordionProfileComponent {
   getEmployeeFieldCodes() {
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: data => {
-        this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id);
+        this.customFields = data.filter((data: CustomField) => data.category === this.category[0].id);
         this.checkAdditionalInformation();
         this.checkAdditionalFormProgress();
         this.totalProfileProgress();

@@ -26,13 +26,13 @@
   <hr class="m-0 p-0">
   <div id="field-table-container">
     <div id="table-buttons">
-      <button (click)="showDialog(0)" [ngClass]="selectedFieldCodes.length == 0 ? 'inactive-tab-button' : ''"
+      <button (click)="showDialog(0)" [ngClass]="selectedCustomFields.length == 0 ? 'inactive-tab-button' : ''"
         id="save-button" [disabled]="!hasSelected()" *ngIf="activeTab == 0" style="width: 118px;">
-        Archive {{selectedFieldCodes.length == 0 ? '' : "(" + selectedFieldCodes.length + ")"}}
+        Archive {{selectedCustomFields.length == 0 ? '' : "(" + selectedCustomFields.length + ")"}}
       </button>
-      <button (click)="showDialog(-1)" [ngClass]="selectedFieldCodes.length == 0 ? 'inactive-tab-button' : ''"
+      <button (click)="showDialog(-1)" [ngClass]="selectedCustomFields.length == 0 ? 'inactive-tab-button' : ''"
         id="save-button" [disabled]="!hasSelected()" *ngIf="activeTab != 0" style="width: 167px">
-        Move To Active {{selectedFieldCodes.length == 0 ? '' :"(" + selectedFieldCodes.length + ")"}}
+        Move To Active {{selectedCustomFields.length == 0 ? '' :"(" + selectedCustomFields.length + ")"}}
       </button>
     </div>
     <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{

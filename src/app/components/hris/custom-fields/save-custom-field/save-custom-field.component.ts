@@ -4,20 +4,20 @@ import { Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { statuses } from 'src/app/models/hris/constants/statuses.constants';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
-import { FieldCode } from 'src/app/models/hris/field-code.interface';
-import { FieldCodeService } from 'src/app/services/hris/field-code.service';
+import { CustomField } from 'src/app/models/hris/custom-field.interface';
+import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 @Component({
-  selector: 'app-update-field',
+  selector: 'app-save-custom-field',
   templateUrl: './save-custom-field.component.html',
   styleUrls: ['./save-custom-field.component.css']
 })
-export class UpdateFieldComponent {
+export class SaveCustomFieldComponent {
 
-  selectedFieldCode!: FieldCode;
+  selectedCustomField!: CustomField;
   public statuses = statuses;
   public dataTypes = dataTypes;
   selectedType: any;
@@ -26,6 +26,7 @@ export class UpdateFieldComponent {
   fieldCodeCapture: string = "";
   showAdvanced: boolean = false;
   isRequired: boolean = false;
+  PREVIOUS_PAGE = "previousPage";
   newFieldCodeForm: FormGroup = this.fb.group({
     code: ['', Validators.required],
     name: ['', [Validators.required]],
@@ -40,27 +41,20 @@ export class UpdateFieldComponent {
     required: [false]
   });
 
-  PREVIOUS_PAGE = "previousPage";
   constructor(public router: Router,
-    private fieldCodeService: FieldCodeService,
+    private customFieldService: CustomFieldService,
     private fb: FormBuilder,
     private snackBarService: SnackbarService,
     public cookieService: CookieService,
     public navService: NavService,
     private systemService: SystemNav) {
-      this.selectedFieldCode = systemService.selectedField;
+      this.selectedCustomField = systemService.selectedField;
   }
 
   ngOnInit() {
     this.navService.showNavbar = false;
     this.navService.showSystemNavbar = false;
-    if (this.selectedFieldCode) {
-      this.initializeForm();
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['selectedFieldCode'] && changes['selectedFieldCode'].currentValue) {
+    if (this.selectedCustomField) {
       this.initializeForm();
     }
   }
@@ -71,21 +65,21 @@ export class UpdateFieldComponent {
   }
 
   private initializeForm() {
-    this.selectedType = this.selectedFieldCode?.type;
-    const optionsControls = this.selectedFieldCode?.options?.map(option => this.fb.control(option.option)) || [];
-    this.fieldCodeCapture = this.selectedFieldCode.name as string;
+    this.selectedType = this.selectedCustomField?.type;
+    const optionsControls = this.selectedCustomField?.options?.map(option => this.fb.control(option.option)) || [];
+    this.fieldCodeCapture = this.selectedCustomField.name as string;
     this.newFieldCodeForm = this.fb.group({
-      code: [this.selectedFieldCode?.code, Validators.required],
-      name: [this.selectedFieldCode?.name, Validators.required],
-      description: [this.selectedFieldCode?.description],
-      regex: [this.selectedFieldCode?.regex],
+      code: [this.selectedCustomField?.code, Validators.required],
+      name: [this.selectedCustomField?.name, Validators.required],
+      description: [this.selectedCustomField?.description],
+      regex: [this.selectedCustomField?.regex],
       type: [this.selectedType, Validators.required],
-      status: [this.selectedFieldCode?.status, Validators.required],
-      internal: [this.selectedFieldCode?.internal],
-      internalTable: [this.selectedFieldCode?.internalTable],
+      status: [this.selectedCustomField?.status, Validators.required],
+      internal: [this.selectedCustomField?.internal],
+      internalTable: [this.selectedCustomField?.internalTable],
       options: this.fb.array(optionsControls),
-      category: [this.selectedFieldCode?.category, Validators.required],
-      required:[this.selectedFieldCode?.required, Validators.required],
+      category: [this.selectedCustomField?.category, Validators.required],
+      required:[this.selectedCustomField?.required, Validators.required],
     });
   }
 
@@ -109,39 +103,38 @@ export class UpdateFieldComponent {
 
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
-      console.log("VALID")
       const { fieldCode } = this.newFieldCodeForm.value;
 
       const optionsArray = this.options.value.map((optionValue: any) => {
         return {
           id: 0,
-          fieldCodeId: this.selectedFieldCode?.id,
+          fieldCodeId: this.selectedCustomField?.id,
           option: optionValue,
         };
       });
 
-      const existingOptions = this.selectedFieldCode?.options?.map(option => option.option) || [];
+      const existingOptions = this.selectedCustomField?.options?.map(option => option.option) || [];
       const optionsToRemove = existingOptions.filter(option => !optionsArray.some((opt: any) => opt.option === option));
       const updatedOptions = optionsArray.filter((option: any) => !optionsToRemove.includes(option.option));
       var formValues = this.newFieldCodeForm.value;
-      var fieldCodeDto = new FieldCode();
-      fieldCodeDto.id = this.selectedFieldCode? this.selectedFieldCode.id : 0,
-      fieldCodeDto.code = formValues['code'],
-      fieldCodeDto.name = formValues['name'],
-      fieldCodeDto.description = formValues['description'],
-      fieldCodeDto.regex =  formValues['regex'],
-      fieldCodeDto.type = formValues['type'],
-      fieldCodeDto.status = formValues['status'],
-      fieldCodeDto.internal= formValues['internal'],
-      fieldCodeDto.internalTable = formValues['internalTable'],
-      fieldCodeDto.options = formValues['type'] == 4 ?  updatedOptions: [],
-      fieldCodeDto.category = formValues['category'],
-      fieldCodeDto.required = formValues['required']
+      var customField = new CustomField();
+      customField.id = this.selectedCustomField? this.selectedCustomField.id : 0,
+      customField.code = formValues['code'],
+      customField.name = formValues['name'],
+      customField.description = formValues['description'],
+      customField.regex =  formValues['regex'],
+      customField.type = formValues['type'],
+      customField.status = formValues['status'],
+      customField.internal = formValues['internal'],
+      customField.internalTable = formValues['internalTable'],
+      customField.options = formValues['type'] == 4 ?  updatedOptions: [],
+      customField.category = formValues['category'],
+      customField.required = formValues['required']
       
-      this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
+      this.customFieldService.saveFieldCode(customField).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
-          this.selectedFieldCode = data;
+          this.selectedCustomField = data;
           this.newFieldCodeForm.disable();
           this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
           this.router.navigateByUrl('/system-settings');
@@ -172,8 +165,8 @@ export class UpdateFieldComponent {
   }
 
   archiveFieldCode() {
-    if (this.selectedFieldCode) {
-      this.fieldCodeService.deleteFieldCode(this.selectedFieldCode).subscribe({
+    if (this.selectedCustomField) {
+      this.customFieldService.deleteFieldCode(this.selectedCustomField).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Custom field archived", "snack-success");
           this.newFieldCodeForm.disable();

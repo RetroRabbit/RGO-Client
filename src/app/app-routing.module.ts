@@ -4,7 +4,7 @@ import { ManageFieldCodeComponent } from './components/hris/custom-fields/manage
 import { ChartComponent } from './components/hris/charts/charts.component';
 import { CreateChartsComponent } from './components/hris/charts/create-charts/create-charts.component';
 import { NewEmployeeComponent } from './components/hris/employees/new-employee/new-employee.component';
-import { UpdateFieldComponent } from './components/hris/custom-fields/save-custom-field/save-custom-field.component';
+import { SaveCustomFieldComponent } from './components/hris/custom-fields/save-custom-field/save-custom-field.component';
 import { RouterModule, Routes } from '@angular/router';
 import { EmployeeDetailsComponent } from './components/hris/employees/employee-details/employee-details.component';
 import { ViewEmployeeComponent } from './components/hris/employees/view-employee/view-employee.component';
@@ -28,7 +28,7 @@ const routes: Routes = [
   { path: 'charts', component: ChartComponent, canActivate: [HrisPageGuard] },
   { path: 'create-charts', component: CreateChartsComponent, canActivate: [HrisPageGuard] },
   { path: 'create-employee', component: NewEmployeeComponent, canActivate: [HrisPageGuard] },
-  { path: 'update-fieldcode', component: UpdateFieldComponent, canActivate: [HrisPageGuard] },
+  { path: 'update-fieldcode', component: SaveCustomFieldComponent, canActivate: [HrisPageGuard] },
   { path: 'employee-details', component: EmployeeDetailsComponent, canActivate: [HrisPageGuard] },
   { path: 'ats-dashboard', component: AtsDashboardComponent, canActivate: [AtsPageGuard]},
   { path: 'create-candidate', component: NewCandidateComponent, canActivate: [AtsPageGuard]}, 

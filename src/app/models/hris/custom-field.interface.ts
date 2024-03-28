@@ -1,6 +1,6 @@
 import { FieldCodeOptions } from "./field-code-options.interface";
 
-export class FieldCode {
+export class CustomField {
   
   FieldCode(){
     this.id = 0;

@@ -1,33 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FieldCode } from '../../models/hris/field-code.interface';
+import { CustomField } from '../../models/hris/custom-field.interface';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
-export class FieldCodeService {
+export class CustomFieldService {
     baseUrl: string;
     
     constructor(private httpClient: HttpClient) { 
         this.baseUrl =`${environment.HttpsBaseURL}/field-code`
     }
 
-    getAllFieldCodes(): Observable<FieldCode[]> {
-        return this.httpClient.get<FieldCode[]>(`${this.baseUrl}`);
+    getAllFieldCodes(): Observable<CustomField[]> {
+        return this.httpClient.get<CustomField[]>(`${this.baseUrl}`);
     }
 
-    saveFieldCode(fieldCode:FieldCode): Observable<any> {
+    saveFieldCode(fieldCode:CustomField): Observable<any> {
         return this.httpClient.post<any>(`${this.baseUrl}`, fieldCode);
     }
 
-    updateFieldCode(fieldCodeData: FieldCode): Observable<any> {
+    updateFieldCode(fieldCodeData: CustomField): Observable<any> {
         return this.httpClient.put<any>(`${this.baseUrl}`, fieldCodeData
         );
     }
 
-    deleteFieldCode(fieldCodeData: FieldCode): Observable<any> {
+    deleteFieldCode(fieldCodeData: CustomField): Observable<any> {
         return this.httpClient.delete<any>(`${this.baseUrl}`, {
             body: fieldCodeData,
         });
