@@ -12,8 +12,8 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 @Component({
   selector: 'app-update-field',
-  templateUrl: './update-field.component.html',
-  styleUrls: ['./update-field.component.css']
+  templateUrl: './save-custom-field.component.html',
+  styleUrls: ['./save-custom-field.component.css']
 })
 export class UpdateFieldComponent {
 
@@ -36,7 +36,8 @@ export class UpdateFieldComponent {
     internal: [false],
     internalTable: [''],
     options: this.fb.array([]),
-    category: [-1, Validators.required]
+    category: [-1, Validators.required],
+    required: [false]
   });
 
   PREVIOUS_PAGE = "previousPage";
@@ -108,6 +109,7 @@ export class UpdateFieldComponent {
 
   onSubmit() {
     if (this.newFieldCodeForm.valid) {
+      console.log("VALID")
       const { fieldCode } = this.newFieldCodeForm.value;
 
       const optionsArray = this.options.value.map((optionValue: any) => {
@@ -123,7 +125,7 @@ export class UpdateFieldComponent {
       const updatedOptions = optionsArray.filter((option: any) => !optionsToRemove.includes(option.option));
       var formValues = this.newFieldCodeForm.value;
       var fieldCodeDto = new FieldCode();
-      fieldCodeDto.id = this.selectedFieldCode.id? this.selectedFieldCode.id : 0,
+      fieldCodeDto.id = this.selectedFieldCode? this.selectedFieldCode.id : 0,
       fieldCodeDto.code = formValues['code'],
       fieldCodeDto.name = formValues['name'],
       fieldCodeDto.description = formValues['description'],
@@ -136,7 +138,7 @@ export class UpdateFieldComponent {
       fieldCodeDto.category = formValues['category'],
       fieldCodeDto.required = formValues['required']
       
-      this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
+      this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
           this.selectedFieldCode = data;

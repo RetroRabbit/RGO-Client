@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UpdateFieldComponent } from './update-field.component';
+import { UpdateFieldComponent } from './save-custom-field.component';
 
 describe('UpdateFieldComponent', () => {
   let component: UpdateFieldComponent;

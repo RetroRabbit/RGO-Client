@@ -335,7 +335,7 @@ export class ManageFieldCodeComponent {
     let unsuccessfulSubmits = 0;
 
     this.selectedFieldCodes.forEach(element => {
-      let updatedField = { ...element }
+      let updatedField = element;
       updatedField.status = updatedField.status == 0 ? -1 : 0;
       this.fieldCodeService.updateFieldCode(updatedField).subscribe({
         next: () => {
