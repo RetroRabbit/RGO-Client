@@ -121,19 +121,18 @@ export class ManageFieldCodeComponent {
         };
       });
 
-      const fieldCodeDto = {
-        id: 0,
-        code: fieldCode.code,
-        name: fieldCode.name,
-        description: fieldCode.description,
-        regex: fieldCode.regex,
-        type: parseInt(fieldCode.type),
-        status: parseInt(fieldCode.status),
-        internal: fieldCode.internal,
-        internalTable: fieldCode.internalTable,
-        options: optionsArray,
-        required: fieldCode.required
-      };
+      let fieldCodeDto = new FieldCode();
+        fieldCodeDto.id = 0;
+        fieldCodeDto.code = fieldCode.code,
+        fieldCodeDto.name = fieldCode.name,
+        fieldCodeDto.description = fieldCode.description,
+        fieldCodeDto.regex = fieldCode.regex,
+        fieldCodeDto.type = parseInt(fieldCode.type),
+        fieldCodeDto.status =  parseInt(fieldCode.status),
+        fieldCodeDto.internal = fieldCode.internal,
+        fieldCodeDto.internalTable = fieldCode.internalTable,
+        fieldCodeDto.options = optionsArray,
+        fieldCodeDto.required = fieldCode.required
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: () => {
@@ -211,7 +210,13 @@ export class ManageFieldCodeComponent {
 
   AddNewField() {
     this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
-    this.router.navigateByUrl('/new-fieldcode');
+    this.router.navigateByUrl('/update-fieldcode');
+  }
+
+  editField(field: FieldCode) {
+    this.systemService.selectedField = field;
+    this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+    this.router.navigateByUrl('/update-fieldcode');
   }
 
   changeTab(tabIndex: number) {
@@ -306,7 +311,7 @@ export class ManageFieldCodeComponent {
   }
 
   moveToActive(field: FieldCode) {
-    var updatedField = { ...field };
+    var updatedField = field;
     updatedField.status = 0;
     this.fieldCodeService.updateFieldCode(updatedField).subscribe({
       next: (data) => {
@@ -370,11 +375,5 @@ export class ManageFieldCodeComponent {
     if (event) {
       this.toggleSelectedFields();
     }
-  }
-
-  editField(field: FieldCode) {
-    this.systemService.selectedField = field;
-    this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
-    this.router.navigateByUrl('/update-fieldcode');
   }
 }

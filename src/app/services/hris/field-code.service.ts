@@ -18,8 +18,8 @@ export class FieldCodeService {
         return this.httpClient.get<FieldCode[]>(`${this.baseUrl}`);
     }
 
-    saveFieldCode(fieldCodeDto:FieldCode): Observable<any> {
-        return this.httpClient.post<any>(`${this.baseUrl}`, fieldCodeDto);
+    saveFieldCode(fieldCode:FieldCode): Observable<any> {
+        return this.httpClient.post<any>(`${this.baseUrl}`, fieldCode);
     }
 
     updateFieldCode(fieldCodeData: FieldCode): Observable<any> {

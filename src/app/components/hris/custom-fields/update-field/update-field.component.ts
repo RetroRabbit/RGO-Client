@@ -25,6 +25,7 @@ export class UpdateFieldComponent {
   isArchiveClicked: boolean = false;
   fieldCodeCapture: string = "";
   showAdvanced: boolean = false;
+  isRequired: boolean = false;
   newFieldCodeForm: FormGroup = this.fb.group({
     code: ['', Validators.required],
     name: ['', [Validators.required]],
@@ -82,7 +83,8 @@ export class UpdateFieldComponent {
       internal: [this.selectedFieldCode?.internal],
       internalTable: [this.selectedFieldCode?.internalTable],
       options: this.fb.array(optionsControls),
-      category: [this.selectedFieldCode?.category, Validators.required]
+      category: [this.selectedFieldCode?.category, Validators.required],
+      required:[this.selectedFieldCode?.required, Validators.required],
     });
   }
 
@@ -120,23 +122,23 @@ export class UpdateFieldComponent {
       const optionsToRemove = existingOptions.filter(option => !optionsArray.some((opt: any) => opt.option === option));
       const updatedOptions = optionsArray.filter((option: any) => !optionsToRemove.includes(option.option));
       var formValues = this.newFieldCodeForm.value;
-      const fieldCodeDto : FieldCode = {
-        id: this.selectedFieldCode.id,
-        code: formValues['code'],
-        name: formValues['name'],
-        description: formValues['description'],
-        regex: formValues['regex'],
-        type: formValues['type'],
-        status: formValues['status'],
-        internal: formValues['internal'],
-        internalTable: formValues['internalTable'],
-        options: formValues['type'] == 4 ?  updatedOptions: [],
-        category: formValues['category'],
-        required: formValues['required']
-      }
+      var fieldCodeDto = new FieldCode();
+      fieldCodeDto.id = this.selectedFieldCode.id? this.selectedFieldCode.id : 0,
+      fieldCodeDto.code = formValues['code'],
+      fieldCodeDto.name = formValues['name'],
+      fieldCodeDto.description = formValues['description'],
+      fieldCodeDto.regex =  formValues['regex'],
+      fieldCodeDto.type = formValues['type'],
+      fieldCodeDto.status = formValues['status'],
+      fieldCodeDto.internal= formValues['internal'],
+      fieldCodeDto.internalTable = formValues['internalTable'],
+      fieldCodeDto.options = formValues['type'] == 4 ?  updatedOptions: [],
+      fieldCodeDto.category = formValues['category'],
+      fieldCodeDto.required = formValues['required']
+      
       this.fieldCodeService.updateFieldCode(fieldCodeDto).subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Custom field has been updated successfully", "snack-success");
+          this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
           this.selectedFieldCode = data;
           this.newFieldCodeForm.disable();
           this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
@@ -148,12 +150,11 @@ export class UpdateFieldComponent {
       });
     }
     else{
-      this.snackBarService.showSnackbar("Oops some fields are still missing information", "snack-error");
+      this.snackBarService.showSnackbar("Some fields are still missing information", "snack-error");
     }
   }
 
-
-  returnOptionsArray(array : any[]){
+  returnOptionsArray(){
     return this.options.value.map((optionValue: any, index: number) => {
       return {
         id: index,
@@ -162,6 +163,7 @@ export class UpdateFieldComponent {
       };
     });
   }
+
   drop(event: CdkDragDrop<string[]>) {
     const formArray = this.newFieldCodeForm.get('options') as FormArray;
     moveItemInArray(formArray.controls, event.previousIndex, event.currentIndex);
@@ -170,7 +172,7 @@ export class UpdateFieldComponent {
   archiveFieldCode() {
     if (this.selectedFieldCode) {
       this.fieldCodeService.deleteFieldCode(this.selectedFieldCode).subscribe({
-        next: (data) => {
+        next: () => {
           this.snackBarService.showSnackbar("Custom field archived", "snack-success");
           this.newFieldCodeForm.disable();
         },
@@ -213,7 +215,11 @@ export class UpdateFieldComponent {
     this.newFieldCodeForm.patchValue({ code: code });
   }
 
-  toggleshowAdvance(){
+  toggleShowAdvance(){
     this.showAdvanced = !this.showAdvanced;
+  }
+
+  toggleRequired(){
+    this.isRequired = !this.isRequired;
   }
 }

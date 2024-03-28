@@ -55,9 +55,11 @@
                     </div>
                 </div>
             </div>
-
+            <mat-checkbox formControlName="required" (change)="toggleRequired()">
+                Make custom field mandatory
+              </mat-checkbox>
             <div class="col-12" id="toggle-advanced">
-                <mat-slide-toggle (toggleChange)="toggleshowAdvance()">Advance fields</mat-slide-toggle>
+                <mat-slide-toggle (toggleChange)="toggleShowAdvance()">Advance fields</mat-slide-toggle>
             </div>
             
             <div *ngIf="showAdvanced">
