@@ -11,8 +11,6 @@ import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
 import { combineLatest, first } from 'rxjs';
-import { countries } from 'src/app/models/hris/constants/countries.constants';
-import { provinces } from 'src/app/models/hris/constants/provinces.constants';
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
 import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
@@ -79,8 +77,8 @@ export class NewEmployeeComponent implements OnInit {
   levels: number[] = levels.map((level) => level.value);
   races: string[] = races.map((race) => race.value);
   genders: string[] = genders.map((gender) => gender.value);
-  //countries: string[] = countries
-  provinces: string[] = provinces
+  provinces: string[] = [];
+  countries: string[] = [];
 
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
@@ -89,7 +87,6 @@ export class NewEmployeeComponent implements OnInit {
   selectedEmployee!: EmployeeProfile;
   validImage: boolean = false;
   public files: NgxFileDropEntry[] = [];
-  countries: string[] = [];
   PREVIOUS_PAGE = 'previousPage';
   COMPANY_EMAIL = 'retrorabbit.co.za';
 
@@ -108,12 +105,8 @@ export class NewEmployeeComponent implements OnInit {
   };
 
   ngOnInit(): void {
-
-    this.http.get<any>('https://countriesnow.space/api/v0.1/countries')
-    .subscribe(response => {
-      this.countries = response.data.map((country: { country: string; }) => country.country);
-      console.log(this.countries);
-    });
+    this.getCountries();
+    this.getProvinces();
 
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
@@ -131,6 +124,23 @@ export class NewEmployeeComponent implements OnInit {
       });
     this.navService.showNavbar = false;
   }
+
+  getProvinces(): void {
+    this.http.get<any>('https://countriesnow.space/api/v0.1/countries/states?country=South%20Africa')
+      .subscribe(response => {
+        this.provinces = response.data.map((state: { name: string; }) => state.name);
+        console.log(this.provinces);
+      });
+  }
+
+  getCountries(): void {
+    this.http.get<any>('https://countriesnow.space/api/v0.1/countries')
+    .subscribe(response => {
+      this.countries = response.data.map((country: { country: string; }) => country.country);
+      console.log(this.countries)
+    });
+  }
+  
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
