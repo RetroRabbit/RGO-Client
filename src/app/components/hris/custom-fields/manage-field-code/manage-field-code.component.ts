@@ -67,7 +67,17 @@ export class ManageFieldCodeComponent {
     private authAccessService: AuthAccessService) {
     navService.showNavbar = true;
   }
+
   ngOnInit(): void {
+    if (this.authAccessService.isAdmin() ||
+      this.authAccessService.isSuperAdmin() ||
+      this.authAccessService.isTalent() ||
+      this.authAccessService.isJourney()) {
+      this.fetchData();
+    }
+  }
+
+  ngAfterViewInit(): void {
     if (this.authAccessService.isAdmin() ||
       this.authAccessService.isSuperAdmin() ||
       this.authAccessService.isTalent() ||
@@ -89,12 +99,22 @@ export class ManageFieldCodeComponent {
         this.activeTab = active;
         this.isLoading = false;
         this.sortByIdDefault(this.dataSource.sort);
+        this.applySorting();
       },
       error: () => {
         this.snackBarService.showSnackbar("Error fetching field codes", "snack-error");
         this.isLoading = false;
       }
     })
+  }
+
+  applySorting(): void {
+    if (this.sort && this.dataSource) {
+      const sortState: Sort = { active: 'id', direction: 'asc' };
+      this.sort.active = sortState.active;
+      this.sort.direction = sortState.direction;
+      this.sort.sortChange.emit(sortState);
+    }
   }
 
   get options() {
@@ -193,7 +213,6 @@ export class ManageFieldCodeComponent {
     }
   }
 
-
   onSearch(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
 
@@ -233,7 +252,7 @@ export class ManageFieldCodeComponent {
   }
 
   sortByIdDefault(sort: MatSort) {
-    const sortState: Sort = {active: 'id', direction: 'asc'};
+    const sortState: Sort = { active: 'id', direction: 'asc' };
     if (sort) {
       sort.active = sortState.active;
       sort.direction = sortState.direction;
