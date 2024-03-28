@@ -20,7 +20,6 @@ import { MatStepper } from '@angular/material/stepper';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
-import { color } from 'html2canvas/dist/types/css/types/color';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -106,8 +105,7 @@ export class NewEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCountries();
-    this.getProvinces();
-
+    this.getProvinces('South Africa');
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.employeeTypes = data.sort((a, b) => {
@@ -125,19 +123,17 @@ export class NewEmployeeComponent implements OnInit {
     this.navService.showNavbar = false;
   }
 
-  getProvinces(): void {
-    this.http.get<any>('https://countriesnow.space/api/v0.1/countries/states?country=South%20Africa')
+  getProvinces(country: string): void {
+    this.http.post<any>('https://countriesnow.space/api/v0.1/countries/states', { country: country })
       .subscribe(response => {
-        this.provinces = response.data.map((state: { name: string; }) => state.name);
-        console.log(this.provinces);
+        this.provinces = response.data.states.map((state: any) => state.name);
       });
-  }
+  }  
 
   getCountries(): void {
     this.http.get<any>('https://countriesnow.space/api/v0.1/countries')
     .subscribe(response => {
       this.countries = response.data.map((country: { country: string; }) => country.country);
-      console.log(this.countries)
     });
   }
   
