@@ -3,7 +3,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { Client } from 'src/app/models/hris/client.interface';
-import { FormBuilder } from '@angular/forms';
+import { EmailValidator, FormBuilder } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
@@ -298,4 +298,11 @@ export class EmployeeProfileComponent {
       });
   }
 
+  Emailboard() {
+    if (this.employeeProfile && this.employeeProfile.email) {
+      this.simpleEmployee.email = this.employeeProfile.email;
+    } else {
+      console.log('Invalid or undefined email');
+    }
+  }
 }
