@@ -65,25 +65,6 @@ export class SaveCustomFieldComponent {
     this.navService.showSystemNavbar = true;
   }
 
-  private populateCustomFieldForm() {
-    this.selectedType = this.selectedCustomField?.type;
-    const optionsControls = this.selectedCustomField?.options?.map(option => this.fb.control(option.option)) || [];
-    this.fieldCodeCapture = this.selectedCustomField?.name as string;
-    this.customFieldForm = this.fb.group({
-      code: [this.selectedCustomField?.code, Validators.required],
-      name: [this.selectedCustomField?.name, Validators.required],
-      description: [this.selectedCustomField?.description],
-      regex: [this.selectedCustomField?.regex],
-      type: [this.selectedType, Validators.required],
-      status: [this.selectedCustomField?.status, Validators.required],
-      internal: [this.selectedCustomField?.internal],
-      internalTable: [this.selectedCustomField?.internalTable],
-      options: this.fb.array(optionsControls),
-      category: [this.selectedCustomField?.category, Validators.required],
-      required: [this.selectedCustomField?.required, Validators.required],
-    });
-  }
-
   get options(): FormArray {
     return this.customFieldForm.get('options') as FormArray;
   }
@@ -109,20 +90,10 @@ export class SaveCustomFieldComponent {
       const existingOptions = this.selectedCustomField?.options?.map(option => option.option) || [];
       const optionsToRemove = existingOptions.filter(option => !optionsArray.some((opt: any) => opt.option === option));
       const updatedOptions = optionsArray.filter((option: any) => !optionsToRemove.includes(option.option));
-      var formValues = this.customFieldForm.value;
       var customField = new CustomField();
+      customField = this.customFieldForm.value;
       customField.id = this.selectedCustomField ? this.selectedCustomField.id : 0,
-        customField.code = formValues['code'],
-        customField.name = formValues['name'],
-        customField.description = formValues['description'],
-        customField.regex = formValues['regex'],
-        customField.type = formValues['type'],
-        customField.status = formValues['status'],
-        customField.internal = formValues['internal'],
-        customField.internalTable = formValues['internalTable'],
-        customField.options = formValues['type'] == 4 ? updatedOptions : [],
-        customField.category = formValues['category'],
-        customField.required = formValues['required']
+      customField.options = this.customFieldForm.value['type'] == 4 ? updatedOptions : [],
 
       this.customFieldService.saveFieldCode(customField).subscribe({
         next: (data) => {
@@ -170,5 +141,24 @@ export class SaveCustomFieldComponent {
 
   toggleRequired() {
     this.isRequired = !this.isRequired;
+  }
+
+  private populateCustomFieldForm() {
+    this.selectedType = this.selectedCustomField?.type;
+    const optionsControls = this.selectedCustomField?.options?.map(option => this.fb.control(option.option)) || [];
+    this.fieldCodeCapture = this.selectedCustomField?.name as string;
+    this.customFieldForm = this.fb.group({
+      code: [this.selectedCustomField?.code, Validators.required],
+      name: [this.selectedCustomField?.name, Validators.required],
+      description: [this.selectedCustomField?.description],
+      regex: [this.selectedCustomField?.regex],
+      type: [this.selectedType, Validators.required],
+      status: [this.selectedCustomField?.status, Validators.required],
+      internal: [this.selectedCustomField?.internal],
+      internalTable: [this.selectedCustomField?.internalTable],
+      options: this.fb.array(optionsControls),
+      category: [this.selectedCustomField?.category, Validators.required],
+      required: [this.selectedCustomField?.required, Validators.required],
+    });
   }
 }
