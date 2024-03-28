@@ -12,7 +12,7 @@
       </div>
     </div>
     <div id="button-container">
-      <button (click)="AddNewField()">+ Add New Field</button>
+      <button (click)="addNewField()">+ Add New Field</button>
     </div>
   </div>
   <div id="tab-buttons" class="mb-0">
@@ -73,7 +73,7 @@
             <ng-container matColumnDef="edit">
               <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
               <mat-cell *matCellDef="let element" class="justify-edit-end">
-                <button *ngIf="activeTab == 0;" id="cancel-button" class="mt-1" (click)="editField(element)">
+                <button *ngIf="activeTab == 0;" id="cancel-button" class="mt-1" (click)="saveCustomField(element)">
                   <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
                   Edit
                 </button>

@@ -7,5 +7,5 @@ import { CustomField } from '../../models/hris/custom-field.interface';
 export class SystemNav {
 
   public selectedMenuItem: string = '';
-  public selectedField!: CustomField;
+  public selectedField?: CustomField;
 }

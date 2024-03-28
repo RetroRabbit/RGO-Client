@@ -227,15 +227,15 @@ export class ManageFieldCodeComponent {
     }
   }
 
-  AddNewField() {
+  addNewField() {
     this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
-    this.router.navigateByUrl('/update-fieldcode');
+    this.router.navigateByUrl('/save-custom-field');
   }
 
-  editField(field: CustomField) {
+  saveCustomField(field: CustomField) {
     this.systemService.selectedField = field;
     this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
-    this.router.navigateByUrl('/update-fieldcode');
+    this.router.navigateByUrl('/save-custom-field');
   }
 
   changeTab(tabIndex: number) {

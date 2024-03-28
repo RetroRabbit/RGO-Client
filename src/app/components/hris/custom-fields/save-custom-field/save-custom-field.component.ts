@@ -17,7 +17,7 @@ import { SystemNav } from 'src/app/services/hris/system-nav.service';
 })
 export class SaveCustomFieldComponent {
 
-  selectedCustomField!: CustomField;
+  selectedCustomField?: CustomField;
   public statuses = statuses;
   public dataTypes = dataTypes;
   selectedType: any;
@@ -68,7 +68,7 @@ export class SaveCustomFieldComponent {
   private populateCustomFieldForm() {
     this.selectedType = this.selectedCustomField?.type;
     const optionsControls = this.selectedCustomField?.options?.map(option => this.fb.control(option.option)) || [];
-    this.fieldCodeCapture = this.selectedCustomField.name as string;
+    this.fieldCodeCapture = this.selectedCustomField?.name as string;
     this.customFieldForm = this.fb.group({
       code: [this.selectedCustomField?.code, Validators.required],
       name: [this.selectedCustomField?.name, Validators.required],
@@ -130,6 +130,7 @@ export class SaveCustomFieldComponent {
           this.selectedCustomField = data;
           this.customFieldForm.disable();
           this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+          this.systemService.selectedField = undefined;
           this.router.navigateByUrl('/system-settings');
         },
         error: (error) => {
@@ -148,6 +149,7 @@ export class SaveCustomFieldComponent {
   }
 
   back() {
+    this.systemService.selectedField = undefined;
     this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
     this.router.navigateByUrl('/system-settings');
   }

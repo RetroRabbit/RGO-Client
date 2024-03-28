@@ -27,7 +27,7 @@ const routes: Routes = [
   { path: 'charts', component: ChartComponent, canActivate: [HrisPageGuard] },
   { path: 'create-charts', component: CreateChartsComponent, canActivate: [HrisPageGuard] },
   { path: 'create-employee', component: NewEmployeeComponent, canActivate: [HrisPageGuard] },
-  { path: 'update-fieldcode', component: SaveCustomFieldComponent, canActivate: [HrisPageGuard] },
+  { path: 'save-custom-field', component: SaveCustomFieldComponent, canActivate: [HrisPageGuard] },
   { path: 'employee-details', component: EmployeeDetailsComponent, canActivate: [HrisPageGuard] },
   { path: 'ats-dashboard', component: AtsDashboardComponent, canActivate: [AtsPageGuard]},
   { path: 'create-candidate', component: NewCandidateComponent, canActivate: [AtsPageGuard]}, 
