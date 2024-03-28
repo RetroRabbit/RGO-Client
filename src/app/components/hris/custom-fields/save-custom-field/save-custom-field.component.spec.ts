@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UpdateFieldComponent } from './update-field.component';
+import { SaveCustomFieldComponent } from './save-custom-field.component';
 
 describe('UpdateFieldComponent', () => {
-  let component: UpdateFieldComponent;
-  let fixture: ComponentFixture<UpdateFieldComponent>;
+  let component: SaveCustomFieldComponent;
+  let fixture: ComponentFixture<SaveCustomFieldComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [UpdateFieldComponent]
+      declarations: [SaveCustomFieldComponent]
     });
-    fixture = TestBed.createComponent(UpdateFieldComponent);
+    fixture = TestBed.createComponent(SaveCustomFieldComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
