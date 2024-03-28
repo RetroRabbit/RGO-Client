@@ -179,11 +179,13 @@
                   class="col-lg-7 col-md-12 custom-mat-select">
                   <mat-label>Country of Issue</mat-label>
                   <input matInput type="text" formControlName="passportCountryIssue" />
-                  <mat-select #countrySelect formControlName="passportCountryIssue" hidden hideSingleSelectionIndicator="true">
+                  <mat-select #countrySelect formControlName="passportCountryIssue" hidden
+                    hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
                   </mat-select>
                   <mat-icon matSuffix (click)="countrySelect.open()">Search</mat-icon>
                 </mat-form-field>
+
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12"
                   *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value">
                   <mat-label>Notes</mat-label>
@@ -247,9 +249,9 @@
                   </mat-error>
                 </mat-form-field>
                 <form class="col-lg-7 col-md-12 mt-2" [formGroup]="postalAddressForm">
-                <mat-checkbox [checked]="isSameAddress" value="isSameAddress" inputId="checkbox"
-                  (change)="postalSameAsPhysicalAddress($event.checked)">
-                </mat-checkbox>
+                  <mat-checkbox [checked]="isSameAddress" value="isSameAddress" inputId="checkbox"
+                    (change)="postalSameAsPhysicalAddress($event.checked)">
+                  </mat-checkbox>
                   <label class="ms-1" for="checkbox">Postal address is the same as physical
                     address</label>
                 </form>
@@ -305,7 +307,8 @@
           <div id="footer">
             <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="goToPreviousPage()">Cancel</button>
-            <button id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''" matStepperNext>Next</button>
+            <button id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
+              matStepperNext>Next</button>
           </div>
         </form>
       </mat-step>
@@ -327,9 +330,8 @@
           <div class="container upload-drop-container">
             <div class="row justify-content-center align-items-center">
               <div class="upload-drop-section row">
-                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                  accept=".PDF" (onFileDrop)="dropped($event, 0)" (onFileOver)="fileOver($event)"
-                  (onFileLeave)="fileLeave($event)">
+                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName="" accept=".PDF"
+                  (onFileDrop)="dropped($event, 0)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                     multiple="true">
                     <div class="justify-content-center align-items-center p-2 m-2">
@@ -373,9 +375,8 @@
                 </ngx-file-drop>
               </div>
               <div class="upload-drop-section row">
-                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                  accept=".PDF" (onFileDrop)="dropped($event, 2)" (onFileOver)="fileOver($event)"
-                  (onFileLeave)="fileLeave($event)">
+                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName="" accept=".PDF"
+                  (onFileDrop)="dropped($event, 2)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                     multiple="true">
                     <div class="justify-content-center align-items-center p-2 m-2">
@@ -419,9 +420,8 @@
                 </ngx-file-drop>
               </div>
               <div class="upload-drop-section row">
-                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                  accept=".PDF" (onFileDrop)="dropped($event, 1)" (onFileOver)="fileOver($event)"
-                  (onFileLeave)="fileLeave($event)">
+                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName="" accept=".PDF"
+                  (onFileDrop)="dropped($event, 1)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                     multiple="true">
                     <div class="justify-content-center align-items-center p-2 m-2">
@@ -465,9 +465,8 @@
                 </ngx-file-drop>
               </div>
               <div class="upload-drop-mie row">
-                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                  accept=".PDF" (onFileDrop)="dropped($event, 3)" (onFileOver)="fileOver($event)"
-                  (onFileLeave)="fileLeave($event)">
+                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName="" accept=".PDF"
+                  (onFileDrop)="dropped($event, 3)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                     multiple="true">
                     <div class="justify-content-center align-items-center p-2 m-2">
@@ -515,10 +514,11 @@
           <div id="footer">
             <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="goToPreviousPage()">Cancel</button>
-            <button [disabled]="!isSavedEmployee" id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
-              (click)="saveAndAddAnother()">Save and add another</button>
-            <button [disabled]="!isSavedEmployee" id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
-              (click)="saveAndExit()">Save</button>
+            <button [disabled]="!isSavedEmployee" id="save-add-button"
+              [ngClass]="screenWidth < 768 ? 'button-mobile' : ''" (click)="saveAndAddAnother()">Save and add
+              another</button>
+            <button [disabled]="!isSavedEmployee" id="save-button"
+              [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''" (click)="saveAndExit()">Save</button>
           </div>
         </form>
       </mat-step>

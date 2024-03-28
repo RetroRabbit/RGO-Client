@@ -23,6 +23,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
 import { color } from 'html2canvas/dist/types/css/types/color';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-new-employee',
@@ -49,7 +50,8 @@ export class NewEmployeeComponent implements OnInit {
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
-    private navService: NavService
+    private navService: NavService,
+    private http: HttpClient
   ) { }
 
   firstFormGroup = this._formBuilder.group({
@@ -77,7 +79,7 @@ export class NewEmployeeComponent implements OnInit {
   levels: number[] = levels.map((level) => level.value);
   races: string[] = races.map((race) => race.value);
   genders: string[] = genders.map((gender) => gender.value);
-  countries: string[] = countries
+  //countries: string[] = countries
   provinces: string[] = provinces
 
   imagePreview: string | ArrayBuffer | null = null;
@@ -87,6 +89,7 @@ export class NewEmployeeComponent implements OnInit {
   selectedEmployee!: EmployeeProfile;
   validImage: boolean = false;
   public files: NgxFileDropEntry[] = [];
+  countries: string[] = [];
   PREVIOUS_PAGE = 'previousPage';
   COMPANY_EMAIL = 'retrorabbit.co.za';
 
@@ -103,6 +106,31 @@ export class NewEmployeeComponent implements OnInit {
     2: { name: '', state: true },
     3: { name: '', state: true },
   };
+
+  ngOnInit(): void {
+
+    this.http.get<any>('https://countriesnow.space/api/v0.1/countries')
+    .subscribe(response => {
+      this.countries = response.data.map((country: { country: string; }) => country.country);
+      console.log(this.countries);
+    });
+
+    this.employeeTypeService.getAllEmployeeTypes().subscribe({
+      next: (data: EmployeeType[]) => {
+        this.employeeTypes = data.sort((a, b) => {
+          const nameA = (a.name || '').toLowerCase();
+          const nameB = (b.name || '').toLowerCase();
+          return nameA.localeCompare(nameB);
+        });
+      },
+    });
+    this.employeeService
+      .getEmployeeProfiles()
+      .subscribe((data: EmployeeProfile[]) => {
+        this.Employees = data;
+      });
+    this.navService.showNavbar = false;
+  }
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
@@ -189,24 +217,6 @@ export class NewEmployeeComponent implements OnInit {
     file: new FormControl<string>(''),
     uploadDate: new FormControl<Date | string>(new Date(Date.now())),
   });
-
-  ngOnInit(): void {
-    this.employeeTypeService.getAllEmployeeTypes().subscribe({
-      next: (data: EmployeeType[]) => {
-        this.employeeTypes = data.sort((a, b) => {
-          const nameA = (a.name || '').toLowerCase();
-          const nameB = (b.name || '').toLowerCase();
-          return nameA.localeCompare(nameB);
-        });
-      },
-    });
-    this.employeeService
-      .getEmployeeProfiles()
-      .subscribe((data: EmployeeProfile[]) => {
-        this.Employees = data;
-      });
-    this.navService.showNavbar = false;
-  }
 
   ngOnDestroy() {
     this.navService.showNavbar = true;
