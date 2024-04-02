@@ -33,6 +33,7 @@
   display: flex;
   height: 40px;
   min-width: 200px;
+  width: 360px;
   align-items: center;
   gap: 4px;
   flex-shrink: 0;
@@ -77,6 +78,7 @@
   flex-shrink: 0;
   align-self: stretch;
   box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.15);
+  width: 360px;
 }
 
 #back-button {
