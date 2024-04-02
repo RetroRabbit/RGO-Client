@@ -5,6 +5,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
@@ -156,6 +157,7 @@ export class AccordionProfileComponent {
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
+    private navService: NavService,
     private customValidationService: CustomvalidationService,
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
@@ -305,6 +307,7 @@ export class AccordionProfileComponent {
 
   saveEmployeeEdit() {
     if (this.employeeDetailsForm.valid) {
+      this.navService.showNavbar = false;
       const employeeDetailsForm = this.employeeDetailsForm.value;
       const personalDetailsForm = this.personalDetailsForm.value;
       this.employeeType = this.employeeTypes.find((data: any) => {
@@ -330,6 +333,7 @@ export class AccordionProfileComponent {
       this.employeeProfileDto.gender = personalDetailsForm.gender;
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
+          this.navService.showNavbar = true;
           this.snackBarService.showSnackbar("Employee details updated", "snack-success");
           this.checkEmployeeFormProgress();
           this.totalProfileProgress();
@@ -343,6 +347,7 @@ export class AccordionProfileComponent {
     }
     else {
       this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+      this.navService.showNavbar = true;
     }
   }
 
