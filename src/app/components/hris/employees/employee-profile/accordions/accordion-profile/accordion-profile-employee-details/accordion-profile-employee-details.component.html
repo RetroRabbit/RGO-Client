@@ -72,8 +72,8 @@
               class="col-12 my-2 col-md-6">
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>Role</mat-label>
-                <mat-select formControlName="employeeType">
-                  <mat-option *ngFor="let type of sharedAccordionFunctionality.employeeTypes" [value]="type.name">
+                <mat-select formControlName="employeeType" hideSingleSelectionIndicator="true">
+                  <mat-option *ngFor="let type of sharedAccordionFunctionality.employeeTypes"  [value]="type.name">
                     {{type.name}}
                   </mat-option>
                 </mat-select>
@@ -82,7 +82,7 @@
             <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.level" class="col-12 my-2 col-md-6">
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>Level</mat-label>
-                <mat-select formControlName="level">
+                <mat-select formControlName="level" hideSingleSelectionIndicator="true">
                   <mat-option *ngFor="let level of sharedAccordionFunctionality.levels" [value]="level.value">
                     {{level.value}}
                   </mat-option>

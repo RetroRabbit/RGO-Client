@@ -30,7 +30,7 @@
                     <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.race" class="col-12 col-md-6 my-2">
                       <mat-form-field appearance="outline" style="width: 100%;">
                         <mat-label>Race</mat-label>
-                        <mat-select formControlName="race">
+                        <mat-select formControlName="race"  hideSingleSelectionIndicator="true">
                           <mat-option *ngFor="let race of sharedAccordionFunctionality.races; index as i" [value]="i">
                             {{race.value}}
                           </mat-option>
@@ -52,7 +52,7 @@
                         <div class="col-12 col-md-6">
                           <mat-form-field appearance="outline" style="width: 100%;">
                             <mat-label>Disability</mat-label>
-                            <mat-select formControlName="disabilityList">
+                            <mat-select formControlName="disabilityList" hideSingleSelectionIndicator="true">
                               <mat-option *ngFor="let disability of sharedAccordionFunctionality.disabilities; index as i" [value]="i">
                                 {{disability.value}}
                               </mat-option>

@@ -57,26 +57,9 @@ export class AccordionProfileAdditionalComponent {
     this.getEmployeeFields();
     this.getClients();
   }
-  initializeForm() {
-    this.sharedAccordionFunctionality.employeeDetailsForm = this.fb.group({
-      name: [this.employeeProfile!.employeeDetails.name, [Validators.required,
-      Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
-      surname: [this.employeeProfile!.employeeDetails.surname, [Validators.required,
-      Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
-      initials: [this.employeeProfile!.employeeDetails.initials, [Validators.pattern(this.sharedAccordionFunctionality.initialsPattern)]],
-      clientAllocated: this.employeeProfile!.employeeDetails.clientAllocated,
-      employeeType: this.employeeProfile!.employeeDetails.employeeType!.name,
-      level: this.employeeProfile!.employeeDetails.level,
-      teamLead: this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
-      dateOfBirth: [this.employeeProfile!.employeeDetails.dateOfBirth, Validators.required],
-      idNumber: [this.employeeProfile!.employeeDetails.idNumber, [Validators.required, this.customValidationService.idNumberValidator]],
-      engagementDate: [this.employeeProfile!.employeeDetails.engagementDate, Validators.required],
-      peopleChampion: this.usingProfile ? this.employeeProfile!.employeeDetails.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId
-    });
-    this.sharedAccordionFunctionality.employeeDetailsForm.disable();
-    this.sharedAccordionFunctionality.checkEmployeeFormProgress();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", true)
-  }
+  initializeForm() { }
+
+
   getEmployeeFields() {
     this.sharedAccordionFunctionality.employeePhysicalAddress = this.employeeProfile.employeeDetails.physicalAddress!;
     this.sharedAccordionFunctionality.employeePostalAddress = this.employeeProfile.employeeDetails.postalAddress!;

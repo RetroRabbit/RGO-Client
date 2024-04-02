@@ -84,6 +84,8 @@ export class AccordionProfileAddressDetailsComponent {
     this.sharedAccordionFunctionality.addressDetailsForm.disable();
     this.sharedAccordionFunctionality.checkAddressFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
+
+
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", true)
   }
 

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ViewChild, HostListener, Input } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, HostListener, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -33,8 +33,8 @@ import { SharedAccordionFunctionality } from './shared-accordion-functionality';
   styleUrls: ['./employee-profile.component.css']
 })
 
-export class EmployeeProfileComponent {
-  @Input('updateProfile') updateProfile: number | undefined;
+export class EmployeeProfileComponent implements OnChanges {
+  @Input() updateProfile!: { updateProfile: SharedAccordionFunctionality };
 
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
@@ -117,15 +117,12 @@ export class EmployeeProfileComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
     navService.showNavbar = true;
   }
-  // ngOnChanges() {
-  //   console.log("Total profile progress", this.updateProfile);
+  ngOnChanges(changes: SimpleChanges): void {
+    changes['updateProfile'].currentValue
 
-  // }
+  }
   ngOnInit() {
-
-
     this.sharedAccordionFunctionality.updateProfile.subscribe(progress => {
-
       this.profileFormProgress = progress;
       this.overallProgress();
     });

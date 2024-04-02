@@ -184,7 +184,7 @@ export class SharedAccordionFunctionality {
       }
     }
     this.employeeFormProgress = Math.round((filledCount / totalFields) * 100);
-
+    console.log("employee form progress:", this.employeeFormProgress)
   }
   checkContactFormProgress() {
     let filledCount = 0;
@@ -199,7 +199,7 @@ export class SharedAccordionFunctionality {
       }
     }
     this.contactFormProgress = Math.round((filledCount / totalFields) * 100);
-
+    console.log("Contact form progress:", this.contactFormProgress)
   }
   checkAddressFormProgress() {
     let filledCount = 0;
@@ -225,7 +225,7 @@ export class SharedAccordionFunctionality {
 
     }
     this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
-
+    console.log("Address form progress:", this.addressFormProgress)
 
   }
 
@@ -245,10 +245,11 @@ export class SharedAccordionFunctionality {
     }
 
     this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
-
+    console.log("Additional form progress:", this.additionalFormProgress)
   }
 
   totalProfileProgress() {
+
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.additionalFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
     this.updateProfile.emit(this.profileFormProgress);
   }

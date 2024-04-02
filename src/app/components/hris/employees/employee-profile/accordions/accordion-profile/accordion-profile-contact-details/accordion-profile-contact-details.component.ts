@@ -55,7 +55,6 @@ export class AccordionProfileContactDetailsComponent {
     });
     this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.sharedAccordionFunctionality.checkContactFormProgress();
-    this.sharedAccordionFunctionality.totalProfileProgress();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", true)
   }
 
