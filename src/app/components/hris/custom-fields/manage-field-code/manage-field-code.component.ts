@@ -1,8 +1,8 @@
 import { Component, HostListener, ViewChild, EventEmitter, Output, TemplateRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { FieldCodeService } from 'src/app/services/hris/field-code.service';
+import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { Router } from '@angular/router';
-import { FieldCode } from 'src/app/models/hris/field-code.interface';
+import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { Table } from 'primeng/table';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -22,10 +22,10 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 })
 
 export class ManageFieldCodeComponent {
-  fieldCodes: FieldCode[] = [];
-  filteredFieldCodes: FieldCode[] = [];
-  selectedFieldCodes: FieldCode[] = [];
-  selectedFieldCode!: FieldCode;
+  customFields: CustomField[] = [];
+  filteredCustomFields: CustomField[] = [];
+  selectedCustomFields: CustomField[] = [];
+  selectedCustomField!: CustomField;
   newFieldCodeForm!: FormGroup;
   searchTerm: string = '';
 
@@ -42,7 +42,7 @@ export class ManageFieldCodeComponent {
   displayedColumns: string[] = ['id', 'name', 'type', 'status', 'edit'];
   showConfirmDialog: boolean = false;
 
-  dataSource: MatTableDataSource<FieldCode> = new MatTableDataSource();
+  dataSource: MatTableDataSource<CustomField> = new MatTableDataSource();
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   isLoading: boolean = true;
 
@@ -58,7 +58,7 @@ export class ManageFieldCodeComponent {
   PREVIOUS_PAGE = "previousPage";
   constructor(
     public router: Router,
-    private fieldCodeService: FieldCodeService,
+    private fieldCodeService: CustomFieldService,
     private fb: FormBuilder,
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
@@ -90,9 +90,9 @@ export class ManageFieldCodeComponent {
     this.isLoading = true;
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: fieldCodes => {
-        this.fieldCodes = fieldCodes;
-        this.filteredFieldCodes = this.fieldCodes.filter(field => field.status == active);
-        this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
+        this.customFields = fieldCodes;
+        this.filteredCustomFields = this.customFields.filter(field => field.status == active);
+        this.dataSource = new MatTableDataSource(this.filteredCustomFields);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.getActivePassive();
@@ -141,19 +141,18 @@ export class ManageFieldCodeComponent {
         };
       });
 
-      const fieldCodeDto = {
-        id: 0,
-        code: fieldCode.code,
-        name: fieldCode.name,
-        description: fieldCode.description,
-        regex: fieldCode.regex,
-        type: parseInt(fieldCode.type),
-        status: parseInt(fieldCode.status),
-        internal: fieldCode.internal,
-        internalTable: fieldCode.internalTable,
-        options: optionsArray,
-        required: fieldCode.required
-      };
+      let fieldCodeDto = new CustomField();
+        fieldCodeDto.id = 0;
+        fieldCodeDto.code = fieldCode.code,
+        fieldCodeDto.name = fieldCode.name,
+        fieldCodeDto.description = fieldCode.description,
+        fieldCodeDto.regex = fieldCode.regex,
+        fieldCodeDto.type = parseInt(fieldCode.type),
+        fieldCodeDto.status =  parseInt(fieldCode.status),
+        fieldCodeDto.internal = fieldCode.internal,
+        fieldCodeDto.internalTable = fieldCode.internalTable,
+        fieldCodeDto.options = optionsArray,
+        fieldCodeDto.required = fieldCode.required
 
       this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
         next: () => {
@@ -180,14 +179,14 @@ export class ManageFieldCodeComponent {
 
   getActivePassive() {
     this.passiveFields = this.activeFields = 0;
-    this.fieldCodes.forEach(field => {
+    this.customFields.forEach(field => {
       if (field.status == 0) this.activeFields++;
       else this.passiveFields++;
     })
   }
 
   onTypeChange() {
-    this.selectedFieldCodes = this.selectedFieldCodes;
+    this.selectedCustomFields = this.selectedCustomFields;
   }
 
   clear(table: Table) {
@@ -203,7 +202,7 @@ export class ManageFieldCodeComponent {
       this.archiveFieldsSearch = 0;
     } else {
       this.activeFieldsSearch = this.archiveFieldsSearch = 0;
-      this.dataSource.filteredData.forEach((field: FieldCode) => {
+      this.dataSource.filteredData.forEach((field: CustomField) => {
         if (field.status === 0) {
           this.activeFieldsSearch++;
         }
@@ -221,27 +220,33 @@ export class ManageFieldCodeComponent {
       this.dataTable.filterGlobal(searchTerm, 'contains');
     }
 
-    if (this.filteredFieldCodes) {
-      this.filteredFieldCodes = this.fieldCodes.filter(fieldCode =>
+    if (this.filteredCustomFields) {
+      this.filteredCustomFields = this.customFields.filter(fieldCode =>
         fieldCode.name && fieldCode.name.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
   }
 
-  AddNewField() {
+  addNewField() {
     this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
-    this.router.navigateByUrl('/new-fieldcode');
+    this.router.navigateByUrl('/save-custom-field');
+  }
+
+  saveCustomField(field: CustomField) {
+    this.systemService.selectedField = field;
+    this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+    this.router.navigateByUrl('/save-custom-field');
   }
 
   changeTab(tabIndex: number) {
     this.activeTab = tabIndex;
-    this.filteredFieldCodes = this.fieldCodes.filter(fieldCode => fieldCode.status == this.activeTab);
-    this.dataSource = new MatTableDataSource(this.filteredFieldCodes);
+    this.filteredCustomFields = this.customFields.filter(fieldCode => fieldCode.status == this.activeTab);
+    this.dataSource = new MatTableDataSource(this.filteredCustomFields);
     this.dataSource._updateChangeSubscription();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.paginator.pageIndex = 0;
-    this.selectedFieldCodes = [];
+    this.selectedCustomFields = [];
     this.filterText = "";
     this.sortByIdDefault(this.sort);
   }
@@ -315,17 +320,17 @@ export class ManageFieldCodeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
-  onRowSelect(fieldCode: FieldCode, event: any) {
-    if (this.selectedFieldCodes?.includes(fieldCode)) {
-      this.selectedFieldCodes.splice(this.selectedFieldCodes.indexOf(fieldCode), 1);
+  onRowSelect(fieldCode: CustomField, event: any) {
+    if (this.selectedCustomFields?.includes(fieldCode)) {
+      this.selectedCustomFields.splice(this.selectedCustomFields.indexOf(fieldCode), 1);
     }
     else {
-      this.selectedFieldCodes?.push(fieldCode);
+      this.selectedCustomFields?.push(fieldCode);
     }
   }
 
-  moveToActive(field: FieldCode) {
-    var updatedField = { ...field };
+  moveToActive(field: CustomField) {
+    var updatedField = field;
     updatedField.status = 0;
     this.fieldCodeService.updateFieldCode(updatedField).subscribe({
       next: (data) => {
@@ -342,19 +347,19 @@ export class ManageFieldCodeComponent {
   }
 
   hasSelected() {
-    return this.selectedFieldCodes.length > 0;
+    return this.selectedCustomFields.length > 0;
   }
 
   toggleSelectedFields() {
     let unsuccessfulSubmits = 0;
 
-    this.selectedFieldCodes.forEach(element => {
-      let updatedField = { ...element }
+    this.selectedCustomFields.forEach(element => {
+      let updatedField = element;
       updatedField.status = updatedField.status == 0 ? -1 : 0;
       this.fieldCodeService.updateFieldCode(updatedField).subscribe({
         next: () => {
           this.fetchData(this.activeTab);
-          this.selectedFieldCodes = [];
+          this.selectedCustomFields = [];
         },
         error: () => {
           unsuccessfulSubmits++;
@@ -389,11 +394,5 @@ export class ManageFieldCodeComponent {
     if (event) {
       this.toggleSelectedFields();
     }
-  }
-
-  editField(field: FieldCode) {
-    this.systemService.selectedField = field;
-    this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
-    this.router.navigateByUrl('/update-fieldcode');
   }
 }

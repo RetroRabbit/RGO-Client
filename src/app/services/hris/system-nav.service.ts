@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FieldCode } from '../../models/hris/field-code.interface';
+import { CustomField } from '../../models/hris/custom-field.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -7,5 +7,5 @@ import { FieldCode } from '../../models/hris/field-code.interface';
 export class SystemNav {
 
   public selectedMenuItem: string = '';
-  public selectedField!: FieldCode;
+  public selectedField?: CustomField;
 }
