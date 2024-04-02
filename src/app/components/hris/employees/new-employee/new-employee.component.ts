@@ -72,13 +72,12 @@ export class NewEmployeeComponent implements OnInit {
   namePattern = /^[a-zA-Z\s'-]*$/;
   initialsPattern = /^[A-Za-z]+$/;
   toggleAdditional: boolean = false;
-
   levels: number[] = levels.map((level) => level.value);
   races: string[] = races.map((race) => race.value);
   genders: string[] = genders.map((gender) => gender.value);
   provinces: string[] = [];
   countries: string[] = [];
-
+  cities: string[] = [];
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
   imageUrl: string = '';
@@ -106,6 +105,7 @@ export class NewEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.getCountries();
     this.getProvinces('South Africa');
+    this.getCities('South Africa', 'Gauteng')
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.employeeTypes = data.sort((a, b) => {
@@ -122,6 +122,15 @@ export class NewEmployeeComponent implements OnInit {
       });
     this.navService.showNavbar = false;
   }
+
+  getCities(country: string, province: string): void {
+    this.http.post<any>('https://countriesnow.space/api/v0.1/countries/state/cities', { country: country, state: province })
+      .subscribe(response => {
+        this.cities = response.data; 
+        console.log(this.cities); 
+      });
+  }
+  
 
   getProvinces(country: string): void {
     this.http.post<any>('https://countriesnow.space/api/v0.1/countries/states', { country: country })
