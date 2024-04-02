@@ -20,6 +20,7 @@ import { AccordionProfileComponent } from './accordions/accordion-profile/accord
 import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents.component';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-employee-profile',
@@ -97,6 +98,7 @@ export class EmployeeProfileComponent {
     private snackBarService: SnackbarService,
     private navService: NavService,
     private changeDetectorRef: ChangeDetectorRef,
+    private clipboard: Clipboard,
     public authAccessService: AuthAccessService) {
     navService.showNavbar = true;
   }
@@ -298,11 +300,7 @@ export class EmployeeProfileComponent {
       });
   }
 
-  Emailboard() {
-    if (this.employeeProfile && this.employeeProfile.email) {
-      this.simpleEmployee.email = this.employeeProfile.email;
-    } else {
-      console.log('Invalid or undefined email');
-    }
+  copyToClipboard(text: string) {
+    this.clipboard.copy(text);
   }
 }
