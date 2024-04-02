@@ -24,8 +24,7 @@ import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin
 import { NewEmployeeComponent } from './components/hris/employees/new-employee/new-employee.component';
 import { ManageFieldCodeComponent } from './components/hris/custom-fields/manage-field-code/manage-field-code.component';
 import { ViewEmployeeComponent } from './components/hris/employees/view-employee/view-employee.component';
-import { NewFieldCodeComponent } from './components/hris/custom-fields/new-field-code/new-field-code.component';
-import { UpdateFieldComponent } from './components/hris/custom-fields/update-field/update-field.component';
+import { SaveCustomFieldComponent } from './components/hris/custom-fields/save-custom-field/save-custom-field.component';
 import { EvaluationsComponent } from './components/hris/evaluations/evaluations.component';
 import { EmployeeEvaluationsComponent } from './components/hris/evaluations/employee-evaluations/employee-evaluations.component';
 import { TemplateItemsComponent } from './components/hris/evaluations/template-items/template-items.component';
@@ -80,6 +79,7 @@ import { AccordionBankingComponent } from './components/hris/employees/employee-
 import { AccordionDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
+import { NewCandidateComponent } from './components/ats/candidates/new-candidate/new-candidate.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PropertyAccessComponent } from './components/hris/system-settings/property-access/property-access.component';
 
@@ -98,8 +98,7 @@ import { PropertyAccessComponent } from './components/hris/system-settings/prope
     EvaluationsComponent,
     EmployeeEvaluationsComponent,
     TemplateItemsComponent,
-    NewFieldCodeComponent,
-    UpdateFieldComponent,
+    SaveCustomFieldComponent,
     AdminDashboardComponent,
     EmployeeDetailsComponent,
     PendingBankDetailsComponent,
@@ -114,6 +113,7 @@ import { PropertyAccessComponent } from './components/hris/system-settings/prope
     AccordionDocumentsComponent,
     LoadingComponentComponent,
     AtsDashboardComponent,
+    NewCandidateComponent,
     PropertyAccessComponent,
   ],
   imports: [
@@ -148,14 +148,12 @@ import { PropertyAccessComponent } from './components/hris/system-settings/prope
     MatInputModule,
     MatRadioModule,
     MatTableModule,
-    MatInputModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
     MatAutocompleteModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
     MatDatepickerModule,

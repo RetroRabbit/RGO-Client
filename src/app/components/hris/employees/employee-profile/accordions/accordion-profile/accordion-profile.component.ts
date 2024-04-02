@@ -5,6 +5,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
@@ -18,8 +19,8 @@ import { EmployeeDataService } from 'src/app/services/hris/employee/employee-dat
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { FieldCodeService } from 'src/app/services/hris/field-code.service';
-import { FieldCode } from 'src/app/models/hris/field-code.interface';
+import { CustomFieldService } from 'src/app/services/hris/field-code.service';
+import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
@@ -53,7 +54,7 @@ export class AccordionProfileComponent {
   filteredEmployees: any = [];
   filteredPeopleChamps: any = [];
   employeeData: EmployeeData[] = [];
-  customFields: FieldCode[] = [];
+  customFields: CustomField[] = [];
 
   foundClient: any;
   foundTeamLead: any;
@@ -156,12 +157,13 @@ export class AccordionProfileComponent {
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
+    private navService: NavService,
     private customValidationService: CustomvalidationService,
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
     private clientService: ClientService,
     private employeeTypeService: EmployeeTypeService,
-    private fieldCodeService: FieldCodeService,
+    private fieldCodeService: CustomFieldService,
     private employeeAddressService: EmployeeAddressService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService) {
@@ -305,6 +307,7 @@ export class AccordionProfileComponent {
 
   saveEmployeeEdit() {
     if (this.employeeDetailsForm.valid) {
+      this.navService.showNavbar = false;
       const employeeDetailsForm = this.employeeDetailsForm.value;
       const personalDetailsForm = this.personalDetailsForm.value;
       this.employeeType = this.employeeTypes.find((data: any) => {
@@ -330,6 +333,7 @@ export class AccordionProfileComponent {
       this.employeeProfileDto.gender = personalDetailsForm.gender;
       this.employeeService.updateEmployee(this.employeeProfileDto).subscribe({
         next: (data) => {
+          this.navService.showNavbar = true;
           this.snackBarService.showSnackbar("Employee details updated", "snack-success");
           this.checkEmployeeFormProgress();
           this.totalProfileProgress();
@@ -343,6 +347,7 @@ export class AccordionProfileComponent {
     }
     else {
       this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+      this.navService.showNavbar = true;
     }
   }
 
@@ -683,7 +688,7 @@ export class AccordionProfileComponent {
   getEmployeeFieldCodes() {
     this.fieldCodeService.getAllFieldCodes().subscribe({
       next: data => {
-        this.customFields = data.filter((data: FieldCode) => data.category === this.category[0].id);
+        this.customFields = data.filter((data: CustomField) => data.category === this.category[0].id);
         this.checkAdditionalInformation();
         this.checkAdditionalFormProgress();
         this.totalProfileProgress();

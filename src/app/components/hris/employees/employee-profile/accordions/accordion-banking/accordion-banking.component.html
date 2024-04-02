@@ -70,7 +70,7 @@
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Account Type</mat-label>
-                                    <mat-select placeholder="Select Type" formControlName="accountType">
+                                    <mat-select placeholder="Select Type" formControlName="accountType" hideSingleSelectionIndicator="true">
                                         <mat-option *ngFor="let accountType of accountTypes" [value]="accountType.id">
                                             {{accountType.value}}
                                         </mat-option>
@@ -80,7 +80,7 @@
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Bank Name</mat-label>
-                                    <mat-select placeholder="Select bank" formControlName="bankName">
+                                    <mat-select placeholder="Select bank" formControlName="bankName" hideSingleSelectionIndicator="true">
                                         <mat-option *ngFor="let bank of banks" [value]="bank.value">
                                             {{bank.value}}
                                         </mat-option>
@@ -139,7 +139,7 @@
                                                 </div>
                                                 <div class="col-auto" id="uploadfile">
                                                     <h4 class="m-2">Upload document here</h4>
-                                                    <input id="fileUpload" hidden type="file"
+                                                    <input id="fileUpload" hidden type="file" [disabled]="!editBanking"
                                                         (change)="onFileSelected($event)" accept=".pdf">
                                                 </div>
                                             </div>
@@ -149,7 +149,7 @@
                                                 </div>
                                                 <div class="col-auto" id="uploadfile">
                                                     <h4 class="m-2" style="color: #0029C6;">Upload document here</h4>
-                                                    <input id="fileUpload" hidden type="file"
+                                                    <input id="fileUpload" hidden type="file" [disabled]="!editBanking"
                                                         (change)="onFileSelected($event)" accept=".pdf">
                                                 </div>
                                             </div>

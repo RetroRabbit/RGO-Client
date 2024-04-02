@@ -22,6 +22,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
+import { color } from 'html2canvas/dist/types/css/types/color';
 
 @Component({
   selector: 'app-new-employee',
@@ -67,6 +68,7 @@ export class NewEmployeeComponent implements OnInit {
   @ViewChild('stepper') private myStepper!: MatStepper;
 
   employeeTypes: EmployeeType[] = [];
+  employeeDocumentModels: EmployeeDocument[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   namePattern = /^[a-zA-Z\s'-]*$/;
   initialsPattern = /^[A-Za-z]+$/;
@@ -85,13 +87,15 @@ export class NewEmployeeComponent implements OnInit {
   selectedEmployee!: EmployeeProfile;
   validImage: boolean = false;
   public files: NgxFileDropEntry[] = [];
-  employeeDocumentModels: EmployeeDocument[] = [];
   PREVIOUS_PAGE = 'previousPage';
   COMPANY_EMAIL = 'retrorabbit.co.za';
 
   filteredPeopleChamps: any = [];
   peopleChampionId = null;
   isMobileScreen = false;
+  isLoadingAddEmployee: boolean = false;
+  isSameAddress: boolean = true;
+  isSavedEmployee: boolean = false;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -102,14 +106,14 @@ export class NewEmployeeComponent implements OnInit {
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
-      unitNumber: new FormControl<string | null>(" ", Validators.minLength(1)),
-      complexName: new FormControl<string | null>(" ", Validators.minLength(1)),
-      suburbDistrict: new FormControl<string | null>(" ", Validators.minLength(1)),
-      city: new FormControl<string | null>(" ", Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>("", [Validators.maxLength(4), Validators.minLength(1), Validators.pattern(/(^\d+$)|(^$)/)]),
-      country: new FormControl<string | null>(" ", Validators.minLength(1)),
-      province: new FormControl<string | null>(" ", Validators.minLength(1)),
-      postalCode: new FormControl<string | null>("", [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
+      unitNumber: new FormControl<string | null>('', Validators.minLength(1)),
+      complexName: new FormControl<string | null>('', Validators.minLength(1)),
+      suburbDistrict: new FormControl<string | null>('', Validators.minLength(1)),
+      city: new FormControl<string | null>('', Validators.minLength(1)),
+      streetNumber: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(1), Validators.pattern(/(^\d+$)|(^$)/)]),
+      country: new FormControl<string | null>('', Validators.minLength(1)),
+      province: new FormControl<string | null>('', Validators.minLength(1)),
+      postalCode: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
     });
   }
 
@@ -127,7 +131,7 @@ export class NewEmployeeComponent implements OnInit {
     terminationDate: new FormControl<Date | string | null>(null),
     reportingLine: new FormControl<EmployeeProfile | null>(null),
     highestQualication: new FormControl<string>(''),
-    disability: new FormControl<boolean>(false),
+    disability: new FormControl<boolean | null>(null),
     disabilityNotes: new FormControl<string>(''),
     countryOfBirth: new FormControl<string>(''),
     nationality: new FormControl<string>(''),
@@ -149,8 +153,8 @@ export class NewEmployeeComponent implements OnInit {
       new Date(Date.now())
     ),
     passportCountryIssue: new FormControl<string>(''),
-    race: new FormControl<number>(0),
-    gender: new FormControl<number>(0),
+    race: new FormControl<number>(-1),
+    gender: new FormControl<number | null>(null),
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),
     ]),
     personalEmail: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]),
@@ -264,29 +268,57 @@ export class NewEmployeeComponent implements OnInit {
     }
   }
 
+  clearFormErrorsAndValues(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(controlName => {
+      const control = formGroup.get(controlName);
+      if (control instanceof FormControl) {
+        control.clearValidators();
+        control.updateValueAndValidity();
+        control.reset();
+      } else if (control instanceof FormGroup) {
+        this.clearFormErrorsAndValues(control);
+      }
+    });
+  }
+
   saveAndExit() {
+    this.isSavedEmployee = false;
+    this.clearFormErrorsAndValues(this.newEmployeeForm);
+    this.clearFormErrorsAndValues(this.uploadDocumentForm);
+    this.clearFormErrorsAndValues(this.physicalAddress);
+    this.clearFormErrorsAndValues(this.postalAddressForm);
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
+    this.removeAllDocuments();
   }
 
   saveAndAddAnother() {
+    this.isSavedEmployee = false;
+    this.clearFormErrorsAndValues(this.newEmployeeForm);
+    this.clearFormErrorsAndValues(this.uploadDocumentForm);
+    this.clearFormErrorsAndValues(this.physicalAddress);
+    this.clearFormErrorsAndValues(this.postalAddressForm);
     this.onUploadDocument('/create-employee');
+    this.removeAllDocuments();
   }
 
   onUploadDocument(nextPage: string): void {
+    this.isLoadingAddEmployee = true;
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Files have been uploaded", "snack-success");
+          this.isLoadingAddEmployee = false;
         },
         error: (error: any) => {
           this.snackBarService.showSnackbar("Failed to save documents", "snack-error");
+          this.isLoadingAddEmployee = false;
         }, complete: () => {
           this.employeeDocumentModels = [];
           this.newEmployeeEmail = "";
           this.files = [];
           this.myStepper.previous();
           this.router.navigateByUrl(nextPage);
-
+          this.isLoadingAddEmployee = false;
         }
       });
     });
@@ -314,8 +346,10 @@ export class NewEmployeeComponent implements OnInit {
     }
   }
 
-  postalSameAsPhysicalAddress() {
-    if (this.postalAddressForm.value.sameAsPhysicalAddress) {
+  postalSameAsPhysicalAddress(event: boolean) {
+    this.isSameAddress = event;
+
+    if (this.postalAddressForm.value.sameAsPhysicalAddress && event) {
       this.postalAddress.patchValue({
         unitNumber: this.physicalAddress.value.unitNumber,
         complexName: this.physicalAddress.value.complexName,
@@ -367,17 +401,18 @@ export class NewEmployeeComponent implements OnInit {
   isDirty = false;
 
   onSubmit(reset: boolean = false): void {
+    this.isLoadingAddEmployee = true;
     if (this.isDirty == true)
       return;
 
-    if (this.isDirty == false)
-      this.isDirty = true;
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
       this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
+      this.isLoadingAddEmployee = false;
       return;
     }
+    this.newEmployeeForm.patchValue({id: 0});
     this.newEmployeeForm.value.initials = this.newEmployeeForm.value.initials?.toUpperCase();
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
@@ -404,23 +439,28 @@ export class NewEmployeeComponent implements OnInit {
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
+        this.isSavedEmployee = true;
         this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
         this.myStepper.next();
         this.isDirty = false;
+        this.isLoadingAddEmployee = false;
       },
 
       error: (error: any, stepper?: MatStepper) => {
         let message = '';
         if (error.status === 400) {
           message = 'Incorrect form values';
+          this.isLoadingAddEmployee = false;
         } else if (error.status === 406) {
-          message = 'User already exists';
+          this.isLoadingAddEmployee = false;
         }
         else if (error.status === 200) {
           stepper?.next();
+          this.isLoadingAddEmployee = false;
         }
-        this.snackBarService.showSnackbar(`Error: ${message}`, "snack-error");
+        this.snackBarService.showSnackbar(`Failed to save employee`, "snack-error");
         this.isDirty = false;
+        this.isLoadingAddEmployee = false;
       },
     });
   }
@@ -561,4 +601,13 @@ export class NewEmployeeComponent implements OnInit {
     this.employeeDocumentModels = this.employeeDocumentModels.filter(file => file.fileCategory !== category);
     this.categories[category].state = true;
   }
+
+  removeAllDocuments(): void {
+    Object.keys(this.categories).forEach(catKey => {
+      const catNum = parseInt(catKey, 10);
+      this.employeeDocumentModels = this.employeeDocumentModels.filter(file => file.fileCategory !== catNum);
+      this.categories[catNum].state = true;
+    });
+  }
+
 }
