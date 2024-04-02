@@ -7,7 +7,7 @@ import { EmployeeDataService } from 'src/app/services/hris/employee/employee-dat
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
-import { FieldCodeService } from 'src/app/services/hris/field-code.service';
+import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -15,7 +15,7 @@ import { SharedAccordionFunctionality } from '../../../shared-accordion-function
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
-import { FieldCode } from 'src/app/models/hris/field-code.interface';
+import { CustomField } from 'src/app/models/hris/custom-field.interface';
 
 @Component({
   selector: 'app-accordion-profile-address-details',
@@ -51,7 +51,7 @@ export class AccordionProfileAddressDetailsComponent {
     private employeeDataService: EmployeeDataService,
     private clientService: ClientService,
     private employeeTypeService: EmployeeTypeService,
-    private fieldCodeService: FieldCodeService,
+    private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -225,9 +225,9 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   getEmployeeFieldCodes() {
-    this.fieldCodeService.getAllFieldCodes().subscribe({
+    this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.customFields = data.filter((data: FieldCode) => data.category === this.sharedAccordionFunctionality.category[0].id);
+        this.sharedAccordionFunctionality.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[0].id);
       }
     })
   }

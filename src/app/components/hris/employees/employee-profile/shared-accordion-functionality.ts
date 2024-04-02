@@ -10,7 +10,7 @@ import { disabilities } from 'src/app/models/hris/constants/disabilities.constan
 import { provinces } from 'src/app/models/hris/constants/provinces.constants';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
-import { FieldCode } from 'src/app/models/hris/field-code.interface';
+import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
@@ -38,7 +38,7 @@ export class SharedAccordionFunctionality {
   filteredEmployees: any = [];
   filteredPeopleChamps: any = [];
   employeeData: EmployeeData[] = [];
-  customFields: FieldCode[] = [];
+  customFields: CustomField[] = [];
 
   foundClient: any;
   foundTeamLead: any;

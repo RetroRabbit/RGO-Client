@@ -9,8 +9,8 @@ import { EmployeeDataService } from 'src/app/services/hris/employee/employee-dat
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { FieldCodeService } from 'src/app/services/hris/field-code.service';
-import { FieldCode } from 'src/app/models/hris/field-code.interface';
+import { CustomFieldService } from 'src/app/services/hris/field-code.service';
+import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
@@ -31,7 +31,7 @@ export class AccordionProfileAdditionalComponent {
     this.screenWidth = window.innerWidth;
   }
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
-  customFields: FieldCode[] = [];
+  customFields: CustomField[] = [];
   additionalFormProgress: number = 0;
 
   constructor(
@@ -43,7 +43,7 @@ export class AccordionProfileAdditionalComponent {
     private employeeDataService: EmployeeDataService,
     private clientService: ClientService,
     private employeeTypeService: EmployeeTypeService,
-    private fieldCodeService: FieldCodeService,
+    private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
@@ -157,9 +157,9 @@ export class AccordionProfileAdditionalComponent {
 
 
   getEmployeeFieldCodes() {
-    this.fieldCodeService.getAllFieldCodes().subscribe({
+    this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
-        this.customFields = data.filter((data: FieldCode) => data.category === this.sharedAccordionFunctionality.category[0].id);
+        this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[0].id);
         this.checkAdditionalInformation();
         this.sharedAccordionFunctionality.checkAdditionalFormProgress();
         this.sharedAccordionFunctionality.totalProfileProgress();

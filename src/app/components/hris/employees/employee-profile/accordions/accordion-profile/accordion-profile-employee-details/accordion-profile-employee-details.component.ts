@@ -8,8 +8,8 @@ import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { FieldCodeService } from 'src/app/services/hris/field-code.service';
-import { FieldCode } from 'src/app/models/hris/field-code.interface';
+import { CustomFieldService } from 'src/app/services/hris/field-code.service';
+import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
@@ -41,7 +41,7 @@ export class AccordionProfileEmployeeDetailsComponent {
     private employeeDataService: EmployeeDataService,
     private clientService: ClientService,
     private employeeTypeService: EmployeeTypeService,
-    private fieldCodeService: FieldCodeService,
+    private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
@@ -427,9 +427,9 @@ export class AccordionProfileEmployeeDetailsComponent {
   }
 
   getEmployeeFieldCodes() {
-    this.fieldCodeService.getAllFieldCodes().subscribe({
+    this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.customFields = data.filter((data: FieldCode) => data.category === this.sharedAccordionFunctionality.category[0].id);
+        this.sharedAccordionFunctionality.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[0].id);
       }
     })
   }
