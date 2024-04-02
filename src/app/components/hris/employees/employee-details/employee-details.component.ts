@@ -9,13 +9,13 @@ import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
-import { FieldCode } from 'src/app/models/hris/field-code.interface';
+import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
-import { FieldCodeService } from 'src/app/services/hris/field-code.service';
+import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 
 @Component({
@@ -29,7 +29,7 @@ export class EmployeeDetailsComponent implements OnInit {
 
   employeeTypes: EmployeeType[] = [];
   employeeData: EmployeeData[] = [];
-  fieldcodes: FieldCode[] = [];
+  fieldcodes: CustomField[] = [];
   employeeFieldcodes: any = [];
   employees: any = [];
   viewMoreInfo: boolean = false;
@@ -54,7 +54,7 @@ export class EmployeeDetailsComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private employeeTypeService: EmployeeTypeService,
     private employeeDataService: EmployeeDataService,
-    private fieldcodeService: FieldCodeService,
+    private fieldcodeService: CustomFieldService,
     private employeeService: EmployeeService,
     private cookieService: CookieService,
     private clientService: ClientService,

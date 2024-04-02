@@ -515,13 +515,16 @@
           <div id="footer">
             <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="goToPreviousPage()">Cancel</button>
-            <button id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
+            <button [disabled]="!isSavedEmployee" id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="saveAndAddAnother()">Save and add another</button>
-            <button id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
+            <button [disabled]="!isSavedEmployee" id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
               (click)="saveAndExit()">Save</button>
           </div>
         </form>
       </mat-step>
     </div>
   </mat-stepper>
+  <div class="spinner-container" *ngIf="isLoadingAddEmployee == true">
+    <mat-spinner></mat-spinner>
+  </div>
 </div>
