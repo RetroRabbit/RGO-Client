@@ -207,16 +207,16 @@
                 class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mb-3">
                 <h1 class="col-lg-7 col-md-12 fs-1">Physical Address</h1>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
-                  <mat-label>Unit Number</mat-label>
-                  <input matInput type="text" formControlName="unitNumber" />
+                  <mat-label>Country</mat-label>
+                  <mat-select formControlName="country" hideSingleSelectionIndicator="true">
+                    <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
+                  </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
-                  <mat-label>Complex Name</mat-label>
-                  <input matInput type="text" formControlName="complexName" />
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
-                  <mat-label>City/Town</mat-label>
-                  <input matInput type="text" formControlName="city" />
+                  <mat-label>Province</mat-label>
+                  <mat-select matAutocompleteOrigin formControlName="province" hideSingleSelectionIndicator="true" (selectionChange)="getCities('South Africa', $event.value)">
+                    <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
+                  </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Suburb/District</mat-label>
@@ -225,23 +225,23 @@
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>City/Town</mat-label>
+                  <input matInput type="text" formControlName="city" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Complex Name</mat-label>
+                  <input matInput type="text" formControlName="complexName" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Unit Number</mat-label>
+                  <input matInput type="text" formControlName="unitNumber" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Street Number</mat-label>
                   <input matInput type="text" formControlName="streetNumber" />
                   <mat-error *ngIf="physicalAddress.controls['streetNumber'].hasError('pattern')">
                     Street number must only contain numbers
                   </mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
-                  <mat-label>Country</mat-label>
-                  <mat-select formControlName="country" hideSingleSelectionIndicator="true">
-                    <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
-                  <mat-label>Province</mat-label>
-                  <mat-select formControlName="province" hideSingleSelectionIndicator="true" (selectionChange)="getCities('South Africa', $event.value)">
-                    <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
-                  </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Postal Code</mat-label>
@@ -262,16 +262,16 @@
                 class="row flex-column justify-content-center align-items-center roboto-font col-md-12 mt-5">
                 <h1 class="col-lg-7 col-md-12 fs-1">Postal Address</h1>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
-                  <mat-label>Unit Number</mat-label>
-                  <input matInput type="text" formControlName="unitNumber" />
+                  <mat-label>Country</mat-label>
+                  <mat-select formControlName="country" hideSingleSelectionIndicator="true">
+                    <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
+                  </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
-                  <mat-label>Complex Name</mat-label>
-                  <input matInput type="text" formControlName="complexName" />
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
-                  <mat-label>City/Town</mat-label>
-                  <input matInput type="text" formControlName="city" />
+                  <mat-label>Province</mat-label>
+                  <mat-select matAutocompleteOrigin formControlName="province" hideSingleSelectionIndicator="true" (selectionChange)="getCities('South Africa', $event.value)">
+                    <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
+                  </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Suburb/District</mat-label>
@@ -280,28 +280,28 @@
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>City/Town</mat-label>
+                  <input matInput type="text" formControlName="city" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Complex Name</mat-label>
+                  <input matInput type="text" formControlName="complexName" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Unit Number</mat-label>
+                  <input matInput type="text" formControlName="unitNumber" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Street Number</mat-label>
                   <input matInput type="text" formControlName="streetNumber" />
-                  <mat-error *ngIf="postalAddress.controls['streetNumber'].hasError('pattern')">
-                    Street Number must contain only numbers.
+                  <mat-error *ngIf="physicalAddress.controls['streetNumber'].hasError('pattern')">
+                    Street number must only contain numbers
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
-                  <mat-label>Country</mat-label>
-                  <mat-select formControlName="country" hideSingleSelectionIndicator="true">
-                    <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
-                  <mat-label>Province</mat-label>
-                  <mat-select formControlName="province" hideSingleSelectionIndicator="true" (selectionChange)="getCities('South Africa', $event.value)">
-                    <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
-                  </mat-select>
-                </mat-form-field>                
-                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Postal Code</mat-label>
                   <input matInput type="text" formControlName="postalCode" />
-                  <mat-error *ngIf="postalAddress.controls['postalCode'].hasError('pattern')">
+                  <mat-error *ngIf="physicalAddress.controls['postalCode'].hasError('pattern')">
                     Postal code must contain only numbers.
                   </mat-error>
                 </mat-form-field>
