@@ -82,6 +82,7 @@ export class EmployeeProfileComponent {
 
   imageUrl!: string;
   validateFile: any;
+  snackBar: any;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -300,7 +301,16 @@ export class EmployeeProfileComponent {
       });
   }
 
-  copyToClipboard(text: string) {
-    this.clipboard.copy(text);
+  copyToClipboard() {
+    let emailToCopy: string;
+    if (this.simpleEmployee && this.simpleEmployee.email) {
+      emailToCopy = this.simpleEmployee.email;
+    } else if (this.employeeProfile && this.employeeProfile.email) {
+      emailToCopy = this.employeeProfile.email;
+    } else {
+      this.snackBar.showSnackbar("No email address available to copy");
+      return;
+    }
+    this.clipboard.copy(emailToCopy);
   }
 }
