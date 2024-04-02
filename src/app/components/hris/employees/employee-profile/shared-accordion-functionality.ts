@@ -18,14 +18,17 @@ import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { AccordionProfilePersonalDetailsComponent } from './accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
+import { AccordionProfileEmployeeDetailsComponent } from './accordions/accordion-profile/accordion-profile-employee-details/accordion-profile-employee-details.component';
+import { AccordionProfileAddressDetailsComponent } from './accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
+import { AccordionProfileAdditionalComponent } from './accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
+import { subscribe } from 'diagnostics_channel';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class SharedAccordionFunctionality {
-  @Output() updateProfile = new EventEmitter<number>();
-  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+  @Output() updateProfile = new EventEmitter<any>();
 
   // this.employeeFormProgress
   employees: EmployeeProfile[] = [];
@@ -140,51 +143,114 @@ export class SharedAccordionFunctionality {
 
   additionalInfoForm: FormGroup = this.fb.group({});
 
-  totalProfileProgress() {
-    // this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.contactFormProgress + this.addressFormProgress + this.additionalFormProgress) / 5);
-    // this.updateProfile.emit(this.profileFormProgress);
-  }
-  checkPropertyPermissions(fieldNames: string[], table: string, form: string, initialLoad: boolean): void {
-    fieldNames.forEach(fieldName => {
-      let control: AbstractControl<any, any> | null = null;
+  checkPersonalFormProgress() {
 
-      switch (form) {
-        case "employeeDetailsForm":
-          control = this.employeeDetailsForm.get(fieldName);
-          break;
-        case "employeeContactForm":
-          control = this.employeeContactForm.get(fieldName);
-          break;
-        case "addressDetailsForm":
-          control = this.addressDetailsForm.get(fieldName);
-          break;
-        case "additionalInfoForm":
-          control = this.additionalInfoForm.get(fieldName);
-          break;
-      }
+    let filledCount = 0;
+    let totalFields = 0;
+    const formControls = this.personalDetailsForm.controls;
 
-      if (control) {
-        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
-          case PropertyAccessLevel.none:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
-            break;
-          case PropertyAccessLevel.read:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          case PropertyAccessLevel.write:
-            if (!initialLoad)
-              control.enable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          default:
-            if (!initialLoad)
-              control.enable();
+    if (this.hasDisability) {
+      totalFields = (Object.keys(this.personalDetailsForm.controls).length);
+    }
+    else {
+      totalFields = (Object.keys(this.personalDetailsForm.controls).length) - 2;
+    }
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '' && this.hasDisability != false && control.value != "na") {
+          filledCount++;
+        }
+        else if (controlName.includes("disability") && this.hasDisability == false) {
+          filledCount++;
         }
       }
-    });
+    }
+    this.personalFormProgress = Math.round((filledCount / totalFields) * 100);
+    console.log("personal form progress:", this.personalFormProgress)
+
   }
+
+  checkEmployeeFormProgress() {
+    let filledCount = 0;
+    const formControls = this.employeeDetailsForm.controls;
+    const totalFields = Object.keys(this.employeeDetailsForm.controls).length;
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '') {
+          filledCount++;
+        }
+      }
+    }
+    this.employeeFormProgress = Math.round((filledCount / totalFields) * 100);
+
+  }
+  checkContactFormProgress() {
+    let filledCount = 0;
+    const formControls = this.employeeContactForm.controls;
+    const totalFields = Object.keys(this.employeeContactForm.controls).length;
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '') {
+          filledCount++;
+        }
+      }
+    }
+    this.contactFormProgress = Math.round((filledCount / totalFields) * 100);
+
+  }
+  checkAddressFormProgress() {
+    let filledCount = 0;
+    const formControls = this.addressDetailsForm.controls;
+    let totalFields = 0;
+    if (this.physicalEqualPostal) {
+      totalFields = (Object.keys(this.addressDetailsForm.controls).length) / 2;
+    }
+    else if (!this.physicalEqualPostal) {
+      totalFields = (Object.keys(this.addressDetailsForm.controls).length);
+    }
+
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != " " && control.value != "") {
+          filledCount++;
+        }
+        else if (!this.physicalEqualPostal && control.value != null && control.value != " " && control.value != "") {
+          filledCount++;
+        }
+      }
+
+    }
+    this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
+
+
+  }
+
+  checkAdditionalFormProgress() {
+
+    let filledCount = 0;
+    const formControls = this.additionalInfoForm.controls;
+    let totalFields = Object.keys(this.additionalInfoForm.controls).length;
+
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '') {
+          filledCount++;
+        }
+      }
+    }
+
+    this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
+
+  }
+
+  totalProfileProgress() {
+    this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.additionalFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
+    this.updateProfile.emit(this.profileFormProgress);
+  }
+
 }

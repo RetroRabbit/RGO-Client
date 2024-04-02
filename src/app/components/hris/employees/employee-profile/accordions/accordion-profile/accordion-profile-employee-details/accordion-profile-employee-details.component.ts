@@ -29,9 +29,7 @@ export class AccordionProfileEmployeeDetailsComponent {
   onResize() {
     this.screenWidth = window.innerWidth;
   }
-  @Output() updateProfile = new EventEmitter<number>();
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
-
   employeeFormProgress: number = 0;
 
   constructor(
@@ -76,8 +74,9 @@ export class AccordionProfileEmployeeDetailsComponent {
       peopleChampion: this.usingProfile ? this.employeeProfile!.employeeDetails.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId
     });
     this.sharedAccordionFunctionality.employeeDetailsForm.disable();
-    this.checkEmployeeFormProgress();
-    this.sharedAccordionFunctionality.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", "employeeDetailsForm", true)
+    this.sharedAccordionFunctionality.checkEmployeeFormProgress();
+    this.sharedAccordionFunctionality.totalProfileProgress();
+    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", true)
 
     this.sharedAccordionFunctionality.personalDetailsForm = this.fb.group({
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
@@ -236,8 +235,8 @@ export class AccordionProfileEmployeeDetailsComponent {
       this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Employee details updated", "snack-success");
-          this.checkEmployeeFormProgress();
-
+          this.sharedAccordionFunctionality.checkEmployeeFormProgress();
+          this.sharedAccordionFunctionality.totalProfileProgress();
           this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.sharedAccordionFunctionality.employeeProfileDto?.clientAllocated)[0];
           this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.teamLead)[0];
           this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.peopleChampion)[0];
@@ -264,7 +263,6 @@ export class AccordionProfileEmployeeDetailsComponent {
       }
     }
     this.employeeFormProgress = Math.round((filledCount / totalFields) * 100);
-    this.updateProfile.emit(this.employeeFormProgress);
   }
 
   filterClients(event: any) {
@@ -337,7 +335,7 @@ export class AccordionProfileEmployeeDetailsComponent {
   editEmployeeDetails() {
     this.sharedAccordionFunctionality.employeeDetailsForm.enable();
     this.sharedAccordionFunctionality.editEmployee = true;
-    this.sharedAccordionFunctionality.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", "employeeDetailsForm", false)
+    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", false)
 
   }
 
@@ -443,6 +441,34 @@ export class AccordionProfileEmployeeDetailsComponent {
   toggleEqualFields() {
     this.sharedAccordionFunctionality.physicalEqualPostal = !this.sharedAccordionFunctionality.physicalEqualPostal;
   }
+  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
+    fieldNames.forEach(fieldName => {
+      let control: AbstractControl<any, any> | null = null;
+      control = this.sharedAccordionFunctionality.employeeContactForm.get(fieldName);
 
+      if (control) {
+        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
+          case PropertyAccessLevel.none:
+            if (!initialLoad)
+              control.disable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
+            break;
+          case PropertyAccessLevel.read:
+            if (!initialLoad)
+              control.disable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+            break;
+          case PropertyAccessLevel.write:
+            if (!initialLoad)
+              control.enable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+            break;
+          default:
+            if (!initialLoad)
+              control.enable();
+        }
+      }
+    });
+  }
 
 }

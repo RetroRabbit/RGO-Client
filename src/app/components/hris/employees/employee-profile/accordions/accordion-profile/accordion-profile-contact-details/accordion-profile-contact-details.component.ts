@@ -22,7 +22,6 @@ export class AccordionProfileContactDetailsComponent {
   onResize() {
     this.screenWidth = window.innerWidth;
   }
-  @Output() updateProfile = new EventEmitter<number>();
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
   contactFormProgress: number = 0;
@@ -41,6 +40,7 @@ export class AccordionProfileContactDetailsComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
+
   }
 
   initializeForm() {
@@ -54,7 +54,8 @@ export class AccordionProfileContactDetailsComponent {
       emergencyContactNo: [this.employeeProfile!.employeeDetails.emergencyContactNo, [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(10)]]
     });
     this.sharedAccordionFunctionality.employeeContactForm.disable();
-    this.checkContactFormProgress();
+    this.sharedAccordionFunctionality.checkContactFormProgress();
+    this.sharedAccordionFunctionality.totalProfileProgress();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", true)
   }
 
@@ -83,8 +84,8 @@ export class AccordionProfileContactDetailsComponent {
       this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Contact details updated", "snack-success");
-          this.checkContactFormProgress();
-          // this.totalProfileProgress();
+          this.sharedAccordionFunctionality.checkContactFormProgress();
+          this.sharedAccordionFunctionality.totalProfileProgress();
           this.sharedAccordionFunctionality.employeeContactForm.disable();
           this.sharedAccordionFunctionality.editContact = false;
         },
@@ -95,22 +96,7 @@ export class AccordionProfileContactDetailsComponent {
       this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
   }
-  checkContactFormProgress() {
-    let filledCount = 0;
-    const formControls = this.sharedAccordionFunctionality.employeeContactForm.controls;
-    const totalFields = Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls).length;
-    for (const controlName in formControls) {
-      if (formControls.hasOwnProperty(controlName)) {
-        const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
-          filledCount++;
-        }
-      }
-    }
-    this.contactFormProgress = Math.round((filledCount / totalFields) * 100);
-    this.updateProfile.emit(this.contactFormProgress);
 
-  }
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     fieldNames.forEach(fieldName => {
       let control: AbstractControl<any, any> | null = null;

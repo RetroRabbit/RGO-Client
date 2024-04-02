@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ViewChild, HostListener } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, HostListener, Input } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -25,6 +25,7 @@ import { AccordionProfilePersonalDetailsComponent } from './accordions/accordion
 import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents.component';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
+import { SharedAccordionFunctionality } from './shared-accordion-functionality';
 
 @Component({
   selector: 'app-employee-profile',
@@ -33,6 +34,8 @@ import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.inte
 })
 
 export class EmployeeProfileComponent {
+  @Input('updateProfile') updateProfile: number | undefined;
+
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
   simpleEmployee!: SimpleEmployee;
@@ -54,7 +57,10 @@ export class EmployeeProfileComponent {
   employeeClient!: EmployeeProfile;
   employeeTeamLead!: EmployeeProfile;
   employeePeopleChampion!: EmployeeProfile;
+
   profileFormProgress: number = 0;
+
+
   overallFormProgress: number = 0;
   documentFormProgress: number = 0;
   bankingFormProgress: number = 0;
@@ -107,11 +113,23 @@ export class EmployeeProfileComponent {
     private snackBarService: SnackbarService,
     private navService: NavService,
     private changeDetectorRef: ChangeDetectorRef,
-    public authAccessService: AuthAccessService) {
+    public authAccessService: AuthAccessService,
+    public sharedAccordionFunctionality: SharedAccordionFunctionality) {
     navService.showNavbar = true;
   }
+  // ngOnChanges() {
+  //   console.log("Total profile progress", this.updateProfile);
 
+  // }
   ngOnInit() {
+
+
+    this.sharedAccordionFunctionality.updateProfile.subscribe(progress => {
+
+      this.profileFormProgress = progress;
+      this.overallProgress();
+    });
+
     this.employeeId = this.route.snapshot.params['id'];
     this.getClients();
     if (this.employeeId == undefined) {
@@ -198,6 +216,7 @@ export class EmployeeProfileComponent {
   }
 
   populateEmployeeAccordion(employee: SimpleEmployee) {
+
     this.employeeProfile = {};
     this.employeeProfile.cellphoneNo = employee.cellphoneNo;
     this.employeeProfile.clientAllocated = employee.clientAllocatedName;
@@ -271,9 +290,9 @@ export class EmployeeProfileComponent {
     this.overallProgress();
   }
 
-  updateProfileProgress(progress: any) {
-    this.profileFormProgress = progress;
-    this.overallProgress();
+  updateProfileProgress() {
+
+
     if (this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney())
       this.getSelectedEmployee();
     else

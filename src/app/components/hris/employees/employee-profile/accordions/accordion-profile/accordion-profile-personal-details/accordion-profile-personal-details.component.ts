@@ -26,10 +26,12 @@ export class AccordionProfilePersonalDetailsComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
+    this.initializeEmployeeProfileDto();
+    // this.getEmployeeFields();
   }
 
-  @Output() updateProfile = new EventEmitter<number>();
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+  @Input('updateProfile') value: any;
 
   personalFormProgress: number = 0;
   usingProfile: boolean = true;
@@ -42,12 +44,77 @@ export class AccordionProfilePersonalDetailsComponent {
       disabilityList: "",
       disabilityNotes: [this.employeeProfile!.employeeDetails.disabilityNotes]
     });
-
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
-    this.checkPersonalFormProgress();
+    this.sharedAccordionFunctionality.checkPersonalFormProgress();
+    this.sharedAccordionFunctionality.totalProfileProgress();
     this.checkEmployeeDetails();
-    this.sharedAccordionFunctionality.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "personalDetailsForm", "Employee", true)
-
+    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", true)
+  }
+  initializeEmployeeProfileDto() {
+    this.sharedAccordionFunctionality.employeeProfileDto = {
+      id: this.employeeProfile!.employeeDetails.id,
+      employeeNumber: this.employeeProfile!.employeeDetails.employeeNumber,
+      taxNumber: this.employeeProfile!.employeeDetails.taxNumber,
+      engagementDate: this.employeeProfile!.employeeDetails.engagementDate,
+      terminationDate: this.employeeProfile!.employeeDetails.terminationDate,
+      peopleChampion: this.usingProfile ? this.employeeProfile!.employeeDetails.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId,
+      disability: this.employeeProfile!.employeeDetails.disability,
+      disabilityNotes: this.employeeProfile!.employeeDetails.disabilityNotes,
+      countryOfBirth: this.employeeProfile!.employeeDetails.countryOfBirth,
+      nationality: this.employeeProfile!.employeeDetails.nationality,
+      level: this.employeeProfile!.employeeDetails.level,
+      employeeType: {
+        id: this.employeeProfile!.employeeDetails.employeeType!.id,
+        name: this.employeeProfile!.employeeDetails.employeeType!.name,
+      },
+      name: this.employeeProfile!.employeeDetails.name,
+      initials: this.employeeProfile!.employeeDetails.initials,
+      surname: this.employeeProfile!.employeeDetails.surname,
+      dateOfBirth: this.employeeProfile!.employeeDetails.dateOfBirth,
+      idNumber: this.employeeProfile!.employeeDetails.idNumber,
+      passportNumber: this.employeeProfile!.employeeDetails.passportNumber,
+      passportExpirationDate: this.employeeProfile!.employeeDetails.passportExpirationDate,
+      passportCountryIssue: this.employeeProfile!.employeeDetails.passportCountryIssue,
+      race: this.employeeProfile!.employeeDetails.race,
+      gender: this.employeeProfile!.employeeDetails.gender,
+      email: this.employeeProfile!.employeeDetails.email,
+      personalEmail: this.employeeProfile!.employeeDetails.personalEmail,
+      cellphoneNo: this.employeeProfile!.employeeDetails.cellphoneNo,
+      photo: this.employeeProfile!.employeeDetails.photo,
+      notes: '',
+      leaveInterval: this.employeeProfile!.employeeDetails.leaveInterval,
+      salary: this.employeeProfile!.employeeDetails.salary,
+      salaryDays: this.employeeProfile!.employeeDetails.salaryDays,
+      payRate: this.employeeProfile!.employeeDetails.payRate,
+      clientAllocated: this.employeeProfile!.employeeDetails.clientAllocated,
+      teamLead: this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
+      physicalAddress: {
+        id: this.employeeProfile!.employeeDetails.physicalAddress?.id,
+        unitNumber: this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber,
+        complexName: this.employeeProfile!.employeeDetails.physicalAddress?.complexName,
+        streetNumber: this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber,
+        suburbOrDistrict: this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict,
+        city: this.employeeProfile!.employeeDetails.physicalAddress?.city,
+        country: this.employeeProfile!.employeeDetails.physicalAddress?.country,
+        province: this.employeeProfile!.employeeDetails.physicalAddress?.province,
+        postalCode: this.employeeProfile!.employeeDetails.physicalAddress?.postalCode,
+      },
+      postalAddress: {
+        id: this.employeeProfile!.employeeDetails.postalAddress?.id,
+        unitNumber: this.employeeProfile!.employeeDetails.postalAddress?.unitNumber,
+        complexName: this.employeeProfile!.employeeDetails.postalAddress?.complexName,
+        streetNumber: this.employeeProfile!.employeeDetails.postalAddress?.streetNumber,
+        suburbOrDistrict: this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict,
+        city: this.employeeProfile!.employeeDetails.postalAddress?.city,
+        country: this.employeeProfile!.employeeDetails.postalAddress?.country,
+        province: this.employeeProfile!.employeeDetails.postalAddress?.province,
+        postalCode: this.employeeProfile!.employeeDetails.postalAddress?.postalCode,
+      },
+      houseNo: this.employeeProfile?.employeeDetails.houseNo,
+      emergencyContactName: this.employeeProfile?.employeeDetails.emergencyContactName,
+      emergencyContactNo: this.employeeProfile?.employeeDetails.emergencyContactNo
+    }
+    console.log(this.sharedAccordionFunctionality.employeeProfileDto);
   }
 
   constructor(
@@ -131,7 +198,7 @@ export class AccordionProfilePersonalDetailsComponent {
       this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Personal details updated", "snack-success");
-          this.checkPersonalFormProgress();
+          this.sharedAccordionFunctionality.checkPersonalFormProgress();
           this.sharedAccordionFunctionality.totalProfileProgress();
           this.sharedAccordionFunctionality.personalDetailsForm.disable();
           this.sharedAccordionFunctionality.editPersonal = false;
@@ -146,31 +213,7 @@ export class AccordionProfilePersonalDetailsComponent {
     }
   }
 
-  checkPersonalFormProgress() {
-    let filledCount = 0;
-    let totalFields = 0;
-    const formControls = this.sharedAccordionFunctionality.personalDetailsForm.controls;
 
-    if (this.sharedAccordionFunctionality.hasDisability) {
-      totalFields = (Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls).length);
-    }
-    else {
-      totalFields = (Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls).length) - 2;
-    }
-    for (const controlName in formControls) {
-      if (formControls.hasOwnProperty(controlName)) {
-        const control = formControls[controlName];
-        if (control.value != null && control.value != '' && this.sharedAccordionFunctionality.hasDisability != false && control.value != "na") {
-          filledCount++;
-        }
-        else if (controlName.includes("disability") && this.sharedAccordionFunctionality.hasDisability == false) {
-          filledCount++;
-        }
-      }
-    }
-    this.personalFormProgress = Math.round((filledCount / totalFields) * 100);
-    this.updateProfile.emit(this.personalFormProgress);
-  }
 
   cancelPersonalEdit() {
     this.sharedAccordionFunctionality.editPersonal = false;
@@ -179,34 +222,34 @@ export class AccordionProfilePersonalDetailsComponent {
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
   }
 
-  // checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
-  //   fieldNames.forEach(fieldName => {
-  //     let control: AbstractControl<any, any> | null = null;
-  //     control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
+  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
+    fieldNames.forEach(fieldName => {
+      let control: AbstractControl<any, any> | null = null;
+      control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
 
-  //     if (control) {
-  //       switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
-  //         case PropertyAccessLevel.none:
-  //           if (!initialLoad)
-  //             control.disable();
-  //           this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
-  //           break;
-  //         case PropertyAccessLevel.read:
-  //           if (!initialLoad)
-  //             control.disable();
-  //           this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-  //           break;
-  //         case PropertyAccessLevel.write:
-  //           if (!initialLoad)
-  //             control.enable();
-  //           this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-  //           break;
-  //         default:
-  //           if (!initialLoad)
-  //             control.enable();
-  //       }
-  //     }
-  //   });
-  // }
+      if (control) {
+        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
+          case PropertyAccessLevel.none:
+            if (!initialLoad)
+              control.disable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
+            break;
+          case PropertyAccessLevel.read:
+            if (!initialLoad)
+              control.disable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+            break;
+          case PropertyAccessLevel.write:
+            if (!initialLoad)
+              control.enable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+            break;
+          default:
+            if (!initialLoad)
+              control.enable();
+        }
+      }
+    });
+  }
 
 }

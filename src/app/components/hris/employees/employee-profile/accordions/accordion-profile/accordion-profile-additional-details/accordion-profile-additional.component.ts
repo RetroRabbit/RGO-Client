@@ -30,9 +30,7 @@ export class AccordionProfileAdditionalComponent {
   onResize() {
     this.screenWidth = window.innerWidth;
   }
-  @Output() updateProfile = new EventEmitter<number>();
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
-
   customFields: FieldCode[] = [];
   additionalFormProgress: number = 0;
 
@@ -76,6 +74,7 @@ export class AccordionProfileAdditionalComponent {
       peopleChampion: this.usingProfile ? this.employeeProfile!.employeeDetails.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId
     });
     this.sharedAccordionFunctionality.employeeDetailsForm.disable();
+    this.sharedAccordionFunctionality.checkEmployeeFormProgress();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", true)
   }
   getEmployeeFields() {
@@ -162,7 +161,8 @@ export class AccordionProfileAdditionalComponent {
       next: data => {
         this.customFields = data.filter((data: FieldCode) => data.category === this.sharedAccordionFunctionality.category[0].id);
         this.checkAdditionalInformation();
-        this.checkAdditionalFormProgress();
+        this.sharedAccordionFunctionality.checkAdditionalFormProgress();
+        this.sharedAccordionFunctionality.totalProfileProgress();
       }
     })
   }
@@ -180,24 +180,6 @@ export class AccordionProfileAdditionalComponent {
         this.sharedAccordionFunctionality.additionalInfoForm.disable();
       }
     });
-  }
-
-  checkAdditionalFormProgress() {
-    let filledCount = 0;
-    const formControls = this.sharedAccordionFunctionality.additionalInfoForm.controls;
-    let totalFields = Object.keys(this.sharedAccordionFunctionality.additionalInfoForm.controls).length;
-
-    for (const controlName in formControls) {
-      if (formControls.hasOwnProperty(controlName)) {
-        const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
-          filledCount++;
-        }
-      }
-    }
-    this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
-    //this.updateProfile.emit(this.additionalFormProgress);
-
   }
 
 
@@ -231,7 +213,8 @@ export class AccordionProfileAdditionalComponent {
         this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
           next: (data) => {
             this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
-            this.checkAdditionalFormProgress();
+            this.sharedAccordionFunctionality.checkAdditionalFormProgress();
+            this.sharedAccordionFunctionality.totalProfileProgress();
             this.sharedAccordionFunctionality.additionalInfoForm.disable();
             this.sharedAccordionFunctionality.editAdditional = false;
           },
@@ -251,7 +234,8 @@ export class AccordionProfileAdditionalComponent {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
               this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
-              this.checkAdditionalFormProgress();
+              this.sharedAccordionFunctionality.checkAdditionalFormProgress();
+              this.sharedAccordionFunctionality.totalProfileProgress();
               this.sharedAccordionFunctionality.additionalInfoForm.disable();
               this.sharedAccordionFunctionality.editAdditional = false;
             },

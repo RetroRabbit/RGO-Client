@@ -34,12 +34,14 @@ export class AccordionProfileAddressDetailsComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
+    this.initializeEmployeeProfileDto();
+    this.getEmployeeFields();
+
+
   }
 
-  @Output() updateProfile = new EventEmitter<number>();
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
-  addressFormProgress: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -80,7 +82,8 @@ export class AccordionProfileAddressDetailsComponent {
       postalPostalCode: [this.employeeProfile!.employeeDetails.postalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]]
     });
     this.sharedAccordionFunctionality.addressDetailsForm.disable();
-    this.checkAddressFormProgress();
+    this.sharedAccordionFunctionality.checkAddressFormProgress();
+    this.sharedAccordionFunctionality.totalProfileProgress();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", true)
   }
 
@@ -133,7 +136,7 @@ export class AccordionProfileAddressDetailsComponent {
               this.employeeProfile!.employeeDetails.physicalAddress = physicalAddressDto;
               this.snackBarService.showSnackbar("Physical address updated", "snack-success");
               this.sharedAccordionFunctionality.addressDetailsForm.disable();
-              this.checkAddressFormProgress();
+              this.sharedAccordionFunctionality.checkAddressFormProgress();
               this.sharedAccordionFunctionality.totalProfileProgress();
               this.getEmployeeFields();
               this.sharedAccordionFunctionality.editAddress = false;
@@ -244,33 +247,6 @@ export class AccordionProfileAddressDetailsComponent {
 
   toggleEqualFields() {
     this.sharedAccordionFunctionality.physicalEqualPostal = !this.sharedAccordionFunctionality.physicalEqualPostal;
-  }
-
-  checkAddressFormProgress() {
-    let filledCount = 0;
-    const formControls = this.sharedAccordionFunctionality.addressDetailsForm.controls;
-    let totalFields = 0;
-    if (this.sharedAccordionFunctionality.physicalEqualPostal) {
-      totalFields = (Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls).length) / 2;
-    }
-    else if (!this.sharedAccordionFunctionality.physicalEqualPostal) {
-      totalFields = (Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls).length);
-    }
-
-    for (const controlName in formControls) {
-      if (formControls.hasOwnProperty(controlName)) {
-        const control = formControls[controlName];
-        if (this.sharedAccordionFunctionality.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != " " && control.value != "") {
-          filledCount++;
-        }
-        else if (!this.sharedAccordionFunctionality.physicalEqualPostal && control.value != null && control.value != " " && control.value != "") {
-          filledCount++;
-        }
-      }
-    }
-    this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
-    //this.updateProfile.emit(this.addressFormProgress);
-
   }
 
   checkEmployeeDetails() {
