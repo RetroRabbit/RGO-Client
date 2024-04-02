@@ -45,6 +45,8 @@ export class ManageFieldCodeComponent {
   dataSource: MatTableDataSource<CustomField> = new MatTableDataSource();
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   isLoading: boolean = true;
+  runCounter: number = 0;
+  runThreshold: number = 2;
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -96,16 +98,27 @@ export class ManageFieldCodeComponent {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.getActivePassive();
-        this.activeTab = active;
-        this.isLoading = false;
         this.sortByIdDefault(this.dataSource.sort);
         this.applySorting();
+        this.runCounter++;
+        if (this.shouldReset()) {
+          this.isLoading = false;
+          this.resetRunCounter();
+        }
       },
       error: () => {
         this.snackBarService.showSnackbar("Error fetching field codes", "snack-error");
         this.isLoading = false;
       }
     })
+  }
+
+  shouldReset(): boolean {
+    return this.runCounter >= this.runThreshold;
+  }
+
+  resetRunCounter(){
+    return this.runCounter = 0;
   }
 
   applySorting(): void {
@@ -239,6 +252,9 @@ export class ManageFieldCodeComponent {
   }
 
   changeTab(tabIndex: number) {
+    if(this.isLoading == true){
+      return;
+    }
     this.activeTab = tabIndex;
     this.filteredCustomFields = this.customFields.filter(fieldCode => fieldCode.status == this.activeTab);
     this.dataSource = new MatTableDataSource(this.filteredCustomFields);
