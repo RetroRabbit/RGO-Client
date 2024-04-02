@@ -105,13 +105,7 @@ export class NewEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCountries();
-    this.getProvinces('South Africa');
 
-
-    // this.createAddressForm.get('country').valueChanges.subscribe(value => {
-    //   this.isSouthAfrica = value === 'South Africa';
-    // });
-    
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.employeeTypes = data.sort((a, b) => {
@@ -130,14 +124,22 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   onCountryChange(country: string): void {
-    this.isSouthAfrica = country === 'South Africa';
+    if(this.isSouthAfrica = country === 'South Africa'){
+      this.isSouthAfrica = true;
+      this.getProvinces('South Africa');
+      console.log(this.isSouthAfrica)
+    }
+    if (!this.isSouthAfrica){
+
+      this.provinces = [];
+      this.cities = [];
+    }
   }
 
   getCities(country: string, province: string): void {
     this.http.post<any>('https://countriesnow.space/api/v0.1/countries/state/cities', { country: country, state: province })
       .subscribe(response => {
         this.cities = response.data; 
-        console.log(this.cities); 
       });
   }
 
