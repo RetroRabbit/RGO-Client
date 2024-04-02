@@ -94,6 +94,7 @@ export class NewEmployeeComponent implements OnInit {
   isLoadingAddEmployee: boolean = false;
   isSameAddress: boolean = true;
   isSavedEmployee: boolean = false;
+  isSouthAfrica = false;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -105,6 +106,12 @@ export class NewEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.getCountries();
     this.getProvinces('South Africa');
+
+
+    // this.createAddressForm.get('country').valueChanges.subscribe(value => {
+    //   this.isSouthAfrica = value === 'South Africa';
+    // });
+    
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.employeeTypes = data.sort((a, b) => {
@@ -122,6 +129,10 @@ export class NewEmployeeComponent implements OnInit {
     this.navService.showNavbar = false;
   }
 
+  onCountryChange(country: string): void {
+    this.isSouthAfrica = country === 'South Africa';
+  }
+
   getCities(country: string, province: string): void {
     this.http.post<any>('https://countriesnow.space/api/v0.1/countries/state/cities', { country: country, state: province })
       .subscribe(response => {
@@ -129,7 +140,6 @@ export class NewEmployeeComponent implements OnInit {
         console.log(this.cities); 
       });
   }
-  
 
   getProvinces(country: string): void {
     this.http.post<any>('https://countriesnow.space/api/v0.1/countries/states', { country: country })
@@ -144,7 +154,6 @@ export class NewEmployeeComponent implements OnInit {
       this.countries = response.data.map((country: { country: string; }) => country.country);
     });
   }
-  
 
   private createAddressForm(): FormGroup {
     return new FormGroup({
