@@ -12,7 +12,7 @@
       </div>
     </div>
     <div id="button-container">
-      <button (click)="AddNewField()">+ Add New Field</button>
+      <button (click)="addNewField()">+ Add New Field</button>
     </div>
   </div>
   <div id="tab-buttons" class="mb-0">
@@ -26,13 +26,13 @@
   <hr class="m-0 p-0">
   <div id="field-table-container">
     <div id="table-buttons">
-      <button (click)="showDialog(0)" [ngClass]="selectedFieldCodes.length == 0 ? 'inactive-tab-button' : ''"
+      <button (click)="showDialog(0)" [ngClass]="selectedCustomFields.length == 0 ? 'inactive-tab-button' : ''"
         id="save-button" [disabled]="!hasSelected()" *ngIf="activeTab == 0" style="width: 118px;">
-        Archive {{selectedFieldCodes.length == 0 ? '' : "(" + selectedFieldCodes.length + ")"}}
+        Archive {{selectedCustomFields.length == 0 ? '' : "(" + selectedCustomFields.length + ")"}}
       </button>
-      <button (click)="showDialog(-1)" [ngClass]="selectedFieldCodes.length == 0 ? 'inactive-tab-button' : ''"
+      <button (click)="showDialog(-1)" [ngClass]="selectedCustomFields.length == 0 ? 'inactive-tab-button' : ''"
         id="save-button" [disabled]="!hasSelected()" *ngIf="activeTab != 0" style="width: 167px">
-        Move To Active {{selectedFieldCodes.length == 0 ? '' :"(" + selectedFieldCodes.length + ")"}}
+        Move To Active {{selectedCustomFields.length == 0 ? '' :"(" + selectedCustomFields.length + ")"}}
       </button>
     </div>
     <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
@@ -56,7 +56,7 @@
             </ng-container>
 
             <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header >Name</mat-header-cell>
               <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
             </ng-container>
 
@@ -73,7 +73,7 @@
             <ng-container matColumnDef="edit">
               <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
               <mat-cell *matCellDef="let element" class="justify-edit-end">
-                <button *ngIf="activeTab == 0;" id="cancel-button" class="mt-1" (click)="editField(element)">
+                <button *ngIf="activeTab == 0;" id="cancel-button" class="mt-1" (click)="saveCustomField(element)">
                   <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
                   Edit
                 </button>

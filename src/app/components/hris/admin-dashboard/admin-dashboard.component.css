@@ -286,6 +286,19 @@ div#results-container {
   align-items: center;
 }
 
+.fullscreen-modal-transparent {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .modal-content {
   background-color: white;
   padding: 20px;
@@ -300,16 +313,16 @@ div#results-container {
   border: none;
   border-radius: 4rem;
   color: white;
-  padding: 0.5rem;
+  padding: 8px;
   width: 80%;
 }
 
 #dialog-close>button {
   border: 1px solid #0029c6;
-  border-radius: 2rem;
+  border-radius: 4rem;
   background-color: white;
   color: #0029c6;
-  padding: 0.5rem;
+  padding: 7px;
   width: 80%;
 }
 
@@ -611,4 +624,8 @@ div#results-container {
 
 .heading-width-desktop {
   margin-left: 900px
+}
+
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #0029C6 !important;
 }

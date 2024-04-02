@@ -179,7 +179,7 @@
               <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.country" class="col-12 col-md-6">
                 <mat-form-field appearance="outline" style="width: 100%;">
                   <mat-label>Country</mat-label>
-                  <mat-select formControlName="physicalCountry">
+                  <mat-select formControlName="physicalCountry" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of filteredCountries" [value]="country">
                       {{ country }}
                     </mat-option>
@@ -189,7 +189,7 @@
               <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.province" class="col-12 col-md-6">
                 <mat-form-field appearance="outline" style="width: 100%;">
                   <mat-label>Province</mat-label>
-                  <mat-select formControlName="physicalProvince">
+                  <mat-select formControlName="physicalProvince" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let province of provinces" [value]="province">
                       {{province}}
                     </mat-option>
@@ -254,7 +254,7 @@
               <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.country" class="col-12 col-md-6">
                 <mat-form-field appearance="outline" style="width: 100%;">
                   <mat-label>Country</mat-label>
-                  <mat-select formControlName="postalCountry">
+                  <mat-select formControlName="postalCountry" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of filteredCountries" [value]="country">
                       {{ country }}
                     </mat-option>
@@ -264,7 +264,7 @@
               <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.province" class="col-12 col-md-6">
                 <mat-form-field appearance="outline" style="width: 100%;">
                   <mat-label>Province</mat-label>
-                  <mat-select formControlName="postalProvince">
+                  <mat-select formControlName="postalProvince" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let province of provinces" [value]="province">
                       {{province}}
                     </mat-option>
@@ -321,7 +321,7 @@
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>{{fieldcode.name}}</mat-label>
                 <div *ngIf="fieldcode.type == fieldTypes[4].id">
-                  <mat-select formControlName="{{fieldcode.code}}">
+                  <mat-select formControlName="{{fieldcode.code}}" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let option of fieldcode.options" [value]="option.option">
                       {{option.option}}
                     </mat-option>

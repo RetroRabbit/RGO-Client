@@ -60,6 +60,7 @@ export class AdminDashboardComponent {
   employeeProfiles: EmployeeProfile[] = [];
   allFlag: boolean = false;
   isLoading: boolean = true;
+  isLoadingChart: boolean = false;
 
   PREVIOUS_PAGE: string = 'previousPage';
 
@@ -325,6 +326,7 @@ export class AdminDashboardComponent {
     if (this.selectedTypes.length > 0) {
       combinedChartName += ` - ${this.selectedTypes.join(', ')}`;
     }
+    this.isLoadingChart = true;
     this.loadCounter = 0;
     this.chartService
       .createChart(
@@ -342,12 +344,14 @@ export class AdminDashboardComponent {
           this.chartName = '';
           this.chartType = '';
           this.configureDashboardData();
+          this.isLoadingChart = false;
         },
         error: () => {
           this.snackBarService.showSnackbar(
             'Failed to create chart',
             'snack-error'
           );
+          this.isLoadingChart = false;
         },
       });
     this.selectedCategories = [];

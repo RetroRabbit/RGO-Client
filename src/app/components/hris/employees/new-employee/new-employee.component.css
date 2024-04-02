@@ -8,6 +8,13 @@ main {
     font-family: "Roboto", sans-serif;
 }
 
+.mat-pseudo-checkbox-checked,
+.mat-pseudo-checkbox-indeterminate,
+.mat-accent .mat-pseudo-checkbox-checked,
+.mat-accent .mat-pseudo-checkbox-indeterminate {
+  background: #0029C6 !important;
+}
+
 .heading-text {
     width: 332px;
     text-align: center;
@@ -22,8 +29,6 @@ main {
 .no-border {
     border: none;
 }
-
-
 
 .form-buttons button {
     width: 100%;
@@ -374,6 +379,34 @@ main {
     line-height: 20px;
     letter-spacing: 0.10000000149011612px;
     text-align: left;
+}
+
+.spinner-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mat-mdc-progress-spinner {
+    --mdc-circular-progress-active-indicator-color: #0029C6 !important;
+}
+
+button:disabled,
+button[disabled],
+#save-add-button:disabled,
+#save-add-button[disabled]
+#save-button:disabled,
+#save-button[disabled] {
+  background: var(--m-3-state-layers-light-on-surface-opacity-012, rgba(29, 27, 32, 0.12));
+  color: var(--m-3-sys-light-on-surface-variant, #49454F);
+  border: none;
 }
 
 @media (max-width: 767px) {

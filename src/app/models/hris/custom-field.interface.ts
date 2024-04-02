@@ -1,9 +1,14 @@
 import { FieldCodeOptions } from "./field-code-options.interface";
 
-export interface FieldCode {
+export class CustomField {
+  
+  FieldCode(){
+    this.id = 0;
+  }
+  
   id?: number;
   code?: string;
-  name: string;
+  name?: string;
   description?: string;
   regex?: string;
   type?: number;

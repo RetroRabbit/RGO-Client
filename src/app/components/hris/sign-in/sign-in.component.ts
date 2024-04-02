@@ -94,6 +94,7 @@ export class SignInComponent {
             this.authAccessService.isSuperAdmin()
           ) {
             this.navService.isHris = true;
+            this.cookieService.set('isHris', String(this.navService.isHris))
             this.router.navigateByUrl('/dashboard');
           }
           else if (this.authAccessService.isEmployee()) { this.router.navigateByUrl('/profile'); }

@@ -24,8 +24,7 @@ import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin
 import { NewEmployeeComponent } from './components/hris/employees/new-employee/new-employee.component';
 import { ManageFieldCodeComponent } from './components/hris/custom-fields/manage-field-code/manage-field-code.component';
 import { ViewEmployeeComponent } from './components/hris/employees/view-employee/view-employee.component';
-import { NewFieldCodeComponent } from './components/hris/custom-fields/new-field-code/new-field-code.component';
-import { UpdateFieldComponent } from './components/hris/custom-fields/update-field/update-field.component';
+import { SaveCustomFieldComponent } from './components/hris/custom-fields/save-custom-field/save-custom-field.component';
 import { EvaluationsComponent } from './components/hris/evaluations/evaluations.component';
 import { EmployeeEvaluationsComponent } from './components/hris/evaluations/employee-evaluations/employee-evaluations.component';
 import { TemplateItemsComponent } from './components/hris/evaluations/template-items/template-items.component';
@@ -105,8 +104,7 @@ import { AccordionProfileAddressDetailsComponent } from './components/hris/emplo
     EvaluationsComponent,
     EmployeeEvaluationsComponent,
     TemplateItemsComponent,
-    NewFieldCodeComponent,
-    UpdateFieldComponent,
+    SaveCustomFieldComponent,
     AdminDashboardComponent,
     EmployeeDetailsComponent,
     PendingBankDetailsComponent,
