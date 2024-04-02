@@ -239,7 +239,7 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Province</mat-label>
-                  <mat-select formControlName="province" hideSingleSelectionIndicator="true">
+                  <mat-select formControlName="province" hideSingleSelectionIndicator="true" (selectionChange)="getCities('South Africa', $event.value)">
                     <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
                   </mat-select>
                 </mat-form-field>

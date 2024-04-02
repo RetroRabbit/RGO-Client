@@ -105,7 +105,6 @@ export class NewEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.getCountries();
     this.getProvinces('South Africa');
-    this.getCities('South Africa', 'Gauteng')
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.employeeTypes = data.sort((a, b) => {
