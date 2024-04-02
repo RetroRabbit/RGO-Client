@@ -156,9 +156,9 @@
       </div>
       <div class="col-lg-4 col-md-4 row justify-content-end align-items-center d-none d-md-flex" id="paginator-text">
         <span class="col-lg-4 col-md-7 fw-medium d-none d-md-flex"> Items per page </span>
-        <mat-form-field appearance="outline" class="col-lg-3 col-md-5" id="paginator-dropdown">
-          <input id="pageSize" matInput type="number" min="1" [(ngModel)]="pageSize" (focus)="pageNumber.open()" />
-          <mat-select #pageNumber [(ngModel)]="pageSize" hidden hideSingleSelectionIndicator="true">
+        <mat-form-field appearance="outline" class="col-lg-2 col-md-5" id="paginator-dropdown">
+          
+          <mat-select #pageNumber [(ngModel)]="pageSize" hideSingleSelectionIndicator="true">
             <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
               {{ pageSize }}
             </mat-option>
