@@ -79,7 +79,7 @@
                     </mat-radio-group>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Select level</mat-label>
-                        <mat-select formControlName="potentialLevel">
+                        <mat-select formControlName="potentialLevel" hideSingleSelectionIndicator="true">
                             <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -153,7 +153,7 @@
                         </mat-radio-group>
                         <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
                             <mat-label>Race</mat-label>
-                            <mat-select formControlName="race">
+                            <mat-select formControlName="race" hideSingleSelectionIndicator="true">
                                 <mat-option *ngFor="let race of races; index as i" [value]="i">{{ race }}</mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -167,7 +167,7 @@
                                 [matAutocomplete]="auto">
                             <mat-autocomplete #auto="matAutocomplete">
                                 <mat-option *ngFor="let employee of allEmployees" [value]='employee.name + " " + employee.surname'
-                                    (onSelectionChange)="showSelectedReferral($event)">{{ employee.name }} {{ employee.surname}}
+                                    (onSelectionChange)="showSelectedReferral($event)">{{ employee.name }} {{ employee.surname}} 
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
@@ -175,7 +175,7 @@
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>Highest Qualification</mat-label>
-                            <mat-select formControlName="highestQualification">
+                            <mat-select formControlName="highestQualification" hideSingleSelectionIndicator="true">
                                 <mat-option *ngFor="let qualification of qualifications; index as i" [value]="qualification">{{qualification }}</mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -183,7 +183,7 @@
                             <mat-icon matPrefix>search</mat-icon>
                             <mat-label>School</mat-label>
                             <mat-select *ngIf="!optionIsOther" formControlName="school"
-                                (selectionChange)="toggleOtherSchoolField($event, schools)">
+                                (selectionChange)="toggleOtherSchoolField($event, schools)" hideSingleSelectionIndicator="true">
                                 <mat-option *ngFor="let school of schools; index as i" [value]="school">{{school}}</mat-option>
                             </mat-select>
                             <input *ngIf="optionIsOther" matInput type="text" formControlName="school"
@@ -191,7 +191,7 @@
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                             <mat-label>Date Obtained</mat-label>
-                            <mat-select formControlName="endDate" placeholder="Select start year">
+                            <mat-select formControlName="endDate" placeholder="Select start year" hideSingleSelectionIndicator="true">
                                 <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
                             </mat-select>
                         </mat-form-field>

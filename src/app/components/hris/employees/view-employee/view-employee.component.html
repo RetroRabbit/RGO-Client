@@ -22,7 +22,7 @@
             <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
               [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
               <mat-label>People Champion Filter</mat-label>
-              <mat-select>
+              <mat-select hideSingleSelectionIndicator="true">
                 <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
                   class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
                   {{ champion.name }}
@@ -36,7 +36,7 @@
             <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 ms-5"
               [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
               <mat-label>User Type Filter</mat-label>
-              <mat-select>
+              <mat-select hideSingleSelectionIndicator="true">
                 <mat-option *ngFor="let userType of usertypes | async" [value]="userType.id" class="menu-item-button"
                   (click)="changeUserTypeFilter(userType)">
                   {{ userType.name }}
@@ -100,7 +100,7 @@
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
                   [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
                   <mat-label>{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</mat-label>
-                  <mat-select>
+                  <mat-select hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let role of roles | async" [value]="role"
                       (click)="changeRole(employee.Email, role)">
                       {{ role }}
@@ -158,7 +158,7 @@
         <span class="col-lg-4 col-md-7 fw-medium d-none d-md-flex"> Items per page </span>
         <mat-form-field appearance="outline" class="col-lg-3 col-md-5" id="paginator-dropdown">
           <input id="pageSize" matInput type="number" min="1" [(ngModel)]="pageSize" (focus)="pageNumber.open()" />
-          <mat-select #pageNumber [(ngModel)]="pageSize" hidden>
+          <mat-select #pageNumber [(ngModel)]="pageSize" hidden hideSingleSelectionIndicator="true">
             <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
               {{ pageSize }}
             </mat-option>
