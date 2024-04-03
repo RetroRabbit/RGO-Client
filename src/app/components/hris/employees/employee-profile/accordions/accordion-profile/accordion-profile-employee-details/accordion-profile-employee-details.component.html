@@ -1,0 +1,195 @@
+<div class="col-12" id="accordion-container">
+  <mat-accordion id="accordion" class="row">
+    <mat-expansion-panel class="mt-3 rounded-3" (opened)="checkEmployeeDetails()"
+      (closed)="sharedAccordionFunctionality.panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="col-6">
+          Employee Details
+        </mat-panel-title>
+        <mat-panel-description *ngIf="sharedAccordionFunctionality.employeeFormProgress != 100" class="pe-0 pe-md-5">
+          <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing information</span>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form [formGroup]="sharedAccordionFunctionality.employeeDetailsForm" (submit)="saveEmployeeEdit()">
+        <div class="col-12 mb-2 d-flex justify-content-end">
+          <button *ngIf="!sharedAccordionFunctionality.editEmployee" mat-button id="edit-button"
+            (click)="editEmployeeDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
+            <mat-icon>edit</mat-icon>Edit Details</button>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="row">
+              <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.name" class="col-12 my-2 col-md-6">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>Full Names</mat-label>
+                  <input matInput formControlName="name">
+                  <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('required')">
+                    Full name is required
+                  </mat-error>
+                  <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('pattern') && !sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('required') ">
+                    Full name must not contain numbers</mat-error>
+                </mat-form-field>
+              </div>
+              <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.surname" class="col-12 my-2 col-md-6">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>Last Name</mat-label>
+                  <input matInput formControlName="surname">
+                  <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['surname'].hasError('required')">
+                    Last name is required
+                  </mat-error>
+                  <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['surname'].hasError('pattern') && !sharedAccordionFunctionality.employeeDetailsForm.controls['surname'].hasError('required') ">
+                    Last name must not contain numbers
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.initials" class="col-12 my-2 col-md-6">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>Initials</mat-label>
+                  <input matInput formControlName="initials">
+                  <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['initials'].hasError('required')">
+                    Initials are required
+                  </mat-error>
+                  <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['initials'].hasError('pattern') && !sharedAccordionFunctionality.employeeDetailsForm.controls['initials'].hasError('required')">
+                    Initials must not contain numbers
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.clientAllocated" class="row">
+              <div class="col-12 my-2 col-md-6">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>Client Allocated</mat-label>
+                  <input type="text" placeholder="" matInput formControlName="clientAllocated"
+                    [matAutocomplete]="autoClient" (input)="filterClients($event)">
+                  <mat-autocomplete #autoClient="matAutocomplete">
+                    <mat-option *ngFor="let client of sharedAccordionFunctionality.filteredClients"
+                      [value]="client.name" (onSelectionChange)="getId(client, 'client')">
+                      {{ client.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.employeeType"
+                class="col-12 my-2 col-md-6">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>Role</mat-label>
+                  <mat-select formControlName="employeeType" hideSingleSelectionIndicator="true">
+                    <mat-option *ngFor="let type of sharedAccordionFunctionality.employeeTypes" [value]="type.name">
+                      {{type.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.level" class="col-12 my-2 col-md-6">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>Level</mat-label>
+                  <mat-select formControlName="level" hideSingleSelectionIndicator="true">
+                    <mat-option *ngFor="let level of sharedAccordionFunctionality.levels" [value]="level.value">
+                      {{level.value}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.teamLead" class="col-12 my-2 col-md-6">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>Team Lead</mat-label>
+                  <input
+                    *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput"
+                    type="text" placeholder="" matInput formControlName="teamLead" [matAutocomplete]="autoLead"
+                    (input)="filterEmployees($event)">
+                  <mat-autocomplete #autoLead="matAutocomplete">
+                    <input
+                      *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput"
+                      type="text" placeholder="" matInput formControlName="teamLead" [matAutocomplete]="autoLead"
+                      (input)="filterEmployees($event)">
+                    <mat-option *ngFor="let employee of sharedAccordionFunctionality.filteredEmployees"
+                      [value]="employee.name + ' ' + employee.surname"
+                      (onSelectionChange)="getId(employee, 'teamLead')">
+                      {{ employee.name }} {{ employee.surname }}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <ng-template #NonAdminTeamLeadInput>
+                    <input matInput type="text" [value]="employeeProfile.simpleEmployee.teamLeadName" [disabled]="true">
+                  </ng-template>
+                </mat-form-field>
+              </div>
+              <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.peopleChampion"
+                class="col-12 my-2 col-md-6">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>People's Champion</mat-label>
+                  <input
+                    *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminPeopleChampionInput"
+                    type="text" placeholder="" matInput formControlName="peopleChampion"
+                    [matAutocomplete]="autoChampion" (input)="filterChampions($event)">
+                  <mat-autocomplete #autoChampion="matAutocomplete">
+                    <mat-option *ngFor="let peopleChampion of sharedAccordionFunctionality.filteredPeopleChamps"
+                      [value]="peopleChampion.name + ' ' + peopleChampion.surname"
+                      (onSelectionChange)="getId(peopleChampion, 'champion')">
+                      {{ peopleChampion.name }}
+                      {{ peopleChampion.surname }}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <ng-template #NonAdminPeopleChampionInput>
+                    <input matInput type="text"
+                      [value]="employeeProfile.simpleEmployee.peopleChampionName ?? 'Unassigned'" [disabled]="true">
+                  </ng-template>
+                </mat-form-field>
+              </div>
+              <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.idNumber" class="col-12 my-2 col-md-6">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>I.D number</mat-label>
+                  <input matInput formControlName="idNumber" (blur)="getGenderBirthday($event)">
+                  <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['idNumber'].hasError('required')">
+                    ID number is required
+                  </mat-error>
+                  <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['idNumber'].hasError('invalidIdNumber') && !sharedAccordionFunctionality.employeeDetailsForm.controls['idNumber'].hasError('required')">
+                    This is not a valid South African ID number
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.dateOfBirth"
+                class="col-12 my-2 col-md-6">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>Date of Birth</mat-label>
+                  <input matInput [matDatepicker]="picker1" class="form-control" formControlName="dateOfBirth">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.engagementDate"
+                class="col-12 col-md-6">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>Start Date</mat-label>
+                  <input matInput [matDatepicker]="picker2" formControlName="engagementDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 d-none d-md-flex d-lg-flex justify-content-end" id="edit-buttons">
+            <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="cancel-button"
+              (click)="cancelEmployeeEdit()">
+              Cancel
+            </button>
+            <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="save-button" type="submit">
+              Save changes
+            </button>
+          </div>
+          <div class="col-12 d-block d-md-none d-lg-none" id="edit-buttons">
+            <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="save-button" type="submit"
+              class="col-12 mb-2">
+              Save changes
+            </button>
+            <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="cancel-button"
+              (click)="cancelEmployeeEdit()" class="col-12">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

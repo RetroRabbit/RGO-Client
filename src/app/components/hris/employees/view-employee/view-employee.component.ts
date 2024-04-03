@@ -176,7 +176,7 @@ export class ViewEmployeeComponent {
           Name: `${employee.name} ${employee.surname}`,
           Position: employee.employeeType!.name,
           Level: employee.level,
-          Client: client ? client.name : 'Bench',
+          Client: client ? client.name : 'None',
           Roles: sortedRoles,
           Email: employee.email,
         };
@@ -413,5 +413,12 @@ export class ViewEmployeeComponent {
         return userTypes;
       })
     );
+  }
+
+  splitAndCapitalizeCamelCase(input: string): string {
+    const words = input.split(/(?=[A-Z])/);
+    const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+    const result = capitalizedWords.join(' ');
+    return result;
   }
 }

@@ -118,7 +118,7 @@ input[type="number"] {
     align-self: flex-start;
     transition: background 0.3s ease;
     display: flex;
-    width: 380px;
+    width: 360px;
     height: 40px;
     margin-top: 20px;
     margin-left: -2%;
@@ -174,12 +174,9 @@ input[type="number"] {
     border: none;
     border-radius: 4rem;
     color: white;
-    margin: 0px auto;
-    margin-right: 2rem;
     padding: 0.5rem;
     right: 0px;
-    margin-top: 1.5rem !important;
-    margin-bottom: 1.5rem !important;
+    height: 40px;
 }
 
 .add-employee-span {
