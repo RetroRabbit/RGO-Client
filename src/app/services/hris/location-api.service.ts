@@ -11,7 +11,11 @@ export class LocationApiService {
 
   getCountries(): Observable<string[]> {
     return this.http.get<any>('https://countriesnow.space/api/v0.1/countries').pipe(
-      map(response => response.data.map((country: { country: string }) => country.country))
+      map(response => {
+        const countries = response.data.map((country: { country: string }) => country.country);
+        countries.unshift('South Africa'); 
+        return countries;
+      })
     );
   }
 

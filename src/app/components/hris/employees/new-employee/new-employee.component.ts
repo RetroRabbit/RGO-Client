@@ -80,6 +80,7 @@ export class NewEmployeeComponent implements OnInit {
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
   imageUrl: string = '';
+  countrySelected: string = '';
   Employees: EmployeeProfile[] = [];
   selectedEmployee!: EmployeeProfile;
   validImage: boolean = false;
@@ -125,35 +126,29 @@ export class NewEmployeeComponent implements OnInit {
 
   loadCountries(): void {
     this.locationApiService.getCountries().subscribe({
-      next: (data) => this.countries = data,
-      error: (error) => console.error('Error loading countries:', error)
-    });
-  }
-
-  loadProvinces(country: string): void {
-    this.locationApiService.getProvinces(country).subscribe({
-      next: (data) => this.provinces = data,
-      error: (error) => console.error('Error loading provinces:', error)
-    });
-    this.cities = [];
-  }
-
-  loadCities(country: string, province: string): void {
-    this.locationApiService.getCities(country, province).subscribe({
-      next: (data) => this.cities = data,
-      error: (error) => console.error('Error loading cities:', error)
+      next: (data) => this.countries = data
     });
   }
 
   onCountryChange(country: string): void {
-    if(this.isSouthAfrica = country === 'South Africa'){
-      this.isSouthAfrica = true;
-      this.loadProvinces('South Africa');
-    }
-    if (!this.isSouthAfrica){
-      this.provinces = [];
-      this.cities = [];
-    }
+    this.countrySelected = country;
+    this.provinces = [];
+    this.cities = [];
+    this.loadProvinces(this.countrySelected);
+  }
+
+  loadProvinces(country: string): void {
+    this.locationApiService.getProvinces(country).subscribe({
+      next: (data) => this.provinces = data
+    });
+    this.cities = [];
+  }
+
+  loadCities(province: string): void {
+    this.locationApiService.getCities(this.countrySelected, province).subscribe({
+      next: (data) => this.cities = data,
+      error: (error) => console.error('Error loading cities:', error)
+    });
   }
 
   private createAddressForm(): FormGroup {
@@ -446,7 +441,7 @@ export class NewEmployeeComponent implements OnInit {
       this.isLoadingAddEmployee = false;
       return;
     }
-    this.newEmployeeForm.patchValue({id: 0});
+    this.newEmployeeForm.patchValue({ id: 0 });
     this.newEmployeeForm.value.initials = this.newEmployeeForm.value.initials?.toUpperCase();
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
