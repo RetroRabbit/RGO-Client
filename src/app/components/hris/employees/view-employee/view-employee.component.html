@@ -2,7 +2,7 @@
   <div class="mt-4 mb-4 mx-0 px-0">
     <div [ngStyle]="{'display': 'flex', 'flex-direction': screenWidth < 992 ? 'column' : ''}">
       <div [ngClass]="screenWidth < 992 ? 'col-12 pl-0' : 'col-6 pl-0'">
-        <div id="search-container" [ngClass]="{ 'bg-white': searchQuery !== '' }">
+        <div class='ms-0' id="search-container" [ngClass]="{ 'bg-white': searchQuery !== '' }">
           <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
             <mat-icon>arrow_back</mat-icon>
           </button>
@@ -46,13 +46,13 @@
           </div>
         </div>
       </div>
-      <div class="col-12 pe-0"
+      <!-- <div class="col-12 pe-0"
         *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">
         <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
           class="col-12 btn btn-primary rounded-pill d-none d-flex justify-content-center align-items-center">
           <span class="add-employee-span">+ Add Employee</span>
         </button>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="row">
@@ -141,7 +141,7 @@
         </span>
         <span>of {{ paginator.length }} results</span>
       </div>
-      <div class="col-lg-4 col-md-4 d-flex">
+      <div class="col-lg-4 col-md-4 d-flex justify-content-center">
         <button mat-icon-button (click)="paginator.previousPage()" [disabled]="!paginator.hasPreviousPage()">
           <mat-icon>arrow_left</mat-icon>
         </button>
