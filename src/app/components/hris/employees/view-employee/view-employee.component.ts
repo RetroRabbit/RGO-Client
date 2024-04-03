@@ -176,7 +176,7 @@ export class ViewEmployeeComponent {
           Name: `${employee.name} ${employee.surname}`,
           Position: employee.employeeType!.name,
           Level: employee.level,
-          Client: client ? client.name : 'Bench',
+          Client: client ? client.name : 'None',
           Roles: sortedRoles,
           Email: employee.email,
         };
