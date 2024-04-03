@@ -3,7 +3,6 @@
     <div class="mt-4 mt-lg-5 mb-4 mx-0 px-0">
       <div [ngStyle]="{'display': 'flex', 'flex-direction': screenWidth < 992 ? 'column' : ''}"
         class="col-lg-12 justify-content-between">
-
         <div [ngClass]="screenWidth < 992 ? 'col-12 pl-0' : 'col-4 pl-0'">
           <div class='ms-0' id="search-container" [ngClass]="{ 'bg-white': searchQuery !== '' }">
             <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
@@ -16,7 +15,6 @@
             </button>
           </div>
         </div>
-
         <div [ngClass]="screenWidth < 992 ? 
         'col-12 row d-flex justify-content-space-between' : 
         'col-5 row d-flex justify-content-space-between pt-1'">
@@ -49,7 +47,6 @@
             </div>
           </div>
         </div>
-
         <div class="pe-0" [ngClass]="screenWidth < 992 ? 
         'col-12 row d-flex justify-content-space-between' : 
         'col-3 mb-1 row d-flex justify-content-end pt-1 me-lg-2'">
@@ -58,7 +55,6 @@
             <span class="add-employee-span">+ Add Employee</span>
           </button>
         </div>
-
       </div>
     </div>
     <div class="row">
@@ -75,29 +71,30 @@
           <mat-table [dataSource]="dataSource" matSort>
             <ng-container matColumnDef="Name">
               <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Name</mat-header-cell>
-              <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '50%' : '25%'}">{{
-                employee.Name }}</mat-cell>
+              <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '50%' : '25%'}">
+                {{ employee.Name }}
+              </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Position">
               <mat-header-cell *matHeaderCellDef mat-sort-header
                 class="boldArrow d-none d-md-flex">Position</mat-header-cell>
-              <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
-                employee.Position
-                }}</mat-cell>
+              <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
+                {{ employee.Position }}
+              </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Level">
               <mat-header-cell *matHeaderCellDef mat-sort-header
                 class="boldArrow d-none d-md-flex">Level</mat-header-cell>
-              <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
-                employee.Level == 0 ? "N/A" : employee.Level
-                }}</mat-cell>
+              <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
+                {{ employee.Level == 0 ? "N/A" : employee.Level }}
+              </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Client">
               <mat-header-cell *matHeaderCellDef mat-sort-header
                 class="boldArrow d-none d-md-flex">Client</mat-header-cell>
-              <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
-                employee.Client
-                }}</mat-cell>
+              <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
+                {{ employee.Client }}
+              </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Roles" [class.hide-column]="!isAdminOrSuperAdmin">
               <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
@@ -105,7 +102,9 @@
                 <div (click)="$event.stopPropagation()" class="row col-12 px-0">
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
                     [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-                    <mat-label>{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</mat-label>
+                    <mat-label>
+                      {{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}
+                    </mat-label>
                     <mat-select hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let role of roles | async" [value]="role"
                         (click)="changeRole(employee.Email, role)">
