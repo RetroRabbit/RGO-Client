@@ -35,7 +35,8 @@
                         <mat-label>Complex Name</mat-label>
                         <input matInput formControlName="physicalComplexName">
                         <mat-error *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalComplexName'].hasError('required')">Complex
-                          name is required</mat-error>
+                          name is required
+                        </mat-error>
                       </mat-form-field>
                     </div>
                     <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.suburbOrDistrict"
@@ -51,9 +52,9 @@
                         <input matInput formControlName="physicalStreetNumber">
                         <mat-error *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalStreetNumber'].hasError('required')">
                           Street number is required</mat-error>
-                        <mat-error
-                          *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalStreetNumber'].hasError('pattern') && !sharedAccordionFunctionality.addressDetailsForm.controls['physicalStreetNumber'].hasError('required')">
-                          Street Number must only contain numbers</mat-error>
+                        <mat-error *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalStreetNumber'].hasError('pattern') && !sharedAccordionFunctionality.addressDetailsForm.controls['physicalStreetNumber'].hasError('required')">
+                          Street Number must only contain numbers
+                        </mat-error>
                       </mat-form-field>
                     </div>
                     <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.city" class="col-12 col-md-6">
@@ -87,10 +88,11 @@
                         <mat-label>Postal Code</mat-label>
                         <input matInput formControlName="physicalPostalCode">
                         <mat-error *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalPostalCode'].hasError('required')">
-                          Postal code is required</mat-error>
-                        <mat-error
-                          *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalPostalCode'].hasError('pattern') && !sharedAccordionFunctionality.addressDetailsForm.controls['physicalPostalCode'].hasError('required')">
-                          Postal code should contain only number</mat-error>
+                          Postal code is required
+                        </mat-error>
+                        <mat-error *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalPostalCode'].hasError('pattern') && !sharedAccordionFunctionality.addressDetailsForm.controls['physicalPostalCode'].hasError('required')">
+                          Postal code should contain only number
+                        </mat-error>
                       </mat-form-field>
                     </div>
                     <div class="col-12">
@@ -101,8 +103,8 @@
                         (change)="toggleEqualFields()" [disabled]="!sharedAccordionFunctionality.editAddress">
                       </mat-checkbox>
                       <label class="ms-1" for="checkbox" [ngClass]="sharedAccordionFunctionality.editAddress === false ? 'disabled-text-address' : ''">Is
-                        the postal address the same as the physical
-                        address?</label>
+                        the postal address the same as the physical address?
+                      </label>
                     </div>
                   </div>
                   <div *ngIf="!sharedAccordionFunctionality.physicalEqualPostal" class="row mt-4">
