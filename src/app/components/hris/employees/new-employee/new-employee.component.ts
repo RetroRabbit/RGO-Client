@@ -1,6 +1,5 @@
 import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
-import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -20,7 +19,6 @@ import { MatStepper } from '@angular/material/stepper';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
-import { HttpClient } from '@angular/common/http';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
 
 @Component({
