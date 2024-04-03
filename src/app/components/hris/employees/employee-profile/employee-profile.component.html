@@ -112,6 +112,9 @@
                             <div id="header-value" *ngIf="employeeClient !== undefined">
                                 {{employeeClient.name ?? 'Bench'}}
                             </div>
+                            <div id="header-value" *ngIf="employeeClient == undefined">
+                                None
+                            </div>
                         </div>
                     </div>
                 </div>
