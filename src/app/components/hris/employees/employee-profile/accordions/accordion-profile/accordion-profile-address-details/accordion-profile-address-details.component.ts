@@ -31,6 +31,8 @@ export class AccordionProfileAddressDetailsComponent {
     this.screenWidth = window.innerWidth;
   }
 
+  usingProfile: boolean = true;
+
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
@@ -54,6 +56,7 @@ export class AccordionProfileAddressDetailsComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeAddressService: EmployeeAddressService,
   ) { }
+
 
   initializeForm() {
     this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
