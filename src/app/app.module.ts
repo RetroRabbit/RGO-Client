@@ -63,18 +63,15 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-
 import { PendingBankDetailsComponent } from './components/hris/employees/pending-bank-details/pending-bank-details.component';
 import { EmployeeDetailsComponent } from './components/hris/employees/employee-details/employee-details.component';
 import { ManageEmployeeEventsComponent } from './components/hris/manage-employee-events/manage-employee-events.component';
 import { AddEmployeeEventComponent } from './components/hris/manage-employee-events/add-employee-event/add-employee-event.component';
 import { SystemSettingsComponent } from './components/hris/system-settings/system-settings.component';
-
 import { ChartReportPdfComponent } from './components/hris/charts/chart-report-pdf/chart-report-pdf.component';
 import { NavBarComponent } from './components/hris/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AccordionProfileComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile.component';
 import { AccordionBankingComponent } from './components/hris/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
 import { AccordionDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
@@ -83,6 +80,11 @@ import { NewCandidateComponent } from './components/ats/candidates/new-candidate
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PropertyAccessComponent } from './components/hris/system-settings/property-access/property-access.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { AccordionProfileEmployeeDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-employee-details/accordion-profile-employee-details.component';
+import { AccordionProfileContactDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-contact-details/accordion-profile-contact-details.component';
+import { AccordionProfileAdditionalComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
+import { AccordionProfilePersonalDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
+import { AccordionProfileAddressDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
 
 @NgModule({
   declarations: [
@@ -109,13 +111,18 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     ChartReportPdfComponent,
     NavBarComponent,
     ConfirmDialogComponent,
-    AccordionProfileComponent,
     AccordionBankingComponent,
     AccordionDocumentsComponent,
     LoadingComponentComponent,
     AtsDashboardComponent,
     NewCandidateComponent,
     PropertyAccessComponent,
+    AccordionProfileEmployeeDetailsComponent,
+    AccordionProfileContactDetailsComponent,
+    AccordionProfileAdditionalComponent,
+    AccordionProfilePersonalDetailsComponent,
+    AccordionProfileAddressDetailsComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -140,7 +147,6 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     }),
     HttpClientModule,
     BrowserAnimationsModule,
-
     MatButtonModule,
     MatMenuModule,
     MatIconModule,
