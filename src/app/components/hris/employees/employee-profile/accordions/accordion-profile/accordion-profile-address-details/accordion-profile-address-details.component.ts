@@ -25,13 +25,12 @@ import { CustomField } from 'src/app/models/hris/custom-field.interface';
 export class AccordionProfileAddressDetailsComponent {
 
   screenWidth = window.innerWidth;
+  usingProfile: boolean = true;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
   }
-
-  usingProfile: boolean = true;
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
@@ -247,7 +246,6 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   checkEmployeeDetails() {
-
     if (this.usingProfile)
       this.checkEmployeeDetailsUsingEmployeeProfile()
     else
@@ -318,7 +316,6 @@ export class AccordionProfileAddressDetailsComponent {
       emergencyContactName: this.employeeProfile?.employeeDetails.emergencyContactName,
       emergencyContactNo: this.employeeProfile?.employeeDetails.emergencyContactNo
     }
-    console.log(this.sharedAccordionFunctionality.employeeProfileDto);
   }
 
   checkEmployeeDetailsUsingEmployeeProfile() {

@@ -153,7 +153,6 @@ export class AccordionProfileEmployeeDetailsComponent {
       emergencyContactName: this.employeeProfile?.employeeDetails.emergencyContactName,
       emergencyContactNo: this.employeeProfile?.employeeDetails.emergencyContactNo
     }
-    console.log(this.sharedAccordionFunctionality.employeeProfileDto);
   }
 
   checkEmployeeDetails() {

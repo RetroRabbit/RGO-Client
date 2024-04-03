@@ -26,18 +26,18 @@ export class SharedAccordionFunctionality {
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
   employeeTypes: EmployeeType[] = [];
-  filteredClients: any = [];
+  filteredClients: Client[] = [];
   filteredEmployees: any = [];
   filteredPeopleChamps: any = [];
   employeeData: EmployeeData[] = [];
   customFields: CustomField[] = [];
 
-  foundClient: any;
+  foundClient: EmployeeProfile | undefined;
   foundTeamLead: any;
-  foundChampion: any;
+  foundChampion: EmployeeProfile | undefined;
   employeeProfileDto?: any;
-  clientId !: number;
-  peopleChampionId !: number;
+  clientId: number | undefined;
+  peopleChampionId: number | undefined;
 
   panelOpenState: boolean = false;
   physicalEqualPostal: boolean = false;
