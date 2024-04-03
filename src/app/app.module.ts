@@ -82,6 +82,7 @@ import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashbo
 import { NewCandidateComponent } from './components/ats/candidates/new-candidate/new-candidate.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PropertyAccessComponent } from './components/hris/system-settings/property-access/property-access.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [
@@ -124,6 +125,7 @@ import { PropertyAccessComponent } from './components/hris/system-settings/prope
     NgChartsModule,
     MatChipsModule,
     MatSnackBarModule,
+    ClipboardModule,
     StoreModule.forRoot({
       app: LoginReducer,
       employee: EmployeeProfileReducer,

@@ -3,7 +3,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { Client } from 'src/app/models/hris/client.interface';
-import { FormBuilder } from '@angular/forms';
+import { EmailValidator, FormBuilder } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
@@ -20,6 +20,7 @@ import { AccordionProfileComponent } from './accordions/accordion-profile/accord
 import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents.component';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-employee-profile',
@@ -81,6 +82,7 @@ export class EmployeeProfileComponent {
 
   imageUrl!: string;
   validateFile: any;
+  snackBar: any;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -97,6 +99,7 @@ export class EmployeeProfileComponent {
     private snackBarService: SnackbarService,
     private navService: NavService,
     private changeDetectorRef: ChangeDetectorRef,
+    private clipboard: Clipboard,
     public authAccessService: AuthAccessService) {
     navService.showNavbar = true;
   }
@@ -298,4 +301,16 @@ export class EmployeeProfileComponent {
       });
   }
 
+  copyToClipboard() {
+    let emailToCopy: string;
+    if (this.simpleEmployee && this.simpleEmployee.email) {
+      emailToCopy = this.simpleEmployee.email;
+    } else if (this.employeeProfile && this.employeeProfile.email) {
+      emailToCopy = this.employeeProfile.email;
+    } else {
+      this.snackBar.showSnackbar("No email address available to copy");
+      return;
+    }
+    this.clipboard.copy(emailToCopy);
+  }
 }
