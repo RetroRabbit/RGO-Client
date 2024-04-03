@@ -1,7 +1,9 @@
-<app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
+<app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData"
+  (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
 <div class='row'>
   <div class="col-12 mt-3" id="button-save-container">
-    <button *ngIf="screenWidth > 767" mat-button id="savechangesbtn" (click)="openDialog()" class="btn btn-primary rounded-pill">Save Changes</button>
+    <button *ngIf="screenWidth > 767" mat-button id="savechangesbtn" (click)="openDialog()"
+      class="btn btn-primary rounded-pill">Save Changes</button>
   </div>
   <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
     'background-color': '#D7DFFF',
@@ -9,7 +11,7 @@
     'border-radius': '10px',
     'height': '80vh',
     width: '100%',
-  }"/>
+  }" />
   <table *ngIf="!isLoading">
     <thead id="tableheader">
       <th id="table-header" [ngClass]="screenWidth <= 767 ? 'px-3 px-3-borders-right' : 'px-3'">Permissions</th>
@@ -22,7 +24,8 @@
         <th class="py-2 px-3" scope="row" id="subheader">
           Charts
         </th>
-        <th [ngClass]="screenWidth <= 767 ? 'px-3-display-none' : 'py-2 px-3'" scope="row" *ngFor="let r of roles" id="allsubheader">
+        <th [ngClass]="screenWidth <= 767 ? 'px-3-display-none' : 'py-2 px-3'" scope="row" *ngFor="let r of roles"
+          id="allsubheader">
           <mat-checkbox [(ngModel)]="allCheckboxesState[r.description]"
             (change)="toggleAllCheckboxes(r.description, $event)">
             <label class="ps-3">All</label>
@@ -31,7 +34,7 @@
       </tr>
       <tr *ngFor="let n of chartPermissions">
         <th class='py-2 px-3' scope="row" id="permissions">
-          {{ n.permission }}
+          {{splitAndCapitalizeCamelCase(n.permission)}}
           <mat-icon *ngIf="screenWidth <= 767" (click)="this.openMobileDialog(n)">more_vert</mat-icon>
         </th>
         <td [ngClass]="screenWidth <= 767 ? 'px-3-display-none' : 'py-2 px-3'" *ngFor="let r of roles">
@@ -44,7 +47,8 @@
         <th class="py-2 px-3" scope="row" id="subheader">
           Employee Data
         </th>
-        <td [ngClass]="screenWidth <= 767 ? 'px-3-display-none' : 'py-2 px-3'" scope="row" *ngFor="let r of roles" id="allsubheader">
+        <td [ngClass]="screenWidth <= 767 ? 'px-3-display-none' : 'py-2 px-3'" scope="row" *ngFor="let r of roles"
+          id="allsubheader">
           <mat-checkbox [(ngModel)]="allEmployeeDataCheckboxesState[r.description]"
             (change)="toggleAllEmployeeDataCheckboxes(r.description, $event)">
             <label class="ps-3">All</label>
@@ -53,7 +57,7 @@
       </tr>
       <tr *ngFor="let n of employeePermissions">
         <th class="py-2 px-3" scope="row" id="permissions">
-          {{n.permission}}
+          {{splitAndCapitalizeCamelCase(n.permission)}}
           <mat-icon *ngIf="screenWidth <= 767" (click)="this.openMobileDialog(n)">more_vert</mat-icon>
         </th>
         <td [ngClass]="screenWidth <= 767 ? 'px-3-display-none' : 'py-2 px-3'" *ngFor="let r of roles">
@@ -65,11 +69,11 @@
     </tbody>
   </table>
 </div>
- 
+
 <ng-template #mobileRoleManagement>
   <table *ngIf="!isLoading" id="mobile-table">
     <th id="mobile-table-header" class="px-3">
-        {{this.permissisonsObj.permission}}
+      {{this.permissisonsObj.permission}}
     </th>
     <tbody class="col-12">
       <tr *ngFor="let r of roles" class='py-2 px-3'>
