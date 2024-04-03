@@ -25,7 +25,6 @@ export class AccordionProfileContactDetailsComponent {
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
-  usingProfile: boolean = true;
 
   constructor(
     private fb: FormBuilder,
