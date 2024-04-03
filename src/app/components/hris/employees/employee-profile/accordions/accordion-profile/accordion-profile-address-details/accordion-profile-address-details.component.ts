@@ -55,8 +55,6 @@ export class AccordionProfileAddressDetailsComponent {
     private employeeAddressService: EmployeeAddressService,
   ) { }
 
-  usingProfile: boolean = true;
-
   initializeForm() {
     this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
       physicalUnitNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
