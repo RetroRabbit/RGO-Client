@@ -3,7 +3,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { Client } from 'src/app/models/hris/client.interface';
-import { FormBuilder } from '@angular/forms';
+import { EmailValidator, FormBuilder } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
@@ -24,6 +24,7 @@ import { AccordionProfilePersonalDetailsComponent } from './accordions/accordion
 import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents.component';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { SharedAccordionFunctionality } from './shared-accordion-functionality';
 
 @Component({
@@ -94,6 +95,7 @@ export class EmployeeProfileComponent implements OnChanges {
 
   imageUrl!: string;
   validateFile: any;
+  snackBar: any;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -110,8 +112,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private snackBarService: SnackbarService,
     private navService: NavService,
     private changeDetectorRef: ChangeDetectorRef,
-    public authAccessService: AuthAccessService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) {
+    public authAccessService: AuthAccessService) {
     navService.showNavbar = true;
   }
 
@@ -319,4 +320,5 @@ export class EmployeeProfileComponent implements OnChanges {
         }
       });
   }
+
 }
