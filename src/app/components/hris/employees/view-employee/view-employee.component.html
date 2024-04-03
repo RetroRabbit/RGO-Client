@@ -1,170 +1,177 @@
-<main class="container-fluid mt-3 px-4">
-  <div class="mt-4 mb-4 mx-0 px-0">
-    <div [ngStyle]="{'display': 'flex', 'flex-direction': screenWidth < 992 ? 'column' : ''}">
-      <div [ngClass]="screenWidth < 992 ? 'col-12 pl-0' : 'col-6 pl-0'">
-        <div class='ms-0' id="search-container" [ngClass]="{ 'bg-white': searchQuery !== '' }">
-          <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
-            <mat-icon>arrow_back</mat-icon>
-          </button>
-          <input mat-Input [(ngModel)]="searchQuery" [ngClass]="searchQuery === '' ? 'no-text ms-5' : 'ms-0' "
-            class="bg-transparent" id="search-input" placeholder="Search for employee by name"
-            autocomplete="off" />
-          <button mat-button id="search-button">
-            <mat-icon>search</mat-icon>
-          </button>
-        </div>
-      </div>
-      <div [ngClass]="screenWidth < 992 ? 
-      'col-12 row d-flex justify-content-space-between' : 
-      'col-6 row d-flex justify-content-space-between pt-1'">
-        <div class="col-6 p-6 mb-2  d-md-block">
-          <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
-              [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-              <mat-label>People Champion Filter</mat-label>
-              <mat-select hideSingleSelectionIndicator="true">
-                <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
-                  class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
-                  {{ champion.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+<div class="container">
+<main class="container-fluid">
+    <div class="mt-4 mt-lg-5 mb-4 mx-0 px-0">
+      <div [ngStyle]="{'display': 'flex', 'flex-direction': screenWidth < 992 ? 'column' : ''}"
+        class="col-lg-12 justify-content-between">
+
+        <div [ngClass]="screenWidth < 992 ? 'col-12 pl-0' : 'col-4 pl-0'">
+          <div class='ms-0' id="search-container" [ngClass]="{ 'bg-white': searchQuery !== '' }">
+            <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+            <input mat-Input [(ngModel)]="searchQuery" [ngClass]="searchQuery === '' ? 'no-text ms-5' : 'ms-0' "
+              class="bg-transparent" id="search-input" placeholder="Search for employee by name" autocomplete="off" />
+            <button mat-button id="search-button">
+              <mat-icon>search</mat-icon>
+            </button>
           </div>
         </div>
-        <div class="col-6 ps-0  d-md-block">
-          <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 ms-5"
-              [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-              <mat-label>User Type Filter</mat-label>
-              <mat-select hideSingleSelectionIndicator="true">
-                <mat-option *ngFor="let userType of usertypes | async" [value]="userType.id" class="menu-item-button"
-                  (click)="changeUserTypeFilter(userType)">
-                  {{ userType.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+
+        <div [ngClass]="screenWidth < 992 ? 
+        'col-12 row d-flex justify-content-space-between' : 
+        'col-5 row d-flex justify-content-space-between pt-1'">
+          <div class="col-6 p-6 mb-2  d-md-block">
+            <div (click)="$event.stopPropagation()" class="row col-12 px-0">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
+                [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
+                <mat-label>People Champion Filter</mat-label>
+                <mat-select hideSingleSelectionIndicator="true">
+                  <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
+                    class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
+                    {{ champion.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-6 ps-0  d-md-block">
+            <div (click)="$event.stopPropagation()" class="row col-12 px-0">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
+                [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
+                <mat-label>User Type Filter</mat-label>
+                <mat-select hideSingleSelectionIndicator="true">
+                  <mat-option *ngFor="let userType of usertypes | async" [value]="userType.id" class="menu-item-button"
+                    (click)="changeUserTypeFilter(userType)">
+                    {{ userType.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="pe-0"
-        *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">
-        <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
-          class="col-12 btn btn-primary rounded-pill d-none d-flex justify-content-center align-items-center">
-          <span class="add-employee-span">+ Add Employee</span>
-        </button>
+
+        <div class="pe-0" [ngClass]="screenWidth < 992 ? 
+        'col-12 row d-flex justify-content-space-between' : 
+        'col-3 mb-1 row d-flex justify-content-end pt-1 me-lg-2'">
+          <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
+            class="col-lg-8 mt-3 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
+            <span class="add-employee-span">+ Add Employee</span>
+          </button>
+        </div>
+
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="card px-0">
+    <div class="row">
+      <div class="card px-0">
+        <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
+          'background-color': '#D7DFFF',
+          'border': '2px solid #D7DFFF',
+          'border-radius': '2rem',
+          'height': '580px',
+          width: '100%',
+        }">
+        </ngx-skeleton-loader>
+        <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
+          <mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="Name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Name</mat-header-cell>
+              <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '50%' : '25%'}">{{
+                employee.Name }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Position">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                class="boldArrow d-none d-md-flex">Position</mat-header-cell>
+              <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
+                employee.Position
+                }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Level">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                class="boldArrow d-none d-md-flex">Level</mat-header-cell>
+              <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
+                employee.Level == 0 ? "N/A" : employee.Level
+                }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Client">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                class="boldArrow d-none d-md-flex">Client</mat-header-cell>
+              <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
+                employee.Client
+                }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Roles" [class.hide-column]="!isAdminOrSuperAdmin">
+              <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
+              <mat-cell *matCellDef="let employee" class="row justify-content-start">
+                <div (click)="$event.stopPropagation()" class="row col-12 px-0">
+                  <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
+                    [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
+                    <mat-label>{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</mat-label>
+                    <mat-select hideSingleSelectionIndicator="true">
+                      <mat-option *ngFor="let role of roles | async" [value]="role"
+                        (click)="changeRole(employee.Email, role)">
+                        {{ role }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row class="rows" [ngStyle]="{'width': screenWidth < 992 ? '100%' : '98%'}"
+              *matRowDef="let row; columns: displayedColumns" (click)="employeeClickEvent(row)"></mat-row>
+          </mat-table>
+          <mat-paginator hidden></mat-paginator>
+        </div>
+        <div *ngIf="!isLoading && dataSource.filteredData.length <= 0"
+          class="d-flex flex-row justify-content-center align-items-center">
+          <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
+          <span id="noResults" class="col-6 d-flex flex-column justify-content-center align-items-center">
+            <h1>Oops!</h1>
+            <h2>No results on your search</h2>
+          </span>
+        </div>
+      </div>
       <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
-        'background-color': '#D7DFFF',
-        'border': '2px solid #D7DFFF',
-        'border-radius': '2rem',
-        'height': '580px',
+        'background-color': '#D6DFFF',
+        'border': '2px solid #D6DFFF',
+        'border-radius': '10px',
+        'height': '60px',
         width: '100%',
       }">
       </ngx-skeleton-loader>
-      <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
-        <mat-table [dataSource]="dataSource" matSort>
-          <ng-container matColumnDef="Name">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Name</mat-header-cell>
-            <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '50%' : '25%'}">{{
-              employee.Name }}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="Position">
-            <mat-header-cell *matHeaderCellDef mat-sort-header
-              class="boldArrow d-none d-md-flex">Position</mat-header-cell>
-            <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
-              employee.Position
-              }}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="Level">
-            <mat-header-cell *matHeaderCellDef mat-sort-header
-              class="boldArrow d-none d-md-flex">Level</mat-header-cell>
-            <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
-              employee.Level == 0 ? "N/A" : employee.Level
-              }}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="Client">
-            <mat-header-cell *matHeaderCellDef mat-sort-header
-              class="boldArrow d-none d-md-flex">Client</mat-header-cell>
-            <mat-cell *matCellDef="let employee" class="d-none d-md-flex">{{
-              employee.Client
-              }}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="Roles" [class.hide-column]="!isAdminOrSuperAdmin">
-            <mat-header-cell *matHeaderCellDef>Roles</mat-header-cell>
-            <mat-cell *matCellDef="let employee" class="row justify-content-start">
-              <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-                <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
-                  [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-                  <mat-label>{{ employee.Roles.length > 0 ? employee.Roles[0] : "N/A" }}</mat-label>
-                  <mat-select hideSingleSelectionIndicator="true">
-                    <mat-option *ngFor="let role of roles | async" [value]="role"
-                      (click)="changeRole(employee.Email, role)">
-                      {{ role }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </mat-cell>
-          </ng-container>
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row class="rows" [ngStyle]="{'width': screenWidth < 992 ? '100%' : '98%'}"
-            *matRowDef="let row; columns: displayedColumns" (click)="employeeClickEvent(row)"></mat-row>
-        </mat-table>
-        <mat-paginator hidden></mat-paginator>
-      </div>
-      <div *ngIf="!isLoading && dataSource.filteredData.length <= 0"
-        class="d-flex flex-row justify-content-center align-items-center">
-        <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
-        <span id="noResults" class="col-6 d-flex flex-column justify-content-center align-items-center">
-          <h1>Oops!</h1>
-          <h2>No results on your search</h2>
-        </span>
-      </div>
-    </div>
-    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{ 
-      'background-color': '#D6DFFF',
-      'border': '2px solid #D6DFFF',
-      'border-radius': '10px',
-      'height': '60px',
-      width: '100%',
-    }">
-    </ngx-skeleton-loader>
-    <div class="d-flex flex-row justify-content-center align-items-center mt-3"
-      *ngIf="!isLoading && dataSource.filteredData.length > 0">
-      <div class="col-lg-4 col-md-4 fs-6 d-none d-md-flex" id="paginatorText">
-        <span class="fw-medium d-none d-md-flex">
-          Showing {{ start }}-{{ end }}
-        </span>
-        <span>of {{ paginator.length }} results</span>
-      </div>
-      <div class="col-lg-4 col-md-4 d-flex justify-content-center">
-        <button mat-icon-button (click)="paginator.previousPage()" [disabled]="!paginator.hasPreviousPage()">
-          <mat-icon>arrow_left</mat-icon>
-        </button>
-        <button mat-icon-button *ngFor="let page of visiblePages" (click)="goToPage(page)">
-          <span class="paginator" [ngClass]="{ active: page === pageIndex + 1 }">
-            {{ page }}
+      <div class="d-flex flex-row justify-content-center align-items-center mt-3"
+        *ngIf="!isLoading && dataSource.filteredData.length > 0">
+        <div class="col-lg-4 col-md-4 fs-6 d-none d-md-flex" id="paginatorText">
+          <span class="fw-medium d-none d-md-flex me-1">
+            Showing {{ start }}-{{ end }}
           </span>
-        </button>
-        <button mat-icon-button (click)="paginator.nextPage()" [disabled]="!paginator.hasNextPage()">
-          <mat-icon>arrow_right</mat-icon>
-        </button>
-      </div>
-      <div class="col-lg-4 col-md-4 row justify-content-end align-items-center d-none d-md-flex" id="paginator-text">
-        <span class="col-lg-4 col-md-7 fw-medium d-none d-md-flex"> Items per page </span>
-        <mat-form-field appearance="outline" class="col-lg-2 col-md-5" id="paginator-dropdown">
-          
-          <mat-select #pageNumber [(ngModel)]="pageSize" hideSingleSelectionIndicator="true">
-            <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
-              {{ pageSize }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <span>of {{ paginator.length }} results</span>
+        </div>
+        <div class="col-lg-4 col-md-4 d-flex justify-content-center">
+          <button mat-icon-button (click)="paginator.previousPage()" [disabled]="!paginator.hasPreviousPage()">
+            <mat-icon>arrow_left</mat-icon>
+          </button>
+          <button mat-icon-button *ngFor="let page of visiblePages" (click)="goToPage(page)">
+            <span class="paginator" [ngClass]="{ active: page === pageIndex + 1 }">
+              {{ page }}
+            </span>
+          </button>
+          <button mat-icon-button (click)="paginator.nextPage()" [disabled]="!paginator.hasNextPage()">
+            <mat-icon>arrow_right</mat-icon>
+          </button>
+        </div>
+        <div class="col-lg-4 col-md-4 row justify-content-end align-items-center d-none d-md-flex" id="paginator-text">
+          <span class="col-lg-4 col-md-7 fw-medium d-none d-md-flex"> Items per page </span>
+          <mat-form-field appearance="outline" class="col-lg-3 col-md-5" id="paginator-dropdown">
+
+            <mat-select #pageNumber [(ngModel)]="pageSize" hideSingleSelectionIndicator="true">
+              <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
+                {{ pageSize }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
     </div>
-  </div>
-</main>
+  </main>
+</div>
