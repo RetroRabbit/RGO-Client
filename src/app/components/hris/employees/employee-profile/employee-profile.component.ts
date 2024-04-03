@@ -112,7 +112,9 @@ export class EmployeeProfileComponent implements OnChanges {
     private snackBarService: SnackbarService,
     private navService: NavService,
     private changeDetectorRef: ChangeDetectorRef,
-    public authAccessService: AuthAccessService) {
+    public authAccessService: AuthAccessService,
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    private clipboard: Clipboard) {
     navService.showNavbar = true;
   }
 
@@ -320,5 +322,16 @@ export class EmployeeProfileComponent implements OnChanges {
         }
       });
   }
-
+  copyToClipboard() {
+    let emailToCopy: string;
+    if (this.simpleEmployee && this.simpleEmployee.email) {
+      emailToCopy = this.simpleEmployee.email;
+    } else if (this.employeeProfile && this.employeeProfile.email) {
+      emailToCopy = this.employeeProfile.email;
+    } else {
+      this.snackBar.showSnackbar("No email address available to copy");
+      return;
+    }
+    this.clipboard.copy(emailToCopy);
+  }
 }
