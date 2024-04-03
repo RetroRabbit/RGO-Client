@@ -26,7 +26,8 @@ export class AccordionProfileAddressDetailsComponent {
 
   screenWidth = window.innerWidth;
   usingProfile: boolean = true;
-
+ usingProfile: boolean = true;
+ 
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
