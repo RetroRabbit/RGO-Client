@@ -17,6 +17,7 @@ import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/
 export class AccordionProfileContactDetailsComponent {
 
   screenWidth = window.innerWidth;
+  usingProfile: boolean = true;
 
   @HostListener('window:resize', ['$event'])
   onResize() {

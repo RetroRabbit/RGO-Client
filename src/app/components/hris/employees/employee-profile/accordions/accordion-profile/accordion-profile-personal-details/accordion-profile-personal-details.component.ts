@@ -19,7 +19,7 @@ export class AccordionProfilePersonalDetailsComponent {
   screenWidth = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])
-
+  usingProfile: boolean = true;
   onResize() {
     this.screenWidth = window.innerWidth;
   }
@@ -30,8 +30,6 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
-
-  usingProfile: boolean = true;
 
   initializeForm() {
     this.sharedAccordionFunctionality.personalDetailsForm = this.fb.group({

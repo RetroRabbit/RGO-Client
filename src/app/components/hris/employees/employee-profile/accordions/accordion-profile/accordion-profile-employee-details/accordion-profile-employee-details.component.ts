@@ -26,6 +26,8 @@ export class AccordionProfileEmployeeDetailsComponent {
   screenWidth = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])
+  usingProfile: boolean = true;
+
   onResize() {
     this.screenWidth = window.innerWidth;
   }
@@ -47,8 +49,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
   }
-
-  usingProfile: boolean = true;
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
