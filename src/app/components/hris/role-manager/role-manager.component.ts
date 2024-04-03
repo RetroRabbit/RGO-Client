@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild,HostListener } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, HostListener } from '@angular/core';
 import { RoleService } from 'src/app/services/hris/role.service';
 import { RoleAccess } from 'src/app/models/hris/role-access.interface';
 import { Role } from 'src/app/models/hris/role.interface';
@@ -33,28 +33,28 @@ export class RoleManagerComponent implements OnInit {
   parentSelector: boolean = false;
 
   showConfirmDialog: boolean = false;
-  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: ''  };
-  
+  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
+
   screenWidth = window.innerWidth;
 
-  @HostListener('window:resize',['$event'])
-  onResize(){
+  @HostListener('window:resize', ['$event'])
+  onResize() {
     this.screenWidth = window.innerWidth;
   }
   @ViewChild('mobileRoleManagement')
   mobileRoleManagement!: TemplateRef<any>;
-  
-  permissisonsObj : RoleAccess = {grouping : '',id : 0 ,permission: ''};
+
+  permissisonsObj: RoleAccess = { grouping: '', id: 0, permission: '' };
   constructor(
     private roleManagementService: RoleManagementService,
     private roleService: RoleService,
     private snackBarService: SnackbarService,
     private navService: NavService,
     private dialog: MatDialog,
-  ) { 
+  ) {
     navService.showNavbar = true;
   }
- 
+
   ngOnInit() {
     forkJoin([
       this.roleManagementService.getAllRoles(),
@@ -70,7 +70,7 @@ export class RoleManagerComponent implements OnInit {
     });
     this.onResize();
   }
-  
+
   areAllCheckboxesSelected(columnKey: string): boolean {
     return this.roles.every((r) => this.checkboxStates[r.description + columnKey]);
   }
@@ -143,13 +143,13 @@ export class RoleManagerComponent implements OnInit {
     for (let n of this.chartPermissions) {
       const key = roleDescription + n.permission;
       this.checkboxStates[key] = this.allCheckboxesState[roleDescription];
-  
+
       const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
         item.role.description === roleDescription &&
         item.roleAccess.permission === n.permission &&
         item.roleAccess.grouping === n.grouping
       );
-  
+
       if (this.allCheckboxesState[roleDescription]) {
         if (existingChangeIndex === -1) {
           const existingLink = this.roleAccessLinks.find(link =>
@@ -157,14 +157,14 @@ export class RoleManagerComponent implements OnInit {
             link.roleAccess.permission === n.permission &&
             link.roleAccess.grouping === n.grouping
           );
-  
+
           const newChange = {
             id: existingLink ? existingLink.id : -1,
             role: { id: -1, description: roleDescription },
             roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
             changeType: event.checked ? 'add' : 'delete',
           };
-  
+
           if (newChange.id === -1) {
             this.temporaryRoleAccessChanges.push(newChange);
           }
@@ -179,7 +179,7 @@ export class RoleManagerComponent implements OnInit {
             roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
             changeType: event.checked ? 'add' : 'delete',
           };
-  
+
           if (newChange.id === -1) {
             this.temporaryRoleAccessChanges.push(newChange);
           }
@@ -190,18 +190,18 @@ export class RoleManagerComponent implements OnInit {
     }
     this.navService.unsavedChanges = true;
   }
-  
+
   toggleAllEmployeeDataCheckboxes(roleDescription: string, event: any) {
     for (let n of this.employeePermissions) {
       const key = roleDescription + n.permission;
       this.checkboxStatesEmployeePermissions[key] = this.allEmployeeDataCheckboxesState[roleDescription];
-  
+
       const existingChangeIndex = this.temporaryRoleAccessChanges.findIndex((item) =>
         item.role.description === roleDescription &&
         item.roleAccess.permission === n.permission &&
         item.roleAccess.grouping === n.grouping
       );
-  
+
       if (this.allEmployeeDataCheckboxesState[roleDescription]) {
         if (existingChangeIndex === -1) {
           const existingLink = this.roleAccessLinks.find(link =>
@@ -209,14 +209,14 @@ export class RoleManagerComponent implements OnInit {
             link.roleAccess.permission === n.permission &&
             link.roleAccess.grouping === n.grouping
           );
-  
+
           const newChange = {
             id: existingLink ? existingLink.id : -1,
             role: { id: -1, description: roleDescription },
             roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
             changeType: event.checked ? 'add' : 'delete',
           };
-  
+
           if (newChange.id === -1) {
             this.temporaryRoleAccessChanges.push(newChange);
           }
@@ -231,7 +231,7 @@ export class RoleManagerComponent implements OnInit {
             roleAccess: { id: -1, permission: n.permission, grouping: n.grouping },
             changeType: event.checked ? 'add' : 'delete',
           };
-  
+
           if (newChange.id === -1) {
             this.temporaryRoleAccessChanges.push(newChange);
           }
@@ -242,7 +242,7 @@ export class RoleManagerComponent implements OnInit {
     }
     this.navService.unsavedChanges = true;
   }
-  
+
   onChangeRoleAccess($event: any, role: string, permission: string, grouping: string) {
     const isChecked = $event.source.checked;
     const change: RoleAccessLink = {
@@ -288,8 +288,8 @@ export class RoleManagerComponent implements OnInit {
     this.snackBarService.showSnackbar("Changes discarded successfully", "snack-success");
   }
 
-  onAdd(role:string,permission:string,grouping: string): void {
-    this.roleService.addRole(role, permission,grouping).subscribe({
+  onAdd(role: string, permission: string, grouping: string): void {
+    this.roleService.addRole(role, permission, grouping).subscribe({
       next: (data) => {
         this.saved = true
       },
@@ -321,18 +321,25 @@ export class RoleManagerComponent implements OnInit {
     this.showConfirmDialog = false;
     if (event) {
       this.saveChanges();
-    } 
+    }
   }
 
-  openMobileDialog(roleAccess: RoleAccess){
+  openMobileDialog(roleAccess: RoleAccess) {
     this.permissisonsObj = roleAccess;
     this.dialog.open(this.mobileRoleManagement, {
-      width :'600px',
-      height : '450px',
+      width: '600px',
+      height: '450px',
       panelClass: 'custom-style'
     });
   }
-  closeMobileDialog(){
+  closeMobileDialog() {
     this.dialog.closeAll()
+  }
+
+  splitAndCapitalizeCamelCase(input: string): string {
+    const words = input.split(/(?=[A-Z])/);
+    const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+    const result = capitalizedWords.join(' ');
+    return result;
   }
 }
