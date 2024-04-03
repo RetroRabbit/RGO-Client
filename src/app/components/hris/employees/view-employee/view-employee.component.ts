@@ -414,4 +414,11 @@ export class ViewEmployeeComponent {
       })
     );
   }
+
+  splitAndCapitalizeCamelCase(input: string): string {
+    const words = input.split(/(?=[A-Z])/);
+    const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+    const result = capitalizedWords.join(' ');
+    return result;
+  }
 }
