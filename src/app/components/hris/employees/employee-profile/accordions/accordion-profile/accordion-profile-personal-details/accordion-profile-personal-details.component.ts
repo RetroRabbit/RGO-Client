@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
@@ -19,6 +19,7 @@ export class AccordionProfilePersonalDetailsComponent {
   screenWidth = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])
+
   onResize() {
     this.screenWidth = window.innerWidth;
   }
@@ -26,13 +27,10 @@ export class AccordionProfilePersonalDetailsComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
-
   }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
-  @Input('updateProfile') value: any;
 
-  personalFormProgress: number = 0;
   usingProfile: boolean = true;
 
   initializeForm() {
@@ -60,7 +58,6 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   checkEmployeeDetails() {
-
     if (this.usingProfile)
       this.checkEmployeeDetailsUsingEmployeeProfile()
     else
@@ -146,8 +143,6 @@ export class AccordionProfilePersonalDetailsComponent {
     }
   }
 
-
-
   cancelPersonalEdit() {
     this.sharedAccordionFunctionality.editPersonal = false;
     this.sharedAccordionFunctionality.hasDisability = false;
@@ -184,5 +179,4 @@ export class AccordionProfilePersonalDetailsComponent {
       }
     });
   }
-
 }

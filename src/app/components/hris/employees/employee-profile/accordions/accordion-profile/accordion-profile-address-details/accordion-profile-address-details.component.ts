@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
@@ -36,12 +36,9 @@ export class AccordionProfileAddressDetailsComponent {
     this.initializeForm();
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();
-
-
   }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
-
 
   constructor(
     private fb: FormBuilder,
@@ -56,13 +53,11 @@ export class AccordionProfileAddressDetailsComponent {
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeAddressService: EmployeeAddressService,
-  ) {
-  }
+  ) { }
 
   usingProfile: boolean = true;
 
   initializeForm() {
-
     this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
       physicalUnitNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       physicalComplexName: [this.employeeProfile!.employeeDetails.physicalAddress?.complexName?.trim(), Validators.required],
@@ -84,7 +79,6 @@ export class AccordionProfileAddressDetailsComponent {
     this.sharedAccordionFunctionality.addressDetailsForm.disable();
     this.sharedAccordionFunctionality.checkAddressFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
-
 
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", true)
   }
@@ -376,7 +370,6 @@ export class AccordionProfileAddressDetailsComponent {
       let control: AbstractControl<any, any> | null = null;
       control = this.sharedAccordionFunctionality.addressDetailsForm.get(fieldName);
 
-
       if (control) {
         switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
           case PropertyAccessLevel.none:
@@ -401,5 +394,4 @@ export class AccordionProfileAddressDetailsComponent {
       }
     });
   }
-
 }

@@ -16,7 +16,6 @@ import { Document } from 'src/app/models/hris/constants/documents.contants';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { AccordionBankingComponent } from './accordions/accordion-banking/accordion-banking.component';
-// import { AccordionProfileComponent } from './accordions/accordion-profile/accordion-profile.component';
 import { AccordionProfileAdditionalComponent } from './accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
 import { AccordionProfileAddressDetailsComponent } from './accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
 import { AccordionProfileContactDetailsComponent } from './accordions/accordion-profile/accordion-profile-contact-details/accordion-profile-contact-details.component';
@@ -59,13 +58,12 @@ export class EmployeeProfileComponent implements OnChanges {
   employeePeopleChampion!: EmployeeProfile;
 
   profileFormProgress: number = 0;
-
-
   overallFormProgress: number = 0;
   documentFormProgress: number = 0;
   bankingFormProgress: number = 0;
   bankInformationProgress: number = 0;
   documentsProgress: number = 0;
+
   bankingPDFName: string = "";
   hasBankingData: boolean = false;
   employeeDocuments: EmployeeDocument[] = [];
@@ -87,7 +85,6 @@ export class EmployeeProfileComponent implements OnChanges {
   screenWidth = window.innerWidth;
 
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
-  // @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
   @ViewChild(AccordionProfileAddressDetailsComponent) adressAccordion!: AccordionProfileAddressDetailsComponent;
   @ViewChild(AccordionProfileAdditionalComponent) additionalAccordion!: AccordionProfileAdditionalComponent;
   @ViewChild(AccordionProfileContactDetailsComponent) contactAccordion!: AccordionProfileContactDetailsComponent;
@@ -117,10 +114,11 @@ export class EmployeeProfileComponent implements OnChanges {
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
     navService.showNavbar = true;
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     changes['updateProfile'].currentValue
-
   }
+
   ngOnInit() {
     this.sharedAccordionFunctionality.updateProfile.subscribe(progress => {
       this.profileFormProgress = progress;
@@ -288,8 +286,6 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   updateProfileProgress() {
-
-
     if (this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney())
       this.getSelectedEmployee();
     else
@@ -323,5 +319,4 @@ export class EmployeeProfileComponent implements OnChanges {
         }
       });
   }
-
 }

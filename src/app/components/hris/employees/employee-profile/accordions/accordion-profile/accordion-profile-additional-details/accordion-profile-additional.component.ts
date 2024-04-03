@@ -1,9 +1,8 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
@@ -11,7 +10,6 @@ import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
@@ -31,6 +29,7 @@ export class AccordionProfileAdditionalComponent {
     this.screenWidth = window.innerWidth;
   }
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+
   customFields: CustomField[] = [];
   additionalFormProgress: number = 0;
 
@@ -38,7 +37,6 @@ export class AccordionProfileAdditionalComponent {
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
-    private customValidationService: CustomvalidationService,
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
     private clientService: ClientService,
@@ -58,7 +56,6 @@ export class AccordionProfileAdditionalComponent {
     this.getClients();
   }
   initializeForm() { }
-
 
   getEmployeeFields() {
     this.sharedAccordionFunctionality.employeePhysicalAddress = this.employeeProfile.employeeDetails.physicalAddress!;
@@ -138,7 +135,6 @@ export class AccordionProfileAdditionalComponent {
     });
   }
 
-
   getEmployeeFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
@@ -164,7 +160,6 @@ export class AccordionProfileAdditionalComponent {
       }
     });
   }
-
 
   editAdditionalDetails() {
     this.sharedAccordionFunctionality.additionalInfoForm.enable();

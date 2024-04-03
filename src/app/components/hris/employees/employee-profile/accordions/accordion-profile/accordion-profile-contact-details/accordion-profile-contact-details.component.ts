@@ -1,5 +1,5 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, HostListener, Input } from '@angular/core';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -22,11 +22,10 @@ export class AccordionProfileContactDetailsComponent {
   onResize() {
     this.screenWidth = window.innerWidth;
   }
+
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
-  contactFormProgress: number = 0;
   usingProfile: boolean = true;
-
 
   constructor(
     private fb: FormBuilder,
@@ -40,11 +39,9 @@ export class AccordionProfileContactDetailsComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
-
   }
 
   initializeForm() {
-
     this.sharedAccordionFunctionality.employeeContactForm = this.fb.group({
       email: [this.employeeProfile!.employeeDetails.email, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.emailPattern)]],
       personalEmail: [this.employeeProfile!.employeeDetails.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],

@@ -1,5 +1,5 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, HostListener, Input } from '@angular/core';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -30,6 +30,7 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.screenWidth = window.innerWidth;
   }
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+
   employeeFormProgress: number = 0;
 
   constructor(
@@ -57,6 +58,7 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.getClients();
     this.checkEmployeeDetails();
   }
+
   initializeForm() {
     this.sharedAccordionFunctionality.employeeDetailsForm = this.fb.group({
       name: [this.employeeProfile!.employeeDetails.name, [Validators.required,
@@ -155,7 +157,6 @@ export class AccordionProfileEmployeeDetailsComponent {
   }
 
   checkEmployeeDetails() {
-
     if (this.usingProfile)
       this.checkEmployeeDetailsUsingEmployeeProfile()
     else
@@ -336,7 +337,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.sharedAccordionFunctionality.employeeDetailsForm.enable();
     this.sharedAccordionFunctionality.editEmployee = true;
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", false)
-
   }
 
   cancelEmployeeEdit() {
@@ -345,9 +345,7 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.sharedAccordionFunctionality.employeeDetailsForm.disable();
   }
 
-
   getEmployeeFields() {
-
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile.employeeDetails.disability;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile.employeeDetails.disability;
@@ -360,7 +358,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.getEmployeeFieldCodes();
     this.initializeForm();
     if (!this.authAccessService.isEmployee()) {
-
       this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
         next: data => {
           this.employeeProfile.employeeDetails = data;
@@ -470,5 +467,4 @@ export class AccordionProfileEmployeeDetailsComponent {
       }
     });
   }
-
 }

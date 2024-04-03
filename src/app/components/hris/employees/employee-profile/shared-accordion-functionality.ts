@@ -13,15 +13,8 @@ import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { AccordionProfilePersonalDetailsComponent } from './accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
-import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
-import { AccordionProfileEmployeeDetailsComponent } from './accordions/accordion-profile/accordion-profile-employee-details/accordion-profile-employee-details.component';
-import { AccordionProfileAddressDetailsComponent } from './accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
-import { AccordionProfileAdditionalComponent } from './accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
-import { subscribe } from 'diagnostics_channel';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +23,6 @@ import { subscribe } from 'diagnostics_channel';
 export class SharedAccordionFunctionality {
   @Output() updateProfile = new EventEmitter<any>();
 
-  // this.employeeFormProgress
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
   employeeTypes: EmployeeType[] = [];
@@ -167,8 +159,6 @@ export class SharedAccordionFunctionality {
       }
     }
     this.personalFormProgress = Math.round((filledCount / totalFields) * 100);
-    console.log("personal form progress:", this.personalFormProgress)
-
   }
 
   checkEmployeeFormProgress() {
@@ -184,8 +174,8 @@ export class SharedAccordionFunctionality {
       }
     }
     this.employeeFormProgress = Math.round((filledCount / totalFields) * 100);
-    console.log("employee form progress:", this.employeeFormProgress)
   }
+
   checkContactFormProgress() {
     let filledCount = 0;
     const formControls = this.employeeContactForm.controls;
@@ -199,8 +189,8 @@ export class SharedAccordionFunctionality {
       }
     }
     this.contactFormProgress = Math.round((filledCount / totalFields) * 100);
-    console.log("Contact form progress:", this.contactFormProgress)
   }
+
   checkAddressFormProgress() {
     let filledCount = 0;
     const formControls = this.addressDetailsForm.controls;
@@ -225,8 +215,6 @@ export class SharedAccordionFunctionality {
 
     }
     this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
-    console.log("Address form progress:", this.addressFormProgress)
-
   }
 
   checkAdditionalFormProgress() {
@@ -243,15 +231,11 @@ export class SharedAccordionFunctionality {
         }
       }
     }
-
     this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
-    console.log("Additional form progress:", this.additionalFormProgress)
   }
 
   totalProfileProgress() {
-
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.additionalFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
     this.updateProfile.emit(this.profileFormProgress);
   }
-
 }
