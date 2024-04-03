@@ -645,17 +645,19 @@
         </div>
         <div class="row" *ngIf="isLoadingChart == false">
           <div class="col-lg-12 col-md-12 col-sm-12" id="dialog-header">
-            <h2 mat-dialog-title id="dialog-title">Add Information graph</h2>
-            <h5 id="dialog-subtitle">
-              To create your graphs. We'll first need to add some data
-            </h5>
+            <h2 mat-dialog-title id="dialog-title">Add graph</h2>
+            <div class="subtitle-container">
+              <h5 id="dialog-subtitle">
+                Create a graphs based on your needs by using the options below
+              </h5>
+            </div>
           </div>
           <div class="col-12" id="dialog-body">
             <div class="row">
-              <div class="offset-1 col-10 dialog-box d-flex justify-content-center align-items-center"
+              <div class="offset-1 col-10 dialog-box d-flex flex-column justify-content-start align-items-start"
                 id="dialog-radios">
                 <mat-radio-group aria-label="Select an option" [(ngModel)]="chartType">
-                  <mat-radio-button value="bar">Bar Graph</mat-radio-button>
+                  <mat-radio-button value="bar">Bar Graph</mat-radio-button> <br>
                   <mat-radio-button value="pie">Pie Chart</mat-radio-button>
                 </mat-radio-group>
               </div>

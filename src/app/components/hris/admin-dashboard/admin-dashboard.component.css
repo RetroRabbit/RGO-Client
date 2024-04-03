@@ -92,6 +92,11 @@
   border: 0px;
 }
 
+#dialog-radios {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
 .employee-card {
   border-radius: 0px 0px 28px 28px;
   background: var(--m-3-white, #fff);
@@ -373,6 +378,13 @@ div#results-container {
   font-weight: 400;
   line-height: 22px;
   letter-spacing: -0.32px;
+}
+
+.subtitle-container {
+ justify-content: center;
+ align-items: center;
+ padding-left: 9%;
+ width: 85%;
 }
 
 #graph-header {
