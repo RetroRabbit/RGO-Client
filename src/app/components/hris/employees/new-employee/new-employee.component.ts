@@ -21,6 +21,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
 import { HttpClient } from '@angular/common/http';
+import { LocationApiService } from 'src/app/services/hris/location-api.service';
 
 @Component({
   selector: 'app-new-employee',
@@ -48,7 +49,7 @@ export class NewEmployeeComponent implements OnInit {
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
     private navService: NavService,
-    private http: HttpClient
+    public locationApiService: LocationApiService,
   ) { }
 
   firstFormGroup = this._formBuilder.group({
@@ -104,7 +105,7 @@ export class NewEmployeeComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.getCountries();
+    this.loadCountries();
 
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
@@ -115,6 +116,7 @@ export class NewEmployeeComponent implements OnInit {
         });
       },
     });
+
     this.employeeService
       .getEmployeeProfiles()
       .subscribe((data: EmployeeProfile[]) => {
@@ -123,38 +125,37 @@ export class NewEmployeeComponent implements OnInit {
     this.navService.showNavbar = false;
   }
 
+  loadCountries(): void {
+    this.locationApiService.getCountries().subscribe({
+      next: (data) => this.countries = data,
+      error: (error) => console.error('Error loading countries:', error)
+    });
+  }
+
+  loadProvinces(country: string): void {
+    this.locationApiService.getProvinces(country).subscribe({
+      next: (data) => this.provinces = data,
+      error: (error) => console.error('Error loading provinces:', error)
+    });
+    this.cities = [];
+  }
+
+  loadCities(country: string, province: string): void {
+    this.locationApiService.getCities(country, province).subscribe({
+      next: (data) => this.cities = data,
+      error: (error) => console.error('Error loading cities:', error)
+    });
+  }
+
   onCountryChange(country: string): void {
     if(this.isSouthAfrica = country === 'South Africa'){
       this.isSouthAfrica = true;
-      this.getProvinces('South Africa');
-      console.log(this.isSouthAfrica)
+      this.loadProvinces('South Africa');
     }
     if (!this.isSouthAfrica){
-
       this.provinces = [];
       this.cities = [];
     }
-  }
-
-  getCities(country: string, province: string): void {
-    this.http.post<any>('https://countriesnow.space/api/v0.1/countries/state/cities', { country: country, state: province })
-      .subscribe(response => {
-        this.cities = response.data; 
-      });
-  }
-
-  getProvinces(country: string): void {
-    this.http.post<any>('https://countriesnow.space/api/v0.1/countries/states', { country: country })
-      .subscribe(response => {
-        this.provinces = response.data.states.map((state: any) => state.name);
-      });
-  }  
-
-  getCountries(): void {
-    this.http.get<any>('https://countriesnow.space/api/v0.1/countries')
-    .subscribe(response => {
-      this.countries = response.data.map((country: { country: string; }) => country.country);
-    });
   }
 
   private createAddressForm(): FormGroup {

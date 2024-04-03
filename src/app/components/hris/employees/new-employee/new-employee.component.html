@@ -215,7 +215,7 @@
                 <ng-container *ngIf="isSouthAfrica; else provinceInput">
                   <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                     <mat-label>Province</mat-label>
-                    <mat-select formControlName="province" (selectionChange)="getCities('South Africa', $event.value)" hideSingleSelectionIndicator="true"> 
+                    <mat-select formControlName="province" (selectionChange)="loadCities('South Africa', $event.value)" hideSingleSelectionIndicator="true"> 
                       <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -286,7 +286,7 @@
                 <ng-container *ngIf="isSouthAfrica; else provinceInput">
                   <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                     <mat-label>Province</mat-label>
-                    <mat-select formControlName="province" (selectionChange)="getCities('South Africa', $event.value)"  hideSingleSelectionIndicator="true">
+                    <mat-select formControlName="province" (selectionChange)="locationApiService.getCities('South Africa', $event.value)"  hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
                     </mat-select>
                   </mat-form-field>
