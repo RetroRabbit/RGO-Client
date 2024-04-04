@@ -167,8 +167,8 @@
                 </div>
                 <div class="row flex-column justify-content-center align-items-center col-lg-12 col-md-12 pb-3">
                   <span class="col-lg-7 fs-5 roboto-font pb-3">Gender</span>
-                  <mat-radio-group class="col-lg-7" formControlName="gender">
-                    <mat-radio-button *ngFor="let gender of genders; index as i" [value]="i">{{ gender
+                  <mat-radio-group class="col-lg-7 row d-flex" formControlName="gender">
+                    <mat-radio-button class="p-0" *ngFor="let gender of genders; index as i" [value]="i">{{ gender
                       }}</mat-radio-button>
                   </mat-radio-group>
                 </div>
