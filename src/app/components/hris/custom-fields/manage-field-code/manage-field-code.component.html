@@ -73,10 +73,8 @@
             <ng-container matColumnDef="edit">
               <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
               <mat-cell *matCellDef="let element" class="justify-edit-end">
-                <button *ngIf="activeTab == 0;" id="cancel-button" class="mt-1" (click)="saveCustomField(element)">
-                  <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
-                  Edit
-                </button>
+                <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
+                <input *ngIf="activeTab == 0;" value="Edit" id="cancel-button" class="mt-1" (click)="saveCustomField(element)"/>
                 <span *ngIf="activeTab !== 0" id="move-to-active" (click)="moveToActive (element)">Move to active</span>
               </mat-cell>
             </ng-container>
