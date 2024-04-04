@@ -58,7 +58,9 @@ export class AccordionProfileAddressDetailsComponent {
   ) { }
 
   ngOnInit() {
-    this.loadCountries();
+    // this.loadCountries();
+    // this.loadProvinces(this.selectedCountry);
+    // this.loadCities(this.selectedProvince);
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
     this.initializeEmployeeProfileDto();
@@ -189,6 +191,7 @@ export class AccordionProfileAddressDetailsComponent {
     this.locationApiService.getCities(this.selectedCountry, province).subscribe({
       next: (data) => this.cities = data,
     });
+    this.selectedProvince = province;
   }
 
   getEmployeeData() {
