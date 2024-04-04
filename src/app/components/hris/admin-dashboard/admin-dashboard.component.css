@@ -375,6 +375,13 @@ div#results-container {
   letter-spacing: -0.32px;
 }
 
+.subtitle-container {
+ justify-content: center;
+ align-items: center;
+ padding-left: 9%;
+ width: 85%;
+}
+
 #graph-header {
   padding: 0;
   height: fit-content;

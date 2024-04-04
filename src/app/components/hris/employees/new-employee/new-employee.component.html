@@ -115,7 +115,7 @@
                   Not a valid South African ID number
                 </mat-error>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7">
                 <mat-label>Date of Birth</mat-label>
                 <input matInput formControlName="dateOfBirth" [matDatepicker]="dateOfBirthPicker" />
                 <mat-datepicker-toggle matSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle>
@@ -123,6 +123,21 @@
                 <mat-error *ngIf="newEmployeeForm.controls['dateOfBirth'].hasError('required')">
                   Date of birth is required
                 </mat-error>
+              </mat-form-field>
+              <div class="col-lg-7 col-md-12 mb-3"> <span class="roboto-font pb-3">Do you have any disabilities?*</span>
+                <mat-radio-group formControlName="disability" class="row">
+                  <mat-radio-button class="col-12 p-1" *ngFor="let check of [false, true]" [value]="check">
+                    {{ check ? "Yes" : "No"}}
+                  </mat-radio-button>
+                </mat-radio-group>
+                <mat-error *ngIf="newEmployeeForm.controls['disability'].hasError('required')">
+                  Disability is required
+                </mat-error>
+              </div>
+              <mat-form-field appearance="outline" class="col-lg-7 col-md-12"
+                *ngIf="newEmployeeForm.controls['disability'].value">
+                <mat-label>Disability Notes</mat-label>
+                <textarea matInput type="text" formControlName="disabilityNotes"></textarea>
               </mat-form-field>
             </div>
             <form [formGroup]="settingsForm"
@@ -190,17 +205,6 @@
                   *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value">
                   <mat-label>Notes</mat-label>
                   <textarea matInput type="text" formControlName="notes"> </textarea>
-                </mat-form-field>
-                <div class="col-lg-7 col-md-12"> <span class="roboto-font pb-3">Do you have any Disabilities ?</span>
-                  <mat-radio-group formControlName="disability">
-                    <mat-radio-button *ngFor="let check of [true, false]" [value]="check">{{ check ? "Yes" :
-                      "No"}}</mat-radio-button>
-                  </mat-radio-group>
-                </div>
-                <mat-form-field appearance="outline" class="col-lg-7 col-md-12"
-                  *ngIf="newEmployeeForm.controls['disability'].value">
-                  <mat-label>Disability Notes</mat-label>
-                  <textarea matInput type="text" formControlName="disabilityNotes"></textarea>
                 </mat-form-field>
               </div>
               <form [formGroup]="physicalAddress"

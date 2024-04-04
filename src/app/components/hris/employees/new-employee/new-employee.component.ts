@@ -179,7 +179,7 @@ export class NewEmployeeComponent implements OnInit {
     terminationDate: new FormControl<Date | string | null>(null),
     reportingLine: new FormControl<EmployeeProfile | null>(null),
     highestQualication: new FormControl<string>(''),
-    disability: new FormControl<boolean | null>(null),
+    disability: new FormControl<boolean | null>(null, [Validators.required]),
     disabilityNotes: new FormControl<string>(''),
     countryOfBirth: new FormControl<string>(''),
     nationality: new FormControl<string>(''),
@@ -445,7 +445,14 @@ export class NewEmployeeComponent implements OnInit {
       this.isLoadingAddEmployee = false;
       return;
     }
-    this.newEmployeeForm.patchValue({ id: 0 });
+    if (this.newEmployeeForm.value.disability !== null && this.newEmployeeForm.value.disability !== undefined) {
+       this.newEmployeeForm.value.disability;
+    } else {
+      this.snackBarService.showSnackbar("Please select a value for disability ", "snack-error");
+      this.isLoadingAddEmployee = false;
+      return;
+    }
+    this.newEmployeeForm.patchValue({id: 0});
     this.newEmployeeForm.value.initials = this.newEmployeeForm.value.initials?.toUpperCase();
     this.newEmployeeForm.value.cellphoneNo =
       this.newEmployeeForm.value.cellphoneNo?.toString().trim();
