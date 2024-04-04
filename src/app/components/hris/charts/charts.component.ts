@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
-import { Chart } from 'src/app/models/hris/charts.interface';
+import { ChartData } from 'src/app/models/hris/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { colours } from '../../../models/hris/constants/colours.constants';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -14,6 +14,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
+import { Chart, ChartDataset, ChartOptions } from 'chart.js';
 
 @Component({
   selector: 'app-chart',
@@ -24,7 +25,7 @@ import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.consta
 export class ChartComponent implements OnInit {
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   @Output() captureCharts = new EventEmitter<number>();
-  @Input() chartsArray: Chart[] = [];
+  @Input() chartsArray: ChartData[] = [];
   selectedChartType: ChartType = 'bar';
   displayChart: boolean = false;
   numberOfEmployees: number = 0;
@@ -144,9 +145,58 @@ export class ChartComponent implements OnInit {
     }
   }
 
+  chart: Chart | undefined;
   ngOnInit(): void {
     this.fetchPeopleChampionEmployees();
     this.getNumberOfEmployees();
+
+    
+    const data = {
+      labels: ['Black', 'White', 'Coloured', 'Indian'],
+      type: 'bar',
+      datasets: [
+        {
+          label: 'Developer',
+          data: [10, 20, 15, 25], 
+          backgroundColor: 'rgba(255, 99, 132, 0.5)', 
+        },
+        {
+          label: 'Designer',
+          data: [15, 10, 20, 30],
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        },
+        {
+          label: 'Scrum Master',
+          data: [5, 15, 10, 20],
+          backgroundColor: 'rgba(255, 206, 86, 0.5)',
+        },
+        {
+          label: 'Support',
+          data: [20, 25, 30, 35],
+          backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        }
+      ]
+    };
+
+    let chartsData = [];
+    chartsData.push(data);
+    chartsData.push(data);
+
+
+    this.chart = new Chart('canvasDummy', {
+      type: 'bar',
+      data: data,
+      options: {
+        scales: {
+          x: {
+            stacked: false
+          },
+          y: {
+            stacked: false
+          }
+        }
+      }
+    });
   }
 
   createAndDisplayChart(): void {
@@ -202,7 +252,7 @@ export class ChartComponent implements OnInit {
   updateChart(): void {
 
     if (this.activeChart) {
-      const updatedChart: Chart = {
+      const updatedChart: ChartData = {
         ...this.activeChart,
         Name: this.updateFormData.Name,
         Type: this.updateFormData.Type,

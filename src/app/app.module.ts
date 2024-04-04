@@ -15,6 +15,7 @@ import { EmployeeProfileComponent } from './components/hris/employees/employee-p
 import { EmployeeProfileReducer } from './components/shared-components/store/reducers/employee-profile.reducer';
 import { EmployeeProfileEffects } from './components/shared-components/store/effects/employeeprofile.effects';
 import { NgChartsModule } from 'ng2-charts';
+
 import { ChartComponent } from './components/hris/charts/charts.component';
 import { CreateChartsComponent } from './components/hris/charts/create-charts/create-charts.component';
 
