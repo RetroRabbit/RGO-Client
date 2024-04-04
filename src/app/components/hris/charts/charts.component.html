@@ -48,10 +48,10 @@
   <div class="col-lg-12 col-sm-2 col-md-6 my-2 border" *ngFor="let chart of chartData;index as i" id="chart-item"  [ngClass]="screenWidth >= 767 ? 'chart-width-tablet' : 'chart-width-mobile'">
     <div id="chart-header" class="row px-2 pt-2">
       <div class="col-8 col-lg-10 d-inline-flex">
-        <h4>{{chart.name}}</h4>
+        <h4 class="mt-3">{{chart.name}}</h4>
       </div>
-      <div class="ms-2 col-md-1 col-sm-1 d-sm-inline-flex " id="chart-icon"  [ngClass]="screenWidth >= 767 ? 'icon-width-tablet' : 'icon-width-mobile'">
-        <button mat-button [matMenuTriggerFor]="menu" id="options-trigger" class="ms-sm-4 ms-lg-auto" > 
+      <div class="col-md-1 col-sm-3 d-sm-inline-flex mt-3" id="chart-icon"  [ngClass]="screenWidth >= 767 ? 'icon-width-tablet' : 'icon-width-mobile'">
+        <button mat-button [matMenuTriggerFor]="menu" id="options-trigger" class="ms-sm-4 ms-lg-auto" >
           <mat-icon id="menu-icon">more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
