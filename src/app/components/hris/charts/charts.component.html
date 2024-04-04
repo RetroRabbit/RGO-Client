@@ -1,14 +1,14 @@
 <div id="chart-container" *ngIf="showUpdateForm">
   <div class="row pt-3">
-    <div class="col-12" style="max-height: 50vh;">
+    <div class="col-12 col-lg-8" style="max-height: 50vh;">
       <div id="edit-chart-container">
         <canvas baseChart [datasets]='chartCanvasArray[selectedChartIndex]'
           [labels]="activeChart.type == 'bar'? activeChart.dataTypes : activeChart.labels"
           [type]="activeChart.type"></canvas>
       </div>
     </div>
-    <div class="col-4">
-      <div class="row p-4">
+    <div class="col-12 col-lg-4">
+      <div class="row p-4 d-flex justify-content-center">
         <h3>Update Chart</h3>
         <div class="row">
           <div class="col-12" id="dialog-radios">
@@ -19,14 +19,14 @@
           </div>
 
           <div class="col-12">
-            <mat-radio-group aria-label="Chart Type" [(ngModel)]="updateFormData.type">
-              <mat-radio-button value='bar'>Bar</mat-radio-button>
-              <mat-radio-button value='pie'>Pie</mat-radio-button>
+            <mat-radio-group class="d-flex row" aria-label="Chart Type" [(ngModel)]="updateFormData.type">
+              <mat-radio-button class="d-flex" value='bar'>Bar</mat-radio-button>
+              <mat-radio-button class="d-flex" value='pie'>Pie</mat-radio-button>
             </mat-radio-group>
           </div>
-          <div class="col-12 mt-3 justify-content" id="edit-controls">
-            <button mat-button id="cancel-button" (click)="showUpdateForm = false">Cancel</button>
-            <button mat-button id="save-button" (click)="updateChart()">Save changes</button>
+          <div class="col-12 row mt-3 justify-content justify-content-md-end ms-lg-3" id="edit-controls">
+            <button mat-button class="col-12 col-md-5 col-lg-12" id="save-button" (click)="updateChart()">Save changes</button>
+            <button mat-button class="col-12 mt-0 col-md-5  col-lg-12 offset-md-2 ms-md-5 ms-lg-0" id="cancel-button" (click)="showUpdateForm = false">Cancel</button>
           </div>
           <div class="report-controls">
           </div>

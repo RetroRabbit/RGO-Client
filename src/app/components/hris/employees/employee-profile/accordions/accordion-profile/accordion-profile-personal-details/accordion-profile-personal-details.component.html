@@ -23,10 +23,10 @@
               <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.gender" class="col-11 my-2">
                 <h4 [ngStyle]="{'color' : sharedAccordionFunctionality.editPersonal ? 'black' :'grey'}">Gender</h4>
                 <mat-radio-group aria-label="Select your gender" formControlName="gender"
-                  class="row col-12 col-md-7 col-lg-5" [value]="employeeProfile.employeeDetails.gender">
-                  <mat-radio-button [value]=1 class="col-4">Male</mat-radio-button>
-                  <mat-radio-button [value]=2 class="col-4">Female</mat-radio-button>
-                  <mat-radio-button [value]=0 class="col-4">Unclassified</mat-radio-button>
+                  class="row col-12 col-md-7 col-lg-5 d-flex" [value]="employeeProfile.employeeDetails.gender">
+                  <mat-radio-button [value]=1>Male</mat-radio-button>
+                  <mat-radio-button [value]=2>Female</mat-radio-button>
+                  <mat-radio-button [value]=0>Unclassified</mat-radio-button>
                 </mat-radio-group>
               </div>
               <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.race" class="col-12 col-md-6 my-2">
@@ -44,9 +44,9 @@
                   Do you have any disabilities?
                 </h3>
                 <mat-radio-group aria-label="Select status" (change)="setHasDisability($event)"
-                  formControlName="disability">
-                  <mat-radio-button [value]=true>yes</mat-radio-button>
+                  formControlName="disability" class="row d-flex">
                   <mat-radio-button [value]=false>no</mat-radio-button>
+                  <mat-radio-button [value]=true>yes</mat-radio-button>
                 </mat-radio-group>
               </div>
               <div class="col-12"
