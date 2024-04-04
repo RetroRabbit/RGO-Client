@@ -308,13 +308,13 @@
                   <mat-error *ngIf="physicalAddress.controls['streetNumber'].hasError('pattern')">
                     Street number must only contain numbers
                   </mat-error>
-                  <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
-                    <mat-label>Street Name</mat-label>
-                    <input matInput type="text" formControlName="streetName" />
-                    <mat-error *ngIf="physicalAddress.controls['streetName'].hasError('pattern')">
-                      Street name must only contain letters
-                    </mat-error>
-                  </mat-form-field>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Street Name</mat-label>
+                  <input matInput type="text" formControlName="streetName" />
+                  <mat-error *ngIf="physicalAddress.controls['streetName'].hasError('pattern')">
+                    Street name must only contain letters
+                  </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Postal Code</mat-label>
