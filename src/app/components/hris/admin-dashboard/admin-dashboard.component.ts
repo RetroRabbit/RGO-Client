@@ -12,7 +12,7 @@ import { Chart } from 'src/app/models/hris/charts.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { MatSort } from '@angular/material/sort';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
@@ -26,6 +26,10 @@ import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.inte
 })
 
 export class AdminDashboardComponent {
+  chartNameControl = new FormControl('', [
+    Validators.required, Validators.minLength(5)
+  ]);
+  
   @ViewChild('dialogTemplate', { static: true })
   dialogTemplate!: TemplateRef<any>;
   @ViewChild(MatSort) sort!: MatSort;
