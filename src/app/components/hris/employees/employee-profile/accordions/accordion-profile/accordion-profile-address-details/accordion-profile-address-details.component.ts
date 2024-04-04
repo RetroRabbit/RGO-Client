@@ -30,7 +30,9 @@ export class AccordionProfileAddressDetailsComponent {
   provinces: string[] = [];
   countries: string[] = [];
   cities: string[] = [];
-  countrySelected: string = '';
+  selectedCountry: string = ''; 
+  selectedProvince: string = '';
+  selectedCity: string = '';
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -61,6 +63,7 @@ export class AccordionProfileAddressDetailsComponent {
     this.initializeForm();
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();
+
   }
 
   initializeForm() {
@@ -169,10 +172,10 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   onCountryChange(country: string): void {
-    this.countrySelected = country;
+    this.selectedCountry = country;
     this.provinces = [];
     this.cities = [];
-    this.loadProvinces(this.countrySelected);
+    this.loadProvinces(this.selectedCountry);
   }
 
   loadProvinces(country: string): void {
@@ -183,7 +186,7 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   loadCities(province: string): void {
-    this.locationApiService.getCities(this.countrySelected, province).subscribe({
+    this.locationApiService.getCities(this.selectedCountry, province).subscribe({
       next: (data) => this.cities = data,
     });
   }
