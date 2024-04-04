@@ -16,6 +16,7 @@ import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/propert
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
+import { LocationApiService } from 'src/app/services/hris/location-api.service';
 
 @Component({
   selector: 'app-accordion-profile-address-details',
@@ -26,17 +27,14 @@ export class AccordionProfileAddressDetailsComponent {
 
   screenWidth = window.innerWidth;
   usingProfile: boolean = true;
+  provinces: string[] = [];
+  countries: string[] = [];
+  cities: string[] = [];
+  countrySelected: string = '';
 
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
-  }
-
-  ngOnInit() {
-    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
-    this.initializeForm();
-    this.initializeEmployeeProfileDto();
-    this.getEmployeeFields();
   }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
@@ -54,8 +52,16 @@ export class AccordionProfileAddressDetailsComponent {
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeAddressService: EmployeeAddressService,
+    public locationApiService: LocationApiService,
   ) { }
 
+  ngOnInit() {
+    this.loadCountries();
+    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
+    this.initializeForm();
+    this.initializeEmployeeProfileDto();
+    this.getEmployeeFields();
+  }
 
   initializeForm() {
     this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
@@ -154,6 +160,32 @@ export class AccordionProfileAddressDetailsComponent {
     } else {
       this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
+  }
+
+  loadCountries(): void {
+    this.locationApiService.getCountries().subscribe({
+      next: (data) => this.countries = data
+    });
+  }
+
+  onCountryChange(country: string): void {
+    this.countrySelected = country;
+    this.provinces = [];
+    this.cities = [];
+    this.loadProvinces(this.countrySelected);
+  }
+
+  loadProvinces(country: string): void {
+    this.locationApiService.getProvinces(country).subscribe({
+      next: (data) => this.provinces = data
+    });
+    this.cities = [];
+  }
+
+  loadCities(province: string): void {
+    this.locationApiService.getCities(this.countrySelected, province).subscribe({
+      next: (data) => this.cities = data,
+    });
   }
 
   getEmployeeData() {
