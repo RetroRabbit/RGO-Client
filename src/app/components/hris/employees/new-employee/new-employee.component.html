@@ -130,6 +130,9 @@
                     {{ check ? "Yes" : "No"}}
                   </mat-radio-button>
                 </mat-radio-group>
+                <mat-error *ngIf="newEmployeeForm.controls['disability'].hasError('required')">
+                  Disability is required
+                </mat-error>
               </div>
               <mat-form-field appearance="outline" class="col-lg-7 col-md-12"
                 *ngIf="newEmployeeForm.controls['disability'].value">
