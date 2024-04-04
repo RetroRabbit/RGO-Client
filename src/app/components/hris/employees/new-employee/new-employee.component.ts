@@ -131,7 +131,7 @@ export class NewEmployeeComponent implements OnInit {
     terminationDate: new FormControl<Date | string | null>(null),
     reportingLine: new FormControl<EmployeeProfile | null>(null),
     highestQualication: new FormControl<string>(''),
-    disability: new FormControl<boolean | null>(null),
+    disability: new FormControl<boolean | null>(null, [Validators.required]),
     disabilityNotes: new FormControl<string>(''),
     countryOfBirth: new FormControl<string>(''),
     nationality: new FormControl<string>(''),
@@ -409,6 +409,13 @@ export class NewEmployeeComponent implements OnInit {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
       this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
+      this.isLoadingAddEmployee = false;
+      return;
+    }
+    if (this.newEmployeeForm.value.disability !== null && this.newEmployeeForm.value.disability !== undefined) {
+       this.newEmployeeForm.value.disability;
+    } else {
+      this.snackBarService.showSnackbar("Please select a value for disability ", "snack-error");
       this.isLoadingAddEmployee = false;
       return;
     }
