@@ -51,6 +51,10 @@ export class EmployeeService {
     return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}/by-email?email=${encodeURIComponent(email)}`);
   }
 
+  checkIdNumber(idNumber: string, employeeId: number): Observable<boolean> {
+    return this.httpClient.get<boolean>(`${this.baseUrl}/id-number?idNumber=${encodeURIComponent(idNumber)}&employeeId=${encodeURIComponent(employeeId)}`);
+  }
+
   updateEmployee(employee: any): Observable<any> {
     const queryParams = `?userEmail=${this.authAccessService.getEmployeeEmail()}`
     return this.httpClient.put<any>(`${this.baseUrl}${queryParams}`, employee)

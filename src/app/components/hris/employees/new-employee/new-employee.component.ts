@@ -96,6 +96,7 @@ export class NewEmployeeComponent implements OnInit {
   isLoadingAddEmployee: boolean = false;
   isSameAddress: boolean = true;
   isSavedEmployee: boolean = false;
+  existingIdNumber: boolean = false;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -446,11 +447,20 @@ export class NewEmployeeComponent implements OnInit {
     this.checkBlankRequiredFields();
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
-        this.isSavedEmployee = true;
-        this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
-        this.myStepper.next();
-        this.isDirty = false;
-        this.isLoadingAddEmployee = false;
+        this.employeeService.checkIdNumber(this.newEmployeeForm.value.idNumber as string, this.newEmployeeForm.value.id as number).subscribe({
+          next: (data: boolean) => {
+            this.existingIdNumber = data;
+            if (this.existingIdNumber == false) {
+              this.isSavedEmployee = true;
+              this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
+              this.myStepper.next();
+              this.isDirty = false;
+              this.isLoadingAddEmployee = false;
+            } else {
+              this.snackBarService.showSnackbar("Id number already exists", "snack-error");
+            }
+          }
+        });
       },
 
       error: (error: any, stepper?: MatStepper) => {

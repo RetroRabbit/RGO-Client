@@ -24,6 +24,7 @@ import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/
 export class AccordionProfileEmployeeDetailsComponent {
 
   screenWidth = window.innerWidth;
+  existingIdNumber: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   usingProfile: boolean = true;
@@ -214,7 +215,6 @@ export class AccordionProfileEmployeeDetailsComponent {
       this.sharedAccordionFunctionality.employeeType = this.sharedAccordionFunctionality.employeeTypes.find((data: any) => {
         return data.name == employeeDetailsForm.employeeType
       });
-
       this.sharedAccordionFunctionality.employeeProfileDto.name = employeeDetailsForm.name;
       this.sharedAccordionFunctionality.employeeProfileDto.surname = employeeDetailsForm.surname;
       this.sharedAccordionFunctionality.employeeProfileDto.initials = employeeDetailsForm.initials;
@@ -232,16 +232,25 @@ export class AccordionProfileEmployeeDetailsComponent {
         + 24 * 60 * 60 * 1000
       ).toISOString();
       this.sharedAccordionFunctionality.employeeProfileDto.gender = personalDetailsForm.gender;
-      this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
-        next: (data) => {
-          this.snackBarService.showSnackbar("Employee details updated", "snack-success");
-          this.sharedAccordionFunctionality.checkEmployeeFormProgress();
-          this.sharedAccordionFunctionality.totalProfileProgress();
-          this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.sharedAccordionFunctionality.employeeProfileDto?.clientAllocated)[0];
-          this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.teamLead)[0];
-          this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.peopleChampion)[0];
-          this.sharedAccordionFunctionality.editEmployee = false;
-          this.sharedAccordionFunctionality.employeeDetailsForm.disable();
+      this.employeeService.checkIdNumber(employeeDetailsForm.idNumber, this.employeeProfile.employeeDetails.id as number).subscribe({
+        next: (data: boolean) => {
+          this.existingIdNumber = data;
+          if (this.existingIdNumber == false) {
+            this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
+              next: (data) => {
+                this.snackBarService.showSnackbar("Employee details updated", "snack-success");
+                this.sharedAccordionFunctionality.checkEmployeeFormProgress();
+                this.sharedAccordionFunctionality.totalProfileProgress();
+                this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.sharedAccordionFunctionality.employeeProfileDto?.clientAllocated)[0];
+                this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.teamLead)[0];
+                this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.peopleChampion)[0];
+                this.sharedAccordionFunctionality.editEmployee = false;
+                this.sharedAccordionFunctionality.employeeDetailsForm.disable();
+              },
+            });
+          } else {
+            this.snackBarService.showSnackbar("Id number already used by another employee", "snack-error");
+          }
         },
       });
     }
