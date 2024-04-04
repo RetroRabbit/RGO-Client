@@ -61,6 +61,7 @@ export class SharedPropertyAccessService {
         unitNumber: true,
         complexName: true,
         streetNumber: true,
+        streetName: true,
         suburbOrDistrict: true,
         city: true,
         country: true,
