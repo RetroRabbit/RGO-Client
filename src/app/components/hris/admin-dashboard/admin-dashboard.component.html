@@ -698,14 +698,13 @@
                   <mat-select [formControl]="typeControl" (selectionChange)="changeEmployeeRolesOnNewChart($event)"
                     multiple>
                     <mat-select-trigger></mat-select-trigger>
-                    <mat-option *ngFor="let type of filteredTypes" [value]="type">
+                    <mat-option *ngFor="let type of filteredTypes" [value]="type" required="required">
                       {{ type }}
                     </mat-option>
-                    <mat-error *ngIf="typeControl.hasError('required')">
-                      <strong>role required</strong>
-                    </mat-error>
                   </mat-select>
-                  
+                  <mat-error *ngIf="typeControl.hasError('required')">
+                    <strong>select role required</strong>
+                  </mat-error>
                   <mat-chip-grid #chipList>
                     <mat-chip-row *ngFor="let type of selectedTypes" [removable]="true" (removed)="onRoleRemoved(type)">
                       {{ type }}
