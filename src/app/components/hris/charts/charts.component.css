@@ -14,7 +14,7 @@
 .chart-width-tablet {
   border-radius: 1rem;
   min-height: 30% !important;
-  max-width: 45% !important;
+  max-width: 48% !important;
   margin-left: 10px;
 }
 
@@ -58,11 +58,13 @@
 }
 
 .icon-width-mobile {
-  width: 3rem !important;
+  /* width: 3rem !important; */
+  width: 65px !important;
+  height: 1rem !important;
 }
 
 .icon-width-tablet {
-  width: 90px !important;
+  width: 65px !important;
   height: 1rem !important;
 }
 
