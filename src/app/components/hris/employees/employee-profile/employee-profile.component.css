@@ -63,6 +63,8 @@
 }
 
 #profile-image {
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     overflow: hidden;
     margin: 0 auto;
@@ -74,6 +76,7 @@
     width: 100%;
     cursor: pointer;
     justify-content: center;
+    border-radius: 50%;
 }
 
 #outer-icon-container {
@@ -355,8 +358,8 @@
     border: 1px solid grey;
   }
 
-  div.row{
-   padding: 0;
+  div.row {
+   padding: 0;
   }
 
 /* #svg-icon-w #icon-w {
