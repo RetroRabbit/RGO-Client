@@ -30,7 +30,7 @@ export class AccordionProfileAddressDetailsComponent {
   provinces: string[] = [];
   countries: string[] = [];
   cities: string[] = [];
-  selectedCountry: string = ''; 
+  selectedCountry: string = '';
   selectedProvince: string = '';
   selectedCity: string = '';
 
@@ -58,14 +58,10 @@ export class AccordionProfileAddressDetailsComponent {
   ) { }
 
   ngOnInit() {
-    // this.loadCountries();
-    // this.loadProvinces(this.selectedCountry);
-    // this.loadCities(this.selectedProvince);
+    this.loadPhysicalAddress();
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
-    this.initializeForm();
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();
-
   }
 
   initializeForm() {
@@ -181,7 +177,7 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   loadProvinces(country: string): void {
-    this.locationApiService.getProvinces(country).subscribe({
+    this.locationApiService.getProvinces(this.selectedCountry).subscribe({
       next: (data) => this.provinces = data
     });
     this.cities = [];
@@ -193,6 +189,39 @@ export class AccordionProfileAddressDetailsComponent {
     });
     this.selectedProvince = province;
   }
+
+  loadPhysicalAddress() {
+    this.locationApiService.getCountries().subscribe({
+      next: (data) => {
+        this.countries = data
+      },
+      error: (error: any) => {
+        this.snackBarService.showSnackbar(error,'Could not load countries')
+      },
+      complete: () => {    
+        this.selectedCountry = this.employeeProfile!.employeeDetails.physicalAddress?.country!
+        this.locationApiService.getProvinces(this.selectedCountry).subscribe({
+          next: (data) => this.provinces = data,
+          error: (error: any) => {
+            this.snackBarService.showSnackbar(error,'Could not load Provinces')
+           },
+          complete: () => {
+            this.selectedProvince = this.employeeProfile!.employeeDetails.physicalAddress?.province!
+            this.locationApiService.getProvinces(this.selectedCountry).subscribe({
+              next: (data) => this.provinces = data,
+              complete: () => {
+                this.locationApiService.getCities(this.selectedCountry, this.selectedProvince).subscribe({
+                  next: (data) => this.cities = data,
+                });
+              }
+            });
+          }
+        })
+      }
+    })
+  }
+
+  
 
   getEmployeeData() {
     this.employeeDataService.getEmployeeData(this.employeeProfile.employeeDetails.id).subscribe({
