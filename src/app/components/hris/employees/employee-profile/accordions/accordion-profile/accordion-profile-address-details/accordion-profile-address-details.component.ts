@@ -275,7 +275,6 @@ export class AccordionProfileAddressDetailsComponent {
       }
     })
   }
-  
 
   getEmployeeData() {
     this.employeeDataService.getEmployeeData(this.employeeProfile.employeeDetails.id).subscribe({
