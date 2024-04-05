@@ -72,6 +72,28 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
+                <mat-label>Personal Email</mat-label>
+                <input matInput type="email" formControlName="personalEmail" />
+                <mat-error *ngIf="newEmployeeForm.controls['personalEmail'].hasError('required')">
+                  Personal email is required
+                </mat-error>
+                <mat-error
+                  *ngIf="newEmployeeForm.controls['personalEmail'].hasError('pattern') && !newEmployeeForm.controls['personalEmail'].hasError('required')">
+                  This is not a valid email
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
+                <mat-label>Phone Number</mat-label>
+                <input matInput formControlName="cellphoneNo" />
+                <mat-error *ngIf="newEmployeeForm.controls['cellphoneNo'].hasError('required')">
+                  Phone number is required
+                </mat-error>
+                <mat-error
+                  *ngIf="newEmployeeForm.controls['cellphoneNo'].hasError('pattern') && !newEmployeeForm.controls['cellphoneNo'].hasError('required')">
+                  This is not a valid phone number
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>Role</mat-label>
                 <mat-select formControlName="employeeType" hideSingleSelectionIndicator="true">
                   <mat-option *ngFor="let type of employeeTypes" [value]="type">{{ type.name }}</mat-option>
