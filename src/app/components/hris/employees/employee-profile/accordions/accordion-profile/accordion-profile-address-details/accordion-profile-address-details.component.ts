@@ -30,9 +30,13 @@ export class AccordionProfileAddressDetailsComponent {
   provinces: string[] = [];
   countries: string[] = [];
   cities: string[] = [];
+  postalProvinces: string[] = [];
+  postalCountries: string[] = [];
+  postalCities: string[] = [];
   selectedCountry: string = '';
   selectedProvince: string = '';
-  selectedCity: string = '';
+  selectedPostalCountry: string = '';
+  selectedPostalProvince: string = '';
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -59,6 +63,7 @@ export class AccordionProfileAddressDetailsComponent {
 
   ngOnInit() {
     this.loadPhysicalAddress();
+    this.loadPostalAddress();
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();
@@ -171,21 +176,40 @@ export class AccordionProfileAddressDetailsComponent {
 
   onCountryChange(country: string): void {
     this.selectedCountry = country;
-    this.provinces = [];
-    this.cities = [];
     this.loadProvinces(this.selectedCountry);
+    this.provinces= [];
+    this.cities = [];
+  }
+
+  onPostalCountryChange(country: string): void{
+    this.selectedPostalCountry = country;
+    this.loadPostalProvinces(this.selectedPostalProvince);
+    this.postalProvinces= [];
+    this.postalCities = [];
   }
 
   loadProvinces(country: string): void {
     this.locationApiService.getProvinces(this.selectedCountry).subscribe({
       next: (data) => this.provinces = data
     });
-    this.cities = [];
+  }
+
+  loadPostalProvinces(country: string): void {
+    this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
+      next: (data) => this.postalProvinces = data
+    });
   }
 
   loadCities(province: string): void {
     this.locationApiService.getCities(this.selectedCountry, province).subscribe({
       next: (data) => this.cities = data,
+    });
+    this.selectedProvince = province;
+  }
+
+  loadPostalCities(province: string): void {
+    this.locationApiService.getCities(this.selectedPostalCountry, province).subscribe({
+      next: (data) => this.postalCities = data,
     });
     this.selectedProvince = province;
   }
@@ -221,6 +245,36 @@ export class AccordionProfileAddressDetailsComponent {
     })
   }
 
+  loadPostalAddress() {
+    this.locationApiService.getCountries().subscribe({
+      next: (data) => {
+        this.postalCountries = data
+      },
+      error: (error: any) => {
+        this.snackBarService.showSnackbar(error,'Could not load countries')
+      },
+      complete: () => {    
+        this.selectedPostalCountry = this.employeeProfile!.employeeDetails.postalAddress?.country!
+        this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
+          next: (data) => this.postalProvinces = data,
+          error: (error: any) => {
+            this.snackBarService.showSnackbar(error,'Could not load Provinces')
+           },
+          complete: () => {
+            this.selectedPostalProvince = this.employeeProfile!.employeeDetails.postalAddress?.province!
+            this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
+              next: (data) => this.postalProvinces = data,
+              complete: () => {
+                this.locationApiService.getCities(this.selectedPostalCountry, this.selectedPostalProvince).subscribe({
+                  next: (data) => this.postalCities = data,
+                });
+              }
+            });
+          }
+        })
+      }
+    })
+  }
   
 
   getEmployeeData() {
