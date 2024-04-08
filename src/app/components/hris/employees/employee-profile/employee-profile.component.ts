@@ -1,9 +1,9 @@
-import { Component, ChangeDetectorRef, ViewChild, HostListener } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, HostListener, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { Client } from 'src/app/models/hris/client.interface';
-import { FormBuilder } from '@angular/forms';
+import { EmailValidator, FormBuilder } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
@@ -16,10 +16,16 @@ import { Document } from 'src/app/models/hris/constants/documents.contants';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { AccordionBankingComponent } from './accordions/accordion-banking/accordion-banking.component';
-import { AccordionProfileComponent } from './accordions/accordion-profile/accordion-profile.component';
+import { AccordionProfileAdditionalComponent } from './accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
+import { AccordionProfileAddressDetailsComponent } from './accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
+import { AccordionProfileContactDetailsComponent } from './accordions/accordion-profile/accordion-profile-contact-details/accordion-profile-contact-details.component';
+import { AccordionProfileEmployeeDetailsComponent } from './accordions/accordion-profile/accordion-profile-employee-details/accordion-profile-employee-details.component';
+import { AccordionProfilePersonalDetailsComponent } from './accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
 import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents.component';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { SharedAccordionFunctionality } from './shared-accordion-functionality';
 
 @Component({
   selector: 'app-employee-profile',
@@ -27,7 +33,9 @@ import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.inte
   styleUrls: ['./employee-profile.component.css']
 })
 
-export class EmployeeProfileComponent {
+export class EmployeeProfileComponent implements OnChanges {
+  @Input() updateProfile!: { updateProfile: SharedAccordionFunctionality };
+
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
   simpleEmployee!: SimpleEmployee;
@@ -49,12 +57,14 @@ export class EmployeeProfileComponent {
   employeeClient!: EmployeeProfile;
   employeeTeamLead!: EmployeeProfile;
   employeePeopleChampion!: EmployeeProfile;
+
   profileFormProgress: number = 0;
   overallFormProgress: number = 0;
   documentFormProgress: number = 0;
   bankingFormProgress: number = 0;
   bankInformationProgress: number = 0;
   documentsProgress: number = 0;
+
   bankingPDFName: string = "";
   hasBankingData: boolean = false;
   employeeDocuments: EmployeeDocument[] = [];
@@ -76,11 +86,16 @@ export class EmployeeProfileComponent {
   screenWidth = window.innerWidth;
 
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
-  @ViewChild(AccordionProfileComponent) profileAccordion!: AccordionProfileComponent;
+  @ViewChild(AccordionProfileAddressDetailsComponent) adressAccordion!: AccordionProfileAddressDetailsComponent;
+  @ViewChild(AccordionProfileAdditionalComponent) additionalAccordion!: AccordionProfileAdditionalComponent;
+  @ViewChild(AccordionProfileContactDetailsComponent) contactAccordion!: AccordionProfileContactDetailsComponent;
+  @ViewChild(AccordionProfileEmployeeDetailsComponent) employeeAccordion!: AccordionProfileEmployeeDetailsComponent;
+  @ViewChild(AccordionProfilePersonalDetailsComponent) personalAccordion!: AccordionProfilePersonalDetailsComponent;
   @ViewChild(AccordionDocumentsComponent) documentAccordion!: AccordionDocumentsComponent;
 
   imageUrl!: string;
   validateFile: any;
+  snackBar: any;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -97,11 +112,22 @@ export class EmployeeProfileComponent {
     private snackBarService: SnackbarService,
     private navService: NavService,
     private changeDetectorRef: ChangeDetectorRef,
-    public authAccessService: AuthAccessService) {
+    public authAccessService: AuthAccessService,
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    private clipboard: Clipboard) {
     navService.showNavbar = true;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    changes['updateProfile'].currentValue
+  }
+
   ngOnInit() {
+    this.sharedAccordionFunctionality.updateProfile.subscribe(progress => {
+      this.profileFormProgress = progress;
+      this.overallProgress();
+    });
+
     this.employeeId = this.route.snapshot.params['id'];
     this.getClients();
     if (this.employeeId == undefined) {
@@ -188,6 +214,7 @@ export class EmployeeProfileComponent {
   }
 
   populateEmployeeAccordion(employee: SimpleEmployee) {
+
     this.employeeProfile = {};
     this.employeeProfile.cellphoneNo = employee.cellphoneNo;
     this.employeeProfile.clientAllocated = employee.clientAllocatedName;
@@ -261,9 +288,7 @@ export class EmployeeProfileComponent {
     this.overallProgress();
   }
 
-  updateProfileProgress(progress: any) {
-    this.profileFormProgress = progress;
-    this.overallProgress();
+  updateProfileProgress() {
     if (this.authAccessService.isAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney())
       this.getSelectedEmployee();
     else
@@ -297,5 +322,16 @@ export class EmployeeProfileComponent {
         }
       });
   }
-
+  copyToClipboard() {
+    let emailToCopy: string;
+    if (this.simpleEmployee && this.simpleEmployee.email) {
+      emailToCopy = this.simpleEmployee.email;
+    } else if (this.employeeProfile && this.employeeProfile.email) {
+      emailToCopy = this.employeeProfile.email;
+    } else {
+      this.snackBar.showSnackbar("No email address available to copy");
+      return;
+    }
+    this.clipboard.copy(emailToCopy);
+  }
 }

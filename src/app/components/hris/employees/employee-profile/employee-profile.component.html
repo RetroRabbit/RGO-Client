@@ -37,7 +37,7 @@
                     <div class="row me-4 d-flex justify-content-start d-md-flex justify-content-md-end">
                         <div class="col-auto">{{usingSimpleProfile ? simpleEmployee.email : employeeProfile.email}}
                         </div>
-                        <div class="col-1 mt-2" id="header-email-clip"><mat-icon>attachment</mat-icon></div>
+                        <div class="col-1 mt-2" id="header-email-clip" (click)="copyToClipboard()"><mat-icon>attachment</mat-icon></div>
                     </div>
                 </div>
                 <div class="col-12 my-2 d-none d-md-block" id="header-role">
@@ -110,7 +110,10 @@
                         <div class="col-9 my-2">
                             <div id="header-label">Client Allocated</div>
                             <div id="header-value" *ngIf="employeeClient !== undefined">
-                                {{employeeClient.name ?? 'Bench'}}
+                                {{employeeClient.name ?? 'None'}}
+                            </div>
+                            <div id="header-value" *ngIf="employeeClient == undefined">
+                                None
                             </div>
                         </div>
                     </div>
@@ -305,12 +308,26 @@
             </div>
         </div>
         <div id="accordions-body`" class="row m-2" *ngIf="employeeProfile">
-            <app-accordion-profile [hidden]="selectedAccordion != 'Profile Details'"
+               <app-accordion-profile-employee-details [hidden]="selectedAccordion != 'Profile Details'"
                 [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
-                (updateProfile)="updateProfileProgress($event)"></app-accordion-profile>
+                ></app-accordion-profile-employee-details>
+                <app-accordion-profile-personal-details [hidden]="selectedAccordion != 'Profile Details'"
+                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+               ></app-accordion-profile-personal-details>
+                <app-accordion-profile-contact-details [hidden]="selectedAccordion != 'Profile Details'"
+                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+                ></app-accordion-profile-contact-details>
+                <app-accordion-profile-address-details [hidden]="selectedAccordion != 'Profile Details'"
+                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+                ></app-accordion-profile-address-details>
+                <app-accordion-profile-additional [hidden]="selectedAccordion != 'Profile Details'"
+                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+                ></app-accordion-profile-additional>
+
             <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"
                 [employeeProfile]="employeeProfile"
                 (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
+
             <app-accordion-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
                 (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents>
         </div>
