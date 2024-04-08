@@ -217,12 +217,15 @@
                   class="col-lg-7 col-md-12 custom-mat-select">
                   <mat-label>Country of Issue</mat-label>
                   <input matInput type="text" formControlName="passportCountryIssue" />
-                  <mat-select #countrySelect formControlName="passportCountryIssue" hidden hideSingleSelectionIndicator="true">
+                  <mat-select #countrySelect formControlName="passportCountryIssue" hidden
+                    hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
                   </mat-select>
                   <mat-icon matSuffix (click)="countrySelect.open()">Search</mat-icon>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
+
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12"
+                  *ngIf="!postalAddressForm.controls['sameAsPhysicalAddress'].value">
                   <mat-label>Notes</mat-label>
                   <textarea matInput type="text" formControlName="notes"> </textarea>
                 </mat-form-field>
@@ -232,15 +235,49 @@
                 <h1 class="col-lg-7 col-md-12 fs-1">Physical Address</h1>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Country</mat-label>
-                  <mat-select formControlName="country" hideSingleSelectionIndicator="true">
+                  <mat-select formControlName="country" (selectionChange)="onCountryChange($event.value)"
+                    hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Province</mat-label>
-                  <mat-select formControlName="province" hideSingleSelectionIndicator="true">
+                  <mat-select formControlName="province" (selectionChange)="loadCities($event.value)"
+                    hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
                   </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Suburb/District</mat-label>
+                  <mat-select formControlName="suburbDistrict" hideSingleSelectionIndicator="true">
+                    <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>City/Town</mat-label>
+                  <input matInput type="text" formControlName="city" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Complex Name</mat-label>
+                  <input matInput type="text" formControlName="complexName" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Unit Number</mat-label>
+                  <input matInput type="text" formControlName="unitNumber" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Street Number</mat-label>
+                  <input matInput type="text" formControlName="streetNumber" />
+                  <mat-error *ngIf="physicalAddress.controls['streetNumber'].hasError('pattern')">
+                    Street number must only contain numbers
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Street Name</mat-label>
+                  <input matInput type="text" formControlName="streetName" />
+                  <mat-error *ngIf="physicalAddress.controls['streetName'].hasError('pattern')">
+                    Street name must only contain letters
+                  </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>City/Town</mat-label>
@@ -277,9 +314,9 @@
                   </mat-error>
                 </mat-form-field>
                 <form class="col-lg-7 col-md-12 mt-2" [formGroup]="postalAddressForm">
-                <mat-checkbox [checked]="isSameAddress" value="isSameAddress" inputId="checkbox"
-                  (change)="postalSameAsPhysicalAddress($event.checked)">
-                </mat-checkbox>
+                  <mat-checkbox [checked]="isSameAddress" value="isSameAddress" inputId="checkbox"
+                    (change)="postalSameAsPhysicalAddress($event.checked)">
+                  </mat-checkbox>
                   <label class="ms-1" for="checkbox">Postal address is the same as physical
                     address</label>
                 </form>
@@ -289,15 +326,49 @@
                 <h1 class="col-lg-7 col-md-12 fs-1">Postal Address</h1>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Country</mat-label>
-                  <mat-select formControlName="country" hideSingleSelectionIndicator="true">
+                  <mat-select formControlName="country" (selectionChange)="onCountryChange($event.value)"
+                    hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Province</mat-label>
-                  <mat-select formControlName="province" hideSingleSelectionIndicator="true">
+                  <mat-select formControlName="province" (selectionChange)="loadCities($event.value)"
+                    hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
                   </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Suburb/District</mat-label>
+                  <mat-select formControlName="suburbDistrict" hideSingleSelectionIndicator="true">
+                    <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>City/Town</mat-label>
+                  <input matInput type="text" formControlName="city" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Complex Name</mat-label>
+                  <input matInput type="text" formControlName="complexName" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Unit Number</mat-label>
+                  <input matInput type="text" formControlName="unitNumber" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Street Number</mat-label>
+                  <input matInput type="text" formControlName="streetNumber" />
+                  <mat-error *ngIf="physicalAddress.controls['streetNumber'].hasError('pattern')">
+                    Street number must only contain numbers
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
+                  <mat-label>Street Name</mat-label>
+                  <input matInput type="text" formControlName="streetName" />
+                  <mat-error *ngIf="physicalAddress.controls['streetName'].hasError('pattern')">
+                    Street name must only contain letters
+                  </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>City/Town</mat-label>
@@ -329,7 +400,7 @@
                 <mat-form-field appearance="outline" class="col-lg-7 col-md-12 mt-2">
                   <mat-label>Postal Code</mat-label>
                   <input matInput type="text" formControlName="postalCode" />
-                  <mat-error *ngIf="postalAddress.controls['postalCode'].hasError('pattern')">
+                  <mat-error *ngIf="physicalAddress.controls['postalCode'].hasError('pattern')">
                     Postal code must contain only numbers.
                   </mat-error>
                 </mat-form-field>
@@ -339,7 +410,8 @@
           <div id="footer">
             <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="goToPreviousPage()">Cancel</button>
-            <button id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''" matStepperNext>Next</button>
+            <button id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
+              matStepperNext>Next</button>
           </div>
         </form>
       </mat-step>
@@ -361,9 +433,8 @@
           <div class="container upload-drop-container">
             <div class="row justify-content-center align-items-center">
               <div class="upload-drop-section row">
-                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                  accept=".PDF" (onFileDrop)="dropped($event, 0)" (onFileOver)="fileOver($event)"
-                  (onFileLeave)="fileLeave($event)">
+                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName="" accept=".PDF"
+                  (onFileDrop)="dropped($event, 0)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                     multiple="true">
                     <div class="justify-content-center align-items-center p-2 m-2">
@@ -407,9 +478,8 @@
                 </ngx-file-drop>
               </div>
               <div class="upload-drop-section row">
-                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                  accept=".PDF" (onFileDrop)="dropped($event, 2)" (onFileOver)="fileOver($event)"
-                  (onFileLeave)="fileLeave($event)">
+                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName="" accept=".PDF"
+                  (onFileDrop)="dropped($event, 2)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                     multiple="true">
                     <div class="justify-content-center align-items-center p-2 m-2">
@@ -453,9 +523,8 @@
                 </ngx-file-drop>
               </div>
               <div class="upload-drop-section row">
-                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                  accept=".PDF" (onFileDrop)="dropped($event, 1)" (onFileOver)="fileOver($event)"
-                  (onFileLeave)="fileLeave($event)">
+                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName="" accept=".PDF"
+                  (onFileDrop)="dropped($event, 1)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                     multiple="true">
                     <div class="justify-content-center align-items-center p-2 m-2">
@@ -499,9 +568,8 @@
                 </ngx-file-drop>
               </div>
               <div class="upload-drop-mie row">
-                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName=""
-                  accept=".PDF" (onFileDrop)="dropped($event, 3)" (onFileOver)="fileOver($event)"
-                  (onFileLeave)="fileLeave($event)">
+                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName="" accept=".PDF"
+                  (onFileDrop)="dropped($event, 3)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
                   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
                     multiple="true">
                     <div class="justify-content-center align-items-center p-2 m-2">
@@ -549,10 +617,11 @@
           <div id="footer">
             <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="goToPreviousPage()">Cancel</button>
-            <button [disabled]="!isSavedEmployee" id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
-              (click)="saveAndAddAnother()">Save and add another</button>
-            <button [disabled]="!isSavedEmployee" id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
-              (click)="saveAndExit()">Save</button>
+            <button [disabled]="!isSavedEmployee" id="save-add-button"
+              [ngClass]="screenWidth < 768 ? 'button-mobile' : ''" (click)="saveAndAddAnother()">Save and add
+              another</button>
+            <button [disabled]="!isSavedEmployee" id="save-button"
+              [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''" (click)="saveAndExit()">Save</button>
           </div>
         </form>
       </mat-step>
