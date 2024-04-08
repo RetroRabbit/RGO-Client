@@ -16,6 +16,7 @@ import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/propert
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
+import { LocationApiService } from 'src/app/services/hris/location-api.service';
 
 @Component({
   selector: 'app-accordion-profile-address-details',
@@ -26,17 +27,20 @@ export class AccordionProfileAddressDetailsComponent {
 
   screenWidth = window.innerWidth;
   usingProfile: boolean = true;
+  provinces: string[] = [];
+  countries: string[] = [];
+  cities: string[] = [];
+  postalProvinces: string[] = [];
+  postalCountries: string[] = [];
+  postalCities: string[] = [];
+  selectedCountry: string = '';
+  selectedProvince: string = '';
+  selectedPostalCountry: string = '';
+  selectedPostalProvince: string = '';
 
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
-  }
-
-  ngOnInit() {
-    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
-    this.initializeForm();
-    this.initializeEmployeeProfileDto();
-    this.getEmployeeFields();
   }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
@@ -54,14 +58,23 @@ export class AccordionProfileAddressDetailsComponent {
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeAddressService: EmployeeAddressService,
+    public locationApiService: LocationApiService,
   ) { }
 
+  ngOnInit() {
+    this.loadPhysicalAddress();
+    this.loadPostalAddress();
+    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
+    this.initializeEmployeeProfileDto();
+    this.getEmployeeFields();
+  }
 
   initializeForm() {
     this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
       physicalUnitNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       physicalComplexName: [this.employeeProfile!.employeeDetails.physicalAddress?.complexName?.trim(), Validators.required],
       physicalStreetNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      physicalStreetName: [this.employeeProfile!.employeeDetails.physicalAddress?.streetName?.trim(), Validators.required],
       physicalSuburb: [this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict?.trim(), Validators.required],
       physicalCity: [this.employeeProfile!.employeeDetails.physicalAddress?.city?.trim(), Validators.required],
       physicalCountry: [this.employeeProfile!.employeeDetails.physicalAddress?.country?.trim(), Validators.required],
@@ -70,6 +83,7 @@ export class AccordionProfileAddressDetailsComponent {
       postalUnitNumber: [this.employeeProfile!.employeeDetails.postalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       postalComplexName: [this.employeeProfile!.employeeDetails.postalAddress?.complexName?.trim(), Validators.required],
       postalStreetNumber: [this.employeeProfile!.employeeDetails.postalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      postalStreetName: [this.employeeProfile!.employeeDetails.postalAddress?.complexName?.trim(), Validators.required],
       postalSuburb: [this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict?.trim(), Validators.required],
       postalCity: [this.employeeProfile!.employeeDetails.postalAddress?.city?.trim(), Validators.required],
       postalCountry: [this.employeeProfile!.employeeDetails.postalAddress?.country?.trim(), Validators.required],
@@ -89,6 +103,7 @@ export class AccordionProfileAddressDetailsComponent {
         postalUnitNumber: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalUnitNumber')?.value,
         postalComplexName: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalComplexName')?.value,
         postalStreetNumber: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetNumber')?.value,
+        postalStreetName: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetName')?.value,
         postalSuburb: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalSuburb')?.value,
         postalCity: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCity')?.value,
         postalCountry: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCountry')?.value,
@@ -104,6 +119,7 @@ export class AccordionProfileAddressDetailsComponent {
         id: this.employeeProfile!.employeeDetails.physicalAddress?.id!,
         unitNumber: addressDetailFormValue['physicalUnitNumber'],
         complexName: addressDetailFormValue['physicalComplexName'],
+        streetName: addressDetailFormValue['physicalStreetName'],
         streetNumber: addressDetailFormValue['physicalStreetNumber'],
         suburbOrDistrict: addressDetailFormValue['physicalSuburb'],
         city: addressDetailFormValue['physicalCity'],
@@ -117,6 +133,7 @@ export class AccordionProfileAddressDetailsComponent {
         unitNumber: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalUnitNumber'] : addressDetailFormValue['postalUnitNumber'],
         complexName: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalComplexName'] : addressDetailFormValue['postalComplexName'],
         streetNumber: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalStreetNumber'] : addressDetailFormValue['postalStreetNumber'],
+        streetName: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalStreetName'] : addressDetailFormValue['postalStreetName'],
         suburbOrDistrict: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalSuburb'] : addressDetailFormValue['postalSuburb'],
         city: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalCity'] : addressDetailFormValue['postalCity'],
         country: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalCountry'] : addressDetailFormValue['postalCountry'],
@@ -149,6 +166,114 @@ export class AccordionProfileAddressDetailsComponent {
     } else {
       this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
+  }
+
+  loadCountries(): void {
+    this.locationApiService.getCountries().subscribe({
+      next: (data) => this.countries = data
+    });
+  }
+
+  onCountryChange(country: string): void {
+    this.selectedCountry = country;
+    this.loadProvinces(this.selectedCountry);
+    this.provinces= [];
+    this.cities = [];
+  }
+
+  onPostalCountryChange(country: string): void{
+    this.selectedPostalCountry = country;
+    this.loadPostalProvinces(this.selectedPostalProvince);
+    this.postalProvinces= [];
+    this.postalCities = [];
+  }
+
+  loadProvinces(country: string): void {
+    this.locationApiService.getProvinces(this.selectedCountry).subscribe({
+      next: (data) => this.provinces = data
+    });
+  }
+
+  loadPostalProvinces(country: string): void {
+    this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
+      next: (data) => this.postalProvinces = data
+    });
+  }
+
+  loadCities(province: string): void {
+    this.locationApiService.getCities(this.selectedCountry, province).subscribe({
+      next: (data) => this.cities = data,
+    });
+    this.selectedProvince = province;
+  }
+
+  loadPostalCities(province: string): void {
+    this.locationApiService.getCities(this.selectedPostalCountry, province).subscribe({
+      next: (data) => this.postalCities = data,
+    });
+    this.selectedProvince = province;
+  }
+
+  loadPhysicalAddress() {
+    this.locationApiService.getCountries().subscribe({
+      next: (data) => {
+        this.countries = data
+      },
+      error: (error: any) => {
+        this.snackBarService.showSnackbar(error,'Could not load countries')
+      },
+      complete: () => {    
+        this.selectedCountry = this.employeeProfile!.employeeDetails.physicalAddress?.country!
+        this.locationApiService.getProvinces(this.selectedCountry).subscribe({
+          next: (data) => this.provinces = data,
+          error: (error: any) => {
+            this.snackBarService.showSnackbar(error,'Could not load Provinces')
+           },
+          complete: () => {
+            this.selectedProvince = this.employeeProfile!.employeeDetails.physicalAddress?.province!
+            this.locationApiService.getProvinces(this.selectedCountry).subscribe({
+              next: (data) => this.provinces = data,
+              complete: () => {
+                this.locationApiService.getCities(this.selectedCountry, this.selectedProvince).subscribe({
+                  next: (data) => this.cities = data,
+                });
+              }
+            });
+          }
+        })
+      }
+    })
+  }
+
+  loadPostalAddress() {
+    this.locationApiService.getCountries().subscribe({
+      next: (data) => {
+        this.postalCountries = data
+      },
+      error: (error: any) => {
+        this.snackBarService.showSnackbar(error,'Could not load countries')
+      },
+      complete: () => {    
+        this.selectedPostalCountry = this.employeeProfile!.employeeDetails.postalAddress?.country!
+        this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
+          next: (data) => this.postalProvinces = data,
+          error: (error: any) => {
+            this.snackBarService.showSnackbar(error,'Could not load Provinces')
+           },
+          complete: () => {
+            this.selectedPostalProvince = this.employeeProfile!.employeeDetails.postalAddress?.province!
+            this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
+              next: (data) => this.postalProvinces = data,
+              complete: () => {
+                this.locationApiService.getCities(this.selectedPostalCountry, this.selectedPostalProvince).subscribe({
+                  next: (data) => this.postalCities = data,
+                });
+              }
+            });
+          }
+        })
+      }
+    })
   }
 
   getEmployeeData() {
@@ -294,6 +419,7 @@ export class AccordionProfileAddressDetailsComponent {
         id: this.employeeProfile!.employeeDetails.physicalAddress?.id,
         unitNumber: this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber,
         complexName: this.employeeProfile!.employeeDetails.physicalAddress?.complexName,
+        streetName: this.employeeProfile!.employeeDetails.physicalAddress?.streetName,
         streetNumber: this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber,
         suburbOrDistrict: this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict,
         city: this.employeeProfile!.employeeDetails.physicalAddress?.city,
@@ -305,6 +431,7 @@ export class AccordionProfileAddressDetailsComponent {
         id: this.employeeProfile!.employeeDetails.postalAddress?.id,
         unitNumber: this.employeeProfile!.employeeDetails.postalAddress?.unitNumber,
         complexName: this.employeeProfile!.employeeDetails.postalAddress?.complexName,
+        streetName: this.employeeProfile!.employeeDetails.postalAddress?.streetName,
         streetNumber: this.employeeProfile!.employeeDetails.postalAddress?.streetNumber,
         suburbOrDistrict: this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict,
         city: this.employeeProfile!.employeeDetails.postalAddress?.city,
