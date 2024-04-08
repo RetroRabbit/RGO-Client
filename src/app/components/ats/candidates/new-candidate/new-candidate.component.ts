@@ -125,7 +125,7 @@ export class NewCandidateComponent {
   }
 
   goToPreviousPage() {
-    this.router.navigateByUrl(this.cookieService.get(this.PREVIOUS_PAGE));
+    this.router.navigateByUrl('/ats-dashboard');
   }
 
   populateYears() {
@@ -399,9 +399,11 @@ export class NewCandidateComponent {
         next: (data) =>
           this.snackBarService.showSnackbar("Candidate added successfully", "snack-success"),
         error: (error) =>
-          this.snackBarService.showSnackbar(error, "Could not add canididate")
-      });
-      this.router.navigateByUrl(nextPage);
+          this.snackBarService.showSnackbar(error, "Could not add canididate"),
+        complete: () => {
+          this.router.navigateByUrl(nextPage);
+        }
+      })
     }
   }
 
