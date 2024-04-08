@@ -53,6 +53,17 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
+                <mat-label>Personal Email</mat-label>
+                <input matInput type="email" formControlName="personalEmail" />
+                <mat-error *ngIf="newEmployeeForm.controls['personalEmail'].hasError('required')">
+                  Personal email is required
+                </mat-error>
+                <mat-error
+                  *ngIf="newEmployeeForm.controls['personalEmail'].hasError('pattern') && !newEmployeeForm.controls['personalEmail'].hasError('required')">
+                  This is not a valid email
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col-md-12 col-lg-7 mb-3">
                 <mat-label>Work Email</mat-label>
                 <input matInput type="email" formControlName="email" />
                 <mat-error *ngIf="newEmployeeForm.controls['email'].hasError('required')">
