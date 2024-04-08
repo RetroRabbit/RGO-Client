@@ -312,7 +312,7 @@ export class NewCandidateComponent {
   
   validatePortfolioFile(file: File): boolean {
     const allowedTypes = ['application/pdf'];
-    if (file.size > 10 * 1024 * 1024) { 
+    if (file.size > 4194304) { 
       this.isValidPortfolioFileSize = false;
       return false;
     }

@@ -116,8 +116,8 @@
                     <div *ngIf="cvUrl !== ''">
                         <p>Selected CV: {{ cvFilename }}</p>
                     </div>
-                    <p *ngIf="isValidCVFile && isValidCVFileSize" class="col-md-12 col-lg-7">Please upload a PDF</p>
-                    <p *ngIf="isValidCVFile && isValidCVFileSize" class="col-md-12 col-lg-7">10 MB Max limit size</p>
+                    <p *ngIf="isValidCVFileSize" class="col-md-12 col-lg-7">Please upload a PDF</p>
+                    <p *ngIf="isValidCVFileSize" class="col-md-12 col-lg-7">10 MB Max limit size</p>
                     <h3 id="change-color-heading" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7">Unsupported file format :</h3>
                     <p id="change-close-color" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7">The selected file type is not supported. <br> Please upload a PDF</p>
                     <h4 class="col-md-12 col-lg-7 info-text">Portfolio</h4>
@@ -149,8 +149,8 @@
                     <div *ngIf="portfolioUrl!== ''">
                         <p>Selected CV: {{ portfolioFilename }}</p>
                     </div>
-                    <p *ngIf="isValidPortfolioFile && isValidPortfolioFileSize" class="col-md-12 col-lg-7">Please upload a PDF</p>
-                    <p *ngIf="isValidPortfolioFile" class="col-md-12 col-lg-7">10 MB Max limit size</p>
+                    <p *ngIf="isValidPortfolioFileSize" class="col-md-12 col-lg-7">Please upload a PDF</p>
+                    <p *ngIf="isValidPortfolioFileSize" class="col-md-12 col-lg-7">10 MB Max limit size</p>
                     <h3 id="change-color-heading" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">Unsupported file format :</h3>
                     <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">The selected file type is not supported.<br> Please upload a PDF</p>
                     <mat-slide-toggle class="col-md-12 col-lg-7 mb-3" color="primary" id="additionalFieldsToggle" (click)="toggleAdditionalFields()">
