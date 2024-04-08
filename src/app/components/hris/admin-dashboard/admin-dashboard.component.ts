@@ -209,6 +209,9 @@ export class AdminDashboardComponent {
   }
 
   showAddGraphModal() {
+    this.chartNameControl.reset();
+    this.categoryControl.reset();
+    this.typeControl.reset();
     this.dialog.open(this.dialogTemplate, {
       width: '500px',
     });
@@ -444,5 +447,13 @@ export class AdminDashboardComponent {
       this.typeControl.setValue(newSelection);
       this.selectedTypes = newSelection;
     }
+  }
+
+  clearAddGraphFields (){
+    this.typeControl.setValue([]);
+    this.categoryControl.setValue([]);
+    this.chartName = '';
+    this.chartType = '';
+    this.types = [];
   }
 }
