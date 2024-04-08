@@ -109,9 +109,9 @@ export class NewCandidateComponent {
       cvFile: new FormControl<string>(''),
       portfolioLink: new FormControl<string>(''),
       portfolioFile: new FormControl<string>(''),
-      gender: new FormControl<number | null>(null),
+      gender: new FormControl<number>(0, Validators.required),
       idNumber: new FormControl<string>('', [Validators.pattern(this.idPattern)]),
-      referral: new FormControl<number | null>(null),
+      referral: new FormControl<number>(0, Validators.required),
       highestQualification: new FormControl<string>(''),
       school: new FormControl<string>(''),
       endDate: new FormControl<string>(''),
@@ -364,6 +364,7 @@ export class NewCandidateComponent {
 
   saveAndAddAnotherCandidate() {
     this.onSubmitCandidate('/create-candidate');
+    this.newCandidateForm.reset();
   }
 
 
