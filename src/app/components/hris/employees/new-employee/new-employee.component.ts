@@ -9,6 +9,8 @@ import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-typ
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
+import { dietary } from 'src/app/models/hris/constants/dietary.constants';
+import { tshirtSize } from 'src/app/models/hris/constants/tshirt.constants';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
 import { combineLatest, first } from 'rxjs';
 import { countries } from 'src/app/models/hris/constants/countries.constants';
@@ -76,6 +78,8 @@ export class NewEmployeeComponent implements OnInit {
 
   levels: number[] = levels.map((level) => level.value);
   races: string[] = races.map((race) => race.value);
+  tshirtSizes: string[] = tshirtSize.map((size) => size.value);
+  dietaries: string[] = dietary.map((diet) => diet);
   genders: string[] = genders.map((gender) => gender.value);
   countries: string[] = countries
   provinces: string[] = provinces
@@ -112,6 +116,7 @@ export class NewEmployeeComponent implements OnInit {
       suburbDistrict: new FormControl<string | null>('', Validators.minLength(1)),
       city: new FormControl<string | null>('', Validators.minLength(1)),
       streetNumber: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(1), Validators.pattern(/(^\d+$)|(^$)/)]),
+      streetName: new FormControl<string | null>('', Validators.minLength(1)),
       country: new FormControl<string | null>('', Validators.minLength(1)),
       province: new FormControl<string | null>('', Validators.minLength(1)),
       postalCode: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
@@ -132,12 +137,12 @@ export class NewEmployeeComponent implements OnInit {
     terminationDate: new FormControl<Date | string | null>(null),
     reportingLine: new FormControl<EmployeeProfile | null>(null),
     highestQualication: new FormControl<string>(''),
-    disability: new FormControl<boolean | null>(null, [Validators.required]),
+    disability: new FormControl<boolean | null>(false, [Validators.required]),
     disabilityNotes: new FormControl<string>(''),
     countryOfBirth: new FormControl<string>(''),
     nationality: new FormControl<string>(''),
     level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
-    employeeType: new FormControl<{ id: number; name: string } | null>(null, Validators.required),
+    employeeType: new FormControl<{ id: number; name: string } | null>(null),
     name: new FormControl<string>('', [Validators.required,
     Validators.pattern(this.namePattern)]),
     initials: new FormControl<string>('', [Validators.required,
@@ -169,7 +174,10 @@ export class NewEmployeeComponent implements OnInit {
     salary: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
     physicalAddress: new FormControl<EmployeeAddress | null>(null),
     postalAddress: new FormControl<EmployeeAddress | null>(null),
-    peopleChampion: new FormControl<string>('')
+    peopleChampion: new FormControl<string>(''),
+    tShirtSize: new FormControl<number>(-1),
+    dietary: new FormControl<string>(''),
+    allergies: new FormControl<string>('')
   });
 
   settingsForm: FormGroup = new FormGroup({
@@ -357,6 +365,7 @@ export class NewEmployeeComponent implements OnInit {
         suburbDistrict: this.physicalAddress.value.suburbDistrict,
         city: this.physicalAddress.value.city,
         streetNumber: this.physicalAddress.value.streetNumber,
+        streetName: this.physicalAddress.value.streetName,
         country: this.physicalAddress.value.country,
         province: this.physicalAddress.value.province,
         postalCode: this.physicalAddress.value.postalCode,
@@ -406,20 +415,6 @@ export class NewEmployeeComponent implements OnInit {
     if (this.isDirty == true)
       return;
 
-    if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
-      this.newEmployeeEmail = this.newEmployeeForm.value.email;
-    } else {
-      this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
-      this.isLoadingAddEmployee = false;
-      return;
-    }
-    if (this.newEmployeeForm.value.disability !== null && this.newEmployeeForm.value.disability !== undefined) {
-       this.newEmployeeForm.value.disability;
-    } else {
-      this.snackBarService.showSnackbar("Please select a value for disability ", "snack-error");
-      this.isLoadingAddEmployee = false;
-      return;
-    }
     this.newEmployeeForm.patchValue({id: 0});
     this.newEmployeeForm.value.initials = this.newEmployeeForm.value.initials?.toUpperCase();
     this.newEmployeeForm.value.cellphoneNo =
