@@ -1,4 +1,4 @@
-<!-- <div id="chart-container" *ngIf="showUpdateForm">
+<div id="chart-container" *ngIf="showUpdateForm">
   <div class="row pt-3">
     <div class="col-12" style="max-height: 50vh;">
       <div id="edit-chart-container">
@@ -73,16 +73,11 @@
     <hr>
     <div id="chart-body" class="row pb-2"  >
       <div id="canvas-container">
-        <canvas  [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart  [datasets]='chartCanvasArray[i]'
-          [labels]="chart.type == 'bar'? chart.dataTypes : chart.labels" [type]="chart.type" [options]="getChartOptions(chart.type)"></canvas>
-        
+        <!-- <canvas  [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart  [datasets]='chartCanvasArray[i]'
+          [labels]="chart.type == 'bar'? chart.dataTypes : chart.labels" [type]="chart.type" [options]="getChartOptions(chart.type)"></canvas> -->
+          <canvas  [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart  [datasets]='chart.datasets'
+          [labels]="chart.type == 'bar'? chart.labels : chart.labels" [type]="chart.type" [options]="getChartOptions(chart.type)"></canvas>
         </div>
     </div>
   </div>
-</div> -->
-
-
-
-<div style="width: 800px; height: 400px;">
-  <canvas id="canvasDummy"></canvas>
 </div>

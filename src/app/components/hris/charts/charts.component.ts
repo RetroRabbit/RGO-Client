@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { ChartData } from 'src/app/models/hris/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
@@ -15,6 +15,7 @@ import { EmployeeService } from 'src/app/services/hris/employee/employee.service
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { Chart, ChartDataset, ChartOptions } from 'chart.js';
+import { ChartDataConstant} from 'src/app/models/hris/constants/chartData.constants';
 
 @Component({
   selector: 'app-chart',
@@ -41,6 +42,13 @@ export class ChartComponent implements OnInit {
   coloursArray: string[] = colours;
   chartCanvasArray: any[] = [];
 
+
+
+  chartDataArray: any[] = [];
+
+
+  graphsForDisplay: any[] = [];
+
   screenWidth: number = 767;
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -58,7 +66,6 @@ export class ChartComponent implements OnInit {
   }
 
   public barChartOptions: ChartConfiguration['options'] = {
-    events: [],
     responsive: true,
     scales: {
       x: {},
@@ -90,7 +97,6 @@ export class ChartComponent implements OnInit {
       datalabels: {
         anchor: 'middle',
         align: 'center',
-        color: ['white', 'white', 'black', 'black', 'white', 'white'],
       } as any,
     },
 
@@ -149,54 +155,6 @@ export class ChartComponent implements OnInit {
   ngOnInit(): void {
     this.fetchPeopleChampionEmployees();
     this.getNumberOfEmployees();
-
-    
-    const data = {
-      labels: ['Black', 'White', 'Coloured', 'Indian'],
-      type: 'bar',
-      datasets: [
-        {
-          label: 'Developer',
-          data: [10, 20, 15, 25], 
-          backgroundColor: 'rgba(255, 99, 132, 0.5)', 
-        },
-        {
-          label: 'Designer',
-          data: [15, 10, 20, 30],
-          backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        },
-        {
-          label: 'Scrum Master',
-          data: [5, 15, 10, 20],
-          backgroundColor: 'rgba(255, 206, 86, 0.5)',
-        },
-        {
-          label: 'Support',
-          data: [20, 25, 30, 35],
-          backgroundColor: 'rgba(75, 192, 192, 0.5)',
-        }
-      ]
-    };
-
-    let chartsData = [];
-    chartsData.push(data);
-    chartsData.push(data);
-
-
-    this.chart = new Chart('canvasDummy', {
-      type: 'bar',
-      data: data,
-      options: {
-        scales: {
-          x: {
-            stacked: false
-          },
-          y: {
-            stacked: false
-          }
-        }
-      }
-    });
   }
 
   createAndDisplayChart(): void {
@@ -207,6 +165,7 @@ export class ChartComponent implements OnInit {
           this.populateCanvasCharts();
           this.displayChart = true;
           this.selectedChartType = this.chartData[0].type;
+          console.log(this.chartData)
         } else {
           this.chartData = [];
           this.displayChart = false;
@@ -250,7 +209,6 @@ export class ChartComponent implements OnInit {
   }
 
   updateChart(): void {
-
     if (this.activeChart) {
       const updatedChart: ChartData = {
         ...this.activeChart,
@@ -326,7 +284,10 @@ export class ChartComponent implements OnInit {
   }
 
   populateCanvasCharts() {
+    this.chartData = ChartDataConstant;
+    console.log(this.chartData);
     this.chartCanvasArray = [];
+    this.chartCanvasArray.push()
     for (let i = 0; i < this.chartData.length; i++) {
       let dataset = [];
 
@@ -352,6 +313,9 @@ export class ChartComponent implements OnInit {
       }
       this.chartCanvasArray.push(dataset);
     }
+
+    console.log(this.chartCanvasArray);
+    console.log(this.chartData);
   }
 
   pdfPreview(index: number) {
