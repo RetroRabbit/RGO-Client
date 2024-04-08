@@ -341,6 +341,7 @@ export class NewCandidateComponent {
     this.portfolioFilename = '';
     this.isValidPortfolioFile = true;
     this.portfolioFileUploaded = false;
+    this.isValidPortfolioFileSize = true;
     const uploadCVInputElement = document.getElementById('uploadPortfolioFile') as HTMLInputElement;
     if (uploadCVInputElement) {
       uploadCVInputElement.value = '';
