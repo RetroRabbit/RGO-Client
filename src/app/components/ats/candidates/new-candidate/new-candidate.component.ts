@@ -310,7 +310,6 @@ export class NewCandidateComponent {
     return true;
   }
   
-
   validatePortfolioFile(file: File): boolean {
     const allowedTypes = ['application/pdf'];
     if (file.size > 10 * 1024 * 1024) { 
@@ -324,7 +323,6 @@ export class NewCandidateComponent {
     this.isValidPortfolioFileSize = true;
     return true;
   }
-  
   
   clearCVFileUpload() {
     this.cvFilename = '';
