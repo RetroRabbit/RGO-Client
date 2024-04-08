@@ -329,9 +329,10 @@ export class EmployeeProfileComponent implements OnChanges {
     } else if (this.employeeProfile && this.employeeProfile.email) {
       emailToCopy = this.employeeProfile.email;
     } else {
-      this.snackBar.showSnackbar("No email address available to copy");
+      this.snackBarService.showSnackbar("No email address available to copy", "snack-error");
       return;
     }
     this.clipboard.copy(emailToCopy);
+    this.snackBarService.showSnackbar("Email copied to clipboard", "snack-success");
   }
 }
