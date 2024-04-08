@@ -447,9 +447,11 @@ export class AdminDashboardComponent {
   }
 
   clearAddGraphFields (){
-    this.selectedCategories = [];
-    this.selectedTypes = [];
+    this.typeControl.setValue([]);
+    this.categoryControl.setValue([]);
     this.chartName = '';
     this.chartType = '';
+    this.types = [];
+    console.log()
   }
 }
