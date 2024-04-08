@@ -302,7 +302,7 @@ export class NewCandidateComponent {
       this.isValidCVFile = false;
       return false;
     }
-    if (file.size > 4194304) { 
+    if (file.size > 10 * 1024 * 1024) { 
       this.isValidCVFileSize = false;
       return false;
     }
@@ -312,7 +312,7 @@ export class NewCandidateComponent {
   
   validatePortfolioFile(file: File): boolean {
     const allowedTypes = ['application/pdf'];
-    if (file.size > 4194304) { 
+    if (file.size > 10 * 1024 * 1024) { 
       this.isValidPortfolioFileSize = false;
       return false;
     }
