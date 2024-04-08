@@ -92,7 +92,7 @@ export class NewCandidateComponent {
   getAllEmployees() {
     this.employeeService.getAll().subscribe({
       next: data => this.allEmployees = data,
-      error: error => this.snackBarService.showSnackbar(error, "error")
+      error: error => this.snackBarService.showSnackbar(error, "Could not get all employees")
     })
   }
 
@@ -109,9 +109,9 @@ export class NewCandidateComponent {
       cvFile: new FormControl<string>(''),
       portfolioLink: new FormControl<string>(''),
       portfolioFile: new FormControl<string>(''),
-      gender: new FormControl<number | null>(null),
+      gender: new FormControl<number>(0, Validators.required),
       idNumber: new FormControl<string>('', [Validators.pattern(this.idPattern)]),
-      referral: new FormControl<number | null>(null),
+      referral: new FormControl<number>(0, Validators.required),
       highestQualification: new FormControl<string>(''),
       school: new FormControl<string>(''),
       endDate: new FormControl<string>(''),
@@ -125,7 +125,7 @@ export class NewCandidateComponent {
   }
 
   goToPreviousPage() {
-    this.router.navigateByUrl(this.cookieService.get(this.PREVIOUS_PAGE));
+    this.router.navigateByUrl('/ats-dashboard');
   }
 
   populateYears() {
@@ -364,6 +364,7 @@ export class NewCandidateComponent {
 
   saveAndAddAnotherCandidate() {
     this.onSubmitCandidate('/create-candidate');
+    this.newCandidateForm.reset();
   }
 
 
@@ -399,8 +400,11 @@ export class NewCandidateComponent {
         next: (data) =>
           this.snackBarService.showSnackbar("Candidate added successfully", "snack-success"),
         error: (error) =>
-          this.snackBarService.showSnackbar(error, "snack-error")
-      });
+          this.snackBarService.showSnackbar(error, "Could not add canididate"),
+        complete: () => {
+          this.router.navigateByUrl(nextPage);
+        }
+      })
     }
   }
 
