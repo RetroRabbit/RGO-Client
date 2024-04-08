@@ -5,9 +5,7 @@ import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
-import { countries } from 'src/app/models/hris/constants/countries.constants';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
-import { provinces } from 'src/app/models/hris/constants/provinces.constants';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
@@ -66,13 +64,9 @@ export class SharedAccordionFunctionality {
   genders = genders;
   races = races;
   levels = levels;
-  countries = countries;
   disabilities = disabilities;
-  provinces = provinces;
   category = category;
   fieldTypes = dataTypes;
-
-  filteredCountries: any[] = this.countries.slice();
   usingProfile: boolean = true;
 
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
