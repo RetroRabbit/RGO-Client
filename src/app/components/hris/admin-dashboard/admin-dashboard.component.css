@@ -84,11 +84,11 @@
 
 #back-button {
   color: var(--m-3-sys-light-primary, #0029C6);
-  margin-left: 40px;
+  /* margin-left: 30px; */
   margin-right: 2px;
   min-width: 48px !important;
   justify-content: end;
-  /* padding-left: 40px; */
+  padding-left: 30px;
 }
 
 span.mat-mdc-button-touch-target {
