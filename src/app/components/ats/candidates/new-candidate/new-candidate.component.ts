@@ -92,7 +92,7 @@ export class NewCandidateComponent {
   getAllEmployees() {
     this.employeeService.getAll().subscribe({
       next: data => this.allEmployees = data,
-      error: error => this.snackBarService.showSnackbar(error, "error")
+      error: error => this.snackBarService.showSnackbar(error, "Could not get all employees")
     })
   }
 
@@ -399,8 +399,9 @@ export class NewCandidateComponent {
         next: (data) =>
           this.snackBarService.showSnackbar("Candidate added successfully", "snack-success"),
         error: (error) =>
-          this.snackBarService.showSnackbar(error, "snack-error")
+          this.snackBarService.showSnackbar(error, "Could not add canididate")
       });
+      this.router.navigateByUrl(nextPage);
     }
   }
 
