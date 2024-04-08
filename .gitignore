@@ -46,3 +46,4 @@ Frontend/RGO-Frontend/.vscode/*
 .DS_Store
 Thumbs.db
 .env
+/.vs
