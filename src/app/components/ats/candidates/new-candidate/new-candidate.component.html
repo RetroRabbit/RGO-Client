@@ -63,8 +63,7 @@
                         <p *ngIf="candidateWarning">This candidate has recieved a warning in the system</p>
                     </div>
                 </div>
-                <!-- *ngIf="isValidEmail && !isBlacklisted && !candidateExists && !candidateWarning" -->
-                <div 
+                <div *ngIf="isValidEmail && !isBlacklisted && !candidateExists && !candidateWarning" 
                     class="row col-md-12 flex-column justify-content-center align-items-center">
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Contact number</mat-label>
