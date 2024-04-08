@@ -60,6 +60,8 @@ export class NewCandidateComponent {
   PREVIOUS_PAGE = 'previousPage';
   isValidEmail = false;
   isValidCVFile = true;
+  isValidCVFileSize = true;
+  isValidPortfolioFileSize = true;
   isValidProfileImage = true;
   isValidPortfolioFile = true;
   isBlacklisted = false;
@@ -260,9 +262,7 @@ export class NewCandidateComponent {
         } else {
         }
       },
-      error: (err) => {
-        this.snackBarService.showSnackbar("Failed to fetch candidates.", "snack-error");
-      }
+      error: (err) => {}
     });
   }
 
@@ -298,28 +298,39 @@ export class NewCandidateComponent {
 
   validateCVFile(file: File): boolean {
     const allowedTypes = ['application/pdf'];
-    if (file.size > 4194304 || !allowedTypes.includes(file.type)) {
+    if (!allowedTypes.includes(file.type)) {
       this.isValidCVFile = false;
       return false;
-    } else {
-      return true;
     }
+    if (file.size > 4194304) { 
+      this.isValidCVFileSize = false;
+      return false;
+    }
+    this.isValidCVFileSize = true;
+    return true;
   }
+  
 
   validatePortfolioFile(file: File): boolean {
     const allowedTypes = ['application/pdf'];
-    if (file.size > 4194304 || !allowedTypes.includes(file.type)) {
+    if (file.size > 10 * 1024 * 1024) { 
+      this.isValidPortfolioFileSize = false;
+      return false;
+    }
+    if (!allowedTypes.includes(file.type)) {
       this.isValidPortfolioFile = false;
       return false;
-    } else {
-      return true;
     }
+    this.isValidPortfolioFileSize = true;
+    return true;
   }
-
+  
+  
   clearCVFileUpload() {
     this.cvFilename = '';
     this.isValidCVFile = true;
     this.cvFileUploaded = false;
+    this.isValidCVFileSize = true;
     const uploadCVInputElement = document.getElementById('uploadCVFile') as HTMLInputElement;
     if (uploadCVInputElement) {
       uploadCVInputElement.value = '';
