@@ -68,7 +68,10 @@
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Contact number</mat-label>
                         <input matInput type="text" formControlName="cellphoneNumber" pattern="^\+27\d{9}$"
-                            placeholder="+27XXXXXXXXX" />
+                            placeholder="+27 XXXXXXXXX" />
+                            <mat-error *ngIf="newCandidateForm.controls['cellphoneNumber'].hasError('required')">
+                                Please enter a valid Cellphone number
+                            </mat-error>
                     </mat-form-field>
                     <mat-radio-group formControlName="jobPosition" class="col-md-12 col-lg-7 my-2 info-text">
                         <p class="col-md-12 col-lg-7 info-text">Role:</p>
@@ -146,10 +149,13 @@
                     <div *ngIf="additionalFieldsVisible"
                         class="row col-md-12 flex-column justify-content-center align-items-center">
                         <mat-radio-group formControlName="gender" class="col-md-12 col-lg-7 my-2 info-text">
-                            <p class="col-md-12 col-lg-7 info-text">Gender:</p>
+                            <p class="col-md-12 col-lg-7 info-text">Gender:*</p>
                             <mat-radio-button [value]=0>Unclassified</mat-radio-button> <br />
                             <mat-radio-button [value]=1>Male</mat-radio-button> <br />
                             <mat-radio-button [value]=2>Female</mat-radio-button> <br />
+                            <mat-error *ngIf="newCandidateForm.controls['gender'].hasError('required')">
+                                Gender is required
+                            </mat-error>
                         </mat-radio-group>
                         <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
                             <mat-label>Race</mat-label>
@@ -161,15 +167,17 @@
                             <mat-label>ID Number/ Passport</mat-label>
                             <input matInput type="text" formControlName="idNumber" />
                         </mat-form-field>
-                        <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
-                            <mat-label>Referral</mat-label>
-                            <input matInput placeholder="Referral" [formControl]="searchControl"
-                                [matAutocomplete]="auto">
+                        <mat-form-field appearance="outline" class="col-lg-7 col-md-12" >
+                            <mat-label>Referral*</mat-label>
+                            <input matInput placeholder="Referral" [formControl]="searchControl" [matAutocomplete]="auto">
                             <mat-autocomplete #auto="matAutocomplete">
                                 <mat-option *ngFor="let employee of allEmployees" [value]='employee.name + " " + employee.surname'
                                     (onSelectionChange)="showSelectedReferral($event)">{{ employee.name }} {{ employee.surname}} 
                                 </mat-option>
                             </mat-autocomplete>
+                            <mat-error *ngIf="newCandidateForm.controls['referral'].hasError('required')">
+                                Referral is required
+                            </mat-error>
                         </mat-form-field>
                         <h4 class="col-md-12 col-lg-7 mb-2 info-text">Qualifications</h4>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
