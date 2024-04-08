@@ -139,12 +139,11 @@ mat-header-row {
     background-color: #d7dfffff;
 }
 
-#paginator-text {
-  font-size: var(--font-size-2);
-  line-height: 24px;
-  letter-spacing: .15px;
-  word-wrap: break-word;
-  height: inherit;
+#paginator-text mat-form-field {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 #paginator-text .mat-form-field-wrapper {
