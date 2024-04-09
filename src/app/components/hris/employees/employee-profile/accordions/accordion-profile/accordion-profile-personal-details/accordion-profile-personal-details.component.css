@@ -1,3 +1,11 @@
 :host .disability-description {
     min-height: 230px;
 }
+
+#edit-button-width {
+    border: none;
+    border-radius: 2rem;
+    background-color: #D7DFFF;
+    color: #0029C6;
+    width: 170px;
+}
