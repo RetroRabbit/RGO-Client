@@ -195,7 +195,7 @@
         </mat-menu>
       </div>
       <div class="col-auto ms-4" id="employee-info">
-        <div *ngIf="isLoading; else ProfileNameSurname" id="loader-styling">
+        <div *ngIf="isLoading; else ProfileNameSurname" id="employee-info">
           <ngx-skeleton-loader appearance="line" count="1" [theme]="{color: '#E0E0E0', borderRadius: '4px'}"></ngx-skeleton-loader>
         </div>
         <ng-template #ProfileNameSurname>
