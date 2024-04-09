@@ -105,7 +105,7 @@
                         *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput"
                         type="text" placeholder="" matInput formControlName="teamLead" [matAutocomplete]="autoLead"
                         (input)="filterEmployees($event)">
-                      <mat-option *ngFor="let employee of sharedAccordionFunctionality.filteredEmployees" id="checkboxDisable"
+                      <mat-option *ngFor="let employee of sharedAccordionFunctionality.filteredEmployees"
                         [value]="employee.name + ' ' + employee.surname"
                         (onSelectionChange)="getId(employee, 'teamLead')">
                         {{ employee.name }} {{ employee.surname }}
@@ -125,7 +125,7 @@
                       type="text" placeholder="" matInput formControlName="peopleChampion"
                       [matAutocomplete]="autoChampion" (input)="filterChampions($event)">
                     <mat-autocomplete #autoChampion="matAutocomplete">
-                      <mat-option class="checkboxDisable" *ngFor="let peopleChampion of sharedAccordionFunctionality.filteredPeopleChamps"
+                      <mat-option *ngFor="let peopleChampion of sharedAccordionFunctionality.filteredPeopleChamps"
                         [value]="peopleChampion.name + ' ' + peopleChampion.surname"
                         (onSelectionChange)="getId(peopleChampion, 'champion')">
                         {{ peopleChampion.name }}
