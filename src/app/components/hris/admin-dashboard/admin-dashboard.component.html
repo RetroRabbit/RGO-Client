@@ -13,7 +13,7 @@
         <div *ngIf="!isLoading" class=""
           [ngClass]="searchQuery.length >= 3 && searchResults.length !== 0 ? ' searchbar active' : 'searchbar'">
           <div id="leading-icon" *ngIf="searchQuery === ''"></div>
-          <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button" width>
+          <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
             <mat-icon>arrow_back</mat-icon>
           </button>
           <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
