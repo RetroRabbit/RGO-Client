@@ -90,10 +90,6 @@
   padding-left: 20px;
 }
 
-span.mat-mdc-button-touch-target {
-  width: 48px !important;
-}
-
 #employee-search:focus {
   background: transparent;
   border: 0px;
