@@ -194,7 +194,7 @@
           </button>
         </mat-menu>
       </div>
-      <div class="col-auto ms-4" id="employee-info" style="height: 18px; display: flex; flex-direction: column;">
+      <div class="col-auto ms-4" id="employee-info">
         <div *ngIf="isLoading; else ProfileNameSurname" id="loader-style">
           <ngx-skeleton-loader appearance="line" count="1" [theme]="{color: '#E0E0E0', borderRadius: '4px'}"></ngx-skeleton-loader>
         </div>
