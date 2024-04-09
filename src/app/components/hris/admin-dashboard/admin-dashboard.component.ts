@@ -29,7 +29,7 @@ export class AdminDashboardComponent {
   chartNameControl = new FormControl('', [
     Validators.required, Validators.minLength(5)
   ]);
-  
+
   @ViewChild('dialogTemplate', { static: true })
   dialogTemplate!: TemplateRef<any>;
   @ViewChild(MatSort) sort!: MatSort;
@@ -41,6 +41,7 @@ export class AdminDashboardComponent {
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
     this.screenWidth = window.innerWidth;
+    this.setSvgWidth();
   }
 
   categoryControl = new FormControl();
@@ -65,7 +66,7 @@ export class AdminDashboardComponent {
   allFlag: boolean = false;
   isLoading: boolean = true;
   isLoadingChart: boolean = false;
-
+  svgWidth: number = 500;
   PREVIOUS_PAGE: string = 'previousPage';
 
   employeeCount: EmployeeCountDataCard = new EmployeeCountDataCard();
@@ -105,6 +106,14 @@ export class AdminDashboardComponent {
       this.authAccessService.isTalent() ||
       this.authAccessService.isJourney()) {
       this.configureDashboardData();
+    }
+  }
+
+  setSvgWidth() : number {
+    if (this.screenWidth <= 500) {
+      return this.svgWidth = 265;
+    } else {
+      return this.svgWidth = 500;
     }
   }
 
