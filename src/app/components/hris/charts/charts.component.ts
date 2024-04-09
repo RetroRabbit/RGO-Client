@@ -15,7 +15,7 @@ import { EmployeeService } from 'src/app/services/hris/employee/employee.service
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { Chart, ChartDataset, ChartOptions } from 'chart.js';
-import { ChartDataConstant} from 'src/app/models/hris/constants/chartData.constants';
+import { ChartDataConstant } from 'src/app/models/hris/constants/chartData.constants';
 
 @Component({
   selector: 'app-chart',
@@ -124,9 +124,9 @@ export class ChartComponent implements OnInit {
   };
 
   getChartOptions(chartType: string) {
-  if(chartType == 'bar'){
+    if (chartType == 'bar') {
       return this.barChartOptions;
-    }else{
+    } else {
       return this.pieChartOptions;
     }
   }
@@ -295,7 +295,7 @@ export class ChartComponent implements OnInit {
         const labelsArray: string[] = this.chartData[i].labels.map((label: string) => this.getEmployeeName(label));
         this.chartData[i].labels = labelsArray;
         dataset.push({
-          data: this.chartData[i].data,
+          data: this.chartData[i].dataSet[0],
           labels: labelsArray,
           backgroundColor: this.coloursArray
         });
@@ -303,7 +303,7 @@ export class ChartComponent implements OnInit {
         if (this.chartData[i].labels) {
           for (let j = 0; j < this.chartData[i].labels.length; j++) {
             dataset.push({
-              data: [this.chartData[i].data[j]],
+              data: [this.chartData[i].dataSet[0].data[j]],
               label: this.getEmployeeName(this.chartData[i].labels[j]),
               backgroundColor: this.coloursArray[j],
               borderColor: this.coloursArray[j],
