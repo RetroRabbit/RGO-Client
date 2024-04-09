@@ -74,6 +74,7 @@ export class ViewEmployeeComponent {
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
   currentUserTypeFilter: GenericDropDownObject = new GenericDropDownObject;
 
+  defaultPageSize : number = 10
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
     this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
@@ -190,7 +191,7 @@ export class ViewEmployeeComponent {
     this.ngZone.run(() => {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-      this.paginator._changePageSize(10);
+      this.paginator._changePageSize(this.defaultPageSize);
     });
     this.dataSource._updateChangeSubscription();
   }
