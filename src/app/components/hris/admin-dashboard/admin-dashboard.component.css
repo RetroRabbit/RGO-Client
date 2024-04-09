@@ -62,6 +62,7 @@
 
 #employee-search::placeholder {
   border: 0px;
+  margin-left: 20px;
   color: var(--m-3-sys-light-primary, #0029c6);
 }
 
@@ -83,8 +84,10 @@
 
 #back-button {
   color: var(--m-3-sys-light-primary, #0029C6);
-  margin-left: 2px;
   margin-right: 2px;
+  min-width: 48px !important;
+  justify-content: end;
+  padding-left: 20px;
 }
 
 #employee-search:focus {
@@ -197,8 +200,7 @@ div#results-container {
   min-height: 88px;
   flex-direction: column;
   margin: 0px 0px 0px 0px;
-  margin-top: -24px;
-  margin-left: 12px;
+  margin-left: 25px;
 }
 
 #search-results>div {
@@ -237,7 +239,7 @@ div#results-container {
   box-shadow: 0px 2px 3px 1px rgba(0, 0, 0, 0.15);
 
   margin-top: 16px;
-  margin-left: 12px;
+  margin-left: 25px;
 }
 
 .view-divider {
