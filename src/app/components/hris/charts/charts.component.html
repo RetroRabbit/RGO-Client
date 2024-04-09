@@ -22,7 +22,6 @@
             <mat-radio-group aria-label="Chart Type" [(ngModel)]="updateFormData.type">
               <mat-radio-button value='bar'>Bar</mat-radio-button>
               <mat-radio-button value='pie'>Pie</mat-radio-button>
-              <mat-radio-button value='stacked'>Stacked</mat-radio-button>
             </mat-radio-group>
           </div>
           <div class="col-12 mt-3 justify-content" id="edit-controls">
@@ -73,13 +72,11 @@
     </div>
     <hr>
     <div id="chart-body" class="row pb-2"  >
-      <div id="canvas-container" *ngIf="chart.type != 'stacked'">
-        <canvas  [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart  [datasets]='chartCanvasArray[i]'
+      <div id="canvas-container">
+        <canvas *ngIf="chart.datasets == [] || chart.datasets == undefined" [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart  [datasets]='chartCanvasArray[i]'
           [labels]="chart.type == 'bar'? chart.dataTypes : chart.labels" [type]="chart.type" [options]="getChartOptions(chart.type)"></canvas>
-          </div>
-        <div id="canvas-container" *ngIf="chart.type == 'stacked'">
-            <canvas [plugins]="stackedChartPlugins" baseChart  [datasets]='chart.datasets'
-            [labels]="chart.labels" [type]="chart.type" [options]="getChartOptions(chart.type)"></canvas>
+          <canvas *ngIf="chart.datasets != [] && chart.datasets != undefined" [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart  [datasets]='chart.datasets'
+          [labels]="chart.type == 'bar'? chart.labels : chart.labels" [type]="chart.type" [options]="getChartOptions(chart.type)"></canvas>
           </div>
     </div>
   </div>

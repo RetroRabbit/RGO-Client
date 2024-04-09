@@ -43,12 +43,6 @@ export class ChartComponent implements OnInit {
   chartCanvasArray: any[] = [];
 
 
-
-  chartDataArray: any[] = [];
-
-
-  graphsForDisplay: any[] = [];
-
   screenWidth: number = 767;
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -57,7 +51,6 @@ export class ChartComponent implements OnInit {
 
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
-  public stackedChartPlugins = [ChartDataLabels];
 
   selectedChartIndex: number = -1;
   constructor(private chartService: ChartService, private cookieService: CookieService, public dialog: MatDialog, private renderer: Renderer2,
@@ -67,43 +60,7 @@ export class ChartComponent implements OnInit {
   }
 
   public barChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
-    scales: {
-      x: {},
-      y: {
-        display: true,
-        title: {
-          display: true,
-          text: 'Employees',
-          color: '#black',
-          font: {
-            family: 'Roboto',
-            size: 14,
-            style: 'normal',
-            lineHeight: 1.2
-          },
-        }
-      }
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'bottom',
-        labels: {
-          font: {
-            size: 14
-          }
-        }
-      },
-      datalabels: {
-        anchor: 'middle',
-        align: 'center',
-      } as any,
-    },
-
-  };
-
-  public stackedChartOptions: ChartConfiguration['options'] = {
+    events: [],
     responsive: true,
     scales: {
       x: {},
@@ -167,9 +124,7 @@ export class ChartComponent implements OnInit {
   };
 
   getChartOptions(chartType: string) {
-    if(chartType == 'stacked'){
-      return this.stackedChartOptions;
-    }else if(chartType == 'bar'){
+  if(chartType == 'bar'){
       return this.barChartOptions;
     }else{
       return this.pieChartOptions;
@@ -328,7 +283,7 @@ export class ChartComponent implements OnInit {
   }
 
   populateCanvasCharts() {
-    // this.chartData = ChartDataConstant;
+    //this.chartData = ChartDataConstant;
     console.log(this.chartData);
     this.chartData.push(ChartDataConstant[1])
     this.chartCanvasArray = [];

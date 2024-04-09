@@ -1,7 +1,7 @@
 export const ChartDataConstant = [
     {
         labels: ['Black', 'White', 'Coloured', 'Indian'],
-        type: 'stacked',
+        type: 'bar',
         name: 'Race',
         datasets: [
           {
@@ -24,7 +24,7 @@ export const ChartDataConstant = [
       },
       {
         labels: ['Ashleigh', 'Mandy', 'Lebo'],
-        type: 'stacked',
+        type: 'bar',
         name: 'People Champion',
         datasets: [
           {
