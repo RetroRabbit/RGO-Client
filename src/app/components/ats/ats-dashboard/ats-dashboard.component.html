@@ -1,15 +1,69 @@
-<div style="height: 1000px; width: 100%; margin: auto; background-color: #D7DFFF;">
-    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
-      'background-color': '#D7DFFF',
-      'border': '2px solid #D7DFFF',
-      'border-radius': '2rem',
-      'height': '0px',
-      'width': '0%'
-    }">
-    </ngx-skeleton-loader>
-    <div id="new-candidate" class="d-sm-flex justify-content-sm-center">
-        <button class="my-4" (click)="AddCandidate()"
-          *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">+ Add Candidate
-        </button>
+<div class="container">
+  <main class="container-fluid">
+    <div class="mt-4 mt-lg-5 mb-4 mx-0 px-0">
+      <div style="height: 1000px; width: 100%; margin: auto;">
+        <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
+            'background-color': '#D7DFFF',
+            'border': '2px solid #D7DFFF',
+            'border-radius': '2rem',
+            'height': '0px',
+            'width': '0%'
+          }">
+        </ngx-skeleton-loader>
+        <div id="new-candidate" class="d-sm-flex justify-content-sm-center">
+          <button class="mb-4 add-candidate-spacing" (click)="AddCandidate()"
+            *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()">
+            + Add Candidate
+          </button>
+        </div>
+        <div class="row">
+          <div class="card px-0">
+            <div class="table-responsive p-0 m-0">
+              <mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="Name">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Name</mat-header-cell>
+                  <mat-cell *matCellDef="let candidate">
+                    {{ candidate.name }}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Surname">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                    class="boldArrow d-none d-md-flex">Surname</mat-header-cell>
+                  <mat-cell *matCellDef="let candidate" class="d-none d-md-flex">
+                    {{ candidate.surname }}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Email">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                    class="boldArrow d-none d-md-flex">Email</mat-header-cell>
+                  <mat-cell *matCellDef="let candidate" class="d-none d-md-flex">
+                    {{ candidate.personalEmail }}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Role">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header
+                    class="boldArrow d-none d-md-flex">Role</mat-header-cell>
+                  <mat-cell *matCellDef="let candidate" class="d-none d-md-flex">
+                    {{ getCandidateRole(candidate.jobPosition) }}
+                  </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row class="rows" [ngStyle]="{'width': screenWidth < 992 ? '100%' : '98%'}"
+                  *matRowDef="let row; columns: displayedColumns"></mat-row>
+              </mat-table>
+              <mat-paginator hidden></mat-paginator>
+            </div>
+            <div *ngIf="!isLoading && dataSource.filteredData.length <= 0"
+              class="d-flex flex-row justify-content-center align-items-center">
+              <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
+              <span id="noResults" class="col-6 d-flex flex-column justify-content-center align-items-center">
+                <h1>Oops!</h1>
+                <h2>No results on your search</h2>
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+  </main>
 </div>
