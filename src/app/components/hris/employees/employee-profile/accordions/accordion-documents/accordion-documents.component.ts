@@ -159,7 +159,6 @@ export class AccordionDocumentsComponent {
         status: 1,
         counterSign: false
       }
-      console.log(updatedDocument);
       this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
         next: () => {
           this.isLoadingUpload = false;

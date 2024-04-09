@@ -15,6 +15,8 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-accordion-profile-employee-details',
@@ -47,7 +49,8 @@ export class AccordionProfileEmployeeDetailsComponent {
     private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) {
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    private navService: NavService) {
   }
 
   ngOnInit() {
@@ -242,6 +245,7 @@ export class AccordionProfileEmployeeDetailsComponent {
           this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.peopleChampion)[0];
           this.sharedAccordionFunctionality.editEmployee = false;
           this.sharedAccordionFunctionality.employeeDetailsForm.disable();
+          this.navService.refreshEmployee();
         },
       });
     }
