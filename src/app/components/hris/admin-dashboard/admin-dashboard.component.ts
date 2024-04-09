@@ -41,7 +41,6 @@ export class AdminDashboardComponent {
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
     this.screenWidth = window.innerWidth;
-    this.setSvgWidth();
   }
 
   categoryControl = new FormControl();
@@ -107,10 +106,11 @@ export class AdminDashboardComponent {
       this.authAccessService.isJourney()) {
       this.configureDashboardData();
     }
+    this.setSvgWidth();
   }
 
   setSvgWidth() : number {
-    if (this.screenWidth <= 500) {
+    if (this.screenWidth < 768) {
       return this.svgWidth = 265;
     } else {
       return this.svgWidth = 500;
