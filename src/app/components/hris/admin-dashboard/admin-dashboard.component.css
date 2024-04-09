@@ -62,6 +62,7 @@
 
 #employee-search::placeholder {
   border: 0px;
+  margin-left: 20px;
   color: var(--m-3-sys-light-primary, #0029c6);
 }
 
@@ -83,8 +84,10 @@
 
 #back-button {
   color: var(--m-3-sys-light-primary, #0029C6);
-  margin-left: 2px;
   margin-right: 2px;
+  min-width: 48px !important;
+  justify-content: end;
+  padding-left: 20px;
 }
 
 #employee-search:focus {
