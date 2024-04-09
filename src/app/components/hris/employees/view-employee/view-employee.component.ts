@@ -190,6 +190,7 @@ export class ViewEmployeeComponent {
     this.ngZone.run(() => {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      this.paginator._changePageSize(10);
     });
     this.dataSource._updateChangeSubscription();
   }
