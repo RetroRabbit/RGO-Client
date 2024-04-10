@@ -237,14 +237,14 @@
                       </mat-select>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class=" mt-2">
-                      <mat-label>City/Town</mat-label>
-                      <input matInput type="text" formControlName="city" />
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class=" mt-2">
                       <mat-label>Suburb/District</mat-label>
                       <mat-select formControlName="suburbDistrict" hideSingleSelectionIndicator="true">
                         <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
                       </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class=" mt-2">
+                      <mat-label>City/Town</mat-label>
+                      <input matInput type="text" formControlName="city" />
                     </mat-form-field>
                     <mat-form-field appearance="outline" class=" mt-2">
                       <mat-label>Unit Number</mat-label>
@@ -304,14 +304,14 @@
                       </mat-select>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class=" mt-2">
-                      <mat-label>City/Town</mat-label>
-                      <input matInput type="text" formControlName="city" />
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class=" mt-2">
                       <mat-label>Suburb/District</mat-label>
                       <mat-select formControlName="suburbDistrict" hideSingleSelectionIndicator="true">
                         <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
                       </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class=" mt-2">
+                      <mat-label>City/Town</mat-label>
+                      <input matInput type="text" formControlName="city" />
                     </mat-form-field>
                     <mat-form-field appearance="outline" class=" mt-2">
                       <mat-label>Unit Number</mat-label>
