@@ -159,7 +159,13 @@ export class ChartComponent implements OnInit {
   createAndDisplayChart(): void {
     this.chartService.getAllCharts().subscribe({
       next: data => {
+        data.forEach(chart => {
+          if(chart.type == "stacked"){
+            chart.type = "bar"
+          }
+        });
         if (data.length > 0) {
+          console.log(data);
           this.chartData = data;
           this.populateCanvasCharts();
           this.displayChart = true;
@@ -283,9 +289,7 @@ export class ChartComponent implements OnInit {
   }
 
   populateCanvasCharts() {
-    //this.chartData = ChartDataConstant;
     console.log(this.chartData);
-    this.chartData.push(ChartDataConstant[1])
     this.chartCanvasArray = [];
     this.chartCanvasArray.push()
     for (let i = 0; i < this.chartData.length; i++) {
@@ -297,13 +301,13 @@ export class ChartComponent implements OnInit {
         dataset.push({
           data: this.chartData[i].dataSet[0],
           labels: labelsArray,
-          backgroundColor: this.coloursArray
+          backgroundColor: this.coloursArray[i]
         });
       } else {
         if (this.chartData[i].labels) {
           for (let j = 0; j < this.chartData[i].labels.length; j++) {
             dataset.push({
-              data: [this.chartData[i].dataSet[0].data[j]],
+              data: [this.chartData[i].datasets[0].data[j]],
               label: this.getEmployeeName(this.chartData[i].labels[j]),
               backgroundColor: this.coloursArray[j],
               borderColor: this.coloursArray[j],
