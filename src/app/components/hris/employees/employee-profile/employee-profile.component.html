@@ -29,9 +29,13 @@
         <div class="col-8 col-md-10 offset-lg-0 col-lg-10 mt-3">
             <div class="row mt-3">
                 <div class="col-11 col-md-6" id="header-name">
-                    <h1 class="mb-0">{{usingSimpleProfile ? simpleEmployee.name :employeeProfile.name}}
-                        {{usingSimpleProfile ?
-                        simpleEmployee.surname : employeeProfile.surname}}</h1>
+                    <h1 class="mb-0"  *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().name != null 
+                    && navService.getEmployeeProfile().surname != null; else NoName">
+                        {{navService.getEmployeeProfile().name}} {{navService.getEmployeeProfile().surname}}
+                    </h1>
+                    <ng-template #NoName>
+                        <div></div>
+                    </ng-template>
                 </div>
                 <div class="col-12 col-md-6 mt-md-1" id="header-email">
                     <div class="row me-4 d-flex justify-content-start d-md-flex justify-content-md-end">
@@ -40,9 +44,11 @@
                         <div class="col-1 mt-2" id="header-email-clip" (click)="copyToClipboard()"><mat-icon>attachment</mat-icon></div>
                     </div>
                 </div>
-                <div class="col-12 mx-lg-3 my-2 d-none d-md-block" id="header-role">
-                    {{usingSimpleProfile ? simpleEmployee.employeeType?.name :employeeProfile.employeeType?.name}} |
-                    Level {{usingSimpleProfile ? simpleEmployee.level :employeeProfile.level}}
+                <div class="col-12 mx-lg-3 my-2 d-none d-md-block" id="header-role" 
+                *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().employeeType != null
+                 || navService.employeeProfile != undefined && navService.getEmployeeProfile().level != null">
+                    {{navService.getEmployeeProfile().employeeType?.name}} |
+                    Level {{navService.getEmployeeProfile().level}}
                 </div>
                 <div class="col-12 my-2 d-none d-md-block" id="header-based"
                     *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">
@@ -51,9 +57,11 @@
             </div>
         </div>
         <div class=" d-block d-md-none d-flex justify-content-center mt-2">
-            <div class="col-auto" id="header-role">
-                {{usingSimpleProfile ? simpleEmployee.employeeType?.name :employeeProfile.employeeType?.name}} | Level
-                {{usingSimpleProfile ? simpleEmployee.level :employeeProfile.level}}
+            <div class="col-auto" id="header-role"
+            *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().employeeType != null
+            || navService.employeeProfile != undefined && navService.getEmployeeProfile().level != null">
+                {{navService.getEmployeeProfile().employeeType?.name}} | Level
+                {{navService.getEmployeeProfile().level}}
             </div>
             <div class="col-auto" id="header-based"
                 *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">

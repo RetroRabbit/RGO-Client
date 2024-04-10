@@ -110,7 +110,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private router: Router,
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
-    private navService: NavService,
+    public navService: NavService,
     private changeDetectorRef: ChangeDetectorRef,
     public authAccessService: AuthAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,

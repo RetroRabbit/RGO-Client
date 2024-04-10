@@ -137,13 +137,21 @@
               <div id="menu-quick-info" class="col text-start">
                 <ngx-skeleton-loader *ngIf="isLoading; else ProfileName" appearance="line"></ngx-skeleton-loader>
                 <ng-template #ProfileName>
-                  <div style="color: #0029c6;">{{employeeProfile?.name + ' ' + employeeProfile?.surname}}</div>
+                  <div style="color: #0029c6;" *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().name != null 
+                  && navService.getEmployeeProfile().surname != null; else NoName">
+                    {{navService.getEmployeeProfile().name + ' ' + navService.getEmployeeProfile().surname}}
+                  </div>
+                  <ng-template #NoName>
+                    <div></div>
+                  </ng-template>
                 </ng-template>
                 <ngx-skeleton-loader *ngIf="isLoading; else ProfileType" appearance="line"></ngx-skeleton-loader>
                 <ng-template #ProfileType>
-                  <div *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().employeeType != null; else NoType">{{navService.getEmployeeProfile().employeeType?.name}}</div>
+                  <div *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().employeeType != null; else NoType">
+                    {{navService.getEmployeeProfile().employeeType?.name}}
+                  </div>
                   <ng-template #NoType>
-                    <div>No Type</div>
+                    <div></div>
                   </ng-template>
                 </ng-template>
               </div>
@@ -151,7 +159,8 @@
                 <div id="image-container" class="col-12">
                   <ngx-skeleton-loader *ngIf="isLoading; else ProfileImage" appearance="circle"></ngx-skeleton-loader>
                   <ng-template #ProfileImage>
-                    <img *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().photo != '';else NoProfile" [src]="navService.getEmployeeProfile().photo" alt="">
+                    <img *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().photo != '';else NoProfile" 
+                    [src]="navService.getEmployeeProfile().photo" alt="">
                     <ng-template #NoProfile>
                       <img src="../../../assets/img/profile.png" alt="Employee Profile Photo">
                     </ng-template>
@@ -202,9 +211,16 @@
           <ngx-skeleton-loader appearance="line" count="1" [theme]="{color: '#E0E0E0', borderRadius: '4px'}"></ngx-skeleton-loader>
         </div>
         <ng-template #ProfileNameSurname>
-          <div style="flex: 1;">{{employeeProfile?.name + ' ' + employeeProfile?.surname}}</div>
+          <div style="flex: 1;">
+            <div style="color: #0029c6;" *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().name != null 
+            && navService.getEmployeeProfile().surname != null; else NoName">
+              {{navService.getEmployeeProfile().name + ' ' + navService.getEmployeeProfile().surname}}
+            </div>
+            <ng-template #NoName>
+              <div></div>
+            </ng-template>
+          </div>
         </ng-template>
-
         <div *ngIf="isLoading; else ProfileType">
           <ngx-skeleton-loader appearance="line" count="1"
             [theme]="{color: '#E0E0E0', borderRadius: '4px'}"></ngx-skeleton-loader>
