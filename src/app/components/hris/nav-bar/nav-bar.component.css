@@ -1,12 +1,23 @@
 @media only screen and (max-width: 992px) {
     #employee-info,
     #employee-photo {
-      display: none;
+      display: none !important;
     }
   }
   #menu-image{
     text-align: center;
     width: 100%;
+  }
+
+  #loader-style {
+    height: 18px;
+    display: inline-block;
+  }
+
+  #employee-info {
+    height: 18px;
+    display: flex;
+    flex-direction: column;
   }
 
   #menu-image-container{
