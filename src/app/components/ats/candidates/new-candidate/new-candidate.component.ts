@@ -163,7 +163,6 @@ export class NewCandidateComponent {
     const fileExtension = file.name.split('.').pop()?.toLowerCase();
     if (file.size > 4194304 || !allowedExtensions.includes(fileExtension || '')) {
       this.isValidProfileImage = false;
-      console.log(this.isValidProfileImage);
       return false;
     }
     this.isValidProfileImage = true;
