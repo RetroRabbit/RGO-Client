@@ -42,9 +42,8 @@ main {
 }
 
 #additional-fields-label {
-    font-size: 22px;
+    font-size: 16px;
     font-weight: 400;
-    line-height: 28px;
     word-wrap: break-word;
 }
 
@@ -60,11 +59,11 @@ main {
 }
 
 #heading {
-    font-size: 36px;
-    font-weight: 400;
+    font-size: 16px;
+    font-weight: 800;
     line-height: 44px;
     word-wrap: break-word;
-    margin-top: 64px;
+    margin-top: 32px;
 }
 
 #heading-text {
