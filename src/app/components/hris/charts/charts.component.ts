@@ -322,21 +322,16 @@ export class ChartComponent implements OnInit {
   }
 
   configureChartColors(chartData: ChartData[]){
-        chartData.forEach((chart: any) => {
-          if(chart.type == "pie" || chart.type == "bar"){
-            chart.datasets?.forEach((dataset: any) => {
-              dataset.backgroundColor = this.coloursArray;
-            });
-          }
-        });
-
         let colorIndex = 0
         chartData.forEach((chart: any) => {
-          if(chart.type == "stacked"){
-            chart.type = "bar"
+          if(chart.subtype == "stacked"){
             chart.datasets?.forEach((dataset: any) => {
               dataset.backgroundColor = this.coloursArray[colorIndex];
               colorIndex++
+            });
+          }else {
+            chart.datasets?.forEach((dataset: any) => {
+              dataset.backgroundColor = this.coloursArray;
             });
           }
         });
