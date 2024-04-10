@@ -5,13 +5,16 @@
                 <mat-panel-title>
                     Main Bank Account
                 </mat-panel-title>
-                <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking?.status == 2" class="pe-0 pe-md-5">
-                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
+                <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking?.status == 2"
+                    class="pe-0 pe-md-5">
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing
+                        information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeBankingsForm">
                 <div class="col-12 mb-2 d-flex justify-content-end">
-                    <button *ngIf="!editBanking" mat-button id="edit-button" (click)="editBankingDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
+                    <button *ngIf="!editBanking" mat-button id="edit-button" (click)="editBankingDetails()"
+                        [ngClass]="screenWidth <= 767 ?'col-12':''">
                         <mat-icon>edit</mat-icon>Edit
                         Details</button>
                 </div>
@@ -70,7 +73,8 @@
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Account Type</mat-label>
-                                    <mat-select placeholder="Select Type" formControlName="accountType" hideSingleSelectionIndicator="true">
+                                    <mat-select placeholder="Select Type" formControlName="accountType"
+                                        hideSingleSelectionIndicator="true">
                                         <mat-option *ngFor="let accountType of accountTypes" [value]="accountType.id">
                                             {{accountType.value}}
                                         </mat-option>
@@ -80,7 +84,8 @@
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Bank Name</mat-label>
-                                    <mat-select placeholder="Select bank" formControlName="bankName" hideSingleSelectionIndicator="true">
+                                    <mat-select placeholder="Select bank" formControlName="bankName"
+                                        hideSingleSelectionIndicator="true">
                                         <mat-option *ngFor="let bank of banks" [value]="bank.value">
                                             {{bank.value}}
                                         </mat-option>
@@ -125,15 +130,17 @@
                                                 [hidden]="employeeBanking.file.length == 0"
                                                 (click)="convertFileToBase64()">Download</button>
                                         </div>
-                                        <div class="col-12 row d-flex justify-content-center align-content-center" [hidden]="!editBanking"
-                                            (click)="openFileInput()">
+                                        <div class="col-12 row d-flex justify-content-center align-content-center"
+                                            [hidden]="!editBanking" (click)="openFileInput()">
                                             <div class="col-12 row ms-1" *ngIf="bankingPDFName.length > 1">
                                                 <div class="col-1 p-0">
-                                                <img  id="pdf-icon" alt="pdf-icon" src="../../../../../../assets/img/pdf-icon.svg" >
+                                                    <img id="pdf-icon" alt="pdf-icon"
+                                                        src="../../../../../../assets/img/pdf-icon.svg">
                                                 </div>
                                                 <p class="col-11" id="recently-uploaded">{{bankingPDFName}}</p>
                                             </div>
-                                            <div *ngIf="!editBanking" class="col-12 rounded-5 bg-light d-flex justify-content-center align-content-center align-items-center ms-4">
+                                            <div *ngIf="!editBanking"
+                                                class="col-12 rounded-5 bg-light d-flex justify-content-center align-content-center align-items-center ms-4">
                                                 <div class="col-1" id="uploadfile">
                                                     <img src="../../../../assets/img/file_upload_grey.svg" alt="">
                                                 </div>
@@ -143,7 +150,8 @@
                                                         (change)="onFileSelected($event)" accept=".pdf">
                                                 </div>
                                             </div>
-                                            <div *ngIf="editBanking" style="background-color:#D7DFFF;" class="col-12 rounded-5 d-flex justify-content-center align-content-center align-items-center ms-4">
+                                            <div *ngIf="editBanking" style="background-color:#D7DFFF;"
+                                                class="col-12 rounded-5 d-flex justify-content-center align-content-center align-items-center ms-4">
                                                 <div class="col-1" id="uploadfile">
                                                     <img src="../../../../assets/img/file_upload.svg" alt="">
                                                 </div>
@@ -160,15 +168,17 @@
                         </div>
                     </div>
                     <div class="col-12 d-block d-md-none" id="edit-buttons">
-                        <button *ngIf="editBanking" mat-button id="save-button" (click)="saveBankingDetails()" class="col-12 mb-2">
+                        <button *ngIf="editBanking" mat-button id="save-button" (click)="saveBankingDetails()"
+                            class="col-12 mb-2">
                             Save changes
                         </button>
-                        <button *ngIf="editBanking" mat-button id="cancel-button"(click)="cancelBankingDetails()" class="col-12">
+                        <button *ngIf="editBanking" mat-button id="cancel-button" (click)="cancelBankingDetails()"
+                            class="col-12">
                             Cancel
                         </button>
                     </div>
                     <div class="col-12 d-none d-md-flex" id="edit-buttons">
-                        <button *ngIf="editBanking" mat-button id="cancel-button"(click)="cancelBankingDetails()">
+                        <button *ngIf="editBanking" mat-button id="cancel-button" (click)="cancelBankingDetails()">
                             Cancel
                         </button>
                         <button *ngIf="editBanking" mat-button id="save-button" (click)="saveBankingDetails()">
