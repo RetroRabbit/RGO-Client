@@ -8,8 +8,6 @@ import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-typ
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
-import { dietary } from 'src/app/models/hris/constants/dietary.constants';
-import { tshirtSize } from 'src/app/models/hris/constants/tshirt.constants';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
 import { combineLatest, first } from 'rxjs';
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
@@ -75,8 +73,6 @@ export class NewEmployeeComponent implements OnInit {
   toggleAdditional: boolean = false;
   levels: number[] = levels.map((level) => level.value);
   races: string[] = races.map((race) => race.value);
-  tshirtSizes: string[] = tshirtSize.map((size) => size.value);
-  dietaries: string[] = dietary.map((diet) => diet);
   genders: string[] = genders.map((gender) => gender.value);
   provinces: string[] = [];
   countries: string[] = [];
@@ -189,7 +185,7 @@ export class NewEmployeeComponent implements OnInit {
     countryOfBirth: new FormControl<string>(''),
     nationality: new FormControl<string>(''),
     level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
-    employeeType: new FormControl<{ id: number; name: string } | null>(null),
+    employeeType: new FormControl<{ id: number; name: string } | null>(null, Validators.required),
     name: new FormControl<string>('', [Validators.required,
     Validators.pattern(this.namePattern)]),
     initials: new FormControl<string>('', [Validators.required,
@@ -221,10 +217,7 @@ export class NewEmployeeComponent implements OnInit {
     salary: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
     physicalAddress: new FormControl<EmployeeAddress | null>(null),
     postalAddress: new FormControl<EmployeeAddress | null>(null),
-    peopleChampion: new FormControl<string>(''),
-    tShirtSize: new FormControl<number>(-1),
-    dietary: new FormControl<string>(''),
-    allergies: new FormControl<string>('')
+    peopleChampion: new FormControl<string>('')
   });
 
   settingsForm: FormGroup = new FormGroup({
@@ -445,6 +438,21 @@ export class NewEmployeeComponent implements OnInit {
     this.isLoadingAddEmployee = true;
     if (this.isDirty == true)
       return;
+
+    if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
+      this.newEmployeeEmail = this.newEmployeeForm.value.email;
+    } else {
+      this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
+      this.isLoadingAddEmployee = false;
+      return;
+    }
+    if (this.newEmployeeForm.value.disability !== null && this.newEmployeeForm.value.disability !== undefined) {
+       this.newEmployeeForm.value.disability;
+    } else {
+      this.snackBarService.showSnackbar("Please select a value for disability ", "snack-error");
+      this.isLoadingAddEmployee = false;
+      return;
+    }
 
     this.newEmployeeForm.patchValue({id: 0});
     this.newEmployeeForm.value.initials = this.newEmployeeForm.value.initials?.toUpperCase();

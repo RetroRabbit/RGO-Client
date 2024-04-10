@@ -5,3 +5,12 @@
     color: #0029C6;
     width: 170px;
 }
+::ng-deep .mat-pseudo-checkbox{
+  height:0px !important;
+  width:0px !important;
+  display:none !important;
+}
+.mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after{
+    height:0px !important;
+    width:0px !important;
+}
