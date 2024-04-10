@@ -7,16 +7,16 @@
                 </mat-panel-title>
                 <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking?.status == 2"
                     class="pe-0 pe-md-5">
-                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing
-                        information</span>
+                    <mat-icon class="mx-1">error</mat-icon>
+                     <span class="d-none d-md-block d-lg-block">Missinginformation</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeBankingsForm">
                 <div class="col-12 mb-2 d-flex justify-content-end">
                     <button *ngIf="!editBanking" mat-button id="edit-button" (click)="editBankingDetails()"
                         [ngClass]="screenWidth <= 767 ?'col-12':''">
-                        <mat-icon>edit</mat-icon>Edit
-                        Details</button>
+                        <mat-icon>edit</mat-icon>Edit Details
+                    </button>
                 </div>
                 <div class="row">
                     <div class="col-12">
