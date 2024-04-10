@@ -154,7 +154,7 @@
                 </div>
                 <form [formGroup]="settingsForm"
                   class="row flex-column justify-content-center align-items-center roboto-font col-md-12">
-                  <div class="d-flex"> <label class="fw-base pe-3" id="additional-fields-label"
+                  <div class="d-flex justify-content-md-start justify-content-end"> <label class="fw-base pe-3" id="additional-fields-label"
                       for="additionalFieldsToggle">Additional Fields</label>
                     <mat-slide-toggle color="primary" id="additionalFieldsToggle"
                       formControlName="toggleAdditionalFields"></mat-slide-toggle>
@@ -345,7 +345,7 @@
                   </form>
                 </div>
               </div>
-              <div id="footer" class="d-flex justify-content-center justify-content-lg-end justify-content-md-start pe-lg-3 ps-md-2">
+              <div id="footer" class="d-flex justify-content-center justify-content-md-start justify-content-lg-end justify-content-md-start pe-lg-3 ps-md-2">
                 <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
                   (click)="goToPreviousPage()">Cancel</button>
                 <button id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
