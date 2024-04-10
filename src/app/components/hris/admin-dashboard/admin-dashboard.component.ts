@@ -12,7 +12,7 @@ import { ChartData } from 'src/app/models/hris/charts.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { MatSort } from '@angular/material/sort';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
@@ -26,6 +26,10 @@ import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.inte
 })
 
 export class AdminDashboardComponent {
+  chartNameControl = new FormControl('', [
+    Validators.required, Validators.minLength(5)
+  ]);
+
   @ViewChild('dialogTemplate', { static: true })
   dialogTemplate!: TemplateRef<any>;
   @ViewChild(MatSort) sort!: MatSort;
@@ -61,7 +65,7 @@ export class AdminDashboardComponent {
   allFlag: boolean = false;
   isLoading: boolean = true;
   isLoadingChart: boolean = false;
-
+  svgWidth: number = 500;
   PREVIOUS_PAGE: string = 'previousPage';
 
   employeeCount: EmployeeCountDataCard = new EmployeeCountDataCard();
@@ -101,6 +105,15 @@ export class AdminDashboardComponent {
       this.authAccessService.isTalent() ||
       this.authAccessService.isJourney()) {
       this.configureDashboardData();
+    }
+    this.setSvgWidth();
+  }
+
+  setSvgWidth() : number {
+    if (this.screenWidth < 768) {
+      return this.svgWidth = 265;
+    } else {
+      return this.svgWidth = 500;
     }
   }
 
@@ -241,6 +254,9 @@ export class AdminDashboardComponent {
   }
 
   showAddGraphModal() {
+    this.chartNameControl.reset();
+    this.categoryControl.reset();
+    this.typeControl.reset();
     this.dialog.open(this.dialogTemplate, {
       width: '500px',
     });
@@ -476,5 +492,13 @@ export class AdminDashboardComponent {
       this.typeControl.setValue(newSelection);
       this.selectedTypes = newSelection;
     }
+  }
+
+  clearAddGraphFields (){
+    this.typeControl.setValue([]);
+    this.categoryControl.setValue([]);
+    this.chartName = '';
+    this.chartType = '';
+    this.types = [];
   }
 }

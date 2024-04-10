@@ -73,10 +73,8 @@
             <ng-container matColumnDef="edit">
               <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
               <mat-cell *matCellDef="let element" class="justify-edit-end">
-                <button *ngIf="activeTab == 0;" id="cancel-button" class="mt-1" (click)="saveCustomField(element)">
-                  <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
-                  Edit
-                </button>
+                <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
+                <input *ngIf="activeTab == 0;" value="Edit" id="cancel-button" class="mt-1" (click)="saveCustomField(element)"/>
                 <span *ngIf="activeTab !== 0" id="move-to-active" (click)="moveToActive (element)">Move to active</span>
               </mat-cell>
             </ng-container>
@@ -87,15 +85,15 @@
           <mat-paginator hidden></mat-paginator>
         </div>
       </div>
-      <div class="d-flex flex-row justify-content-center align-items-center mt-3"
-        *ngIf="dataSource.filteredData.length > 0">
-        <div class="col-lg-4 col-md-4 fs-6" id="paginatorText">
-          <span class="fw-medium">
+      <div class="d-flex flex-row justify-content-center align-items-center mt-2"
+        *ngIf="!isLoading && dataSource.filteredData.length > 0">
+        <div class="col-lg-4 col-md-4 fs-6 d-none d-md-flex" id="paginatorText">
+          <span class="fw-medium d-none d-md-flex me-1">
             Showing {{ start }}-{{ end }}
           </span>
           <span>of {{ paginator.length }} results</span>
         </div>
-        <div class="col-lg-4 col-md-4 row justify-content-center">
+        <div class="col-lg-4 col-md-4 d-flex justify-content-center">
           <button mat-icon-button (click)="paginator.previousPage()" [disabled]="!paginator.hasPreviousPage()">
             <mat-icon>arrow_left</mat-icon>
           </button>
@@ -108,11 +106,10 @@
             <mat-icon>arrow_right</mat-icon>
           </button>
         </div>
-        <div class="col-lg-4 col-md-4 row justify-content-end align-items-center" id="paginator-text">
-          <span class="col-lg-4 col-md-7 fw-medium"> Items per page </span>
-          <mat-form-field appearance="outline" class="col-lg-3 col-md-5" id="paginator-dropdown">
-            <input id="pageSize" matInput type="number" min="1" [(ngModel)]="pageSize" (focus)="pageNumber.open()" />
-            <mat-select #pageNumber [(ngModel)]="pageSize" hidden>
+        <div class="col-lg-4 col-md-4 row justify-content-end align-items-center d-none d-md-flex" id="paginator-text">
+          <span class="col-lg-4 col-md-7 fw-medium d-none d-md-flex"> Items per page </span>
+          <mat-form-field appearance="outline" class="col-md-5" id="paginator-dropdown">
+            <mat-select #pageNumber [(ngModel)]="pageSize" hideSingleSelectionIndicator="true">
               <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize">
                 {{ pageSize }}
               </mat-option>

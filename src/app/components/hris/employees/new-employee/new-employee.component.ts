@@ -1,6 +1,5 @@
 import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
-import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -11,8 +10,6 @@ import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
 import { combineLatest, first } from 'rxjs';
-import { countries } from 'src/app/models/hris/constants/countries.constants';
-import { provinces } from 'src/app/models/hris/constants/provinces.constants';
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
 import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
@@ -22,7 +19,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
-import { color } from 'html2canvas/dist/types/css/types/color';
+import { LocationApiService } from 'src/app/services/hris/location-api.service';
 
 @Component({
   selector: 'app-new-employee',
@@ -49,7 +46,8 @@ export class NewEmployeeComponent implements OnInit {
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
-    private navService: NavService
+    private navService: NavService,
+    public locationApiService: LocationApiService,
   ) { }
 
   firstFormGroup = this._formBuilder.group({
@@ -73,16 +71,16 @@ export class NewEmployeeComponent implements OnInit {
   namePattern = /^[a-zA-Z\s'-]*$/;
   initialsPattern = /^[A-Za-z]+$/;
   toggleAdditional: boolean = false;
-
   levels: number[] = levels.map((level) => level.value);
   races: string[] = races.map((race) => race.value);
   genders: string[] = genders.map((gender) => gender.value);
-  countries: string[] = countries
-  provinces: string[] = provinces
-
+  provinces: string[] = [];
+  countries: string[] = [];
+  cities: string[] = [];
   imagePreview: string | ArrayBuffer | null = null;
   previewImage: string = '';
   imageUrl: string = '';
+  countrySelected: string = '';
   Employees: EmployeeProfile[] = [];
   selectedEmployee!: EmployeeProfile;
   validImage: boolean = false;
@@ -96,6 +94,7 @@ export class NewEmployeeComponent implements OnInit {
   isLoadingAddEmployee: boolean = false;
   isSameAddress: boolean = true;
   isSavedEmployee: boolean = false;
+  isSouthAfrica = false;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -104,6 +103,54 @@ export class NewEmployeeComponent implements OnInit {
     3: { name: '', state: true },
   };
 
+  ngOnInit(): void {
+    this.loadCountries();
+
+    this.employeeTypeService.getAllEmployeeTypes().subscribe({
+      next: (data: EmployeeType[]) => {
+        this.employeeTypes = data.sort((a, b) => {
+          const nameA = (a.name || '').toLowerCase();
+          const nameB = (b.name || '').toLowerCase();
+          return nameA.localeCompare(nameB);
+        });
+      },
+    });
+
+    this.employeeService
+      .getEmployeeProfiles()
+      .subscribe((data: EmployeeProfile[]) => {
+        this.Employees = data;
+      });
+    this.navService.showNavbar = false;
+  }
+
+  loadCountries(): void {
+    this.locationApiService.getCountries().subscribe({
+      next: (data) => this.countries = data
+    });
+  }
+
+  onCountryChange(country: string): void {
+    this.countrySelected = country;
+    this.provinces = [];
+    this.cities = [];
+    this.loadProvinces(this.countrySelected);
+  }
+
+  loadProvinces(country: string): void {
+    this.locationApiService.getProvinces(country).subscribe({
+      next: (data) => this.provinces = data
+    });
+    this.cities = [];
+  }
+
+  loadCities(province: string): void {
+    this.locationApiService.getCities(this.countrySelected, province).subscribe({
+      next: (data) => this.cities = data,
+      error: (error) => console.error('Error loading cities:', error)
+    });
+  }
+
   private createAddressForm(): FormGroup {
     return new FormGroup({
       unitNumber: new FormControl<string | null>('', Validators.minLength(1)),
@@ -111,6 +158,7 @@ export class NewEmployeeComponent implements OnInit {
       suburbDistrict: new FormControl<string | null>('', Validators.minLength(1)),
       city: new FormControl<string | null>('', Validators.minLength(1)),
       streetNumber: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(1), Validators.pattern(/(^\d+$)|(^$)/)]),
+      streetName: new FormControl<string | null>('', Validators.minLength(1)),
       country: new FormControl<string | null>('', Validators.minLength(1)),
       province: new FormControl<string | null>('', Validators.minLength(1)),
       postalCode: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
@@ -131,7 +179,7 @@ export class NewEmployeeComponent implements OnInit {
     terminationDate: new FormControl<Date | string | null>(null),
     reportingLine: new FormControl<EmployeeProfile | null>(null),
     highestQualication: new FormControl<string>(''),
-    disability: new FormControl<boolean | null>(null),
+    disability: new FormControl<boolean | null>(false, [Validators.required]),
     disabilityNotes: new FormControl<string>(''),
     countryOfBirth: new FormControl<string>(''),
     nationality: new FormControl<string>(''),
@@ -189,24 +237,6 @@ export class NewEmployeeComponent implements OnInit {
     file: new FormControl<string>(''),
     uploadDate: new FormControl<Date | string>(new Date(Date.now())),
   });
-
-  ngOnInit(): void {
-    this.employeeTypeService.getAllEmployeeTypes().subscribe({
-      next: (data: EmployeeType[]) => {
-        this.employeeTypes = data.sort((a, b) => {
-          const nameA = (a.name || '').toLowerCase();
-          const nameB = (b.name || '').toLowerCase();
-          return nameA.localeCompare(nameB);
-        });
-      },
-    });
-    this.employeeService
-      .getEmployeeProfiles()
-      .subscribe((data: EmployeeProfile[]) => {
-        this.Employees = data;
-      });
-    this.navService.showNavbar = false;
-  }
 
   ngOnDestroy() {
     this.navService.showNavbar = true;
@@ -356,6 +386,7 @@ export class NewEmployeeComponent implements OnInit {
         suburbDistrict: this.physicalAddress.value.suburbDistrict,
         city: this.physicalAddress.value.city,
         streetNumber: this.physicalAddress.value.streetNumber,
+        streetName: this.physicalAddress.value.streetName,
         country: this.physicalAddress.value.country,
         province: this.physicalAddress.value.province,
         postalCode: this.physicalAddress.value.postalCode,
@@ -371,6 +402,7 @@ export class NewEmployeeComponent implements OnInit {
       suburbOrDistrict: this.physicalAddress.value.suburbDistrict!,
       city: this.physicalAddress.value.city!,
       streetNumber: this.physicalAddress.value.streetNumber!,
+      streetName: this.physicalAddress.value.streetName!,
       country: this.physicalAddress.value.country!,
       province: this.physicalAddress.value.province!,
       postalCode: this.physicalAddress.value.postalCode!,
@@ -385,6 +417,7 @@ export class NewEmployeeComponent implements OnInit {
       suburbOrDistrict: this.postalAddress.value.suburbDistrict!,
       city: this.postalAddress.value.city!,
       streetNumber: this.postalAddress.value.streetNumber!,
+      streetName: this.postalAddress.value.streetName!,
       country: this.postalAddress.value.country!,
       province: this.postalAddress.value.province!,
       postalCode: this.postalAddress.value.postalCode!,
@@ -412,6 +445,14 @@ export class NewEmployeeComponent implements OnInit {
       this.isLoadingAddEmployee = false;
       return;
     }
+    if (this.newEmployeeForm.value.disability !== null && this.newEmployeeForm.value.disability !== undefined) {
+       this.newEmployeeForm.value.disability;
+    } else {
+      this.snackBarService.showSnackbar("Please select a value for disability ", "snack-error");
+      this.isLoadingAddEmployee = false;
+      return;
+    }
+
     this.newEmployeeForm.patchValue({id: 0});
     this.newEmployeeForm.value.initials = this.newEmployeeForm.value.initials?.toUpperCase();
     this.newEmployeeForm.value.cellphoneNo =

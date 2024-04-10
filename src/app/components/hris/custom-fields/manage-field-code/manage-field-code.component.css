@@ -139,12 +139,11 @@ mat-header-row {
     background-color: #d7dfffff;
 }
 
-#paginator-text {
-  font-size: var(--font-size-2);
-  line-height: 24px;
-  letter-spacing: .15px;
-  word-wrap: break-word;
-  height: inherit;
+#paginator-text mat-form-field {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 #paginator-text .mat-form-field-wrapper {
@@ -201,15 +200,21 @@ mat-header-row {
 }
 
 #cancel-button{
-  width: 110px !important;
-  display: flex;
+  width: 50px !important;
+  border:none;
   height: 40px;
-  padding: 10px 24px 10px 16px;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  align-self: stretch;
+  padding: 10px 5px 10px 0px;
+  margin-right:60px;
+  text-align: center;
+}
+
+#cancel-button:hover{
+  cursor:pointer;
+}
+
+#cancel-button:active {
+  outline: 0;
+  border:none
 }
 
 #move-to-active{

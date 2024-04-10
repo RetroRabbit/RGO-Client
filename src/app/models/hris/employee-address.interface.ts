@@ -2,6 +2,7 @@ export interface EmployeeAddress {
     id: number;
     unitNumber: string | null;
     complexName: string | null;
+    streetName: string | null;
     streetNumber: string | null;
     suburbOrDistrict: string | null;
     city: string | null;
