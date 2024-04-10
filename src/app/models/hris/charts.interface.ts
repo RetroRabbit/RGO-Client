@@ -6,5 +6,6 @@ export class ChartData {
   type?: string;
   dataTypes?: string[];
   labels?: string[];
+  datasets?: any[];
   data?: any;
 }

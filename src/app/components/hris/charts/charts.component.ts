@@ -92,6 +92,10 @@ export class ChartComponent implements OnInit {
       datalabels: {
         anchor: 'middle',
         align: 'center',
+        color: 'white',
+        font: {
+          size: 8
+        }
       } as any,
     },
 
@@ -118,7 +122,7 @@ export class ChartComponent implements OnInit {
       datalabels: {
         anchor: 'middle',
         align: 'center',
-        color: ['white', 'white', 'black', 'black', 'white', 'white'],
+        color: 'white',
       } as any,
     },
   };
@@ -159,11 +163,8 @@ export class ChartComponent implements OnInit {
   createAndDisplayChart(): void {
     this.chartService.getAllCharts().subscribe({
       next: data => {
-        data.forEach(chart => {
-          if(chart.type == "stacked"){
-            chart.type = "bar"
-          }
-        });
+        data = this.configureChartColors(data);
+
         if (data.length > 0) {
           console.log(data);
           this.chartData = data;
@@ -278,8 +279,6 @@ export class ChartComponent implements OnInit {
   getEmployeeName(employeeId: string | undefined): string {
 
     const id = (employeeId || '').toString();
-
-
     if (this.employeeNames[id]) {
       return this.employeeNames[id];
     }
@@ -289,9 +288,8 @@ export class ChartComponent implements OnInit {
   }
 
   populateCanvasCharts() {
-    console.log(this.chartData);
     this.chartCanvasArray = [];
-    this.chartCanvasArray.push()
+    this.chartCanvasArray.push();
     for (let i = 0; i < this.chartData.length; i++) {
       let dataset = [];
 
@@ -301,7 +299,8 @@ export class ChartComponent implements OnInit {
         dataset.push({
           data: this.chartData[i].dataSet[0],
           labels: labelsArray,
-          backgroundColor: this.coloursArray[i]
+          backgroundColor: this.coloursArray
+          
         });
       } else {
         if (this.chartData[i].labels) {
@@ -321,6 +320,29 @@ export class ChartComponent implements OnInit {
     console.log(this.chartCanvasArray);
     console.log(this.chartData);
   }
+
+  configureChartColors(chartData: ChartData[]){
+        chartData.forEach((chart: any) => {
+          if(chart.type == "pie" || chart.type == "bar"){
+            chart.datasets?.forEach((dataset: any) => {
+              dataset.backgroundColor = this.coloursArray;
+            });
+          }
+        });
+
+        let colorIndex = 0
+        chartData.forEach((chart: any) => {
+          if(chart.type == "stacked"){
+            chart.type = "bar"
+            chart.datasets?.forEach((dataset: any) => {
+              dataset.backgroundColor = this.coloursArray[colorIndex];
+              colorIndex++
+            });
+          }
+        });
+
+        return chartData;
+}
 
   pdfPreview(index: number) {
     const dialogRef = this.dialog.open(ChartReportPdfComponent, {
