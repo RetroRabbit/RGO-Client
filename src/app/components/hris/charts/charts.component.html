@@ -2,9 +2,9 @@
   <div class="row pt-3">
     <div class="col-12 col-lg-8" style="max-height: 50vh;">
       <div id="edit-chart-container">
-        <canvas baseChart [datasets]='chartCanvasArray[selectedChartIndex]'
-          [labels]="activeChart.type == 'bar'? activeChart.dataTypes : activeChart.labels"
-          [type]="activeChart.type"></canvas>
+        <canvas [plugins]="activeChart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
+        [datasets]='activeChart.datasets' [labels]="activeChart.type == 'bar'? activeChart.labels : activeChart.labels" [type]="activeChart.type"
+        [options]="getChartOptions(activeChart.type)"></canvas>
       </div>
     </div>
     <div class="col-12 col-lg-4">
@@ -79,13 +79,8 @@
     <hr>
     <div id="chart-body" class="row pb-2">
       <div id="canvas-container">
-        <canvas *ngIf="chart.datasets == [] || chart.datasets == undefined"
-          [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart [datasets]='chartCanvasArray[i]'
-          [labels]="chart.type == 'bar'? chart.dataTypes : chart.labels" [type]="chart.type"
-          [options]="getChartOptions(chart.type)"></canvas>
-        <canvas *ngIf="chart.datasets != [] && chart.datasets != undefined"
-          [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart [datasets]='chart.datasets'
-          [labels]="chart.type == 'bar'? chart.labels : chart.labels" [type]="chart.type"
+        <canvas [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
+          [datasets]='chart.datasets' [labels]="chart.type == 'bar'? chart.labels : chart.labels" [type]="chart.type"
           [options]="getChartOptions(chart.type)"></canvas>
       </div>
     </div>

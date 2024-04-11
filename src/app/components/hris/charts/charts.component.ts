@@ -14,8 +14,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
-import { Chart, ChartDataset, ChartOptions } from 'chart.js';
-import { ChartDataConstant } from 'src/app/models/hris/constants/chartData.constants';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-chart',
@@ -24,6 +23,15 @@ import { ChartDataConstant } from 'src/app/models/hris/constants/chartData.const
 })
 
 export class ChartComponent implements OnInit {
+
+  constructor(private chartService: ChartService, private cookieService: CookieService, public dialog: MatDialog, private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document, private employeeService: EmployeeService, private snackBarService: SnackbarService,
+    navService: NavService) {
+    navService.showNavbar = true;
+  }
+
+
+
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   @Output() captureCharts = new EventEmitter<number>();
   @Input() chartsArray: ChartData[] = [];
@@ -51,13 +59,8 @@ export class ChartComponent implements OnInit {
 
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
-
   selectedChartIndex: number = -1;
-  constructor(private chartService: ChartService, private cookieService: CookieService, public dialog: MatDialog, private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document, private employeeService: EmployeeService, private snackBarService: SnackbarService,
-    navService: NavService) {
-    navService.showNavbar = true;
-  }
+  
 
   public barChartOptions: ChartConfiguration['options'] = {
     events: [],
@@ -93,9 +96,6 @@ export class ChartComponent implements OnInit {
         anchor: 'middle',
         align: 'center',
         color: 'white',
-        font: {
-          size: 8
-        }
       } as any,
     },
 
@@ -164,14 +164,11 @@ export class ChartComponent implements OnInit {
     this.chartService.getAllCharts().subscribe({
       next: data => {
         data = this.configureChartColors(data);
-
         if (data.length > 0) {
-          console.log(data);
           this.chartData = data;
           this.populateCanvasCharts();
           this.displayChart = true;
           this.selectedChartType = this.chartData[0].type;
-          console.log(this.chartData)
         } else {
           this.chartData = [];
           this.displayChart = false;
@@ -222,12 +219,12 @@ export class ChartComponent implements OnInit {
         Type: this.updateFormData.Type,
       };
       this.chartService.updateChart(this.updateFormData).subscribe({
-        next: (updatedData: any) => {
+        next: () => {
           this.snackBarService.showSnackbar("Update successful", "snack-success");
           this.resetPage();
           this.createAndDisplayChart();
         },
-        error: error => {
+        error: () => {
           this.snackBarService.showSnackbar("Update unsuccessful", "snack-error");
 
         }
@@ -250,7 +247,7 @@ export class ChartComponent implements OnInit {
           this.resetPage();
           this.createAndDisplayChart();
         },
-        error: error => {
+        error: () => {
           this.snackBarService.showSnackbar("Failed to delete graph", "snack-error");
         }
       });
@@ -265,10 +262,8 @@ export class ChartComponent implements OnInit {
             this.employeeNames[employee.id] = `${employee.name} ${employee.surname}`;
           }
         });
-      }, error: (error) => {
-
+      }, error: () => {
         this.snackBarService.showSnackbar("Failed to fetch people champion", "snack-error");
-
       }, complete: () => {
         this.createAndDisplayChart();
       },
@@ -277,14 +272,11 @@ export class ChartComponent implements OnInit {
   }
 
   getEmployeeName(employeeId: string | undefined): string {
-
     const id = (employeeId || '').toString();
     if (this.employeeNames[id]) {
       return this.employeeNames[id];
     }
     return id;
-
-
   }
 
   populateCanvasCharts() {
@@ -314,15 +306,12 @@ export class ChartComponent implements OnInit {
           }
         }
       }
-      this.chartCanvasArray.push(dataset);
+      // this.chartCanvasArray.push(dataset);
     }
-
-    console.log(this.chartCanvasArray);
-    console.log(this.chartData);
   }
 
   configureChartColors(chartData: ChartData[]){
-        let colorIndex = 0
+    let colorIndex = 0
         chartData.forEach((chart: any) => {
           if(chart.subtype == "stacked"){
             chart.datasets?.forEach((dataset: any) => {
@@ -334,8 +323,8 @@ export class ChartComponent implements OnInit {
               dataset.backgroundColor = this.coloursArray;
             });
           }
+          colorIndex = 0;
         });
-
         return chartData;
 }
 

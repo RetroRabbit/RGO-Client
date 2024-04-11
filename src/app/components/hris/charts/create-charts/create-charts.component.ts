@@ -53,7 +53,6 @@ export class CreateChartsComponent {
     this.ChartService.createChart(this.selectedDataItems, this.selectedDataItems, this.chartName, this.chartType)
       .subscribe({
         next : response => {
-          console.log(this.selectedDataItems, this.selectedDataItems, this.chartName, this.chartType)
           this.snackBarService.showSnackbar("Chart created", "snack-success");
           this.router.navigateByUrl('/charts')
           this.cookieService.set('currentPage', "Charts");
