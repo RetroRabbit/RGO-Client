@@ -10,7 +10,7 @@ import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-rol
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
+
 @Component({
   selector: 'app-accordion-documents',
   templateUrl: './accordion-documents.component.html',
