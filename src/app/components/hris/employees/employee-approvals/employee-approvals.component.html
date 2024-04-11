@@ -11,15 +11,15 @@
     </div>
   </div>
   <div id="tab-buttons" class="mb-0">
-    <div id="tab" (click)="filterByStatus(1)"
+    <div id="tab" (click)="filterBankingAndDocumentsByStatus(1)"
       [ngClass]="this.selectedTabService.getSelectedTabIndex() === 0 ? 'activeTab' : ''">
       Pending ({{ pendingCount }})
     </div>
-    <div id="tab" (click)="filterByStatus(0)"
+    <div id="tab" (click)="filterBankingAndDocumentsByStatus(0)"
       [ngClass]="this.selectedTabService.getSelectedTabIndex() === 1 ? 'activeTab' : ''">
       Approved ({{ approvedCount }})
     </div>
-    <div id="tab" (click)="filterByStatus(2)"
+    <div id="tab" (click)="filterBankingAndDocumentsByStatus(2)"
       [ngClass]="this.selectedTabService.getSelectedTabIndex() === 2 ? 'activeTab' : ''">
       Declined ({{ declinedCount }})
     </div>
@@ -64,7 +64,7 @@
             <ng-container matColumnDef="action">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               <mat-cell *matCellDef="let element">
-                <a *ngIf="!element.isBanking" (click)="routeToPage(element)">View</a>
+                <a *ngIf="!element.isBanking" (click)="routeToApprovalPages(element)">View</a>
               </mat-cell>
             </ng-container>
 

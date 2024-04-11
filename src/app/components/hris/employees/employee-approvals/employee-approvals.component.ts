@@ -132,7 +132,7 @@ export class EmployeeApprovalsComponent {
       if (!indexVisistedArray.includes(i)) {
         const currentDto = this.bankingAndStarterKitData[i];
         if (currentDto.employeeBankingDto !== null && currentDto.employeeBankingDto.status == status) {
-          this.addToFilteredArray(currentDto, true, status);
+          this.filterDocumentTypeAndStatus(currentDto, true, status);
         }
         if (currentDto.employeeDocumentDto !== null) {
           const employeeDocumentsIndexes = this.findEmployeeDocuments(i, currentDto.employeeDocumentDto.employeeId);
@@ -145,16 +145,16 @@ export class EmployeeApprovalsComponent {
 
           if (documentsForEmployee.length < 4) {
             if(status == 1)
-              this.addToFilteredArray(currentDto, false, status);
+              this.filterDocumentTypeAndStatus(currentDto, false, status);
           }
           else {
             let sameStatuses = documentsForEmployee.every(document => document.status == documentsForEmployee[0].status);
             if (!sameStatuses) {
               if (status == 1)
-                this.addToFilteredArray(currentDto, false, status);
+                this.filterDocumentTypeAndStatus(currentDto, false, status);
             } else {
               if (status == documentsForEmployee[0].status)
-                this.addToFilteredArray(currentDto, false, status);
+                this.filterDocumentTypeAndStatus(currentDto, false, status);
             }
           }
         }
@@ -179,7 +179,7 @@ export class EmployeeApprovalsComponent {
     return numberIndex;
   }
 
-  addToFilteredArray(documentOrBanking: BankingAndStarterKitDto, isBanking: boolean, status: number) {
+  filterDocumentTypeAndStatus(documentOrBanking: BankingAndStarterKitDto, isBanking: boolean, status: number) {
     this.filteredEmployeeDtos.push({
       employeeId: documentOrBanking.employeeId,
       name: documentOrBanking.name as string,
@@ -190,13 +190,7 @@ export class EmployeeApprovalsComponent {
     });
   }
 
-  getStatusForEmployee(documents: EmployeeDocument[]): string {
-    const allApproved = documents.every(document => document.status === 0);
-    const allRejected = documents.every(document => document.status === 2);
-    return allApproved ? "Approved" : (allRejected ? "Declined" : "Pending");
-  }
-
-  filterByStatus(status: number) {
+  filterBankingAndDocumentsByStatus(status: number) {
     if (status < 2)
       this.selectedTabService.setSelectedTabIndex((status == 1) ? 0 : 1);
     else
@@ -205,7 +199,7 @@ export class EmployeeApprovalsComponent {
     this.buildFilteredArray(status);
   }
 
-  routeToPage(element: any) {
+  routeToApprovalPages(element: any) {
     if (element.update == "Banking Details")
       this.router.navigateByUrl(`/view-banking-approval/${element.employeeId}`)
     else
