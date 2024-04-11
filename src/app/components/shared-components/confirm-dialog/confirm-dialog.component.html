@@ -97,7 +97,6 @@
                 </div>
                 <div>
                     <!-- Add [disabled] attribute binding based on the hasDeclineReason() function -->
-                    <!-- Add [disabled] attribute binding based on the hasDeclineReason() function -->
                     <button mat-button mat-dialog-close class="button-style" id="decline-update-button"
                         (click)="captureResponse(true)" [disabled]="!hasDeclineReason && hasSelectedReason">
                         {{dialogType.confirmButtonText}}
