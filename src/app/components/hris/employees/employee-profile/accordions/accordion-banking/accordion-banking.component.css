@@ -10,7 +10,23 @@
     cursor: pointer;
 }
 
-#pdf-icon{
+#pdf-icon {
     width: 14px;
     height: 18px;
+}
+
+#status-null {
+    position: absolute !important;
+    top: 64px;
+    left: 15px;
+    width: 60%;
+    z-index: 9999;
+}
+
+@media only screen and (max-width: 767px) {
+    #status-null {
+        width: 90%;
+        top: 110px;
+        left: 5%;
+    }
 }
