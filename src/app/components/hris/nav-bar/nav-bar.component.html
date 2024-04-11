@@ -76,10 +76,10 @@
             *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
             <div id="nav-item-container">
               <div id="nav-item">
-                <div (click)="changeNav('/employees')" [ngClass]="router.url == '/employees' ? 'active' : 'idle'">
+                <div (click)="changeNav('/employees')" [ngClass]="router.url.includes('/employees') ||  router.url.includes('/view-') ? 'active' : 'idle'">
                   Employees
                 </div>
-                <div *ngIf="router.url == '/employees'" id="selected-line-box">
+                <div *ngIf="router.url.includes('/employees') ||  router.url.includes('/view-')" id="selected-line-box">
                   <div id="selected-line">
                   </div>
                 </div>

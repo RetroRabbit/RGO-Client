@@ -85,8 +85,11 @@ import { AccordionProfileContactDetailsComponent } from './components/hris/emplo
 import { AccordionProfileAdditionalComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
 import { AccordionProfilePersonalDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
 import { AccordionProfileAddressDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
-
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { ViewStarterKitApprovalComponent } from './components/hris/employees/employee-approvals/view-starter-kit-approval/view-starter-kit-approval.component';
+import { ViewBankingApprovalComponent } from './components/hris/employees/employee-approvals/view-banking-approval/view-banking-approval.component';
+import { EmployeeOptionsComponent } from './components/hris/employees/employee-options/employee-options.component';
+import { EmployeeApprovalsComponent } from './components/hris/employees/employee-approvals/employee-approvals.component';
 
 @NgModule({
   declarations: [
@@ -124,6 +127,10 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
     AccordionProfileAdditionalComponent,
     AccordionProfilePersonalDetailsComponent,
     AccordionProfileAddressDetailsComponent,
+    ViewStarterKitApprovalComponent,
+    ViewBankingApprovalComponent,
+    EmployeeOptionsComponent,
+    EmployeeApprovalsComponent,
 
   ],
   imports: [

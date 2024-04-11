@@ -11,12 +11,18 @@ export class ConfirmDialogComponent {
 
   @Input() dialogType: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   @Output() confirmation = new EventEmitter<boolean>();
+  @Output() declineResponse = new EventEmitter<any>();
 
   @ViewChild('dialogSaveTemplate') dialogSaveTemplate!: TemplateRef<any>;
   @ViewChild('dialogSaveTemplateMobile') dialogSaveTemplateMobile!: TemplateRef<any>;
+  @ViewChild('dialogDeclineTemplate') dialogDeclineTemplate!: TemplateRef<any>;
+  @ViewChild('dialogDeclineTemplateMobile') dialogDeclineTemplateMobile!: TemplateRef<any>;
 
   confirmButtonText: string = '';
   cancelButtonText: string = '';
+  declineReason: string = "";
+  selectedReason: number = -1;
+
   screenWidth = window.innerWidth;
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -32,14 +38,35 @@ export class ConfirmDialogComponent {
   
   ngAfterViewInit() {
     if (this.screenWidth > 767) {
-      this.dialog.open(this.dialogSaveTemplate);
+      if(this.dialogType.type.toLocaleLowerCase() == 'decline')
+        this.dialog.open(this.dialogDeclineTemplate);
+      else
+        this.dialog.open(this.dialogSaveTemplate);
     }
-    else if (this.screenWidth <= 767) {
-      this.dialog.open(this.dialogSaveTemplateMobile);
+    else {
+      if(this.dialogType.type.toLocaleLowerCase() == 'decline')
+        this.dialog.open(this.dialogDeclineTemplateMobile);
+      else
+        this.dialog.open(this.dialogSaveTemplateMobile);
     }
   }
 
   captureResponse(event: any) {
-    this.confirmation.emit(event);
+    if(this.dialogType.type == 'decline')
+      this.declineResponse.emit({
+        confirmation: event,
+        declineReason: this.declineReason,
+        selectedReason: this.selectedReason
+      });
+    else
+      this.confirmation.emit(event);
+  }
+
+  get hasDeclineReason():boolean {
+    return this.declineReason != "";
+  }
+
+  get hasSelectedReason():boolean {
+    return this.selectedReason != -1;
   }
 }
