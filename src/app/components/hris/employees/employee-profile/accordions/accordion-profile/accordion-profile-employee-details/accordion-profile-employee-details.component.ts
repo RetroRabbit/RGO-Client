@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
+import { CustomvalidationService } from 'src/app/services/hris/id-validator.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { ClientService } from 'src/app/services/hris/client.service';
@@ -234,7 +234,7 @@ export class AccordionProfileEmployeeDetailsComponent {
         + 24 * 60 * 60 * 1000
       ).toISOString();
       this.sharedAccordionFunctionality.employeeProfileDto.gender = personalDetailsForm.gender;
-      this.employeeService.checkIdNumber(employeeDetailsForm.idNumber, this.employeeProfile.employeeDetails.id as number).subscribe({
+      this.employeeService.checkDuplicateIdNumber(employeeDetailsForm.idNumber).subscribe({
         next: (data: boolean) => {
           this.existingIdNumber = data;
           if (this.existingIdNumber == false) {

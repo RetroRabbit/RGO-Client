@@ -21,7 +21,7 @@ export class EmployeeService {
   }
 
   /**
-* @summary  Gets the Basic Employee information ie.  
+* @summary  Gets the Basic Employee information ie.
 *  id
 *  name
 *  surname
@@ -51,8 +51,8 @@ export class EmployeeService {
     return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}/by-email?email=${encodeURIComponent(email)}`);
   }
 
-  checkIdNumber(idNumber: string, employeeId: number): Observable<boolean> {
-    return this.httpClient.get<boolean>(`${this.baseUrl}/id-number?idNumber=${encodeURIComponent(idNumber)}&employeeId=${encodeURIComponent(employeeId)}`);
+  checkDuplicateIdNumber(idNumber: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(`${this.baseUrl}/id-number?idNumber=${encodeURIComponent(idNumber)}`);
   }
 
   updateEmployee(employee: any): Observable<any> {
