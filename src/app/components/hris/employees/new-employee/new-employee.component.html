@@ -345,10 +345,10 @@
                   </form>
                 </div>
               </div>
-              <div id="footer" class="d-flex justify-content-center justify-content-md-start justify-content-lg-end justify-content-md-start pe-lg-3 ps-md-2">
-                <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
+              <div id="footer" class="d-flex justify-content-center justify-content-md-end ps-2 pe-2 ps-lg-0 pe-lg-3 ps-md-2 pe-md-3">
+                <button class="col-12 col-md-3" id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
                   (click)="goToPreviousPage()">Cancel</button>
-                <button id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
+                <button class="col-12 col-md-2" id="next-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
                   matStepperNext>Next</button>
               </div>
             </form>
