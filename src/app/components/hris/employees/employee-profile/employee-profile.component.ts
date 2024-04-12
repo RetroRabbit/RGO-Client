@@ -110,7 +110,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private router: Router,
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
-    private navService: NavService,
+    public navService: NavService,
     private changeDetectorRef: ChangeDetectorRef,
     public authAccessService: AuthAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -316,6 +316,8 @@ export class EmployeeProfileComponent implements OnChanges {
       .subscribe({
         next: () => {
           this.getSelectedEmployee()
+          this.snackBarService.showSnackbar("Updated employee profile picture", "snack-success");
+          this.navService.refreshEmployee();
         },
         error: () => {
           this.snackBarService.showSnackbar("Failed to update employee profile picture", "snack-error");
