@@ -119,6 +119,14 @@
                       Start date is required
                     </mat-error>
                   </mat-form-field>
+                  <mat-form-field appearance="outline" class=" mb-3">
+                    <mat-label>ID Number</mat-label>
+                    <input matInput type="text" formControlName="idNumber" (blur)="getGenderBirthday($event)" />
+                    <mat-error
+                      *ngIf="newEmployeeForm.controls['idNumber'].hasError('invalidIdNumber') && !newEmployeeForm.controls['idNumber'].hasError('required')">
+                      Not a valid South African ID number
+                    </mat-error>
+                  </mat-form-field>
                   <mat-form-field appearance="outline" class="">
                     <mat-label>Date of Birth</mat-label>
                     <input matInput formControlName="dateOfBirth" [matDatepicker]="dateOfBirthPicker" />
@@ -126,14 +134,6 @@
                     <mat-datepicker #dateOfBirthPicker></mat-datepicker>
                     <mat-error *ngIf="newEmployeeForm.controls['dateOfBirth'].hasError('required')">
                       Date of birth is required
-                    </mat-error>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline" class=" mb-3">
-                    <mat-label>ID Number</mat-label>
-                    <input matInput type="text" formControlName="idNumber" (blur)="getGenderBirthday($event)" />
-                    <mat-error
-                      *ngIf="newEmployeeForm.controls['idNumber'].hasError('invalidIdNumber') && !newEmployeeForm.controls['idNumber'].hasError('required')">
-                      Not a valid South African ID number
                     </mat-error>
                   </mat-form-field>
                   <div class=" mb-3"> <span class="roboto-font pb-3">Do you have any disabilities?</span>
@@ -154,9 +154,9 @@
                 </div>
                 <form [formGroup]="settingsForm"
                   class="row flex-column justify-content-center align-items-center roboto-font col-md-12">
-                  <div class="d-flex justify-content-md-start justify-content-end"> <label class="fw-base pe-3" id="additional-fields-label"
+                  <div class="d-flex justify-content-md-start justify-content-end align-self-start"> <label class="fw-base pe-3 col-11 col-md-auto" id="additional-fields-label"
                       for="additionalFieldsToggle">Additional Fields</label>
-                    <mat-slide-toggle color="primary" id="additionalFieldsToggle"
+                    <mat-slide-toggle class="col-1" color="primary" id="additionalFieldsToggle"
                       formControlName="toggleAdditionalFields"></mat-slide-toggle>
                   </div>
                 </form>
