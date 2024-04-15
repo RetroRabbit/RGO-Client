@@ -51,8 +51,8 @@
                     Level {{navService.getEmployeeProfile().level}}
                 </div>
                 <div class="col-12 my-2 d-none d-md-block" id="header-based"
-                    *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">
-                    Based in {{employeePhysicalAddress.city}}
+                    *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().physicalAddress?.city != ' ' && navService.getEmployeeProfile().physicalAddress?.city != ''">
+                    Based in {{navService.getEmployeeProfile().physicalAddress?.city}}
                 </div>
             </div>
         </div>
