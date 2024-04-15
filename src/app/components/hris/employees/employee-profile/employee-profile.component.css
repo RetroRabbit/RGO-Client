@@ -3,7 +3,15 @@
     padding-left: 30px;
 }
 
-#header-role,
+#header-role {
+    color: #555454;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+}
+
 #header-based {
     color: #555454;
     font-size: 16px;
@@ -11,6 +19,7 @@
     font-weight: 400;
     line-height: 20px;
     letter-spacing: 0.25px;
+    padding-left: 30px;
 }
 
 #header-email {
