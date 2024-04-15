@@ -56,6 +56,8 @@ export class SaveCustomFieldComponent {
   ngOnInit() {
     this.navService.showNavbar = false;
     this.navService.showSystemNavbar = false;
+    this.options.push(this.fb.control(''));
+    this.options.push(this.fb.control(''));
     if (this.selectedCustomField) {
       this.populateCustomFieldForm();
     }
@@ -166,9 +168,6 @@ export class SaveCustomFieldComponent {
   }
 
   checkSelectedOption(option: any) {
-    console.log("option " + option);
-    console.log("option.value " + option.value);
-    console.log("this.options " + this.options)
     if (option == 4 || option.value == 4) {
       this.optionsValid = false;
       if (this.options.length < 2) 
