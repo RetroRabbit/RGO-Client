@@ -375,17 +375,34 @@ export class NewCandidateComponent {
     if (this.newCandidateForm.valid) {
       this.onSubmitCandidate('/create-candidate');
       this.newCandidateForm.reset();
+      this.clearSpecificFields();
       this.clearValidators();
     } else {
       this.newCandidateForm.markAllAsTouched();
     }
   }
-  
+
+  clearSpecificFields() {
+    this.searchControl.setValue('');
+    this.cvFilename = '';
+    this.cvFileUploaded = false;
+    this.isValidCVFile = true;
+    this.isValidCVFileSize = true;
+    this.portfolioFilename = '';
+    this.portfolioFileUploaded = false;
+    this.isValidPortfolioFile = true;
+    this.isValidPortfolioFileSize = true;
+    this.isValidProfileImage = true;
+  }
+
   clearValidators() {
-    for (const control in this.newCandidateForm.controls) {
-      if (Object.prototype.hasOwnProperty.call(this.newCandidateForm.controls, control)) {
-        this.newCandidateForm.get(control)?.clearValidators();
-        this.newCandidateForm.get(control)?.updateValueAndValidity();
+    for (const controlName in this.newCandidateForm.controls) {
+      if (Object.prototype.hasOwnProperty.call(this.newCandidateForm.controls, controlName)) {
+        const control = this.newCandidateForm.get(controlName);
+        if (control) {
+          control.clearValidators();
+          control.updateValueAndValidity();
+        }
       }
     }
   }
@@ -439,6 +456,3 @@ export class NewCandidateComponent {
     })
   }
 }
-
-
-
