@@ -8,7 +8,7 @@
                 <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking?.status == 2"
                     class="pe-0 pe-md-5">
                     <mat-icon class="mx-1">error</mat-icon>
-                     <span class="d-none d-md-block d-lg-block">Missinginformation</span>
+                     <span class="d-none d-md-block d-lg-block">Missing Information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeBankingsForm">
@@ -59,17 +59,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6 my-2">
-                                <mat-form-field appearance="outline" id="banking-field">
-                                    <mat-label>Bank Account Owner</mat-label>
-                                    <input matInput placeholder="Enter name of owner"
-                                        formControlName="accountHolderName">
-                                    <mat-error
-                                        *ngIf="employeeBankingsForm.controls['accountHolderName'].hasError('required')">
-                                        Owner name is required</mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-0 col-md-6 col-lg-6"></div>
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Account Type</mat-label>
