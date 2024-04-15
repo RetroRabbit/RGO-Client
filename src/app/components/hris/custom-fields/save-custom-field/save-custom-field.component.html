@@ -9,42 +9,38 @@
                         [(ngModel)]="fieldCodeCapture">
                 </mat-form-field>
             </div>
+            <div class="col-12">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Description</mat-label>
+                    <input matInput formControlName="description">
+                </mat-form-field>
+            </div>
             <div>
+                <h1 id="radio-headings" class="mb-0">Select where it goes on the employee profile:</h1>
                 <mat-radio-group aria-label="Category" formControlName="category">
                     <mat-radio-button [value]=0>Profile Details</mat-radio-button> <br>
                     <mat-radio-button [value]=1>Bank Information</mat-radio-button> <br>
                     <mat-radio-button [value]=2>Career Summary</mat-radio-button>
                 </mat-radio-group>
             </div>
-            <div class="col-12 mt-4">
-                <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Description</mat-label>
-                    <input matInput formControlName="description">
-                </mat-form-field>
-            </div>
             <div class="col-12">
-                <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Type</mat-label>
-                    <mat-select formControlName="type" (selectionChange)="checkSelectedOption($event)">
-                        <mat-option *ngFor="let type of dataTypes" [value]="type.id">{{type.value}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <div id="type-info">
-                    <p><strong>String:</strong> is text or words</p>
-                    <p><strong>Integer:</strong> are whole numbers</p>
-                    <p><strong>Date:</strong> used to represent dates</p>
-                    <p><strong>Float:</strong> used to represent numbers that have a decimal point or integers</p>
-                    <p><strong>Options:</strong> refers to one or more choices, represented as strings or integers.</p>
-                </div>
+                <h1 id="radio-headings" class="mb-0">Select what type of field it should be</h1>
+                <mat-radio-group aria-label="Type" formControlName="type" (change)="checkSelectedOption($event)">
+                    <mat-radio-button [value]=0>Date - For specific calendar days, like birthdays</mat-radio-button> <br>
+                    <mat-radio-button [value]=1>String - For storing text, like names or messages</mat-radio-button> <br>
+                    <mat-radio-button [value]=2>Integer - Whole counting numbers, like 1, 2, 3...</mat-radio-button>
+                    <mat-radio-button [value]=3>Float - For numbers with decimal points, like currency</mat-radio-button>
+                    <mat-radio-button [value]=4>Options - Choices, which can be words or numbers </mat-radio-button>
+                </mat-radio-group>
                 <div *ngIf="customFieldForm.get('type')?.value == 4 && customFieldForm.get('options') as optionsArray"
-                    formArrayName="options" cdkDropList (cdkDropListDropped)="drop($event)">
+                    formArrayName="options" cdkDropList (cdkDropListDropped)="drop($event)" class="mt-2">
                     <div *ngFor="let option of options.controls; let i = index" class="row mx-0" cdkDrag>
                         <div id="icon-circle" (click)="removeOption(i)" class="col-1">
                             <mat-icon id="icon">close</mat-icon>
                         </div>
                         <div class="col-10">
                             <mat-form-field appearance="outline" style="width: 100%;">
-                                <mat-label>Option {{i + 1}}</mat-label>
+                                <mat-label>Option {{i + 1}} Title*</mat-label>
                                 <input matInput [formControlName]="i">
                             </mat-form-field>
                         </div>
@@ -53,18 +49,19 @@
                         </div>
                     </div>
                     <div>
-                        <button (click)="addOption()" id="add-button">+ Add Option</button>
+                        <button class="ms-4" (click)="addOption()" id="add-button">+ Add Option</button>
                     </div>
                 </div>
             </div>
             <br>
-            <mat-checkbox formControlName="required" (change)="toggleRequired()">
-                Make custom field mandatory
-            </mat-checkbox>
+            <div class="col-12">
+                <mat-checkbox formControlName="required" (change)="toggleRequired()">
+                    Make custom field mandatory
+                </mat-checkbox>
+            </div>
             <div class="col-12" id="toggle-advanced">
                 <mat-slide-toggle (toggleChange)="toggleShowAdvance()">Advance fields</mat-slide-toggle>
             </div>
-
             <div *ngIf="showAdvanced">
                 <div class="col-12">
                     <mat-form-field appearance="outline" style="width: 100%;">
@@ -81,7 +78,7 @@
             </div>
             <div id="button-container">
                 <div>
-                    <button id="save-button" (click)="onSubmit()">Save Update</button>
+                    <button id="save-button" (click)="onSubmit()" [disabled]="optionsValid == false">Save Update</button>
                 </div>
                 <div>
                     <button id="cancel-button" (click)="back()">Cancel</button>

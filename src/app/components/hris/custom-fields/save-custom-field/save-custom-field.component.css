@@ -61,6 +61,17 @@ h3 {
     width: 400px !important;
 }
 
+button:disabled,
+button[disabled],
+#save-add-button:disabled,
+#save-add-button[disabled]
+#save-button:disabled,
+#save-button[disabled] {
+  background: var(--m-3-state-layers-light-on-surface-opacity-012, rgba(29, 27, 32, 0.12));
+  color: var(--m-3-sys-light-on-surface-variant, #49454F);
+  border: none;
+}
+
 #cancel-button {
     display: flex;
     padding: 10px 24px;
@@ -79,6 +90,15 @@ h3 {
     line-height: 20px;
     letter-spacing: 0.1px;
     width: 400px;
+}
+
+#radio-headings {
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
 }
 
 #icon-circle:hover, #drag-icon{
