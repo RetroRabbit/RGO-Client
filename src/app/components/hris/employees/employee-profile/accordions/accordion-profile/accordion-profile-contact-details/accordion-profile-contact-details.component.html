@@ -74,9 +74,6 @@
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Home Number</mat-label>
                                         <input matInput formControlName="houseNo">
-                                        <mat-error *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['houseNo'].hasError('required')">
-                                            Home number is required
-                                        </mat-error>
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['houseNo'].hasError('pattern') && !sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].hasError('required')">
                                             Home number must only contain numbers
