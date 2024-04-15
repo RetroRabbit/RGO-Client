@@ -68,7 +68,7 @@ export class NewEmployeeComponent implements OnInit {
   employeeTypes: EmployeeType[] = [];
   employeeDocumentModels: EmployeeDocument[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
-  namePattern = /^[a-zA-Z\s'-]*$/;
+  namePattern = /^[a-zA-Z\s ()'-]*$/;
   initialsPattern = /^[A-Za-z]+$/;
   toggleAdditional: boolean = false;
   levels: number[] = levels.map((level) => level.value);
@@ -330,6 +330,8 @@ export class NewEmployeeComponent implements OnInit {
     this.clearFormErrorsAndValues(this.postalAddressForm);
     this.onUploadDocument('/create-employee');
     this.removeAllDocuments();
+    this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
+    this.newEmployeeForm.controls['disability'].setValue(false);
   }
 
   onUploadDocument(nextPage: string): void {
