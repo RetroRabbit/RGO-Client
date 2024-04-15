@@ -64,8 +64,8 @@
                 {{navService.getEmployeeProfile().level}}
             </div>
             <div class="col-auto" id="header-based"
-                *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">
-                Based in {{employeePhysicalAddress.city}}
+            *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().physicalAddress?.city != ' ' && navService.getEmployeeProfile().physicalAddress?.city != ''">
+            Based in {{navService.getEmployeeProfile().physicalAddress?.city}}
             </div>
         </div>
         <div class="col-12 col-md-10 offset-md-2 my-2 px-4">
@@ -135,8 +135,8 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">Start Date</div>
-                            <div *ngIf="!usingSimpleProfile;else NonAdminEngagementDate" id="header-value">
-                                {{ employeeProfile.engagementDate| date:'d MMM yyyy' }}
+                            <div *ngIf="navService.employeeProfile != undefined; else NonAdminEngagementDate" id="header-value">
+                                {{ navService.getEmployeeProfile().engagementDate| date:'d MMM yyyy' }}
                             </div>
                             <ng-template #NonAdminEngagementDate>
                                 {{simpleEmployee.engagementDate| date:'d MMM yyyy'}}
