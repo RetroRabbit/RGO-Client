@@ -329,6 +329,8 @@ export class NewEmployeeComponent implements OnInit {
     this.clearFormErrorsAndValues(this.postalAddressForm);
     this.onUploadDocument('/create-employee');
     this.removeAllDocuments();
+    this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
+    this.newEmployeeForm.controls['disability'].setValue(false);
   }
 
   onUploadDocument(nextPage: string): void {
