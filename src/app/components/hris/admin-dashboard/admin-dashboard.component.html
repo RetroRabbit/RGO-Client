@@ -73,19 +73,19 @@
       </div>
     </div>
 
-
-    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
-  'background-color': '#D7DFFF',
-  'border': '2px solid #D7DFFF',
-  'border-radius': '2rem',
-  'height': '300px',
-  'width': '100%',
-}">
+    <div *ngIf="isLoading" class="skeleton-loader-container">
+    <ngx-skeleton-loader *ngIf="isLoading" count="1" appearance="line" animation="pulse" [theme]="{
+      'background-color': '#D7DFFF',
+      'border': '2px solid #D7DFFF',
+      'border-radius': '2rem',
+      'height': '200px',
+      'width': '100%',
+    }">
     </ngx-skeleton-loader>
-
+    </div>
     <div *ngIf="!isLoading" class="me-3 me-lg-0"
       [ngClass]="screenWidth <= 767 ? 'data-cards-container-mobile' : (screenWidth <= 991 ? 'data-cards-container-tablet' : 'data-cards-container-desktop')">
-      <div class="data-card " [ngClass]="screenWidth <= 991 ? 'data-card-tablet' : 'data-card-mobile'">
+      <div class="data-card " [ngClass]="screenWidth <= 991 ? 'data-card-tablet' : 'data-card-mobile'" *ngIf="!isLoading">
         <div class="row">
           <div class="col-3">
             <div id="options-trigger">
