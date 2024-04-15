@@ -261,7 +261,7 @@ export class NewCandidateComponent {
         } else {
         }
       },
-      error: (err) => {}
+      error: (err) => { }
     });
   }
 
@@ -301,17 +301,17 @@ export class NewCandidateComponent {
       this.isValidCVFile = false;
       return false;
     }
-    if (file.size > 10 * 1024 * 1024) { 
+    if (file.size > 10 * 1024 * 1024) {
       this.isValidCVFileSize = false;
       return false;
     }
     this.isValidCVFileSize = true;
     return true;
   }
-  
+
   validatePortfolioFile(file: File): boolean {
     const allowedTypes = ['application/pdf'];
-    if (file.size > 10 * 1024 * 1024) { 
+    if (file.size > 10 * 1024 * 1024) {
       this.isValidPortfolioFileSize = false;
       return false;
     }
@@ -322,7 +322,7 @@ export class NewCandidateComponent {
     this.isValidPortfolioFileSize = true;
     return true;
   }
-  
+
   clearCVFileUpload() {
     this.cvFilename = '';
     this.isValidCVFile = true;
@@ -372,10 +372,23 @@ export class NewCandidateComponent {
   }
 
   saveAndAddAnotherCandidate() {
-    this.onSubmitCandidate('/create-candidate');
-    this.newCandidateForm.reset();
+    if (this.newCandidateForm.valid) {
+      this.onSubmitCandidate('/create-candidate');
+      this.newCandidateForm.reset();
+      this.clearValidators();
+    } else {
+      this.newCandidateForm.markAllAsTouched();
+    }
   }
-
+  
+  clearValidators() {
+    for (const control in this.newCandidateForm.controls) {
+      if (Object.prototype.hasOwnProperty.call(this.newCandidateForm.controls, control)) {
+        this.newCandidateForm.get(control)?.clearValidators();
+        this.newCandidateForm.get(control)?.updateValueAndValidity();
+      }
+    }
+  }
 
   onSubmitCandidate(nextPage: string): void {
     if (this.newCandidateForm.valid) {
