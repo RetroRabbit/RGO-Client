@@ -18,6 +18,7 @@ import {
   HostListener,
   NgZone,
   Input,
+  ViewEncapsulation,
 } from '@angular/core';
 import {
   Observable,
@@ -39,7 +40,9 @@ import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-obj
   selector: 'app-view-employee',
   templateUrl: './view-employee.component.html',
   styleUrls: ['./view-employee.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
+
 export class ViewEmployeeComponent {
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() addEmployeeEvent = new EventEmitter<void>();
@@ -74,7 +77,7 @@ export class ViewEmployeeComponent {
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
   currentUserTypeFilter: GenericDropDownObject = new GenericDropDownObject;
 
-  defaultPageSize : number = 10
+  defaultPageSize: number = 10
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
     this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
