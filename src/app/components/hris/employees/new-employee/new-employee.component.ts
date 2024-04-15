@@ -68,7 +68,7 @@ export class NewEmployeeComponent implements OnInit {
   employeeTypes: EmployeeType[] = [];
   employeeDocumentModels: EmployeeDocument[] = [];
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
-  namePattern = /^[a-zA-Z\s'-]*$/;
+  namePattern = /^[a-zA-Z\s ()'-]*$/;
   initialsPattern = /^[A-Za-z]+$/;
   toggleAdditional: boolean = false;
   levels: number[] = levels.map((level) => level.value);
