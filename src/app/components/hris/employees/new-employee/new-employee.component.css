@@ -42,9 +42,8 @@ main {
 }
 
 #additional-fields-label {
-    font-size: 22px;
+    font-size: 16px;
     font-weight: 400;
-    line-height: 28px;
     word-wrap: break-word;
 }
 
@@ -60,11 +59,11 @@ main {
 }
 
 #heading {
-    font-size: 36px;
+    font-size: 24px;
     font-weight: 400;
     line-height: 44px;
     word-wrap: break-word;
-    margin-top: 64px;
+    margin-top: 32px;
 }
 
 #heading-text {
@@ -159,7 +158,7 @@ main {
 
 #cancel-button {
     display: flex;
-    padding: 10px 24px;
+    padding: 10px 40px;
     justify-content: center;
     align-items: center;
     gap: 8px;
@@ -374,7 +373,6 @@ main {
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0.1px;
-    width: 365px;
     margin-bottom: 20px;
 }
 
