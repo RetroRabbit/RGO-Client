@@ -17,6 +17,7 @@ import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface'
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 
 @Component({
   selector: 'app-accordion-profile-address-details',
@@ -59,6 +60,7 @@ export class AccordionProfileAddressDetailsComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeAddressService: EmployeeAddressService,
     public locationApiService: LocationApiService,
+    private navService: NavService
   ) { }
 
   ngOnInit() {
@@ -153,6 +155,7 @@ export class AccordionProfileAddressDetailsComponent {
               this.sharedAccordionFunctionality.totalProfileProgress();
               this.getEmployeeFields();
               this.sharedAccordionFunctionality.editAddress = false;
+              this.navService.refreshEmployee();
             },
             error: (error: any) => {
               this.snackBarService.showSnackbar(error.error, "snack-error");
