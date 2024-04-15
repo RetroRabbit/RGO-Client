@@ -97,6 +97,13 @@ export class SaveCustomFieldComponent {
 
       this.customFieldService.saveFieldCode(customField).subscribe({
         next: (data) => {
+          console.log("existing options " + existingOptions.length);
+          console.log("options to remove " + optionsToRemove.length);
+          console.log("updated options " + updatedOptions.length);
+          if((updatedOptions.length) <= 2){
+            this.snackBarService.showSnackbar("Custom field does not have enough options", "snack-error");
+            return
+          }
           this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
           this.selectedCustomField = data;
           this.customFieldForm.disable();
@@ -160,5 +167,24 @@ export class SaveCustomFieldComponent {
       category: [this.selectedCustomField?.category, Validators.required],
       required: [this.selectedCustomField?.required, Validators.required],
     });
+  }
+
+  checkSelectedOption(option: any){
+    console.log(option.value);
+
+    /* 
+      if option is 4
+        -> check the added options array's length
+        (if the added options array's length < 3)
+        if smaller than 3
+          disable the submit button
+
+          -------------------------------
+        if options.length < 3
+          this.options.push(this.fb.control(''));
+          the main this.option 
+    */
+
+    //this.customFieldForm.value['type'] == 4 ? updatedOptions : []
   }
 }
