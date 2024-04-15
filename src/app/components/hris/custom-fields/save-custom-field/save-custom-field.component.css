@@ -15,7 +15,7 @@
     text-align: left !important;
 }
 
-#form-container > form > div{
+#form-container>form>div {
     margin: auto;
     width: 400px;
     padding: 0;
@@ -48,11 +48,11 @@ h3 {
     gap: 8px;
 }
 
-#button-container  {
+#button-container {
     width: 400px;
 }
 
-#button-container > div > button:first-child{
+#button-container>div>button:first-child {
     margin-bottom: 20px;
 }
 
@@ -64,12 +64,11 @@ h3 {
 button:disabled,
 button[disabled],
 #save-add-button:disabled,
-#save-add-button[disabled]
-#save-button:disabled,
+#save-add-button[disabled] #save-button:disabled,
 #save-button[disabled] {
-  background: var(--m-3-state-layers-light-on-surface-opacity-012, rgba(29, 27, 32, 0.12));
-  color: var(--m-3-sys-light-on-surface-variant, #49454F);
-  border: none;
+    background: var(--m-3-state-layers-light-on-surface-opacity-012, rgba(29, 27, 32, 0.12));
+    color: var(--m-3-sys-light-on-surface-variant, #49454F);
+    border: none;
 }
 
 #cancel-button {
@@ -101,19 +100,20 @@ button[disabled],
     letter-spacing: 0.15px;
 }
 
-#icon-circle:hover, #drag-icon{
+#icon-circle:hover,
+#drag-icon {
     cursor: pointer;
 }
 
-#icon-circle{
+#icon-circle {
     color: #DC362E;
 }
 
-.mat-icon{
-    margin-top: 1rem ;
+.mat-icon {
+    margin-top: 1rem;
 }
 
-#add-button{
+#add-button {
     padding: 10px 24px;
     justify-content: center;
     align-items: center;
@@ -132,15 +132,15 @@ button[disabled],
     width: 137px;
 }
 
-#toggle-advanced{
+#toggle-advanced {
     margin-top: 30px !important;
     margin-bottom: 30px !important;
 }
 
-#type-info{
+#type-info {
     margin: 0 0 10px 0;
 }
 
-#type-info > p{
+#type-info>p {
     margin: 0;
 }

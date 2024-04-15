@@ -26,10 +26,14 @@
             <div class="col-12">
                 <h1 id="radio-headings" class="mb-0">Select what type of field it should be</h1>
                 <mat-radio-group aria-label="Type" formControlName="type" (change)="checkSelectedOption($event)">
-                    <mat-radio-button [value]=0>Date - For specific calendar days, like birthdays</mat-radio-button> <br>
-                    <mat-radio-button [value]=1>String - For storing text, like names or messages</mat-radio-button> <br>
+                    <mat-radio-button [value]=0>Date - For specific calendar days, like birthdays</mat-radio-button>
+                    <br>
+                    <mat-radio-button [value]=1>String - For storing text, like names or messages</mat-radio-button>
+                    <br>
                     <mat-radio-button [value]=2>Integer - Whole counting numbers, like 1, 2, 3...</mat-radio-button>
+                    <br>
                     <mat-radio-button [value]=3>Float - For numbers with decimal points, like currency</mat-radio-button>
+                    <br>
                     <mat-radio-button [value]=4>Options - Choices, which can be words or numbers </mat-radio-button>
                 </mat-radio-group>
                 <div *ngIf="customFieldForm.get('type')?.value == 4 && customFieldForm.get('options') as optionsArray"
@@ -78,7 +82,9 @@
             </div>
             <div id="button-container">
                 <div>
-                    <button id="save-button" (click)="onSubmit()" [disabled]="optionsValid == false">Save Update</button>
+                    <button id="save-button" (click)="onSubmit()" [disabled]="optionsValid == false">
+                        Save Update
+                    </button>
                 </div>
                 <div>
                     <button id="cancel-button" (click)="back()">Cancel</button>

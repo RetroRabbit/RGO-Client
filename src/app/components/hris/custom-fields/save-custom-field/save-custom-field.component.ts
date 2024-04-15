@@ -170,9 +170,9 @@ export class SaveCustomFieldComponent {
   checkSelectedOption(option: any) {
     if (option == 4 || option.value == 4) {
       this.optionsValid = false;
-      if (this.options.length < 2) 
+      if (this.options.length < 2)
         this.optionsValid = false;
-      else 
+      else
         this.optionsValid = true;
     }
     else if (option.value != 4 || option != 4)
