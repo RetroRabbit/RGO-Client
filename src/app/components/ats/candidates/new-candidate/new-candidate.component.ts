@@ -76,6 +76,7 @@ export class NewCandidateComponent {
   employeesReferrals: Observable<GenericDropDownObject[]> = this.getEmployees();
   filteredEmployees!: Observable<GenericDropDownObject[]>;
   allEmployees: EmployeeProfile[] = [];
+  optionValid: boolean = false;
 
   ngOnInit(): void {
     this.initializeForm();
@@ -425,6 +426,15 @@ export class NewCandidateComponent {
       }
     })
   }
+
+  checkSelectedOption(option: any) {
+    console.log("option value " + option)
+
+    if (option == 0 || option.value == 0)
+      this.optionValid = true;
+    else
+      this.optionValid = false;
+}
 }
 
 
