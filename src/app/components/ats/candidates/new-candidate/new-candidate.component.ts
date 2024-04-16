@@ -392,7 +392,8 @@ export class NewCandidateComponent {
     this.portfolioFileUploaded = false;
     this.isValidPortfolioFile = true;
     this.isValidPortfolioFileSize = true;
-    this.isValidProfileImage = true;
+    this.isValidProfileImage = false;
+    this.imageUrl = '';
   }
 
   clearValidators() {
