@@ -484,11 +484,13 @@ export class NewEmployeeComponent implements OnInit {
     this.employeeService.checkDuplicateIdNumber(this.newEmployeeForm.value.idNumber as string).subscribe({
       next: (data: boolean) => {
         this.existingIdNumber = data;
-        if (!this.existingIdNumber) {
-          this.saveEmployee();
-        } else {
+        if (this.existingIdNumber) {
           this.snackBarService.showSnackbar("Id number already exists", "snack-error");
           this.isLoadingAddEmployee = false;
+          console.log(`ID was ${this.existingIdNumber} in the employeeService call, not saving employees`);
+        } else {
+          this.saveEmployee();
+          console.log(`ID was ${this.existingIdNumber} in the employeeService call, called saveEmployee()`);
         }
       },
       error: () => {
@@ -503,7 +505,10 @@ export class NewEmployeeComponent implements OnInit {
       next: () => {
         this.isSavedEmployee = true;
         this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
-        this.myStepper.next();
+        if (!this.existingIdNumber) {
+          this.myStepper.next();
+          console.log(`ID was ${this.existingIdNumber}. Mat stepper moved in saveEmployees()`);
+        }
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
       },
@@ -516,7 +521,7 @@ export class NewEmployeeComponent implements OnInit {
           this.isLoadingAddEmployee = false;
         }
         else if (error.status === 200) {
-          stepper?.next();
+          // stepper?.next();
           this.isLoadingAddEmployee = false;
         }
         this.snackBarService.showSnackbar(`Failed to save employee`, "snack-error");
