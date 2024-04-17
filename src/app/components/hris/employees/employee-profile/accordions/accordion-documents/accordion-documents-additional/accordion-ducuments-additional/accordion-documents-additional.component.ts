@@ -1,22 +1,21 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
-import { Document } from 'src/app/models/hris/constants/documents.contants';
+import { AdditionalDocument} from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 
 @Component({
-  selector: 'app-accordion-documents',
-  templateUrl: './accordion-documents.component.html',
-  styleUrls: ['./accordion-documents.component.css']
+  selector: 'app-accordion-documents-additional',
+  templateUrl: './accordion-documents-additional.component.html',
+  styleUrls: ['./accordion-documents-additional.component.css']
 })
-export class AccordionDocumentsComponent {
+export class AccordionDucumentsAdditionalComponent {
+
   @Output() updateDocument = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
 
@@ -28,7 +27,7 @@ export class AccordionDocumentsComponent {
   }
 
   selectedEmployee!: EmployeeProfile;
-  fileCategories = Document;
+  fileCategories = AdditionalDocument;
   documentFormProgress: number = 0;
   documentsProgress: number = 0;
   employeeDocuments: EmployeeDocument[] = [];
@@ -48,8 +47,6 @@ export class AccordionDocumentsComponent {
     private employeeDocumentService: EmployeeDocumentService,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
-    private employeeRoleService: EmployeeRoleService,
-    private employeeProfileService: EmployeeProfileService,
     private cookieService: CookieService,
     private authAccessService: AuthAccessService
   ) { }

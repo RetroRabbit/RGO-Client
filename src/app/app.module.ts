@@ -73,7 +73,7 @@ import { NavBarComponent } from './components/hris/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccordionBankingComponent } from './components/hris/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
-import { AccordionDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
+import { AccordionDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents-starterkit/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 import { NewCandidateComponent } from './components/ats/candidates/new-candidate/new-candidate.component';
@@ -87,6 +87,7 @@ import { AccordionProfilePersonalDetailsComponent } from './components/hris/empl
 import { AccordionProfileAddressDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
 
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { AccordionDucumentsAdditionalComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents-additional/accordion-ducuments-additional/accordion-documents-additional.component';
 
 @NgModule({
   declarations: [
@@ -124,6 +125,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
     AccordionProfileAdditionalComponent,
     AccordionProfilePersonalDetailsComponent,
     AccordionProfileAddressDetailsComponent,
+    AccordionDucumentsAdditionalComponent,
 
   ],
   imports: [

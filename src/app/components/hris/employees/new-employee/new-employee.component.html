@@ -506,51 +506,6 @@
                   </ng-template>
                 </ngx-file-drop>
               </div>
-              <div class="upload-drop-mie row">
-                <ngx-file-drop dropZoneClassName="upload-drop-section" contentClassName="" accept=".PDF"
-                  (onFileDrop)="dropped($event, 3)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
-                  <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" directory="true"
-                    multiple="true">
-                    <div class="justify-content-center align-items-center p-2 m-2">
-                      <div class="row">
-                        <div class="col-5">
-                          <div id="align">
-                            <mat-icon *ngIf="categories[3].state == false" id="icon">check_circle</mat-icon>
-                          </div>
-                          <div class="roboto-font" id="align" *ngIf="categories[3].state == true">
-                            <p id="title">MIE Consent Form</p>
-                            <p id="supported">PDF is supported</p>
-                          </div>
-                          <div class="roboto-font" id="align" *ngIf="categories[3].state == false">
-                            <p id="title">MIE Consent Form</p>
-                            <p id="document-text">{{categories[3].name}}</p>
-                          </div>
-                        </div>
-                        <div class="col d-none d-lg-block file-mention" id="align-left"
-                          *ngIf="categories[3].state == true">
-                          <p id="drop-file">Drop your files Here!</p>
-                        </div>
-                        <div class="col">
-                          <div id="align-buttons">
-                            <div id="remove-upload-button-container">
-                              <button mat-button id="file-button" *ngIf="categories[3].state == false" class="mx-2"
-                                type="button" (click)="removeByCategory(3)">
-                                <mat-icon>Clear</mat-icon>
-                                Remove
-                              </button>
-                              <button mat-button id="upload-button" class="text-white border-primary mx-2" type="button"
-                                (click)="openFileSelector()" [disabled]="categories[3].state == false">
-                                <mat-icon>Add</mat-icon>
-                                Upload
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </ng-template>
-                </ngx-file-drop>
-              </div>
             </div>
           </div>
           <div id="footer">

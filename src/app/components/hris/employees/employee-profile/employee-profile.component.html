@@ -336,8 +336,10 @@
                 [employeeProfile]="employeeProfile"
                 (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
 
-            <app-accordion-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
-                (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents>
+            <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
+                (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents-starterkit>
+            <app-accordion-documents-additional [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
+                (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents-additional>
         </div>
     </div>
 </div>
