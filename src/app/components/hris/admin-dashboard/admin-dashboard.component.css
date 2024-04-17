@@ -144,6 +144,15 @@ input[type="search"]::-webkit-search-results-decoration {
   width: 24px;
 }
 
+.skeleton-loader-container {
+  display: flex;
+  justify-content: center; 
+}
+
+ngx-skeleton-loader {
+  width: 97%; 
+}
+
 .cross-margins {
   margin-bottom: 6px;
 }
