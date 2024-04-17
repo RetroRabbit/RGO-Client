@@ -234,28 +234,37 @@ export class AccordionProfileEmployeeDetailsComponent {
         + 24 * 60 * 60 * 1000
       ).toISOString();
       this.sharedAccordionFunctionality.employeeProfileDto.gender = personalDetailsForm.gender;
-      this.employeeService.checkDuplicateIdNumber(employeeDetailsForm.idNumber).subscribe({
-        next: (data: boolean) => {
-          this.existingIdNumber = data;
-          if (this.existingIdNumber == false) {
-            this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
-              next: (data) => {
-                this.snackBarService.showSnackbar("Employee details updated", "snack-success");
-                this.sharedAccordionFunctionality.checkEmployeeFormProgress();
-                this.sharedAccordionFunctionality.totalProfileProgress();
-                this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.sharedAccordionFunctionality.employeeProfileDto?.clientAllocated)[0];
-                this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.teamLead)[0];
-                this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.peopleChampion)[0];
-                this.sharedAccordionFunctionality.editEmployee = false;
-                this.sharedAccordionFunctionality.employeeDetailsForm.disable();
-                this.navService.refreshEmployee();
-              },
-            });
-          } else {
-            this.snackBarService.showSnackbar("Id number already used by another employee", "snack-error");
-          }
-        },
-      });
+      let foundDuplicateId = true;
+      if (this.navService.getEmployeeProfile().idNumber !== this.sharedAccordionFunctionality.employeeProfileDto.idNumber) {
+        this.employeeService.checkDuplicateIdNumber(this.sharedAccordionFunctionality.employeeProfileDto.idNumber, this.navService.getEmployeeProfile().email!).subscribe({
+          next: (data: boolean) => {
+            foundDuplicateId = data;
+            console.log(data);
+            if (!foundDuplicateId) {
+              this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
+                next: () => {
+                  this.snackBarService.showSnackbar("Employee details updated", "snack-success");
+                  this.sharedAccordionFunctionality.checkEmployeeFormProgress();
+                  this.sharedAccordionFunctionality.totalProfileProgress();
+                  this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.sharedAccordionFunctionality.employeeProfileDto?.clientAllocated)[0];
+                  this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.teamLead)[0];
+                  this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.peopleChampion)[0];
+                  this.sharedAccordionFunctionality.editEmployee = false;
+                  this.sharedAccordionFunctionality.employeeDetailsForm.disable();
+                  this.navService.refreshEmployee();
+                },
+                error: () => {
+                  this.snackBarService.showSnackbar("Failed to update employee details", "snack-error");
+                  return;
+                }
+              });
+            } else {
+              this.snackBarService.showSnackbar("Id number already used by another employee", "snack-error");
+              return;
+            }
+          },
+        })
+      }
     }
     else {
       this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");

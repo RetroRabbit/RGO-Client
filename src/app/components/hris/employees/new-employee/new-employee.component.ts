@@ -438,6 +438,7 @@ export class NewEmployeeComponent implements OnInit {
   isDirty = false;
 
   onSubmit(reset: boolean = false): void {
+    this.existingIdNumber = false;
     this.isLoadingAddEmployee = true;
     if (this.isDirty == true)
       return;
@@ -482,12 +483,13 @@ export class NewEmployeeComponent implements OnInit {
 
     const employeeEmail: string = this.newEmployeeForm.value.email!;
     this.checkBlankRequiredFields();
-    this.employeeService.checkDuplicateIdNumber(this.newEmployeeForm.value.idNumber as string).subscribe({
+    this.employeeService.checkDuplicateIdNumber(this.newEmployeeForm.value.idNumber as string, this.newEmployeeForm.value.email).subscribe({
       next: (data: boolean) => {
         this.existingIdNumber = data;
         if (this.existingIdNumber) {
           this.snackBarService.showSnackbar("Id number already exists", "snack-error");
           this.isLoadingAddEmployee = false;
+          // this.myStepper.reset();
           console.log(`ID was ${this.existingIdNumber} in the employeeService call, not saving employees`);
         } else {
           this.saveEmployee();
@@ -522,7 +524,7 @@ export class NewEmployeeComponent implements OnInit {
           this.isLoadingAddEmployee = false;
         }
         else if (error.status === 200) {
-          // stepper?.next();
+          stepper?.next();
           this.isLoadingAddEmployee = false;
         }
         this.snackBarService.showSnackbar(`Failed to save employee`, "snack-error");
