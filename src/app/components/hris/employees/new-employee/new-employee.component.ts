@@ -332,6 +332,7 @@ export class NewEmployeeComponent implements OnInit {
     this.removeAllDocuments();
     this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
     this.newEmployeeForm.controls['disability'].setValue(false);
+    this.myStepper.reset();
   }
 
   onUploadDocument(nextPage: string): void {
