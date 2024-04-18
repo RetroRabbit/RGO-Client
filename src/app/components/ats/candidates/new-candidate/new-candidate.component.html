@@ -50,8 +50,11 @@
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>Email</mat-label>
                         <input matInput type="email" formControlName="email" />
-                        <mat-error *ngIf="newCandidateForm.controls['email'].hasError('required')">
+                        <mat-error *ngIf="newCandidateForm.controls['email'].hasError('pattern')">
                             Please enter a valid email address
+                        </mat-error>
+                        <mat-error *ngIf="newCandidateForm.controls['email'].hasError('required')">
+                            Email address is required
                         </mat-error>
                     </mat-form-field>
                     <div class="col-md-12 col-lg-7 my-1">
@@ -69,7 +72,7 @@
                         <mat-label>Contact number</mat-label>
                         <input matInput type="text" formControlName="cellphoneNumber" pattern="^\+27\d{9}$"
                             placeholder="+27 XXXXXXXXX" />
-                            <mat-error *ngIf="newCandidateForm.controls['cellphoneNumber'].hasError('required')">
+                            <mat-error *ngIf="newCandidateForm.controls['cellphoneNumber'].hasError('pattern')">
                                 Please enter a valid Cellphone number
                             </mat-error>
                     </mat-form-field>
@@ -126,7 +129,7 @@
                         <input matInput type="text" formControlName="portfolioLink" />
                         <mat-icon matSuffix>link</mat-icon>
                         <mat-error *ngIf="newCandidateForm.controls['portfolioLink'].hasError('pattern')">
-                            valid website link is required.
+                            Valid website link is required.
                         </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
@@ -159,13 +162,10 @@
                     <div *ngIf="additionalFieldsVisible"
                         class="row col-md-12 flex-column justify-content-center align-items-center">
                         <mat-radio-group formControlName="gender" class="col-md-12 col-lg-7 my-2 info-text">
-                            <p class="col-md-12 col-lg-7 info-text">Gender:*</p>
+                            <p class="col-md-12 col-lg-7 info-text">Gender:</p>
                             <mat-radio-button [value]=0>Unclassified</mat-radio-button> <br />
                             <mat-radio-button [value]=1>Male</mat-radio-button> <br />
                             <mat-radio-button [value]=2>Female</mat-radio-button> <br />
-                            <mat-error *ngIf="newCandidateForm.controls['gender'].hasError('required')">
-                                Gender is required
-                            </mat-error>
                         </mat-radio-group>
                         <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
                             <mat-label>Race</mat-label>
@@ -178,16 +178,13 @@
                             <input matInput type="text" formControlName="idNumber" />
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-lg-7 col-md-12" >
-                            <mat-label>Referral*</mat-label>
+                            <mat-label>Referral</mat-label>
                             <input matInput placeholder="Referral" [formControl]="searchControl" [matAutocomplete]="auto">
                             <mat-autocomplete #auto="matAutocomplete">
                                 <mat-option *ngFor="let employee of allEmployees" [value]='employee.name + " " + employee.surname'
                                     (onSelectionChange)="showSelectedReferral($event)">{{ employee.name }} {{ employee.surname}} 
                                 </mat-option>
                             </mat-autocomplete>
-                            <mat-error *ngIf="newCandidateForm.controls['referral'].hasError('required')">
-                                Referral is required
-                            </mat-error>
                         </mat-form-field>
                         <h4 class="col-md-12 col-lg-7 mb-2 info-text">Qualifications</h4>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
@@ -208,7 +205,7 @@
                                 placeholder="Enter other school">
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
-                            <mat-label>Date Obtained</mat-label>
+                            <mat-label>Year Obtained</mat-label>
                             <mat-select formControlName="endDate" placeholder="Select start year" hideSingleSelectionIndicator="true">
                                 <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
                             </mat-select>
