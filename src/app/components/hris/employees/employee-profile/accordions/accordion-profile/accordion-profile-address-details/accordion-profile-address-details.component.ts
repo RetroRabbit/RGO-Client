@@ -71,8 +71,8 @@ export class AccordionProfileAddressDetailsComponent {
 
   initializeForm() {
     this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
-      physicalUnitNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      physicalComplexName: [this.employeeProfile!.employeeDetails.physicalAddress?.complexName?.trim(), Validators.required],
+      physicalUnitNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber?.trim(), [Validators.pattern(/^[0-9]*$/)]],
+      physicalComplexName: [this.employeeProfile!.employeeDetails.physicalAddress?.complexName?.trim()],
       physicalStreetNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       physicalStreetName: [this.employeeProfile!.employeeDetails.physicalAddress?.streetName?.trim(), Validators.required],
       physicalSuburb: [this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict?.trim(), Validators.required],
@@ -80,10 +80,10 @@ export class AccordionProfileAddressDetailsComponent {
       physicalCountry: [this.employeeProfile!.employeeDetails.physicalAddress?.country?.trim(), Validators.required],
       physicalProvince: [this.employeeProfile!.employeeDetails.physicalAddress?.province?.trim(), Validators.required],
       physicalPostalCode: [this.employeeProfile!.employeeDetails.physicalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]],
-      postalUnitNumber: [this.employeeProfile!.employeeDetails.postalAddress?.unitNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      postalComplexName: [this.employeeProfile!.employeeDetails.postalAddress?.complexName?.trim(), Validators.required],
+      postalUnitNumber: [this.employeeProfile!.employeeDetails.postalAddress?.unitNumber?.trim(), [Validators.pattern(/^[0-9]*$/)]],
+      postalComplexName: [this.employeeProfile!.employeeDetails.postalAddress?.complexName?.trim()],
       postalStreetNumber: [this.employeeProfile!.employeeDetails.postalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      postalStreetName: [this.employeeProfile!.employeeDetails.postalAddress?.complexName?.trim(), Validators.required],
+      postalStreetName: [this.employeeProfile!.employeeDetails.postalAddress?.streetName?.trim(), Validators.required],
       postalSuburb: [this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict?.trim(), Validators.required],
       postalCity: [this.employeeProfile!.employeeDetails.postalAddress?.city?.trim(), Validators.required],
       postalCountry: [this.employeeProfile!.employeeDetails.postalAddress?.country?.trim(), Validators.required],
@@ -166,6 +166,7 @@ export class AccordionProfileAddressDetailsComponent {
     } else {
       this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
+    this.cancelAddressEdit();
   }
 
   loadCountries(): void {
