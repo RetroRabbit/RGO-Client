@@ -412,7 +412,7 @@ export class NewCandidateComponent {
   onSubmitCandidate(nextPage: string): void {
     if (this.newCandidateForm.valid) {
       const newCandidateForm = this.newCandidateForm.value;
-      console.table(newCandidateForm);
+
       const candidateDto = {
         id: 0,
         name: newCandidateForm.name,
@@ -465,5 +465,5 @@ export class NewCandidateComponent {
       this.optionValid = true;
     else
       this.optionValid = false;
-}
+  }
 }
