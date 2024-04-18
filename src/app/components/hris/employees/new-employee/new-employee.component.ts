@@ -506,7 +506,9 @@ export class NewEmployeeComponent implements OnInit {
       next: () => {
         this.isSavedEmployee = true;
         this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
-        this.myStepper.next();
+        if (!this.existingIdNumber) {
+          this.myStepper.next();
+        }
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
       },
