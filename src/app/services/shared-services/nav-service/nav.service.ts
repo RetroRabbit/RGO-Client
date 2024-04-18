@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { EmployeeProfileService }  from '../../hris/employee/employee-profile.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { AuthAccessService } from '../auth-access/auth-access.service';
+import { EmployeeService } from '../../hris/employee/employee.service';
+import { filter } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,8 @@ export class NavService {
   public isHris?: boolean;
   static showNavbar: boolean;
   public employeeProfile!:EmployeeProfile;
+  employeeTeamLead!: EmployeeProfile;
+  employees: EmployeeProfile[] = [];
 
   constructor(private authAccessService: AuthAccessService, private employeeProfileService: EmployeeProfileService){
   }
@@ -24,6 +28,10 @@ export class NavService {
       }
     });
   }
+  
+  // refreshEmployeeTeamlead() {
+  //   this.employeeTeamLead = this.employeeProfile
+  // }
 
   getEmployeeProfile(){
     return this.employeeProfile;
