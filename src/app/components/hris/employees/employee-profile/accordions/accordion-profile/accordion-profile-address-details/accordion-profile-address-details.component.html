@@ -122,7 +122,7 @@
                   </mat-form-field>
                 </div>
                 <div class="col-12">
-                  <mat-checkbox inputId="checkbox" value="Postal address is same as physical address"
+                  <mat-checkbox  [checked]="sharedAccordionFunctionality.physicalEqualPostal" inputId="checkbox" value="Postal address is same as physical address"
                     (change)="toggleEqualFields()" [disabled]="!sharedAccordionFunctionality.editAddress">
                   </mat-checkbox>
                   <label class="ms-1" for="checkbox"
