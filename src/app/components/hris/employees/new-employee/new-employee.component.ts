@@ -95,6 +95,7 @@ export class NewEmployeeComponent implements OnInit {
   isSameAddress: boolean = true;
   isSavedEmployee: boolean = false;
   existingIdNumber: boolean = false;
+  empId: number = 0;
   isSouthAfrica = false;
 
   categories: { [ key: number ]: { name: string, state: boolean } } = {
@@ -483,17 +484,14 @@ export class NewEmployeeComponent implements OnInit {
 
     const employeeEmail: string = this.newEmployeeForm.value.email!;
     this.checkBlankRequiredFields();
-    this.employeeService.checkDuplicateIdNumber(this.newEmployeeForm.value.idNumber as string, this.newEmployeeForm.value.email).subscribe({
+    this.employeeService.checkDuplicateIdNumber(this.newEmployeeForm.value.idNumber as string, 0).subscribe({
       next: (data: boolean) => {
         this.existingIdNumber = data;
         if (this.existingIdNumber) {
-          this.snackBarService.showSnackbar("Id number already exists", "snack-error");
+          this.snackBarService.showSnackbar("ID Number already exists", "snack-error");
           this.isLoadingAddEmployee = false;
-          // this.myStepper.reset();
-          console.log(`ID was ${this.existingIdNumber} in the employeeService call, not saving employees`);
         } else {
           this.saveEmployee();
-          console.log(`ID was ${this.existingIdNumber} in the employeeService call, called saveEmployee()`);
         }
       },
       error: () => {
@@ -508,10 +506,7 @@ export class NewEmployeeComponent implements OnInit {
       next: () => {
         this.isSavedEmployee = true;
         this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
-        if (!this.existingIdNumber) {
-          this.myStepper.next();
-          console.log(`ID was ${this.existingIdNumber}. Mat stepper moved in saveEmployees()`);
-        }
+        this.myStepper.next();
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
       },

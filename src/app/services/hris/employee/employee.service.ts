@@ -51,8 +51,8 @@ export class EmployeeService {
     return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}/by-email?email=${encodeURIComponent(email)}`);
   }
 
-  checkDuplicateIdNumber(idNumber: string, email: string): Observable<boolean> {
-    return this.httpClient.get<boolean>(`${this.baseUrl}/id-number?idNumber=${encodeURIComponent(idNumber)}&email=${encodeURIComponent(email)}`);
+  checkDuplicateIdNumber(idNumber: string, employeeId: number): Observable<boolean> {
+    return this.httpClient.get<boolean>(`${this.baseUrl}/id-number?idNumber=${encodeURIComponent(idNumber)}&employeeId=${employeeId}`);
   }
 
   updateEmployee(employee: any): Observable<any> {
