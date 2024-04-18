@@ -5,13 +5,14 @@ import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
 @Injectable({
     providedIn: 'root'
 })
+
 export class CustomvalidationService {
-    
+
  static ValidateIdNumber(idNumber: any) {
         var tempTotal;
         var checkSum = 0;
         var multiplier = 1;
-    
+
         for (let i = 0; i < 13; ++i) {
             tempTotal = parseInt(idNumber.charAt(i)) * multiplier;
             if (tempTotal > 9) {
@@ -20,7 +21,7 @@ export class CustomvalidationService {
             checkSum = checkSum + tempTotal;
             multiplier = (multiplier % 2 === 0) ? 1 : 2;
         }
-    
+
         if ((checkSum % 10) !== 0) {
             return false;
         }

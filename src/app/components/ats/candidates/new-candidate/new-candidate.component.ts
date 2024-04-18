@@ -104,21 +104,21 @@ export class NewCandidateComponent {
       name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
       surname: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
       email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]),
-      cellphoneNumber: new FormControl<string>('+27', [Validators.pattern(/^\+27\d{9}$/)]),
+      cellphoneNumber: new FormControl<string>('', [Validators.pattern(/^\+27\d{9}$/)]),
       potentialLevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
-      jobPosition: new FormControl<number | null>(null),
+      jobPosition: new FormControl<number | null>(-1),
       location: new FormControl<string | null>(''),
       linkedInProfile: new FormControl<string>(''),
       cvFile: new FormControl<string>(''),
       portfolioLink: new FormControl<string>(''),
       portfolioFile: new FormControl<string>(''),
-      gender: new FormControl<number>(0, Validators.required),
+      gender: new FormControl<number>(0),
       idNumber: new FormControl<string>('', [Validators.pattern(this.idPattern)]),
-      referral: new FormControl<number>(0, Validators.required),
+      referral: new FormControl<number>(0),
       highestQualification: new FormControl<string>(''),
       school: new FormControl<string>(''),
-      endDate: new FormControl<string>(''),
-      race: new FormControl<number | null>(null),
+      endDate: new FormControl<number>(0),
+      race: new FormControl<number | null>(-1),
       photo: new FormControl<string>(''),
     })
   }
@@ -465,5 +465,5 @@ export class NewCandidateComponent {
       this.optionValid = true;
     else
       this.optionValid = false;
-}
+  }
 }
