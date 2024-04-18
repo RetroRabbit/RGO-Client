@@ -162,9 +162,9 @@
                         class="row col-md-12 flex-column justify-content-center align-items-center">
                         <mat-radio-group formControlName="gender" class="col-md-12 col-lg-7 my-2 info-text">
                             <p class="col-md-12 col-lg-7 info-text">Gender:*</p>
-                            <mat-radio-button [value]=0>Unclassified</mat-radio-button> <br />
-                            <mat-radio-button [value]=1>Male</mat-radio-button> <br />
-                            <mat-radio-button [value]=2>Female</mat-radio-button> <br />
+                            <mat-radio-button [value]=0>Male</mat-radio-button> <br />
+                            <mat-radio-button [value]=1>Female</mat-radio-button> <br />
+                            <mat-radio-button [value]=2>Prefer not to say</mat-radio-button> <br />
                             <mat-error *ngIf="newCandidateForm.controls['gender'].hasError('required')">
                                 Gender is required
                             </mat-error>
