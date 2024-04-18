@@ -44,11 +44,9 @@
                         <div class="col-1 mt-2" id="header-email-clip" (click)="copyToClipboard()"><mat-icon>attachment</mat-icon></div>
                     </div>
                 </div>
-                <div class="col-12 mx-lg-3 my-2 d-none d-md-block" id="header-role" 
-                *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().employeeType != null
-                 || navService.employeeProfile != undefined && navService.getEmployeeProfile().level != null">
-                    {{navService.getEmployeeProfile().employeeType?.name}} |
-                    Level {{navService.getEmployeeProfile().level}}
+                <div class="col-12 mx-lg-3 my-2 d-none d-md-block" id="header-role" >
+                    {{usingSimpleProfile ? simpleEmployee.employeeType?.name :employeeProfile.employeeType?.name}} | Level
+                    {{usingSimpleProfile ? simpleEmployee.level :employeeProfile.level}}
                 </div>
                 <div class="col-12 my-2 d-none d-md-block" id="header-based"
                     *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().physicalAddress?.city != ' ' && navService.getEmployeeProfile().physicalAddress?.city != ''">
@@ -57,11 +55,9 @@
             </div>
         </div>
         <div class=" d-block d-md-none d-flex justify-content-center mt-2">
-            <div class="col-auto" id="header-role"
-            *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().employeeType != null
-            || navService.employeeProfile != undefined && navService.getEmployeeProfile().level != null">
-                {{navService.getEmployeeProfile().employeeType?.name}} | Level
-                {{navService.getEmployeeProfile().level}}
+            <div class="col-auto" id="header-role">
+                {{usingSimpleProfile ? simpleEmployee.employeeType?.name :employeeProfile.employeeType?.name}} | Level
+                {{usingSimpleProfile ? simpleEmployee.level :employeeProfile.level}}
             </div>
             <div class="col-auto" id="header-based"
             *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().physicalAddress?.city != ' ' && navService.getEmployeeProfile().physicalAddress?.city != ''">
@@ -79,8 +75,8 @@
                         </div>
                         <div class="col-7 my-2 ms-3">
                             <div id="header-label">Team Lead</div>
-                            <div id="header-value" *ngIf="!usingSimpleProfile;else NonAdminTeamLead">
-                                {{employeeTeamLead ? employeeTeamLead.name + ' ' + employeeTeamLead.surname : 'Not
+                            <div id="header-value" *ngIf="!usingSimpleProfile; else NonAdminTeamLead">
+                                {{sharedAccordionFunctionality.employeeTeamLead ? sharedAccordionFunctionality.employeeTeamLead.name + ' ' + sharedAccordionFunctionality.employeeTeamLead.surname : 'Not
                                 assigned'}}
                             </div>
                             <ng-template #NonAdminTeamLead>
@@ -118,7 +114,7 @@
                         <div class="col-9 my-2">
                             <div id="header-label">Client Allocated</div>
                             <div id="header-value" *ngIf="employeeClient !== undefined">
-                                {{employeeClient.name ?? 'None'}}
+                                {{sharedAccordionFunctionality.employeeClient.name ?? 'None'}}
                             </div>
                             <div id="header-value" *ngIf="employeeClient == undefined">
                                 None

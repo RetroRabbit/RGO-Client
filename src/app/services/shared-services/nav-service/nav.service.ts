@@ -15,8 +15,6 @@ export class NavService {
   public isHris?: boolean;
   static showNavbar: boolean;
   public employeeProfile!:EmployeeProfile;
-  employeeTeamLead!: EmployeeProfile;
-  employees: EmployeeProfile[] = [];
 
   constructor(private authAccessService: AuthAccessService, private employeeProfileService: EmployeeProfileService){
   }
@@ -25,14 +23,11 @@ export class NavService {
     this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
       next: (data) => {
         this.employeeProfile = data;
+        console.log(this.employeeProfile);
       }
     });
   }
   
-  // refreshEmployeeTeamlead() {
-  //   this.employeeTeamLead = this.employeeProfile
-  // }
-
   getEmployeeProfile(){
     return this.employeeProfile;
   }
