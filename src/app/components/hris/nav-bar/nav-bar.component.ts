@@ -68,6 +68,7 @@ export class NavBarComponent {
         this.cookieService.set("userId", String(this.employeeProfile.id));
         this.isLoading = false;
         this.authAccessService.setUserId(Number(this.employeeProfile.id));
+        this.navService.refreshEmployee();
       },
       error: (error) => {
         this.isLoading = false;

@@ -110,7 +110,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private router: Router,
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
-    private navService: NavService,
+    public navService: NavService,
     private changeDetectorRef: ChangeDetectorRef,
     public authAccessService: AuthAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -121,7 +121,9 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     changes['updateProfile'].currentValue
   }
-
+  ngOnDestroy(){
+    this.displayEditButtons()
+  }
   ngOnInit() {
     this.sharedAccordionFunctionality.updateProfile.subscribe(progress => {
       this.profileFormProgress = progress;
@@ -316,6 +318,8 @@ export class EmployeeProfileComponent implements OnChanges {
       .subscribe({
         next: () => {
           this.getSelectedEmployee()
+          this.snackBarService.showSnackbar("Updated employee profile picture", "snack-success");
+          this.navService.refreshEmployee();
         },
         error: () => {
           this.snackBarService.showSnackbar("Failed to update employee profile picture", "snack-error");
@@ -334,5 +338,12 @@ export class EmployeeProfileComponent implements OnChanges {
     }
     this.clipboard.copy(emailToCopy);
     this.snackBarService.showSnackbar("Email copied to clipboard", "snack-success");
+  }
+  displayEditButtons(){
+    this.sharedAccordionFunctionality.editEmployee = false;
+    this.sharedAccordionFunctionality.editAdditional = false;
+    this.sharedAccordionFunctionality.editAddress = false;
+    this.sharedAccordionFunctionality.editContact = false;
+    this.sharedAccordionFunctionality.editPersonal = false;
   }
 }

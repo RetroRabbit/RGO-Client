@@ -60,12 +60,8 @@
                     <mat-label>Unit Number</mat-label>
                     <input matInput formControlName="physicalUnitNumber">
                     <mat-error
-                      *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalUnitNumber'].hasError('required')">
-                      Unit number is required
-                    </mat-error>
-                    <mat-error
-                      *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalUnitNumber'].hasError('pattern') && !sharedAccordionFunctionality.addressDetailsForm.controls['physicalUnitNumber'].hasError('required')">
-                      Unit number must only contain numbers
+                      *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalUnitNumber'].hasError('pattern')">
+                      Unit number should only contain numbers
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -73,10 +69,6 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Complex Name</mat-label>
                     <input matInput formControlName="physicalComplexName">
-                    <mat-error
-                      *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalComplexName'].hasError('required')">Complex
-                      name is required
-                    </mat-error>
                   </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.streetNumber"

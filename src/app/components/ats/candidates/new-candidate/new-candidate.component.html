@@ -73,7 +73,7 @@
                                 Please enter a valid Cellphone number
                             </mat-error>
                     </mat-form-field>
-                    <mat-radio-group formControlName="jobPosition" class="col-md-12 col-lg-7 my-2 info-text">
+                    <mat-radio-group formControlName="jobPosition" class="col-md-12 col-lg-7 my-2 info-text" (change)="checkSelectedOption($event)">
                         <p class="col-md-12 col-lg-7 info-text">Role:</p>
                         <mat-radio-button [value]=0>UI/UX Designer</mat-radio-button> <br />
                         <mat-radio-button [value]=1>Developer</mat-radio-button> <br />
@@ -91,7 +91,7 @@
                         <input matInput type="text" formControlName="location" />
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
-                        <mat-label>Attach link</mat-label>
+                        <mat-label>Attach LinkedIn link</mat-label>
                         <input matInput type="text" formControlName="linkedInProfile" />
                         <mat-error *ngIf="newCandidateForm.controls['linkedInProfile'].hasError('pattern')">
                             Valid LinkedIn Profile link is required
@@ -120,39 +120,41 @@
                     <p *ngIf="isValidCVFileSize" class="col-md-12 col-lg-7">10 MB Max limit size</p>
                     <h3 id="change-color-heading" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7">Unsupported file format :</h3>
                     <p id="change-close-color" *ngIf="!isValidCVFile" class="col-md-12 col-lg-7">The selected file type is not supported. <br> Please upload a PDF</p>
-                    <h4 class="col-md-12 col-lg-7 info-text">Portfolio</h4>
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
-                        <mat-label>Attach website link</mat-label>
-                        <input matInput type="text" formControlName="portfolioLink" />
-                        <mat-icon matSuffix>link</mat-icon>
-                        <mat-error *ngIf="newCandidateForm.controls['portfolioLink'].hasError('pattern')">
-                            valid website link is required.
-                        </mat-error>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
-                        <mat-label>Portfolio PDF</mat-label>
-                        <input matInput type="text" [value]="portfolioFilename" (click)="uploadPortfolioFile.click()" />
-                        <span mat-icon-button matSuffix class="pe-3">
-                            <mat-icon *ngIf="!isValidPortfolioFileSize" id="change-close-color" (click)="clearPortfolioFileUpload()">error</mat-icon>
-                            <mat-icon *ngIf="!portfolioFileUploaded" id="file-upload-cursor">attach_file</mat-icon>
-                            <mat-icon *ngIf="portfolioFileUploaded && isValidPortfolioFile && isValidPortfolioFileSize" id="change-close-color"
-                                (click)="clearPortfolioFileUpload()">close</mat-icon>
-                            <mat-icon *ngIf="!isValidPortfolioFile" (click)="clearPortfolioFileUpload()" id="change-close-color">error</mat-icon>
-                        </span>
-                        <input type="file" #uploadPortfolioFile (change)="onPortfolioFileChange($event)" hidden
-                            accept=".pdf" />
-                    </mat-form-field>
-                    <div  class="col-md-12 col-lg-7">
-                        <h3 *ngIf="!isValidPortfolioFileSize" class="warning-message"> File size exceeded:</h3>
-                        <p *ngIf="!isValidPortfolioFileSize" id="change-close-color">File size exceeds max limit of 10MB</p>
+                    <div class="col-md-12 col-lg-7" *ngIf="optionValid == true">
+                        <h4 class="col-md-12 info-text">Portfolio</h4>
+                        <mat-form-field appearance="outline" class="col-md-12 my-2">
+                            <mat-label>Attach website link</mat-label>
+                            <input matInput type="text" formControlName="portfolioLink" />
+                            <mat-icon matSuffix>link</mat-icon>
+                            <mat-error *ngIf="newCandidateForm.controls['portfolioLink'].hasError('pattern')">
+                                valid website link is required.
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="col-md-12 my-2">
+                            <mat-label>Portfolio PDF</mat-label>
+                            <input matInput type="text" [value]="portfolioFilename" (click)="uploadPortfolioFile.click()" />
+                            <span mat-icon-button matSuffix class="pe-3">
+                                <mat-icon *ngIf="!isValidPortfolioFileSize" id="change-close-color" (click)="clearPortfolioFileUpload()">error</mat-icon>
+                                <mat-icon *ngIf="!portfolioFileUploaded" id="file-upload-cursor">attach_file</mat-icon>
+                                <mat-icon *ngIf="portfolioFileUploaded && isValidPortfolioFile && isValidPortfolioFileSize" id="change-close-color"
+                                    (click)="clearPortfolioFileUpload()">close</mat-icon>
+                                <mat-icon *ngIf="!isValidPortfolioFile" (click)="clearPortfolioFileUpload()" id="change-close-color">error</mat-icon>
+                            </span>
+                            <input type="file" #uploadPortfolioFile (change)="onPortfolioFileChange($event)" hidden
+                                accept=".pdf" />
+                        </mat-form-field>
+                        <div  class="col-md-12 col-lg-7">
+                            <h3 *ngIf="!isValidPortfolioFileSize" class="warning-message"> File size exceeded:</h3>
+                            <p *ngIf="!isValidPortfolioFileSize" id="change-close-color">File size exceeds max limit of 10MB</p>
+                        </div>
+                        <div *ngIf="portfolioUrl!== ''">
+                            <p>Selected CV: {{ portfolioFilename }}</p>
+                        </div>
+                        <p *ngIf="isValidPortfolioFileSize" class="col-md-12 col-lg-7">Please upload a PDF</p>
+                        <p *ngIf="isValidPortfolioFileSize" class="col-md-12 col-lg-7">10 MB Max limit size</p>
+                        <h3 id="change-color-heading" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">Unsupported file format :</h3>
+                        <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">The selected file type is not supported.<br> Please upload a PDF</p>
                     </div>
-                    <div *ngIf="portfolioUrl!== ''">
-                        <p>Selected CV: {{ portfolioFilename }}</p>
-                    </div>
-                    <p *ngIf="isValidPortfolioFileSize" class="col-md-12 col-lg-7">Please upload a PDF</p>
-                    <p *ngIf="isValidPortfolioFileSize" class="col-md-12 col-lg-7">10 MB Max limit size</p>
-                    <h3 id="change-color-heading" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">Unsupported file format :</h3>
-                    <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">The selected file type is not supported.<br> Please upload a PDF</p>
                     <mat-slide-toggle class="col-md-12 col-lg-7 mb-3" color="primary" id="additionalFieldsToggle" (click)="toggleAdditionalFields()">
                         Additional fields
                     </mat-slide-toggle>
@@ -160,9 +162,9 @@
                         class="row col-md-12 flex-column justify-content-center align-items-center">
                         <mat-radio-group formControlName="gender" class="col-md-12 col-lg-7 my-2 info-text">
                             <p class="col-md-12 col-lg-7 info-text">Gender:*</p>
-                            <mat-radio-button [value]=0>Unclassified</mat-radio-button> <br />
-                            <mat-radio-button [value]=1>Male</mat-radio-button> <br />
-                            <mat-radio-button [value]=2>Female</mat-radio-button> <br />
+                            <mat-radio-button [value]=0>Male</mat-radio-button> <br />
+                            <mat-radio-button [value]=1>Female</mat-radio-button> <br />
+                            <mat-radio-button [value]=2>Prefer not to say</mat-radio-button> <br />
                             <mat-error *ngIf="newCandidateForm.controls['gender'].hasError('required')">
                                 Gender is required
                             </mat-error>

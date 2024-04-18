@@ -76,6 +76,7 @@ export class NewCandidateComponent {
   employeesReferrals: Observable<GenericDropDownObject[]> = this.getEmployees();
   filteredEmployees!: Observable<GenericDropDownObject[]>;
   allEmployees: EmployeeProfile[] = [];
+  optionValid: boolean = false;
 
   ngOnInit(): void {
     this.initializeForm();
@@ -163,7 +164,6 @@ export class NewCandidateComponent {
     const fileExtension = file.name.split('.').pop()?.toLowerCase();
     if (file.size > 4194304 || !allowedExtensions.includes(fileExtension || '')) {
       this.isValidProfileImage = false;
-      console.log(this.isValidProfileImage);
       return false;
     }
     this.isValidProfileImage = true;
@@ -262,7 +262,7 @@ export class NewCandidateComponent {
         } else {
         }
       },
-      error: (err) => {}
+      error: (err) => { }
     });
   }
 
@@ -302,17 +302,17 @@ export class NewCandidateComponent {
       this.isValidCVFile = false;
       return false;
     }
-    if (file.size > 10 * 1024 * 1024) { 
+    if (file.size > 10 * 1024 * 1024) {
       this.isValidCVFileSize = false;
       return false;
     }
     this.isValidCVFileSize = true;
     return true;
   }
-  
+
   validatePortfolioFile(file: File): boolean {
     const allowedTypes = ['application/pdf'];
-    if (file.size > 10 * 1024 * 1024) { 
+    if (file.size > 10 * 1024 * 1024) {
       this.isValidPortfolioFileSize = false;
       return false;
     }
@@ -323,7 +323,7 @@ export class NewCandidateComponent {
     this.isValidPortfolioFileSize = true;
     return true;
   }
-  
+
   clearCVFileUpload() {
     this.cvFilename = '';
     this.isValidCVFile = true;
@@ -373,10 +373,41 @@ export class NewCandidateComponent {
   }
 
   saveAndAddAnotherCandidate() {
-    this.onSubmitCandidate('/create-candidate');
-    this.newCandidateForm.reset();
+    if (this.newCandidateForm.valid) {
+      this.onSubmitCandidate('/create-candidate');
+      this.newCandidateForm.reset();
+      this.clearSpecificFields();
+      this.clearValidators();
+    } else {
+      this.newCandidateForm.markAllAsTouched();
+    }
   }
 
+  clearSpecificFields() {
+    this.searchControl.setValue('');
+    this.cvFilename = '';
+    this.cvFileUploaded = false;
+    this.isValidCVFile = true;
+    this.isValidCVFileSize = true;
+    this.portfolioFilename = '';
+    this.portfolioFileUploaded = false;
+    this.isValidPortfolioFile = true;
+    this.isValidPortfolioFileSize = true;
+    this.isValidProfileImage = false;
+    this.imageUrl = '';
+  }
+
+  clearValidators() {
+    for (const controlName in this.newCandidateForm.controls) {
+      if (Object.prototype.hasOwnProperty.call(this.newCandidateForm.controls, controlName)) {
+        const control = this.newCandidateForm.get(controlName);
+        if (control) {
+          control.clearValidators();
+          control.updateValueAndValidity();
+        }
+      }
+    }
+  }
 
   onSubmitCandidate(nextPage: string): void {
     if (this.newCandidateForm.valid) {
@@ -426,7 +457,13 @@ export class NewCandidateComponent {
       }
     })
   }
+
+  checkSelectedOption(option: any) {
+    console.log("option value " + option)
+
+    if (option == 0 || option.value == 0)
+      this.optionValid = true;
+    else
+      this.optionValid = false;
 }
-
-
-
+}
