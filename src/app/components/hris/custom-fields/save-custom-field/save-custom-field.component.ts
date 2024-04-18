@@ -27,6 +27,7 @@ export class SaveCustomFieldComponent {
   showAdvanced: boolean = false;
   isRequired: boolean = false;
   PREVIOUS_PAGE = "previousPage";
+  optionsValid: boolean = true;
 
   customFieldForm: FormGroup = this.fb.group({
     code: ['', Validators.required],
@@ -55,6 +56,8 @@ export class SaveCustomFieldComponent {
   ngOnInit() {
     this.navService.showNavbar = false;
     this.navService.showSystemNavbar = false;
+    this.options.push(this.fb.control(''));
+    this.options.push(this.fb.control(''));
     if (this.selectedCustomField) {
       this.populateCustomFieldForm();
     }
@@ -71,10 +74,12 @@ export class SaveCustomFieldComponent {
 
   addOption() {
     this.options.push(this.fb.control(''));
+    this.checkSelectedOption(4);
   }
 
   removeOption(index: number) {
     this.options.removeAt(index);
+    this.checkSelectedOption(4);
   }
 
   onSubmit() {
@@ -93,21 +98,21 @@ export class SaveCustomFieldComponent {
       var customField = new CustomField();
       customField = this.customFieldForm.value;
       customField.id = this.selectedCustomField ? this.selectedCustomField.id : 0,
-      customField.options = this.customFieldForm.value['type'] == 4 ? updatedOptions : [],
+        customField.options = this.customFieldForm.value['type'] == 4 ? updatedOptions : [],
 
-      this.customFieldService.saveFieldCode(customField).subscribe({
-        next: (data) => {
-          this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
-          this.selectedCustomField = data;
-          this.customFieldForm.disable();
-          this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
-          this.systemService.selectedField = undefined;
-          this.router.navigateByUrl('/system-settings');
-        },
-        error: (error) => {
-          this.snackBarService.showSnackbar(error.error, "snack-error");
-        }
-      });
+        this.customFieldService.saveFieldCode(customField).subscribe({
+          next: (data) => {
+            this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
+            this.selectedCustomField = data;
+            this.customFieldForm.disable();
+            this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+            this.systemService.selectedField = undefined;
+            this.router.navigateByUrl('/system-settings');
+          },
+          error: (error) => {
+            this.snackBarService.showSnackbar(error.error, "snack-error");
+          }
+        });
     }
     else {
       this.snackBarService.showSnackbar("Some fields are still missing information", "snack-error");
@@ -160,5 +165,17 @@ export class SaveCustomFieldComponent {
       category: [this.selectedCustomField?.category, Validators.required],
       required: [this.selectedCustomField?.required, Validators.required],
     });
+  }
+
+  checkSelectedOption(option: any) {
+    if (option == 4 || option.value == 4) {
+      this.optionsValid = false;
+      if (this.options.length < 2)
+        this.optionsValid = false;
+      else
+        this.optionsValid = true;
+    }
+    else if (option.value != 4 || option != 4)
+      this.optionsValid = true;
   }
 }
