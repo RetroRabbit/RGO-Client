@@ -66,6 +66,7 @@
 #download-text:hover {
     cursor: pointer;
 }
+
 #cancel-button {
     display: flex;
     padding: 10px 24px;
@@ -127,7 +128,6 @@
     align-items: center;
     gap: 16px;
 }
-
 
 #horizontal {
     height: 0px;
