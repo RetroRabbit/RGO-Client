@@ -208,7 +208,7 @@ export class NewEmployeeComponent implements OnInit {
     email: new FormControl<string>('', [ Validators.required, Validators.email, Validators.pattern(this.emailPattern),
     ]),
     personalEmail: new FormControl<string>('', [ Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*") ]),
-    cellphoneNo: new FormControl('', [ Validators.pattern(/^[0-9]*$/), Validators.maxLength(10)
+    cellphoneNo: new FormControl('', [ Validators.pattern(/^[0][6-8][0-9]{8}$/), Validators.maxLength(10)
     ]),
     photo: new FormControl<string>(''),
     notes: new FormControl<string>(''),
