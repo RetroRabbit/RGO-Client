@@ -3,8 +3,10 @@
     <div class="col-12 col-lg-8" style="max-height: 50vh;">
       <div id="edit-chart-container">
         <canvas [plugins]="activeChart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
-        [datasets]='activeChart.datasets' [labels]="activeChart.type == 'bar'? activeChart.labels : activeChart.labels" [type]="activeChart.type"
-        [options]="getChartOptions(activeChart.type)"></canvas>
+          [datasets]='activeChart.datasets'
+          [labels]="activeChart.type == 'bar'? activeChart.labels : activeChart.labels" [type]="activeChart.type"
+          [options]="getChartOptions(activeChart.type)">
+        </canvas>
       </div>
     </div>
     <div class="col-12 col-lg-4">
@@ -24,6 +26,7 @@
               <mat-radio-button class="d-flex" value='pie'>Pie</mat-radio-button>
             </mat-radio-group>
           </div>
+          
           <div class="col-12 row mt-3 justify-content justify-content-md-end ms-lg-3" id="edit-controls">
             <button mat-button class="col-12 col-md-5 col-lg-12" id="save-button" (click)="updateChart()">
               Save changes

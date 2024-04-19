@@ -16,8 +16,7 @@ export class ReportComponent {
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
 
-  ngOnInit(){
-  }
+  
   constructor(private chartService: ChartService, navService: NavService) {
     navService.showNavbar = true;
   }
@@ -40,7 +39,6 @@ export class ReportComponent {
       } as any,
     },
   };
-
 
   public pieChartOptions: ChartConfiguration['options'] = {
     responsive: true,

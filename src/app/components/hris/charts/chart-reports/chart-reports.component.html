@@ -7,7 +7,8 @@
           [datasets]='chartData.selectedChart.datasets'
           [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.labels : chartData.selectedChart.labels"
           [type]="chartData.selectedChart.type"
-          [options]="chartData.selectedChart.type == 'bar' ? barChartOptions : pieChartOptions"></canvas>
+          [options]="chartData.selectedChart.type == 'bar' ? barChartOptions : pieChartOptions">
+        </canvas>
       </div>
     </div>
     <div class="col-5">

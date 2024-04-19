@@ -18,17 +18,11 @@
 
     <div class="chart-form">
         <label for="chartData">Chart Data Item:</label>
-        <ng-multiselect-dropdown
-          id="chartData"
-          [placeholder]="'Select Data Items'"
-          [data]="columns"
-          [(ngModel)]="selectedDataItems"
-          (onSelect)="onDropDownChange()"
-          (onDeSelect)="onDropDownChange()"
-          [settings]="dropdownSettings"
-        >
+        <ng-multiselect-dropdown id="chartData" [placeholder]="'Select Data Items'" [data]="columns"
+            [(ngModel)]="selectedDataItems" (onSelect)="onDropDownChange()" (onDeSelect)="onDropDownChange()"
+            [settings]="dropdownSettings">
         </ng-multiselect-dropdown>
-      </div>
+    </div>
     <div class="chart-container">
         <canvas baseChart [datasets]="[{ data: chartData, label: chartName }]" [labels]="chartLabels" [type]="chartType"
             [options]="chartOptions">
