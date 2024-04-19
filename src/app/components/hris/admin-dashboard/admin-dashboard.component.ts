@@ -195,41 +195,6 @@ export class AdminDashboardComponent {
     });
   }
 
-
-
-
-  dummyChart(){
-    const data = {
-      labels: ['Race 1', 'Race 2', 'Race 3', 'Race 4'], // Races
-      datasets: [
-        {
-          label: 'Developer',
-          data: [10, 20, 15, 25], // Number of employees for each race
-          backgroundColor: 'rgba(255, 99, 132, 0.5)', // Bar color
-        },
-        {
-          label: 'Designer',
-          data: [15, 10, 20, 30],
-          backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        },
-        {
-          label: 'Scrum Master',
-          data: [5, 15, 10, 20],
-          backgroundColor: 'rgba(255, 206, 86, 0.5)',
-        },
-        {
-          label: 'Support',
-          data: [20, 25, 30, 35],
-          backgroundColor: 'rgba(75, 192, 192, 0.5)',
-        }
-      ]
-    };
-
-    return data;
-  }
-
-
-
   getCharts() {
     this.chartService.getAllCharts().subscribe({
       next: (data) => {
