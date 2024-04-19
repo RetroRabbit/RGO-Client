@@ -459,8 +459,6 @@ export class NewCandidateComponent {
   }
 
   checkSelectedOption(option: any) {
-    console.log("option value " + option)
-
     if (option == 0 || option.value == 0)
       this.optionValid = true;
     else
