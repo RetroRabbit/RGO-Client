@@ -16,7 +16,6 @@ export class ReportComponent {
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
 
-  
   constructor(private chartService: ChartService, navService: NavService) {
     navService.showNavbar = true;
   }

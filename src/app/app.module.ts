@@ -15,10 +15,8 @@ import { EmployeeProfileComponent } from './components/hris/employees/employee-p
 import { EmployeeProfileReducer } from './components/shared-components/store/reducers/employee-profile.reducer';
 import { EmployeeProfileEffects } from './components/shared-components/store/effects/employeeprofile.effects';
 import { NgChartsModule } from 'ng2-charts';
-
 import { ChartComponent } from './components/hris/charts/charts.component';
 import { CreateChartsComponent } from './components/hris/charts/create-charts/create-charts.component';
-
 import { ReportComponent } from './components/hris/charts/chart-reports/chart-reports.component';
 import { RoleManagerComponent } from './components/hris/role-manager/role-manager.component';
 import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin-dashboard.component';
@@ -34,7 +32,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { TableModule } from 'primeng/table';
-
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -86,7 +83,6 @@ import { AccordionProfileContactDetailsComponent } from './components/hris/emplo
 import { AccordionProfileAdditionalComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
 import { AccordionProfilePersonalDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
 import { AccordionProfileAddressDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
-
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
