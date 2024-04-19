@@ -134,23 +134,32 @@ export class AdminDashboardComponent {
   }
 
   getDataCardsData() {
-    this.isLoading = false;
+    this.isLoading = true;
     this.employeeService.getTotalEmployees().subscribe({
       next: (data: number) => {
         this.totalNumberOfEmployees = data;
       },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
 
     this.employeeService.getEmployeeCountData().subscribe({
       next: (data: EmployeeCountDataCard) => {
         this.employeeCount = data;
       },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
 
     this.employeeService.getChurnRate().subscribe({
       next: (data: ChurnRateDataCard) => {
         this.churnRate = data;
       },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 

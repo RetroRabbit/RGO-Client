@@ -140,7 +140,7 @@
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.idNumber" class="col-12 my-2 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>I.D number</mat-label>
+                    <mat-label>ID Number</mat-label>
                     <input matInput formControlName="idNumber" (blur)="getGenderBirthday($event)">
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['idNumber'].hasError('required')">
                       ID number is required
