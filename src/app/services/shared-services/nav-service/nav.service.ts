@@ -21,7 +21,6 @@ export class NavService {
     this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
       next: (data) => {
         this.employeeProfile = data;
-        console.log(this.employeeProfile);
       }
     });
   }
