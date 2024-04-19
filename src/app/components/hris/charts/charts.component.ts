@@ -24,17 +24,26 @@ import { Chart } from 'chart.js';
 
 export class ChartComponent implements OnInit {
 
-  constructor(private chartService: ChartService, private cookieService: CookieService, public dialog: MatDialog, private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document, private employeeService: EmployeeService, private snackBarService: SnackbarService,
+  constructor(private chartService: ChartService, 
+    private cookieService: CookieService, 
+    public dialog: MatDialog, 
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document, 
+    private employeeService: EmployeeService, 
+    private snackBarService: SnackbarService,
     navService: NavService) {
     navService.showNavbar = true;
   }
 
-
-
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   @Output() captureCharts = new EventEmitter<number>();
   @Input() chartsArray: ChartData[] = [];
+  screenWidth: number = 767;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+  }
+
   selectedChartType: ChartType = 'bar';
   displayChart: boolean = false;
   numberOfEmployees: number = 0;
@@ -45,22 +54,13 @@ export class ChartComponent implements OnInit {
   showUpdateForm: boolean = false;
   updateFormData: any = {
     Name: '',
-    Type: ''
+    Type: '',
   }
   coloursArray: string[] = colours;
   chartCanvasArray: any[] = [];
-
-
-  screenWidth: number = 767;
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.screenWidth = window.innerWidth;
-  }
-
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
   selectedChartIndex: number = -1;
-  
 
   public barChartOptions: ChartConfiguration['options'] = {
     events: [],
@@ -147,6 +147,7 @@ export class ChartComponent implements OnInit {
       Type: ''
     }
   }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['chartsArray'] && !changes['chartsArray'].firstChange) {
       this.resetPage();
@@ -175,7 +176,7 @@ export class ChartComponent implements OnInit {
           this.captureCharts.emit(0);
         }
       },
-      error: error => {
+      error: () => {
         this.snackBarService.showSnackbar("Chart display unsuccessful", "snack-error");
       }
     });
@@ -306,7 +307,7 @@ export class ChartComponent implements OnInit {
           }
         }
       }
-      // this.chartCanvasArray.push(dataset);
+      this.chartCanvasArray.push(dataset);
     }
   }
 

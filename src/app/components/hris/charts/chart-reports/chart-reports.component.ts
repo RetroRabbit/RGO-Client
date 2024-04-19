@@ -72,7 +72,12 @@ export class ReportComponent {
   }
 
   getTotalEmployees(): number {
-    return this.chartData.selectedChart.data.reduce((total: number, value: number) => total + value, 0);
+    console.log(this.chartData.selectedChart);
+    let employeeTotal = 0;
+    this.chartData.selectedChart.datasets.forEach((dataset: any) => {
+      employeeTotal += dataset.data.reduce((a: number, b: number) => a + b, 0);
+    });
+    return employeeTotal;
   }
 
   calculatePercentage(value: number): string {
