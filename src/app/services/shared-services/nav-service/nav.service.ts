@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { EmployeeProfileService }  from '../../hris/employee/employee-profile.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { AuthAccessService } from '../auth-access/auth-access.service';
-import { EmployeeService } from '../../hris/employee/employee.service';
-import { filter } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
