@@ -20,6 +20,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/idnumber-validator';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
+import { DocumentType } from 'src/app/models/hris/constants/documents.contants';
 
 @Component({
   selector: 'app-new-employee',
@@ -280,7 +281,8 @@ export class NewEmployeeComponent implements OnInit {
                   uploadDate: new Date(),
                   reason: "",
                   status: 3,
-                  counterSign: false
+                  counterSign: false,
+                  documentType: 1
                 };
                 this.employeeDocumentModels.push(employeeDocument);
                 this.categories[category].state = false;
@@ -337,7 +339,7 @@ export class NewEmployeeComponent implements OnInit {
   onUploadDocument(nextPage: string): void {
     this.isLoadingAddEmployee = true;
     this.employeeDocumentModels.forEach((documentModel) => {
-      this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
+      this.employeeDocumentService.saveEmployeeDocument(documentModel, 0).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Files have been uploaded", "snack-success");
           this.isLoadingAddEmployee = false;

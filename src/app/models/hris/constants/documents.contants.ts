@@ -4,8 +4,14 @@ export const Document =[
     "Medical Aid Form",
 ]
 
-export const AdditionalDocument =[
-    "Fixed Term Contract 2",
-    "Retirement Annuity Form 2",
-    "Medical Aid Form 2",
-]
+export interface FileCategory {
+    name: string;
+    id: number;
+  }
+
+export enum DocumentType {
+    all,
+    starterKit,
+    additional
+}
+

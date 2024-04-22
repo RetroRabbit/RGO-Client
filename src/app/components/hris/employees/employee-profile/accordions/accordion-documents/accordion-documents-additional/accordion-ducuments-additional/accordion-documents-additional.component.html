@@ -109,6 +109,16 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-6">
+                    <mat-form-field>
+                        <input matInput placeholder="Category Name" [(ngModel)]="newCategoryName">
+                    </mat-form-field>
+                </div>
+                <div class="col-3">
+                    <button mat-button color="primary" (click)="addCategory()">Add Category</button>
+                </div>
+            </div>
         </mat-expansion-panel>
     </mat-accordion>
     <div class="spinner-container" *ngIf="isLoadingUpload == true">

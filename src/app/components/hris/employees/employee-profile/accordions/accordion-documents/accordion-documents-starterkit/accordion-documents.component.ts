@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
-import { Document } from 'src/app/models/hris/constants/documents.contants';
+import { Document, DocumentType } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -110,7 +110,7 @@ export class AccordionDocumentsComponent {
   }
 
   getEmployeeDocuments() {
-    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number).subscribe({
+    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 0).subscribe({
       next: data => {
         this.employeeDocuments = data;
         this.dataSource.data = this.fileCategories;
@@ -130,10 +130,11 @@ export class AccordionDocumentsComponent {
       blob: this.base64String,
       fileCategory: document.fileCategory,
       uploadDate: document.uploadDate,
-      status: 1
+      status: 1,
+      documentType: 0
     }
     if (document.id == 0) {
-      this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
+      this.employeeDocumentService.saveEmployeeDocument(saveObj, 0).subscribe({
         next: () => {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
@@ -157,7 +158,8 @@ export class AccordionDocumentsComponent {
         uploadDate: document.uploadDate,
         reason: document.reason,
         status: 1,
-        counterSign: false
+        counterSign: false,
+        documentType: 0
       }
       this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
         next: () => {
@@ -191,7 +193,8 @@ export class AccordionDocumentsComponent {
           status: 1,
           uploadDate: new Date(),
           reason: '',
-          counterSign: false
+          counterSign: false,
+          documentType: 0
         };
         this.uploadDocumentDto(newDto);
 
