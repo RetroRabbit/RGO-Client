@@ -23,14 +23,6 @@
         <span>Property Access Management</span>
       </div>
     </div>
-    <div>
-      <button mat-button [matMenuTriggerFor]="menu" id="nav-item">
-        More
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="displayEmployeeBanking()">Employee Banking</button>
-      </mat-menu>
-    </div>
   </div>
   <div class="col-3 mt-4" id="bottom-menu" *ngIf="navService.showSystemNavbar && screenWidth <= 767">
     <div id="mobile-icon-text-container" (click)="displayCustomFieldsManagement()">
