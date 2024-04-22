@@ -8,4 +8,15 @@ export class SystemNav {
 
   public selectedMenuItem: string = '';
   public selectedField?: CustomField;
+  public selectedEmployeeMenuItem: string = '';
+  private selectedTabIndex: number = 0;
+  
+
+  public setSelectedTabIndex(index: number): void{
+    this.selectedTabIndex = index;
+  }
+
+  public getSelectedTabIndex(): number {
+    return this.selectedTabIndex;
+  }
 }

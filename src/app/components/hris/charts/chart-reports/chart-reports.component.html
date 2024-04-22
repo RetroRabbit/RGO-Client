@@ -1,16 +1,15 @@
 <div id="chart-container">
   <div class="row">
     <div class="col-7">
-      <div id="edit-chart-container"
-     [class.pie-chart]="isPieChart(chartData.selectedChart.type)"
-     [class.bar-chart]="!isPieChart(chartData.selectedChart.type)">
-  <canvas baseChart [datasets]='chartData.canvasData'
-  [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.dataTypes : chartData.selectedChart.labels"
-  [type]="chartData.selectedChart.type"
-  [plugins]="chartData.selectedChart.type == 'bar' ? barChartPlugins : barChartPlugins"
-  [options]="chartData.selectedChart.type == 'bar' ? barChartOptions : pieChartOptions"
-  ></canvas>
-</div>
+      <div id="edit-chart-container" [class.pie-chart]="isPieChart(chartData.selectedChart.type)"
+        [class.bar-chart]="!isPieChart(chartData.selectedChart.type)">
+        <canvas [plugins]="chartData.selectedChart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
+          [datasets]='chartData.selectedChart.datasets'
+          [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.labels : chartData.selectedChart.labels"
+          [type]="chartData.selectedChart.type"
+          [options]="chartData.selectedChart.type == 'bar' ? barChartOptions : pieChartOptions">
+        </canvas>
+      </div>
     </div>
     <div class="col-5">
       <div class="row pe-4">
@@ -21,11 +20,12 @@
                 <h1>{{ chartData.selectedChart.name }}</h1>
               </div>
               <div class="col-12">
-                <p class="report-description">This report provides information about the {{chartData.selectedChart.name}} chart:</p>
+                <p class="report-description">This report provides information about the
+                  {{chartData.selectedChart.name}} chart:</p>
               </div>
               <hr>
               <div class="col-6">
-                <h3>Chart Type: </h3> {{ chartData.selectedChart.type }}<br>
+                <h3>Chart Type: </h3> {{chartData.selectedChart.subtype}} {{ chartData.selectedChart.type }}<br>
               </div>
               <div class="col-6 mb-2">
                 <h3>Total Employees: </h3> {{ getTotalEmployees() }} employees
@@ -34,10 +34,12 @@
               <div class="col-12">
                 <h2>Chart Data</h2>
               </div>
-              <div class="col-6" *ngFor="let label of chartData.selectedChart.labels; let i = index">
-                <div class="data-label">{{ label }}:</div>
-                <div class="data-value">{{ chartData.selectedChart.data[i] }} employees</div>
-                <div class="data-percentage">({{ calculatePercentage(chartData.selectedChart.data[i]) }}% of total)</div>
+              <div class="col-6" *ngFor="let dataset of chartData.selectedChart.datasets; let i = index">
+                <br>
+                <div class="data-label">{{ dataset.label }}:</div>
+                <div class="col-12" *ngFor="let data of dataset.data; let i = index">
+                  <div class="data-value">{{ data }} {{chartData.selectedChart.labels[i]}}</div>
+                </div>
               </div>
             </div>
           </div>

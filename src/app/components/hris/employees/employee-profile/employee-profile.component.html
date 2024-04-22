@@ -46,13 +46,13 @@
                 </div>
                 <div class="col-12 mx-lg-3 my-2 d-none d-md-block" id="header-role" 
                 *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().employeeType != null
-                 || navService.employeeProfile != undefined && navService.getEmployeeProfile().level != null">
+                || navService.employeeProfile != undefined && navService.getEmployeeProfile().level != null">
                     {{navService.getEmployeeProfile().employeeType?.name}} |
                     Level {{navService.getEmployeeProfile().level}}
                 </div>
                 <div class="col-12 my-2 d-none d-md-block" id="header-based"
-                    *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">
-                    Based in {{employeePhysicalAddress.city}}
+                    *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().physicalAddress?.city != ' ' && navService.getEmployeeProfile().physicalAddress?.city != ''">
+                    Based in {{navService.getEmployeeProfile().physicalAddress?.city}}
                 </div>
             </div>
         </div>
@@ -60,12 +60,12 @@
             <div class="col-auto" id="header-role"
             *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().employeeType != null
             || navService.employeeProfile != undefined && navService.getEmployeeProfile().level != null">
-                {{navService.getEmployeeProfile().employeeType?.name}} | Level
-                {{navService.getEmployeeProfile().level}}
+                {{navService.getEmployeeProfile().employeeType?.name}} |
+                Level {{navService.getEmployeeProfile().level}}
             </div>
             <div class="col-auto" id="header-based"
-                *ngIf="employeePhysicalAddress != undefined && employeePhysicalAddress.city != ' ' && employeePhysicalAddress.city != ''">
-                Based in {{employeePhysicalAddress.city}}
+            *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().physicalAddress?.city != ' ' && navService.getEmployeeProfile().physicalAddress?.city != ''">
+            Based in {{navService.getEmployeeProfile().physicalAddress?.city}}
             </div>
         </div>
         <div class="col-12 col-md-10 offset-md-2 my-2 px-4">
@@ -79,8 +79,8 @@
                         </div>
                         <div class="col-7 my-2 ms-3">
                             <div id="header-label">Team Lead</div>
-                            <div id="header-value" *ngIf="!usingSimpleProfile;else NonAdminTeamLead">
-                                {{employeeTeamLead ? employeeTeamLead.name + ' ' + employeeTeamLead.surname : 'Not
+                            <div id="header-value" *ngIf="!usingSimpleProfile; else NonAdminTeamLead">
+                                {{sharedAccordionFunctionality.employeeTeamLead ? sharedAccordionFunctionality.employeeTeamLead.name + ' ' + sharedAccordionFunctionality.employeeTeamLead.surname : 'Not
                                 assigned'}}
                             </div>
                             <ng-template #NonAdminTeamLead>
@@ -99,8 +99,8 @@
                         <div class="col-9 my-2">
                             <div id="header-label">People Champion</div>
                             <div id="header-value" *ngIf="!usingSimpleProfile;else NonAdminPeopleChampion">
-                                {{employeePeopleChampion ? employeePeopleChampion.name + ' ' +
-                                employeePeopleChampion.surname: 'Not assigned'}}
+                                {{sharedAccordionFunctionality.employeePeopleChampion ? sharedAccordionFunctionality.employeePeopleChampion.name + ' ' +
+                                sharedAccordionFunctionality.employeePeopleChampion.surname: 'Not assigned'}}
                             </div>
                             <ng-template #NonAdminPeopleChampion>
                                 {{simpleEmployee.peopleChampionName}}
@@ -117,8 +117,8 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">Client Allocated</div>
-                            <div id="header-value" *ngIf="employeeClient !== undefined">
-                                {{employeeClient.name ?? 'None'}}
+                            <div id="header-value" *ngIf="sharedAccordionFunctionality.employeeClient !== undefined">
+                                {{sharedAccordionFunctionality.employeeClient.name ?? 'None'}}
                             </div>
                             <div id="header-value" *ngIf="employeeClient == undefined">
                                 None
@@ -135,8 +135,8 @@
                         </div>
                         <div class="col-9 my-2">
                             <div id="header-label">Start Date</div>
-                            <div *ngIf="!usingSimpleProfile;else NonAdminEngagementDate" id="header-value">
-                                {{ employeeProfile.engagementDate| date:'d MMM yyyy' }}
+                            <div *ngIf="navService.employeeProfile != undefined; else NonAdminEngagementDate" id="header-value">
+                                {{ navService.getEmployeeProfile().engagementDate| date:'d MMM yyyy' }}
                             </div>
                             <ng-template #NonAdminEngagementDate>
                                 {{simpleEmployee.engagementDate| date:'d MMM yyyy'}}

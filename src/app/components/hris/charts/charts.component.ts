@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
-import { Chart } from 'src/app/models/hris/charts.interface';
+import { ChartData } from 'src/app/models/hris/charts.interface';
 import { CookieService } from 'ngx-cookie-service';
 import { colours } from '../../../models/hris/constants/colours.constants';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -14,6 +14,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-chart',
@@ -22,9 +23,27 @@ import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.consta
 })
 
 export class ChartComponent implements OnInit {
+
+  constructor(private chartService: ChartService, 
+    private cookieService: CookieService, 
+    public dialog: MatDialog, 
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document, 
+    private employeeService: EmployeeService, 
+    private snackBarService: SnackbarService,
+    navService: NavService) {
+    navService.showNavbar = true;
+  }
+
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   @Output() captureCharts = new EventEmitter<number>();
-  @Input() chartsArray: Chart[] = [];
+  @Input() chartsArray: ChartData[] = [];
+  screenWidth: number = 767;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+  }
+
   selectedChartType: ChartType = 'bar';
   displayChart: boolean = false;
   numberOfEmployees: number = 0;
@@ -35,26 +54,13 @@ export class ChartComponent implements OnInit {
   showUpdateForm: boolean = false;
   updateFormData: any = {
     Name: '',
-    Type: ''
+    Type: '',
   }
   coloursArray: string[] = colours;
   chartCanvasArray: any[] = [];
-
-  screenWidth: number = 767;
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.screenWidth = window.innerWidth;
-  }
-
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
-
   selectedChartIndex: number = -1;
-  constructor(private chartService: ChartService, private cookieService: CookieService, public dialog: MatDialog, private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document, private employeeService: EmployeeService, private snackBarService: SnackbarService,
-    navService: NavService) {
-    navService.showNavbar = true;
-  }
 
   public barChartOptions: ChartConfiguration['options'] = {
     events: [],
@@ -89,7 +95,7 @@ export class ChartComponent implements OnInit {
       datalabels: {
         anchor: 'middle',
         align: 'center',
-        color: ['white', 'white', 'black', 'black', 'white', 'white'],
+        color: 'white',
       } as any,
     },
 
@@ -116,13 +122,17 @@ export class ChartComponent implements OnInit {
       datalabels: {
         anchor: 'middle',
         align: 'center',
-        color: ['white', 'white', 'black', 'black', 'white', 'white'],
+        color: 'white',
       } as any,
     },
   };
 
   getChartOptions(chartType: string) {
-    return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
+    if (chartType == 'bar') {
+      return this.barChartOptions;
+    } else {
+      return this.pieChartOptions;
+    }
   }
 
   resetPage() {
@@ -137,6 +147,7 @@ export class ChartComponent implements OnInit {
       Type: ''
     }
   }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['chartsArray'] && !changes['chartsArray'].firstChange) {
       this.resetPage();
@@ -144,6 +155,7 @@ export class ChartComponent implements OnInit {
     }
   }
 
+  chart: Chart | undefined;
   ngOnInit(): void {
     this.fetchPeopleChampionEmployees();
     this.getNumberOfEmployees();
@@ -152,6 +164,7 @@ export class ChartComponent implements OnInit {
   createAndDisplayChart(): void {
     this.chartService.getAllCharts().subscribe({
       next: data => {
+        data = this.configureChartColors(data);
         if (data.length > 0) {
           this.chartData = data;
           this.populateCanvasCharts();
@@ -163,7 +176,7 @@ export class ChartComponent implements OnInit {
           this.captureCharts.emit(0);
         }
       },
-      error: error => {
+      error: () => {
         this.snackBarService.showSnackbar("Chart display unsuccessful", "snack-error");
       }
     });
@@ -200,20 +213,19 @@ export class ChartComponent implements OnInit {
   }
 
   updateChart(): void {
-
     if (this.activeChart) {
-      const updatedChart: Chart = {
+      const updatedChart: ChartData = {
         ...this.activeChart,
         Name: this.updateFormData.Name,
         Type: this.updateFormData.Type,
       };
       this.chartService.updateChart(this.updateFormData).subscribe({
-        next: (updatedData: any) => {
+        next: () => {
           this.snackBarService.showSnackbar("Update successful", "snack-success");
           this.resetPage();
           this.createAndDisplayChart();
         },
-        error: error => {
+        error: () => {
           this.snackBarService.showSnackbar("Update unsuccessful", "snack-error");
 
         }
@@ -236,7 +248,7 @@ export class ChartComponent implements OnInit {
           this.resetPage();
           this.createAndDisplayChart();
         },
-        error: error => {
+        error: () => {
           this.snackBarService.showSnackbar("Failed to delete graph", "snack-error");
         }
       });
@@ -251,10 +263,8 @@ export class ChartComponent implements OnInit {
             this.employeeNames[employee.id] = `${employee.name} ${employee.surname}`;
           }
         });
-      }, error: (error) => {
-
+      }, error: () => {
         this.snackBarService.showSnackbar("Failed to fetch people champion", "snack-error");
-
       }, complete: () => {
         this.createAndDisplayChart();
       },
@@ -263,20 +273,16 @@ export class ChartComponent implements OnInit {
   }
 
   getEmployeeName(employeeId: string | undefined): string {
-
     const id = (employeeId || '').toString();
-
-
     if (this.employeeNames[id]) {
       return this.employeeNames[id];
     }
     return id;
-
-
   }
 
   populateCanvasCharts() {
     this.chartCanvasArray = [];
+    this.chartCanvasArray.push();
     for (let i = 0; i < this.chartData.length; i++) {
       let dataset = [];
 
@@ -284,15 +290,16 @@ export class ChartComponent implements OnInit {
         const labelsArray: string[] = this.chartData[i].labels.map((label: string) => this.getEmployeeName(label));
         this.chartData[i].labels = labelsArray;
         dataset.push({
-          data: this.chartData[i].data,
+          data: this.chartData[i].dataSet[0],
           labels: labelsArray,
           backgroundColor: this.coloursArray
+          
         });
       } else {
         if (this.chartData[i].labels) {
           for (let j = 0; j < this.chartData[i].labels.length; j++) {
             dataset.push({
-              data: [this.chartData[i].data[j]],
+              data: [this.chartData[i].datasets[0].data[j]],
               label: this.getEmployeeName(this.chartData[i].labels[j]),
               backgroundColor: this.coloursArray[j],
               borderColor: this.coloursArray[j],
@@ -303,6 +310,24 @@ export class ChartComponent implements OnInit {
       this.chartCanvasArray.push(dataset);
     }
   }
+
+  configureChartColors(chartData: ChartData[]){
+    let colorIndex = 0
+        chartData.forEach((chart: any) => {
+          if(chart.subtype == "stacked"){
+            chart.datasets?.forEach((dataset: any) => {
+              dataset.backgroundColor = this.coloursArray[colorIndex];
+              colorIndex++
+            });
+          }else {
+            chart.datasets?.forEach((dataset: any) => {
+              dataset.backgroundColor = this.coloursArray;
+            });
+          }
+          colorIndex = 0;
+        });
+        return chartData;
+}
 
   pdfPreview(index: number) {
     const dialogRef = this.dialog.open(ChartReportPdfComponent, {

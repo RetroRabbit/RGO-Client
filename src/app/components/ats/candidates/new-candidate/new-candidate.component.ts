@@ -104,21 +104,21 @@ export class NewCandidateComponent {
       name: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
       surname: new FormControl<string>('', [Validators.required, Validators.pattern(this.namePattern)]),
       email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]),
-      cellphoneNumber: new FormControl<string>('+27', [Validators.pattern(/^\+27\d{9}$/)]),
+      cellphoneNumber: new FormControl<string>('', [Validators.pattern(/^[0][6-8][0-9]{8}$/)]),
       potentialLevel: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
-      jobPosition: new FormControl<number | null>(null),
+      jobPosition: new FormControl<number | null>(-1),
       location: new FormControl<string | null>(''),
       linkedInProfile: new FormControl<string>(''),
       cvFile: new FormControl<string>(''),
       portfolioLink: new FormControl<string>(''),
       portfolioFile: new FormControl<string>(''),
-      gender: new FormControl<number>(0, Validators.required),
+      gender: new FormControl<number>(0),
       idNumber: new FormControl<string>('', [Validators.pattern(this.idPattern)]),
-      referral: new FormControl<number>(0, Validators.required),
+      referral: new FormControl<number>(0),
       highestQualification: new FormControl<string>(''),
       school: new FormControl<string>(''),
-      endDate: new FormControl<string>(''),
-      race: new FormControl<number | null>(null),
+      endDate: new FormControl<number>(0),
+      race: new FormControl<number | null>(-1),
       photo: new FormControl<string>(''),
     })
   }
@@ -145,6 +145,10 @@ export class NewCandidateComponent {
     if (!this.optionIsOther) {
       this.newCandidateForm.setValue({ selectedSchool: selectedSchool });
     }
+  }
+  onEmailChange(event: any): void {
+    const emailChange = event.target.value;
+    this.checkEmail(emailChange);
   }
 
   onImageChange(event: any): void {
@@ -241,7 +245,10 @@ export class NewCandidateComponent {
       this.snackBarService.showSnackbar("Please enter a valid email address", "snack-error");
       return;
     }
+    this.checkEmail(email);
+  }
 
+  checkEmail(email: string) {
     this.candidateService.getAll().subscribe({
       next: (candidates) => {
         const candidate = candidates.find(c => c.personalEmail === email);
@@ -260,12 +267,14 @@ export class NewCandidateComponent {
               this.snackBarService.showSnackbar("This email already exists in our records.", "snack-info");
           }
         } else {
+          this.candidateExists = false;
+          this.candidateWarning = false;
+          this.isBlacklisted = false;
         }
       },
       error: (err) => { }
     });
   }
-
   clearUpload() {
     var input = document.getElementById('imageUpload') as HTMLInputElement;
     input.value = '';
@@ -459,11 +468,9 @@ export class NewCandidateComponent {
   }
 
   checkSelectedOption(option: any) {
-    console.log("option value " + option)
-
     if (option == 0 || option.value == 0)
       this.optionValid = true;
     else
       this.optionValid = false;
-}
+  }
 }

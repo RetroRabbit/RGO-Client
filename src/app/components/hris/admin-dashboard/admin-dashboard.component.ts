@@ -8,7 +8,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { Chart } from 'src/app/models/hris/charts.interface';
+import { ChartData } from 'src/app/models/hris/charts.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { MatSort } from '@angular/material/sort';
@@ -58,7 +58,7 @@ export class AdminDashboardComponent {
   loadCounter: number = 0;
   isMobileScreen = false;
   totalNumberOfEmployees: number = 0;
-  charts: Chart[] = [];
+  charts: ChartData[] = [];
   searchQuery: string = '';
   searchResults: EmployeeProfile[] = [];
   employeeProfiles: EmployeeProfile[] = [];
@@ -199,6 +199,7 @@ export class AdminDashboardComponent {
     this.chartService.getAllCharts().subscribe({
       next: (data) => {
         this.charts = data;
+        this.charts[0].data;
       },
       error: () => {
         this.snackBarService.showSnackbar(

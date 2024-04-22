@@ -1,0 +1,86 @@
+#side-menu{
+    border-radius: 0px 16px 16px 0px;
+    background: var(--m-3-sys-light-primary-container, #D7DFFF);
+    padding: 12px;
+    min-height: 80vh;
+}
+
+h1{
+    color: var(--m-3-sys-light-on-surface-variant, #49454F);
+    font-family: Roboto;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 36px;
+
+    padding-left: 12px;
+}
+
+h5{
+    color: var(--m-3-sys-light-primary, #0029C6);
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+
+    padding-left: 12px;
+}
+
+#icon-text-container {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding: 12px;
+    border-radius: 100px;
+    transition: 0.5s background-color;
+}
+
+#icon-text-container:hover{
+    background: var(--m-3-white, #FFF);
+    cursor: pointer;
+}
+
+#icon-text-container > #mat-icon{
+    margin:0px 16px;
+}
+
+#icon-text-container > span{
+    color: var(--m-3-sys-light-on-surface-variant, #49454F);
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+}
+
+#button-container > button{
+    color: var(--m-3-sys-light-on-surface-variant, #49454F);
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+
+    background: none;
+    border: none;
+}
+
+#icon-text-container.active,
+#icon-text-container.active span{
+    color: var(--m-3-sys-light-primary, #0029C6);
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    border-radius: 100px;
+
+    background: var(--m-3-sys-light-primary-container, #ffffff);
+}
