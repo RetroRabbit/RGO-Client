@@ -60,7 +60,7 @@ export class ManageFieldCodeComponent {
   PREVIOUS_PAGE = "previousPage";
   constructor(
     public router: Router,
-    private fieldCodeService: CustomFieldService,
+    private customFieldService: CustomFieldService,
     private fb: FormBuilder,
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
@@ -90,7 +90,7 @@ export class ManageFieldCodeComponent {
 
   fetchData(active: number = 0) {
     this.isLoading = true;
-    this.fieldCodeService.getAllFieldCodes().subscribe({
+    this.customFieldService.getAllFieldCodes().subscribe({
       next: fieldCodes => {
         this.customFields = fieldCodes;
         this.filteredCustomFields = this.customFields.filter(field => field.status == active);
@@ -167,7 +167,7 @@ export class ManageFieldCodeComponent {
         fieldCodeDto.options = optionsArray,
         fieldCodeDto.required = fieldCode.required
 
-      this.fieldCodeService.saveFieldCode(fieldCodeDto).subscribe({
+      this.customFieldService.saveFieldCode(fieldCodeDto).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Field code saved", "snack-success");
           this.newFieldCodeForm.disable();
@@ -348,7 +348,7 @@ export class ManageFieldCodeComponent {
   moveToActive(field: CustomField) {
     var updatedField = field;
     updatedField.status = 0;
-    this.fieldCodeService.updateFieldCode(updatedField).subscribe({
+    this.customFieldService.updateFieldCode(updatedField).subscribe({
       next: (data) => {
         this.snackBarService.showSnackbar("Field code updated", "snack-success");
         this.fetchData(this.activeTab);
@@ -372,7 +372,7 @@ export class ManageFieldCodeComponent {
     this.selectedCustomFields.forEach(element => {
       let updatedField = element;
       updatedField.status = updatedField.status == 0 ? -1 : 0;
-      this.fieldCodeService.updateFieldCode(updatedField).subscribe({
+      this.customFieldService.updateFieldCode(updatedField).subscribe({
         next: () => {
           this.fetchData(this.activeTab);
           this.selectedCustomFields = [];

@@ -24,7 +24,7 @@ export class NavService {
       }
     });
   }
-
+  
   getEmployeeProfile(){
     return this.employeeProfile;
   }

@@ -1,0 +1,143 @@
+<ngx-skeleton-loader *ngIf="isLoading;else ShowBanking" [count]="1" appearance="line" animation="pulse" [theme]="{
+    'background-color': '#D7DFFF',
+    'border': '2px solid #D7DFFF',
+    'border-radius': '2rem',
+    'height': '75vh',
+    width: '100%',
+  }">
+</ngx-skeleton-loader>
+<app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (declineResponse)="dialogFeedBack($event)"></app-confirm-dialog>
+<ng-template #ShowBanking>
+    <div class="container mt-4">
+        <div class="w-75 py-3">
+            <button mat-button class="btn" id="back-button" (click)="backToApprovals()">
+                <mat-icon>arrow_back</mat-icon>
+                <span>Back To Approvals</span>
+            </button>
+        </div>
+        <div id="approval-header" class="row p-2">
+            <div class="col-2 mt-3 mb-3">
+                <div id="profile-image">
+                    <img [src]="employee?.photo == '' ? '../../../../../assets/img/profile.png' : employee?.photo" alt="">
+                </div>
+            </div>
+            <div class="col-md-4 offset-md-1 offset-lg-0 col-lg-6 mt-3 mb-3 pt-1">
+                <div id="header-label">Banking Details</div>
+                <div id="header-value">{{ employee.name }} {{ employee.surname }}</div>
+            </div>
+            <div class="col-lg-3 offset-lg-2 mt-3 p-3 text-end" id="header-label">{{ this.employeeBanking[this.employeeBanking.length - 1].lastUpdateDate }}</div>
+        </div>
+
+        <div id="approval-header" class="row my-4 p-2">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-lg-6 mt-4" id="approval-title">Current Details</div>
+                    <div class="row mt-4">
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Bank Account Owner</div>
+                            <div id="header-value">{{ employeeBanking.length > 1 ? employeeBanking[0]?.accountHolderName : 'N/A'}}</div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Bank Name</div>
+                            <div id="header-value">{{ employeeBanking.length > 1 ? employeeBanking[0]?.bankName : 'N/A'}}
+                            </div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Account Number</div>
+                            <div id="header-value">{{ employeeBanking.length > 1 ? employeeBanking[0]?.accountNo : 'N/A' }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Account Type</div>
+                            <div id="header-value">{{ employeeBanking.length > 1 ? employeeBanking[0]?.accountType  == 1 ? 'Savings' : 'Cheque' : 'N/A' }}</div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Swift Code</div>
+                            <div id="header-value">00000</div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Branch Code</div>
+                            <div id="header-value">{{ employeeBanking.length > 1 ? employeeBanking[0]?.branchCode : 'N/A' }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Proof of Account</div>
+                            <div class="row my-2">
+                                <div class="col-1"><img src="../../../assets/img/pdf.png" alt="PDF Image" width="14px" height="18px"></div>
+                                <div class="col-lg-4" id="header-value" *ngIf="employeeBanking.length > 1">{{ employee.name }}_{{ employee.surname }}_Current.pdf</div>
+                                <div class="col-lg-4" id="header-value" *ngIf="employeeBanking.length < 2">N/A</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div class="row mt-4">
+                                <div class="col-1" style="color: blue" id="uploadfile">
+                                    <img src="../../../../assets/img/file_upload.svg" alt="">
+                                </div>
+                                <div class="col-lg-6" id="download-text">Download/View PDF</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-lg-6 mt-4" id="approval-title">Update Requested</div>
+                    <div class="row mt-4">
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Bank Account Owner</div>
+                            <div id="header-value">{{ employeeBanking[employeeBanking.length -1]?.accountHolderName }}</div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Bank Name</div>
+                            <div id="header-value">{{ employeeBanking[employeeBanking.length -1]?.bankName}}
+                            </div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Account Number</div>
+                            <div id="header-value">{{ employeeBanking[employeeBanking.length -1]?.accountNo}}
+                            </div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Account Type</div>
+                            <div id="header-value">{{ employeeBanking[employeeBanking.length -1]?.accountType == 1 ?'Savings' : 'Cheque'}}</div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Swift Code</div>
+                            <div id="header-value">00000</div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Branch Code</div>
+                            <div id="header-value">{{ employeeBanking[employeeBanking.length -1]?.branch }}</div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div id="header-label">Proof of Account</div>
+                            <div class="row my-2">
+                                <div class="col-1"><img src="../../../assets/img/pdf.png" alt="PDF Image" width="14px" height="18px"></div>
+                                <div class="col-lg-4" id="header-value">{{ employee.name }}_{{ employee.surname }}_Update.pdf</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div class="row mt-4" >
+                                <div class="col-1" style="color: blue" id="uploadfile">
+                                    <img src="../../../../assets/img/file_upload.svg" alt="">
+                                </div>
+                                <div class="col-lg-6" id="download-text" (click)="convertFileToBase64(employeeBanking.length - 1)">Download/View PDF</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border px-2 mx-2" id="horizontal"></div>
+            <div id="footer">
+                <button id="next-button"
+                    [ngStyle]="{'background-color': employeeBanking[employeeBanking.length -1]?.status == 0 ?  '#e3e3e4ff': '#0029c6'}"
+                    (click)="updateBanking(0)" [disabled]="employeeBanking[employeeBanking.length -1]?.status == 0">
+                    <mat-icon>check_small</mat-icon>Approve Update
+                </button>
+                <button id="cancel-button" (click)="openDialog()" [disabled]="employeeBanking[employeeBanking.length -1]?.status == 2">
+                    <mat-icon>close</mat-icon>Decline Update
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -658,14 +658,16 @@
                 id="dialog-radios">
                 <mat-radio-group aria-label="Select an option" [(ngModel)]="chartType">
                   <mat-radio-button value="bar">Bar Graph</mat-radio-button> <br>
-                  <mat-radio-button value="pie">Pie Chart</mat-radio-button>
+                  <mat-radio-button value="pie">Pie Chart</mat-radio-button> <br>
+                  <mat-radio-button value="stacked">Stacked Graph</mat-radio-button>
                   <h5 class="option" *ngIf="!chartType">Please select an option</h5>
                 </mat-radio-group>
               </div>
               <div class="mt-3 px-4 offset-1 col-10">
                 <mat-form-field appearance="outline" style="width: 100%" class="mb-3">
                   <mat-label>Graph title</mat-label>
-                  <input matInput type="text" id="chartData" [formControl]="chartNameControl" [(ngModel)]="chartName" required="required" />
+                  <input matInput type="text" id="chartData" [formControl]="chartNameControl" [(ngModel)]="chartName"
+                    required="required" />
                   <mat-error *ngIf="chartNameControl.hasError('required')">
                     Title required
                   </mat-error>

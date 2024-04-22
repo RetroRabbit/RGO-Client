@@ -1,19 +1,19 @@
 #dialog-content {
     align-items: center;
-    background: #FFF;
+    background: #fff;
     border-radius: 20px;
     display: inline-flex;
     flex-direction: column;
     justify-content: center;
     gap: 16px;
     padding: 24px 40px;
-    width: 461px;
-    height: 296px;
-}
-
-#dialog-content-mobile {
+    min-width: 461px;
+    min-height: 296px;
+  }
+  
+  #dialog-content-mobile {
     align-items: center;
-    background: #FFF;
+    background: #fff;
     border-radius: 20px;
     display: inline-flex;
     flex-direction: column;
@@ -24,25 +24,25 @@
     height: 296px;
     display: flex;
     overflow-x: hidden;
-}
-
-#dialog-header {
+  }
+  
+  #dialog-header {
     width: 381px;
     height: 112px;
     text-align: center;
     margin-bottom: 40px;
-}
-
-#dialog-header-mobile {
+  }
+  
+  #dialog-header-mobile {
     width: 381px;
     height: 112px;
     text-align: center;
     margin-bottom: 40px;
     display: flex;
     flex-direction: column;
-}
-
-#dialog-header>h2 {
+  }
+  
+  #dialog-header > h2 {
     color: var(--m-3-black, #000);
     text-align: center;
     font-family: Roboto;
@@ -52,10 +52,10 @@
     line-height: 52px;
     margin-bottom: 16px;
     padding: 0;
-}
-
-#dialog-header>h4 {
-    color: var(--m-3-sys-light-primary, #0029C6);
+  }
+  
+  #dialog-header > h4 {
+    color: var(--m-3-sys-light-primary, #0029c6);
     text-align: center;
     margin: auto;
     font-family: Inter;
@@ -65,10 +65,10 @@
     line-height: 22px;
     letter-spacing: -0.32px;
     width: 265px;
-}
-
-#dialog-header-mobile>h4 {
-    color: var(--m-3-sys-light-primary, #0029C6);
+  }
+  
+  #dialog-header-mobile > h4 {
+    color: var(--m-3-sys-light-primary, #0029c6);
     text-align: center;
     margin: auto;
     font-family: Inter;
@@ -80,21 +80,21 @@
     width: 50%;
     align-self: center;
     display: flex;
-}
-
-#button-container {
+  }
+  
+  #button-container {
     width: 381px;
     min-height: 96px;
-}
-
-#button-container-mobile {
+  }
+  
+  #button-container-mobile {
     width: 381px;
     min-height: 96px;
     display: flex;
     flex-direction: column;
-}
-
-#save-button {
+  }
+  
+  #save-button {
     display: flex;
     height: 40px;
     flex-direction: column;
@@ -103,13 +103,13 @@
     gap: 8px;
     align-self: stretch;
     border-radius: 100px;
-    background: var(--m-3-sys-light-primary, #0029C6);
+    background: var(--m-3-sys-light-primary, #0029c6);
     width: 381px;
     margin-bottom: 16px;
-    color: white
-}
-
-#save-button-mobile {
+    color: white;
+  }
+  
+  #save-button-mobile {
     display: flex;
     height: 40px;
     flex-direction: column;
@@ -118,15 +118,15 @@
     gap: 8px;
     align-self: center;
     border-radius: 100px;
-    background: var(--m-3-sys-light-primary, #0029C6);
+    background: var(--m-3-sys-light-primary, #0029c6);
     width: 200px;
     margin-bottom: 16px;
-    color: white
-}
-
-#cancel-button {
+    color: white;
+  }
+  
+  #cancel-button {
     border-radius: 100px;
-    border: 1px solid var(--m-3-sys-light-primary, #0029C6);
+    border: 1px solid var(--m-3-sys-light-primary, #0029c6);
     display: flex;
     height: 40px;
     flex-direction: column;
@@ -135,11 +135,11 @@
     gap: 8px;
     align-self: stretch;
     width: 381px;
-}
-
-#cancel-button-mobile {
+  }
+  
+  #cancel-button-mobile {
     border-radius: 100px;
-    border: 1px solid var(--m-3-sys-light-primary, #0029C6);
+    border: 1px solid var(--m-3-sys-light-primary, #0029c6);
     display: flex;
     height: 40px;
     flex-direction: column;
@@ -148,4 +148,4 @@
     gap: 8px;
     align-self: center;
     width: 200px;
-}
+  }

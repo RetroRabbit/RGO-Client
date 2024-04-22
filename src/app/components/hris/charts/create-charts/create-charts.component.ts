@@ -34,7 +34,11 @@ export class CreateChartsComponent {
     enableSearchFilter: true,
   };
 
-  constructor(private ChartService: ChartService, private router: Router,private cookieService: CookieService,private snackBarService: SnackbarService, navService : NavService) {
+  constructor(private ChartService: ChartService, 
+    private router: Router,
+    private cookieService: CookieService,
+    private snackBarService: SnackbarService, 
+    navService : NavService) {
     navService.showNavbar = true;
   }
 

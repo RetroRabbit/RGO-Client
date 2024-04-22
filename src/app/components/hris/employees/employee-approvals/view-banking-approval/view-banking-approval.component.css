@@ -1,0 +1,148 @@
+#header-label {
+    overflow: hidden;
+    color: var(--Tertiary-Grey, #5F5F5F);
+    text-overflow: ellipsis;
+    font-family: Roboto;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+#header-value {
+    color: var(--M3-sys-light-secondary, #625B71);
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+}
+
+#approval-header {
+    background-color: white;
+    border-radius: 7px;
+}
+
+#approval-header .col-2 {
+    width: 73px;
+}
+
+#profile-image {
+    border-radius: 50%;
+    height: 49px;
+    margin: 0 auto;
+    width: 49px;
+}
+
+#profile-image>img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+
+#approval-title{
+    color: #000;
+    font-family: Roboto;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 36px;
+}
+
+#download-text{
+    color: var(--M3-sys-light-primary, #0029C6);
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+}
+
+#download-text:hover {
+    cursor: pointer;
+}
+
+#cancel-button {
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border-radius: 30px;
+    border: 1px solid #0029c6;
+    color:#0029c6;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    width: 223px;
+    height: 40px;
+}
+
+#cancel-button:disabled {
+    border: 1px solid #e3e3e4ff;
+    color:#e3e3e4ff; 
+}
+ 
+#next-button {
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #0029c6;
+    border-radius: 30px;
+    border: none ;
+    color: #FFF;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    width: 223px;
+    height: 40px;
+}
+
+.icon-custom-size {
+    height: 18px;
+    width: 18px;
+}
+
+#footer {
+    display: flex;
+    width: 100%;
+    height: 101px;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+}
+
+#horizontal {
+    height: 0px;
+    margin: auto 0;
+    padding: 0;
+    width: 1280px;
+    border-color: var(--bs-border-color, #F2F2F2);
+}
+
+#back-button{
+    color: var(--M3-sys-light-primary, #0029C6);
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+}

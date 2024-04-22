@@ -15,11 +15,14 @@ import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashbo
 import { HrisPageGuard } from './hris-guard.guard';
 import { AtsPageGuard } from './ats-guard.guard';
 import { NewCandidateComponent } from './components/ats/candidates/new-candidate/new-candidate.component';
+import { ViewStarterKitApprovalComponent } from './components/hris/employees/employee-approvals/view-starter-kit-approval/view-starter-kit-approval.component';
+import { EmployeeOptionsComponent } from './components/hris/employees/employee-options/employee-options.component';
+import { ViewBankingApprovalComponent } from './components/hris/employees/employee-approvals/view-banking-approval/view-banking-approval.component';
 
 const routes: Routes = [
   { path: '', component: SignInComponent },
   { path: 'dashboard', component: AdminDashboardComponent, canActivate: [HrisPageGuard]},
-  { path: 'employees', component: ViewEmployeeComponent, canActivate: [HrisPageGuard] },
+  { path: 'employees', component: EmployeeOptionsComponent, canActivate: [HrisPageGuard] },
   { path: 'profile', component: EmployeeProfileComponent, canActivate: [HrisPageGuard] },
   { path: 'profile/:id', component: EmployeeProfileComponent, canActivate: [HrisPageGuard] },
   { path: 'system-settings', component: SystemSettingsComponent, canActivate: [HrisPageGuard] },
@@ -31,6 +34,8 @@ const routes: Routes = [
   { path: 'employee-details', component: EmployeeDetailsComponent, canActivate: [HrisPageGuard] },
   { path: 'ats-dashboard', component: AtsDashboardComponent, canActivate: [AtsPageGuard]},
   { path: 'create-candidate', component: NewCandidateComponent, canActivate: [AtsPageGuard]}, 
+  { path: 'view-banking-approval/:id', component: ViewBankingApprovalComponent},
+  { path: 'view-starter-kit-approval/:id', component: ViewStarterKitApprovalComponent}
 ];
 
 @NgModule({

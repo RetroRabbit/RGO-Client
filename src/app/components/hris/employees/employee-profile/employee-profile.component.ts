@@ -121,7 +121,7 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     changes['updateProfile'].currentValue
   }
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.displayEditButtons()
   }
   ngOnInit() {
@@ -196,6 +196,7 @@ export class EmployeeProfileComponent implements OnChanges {
         this.employeeProfile = data;
         this.employeePhysicalAddress = data.physicalAddress!;
         this.employeePostalAddress = data.postalAddress!;
+        this.checkAddressMatch(data);
       }, complete: () => {
         this.getAllEmployees();
       }, error: () => {
@@ -339,11 +340,19 @@ export class EmployeeProfileComponent implements OnChanges {
     this.clipboard.copy(emailToCopy);
     this.snackBarService.showSnackbar("Email copied to clipboard", "snack-success");
   }
-  displayEditButtons(){
+  displayEditButtons() {
     this.sharedAccordionFunctionality.editEmployee = false;
     this.sharedAccordionFunctionality.editAdditional = false;
     this.sharedAccordionFunctionality.editAddress = false;
     this.sharedAccordionFunctionality.editContact = false;
     this.sharedAccordionFunctionality.editPersonal = false;
+  }
+  checkAddressMatch(data: EmployeeProfile) {
+    var dataCopy: any = data;
+    const stringifiedphysicalAddress = JSON.stringify(dataCopy.physicalAddress);
+    const stringifiedpostalAddress = JSON.stringify(dataCopy.postalAddress);
+    if (stringifiedphysicalAddress === stringifiedpostalAddress) {
+      this.sharedAccordionFunctionality.physicalEqualPostal = true;
+    }
   }
 }

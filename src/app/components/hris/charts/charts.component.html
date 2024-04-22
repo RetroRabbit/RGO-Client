@@ -2,9 +2,11 @@
   <div class="row pt-3">
     <div class="col-12 col-lg-8" style="max-height: 50vh;">
       <div id="edit-chart-container">
-        <canvas baseChart [datasets]='chartCanvasArray[selectedChartIndex]'
-          [labels]="activeChart.type == 'bar'? activeChart.dataTypes : activeChart.labels"
-          [type]="activeChart.type"></canvas>
+        <canvas [plugins]="activeChart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
+          [datasets]='activeChart.datasets'
+          [labels]="activeChart.type == 'bar'? activeChart.labels : activeChart.labels" [type]="activeChart.type"
+          [options]="getChartOptions(activeChart.type)">
+        </canvas>
       </div>
     </div>
     <div class="col-12 col-lg-4">
@@ -17,7 +19,6 @@
               <input matInput [(ngModel)]="updateFormData.name">
             </mat-form-field>
           </div>
-
           <div class="col-12">
             <mat-radio-group class="d-flex row" aria-label="Chart Type" [(ngModel)]="updateFormData.type">
               <mat-radio-button class="d-flex" value='bar'>Bar</mat-radio-button>
@@ -25,8 +26,11 @@
             </mat-radio-group>
           </div>
           <div class="col-12 row mt-3 justify-content justify-content-md-end ms-lg-3" id="edit-controls">
-            <button mat-button class="col-12 col-md-5 col-lg-12" id="save-button" (click)="updateChart()">Save changes</button>
-            <button mat-button class="col-12 mt-0 col-md-5  col-lg-12 offset-md-2 ms-md-5 ms-lg-0" id="cancel-button" (click)="showUpdateForm = false">Cancel</button>
+            <button mat-button class="col-12 col-md-5 col-lg-12" id="save-button" (click)="updateChart()">
+              Save changes
+            </button>
+            <button mat-button class="col-12 mt-0 col-md-5  col-lg-12 offset-md-2 ms-md-5 ms-lg-0" id="cancel-button"
+              (click)="showUpdateForm = false">Cancel</button>
           </div>
           <div class="report-controls">
           </div>
@@ -44,20 +48,22 @@
     <button mat-button id="cancel-button" (click)="showReport= false">Back</button>
   </div>
 </div>
-<div class="row  justify-content-center d-flex flex-wrap" id="chart-container" *ngIf="!showUpdateForm && !showReport"  >
-  <div class="col-lg-12 col-sm-2 col-md-6 my-2 border" *ngFor="let chart of chartData;index as i" id="chart-item"  [ngClass]="screenWidth >= 767 ? 'chart-width-tablet' : 'chart-width-mobile'">
+<div class="row  justify-content-center d-flex flex-wrap" id="chart-container" *ngIf="!showUpdateForm && !showReport">
+  <div class="col-lg-12 col-sm-2 col-md-6 my-2 border" *ngFor="let chart of chartData;index as i" id="chart-item"
+    [ngClass]="screenWidth >= 767 ? 'chart-width-tablet' : 'chart-width-mobile'">
     <div id="chart-header" class="row px-2 pt-2">
       <div class="col d-inline-flex">
         <h4 class="mt-3">{{chart.name}}</h4>
       </div>
-      <div class="col-md-1 col-sm-3 d-sm-inline-flex mt-3" id="chart-icon"  [ngClass]="screenWidth >= 767 ? 'icon-width-tablet' : 'icon-width-mobile'">
-        <button mat-button [matMenuTriggerFor]="menu" id="options-trigger" class="ms-sm-4 ms-lg-auto" >
+      <div class="col-md-1 col-sm-3 d-sm-inline-flex mt-3" id="chart-icon"
+        [ngClass]="screenWidth >= 767 ? 'icon-width-tablet' : 'icon-width-mobile'">
+        <button mat-button [matMenuTriggerFor]="menu" id="options-trigger" class="ms-sm-4 ms-lg-auto">
           <mat-icon id="menu-icon">more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="pdfPreview(i)">
-              <mat-icon id="chart-icon-menu" class="pe-3">keyboard_backspace</mat-icon> Export graph
-            </button>
+            <mat-icon id="chart-icon-menu" class="pe-3">keyboard_backspace</mat-icon> Export graph
+          </button>
           <button mat-menu-item (click)="generateReport(i)">
             <mat-icon class="pe-3">arrow_forward_ios</mat-icon> View graph details
           </button>
@@ -71,10 +77,11 @@
       </div>
     </div>
     <hr>
-    <div id="chart-body" class="row pb-2"  >
+    <div id="chart-body" class="row pb-2">
       <div id="canvas-container">
-        <canvas  [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart  [datasets]='chartCanvasArray[i]'
-          [labels]="chart.type == 'bar'? chart.dataTypes : chart.labels" [type]="chart.type" [options]="getChartOptions(chart.type)"></canvas>
+        <canvas [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
+          [datasets]='chart.datasets' [labels]="chart.type == 'bar'? chart.labels : chart.labels" [type]="chart.type"
+          [options]="getChartOptions(chart.type)"></canvas>
       </div>
     </div>
   </div>
