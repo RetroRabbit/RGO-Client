@@ -84,6 +84,7 @@ export class ManageFieldCodeComponent {
       this.authAccessService.isSuperAdmin() ||
       this.authAccessService.isTalent() ||
       this.authAccessService.isJourney()) {
+        this.dataSource.sort = this.sort;
       this.fetchData();
     }
   }
