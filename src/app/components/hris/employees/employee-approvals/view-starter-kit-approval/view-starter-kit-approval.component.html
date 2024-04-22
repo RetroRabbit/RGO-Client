@@ -1,0 +1,70 @@
+<!-- <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmation)="dialogFeedBack($event)"></app-confirm-dialog> -->
+<ngx-skeleton-loader *ngIf="isLoading;else ShowDocuments" [count]="1" appearance="line" animation="pulse" [theme]="{
+    'background-color': '#D7DFFF',
+    'border': '2px solid #D7DFFF',
+    'border-radius': '2rem',
+    'height': '75vh',
+    width: '100%',
+  }">
+</ngx-skeleton-loader>
+<app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData"
+    (declineResponse)="dialogFeedBack($event)"></app-confirm-dialog>
+
+<ng-template #ShowDocuments>
+    <div class="container mt-4">
+        <div class="w-75 py-3">
+            <button mat-button class="btn" id="back-button" (click)="backToApprovals()">
+                <mat-icon>arrow_back</mat-icon>
+                <span>Back To Approvals</span>
+            </button>
+        </div>
+        <div id="approval-header" class="row p-2">
+            <div class="col-2 mt-3 mb-3">
+                <div id="profile-image">
+                    <img [src]="employee?.photo == '' ? '../../../../../assets/img/profile.png' : employee?.photo"
+                        alt="">
+                </div>
+            </div>
+            <div class="col-md-4 offset-md-1 offset-lg-0 col-lg-6 mt-3 mb-3 pt-1">
+                <div id="header-label">Starter Kit</div>
+                <div id="header-value">{{employee?.name +' '+ employee?.surname}}</div>
+            </div>
+            <div class="col-lg-3 offset-lg-2 mt-3 p-3 text-end" id="header-label">Updated 3 minutes ago</div>
+        </div>
+
+        <div id="approval-header" class="row my-4 p-2">
+            <div class="col-lg-6 my-4" id="approval-title">Starter Kit</div>
+            <div *ngFor="let category of fileCategories; let i = index" class="row">
+                <div id="document" class="col-12 col-md-6 col-lg-6">
+                    <h3 class="my-0">{{category}}</h3>
+                    <div class="col-12" *ngIf="getFile(i) as document;else NoFile" id="fileName">
+                        <div class="document-info">
+                            <p><img src="../../../assets/img/pdf.png" alt="PDF Image">{{document != undefined ?
+                                document.fileName : 'N/A'}}</p>
+                            <div class="download-div" (click)="downloadDocument($event, i)">
+                                <p class="download-div-text"><img src="../../../../assets/img/file_download.svg" alt="">
+                                    Download/View PDF</p>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #NoFile>
+                        <p>N/A</p>
+                    </ng-template>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-6 row justify-content-end">
+                    <div class="col-3">
+                        <button id="button-approve" (click)="updateDocument(i, 0)"
+                            [disabled]="getFile(i)?.status == 0"><mat-icon id="button-icon"
+                                class="mx-3">check_small</mat-icon>Accept</button>
+                    </div>
+                    <div class="col-3">
+                        <button id="button-decline" (click)="openDialog(i)"
+                            [disabled]="getFile(i)?.status == 2"><mat-icon id="button-icon"
+                                class="mx-3">close</mat-icon>Decline</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

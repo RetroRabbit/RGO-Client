@@ -1,0 +1,134 @@
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
+import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
+import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-banking.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
+import { Location } from '@angular/common';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
+@Component({
+  selector: 'app-view-banking-approval',
+  templateUrl: './view-banking-approval.component.html',
+  styleUrls: ['./view-banking-approval.component.css']
+})
+export class ViewBankingApprovalComponent {
+  copyOfSelected: EmployeeBanking | null = null;
+  declineReason: string = "";
+  selectedReason: string = "";
+  isLoading: boolean = true;
+  employeeBanking: any;
+
+  bankingId = this.route.snapshot.params['id'];
+  showConfirmDialog: boolean = false;
+  dialogTypeData!: Dialog;
+  employee: any;
+
+  constructor(private employeeBankingService: EmployeeBankingService, 
+    private router: Router, private route: ActivatedRoute, 
+    private location: Location, private snackBarService: SnackbarService, 
+    private navService: NavService, private employeeService: EmployeeProfileService,
+    private changeDetector: ChangeDetectorRef) 
+    { }
+
+  ngOnInit(): void {
+    this.getBankingDetails(this.bankingId);
+  }
+  
+  ngAfterContentChecked() {
+    this.changeDetector.detectChanges();
+ }
+
+  backToApprovals() {
+    this.router.navigateByUrl('/employees')
+  }
+
+  getBankingDetails(id: number): void {
+    if (id && !isNaN(+id)) {
+      this.employeeBankingService.getBankingDetails(id).subscribe({
+        next: data => {
+          this.employeeBanking = data;
+          this.employeeService.getEmployeeById(this.employeeBanking[this.employeeBanking.length -1].employeeId).subscribe({
+            next: employee => {
+              this.employee = employee;
+              this.isLoading = false;
+            }
+          });
+        }
+      });
+    }
+  }
+
+  getEmployeeForBanking(id : number): void {
+    this.employeeService.getEmployeeById(id).subscribe({
+      next: employee => {
+        this.employee = employee;
+      }
+    });
+  }
+
+  convertFileToBase64(index : number) {    
+    if (this.employeeBanking[index]?.file){
+      const newOrOld = this.employeeBanking.length > 1 ? 'Update' : 'Current'
+      this.downloadFile(this.employeeBanking[index]?.file, `${this.employee.name}_${this.employee.surname}_${newOrOld}_Proof_of_Account.pdf`);
+    }
+  }
+
+  downloadFile(base64String: string, fileName: string) {
+    const commaIndex = base64String.indexOf(',');
+    if (commaIndex !== -1) {
+      base64String = base64String.slice(commaIndex + 1);
+    }
+
+    const byteString = atob(base64String);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const intArray = new Uint8Array(arrayBuffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+      intArray[i] = byteString.charCodeAt(i);
+    }
+
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+  }
+
+  updateBanking(status: number): void {
+    let copyOfBanking = {...this.employeeBanking[this.employeeBanking.length - 1]};
+    copyOfBanking.status = status;
+    if(status == 2)
+      copyOfBanking.declineReason = `${this.selectedReason} ${this.declineReason}`;
+    else
+      copyOfBanking.declineReason = ``;
+    
+    this.employeeBankingService.updatePending(copyOfBanking).subscribe({
+      next: () => {
+          this.snackBarService.showSnackbar(`Bank statement has successfully updated`, "snack-success");
+          this.backToApprovals();
+      },
+      error: error => this.snackBarService.showSnackbar(`${error}`, "snack-error")
+    })
+  }
+
+  openDialog(): void{
+    this.dialogTypeData = {
+      type: 'decline',
+      title: 'Decline Update',
+      subtitle: 'Please provide a reason for declining this update',
+      confirmButtonText: 'Decline Update',
+      denyButtonText: 'Cancel'
+    };
+    this.showConfirmDialog = true;
+  }
+
+  dialogFeedBack(response: any): void{
+    this.declineReason = response.declineReason;
+    this.selectedReason = response.selectedReason;
+    if(!response.confirmatio)
+      this.updateBanking(2);
+    else
+      this.backToApprovals();
+  }
+}
