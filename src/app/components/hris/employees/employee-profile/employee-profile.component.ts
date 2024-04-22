@@ -349,8 +349,6 @@ export class EmployeeProfileComponent implements OnChanges {
   }
   checkAddressMatch(data: EmployeeProfile) {
     var dataCopy: any = data;
-    delete dataCopy.postalAddress.id
-    delete dataCopy.physicalAddress.id
     const stringifiedphysicalAddress = JSON.stringify(dataCopy.physicalAddress);
     const stringifiedpostalAddress = JSON.stringify(dataCopy.postalAddress);
     if (stringifiedphysicalAddress === stringifiedpostalAddress) {

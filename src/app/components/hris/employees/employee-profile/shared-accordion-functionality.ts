@@ -38,7 +38,7 @@ export class SharedAccordionFunctionality {
   peopleChampionId: number | undefined;
 
   panelOpenState: boolean = false;
-  physicalEqualPostal: boolean = false;
+  physicalEqualPostal: boolean = true;
   hasDisability: boolean | undefined = false;
   editEmployee: boolean = false;
   editPersonal: boolean = false;
