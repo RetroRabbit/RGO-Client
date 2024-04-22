@@ -58,7 +58,7 @@ export class ViewStarterKitApprovalComponent {
   }
 
   getEmployeeDocuments(id: number) {
-    this.documentService.getAllEmployeeDocuments(id).subscribe({
+    this.documentService.getAllEmployeeDocuments(id, 0).subscribe({
       next: documents => {
         this.employeeDocuments = documents;
         this.employeeService.getEmployeeById(this.employeeDocuments[this.employeeDocuments.length - 1].employeeId).subscribe({
