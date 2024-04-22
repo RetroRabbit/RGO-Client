@@ -146,6 +146,10 @@ export class NewCandidateComponent {
       this.newCandidateForm.setValue({ selectedSchool: selectedSchool });
     }
   }
+  onEmailChange(event: any): void {
+    const emailChange = event.target.value;
+    this.checkEmail(emailChange);
+  }
 
   onImageChange(event: any): void {
     if (event.target.files && event.target.files.length) {
@@ -241,7 +245,10 @@ export class NewCandidateComponent {
       this.snackBarService.showSnackbar("Please enter a valid email address", "snack-error");
       return;
     }
+    this.checkEmail(email);
+  }
 
+  checkEmail(email: string) {
     this.candidateService.getAll().subscribe({
       next: (candidates) => {
         const candidate = candidates.find(c => c.personalEmail === email);
@@ -260,12 +267,14 @@ export class NewCandidateComponent {
               this.snackBarService.showSnackbar("This email already exists in our records.", "snack-info");
           }
         } else {
+          this.candidateExists = false;
+          this.candidateWarning = false;
+          this.isBlacklisted = false;
         }
       },
       error: (err) => { }
     });
   }
-
   clearUpload() {
     var input = document.getElementById('imageUpload') as HTMLInputElement;
     input.value = '';
