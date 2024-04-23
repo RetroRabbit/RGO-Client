@@ -286,8 +286,10 @@ mat-cell {
     min-width: 55% !important;
 }
 
-::ng-deep .mat-mdc-text-field-wrapper {
+
+app-view-employee .mat-mdc-text-field-wrapper{
     max-height: 40px;
+    align-items: center;
 }
 
 ::ng-deep .mat-mdc-form-field {
@@ -296,7 +298,7 @@ mat-cell {
 
 mat-label {
     font-size: 14px;
-    padding-bottom: 10px;
+    margin-top: 20px !important;
 }
 
 ::ng-deep .mat-mdc-form-field:not(.mat-form-field-disabled) .mdc-floating-label {
