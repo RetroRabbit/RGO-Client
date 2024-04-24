@@ -56,6 +56,7 @@ export class ManageFieldCodeComponent {
   onResize() {
     this.screenWidth = window.innerWidth;
   }
+  
   pageSizes: number[] = [1, 5, 10, 25, 100];
   PREVIOUS_PAGE = "previousPage";
   constructor(
@@ -84,7 +85,6 @@ export class ManageFieldCodeComponent {
       this.authAccessService.isSuperAdmin() ||
       this.authAccessService.isTalent() ||
       this.authAccessService.isJourney()) {
-        this.dataSource.sort = this.sort;
       this.fetchData();
     }
   }
@@ -95,12 +95,7 @@ export class ManageFieldCodeComponent {
       next: fieldCodes => {
         this.customFields = fieldCodes;
         this.filteredCustomFields = this.customFields.filter(field => field.status == active);
-        this.dataSource = new MatTableDataSource(this.filteredCustomFields);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.getActivePassive();
-        this.sortByIdDefault(this.dataSource.sort);
-        this.applySorting();
+        this.getDataSource();
         this.runCounter++;
         if (this.shouldReset()) {
           this.isLoading = false;
@@ -112,6 +107,19 @@ export class ManageFieldCodeComponent {
         this.isLoading = false;
       }
     })
+    this.isLoading = false;
+  }
+
+  getDataSource(){
+    this.dataSource = new MatTableDataSource(this.filteredCustomFields);
+    this.dataSource._updateChangeSubscription();
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.paginator.pageIndex = 0;
+    this.selectedCustomFields = [];
+    this.filterText = "";
+    this.getActivePassive();
+    this.sortByIdDefault(this.sort);
   }
 
   shouldReset(): boolean {
@@ -120,15 +128,6 @@ export class ManageFieldCodeComponent {
 
   resetRunCounter(){
     return this.runCounter = 0;
-  }
-
-  applySorting(): void {
-    if (this.sort && this.dataSource) {
-      const sortState: Sort = { active: 'id', direction: 'asc' };
-      this.sort.active = sortState.active;
-      this.sort.direction = sortState.direction;
-      this.sort.sortChange.emit(sortState);
-    }
   }
 
   get options() {
@@ -258,14 +257,7 @@ export class ManageFieldCodeComponent {
     }
     this.activeTab = tabIndex;
     this.filteredCustomFields = this.customFields.filter(fieldCode => fieldCode.status == this.activeTab);
-    this.dataSource = new MatTableDataSource(this.filteredCustomFields);
-    this.dataSource._updateChangeSubscription();
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.paginator.pageIndex = 0;
-    this.selectedCustomFields = [];
-    this.filterText = "";
-    this.sortByIdDefault(this.sort);
+    this.getDataSource();
   }
 
   sortByIdDefault(sort: MatSort) {
