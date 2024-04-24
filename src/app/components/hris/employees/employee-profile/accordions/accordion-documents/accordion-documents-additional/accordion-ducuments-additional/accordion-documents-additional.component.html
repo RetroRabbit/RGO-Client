@@ -19,15 +19,15 @@
                     <div class="col-4">
                         <h4 class="ms-1 mt-1">Action</h4>
                     </div>
-                    <div class="col-2">
+                    <!-- <div class="col-2">
                         <h4 class="ms-1 mt-1">Status</h4>
-                    </div>
+                    </div> -->
                 </div>
                 <div id="table-body" class="my-2">
-                    <div *ngFor="let category of fileCategories;let i = index" class="row my-2 py-2" id="document-row">
+                    <div *ngFor="let document of employeeDocuments" class="row my-2 py-2" id="document-row">
                         <div id="document" class="col-12 col-md-6 col-lg-6">
-                            <h3>{{category}}</h3>
-                            <div class="col-12" *ngIf="getFileName(i) as document;else NoFile" id="fileName">
+                            <h3>{{document.reference}}</h3>
+                            <div class="col-12" *ngIf="getFileName(document.id) as document;else NoFile" id="fileName">
                                 <p>{{document.fileName}}</p>
                             </div>
                             <ng-template #NoFile>
@@ -37,8 +37,8 @@
                         <div class="col-12 col-md-4 col-lg-4 py-2">
                             <div class="row">
                                 <div id="actionCellDownload" class="col-12 col-md-auto mb-2">
-                                    <button *ngIf="disableDownload(i);else DisabledDownload" mat-button color="primary"
-                                        (click)="downloadDocument($event)" [disabled]="!disableDownload(i)" [id]=i [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
+                                    <button mat-button color="primary"
+                                        (click)="downloadDocument(document.id)" [id]=document.id [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
                                         <svg id="svg-icon" width="19" height="19" viewBox="0 0 19 19" fill="white"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <g id="Icons/file_download">
@@ -49,7 +49,7 @@
                                         </svg>
                                         Download
                                     </button>
-                                    <ng-template #DisabledDownload>
+                                    <!-- <ng-template #DisabledDownload>
                                         <button mat-button color="primary"
                                             [disabled]="true" [id]=i [ngClass]="screenWidth <= 767 ?'disabledDownload upload-download-button':'disabledDownload'" >
                                             <svg id="svg-icon" width="19" height="19" viewBox="0 0 19 19" fill="white"
@@ -62,12 +62,12 @@
                                             </svg>
                                             Download
                                         </button>
-                                    </ng-template>
+                                    </ng-template> -->
                                 </div>
                                 <div id="actionCellUpload" class="col-12 col-md-auto">
-                                    <button mat-button color="primary" (click)="captureUploadIndex($event)" [id]=i
-                                        [disabled]="disableUploadButton(i)"
-                                        [ngStyle]="{'background-color': !disableUploadButton(i) ? '#0029c6' : '#e3e3e4ff'}" [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
+                                    <button mat-button color="primary" (click)="captureUploadIndex(document.id)" [id]=document.id
+                                        [disabled]="disableUploadButton(document.id)"
+                                        [ngStyle]="{'background-color': !disableUploadButton(document.id) ? '#0029c6' : '#e3e3e4ff'}" [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
                                             <svg id="svg-icon-w" width="24" height="24" viewBox="0 0 24 24" fill="#e3e3e4ff"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <g id="Icons/file_upload">
@@ -79,10 +79,10 @@
                                     </button>
                                 </div>
                                 <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf"
-                                    [id]="i + '-document'">
+                                    [id]="document.id + '-document'">
                             </div>
                         </div>
-                        <div class="col-12 col-md-2 col-lg-2 py-2">
+                        <!-- <div class="col-12 col-md-2 col-lg-2 py-2">
                             <div *ngIf="getFileName(i) as document; else noDoc" id="statuses">
                                 <div *ngIf="document.status === 0" id="status-0">
                                     <span>{{ 'Approved' }}</span>
@@ -102,7 +102,7 @@
                                     <span>{{ 'Awaiting Documents' }}</span>
                                 </div>
                             </ng-template>
-                        </div>
+                        </div> -->
                         <div *ngIf="getFileName(i) as document" id="reject-reason">
                             <h5 *ngIf="document.status == 2">{{document.reason}}</h5>
                         </div>
@@ -110,13 +110,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-6">
-                    <mat-form-field>
-                        <input matInput placeholder="Category Name" [(ngModel)]="newCategoryName">
+                <div class="col-12 my-2 col-md-6">
+                    <mat-form-field appearance="outline" style="width: 100%;" >
+                      <mat-label>New Category Name</mat-label>
+                      <input matInput [(ngModel)]="newCategoryName">
+                      <!-- <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('required')">
+                        Full name is required
+                      </mat-error> -->
                     </mat-form-field>
                 </div>
-                <div class="col-3">
-                    <button mat-button color="primary" (click)="addCategory()">Add Category</button>
+                <div class="col-3 mt-3 ms-5">
+                    <button class="ps-4 pe-4" id="add-category-button" mat-button color="primary" (click)="addNewAdditionalCategory()">Add Category</button>
                 </div>
             </div>
         </mat-expansion-panel>

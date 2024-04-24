@@ -8,8 +8,6 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { MatTableDataSource } from '@angular/material/table';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
-import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 
 @Component({
   selector: 'app-accordion-documents-additional',
@@ -45,19 +43,20 @@ export class AccordionDucumentsAdditionalComponent {
   roles: string[] = [];
   isLoadingUpload: boolean = false;
   newCategoryName: string = "";
+  documentId: number = 0;
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
-    private employeeRoleService: EmployeeRoleService,
-    private employeeProfileService: EmployeeProfileService,
+
     private cookieService: CookieService,
     private authAccessService: AuthAccessService
   ) { }
 
   ngOnInit() {
-    this.getEmployeeDocuments();
+    this.getAdditionalDocuments();
+    this.getAdditionalDocumentReferences();
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
   }
@@ -88,20 +87,21 @@ export class AccordionDucumentsAdditionalComponent {
     link.click();
   }
 
-  captureUploadIndex(event: any) {
-    this.uploadButtonIndex = event.srcElement.parentElement.id - 4;
+  captureUploadIndex(documentId: number) {
+    this.uploadButtonIndex = documentId;
     const inputField = document.getElementById(`${this.uploadButtonIndex}-document`) as HTMLInputElement;
     inputField.click();
+    this.documentId = documentId;
   }
 
   uploadDocument(event: any) {
     this.isLoadingUpload = true;
     this.selectedFile = event.target.files[0];
     this.documentsFileName = this.selectedFile.name;
-    this.uploadProfileDocument();
+    this.uploadAdditionalDocument();
   }
 
-  uploadProfileDocument() {
+  uploadAdditionalDocument() {
     if (this.selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -111,12 +111,12 @@ export class AccordionDucumentsAdditionalComponent {
     }
   }
 
-  getEmployeeDocuments() {
+  getAdditionalDocuments() {
     this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 1).subscribe({
       next: data => {
         this.employeeDocuments = data;
         this.dataSource.data = this.fileCategories;
-        this.calculateDocumentProgress();
+        this.getAdditionalDocumentReferences();
       },
       error: error => {
         this.snackBarService.showSnackbar(error, "snack-error");
@@ -140,8 +140,7 @@ export class AccordionDucumentsAdditionalComponent {
         next: () => {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
-          this.getEmployeeDocuments();
-          this.calculateDocumentProgress();
+          this.getAdditionalDocuments();
         },
         error: (error) => {
           this.isLoadingUpload = false;
@@ -167,9 +166,7 @@ export class AccordionDucumentsAdditionalComponent {
         next: () => {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document updated", "snack-success");
-          this.getEmployeeDocuments();
-          this.calculateDocumentProgress();
-
+          this.getAdditionalDocuments();
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -180,7 +177,7 @@ export class AccordionDucumentsAdditionalComponent {
   }
 
   buildDocumentDto() {
-    const existingValue = this.filterDocumentsByCategory();
+    const existingValue = this.filterDocumentsById();
     if (this.selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -188,7 +185,7 @@ export class AccordionDucumentsAdditionalComponent {
         var newDto: {} = {
           id: existingValue != undefined ? existingValue?.id as number : 0,
           employee: this.employeeProfile,
-          reference: "",
+          reference: existingValue?.reference,
           fileName: this.documentsFileName,
           fileCategory: +this.uploadButtonIndex,
           blob: this.base64String,
@@ -205,12 +202,12 @@ export class AccordionDucumentsAdditionalComponent {
     }
   }
 
-  filterDocumentsByCategory(): EmployeeDocument | null {
-    var object = this.employeeDocuments.filter(document => document.fileCategory == (this.uploadButtonIndex + 1));
+  filterDocumentsById(): EmployeeDocument | null {
+    var object = this.employeeDocuments.filter(document => document.id == (this.uploadButtonIndex))[0];
     if (object == null) {
       return null;
     }
-    return object[0];
+    return object;
   }
 
   getFileName(index: number): EmployeeDocument {
@@ -218,19 +215,10 @@ export class AccordionDucumentsAdditionalComponent {
     return documentObject;
   }
 
-  downloadDocument(event: any) {
-    const id = event.srcElement.parentElement.id;
-    const documentObject = this.employeeDocuments.find(document => document.fileCategory == id) as any;
-    if (documentObject === undefined) {
-      // TODO: download clean slate form
-    }
-    else {
-      if (documentObject.status == 2) {
-        // TODO: download clean slate form
-      } else {
-        this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
-      }
-    }
+  downloadDocument(documentId: number) {
+    const id = documentId;
+    const documentObject = this.employeeDocuments.find(document => document.id == id) as any;
+    this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
   }
 
   disableUploadButton(index: number): boolean {
@@ -249,13 +237,6 @@ export class AccordionDucumentsAdditionalComponent {
     return true;
   }
 
-  calculateDocumentProgress() {
-    const total = this.fileCategories.length;
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
-    this.documentFormProgress = fetchedDocuments / total * 100;
-    this.updateDocument.emit(this.documentFormProgress);
-  }
-
   disableDownload(index: number) {
     const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
 
@@ -267,14 +248,12 @@ export class AccordionDucumentsAdditionalComponent {
     return true;
   }
 
-  addCategory() {
-    console.log(this.newCategoryName);
+  addNewAdditionalCategory() {
     var newDto: {} = {
       id:0,
       employee: this.employeeProfile,
       reference: this.newCategoryName,
       fileName: this.documentsFileName,
-      fileCategory: +this.uploadButtonIndex,
       blob: this.base64String,
       status: 1,
       uploadDate: new Date(),
@@ -282,17 +261,16 @@ export class AccordionDucumentsAdditionalComponent {
       counterSign: false,
       documentType: 1
     };
-    this.uploadNewCategory(newDto)
+    this.uploadNewAdditionalCategory(newDto)
   }
 
-  uploadNewCategory(document: any) {
+  uploadNewAdditionalCategory(document: any) {
     const saveObj = {
       id: document.id,
       employeeId: document.employee.id,
       reference: document.reference,
       fileName: document.fileName,
       blob: this.base64String,
-      fileCategory: document.fileCategory,
       uploadDate: document.uploadDate,
       status: 1,
       documentType: 1
@@ -301,13 +279,20 @@ export class AccordionDucumentsAdditionalComponent {
       next: () => {
         this.isLoadingUpload = false;
         this.snackBarService.showSnackbar("Document added", "snack-success");
-        this.getEmployeeDocuments();
-        this.calculateDocumentProgress();
+        this.getAdditionalDocuments();
       },
       error: (error) => {
         this.isLoadingUpload = false;
         this.snackBarService.showSnackbar(error, "snack-error");
       }
     });
+  }
+
+  getAdditionalDocumentReferences() {
+    const filteredDocuments = this.employeeDocuments.filter(document => document.reference !== "");
+    this.fileCategories = filteredDocuments.map(document => ({
+      name: document.reference, 
+      id: document.id,
+    }));
   }
 }
