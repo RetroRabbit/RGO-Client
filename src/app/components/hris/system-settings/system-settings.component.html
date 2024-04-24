@@ -9,13 +9,13 @@
         <span>Custom Field Management</span>
       </div>
     </div>
-    <div id="button-container">
-      <div id="icon-text-container" (click)="displayRoleManagement()"
+    <div id="button-container" *ngIf="!hideRoleManagement"> 
+       <div id="icon-text-container" (click)="displayRoleManagement()"
         [ngClass]="systemNavItemService.selectedMenuItem =='Role Management' ? 'active' : ''">
-        <mat-icon id="mat-icon">person_outline_24px</mat-icon>
-        <span>Role Management</span>
-      </div>
+         <mat-icon id="mat-icon">person_outline_24px</mat-icon>
+      <span>Role Management</span>
     </div>
+  </div>
     <div id="button-container">
       <div id="icon-text-container" (click)="displayPropertyAccessManagement()"
         [ngClass]="systemNavItemService.selectedMenuItem =='Property Access Management' ? 'active' : ''">
