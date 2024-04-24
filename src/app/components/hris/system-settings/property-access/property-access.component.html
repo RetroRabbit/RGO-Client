@@ -35,7 +35,8 @@
             <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
                 <mat-table [dataSource]="dataSource" matSort>
                     <ng-container matColumnDef="id">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow hide-id-column"></mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                            class="boldArrow hide-id-column"></mat-header-cell>
                         <mat-cell *matCellDef="let permission" class="hide-id-column">
                         </mat-cell>
                     </ng-container>
@@ -59,19 +60,20 @@
                     </ng-container>
                     <ng-container matColumnDef="accessLevel">
                         <mat-header-cell *matHeaderCellDef>Permission</mat-header-cell>
-                        <mat-cell *matCellDef="let permission" class="row justify-content-start permissions-select-width">
+                        <mat-cell *matCellDef="let permission"
+                            class="row justify-content-start permissions-select-width">
                             <div (click)="$event.stopPropagation()" class="row col-12 px-0">
                                 <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
                                     [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-                                   
-                                            {{splitAndCapitalizeCamelCase(getEnumKey(permission.accessLevel))}}
-                                        <mat-select>
-                                            <mat-option *ngFor="let perm of permissions | async" [value]="permission.name"
-                                                (click)="changePermissions(permission.id, perm)">
-                                                {{ perm.name }}
-                                            </mat-option>
-                                        </mat-select>
-                                    
+                                    <mat-label>
+                                        {{splitAndCapitalizeCamelCase(getEnumKey(permission.accessLevel))}}
+                                    </mat-label>
+                                    <mat-select>
+                                        <mat-option *ngFor="let perm of permissions | async" [value]="permission.name"
+                                            (click)="changePermissions(permission.id, perm)">
+                                            {{ perm.name }}
+                                        </mat-option>
+                                    </mat-select>
                                 </mat-form-field>
                             </div>
                         </mat-cell>
