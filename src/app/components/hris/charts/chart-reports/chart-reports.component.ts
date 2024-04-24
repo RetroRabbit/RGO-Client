@@ -35,6 +35,7 @@ export class ReportComponent {
       datalabels: {
         anchor: 'middle',
         align: 'middle',
+        color: 'white',
       } as any,
     },
   };

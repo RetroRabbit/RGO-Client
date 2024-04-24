@@ -38,7 +38,7 @@
                 <br>
                 <div class="data-label">{{ dataset.label }}:</div>
                 <div class="col-12" *ngFor="let data of dataset.data; let i = index">
-                  <div class="data-value">{{ data }} {{chartData.selectedChart.labels[i]}}</div>
+                  <div class="data-value">{{ data }} - {{chartData.selectedChart.labels[i]}}</div>
                 </div>
               </div>
             </div>

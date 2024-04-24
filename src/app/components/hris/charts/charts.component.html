@@ -19,7 +19,7 @@
               <input matInput [(ngModel)]="updateFormData.name">
             </mat-form-field>
           </div>
-          <div class="col-12">
+          <div class="col-12" *ngIf="activeChart.subtype != 'stacked'">
             <mat-radio-group class="d-flex row" aria-label="Chart Type" [(ngModel)]="updateFormData.type">
               <mat-radio-button class="d-flex" value='bar'>Bar</mat-radio-button>
               <mat-radio-button class="d-flex" value='pie'>Pie</mat-radio-button>
