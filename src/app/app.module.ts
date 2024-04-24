@@ -88,6 +88,8 @@ import { ViewStarterKitApprovalComponent } from './components/hris/employees/emp
 import { ViewBankingApprovalComponent } from './components/hris/employees/employee-approvals/view-banking-approval/view-banking-approval.component';
 import { EmployeeOptionsComponent } from './components/hris/employees/employee-options/employee-options.component';
 import { EmployeeApprovalsComponent } from './components/hris/employees/employee-approvals/employee-approvals.component';
+import { TopNavComponent } from './components/hris/nav-bar/types/top-nav/top-nav.component';
+import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-nav.component';
 
 @NgModule({
   declarations: [
@@ -129,6 +131,8 @@ import { EmployeeApprovalsComponent } from './components/hris/employees/employee
     ViewBankingApprovalComponent,
     EmployeeOptionsComponent,
     EmployeeApprovalsComponent,
+    TopNavComponent,
+    SideNavComponent,
 
   ],
   imports: [

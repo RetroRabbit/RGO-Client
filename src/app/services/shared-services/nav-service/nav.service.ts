@@ -14,8 +14,8 @@ export class NavService {
   static showNavbar: boolean;
   public employeeProfile!:EmployeeProfile;
 
-  constructor(private authAccessService: AuthAccessService, private employeeProfileService: EmployeeProfileService){
-  }
+  constructor(private authAccessService: AuthAccessService, private employeeProfileService: EmployeeProfileService)
+  { }
 
   refreshEmployee(){
     this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({

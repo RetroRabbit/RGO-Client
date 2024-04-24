@@ -1,0 +1,87 @@
+<!-- <app-confirm-dialog *ngIf="navService.showConfirmDialog$" [dialogType]="dialogTypeData"
+    (confirmation)="navService.dialogFeedBack($event)"></app-confirm-dialog> -->
+    <!-- <div id="header" *ngIf="navService.showNavbar$"> -->
+
+        <!-- <button mat-icon-button class="menu-toggle-button" (click)="navService.toggleSidenav()">
+            <mat-icon class="trailing-icon">menu</mat-icon>
+        </button> -->
+    
+        <div class="header-left-frame">
+            <img class="logo-horizontal-wordmark" src="../../../../assets/img/header_logo.svg">
+    
+            <!-- <nav mat-tab-nav-bar *ngIf="navService.isHris$" ngClass="tabs" dynamicHeight class="tabsnav">
+                <a mat-tab-link
+                    *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()"
+                    routerLink="/dashboard" routerLinkActive="active-link">Dashboard</a>
+                <a mat-tab-link routerLink="/profile" routerLinkActive="active-link">Profile</a>
+                <a mat-tab-link
+                    *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()"
+                    routerLink="/employees" routerLinkActive="active-link">Employees</a>
+                <a mat-tab-link *ngIf="authAccessService.isAdmin()" routerLink="/system-settings"
+                    routerLinkActive="active-link">Settings</a>
+            </nav> -->
+    
+        </div>
+    
+        <div class="header-right-frame">
+            <div class="employee-frame">
+                <!-- <mat-card class="dropdown-card"
+                    [ngClass]="{'shadow-on': (navService.sectionVisible$ | async), 'shadow-off': !(navService.sectionVisible$ | async)}"> -->
+                    <mat-card-header>
+                        <div class="card-header-content">
+                            <!-- <button mat-icon-button #toggleButton (click)="navService.toggleSection()"
+                                class="trailing-button"> -->
+                                <!-- <mat-icon class="trailing-icon">
+                                    {{ (navService.sectionVisible$ | async) ? 'expand_less' : 'expand_more' }}
+                                </mat-icon> 
+                            </button> -->
+    
+                            <div class="inner-frame">
+                                <span class="trailing-text-name">{{navService.employeeProfile?.name + ' ' +
+                                    navService.employeeProfile?.surname}}</span>
+                                <!-- <span class="trailing-text-role">{{navService.employeeType?.name}}</span> -->
+                            </div>
+    
+                            <div id="image-container">
+                                <!-- <ngx-skeleton-loader *ngIf="isLoading; else ProfileImage"
+                                    appearance="circle"></ngx-skeleton-loader> -->
+                                <!-- <ng-template #ProfileImage>
+                                    <img class="trailing-image" *ngIf="navService.profileImage else NoProfile"
+                                        [src]="navService.profileImage" alt="profile image">
+                                    <ng-template #NoProfile>
+                                        <img class="trailing-image" src="../../../../assets/img/profile.png"
+                                            alt="employee profile image">
+                                    </ng-template>
+                                </ng-template> -->
+                            </div>
+                        </div>
+                    </mat-card-header>
+    
+                    <!-- <mat-card-actions *ngIf="(navService.sectionVisible$ | async)" class="card-menu-section">
+                        <mat-divider></mat-divider>
+                        <button mat-menu-item *ngIf="(navService.hasAccessToAts() && (navService.isHris$ | async))"
+                            (click)="navService.switchToAts('/ats-dashboard')">
+                            <mat-icon class="dropdown-card-icon">compare_arrows</mat-icon>
+                            <span class="small-text">Switch to </span>
+                            <span class="large-text">Applicant Portal</span>
+                        </button>
+    
+                        <button mat-menu-item *ngIf="!(navService.isHris$ | async)"
+                            (click)="navService.switchToHris('/dashboard')">
+                            <mat-icon>compare_arrows</mat-icon>
+                            <span class="small-text">Switch to</span>
+                            <span class="large-text">Employee Portal</span>
+                        </button>
+    
+                        <mat-divider class="dropdown-divider"></mat-divider>
+    
+                        <button mat-menu-item (click)="navService.logout()">
+                            <mat-icon>exit_to_app</mat-icon>
+                            <span class="logout-text">Log Out</span>
+                        </button>
+    
+                    </mat-card-actions> -->
+                <!-- </mat-card> -->
+            </div>
+        </div>
+    <!-- </div> -->
