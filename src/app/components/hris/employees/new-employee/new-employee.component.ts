@@ -106,6 +106,7 @@ export class NewEmployeeComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    this.levels.push(999);
     this.loadCountries();
 
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
