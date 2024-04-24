@@ -96,11 +96,13 @@ export class ChartReportPdfComponent {
   }
 
   downloadReportAsPDF() {
-    const container = document.querySelector(".container") as HTMLElement;
+    const container = document.querySelector("#overflow-container") as HTMLElement;
     if (container) {
-      const originalStyle = container.getAttribute("style");
-      container.style.height = 'fit-content';
-      html2canvas(container).then(canvas => {
+      let pdfValue = container as HTMLElement;
+      const originalStyle = pdfValue.getAttribute("style");
+      pdfValue.style.height = 'fit-content';
+      pdfValue.querySelector("#button-container")?.setAttribute( "hidden" ,"true");
+      html2canvas(pdfValue).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'mm', 'a4');
         const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -122,8 +124,9 @@ export class ChartReportPdfComponent {
         }
       });
     } else {
-      this.snackBarService.showSnackbar("Could not find the container element to generate the PDF","snack-error");
+      this.snackBarService.showSnackbar("Error generating pdf","snack-error");
     }
+
   }
 
   downloadReportAsCSV(dataTypes: string[]) {
