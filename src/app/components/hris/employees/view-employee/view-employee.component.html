@@ -22,7 +22,7 @@
             <div (click)="$event.stopPropagation()" class="row col-12 px-0">
               <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
                 [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-                <div class="dropdown-wrapper">
+                
                   <mat-label>People Champion Filter</mat-label>
                   <mat-select hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
@@ -30,7 +30,7 @@
                       {{ champion.name }}
                     </mat-option>
                   </mat-select>
-                </div>
+                
               </mat-form-field>
             </div>
           </div>
@@ -38,7 +38,7 @@
             <div (click)="$event.stopPropagation()" class="row col-12 px-0">
               <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
                 [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-                <div class="dropdown-wrapper">
+               
                   <mat-label>User Type Filter</mat-label>
                   <mat-select hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let userType of usertypes | async" [value]="userType.id" class="menu-item-button"
@@ -46,7 +46,7 @@
                       {{ userType.name }}
                     </mat-option>
                   </mat-select>
-                </div>
+               
               </mat-form-field>
             </div>
           </div>
@@ -106,7 +106,7 @@
                 <div (click)="$event.stopPropagation()" class="row col-12 px-0">
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
                     [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-                    <div class="dropdown-wrapper">
+                    
                       <mat-label>
                         {{ splitAndCapitalizeCamelCase(employee.Roles.length > 0 ? employee.Roles[0] : "N/A") }}
                       </mat-label>
@@ -116,7 +116,7 @@
                           {{ splitAndCapitalizeCamelCase(role) }}
                         </mat-option>
                       </mat-select>
-                    </div>
+                    
                   </mat-form-field>
                 </div>
               </mat-cell>
