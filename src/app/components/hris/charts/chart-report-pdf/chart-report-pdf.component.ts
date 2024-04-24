@@ -7,6 +7,7 @@ import { ChartConfiguration } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { barChartOptions, pieChartOptions } from 'src/app/models/hris/constants/chartOptions.constants';
 @Component({
   selector: 'app-chart-report-pdf',
   templateUrl: './chart-report-pdf.component.html',
@@ -36,37 +37,10 @@ export class ChartReportPdfComponent {
     }
   }
 
-  public barChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
-    scales: {
-      x: {},
-      y: {
-        min: 0,
-      },
-    },
-    plugins: {
-      legend: {
-        display: true,
-      },
-      datalabels: {
-        anchor: 'middle',
-        align: 'middle',
-        color: 'white',
-      } as any,
-    },
-  };
+  barChartOptions = barChartOptions;
+  pieChartOptions = pieChartOptions;
 
-
-  public pieChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-      },
-    },
-  };
-
+  
   generateReport(): void {
     const reportHTML = this.generateHTMLReport();
     const newWindow = window.open();
@@ -101,7 +75,6 @@ export class ChartReportPdfComponent {
     if (container) {
       const originalStyle = container.getAttribute("style");
       container.style.height = 'fit-content';
-      // pdfValue.querySelector("#button-container")?.setAttribute( "hidden" ,"true");
       html2canvas(container).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'mm', 'a4');

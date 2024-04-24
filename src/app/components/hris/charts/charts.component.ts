@@ -15,6 +15,7 @@ import { EmployeeService } from 'src/app/services/hris/employee/employee.service
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { Chart } from 'chart.js';
+import { pieChartOptions, barChartOptions } from 'src/app/models/hris/constants/chartOptions.constants';
 
 @Component({
   selector: 'app-chart',
@@ -62,70 +63,8 @@ export class ChartComponent implements OnInit {
   public barChartPlugins = [ChartDataLabels];
   selectedChartIndex: number = -1;
 
-  public barChartOptions: ChartConfiguration['options'] = {
-    events: [],
-    responsive: true,
-    scales: {
-      x: {},
-      y: {
-        display: true,
-        title: {
-          display: true,
-          text: 'Employees',
-          color: '#black',
-          font: {
-            family: 'Roboto',
-            size: 14,
-            style: 'normal',
-            lineHeight: 1.2
-          },
-        }
-      }
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'bottom',
-        labels: {
-          font: {
-            size: 14
-          }
-        }
-      },
-      datalabels: {
-        anchor: 'middle',
-        align: 'center',
-        color: 'white',
-      } as any,
-    },
-
-  };
-
-  public pieChartOptions: ChartConfiguration['options'] = {
-    events: [],
-    responsive: true,
-    layout: {
-      padding: {
-        left: 20
-      }
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'right',
-        labels: {
-          font: {
-            size: 14
-          }
-        }
-      },
-      datalabels: {
-        anchor: 'middle',
-        align: 'center',
-        color: 'white',
-      } as any,
-    },
-  };
+  barChartOptions = barChartOptions;
+  pieChartOptions = pieChartOptions;
 
   getChartOptions(chartType: string) {
     if (chartType == 'bar') {
