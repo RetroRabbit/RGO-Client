@@ -10,7 +10,6 @@ import { SystemNav } from 'src/app/services/hris/system-nav.service';
 })
 export class SystemSettingsComponent {
   hideRoleManagement = true;
-  
   @Output() emitFieldCode = new EventEmitter<CustomField>();
   clicked: string = "";
   screenWidth = window.innerWidth;
