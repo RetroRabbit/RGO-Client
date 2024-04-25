@@ -1,12 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener} from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { ChartData } from 'src/app/models/hris/charts.interface';
-import { CookieService } from 'ngx-cookie-service';
 import { colours } from '../../../models/hris/constants/colours.constants';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';
-import { ChartConfiguration, ChartType } from 'chart.js';
+import { ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
@@ -23,10 +22,10 @@ import { pieChartOptions, barChartOptions } from 'src/app/models/hris/constants/
   styleUrls: ['./charts.component.css'],
 })
 
+
 export class ChartComponent implements OnInit {
 
   constructor(private chartService: ChartService, 
-    private cookieService: CookieService, 
     public dialog: MatDialog, 
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document, 
@@ -53,29 +52,27 @@ export class ChartComponent implements OnInit {
   employeeNames: { [id: string]: string } = {};
   showReport: boolean = false;
   showUpdateForm: boolean = false;
+  coloursArray: string[] = colours;
+  chart: Chart | undefined;
+  chartCanvasArray: any[] = [];
+  pieChartPlugins = [ChartDataLabels];
+  barChartPlugins = [ChartDataLabels];
+  selectedChartIndex: number = -1;
+  barChartOptions = barChartOptions;
+  pieChartOptions = pieChartOptions;
+  
+
   updateFormData: any = {
     Name: '',
     Type: '',
   }
-  coloursArray: string[] = colours;
-  chartCanvasArray: any[] = [];
-  public pieChartPlugins = [ChartDataLabels];
-  public barChartPlugins = [ChartDataLabels];
-  selectedChartIndex: number = -1;
-
-  barChartOptions = barChartOptions;
-  pieChartOptions = pieChartOptions;
-
+  
   getChartOptions(chartType: string) {
-    if (chartType == 'bar') {
-      return this.barChartOptions;
-    } else {
-      return this.pieChartOptions;
-    }
+    return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
   }
 
   resetPage() {
-    this.displayChart = false
+    this.displayChart = false;
     this.chartData = [];
     this.activeChart = null;
     this.showReport = false;
@@ -94,7 +91,6 @@ export class ChartComponent implements OnInit {
     }
   }
 
-  chart: Chart | undefined;
   ngOnInit(): void {
     this.fetchPeopleChampionEmployees();
     this.getNumberOfEmployees();
