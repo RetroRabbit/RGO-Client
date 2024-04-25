@@ -3,6 +3,7 @@ import { ChartService } from 'src/app/services/hris/charts.service';
 import { ChartConfiguration } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { barChartOptions, pieChartOptions } from 'src/app/models/hris/constants/chartOptions.constants';
 @Component({
   selector: 'app-report',
   templateUrl: './chart-reports.component.html',
@@ -20,34 +21,8 @@ export class ReportComponent {
     navService.showNavbar = true;
   }
 
-  public barChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
-    scales: {
-      x: {},
-      y: {
-        min: 0,
-      },
-    },
-    plugins: {
-      legend: {
-        display: true,
-      },
-      datalabels: {
-        anchor: 'middle',
-        align: 'middle',
-      } as any,
-    },
-  };
-
-  public pieChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-      },
-    },
-  };
+  barChartOptions = barChartOptions;
+  pieChartOptions = pieChartOptions;
 
   isPieChart(chartType: string): boolean {
     return chartType === 'pie';
