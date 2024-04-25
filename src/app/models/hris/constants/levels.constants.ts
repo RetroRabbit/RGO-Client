@@ -6,5 +6,6 @@ export const levels = [
     {id: 4, value: 5},
     {id: 5, value: 6},
     {id: 6, value: 7},
-    {id: 7, value: 8}
+    {id: 7, value: 8},
+    {id: 8, value: 999}
 ]
