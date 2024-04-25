@@ -56,7 +56,6 @@ export class TopNavComponent {
   }
 
   signIn() {
-    this.navService.showNavbar = true;
     const types: string = this.cookieService.get('userType');
     const userEmail = this.cookieService.get('userEmail');
     this.roles = Object.keys(JSON.parse(types));
@@ -88,7 +87,6 @@ export class TopNavComponent {
   }
 
   logout() {
-    this.navService.showNavbar = false;
     this.auth.logout({
       logoutParams: { returnTo: document.location.origin },
     });
@@ -139,7 +137,6 @@ export class TopNavComponent {
     if (event) {
       this.navService.unsavedChanges = false;
       this.router.navigate([this.tempRoute]);
-    } else {
     }
   }
 }

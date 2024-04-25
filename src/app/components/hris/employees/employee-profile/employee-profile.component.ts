@@ -115,7 +115,6 @@ export class EmployeeProfileComponent implements OnChanges {
     public authAccessService: AuthAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private clipboard: Clipboard) {
-    navService.showNavbar = true;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

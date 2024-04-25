@@ -47,7 +47,6 @@ export class PropertyAccessComponent {
         private ngZone: NgZone,
         private accessPropertiesService: AccessPropertiesService
     ) {
-        NavService.showNavbar = true;
     }
 
     ngOnInit() {

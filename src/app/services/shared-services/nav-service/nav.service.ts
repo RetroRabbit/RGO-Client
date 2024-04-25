@@ -8,11 +8,14 @@ import { AuthAccessService } from '../auth-access/auth-access.service';
 })
 export class NavService {
   public showNavbar: boolean = false;
+  public showSideBar: boolean = false;
   public showSystemNavbar: boolean = true;
   public unsavedChanges: boolean = false;
   public isHris?: boolean;
-  static showNavbar: boolean;
   public employeeProfile!:EmployeeProfile;
+
+  private tempShowNavBar: boolean = false;
+  private tempShowSideNav: boolean = false;
 
   constructor(private authAccessService: AuthAccessService, private employeeProfileService: EmployeeProfileService)
   { }
@@ -25,7 +28,21 @@ export class NavService {
     });
   }
   
-  getEmployeeProfile(){
+  public getEmployeeProfile(){
     return this.employeeProfile;
+  }
+
+  hideAll()
+  {
+    this.tempShowNavBar = this.showNavbar;
+    this.tempShowSideNav = this.showSideBar;
+
+    this.showNavbar = this.showSideBar = false;
+  }
+
+  showAll()
+  {
+    this.showNavbar = this.tempShowNavBar;
+    this.showSideBar = this.tempShowSideNav;
   }
 }

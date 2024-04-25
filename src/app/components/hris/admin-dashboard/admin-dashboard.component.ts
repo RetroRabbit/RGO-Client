@@ -94,7 +94,6 @@ export class AdminDashboardComponent {
     private employeeTypeService: EmployeeTypeService,
     private navService: NavService,
     public authAccessService: AuthAccessService) {
-    navService.showNavbar = true;
   }
 
   ngOnInit() {

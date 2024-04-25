@@ -96,7 +96,6 @@ export class ViewEmployeeComponent {
     public authAccessService: AuthAccessService,
     private employeeTypeService: EmployeeTypeService
   ) {
-    navService.showNavbar = true;
   }
 
   ngOnInit() {

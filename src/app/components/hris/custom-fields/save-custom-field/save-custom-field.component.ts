@@ -54,7 +54,7 @@ export class SaveCustomFieldComponent {
   }
 
   ngOnInit() {
-    this.navService.showNavbar = false;
+    this.navService.hideAll();
     this.navService.showSystemNavbar = false;
     this.options.push(this.fb.control(''));
     this.options.push(this.fb.control(''));
@@ -64,8 +64,7 @@ export class SaveCustomFieldComponent {
   }
 
   ngOnDestroy() {
-    this.navService.showNavbar = true;
-    this.navService.showSystemNavbar = true;
+    this.navService.showAll();
   }
 
   get options(): FormArray {

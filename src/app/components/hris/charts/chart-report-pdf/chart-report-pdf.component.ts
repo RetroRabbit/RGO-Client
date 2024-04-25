@@ -27,7 +27,6 @@ export class ChartReportPdfComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, 
   private snackBarService: SnackbarService,
   private navService: NavService) {
-    navService.showNavbar = true;
    }
 
   ngAfterViewInit() {

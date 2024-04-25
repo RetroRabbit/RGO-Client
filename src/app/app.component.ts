@@ -1,9 +1,10 @@
-import { Component } from "@angular/core";
+import { Component, HostListener } from "@angular/core";
 import { AuthService } from "@auth0/auth0-angular";
 import { CookieService } from "ngx-cookie-service";
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeProfile } from "./models/hris/employee-profile.interface";
 import { Chart } from "chart.js";
+import { AuthAccessService } from "./services/shared-services/auth-access/auth-access.service";
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,14 @@ import { Chart } from "chart.js";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+    this.navService.showNavbar = window.innerWidth > 776 ? true : false;
+    this.navService.showSideBar = window.innerWidth <= 776 ? true : false;
+  }
+  
   title = 'HRIS';
   showNav = this.navService.showNavbar;
   screenWidth !: number;
@@ -19,17 +28,19 @@ export class AppComponent {
   profileImage: string | undefined = '';
   selectedItem: string = 'Dashboard';
   charts: Chart[] = [];
-  employeeType: { id?: number, name?: string } | undefined = {
+
+  employeeType: { id?: number, name?: string } = {
     id: 0,
     name: ''
   };
 
+
   constructor(
     private auth: AuthService,
+    private authAccess: AuthAccessService,
     public cookieService: CookieService,
-    public navService: NavService)
-    {
-    this.screenWidth = window.innerWidth;
+    public navService: NavService){
+      this.screenWidth = window.innerWidth;
   }
 
   isAdmin(): boolean {
@@ -50,10 +61,13 @@ export class AppComponent {
   }
 
   logout() {
-    this.navService.showNavbar = false;
     this.auth.logout({
       logoutParams: { returnTo: document.location.origin }
     });
   }
-  
+
+  hasSignedIn(): boolean 
+  {
+    return this.authAccess.getEmployeeEmail() == "";
+  }
 }

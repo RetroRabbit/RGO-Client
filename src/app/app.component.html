@@ -1,8 +1,35 @@
-<div class="row" id="container">
-<app-nav-bar *ngIf="navService.showNavbar"></app-nav-bar>
-<div class="col-12" id="content">
-    <router-outlet></router-outlet>
-</div>
-</div>
+<!-- <div class="row" id="container">
+    <app-top-nav *ngIf="navService.showNavbar"></app-top-nav>
+    <app-side-nav *ngIf="navService.showSideBar"></app-side-nav>
+    <div class="col-12" id="content">
+        <router-outlet></router-outlet>
+    </div>
+</div> -->
+<mat-sidenav-container id="sidenav-container">
+    <!-- <mat-sidenav id="sidenav-menu" #sidenav mode="over" fixedInViewport [opened]="navService.showSideBar">
+      <app-side-nav/>
+    </mat-sidenav> -->
+    <!-- Determine the visual break point
 
-
+    
+        if width <= 776
+             <app-side-nav/>
+            router outlet next to it
+        else
+            <app-top-nav/>
+            routeroutlet -->
+    
+    <!-- <mat-sidenav id="sidenav-menu" #sidenav mode="over" fixedInViewport [opened]="true" *ngIf="navService.showSideBar">
+        <app-side-nav/>
+        <router-outlet/>
+    </mat-sidenav> -->
+    <mat-sidenav-content>
+      <div class="row" id="container">
+        <app-top-nav *ngIf="navService.showNavbar" [hidden]="hasSignedIn()"></app-top-nav>
+        <app-side-nav *ngIf="navService.showSideBar" [hidden]="hasSignedIn()"></app-side-nav>
+        <div class="col-12" id="content">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>

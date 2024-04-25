@@ -17,7 +17,6 @@ export class ReportComponent {
   public barChartPlugins = [ChartDataLabels];
 
   constructor(private chartService: ChartService, navService: NavService) {
-    navService.showNavbar = true;
   }
 
   public barChartOptions: ChartConfiguration['options'] = {

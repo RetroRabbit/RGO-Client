@@ -67,7 +67,6 @@ export class ManageFieldCodeComponent {
     private systemService: SystemNav,
     private navService: NavService,
     private authAccessService: AuthAccessService) {
-    navService.showNavbar = true;
   }
 
   ngOnInit(): void {
