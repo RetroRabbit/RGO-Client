@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { Router } from '@angular/router';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { Table } from 'primeng/table';
+// import { Table } from 'primeng/table';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -29,7 +29,7 @@ export class ManageFieldCodeComponent {
   newFieldCodeForm!: FormGroup;
   searchTerm: string = '';
 
-  @ViewChild('dataTable') dataTable: Table | undefined = undefined;
+  // @ViewChild('dataTable') dataTable: Table | undefined = undefined;
   filterText: string = '';
   isUnique?: boolean = true;
 
@@ -201,9 +201,9 @@ export class ManageFieldCodeComponent {
     this.selectedCustomFields = this.selectedCustomFields;
   }
 
-  clear(table: Table) {
-    table.clear();
-  }
+  // clear(table: Table) {
+  //   table.clear();
+  // }
 
   filterData() {
     const filterValue = this.filterText.trim().toLowerCase();
@@ -228,9 +228,9 @@ export class ManageFieldCodeComponent {
   onSearch(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
 
-    if (this.dataTable) {
-      this.dataTable.filterGlobal(searchTerm, 'contains');
-    }
+    // if (this.dataTable) {
+    //   this.dataTable.filterGlobal(searchTerm, 'contains');
+    // }
 
     if (this.filteredCustomFields) {
       this.filteredCustomFields = this.customFields.filter(fieldCode =>
@@ -263,8 +263,7 @@ export class ManageFieldCodeComponent {
     this.paginator.pageIndex = 0;
     this.selectedCustomFields = [];
     this.filterText = "";
-    this.sortByIdDefault(this.sort);
-  }
+    this.sortByIdDefault(this.sort);  }
 
   sortByIdDefault(sort: MatSort) {
     const sortState: Sort = { active: 'id', direction: 'asc' };
