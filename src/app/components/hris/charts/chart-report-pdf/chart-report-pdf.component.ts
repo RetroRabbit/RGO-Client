@@ -40,7 +40,6 @@ export class ChartReportPdfComponent {
   barChartOptions = barChartOptions;
   pieChartOptions = pieChartOptions;
 
-  
   generateReport(): void {
     const reportHTML = this.generateHTMLReport();
     const newWindow = window.open();
