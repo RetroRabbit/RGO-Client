@@ -20,7 +20,6 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/id-validator.service';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
-import { DocumentType } from 'src/app/models/hris/constants/documents.contants';
 
 @Component({
   selector: 'app-new-employee',

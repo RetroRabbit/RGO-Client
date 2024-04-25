@@ -10,7 +10,6 @@
   </div>
   <div #reportContent class="container m-0">
     <div class="row">
-
       <div class="col-12 m-0 text-center" id="chart-container">
         <div class="container text-center" style="height: 297mm; background: white; margin: 0 auto;">
           <div class="row text-center">
@@ -36,10 +35,10 @@
             <div class="col-12">
               <div #chartContainer id="edit-chart-container">
                 <canvas [plugins]="chartData.selectedChart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
-                [datasets]='chartData.selectedChart.datasets'
-                [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.labels : chartData.selectedChart.labels"
-                [type]="chartData.selectedChart.type"
-                [options]="chartData.selectedChart.type == 'bar' ? barChartOptions : pieChartOptions"></canvas>
+                  [datasets]='chartData.selectedChart.datasets'
+                  [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.labels : chartData.selectedChart.labels"
+                  [type]="chartData.selectedChart.type"
+                  [options]="chartData.selectedChart.type == 'bar' ? barChartOptions : pieChartOptions"></canvas>
               </div>
             </div>
             <hr>

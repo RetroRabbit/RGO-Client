@@ -1,13 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { ChartData } from 'src/app/models/hris/charts.interface';
-import { CookieService } from 'ngx-cookie-service';
 import { colours } from '../../../models/hris/constants/colours.constants';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';
 import { ChartConfiguration, ChartType } from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
@@ -15,6 +13,7 @@ import { EmployeeService } from 'src/app/services/hris/employee/employee.service
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { Chart } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 @Component({
   selector: 'app-chart',
@@ -24,12 +23,12 @@ import { Chart } from 'chart.js';
 
 export class ChartComponent implements OnInit {
 
-  constructor(private chartService: ChartService, 
-    private cookieService: CookieService, 
-    public dialog: MatDialog, 
+  constructor(
+    private chartService: ChartService,
+    public dialog: MatDialog,
     private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document, 
-    private employeeService: EmployeeService, 
+    @Inject(DOCUMENT) private document: Document,
+    private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
     navService: NavService) {
     navService.showNavbar = true;
@@ -38,6 +37,7 @@ export class ChartComponent implements OnInit {
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   @Output() captureCharts = new EventEmitter<number>();
   @Input() chartsArray: ChartData[] = [];
+
   screenWidth: number = 767;
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -52,15 +52,18 @@ export class ChartComponent implements OnInit {
   employeeNames: { [id: string]: string } = {};
   showReport: boolean = false;
   showUpdateForm: boolean = false;
+  coloursArray: string[] = colours;
+  chartCanvasArray: any[] = [];
+  selectedChartIndex: number = -1;
+  chart: Chart | undefined;
+
   updateFormData: any = {
     Name: '',
     Type: '',
   }
-  coloursArray: string[] = colours;
-  chartCanvasArray: any[] = [];
+
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
-  selectedChartIndex: number = -1;
 
   public barChartOptions: ChartConfiguration['options'] = {
     events: [],
@@ -155,7 +158,6 @@ export class ChartComponent implements OnInit {
     }
   }
 
-  chart: Chart | undefined;
   ngOnInit(): void {
     this.fetchPeopleChampionEmployees();
     this.getNumberOfEmployees();
@@ -293,7 +295,7 @@ export class ChartComponent implements OnInit {
           data: this.chartData[i].dataSet[0],
           labels: labelsArray,
           backgroundColor: this.coloursArray
-          
+
         });
       } else {
         if (this.chartData[i].labels) {
@@ -311,23 +313,23 @@ export class ChartComponent implements OnInit {
     }
   }
 
-  configureChartColors(chartData: ChartData[]){
+  configureChartColors(chartData: ChartData[]) {
     let colorIndex = 0
-        chartData.forEach((chart: any) => {
-          if(chart.subtype == "stacked"){
-            chart.datasets?.forEach((dataset: any) => {
-              dataset.backgroundColor = this.coloursArray[colorIndex];
-              colorIndex++
-            });
-          }else {
-            chart.datasets?.forEach((dataset: any) => {
-              dataset.backgroundColor = this.coloursArray;
-            });
-          }
-          colorIndex = 0;
+    chartData.forEach((chart: any) => {
+      if (chart.subtype == "stacked") {
+        chart.datasets?.forEach((dataset: any) => {
+          dataset.backgroundColor = this.coloursArray[colorIndex];
+          colorIndex++
         });
-        return chartData;
-}
+      } else {
+        chart.datasets?.forEach((dataset: any) => {
+          dataset.backgroundColor = this.coloursArray;
+        });
+      }
+      colorIndex = 0;
+    });
+    return chartData;
+  }
 
   pdfPreview(index: number) {
     const dialogRef = this.dialog.open(ChartReportPdfComponent, {

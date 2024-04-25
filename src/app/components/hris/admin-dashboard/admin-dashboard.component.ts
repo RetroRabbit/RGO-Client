@@ -2,7 +2,6 @@ import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-typ
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
-import { catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
@@ -43,37 +42,38 @@ export class AdminDashboardComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  categoryControl = new FormControl();
+  PREVIOUS_PAGE: string = 'previousPage';
   chartName: string = '';
   chartType: any = '';
   chartData: number[] = [];
+  charts: ChartData[] = [];
   categories: string[] = [];
   filteredCategories: string[] = this.categories;
   selectedCategories: string[] = [];
-  noResults: boolean = false;
-  typeControl = new FormControl();
   types: string[] = [];
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
-  loadCounter: number = 0;
-  isMobileScreen = false;
+  employeeProfiles: EmployeeProfile[] = [];
   totalNumberOfEmployees: number = 0;
-  charts: ChartData[] = [];
+  roles: string[] = [];
   searchQuery: string = '';
   searchResults: EmployeeProfile[] = [];
-  employeeProfiles: EmployeeProfile[] = [];
+  svgWidth: number = 500;
+
+  isMobileScreen = false;
+  noResults: boolean = false;
   allFlag: boolean = false;
   isLoading: boolean = true;
   isLoadingChart: boolean = false;
-  svgWidth: number = 500;
-  PREVIOUS_PAGE: string = 'previousPage';
+  displayAllEmployees: boolean = false;
+  loadCounter: number = 0;
+
+  categoryControl = new FormControl();
+  typeControl = new FormControl();
 
   employeeCount: EmployeeCountDataCard = new EmployeeCountDataCard();
   churnRate: ChurnRateDataCard = new ChurnRateDataCard();
   employeeType: EmployeeType = new EmployeeType();
-
-  displayAllEmployees: boolean = false;
-  roles: string[] = [];
 
   dataSource: MatTableDataSource<{
     Name: string;
@@ -92,8 +92,8 @@ export class AdminDashboardComponent {
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
-    private navService: NavService,
-    public authAccessService: AuthAccessService) {
+    public authAccessService: AuthAccessService,
+    navService: NavService) {
     navService.showNavbar = true;
   }
 
@@ -109,7 +109,7 @@ export class AdminDashboardComponent {
     this.setSvgWidth();
   }
 
-  setSvgWidth() : number {
+  setSvgWidth(): number {
     if (this.screenWidth < 768) {
       return this.svgWidth = 265;
     } else {
@@ -468,7 +468,7 @@ export class AdminDashboardComponent {
     }
   }
 
-  clearAddGraphFields (){
+  clearAddGraphFields() {
     this.typeControl.setValue([]);
     this.categoryControl.setValue([]);
     this.chartName = '';

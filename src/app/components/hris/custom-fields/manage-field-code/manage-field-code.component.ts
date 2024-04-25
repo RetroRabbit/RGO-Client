@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, EventEmitter, Output, TemplateRef } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { Router } from '@angular/router';
@@ -28,11 +28,8 @@ export class ManageFieldCodeComponent {
   selectedCustomField!: CustomField;
   newFieldCodeForm!: FormGroup;
   searchTerm: string = '';
-
-  @ViewChild('dataTable') dataTable: Table | undefined = undefined;
   filterText: string = '';
   isUnique?: boolean = true;
-
   activeTab: number = 0;
   selectedFields: number = 0;
   activeFields: number = 0;
@@ -41,23 +38,24 @@ export class ManageFieldCodeComponent {
   archiveFieldsSearch: number = 0;
   displayedColumns: string[] = ['id', 'name', 'type', 'status', 'edit'];
   showConfirmDialog: boolean = false;
-
   dataSource: MatTableDataSource<CustomField> = new MatTableDataSource();
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   isLoading: boolean = true;
   runCounter: number = 0;
   runThreshold: number = 2;
+  screenWidth: number = 992;
+  pageSizes: number[] = [1, 5, 10, 25, 100];
+  PREVIOUS_PAGE = "previousPage";
 
+  @ViewChild('dataTable') dataTable: Table | undefined = undefined;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  screenWidth: number = 992;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
   }
-  pageSizes: number[] = [1, 5, 10, 25, 100];
-  PREVIOUS_PAGE = "previousPage";
+
   constructor(
     public router: Router,
     private customFieldService: CustomFieldService,
@@ -65,7 +63,7 @@ export class ManageFieldCodeComponent {
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
     private systemService: SystemNav,
-    private navService: NavService,
+    navService: NavService,
     private authAccessService: AuthAccessService) {
     navService.showNavbar = true;
   }
@@ -117,7 +115,7 @@ export class ManageFieldCodeComponent {
     return this.runCounter >= this.runThreshold;
   }
 
-  resetRunCounter(){
+  resetRunCounter() {
     return this.runCounter = 0;
   }
 
@@ -155,13 +153,13 @@ export class ManageFieldCodeComponent {
       });
 
       let fieldCodeDto = new CustomField();
-        fieldCodeDto.id = 0;
-        fieldCodeDto.code = fieldCode.code,
+      fieldCodeDto.id = 0;
+      fieldCodeDto.code = fieldCode.code,
         fieldCodeDto.name = fieldCode.name,
         fieldCodeDto.description = fieldCode.description,
         fieldCodeDto.regex = fieldCode.regex,
         fieldCodeDto.type = parseInt(fieldCode.type),
-        fieldCodeDto.status =  parseInt(fieldCode.status),
+        fieldCodeDto.status = parseInt(fieldCode.status),
         fieldCodeDto.internal = fieldCode.internal,
         fieldCodeDto.internalTable = fieldCode.internalTable,
         fieldCodeDto.options = optionsArray,
@@ -252,7 +250,7 @@ export class ManageFieldCodeComponent {
   }
 
   changeTab(tabIndex: number) {
-    if(this.isLoading == true){
+    if (this.isLoading == true) {
       return;
     }
     this.activeTab = tabIndex;

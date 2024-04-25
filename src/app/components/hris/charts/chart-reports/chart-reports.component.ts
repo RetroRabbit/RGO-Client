@@ -8,13 +8,14 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
   templateUrl: './chart-reports.component.html',
   styleUrls: ['./chart-reports.component.css']
 })
+
 export class ReportComponent {
   @Input() chartData !: { selectedChart: any; canvasData: any; };
   activeChart: any = null;
   showReport: boolean = false;
-  clearActiveChart: () => void = () => { };
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
+  clearActiveChart: () => void = () => { };
 
   constructor(private chartService: ChartService, navService: NavService) {
     navService.showNavbar = true;
@@ -62,6 +63,7 @@ export class ReportComponent {
       newWindow.document.close();
     }
   }
+  
   generateHTMLReport(): string {
     const chartHTML = `<h1>${this.chartData.selectedChart.label}</h1>`;
     const dataHTML = `<p>Data: ${JSON.stringify(this.chartData.selectedChart.data)}</p>`;

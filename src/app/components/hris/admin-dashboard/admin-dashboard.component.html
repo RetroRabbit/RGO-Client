@@ -72,7 +72,6 @@
         </div>
       </div>
     </div>
-
     <div *ngIf="isLoading" class="skeleton-loader-container">
     <ngx-skeleton-loader *ngIf="isLoading" count="1" appearance="line" animation="pulse" [theme]="{
       'background-color': '#D7DFFF',
@@ -230,7 +229,6 @@
         </div>
       </div>
     </div>
-
     <div class="px-4 container-fluid pt-4" id="graph-container">
       <ngx-skeleton-loader count="1" appearance="line" animation="pulse" *ngIf="loadCounter < 4" [theme]="{
     'background-color': '#D7DFFF',
@@ -635,8 +633,6 @@
         </div>
       </ng-template>
     </div>
-
-
     <ng-template #dialogTemplate>
       <div class="container-fluid p-4"
         [ngClass]="isLoadingChart == true ? 'fullscreen-modal-transparent' : {'fullscreen-modal': isMobileScreen}">

@@ -1,4 +1,4 @@
-import { Component, Input, Inject, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, Inject, ElementRef, ViewChild } from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import jsPDF from 'jspdf';
@@ -12,6 +12,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
   templateUrl: './chart-report-pdf.component.html',
   styleUrls: ['./chart-report-pdf.component.css']
 })
+
 export class ChartReportPdfComponent {
   @Input() inputchartData !: { selectedChart: any; canvasData: any; };
   activeChart: any = null;
@@ -22,18 +23,10 @@ export class ChartReportPdfComponent {
   @ViewChild('reportContent') reportContent!: ElementRef;
   @ViewChild('canvas') canvas: ElementRef = {} as ElementRef;
 
-  ngOnInit() {
-  }
-  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, 
-  private snackBarService: SnackbarService,
-  private navService: NavService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService,
+    private snackBarService: SnackbarService,
+    navService: NavService) {
     navService.showNavbar = true;
-   }
-
-  ngAfterViewInit() {
-    if (this.canvas && this.canvas.nativeElement) {
-      const context: CanvasRenderingContext2D = this.canvas.nativeElement.getContext('2d');
-    }
   }
 
   public barChartOptions: ChartConfiguration['options'] = {
@@ -55,7 +48,6 @@ export class ChartReportPdfComponent {
     },
   };
 
-
   public pieChartOptions: ChartConfiguration['options'] = {
     responsive: true,
     plugins: {
@@ -75,6 +67,7 @@ export class ChartReportPdfComponent {
       newWindow.document.close();
     }
   }
+
   generateHTMLReport(): string {
     const chartHTML = `<h1>${this.chartData.selectedChart.label}</h1>`;
     const dataHTML = `<p>Data: ${JSON.stringify(this.chartData.selectedChart.data)}</p>`;
@@ -112,7 +105,7 @@ export class ChartReportPdfComponent {
         } else {
           container.removeAttribute("style");
         }
-      }).catch(error => {
+      }).catch(() => {
         this.snackBarService.showSnackbar("Error generating PDF", "snack-error");
 
         if (originalStyle !== null) {
@@ -122,7 +115,7 @@ export class ChartReportPdfComponent {
         }
       });
     } else {
-      this.snackBarService.showSnackbar("Could not find the container element to generate the PDF","snack-error");
+      this.snackBarService.showSnackbar("Could not find the container element to generate the PDF", "snack-error");
     }
   }
 

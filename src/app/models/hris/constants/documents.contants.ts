@@ -7,11 +7,5 @@ export const Document =[
 export interface FileCategory {
     name: string;
     id: number;
-  }
-
-export enum DocumentType {
-    all,
-    starterKit,
-    additional
 }
 
