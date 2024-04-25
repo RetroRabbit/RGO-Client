@@ -13,6 +13,14 @@
     border-radius: 4rem;
     color: white;
     padding: 0.5rem;
+}
+
+.delete-button {
+    background: #c60000;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    padding: 0.5rem;
     width: 8rem;
 }
 
@@ -47,8 +55,15 @@
 }
 
 #document-row {
-    background-color: white;
-    border-radius: 2rem;
+    border-radius: 20px;
+    border: 1px solid var(--M3-sys-light-outline-variant, #CAC4D0);
+    background: var(--M3-white, #FFF);
+}
+
+#document-add-row {
+    border-radius: 20px;
+    border: 1px dashed var(--M3-sys-light-outline-variant, #CAC4D0);
+    background: var(--M3-white, #FFF);
 }
 
 #fileName {
