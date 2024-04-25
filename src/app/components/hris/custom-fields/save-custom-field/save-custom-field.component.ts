@@ -98,7 +98,8 @@ export class SaveCustomFieldComponent {
       customField = this.customFieldForm.value;
       customField.id = this.selectedCustomField ? this.selectedCustomField.id : 0,
         customField.options = this.customFieldForm.value['type'] == 4 ? updatedOptions : [],
-
+        customField.status = 0;
+        
         this.customFieldService.saveFieldCode(customField).subscribe({
           next: (data) => {
             this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");

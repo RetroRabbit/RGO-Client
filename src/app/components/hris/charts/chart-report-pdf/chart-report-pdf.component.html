@@ -1,4 +1,4 @@
-<div id="oveflow-contianer">
+<div id="overflow-container">
   <div class="row justify-content-centre mb-4">
     <div class="col-auto text-center">
       <button mat-button id="save-button" (click)="downloadReportAsPDF()">Download PDF</button>
@@ -8,9 +8,8 @@
         CSV</button>
     </div>
   </div>
-  <div #reportContent class="container m-0">
+  <div #reportContent class="container m-0" id="report-content">
     <div class="row">
-
       <div class="col-12 m-0 text-center" id="chart-container">
         <div class="container text-center" style="height: 297mm; background: white; margin: 0 auto;">
           <div class="row text-center">
@@ -52,7 +51,7 @@
               <br>
               <div class="data-label">{{ dataset.label }}:</div>
               <div class="col-12" *ngFor="let data of dataset.data; let i = index">
-                <div class="data-value">{{ data }} {{chartData.selectedChart.labels[i]}}</div>
+                <div class="data-value">{{ data }} - {{chartData.selectedChart.labels[i]}}</div>
               </div>
             </div>
           </div>

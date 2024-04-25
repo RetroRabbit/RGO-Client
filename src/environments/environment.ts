@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  HttpsBaseURL: 'https://localhost:7026',
+  HttpsBaseURL: 'http://localhost:7026',
   redirect_uri: 'http://localhost:4200',
   development : true
 };
