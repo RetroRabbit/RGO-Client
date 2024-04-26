@@ -16,8 +16,8 @@ export class AppComponent {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
-    this.navService.showNavbar = window.innerWidth > 776 ? true : false;
-    this.navService.showSideBar = window.innerWidth <= 776 ? true : false;
+    this.navService.showNavbar = window.innerWidth > 600 ? true : false;
+    this.navService.showSideBar = window.innerWidth <= 600 ? true : false;
   }
   
   title = 'HRIS';
@@ -27,6 +27,7 @@ export class AppComponent {
   employeeProfile: EmployeeProfile | undefined;
   profileImage: string | undefined = '';
   selectedItem: string = 'Dashboard';
+  searchQuery: string = '';
   charts: Chart[] = [];
 
   employeeType: { id?: number, name?: string } = {
@@ -55,7 +56,6 @@ export class AppComponent {
     return this.roles.includes('Employee');
   }
 
-  searchQuery: string = '';
   handleSearchQuery(query: string) {
     this.searchQuery = query;
   }
@@ -68,6 +68,6 @@ export class AppComponent {
 
   hasSignedIn(): boolean 
   {
-    return this.authAccess.getEmployeeEmail() == "";
+    return this.authAccess.getEmployeeEmail() != "";
   }
 }

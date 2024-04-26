@@ -1,164 +1,76 @@
-<!-- <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData"
-    (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
-    <div id="header" *ngIf="navService.showNavbar">
+<div id="sidenav-menu-header-container">
+    <span id="sidenav-menu-header">HRIS Dashboard</span>
+</div>
+<div id="sidenav-menu-title-container">
+    <span id="sidenav-menu-title">Main Menu</span>
+</div>
+<mat-nav-list class="col" id="sidenav-list">
 
-        <button mat-icon-button class="menu-toggle-button" (click)="toggleSideNav()">
-            <mat-icon class="trailing-icon">menu</mat-icon>
-        </button>
-    
-        <div class="header-left-frame">
-            <img class="logo-horizontal-wordmark" src="../../../../assets/img/header_logo.svg">
-    
-            <nav mat-tab-nav-bar *ngIf="navService.isHris" ngClass="tabs" dynamicHeight class="tabsnav">
-                <a mat-tab-link
-                    *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()"
-                    routerLink="/dashboard" routerLinkActive="active-link">Dashboard</a>
-                <a mat-tab-link routerLink="/profile" routerLinkActive="active-link">Profile</a>
-                <a mat-tab-link
-                    *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()"
-                    routerLink="/employees" routerLinkActive="active-link">Employees</a>
-                <a mat-tab-link *ngIf="authAccessService.isAdmin()" routerLink="/system-settings"
-                    routerLinkActive="active-link">Settings</a>
-            </nav>
-    
-        </div>
-    
-        <div class="header-right-frame">
-            <div class="employee-frame">
-                <mat-card class="dropdown-card"
-                    [ngClass]="{'shadow-on':isSectionVisible, 'shadow-off': !isSectionVisible}">
-                    <mat-card-header>
-                        <div class="card-header-content">
-                            <button mat-icon-button #toggleButton (click)="toggleSection()"
-                                class="trailing-button">
-                                 <mat-icon class="trailing-icon">
-                                    {{ isSectionVisible ? 'expand_less' : 'expand_more' }}
-                                </mat-icon> 
-                            </button>
-    
-                            <div class="inner-frame">
-                                <span class="trailing-text-name">{{navService.getEmployeeProfile()?.name + ' ' +
-                                    navService.getEmployeeProfile()?.surname}}</span>
-                                <span class="trailing-text-role">{{navService.getEmployeeProfile()?.employeeType?.name}}</span>
-                            </div>
-    
-                            <div id="image-container">
-                                <ngx-skeleton-loader *ngIf="isLoading; else ProfileImage"
-                                    appearance="circle"></ngx-skeleton-loader>
-                                <ng-template #ProfileImage>
-                                    <img class="trailing-image" *ngIf="navService.getEmployeeProfile()?.photo; else NoProfile"
-                                        [src]="navService.getEmployeeProfile()?.photo" alt="profile image">
-                                    <ng-template #NoProfile>
-                                        <img class="trailing-image" src="../../../../assets/img/profile.png"
-                                            alt="employee profile image">
-                                    </ng-template>
-                                </ng-template>
-                            </div>
-                        </div>
-                    </mat-card-header>
-    
-                    <mat-card-actions *ngIf="isSectionVisible" class="card-menu-section">
-                        <mat-divider></mat-divider>
-                        <button mat-menu-item *ngIf="(hasAccessToAts() && navService.isHris)"
-                            (click)="switchToAts('/ats-dashboard')">
-                            <mat-icon class="dropdown-card-icon">compare_arrows</mat-icon>
-                            <span class="small-text">Switch to </span>
-                            <span class="large-text">Applicant Portal</span>
-                        </button>
-    
-                        <button mat-menu-item *ngIf="!navService.isHris"
-                            (click)="switchToHris('/dashboard')">
-                            <mat-icon>compare_arrows</mat-icon>
-                            <span class="small-text">Switch to</span>
-                            <span class="large-text">Employee Portal</span>
-                        </button>
-    
-                        <mat-divider class="dropdown-divider"></mat-divider>
-    
-                        <button mat-menu-item (click)="logout()">
-                            <mat-icon>exit_to_app</mat-icon>
-                            <span class="logout-text">Log Out</span>
-                        </button>
-    
-                    </mat-card-actions>
-                </mat-card>
-            </div>
-        </div>
-    </div> -->
+    <a class="sidenav-list-item" (click)="toggleSideNav()" routerLink="/dashboard" routerLinkActive="active-list-item"
+        *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            class="list-icon">
+            <mask id="mask0_7793_43972" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
+                height="24">
+                <rect width="24" height="24" fill="#D9D9D9" />
+            </mask>
+            <g mask="url(#mask0_7793_43972)">
+                <path
+                    d="M13 9V3H21V9H13ZM3 13V3H11V13H3ZM13 21V11H21V21H13ZM3 21V15H11V21H3ZM5 11H9V5H5V11ZM15 19H19V13H15V19ZM15 7H19V5H15V7ZM5 19H9V17H5V19Z"
+                    fill="#1C1B1F" />
+            </g>
+        </svg>
+        <span class="list-text">Dashboard</span>
+    </a>
 
-    <div id="sidenav-menu-header-container">
-        <span id="sidenav-menu-header">HRIS Dashboard</span>
-    </div>
-    <div id="sidenav-menu-title-container">
-        <span id="sidenav-menu-title">Main Menu</span>
-    </div>
-    <mat-nav-list class="col" id="sidenav-list" class="sidenav-list">
-    
-        <a class="sidenav-list-item" (click)="toggleSideNav()" routerLink="/dashboard"
-            routerLinkActive="active-list-item" *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                class="list-icon">
-                <mask id="mask0_7793_43972" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
-                    height="24">
-                    <rect width="24" height="24" fill="#D9D9D9" />
-                </mask>
-                <g mask="url(#mask0_7793_43972)">
-                    <path
-                        d="M13 9V3H21V9H13ZM3 13V3H11V13H3ZM13 21V11H21V21H13ZM3 21V15H11V21H3ZM5 11H9V5H5V11ZM15 19H19V13H15V19ZM15 7H19V5H15V7ZM5 19H9V17H5V19Z"
-                        fill="#1C1B1F" />
-                </g>
-            </svg>
-            <span class="list-text">Dashboard</span>
-        </a>
-    
-        <a class="sidenav-list-item" (click)="toggleSideNav()" routerLink="/profile"
-            routerLinkActive="active-list-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                class="list-icon">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4ZM14 8C14 6.9 13.1 6 12 6C10.9 6 10 6.9 10 8C10 9.1 10.9 10 12 10C13.1 10 14 9.1 14 8ZM18 17C17.8 16.29 14.7 15 12 15C9.3 15 6.2 16.29 6 17.01V18H18V17ZM4 17C4 14.34 9.33 13 12 13C14.67 13 20 14.34 20 17V20H4V17Z"
-                    fill="#49454F" />
-            </svg>
-            <span class="list-text">Profile</span>
-        </a>
-    
-        <a class="sidenav-list-item" (click)="toggleSideNav()" routerLink="/employees"
-            routerLinkActive="active-list-item" *ngIf="authAccessService.isTalent() || authAccessService.isEmployee()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                class="list-icon">
-                <mask id="mask0_7793_43989" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
-                    height="24">
-                    <rect width="24" height="24" fill="#D9D9D9" />
-                </mask>
-                <g mask="url(#mask0_7793_43989)">
-                    <path
-                        d="M0 18V16.425C0 15.7083 0.366667 15.125 1.1 14.675C1.83333 14.225 2.8 14 4 14C4.21667 14 4.425 14.0042 4.625 14.0125C4.825 14.0208 5.01667 14.0417 5.2 14.075C4.96667 14.425 4.79167 14.7917 4.675 15.175C4.55833 15.5583 4.5 15.9583 4.5 16.375V18H0ZM6 18V16.375C6 15.8417 6.14583 15.3542 6.4375 14.9125C6.72917 14.4708 7.14167 14.0833 7.675 13.75C8.20833 13.4167 8.84583 13.1667 9.5875 13C10.3292 12.8333 11.1333 12.75 12 12.75C12.8833 12.75 13.6958 12.8333 14.4375 13C15.1792 13.1667 15.8167 13.4167 16.35 13.75C16.8833 14.0833 17.2917 14.4708 17.575 14.9125C17.8583 15.3542 18 15.8417 18 16.375V18H6ZM19.5 18V16.375C19.5 15.9417 19.4458 15.5333 19.3375 15.15C19.2292 14.7667 19.0667 14.4083 18.85 14.075C19.0333 14.0417 19.2208 14.0208 19.4125 14.0125C19.6042 14.0042 19.8 14 20 14C21.2 14 22.1667 14.2208 22.9 14.6625C23.6333 15.1042 24 15.6917 24 16.425V18H19.5ZM8.125 16H15.9C15.7333 15.6667 15.2708 15.375 14.5125 15.125C13.7542 14.875 12.9167 14.75 12 14.75C11.0833 14.75 10.2458 14.875 9.4875 15.125C8.72917 15.375 8.275 15.6667 8.125 16ZM4 13C3.45 13 2.97917 12.8042 2.5875 12.4125C2.19583 12.0208 2 11.55 2 11C2 10.4333 2.19583 9.95833 2.5875 9.575C2.97917 9.19167 3.45 9 4 9C4.56667 9 5.04167 9.19167 5.425 9.575C5.80833 9.95833 6 10.4333 6 11C6 11.55 5.80833 12.0208 5.425 12.4125C5.04167 12.8042 4.56667 13 4 13ZM20 13C19.45 13 18.9792 12.8042 18.5875 12.4125C18.1958 12.0208 18 11.55 18 11C18 10.4333 18.1958 9.95833 18.5875 9.575C18.9792 9.19167 19.45 9 20 9C20.5667 9 21.0417 9.19167 21.425 9.575C21.8083 9.95833 22 10.4333 22 11C22 11.55 21.8083 12.0208 21.425 12.4125C21.0417 12.8042 20.5667 13 20 13ZM12 12C11.1667 12 10.4583 11.7083 9.875 11.125C9.29167 10.5417 9 9.83333 9 9C9 8.15 9.29167 7.4375 9.875 6.8625C10.4583 6.2875 11.1667 6 12 6C12.85 6 13.5625 6.2875 14.1375 6.8625C14.7125 7.4375 15 8.15 15 9C15 9.83333 14.7125 10.5417 14.1375 11.125C13.5625 11.7083 12.85 12 12 12ZM12 10C12.2833 10 12.5208 9.90417 12.7125 9.7125C12.9042 9.52083 13 9.28333 13 9C13 8.71667 12.9042 8.47917 12.7125 8.2875C12.5208 8.09583 12.2833 8 12 8C11.7167 8 11.4792 8.09583 11.2875 8.2875C11.0958 8.47917 11 8.71667 11 9C11 9.28333 11.0958 9.52083 11.2875 9.7125C11.4792 9.90417 11.7167 10 12 10Z"
-                        fill="#1C1B1F" />
-                </g>
-            </svg>
-            <span class="list-text">Employees</span>
-            <span class="list-number">{{ totalNumberOfEmployees }}</span>
-        </a>
-    
-        <a class="sidenav-list-item" (click)="toggleSideNav()" routerLink="/system-settings"
-            routerLinkActive="active-list-item" *ngIf="authAccessService.isAdmin()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                class="list-icon">
-                <mask id="mask0_7793_43996" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
-                    height="24">
-                    <rect width="24" height="24" fill="#D9D9D9" />
-                </mask>
-                <g mask="url(#mask0_7793_43996)">
-                    <path
-                        d="M7.5 6C7.08333 6 6.72917 6.14583 6.4375 6.4375C6.14583 6.72917 6 7.08333 6 7.5C6 7.91667 6.14583 8.27083 6.4375 8.5625C6.72917 8.85417 7.08333 9 7.5 9C7.91667 9 8.27083 8.85417 8.5625 8.5625C8.85417 8.27083 9 7.91667 9 7.5C9 7.08333 8.85417 6.72917 8.5625 6.4375C8.27083 6.14583 7.91667 6 7.5 6ZM7.5 16C7.08333 16 6.72917 16.1458 6.4375 16.4375C6.14583 16.7292 6 17.0833 6 17.5C6 17.9167 6.14583 18.2708 6.4375 18.5625C6.72917 18.8542 7.08333 19 7.5 19C7.91667 19 8.27083 18.8542 8.5625 18.5625C8.85417 18.2708 9 17.9167 9 17.5C9 17.0833 8.85417 16.7292 8.5625 16.4375C8.27083 16.1458 7.91667 16 7.5 16ZM4 3H20C20.2833 3 20.5208 3.09583 20.7125 3.2875C20.9042 3.47917 21 3.71667 21 4V11C21 11.2833 20.9042 11.5208 20.7125 11.7125C20.5208 11.9042 20.2833 12 20 12H4C3.71667 12 3.47917 11.9042 3.2875 11.7125C3.09583 11.5208 3 11.2833 3 11V4C3 3.71667 3.09583 3.47917 3.2875 3.2875C3.47917 3.09583 3.71667 3 4 3ZM5 5V10H19V5H5ZM4 13H20C20.2833 13 20.5208 13.0958 20.7125 13.2875C20.9042 13.4792 21 13.7167 21 14V21C21 21.2833 20.9042 21.5208 20.7125 21.7125C20.5208 21.9042 20.2833 22 20 22H4C3.71667 22 3.47917 21.9042 3.2875 21.7125C3.09583 21.5208 3 21.2833 3 21V14C3 13.7167 3.09583 13.4792 3.2875 13.2875C3.47917 13.0958 3.71667 13 4 13ZM5 15V20H19V15H5Z"
-                        fill="#1C1B1F" />
-                </g>
-            </svg>
-            <span class="list-text">System Settings</span>
-        </a>
-    </mat-nav-list>
+    <a class="sidenav-list-item" (click)="toggleSideNav()" routerLink="/profile" routerLinkActive="active-list-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            class="list-icon">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4ZM14 8C14 6.9 13.1 6 12 6C10.9 6 10 6.9 10 8C10 9.1 10.9 10 12 10C13.1 10 14 9.1 14 8ZM18 17C17.8 16.29 14.7 15 12 15C9.3 15 6.2 16.29 6 17.01V18H18V17ZM4 17C4 14.34 9.33 13 12 13C14.67 13 20 14.34 20 17V20H4V17Z"
+                fill="#49454F" />
+        </svg>
+        <span class="list-text">Profile</span>
+    </a>
+
+    <a class="sidenav-list-item" (click)="toggleSideNav()" routerLink="/employees" routerLinkActive="active-list-item"
+        *ngIf="authAccessService.isTalent() || authAccessService.isEmployee()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            class="list-icon">
+            <mask id="mask0_7793_43989" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
+                height="24">
+                <rect width="24" height="24" fill="#D9D9D9" />
+            </mask>
+            <g mask="url(#mask0_7793_43989)">
+                <path
+                    d="M0 18V16.425C0 15.7083 0.366667 15.125 1.1 14.675C1.83333 14.225 2.8 14 4 14C4.21667 14 4.425 14.0042 4.625 14.0125C4.825 14.0208 5.01667 14.0417 5.2 14.075C4.96667 14.425 4.79167 14.7917 4.675 15.175C4.55833 15.5583 4.5 15.9583 4.5 16.375V18H0ZM6 18V16.375C6 15.8417 6.14583 15.3542 6.4375 14.9125C6.72917 14.4708 7.14167 14.0833 7.675 13.75C8.20833 13.4167 8.84583 13.1667 9.5875 13C10.3292 12.8333 11.1333 12.75 12 12.75C12.8833 12.75 13.6958 12.8333 14.4375 13C15.1792 13.1667 15.8167 13.4167 16.35 13.75C16.8833 14.0833 17.2917 14.4708 17.575 14.9125C17.8583 15.3542 18 15.8417 18 16.375V18H6ZM19.5 18V16.375C19.5 15.9417 19.4458 15.5333 19.3375 15.15C19.2292 14.7667 19.0667 14.4083 18.85 14.075C19.0333 14.0417 19.2208 14.0208 19.4125 14.0125C19.6042 14.0042 19.8 14 20 14C21.2 14 22.1667 14.2208 22.9 14.6625C23.6333 15.1042 24 15.6917 24 16.425V18H19.5ZM8.125 16H15.9C15.7333 15.6667 15.2708 15.375 14.5125 15.125C13.7542 14.875 12.9167 14.75 12 14.75C11.0833 14.75 10.2458 14.875 9.4875 15.125C8.72917 15.375 8.275 15.6667 8.125 16ZM4 13C3.45 13 2.97917 12.8042 2.5875 12.4125C2.19583 12.0208 2 11.55 2 11C2 10.4333 2.19583 9.95833 2.5875 9.575C2.97917 9.19167 3.45 9 4 9C4.56667 9 5.04167 9.19167 5.425 9.575C5.80833 9.95833 6 10.4333 6 11C6 11.55 5.80833 12.0208 5.425 12.4125C5.04167 12.8042 4.56667 13 4 13ZM20 13C19.45 13 18.9792 12.8042 18.5875 12.4125C18.1958 12.0208 18 11.55 18 11C18 10.4333 18.1958 9.95833 18.5875 9.575C18.9792 9.19167 19.45 9 20 9C20.5667 9 21.0417 9.19167 21.425 9.575C21.8083 9.95833 22 10.4333 22 11C22 11.55 21.8083 12.0208 21.425 12.4125C21.0417 12.8042 20.5667 13 20 13ZM12 12C11.1667 12 10.4583 11.7083 9.875 11.125C9.29167 10.5417 9 9.83333 9 9C9 8.15 9.29167 7.4375 9.875 6.8625C10.4583 6.2875 11.1667 6 12 6C12.85 6 13.5625 6.2875 14.1375 6.8625C14.7125 7.4375 15 8.15 15 9C15 9.83333 14.7125 10.5417 14.1375 11.125C13.5625 11.7083 12.85 12 12 12ZM12 10C12.2833 10 12.5208 9.90417 12.7125 9.7125C12.9042 9.52083 13 9.28333 13 9C13 8.71667 12.9042 8.47917 12.7125 8.2875C12.5208 8.09583 12.2833 8 12 8C11.7167 8 11.4792 8.09583 11.2875 8.2875C11.0958 8.47917 11 8.71667 11 9C11 9.28333 11.0958 9.52083 11.2875 9.7125C11.4792 9.90417 11.7167 10 12 10Z"
+                    fill="#1C1B1F" />
+            </g>
+        </svg>
+        <span class="list-text">Employees</span>
+        <span class="list-number">{{ totalNumberOfEmployees }}</span>
+    </a>
+
+    <a class="sidenav-list-item" (click)="toggleSideNav()" routerLink="/system-settings"
+        routerLinkActive="active-list-item" *ngIf="authAccessService.isAdmin()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            class="list-icon">
+            <mask id="mask0_7793_43996" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
+                height="24">
+                <rect width="24" height="24" fill="#D9D9D9" />
+            </mask>
+            <g mask="url(#mask0_7793_43996)">
+                <path
+                    d="M7.5 6C7.08333 6 6.72917 6.14583 6.4375 6.4375C6.14583 6.72917 6 7.08333 6 7.5C6 7.91667 6.14583 8.27083 6.4375 8.5625C6.72917 8.85417 7.08333 9 7.5 9C7.91667 9 8.27083 8.85417 8.5625 8.5625C8.85417 8.27083 9 7.91667 9 7.5C9 7.08333 8.85417 6.72917 8.5625 6.4375C8.27083 6.14583 7.91667 6 7.5 6ZM7.5 16C7.08333 16 6.72917 16.1458 6.4375 16.4375C6.14583 16.7292 6 17.0833 6 17.5C6 17.9167 6.14583 18.2708 6.4375 18.5625C6.72917 18.8542 7.08333 19 7.5 19C7.91667 19 8.27083 18.8542 8.5625 18.5625C8.85417 18.2708 9 17.9167 9 17.5C9 17.0833 8.85417 16.7292 8.5625 16.4375C8.27083 16.1458 7.91667 16 7.5 16ZM4 3H20C20.2833 3 20.5208 3.09583 20.7125 3.2875C20.9042 3.47917 21 3.71667 21 4V11C21 11.2833 20.9042 11.5208 20.7125 11.7125C20.5208 11.9042 20.2833 12 20 12H4C3.71667 12 3.47917 11.9042 3.2875 11.7125C3.09583 11.5208 3 11.2833 3 11V4C3 3.71667 3.09583 3.47917 3.2875 3.2875C3.47917 3.09583 3.71667 3 4 3ZM5 5V10H19V5H5ZM4 13H20C20.2833 13 20.5208 13.0958 20.7125 13.2875C20.9042 13.4792 21 13.7167 21 14V21C21 21.2833 20.9042 21.5208 20.7125 21.7125C20.5208 21.9042 20.2833 22 20 22H4C3.71667 22 3.47917 21.9042 3.2875 21.7125C3.09583 21.5208 3 21.2833 3 21V14C3 13.7167 3.09583 13.4792 3.2875 13.2875C3.47917 13.0958 3.71667 13 4 13ZM5 15V20H19V15H5Z"
+                    fill="#1C1B1F" />
+            </g>
+        </svg>
+        <span class="list-text">System Settings</span>
+    </a>
+
     <mat-divider id="divider" />
-    <button mat-menu-item (click)="logout()" class="logout">
+    <button (click)="logout()"  class="sidenav-list-item">
         <mat-icon>exit_to_app</mat-icon>
         <span class="logout-text">Log Out</span>
     </button>
+</mat-nav-list>

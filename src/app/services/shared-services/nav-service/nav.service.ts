@@ -16,6 +16,7 @@ export class NavService {
 
   private tempShowNavBar: boolean = false;
   private tempShowSideNav: boolean = false;
+  public expandSideNav: boolean = false;
 
   constructor(private authAccessService: AuthAccessService, private employeeProfileService: EmployeeProfileService)
   { }
@@ -44,5 +45,9 @@ export class NavService {
   {
     this.showNavbar = this.tempShowNavBar;
     this.showSideBar = this.tempShowSideNav;
+  }
+
+  toggleSideBar(){
+    this.expandSideNav = !this.expandSideNav;
   }
 }
