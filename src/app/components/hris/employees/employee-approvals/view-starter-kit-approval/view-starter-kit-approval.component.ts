@@ -119,6 +119,7 @@ export class ViewStarterKitApprovalComponent {
   updateDocument(documentIndex: number, updateStatus: number = 0) {
     let copyOfDocument = updateStatus == 2 ? { ...this.getFile(this.documenetIndex) } : { ...this.getFile(documentIndex) };
     copyOfDocument.status = updateStatus;
+    copyOfDocument.lastUpdatedDate = new Date(Date.now());
 
     if (updateStatus == 2)
       copyOfDocument.reason = `${this.selectedReason} ${this.declineReason}`;

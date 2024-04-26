@@ -143,7 +143,6 @@ export class AccordionDocumentsComponent {
         error: (error) => {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar(error, "snack-error");
-
         }
       });
     } else {
@@ -157,7 +156,8 @@ export class AccordionDocumentsComponent {
         uploadDate: document.uploadDate,
         reason: document.reason,
         status: 1,
-        counterSign: false
+        counterSign: false,
+        lastUpdatedDate: document.lastUpdatedDate
       }
       this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
         next: () => {
@@ -191,7 +191,8 @@ export class AccordionDocumentsComponent {
           status: 1,
           uploadDate: new Date(),
           reason: '',
-          counterSign: false
+          counterSign: false,
+          lastUpdatedDate: new Date()
         };
         this.uploadDocumentDto(newDto);
 
