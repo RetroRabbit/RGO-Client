@@ -58,9 +58,9 @@ export class AccordionDucumentsAdditionalComponent {
   ) { }
 
   ngOnInit() {
-    this.getAdditionalDocuments();
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
+    this.getAdditionalDocuments();
   }
 
   onChangeDocumentTypes(){
