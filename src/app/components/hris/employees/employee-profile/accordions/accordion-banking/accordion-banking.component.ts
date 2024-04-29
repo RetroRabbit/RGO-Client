@@ -28,7 +28,7 @@ export class AccordionBankingComponent {
   shouldUseSentInProfile: boolean = true;
   panelOpenState: boolean = false;
   bankInformationProgress: number = 0;
-  employeeBanking !: EmployeeBanking;
+  employeeBanking : EmployeeBanking [] = [];
   hasBankingData: boolean = false;
   accountTypes = accountTypes;
   banks = banks;
@@ -69,9 +69,9 @@ export class AccordionBankingComponent {
       next: (data) => {
         this.employeeBanking = data;
         if (this.employeeBanking != null) {
-          this.bankingId = this.employeeBanking.id;
+          this.bankingId = this.employeeBanking[this.employeeBanking.length-1].id;
         }
-        this.initializeBankingForm(this.employeeBanking);
+        this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length-1]);
       }
     })
   }
@@ -97,8 +97,8 @@ export class AccordionBankingComponent {
   }
 
   convertFileToBase64() {
-    if (this.employeeBanking.file)
-      this.downloadFile(this.employeeBanking.file, `${this.employeeProfile?.name} ${this.employeeProfile?.surname}_Proof_of_Account.pdf`);
+    if (this.employeeBanking[this.employeeBanking.length-1].file)
+      this.downloadFile(this.employeeBanking[this.employeeBanking.length-1].file, `${this.employeeProfile?.name} ${this.employeeProfile?.surname}_Proof_of_Account.pdf`);
   }
 
   downloadFile(base64String: string, fileName: string) {
@@ -193,7 +193,7 @@ export class AccordionBankingComponent {
 
   totalBankingProgress() {
     this.bankInformationProgress = Math.floor(this.bankingFormProgress);
-    this.updateBanking.emit({ progress: this.bankInformationProgress, status: this.employeeBanking?.status });
+    this.updateBanking.emit({ progress: this.bankInformationProgress, status: this.employeeBanking[this.employeeBanking.length-1].status});
   }
 
   checkBankingInformationProgress() {
