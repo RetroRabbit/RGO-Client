@@ -180,7 +180,7 @@ input[type="number"] {
 }
 
 .add-employee-span {
-    margin-right: 3%;
+    margin-right: -5%;
     font-size: var(--font-size-1);
 }
 
