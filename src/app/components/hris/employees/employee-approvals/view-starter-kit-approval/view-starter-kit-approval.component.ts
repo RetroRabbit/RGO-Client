@@ -86,12 +86,9 @@ export class ViewStarterKitApprovalComponent {
         }
       }
     }
-    console.log(currentDate);
-    console.log(updatedDate);
     
     const millisecondInDays = 1000 * 60 * 60 * 24;
     const milliDiff: number = new Date(currentDate).getTime() - new Date(updatedDate).getTime();
-    console.log(milliDiff);
     const totalDays = Math.floor(milliDiff/millisecondInDays);
     const totalSeconds = Math.floor(milliDiff / 1000);
     const totalMinutes = Math.floor(totalSeconds / 60);
