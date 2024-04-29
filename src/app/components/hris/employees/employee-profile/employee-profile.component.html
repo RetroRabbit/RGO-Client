@@ -19,7 +19,7 @@
             width: '100%',
           }">
     </ngx-skeleton-loader>
-    <div id="profile-header" *ngIf="!isLoading" class="row p-2 m-1">
+    <div id="profile-header" *ngIf="!isLoading" class="row ps-2 m-1">
         <div class="col-4 col-md-2 mt-4">
             <div id="profile-image">
                 <img (click)="uploadFile.click()" [src]="employeeProfile.photo || '/assets/img/profile.png'" alt="Profile img" class="rounded-circle profile-img">
@@ -27,13 +27,15 @@
             </div>
         </div>
         <div class="col-8 col-md-10 offset-lg-0 col-lg-10 mt-3">
-            <div class="row mt-3">
+            <div class="row mt-3 px-0">
                 <div class="col-11 col-md-6" id="header-name">
-                    <h1 class="mb-0"  *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnName">
+                    <h1 class="mb-0" *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnName">
                         {{ selectedEmployee.name }} {{ selectedEmployee.surname }}
                     </h1>
                     <ng-template #OwnName>
-                        <h1 class="mb-0">{{navService.getEmployeeProfile().name}} {{navService.getEmployeeProfile().surname}}</h1>
+                        <h1 class="mb-0" *ngIf="navService.employeeProfile.id == selectedEmployee.id">
+                            {{navService.getEmployeeProfile().name}} {{navService.getEmployeeProfile().surname}}
+                        </h1>
                     </ng-template>
                 </div>
                 <div class="col-12 col-md-6 mt-md-1" id="header-email">
@@ -44,19 +46,21 @@
                         <div class="col-1 mt-2" id="header-email-clip" (click)="copyToClipboard()"><mat-icon>attachment</mat-icon></div>
                     </div>
                 </div>
-                <div class="col-12 mx-lg-3 my-2 d-none d-md-block" id="header-role" 
-                *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnType">
+                <div class="col-12 my-2 d-none d-md-block" id="header-role" *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnType">
                     {{selectedEmployee.employeeType?.name}} | Level {{ selectedEmployee.level }}
                 </div>
                     <ng-template #OwnType>
-                        <div>{{navService.getEmployeeProfile().employeeType?.name}} | Level {{navService.getEmployeeProfile().level}}</div>
+                        <div class="col-12 my-2 d-none d-md-block" id="header-role">
+                            {{navService.getEmployeeProfile().employeeType?.name}} | Level {{navService.getEmployeeProfile().level}}
+                        </div>
                     </ng-template>
-                <div class="col-12 my-2 d-none d-md-block" id="header-based"
-                    *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnAddress">
+                <div class="col-12 my-2 d-none d-md-block" id="header-based" *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnAddress">
                     Based in {{ selectedEmployee.physicalAddress }}
                 </div>
                     <ng-template #OwnAddress>
-                        <div>Based in {{navService.getEmployeeProfile().physicalAddress?.city}}</div>
+                        <div class="col-12 my-2 d-none d-md-block" id="header-based">
+                            Based in {{navService.getEmployeeProfile().physicalAddress?.city}}
+                        </div>
                     </ng-template>
             </div>
         </div>
@@ -74,7 +78,7 @@
                     <div>Based in {{navService.getEmployeeProfile().physicalAddress?.city}}</div>
                 </ng-template>
         </div>
-        <div class="col-12 col-md-10 offset-md-2 my-2 px-4">
+        <div class="col-12 col-md-10 offset-md-2 my-2">
             <div class="row" id="quick-info">
                 <div class="col-12 col-md-6 col-lg-3 mb-2">
                     <div class="row">
