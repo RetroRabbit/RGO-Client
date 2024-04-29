@@ -19,6 +19,8 @@ export class ViewStarterKitApprovalComponent {
   declineReason: string = "";
   selectedReason: string = "";
 
+  updateText: string = "";
+
   isLoading: boolean = true;
   showConfirmDialog: boolean = false;
 
@@ -67,9 +69,49 @@ export class ViewStarterKitApprovalComponent {
             this.isLoading = false;
           }
         });
+        this.updateText = this.getNewDate();
       },
       error: () => this.snackBarService.showSnackbar(`Error fetching employee documents`, "snack-error")
     })
+  }
+
+  getNewDate() {
+    let dateText = "";
+    let currentDate = new Date();
+    let updatedDate = this.employeeDocuments[0].lastUpdatedDate;
+    if (this.employeeDocuments.length > 1) {
+      for (let k = 0; k < this.employeeDocuments.length; k++) {
+        if (this.employeeDocuments[k].lastUpdatedDate > updatedDate) {
+          updatedDate = this.employeeDocuments[k].lastUpdatedDate;
+        }
+      }
+    }
+    console.log(currentDate);
+    console.log(updatedDate);
+    
+    const millisecondInDays = 1000 * 60 * 60 * 24;
+    const milliDiff: number = new Date(currentDate).getTime() - new Date(updatedDate).getTime();
+    console.log(milliDiff);
+    const totalDays = Math.floor(milliDiff/millisecondInDays);
+    const totalSeconds = Math.floor(milliDiff / 1000);
+    const totalMinutes = Math.floor(totalSeconds / 60);
+    const totalHours = Math.floor(totalMinutes / 60);
+
+    if (totalSeconds < 60)
+        dateText = "Updated just now";
+    else if (totalMinutes < 60)
+        dateText = "Updated " + Math.floor(totalMinutes) + " minutes ago";
+    else if (totalHours < 24)
+        dateText = "Updated " + Math.floor(totalHours) + " hours ago";
+    else if (totalDays < 7)
+        dateText = "Updated " + Math.floor(totalDays) + " days ago";
+    else if (totalDays > 7 && totalDays < 28)
+        dateText = "Updated " + Math.floor(totalDays % 7) + " weeks ago";
+    else if (totalDays >= 28)
+        dateText = "Updated " + Math.floor(totalDays % 28) + " months ago";
+    else if (totalDays >= 365)
+        dateText = "Updated " + Math.floor(totalDays % 365) + " years ago";
+    return dateText;
   }
 
   getFile(index: number): EmployeeDocument | null {
@@ -119,7 +161,7 @@ export class ViewStarterKitApprovalComponent {
   updateDocument(documentIndex: number, updateStatus: number = 0) {
     let copyOfDocument = updateStatus == 2 ? { ...this.getFile(this.documenetIndex) } : { ...this.getFile(documentIndex) };
     copyOfDocument.status = updateStatus;
-    copyOfDocument.lastUpdatedDate = new Date(Date.now());
+    copyOfDocument.lastUpdatedDate = new Date();
 
     if (updateStatus == 2)
       copyOfDocument.reason = `${this.selectedReason} ${this.declineReason}`;
@@ -129,6 +171,7 @@ export class ViewStarterKitApprovalComponent {
     this.documentService.updateEmployeeDocument(copyOfDocument as EmployeeDocument).subscribe({
       next: () => {
         this.snackBarService.showSnackbar(`Document has successfully updated`, "snack-success");
+        this.updateText = this.getNewDate();
         this.getEmployeeDocuments(this.documentId);
       },
       error: () => this.snackBarService.showSnackbar(`Something happened.Please try again later`, "snack-error")
