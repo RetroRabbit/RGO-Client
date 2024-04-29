@@ -11,7 +11,7 @@
     <div class="row pe-md-4 ps-md-4 mt-lg-5">
       <div class="ps-4 pe-4 ps-md-0 pe-md-0 col-12 mt-4 col-md-7 col-lg-5">
         <div *ngIf="!isLoading" class=""
-          [ngClass]="searchQuery.length >= 3 && searchResults.length !== 0 ? ' searchbar active' : 'searchbar'">
+          [ngClass]="searchQuery.length >= 3 && searchResults.length !== 0 ? 'searchbar active' : 'searchbar'">
           <div id="leading-icon" *ngIf="searchQuery === ''"></div>
           <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
             <mat-icon>arrow_back</mat-icon>
@@ -31,7 +31,7 @@
             <img src="/assets/img/Icon_Close_Blue.svg" alt="Close-Search" height="16" class="cross-margins" width="16">
           </div>
         </div>
-        <div id="search-results-container">
+        <div id="search-results-container" [ngStyle]="{'width': screenWidth <= 500 ? '382px' : '481px'}">
           <div *ngIf="searchResults.length > 0 && searchQuery !== ''">
             <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
               <div class="col-12 ps-4 padding-right-search-div">
