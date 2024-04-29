@@ -7,6 +7,7 @@ import { ChartConfiguration } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { barChartOptions, pieChartOptions } from 'src/app/models/hris/constants/chartOptions.constants';
 @Component({
   selector: 'app-chart-report-pdf',
   templateUrl: './chart-report-pdf.component.html',
@@ -29,34 +30,8 @@ export class ChartReportPdfComponent {
     navService.showNavbar = true;
   }
 
-  public barChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
-    scales: {
-      x: {},
-      y: {
-        min: 0,
-      },
-    },
-    plugins: {
-      legend: {
-        display: true,
-      },
-      datalabels: {
-        anchor: 'middle',
-        align: 'middle',
-      } as any,
-    },
-  };
-
-  public pieChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-      },
-    },
-  };
+  barChartOptions = barChartOptions;
+  pieChartOptions = pieChartOptions;
 
   generateReport(): void {
     const reportHTML = this.generateHTMLReport();
@@ -89,7 +64,7 @@ export class ChartReportPdfComponent {
   }
 
   downloadReportAsPDF() {
-    const container = document.querySelector(".container") as HTMLElement;
+    const container = document.querySelector("#report-content") as HTMLElement;
     if (container) {
       const originalStyle = container.getAttribute("style");
       container.style.height = 'fit-content';
@@ -115,8 +90,9 @@ export class ChartReportPdfComponent {
         }
       });
     } else {
-      this.snackBarService.showSnackbar("Could not find the container element to generate the PDF", "snack-error");
+      this.snackBarService.showSnackbar("Error generating pdf","snack-error");
     }
+
   }
 
   downloadReportAsCSV(dataTypes: string[]) {

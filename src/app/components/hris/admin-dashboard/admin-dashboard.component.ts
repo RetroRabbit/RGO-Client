@@ -199,7 +199,6 @@ export class AdminDashboardComponent {
     this.chartService.getAllCharts().subscribe({
       next: (data) => {
         this.charts = data;
-        this.charts[0].data;
       },
       error: () => {
         this.snackBarService.showSnackbar(
