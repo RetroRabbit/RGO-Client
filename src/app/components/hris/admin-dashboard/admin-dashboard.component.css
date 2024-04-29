@@ -146,11 +146,11 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .skeleton-loader-container {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
 }
 
 ngx-skeleton-loader {
-  width: 97%; 
+  width: 97%;
 }
 
 .cross-margins {
@@ -208,8 +208,6 @@ div#results-container {
   min-height: 88px;
   flex-direction: column;
   margin: 0px 0px 0px 0px;
-  margin-top: -24px;
-  margin-left: 12px;
 }
 
 #search-results>div {
@@ -247,7 +245,6 @@ div#results-container {
   background: var(--m-3-white, #fff);
   box-shadow: 0px 2px 3px 1px rgba(0, 0, 0, 0.15);
   margin-top: 16px;
-  margin-left: 12px;
 }
 
 .view-divider {
