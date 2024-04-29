@@ -31,7 +31,6 @@ import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-// import { TableModule } from 'primeng/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -83,7 +82,7 @@ import { AccordionProfileContactDetailsComponent } from './components/hris/emplo
 import { AccordionProfileAdditionalComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
 import { AccordionProfilePersonalDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
 import { AccordionProfileAddressDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { ViewStarterKitApprovalComponent } from './components/hris/employees/employee-approvals/view-starter-kit-approval/view-starter-kit-approval.component';
 import { ViewBankingApprovalComponent } from './components/hris/employees/employee-approvals/view-banking-approval/view-banking-approval.component';
 import { EmployeeOptionsComponent } from './components/hris/employees/employee-options/employee-options.component';
@@ -187,7 +186,6 @@ import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-
     MatProgressBarModule,
     NgxFileDropModule,
     MatStepperModule,
-    // TableModule,
     MatPaginatorModule,
     MatSortModule,
     MatButtonToggleModule,

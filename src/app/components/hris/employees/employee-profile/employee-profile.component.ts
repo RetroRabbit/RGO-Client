@@ -130,14 +130,10 @@ export class EmployeeProfileComponent implements OnChanges {
     });
 
     this.employeeId = this.route.snapshot.params['id'];
-    console.log(this.employeeId);
     this.getClients();
     if (this.employeeId == undefined) {
       this.showBackButtons = false;
-      console.log(this.cookieService.get('userId'));
-      console.log(this.authAccessService.getUserId());
       this.employeeId = this.authAccessService.getUserId();
-      // this.employeeId = this.cookieService.get('userId');
     }
     if (this.authAccessService.isAdmin() ||
       this.authAccessService.isSuperAdmin() ||

@@ -27,7 +27,6 @@ export class NavService {
   refreshEmployee() {
     this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
       next: (data) => {
-        console.log(data);
         this.employeeProfile = data;
         this.authAccessService.setUserId(this.employeeProfile.id as number);
         this.cookieService.set("userId", String(this.employeeProfile.id));
