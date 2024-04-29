@@ -1,4 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener} from '@angular/core';
+
+
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { ChartData } from 'src/app/models/hris/charts.interface';
 import { colours } from '../../../models/hris/constants/colours.constants';
@@ -21,7 +23,6 @@ import { pieChartOptions, barChartOptions } from 'src/app/models/hris/constants/
   templateUrl: './charts.component.html',
   styleUrls: ['./charts.component.css'],
 })
-
 
 export class ChartComponent implements OnInit {
 
@@ -61,7 +62,6 @@ export class ChartComponent implements OnInit {
   selectedChartIndex: number = -1;
   barChartOptions = barChartOptions;
   pieChartOptions = pieChartOptions;
-  
 
   updateFormData: any = {
     Name: '',
