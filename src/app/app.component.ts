@@ -16,8 +16,8 @@ export class AppComponent {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
-    this.navService.showNavbar = window.innerWidth > 600 ? true : false;
-    this.navService.showSideBar = window.innerWidth <= 600 ? true : false;
+    this.navService.showNavbar = window.innerWidth > 605 ? true : false;
+    this.navService.showSideBar = window.innerWidth <= 605 ? true : false;
   }
   
   title = 'HRIS';

@@ -18,19 +18,24 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 export class TopNavComponent {
 
   [x: string]: any;
+
   title = 'HRIS';
   screenWidth!: number;
+
   roles!: string[];
   employeeProfile: EmployeeProfile | undefined;
   profileImage: string | undefined = '';
   selectedItem: string = 'Dashboard';
   charts: Chart[] = [];
+
   employeeType: { id?: number; name?: string } | undefined = {
     id: 0,
     name: '',
   };
+
   isLoading: boolean = false;
   showConfirmDialog: boolean = false;
+
   dialogTypeData: Dialog = {
     type: '',
     title: '',
@@ -39,6 +44,7 @@ export class TopNavComponent {
     denyButtonText: '',
   };
   tempRoute: string = '';
+
   constructor(
     private employeeProfileService: EmployeeProfileService,
     private chartService: ChartService,
@@ -57,24 +63,24 @@ export class TopNavComponent {
 
   signIn() {
     const types: string = this.cookieService.get('userType');
-    const userEmail = this.cookieService.get('userEmail');
+    // const userEmail = this.cookieService.get('userEmail');
     this.roles = Object.keys(JSON.parse(types));
 
-    this.isLoading = true; 
-      this.employeeProfileService.getSimpleEmployee(userEmail).subscribe({
-      next: (data) => {
-        this.employeeProfile = data;
-        this.profileImage = this.employeeProfile.photo;
-        this.employeeType = this.employeeProfile.employeeType;
-        this.cookieService.set("userId", String(this.employeeProfile.id));
-        this.isLoading = false;
-        this.authAccessService.setUserId(Number(this.employeeProfile.id));
+    // this.isLoading = true; 
+      // this.employeeProfileService.getSimpleEmployee(userEmail).subscribe({
+      // next: () => {
+        // this.employeeProfile = this.navService.getEmployeeProfile();
+        // this.profileImage = this.employeeProfile.photo;
+        // this.employeeType = this.employeeProfile.employeeType;
+        // this.cookieService.set("userId", String(this.employeeProfile.id));
+        // this.isLoading = false;
+        // this.authAccessService.setUserId(Number(this.employeeProfile.id));
         this.navService.refreshEmployee();
-      },
-      error: (error) => {
+      // },
+      // error: () => {
         this.isLoading = false;
-      }
-    });
+      // }
+    // });
 
     this.chartService.getAllCharts().subscribe({
       next: (data: any) => (this.charts = data),
@@ -87,9 +93,9 @@ export class TopNavComponent {
   }
 
   logout() {
-    this.auth.logout({
-      logoutParams: { returnTo: document.location.origin },
-    });
+    this.navService.hideAll();
+    this.authAccessService.clearUserData();
+    this.router.navigateByUrl("/");
   }
 
   changeNav(route: string) {

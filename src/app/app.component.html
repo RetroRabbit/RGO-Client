@@ -52,7 +52,7 @@
         </div>
         <div class="col-2">
           <div id="image-container" class="d-flex justify-content-end">
-            <img *ngIf="navService.getEmployeeProfile()?.photo != undefined; else NoProfile" [src]="navService.getEmployeeProfile().photo" alt="profile photo">
+            <img [src]="navService.getEmployeeProfile()?.photo != undefined ? navService.getEmployeeProfile().photo: '../assets/img/profile.png' " alt="profile photo">
             <ng-template #NoProfile>
               <img src="../assets/img/profile.png" alt="profile photo">
             </ng-template>

@@ -76,6 +76,7 @@ export class SignInComponent {
             roles: roles,
           };
           this.authAccessService.setEmployeeEmail(user?.email as string);
+          this.navService.refreshEmployee();
           this.store.dispatch(GetLogin({ payload: googleID }));
           if(window.innerWidth > 776) 
               this.navService.showNavbar = true;

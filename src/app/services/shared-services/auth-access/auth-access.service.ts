@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { NavService } from '../nav-service/nav.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthAccessService {
+
+  public constructor(private cookieService: CookieService)
+  { }
+
   private roles: string = '';
 
   private employeeEmail: string = '';
 
-  private userId: number = 0;
+  private userId: number = -1;
 
   setEmployeeEmail(email: string) {
     this.employeeEmail = email;
@@ -52,5 +58,12 @@ export class AuthAccessService {
 
   getUserId(): number {
     return this.userId;
+  }
+
+  clearUserData() {
+    this.roles = "";
+    this.userId = -1;
+    this.employeeEmail = "";
+    this.cookieService.deleteAll();
   }
 }
