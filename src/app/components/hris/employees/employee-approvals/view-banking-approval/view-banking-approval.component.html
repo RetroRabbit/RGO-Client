@@ -34,10 +34,6 @@
                     <div class="col-lg-6 mt-4" id="approval-title">Current Details</div>
                     <div class="row mt-4">
                         <div class="col-lg-6 my-2">
-                            <div id="header-label">Bank Account Owner</div>
-                            <div id="header-value">{{ employeeBanking.length > 1 ? employeeBanking[0]?.accountHolderName : 'N/A'}}</div>
-                        </div>
-                        <div class="col-lg-6 my-2">
                             <div id="header-label">Bank Name</div>
                             <div id="header-value">{{ employeeBanking.length > 1 ? employeeBanking[0]?.bankName : 'N/A'}}
                             </div>
@@ -50,10 +46,6 @@
                         <div class="col-lg-6 my-2">
                             <div id="header-label">Account Type</div>
                             <div id="header-value">{{ employeeBanking.length > 1 ? employeeBanking[0]?.accountType  == 1 ? 'Savings' : 'Cheque' : 'N/A' }}</div>
-                        </div>
-                        <div class="col-lg-6 my-2">
-                            <div id="header-label">Swift Code</div>
-                            <div id="header-value">00000</div>
                         </div>
                         <div class="col-lg-6 my-2">
                             <div id="header-label">Branch Code</div>
@@ -83,10 +75,7 @@
                 <div class="row">
                     <div class="col-lg-6 mt-4" id="approval-title">Update Requested</div>
                     <div class="row mt-4">
-                        <div class="col-lg-6 my-2">
-                            <div id="header-label">Bank Account Owner</div>
-                            <div id="header-value">{{ employeeBanking[employeeBanking.length -1]?.accountHolderName }}</div>
-                        </div>
+
                         <div class="col-lg-6 my-2">
                             <div id="header-label">Bank Name</div>
                             <div id="header-value">{{ employeeBanking[employeeBanking.length -1]?.bankName}}
@@ -100,10 +89,6 @@
                         <div class="col-lg-6 my-2">
                             <div id="header-label">Account Type</div>
                             <div id="header-value">{{ employeeBanking[employeeBanking.length -1]?.accountType == 1 ?'Savings' : 'Cheque'}}</div>
-                        </div>
-                        <div class="col-lg-6 my-2">
-                            <div id="header-label">Swift Code</div>
-                            <div id="header-value">00000</div>
                         </div>
                         <div class="col-lg-6 my-2">
                             <div id="header-label">Branch Code</div>

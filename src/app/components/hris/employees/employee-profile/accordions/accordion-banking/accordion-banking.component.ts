@@ -82,7 +82,7 @@ export class AccordionBankingComponent {
       return;
     }
     this.employeeBankingsForm = this.fb.group({
-      accountHolderName: [{ value: bankingDetails.accountHolderName, disabled: true }, Validators.required],
+    
       accountType: [{ value: bankingDetails.accountType, disabled: true }, Validators.required],
       bankName: [{ value: bankingDetails.bankName, disabled: true }, Validators.required],
       accountNo: [{ value: bankingDetails.accountNo, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],

@@ -98,7 +98,7 @@ export class PendingBankDetailsComponent {
       return;
     }
     this.employeeBankingService.updatePending(updateData).subscribe( (data) => {
-      this.snackBarService.showSnackbar(`${this.copyOfSelected?.accountHolderName} has been updated`, "snack-success");
+      this.snackBarService.showSnackbar(`${this.copyOfSelected?.accountNo} has been updated`, "snack-success");
       this.showTable();
       this.ngOnInit();
     },
