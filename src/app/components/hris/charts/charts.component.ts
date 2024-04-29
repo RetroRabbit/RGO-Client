@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { ChartData } from 'src/app/models/hris/charts.interface';
@@ -5,7 +6,8 @@ import { colours } from '../../../models/hris/constants/colours.constants';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChartReportPdfComponent } from './chart-report-pdf/chart-report-pdf.component';
-import { ChartConfiguration, ChartType } from 'chart.js';
+import { ChartType } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
@@ -13,7 +15,7 @@ import { EmployeeService } from 'src/app/services/hris/employee/employee.service
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { Chart } from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { pieChartOptions, barChartOptions } from 'src/app/models/hris/constants/chartOptions.constants';
 
 @Component({
   selector: 'app-chart',
@@ -23,9 +25,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 export class ChartComponent implements OnInit {
 
-  constructor(
-    private chartService: ChartService,
-    public dialog: MatDialog,
+  constructor(private chartService: ChartService, 
+    public dialog: MatDialog, 
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document,
     private employeeService: EmployeeService,
@@ -53,93 +54,25 @@ export class ChartComponent implements OnInit {
   showReport: boolean = false;
   showUpdateForm: boolean = false;
   coloursArray: string[] = colours;
-  chartCanvasArray: any[] = [];
-  selectedChartIndex: number = -1;
   chart: Chart | undefined;
+  chartCanvasArray: any[] = [];
+  pieChartPlugins = [ChartDataLabels];
+  barChartPlugins = [ChartDataLabels];
+  selectedChartIndex: number = -1;
+  barChartOptions = barChartOptions;
+  pieChartOptions = pieChartOptions;
 
   updateFormData: any = {
     Name: '',
     Type: '',
   }
-
-  public pieChartPlugins = [ChartDataLabels];
-  public barChartPlugins = [ChartDataLabels];
-
-  public barChartOptions: ChartConfiguration['options'] = {
-    events: [],
-    responsive: true,
-    scales: {
-      x: {},
-      y: {
-        display: true,
-        title: {
-          display: true,
-          text: 'Employees',
-          color: '#black',
-          font: {
-            family: 'Roboto',
-            size: 14,
-            style: 'normal',
-            lineHeight: 1.2
-          },
-        }
-      }
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'bottom',
-        labels: {
-          font: {
-            size: 14
-          }
-        }
-      },
-      datalabels: {
-        anchor: 'middle',
-        align: 'center',
-        color: 'white',
-      } as any,
-    },
-
-  };
-
-  public pieChartOptions: ChartConfiguration['options'] = {
-    events: [],
-    responsive: true,
-    layout: {
-      padding: {
-        left: 20
-      }
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'right',
-        labels: {
-          font: {
-            size: 14
-          }
-        }
-      },
-      datalabels: {
-        anchor: 'middle',
-        align: 'center',
-        color: 'white',
-      } as any,
-    },
-  };
-
+  
   getChartOptions(chartType: string) {
-    if (chartType == 'bar') {
-      return this.barChartOptions;
-    } else {
-      return this.pieChartOptions;
-    }
+    return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
   }
 
   resetPage() {
-    this.displayChart = false
+    this.displayChart = false;
     this.chartData = [];
     this.activeChart = null;
     this.showReport = false;
