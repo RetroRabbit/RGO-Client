@@ -121,7 +121,7 @@ export class SideNavComponent {
   }
   
   logout() {
-    this.navService.hideAll();
+    this.navService.expandSideNav = false;
     this.authAccessService.clearUserData();
     this.router.navigateByUrl("/");
   }
