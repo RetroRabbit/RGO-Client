@@ -278,22 +278,6 @@ app-property-access .mat-mdc-form-field {
   display: inline;
 }
 
-/* 
-::ng-deep .mat-mdc-form-field:not(.mat-form-field-disabled) .mdc-floating-label {
-  position: relative;
-  top: 18px;
-} */
-.mat-select-panel {
-  font-size: initial;
-  /* Add any other styling resets here */
-}
-
-.mat-option-text {
-  padding: initial;
-  /* Add any other styling resets here */
-}
-
-
 .hide-id-column {
   display: none;
 }
