@@ -164,13 +164,6 @@
     text-align: right;
   }
 
-  #content {
-    background-color: #E8EFFF;
-    min-height: 90vh;
-    max-height: auto;
-    margin: 0;
-    padding: 0;
-  }
 
   #new-hire > button {
     background: #0029c6;
