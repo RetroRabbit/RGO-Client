@@ -525,7 +525,7 @@ export class NewEmployeeComponent implements OnInit {
           stepper?.next();
           this.isLoadingAddEmployee = false;
         }
-        this.snackBarService.showSnackbar(`Employee details already exist`, "snack-error");
+        this.snackBarService.showSnackbar(`This email already exists`, "snack-error");
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
       },
