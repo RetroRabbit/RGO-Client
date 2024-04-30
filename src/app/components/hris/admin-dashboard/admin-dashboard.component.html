@@ -10,57 +10,59 @@
     </ngx-skeleton-loader>
     <div class="row pe-md-4 ps-md-4 mt-lg-5">
       <div class="ps-4 pe-4 ps-md-0 pe-md-0 col-12 mt-4 col-md-7 col-lg-5">
-        <div *ngIf="!isLoading" class=""
-          [ngClass]="searchQuery.length >= 3 && searchResults.length !== 0 ? 'searchbar active' : 'searchbar'">
-          <div id="leading-icon" *ngIf="searchQuery === ''"></div>
-          <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
-            <mat-icon>arrow_back</mat-icon>
-          </button>
-          <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
-            [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off" />
+        <div [ngStyle]="{'width': screenWidth <= 500 ? '382px' : '481px'}">
+          <div *ngIf="!isLoading" class=""
+            [ngClass]="searchQuery.length >= 3 && searchResults.length !== 0 ? 'searchbar active' : 'searchbar'">
+            <div id="leading-icon" *ngIf="searchQuery === ''"></div>
+            <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+            <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
+              [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off" />
 
-          <div id="search-icon" (click)="searchEmployees()" *ngIf="searchQuery === ''">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M14.76 13.27L20.49 19L19 20.49L13.27 14.76C12.2 15.53 10.91 16 9.5 16C5.91 16 3 13.09 3 9.5C3 5.91 5.91 3 9.5 3C13.09 3 16 5.91 16 9.5C16 10.91 15.53 12.2 14.76 13.27ZM9.5 5C7.01 5 5 7.01 5 9.5C5 11.99 7.01 14 9.5 14C11.99 14 14 11.99 14 9.5C14 7.01 11.99 5 9.5 5Z"
-                fill="#0029C6" />
-            </svg>
+            <div id="search-icon" (click)="searchEmployees()" *ngIf="searchQuery === ''">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M14.76 13.27L20.49 19L19 20.49L13.27 14.76C12.2 15.53 10.91 16 9.5 16C5.91 16 3 13.09 3 9.5C3 5.91 5.91 3 9.5 3C13.09 3 16 5.91 16 9.5C16 10.91 15.53 12.2 14.76 13.27ZM9.5 5C7.01 5 5 7.01 5 9.5C5 11.99 7.01 14 9.5 14C11.99 14 14 11.99 14 9.5C14 7.01 11.99 5 9.5 5Z"
+                  fill="#0029C6" />
+              </svg>
+            </div>
+            <div class="blue-cross-border py-1 px-1" *ngIf="searchQuery !== '' && searchQuery.length >= 3"
+              (click)="clearSearchField()">
+              <img src="/assets/img/Icon_Close_Blue.svg" alt="Close-Search" height="16" class="cross-margins" width="16">
+            </div>
           </div>
-          <div class="blue-cross-border py-1 px-1" *ngIf="searchQuery !== '' && searchQuery.length >= 3"
-            (click)="clearSearchField()">
-            <img src="/assets/img/Icon_Close_Blue.svg" alt="Close-Search" height="16" class="cross-margins" width="16">
-          </div>
-        </div>
-        <div id="search-results-container" [ngStyle]="{'width': screenWidth <= 500 ? '382px' : '481px'}">
-          <div *ngIf="searchResults.length > 0 && searchQuery !== ''">
-            <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
-              <div class="col-12 ps-4 padding-right-search-div">
-                <div class="row">
-                  <div class="col-2">
-                    <div>
-                      <img id="avatar" src="{{employee?.photo || '/assets/img/profile.png'}}" alt="X">
-                    </div>
-                  </div>
-
-                  <div class="col-9 pt-1 px-4">
-                    <div (click)="employeeClickEvent(employee)">
+          <div id="search-results-container">
+            <div *ngIf="searchResults.length > 0 && searchQuery !== ''">
+              <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
+                <div class="col-12 ps-4 padding-right-search-div">
+                  <div class="row">
+                    <div class="col-2">
                       <div>
-                        {{ employee.employeeType?.name }} - L{{ employee?.level }}
+                        <img id="avatar" src="{{employee?.photo || '/assets/img/profile.png'}}" alt="X">
                       </div>
-                      <div>{{ employee?.name }} {{ employee?.surname }}</div>
                     </div>
-                  </div>
-                  <div id="search-arrow" class="col-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M10 17L15 12L10 7V17Z" fill="#0029C6" />
-                    </svg>
+
+                    <div class="col-9 pt-1 px-4">
+                      <div (click)="employeeClickEvent(employee)">
+                        <div>
+                          {{ employee.employeeType?.name }} - L{{ employee?.level }}
+                        </div>
+                        <div>{{ employee?.name }} {{ employee?.surname }}</div>
+                      </div>
+                    </div>
+                    <div id="search-arrow" class="col-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M10 17L15 12L10 7V17Z" fill="#0029C6" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div id="view-more-container" *ngIf="!displayAllEmployees" class="mt-0">
-              <mat-divider class="view-divider"></mat-divider>
-              <div (click)="viewMoreEmployees()" class="mb-4">View more employees</div>
+              <div id="view-more-container" *ngIf="!displayAllEmployees" class="mt-0">
+                <mat-divider class="view-divider"></mat-divider>
+                <div (click)="viewMoreEmployees()" class="mb-4">View more employees</div>
+              </div>
             </div>
           </div>
         </div>
