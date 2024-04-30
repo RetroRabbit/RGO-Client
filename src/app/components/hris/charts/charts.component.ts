@@ -1,4 +1,3 @@
-
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { ChartData } from 'src/app/models/hris/charts.interface';
@@ -25,8 +24,8 @@ import { pieChartOptions, barChartOptions } from 'src/app/models/hris/constants/
 
 export class ChartComponent implements OnInit {
 
-  constructor(private chartService: ChartService, 
-    public dialog: MatDialog, 
+  constructor(private chartService: ChartService,
+    public dialog: MatDialog,
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document,
     private employeeService: EmployeeService,
@@ -66,7 +65,7 @@ export class ChartComponent implements OnInit {
     Name: '',
     Type: '',
   }
-  
+
   getChartOptions(chartType: string) {
     return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
   }
