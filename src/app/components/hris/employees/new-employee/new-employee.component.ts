@@ -525,7 +525,7 @@ export class NewEmployeeComponent implements OnInit {
           stepper?.next();
           this.isLoadingAddEmployee = false;
         }
-        this.snackBarService.showSnackbar(`Failed to check duplicate value found`, "snack-error");
+        this.snackBarService.showSnackbar(`Employee details already exist`, "snack-error");
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
       },
