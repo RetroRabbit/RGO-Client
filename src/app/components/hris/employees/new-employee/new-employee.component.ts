@@ -46,7 +46,7 @@ export class NewEmployeeComponent implements OnInit {
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
-    private navService: NavService,
+    public navService: NavService,
     public locationApiService: LocationApiService,
   ) { }
 

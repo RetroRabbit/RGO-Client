@@ -11,6 +11,13 @@
 
 #header-container {
   background-color: white;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.mat-sidenav {
+  border-bottom-left-radius: 35px;
+  border-bottom-right-radius: 35px;
 }
 
 img {
@@ -25,4 +32,8 @@ img {
 mat-sidenav{
   width: 275px;
   padding: 0 2%;
+}
+
+.mat-sidenav-container {
+  background-color: #E8EFFF;
 }
