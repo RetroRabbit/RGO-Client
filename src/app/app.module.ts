@@ -66,7 +66,6 @@ import { ManageEmployeeEventsComponent } from './components/hris/manage-employee
 import { AddEmployeeEventComponent } from './components/hris/manage-employee-events/add-employee-event/add-employee-event.component';
 import { SystemSettingsComponent } from './components/hris/system-settings/system-settings.component';
 import { ChartReportPdfComponent } from './components/hris/charts/chart-report-pdf/chart-report-pdf.component';
-import { NavBarComponent } from './components/hris/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccordionBankingComponent } from './components/hris/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
@@ -113,7 +112,6 @@ import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-
     AddEmployeeEventComponent,
     SystemSettingsComponent,
     ChartReportPdfComponent,
-    NavBarComponent,
     ConfirmDialogComponent,
     AccordionBankingComponent,
     AccordionDocumentsComponent,

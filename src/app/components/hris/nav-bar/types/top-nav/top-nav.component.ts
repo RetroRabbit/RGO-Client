@@ -63,25 +63,9 @@ export class TopNavComponent {
 
   signIn() {
     const types: string = this.cookieService.get('userType');
-    // const userEmail = this.cookieService.get('userEmail');
     this.roles = Object.keys(JSON.parse(types));
-
-    // this.isLoading = true; 
-      // this.employeeProfileService.getSimpleEmployee(userEmail).subscribe({
-      // next: () => {
-        // this.employeeProfile = this.navService.getEmployeeProfile();
-        // this.profileImage = this.employeeProfile.photo;
-        // this.employeeType = this.employeeProfile.employeeType;
-        // this.cookieService.set("userId", String(this.employeeProfile.id));
-        // this.isLoading = false;
-        // this.authAccessService.setUserId(Number(this.employeeProfile.id));
-        this.navService.refreshEmployee();
-      // },
-      // error: () => {
-        this.isLoading = false;
-      // }
-    // });
-
+    this.navService.refreshEmployee();
+    this.isLoading = false;
     this.chartService.getAllCharts().subscribe({
       next: (data: any) => (this.charts = data),
     });
@@ -109,22 +93,22 @@ export class TopNavComponent {
     }
   }
 
-  switchToAts(route: string){
+  switchToAts(route: string) {
     if (this.navService.unsavedChanges) {
       this.tempRoute = route;
       this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
 
       this.showConfirmDialog = true;
-    } else {  
+    } else {
       this.navService.isHris = false;
       this.cookieService.set("isHris", String(this.navService.isHris));
       this.router.navigate([route]);
     }
   }
-  switchToHris(route: string){
+  switchToHris(route: string) {
     if (this.navService.unsavedChanges) {
       this.tempRoute = route;
-     this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
+      this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
 
       this.showConfirmDialog = true;
     } else {
