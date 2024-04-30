@@ -65,6 +65,7 @@ export class SaveCustomFieldComponent {
 
   ngOnDestroy() {
     this.navService.showAll();
+    this.navService.showSystemNavbar = true;
   }
 
   get options(): FormArray {
