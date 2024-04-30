@@ -31,45 +31,45 @@
             <img src="/assets/img/Icon_Close_Blue.svg" alt="Close-Search" height="16" class="cross-margins" width="16">
           </div>
         </div>
-      </div>
-      <div id="new-hire" class="mb-4 mt-4 col-12 col-md-4 offset-md-1 col-lg-2 offset-lg-5 ps-4 pe-4 ps-md-0 pe-md-0">
-        <button class="col-12" (click)="AddEmployee()"
-          *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()"
-          [ngClass]="screenWidth >= 767 ? '' : 'add-button-mobile'">+ Add
-          Employee</button>
-      </div>
-    </div>
-    <div id="search-results-container" class="col-12 col-md-7">
-      <div *ngIf="searchResults.length > 0 && searchQuery !== ''">
-        <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
-          <div class="col-12 ps-4 padding-right-search-div">
-            <div class="row">
-              <div class="col-2">
-                <div>
-                  <img id="avatar" src="{{employee?.photo || '/assets/img/profile.png'}}" alt="X">
-                </div>
-              </div>
-
-              <div class="col-9 pt-1 px-4">
-                <div (click)="employeeClickEvent(employee)">
-                  <div>
-                    {{ employee.employeeType?.name }} - L{{ employee?.level }}
+        <div id="search-results-container">
+          <div *ngIf="searchResults.length > 0 && searchQuery !== ''">
+            <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
+              <div class="col-12 ps-4 padding-right-search-div">
+                <div class="row">
+                  <div class="col-2">
+                    <div>
+                      <img id="avatar" src="{{employee?.photo || '/assets/img/profile.png'}}" alt="X">
+                    </div>
                   </div>
-                  <div>{{ employee?.name }} {{ employee?.surname }}</div>
+
+                  <div class="col-9 pt-1 px-4">
+                    <div (click)="employeeClickEvent(employee)">
+                      <div>
+                        {{ employee.employeeType?.name }} - L{{ employee?.level }}
+                      </div>
+                      <div>{{ employee?.name }} {{ employee?.surname }}</div>
+                    </div>
+                  </div>
+                  <div id="search-arrow" class="col-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <path d="M10 17L15 12L10 7V17Z" fill="#0029C6" />
+                    </svg>
+                  </div>
                 </div>
               </div>
-              <div id="search-arrow" class="col-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M10 17L15 12L10 7V17Z" fill="#0029C6" />
-                </svg>
-              </div>
+            </div>
+            <div id="view-more-container" *ngIf="!displayAllEmployees" class="mt-0">
+              <mat-divider class="view-divider"></mat-divider>
+              <div (click)="viewMoreEmployees()" class="mb-4">View more employees</div>
             </div>
           </div>
         </div>
-        <div id="view-more-container" *ngIf="!displayAllEmployees" class="mt-0">
-          <mat-divider class="view-divider"></mat-divider>
-          <div (click)="viewMoreEmployees()" class="mb-4">View more employees</div>
-        </div>
+      </div>
+      <div id="new-hire" class="mb-4 mt-4 col-12 col-md-4 offset-md-1 col-lg-2 offset-lg-5 ps-4 pe-4 ps-md-0 pe-md-0">
+        <button mat-button class="col-12" (click)="AddEmployee()"
+          *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()"
+          [ngClass]="screenWidth >= 767 ? '' : 'add-button-mobile'">+ Add
+          Employee</button>
       </div>
     </div>
     <div *ngIf="isLoading" class="skeleton-loader-container">

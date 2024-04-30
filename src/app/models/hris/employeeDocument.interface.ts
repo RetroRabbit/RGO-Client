@@ -9,5 +9,6 @@ export interface EmployeeDocument {
     reason: string,
     status: number,
     counterSign: boolean,
-    documentType: number
+    documentType: number,
+    lastUpdatedDate: Date
 }

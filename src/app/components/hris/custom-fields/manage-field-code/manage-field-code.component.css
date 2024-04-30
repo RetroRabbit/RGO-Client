@@ -95,6 +95,7 @@
   height: 40px;
   min-width: 360px;
   width: 409px;
+  margin-bottom: 5px;
 }
 
 #search-container > div{
@@ -112,7 +113,7 @@
   color: #0029C6;
   font-family: inherit;
   width: 100%;
-  height: 38px;
+  height: 37px;
   border: 0;
   outline: 0;
 }

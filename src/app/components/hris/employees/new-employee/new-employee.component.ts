@@ -283,7 +283,8 @@ export class NewEmployeeComponent implements OnInit {
                   reason: "",
                   status: 3,
                   counterSign: false,
-                  documentType: 1
+                  documentType: 1,
+                  lastUpdatedDate: new Date()
                 };
                 this.employeeDocumentModels.push(employeeDocument);
                 this.categories[ category ].state = false;

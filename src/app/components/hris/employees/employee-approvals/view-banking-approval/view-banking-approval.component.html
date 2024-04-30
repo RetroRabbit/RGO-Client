@@ -144,13 +144,12 @@
             </div>
             <div class="border px-2 mx-2" id="horizontal"></div>
             <div id="footer">
-                <button id="next-button"
+                <button mat-button id="next-button"
                     [ngStyle]="{'background-color': employeeBanking[employeeBanking.length -1]?.status == 0 ?  '#e3e3e4ff': '#0029c6'}"
                     (click)="updateBanking(0)" [disabled]="employeeBanking[employeeBanking.length -1]?.status == 0">
                     <mat-icon>check_small</mat-icon>Approve Update
                 </button>
-                <button id="cancel-button" (click)="openDialog()"
-                    [disabled]="employeeBanking[employeeBanking.length -1]?.status == 2">
+                <button mat-button id="cancel-button" (click)="openDialog()" [disabled]="employeeBanking[employeeBanking.length -1]?.status == 2">
                     <mat-icon>close</mat-icon>Decline Update
                 </button>
             </div>
