@@ -21,12 +21,29 @@
           <div class="row">
             <div class="col-12 col-md-9 col-lg-10">
               <div class="row">
+                <!--Maybe do the check on this div??-->
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.country" class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Country</mat-label>
                     <mat-select formControlName="physicalCountry" (selectionChange)="onCountryChange($event.value)"
                       hideSingleSelectionIndicator="true">
-                      <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
+                      <!--compare thhis user id to the singed in user id usng the nav service then display according-->
+                      <!--if statement here to check the 2 employee id's and display data from shared accordion or yours-->
+                      <!-- <mat-option *ngFor="let country of countries" [value]="country"> {{ country }} </mat-option> -->
+
+                      <!-- <div *ngIf="navService.employeeProfile.id == employeeProfile.employeeDetails.id">
+                        <mat-option *ngFor="let country of countries" [value]="country">{{ navService.getEmployeeProfile().physicalAddress?.country }}</mat-option>
+                      </div>
+                      <div *ngIf="navService.employeeProfile.id !== employeeProfile.employeeDetails.id">
+                        <mat-option *ngFor="let country of countries" [value]="country">{{ sharedAccordionFunctionality.employeePhysicalAddress.country }}</mat-option>
+                      </div> -->
+
+                      <mat-option *ngFor="let country of countries" [value]="country">
+                        {{ navService.employeeProfile.id === employeeProfile.employeeDetails.id 
+                          ? navService.getEmployeeProfile().physicalAddress?.country
+                          : sharedAccordionFunctionality.employeePhysicalAddress.country }}
+                      </mat-option>
+                      <!------------------------------>
                     </mat-select>
                   </mat-form-field>
                 </div>
