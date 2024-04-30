@@ -15,9 +15,10 @@ export class NavService {
   public isHris?: boolean;
   public employeeProfile!:EmployeeProfile;
 
-  private tempShowNavBar: boolean = false;
-  private tempShowSideNav: boolean = false;
+  // private tempShowNavBar: boolean = false;
+  // private tempShowSideNav: boolean = false;
   public expandSideNav: boolean = false;
+  public showNavContainer: boolean = true;
 
   constructor(private authAccessService: AuthAccessService, private employeeProfileService: EmployeeProfileService,
     private cookieService: CookieService
@@ -39,15 +40,17 @@ export class NavService {
   }
 
   public hideAll() {
-    this.tempShowNavBar = this.showNavbar;
-    this.tempShowSideNav = this.showSideBar;
+    // this.tempShowNavBar = this.showNavbar;
+    // this.tempShowSideNav = this.showSideBar;
 
-    this.showNavbar = this.showSideBar = false;
+    // this.showNavbar = this.showSideBar = false;
+    this.showNavContainer = false;
   }
 
   public showAll() {
-    this.showNavbar = this.tempShowNavBar;
-    this.showSideBar = this.tempShowSideNav;
+    // this.showNavbar = this.tempShowNavBar;
+    // this.showSideBar = this.tempShowSideNav;
+    this.showNavContainer = true;
   }
 
   public toggleSideBar() {

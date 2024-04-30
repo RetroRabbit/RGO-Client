@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { NavService } from '../nav-service/nav.service';
 
 @Injectable({
   providedIn: 'root',
