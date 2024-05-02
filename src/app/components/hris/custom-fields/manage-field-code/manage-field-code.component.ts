@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, EventEmitter, Output, TemplateRef } from '@angular/core';
+import { Component, HostListener, ViewChild, EventEmitter, Output, TemplateRef, NgZone } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { Router } from '@angular/router';
@@ -67,8 +67,10 @@ export class ManageFieldCodeComponent {
     private snackBarService: SnackbarService,
     private systemService: SystemNav,
     private navService: NavService,
+    private ngZone: NgZone,
     private authAccessService: AuthAccessService) {
     navService.showNavbar = true;
+
   }
 
   ngOnInit(): void {
@@ -112,14 +114,17 @@ export class ManageFieldCodeComponent {
 
   getDataSource(){
     this.dataSource = new MatTableDataSource(this.filteredCustomFields);
+    this.ngZone.run(() => {
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.paginator.pageIndex = 0;
+      this.paginator._changePageSize(10);
+      this.selectedCustomFields = [];
+      this.filterText = "";
+      this.getActivePassive();
+      this.sortByIdDefault(this.sort);
+    });
     this.dataSource._updateChangeSubscription();
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.paginator.pageIndex = 0;
-    this.selectedCustomFields = [];
-    this.filterText = "";
-    this.getActivePassive();
-    this.sortByIdDefault(this.sort);
   }
 
   shouldReset(): boolean {
