@@ -1,10 +1,9 @@
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { Chart } from 'chart.js';
 import { CookieService } from 'ngx-cookie-service';
-import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
@@ -20,11 +19,9 @@ export class TopNavComponent {
   [x: string]: any;
 
   title = 'HRIS';
-  screenWidth!: number;
+  screenWidth: number;
 
   roles!: string[];
-  employeeProfile: EmployeeProfile | undefined;
-  profileImage: string | undefined = '';
   selectedItem: string = 'Dashboard';
   charts: Chart[] = [];
 
@@ -44,6 +41,11 @@ export class TopNavComponent {
     denyButtonText: '',
   };
   tempRoute: string = '';
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+  }
 
   constructor(
     private employeeProfileService: EmployeeProfileService,

@@ -17,7 +17,8 @@ export class NavService {
 
   public expandSideNav: boolean = false;
   public showNavContainer: boolean = true;
-
+  public showTopNavMenu: boolean = false;
+  
   constructor(private authAccessService: AuthAccessService, private employeeProfileService: EmployeeProfileService,
     private cookieService: CookieService
   )
