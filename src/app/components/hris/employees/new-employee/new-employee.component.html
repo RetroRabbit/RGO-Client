@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-stepper class="rounded-4 mt-4" [linear]="isLinear" #stepper>
+  <mat-stepper [ngClass]="navService.showNavContainer ? 'rounded-4 mt-4' : 'rounded-4'" [linear]="isLinear" #stepper>
     <div class="container-fluid p-4 col-8" [ngClass]="{'fullscreen-modal': isMobileScreen}">
       <mat-step [stepControl]="newEmployeeForm" label="Basic Information">
         <ng-template matStepLabel>Basic Information</ng-template>

@@ -19,7 +19,6 @@ export class SystemSettingsComponent {
     this.screenWidth = window.innerWidth;
   }
   constructor(public cookieService: CookieService, public navService: NavService, public systemNavItemService: SystemNav) {
-    navService.showNavbar = true;
     this.systemNavItemService.selectedMenuItem = "Custom Field management";
   }
   ngOnInit() {

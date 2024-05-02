@@ -62,7 +62,6 @@ export class EmployeeDetailsComponent implements OnInit {
     private snackBarService: SnackbarService,
     private navService: NavService
   ) {
-    navService.showNavbar = true;
   }
 
   ngOnInit(): void {

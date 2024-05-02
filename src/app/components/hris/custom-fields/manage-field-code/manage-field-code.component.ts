@@ -3,7 +3,6 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { Router } from '@angular/router';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { Table } from 'primeng/table';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -28,10 +27,10 @@ export class ManageFieldCodeComponent {
   selectedCustomField!: CustomField;
   newFieldCodeForm!: FormGroup;
   searchTerm: string = '';
-
-  @ViewChild('dataTable') dataTable: Table | undefined = undefined;
   filterText: string = '';
+
   isUnique?: boolean = true;
+  showConfirmDialog: boolean = false;
 
   activeTab: number = 0;
   selectedFields: number = 0;
@@ -40,7 +39,6 @@ export class ManageFieldCodeComponent {
   activeFieldsSearch: number = 0;
   archiveFieldsSearch: number = 0;
   displayedColumns: string[] = ['id', 'name', 'type', 'status', 'edit'];
-  showConfirmDialog: boolean = false;
 
   dataSource: MatTableDataSource<CustomField> = new MatTableDataSource();
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
@@ -69,8 +67,6 @@ export class ManageFieldCodeComponent {
     private navService: NavService,
     private ngZone: NgZone,
     private authAccessService: AuthAccessService) {
-    navService.showNavbar = true;
-
   }
 
   ngOnInit(): void {
@@ -207,10 +203,6 @@ export class ManageFieldCodeComponent {
     this.selectedCustomFields = this.selectedCustomFields;
   }
 
-  clear(table: Table) {
-    table.clear();
-  }
-
   filterData() {
     const filterValue = this.filterText.trim().toLowerCase();
     this.dataSource.filter = filterValue;
@@ -232,12 +224,6 @@ export class ManageFieldCodeComponent {
   }
 
   onSearch(event: Event) {
-    const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
-
-    if (this.dataTable) {
-      this.dataTable.filterGlobal(searchTerm, 'contains');
-    }
-
     if (this.filteredCustomFields) {
       this.filteredCustomFields = this.customFields.filter(fieldCode =>
         fieldCode.name && fieldCode.name.toLowerCase().includes(this.searchTerm.toLowerCase())
@@ -262,6 +248,14 @@ export class ManageFieldCodeComponent {
     }
     this.activeTab = tabIndex;
     this.filteredCustomFields = this.customFields.filter(fieldCode => fieldCode.status == this.activeTab);
+    this.dataSource = new MatTableDataSource(this.filteredCustomFields);
+    this.dataSource._updateChangeSubscription();
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.paginator.pageIndex = 0;
+    this.selectedCustomFields = [];
+    this.filterText = "";
+    this.sortByIdDefault(this.sort);  
     this.getDataSource();
   }
 
