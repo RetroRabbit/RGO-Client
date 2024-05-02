@@ -49,7 +49,6 @@ export class AddEmployeeEventComponent {
     private cookieService: CookieService,
     private snackBarService: SnackbarService,
     private navService : NavService) {
-      navService.showNavbar = true;
      }
 
   ngOnInit(): void {

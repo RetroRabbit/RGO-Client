@@ -1,6 +1,5 @@
 import { Component, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { Table } from 'primeng/table';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -36,7 +35,6 @@ export class EmployeeApprovalsComponent {
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild('dataTable') dataTable: Table | undefined = undefined;
   @ViewChild('searchInput') searchInput!: ElementRef;
 
   isUnique?: boolean = true;
@@ -231,10 +229,6 @@ export class EmployeeApprovalsComponent {
       const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
       return formattedDate;
     }
-  }
-
-  clear(table: Table) {
-    table.clear();
   }
 
   filterData(event: Event): void {

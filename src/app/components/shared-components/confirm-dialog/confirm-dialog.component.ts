@@ -29,7 +29,6 @@ export class ConfirmDialogComponent {
     this.screenWidth = window.innerWidth;
   }
   constructor(private dialog: MatDialog, private navService: NavService) {
-    navService.showNavbar = true;
   }
   
   ngOnInit() {

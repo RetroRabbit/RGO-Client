@@ -35,7 +35,6 @@ export class ManageEmployeeEventsComponent {
     private cookieService: CookieService,
     private snackBarService: SnackbarService,
     private navService: NavService) {
-      navService.showNavbar = true;
      }
 
   updateEvents(filter: {
