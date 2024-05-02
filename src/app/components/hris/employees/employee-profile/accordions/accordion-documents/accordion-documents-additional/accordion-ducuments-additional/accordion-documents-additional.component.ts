@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { AdditionalDocumentTypes, FileCategory } from 'src/app/models/hris/constants/documents.contants';
@@ -22,7 +22,7 @@ export class AccordionDucumentsAdditionalComponent {
     Validators.required, Validators.minLength(5)
   ]);
 
-  documentTypeControl = new FormControl('',[
+  documentTypeControl = new FormControl('', [
     Validators.required,]);
 
   screenWidth = window.innerWidth;
@@ -45,9 +45,8 @@ export class AccordionDucumentsAdditionalComponent {
   isLoadingUpload: boolean = false;
   documentId: number = 0;
   documentTypes = AdditionalDocumentTypes;
-
   newDocumentName: string = '';
-  newDocumentType: string ='';
+  newDocumentType: string = '';
   otherSelected: boolean = false;
 
   constructor(
@@ -60,19 +59,23 @@ export class AccordionDucumentsAdditionalComponent {
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
+  }
+
+  ngAfterViewInit(){
+    console.log("the employee id" + this.employeeProfile.id);
     this.getAdditionalDocuments();
   }
 
-  onChangeDocumentTypes(){
-    if(this.newDocumentType == "Other"){
+  onChangeDocumentTypes() {
+    if (this.newDocumentType == "Other") {
       this.otherSelected = true;
-    }else{
+    } else {
       this.otherSelected = false;
     }
   }
 
   addNewAdditionalDocument() {
-    if(this.newDocumentType == "Other"){
+    if (this.newDocumentType == "Other") {
       if (this.newDocumentName == "") {
         this.snackBarService.showSnackbar("Please enter a title", "snack-error")
         return;
@@ -80,7 +83,7 @@ export class AccordionDucumentsAdditionalComponent {
       const inputField = document.getElementById('upload-new-additional-document');
       inputField?.click();
     }
-    else{
+    else {
       this.documentNameControl.clearValidators;
       this.newDocumentName = this.newDocumentType;
       if (this.newDocumentName == "") {
