@@ -24,13 +24,13 @@ import { LocationApiService } from 'src/app/services/hris/location-api.service';
 @Component({
   selector: 'app-new-employee',
   templateUrl: './new-employee.component.html',
-  styleUrls: [ './new-employee.component.css' ],
+  styleUrls: ['./new-employee.component.css'],
 })
 
 export class NewEmployeeComponent implements OnInit {
 
   screenWidth = window.innerWidth;
-  @HostListener('window:resize', [ '$event' ])
+  @HostListener('window:resize', ['$event'])
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
     this.screenWidth = window.innerWidth;
@@ -51,10 +51,10 @@ export class NewEmployeeComponent implements OnInit {
   ) { }
 
   firstFormGroup = this._formBuilder.group({
-    firstCtrl: [ '', Validators.required ],
+    firstCtrl: ['', Validators.required],
   });
   secondFormGroup = this._formBuilder.group({
-    secondCtrl: [ '', Validators.required ],
+    secondCtrl: ['', Validators.required],
   });
   isLinear = true;
 
@@ -98,7 +98,7 @@ export class NewEmployeeComponent implements OnInit {
   empId: number = 0;
   isSouthAfrica = false;
 
-  categories: { [ key: number ]: { name: string, state: boolean } } = {
+  categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
     1: { name: '', state: true },
     2: { name: '', state: true },
@@ -159,11 +159,11 @@ export class NewEmployeeComponent implements OnInit {
       complexName: new FormControl<string | null>('', Validators.minLength(1)),
       suburbDistrict: new FormControl<string | null>('', Validators.minLength(1)),
       city: new FormControl<string | null>('', Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>('', [ Validators.maxLength(4), Validators.minLength(1), Validators.pattern(/(^\d+$)|(^$)/) ]),
+      streetNumber: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(1), Validators.pattern(/(^\d+$)|(^$)/)]),
       streetName: new FormControl<string | null>('', Validators.minLength(1)),
       country: new FormControl<string | null>('', Validators.minLength(1)),
       province: new FormControl<string | null>('', Validators.minLength(1)),
-      postalCode: new FormControl<string | null>('', [ Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/) ]),
+      postalCode: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
     });
   }
 
@@ -171,7 +171,7 @@ export class NewEmployeeComponent implements OnInit {
 
   postalAddress: FormGroup = this.createAddressForm();
   newEmployeeForm = new FormGroup({
-    id: new FormControl<number>(0, [ Validators.pattern(/^[0-9]*$/), Validators.required ]),
+    id: new FormControl<number>(0, [Validators.pattern(/^[0-9]*$/), Validators.required]),
     employeeNumber: new FormControl<string>(
       '0',
       Validators.pattern(/^(\w{3})(\d{3})$/)
@@ -181,23 +181,23 @@ export class NewEmployeeComponent implements OnInit {
     terminationDate: new FormControl<Date | string | null>(null),
     reportingLine: new FormControl<EmployeeProfile | null>(null),
     highestQualication: new FormControl<string>(''),
-    disability: new FormControl<boolean | null>(false, [ Validators.required ]),
+    disability: new FormControl<boolean | null>(false, [Validators.required]),
     disabilityNotes: new FormControl<string>(''),
     countryOfBirth: new FormControl<string>(''),
     nationality: new FormControl<string>(''),
-    level: new FormControl<number>(-1, [ Validators.pattern(/^[0-9]*$/), Validators.required ]),
+    level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
     employeeType: new FormControl<{ id: number; name: string } | null>(null, Validators.required),
-    name: new FormControl<string>('', [ Validators.required,
-    Validators.pattern(this.namePattern) ]),
-    initials: new FormControl<string>('', [ Validators.required,
-    Validators.pattern(this.initialsPattern) ]),
-    surname: new FormControl<string>('', [ Validators.required,
-    Validators.pattern(this.namePattern) ]),
+    name: new FormControl<string>('', [Validators.required,
+    Validators.pattern(this.namePattern)]),
+    initials: new FormControl<string>('', [Validators.required,
+    Validators.pattern(this.initialsPattern)]),
+    surname: new FormControl<string>('', [Validators.required,
+    Validators.pattern(this.namePattern)]),
     dateOfBirth: new FormControl<Date | string>(
       new Date(Date.now()),
       Validators.required
     ),
-    idNumber: new FormControl<string>('', [ Validators.required, this.customValidationService.idNumberValidator ]),
+    idNumber: new FormControl<string>('', [Validators.required, this.customValidationService.idNumberValidator]),
     passportNumber: new FormControl<string>(''),
     passportExpiryDate: new FormControl<Date | string | null>(
       new Date(Date.now())
@@ -205,10 +205,10 @@ export class NewEmployeeComponent implements OnInit {
     passportCountryIssue: new FormControl<string>(''),
     race: new FormControl<number>(-1),
     gender: new FormControl<number | null>(null),
-    email: new FormControl<string>('', [ Validators.required, Validators.email, Validators.pattern(this.emailPattern),
+    email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),
     ]),
-    personalEmail: new FormControl<string>('', [ Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*") ]),
-    cellphoneNo: new FormControl('', [ Validators.pattern(/^[0][6-8][0-9]{8}$/), Validators.maxLength(10)
+    personalEmail: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]),
+    cellphoneNo: new FormControl('', [Validators.pattern(/^[0][6-8][0-9]{8}$/), Validators.maxLength(10)
     ]),
     photo: new FormControl<string>(''),
     notes: new FormControl<string>(''),
@@ -287,8 +287,8 @@ export class NewEmployeeComponent implements OnInit {
                   lastUpdatedDate: new Date()
                 };
                 this.employeeDocumentModels.push(employeeDocument);
-                this.categories[ category ].state = false;
-                this.categories[ category ].name = file.name;
+                this.categories[category].state = false;
+                this.categories[category].name = file.name;
               },
               error: (error: any) => {
                 this.snackBarService.showSnackbar("Failed to compile documents", "snack-error");
@@ -373,7 +373,7 @@ export class NewEmployeeComponent implements OnInit {
 
   onFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
-      const file = event.target.files[ 0 ];
+      const file = event.target.files[0];
       this.imageName = file.name;
       if (this.validateFile(file)) {
         this.imageConverter(file);
@@ -481,7 +481,7 @@ export class NewEmployeeComponent implements OnInit {
       dateOfBirth: this.newEmployeeForm.value.dateOfBirth,
       physicalAddress: this.physicalAddressObj,
       postalAddress: this.postalAddressObj,
-      peopleChampion: this.newEmployeeForm.controls[ "peopleChampion" ].value == "" ? null : this.peopleChampionId
+      peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
     });
 
     const employeeEmail: string = this.newEmployeeForm.value.email!;
@@ -526,7 +526,7 @@ export class NewEmployeeComponent implements OnInit {
           stepper?.next();
           this.isLoadingAddEmployee = false;
         }
-        this.snackBarService.showSnackbar(`Failed to save employee`, "snack-error");
+        this.snackBarService.showSnackbar(`This email already exists`, "snack-error");
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
       },
@@ -574,7 +574,7 @@ export class NewEmployeeComponent implements OnInit {
 
   imageHandler(event: Event) {
     const inputElement = event.target as HTMLInputElement;
-    const file = inputElement.files?.[ 0 ];
+    const file = inputElement.files?.[0];
     if (file) {
       if (this.validateFile(file)) {
         this.imageConverter(file);
@@ -623,11 +623,11 @@ export class NewEmployeeComponent implements OnInit {
     const byteNumbers = new Array(byteArray.length);
 
     for (let i = 0; i < byteArray.length; i++) {
-      byteNumbers[ i ] = byteArray.charCodeAt(i);
+      byteNumbers[i] = byteArray.charCodeAt(i);
     }
 
     const byteArrayBuffer = new Uint8Array(byteNumbers);
-    const blob = new Blob([ byteArrayBuffer ], { type: 'image/jpeg' });
+    const blob = new Blob([byteArrayBuffer], { type: 'image/jpeg' });
     this.imageUrl = URL.createObjectURL(blob);
   }
 
@@ -652,7 +652,7 @@ export class NewEmployeeComponent implements OnInit {
 
     let dobMatch = dob.match(/\d{2}/g)
     if (dobMatch) {
-      let [ year, month, day ] = dobMatch;
+      let [year, month, day] = dobMatch;
       const currentYear = new Date().getFullYear().toString().slice(0, 2);
       let birthYear = (parseInt(year) < parseInt(currentYear)) ? ('20' + year) : ('19' + year);
       this.newEmployeeForm.patchValue({
@@ -667,14 +667,14 @@ export class NewEmployeeComponent implements OnInit {
 
   removeByCategory(category: number): void {
     this.employeeDocumentModels = this.employeeDocumentModels.filter(file => file.fileCategory !== category);
-    this.categories[ category ].state = true;
+    this.categories[category].state = true;
   }
 
   removeAllDocuments(): void {
     Object.keys(this.categories).forEach(catKey => {
       const catNum = parseInt(catKey, 10);
       this.employeeDocumentModels = this.employeeDocumentModels.filter(file => file.fileCategory !== catNum);
-      this.categories[ catNum ].state = true;
+      this.categories[catNum].state = true;
     });
   }
 
