@@ -18,7 +18,7 @@ export class NavService {
   public expandSideNav: boolean = false;
   public showNavContainer: boolean = true;
   public showTopNavMenu: boolean = false;
-  
+
   constructor(private authAccessService: AuthAccessService, private employeeProfileService: EmployeeProfileService,
     private cookieService: CookieService
   )
@@ -38,11 +38,11 @@ export class NavService {
     return this.employeeProfile;
   }
 
-  public hideAll() {
+  public hideNav() {
     this.showNavContainer = false;
   }
 
-  public showAll() {
+  public showNav() {
     this.showNavContainer = true;
   }
 

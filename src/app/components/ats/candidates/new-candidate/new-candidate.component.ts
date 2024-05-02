@@ -80,7 +80,7 @@ export class NewCandidateComponent {
 
   ngOnInit(): void {
     this.initializeForm();
-    this.navService.hideAll();
+    this.navService.hideNav();
     this.populateYears();
     this.searchControl = new FormControl('');
     this.filteredEmployees = this.searchControl.valueChanges.pipe(
@@ -124,7 +124,7 @@ export class NewCandidateComponent {
   }
 
   ngOnDestroy() {
-    this.navService.showAll();
+    this.navService.showNav();
   }
 
   goToPreviousPage() {

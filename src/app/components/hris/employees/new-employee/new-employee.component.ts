@@ -123,7 +123,7 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
-      this.navService.hideAll();
+      this.navService.hideNav();
   }
 
   loadCountries(): void {
@@ -241,7 +241,7 @@ export class NewEmployeeComponent implements OnInit {
   });
 
   ngOnDestroy() {
-    this.navService.showAll();
+    this.navService.showNav();
   }
 
   filterChampions(event: any) {
