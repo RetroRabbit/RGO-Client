@@ -79,7 +79,7 @@ export class TopNavComponent {
   }
 
   logout() {
-    this.navService.hideAll();
+    this.navService.hideNav();
     this.authAccessService.clearUserData();
     this.router.navigateByUrl("/");
   }
