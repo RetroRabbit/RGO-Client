@@ -1,18 +1,18 @@
 <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData"
   (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
 <div id="field-code-container" class="mt-4">
-  <div id="interact-fields" class="justify-content-between ms-3">
-    <div id="search-container" class="row">
+  <div id="interact-fields" class="d-sm-flex flex-sm-column flex-lg-row flex-md-row justify-content-between ms-3">
+    <div id="search-container" class="row mt-3">
       <div class="col-10 ps-4">
         <input pInputText [(ngModel)]="filterText" (input)="filterData()" type="text" placeholder="Search custom field"
           class="w-100" id="search-field">
       </div>
-      <div id="icon" class="col-1 pt-2 ps-4">
+      <div id="icon" class="col-1 pt-2 ps-4 me-3">
         <mat-icon>search</mat-icon>
       </div>
     </div>
-    <div id="button-container">
-      <button (click)="addNewField()">+ Add New Field</button>
+    <div id="button-container" class="col-10 mt-3 offset-0">
+      <button (click)="addNewField()" [ngClass]="navService.showSideBar ? 'add-button-mobile' : 'add-button-desktop'" >+ Add New Field</button>
     </div>
   </div>
   <div id="tab-buttons" class="mb-0">
