@@ -179,7 +179,7 @@ export class ViewStarterKitApprovalComponent {
     this.documenetIndex = documentIndex;
     this.dialogTypeData = {
       type: 'decline',
-      title: 'Decline Update',
+      title: 'Decline update',
       subtitle: 'Please provide a reason for declining this update',
       confirmButtonText: 'Decline Update',
       denyButtonText: 'Cancel'
@@ -190,10 +190,10 @@ export class ViewStarterKitApprovalComponent {
   dialogFeedBack(response: any): void {
     this.declineReason = response.declineReason;
     this.selectedReason = response.selectedReason;
-    if (!response.confirmatio)
+    if (response.confirmation)
       this.updateDocument(this.documenetIndex, 2);
-    else
-      this.backToApprovals();
+
+    this.showConfirmDialog = false;
   }
 
   convertFileToBase64(index: number) {

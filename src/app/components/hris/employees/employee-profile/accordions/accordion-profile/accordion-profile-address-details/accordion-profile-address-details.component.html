@@ -26,7 +26,7 @@
                     <mat-label>Country</mat-label>
                     <mat-select formControlName="physicalCountry" (selectionChange)="onCountryChange($event.value)"
                       hideSingleSelectionIndicator="true">
-                      <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
+                      <mat-option *ngFor="let country of countries" [value]="country"> {{ country }} </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
