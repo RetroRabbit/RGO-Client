@@ -64,8 +64,8 @@ export class AccordionProfileAddressDetailsComponent {
   ) { }
 
   ngOnInit() {
-    // this.loadPhysicalAddress();
-    // this.loadPostalAddress();
+    this.loadPhysicalAddress();
+    this.loadPostalAddress();
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();
