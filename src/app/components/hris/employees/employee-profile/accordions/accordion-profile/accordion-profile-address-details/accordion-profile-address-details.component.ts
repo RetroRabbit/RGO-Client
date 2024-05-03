@@ -60,7 +60,7 @@ export class AccordionProfileAddressDetailsComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeAddressService: EmployeeAddressService,
     public locationApiService: LocationApiService,
-    private navService: NavService
+    public navService: NavService
   ) { }
 
   ngOnInit() {
