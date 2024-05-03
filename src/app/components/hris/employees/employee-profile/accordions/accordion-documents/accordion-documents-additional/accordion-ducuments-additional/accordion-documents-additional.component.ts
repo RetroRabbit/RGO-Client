@@ -65,10 +65,6 @@ export class AccordionDocumentsAdditionalComponent {
     this.getAdditionalDocuments();
   }
 
-  ngAfterContentInit() {
-
-  }
-
   onChangeDocumentTypes() {
     if (this.newDocumentType == "Other") {
       this.otherSelected = true;
