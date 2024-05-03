@@ -188,6 +188,21 @@
     color: white;
   }
 
+  #decline-update-button:disabled {
+    display: flex;
+    height: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 100px;
+    background: lightgray;
+    width: 400px;
+    margin-bottom: 16px;
+    color: gray;
+  }
+
   #decline-cancel-button {
     border-radius: 100px;
     border: 1px solid var(--m-3-sys-light-primary, #0029c6);
