@@ -102,11 +102,6 @@
                     </div>
                 </div>
             </div>
-            <button mat-button color="primary" (click)="getAdditionalDocuments()" [id]=0
-            [ngClass]="screenWidth <= 767 ?'upload-download-button':''"
-            class=" col-12 mt-2 ps-2 pe-2">
-            Refresh Button for now
-        </button>
         </mat-expansion-panel>
     </mat-accordion>
     <div class="spinner-container" *ngIf="isLoadingUpload == true">
