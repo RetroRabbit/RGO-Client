@@ -36,9 +36,8 @@ export class CreateChartsComponent {
   constructor(private ChartService: ChartService,
     private router: Router,
     private cookieService: CookieService,
-    private snackBarService: SnackbarService,
-    navService: NavService) {
-    navService.showNavbar = true;
+    private snackBarService: SnackbarService, 
+    navService : NavService) {
   }
 
   ngOnInit(): void {

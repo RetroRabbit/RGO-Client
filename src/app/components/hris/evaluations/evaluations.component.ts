@@ -81,7 +81,6 @@ export class EvaluationsComponent {
     private cookieService: CookieService,
     private navService: NavService
   ) {
-    navService.showNavbar = true;
   }
 
   fetchAudience(): void {

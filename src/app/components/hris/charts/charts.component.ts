@@ -31,7 +31,6 @@ export class ChartComponent implements OnInit {
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
     navService: NavService) {
-    navService.showNavbar = true;
   }
 
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();

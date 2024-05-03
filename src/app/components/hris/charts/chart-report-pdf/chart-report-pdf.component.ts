@@ -24,10 +24,17 @@ export class ChartReportPdfComponent {
   @ViewChild('reportContent') reportContent!: ElementRef;
   @ViewChild('canvas') canvas: ElementRef = {} as ElementRef;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService,
-    private snackBarService: SnackbarService,
-    navService: NavService) {
-    navService.showNavbar = true;
+  ngOnInit() {
+  }
+  constructor(@Inject(MAT_DIALOG_DATA) public chartData: any, private chartService: ChartService, 
+  private snackBarService: SnackbarService,
+  private navService: NavService) {
+   }
+
+  ngAfterViewInit() {
+    if (this.canvas && this.canvas.nativeElement) {
+      const context: CanvasRenderingContext2D = this.canvas.nativeElement.getContext('2d');
+    }
   }
 
   barChartOptions = barChartOptions;

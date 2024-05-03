@@ -92,9 +92,8 @@ export class AdminDashboardComponent {
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
-    public authAccessService: AuthAccessService,
-    navService: NavService) {
-    navService.showNavbar = true;
+    private navService: NavService,
+    public authAccessService: AuthAccessService) {
   }
 
   ngOnInit() {

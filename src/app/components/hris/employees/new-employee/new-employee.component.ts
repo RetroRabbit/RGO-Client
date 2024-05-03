@@ -46,7 +46,7 @@ export class NewEmployeeComponent implements OnInit {
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     private _formBuilder: FormBuilder,
-    private navService: NavService,
+    public navService: NavService,
     public locationApiService: LocationApiService,
   ) { }
 
@@ -123,7 +123,7 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
-    this.navService.showNavbar = false;
+      this.navService.hideNav();
   }
 
   loadCountries(): void {
@@ -241,7 +241,7 @@ export class NewEmployeeComponent implements OnInit {
   });
 
   ngOnDestroy() {
-    this.navService.showNavbar = true;
+    this.navService.showNav();
   }
 
   filterChampions(event: any) {

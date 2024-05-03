@@ -1,4 +1,4 @@
-<div id="field-container" class="my-4">
+<div id="field-container" [ngClass]="navService.showNavContainer ? 'my-4' : 'my-2'">
     <div id="form-container" class="py-4">
         <h3>Edit custom field</h3>
         <form class="row mx-0" [formGroup]="customFieldForm">

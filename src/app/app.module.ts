@@ -31,7 +31,6 @@ import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { TableModule } from 'primeng/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -67,7 +66,6 @@ import { ManageEmployeeEventsComponent } from './components/hris/manage-employee
 import { AddEmployeeEventComponent } from './components/hris/manage-employee-events/add-employee-event/add-employee-event.component';
 import { SystemSettingsComponent } from './components/hris/system-settings/system-settings.component';
 import { ChartReportPdfComponent } from './components/hris/charts/chart-report-pdf/chart-report-pdf.component';
-import { NavBarComponent } from './components/hris/nav-bar/nav-bar.component';
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccordionBankingComponent } from './components/hris/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
@@ -89,6 +87,8 @@ import { ViewStarterKitApprovalComponent } from './components/hris/employees/emp
 import { ViewBankingApprovalComponent } from './components/hris/employees/employee-approvals/view-banking-approval/view-banking-approval.component';
 import { EmployeeOptionsComponent } from './components/hris/employees/employee-options/employee-options.component';
 import { EmployeeApprovalsComponent } from './components/hris/employees/employee-approvals/employee-approvals.component';
+import { TopNavComponent } from './components/hris/nav-bar/types/top-nav/top-nav.component';
+import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-nav.component';
 
 @NgModule({
   declarations: [
@@ -113,7 +113,6 @@ import { EmployeeApprovalsComponent } from './components/hris/employees/employee
     AddEmployeeEventComponent,
     SystemSettingsComponent,
     ChartReportPdfComponent,
-    NavBarComponent,
     ConfirmDialogComponent,
     AccordionBankingComponent,
     AccordionDocumentsComponent,
@@ -131,6 +130,8 @@ import { EmployeeApprovalsComponent } from './components/hris/employees/employee
     ViewBankingApprovalComponent,
     EmployeeOptionsComponent,
     EmployeeApprovalsComponent,
+    TopNavComponent,
+    SideNavComponent,
 
   ],
   imports: [
@@ -185,7 +186,6 @@ import { EmployeeApprovalsComponent } from './components/hris/employees/employee
     MatProgressBarModule,
     NgxFileDropModule,
     MatStepperModule,
-    TableModule,
     MatPaginatorModule,
     MatSortModule,
     MatButtonToggleModule,

@@ -3,7 +3,6 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { Client } from 'src/app/models/hris/client.interface';
-import { EmailValidator, FormBuilder } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
@@ -64,11 +63,11 @@ export class EmployeeProfileComponent implements OnChanges {
   bankingFormProgress: number = 0;
   bankInformationProgress: number = 0;
   documentsProgress: number = 0;
+  uploadButtonIndex: number = 0;
 
   bankingPDFName: string = "";
   hasBankingData: boolean = false;
   employeeDocuments: EmployeeDocument[] = [];
-  uploadButtonIndex: number = 0;
   documentsFileName: string = "";
   clientId? = null;
   peopleChampionId = null;
@@ -105,7 +104,6 @@ export class EmployeeProfileComponent implements OnChanges {
   constructor(private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
     private clientService: ClientService,
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private employeeService: EmployeeService,
@@ -115,7 +113,6 @@ export class EmployeeProfileComponent implements OnChanges {
     public authAccessService: AuthAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private clipboard: Clipboard) {
-    navService.showNavbar = true;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -134,7 +131,7 @@ export class EmployeeProfileComponent implements OnChanges {
     this.getClients();
     if (this.employeeId == undefined) {
       this.showBackButtons = false;
-      this.employeeId = this.cookieService.get('userId');
+      this.employeeId = this.authAccessService.getUserId();
     }
     if (this.authAccessService.isAdmin() ||
       this.authAccessService.isSuperAdmin() ||

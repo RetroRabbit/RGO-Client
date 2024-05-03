@@ -43,12 +43,7 @@ export class SignInComponent {
   onResize() {
     this.NgZone.run(() => {
       this.screenWidth = window.innerWidth;
-      this.checkIfMobile();
     });
-  }
-
-  private checkIfMobile() {
-    this.screenWidth = window.innerWidth;
   }
 
   Login() {
@@ -81,8 +76,13 @@ export class SignInComponent {
             roles: roles,
           };
           this.authAccessService.setEmployeeEmail(user?.email as string);
+          this.navService.refreshEmployee();
           this.store.dispatch(GetLogin({ payload: googleID }));
-          this.navService.showNavbar = true;
+          if(window.innerWidth > 776) 
+              this.navService.showNavbar = true;
+          else 
+            this.navService.showSideBar = true; 
+          
           this.sharedPropprtyAccessService.setAccessProperties();
           if (this.authAccessService.isTalent()) {
             this.navService.isHris = false;
