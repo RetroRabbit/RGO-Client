@@ -179,7 +179,7 @@ export class ViewStarterKitApprovalComponent {
     this.documenetIndex = documentIndex;
     this.dialogTypeData = {
       type: 'decline',
-      title: 'Decline Update',
+      title: 'Decline update',
       subtitle: 'Please provide a reason for declining this update',
       confirmButtonText: 'Decline Update',
       denyButtonText: 'Cancel'
