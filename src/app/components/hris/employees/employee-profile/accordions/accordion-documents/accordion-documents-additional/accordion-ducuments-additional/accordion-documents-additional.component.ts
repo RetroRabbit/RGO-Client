@@ -15,7 +15,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
   templateUrl: './accordion-documents-additional.component.html',
   styleUrls: ['./accordion-documents-additional.component.css']
 })
-export class AccordionDucumentsAdditionalComponent {
+export class AccordionDocumentsAdditionalComponent {
   @Output() updateDocument = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
 
