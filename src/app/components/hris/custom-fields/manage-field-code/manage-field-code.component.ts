@@ -63,7 +63,7 @@ export class ManageFieldCodeComponent {
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
     private systemService: SystemNav,
-    private navService: NavService,
+    public navService: NavService,
     private ngZone: NgZone,
     private authAccessService: AuthAccessService) {
   }
@@ -107,7 +107,7 @@ export class ManageFieldCodeComponent {
     this.isLoading = false;
   }
 
-  getDataSource(){
+  getDataSource() {
     this.dataSource = new MatTableDataSource(this.filteredCustomFields);
     this.ngZone.run(() => {
       this.dataSource.sort = this.sort;
@@ -254,7 +254,7 @@ export class ManageFieldCodeComponent {
     this.paginator.pageIndex = 0;
     this.selectedCustomFields = [];
     this.filterText = "";
-    this.sortByIdDefault(this.sort);  
+    this.sortByIdDefault(this.sort);
     this.getDataSource();
   }
 
