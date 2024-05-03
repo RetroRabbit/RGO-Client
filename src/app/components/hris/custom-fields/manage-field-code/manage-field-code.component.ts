@@ -54,7 +54,7 @@ export class ManageFieldCodeComponent {
   onResize() {
     this.screenWidth = window.innerWidth;
   }
-  
+
   pageSizes: number[] = [1, 5, 10, 25, 100];
   PREVIOUS_PAGE = "previousPage";
   constructor(
@@ -64,7 +64,7 @@ export class ManageFieldCodeComponent {
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
     private systemService: SystemNav,
-    private navService: NavService,
+    public navService: NavService,
     private ngZone: NgZone,
     private authAccessService: AuthAccessService) {
   }
@@ -108,7 +108,7 @@ export class ManageFieldCodeComponent {
     this.isLoading = false;
   }
 
-  getDataSource(){
+  getDataSource() {
     this.dataSource = new MatTableDataSource(this.filteredCustomFields);
     this.ngZone.run(() => {
       this.dataSource.sort = this.sort;
@@ -127,7 +127,7 @@ export class ManageFieldCodeComponent {
     return this.runCounter >= this.runThreshold;
   }
 
-  resetRunCounter(){
+  resetRunCounter() {
     return this.runCounter = 0;
   }
 
@@ -156,13 +156,13 @@ export class ManageFieldCodeComponent {
       });
 
       let fieldCodeDto = new CustomField();
-        fieldCodeDto.id = 0;
-        fieldCodeDto.code = fieldCode.code,
+      fieldCodeDto.id = 0;
+      fieldCodeDto.code = fieldCode.code,
         fieldCodeDto.name = fieldCode.name,
         fieldCodeDto.description = fieldCode.description,
         fieldCodeDto.regex = fieldCode.regex,
         fieldCodeDto.type = parseInt(fieldCode.type),
-        fieldCodeDto.status =  parseInt(fieldCode.status),
+        fieldCodeDto.status = parseInt(fieldCode.status),
         fieldCodeDto.internal = fieldCode.internal,
         fieldCodeDto.internalTable = fieldCode.internalTable,
         fieldCodeDto.options = optionsArray,
@@ -243,7 +243,7 @@ export class ManageFieldCodeComponent {
   }
 
   changeTab(tabIndex: number) {
-    if(this.isLoading == true){
+    if (this.isLoading == true) {
       return;
     }
     this.activeTab = tabIndex;
@@ -255,7 +255,7 @@ export class ManageFieldCodeComponent {
     this.paginator.pageIndex = 0;
     this.selectedCustomFields = [];
     this.filterText = "";
-    this.sortByIdDefault(this.sort);  
+    this.sortByIdDefault(this.sort);
     this.getDataSource();
   }
 
