@@ -46,7 +46,7 @@
                         <div class="col-1 mt-2" id="header-email-clip" (click)="copyToClipboard()"><mat-icon>attachment</mat-icon></div>
                     </div>
                 </div>
-                <div class="col-12 my-2 d-none d-md-block" id="header-role" *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnType">
+                <div class="col-12 my-2 d-none d-md-block" id="header-role"*ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnType">
                     {{selectedEmployee.employeeType?.name}} | Level {{ selectedEmployee.level }}
                 </div>
                     <ng-template #OwnType>
@@ -281,7 +281,7 @@
     <div id="profile-accordions" *ngIf="!isLoading">
         <div id="accordions-nav"
             [ngClass]="screenWidth <= 767 ?'col-12 ms-0 d-flex overflow-x-scroll rounded-3':'row col-12 ms-0 rounded-3'">
-            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-4'">
+            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-3'">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
                         <div (click)="CaptureEvent($event)"
@@ -295,7 +295,21 @@
                     </div>
                 </div>
             </div>
-            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-4'">
+            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-3'">
+                <div id="nav-item-container" class="col-auto">
+                    <div id="nav-item">
+                        <div (click)="CaptureEvent($event)"
+                            [ngClass]="selectedItem == 'Career Summary' ? 'active' : 'idle'">
+                            Career Summary
+                        </div>
+                        <div *ngIf="selectedItem == 'Career Summary'" id="selected-line-box">
+                            <div id="selected-line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-3'">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
                         <div (click)="CaptureEvent($event)"
@@ -309,7 +323,7 @@
                     </div>
                 </div>
             </div>
-            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-4'">
+            <div [ngClass]="screenWidth <= 767 ?'nav-item-mobile':'col-3'">
                 <div id="nav-item-container" class="col-auto">
                     <div id="nav-item">
                         <div (click)="CaptureEvent($event)" [ngClass]="selectedItem == 'Documents' ? 'active' : 'idle'">
