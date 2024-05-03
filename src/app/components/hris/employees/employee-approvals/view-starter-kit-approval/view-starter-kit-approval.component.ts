@@ -186,10 +186,10 @@ export class ViewStarterKitApprovalComponent {
   dialogFeedBack(response: any): void {
     this.declineReason = response.declineReason;
     this.selectedReason = response.selectedReason;
-    if (!response.confirmatio)
+    if (response.confirmation)
       this.updateDocument(this.documenetIndex, 2);
-    else
-      this.backToApprovals();
+
+    this.showConfirmDialog = false;
   }
 
   convertFileToBase64(index: number) {
