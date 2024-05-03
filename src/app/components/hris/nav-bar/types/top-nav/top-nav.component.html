@@ -127,7 +127,7 @@
       </button>
     </div>
     <div [hidden]="screenWidth < 992 && !navService.showTopNavMenu" id="employee-info">
-      <h4> {{ navService.employeeProfile.name }} {{ navService.employeeProfile.surname }} </h4>
+      <h4> {{ navService.employeeProfile?.name }} {{ navService.employeeProfile?.surname }} </h4>
       <h5> {{ navService.employeeProfile.employeeType?.name }} </h5>
     </div>
     <div class="ms-2" id="image-container" [hidden]="screenWidth < 992 && !navService.showTopNavMenu">

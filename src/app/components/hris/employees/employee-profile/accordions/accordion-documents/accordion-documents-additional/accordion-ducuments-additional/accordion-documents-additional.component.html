@@ -91,7 +91,7 @@
                             [ngClass]="otherSelected==true ? 'col d-flex justify-content-end m-0' :'col d-flex justify-content-end m-0'">
                             <div id="actionCellUpload" class="col-12 d-flex justify-content-end me-3">
                                 <input type="file" name="" id="upload-new-additional-document" hidden
-                                    (change)="captureNewDocument($event)">
+                                    (change)="captureNewDocument($event)" accept=".pdf">
                                 <button mat-button color="primary" (click)="addNewAdditionalDocument()" [id]=0
                                     [ngClass]="screenWidth <= 767 ?'upload-download-button':''"
                                     class=" col-12 mt-2 ps-2 pe-2">
@@ -102,6 +102,11 @@
                     </div>
                 </div>
             </div>
+            <button mat-button color="primary" (click)="getAdditionalDocuments()" [id]=0
+            [ngClass]="screenWidth <= 767 ?'upload-download-button':''"
+            class=" col-12 mt-2 ps-2 pe-2">
+            Refresh Button for now
+        </button>
         </mat-expansion-panel>
     </mat-accordion>
     <div class="spinner-container" *ngIf="isLoadingUpload == true">

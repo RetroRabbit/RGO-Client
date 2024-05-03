@@ -8,6 +8,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { MatTableDataSource } from '@angular/material/table';
 import { CookieService } from 'ngx-cookie-service';
 import { FormControl, Validators } from '@angular/forms';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 
 @Component({
   selector: 'app-accordion-documents-additional',
@@ -48,22 +49,24 @@ export class AccordionDucumentsAdditionalComponent {
   newDocumentName: string = '';
   newDocumentType: string = '';
   otherSelected: boolean = false;
+  
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
     private cookieService: CookieService,
+    public navService: NavService,
   ) { }
 
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
+    this.getAdditionalDocuments();
   }
 
-  ngAfterViewInit(){
-    console.log("the employee id" + this.employeeProfile.id);
-    this.getAdditionalDocuments();
+  ngAfterContentInit() {
+
   }
 
   onChangeDocumentTypes() {
@@ -78,6 +81,10 @@ export class AccordionDucumentsAdditionalComponent {
     if (this.newDocumentType == "Other") {
       if (this.newDocumentName == "") {
         this.snackBarService.showSnackbar("Please enter a title", "snack-error")
+        return;
+      }
+      if (this.newDocumentName.length <= 4) {
+        this.snackBarService.showSnackbar("Please enter a longer title", "snack-error")
         return;
       }
       const inputField = document.getElementById('upload-new-additional-document');
@@ -170,16 +177,30 @@ export class AccordionDucumentsAdditionalComponent {
   }
 
   getAdditionalDocuments() {
-    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 1).subscribe({
-      next: data => {
-        this.employeeDocuments = data;
-        this.dataSource.data = this.fileCategories;
-        this.getAdditionalDocumentReferences();
-      },
-      error: error => {
-        this.snackBarService.showSnackbar(error, "snack-error");
-      }
-    })
+    if(this.employeeId != undefined){
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 1).subscribe({
+        next: data => {
+          this.employeeDocuments = data;
+          this.dataSource.data = this.fileCategories;
+          this.getAdditionalDocumentReferences();
+        },
+        error: error => {
+          this.snackBarService.showSnackbar(error, "snack-error");
+        }
+      })
+    } else{
+      this.employeeId = this.navService.employeeProfile.id;
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 1).subscribe({
+        next: data => {
+          this.employeeDocuments = data;
+          this.dataSource.data = this.fileCategories;
+          this.getAdditionalDocumentReferences();
+        },
+        error: error => {
+          this.snackBarService.showSnackbar(error, "snack-error");
+        }
+      })
+    }
   }
 
   getAdditionalDocumentReferences() {

@@ -47,8 +47,9 @@
 }
 
 #document-row {
-    background-color: white;
-    border-radius: 2rem;
+    border-radius: 20px;
+    border: 1px solid var(--M3-sys-light-outline-variant, #CAC4D0);
+    background: var(--M3-white, #FFF);
 }
 
 #fileName {
