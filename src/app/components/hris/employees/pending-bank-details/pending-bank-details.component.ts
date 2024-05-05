@@ -22,7 +22,6 @@ export class PendingBankDetailsComponent {
     private employeeBankingService: EmployeeBankingService,
     private snackBarService: SnackbarService,
     private navService: NavService) {
-      navService.showNavbar = true;
      }
 
   ngOnInit() {

@@ -1,6 +1,6 @@
 #header-name {
     font-family: Poppins;
-    padding-left: 30px;
+    text-align: left;
 }
 
 #header-role {
@@ -10,7 +10,7 @@
     font-weight: 400;
     line-height: 20px;
     letter-spacing: 0.25px;
-    padding-left: 15px;
+    text-align: left;
 }
 
 #header-based {
@@ -20,7 +20,7 @@
     font-weight: 400;
     line-height: 20px;
     letter-spacing: 0.25px;
-    padding-left: 30px;
+    text-align: left;
 }
 
 #header-email {

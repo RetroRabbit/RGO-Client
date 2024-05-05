@@ -52,7 +52,6 @@ export class RoleManagerComponent implements OnInit {
     private navService: NavService,
     private dialog: MatDialog,
   ) {
-    navService.showNavbar = true;
   }
 
   ngOnInit() {
