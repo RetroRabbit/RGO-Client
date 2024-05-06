@@ -88,6 +88,8 @@ export class AdminDashboardComponent {
     Email: string | undefined;
   }> = new MatTableDataSource();
 
+  rolesSelected: string[] = [];
+  categoriesSelected: string[] = [];
   constructor(
     private employeeService: EmployeeService,
     public chartService: ChartService,
@@ -101,9 +103,22 @@ export class AdminDashboardComponent {
     this.editChartSubscription = this.chartService.getClickEvent().subscribe(() => {
       this.chartType = this.chartService.activeChart.type
       this.chartName = this.chartService.activeChart.name
-      this.dialog.open(this.dialogTemplate, {
+      this.categoriesSelected = this.chartService.activeChart.dataTypes[0].replace("'"," ").split(",")
+      this.rolesSelected = this.chartService.activeChart.name.split("-")[1].split(",")
+      this.categoryControl.disable()
+      this.typeControl.disable()
+      let dialogRef = this.dialog.open(this.dialogTemplate, {
         width: '500px',
       })
+      dialogRef.afterClosed().subscribe(result => {
+        this.categoryControl.enable()
+        this.typeControl.enable()
+        this.chartService.isEditing = false;
+        this.chartName = "";
+        this.chartType = "";
+        this.categoriesSelected = []
+        this.rolesSelected = []
+      });
     })
   }
 

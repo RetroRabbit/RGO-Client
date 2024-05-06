@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment';
 })
 export class ChartService {
   baseUrl: string;
-  editingCharts: any = new BehaviorSubject(null);
+  editingCharts: any = new BehaviorSubject(false);
   updatedChartData: any = new BehaviorSubject([]);
   clickEvent = new Subject<any>();
   constructor(private httpClient: HttpClient) {
