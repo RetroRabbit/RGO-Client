@@ -20,10 +20,12 @@
                 <mat-radio-group aria-label="Category" formControlName="category">
                     <mat-radio-button [value]=0>Profile Details</mat-radio-button> <br>
                     <mat-radio-button [value]=1>Bank Information</mat-radio-button> <br>
-                    <mat-radio-button [value]=2>Career Summary</mat-radio-button>
+                    <mat-radio-button [value]=2 (change)="radioHide()" >Career Summary</mat-radio-button> <br>
+                    <mat-radio-button [value]=3 (change)="radioShow()" >Custom Documents</mat-radio-button>
+
                 </mat-radio-group>
             </div>
-            <div class="col-12">
+            <div class="col-12" *ngIf="showTypeFields">
                 <h1 id="radio-headings" class="mb-0">Select what type of field it should be</h1>
                 <mat-radio-group aria-label="Type" formControlName="type" (change)="checkSelectedOption($event)">
                     <mat-radio-button [value]=0>Date - For specific calendar days, like birthdays</mat-radio-button>

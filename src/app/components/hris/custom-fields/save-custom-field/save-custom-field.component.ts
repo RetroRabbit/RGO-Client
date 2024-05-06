@@ -25,6 +25,7 @@ export class SaveCustomFieldComponent {
   isArchiveClicked: boolean = false;
   fieldCodeCapture: string = "";
   showAdvanced: boolean = false;
+  showTypeFields: boolean = true;
   isRequired: boolean = false;
   PREVIOUS_PAGE = "previousPage";
   optionsValid: boolean = true;
@@ -100,20 +101,20 @@ export class SaveCustomFieldComponent {
       customField.id = this.selectedCustomField ? this.selectedCustomField.id : 0,
         customField.options = this.customFieldForm.value['type'] == 4 ? updatedOptions : [],
         customField.status = 0;
-        
-        this.customFieldService.saveFieldCode(customField).subscribe({
-          next: (data) => {
-            this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
-            this.selectedCustomField = data;
-            this.customFieldForm.disable();
-            this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
-            this.systemService.selectedField = undefined;
-            this.router.navigateByUrl('/system-settings');
-          },
-          error: (error) => {
-            this.snackBarService.showSnackbar(error.error, "snack-error");
-          }
-        });
+
+      this.customFieldService.saveFieldCode(customField).subscribe({
+        next: (data) => {
+          this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
+          this.selectedCustomField = data;
+          this.customFieldForm.disable();
+          this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+          this.systemService.selectedField = undefined;
+          this.router.navigateByUrl('/system-settings');
+        },
+        error: (error) => {
+          this.snackBarService.showSnackbar(error.error, "snack-error");
+        }
+      });
     }
     else {
       this.snackBarService.showSnackbar("Some fields are still missing information", "snack-error");
@@ -178,5 +179,11 @@ export class SaveCustomFieldComponent {
     }
     else if (option.value != 4 || option != 4)
       this.optionsValid = true;
+  }
+  radioShow() {
+    this.showTypeFields = false;
+  }
+  radioHide() {
+    this.showTypeFields = true;
   }
 }
