@@ -34,19 +34,18 @@ export class ConfirmDialogComponent {
   ngOnInit() {
     this.onResize();
   }
-  
   ngAfterViewInit() {
     if (this.screenWidth > 767) {
       if(this.dialogType.type.toLocaleLowerCase() == 'decline')
-        this.dialog.open(this.dialogDeclineTemplate);
+        this.dialog.open(this.dialogDeclineTemplate, { disableClose: true });
       else
-        this.dialog.open(this.dialogSaveTemplate);
+        this.dialog.open(this.dialogSaveTemplate, { disableClose: true });
     }
     else {
       if(this.dialogType.type.toLocaleLowerCase() == 'decline')
-        this.dialog.open(this.dialogDeclineTemplateMobile);
+        this.dialog.open(this.dialogDeclineTemplateMobile, { disableClose: true });
       else
-        this.dialog.open(this.dialogSaveTemplateMobile);
+        this.dialog.open(this.dialogSaveTemplateMobile, { disableClose: true });
     }
   }
 

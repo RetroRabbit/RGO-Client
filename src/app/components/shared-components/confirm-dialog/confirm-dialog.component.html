@@ -40,7 +40,7 @@
         <div class="row">
             <div id="dialog-container">
                 <div>
-                    <h2 mat-dialog-title id="decline-title">{{dialogType.title}}</h2>
+                    <span mat-dialog-title id="decline-title">{{dialogType.title}}</span>
                     <h4 id="decline-subtitle">{{dialogType.subtitle}}</h4>
                 </div>
                 <div id="dialog-body">
@@ -52,22 +52,26 @@
                         </mat-radio-group>
                     </div>
                     <div class="col-12 my-2">
-                        <mat-form-field appearance="outline" class="additional-information w-100">
+                        <mat-form-field appearance="outline" class="additional-information w-100" id="additional-info">
                             <mat-label>Additional Information</mat-label>
                             <textarea matInput [(ngModel)]="declineReason"></textarea>
                         </mat-form-field>
                     </div>
                 </div>
                 <div id="button-container">
-                    <button mat-button mat-dialog-close class="button-style" id="decline-update-button"
-                        (click)="captureResponse(true)" [disabled]="!hasSelectedReason">
-                        {{dialogType.confirmButtonText}}
-                    </button>
+                    <div class="col-12 my-4">
+                        <button mat-button mat-dialog-close id="decline-update-button"
+                            (click)="captureResponse(true)" [disabled]="!hasSelectedReason">
+                            {{dialogType.confirmButtonText}}
+                        </button>
+                    </div>
 
-                    <button mat-button mat-dialog-close class="cancel-button-style" id="decline-update-button"
-                        (click)="captureResponse(false)">
-                        {{dialogType.denyButtonText}}
-                    </button>
+                    <div class="col-12 my-4">
+                        <button mat-button mat-dialog-close id="decline-cancel-button"
+                            (click)="captureResponse(false)">
+                            {{dialogType.denyButtonText}}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
