@@ -103,8 +103,12 @@ export class AdminDashboardComponent {
     this.editChartSubscription = this.chartService.getClickEvent().subscribe(() => {
       this.chartType = this.chartService.activeChart.type
       this.chartName = this.chartService.activeChart.name
-      this.categoriesSelected = this.chartService.activeChart.dataTypes[0].replace("'"," ").split(",")
-      this.rolesSelected = this.chartService.activeChart.name.split("-")[1].split(",")
+      this.categoriesSelected = this.chartService.activeChart.dataTypes[0].replace("'", " ").split(",")
+      var roles = this.chartService.activeChart.name.split("-")[1].split(",")
+      for (let i = 0; i < roles.length; i++) {
+        roles[i] = roles[i].trim(" ")
+      }
+      this.rolesSelected = roles;
       this.categoryControl.disable()
       this.typeControl.disable()
       let dialogRef = this.dialog.open(this.dialogTemplate, {
@@ -136,6 +140,7 @@ export class AdminDashboardComponent {
   ngOnDestroy() {
     this.editChartSubscription.unsubscribe()
   }
+
   setSvgWidth(): number {
     if (this.screenWidth < 768) {
       return this.svgWidth = 265;
