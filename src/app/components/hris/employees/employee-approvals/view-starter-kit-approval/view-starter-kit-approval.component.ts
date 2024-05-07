@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
-import { Document } from 'src/app/models/hris/constants/documents.contants';
+import { Document } from 'src/app/models/hris/constants/starter-documents.contants';
 
 @Component({
   selector: 'app-pending-employee-starterkits',
@@ -86,7 +86,7 @@ export class ViewStarterKitApprovalComponent {
         }
       }
     }
-    
+
     const millisecondInDays = 1000 * 60 * 60 * 24;
     const milliDiff: number = new Date(currentDate).getTime() - new Date(updatedDate).getTime();
     const totalDays = Math.floor(milliDiff/millisecondInDays);
