@@ -20,10 +20,6 @@ export class SystemNav {
     return this.selectedTabIndex;
   }
 
-  public setSelectedField(field: CustomField) {
-    this.selectedField = field;
-  }
-
   public setIsAdding(isAdding: boolean) {
     this.isAdding = isAdding;
   }

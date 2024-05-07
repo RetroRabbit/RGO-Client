@@ -1,7 +1,7 @@
 <div id="field-container" [ngClass]="navService.showNavContainer ? 'my-4' : 'my-2'">
     <div id="form-container" class="py-4">
         <h3 *ngIf="systemService.isAdding == true">Create a new custom field</h3>
-        <h3 *ngIf="systemService.isAdding == false">Update the custom field</h3>
+        <h3 *ngIf="systemService.isAdding == false">Edit a custom field</h3>
         <form class="row mx-0" [formGroup]="customFieldForm">
             <h1 id="field-heading">Name and describe the field:</h1>
             <div class="col-12">
