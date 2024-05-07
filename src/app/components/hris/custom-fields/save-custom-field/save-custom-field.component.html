@@ -1,7 +1,6 @@
 <div id="field-container" [ngClass]="navService.showNavContainer ? 'my-4' : 'my-2'">
     <div id="form-container" class="py-4">
-        <h3 *ngIf="systemService.isAdding == true">Create a new custom field</h3>
-        <h3 *ngIf="systemService.isAdding == false">Edit a custom field</h3>
+        <h3>{{ systemService.isAdding ? 'Create a new custom field' : 'Edit a custom field' }}</h3>
         <form class="row mx-0" [formGroup]="customFieldForm">
             <h1 id="field-heading">Name and describe the field:</h1>
             <div class="col-12">
@@ -84,11 +83,8 @@
             </div>
             <div id="button-container">
                 <div>
-                    <button mat-raised-button id="save-button" (click)="onSubmit()" [disabled]="optionsValid == false" *ngIf="systemService.isAdding == true">
-                        Save
-                    </button>
-                    <button mat-raised-button id="save-button" (click)="onSubmit()" [disabled]="optionsValid == false" *ngIf="systemService.isAdding == false">
-                        Update
+                    <button mat-raised-button id="save-button" (click)="onSubmit()" [disabled]="optionsValid == false">
+                        {{ systemService.isAdding ? 'Save' : 'Update' }}
                     </button>
                 </div>
                 <div>
