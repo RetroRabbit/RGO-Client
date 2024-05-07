@@ -12,16 +12,16 @@ import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 
 @Component({
-  selector: 'app-accordion-documents',
-  templateUrl: './accordion-documents.component.html',
-  styleUrls: ['./accordion-documents.component.css']
+  selector: 'app-accordion-starter-documents',
+  templateUrl: './accordion-starter-documents.component.html',
+  styleUrls: ['./accordion-starter-documents.component.css']
 })
-export class AccordionDocumentsComponent {
+export class AccordionStarterDocumentsComponent {
   @Output() updateDocument = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
 
   screenWidth = window.innerWidth;
-  
+
   @HostListener('window:resize',['$event'])
   onResize(){
     this.screenWidth = window.innerWidth;

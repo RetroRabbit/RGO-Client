@@ -69,7 +69,7 @@ import { ChartReportPdfComponent } from './components/hris/charts/chart-report-p
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccordionBankingComponent } from './components/hris/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
-import { AccordionDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
+import { AccordionStarterDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-starter-documents/accordion-starter-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 import { NewCandidateComponent } from './components/ats/candidates/new-candidate/new-candidate.component';
@@ -88,6 +88,7 @@ import { EmployeeOptionsComponent } from './components/hris/employees/employee-o
 import { EmployeeApprovalsComponent } from './components/hris/employees/employee-approvals/employee-approvals.component';
 import { TopNavComponent } from './components/hris/nav-bar/types/top-nav/top-nav.component';
 import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-nav.component';
+import { AccordionEmployeeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-employee-documents/accordion-employee-documents.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +115,8 @@ import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-
     ChartReportPdfComponent,
     ConfirmDialogComponent,
     AccordionBankingComponent,
-    AccordionDocumentsComponent,
+    AccordionStarterDocumentsComponent,
+    AccordionEmployeeDocumentsComponent,
     LoadingComponentComponent,
     AtsDashboardComponent,
     NewCandidateComponent,
@@ -130,6 +132,7 @@ import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-
     EmployeeApprovalsComponent,
     TopNavComponent,
     SideNavComponent,
+    AccordionEmployeeDocumentsComponent,
 
   ],
   imports: [

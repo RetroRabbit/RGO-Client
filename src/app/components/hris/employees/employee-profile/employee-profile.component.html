@@ -358,8 +358,8 @@
                 [employeeProfile]="employeeProfile"
                 (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
 
-            <app-accordion-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
-                (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents>
+            <app-accordion-starter-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
+                (updateDocument)="updateDocumentProgress($event)"></app-accordion-starter-documents>
         </div>
     </div>
 </div>
