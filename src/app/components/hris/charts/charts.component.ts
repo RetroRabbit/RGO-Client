@@ -170,7 +170,15 @@ export class ChartComponent implements OnInit {
     this.selectedChartIndex = index;
     this.activeChart = this.chartData[index];
     this.updateFormData = { ...this.activeChart };
-    this.showUpdateForm = true;
+    this.chartService.activeChart = { ...this.activeChart }
+    this.chartService.isEditing = true
+    this.chartService.editChartClickEvent();
+    this.chartService.editingCharts.subscribe((editingCharts: any) => {
+      if (!editingCharts) {
+        this.resetPage();
+        this.createAndDisplayChart();
+      }
+    });
   }
 
   deleteChart(selectedIndex: number): void {

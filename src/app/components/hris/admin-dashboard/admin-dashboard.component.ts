@@ -2,6 +2,7 @@ import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-typ
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
+import { Subscription, catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
@@ -17,7 +18,7 @@ import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
-
+import { ChartComponent } from '../charts/charts.component';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -25,6 +26,7 @@ import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.inte
 })
 
 export class AdminDashboardComponent {
+  editChartSubscription: Subscription;
   chartNameControl = new FormControl('', [
     Validators.required, Validators.minLength(5)
   ]);
@@ -48,6 +50,8 @@ export class AdminDashboardComponent {
   chartData: number[] = [];
   charts: ChartData[] = [];
   categories: string[] = [];
+  chartCategory: any = '';
+  chartRoles: any = '';
   filteredCategories: string[] = this.categories;
   selectedCategories: string[] = [];
   types: string[] = [];
@@ -77,16 +81,17 @@ export class AdminDashboardComponent {
 
   dataSource: MatTableDataSource<{
     Name: string;
-    Position: string | undefined;
     Level: number | undefined;
     Client: string;
     Roles: string[];
     Email: string | undefined;
   }> = new MatTableDataSource();
 
+  rolesSelected: string[] = [];
+  categoriesSelected: string[] = [];
   constructor(
     private employeeService: EmployeeService,
-    private chartService: ChartService,
+    public chartService: ChartService,
     private cookieService: CookieService,
     private router: Router,
     private dialog: MatDialog,
@@ -94,6 +99,30 @@ export class AdminDashboardComponent {
     private employeeTypeService: EmployeeTypeService,
     private navService: NavService,
     public authAccessService: AuthAccessService) {
+    this.editChartSubscription = this.chartService.getClickEvent().subscribe(() => {
+      this.chartType = this.chartService.activeChart.type
+      this.chartName = this.chartService.activeChart.name
+      this.categoriesSelected = this.chartService.activeChart.dataTypes[0].replace("'", " ").split(",")
+      var roles = this.chartService.activeChart.name.split("-")[1].split(",")
+      for (let i = 0; i < roles.length; i++) {
+        roles[i] = roles[i].trim(" ")
+      }
+      this.rolesSelected = roles;
+      this.categoryControl.disable()
+      this.typeControl.disable()
+      let dialogRef = this.dialog.open(this.dialogTemplate, {
+        width: '500px',
+      })
+      dialogRef.afterClosed().subscribe(result => {
+        this.categoryControl.enable()
+        this.typeControl.enable()
+        this.chartService.isEditing = false;
+        this.chartName = "";
+        this.chartType = "";
+        this.categoriesSelected = []
+        this.rolesSelected = []
+      });
+    })
   }
 
   ngOnInit() {
@@ -106,6 +135,9 @@ export class AdminDashboardComponent {
       this.configureDashboardData();
     }
     this.setSvgWidth();
+  }
+  ngOnDestroy() {
+    this.editChartSubscription.unsubscribe()
   }
 
   setSvgWidth(): number {
@@ -317,6 +349,26 @@ export class AdminDashboardComponent {
   }
 
   createChart() {
+    if (this.chartService.isEditing) {
+      if (this.chartService.activeChart) {
+        const updatedChart: ChartData = {
+          ...this.chartService.activeChart,
+          name: this.chartName,
+          type: this.chartType,
+        };
+        this.chartService.updateChart(updatedChart).subscribe({
+          next: () => {
+            this.snackBarService.showSnackbar("Update successful", "snack-success");
+            this.chartService.isEditing = false
+            this.dialog.closeAll();
+          },
+          error: () => {
+            this.snackBarService.showSnackbar("Update unsuccessful", "snack-error");
+          }
+        });
+      }
+      return
+    }
     if (!this.chartType) {
       this.snackBarService.showSnackbar(
         'Please select a chart type',
@@ -382,6 +434,7 @@ export class AdminDashboardComponent {
     this.categoryControl.setValue(null);
     this.selectedTypes = [];
     this.typeControl.setValue(null);
+    return
   }
 
   activateSearchBar() {
@@ -472,5 +525,7 @@ export class AdminDashboardComponent {
     this.chartName = '';
     this.chartType = '';
     this.types = [];
+    this.dialog.closeAll()
+    this.chartService.isEditing = false;
   }
 }
