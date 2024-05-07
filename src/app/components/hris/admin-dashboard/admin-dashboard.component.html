@@ -679,10 +679,10 @@
         </div>
         <div class="row" *ngIf="isLoadingChart == false">
           <div class="col-lg-12 col-md-12 col-sm-12" id="dialog-header">
-            <h2 mat-dialog-title id="dialog-title">Add graph</h2>
+            <h2 mat-dialog-title id="dialog-title">{{ !chartService.isEditing ? 'Add' : 'Edit'}} graph</h2>
             <div class="subtitle-container">
               <h5 id="dialog-subtitle">
-                Create a graphs based on your needs by using the options below
+                {{ !chartService.isEditing ? 'Add' : 'Edit'}} a graph based on your needs by using the options below
               </h5>
             </div>
           </div>
@@ -695,7 +695,7 @@
                   <br />
                   <mat-radio-button value="pie">Pie Chart</mat-radio-button>
                   <br />
-                  <mat-radio-button value="stacked">Stacked Graph</mat-radio-button>
+                  <mat-radio-button hidden value="stacked">Stacked Graph</mat-radio-button>
                   <h5 class="option" *ngIf="!chartType">
                     Please select an option
                   </h5>
@@ -717,9 +717,9 @@
               <div class="px-4 offset-1 col-10">
                 <mat-form-field appearance="outline" style="width: 100%" class="mb-3">
                   <mat-label>Select category</mat-label>
-                  <mat-select [formControl]="categoryControl" multiple required>
+                  <mat-select [formControl]="categoryControl" [(ngModel)]="categoriesSelected" multiple required>
                     <mat-select-trigger></mat-select-trigger>
-                    <mat-option *ngFor="let category of filteredCategories" [value]="category" required="required">
+                    <mat-option *ngFor="let category of filteredCategories" [value]="category"  required="required">
                       {{ category }}
                     </mat-option>
                   </mat-select>
@@ -739,10 +739,10 @@
                   </mat-chip-grid>
                   <mat-icon matSuffix>arrow_drop_down</mat-icon>
                 </mat-form-field>
-                <mat-form-field appearance="outline" style="width: 100%" class="mb-3">
+                <mat-form-field [floatLabel]="this.chartService.isEditing" appearance="outline" style="width: 100%" class="mb-3">
                   <mat-label>Select role</mat-label>
-                  <mat-select [formControl]="typeControl" (selectionChange)="changeEmployeeRolesOnNewChart($event)"
-                    multiple required>
+                  <mat-select [formControl]="typeControl" [(ngModel)]="rolesSelected"
+                    (selectionChange)="changeEmployeeRolesOnNewChart($event)" multiple required> 
                     <mat-select-trigger></mat-select-trigger>
                     <mat-option *ngFor="let type of filteredTypes" [value]="type" required="required">
                       {{ type }}
