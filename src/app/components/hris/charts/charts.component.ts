@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, HostListener } from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { ChartData } from 'src/app/models/hris/charts.interface';
 import { colours } from '../../../models/hris/constants/colours.constants';
@@ -22,14 +22,13 @@ import { pieChartOptions, barChartOptions } from 'src/app/models/hris/constants/
   styleUrls: ['./charts.component.css'],
 })
 
-
 export class ChartComponent implements OnInit {
 
-  constructor(private chartService: ChartService, 
-    public dialog: MatDialog, 
+  constructor(private chartService: ChartService,
+    public dialog: MatDialog,
     private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document, 
-    private employeeService: EmployeeService, 
+    @Inject(DOCUMENT) private document: Document,
+    private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
     navService: NavService) {
   }
@@ -37,6 +36,7 @@ export class ChartComponent implements OnInit {
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   @Output() captureCharts = new EventEmitter<number>();
   @Input() chartsArray: ChartData[] = [];
+
   screenWidth: number = 767;
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -59,13 +59,12 @@ export class ChartComponent implements OnInit {
   selectedChartIndex: number = -1;
   barChartOptions = barChartOptions;
   pieChartOptions = pieChartOptions;
-  
 
   updateFormData: any = {
     Name: '',
     Type: '',
   }
-  
+
   getChartOptions(chartType: string) {
     return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
   }
@@ -171,7 +170,15 @@ export class ChartComponent implements OnInit {
     this.selectedChartIndex = index;
     this.activeChart = this.chartData[index];
     this.updateFormData = { ...this.activeChart };
-    this.showUpdateForm = true;
+    this.chartService.activeChart = { ...this.activeChart }
+    this.chartService.isEditing = true
+    this.chartService.editChartClickEvent();
+    this.chartService.editingCharts.subscribe((editingCharts: any) => {
+      if (!editingCharts) {
+        this.resetPage();
+        this.createAndDisplayChart();
+      }
+    });
   }
 
   deleteChart(selectedIndex: number): void {
@@ -227,7 +234,7 @@ export class ChartComponent implements OnInit {
           data: this.chartData[i].dataSet[0],
           labels: labelsArray,
           backgroundColor: this.coloursArray
-          
+
         });
       } else {
         if (this.chartData[i].labels) {
@@ -245,23 +252,23 @@ export class ChartComponent implements OnInit {
     }
   }
 
-  configureChartColors(chartData: ChartData[]){
+  configureChartColors(chartData: ChartData[]) {
     let colorIndex = 0
-        chartData.forEach((chart: any) => {
-          if(chart.subtype == "stacked"){
-            chart.datasets?.forEach((dataset: any) => {
-              dataset.backgroundColor = this.coloursArray[colorIndex];
-              colorIndex++
-            });
-          }else {
-            chart.datasets?.forEach((dataset: any) => {
-              dataset.backgroundColor = this.coloursArray;
-            });
-          }
-          colorIndex = 0;
+    chartData.forEach((chart: any) => {
+      if (chart.subtype == "stacked") {
+        chart.datasets?.forEach((dataset: any) => {
+          dataset.backgroundColor = this.coloursArray[colorIndex];
+          colorIndex++
         });
-        return chartData;
-}
+      } else {
+        chart.datasets?.forEach((dataset: any) => {
+          dataset.backgroundColor = this.coloursArray;
+        });
+      }
+      colorIndex = 0;
+    });
+    return chartData;
+  }
 
   pdfPreview(index: number) {
     const dialogRef = this.dialog.open(ChartReportPdfComponent, {

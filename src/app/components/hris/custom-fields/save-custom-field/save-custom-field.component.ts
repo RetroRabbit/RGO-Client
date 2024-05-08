@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -16,7 +16,6 @@ import { SystemNav } from 'src/app/services/hris/system-nav.service';
   styleUrls: ['./save-custom-field.component.css']
 })
 export class SaveCustomFieldComponent {
-
   selectedCustomField?: CustomField;
   public statuses = statuses;
   public dataTypes = dataTypes;

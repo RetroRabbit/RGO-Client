@@ -1,8 +1,8 @@
 #actionCellDownload>button {
     border: 1px solid #0029C6;
     border-radius: 2rem;
-    background-color: white;
-    color: #0029C6;
+    background-color: #0029C6;
+    color: white;
     padding: 0.5rem;
     width: 8rem;
 }
@@ -12,6 +12,16 @@
     border: none;
     border-radius: 4rem;
     color: white;
+    padding: 0.5rem;
+    height: 40px;
+    width: 160px;
+}
+
+.delete-button {
+    border-radius: 100px;
+    border: 1px solid var(--M3-sys-light-error, #B3261E);
+    background: #fff;
+    color: #B3261E;
     padding: 0.5rem;
     width: 8rem;
 }
@@ -52,6 +62,12 @@
     background: var(--M3-white, #FFF);
 }
 
+#document-add-row {
+    border-radius: 20px;
+    border: 2px dashed var(--M3-sys-light-outline-variant, #CAC4D0);
+    background: var(--M3-white, #FFF);
+}
+
 #fileName {
     color: grey;
 }
@@ -60,7 +76,7 @@
     fill: white;
 }
 
-#actionCellDownload>button.disabledDownload{
+#actionCellDownload>button.disabledDownload {
     border: 1px solid #e3e3e4ff;
     border-radius: 2rem;
     background-color: #e3e3e4ff;
@@ -70,7 +86,7 @@
 }
 
 :host .upload-download-button {
-    width: 100%!important;
+    width: 100% !important;
 }
 
 .spinner-container {
@@ -89,6 +105,7 @@
 .mat-mdc-progress-spinner {
     --mdc-circular-progress-active-indicator-color: #0029C6 !important;
 }
+
 .row {
     margin-left: 20px;
     margin-right: 20px;
@@ -129,4 +146,25 @@
 #accordion {
     margin-right: -2%;
     margin-left: -2%;
+}
+
+#add-category-button {
+    background: #0029c6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    padding: 0.5rem;
+    right: 0px;
+    height: 40px;
+}
+
+#add-fields-container {
+    height: 4.5rem;
+    width: 400px;
+    max-width: 400px !important;
+}
+
+#add-fields {
+    width: 400px;
+    max-width: 400px !important;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ChartData } from '../../models/hris/charts.interface';
 import { environment } from '../../../environments/environment';
 
@@ -9,11 +9,30 @@ import { environment } from '../../../environments/environment';
 })
 export class ChartService {
   baseUrl: string;
-    
-  constructor(private httpClient: HttpClient) { 
-      this.baseUrl =`${environment.HttpsBaseURL}/charts`
+  editingCharts: any = new BehaviorSubject(false);
+  updatedChartData: any = new BehaviorSubject([]);
+  clickEvent = new Subject<any>();
+  constructor(private httpClient: HttpClient) {
+    this.baseUrl = `${environment.HttpsBaseURL}/charts`
   }
-
+  get isEditing(): any {
+    return this.editingCharts.value
+  }
+  set isEditing(data) {
+    this.editingCharts.next(data)
+  }
+  get activeChart(): any {
+    return this.updatedChartData.value
+  }
+  set activeChart(data) {
+    this.updatedChartData.next(data)
+  }
+  editChartClickEvent() {
+    this.clickEvent.next({});
+  }
+  getClickEvent(): Observable<any> {
+    return this.clickEvent.asObservable();
+  }
   getAllCharts(): Observable<ChartData[]> {
     return this.httpClient.get<ChartData[]>(`${this.baseUrl}`);
   }
@@ -51,5 +70,4 @@ export class ChartService {
       responseType: 'arraybuffer'
     });
   }
-
 }
