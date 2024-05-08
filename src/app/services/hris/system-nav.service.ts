@@ -10,7 +10,7 @@ export class SystemNav {
   public selectedField?: CustomField;
   public selectedEmployeeMenuItem: string = '';
   private selectedTabIndex: number = 0;
-  public isAdding: boolean = false;
+  public isEditing: boolean = false;
 
   public setSelectedTabIndex(index: number): void{
     this.selectedTabIndex = index;
@@ -20,7 +20,7 @@ export class SystemNav {
     return this.selectedTabIndex;
   }
 
-  public setIsAdding(isAdding: boolean) {
-    this.isAdding = isAdding;
+  public setIsEditing(isEditing: boolean) {
+    this.isEditing = isEditing;
   }
 }

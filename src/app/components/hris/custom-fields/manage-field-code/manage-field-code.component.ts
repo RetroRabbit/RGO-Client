@@ -234,14 +234,14 @@ export class ManageFieldCodeComponent {
   addNewField() {
     this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
     this.router.navigateByUrl('/save-custom-field');
-    this.systemService.setIsAdding(true);
+    this.systemService.setIsEditing(true);
   }
 
   saveCustomField(field: CustomField) {
     this.systemService.selectedField = field;
     this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
     this.router.navigateByUrl('/save-custom-field');
-    this.systemService.setIsAdding(false);
+    this.systemService.setIsEditing(false);
   }
 
   changeTab(tabIndex: number) {
