@@ -1,29 +1,28 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
-import { Document } from 'src/app/models/hris/constants/starter-documents.contants';
+import { Document } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 
 @Component({
-  selector: 'app-accordion-starter-documents',
-  templateUrl: './accordion-starter-documents.component.html',
-  styleUrls: ['./accordion-starter-documents.component.css']
+  selector: 'app-accordion-documents-starterkit',
+  templateUrl: './accordion-documents.component.html',
+  styleUrls: ['./accordion-documents.component.css']
 })
-export class AccordionStarterDocumentsComponent {
+export class AccordionDocumentsComponent {
   @Output() updateDocument = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
 
   screenWidth = window.innerWidth;
 
-  @HostListener('window:resize',['$event'])
-  onResize(){
+  @HostListener('window:resize', ['$event'])
+  onResize() {
     this.screenWidth = window.innerWidth;
   }
 
@@ -42,16 +41,15 @@ export class AccordionStarterDocumentsComponent {
   dataSource = new MatTableDataSource<string>();
   selectedFile !: File;
   roles: string[] = [];
-  isLoadingUpload : boolean = false;
+  isLoadingUpload: boolean = false;
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
-    private employeeRoleService: EmployeeRoleService,
-    private employeeProfileService: EmployeeProfileService,
     private cookieService: CookieService,
-    private authAccessService: AuthAccessService
+    private authAccessService: AuthAccessService,
+    public navService: NavService,
   ) { }
 
   ngOnInit() {
@@ -110,16 +108,31 @@ export class AccordionStarterDocumentsComponent {
   }
 
   getEmployeeDocuments() {
-    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number).subscribe({
-      next: data => {
-        this.employeeDocuments = data;
-        this.dataSource.data = this.fileCategories;
-        this.calculateDocumentProgress();
-      },
-      error: error => {
-        this.snackBarService.showSnackbar(error, "snack-error");
-      }
-    })
+    if (this.employeeId != undefined) {
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 0).subscribe({
+        next: data => {
+          this.employeeDocuments = data;
+          this.dataSource.data = this.fileCategories;
+          this.calculateDocumentProgress();
+        },
+        error: error => {
+          this.snackBarService.showSnackbar(error, "snack-error");
+        }
+      })
+    }else {
+      this.employeeId = this.navService.employeeProfile.id;
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 0).subscribe({
+        next: data => {
+          this.employeeDocuments = data;
+          this.dataSource.data = this.fileCategories;
+          this.calculateDocumentProgress();
+        },
+        error: error => {
+          this.snackBarService.showSnackbar(error, "snack-error");
+        }
+      })
+    }
+
   }
 
   uploadDocumentDto(document: any) {
@@ -130,10 +143,11 @@ export class AccordionStarterDocumentsComponent {
       blob: this.base64String,
       fileCategory: document.fileCategory,
       uploadDate: document.uploadDate,
-      status: 1
+      status: 1,
+      documentType: 0
     }
     if (document.id == 0) {
-      this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
+      this.employeeDocumentService.saveEmployeeDocument(saveObj, 0).subscribe({
         next: () => {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
@@ -157,6 +171,7 @@ export class AccordionStarterDocumentsComponent {
         reason: document.reason,
         status: 1,
         counterSign: false,
+        documentType: 0,
         lastUpdatedDate: document.lastUpdatedDate
       }
       this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
@@ -192,6 +207,7 @@ export class AccordionStarterDocumentsComponent {
           uploadDate: new Date(),
           reason: '',
           counterSign: false,
+          documentType: 0,
           lastUpdatedDate: new Date()
         };
         this.uploadDocumentDto(newDto);
@@ -234,11 +250,11 @@ export class AccordionStarterDocumentsComponent {
     if (this.authAccessService.isEmployee()) {
       return false;
     }
-    else if(documentObject == null && (this.authAccessService.isAdmin() ||  this.authAccessService.isSuperAdmin())){
+    else if (documentObject == null && (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin())) {
       return false;
     }
     else if (documentObject?.status as number > 1) {
-      if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
+      if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
         return false;
       }
     }
@@ -252,13 +268,13 @@ export class AccordionStarterDocumentsComponent {
     this.updateDocument.emit(this.documentFormProgress);
   }
 
-  disableDownload(index : number){
+  disableDownload(index: number) {
     const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
 
-    if(documentObject == undefined)
+    if (documentObject == undefined)
       return false;
 
-    if(documentObject?.status == 0 || documentObject?.status == 1)
+    if (documentObject?.status == 0 || documentObject?.status == 1)
       return false;
     return true;
   }

@@ -111,7 +111,7 @@ export class AccordionEmployeeDocumentsComponent {
   }
 
   getEmployeeDocuments() {
-    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number).subscribe({
+    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number,2).subscribe({
       next: data => {
         this.employeeDocuments = data;
         this.dataSource.data = this.fileCategories;
@@ -134,7 +134,7 @@ export class AccordionEmployeeDocumentsComponent {
       status: 1
     }
     if (document.id == 0) {
-      this.employeeDocumentService.saveEmployeeDocument(saveObj).subscribe({
+      this.employeeDocumentService.saveEmployeeDocument(saveObj,2).subscribe({
         next: () => {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
@@ -155,6 +155,7 @@ export class AccordionEmployeeDocumentsComponent {
         fileCategory: document.fileCategory,
         blob: document.blob,
         uploadDate: document.uploadDate,
+        documentType: 2,
         reason: document.reason,
         status: 1,
         counterSign: false,

@@ -15,11 +15,11 @@ export class EmployeeDocumentService {
         this.baseUrl =`${environment.HttpsBaseURL}/employee-documents`
     }
 
-    getAllEmployeeDocuments(employeeId: number): Observable<EmployeeDocument[]> {
-        return this.httpClient.get<EmployeeDocument[]>(`${this.baseUrl}/${employeeId}`);
+    getAllEmployeeDocuments(employeeId: number, documentType: number): Observable<EmployeeDocument[]> {
+        return this.httpClient.get<EmployeeDocument[]>(`${this.baseUrl}/all/${employeeId}/${documentType}`);
     }
-    saveEmployeeDocument(employeeDocument: any): Observable<EmployeeDocument> {
-        return this.httpClient.post<EmployeeDocument>(`${this.baseUrl}`, employeeDocument);
+    saveEmployeeDocument(employeeDocument: any, documentType: number): Observable<EmployeeDocument> {
+        return this.httpClient.post<EmployeeDocument>(`${this.baseUrl}/${documentType}`, employeeDocument);
     }
     getEmployeeDocument(employeeId: number, filename: string): Observable<EmployeeDocument> {
         return this.httpClient.get<EmployeeDocument>(`${this.baseUrl}?employeeId=${employeeId}?filename=${filename}`);
@@ -29,5 +29,8 @@ export class EmployeeDocumentService {
     }
     deleteEmployeeDocument(employeeDocumentId: number): Observable<EmployeeDocument> {
         return this.httpClient.delete<EmployeeDocument>(`${this.baseUrl}/${employeeDocumentId}`);
+    }
+    getCategories(employeeId: number, documentType: number): Observable<EmployeeDocument[]> {
+        return this.httpClient.get<EmployeeDocument[]>(`${this.baseUrl}/category/${employeeId}/${documentType}`);
     }
 };

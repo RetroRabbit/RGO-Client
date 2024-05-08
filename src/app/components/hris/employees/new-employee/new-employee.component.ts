@@ -283,6 +283,7 @@ export class NewEmployeeComponent implements OnInit {
                   reason: "",
                   status: 3,
                   counterSign: false,
+                  documentType: 1,
                   lastUpdatedDate: new Date()
                 };
                 this.employeeDocumentModels.push(employeeDocument);
@@ -340,7 +341,7 @@ export class NewEmployeeComponent implements OnInit {
   onUploadDocument(nextPage: string): void {
     this.isLoadingAddEmployee = true;
     this.employeeDocumentModels.forEach((documentModel) => {
-      this.employeeDocumentService.saveEmployeeDocument(documentModel).subscribe({
+      this.employeeDocumentService.saveEmployeeDocument(documentModel, 0).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Files have been uploaded", "snack-success");
           this.isLoadingAddEmployee = false;

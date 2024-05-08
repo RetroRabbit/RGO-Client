@@ -39,24 +39,23 @@ export class ManageFieldCodeComponent {
   activeFieldsSearch: number = 0;
   archiveFieldsSearch: number = 0;
   displayedColumns: string[] = ['id', 'name', 'type', 'status', 'edit'];
-
   dataSource: MatTableDataSource<CustomField> = new MatTableDataSource();
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   isLoading: boolean = true;
   runCounter: number = 0;
   runThreshold: number = 2;
+  screenWidth: number = 992;
+  pageSizes: number[] = [1, 5, 10, 25, 100];
+  PREVIOUS_PAGE = "previousPage";
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  screenWidth: number = 992;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
   }
 
-  pageSizes: number[] = [1, 5, 10, 25, 100];
-  PREVIOUS_PAGE = "previousPage";
   constructor(
     public router: Router,
     private customFieldService: CustomFieldService,

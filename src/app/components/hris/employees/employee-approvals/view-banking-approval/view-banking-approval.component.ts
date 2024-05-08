@@ -3,41 +3,41 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-banking.service';
-import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { Location } from '@angular/common';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
+
 @Component({
   selector: 'app-view-banking-approval',
   templateUrl: './view-banking-approval.component.html',
   styleUrls: ['./view-banking-approval.component.css']
 })
+
 export class ViewBankingApprovalComponent {
   copyOfSelected: EmployeeBanking | null = null;
   declineReason: string = "";
   selectedReason: string = "";
   isLoading: boolean = true;
   employeeBanking: any;
-
   bankingId = this.route.snapshot.params['id'];
   showConfirmDialog: boolean = false;
   dialogTypeData!: Dialog;
   employee: any;
 
-  constructor(private employeeBankingService: EmployeeBankingService, 
-    private router: Router, private route: ActivatedRoute, 
-    private location: Location, private snackBarService: SnackbarService, 
-    private navService: NavService, private employeeService: EmployeeProfileService,
-    private changeDetector: ChangeDetectorRef) 
-    { }
+  constructor(
+    private employeeBankingService: EmployeeBankingService,
+    private router: Router, 
+    private route: ActivatedRoute,
+    private snackBarService: SnackbarService,
+    private employeeService: EmployeeProfileService,
+    private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.getBankingDetails(this.bankingId);
   }
-  
+
   ngAfterContentChecked() {
     this.changeDetector.detectChanges();
- }
+  }
 
   backToApprovals() {
     this.router.navigateByUrl('/employees')
@@ -48,7 +48,7 @@ export class ViewBankingApprovalComponent {
       this.employeeBankingService.getBankingDetails(id).subscribe({
         next: data => {
           this.employeeBanking = data;
-          this.employeeService.getEmployeeById(this.employeeBanking[this.employeeBanking.length -1].employeeId).subscribe({
+          this.employeeService.getEmployeeById(this.employeeBanking[this.employeeBanking.length - 1].employeeId).subscribe({
             next: employee => {
               this.employee = employee;
               this.isLoading = false;
@@ -59,7 +59,7 @@ export class ViewBankingApprovalComponent {
     }
   }
 
-  getEmployeeForBanking(id : number): void {
+  getEmployeeForBanking(id: number): void {
     this.employeeService.getEmployeeById(id).subscribe({
       next: employee => {
         this.employee = employee;
@@ -67,8 +67,8 @@ export class ViewBankingApprovalComponent {
     });
   }
 
-  convertFileToBase64(index : number) {    
-    if (this.employeeBanking[index]?.file){
+  convertFileToBase64(index: number) {
+    if (this.employeeBanking[index]?.file) {
       const newOrOld = this.employeeBanking.length > 1 ? 'Update' : 'Current'
       this.downloadFile(this.employeeBanking[index]?.file, `${this.employee.name}_${this.employee.surname}_${newOrOld}_Proof_of_Account.pdf`);
     }
@@ -96,23 +96,23 @@ export class ViewBankingApprovalComponent {
   }
 
   updateBanking(status: number): void {
-    let copyOfBanking = {...this.employeeBanking[this.employeeBanking.length - 1]};
+    let copyOfBanking = { ...this.employeeBanking[this.employeeBanking.length - 1] };
     copyOfBanking.status = status;
-    if(status == 2)
+    if (status == 2)
       copyOfBanking.declineReason = `${this.selectedReason} ${this.declineReason}`;
     else
       copyOfBanking.declineReason = ``;
-    
+
     this.employeeBankingService.updatePending(copyOfBanking).subscribe({
       next: () => {
-          this.snackBarService.showSnackbar(`Bank statement has successfully updated`, "snack-success");
-          this.backToApprovals();
+        this.snackBarService.showSnackbar(`Bank statement has successfully updated`, "snack-success");
+        this.backToApprovals();
       },
       error: error => this.snackBarService.showSnackbar(`${error}`, "snack-error")
     })
   }
 
-  openDialog(): void{
+  openDialog(): void {
     this.dialogTypeData = {
       type: 'decline',
       title: 'Decline Update',
@@ -123,10 +123,10 @@ export class ViewBankingApprovalComponent {
     this.showConfirmDialog = true;
   }
 
-  dialogFeedBack(response: any): void{
+  dialogFeedBack(response: any): void {
     this.declineReason = response.declineReason;
     this.selectedReason = response.selectedReason;
-    if(!response.confirmatio)
+    if (!response.confirmatio)
       this.updateBanking(2);
     else
       this.backToApprovals();

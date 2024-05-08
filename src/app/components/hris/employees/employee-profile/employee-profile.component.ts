@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
-import { Document } from 'src/app/models/hris/constants/starter-documents.contants';
+import { Document } from 'src/app/models/hris/constants/documents.contants';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { AccordionBankingComponent } from './accordions/accordion-banking/accordion-banking.component';
@@ -20,7 +20,7 @@ import { AccordionProfileAddressDetailsComponent } from './accordions/accordion-
 import { AccordionProfileContactDetailsComponent } from './accordions/accordion-profile/accordion-profile-contact-details/accordion-profile-contact-details.component';
 import { AccordionProfileEmployeeDetailsComponent } from './accordions/accordion-profile/accordion-profile-employee-details/accordion-profile-employee-details.component';
 import { AccordionProfilePersonalDetailsComponent } from './accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
-import { AccordionStarterDocumentsComponent } from './accordions/accordion-starter-documents/accordion-starter-documents.component';
+import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents-starterkit/accordion-documents.component';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -90,7 +90,6 @@ export class EmployeeProfileComponent implements OnChanges {
   @ViewChild(AccordionProfileContactDetailsComponent) contactAccordion!: AccordionProfileContactDetailsComponent;
   @ViewChild(AccordionProfileEmployeeDetailsComponent) employeeAccordion!: AccordionProfileEmployeeDetailsComponent;
   @ViewChild(AccordionProfilePersonalDetailsComponent) personalAccordion!: AccordionProfilePersonalDetailsComponent;
-  @ViewChild(AccordionStarterDocumentsComponent) documentAccordion!: AccordionStarterDocumentsComponent;
 
   imageUrl!: string;
   validateFile: any;
