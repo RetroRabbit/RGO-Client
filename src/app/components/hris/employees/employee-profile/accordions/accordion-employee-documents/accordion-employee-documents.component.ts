@@ -182,7 +182,7 @@ export class AccordionEmployeeDocumentsComponent {
       const reader = new FileReader();
       reader.onload = () => {
         this.base64String = reader.result as string;
-        var newDto: {} = {
+        let newDto: {} = {
           id: existingValue != undefined ? existingValue?.id as number : 0,
           employee: this.employeeProfile,
           reference: "",
@@ -218,16 +218,7 @@ export class AccordionEmployeeDocumentsComponent {
   downloadDocument(event: any) {
     const id = event.srcElement.parentElement.id;
     const documentObject = this.employeeDocuments.find(document => document.fileCategory == id) as any;
-    if (documentObject === undefined) {
-      // TODO: download clean slate form
-    }
-    else {
-      if (documentObject.status == 2) {
-        // TODO: download clean slate form
-      } else {
-        this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
-      }
-    }
+    this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
   }
 
   disableUploadButton(index: number): boolean {
@@ -259,8 +250,6 @@ export class AccordionEmployeeDocumentsComponent {
     if (documentObject == undefined)
       return false;
 
-    if (documentObject?.status == 0 || documentObject?.status == 1)
-      return false;
     return true;
   }
 
