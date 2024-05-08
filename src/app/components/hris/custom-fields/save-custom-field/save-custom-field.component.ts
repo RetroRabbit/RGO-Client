@@ -60,7 +60,6 @@ export class SaveCustomFieldComponent {
     this.options.push(this.fb.control(''));
     if (this.selectedCustomField) {
       this.populateCustomFieldForm();
-      this.systemService.isAdding;
     }
   }
 
