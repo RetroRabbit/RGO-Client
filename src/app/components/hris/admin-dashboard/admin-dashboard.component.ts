@@ -44,44 +44,43 @@ export class AdminDashboardComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  categoryControl = new FormControl();
+  PREVIOUS_PAGE: string = 'previousPage';
   chartName: string = '';
   chartType: any = '';
   chartData: number[] = [];
+  charts: ChartData[] = [];
   categories: string[] = [];
   chartCategory: any = '';
   chartRoles: any = '';
   filteredCategories: string[] = this.categories;
   selectedCategories: string[] = [];
-  noResults: boolean = false;
-  typeControl = new FormControl();
   types: string[] = [];
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
-  loadCounter: number = 0;
-  isMobileScreen = false;
+  employeeProfiles: EmployeeProfile[] = [];
   totalNumberOfEmployees: number = 0;
-  charts: ChartData[] = [];
+  roles: string[] = [];
   searchQuery: string = '';
   searchResults: EmployeeProfile[] = [];
-  employeeProfiles: EmployeeProfile[] = [];
+  svgWidth: number = 500;
+
+  isMobileScreen = false;
+  noResults: boolean = false;
   allFlag: boolean = false;
   isLoading: boolean = true;
   isLoadingChart: boolean = false;
-  svgWidth: number = 500;
-  PREVIOUS_PAGE: string = 'previousPage';
+  displayAllEmployees: boolean = false;
+  loadCounter: number = 0;
+
+  categoryControl = new FormControl();
+  typeControl = new FormControl();
 
   employeeCount: EmployeeCountDataCard = new EmployeeCountDataCard();
   churnRate: ChurnRateDataCard = new ChurnRateDataCard();
   employeeType: EmployeeType = new EmployeeType();
 
-  displayAllEmployees: boolean = false;
-  roles: string[] = [];
-  editingCharts: boolean = false;
-
   dataSource: MatTableDataSource<{
     Name: string;
-    Position: string | undefined;
     Level: number | undefined;
     Client: string;
     Roles: string[];

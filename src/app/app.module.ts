@@ -69,7 +69,7 @@ import { ChartReportPdfComponent } from './components/hris/charts/chart-report-p
 import { ConfirmDialogComponent } from './components/shared-components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccordionBankingComponent } from './components/hris/employees/employee-profile/accordions/accordion-banking/accordion-banking.component';
-import { AccordionDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents.component';
+import { AccordionDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents-starterkit/accordion-documents.component';
 import { LoadingComponentComponent } from './components/shared-components/loading-component/loading-component.component';
 import { AtsDashboardComponent } from './components/ats/ats-dashboard/ats-dashboard.component';
 import { NewCandidateComponent } from './components/ats/candidates/new-candidate/new-candidate.component';
@@ -81,7 +81,8 @@ import { AccordionProfileContactDetailsComponent } from './components/hris/emplo
 import { AccordionProfileAdditionalComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
 import { AccordionProfilePersonalDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
 import { AccordionProfileAddressDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { AccordionDocumentsAdditionalComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents-additional/accordion-ducuments-additional/accordion-documents-additional.component';
 import { ViewStarterKitApprovalComponent } from './components/hris/employees/employee-approvals/view-starter-kit-approval/view-starter-kit-approval.component';
 import { ViewBankingApprovalComponent } from './components/hris/employees/employee-approvals/view-banking-approval/view-banking-approval.component';
 import { EmployeeOptionsComponent } from './components/hris/employees/employee-options/employee-options.component';
@@ -124,6 +125,7 @@ import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-
     AccordionProfileAdditionalComponent,
     AccordionProfilePersonalDetailsComponent,
     AccordionProfileAddressDetailsComponent,
+    AccordionDocumentsAdditionalComponent,
     ViewStarterKitApprovalComponent,
     ViewBankingApprovalComponent,
     EmployeeOptionsComponent,

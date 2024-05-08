@@ -9,11 +9,11 @@ import { barChartOptions, pieChartOptions } from 'src/app/models/hris/constants/
   templateUrl: './chart-reports.component.html',
   styleUrls: ['./chart-reports.component.css']
 })
+
 export class ReportComponent {
   @Input() chartData !: { selectedChart: any; canvasData: any; };
   activeChart: any = null;
   showReport: boolean = false;
-  clearActiveChart: () => void = () => { };
   public pieChartPlugins = [ChartDataLabels];
   public barChartPlugins = [ChartDataLabels];
 
@@ -36,6 +36,7 @@ export class ReportComponent {
       newWindow.document.close();
     }
   }
+
   generateHTMLReport(): string {
     const chartHTML = `<h1>${this.chartData.selectedChart.label}</h1>`;
     const dataHTML = `<p>Data: ${JSON.stringify(this.chartData.selectedChart.data)}</p>`;

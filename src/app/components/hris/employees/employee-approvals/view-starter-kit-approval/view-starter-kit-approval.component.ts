@@ -1,9 +1,7 @@
 import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { CookieService } from 'ngx-cookie-service';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
-import { Location } from '@angular/common';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
@@ -18,34 +16,32 @@ export class ViewStarterKitApprovalComponent {
 
   declineReason: string = "";
   selectedReason: string = "";
-
   lastUpdatedMessage: string = "";
-
   isLoading: boolean = true;
   showConfirmDialog: boolean = false;
-
   documenetIndex: number = 0;
-
   activeButtonIndex: number | null = null;
   activeButtonType: 'approve' | 'decline' | null = null;
-
   dialogTypeData!: Dialog;
   documentId = this.route.snapshot.params['id'];
   employee: any;
   employeeDocuments: EmployeeDocument[] = [];
   fileCategories = Document;
-
   screenWidth = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
   }
-  constructor(private cookieService: CookieService, private router: Router,
-    private route: ActivatedRoute, private location: Location,
-    private snackBarService: SnackbarService, private documentService: EmployeeDocumentService,
-    private changeDetector: ChangeDetectorRef, private employeeService: EmployeeProfileService
-  ) { }
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private snackBarService: SnackbarService,
+    private documentService: EmployeeDocumentService,
+    private changeDetector: ChangeDetectorRef,
+    private employeeService: EmployeeProfileService)
+    { }
 
   ngOnInit(): void {
     this.getEmployeeDocuments(this.documentId);
@@ -60,7 +56,7 @@ export class ViewStarterKitApprovalComponent {
   }
 
   getEmployeeDocuments(id: number) {
-    this.documentService.getAllEmployeeDocuments(id).subscribe({
+    this.documentService.getAllEmployeeDocuments(id, 0).subscribe({
       next: documents => {
         this.employeeDocuments = documents;
         this.employeeService.getEmployeeById(this.employeeDocuments[this.employeeDocuments.length - 1].employeeId).subscribe({
