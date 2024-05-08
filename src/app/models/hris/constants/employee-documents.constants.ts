@@ -4,7 +4,6 @@ export const Document = [
   "Equipment",
   "Mock Payslip",
   "MIE Consent Form",
-  "PIP",
   "Qualification Check",
   "Retro CV",
   "Written approval of offer",
