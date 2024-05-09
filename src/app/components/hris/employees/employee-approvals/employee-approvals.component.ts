@@ -58,16 +58,16 @@ export class EmployeeApprovalsComponent {
 
   ngOnInit(): void {
     this.fetchData(this.selectedTabService.getSelectedTabIndex());
+    
   }
 
-  fetchData(active: number = this.selectedTabService.getSelectedTabIndex()): void {
+  fetchData(active: number= this.selectedTabService.getSelectedTabIndex()): void {
     this.isLoading = true;
     this.employeeBankingandstarterkitService.getAllBankingAndStarterkits().subscribe({
       next: (data: BankingAndStarterKitDto[]) => {
         this.bankingAndStarterKitData = data;
         this.updateStatusCounts(data)
-        this.buildFilteredArray(1);
-        this.selectedTabService.setSelectedTabIndex(active)
+        this.buildFilteredArray();
       },
       error: () => this.snackBarService.showSnackbar("Error fetching banking and starter kit data", "snack-error"),
       complete: () => this.isLoading = false
@@ -94,6 +94,7 @@ export class EmployeeApprovalsComponent {
     this.pendingCount = bankingDtos.filter(dto => dto.status == 1).length;
     this.approvedCount = bankingDtos.filter(dto => dto.status == 0).length;
     this.declinedCount = bankingDtos.filter(dto => dto.status == 2).length;
+    console.log(this.declinedCount)
 
     let employeeIds: number[] = [];
     documentDtos.forEach(dto => {
@@ -118,14 +119,14 @@ export class EmployeeApprovalsComponent {
     });
   }
 
-  buildFilteredArray(status: number) {
+  buildFilteredArray() {
     this.filteredEmployeeDtos = [];
     let indexVisistedArray: number[] = [];
     for (let i = 0; i < this.bankingAndStarterKitData.length; i++) {
       if (!indexVisistedArray.includes(i)) {
         const currentDto = this.bankingAndStarterKitData[i];
-        if (currentDto.employeeBankingDto !== null && currentDto.employeeBankingDto.status == status) {
-          this.filterDocumentTypeAndStatus(currentDto, true, status);
+        if (currentDto.employeeBankingDto !== null && currentDto.employeeBankingDto.status == (this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1)) {
+          this.filterDocumentTypeAndStatus(currentDto, true, (this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1));
         }
         if (currentDto.employeeDocumentDto !== null) {
           const employeeDocumentsIndexes = this.findEmployeeDocuments(i, currentDto.employeeDocumentDto.employeeId);
@@ -137,17 +138,17 @@ export class EmployeeApprovalsComponent {
           });
 
           if (documentsForEmployee.length < 4) {
-            if (status == 1)
-              this.filterDocumentTypeAndStatus(currentDto, false, status);
+            if((this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1) == 1)
+              this.filterDocumentTypeAndStatus(currentDto, false, (this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1));
           }
           else {
             let sameStatuses = documentsForEmployee.every(document => document.status == documentsForEmployee[0].status);
             if (!sameStatuses) {
-              if (status == 1)
-                this.filterDocumentTypeAndStatus(currentDto, false, status);
+              if ((this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1) == 1)
+                this.filterDocumentTypeAndStatus(currentDto, false, (this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1));
             } else {
-              if (status == documentsForEmployee[0].status)
-                this.filterDocumentTypeAndStatus(currentDto, false, status);
+              if ((this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1) == documentsForEmployee[0].status)
+                this.filterDocumentTypeAndStatus(currentDto, false, (this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1));
             }
           }
         }
@@ -155,6 +156,7 @@ export class EmployeeApprovalsComponent {
     }
     this.filteredEmployeeDtos.sort((a, b) => (a.name < b.name ? -1 : 1));
     this.dataSource = new MatTableDataSource(this.filteredEmployeeDtos);
+    console.log('Filtered Emple Data:', this.filteredEmployeeDtos);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.sortByNameDefault(this.sort);
@@ -184,12 +186,8 @@ export class EmployeeApprovalsComponent {
   }
 
   filterBankingAndDocumentsByStatus(status: number) {
-    if (status < 2)
-      this.selectedTabService.setSelectedTabIndex((status == 1) ? 0 : 1);
-    else
-      this.selectedTabService.setSelectedTabIndex(2);
-
-    this.buildFilteredArray(status);
+    this.selectedTabService.setSelectedTabIndex(status);
+    this.buildFilteredArray();
   }
 
   routeToApprovalPages(element: any) {
