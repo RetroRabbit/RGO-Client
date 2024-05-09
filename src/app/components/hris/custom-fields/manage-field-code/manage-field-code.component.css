@@ -138,7 +138,6 @@
 }
 
 #search-field:focus {
-  background-color: rgb(202, 204, 214);
   color: #0029C6;
   outline: 0;
 }
