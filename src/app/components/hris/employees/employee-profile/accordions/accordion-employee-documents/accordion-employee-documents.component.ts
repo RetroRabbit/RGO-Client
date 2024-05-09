@@ -10,6 +10,7 @@ import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-rol
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 
 @Component({
   selector: 'app-accordion-employee-documents',
@@ -51,14 +52,15 @@ export class AccordionEmployeeDocumentsComponent {
     private snackBarService: SnackbarService,
     private employeeRoleService: EmployeeRoleService,
     private employeeProfileService: EmployeeProfileService,
+    public navService: NavService,
     private cookieService: CookieService,
     private authAccessService: AuthAccessService
   ) { }
 
   ngOnInit() {
-    this.getEmployeeDocuments();
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
+    this.getEmployeeDocuments();
   }
 
   openFileInput() {
@@ -111,16 +113,33 @@ export class AccordionEmployeeDocumentsComponent {
   }
 
   getEmployeeDocuments() {
-    this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number,2).subscribe({
-      next: data => {
-        this.employeeDocuments = data;
-        this.dataSource.data = this.fileCategories;
-        this.calculateDocumentProgress();
-      },
-      error: error => {
-        this.snackBarService.showSnackbar(error, "snack-error");
-      }
-    })
+    if (this.employeeId != undefined) {
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 2).subscribe({
+        next: data => {
+          this.employeeDocuments = data;
+          console.log('Employee Documents: ', this.employeeDocuments)
+          this.dataSource.data = this.fileCategories;
+          this.calculateDocumentProgress();
+        },
+        error: error => {
+          this.snackBarService.showSnackbar(error, "snack-error");
+        }
+      });
+    } else {
+      this.employeeId = this.navService.employeeProfile.id;
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 2).subscribe({
+        next: data => {
+          this.employeeDocuments = data;
+          console.log('Employee Documents: ', this.employeeDocuments)
+          this.dataSource.data = this.fileCategories;
+          this.calculateDocumentProgress();
+        },
+        error: error => {
+          this.snackBarService.showSnackbar(error, "snack-error");
+        }
+      });
+    }
+    console.log(`Employee Profile: ${this.employeeId}`);
   }
 
   uploadDocumentDto(document: any) {
@@ -129,52 +148,25 @@ export class AccordionEmployeeDocumentsComponent {
       employeeId: document.employee.id,
       fileName: document.fileName,
       blob: this.base64String,
-      fileCategory: document.fileCategory,
+      fileCategory: null,
+      employeeFileCategory: document.fileCategories,
       uploadDate: document.uploadDate,
-      status: 1
+      status: 1,
+      documentType: 2,
     }
-    if (document.id == 0) {
-      this.employeeDocumentService.saveEmployeeDocument(saveObj,2).subscribe({
-        next: () => {
-          this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar("Document added", "snack-success");
-          this.getEmployeeDocuments();
-          this.calculateDocumentProgress();
-        },
-        error: (error) => {
-          this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar(error, "snack-error");
-        }
-      });
-    } else {
-      const updatedDocument = {
-        id: document.id,
-        employeeId: document.employee.id,
-        reference: document.reference,
-        fileName: document.fileName,
-        fileCategory: document.fileCategory,
-        blob: document.blob,
-        uploadDate: document.uploadDate,
-        documentType: 2,
-        reason: document.reason,
-        status: 1,
-        counterSign: false,
-        lastUpdatedDate: document.lastUpdatedDate
+    console.log('Saved Object',saveObj);
+    this.employeeDocumentService.saveEmployeeDocument(saveObj, 2).subscribe({
+      next: () => {
+        this.isLoadingUpload = false;
+        this.snackBarService.showSnackbar("Document added", "snack-success");
+        this.getEmployeeDocuments();
+        this.calculateDocumentProgress();
+      },
+      error: (error) => {
+        this.isLoadingUpload = false;
+        this.snackBarService.showSnackbar(error, "snack-error");
       }
-      this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
-        next: () => {
-          this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar("Document updated", "snack-success");
-          this.getEmployeeDocuments();
-          this.calculateDocumentProgress();
-
-        },
-        error: (error) => {
-          this.snackBarService.showSnackbar(error, "snack-error");
-          this.isLoadingUpload = false;
-        }
-      });
-    }
+    });
   }
 
   buildDocumentDto() {
@@ -188,16 +180,18 @@ export class AccordionEmployeeDocumentsComponent {
           employee: this.employeeProfile,
           reference: "",
           fileName: this.documentsFileName,
-          fileCategory: +this.uploadButtonIndex,
+          fileCategory: null,
+          employeeFileCategory: +this.uploadButtonIndex,
           blob: this.base64String,
           status: 1,
+          documentType: 2,
           uploadDate: new Date(),
           reason: '',
           counterSign: false,
           lastUpdatedDate: new Date()
         };
         this.uploadDocumentDto(newDto);
-
+        console.log('New Dto: ', newDto)
       };
       reader.readAsDataURL(this.selectedFile);
     }
@@ -208,6 +202,7 @@ export class AccordionEmployeeDocumentsComponent {
     if (object == null) {
       return null;
     }
+    console.log('Object[0]: ',object[ 0 ]);
     return object[ 0 ];
   }
 
