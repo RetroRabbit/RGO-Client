@@ -106,10 +106,6 @@
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].hasError('required')">
                                             Emergency contact number is required
                                         </mat-error>
-                                        <mat-error
-                                            *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].hasError('pattern') && !sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactName'].hasError('required')">
-                                            Contact number must only contain numbers
-                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
