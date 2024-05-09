@@ -384,7 +384,7 @@ export class ManageFieldCodeComponent {
   }
 
   showDialog(status: number) {
-    this.dialogTypeData.type = 'confirm';
+    this.dialogTypeData.type = 'save';
     this.dialogTypeData.confirmButtonText = 'Save';
     this.dialogTypeData.denyButtonText = 'Cancel';
 
