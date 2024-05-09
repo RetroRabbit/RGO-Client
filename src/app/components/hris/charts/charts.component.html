@@ -77,11 +77,21 @@
       </div>
     </div>
     <hr>
-    <div id="chart-body" class="row pb-2">
-      <div id="canvas-container">
+    <div id="chart-body" class="pb-2">
+      <div class="col-5 col-md-5" id="canvas-container-bar" *ngIf="chart.type == 'bar'">
+        <canvas id="canvas-bar" [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
+          [datasets]='chart.datasets' [labels]="chart.type == 'bar'? chart.labels : chart.labels" [type]="chart.type"
+          [options]="getChartOptions(chart.type)"></canvas>
+      </div>
+      <div id="canvas-container-pie" *ngIf="chart.type == 'pie'">
         <canvas [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
           [datasets]='chart.datasets' [labels]="chart.type == 'bar'? chart.labels : chart.labels" [type]="chart.type"
           [options]="getChartOptions(chart.type)"></canvas>
+      </div>
+      <div>Roles:
+        <div *ngFor="let role of chart.roles;index as k">
+          - {{chart.roles[k]}}
+        </div>
       </div>
     </div>
   </div>

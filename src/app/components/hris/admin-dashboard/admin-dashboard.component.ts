@@ -399,17 +399,13 @@ export class AdminDashboardComponent {
       return;
     }
 
-    let combinedChartName = this.chartName;
-    if (this.selectedTypes.length > 0) {
-      combinedChartName += ` - ${this.selectedTypes.join(', ')}`;
-    }
     this.isLoadingChart = true;
     this.loadCounter = 0;
     this.chartService
       .createChart(
         this.selectedCategories,
         this.selectedTypes,
-        combinedChartName,
+        this.chartName,
         this.chartType
       )
       .subscribe({
