@@ -30,7 +30,4 @@ export class EmployeeDocumentService {
     deleteEmployeeDocument(employeeDocumentId: number): Observable<EmployeeDocument> {
         return this.httpClient.delete<EmployeeDocument>(`${this.baseUrl}/${employeeDocumentId}`);
     }
-    getCategories(employeeId: number, documentType: number): Observable<EmployeeDocument[]> {
-        return this.httpClient.get<EmployeeDocument[]>(`${this.baseUrl}/category/${employeeId}/${documentType}`);
-    }
 };
