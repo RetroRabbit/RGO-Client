@@ -35,10 +35,10 @@
             <div class="col-12">
               <div #chartContainer id="edit-chart-container">
                 <canvas [plugins]="chartData.selectedChart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
-                [datasets]='chartData.selectedChart.datasets'
-                [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.labels : chartData.selectedChart.labels"
-                [type]="chartData.selectedChart.type"
-                [options]="chartData.selectedChart.type == 'bar' ? barChartOptions : pieChartOptions"></canvas>
+                  [datasets]='chartData.selectedChart.datasets'
+                  [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.labels : chartData.selectedChart.labels"
+                  [type]="chartData.selectedChart.type"
+                  [options]="chartData.selectedChart.type == 'bar' ? barChartOptions : pieChartOptions"></canvas>
               </div>
             </div>
             <hr>
