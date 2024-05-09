@@ -1,4 +1,4 @@
-import { Component, Input, Inject, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, Inject, ElementRef, ViewChild } from '@angular/core';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import jsPDF from 'jspdf';
@@ -13,6 +13,7 @@ import { barChartOptions, pieChartOptions } from 'src/app/models/hris/constants/
   templateUrl: './chart-report-pdf.component.html',
   styleUrls: ['./chart-report-pdf.component.css']
 })
+
 export class ChartReportPdfComponent {
   @Input() inputchartData !: { selectedChart: any; canvasData: any; };
   activeChart: any = null;
@@ -48,6 +49,7 @@ export class ChartReportPdfComponent {
       newWindow.document.close();
     }
   }
+
   generateHTMLReport(): string {
     const chartHTML = `<h1>${this.chartData.selectedChart.label}</h1>`;
     const dataHTML = `<p>Data: ${JSON.stringify(this.chartData.selectedChart.data)}</p>`;
@@ -85,7 +87,7 @@ export class ChartReportPdfComponent {
         } else {
           container.removeAttribute("style");
         }
-      }).catch(error => {
+      }).catch(() => {
         this.snackBarService.showSnackbar("Error generating PDF", "snack-error");
 
         if (originalStyle !== null) {

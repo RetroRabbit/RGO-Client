@@ -27,39 +27,34 @@ export class EmployeeApprovalsComponent {
   bankingAndStarterKitData: BankingAndStarterKitDto[] = [];
   filteredEmployeeDtos: any[] = [];
   filteredEmployeeIds: number[] = [];
-
   displayedColumns: string[] = ['name', 'type', 'date', 'status', 'action'];
-
   userDocumentsMap: string[] = [];
   pageSizes: number[] = [1, 5, 10, 25, 100];
+  isUnique?: boolean = true;
+  isLoading: boolean = true;
+  showConfirmDialog: boolean = false;
+  pendingCount: number = 0;
+  approvedCount: number = 0;
+  declinedCount: number = 0;
+  screenWidth: number = 992;
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('searchInput') searchInput!: ElementRef;
 
-  isUnique?: boolean = true;
-  isLoading: boolean = true;
-  showConfirmDialog: boolean = false;
-
-  pendingCount: number = 0;
-  approvedCount: number = 0;
-  declinedCount: number = 0;
-  screenWidth: number = 992;
-
-  dataSource: MatTableDataSource<any> = new MatTableDataSource();
-  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
-
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
   }
+
   constructor(
     private employeeBankingandstarterkitService: EmployeeBankingandstarterkitService,
     private snackBarService: SnackbarService,
     public router: Router,
     public cookieService: CookieService,
-    public selectedTabService: SystemNav
-  ) { }
+    public selectedTabService: SystemNav) { }
 
   ngOnInit(): void {
     this.fetchData(this.selectedTabService.getSelectedTabIndex());
@@ -142,7 +137,7 @@ export class EmployeeApprovalsComponent {
           });
 
           if (documentsForEmployee.length < 4) {
-            if(status == 1)
+            if (status == 1)
               this.filterDocumentTypeAndStatus(currentDto, false, status);
           }
           else {

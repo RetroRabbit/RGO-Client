@@ -20,7 +20,7 @@ import { AccordionProfileAddressDetailsComponent } from './accordions/accordion-
 import { AccordionProfileContactDetailsComponent } from './accordions/accordion-profile/accordion-profile-contact-details/accordion-profile-contact-details.component';
 import { AccordionProfileEmployeeDetailsComponent } from './accordions/accordion-profile/accordion-profile-employee-details/accordion-profile-employee-details.component';
 import { AccordionProfilePersonalDetailsComponent } from './accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
-import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents.component';
+import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents-starterkit/accordion-documents.component';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { Clipboard } from '@angular/cdk/clipboard';

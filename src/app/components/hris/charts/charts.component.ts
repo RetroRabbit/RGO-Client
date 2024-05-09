@@ -22,7 +22,6 @@ import { pieChartOptions, barChartOptions } from 'src/app/models/hris/constants/
   styleUrls: ['./charts.component.css'],
 })
 
-
 export class ChartComponent implements OnInit {
 
   constructor(private chartService: ChartService,
@@ -37,6 +36,7 @@ export class ChartComponent implements OnInit {
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
   @Output() captureCharts = new EventEmitter<number>();
   @Input() chartsArray: ChartData[] = [];
+
   screenWidth: number = 767;
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -59,13 +59,12 @@ export class ChartComponent implements OnInit {
   selectedChartIndex: number = -1;
   barChartOptions = barChartOptions;
   pieChartOptions = pieChartOptions;
-  
 
   updateFormData: any = {
     Name: '',
     Type: '',
   }
-  
+
   getChartOptions(chartType: string) {
     return chartType === 'bar' ? this.barChartOptions : this.pieChartOptions;
   }
@@ -235,7 +234,7 @@ export class ChartComponent implements OnInit {
           data: this.chartData[i].dataSet[0],
           labels: labelsArray,
           backgroundColor: this.coloursArray
-          
+
         });
       } else {
         if (this.chartData[i].labels) {

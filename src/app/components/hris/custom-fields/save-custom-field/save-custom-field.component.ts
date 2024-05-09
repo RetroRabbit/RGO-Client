@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -16,7 +16,6 @@ import { SystemNav } from 'src/app/services/hris/system-nav.service';
   styleUrls: ['./save-custom-field.component.css']
 })
 export class SaveCustomFieldComponent {
-
   selectedCustomField?: CustomField;
   public statuses = statuses;
   public dataTypes = dataTypes;
@@ -49,7 +48,7 @@ export class SaveCustomFieldComponent {
     private snackBarService: SnackbarService,
     public cookieService: CookieService,
     public navService: NavService,
-    private systemService: SystemNav) {
+    public systemService: SystemNav) {
     this.selectedCustomField = systemService.selectedField;
   }
 
@@ -98,22 +97,22 @@ export class SaveCustomFieldComponent {
       var customField = new CustomField();
       customField = this.customFieldForm.value;
       customField.id = this.selectedCustomField ? this.selectedCustomField.id : 0,
-        customField.options = this.customFieldForm.value['type'] == 4 ? updatedOptions : [],
-        customField.status = 0;
-        
-        this.customFieldService.saveFieldCode(customField).subscribe({
-          next: (data) => {
-            this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
-            this.selectedCustomField = data;
-            this.customFieldForm.disable();
-            this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
-            this.systemService.selectedField = undefined;
-            this.router.navigateByUrl('/system-settings');
-          },
-          error: (error) => {
-            this.snackBarService.showSnackbar(error.error, "snack-error");
-          }
-        });
+      customField.options = this.customFieldForm.value['type'] == 4 ? updatedOptions : [],
+      customField.status = 0;
+
+      this.customFieldService.saveFieldCode(customField).subscribe({
+        next: (data) => {
+          this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
+          this.selectedCustomField = data;
+          this.customFieldForm.disable();
+          this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
+          this.systemService.selectedField = undefined;
+          this.router.navigateByUrl('/system-settings');
+        },
+        error: (error) => {
+          this.snackBarService.showSnackbar(error.error, "snack-error");
+        }
+      });
     }
     else {
       this.snackBarService.showSnackbar("Some fields are still missing information", "snack-error");
