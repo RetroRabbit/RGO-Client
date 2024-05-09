@@ -1,6 +1,6 @@
 <div class="container">
-<main class="container-fluid">
-    <div class="mt-4 mt-lg-5 mb-4 mx-0 px-0">
+  <main class="container-fluid">
+    <div class="mt-4 mt-lg-5 mx-0 px-0">
       <div [ngStyle]="{'display': 'flex', 'flex-direction': screenWidth < 992 ? 'column' : ''}"
         class="col-lg-12 justify-content-between">
         <div [ngClass]="screenWidth < 992 ? 'col-12 pl-0' : 'col-4 pl-0'">
@@ -15,49 +15,46 @@
             </button>
           </div>
         </div>
-        <div [ngClass]="screenWidth < 992 ? 
-        'col-12 row d-flex justify-content-space-between' : 
-        'col-5 row d-flex justify-content-space-between pt-1'">
-          <div class="col-6 p-6 mb-2  d-md-block">
-            <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
-                [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-                <div class="dropdown-wrapper">
-                  <mat-label>People Champion Filter</mat-label>
-                  <mat-select hideSingleSelectionIndicator="true">
-                    <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
-                      class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
-                      {{ champion.name }}
-                    </mat-option>
-                  </mat-select>
-                </div>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="col-6 ps-0  d-md-block">
-            <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-              <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
-                [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-                <div class="dropdown-wrapper">
-                  <mat-label>User Type Filter</mat-label>
-                  <mat-select hideSingleSelectionIndicator="true">
-                    <mat-option *ngFor="let userType of usertypes | async" [value]="userType.id" class="menu-item-button"
-                      (click)="changeUserTypeFilter(userType)">
-                      {{ userType.name }}
-                    </mat-option>
-                  </mat-select>
-                </div>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
         <div class="pe-0" [ngClass]="screenWidth < 992 ? 
         'col-12 row d-flex justify-content-space-between' : 
         'col-3 mb-1 row d-flex justify-content-end pt-1 me-lg-1'">
-          <button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
+          <button mat-button (click)="onAddEmployeeClick()" type="button" id="add-employee-button"
             class="col-lg-8 mt-3 btn btn-primary rounded-pill d-flex justify-content-center align-items-center">
             <span class="add-employee-span">+ Add Employee</span>
           </button>
+        </div>
+      </div>
+      <div [ngClass]="screenWidth < 992 ? 
+        'col-12 row d-flex justify-content-space-between' : 
+        'col-5 row d-flex justify-content-space-between pt-1'">
+        <div class="col-6 p-6 d-md-block">
+          <div (click)="$event.stopPropagation()" class="row col-12 px-0">
+            <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
+              [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
+              <mat-label>People Champion Filter</mat-label>
+              <mat-select hideSingleSelectionIndicator="true">
+                <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
+                  class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
+                  {{ champion.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-6 ps-0  d-md-block">
+          <div (click)="$event.stopPropagation()" class="row col-12 px-0">
+            <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
+              [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
+              <mat-label>User Type Filter</mat-label>
+              <mat-select hideSingleSelectionIndicator="true">
+                <mat-option *ngFor="let userType of usertypes | async" [value]="userType.id" class="menu-item-button"
+                  (click)="changeUserTypeFilter(userType)">
+                  {{ userType.name }}
+                </mat-option>
+              </mat-select>
+
+            </mat-form-field>
+          </div>
         </div>
       </div>
     </div>
@@ -106,17 +103,15 @@
                 <div (click)="$event.stopPropagation()" class="row col-12 px-0">
                   <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
                     [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-                    <div class="dropdown-wrapper">
-                      <mat-label>
-                        {{ splitAndCapitalizeCamelCase(employee.Roles.length > 0 ? employee.Roles[0] : "N/A") }}
-                      </mat-label>
-                      <mat-select hideSingleSelectionIndicator="true">
-                        <mat-option *ngFor="let role of roles | async" [value]="role"
-                          (click)="changeRole(employee.Email, role)">
-                          {{ splitAndCapitalizeCamelCase(role) }}
-                        </mat-option>
-                      </mat-select>
-                    </div>
+                    <mat-label>
+                      {{ splitAndCapitalizeCamelCase(employee.Roles.length > 0 ? employee.Roles[0] : "N/A") }}
+                    </mat-label>
+                    <mat-select hideSingleSelectionIndicator="true">
+                      <mat-option *ngFor="let role of roles | async" [value]="role"
+                        (click)="changeRole(employee.Email, role)">
+                        {{ splitAndCapitalizeCamelCase(role) }}
+                      </mat-option>
+                    </mat-select>
                   </mat-form-field>
                 </div>
               </mat-cell>

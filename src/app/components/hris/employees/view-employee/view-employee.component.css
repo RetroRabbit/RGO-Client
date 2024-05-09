@@ -180,7 +180,7 @@ input[type="number"] {
 }
 
 .add-employee-span {
-    margin-right: 3%;
+    margin-right: -5%;
     font-size: var(--font-size-1);
 }
 
@@ -192,7 +192,7 @@ input[type="number"] {
     .mat-mdc-text-field-wrapper {
         min-width: 100%;
         height: 56px !important;
-        position: relative;
+        min-height: 56px;
         align-items: center;
         font-size: var(--font-size-1);
         font-weight: 400;
@@ -285,26 +285,6 @@ mat-cell {
 
 .align-add-mobile {
     min-width: 55% !important;
-}
-
-
- app-view-employee .mat-mdc-text-field-wrapper{
-    max-height: 40px;
-    align-items: center;
-}
-
-.dropdown-wrapper{
-    display: flex;
-    align-items: center; 
-    justify-content: flex-start; 
-    gap: 10px; 
-    white-space: nowrap; 
-    overflow: hidden; 
-  }
-
-mat-label {
-    font-size: 14px;
-    position: relative;
 }
 
 .hide-column {

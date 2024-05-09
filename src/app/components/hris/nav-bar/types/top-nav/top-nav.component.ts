@@ -1,34 +1,38 @@
-import { Component } from '@angular/core';
+import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
+import { Component, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { Chart } from 'chart.js';
 import { CookieService } from 'ngx-cookie-service';
-import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ChartService } from 'src/app/services/hris/charts.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
-import { Router } from '@angular/router';
-import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { Chart } from 'chart.js';
-import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+
 @Component({
-  selector: 'app-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.css'],
+  selector: 'app-top-nav',
+  templateUrl: './top-nav.component.html',
+  styleUrls: ['./top-nav.component.css']
 })
-export class NavBarComponent {
+export class TopNavComponent {
+
   [x: string]: any;
+
   title = 'HRIS';
-  screenWidth!: number;
+  screenWidth: number;
+
   roles!: string[];
-  employeeProfile: EmployeeProfile | undefined;
-  profileImage: string | undefined = '';
   selectedItem: string = 'Dashboard';
   charts: Chart[] = [];
+
   employeeType: { id?: number; name?: string } | undefined = {
     id: 0,
     name: '',
   };
+
   isLoading: boolean = false;
   showConfirmDialog: boolean = false;
+
   dialogTypeData: Dialog = {
     type: '',
     title: '',
@@ -37,6 +41,12 @@ export class NavBarComponent {
     denyButtonText: '',
   };
   tempRoute: string = '';
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+  }
+
   constructor(
     private employeeProfileService: EmployeeProfileService,
     private chartService: ChartService,
@@ -54,27 +64,10 @@ export class NavBarComponent {
   }
 
   signIn() {
-    this.navService.showNavbar = true;
     const types: string = this.cookieService.get('userType');
-    const userEmail = this.cookieService.get('userEmail');
     this.roles = Object.keys(JSON.parse(types));
-
-    this.isLoading = true; 
-      this.employeeProfileService.getSimpleEmployee(userEmail).subscribe({
-      next: (data) => {
-        this.employeeProfile = data;
-        this.profileImage = this.employeeProfile.photo;
-        this.employeeType = this.employeeProfile.employeeType;
-        this.cookieService.set("userId", String(this.employeeProfile.id));
-        this.isLoading = false;
-        this.authAccessService.setUserId(Number(this.employeeProfile.id));
-        this.navService.refreshEmployee();
-      },
-      error: (error) => {
-        this.isLoading = false;
-      }
-    });
-
+    this.navService.refreshEmployee();
+    this.isLoading = false;
     this.chartService.getAllCharts().subscribe({
       next: (data: any) => (this.charts = data),
     });
@@ -86,10 +79,9 @@ export class NavBarComponent {
   }
 
   logout() {
-    this.navService.showNavbar = false;
-    this.auth.logout({
-      logoutParams: { returnTo: document.location.origin },
-    });
+    this.navService.showTopNavMenu = false;
+    this.authAccessService.clearUserData();
+    this.router.navigateByUrl("/");
   }
 
   changeNav(route: string) {
@@ -103,22 +95,22 @@ export class NavBarComponent {
     }
   }
 
-  switchToAts(route: string){
+  switchToAts(route: string) {
     if (this.navService.unsavedChanges) {
       this.tempRoute = route;
       this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
 
       this.showConfirmDialog = true;
-    } else {  
+    } else {
       this.navService.isHris = false;
       this.cookieService.set("isHris", String(this.navService.isHris));
       this.router.navigate([route]);
     }
   }
-  switchToHris(route: string){
+  switchToHris(route: string) {
     if (this.navService.unsavedChanges) {
       this.tempRoute = route;
-     this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
+      this.dialogTypeData = { type: 'save', title: 'Discard unsaved changes?', subtitle: '', confirmButtonText: 'Discard', denyButtonText: 'Back' }
 
       this.showConfirmDialog = true;
     } else {
@@ -137,7 +129,6 @@ export class NavBarComponent {
     if (event) {
       this.navService.unsavedChanges = false;
       this.router.navigate([this.tempRoute]);
-    } else {
     }
   }
 }

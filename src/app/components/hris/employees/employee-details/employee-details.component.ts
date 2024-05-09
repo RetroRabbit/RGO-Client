@@ -25,8 +25,8 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 })
 export class EmployeeDetailsComponent implements OnInit {
   @Input() selectedEmployee!: any | null;
-  employeeForm!: FormGroup;
 
+  employeeForm!: FormGroup;
   employeeTypes: EmployeeType[] = [];
   employeeData: EmployeeData[] = [];
   fieldcodes: CustomField[] = [];
@@ -60,9 +60,8 @@ export class EmployeeDetailsComponent implements OnInit {
     private clientService: ClientService,
     private employeeRoleService: EmployeeRoleService,
     private snackBarService: SnackbarService,
-    private navService: NavService
+    navService: NavService
   ) {
-    navService.showNavbar = true;
   }
 
   ngOnInit(): void {

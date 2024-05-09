@@ -1,7 +1,7 @@
 <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData"
   (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
-<div class="col-12 row px-4" id="header" *ngIf="navService.showNavbar">
-  <div class="col-11 col-md-9 col-lg-8 mt-auto">
+<div class="col-12 row px-4 justify-content-between" id="header">
+  <div class="col-lg-8 col-md-9 mt-auto">
     <div class="row" id="left-column">
       <div class="col-md-12" id="retro-logo">
         <svg width="162" height="21" viewBox="0 0 162 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,66 +43,63 @@
             fill="black" />
         </svg>
       </div>
-      <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" *ngIf="navService.isHris">
-        <div class="row">
-          <div class="col-2"
-            *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
-            <div id="nav-item-container" class="col-auto">
-              <div id="nav-item">
-                <div (click)="changeNav('/dashboard')" [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
-                  Dashboard
-                </div>
-                <div *ngIf="router.url == '/dashboard'" id="selected-line-box">
-                  <div id="selected-line">
-                  </div>
+      <div id="navigation" *ngIf="navService.isHris">
+        <div *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+          <div id="nav-item-container" class="col-auto">
+            <div id="nav-item">
+              <div (click)="changeNav('/dashboard')" [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
+                Dashboard
+              </div>
+              <div *ngIf="router.url == '/dashboard'" id="selected-line-box">
+                <div id="selected-line">
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-2">
-            <div id="nav-item-container">
-              <div id="nav-item">
-                <div (click)="changeNav('/profile')" [ngClass]="router.url.includes('/profile') ? 'active' : 'idle'">
-                  Profile
-                </div>
-                <div *ngIf="router.url.includes('/profile')" id="selected-line-box">
-                  <div id="selected-line">
-                  </div>
+        </div>
+        <div>
+          <div id="nav-item-container">
+            <div id="nav-item">
+              <div (click)="changeNav('/profile')" [ngClass]="router.url.includes('/profile') ? 'active' : 'idle'">
+                Profile
+              </div>
+              <div *ngIf="router.url.includes('/profile')" id="selected-line-box">
+                <div id="selected-line">
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-2"
-            *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
-            <div id="nav-item-container">
-              <div id="nav-item">
-                <div (click)="changeNav('/employees')" [ngClass]="router.url.includes('/employees') ||  router.url.includes('/view-') ? 'active' : 'idle'">
-                  Employees
-                </div>
-                <div *ngIf="router.url.includes('/employees') ||  router.url.includes('/view-')" id="selected-line-box">
-                  <div id="selected-line">
-                  </div>
+        </div>
+        <div *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+          <div id="nav-item-container">
+            <div id="nav-item">
+              <div (click)="changeNav('/employees')"
+                [ngClass]="router.url.includes('/employees') ||  router.url.includes('/view-') ? 'active' : 'idle'">
+                Employees
+              </div>
+              <div *ngIf="router.url.includes('/employees') ||  router.url.includes('/view-')" id="selected-line-box">
+                <div id="selected-line">
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-3" *ngIf="authAccessService.isAdmin()">
-            <div id="nav-item-container">
-              <div id="nav-item">
-                <div (click)="changeNav('/system-settings')"
-                  [ngClass]="router.url == '/system-settings' ? 'active' : 'idle'">
-                  System Settings
-                </div>
-                <div *ngIf="router.url == '/system-settings'" id="selected-line-box">
-                  <div id="selected-line">
-                  </div>
+        </div>
+        <div *ngIf="authAccessService.isAdmin()">
+          <div id="nav-item-container">
+            <div id="nav-item">
+              <div (click)="changeNav('/system-settings')"
+                [ngClass]="router.url == '/system-settings' ? 'active' : 'idle'">
+                System Settings
+              </div>
+              <div *ngIf="router.url == '/system-settings'" id="selected-line-box">
+                <div id="selected-line">
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-sm-12 col-md-12 col-lg-10" id="navigation" *ngIf="!navService.isHris">
+      <div id="navigation" *ngIf="!navService.isHris">
         <div class="row">
           <div class="col-2"
             *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
@@ -122,129 +119,28 @@
       </div>
     </div>
   </div>
-  <div class="col-1 col-md-3 col-lg-4 mt-4" id="right-column">
-    <div class="row justify-content-end">
-      <div class="col-1" id="info-menu">
-        <button mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu" id="options-trigger">
-          <mat-icon id="menu-icon">play_arrow</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu" class="p-2 rounded-4">
-          <button mat-menu-item id="menu-info">
-            <div class="row">
-              <button mat-button (click)="menuTrigger.openMenu()" id="options-trigger-upsidedown" class="col-2">
-                <mat-icon id="menu-icon">play_arrow</mat-icon>
-              </button>
-              <div id="menu-quick-info" class="col text-start">
-                <ngx-skeleton-loader *ngIf="isLoading; else ProfileName" appearance="line"></ngx-skeleton-loader>
-                <ng-template #ProfileName>
-                  <div style="color: #0029c6;" *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().name != null 
-                  && navService.getEmployeeProfile().surname != null; else NoName">
-                    {{navService.getEmployeeProfile().name + ' ' + navService.getEmployeeProfile().surname}}
-                  </div>
-                  <ng-template #NoName>
-                    <div></div>
-                  </ng-template>
-                </ng-template>
-                <ngx-skeleton-loader *ngIf="isLoading; else ProfileType" appearance="line"></ngx-skeleton-loader>
-                <ng-template #ProfileType>
-                  <div *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().employeeType != null; else NoType">
-                    {{navService.getEmployeeProfile().employeeType?.name}}
-                  </div>
-                  <ng-template #NoType>
-                    <div></div>
-                  </ng-template>
-                </ng-template>
-              </div>
-              <div id="employee-photo" class="col-2 me-3">
-                <div id="image-container" class="col-12">
-                  <ngx-skeleton-loader *ngIf="isLoading; else ProfileImage" appearance="circle"></ngx-skeleton-loader>
-                  <ng-template #ProfileImage>
-                    <img *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().photo != '';else NoProfile" 
-                    [src]="navService.getEmployeeProfile().photo" alt="">
-                    <ng-template #NoProfile>
-                      <img src="../../../assets/img/profile.png" alt="Employee Profile Photo">
-                    </ng-template>
-                  </ng-template>
-                </div>
-              </div>
-            </div>
-          </button>
-          <button mat-menu-item *ngIf="hasAccessToAts() && navService.isHris" (click)="switchToAts('/ats-dashboard')"
-          id="dropdown-buttons" class="rounded-5 row mb-2">
-            <div class="row d-flex justify-content-center align-items-center align-content-center">
-              <div class="col-2 mt-2">
-                <mat-icon>compare_arrows</mat-icon>
-              </div>
-              <div class="col-10">
-                <h6 class="col-12 mb-0">Switch to</h6>
-                <h4 class="col-12 mb-0">Applicant Portal</h4>
-              </div>
-            </div>
-          </button>
-          <button mat-menu-item *ngIf="!navService.isHris" (click)="switchToHris('/dashboard')" id="dropdown-buttons"
-            class="rounded-5 row mb-2">
-            <div class="row d-flex justify-content-center align-items-center align-content-center">
-              <div class="col-2 mt-2">
-                <mat-icon>compare_arrows</mat-icon>
-              </div>
-              <div class="col-10">
-                <h6 class="col-12 mb-0">Switch to</h6>
-                <h4 class="col-12 mb-0">Employee Portal</h4>
-              </div>
-            </div>
-          </button>
-          <hr class="m-0 ms-2 me-2">
-          <button mat-menu-item (click)="logout()" id="dropdown-buttons" class="rounded-5 row mt-2">
-            <div class="row mt-1">
-              <div class="col-2">
-                <mat-icon>exit_to_app</mat-icon>
-              </div>
-              <div class="col-10">
-                <h4 class="col-12 mb-0">Logout</h4>
-              </div>
-            </div>
-          </button>
-        </mat-menu>
-      </div>
-      <div class="col-auto ms-4" id="employee-info">
-        <div *ngIf="isLoading; else ProfileNameSurname" id="loader-style">
-          <ngx-skeleton-loader appearance="line" count="1" [theme]="{color: '#E0E0E0', borderRadius: '4px'}"></ngx-skeleton-loader>
-        </div>
-        <ng-template #ProfileNameSurname>
-          <div style="flex: 1;">
-            <div style="color: #0029c6;" *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().name != null 
-            && navService.getEmployeeProfile().surname != null; else NoName">
-              {{navService.getEmployeeProfile().name + ' ' + navService.getEmployeeProfile().surname}}
-            </div>
-            <ng-template #NoName>
-              <div></div>
-            </ng-template>
-          </div>
-        </ng-template>
-        <div *ngIf="isLoading; else ProfileType">
-          <ngx-skeleton-loader appearance="line" count="1"
-            [theme]="{color: '#E0E0E0', borderRadius: '4px'}"></ngx-skeleton-loader>
-        </div>
-        <ng-template #ProfileType>
-          <div *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().employeeType != null; else NoType">{{navService.getEmployeeProfile().employeeType?.name}}</div>
-          <ng-template #NoType>
-            <div>No Type</div>
-          </ng-template>
-        </ng-template>
-      </div>
-      <div class="col-auto" id="employee-photo">
-        <div id="image-container">
-          <ngx-skeleton-loader *ngIf="isLoading; else ProfileImage" appearance="circle" count="1" animation="pulse"
-            [theme]="{color: '#E0E0E0'}">
-          </ngx-skeleton-loader>
-          <ng-template #ProfileImage>
-            <img *ngIf="navService.employeeProfile != undefined && navService.getEmployeeProfile().photo != '';else NoProfile" [src]="navService.getEmployeeProfile().photo" alt="">
-            <ng-template #NoProfile>
-              <img src="../../../assets/img/profile.png" alt="Employee Profile Photo">
-            </ng-template>
-          </ng-template>
-        </div>
-      </div>
+  <div [id]="navService.showTopNavMenu ? 'drop-down-container-closed' : 'drop-down-container-open'" class="col-4 mt-3 p-3 rounded-3" >
+    <div id="drop-down-content">
+      <div class="me-3">
+      <button id="options-trigger" (click)="navService.showTopNavMenu = !navService.showTopNavMenu">
+        <mat-icon [id]="!navService.showTopNavMenu ? 'menu-icon-closed' : 'menu-icon-open'">play_arrow</mat-icon>
+      </button>
+    </div>
+    <div [hidden]="screenWidth < 992 && !navService.showTopNavMenu" id="employee-info">
+      <h4> {{ navService.employeeProfile?.name }} {{ navService.employeeProfile?.surname }} </h4>
+      <h5> {{ navService.employeeProfile?.employeeType?.name }} </h5>
+    </div>
+    <div class="ms-2" id="image-container" [hidden]="screenWidth < 992 && !navService.showTopNavMenu">
+      <img *ngIf="navService.employeeProfile && navService.employeeProfile.photo; else NoProfilePhoto"
+        [src]="navService.employeeProfile.photo" alt="Profile Photo">
+      <ng-template #NoProfilePhoto>
+        <img src="../../../../../../assets/img/profile.png" alt="Profile Photo">
+      </ng-template>
     </div>
   </div>
+  <div [hidden]="!navService.showTopNavMenu" class="px-5" id="logout">
+    <div class="my-2"></div>
+    <h4 (click)="logout()">Log Out</h4>
+  </div>
+</div>
 </div>

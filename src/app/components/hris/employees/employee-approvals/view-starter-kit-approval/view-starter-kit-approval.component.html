@@ -1,4 +1,3 @@
-<!-- <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmation)="dialogFeedBack($event)"></app-confirm-dialog> -->
 <ngx-skeleton-loader *ngIf="isLoading;else ShowDocuments" [count]="1" appearance="line" animation="pulse" [theme]="{
     'background-color': '#D7DFFF',
     'border': '2px solid #D7DFFF',
@@ -9,7 +8,6 @@
 </ngx-skeleton-loader>
 <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData"
     (declineResponse)="dialogFeedBack($event)"></app-confirm-dialog>
-
 <ng-template #ShowDocuments>
     <div class="container mt-4">
         <div class="w-75 py-3">
@@ -29,9 +27,8 @@
                 <div id="header-label">Starter Kit</div>
                 <div id="header-value">{{employee?.name +' '+ employee?.surname}}</div>
             </div>
-            <div class="col-lg-3 offset-lg-2 mt-3 p-3 text-end" id="header-label">Updated 3 minutes ago</div>
+            <div class="col-lg-3 offset-lg-2 mt-3 p-3 text-end" id="header-label"> {{ lastUpdatedMessage }}</div>
         </div>
-
         <div id="approval-header" class="row my-4 p-2">
             <div class="col-lg-6 my-4" id="approval-title">Starter Kit</div>
             <div *ngFor="let category of fileCategories; let i = index" class="row">
@@ -51,7 +48,6 @@
                         <p>N/A</p>
                     </ng-template>
                 </div>
-
                 <div class="col-12 col-md-6 col-lg-6 row justify-content-end">
                     <div class="col-3">
                         <button id="button-approve" (click)="updateDocument(i, 0)"

@@ -1,98 +1,119 @@
 <div class="container">
   <div class="">
     <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
-    'background-color': '#D7DFFF',
-    'border': '2px solid #D7DFFF',
-    'border-radius': '2rem',
-    'height': '0px',
-    'width': '0%'
-    }">
+        'background-color': '#D7DFFF',
+        border: '2px solid #D7DFFF',
+        'border-radius': '2rem',
+        height: '0px',
+        width: '0%'
+      }">
     </ngx-skeleton-loader>
     <div class="row pe-md-4 ps-md-4 mt-lg-5">
       <div class="ps-4 pe-4 ps-md-0 pe-md-0 col-12 mt-4 col-md-7 col-lg-5">
-        <div *ngIf="!isLoading" class=""
-          [ngClass]="searchQuery.length >= 3 && searchResults.length !== 0 ? ' searchbar active' : 'searchbar'">
-          <div id="leading-icon" *ngIf="searchQuery === ''"></div>
-          <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
-            <mat-icon>arrow_back</mat-icon>
-          </button>
-          <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
-            [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off" />
+        <div class="search-container">
+          <div *ngIf="!isLoading" class="" [ngClass]="
+              searchQuery.length >= 3 && searchResults.length !== 0
+                ? ' searchbar active'
+                : 'searchbar'
+            ">
+            <div id="leading-icon" *ngIf="searchQuery === ''"></div>
+            <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+            <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
+              [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off" />
 
-          <div id="search-icon" (click)="searchEmployees()" *ngIf="searchQuery === ''">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M14.76 13.27L20.49 19L19 20.49L13.27 14.76C12.2 15.53 10.91 16 9.5 16C5.91 16 3 13.09 3 9.5C3 5.91 5.91 3 9.5 3C13.09 3 16 5.91 16 9.5C16 10.91 15.53 12.2 14.76 13.27ZM9.5 5C7.01 5 5 7.01 5 9.5C5 11.99 7.01 14 9.5 14C11.99 14 14 11.99 14 9.5C14 7.01 11.99 5 9.5 5Z"
-                fill="#0029C6" />
-            </svg>
+            <div [ngStyle]="{ display: screenWidth <= 350 ? 'none' : '' }" id="search-icon" (click)="searchEmployees()"
+              *ngIf="searchQuery === ''">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M14.76 13.27L20.49 19L19 20.49L13.27 14.76C12.2 15.53 10.91 16 9.5 16C5.91 16 3 13.09 3 9.5C3 5.91 5.91 3 9.5 3C13.09 3 16 5.91 16 9.5C16 10.91 15.53 12.2 14.76 13.27ZM9.5 5C7.01 5 5 7.01 5 9.5C5 11.99 7.01 14 9.5 14C11.99 14 14 11.99 14 9.5C14 7.01 11.99 5 9.5 5Z"
+                  fill="#0029C6" />
+              </svg>
+            </div>
+            <div [ngStyle]="{ display: screenWidth <= 350 ? 'none' : '' }" class="blue-cross-border py-1 px-1"
+              *ngIf="searchQuery !== '' && searchQuery.length >= 3" (click)="clearSearchField()">
+              <img src="/assets/img/Icon_Close_Blue.svg" alt="Close-Search" height="16" class="cross-margins"
+                width="16" />
+            </div>
           </div>
-          <div class="blue-cross-border py-1 px-1" *ngIf="searchQuery !== '' && searchQuery.length >= 3"
-            (click)="clearSearchField()">
-            <img src="/assets/img/Icon_Close_Blue.svg" alt="Close-Search" height="16" class="cross-margins" width="16">
-          </div>
-        </div>
-      </div>
-      <div id="new-hire" class="mb-4 mt-4 col-12 col-md-4 offset-md-1 col-lg-2 offset-lg-5 ps-4 pe-4 ps-md-0 pe-md-0">
-        <button class="col-12" (click)="AddEmployee()"
-          *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent()"
-          [ngClass]="screenWidth >= 767 ? '' : 'add-button-mobile'">+ Add
-          Employee</button>
-      </div>
-    </div>
-    <div id="search-results-container" class="col-12 col-md-7">
-      <div *ngIf="searchResults.length > 0 && searchQuery !== ''">
-        <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
-          <div class="col-12 ps-4 padding-right-search-div">
-            <div class="row">
-              <div class="col-2">
-                <div>
-                  <img id="avatar" src="{{employee?.photo || '/assets/img/profile.png'}}" alt="X">
-                </div>
-              </div>
+          <div id="search-results-container">
+            <div *ngIf="searchResults.length > 0 && searchQuery !== ''">
+              <div class="row" id="search-results" *ngFor="let employee of searchResults; let i = index">
+                <div class="col-12 ps-4 padding-right-search-div">
+                  <div class="row">
+                    <div class="col-2">
+                      <div>
+                        <img id="avatar" src="{{
+                            employee?.photo || '/assets/img/profile.png'
+                          }}" alt="X" />
+                      </div>
+                    </div>
 
-              <div class="col-9 pt-1 px-4">
-                <div (click)="employeeClickEvent(employee)">
-                  <div>
-                    {{ employee.employeeType?.name }} - L{{ employee?.level }}
+                    <div class="col-9 pt-1 px-4">
+                      <div (click)="employeeClickEvent(employee)">
+                        <div>
+                          {{ employee.employeeType?.name }} - L{{
+                          employee?.level
+                          }}
+                        </div>
+                        <div>{{ employee?.name }} {{ employee?.surname }}</div>
+                      </div>
+                    </div>
+                    <div [ngStyle]="{ display: screenWidth <= 350 ? 'none' : '' }" id="search-arrow" class="col-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M10 17L15 12L10 7V17Z" fill="#0029C6" />
+                      </svg>
+                    </div>
                   </div>
-                  <div>{{ employee?.name }} {{ employee?.surname }}</div>
                 </div>
               </div>
-              <div id="search-arrow" class="col-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M10 17L15 12L10 7V17Z" fill="#0029C6" />
-                </svg>
+              <div id="view-more-container" *ngIf="!displayAllEmployees" class="mt-0">
+                <mat-divider class="view-divider"></mat-divider>
+                <div (click)="viewMoreEmployees()" class="mb-4">
+                  View more employees
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div id="view-more-container" *ngIf="!displayAllEmployees" class="mt-0">
-          <mat-divider class="view-divider"></mat-divider>
-          <div (click)="viewMoreEmployees()" class="mb-4">View more employees</div>
-        </div>
+      </div>
+      <div id="new-hire" class="mb-4 mt-4 col-12 col-md-4 offset-md-1 col-lg-2 offset-lg-5 ps-4 pe-4 ps-md-0 pe-md-0">
+        <button mat-button class="col-12" (click)="AddEmployee()" *ngIf="
+            authAccessService.isAdmin() ||
+            authAccessService.isSuperAdmin() ||
+            authAccessService.isTalent()
+          " [ngClass]="screenWidth >= 767 ? '' : 'add-button-mobile'">
+          + Add Employee
+        </button>
       </div>
     </div>
-
     <div *ngIf="isLoading" class="skeleton-loader-container">
-    <ngx-skeleton-loader *ngIf="isLoading" count="1" appearance="line" animation="pulse" [theme]="{
+      <ngx-skeleton-loader *ngIf="isLoading" count="1" appearance="line" animation="pulse" [theme]="{
       'background-color': '#D7DFFF',
       'border': '2px solid #D7DFFF',
       'border-radius': '2rem',
       'height': '200px',
       'width': '100%',
     }">
-    </ngx-skeleton-loader>
+      </ngx-skeleton-loader>
     </div>
-    <div *ngIf="!isLoading" class="me-3 me-lg-0"
-      [ngClass]="screenWidth <= 767 ? 'data-cards-container-mobile' : (screenWidth <= 991 ? 'data-cards-container-tablet' : 'data-cards-container-desktop')">
-      <div class="data-card " [ngClass]="screenWidth <= 991 ? 'data-card-tablet' : 'data-card-mobile'" *ngIf="!isLoading">
+    <div *ngIf="!isLoading" class="me-3 me-lg-0 w-100" [ngClass]="
+        screenWidth <= 767
+          ? 'data-cards-container-mobile'
+          : screenWidth <= 991
+          ? 'data-cards-container-tablet'
+          : 'data-cards-container-desktop'
+      ">
+      <div class="data-card" [ngClass]="screenWidth <= 991 ? 'data-card-tablet' : 'data-card-mobile'"
+        *ngIf="!isLoading">
         <div class="row">
           <div class="col-3">
             <div id="options-trigger">
               <mat-icon id="menu-icon">person_outline_24px</mat-icon>
             </div>
           </div>
-          <div class="col-9 my-2" style="justify-content: left;">
+          <div class="col-9 my-2" style="justify-content: left">
             <div id="header-label">Employee Count</div>
             <div id="total-employees">
               Total employees: <b>{{ totalNumberOfEmployees }}</b>
@@ -140,7 +161,11 @@
         </div>
       </div>
 
-      <div class="data-card" [ngClass]="screenWidth <= 991 ? 'data-card-tablet data-card-middle' : 'data-card-mobile'">
+      <div class="data-card" [ngClass]="
+          screenWidth <= 991
+            ? 'data-card-tablet data-card-middle'
+            : 'data-card-mobile'
+        ">
         <div class="row">
           <div class="col-3">
             <div id="options-trigger">
@@ -161,7 +186,8 @@
               </div>
               <div class="col">
                 <div id="subheaders">
-                  Scrum Masters: <b>{{ employeeCount.scrumMastersOnBenchCount }}</b>
+                  Scrum Masters:
+                  <b>{{ employeeCount.scrumMastersOnBenchCount }}</b>
                 </div>
               </div>
             </div>
@@ -191,8 +217,7 @@
           <div class="col-9 my-2">
             <div id="header-label">Churn Rate</div>
             <div id="total-employees">
-              <span class="span-churn-rate">
-                {{ churnRate.churnRate }}%</span>
+              <span class="span-churn-rate"> {{ churnRate.churnRate }}%</span>
               over {{ churnRate.month }} {{ churnRate.year }}
             </div>
             <hr />
@@ -230,7 +255,6 @@
         </div>
       </div>
     </div>
-
     <div class="px-4 container-fluid pt-4" id="graph-container">
       <ngx-skeleton-loader count="1" appearance="line" animation="pulse" *ngIf="loadCounter < 4" [theme]="{
     'background-color': '#D7DFFF',
@@ -624,9 +648,15 @@
                 <h5>Your recent graphs</h5>
               </div>
             </div>
-            <div class="col-2 col-lg-5 d-inline-block ms-lg-5  " id="graphs-btn">
+            <div class="col-2 col-lg-5 d-inline-block ms-lg-5" id="graphs-btn">
               <button class="btn-sm mt-3 mt-lg-3 ms-md-5 ms-sm-4 mb-sm-4 mb-md-4 mb-lg-5" (click)="showAddGraphModal()"
-                [ngClass]="screenWidth >= 767  ? 'button-width-tablet' : 'button-width-mobile'">+ Add Graph</button>
+                [ngClass]="
+                  screenWidth >= 767
+                    ? 'button-width-tablet'
+                    : 'button-width-mobile'
+                ">
+                + Add Graph
+              </button>
             </div>
           </div>
           <div>
@@ -635,20 +665,21 @@
         </div>
       </ng-template>
     </div>
-
-
     <ng-template #dialogTemplate>
-      <div class="container-fluid p-4"
-        [ngClass]="isLoadingChart == true ? 'fullscreen-modal-transparent' : {'fullscreen-modal': isMobileScreen}">
+      <div class="container-fluid p-4" [ngClass]="
+          isLoadingChart == true
+            ? 'fullscreen-modal-transparent'
+            : { 'fullscreen-modal': isMobileScreen }
+        ">
         <div class="align-content-center align-items-center d-flex justify-content-center">
           <mat-spinner *ngIf="isLoadingChart == true"></mat-spinner>
         </div>
         <div class="row" *ngIf="isLoadingChart == false">
           <div class="col-lg-12 col-md-12 col-sm-12" id="dialog-header">
-            <h2 mat-dialog-title id="dialog-title">Add graph</h2>
+            <h2 mat-dialog-title id="dialog-title">{{ !chartService.isEditing ? 'Add' : 'Edit'}} graph</h2>
             <div class="subtitle-container">
               <h5 id="dialog-subtitle">
-                Create a graphs based on your needs by using the options below
+                {{ !chartService.isEditing ? 'Add' : 'Edit'}} a graph based on your needs by using the options below
               </h5>
             </div>
           </div>
@@ -657,10 +688,14 @@
               <div class="offset-1 col-10 dialog-box d-flex flex-column justify-content-start align-items-start"
                 id="dialog-radios">
                 <mat-radio-group aria-label="Select an option" [(ngModel)]="chartType">
-                  <mat-radio-button value="bar">Bar Graph</mat-radio-button> <br>
-                  <mat-radio-button value="pie">Pie Chart</mat-radio-button> <br>
-                  <mat-radio-button value="stacked">Stacked Graph</mat-radio-button>
-                  <h5 class="option" *ngIf="!chartType">Please select an option</h5>
+                  <mat-radio-button value="bar">Bar Graph</mat-radio-button>
+                  <br />
+                  <mat-radio-button value="pie">Pie Chart</mat-radio-button>
+                  <br />
+                  <mat-radio-button hidden value="stacked">Stacked Graph</mat-radio-button>
+                  <h5 class="option" *ngIf="!chartType">
+                    Please select an option
+                  </h5>
                 </mat-radio-group>
               </div>
               <div class="mt-3 px-4 offset-1 col-10">
@@ -679,9 +714,9 @@
               <div class="px-4 offset-1 col-10">
                 <mat-form-field appearance="outline" style="width: 100%" class="mb-3">
                   <mat-label>Select category</mat-label>
-                  <mat-select [formControl]="categoryControl" multiple required>
+                  <mat-select [formControl]="categoryControl" [(ngModel)]="categoriesSelected" multiple required>
                     <mat-select-trigger></mat-select-trigger>
-                    <mat-option *ngFor="let category of filteredCategories" [value]="category" required="required">
+                    <mat-option *ngFor="let category of filteredCategories" [value]="category"  required="required">
                       {{ category }}
                     </mat-option>
                   </mat-select>
@@ -691,7 +726,7 @@
                   <mat-chip-grid #chipList>
                     <mat-chip-row *ngFor="let category of selectedCategories" [removable]="true"
                       (removed)="removeChartCategory(category)">
-                      {{category}}
+                      {{ category }}
                       <svg matChipRemove width="19" height="18" viewBox="0 0 19 18" fill="none">
                         <path
                           d="M14.75 4.8075L13.6925 3.75L9.5 7.9425L5.3075 3.75L4.25 4.8075L8.4425 9L4.25 13.1925L5.3075 14.25L9.5 10.0575L13.6925 14.25L14.75 13.1925L10.5575 9L14.75 4.8075Z"
@@ -701,10 +736,10 @@
                   </mat-chip-grid>
                   <mat-icon matSuffix>arrow_drop_down</mat-icon>
                 </mat-form-field>
-                <mat-form-field appearance="outline" style="width: 100%" class="mb-3">
+                <mat-form-field [floatLabel]="this.chartService.isEditing" appearance="outline" style="width: 100%" class="mb-3">
                   <mat-label>Select role</mat-label>
-                  <mat-select [formControl]="typeControl" (selectionChange)="changeEmployeeRolesOnNewChart($event)"
-                    multiple required>
+                  <mat-select [formControl]="typeControl" [(ngModel)]="rolesSelected"
+                    (selectionChange)="changeEmployeeRolesOnNewChart($event)" multiple required> 
                     <mat-select-trigger></mat-select-trigger>
                     <mat-option *ngFor="let type of filteredTypes" [value]="type" required="required">
                       {{ type }}
@@ -734,7 +769,9 @@
                 <button (click)="createChart()">Save</button>
               </div>
               <div class="col-12 d-flex justify-content-center align-items-center" id="dialog-close">
-                <button mat-dialog-close (click)="clearAddGraphFields()">Close</button>
+                <button mat-dialog-close (click)="clearAddGraphFields()">
+                  Close
+                </button>
               </div>
             </div>
           </div>
@@ -742,3 +779,4 @@
       </div>
     </ng-template>
   </div>
+</div>

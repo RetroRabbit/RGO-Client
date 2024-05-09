@@ -1,8 +1,8 @@
 #dialog-content {
     align-items: center;
     background: #fff;
-    border-radius: 20px;
     display: inline-flex;
+    border-radius: 20px;
     flex-direction: column;
     justify-content: center;
     gap: 16px;
@@ -24,6 +24,10 @@
     height: 296px;
     display: flex;
     overflow-x: hidden;
+  }
+
+  #dialog-container {
+    border-radius: 20px;
   }
   
   #dialog-header {
@@ -81,8 +85,40 @@
     align-self: center;
     display: flex;
   }
+
+  #dialog-body {
+    width: 400px;
+  }
+
+  #dialog-content {
+    width: 461px;
+    border-radius: 20px;
+  }
   
+  #decline-title {
+    font-family: Roboto;
+    font-size: 45px;
+    font-weight: 400;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
+  }
+
+  #decline-subtitle {
+    font-family: Roboto;
+    font-size: 17px;
+    display: flex;
+    align-self: center;
+    letter-spacing: 0px;
+    font-weight: 400;
+    justify-content: center;
+    color: #0029c6;
+  }
+
   #button-container {
+    margin-top: -10px;
     width: 381px;
     min-height: 96px;
   }
@@ -136,6 +172,50 @@
     align-self: stretch;
     width: 381px;
   }
+
+  #decline-update-button {
+    display: flex;
+    height: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 100px;
+    background: var(--m-3-sys-light-primary, #0029c6);
+    width: 400px;
+    margin-bottom: 16px;
+    color: white;
+  }
+
+  #decline-update-button:disabled {
+    display: flex;
+    height: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 100px;
+    background: lightgray;
+    width: 400px;
+    margin-bottom: 16px;
+    color: gray;
+  }
+
+  #decline-cancel-button {
+    border-radius: 100px;
+    border: 1px solid var(--m-3-sys-light-primary, #0029c6);
+    display: flex;
+    height: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    width: 400px;
+    color: var(--m-3-sys-light-primary, #0029c6);
+  }
   
   #cancel-button-mobile {
     border-radius: 100px;
@@ -148,4 +228,8 @@
     gap: 8px;
     align-self: center;
     width: 200px;
+  }
+
+  #additional-info {
+    height: 130px;
   }

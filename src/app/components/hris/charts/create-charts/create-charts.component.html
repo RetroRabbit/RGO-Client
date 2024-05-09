@@ -1,6 +1,5 @@
 <div class="container">
     <h2>Create a Chart</h2>
-
     <div class="chart-form">
         <label for="chartType">Chart Type:</label>
         <select id="chartType" [(ngModel)]="chartType">
@@ -10,12 +9,10 @@
             <option value="doughnut">Doughnut</option>
         </select>
     </div>
-
     <div class="chart-form">
         <label for="chartData">Chart Name:</label>
         <input type="text" id="chartData" [(ngModel)]="chartName">
     </div>
-
     <div class="chart-form">
         <label for="chartData">Chart Data Item:</label>
         <ng-multiselect-dropdown id="chartData" [placeholder]="'Select Data Items'" [data]="columns"
@@ -28,5 +25,5 @@
             [options]="chartOptions">
         </canvas>
     </div>
-    <button class="create-button" (click)="createChart()">Create Chart</button>
+    <button mat-button class="create-button" (click)="createChart()">Create Chart</button>
 </div>

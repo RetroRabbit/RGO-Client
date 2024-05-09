@@ -29,7 +29,6 @@ export class AtsDashboardComponent {
     public authAccessService: AuthAccessService,
     private candidateService: CandidateService,
     private snackBarService: SnackbarService) {
-    navService.showNavbar = true;
   }
 
   screenWidth = window.innerWidth;

@@ -1,5 +1,5 @@
 export interface Token {
   email: any
-  token: any; // has to stay any
+  token: any
   roles: any
 }

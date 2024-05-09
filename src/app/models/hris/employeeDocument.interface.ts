@@ -8,5 +8,7 @@ export interface EmployeeDocument {
     uploadDate: Date,
     reason: string,
     status: number,
-    counterSign: boolean
+    counterSign: boolean,
+    documentType: number,
+    lastUpdatedDate: Date
 }

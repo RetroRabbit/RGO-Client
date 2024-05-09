@@ -1,9 +1,8 @@
-import { Component, HostListener, ViewChild, EventEmitter, Output, TemplateRef } from '@angular/core';
+import { Component, HostListener, ViewChild, EventEmitter, Output, TemplateRef, NgZone } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { Router } from '@angular/router';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { Table } from 'primeng/table';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -28,10 +27,10 @@ export class ManageFieldCodeComponent {
   selectedCustomField!: CustomField;
   newFieldCodeForm!: FormGroup;
   searchTerm: string = '';
-
-  @ViewChild('dataTable') dataTable: Table | undefined = undefined;
   filterText: string = '';
+
   isUnique?: boolean = true;
+  showConfirmDialog: boolean = false;
 
   activeTab: number = 0;
   selectedFields: number = 0;
@@ -40,25 +39,23 @@ export class ManageFieldCodeComponent {
   activeFieldsSearch: number = 0;
   archiveFieldsSearch: number = 0;
   displayedColumns: string[] = ['id', 'name', 'type', 'status', 'edit'];
-  showConfirmDialog: boolean = false;
-
   dataSource: MatTableDataSource<CustomField> = new MatTableDataSource();
   dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
   isLoading: boolean = true;
   runCounter: number = 0;
   runThreshold: number = 2;
+  screenWidth: number = 992;
+  pageSizes: number[] = [1, 5, 10, 25, 100];
+  PREVIOUS_PAGE = "previousPage";
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  screenWidth: number = 992;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
   }
-  
-  pageSizes: number[] = [1, 5, 10, 25, 100];
-  PREVIOUS_PAGE = "previousPage";
+
   constructor(
     public router: Router,
     private customFieldService: CustomFieldService,
@@ -66,9 +63,9 @@ export class ManageFieldCodeComponent {
     public cookieService: CookieService,
     private snackBarService: SnackbarService,
     private systemService: SystemNav,
-    private navService: NavService,
+    public navService: NavService,
+    private ngZone: NgZone,
     private authAccessService: AuthAccessService) {
-    navService.showNavbar = true;
   }
 
   ngOnInit(): void {
@@ -110,23 +107,26 @@ export class ManageFieldCodeComponent {
     this.isLoading = false;
   }
 
-  getDataSource(){
+  getDataSource() {
     this.dataSource = new MatTableDataSource(this.filteredCustomFields);
+    this.ngZone.run(() => {
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.paginator.pageIndex = 0;
+      this.paginator._changePageSize(10);
+      this.selectedCustomFields = [];
+      this.filterText = "";
+      this.getActivePassive();
+      this.sortByIdDefault(this.sort);
+    });
     this.dataSource._updateChangeSubscription();
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.paginator.pageIndex = 0;
-    this.selectedCustomFields = [];
-    this.filterText = "";
-    this.getActivePassive();
-    this.sortByIdDefault(this.sort);
   }
 
   shouldReset(): boolean {
     return this.runCounter >= this.runThreshold;
   }
 
-  resetRunCounter(){
+  resetRunCounter() {
     return this.runCounter = 0;
   }
 
@@ -155,13 +155,13 @@ export class ManageFieldCodeComponent {
       });
 
       let fieldCodeDto = new CustomField();
-        fieldCodeDto.id = 0;
-        fieldCodeDto.code = fieldCode.code,
+      fieldCodeDto.id = 0;
+      fieldCodeDto.code = fieldCode.code,
         fieldCodeDto.name = fieldCode.name,
         fieldCodeDto.description = fieldCode.description,
         fieldCodeDto.regex = fieldCode.regex,
         fieldCodeDto.type = parseInt(fieldCode.type),
-        fieldCodeDto.status =  parseInt(fieldCode.status),
+        fieldCodeDto.status = parseInt(fieldCode.status),
         fieldCodeDto.internal = fieldCode.internal,
         fieldCodeDto.internalTable = fieldCode.internalTable,
         fieldCodeDto.options = optionsArray,
@@ -202,10 +202,6 @@ export class ManageFieldCodeComponent {
     this.selectedCustomFields = this.selectedCustomFields;
   }
 
-  clear(table: Table) {
-    table.clear();
-  }
-
   filterData() {
     const filterValue = this.filterText.trim().toLowerCase();
     this.dataSource.filter = filterValue;
@@ -227,12 +223,6 @@ export class ManageFieldCodeComponent {
   }
 
   onSearch(event: Event) {
-    const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
-
-    if (this.dataTable) {
-      this.dataTable.filterGlobal(searchTerm, 'contains');
-    }
-
     if (this.filteredCustomFields) {
       this.filteredCustomFields = this.customFields.filter(fieldCode =>
         fieldCode.name && fieldCode.name.toLowerCase().includes(this.searchTerm.toLowerCase())
@@ -243,20 +233,30 @@ export class ManageFieldCodeComponent {
   addNewField() {
     this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
     this.router.navigateByUrl('/save-custom-field');
+    this.systemService.setIsEditing(true);
   }
 
   saveCustomField(field: CustomField) {
     this.systemService.selectedField = field;
     this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
     this.router.navigateByUrl('/save-custom-field');
+    this.systemService.setIsEditing(false);
   }
 
   changeTab(tabIndex: number) {
-    if(this.isLoading == true){
+    if (this.isLoading == true) {
       return;
     }
     this.activeTab = tabIndex;
     this.filteredCustomFields = this.customFields.filter(fieldCode => fieldCode.status == this.activeTab);
+    this.dataSource = new MatTableDataSource(this.filteredCustomFields);
+    this.dataSource._updateChangeSubscription();
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.paginator.pageIndex = 0;
+    this.selectedCustomFields = [];
+    this.filterText = "";
+    this.sortByIdDefault(this.sort);
     this.getDataSource();
   }
 
@@ -384,7 +384,7 @@ export class ManageFieldCodeComponent {
   }
 
   showDialog(status: number) {
-    this.dialogTypeData.type = 'save';
+    this.dialogTypeData.type = 'confirm';
     this.dialogTypeData.confirmButtonText = 'Save';
     this.dialogTypeData.denyButtonText = 'Cancel';
 

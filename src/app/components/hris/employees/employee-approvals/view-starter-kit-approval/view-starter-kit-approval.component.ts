@@ -1,9 +1,7 @@
 import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { CookieService } from 'ngx-cookie-service';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
-import { Location } from '@angular/common';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
@@ -18,32 +16,32 @@ export class ViewStarterKitApprovalComponent {
 
   declineReason: string = "";
   selectedReason: string = "";
-
+  lastUpdatedMessage: string = "";
   isLoading: boolean = true;
   showConfirmDialog: boolean = false;
-
   documenetIndex: number = 0;
-
   activeButtonIndex: number | null = null;
   activeButtonType: 'approve' | 'decline' | null = null;
-
   dialogTypeData!: Dialog;
   documentId = this.route.snapshot.params['id'];
   employee: any;
   employeeDocuments: EmployeeDocument[] = [];
   fileCategories = Document;
-
   screenWidth = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
   }
-  constructor(private cookieService: CookieService, private router: Router,
-    private route: ActivatedRoute, private location: Location,
-    private snackBarService: SnackbarService, private documentService: EmployeeDocumentService,
-    private changeDetector: ChangeDetectorRef, private employeeService: EmployeeProfileService
-  ) { }
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private snackBarService: SnackbarService,
+    private documentService: EmployeeDocumentService,
+    private changeDetector: ChangeDetectorRef,
+    private employeeService: EmployeeProfileService)
+    { }
 
   ngOnInit(): void {
     this.getEmployeeDocuments(this.documentId);
@@ -58,7 +56,7 @@ export class ViewStarterKitApprovalComponent {
   }
 
   getEmployeeDocuments(id: number) {
-    this.documentService.getAllEmployeeDocuments(id).subscribe({
+    this.documentService.getAllEmployeeDocuments(id, 0).subscribe({
       next: documents => {
         this.employeeDocuments = documents;
         this.employeeService.getEmployeeById(this.employeeDocuments[this.employeeDocuments.length - 1].employeeId).subscribe({
@@ -67,9 +65,46 @@ export class ViewStarterKitApprovalComponent {
             this.isLoading = false;
           }
         });
+        this.lastUpdatedMessage = this.getNewDate();
       },
       error: () => this.snackBarService.showSnackbar(`Error fetching employee documents`, "snack-error")
     })
+  }
+
+  getNewDate() {
+    let message = "";
+    let currentDate = new Date();
+    let updatedDate = this.employeeDocuments[0].lastUpdatedDate;
+    if (this.employeeDocuments.length > 1) {
+      for (let k = 0; k < this.employeeDocuments.length; k++) {
+        if (this.employeeDocuments[k].lastUpdatedDate > updatedDate) {
+          updatedDate = this.employeeDocuments[k].lastUpdatedDate;
+        }
+      }
+    }
+    
+    const millisecondInDays = 1000 * 60 * 60 * 24;
+    const milliDiff: number = new Date(currentDate).getTime() - new Date(updatedDate).getTime();
+    const totalDays = Math.floor(milliDiff/millisecondInDays);
+    const totalSeconds = Math.floor(milliDiff / 1000);
+    const totalMinutes = Math.floor(totalSeconds / 60);
+    const totalHours = Math.floor(totalMinutes / 60);
+
+    if (totalSeconds < 60)
+      message = "Updated just now";
+    else if (totalMinutes < 60)
+      message = "Updated " + Math.floor(totalMinutes) + " minutes ago";
+    else if (totalHours < 24)
+      message = "Updated " + Math.floor(totalHours) + " hours ago";
+    else if (totalDays < 7)
+      message = "Updated " + Math.floor(totalDays) + " days ago";
+    else if (totalDays > 7 && totalDays < 28)
+      message = "Updated " + Math.floor(totalDays % 7) + " weeks ago";
+    else if (totalDays >= 28)
+      message = "Updated " + Math.floor(totalDays % 28) + " months ago";
+    else if (totalDays >= 365)
+      message = "Updated " + Math.floor(totalDays % 365) + " years ago";
+    return message;
   }
 
   getFile(index: number): EmployeeDocument | null {
@@ -119,6 +154,7 @@ export class ViewStarterKitApprovalComponent {
   updateDocument(documentIndex: number, updateStatus: number = 0) {
     let copyOfDocument = updateStatus == 2 ? { ...this.getFile(this.documenetIndex) } : { ...this.getFile(documentIndex) };
     copyOfDocument.status = updateStatus;
+    copyOfDocument.lastUpdatedDate = new Date();
 
     if (updateStatus == 2)
       copyOfDocument.reason = `${this.selectedReason} ${this.declineReason}`;
@@ -128,6 +164,7 @@ export class ViewStarterKitApprovalComponent {
     this.documentService.updateEmployeeDocument(copyOfDocument as EmployeeDocument).subscribe({
       next: () => {
         this.snackBarService.showSnackbar(`Document has successfully updated`, "snack-success");
+        this.lastUpdatedMessage = this.getNewDate();
         this.getEmployeeDocuments(this.documentId);
       },
       error: () => this.snackBarService.showSnackbar(`Something happened.Please try again later`, "snack-error")
@@ -138,7 +175,7 @@ export class ViewStarterKitApprovalComponent {
     this.documenetIndex = documentIndex;
     this.dialogTypeData = {
       type: 'decline',
-      title: 'Decline Update',
+      title: 'Decline update',
       subtitle: 'Please provide a reason for declining this update',
       confirmButtonText: 'Decline Update',
       denyButtonText: 'Cancel'
@@ -149,10 +186,10 @@ export class ViewStarterKitApprovalComponent {
   dialogFeedBack(response: any): void {
     this.declineReason = response.declineReason;
     this.selectedReason = response.selectedReason;
-    if (!response.confirmatio)
+    if (response.confirmation)
       this.updateDocument(this.documenetIndex, 2);
-    else
-      this.backToApprovals();
+
+    this.showConfirmDialog = false;
   }
 
   convertFileToBase64(index: number) {
