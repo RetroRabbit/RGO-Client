@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AccordionDucumentsAdditionalComponent } from './accordion-documents-additional.component';
+import { AccordionDocumentsAdditionalComponent } from './accordion-documents-additional.component';
 
 describe('AccordionDucumentsAdditionalComponent', () => {
-  let component: AccordionDucumentsAdditionalComponent;
-  let fixture: ComponentFixture<AccordionDucumentsAdditionalComponent>;
+  let component: AccordionDocumentsAdditionalComponent;
+  let fixture: ComponentFixture<AccordionDocumentsAdditionalComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AccordionDucumentsAdditionalComponent]
+      declarations: [AccordionDocumentsAdditionalComponent]
     });
-    fixture = TestBed.createComponent(AccordionDucumentsAdditionalComponent);
+    fixture = TestBed.createComponent(AccordionDocumentsAdditionalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

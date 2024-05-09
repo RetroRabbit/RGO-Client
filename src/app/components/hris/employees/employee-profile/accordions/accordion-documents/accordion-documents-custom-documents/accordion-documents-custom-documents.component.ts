@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
-import { SharedAccordionFunctionality } from '../../shared-accordion-functionality';
+import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 
 @Component({
   selector: 'app-accordion-documents-custom-documents',

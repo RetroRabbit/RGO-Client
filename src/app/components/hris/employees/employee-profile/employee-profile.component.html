@@ -353,16 +353,14 @@
                 <app-accordion-profile-additional [hidden]="selectedAccordion != 'Profile Details'"
                 [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
                 ></app-accordion-profile-additional>
-
-            <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"
+              <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"
                 [employeeProfile]="employeeProfile"
                 (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
-
-            <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
+              <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
                 (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents-starterkit>
-            <app-accordion-documents-additional [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
+              <app-accordion-documents-additional [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
                 (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents-additional>
-            <app-accordion-documents-custom-documents [hidden]="selectedAccordion != 'Documents'"></app-accordion-documents-custom-documents>
+              <app-accordion-documents-custom-documents [hidden]="selectedAccordion != 'Documents'" ></app-accordion-documents-custom-documents>
 
             </div>
     </div>
