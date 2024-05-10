@@ -692,7 +692,7 @@
                   <br />
                   <mat-radio-button value="pie">Pie Chart</mat-radio-button>
                   <br />
-                  <mat-radio-button hidden value="stacked">Stacked Graph</mat-radio-button>
+                  <mat-radio-button *ngIf="!chartService.isEditing"  value="stacked">Stacked Graph</mat-radio-button>
                   <h5 class="option" *ngIf="!chartType">
                     Please select an option
                   </h5>
