@@ -148,7 +148,7 @@ export class AccordionEmployeeDocumentsComponent {
       employeeId: document.employee.id,
       fileName: document.fileName,
       blob: this.base64String,
-      fileCategory: null,
+      fileCategory: 0,
       employeeFileCategory: document.fileCategories,
       uploadDate: document.uploadDate,
       status: 1,
@@ -180,7 +180,7 @@ export class AccordionEmployeeDocumentsComponent {
           employee: this.employeeProfile,
           reference: "",
           fileName: this.documentsFileName,
-          fileCategory: null,
+          fileCategory: 0,
           employeeFileCategory: +this.uploadButtonIndex,
           blob: this.base64String,
           status: 1,
@@ -198,7 +198,7 @@ export class AccordionEmployeeDocumentsComponent {
   }
 
   filterDocumentsByCategory(): EmployeeDocument | null {
-    var object = this.employeeDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
+    var object = this.employeeDocuments.filter(document => document.employeeFileCategory == this.uploadButtonIndex);
     if (object == null) {
       return null;
     }
@@ -207,18 +207,18 @@ export class AccordionEmployeeDocumentsComponent {
   }
 
   getFileName(index: number): EmployeeDocument {
-    var documentObject = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
+    var documentObject = this.employeeDocuments.find(document => document.employeeFileCategory == index) as EmployeeDocument;
     return documentObject;
   }
 
   downloadDocument(event: any) {
     const id = event.srcElement.parentElement.id;
-    const documentObject = this.employeeDocuments.find(document => document.fileCategory == id) as any;
+    const documentObject = this.employeeDocuments.find(document => document.employeeFileCategory == id) as any;
     this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
   }
 
   disableUploadButton(index: number): boolean {
-    const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
+    const documentObject = this.employeeDocuments.find(document => document.employeeFileCategory == index);
     if (this.authAccessService.isEmployee()) {
       return false;
     }
@@ -241,7 +241,7 @@ export class AccordionEmployeeDocumentsComponent {
   }
 
   disableDownload(index: number) {
-    const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
+    const documentObject = this.employeeDocuments.find(document => document.employeeFileCategory == index);
 
     if (documentObject == undefined)
       return false;

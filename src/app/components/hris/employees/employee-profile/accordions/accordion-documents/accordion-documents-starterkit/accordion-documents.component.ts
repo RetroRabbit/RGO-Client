@@ -166,6 +166,7 @@ export class AccordionDocumentsComponent {
         reference: document.reference,
         fileName: document.fileName,
         fileCategory: document.fileCategory,
+        employeeFileCategory: 0,
         blob: document.blob,
         uploadDate: document.uploadDate,
         reason: document.reason,
