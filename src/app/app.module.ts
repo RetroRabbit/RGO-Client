@@ -88,6 +88,7 @@ import { EmployeeOptionsComponent } from './components/hris/employees/employee-o
 import { EmployeeApprovalsComponent } from './components/hris/employees/employee-approvals/employee-approvals.component';
 import { TopNavComponent } from './components/hris/nav-bar/types/top-nav/top-nav.component';
 import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-nav.component';
+import { CareerSummaryComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordian-career-summary.component';
 
 @NgModule({
   declarations: [
@@ -130,7 +131,7 @@ import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-
     EmployeeApprovalsComponent,
     TopNavComponent,
     SideNavComponent,
-
+    CareerSummaryComponent,
   ],
   imports: [
     BrowserModule,
