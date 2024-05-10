@@ -149,7 +149,7 @@ export class AccordionEmployeeDocumentsComponent {
       fileName: document.fileName,
       blob: this.base64String,
       fileCategory: 0,
-      employeeFileCategory: document.fileCategories,
+      employeeFileCategory: +this.uploadButtonIndex,
       uploadDate: document.uploadDate,
       status: 1,
       documentType: 2,
