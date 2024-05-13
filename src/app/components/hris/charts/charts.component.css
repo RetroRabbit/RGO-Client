@@ -46,6 +46,10 @@
   margin: 0 auto;
 }
 
+#role-names {
+  text-align: left;
+}
+
 #menu-icon {
   color: #0029c6;
   border-width: 2px;
