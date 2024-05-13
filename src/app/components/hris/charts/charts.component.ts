@@ -290,7 +290,7 @@ export class ChartComponent implements OnInit {
     });
   }
 
-  showDialog(index: number) {
+  confirmDelete(index: number) {
     this.selectedChartIndex = index;
     this.dialogTypeData.type = 'confirm';
     this.dialogTypeData.confirmButtonText = 'Delete';
