@@ -91,7 +91,7 @@ export class AccordionEmployeeDocumentsComponent {
 
   captureUploadIndex(event: any) {
     this.uploadButtonIndex = event.srcElement.parentElement.id;
-    const inputField = document.getElementById(`${this.uploadButtonIndex}-document`) as HTMLInputElement;
+    const inputField = document.getElementById(`${this.uploadButtonIndex}-employee-document`) as HTMLInputElement;
     inputField.click();
   }
 
@@ -117,7 +117,6 @@ export class AccordionEmployeeDocumentsComponent {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 2).subscribe({
         next: data => {
           this.employeeDocuments = data;
-          console.log('Employee Documents: ', this.employeeDocuments)
           this.dataSource.data = this.fileCategories;
           this.calculateDocumentProgress();
         },
@@ -130,7 +129,6 @@ export class AccordionEmployeeDocumentsComponent {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 2).subscribe({
         next: data => {
           this.employeeDocuments = data;
-          console.log('Employee Documents: ', this.employeeDocuments)
           this.dataSource.data = this.fileCategories;
           this.calculateDocumentProgress();
         },
@@ -139,7 +137,6 @@ export class AccordionEmployeeDocumentsComponent {
         }
       });
     }
-    console.log(`Employee Profile: ${this.employeeId}`);
   }
 
   uploadDocumentDto(document: any) {
@@ -154,7 +151,6 @@ export class AccordionEmployeeDocumentsComponent {
       status: 1,
       documentType: 2,
     }
-    console.log('Saved Object',saveObj);
     this.employeeDocumentService.saveEmployeeDocument(saveObj, 2).subscribe({
       next: () => {
         this.isLoadingUpload = false;
@@ -191,7 +187,6 @@ export class AccordionEmployeeDocumentsComponent {
           lastUpdatedDate: new Date()
         };
         this.uploadDocumentDto(newDto);
-        console.log('New Dto: ', newDto)
       };
       reader.readAsDataURL(this.selectedFile);
     }
@@ -202,7 +197,6 @@ export class AccordionEmployeeDocumentsComponent {
     if (object == null) {
       return null;
     }
-    console.log('Object[0]: ',object[ 0 ]);
     return object[ 0 ];
   }
 
