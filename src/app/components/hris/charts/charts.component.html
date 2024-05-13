@@ -1,3 +1,5 @@
+<app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData"
+  (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
 <div id="chart-container" *ngIf="showUpdateForm">
   <div class="row pt-3">
     <div class="col-12 col-lg-8" style="max-height: 50vh;">
@@ -70,7 +72,7 @@
           <button mat-menu-item (click)="editChart(i)">
             <mat-icon class="pe-3">edit</mat-icon> Edit graph
           </button>
-          <button mat-menu-item (click)="deleteChart(i)">
+          <button mat-menu-item (click)="showDialog(i)">
             <mat-icon class="pe-3">delete_outline</mat-icon> Delete graph
           </button>
         </mat-menu>

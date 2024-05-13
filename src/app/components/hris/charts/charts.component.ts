@@ -15,6 +15,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { Chart } from 'chart.js';
 import { pieChartOptions, barChartOptions } from 'src/app/models/hris/constants/chartOptions.constants';
+import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 
 @Component({
   selector: 'app-chart',
@@ -59,6 +60,8 @@ export class ChartComponent implements OnInit {
   selectedChartIndex: number = -1;
   barChartOptions = barChartOptions;
   pieChartOptions = pieChartOptions;
+  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
+  showConfirmDialog: boolean = false;
 
   updateFormData: any = {
     Name: '',
@@ -285,6 +288,23 @@ export class ChartComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
     });
+  }
+
+  showDialog(index: number) {
+    this.selectedChartIndex = index;
+    this.dialogTypeData.type = 'confirm';
+    this.dialogTypeData.confirmButtonText = 'Delete';
+    this.dialogTypeData.denyButtonText = 'Cancel';
+    this.dialogTypeData.title = 'Delete Chart'
+    this.dialogTypeData.subtitle = 'Are you sure you want to delete this chart?';
+    this.showConfirmDialog = true;
+  }
+
+  dialogFeedBack(event: any) {
+    this.showConfirmDialog = false;
+    if (event) {
+      this.deleteChart(this.selectedChartIndex);
+    }
   }
 }
 
