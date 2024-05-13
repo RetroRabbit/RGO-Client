@@ -57,8 +57,12 @@ export class EmployeeApprovalsComponent {
     public selectedTabService: SystemNav) { }
 
   ngOnInit(): void {
-    this.fetchData(this.selectedTabService.getSelectedTabIndex());
+    // this.fetchData(this.selectedTabService.getSelectedTabIndex());
     
+  }
+  ngAfterViewInit()
+  {
+    this.fetchData(this.selectedTabService.getSelectedTabIndex());
   }
 
   fetchData(active: number= this.selectedTabService.getSelectedTabIndex()): void {
@@ -121,46 +125,55 @@ export class EmployeeApprovalsComponent {
 
   buildFilteredArray() {
     this.filteredEmployeeDtos = [];
-    let indexVisistedArray: number[] = [];
+    let indexVisitedArray: number[] = [];
+    const selectedTabIndex = this.selectedTabService.getSelectedTabIndex();
+    const selectedStatus = selectedTabIndex === 2 ? 2 : selectedTabIndex === 1 ? 0 : 1; // 0 for pending, 1 for approved, 2 for declined
+
     for (let i = 0; i < this.bankingAndStarterKitData.length; i++) {
-      if (!indexVisistedArray.includes(i)) {
-        const currentDto = this.bankingAndStarterKitData[i];
-        if (currentDto.employeeBankingDto !== null && currentDto.employeeBankingDto.status == (this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1)) {
-          this.filterDocumentTypeAndStatus(currentDto, true, (this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1));
-        }
-        if (currentDto.employeeDocumentDto !== null) {
-          const employeeDocumentsIndexes = this.findEmployeeDocuments(i, currentDto.employeeDocumentDto.employeeId);
-          let documentsForEmployee: EmployeeDocument[] = [];
+        if (!indexVisitedArray.includes(i)) {
+            const currentDto = this.bankingAndStarterKitData[i];
 
-          employeeDocumentsIndexes.forEach(id => {
-            indexVisistedArray.push(id);
-            documentsForEmployee.push(this.bankingAndStarterKitData[id].employeeDocumentDto)
-          });
-
-          if (documentsForEmployee.length < 4) {
-            if((this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1) == 1)
-              this.filterDocumentTypeAndStatus(currentDto, false, (this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1));
-          }
-          else {
-            let sameStatuses = documentsForEmployee.every(document => document.status == documentsForEmployee[0].status);
-            if (!sameStatuses) {
-              if ((this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1) == 1)
-                this.filterDocumentTypeAndStatus(currentDto, false, (this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1));
-            } else {
-              if ((this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1) == documentsForEmployee[0].status)
-                this.filterDocumentTypeAndStatus(currentDto, false, (this.selectedTabService.getSelectedTabIndex() == 1 ? 0 : 1));
+            if (currentDto.employeeBankingDto && currentDto.employeeBankingDto.status === selectedStatus) {
+                this.filterDocumentTypeAndStatus(currentDto, true, selectedStatus);
             }
-          }
+
+            if (currentDto.employeeDocumentDto) {
+                const employeeDocumentsIndexes = this.findEmployeeDocuments(i, currentDto.employeeDocumentDto.employeeId);
+                let documentsForEmployee: EmployeeDocument[] = [];
+
+                employeeDocumentsIndexes.forEach(id => {
+                    indexVisitedArray.push(id);
+                    documentsForEmployee.push(this.bankingAndStarterKitData[id].employeeDocumentDto);
+                });
+
+                if (documentsForEmployee.length < 4) {
+                    if (selectedStatus === 1 || selectedStatus === 2) { // Handling for approved (1) and declined (2) status
+                        this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
+                    }
+                } else {
+                    let sameStatuses = documentsForEmployee.every(document => document.status === documentsForEmployee[0].status);
+                    if (!sameStatuses) {
+                        if (selectedStatus === 1 || selectedStatus === 2) { // Handling for approved (1) and declined (2) status
+                            this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
+                        }
+                    } else {
+                        if (selectedStatus === documentsForEmployee[0].status) {
+                            this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
+                        }
+                    }
+                }
+            }
         }
-      }
     }
+
     this.filteredEmployeeDtos.sort((a, b) => (a.name < b.name ? -1 : 1));
     this.dataSource = new MatTableDataSource(this.filteredEmployeeDtos);
-    console.log('Filtered Emple Data:', this.filteredEmployeeDtos);
+    console.log('Filtered Employee Data:', this.filteredEmployeeDtos);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.sortByNameDefault(this.sort);
-  }
+}
+
 
   findEmployeeDocuments(startIndex: number, employeeId: number): number[] {
     let numberIndex: number[] = [];

@@ -101,12 +101,31 @@ export class AccordionBankingComponent {
       this.downloadFile(this.employeeBanking[this.employeeBanking.length-1].file, `${this.employeeProfile?.name} ${this.employeeProfile?.surname}_Proof_of_Account.pdf`);
   }
 
-  downloadFile(base64String: string, fileName: string) {
+ downloadFile(base64String: string, fileName: string) {
+    // Remove the prefix before the base64 string
     const commaIndex = base64String.indexOf(',');
     if (commaIndex !== -1) {
-      base64String = base64String.slice(commaIndex + 1);
+        base64String = base64String.slice(commaIndex + 1);
     }
-  }
+
+    // Decode the base64 string into a byte array
+    const byteCharacters = atob(base64String);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+
+    // Create a Blob from the byte array
+    const blob = new Blob([byteArray], { type: 'application/pdf' }); // Adjust 'type' according to your file type
+
+    // Create a temporary anchor element to trigger the download
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+}
+
 
   openFileInput() {
     const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
