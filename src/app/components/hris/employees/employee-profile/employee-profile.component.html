@@ -23,7 +23,7 @@
         <div class="col-4 col-md-2 mt-4">
             <div id="profile-image">
                 <img (click)="uploadFile.click()" [src]="employeeProfile.photo || '/assets/img/profile.png'" alt="Profile img" class="rounded-circle profile-img">
-                <input type="file" #uploadFile (change)="onFileChange($event)" hidden>
+                <input type="file" #uploadFile (change)="onFileChange($event)" hidden accept=".png, .svg,.jpg,.jpeg">
             </div>
         </div>
         <div class="col-8 col-md-10 offset-lg-0 col-lg-10 mt-3">
@@ -59,7 +59,7 @@
                 </div>
                     <ng-template #OwnAddress>
                         <div class="col-12 my-2 d-none d-md-block" id="header-based">
-                            Based in {{navService.getEmployeeProfile().physicalAddress?.city}}
+                            Based in {{navService.getEmployeeProfile().physicalAddress?.suburbOrDistrict}}
                         </div>
                     </ng-template>
             </div>
