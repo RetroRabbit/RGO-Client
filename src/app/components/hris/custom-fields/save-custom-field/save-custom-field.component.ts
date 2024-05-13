@@ -24,7 +24,9 @@ export class SaveCustomFieldComponent {
   isArchiveClicked: boolean = false;
   fieldCodeCapture: string = "";
   showAdvanced: boolean = false;
-  showTypeFields: boolean = true;
+  showTypeFields: boolean = false;
+  showDocumentFields: boolean = false;
+
   isRequired: boolean = false;
   PREVIOUS_PAGE = "previousPage";
   optionsValid: boolean = true;
@@ -179,10 +181,24 @@ export class SaveCustomFieldComponent {
     else if (option.value != 4 || option != 4)
       this.optionsValid = true;
   }
-  radioShow() {
-    this.showTypeFields = false;
+
+  isDisabled() {
+    return this.showTypeFields;
   }
-  radioHide() {
+  isDisabledDocuments() {
+    return this.showDocumentFields;
+  }
+
+  checkOption(option: any) {
     this.showTypeFields = true;
+    this.showDocumentFields = false;
+
   }
+
+  checkOptionDocuments(option: any) {
+    this.showDocumentFields = true;
+    this.showTypeFields = false;
+
+  }
+
 }
