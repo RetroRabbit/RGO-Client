@@ -29,18 +29,13 @@ export class AccordionEmployeeDocumentsComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  selectedEmployee!: EmployeeProfile;
   fileCategories = Document;
   documentFormProgress: number = 0;
-  documentsProgress: number = 0;
   employeeDocuments: EmployeeDocument[] = [];
   documentsFileName: string = "";
   base64String: string = "";
   uploadButtonIndex: number = 0;
   employeeId = this.route.snapshot.params[ 'id' ];
-  previousPage: string = '';
-  PREVIOUS_PAGE = "previousPage";
-  showBackButtons: boolean = true;
   dataSource = new MatTableDataSource<string>();
   selectedFile !: File;
   roles: string[] = [];
@@ -50,8 +45,6 @@ export class AccordionEmployeeDocumentsComponent {
     private employeeDocumentService: EmployeeDocumentService,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
-    private employeeRoleService: EmployeeRoleService,
-    private employeeProfileService: EmployeeProfileService,
     public navService: NavService,
     private cookieService: CookieService,
     private authAccessService: AuthAccessService
@@ -61,11 +54,6 @@ export class AccordionEmployeeDocumentsComponent {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
     this.getEmployeeDocuments();
-  }
-
-  openFileInput() {
-    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
-    fileInput.click();
   }
 
   downloadFile(base64String: string, fileName: string) {

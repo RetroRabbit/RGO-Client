@@ -50,7 +50,6 @@ export class AccordionDocumentsAdditionalComponent {
   newDocumentType: string = '';
   otherSelected: boolean = false;
 
-
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
     private route: ActivatedRoute,
