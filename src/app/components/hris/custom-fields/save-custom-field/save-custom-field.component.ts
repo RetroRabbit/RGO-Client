@@ -49,7 +49,7 @@ export class SaveCustomFieldComponent {
     private snackBarService: SnackbarService,
     public cookieService: CookieService,
     public navService: NavService,
-    private systemService: SystemNav) {
+    public systemService: SystemNav) {
     this.selectedCustomField = systemService.selectedField;
   }
 

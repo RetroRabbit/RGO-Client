@@ -233,12 +233,14 @@ export class ManageFieldCodeComponent {
   addNewField() {
     this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
     this.router.navigateByUrl('/save-custom-field');
+    this.systemService.setIsEditing(true);
   }
 
   saveCustomField(field: CustomField) {
     this.systemService.selectedField = field;
     this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
     this.router.navigateByUrl('/save-custom-field');
+    this.systemService.setIsEditing(false);
   }
 
   changeTab(tabIndex: number) {
@@ -382,7 +384,7 @@ export class ManageFieldCodeComponent {
   }
 
   showDialog(status: number) {
-    this.dialogTypeData.type = 'save';
+    this.dialogTypeData.type = 'confirm';
     this.dialogTypeData.confirmButtonText = 'Save';
     this.dialogTypeData.denyButtonText = 'Cancel';
 
