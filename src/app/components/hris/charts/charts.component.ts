@@ -11,11 +11,11 @@ import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
-import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { Chart } from 'chart.js';
 import { pieChartOptions, barChartOptions } from 'src/app/models/hris/constants/chartOptions.constants';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
+import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 
 @Component({
   selector: 'app-chart',
@@ -25,13 +25,15 @@ import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 
 export class ChartComponent implements OnInit {
 
-  constructor(private chartService: ChartService,
+  constructor(
+    private chartService: ChartService,
     public dialog: MatDialog,
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document,
     private employeeService: EmployeeService,
-    private snackBarService: SnackbarService,
-    navService: NavService) {
+    private snackBarService: SnackbarService
+  ) {
+    this.dialogTypeData = new DialogTypeData().dialogTypeData;
   }
 
   @Output() selectedItem = new EventEmitter<{ selectedPage: string }>();
@@ -60,7 +62,7 @@ export class ChartComponent implements OnInit {
   selectedChartIndex: number = -1;
   barChartOptions = barChartOptions;
   pieChartOptions = pieChartOptions;
-  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
+  dialogTypeData!: Dialog;
   showConfirmDialog: boolean = false;
 
   updateFormData: any = {

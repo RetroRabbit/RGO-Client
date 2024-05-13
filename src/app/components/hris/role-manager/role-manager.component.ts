@@ -9,6 +9,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { forkJoin } from 'rxjs';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 @Component({
   selector: 'app-role-manager',
   templateUrl: './role-manager.component.html',
@@ -33,7 +34,7 @@ export class RoleManagerComponent implements OnInit {
   parentSelector: boolean = false;
 
   showConfirmDialog: boolean = false;
-  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
+  dialogTypeData!: Dialog;
 
   screenWidth = window.innerWidth;
 
@@ -52,6 +53,7 @@ export class RoleManagerComponent implements OnInit {
     private navService: NavService,
     private dialog: MatDialog,
   ) {
+    this.dialogTypeData = new DialogTypeData().dialogTypeData;
   }
 
   ngOnInit() {
