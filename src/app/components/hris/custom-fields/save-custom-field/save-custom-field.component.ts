@@ -76,12 +76,12 @@ export class SaveCustomFieldComponent {
 
   addOption() {
     this.options.push(this.fb.control(''));
-    this.checkSelectedOption(4);
+    this.checkSelectedOption(5);
   }
 
   removeOption(index: number) {
     this.options.removeAt(index);
-    this.checkSelectedOption(4);
+    this.checkSelectedOption(5);
   }
 
   onSubmit() {
@@ -171,14 +171,14 @@ export class SaveCustomFieldComponent {
   }
 
   checkSelectedOption(option: any) {
-    if (option == 4 || option.value == 4) {
+    if (option == 4 || option.value == 5) {
       this.optionsValid = false;
       if (this.options.length < 2)
         this.optionsValid = false;
       else
         this.optionsValid = true;
     }
-    else if (option.value != 4 || option != 4)
+    else if (option.value != 5 || option != 5)
       this.optionsValid = true;
   }
 
