@@ -21,15 +21,12 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   ngOnInit() {
     this.getDocumentFields();
-    console.log(this.sharedAccordionFunctionality.category)
   }
 
-  initializeForm() { }
 
   getDocumentFields() {
     this.getDocumentFieldCodes();
     this.initializeForm();
-    console.log(this.getDocumentFieldCodes());
   }
 
   getDocumentsFieldCodes() {

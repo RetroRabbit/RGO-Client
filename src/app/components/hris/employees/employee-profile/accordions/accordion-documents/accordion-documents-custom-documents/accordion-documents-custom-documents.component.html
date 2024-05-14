@@ -6,7 +6,7 @@
                     Additional Documents
                 </mat-panel-title>
                 <mat-panel-description class="pe-0 pe-md-5">
-                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <div id="table">
@@ -25,7 +25,6 @@
                             <h3>{{fieldcode.name}}</h3>
                             <div class="col-12"  id="fileName">
                                 <mat-label>{{fieldcode.description}}</mat-label>
-
                             </div>
                             <ng-template #NoFile>
                                 <p>Download & upload document here</p>
@@ -33,7 +32,7 @@
                             </div>
                             <div class="col-12 col-md-4 col-lg-6 py-2">
                                 <div class="row">
-                                    <div id="actionCellDownload"  class="col-12 col-md-auto mb-2">
+                                    <div id="actionCellDownload" class="col-12 col-md-auto mb-2">
                                         <button mat-button id="cancel-button">
                                             <svg id="svg-icon" width="19" height="19" viewBox="0 0 19 19" fill="white"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -65,5 +64,4 @@
                       </div>
         </mat-expansion-panel>
     </mat-accordion>
-
 </div>

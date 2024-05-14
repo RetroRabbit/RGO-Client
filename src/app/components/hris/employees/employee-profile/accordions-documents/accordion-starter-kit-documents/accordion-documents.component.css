@@ -60,7 +60,7 @@
     fill: white;
 }
 
-#actionCellDownload>button.disabledDownload{
+#actionCellDownload>button.disabledDownload {
     border: 1px solid #e3e3e4ff;
     border-radius: 2rem;
     background-color: #e3e3e4ff;
