@@ -1,7 +1,7 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { SharedAccordionFunctionality } from '../../shared-accordion-functionality';
+import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
@@ -11,12 +11,12 @@ import { EmployeeQualificationsService } from 'src/app/services/hris/employee/em
 import { EmployeeQualifications } from 'src/app/models/hris/employee-qualifications.interface';
 
 @Component({
-  selector: 'app-career-summary',
-  templateUrl: './accordion-career-summary.component.html',
-  styleUrls: ['./accordion-career-summary.component.css']
+  selector: 'app-career-summary-qualifications',
+  templateUrl: './accordion-career-summary-qualifications.component.html',
+  styleUrls: ['./accordion-career-summary-qualifications.component.css']
 })
 
-export class CareerSummaryComponent {
+export class CareerSummaryQualificationsComponent {
 
   screenWidth = window.innerWidth;
   @HostListener('window:resize', ['$event'])
