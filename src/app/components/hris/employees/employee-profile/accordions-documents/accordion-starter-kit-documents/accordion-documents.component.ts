@@ -119,7 +119,7 @@ export class AccordionDocumentsComponent {
           this.snackBarService.showSnackbar(error, "snack-error");
         }
       })
-    }else {
+    } else {
       this.employeeId = this.navService.employeeProfile.id;
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 0).subscribe({
         next: data => {
