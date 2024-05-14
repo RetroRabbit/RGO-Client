@@ -31,10 +31,10 @@
             </div>
             <hr>
           </div>
-          <div class="row mb-4 text-center">
+          <div class="row col-12 mb-4 text-center">
             <div class="col-12">
               <div #chartContainer id="edit-chart-container">
-                <canvas [plugins]="chartData.selectedChart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
+                <canvas class="col-12 h-100 w-100" [plugins]="chartData.selectedChart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
                   [datasets]='chartData.selectedChart.datasets'
                   [labels]="chartData.selectedChart.type == 'bar'? chartData.selectedChart.labels : chartData.selectedChart.labels"
                   [type]="chartData.selectedChart.type"

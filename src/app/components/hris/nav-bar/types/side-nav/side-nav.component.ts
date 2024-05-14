@@ -8,6 +8,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthService } from '@auth0/auth0-angular';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
+import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 
 @Component({
   selector: 'app-side-nav',
@@ -39,13 +40,7 @@ export class SideNavComponent {
   showSideNav: boolean = false;
   isSectionVisible: boolean = false;
 
-  dialogTypeData: Dialog = {
-    type: '',
-    title: '',
-    subtitle: '',
-    confirmButtonText: '',
-    denyButtonText: '',
-  };
+  dialogTypeData!: Dialog;
 
   tempRoute: string = '';
   searchQuery: string = '';
@@ -61,6 +56,7 @@ export class SideNavComponent {
     private employeeService: EmployeeService
   ) {
     this.screenWidth = window.innerWidth;
+    this.dialogTypeData = new DialogTypeData().dialogTypeData;
   }
 
   ngOnInit() {

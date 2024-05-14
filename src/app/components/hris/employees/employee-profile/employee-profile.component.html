@@ -55,11 +55,11 @@
                         </div>
                     </ng-template>
                 <div class="col-12 my-2 d-none d-md-block" id="header-based" *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnAddress">
-                    Based in {{ selectedEmployee.physicalAddress?.city }}
+                    Based in {{ selectedEmployee.physicalAddress?.suburbOrDistrict }}
                 </div>
                     <ng-template #OwnAddress>
-                        <div class="col-12 my-2 d-none d-md-block" id="header-based">
-                            Based in {{navService.getEmployeeProfile().physicalAddress?.city}}
+                        <div class="col-12 my-2 d-none d-md-block" id="header-based" *ngIf="selectedEmployee.physicalAddress?.suburbOrDistrict != null">
+                            Based in {{navService.getEmployeeProfile().physicalAddress?.suburbOrDistrict}}
                         </div>
                     </ng-template>
             </div>
@@ -71,11 +71,11 @@
                 <ng-template #OwnType>
                     <div>{{navService.getEmployeeProfile().employeeType?.name}} | Level {{navService.getEmployeeProfile().level}}</div>
                 </ng-template>
-            <div class="col-auto" id="header-based" *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnAddress">
-                Based in {{ selectedEmployee.physicalAddress }}
-            </div>
+                <div class="col-auto" id="header-based" *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnAddress">
+                Based in {{ selectedEmployee.physicalAddress?.suburbOrDistrict }}
+                </div>
                 <ng-template #OwnAddress>
-                    <div>Based in {{navService.getEmployeeProfile().physicalAddress?.city}}</div>
+                    <div *ngIf="selectedEmployee.physicalAddress?.suburbOrDistrict != null">Based in {{navService.getEmployeeProfile().physicalAddress?.suburbOrDistrict}}</div>
                 </ng-template>
         </div>
         <div class="col-12 col-md-10 offset-md-2 my-2">

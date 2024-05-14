@@ -13,6 +13,7 @@ import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -40,7 +41,7 @@ export class ManageFieldCodeComponent {
   archiveFieldsSearch: number = 0;
   displayedColumns: string[] = ['id', 'name', 'type', 'status', 'edit'];
   dataSource: MatTableDataSource<CustomField> = new MatTableDataSource();
-  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
+  dialogTypeData!: Dialog;
   isLoading: boolean = true;
   runCounter: number = 0;
   runThreshold: number = 2;
@@ -65,7 +66,9 @@ export class ManageFieldCodeComponent {
     private systemService: SystemNav,
     public navService: NavService,
     private ngZone: NgZone,
-    private authAccessService: AuthAccessService) {
+    private authAccessService: AuthAccessService
+  ) {
+      this.dialogTypeData = new DialogTypeData().dialogTypeData;
   }
 
   ngOnInit(): void {
