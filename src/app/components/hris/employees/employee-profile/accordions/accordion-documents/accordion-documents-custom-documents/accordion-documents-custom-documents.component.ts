@@ -22,7 +22,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
   ngOnInit() {
     this.getDocumentFields();
     console.log(this.sharedAccordionFunctionality.category)
-
   }
 
   initializeForm() { }
@@ -56,6 +55,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
       }
     });
   }
+
   getDocumentFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
@@ -64,6 +64,4 @@ export class AccordionDocumentsCustomDocumentsComponent {
       }
     })
   }
-
-
 }
