@@ -150,7 +150,6 @@ export class SaveCustomFieldComponent {
   toggleRequired() {
     this.isRequired = !this.isRequired;
   }
-
   private populateCustomFieldForm() {
     this.selectedType = this.selectedCustomField?.type;
     const optionsControls = this.selectedCustomField?.options?.map(option => this.fb.control(option.option)) || [];
@@ -170,16 +169,14 @@ export class SaveCustomFieldComponent {
     });
   }
 
-  checkSelectedOption(option: any) {
-    if (option == 4 || option.value == 5) {
-      this.optionsValid = false;
-      if (this.options.length < 2)
-        this.optionsValid = false;
-      else
-        this.optionsValid = true;
+  checkSelectedOption(e: any) {
+    this.selectedType = this.selectedCustomField?.type;
+    if (this.selectedType === null) {
+      this.optionsValid = true
     }
-    else if (option.value != 5 || option != 5)
-      this.optionsValid = true;
+    else {
+      this.optionsValid = false
+    }
   }
 
   isDisabled() {
@@ -192,13 +189,11 @@ export class SaveCustomFieldComponent {
   checkOption(option: any) {
     this.showTypeFields = true;
     this.showDocumentFields = false;
-
   }
 
   checkOptionDocuments(option: any) {
     this.showDocumentFields = true;
     this.showTypeFields = false;
-
   }
 
 }

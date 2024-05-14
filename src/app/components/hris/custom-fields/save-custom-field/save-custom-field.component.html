@@ -88,7 +88,7 @@
             </div>
             <div id="button-container">
                 <div>
-                    <button mat-raised-button id="save-button" (click)="onSubmit()" [disabled]="optionsValid == false">
+                    <button mat-raised-button id="save-button" (click)="onSubmit()" [disabled]="optionsValid">
                         {{ systemService.isEditing ? 'Save' : 'Update' }}
                     </button>
                 </div>
