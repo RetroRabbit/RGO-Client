@@ -13,6 +13,7 @@ import { category } from 'src/app/models/hris/constants/fieldcodeCategory.consta
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { nqfLevels } from 'src/app/models/hris/constants/nqfLevels.constant.';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +46,7 @@ export class SharedAccordionFunctionality {
   editAddress: boolean = false;
   editAdditional: boolean = false;
   editContact: boolean = false;
-
+  editQualifications: boolean = false;
   employeeType?: EmployeeType;
   employeeClient!: EmployeeProfile;
   employeeTeamLead!: EmployeeProfile;
@@ -60,10 +61,13 @@ export class SharedAccordionFunctionality {
   contactFormProgress: number = 0;
   addressFormProgress: number = 0;
   additionalFormProgress: number = 0;
+  qualificationsFormProgress: number = 0;
+
 
   genders = genders;
   races = races;
   levels = levels;
+  nqfLevels = nqfLevels;
   disabilities = disabilities;
   category = category;
   fieldTypes = dataTypes;
@@ -125,6 +129,18 @@ export class SharedAccordionFunctionality {
     postalCountry: { value: '', disabled: true },
     postalProvince: { value: '', disabled: true },
     postalPostalCode: { value: '', disabled: true }
+  });
+
+  employeeQualificationForm: FormGroup = this.fb.group({
+    highestQualification: { value: '', disabled: true },
+    school: { value: '', disabled: true },
+    degree: { value: '', disabled: true },
+    fieldOfStudy: { value: '', disabled: true },
+    yearObtained: { value: '', disabled: true },
+    nqfLevel: { value: '', disabled: true },
+    downloadDocument: { value: '', disabled: true },
+    addAnotherQualification: { value: '', disabled: true },
+    editQualification: { value: '', disabled: true }
   });
 
   additionalInfoForm: FormGroup = this.fb.group({});
@@ -228,6 +244,24 @@ export class SharedAccordionFunctionality {
     this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
+  checkQualificationsFormProgress() {
+
+   /*  let filledCount = 0;
+    const formControls = this.additionalInfoForm.controls;
+    let totalFields = Object.keys(this.additionalInfoForm.controls).length;
+
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '') {
+          filledCount++;
+        }
+      }
+    }
+    this.additionalFormProgress = Math.round((filledCount / totalFields) * 100); */
+  }
+
+  
   totalProfileProgress() {
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.additionalFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
     this.updateProfile.emit(this.profileFormProgress);

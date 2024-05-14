@@ -271,6 +271,7 @@ export class EmployeeProfileComponent implements OnChanges {
     const target = event.target as HTMLAnchorElement;
     this.selectedItem = target.innerText;
     this.selectedAccordion = target.innerText;
+    console.log(this.selectedAccordion)
   }
 
   overallProgress() {
