@@ -12,43 +12,58 @@ import { SharedAccordionFunctionality } from '../../../shared-accordion-function
 })
 export class AccordionDocumentsCustomDocumentsComponent {
 
-  // customFields: CustomField[] = [];
+  customFields: CustomField[] = [];
 
-  // constructor(
-  //   private customFieldService: CustomFieldService,
-  //   private fb: FormBuilder,
-  //   public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
+  constructor(
+    private customFieldService: CustomFieldService,
+    private fb: FormBuilder,
+    public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
 
-  // getDocumentsFieldCodes() {
-  //   this.customFieldService.getAllFieldCodes().subscribe({
-  //     next: data => {
-  //       this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[0].id);
-  //       this.checkCustomDocumentsInformation();
-  //     }
-  //   })
-  // }
+  ngOnInit() {
+    this.getDocumentFields();
+    console.log(this.sharedAccordionFunctionality.category)
 
-  // checkCustomDocumentsInformation() {
-  //   const formGroupConfig: any = {};
-  //   this.customFields.forEach(fieldName => {
-  //     if (fieldName.code != null || fieldName.code != undefined) {
-  //       const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
-  //       formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
-  //       this.sharedAccordionFunctionality.additionalInfoForm = this.fb.group(formGroupConfig);
-  //       if (fieldName.required == true) {
-  //         this.sharedAccordionFunctionality.additionalInfoForm.controls[fieldName.code].setValidators(Validators.required);
-  //       }
-  //       this.sharedAccordionFunctionality.additionalInfoForm.disable();
-  //     }
-  //   });
-  // }
-  // getDocumentFieldCodes() {
-  //   this.customFieldService.getAllFieldCodes().subscribe({
-  //     next: data => {
-  //       this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[0].id);
-  //       this.checkAdditionalInformation();
+  }
 
-  //     }
-  //   })
-  // }
+  initializeForm() { }
+
+  getDocumentFields() {
+    this.getDocumentFieldCodes();
+    this.initializeForm();
+    console.log(this.getDocumentFieldCodes());
+  }
+
+  getDocumentsFieldCodes() {
+    this.customFieldService.getAllFieldCodes().subscribe({
+      next: data => {
+        this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[3].id);
+        this.checkCustomDocumentsInformation();
+      }
+    })
+  }
+
+  checkCustomDocumentsInformation() {
+    const formGroupConfig: any = {};
+    this.customFields.forEach(fieldName => {
+      if (fieldName.code != null || fieldName.code != undefined) {
+        const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
+        formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
+        this.sharedAccordionFunctionality.additionalInfoForm = this.fb.group(formGroupConfig);
+        if (fieldName.required == true) {
+          this.sharedAccordionFunctionality.additionalInfoForm.controls[fieldName.code].setValidators(Validators.required);
+        }
+        this.sharedAccordionFunctionality.additionalInfoForm.disable();
+      }
+    });
+  }
+  getDocumentFieldCodes() {
+    this.customFieldService.getAllFieldCodes().subscribe({
+      next: data => {
+        this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[3].id);
+        this.checkCustomDocumentsInformation();
+      }
+    })
+  }
+
+
 }
