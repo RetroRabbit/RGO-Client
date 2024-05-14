@@ -24,7 +24,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
     console.log(this.sharedAccordionFunctionality.category)
   }
 
-  initializeForm() { }
 
   getDocumentFields() {
     this.getDocumentFieldCodes();
