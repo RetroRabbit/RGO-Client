@@ -21,7 +21,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   ngOnInit() {
     this.getDocumentFields();
-    console.log(this.sharedAccordionFunctionality.category)
   }
 
 
