@@ -24,7 +24,7 @@
       <div id="profile-image">
         <img (click)="uploadFile.click()" [src]="employeeProfile.photo || '/assets/img/profile.png'" alt="Profile img"
           class="rounded-circle profile-img">
-        <input type="file" #uploadFile (change)="onFileChange($event)" hidden>
+        <input type="file" #uploadFile (change)="onFileChange($event)" hidden accept=".png, .svg,.jpg,.jpeg">
       </div>
     </div>
     <div class="col-8 col-md-10 offset-lg-0 col-lg-10 mt-3">
@@ -59,11 +59,12 @@
         </ng-template>
         <div class="col-12 my-2 d-none d-md-block" id="header-based"
           *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnAddress">
-          Based in {{ selectedEmployee.physicalAddress?.city }}
+          Based in {{ selectedEmployee.physicalAddress?.suburbOrDistrict }}
         </div>
         <ng-template #OwnAddress>
-          <div class="col-12 my-2 d-none d-md-block" id="header-based">
-            Based in {{navService.getEmployeeProfile().physicalAddress?.city}}
+          <div class="col-12 my-2 d-none d-md-block" id="header-based"
+            *ngIf="selectedEmployee.physicalAddress?.suburbOrDistrict != null">
+            Based in {{navService.getEmployeeProfile().physicalAddress?.suburbOrDistrict}}
           </div>
         </ng-template>
       </div>
@@ -79,10 +80,11 @@
       </ng-template>
       <div class="col-auto" id="header-based"
         *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnAddress">
-        Based in {{ selectedEmployee.physicalAddress }}
+        Based in {{ selectedEmployee.physicalAddress?.suburbOrDistrict }}
       </div>
       <ng-template #OwnAddress>
-        <div>Based in {{navService.getEmployeeProfile().physicalAddress?.city}}</div>
+        <div *ngIf="selectedEmployee.physicalAddress?.suburbOrDistrict != null">Based in
+          {{navService.getEmployeeProfile().physicalAddress?.suburbOrDistrict}}</div>
       </ng-template>
     </div>
     <div class="col-12 col-md-10 offset-md-2 my-2">
@@ -166,14 +168,13 @@
       </div>
     </div>
   </div>
-
   <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
-        'background-color': '#D7DFFF',
-        'border': '2px solid #D7DFFF',
-        'border-radius': '2rem',
-        'height': '250px',
-        width: '100%',
-      }" />
+          'background-color': '#D7DFFF',
+          'border': '2px solid #D7DFFF',
+          'border-radius': '2rem',
+          'height': '250px',
+          width: '100%',
+        }" />
   <div id="profile-completion" *ngIf="!isLoading" class="row my-4 p-3 m-2 m-md-0 p-md-4 mt-md-4 mb-md-4 ">
     <div class="col-12 mt-2" id="completion-header">
       <div class="row" id="completion-header-container">
@@ -283,12 +284,12 @@
   </div>
 
   <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
-        'background-color': '#D7DFFF',
-        'border': '2px solid #D7DFFF',
-        'border-radius': '2rem',
-        'height': '380px',
-        width: '100%',
-      }" />
+          'background-color': '#D7DFFF',
+          'border': '2px solid #D7DFFF',
+          'border-radius': '2rem',
+          'height': '380px',
+          width: '100%',
+        }" />
   <div id="profile-accordions" *ngIf="!isLoading">
     <div id="accordions-nav"
       [ngClass]="screenWidth <= 767 ?'col-12 ms-0 d-flex overflow-x-scroll rounded-3':'row col-12 ms-0 rounded-3'">
@@ -372,3 +373,4 @@
     </div>
   </div>
 </div>
+
