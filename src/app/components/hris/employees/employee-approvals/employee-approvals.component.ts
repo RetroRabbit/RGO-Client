@@ -12,6 +12,7 @@ import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/emplo
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { BankingAndStarterKitDto } from 'src/app/models/hris/banking-and-starterkit.interface';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
+import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 
 @Component({
   selector: 'app-employee-approvals',
@@ -38,7 +39,7 @@ export class EmployeeApprovalsComponent {
   declinedCount: number = 0;
   screenWidth: number = 992;
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
-  dialogTypeData: Dialog = { type: '', title: '', subtitle: '', confirmButtonText: '', denyButtonText: '' };
+  dialogTypeData!: Dialog;
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -54,7 +55,10 @@ export class EmployeeApprovalsComponent {
     private snackBarService: SnackbarService,
     public router: Router,
     public cookieService: CookieService,
-    public selectedTabService: SystemNav) { }
+    public selectedTabService: SystemNav
+  ) {
+      this.dialogTypeData = new DialogTypeData().dialogTypeData;
+  }
 
   ngOnInit(): void {
     // this.fetchData(this.selectedTabService.getSelectedTabIndex());
