@@ -49,6 +49,7 @@ export class AccordionDocumentsAdditionalComponent {
   newDocumentName: string = '';
   newDocumentType: string = '';
   otherSelected: boolean = false;
+  allowedTypes = ['application/pdf'];
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
@@ -99,7 +100,7 @@ export class AccordionDocumentsAdditionalComponent {
 
   captureNewDocument(event: any) {
     this.selectedFile = event.target.files[0];
-    if (this.selectedFile) {
+    if (this.selectedFile && this.allowedTypes.includes(this.selectedFile.type)) {
       const reader = new FileReader();
       reader.onload = () => {
         this.base64String = reader.result as string;
@@ -117,6 +118,8 @@ export class AccordionDocumentsAdditionalComponent {
         this.uploadDocumentDto(newDto);
       };
       reader.readAsDataURL(this.selectedFile);
+    } else {
+      this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
     }
   }
 

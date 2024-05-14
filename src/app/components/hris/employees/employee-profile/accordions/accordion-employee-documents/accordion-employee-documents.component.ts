@@ -6,8 +6,6 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
@@ -40,6 +38,7 @@ export class AccordionEmployeeDocumentsComponent {
   selectedFile !: File;
   roles: string[] = [];
   isLoadingUpload: boolean = false;
+  allowedTypes = ['application/pdf'];
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
@@ -87,7 +86,12 @@ export class AccordionEmployeeDocumentsComponent {
     this.isLoadingUpload = true;
     this.selectedFile = event.target.files[ 0 ];
     this.documentsFileName = this.selectedFile.name;
-    this.uploadProfileDocument();
+    if (this.allowedTypes.includes(this.selectedFile.type)) {
+      this.uploadProfileDocument();
+    } else {
+      this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
+      this.isLoadingUpload = false;
+    }
   }
 
   uploadProfileDocument() {
@@ -139,18 +143,48 @@ export class AccordionEmployeeDocumentsComponent {
       status: 1,
       documentType: 2,
     }
-    this.employeeDocumentService.saveEmployeeDocument(saveObj, 2).subscribe({
-      next: () => {
-        this.isLoadingUpload = false;
-        this.snackBarService.showSnackbar("Document added", "snack-success");
-        this.getEmployeeDocuments();
-        this.calculateDocumentProgress();
-      },
-      error: (error) => {
-        this.isLoadingUpload = false;
-        this.snackBarService.showSnackbar(error, "snack-error");
+    if (!document.id) {
+      this.employeeDocumentService.saveEmployeeDocument(saveObj, 2).subscribe({
+        next: () => {
+          this.isLoadingUpload = false;
+          this.snackBarService.showSnackbar("Document added", "snack-success");
+          this.getEmployeeDocuments();
+          this.calculateDocumentProgress();
+        },
+        error: (error) => {
+          this.isLoadingUpload = false;
+          this.snackBarService.showSnackbar(error, "snack-error");
+        }
+      });
+    } else {
+      const updatedDocument = {
+        id: document.id,
+        employeeId: document.employee.id,
+        reference: document.reference,
+        fileName: document.fileName,
+        fileCategory: document.fileCategory,
+        employeeFileCategory: +this.uploadButtonIndex,
+        blob: document.blob,
+        uploadDate: document.uploadDate,
+        reason: document.reason,
+        status: 1,
+        counterSign: false,
+        documentType: 2,
+        lastUpdatedDate: document.lastUpdatedDate,
       }
-    });
+      this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
+        next: () => {
+          this.isLoadingUpload = false;
+          this.snackBarService.showSnackbar("Document updated", "snack-success");
+          this.getEmployeeDocuments();
+          this.calculateDocumentProgress();
+        },
+        error: (error) => {
+          this.snackBarService.showSnackbar(error, "snack-error");
+          this.isLoadingUpload = false;
+        }
+      });
+    }
   }
 
   buildDocumentDto() {
