@@ -23,10 +23,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
     this.getDocumentFields();
   }
 
-
   getDocumentFields() {
     this.getDocumentFieldCodes();
-    this.initializeForm();
   }
 
   getDocumentsFieldCodes() {
