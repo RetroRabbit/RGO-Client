@@ -10,8 +10,8 @@
 
 #edit-chart-container>canvas{
   margin: 0 auto;
-  width: 40vw;
-  height: 100%;
+  width: 100%;
+  height: 40vh;
 }
 
 #oveflow-contianer{
