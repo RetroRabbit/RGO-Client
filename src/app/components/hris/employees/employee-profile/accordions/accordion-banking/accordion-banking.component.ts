@@ -17,18 +17,18 @@ export class AccordionBankingComponent {
 
   screenWidth = window.innerWidth;
 
-  @HostListener('window:resize',['$event'])
-  onResize(){
+  @HostListener('window:resize', ['$event'])
+  onResize() {
     this.screenWidth = window.innerWidth;
   }
-  
+
   @Input() employeeProfile !: EmployeeProfile | SimpleEmployee;
   @Output() updateBanking = new EventEmitter<{ progress: number, status: number }>();
 
   shouldUseSentInProfile: boolean = true;
   panelOpenState: boolean = false;
   bankInformationProgress: number = 0;
-  employeeBanking : EmployeeBanking [] = [];
+  employeeBanking: EmployeeBanking[] = [];
   hasBankingData: boolean = false;
   accountTypes = accountTypes;
   banks = banks;
@@ -59,19 +59,20 @@ export class AccordionBankingComponent {
     private snackBarService: SnackbarService) {
   }
 
-  ngOnInit() {
+  ngAfterViewInit(): void {
     this.getEmployeeBankingData();
-    this.banks = this.banks.slice().sort((a,b) => a.value.localeCompare(b.value));
+    this.banks = this.banks.slice().sort((a, b) => a.value.localeCompare(b.value));
   }
+
 
   getEmployeeBankingData() {
     this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
       next: (data) => {
         this.employeeBanking = data;
         if (this.employeeBanking != null) {
-          this.bankingId = this.employeeBanking[this.employeeBanking.length-1].id;
+          this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
         }
-        this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length-1]);
+        this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
       }
     })
   }
@@ -82,7 +83,7 @@ export class AccordionBankingComponent {
       return;
     }
     this.employeeBankingsForm = this.fb.group({
-    
+
       accountType: [{ value: bankingDetails.accountType, disabled: true }, Validators.required],
       bankName: [{ value: bankingDetails.bankName, disabled: true }, Validators.required],
       accountNo: [{ value: bankingDetails.accountNo, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
@@ -97,34 +98,31 @@ export class AccordionBankingComponent {
   }
 
   convertFileToBase64() {
-    if (this.employeeBanking[this.employeeBanking.length-1].file)
-      this.downloadFile(this.employeeBanking[this.employeeBanking.length-1].file, `${this.employeeProfile?.name} ${this.employeeProfile?.surname}_Proof_of_Account.pdf`);
+    if (this.employeeBanking[this.employeeBanking.length - 1].file)
+      this.downloadFile(this.employeeBanking[this.employeeBanking.length - 1].file, `${this.employeeProfile?.name} ${this.employeeProfile?.surname}_Proof_of_Account.pdf`);
   }
 
- downloadFile(base64String: string, fileName: string) {
-    // Remove the prefix before the base64 string
+  downloadFile(base64String: string, fileName: string) {
     const commaIndex = base64String.indexOf(',');
+
     if (commaIndex !== -1) {
-        base64String = base64String.slice(commaIndex + 1);
+      base64String = base64String.slice(commaIndex + 1);
     }
 
-    // Decode the base64 string into a byte array
     const byteCharacters = atob(base64String);
     const byteNumbers = new Array(byteCharacters.length);
+
     for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
+
     const byteArray = new Uint8Array(byteNumbers);
-
-    // Create a Blob from the byte array
-    const blob = new Blob([byteArray], { type: 'application/pdf' }); // Adjust 'type' according to your file type
-
-    // Create a temporary anchor element to trigger the download
+    const blob = new Blob([byteArray], { type: 'application/pdf' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = fileName;
     link.click();
-}
+  }
 
 
   openFileInput() {
@@ -165,7 +163,6 @@ export class AccordionBankingComponent {
     const employeeBankingFormValue = this.employeeBankingsForm.value;
     this.employeeBankingDto = {
       id: this.bankingId,
-      accountHolderName: employeeBankingFormValue.accountHolderName,
       employeeId: this.employeeProfile?.id,
       bankName: employeeBankingFormValue.bankName,
       branch: `${employeeBankingFormValue.branch}`,
@@ -211,10 +208,13 @@ export class AccordionBankingComponent {
   }
 
   totalBankingProgress() {
-    this.bankInformationProgress = Math.floor(this.bankingFormProgress);
-    this.updateBanking.emit({ progress: this.bankInformationProgress, status: this.employeeBanking[this.employeeBanking.length-1].status});
+    if (this.employeeBanking.length > 0) {
+      this.bankInformationProgress = Math.floor(this.bankingFormProgress);
+      this.updateBanking.emit({ progress: this.bankInformationProgress, status: this.employeeBanking[this.employeeBanking.length - 1].status });
+    } else {
+      console.error('Employee banking data is empty.');
+    }
   }
-
   checkBankingInformationProgress() {
     let filledCount = 0;
     let totalFields = 0;

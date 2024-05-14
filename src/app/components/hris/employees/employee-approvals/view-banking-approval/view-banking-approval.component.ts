@@ -98,7 +98,6 @@ export class ViewBankingApprovalComponent {
   updateBanking(status: number): void {
     let copyOfBanking = { ...this.employeeBanking[this.employeeBanking.length - 1] };
     copyOfBanking.status = status;
-    console.log(copyOfBanking)
     if (status == 2)
       copyOfBanking.declineReason = `${this.selectedReason} ${this.declineReason}`;
     else
@@ -108,6 +107,7 @@ export class ViewBankingApprovalComponent {
       next: () => {
         this.snackBarService.showSnackbar(`Bank statement has successfully updated`, "snack-success");
         this.backToApprovals();
+         this.changeDetector.detectChanges();
       },
       error: error => this.snackBarService.showSnackbar(`${error}`, "snack-error")
     })
@@ -125,12 +125,13 @@ export class ViewBankingApprovalComponent {
   }
 
   dialogFeedBack(response: any): void {
-    // this.declineReason = response.declineReason;
-    // this.selectedReason = response.selectedReason;
-    this.showConfirmDialog = false;
+    this.declineReason = response.declineReason;
+    this.selectedReason = response.selectedReason;
+    this.showConfirmDialog=false;
     if(response.confirmation)
       {
     this.updateBanking(2);
       }
+     
   }
 }
