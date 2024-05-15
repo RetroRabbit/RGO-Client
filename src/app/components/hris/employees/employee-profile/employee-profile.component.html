@@ -69,24 +69,14 @@
         </ng-template>
       </div>
     </div>
-    <div class=" d-block d-md-none d-flex justify-content-center mt-2">
-      <div class="col-auto" id="header-role"
-        *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnType">
-        {{selectedEmployee.employeeType?.name}} | Level {{ selectedEmployee.level }}
-      </div>
-      <ng-template #OwnType>
-        <div>{{navService.getEmployeeProfile().employeeType?.name}} | Level {{navService.getEmployeeProfile().level}}
-        </div>
-      </ng-template>
-      <div class="col-auto" id="header-based"
-        *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnAddress">
-        Based in {{ selectedEmployee.physicalAddress?.suburbOrDistrict }}
-      </div>
-      <ng-template #OwnAddress>
-        <div *ngIf="selectedEmployee.physicalAddress?.suburbOrDistrict != null">Based in
-          {{navService.getEmployeeProfile().physicalAddress?.suburbOrDistrict}}</div>
-      </ng-template>
-    </div>
+
+    <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
+        'background-color': '#D7DFFF',
+        'border': '2px solid #D7DFFF',
+        'border-radius': '2rem',
+        'height': '380px',
+        width: '100%',
+      }" />
     <div class="col-12 col-md-10 offset-md-2 my-2">
       <div class="row" id="quick-info">
         <div class="col-12 col-md-6 col-lg-3 mb-2">

@@ -24,6 +24,9 @@ export class SaveCustomFieldComponent {
   isArchiveClicked: boolean = false;
   fieldCodeCapture: string = "";
   showAdvanced: boolean = false;
+  showTypeFields: boolean = false;
+  showDocumentFields: boolean = false;
+
   isRequired: boolean = false;
   PREVIOUS_PAGE = "previousPage";
   optionsValid: boolean = true;
@@ -73,12 +76,12 @@ export class SaveCustomFieldComponent {
 
   addOption() {
     this.options.push(this.fb.control(''));
-    this.checkSelectedOption(4);
+    this.checkSelectedOption(5);
   }
 
   removeOption(index: number) {
     this.options.removeAt(index);
-    this.checkSelectedOption(4);
+    this.checkSelectedOption(5);
   }
 
   onSubmit() {
@@ -97,8 +100,8 @@ export class SaveCustomFieldComponent {
       var customField = new CustomField();
       customField = this.customFieldForm.value;
       customField.id = this.selectedCustomField ? this.selectedCustomField.id : 0,
-      customField.options = this.customFieldForm.value['type'] == 4 ? updatedOptions : [],
-      customField.status = 0;
+        customField.options = this.customFieldForm.value['type'] == 4 ? updatedOptions : [],
+        customField.status = 0;
 
       this.customFieldService.saveFieldCode(customField).subscribe({
         next: (data) => {
@@ -147,7 +150,6 @@ export class SaveCustomFieldComponent {
   toggleRequired() {
     this.isRequired = !this.isRequired;
   }
-
   private populateCustomFieldForm() {
     this.selectedType = this.selectedCustomField?.type;
     const optionsControls = this.selectedCustomField?.options?.map(option => this.fb.control(option.option)) || [];
@@ -167,15 +169,31 @@ export class SaveCustomFieldComponent {
     });
   }
 
-  checkSelectedOption(option: any) {
-    if (option == 4 || option.value == 4) {
-      this.optionsValid = false;
-      if (this.options.length < 2)
-        this.optionsValid = false;
-      else
-        this.optionsValid = true;
+  checkSelectedOption(e: any) {
+    this.selectedType = this.selectedCustomField?.type;
+    if (this.selectedType === null) {
+      this.optionsValid = true
     }
-    else if (option.value != 4 || option != 4)
-      this.optionsValid = true;
+    else {
+      this.optionsValid = false
+    }
   }
+
+  isDisabled() {
+    return this.showTypeFields;
+  }
+  isDisabledDocuments() {
+    return this.showDocumentFields;
+  }
+
+  checkOption(option: any) {
+    this.showTypeFields = true;
+    this.showDocumentFields = false;
+  }
+
+  checkOptionDocuments(option: any) {
+    this.showDocumentFields = true;
+    this.showTypeFields = false;
+  }
+
 }
