@@ -19,24 +19,28 @@
             <div>
                 <h1 id="radio-headings" class="mb-0">Select where it goes on the employee profile:</h1>
                 <mat-radio-group aria-label="Category" formControlName="category">
-                    <mat-radio-button [value]=0>Profile Details</mat-radio-button> <br>
-                    <mat-radio-button [value]=1>Bank Information</mat-radio-button> <br>
-                    <mat-radio-button [value]=2>Career Summary</mat-radio-button>
+                    <mat-radio-button [value]=0 (change)="checkOption($event)">Profile Details</mat-radio-button> <br>
+                    <mat-radio-button [value]=1 (change)="checkOption($event)">Bank Information</mat-radio-button> <br>
+                    <mat-radio-button [value]=2 (change)="checkOption($event)">Career Summary</mat-radio-button> <br>
+                    <mat-radio-button [value]=3 (change)="checkOptionDocuments($event)">Documents</mat-radio-button>
                 </mat-radio-group>
             </div>
             <div class="col-12">
                 <h1 id="radio-headings" class="mb-0">Select what type of field it should be</h1>
                 <mat-radio-group aria-label="Type" formControlName="type" (change)="checkSelectedOption($event)">
-                    <mat-radio-button [value]=0>Date - For specific calendar days, like birthdays</mat-radio-button>
+                    <mat-radio-button [value]=0 [disabled]="isDisabledDocuments()">Date - For specific calendar days, like birthdays</mat-radio-button>
                     <br>
-                    <mat-radio-button [value]=1>String - For storing text, like names or messages</mat-radio-button>
+                    <mat-radio-button [value]=1 [disabled]="isDisabledDocuments()">String - For storing text, like names or messages</mat-radio-button>
                     <br>
-                    <mat-radio-button [value]=2>Integer - Whole counting numbers, like 1, 2, 3...</mat-radio-button>
+                    <mat-radio-button [value]=2 [disabled]="isDisabledDocuments()">Integer - Whole counting numbers, like 1, 2, 3...</mat-radio-button>
                     <br>
-                    <mat-radio-button [value]=3>Float - For numbers with decimal points, like
+                    <mat-radio-button [value]=3 [disabled]="isDisabledDocuments()">Float - For numbers with decimal points, like
                         currency</mat-radio-button>
                     <br>
-                    <mat-radio-button [value]=4>Options - Choices, which can be words or numbers </mat-radio-button>
+                    <mat-radio-button [value]=4 [disabled]="isDisabledDocuments()">Options - Choices, which can be words or numbers</mat-radio-button>
+                    <br>
+                    <mat-radio-button [value]=5 [disabled]="isDisabled()">Custom Documents - For file uploads, personal or required documents</mat-radio-button>
+
                 </mat-radio-group>
                 <div *ngIf="customFieldForm.get('type')?.value == 4 && customFieldForm.get('options') as optionsArray"
                     formArrayName="options" cdkDropList (cdkDropListDropped)="drop($event)" class="mt-2">
@@ -66,7 +70,7 @@
                 </mat-checkbox>
             </div>
             <div class="col-12" id="toggle-advanced">
-                <mat-slide-toggle (toggleChange)="toggleShowAdvance()">Advance fields</mat-slide-toggle>
+                <mat-slide-toggle [disabled]="isDisabledDocuments()" (toggleChange)="toggleShowAdvance()">Advance fields</mat-slide-toggle>
             </div>
             <div *ngIf="showAdvanced">
                 <div class="col-12">
@@ -84,7 +88,7 @@
             </div>
             <div id="button-container">
                 <div>
-                    <button mat-raised-button id="save-button" (click)="onSubmit()" [disabled]="optionsValid == false">
+                    <button mat-raised-button id="save-button" (click)="onSubmit()" [disabled]="optionsValid">
                         {{ systemService.isEditing ? 'Save' : 'Update' }}
                     </button>
                 </div>
