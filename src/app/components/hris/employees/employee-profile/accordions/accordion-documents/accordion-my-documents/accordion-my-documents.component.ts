@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { AdditionalDocumentTypes, FileCategory } from 'src/app/models/hris/constants/documents.contants';
@@ -11,9 +11,9 @@ import { FormControl, Validators } from '@angular/forms';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 
 @Component({
-  selector: 'app-accordion-documents-additional',
-  templateUrl: './accordion-documents-additional.component.html',
-  styleUrls: ['./accordion-documents-additional.component.css']
+  selector: 'app-accordion-my-documents',
+  templateUrl: './accordion-my-documents.component.html',
+  styleUrls: ['./accordion-my-documents.component.css']
 })
 export class AccordionDocumentsAdditionalComponent {
   @Output() updateDocument = new EventEmitter<number>();
@@ -49,7 +49,7 @@ export class AccordionDocumentsAdditionalComponent {
   newDocumentName: string = '';
   newDocumentType: string = '';
   otherSelected: boolean = false;
-  
+
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
@@ -173,7 +173,7 @@ export class AccordionDocumentsAdditionalComponent {
   }
 
   getAdditionalDocuments() {
-    if(this.employeeId != undefined){
+    if (this.employeeId != undefined) {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 1).subscribe({
         next: data => {
           this.employeeDocuments = data;
@@ -184,7 +184,7 @@ export class AccordionDocumentsAdditionalComponent {
           this.snackBarService.showSnackbar(error, "snack-error");
         }
       })
-    } else{
+    } else {
       this.employeeId = this.navService.employeeProfile.id;
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 1).subscribe({
         next: data => {

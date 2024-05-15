@@ -278,6 +278,7 @@ export class NewEmployeeComponent implements OnInit {
                   reference: "",
                   fileName: file.name,
                   fileCategory: category,
+                  employeeFileCategory: 0,
                   blob: base64String,
                   uploadDate: new Date(),
                   reason: "",

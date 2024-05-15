@@ -8,6 +8,7 @@ import { ChartService } from 'src/app/services/hris/charts.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 
 @Component({
   selector: 'app-top-nav',
@@ -33,13 +34,7 @@ export class TopNavComponent {
   isLoading: boolean = false;
   showConfirmDialog: boolean = false;
 
-  dialogTypeData: Dialog = {
-    type: '',
-    title: '',
-    subtitle: '',
-    confirmButtonText: '',
-    denyButtonText: '',
-  };
+  dialogTypeData!: Dialog;
   tempRoute: string = '';
 
   @HostListener('window:resize', ['$event'])
@@ -57,6 +52,7 @@ export class TopNavComponent {
     public authAccessService: AuthAccessService
   ) {
     this.screenWidth = window.innerWidth;
+    this.dialogTypeData = new DialogTypeData().dialogTypeData;
   }
 
   ngOnInit() {
