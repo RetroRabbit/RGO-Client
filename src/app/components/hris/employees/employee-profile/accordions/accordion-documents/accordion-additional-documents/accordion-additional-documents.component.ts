@@ -6,9 +6,9 @@ import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 
 @Component({
-  selector: 'app-accordion-documents-custom-documents',
-  templateUrl: './accordion-documents-custom-documents.component.html',
-  styleUrls: ['./accordion-documents-custom-documents.component.css']
+  selector: 'app-accordion-additional-documents',
+  templateUrl: './accordion-additional-documents.component.html',
+  styleUrls: ['./accordion-additional-documents.component.css']
 })
 export class AccordionDocumentsCustomDocumentsComponent {
 

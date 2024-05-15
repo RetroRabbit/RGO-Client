@@ -357,8 +357,9 @@
       <app-accordion-employee-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
       </app-accordion-employee-documents>
 
-      <app-accordion-documents-additional [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
-        (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents-additional>
+      <app-accordion-my-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
+      (updateDocument)="updateDocumentProgress($event)"></app-accordion-my-documents>
+    <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'" ></app-accordion-additional-documents>
 
     </div>
   </div>
