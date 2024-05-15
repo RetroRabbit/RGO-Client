@@ -44,7 +44,6 @@ export class AccordionDocumentsComponent {
   isLoadingUpload: boolean = false;
   allowedTypes = ['application/pdf'];
 
-
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
     private route: ActivatedRoute,
