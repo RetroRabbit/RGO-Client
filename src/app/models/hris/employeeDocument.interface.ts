@@ -4,6 +4,7 @@ export interface EmployeeDocument {
     reference: string,
     fileName: string,
     fileCategory: number,
+    employeeFileCategory: number,
     blob: string,
     uploadDate: Date,
     reason: string,
