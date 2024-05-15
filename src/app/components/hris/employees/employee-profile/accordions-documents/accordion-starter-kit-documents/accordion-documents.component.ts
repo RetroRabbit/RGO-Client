@@ -48,13 +48,14 @@ export class AccordionDocumentsComponent {
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
     private cookieService: CookieService,
-
     private authAccessService: AuthAccessService,
     public navService: NavService,
   ) { }
 
   ngOnInit() {
     this.getEmployeeDocuments();
+    const types: string = this.cookieService.get('userType');
+    this.roles = Object.keys(JSON.parse(types));
   }
 
   openFileInput() {

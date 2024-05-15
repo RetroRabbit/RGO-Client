@@ -7,7 +7,7 @@
                     Starter Kit documents
                 </mat-panel-title>
                 <mat-panel-description *ngIf="documentFormProgress != 100" class="pe-0 pe-md-5">
-                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
+                    <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
 
@@ -78,8 +78,8 @@
                                             </svg> Upload
                                     </button>
                                 </div>
-                                <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf" [id]="i + '-document'">
-
+                                <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf"
+                                    [id]="i + '-document'">
                             </div>
                         </div>
                         <div class="col-12 col-md-2 col-lg-2 py-2">
