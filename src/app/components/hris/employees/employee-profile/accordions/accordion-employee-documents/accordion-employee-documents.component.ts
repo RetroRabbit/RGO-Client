@@ -9,6 +9,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
+import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 
 @Component({
   selector: 'app-accordion-employee-documents',
@@ -39,6 +41,9 @@ export class AccordionEmployeeDocumentsComponent {
   roles: string[] = [];
   isLoadingUpload: boolean = false;
   allowedTypes = ['application/pdf'];
+  showConfirmDialog: boolean = false;
+  dialogTypeData!: Dialog;
+  documentExists: boolean = false;
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
@@ -47,7 +52,9 @@ export class AccordionEmployeeDocumentsComponent {
     public navService: NavService,
     private cookieService: CookieService,
     private authAccessService: AuthAccessService
-  ) { }
+  ) {
+    this.dialogTypeData = new DialogTypeData().dialogTypeData;
+  }
 
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
@@ -263,6 +270,25 @@ export class AccordionEmployeeDocumentsComponent {
       return false;
 
     return true;
+  }
+
+  dialogFeedBack(event: any) {
+    this.showConfirmDialog = false;
+    if (event.confirmation) {
+      this.uploadProfileDocument();
+    }
+  }
+
+  showDialog(status: number) {
+    this.dialogTypeData.type = 'confirm';
+    this.dialogTypeData.confirmButtonText = 'Save';
+    this.dialogTypeData.denyButtonText = 'Cancel';
+
+    if (status === 0) {
+      this.dialogTypeData.title = 'Replace Documents'
+      this.dialogTypeData.subtitle = 'This action will replace the current document with this new document.';
+    }
+    this.showConfirmDialog = true;
   }
 
 }
