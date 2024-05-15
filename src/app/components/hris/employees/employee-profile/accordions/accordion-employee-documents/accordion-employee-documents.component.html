@@ -31,7 +31,7 @@
                 <p>Download & upload document here</p>
               </ng-template>
             </div>
-            <div ngClass="{{ screenWidth >= 1200 ? 'pt-4 ps-4' : ''}}" class="col-12 col-md-4 col-lg-5 py-2">
+            <div ngClass="{{ screenWidth >= 1200 ? 'pt-4 padding-row-buttons' : ''}}" class="col-12 col-md-4 col-lg-5 py-2">
               <div class="row">
                 <div id="actionCellDownload" class="col-12 col-md-auto mb-2">
                   <button mat-button color="primary" (click)="downloadDocument($event)" [disabled]="!disableDownload(i)"
