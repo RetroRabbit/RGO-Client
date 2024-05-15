@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AccordionDocumentsAdditionalComponent } from './accordion-documents-additional.component';
+import { AccordionDocumentsAdditionalComponent } from './accordion-my-documents.component';
 
 describe('AccordionDucumentsAdditionalComponent', () => {
   let component: AccordionDocumentsAdditionalComponent;
