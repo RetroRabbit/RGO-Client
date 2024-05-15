@@ -460,10 +460,9 @@
                 (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents-starterkit>
             <app-accordion-documents-additional [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
                 (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents-additional>
-            <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="{
-          employeeDetails: employeeProfile,
-          simpleEmployee: simpleEmployee
-        }"></app-career-summary-qualifications>
+
+            <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'" 
+                [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-career-summary-qualifications>
         </div>
     </div>
 </div>
