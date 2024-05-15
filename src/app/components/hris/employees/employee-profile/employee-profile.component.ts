@@ -90,7 +90,6 @@ export class EmployeeProfileComponent implements OnChanges {
   @ViewChild(AccordionProfileContactDetailsComponent) contactAccordion!: AccordionProfileContactDetailsComponent;
   @ViewChild(AccordionProfileEmployeeDetailsComponent) employeeAccordion!: AccordionProfileEmployeeDetailsComponent;
   @ViewChild(AccordionProfilePersonalDetailsComponent) personalAccordion!: AccordionProfilePersonalDetailsComponent;
-  @ViewChild(AccordionDocumentsComponent) documentAccordion!: AccordionDocumentsComponent;
 
   imageUrl!: string;
   validateFile: any;

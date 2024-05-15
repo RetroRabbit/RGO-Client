@@ -90,6 +90,8 @@ import { EmployeeApprovalsComponent } from './components/hris/employees/employee
 import { TopNavComponent } from './components/hris/nav-bar/types/top-nav/top-nav.component';
 import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-nav.component';
 import { CareerSummaryQualificationsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-summary-qualifications/accordian-career-summary-qualifications.component';
+import { AccordionEmployeeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-employee-documents/accordion-employee-documents.component';
+import { AccordionDocumentsCustomDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents-custom-documents/accordion-documents-custom-documents.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +119,7 @@ import { CareerSummaryQualificationsComponent } from './components/hris/employee
     ConfirmDialogComponent,
     AccordionBankingComponent,
     AccordionDocumentsComponent,
+    AccordionEmployeeDocumentsComponent,
     LoadingComponentComponent,
     AtsDashboardComponent,
     NewCandidateComponent,
@@ -134,6 +137,9 @@ import { CareerSummaryQualificationsComponent } from './components/hris/employee
     TopNavComponent,
     SideNavComponent,
     CareerSummaryQualificationsComponent,
+    AccordionEmployeeDocumentsComponent,
+    AccordionDocumentsCustomDocumentsComponent,
+
   ],
   imports: [
     BrowserModule,

@@ -42,20 +42,20 @@ export class AccordionDocumentsComponent {
   selectedFile !: File;
   roles: string[] = [];
   isLoadingUpload: boolean = false;
-  allowedTypes = ['application/pdf'];
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
     private cookieService: CookieService,
-
     private authAccessService: AuthAccessService,
     public navService: NavService,
   ) { }
 
   ngOnInit() {
     this.getEmployeeDocuments();
+    const types: string = this.cookieService.get('userType');
+    this.roles = Object.keys(JSON.parse(types));
   }
 
   openFileInput() {
@@ -94,12 +94,7 @@ export class AccordionDocumentsComponent {
     this.isLoadingUpload = true;
     this.selectedFile = event.target.files[0];
     this.documentsFileName = this.selectedFile.name;
-    if (this.allowedTypes.includes(this.selectedFile.type)) {
-      this.uploadProfileDocument();
-    } else {
-      this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
-      this.isLoadingUpload = false;
-    }
+    this.uploadProfileDocument();
   }
 
   uploadProfileDocument() {
@@ -171,7 +166,6 @@ export class AccordionDocumentsComponent {
         reference: document.reference,
         fileName: document.fileName,
         fileCategory: document.fileCategory,
-        employeeFileCategory: 0,
         blob: document.blob,
         uploadDate: document.uploadDate,
         reason: document.reason,

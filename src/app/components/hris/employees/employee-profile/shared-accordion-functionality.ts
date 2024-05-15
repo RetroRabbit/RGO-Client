@@ -222,7 +222,6 @@ export class SharedAccordionFunctionality {
           filledCount++;
         }
       }
-
     }
     this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
   }
