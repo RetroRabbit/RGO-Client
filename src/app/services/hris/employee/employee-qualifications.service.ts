@@ -15,8 +15,24 @@ export class EmployeeQualificationsService {
   constructor(private httpClient: HttpClient) {
     this.baseUrl = `${environment.HttpsBaseURL}/employee-qualifications`
   }
-  update(address: EmployeeQualifications): Observable<EmployeeQualifications> {
-    return this.httpClient.put<EmployeeQualifications>(`${this.baseUrl}`, address);
+
+  saveEmployeeQualification(employeeQualification: any): Observable<EmployeeQualifications> {
+    return this.httpClient.post<EmployeeQualifications>(`${this.baseUrl}`, employeeQualification);
   }
 
+  updateEmployeeQualification(employeeDocument: EmployeeQualifications, employeeQualificationId: number): Observable<EmployeeQualifications> {
+    return this.httpClient.put<EmployeeQualifications>(`${this.baseUrl}/${employeeQualificationId}`, employeeDocument);
+  }
+
+  getAllEmployeeQualifications(): Observable<EmployeeQualifications[]> {
+    return this.httpClient.get<EmployeeQualifications[]>(`${this.baseUrl}`);
+  }
+
+  getEmployeeQualification(employeeId: number): Observable<EmployeeQualifications> {
+    return this.httpClient.get<EmployeeQualifications>(`${this.baseUrl}/${employeeId}`);
+  }
+
+  deleteEmployeeQualification(employeeQualificationId: number): Observable<EmployeeQualifications> {
+    return this.httpClient.delete<EmployeeQualifications>(`${this.baseUrl}/${employeeQualificationId}`);
+  }
 }
