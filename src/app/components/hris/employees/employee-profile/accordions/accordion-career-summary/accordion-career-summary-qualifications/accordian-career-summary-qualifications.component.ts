@@ -83,12 +83,12 @@ export class CareerSummaryQualificationsComponent {
   }
   initializeForm() {
     this.sharedAccordionFunctionality.employeeQualificationForm = this.fb.group({
-      highestQualification: [this.employeeProfile!.employeeDetails.qualifications?.highestQualification?.trim(), [Validators.pattern(/^[0-9]*$/)]],
-      school: [this.employeeProfile!.employeeDetails.qualifications?.school?.trim(), [Validators.pattern(/^[0-9]*$/)]],
-      degree: [this.employeeProfile!.employeeDetails.qualifications?.degree?.trim(), [Validators.pattern(/^[0-9]*$/)]],
-      fieldOfStudy: [this.employeeProfile!.employeeDetails.qualifications?.fieldOfStudy?.trim(), [Validators.pattern(/^[0-9]*$/)]],
-      yearObtained: [this.employeeProfile!.employeeDetails.qualifications?.yearObtained?.trim(), [Validators.pattern(/^[0-9]*$/)]],
-      nqfLevel: [this.employeeProfile!.employeeDetails.qualifications?.nqfLevel?.trim(), [Validators.pattern(/^[0-9]*$/)]],
+      highestQualification: [this.employeeProfile!.employeeDetails.qualifications?.highestQualification?.trim(), [Validators.required]],
+      school: [this.employeeProfile!.employeeDetails.qualifications?.school?.trim(), [Validators.required]],
+      degree: [this.employeeProfile!.employeeDetails.qualifications?.degree?.trim(), [Validators.required]],
+      fieldOfStudy: [this.employeeProfile!.employeeDetails.qualifications?.fieldOfStudy?.trim(), [Validators.required]],
+      yearObtained: [this.employeeProfile!.employeeDetails.qualifications?.yearObtained?.trim(), [Validators.pattern(/^(19|20)\d{2}$/), Validators.required]],
+      nqfLevel: [this.employeeProfile!.employeeDetails.qualifications?.nqfLevel?.trim(), [Validators.required]],
        
     });
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();

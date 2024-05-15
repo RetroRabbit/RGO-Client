@@ -40,10 +40,10 @@
                                                         {{level.value}}
                                                     </mat-option>
                                                 </mat-select>
-                                                <!-- <mat-error
+                                                <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['highestQualification'].hasError('required')">
                                                     Highest Qualification is required
-                                                </mat-error> -->
+                                                </mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.school"
@@ -52,10 +52,10 @@
                                                 <mat-label>School</mat-label>
                                                 <input matInput formControlName="school"
                                                     placeholder="e.g University of Pretoria">
-                                                <!-- <mat-error
+                                                <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['school'].hasError('required')">
                                                     School is required
-                                                </mat-error> -->
+                                                </mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.degree"
@@ -63,10 +63,10 @@
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Degree</mat-label>
                                                 <input matInput formControlName="degree" placeholder="e.g Bachelors">
-                                                <!-- <mat-error
+                                                <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['degree'].hasError('required')">
                                                     Degree is required
-                                                </mat-error> -->
+                                                </mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.fieldOfStudy"
@@ -75,19 +75,25 @@
                                                 <mat-label>Field Of Study</mat-label>
                                                 <input matInput formControlName="fieldOfStudy"
                                                     placeholder="e.g Field of Study">
+                                                <mat-error
+                                                    *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['fieldOfStudy'].hasError('required')">
+                                                    Field of study is required
+                                                </mat-error>
                                             </mat-form-field>
                                         </div>
-    
-    
                                         <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.yearObtained"
                                             class="col-12 col-md-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Year Obtained</mat-label>
                                                 <input matInput formControlName="yearObtained" placeholder="yyyy">
-                                                <!-- <mat-error
+                                                <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['yearObtained'].hasError('required')">
-                                                    Year Obtained
-                                                </mat-error> -->
+                                                    Year Obtained is required
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['yearObtained'].hasError('pattern')">
+                                                    Year Obtained is must be in yyyy format
+                                                </mat-error>
                                             </mat-form-field>
                                         </div>
                                         <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.nqfLevel"
@@ -100,10 +106,10 @@
                                                         {{level.value}}
                                                     </mat-option>
                                                 </mat-select>
-                                                <!-- <mat-error
+                                                <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['nqfLevel'].hasError('required')">
-                                                    NQF Level
-                                                </mat-error> -->
+                                                    NQF Level is required
+                                                </mat-error>
                                             </mat-form-field>
                                         </div>
                                     </div>
