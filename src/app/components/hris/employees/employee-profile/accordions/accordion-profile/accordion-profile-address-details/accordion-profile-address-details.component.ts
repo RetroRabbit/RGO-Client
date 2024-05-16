@@ -228,6 +228,10 @@ export class AccordionProfileAddressDetailsComponent {
       },
       complete: () => {    
         this.selectedCountry = this.employeeProfile!.employeeDetails.physicalAddress?.country!
+        if(this.selectedCountry == " ")
+          {
+            return;
+          }
         this.locationApiService.getProvinces(this.selectedCountry).subscribe({
           next: (data) => this.provinces = data,
           error: (error: any) => {
@@ -259,6 +263,10 @@ export class AccordionProfileAddressDetailsComponent {
       },
       complete: () => {    
         this.selectedPostalCountry = this.employeeProfile!.employeeDetails.postalAddress?.country!
+        if(this.selectedPostalCountry == " ")
+          {
+            return;
+          }
         this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
           next: (data) => this.postalProvinces = data,
           error: (error: any) => {
