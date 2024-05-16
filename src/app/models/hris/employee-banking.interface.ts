@@ -6,7 +6,6 @@ export interface EmployeeBanking{
     branch: string,
     accountNo: string,
     accountType: number,
-    accountHolderName: string,
     status: number,
     declineReason: string,
     file: string,
