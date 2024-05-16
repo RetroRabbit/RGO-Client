@@ -5,7 +5,7 @@
                 <mat-panel-title>
                     Main Bank Account
                 </mat-panel-title>
-                <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking?.status == 2"
+                <mat-panel-description *ngIf="bankInformationProgress != 100 || employeeBanking[this.employeeBanking.length-1].status == 2"
                     class="pe-0 pe-md-5">
                     <mat-icon class="mx-1">error</mat-icon>
                      <span class="d-none d-md-block d-lg-block">Missing Information</span>
@@ -25,24 +25,24 @@
                                 <div class="col-7 my-2">
                                     <div class="row">
                                         <div class="col-12 ps-4 mt-1"
-                                            *ngIf="hasBankingData && employeeBanking.status > 0">
-                                            Last updated: {{employeeBanking.lastUpdateDate | date}}
+                                            *ngIf="hasBankingData && employeeBanking[this.employeeBanking.length-1].status > 0">
+                                            Last updated: {{employeeBanking[this.employeeBanking.length-1].lastUpdateDate | date}}
                                         </div>
-                                        <div class="col-11 px-4" *ngIf="hasBankingData && employeeBanking.status > 0">
+                                        <div class="col-11 px-4" *ngIf="hasBankingData && employeeBanking[this.employeeBanking.length-1].status > 0">
                                             <hr>
                                         </div>
                                         <div class="col-7 ps-4 pt-2" id="last-updated"
-                                            *ngIf="hasBankingData && employeeBanking.pendingUpdateDate">
-                                            Update submitted on {{employeeBanking.pendingUpdateDate | date}}
+                                            *ngIf="hasBankingData && employeeBanking[this.employeeBanking.length-1].pendingUpdateDate">
+                                            Update submitted on {{employeeBanking[this.employeeBanking.length-1].pendingUpdateDate | date}}
                                         </div>
                                         <div *ngIf="hasBankingData;else NoBankingInfo" class="col-4" id="statuses">
-                                            <div *ngIf="employeeBanking.status === 0" id="status-0">
+                                            <div *ngIf="employeeBanking[this.employeeBanking.length-1].status === 0" id="status-0">
                                                 <span>{{ 'Approved' }}</span>
                                             </div>
-                                            <div *ngIf="employeeBanking.status === 2" id="status-2">
+                                            <div *ngIf="employeeBanking[this.employeeBanking.length-1].status === 2" id="status-2">
                                                 <span>{{ 'Rejected' }}</span>
                                             </div>
-                                            <div *ngIf="employeeBanking.status === 1" id="status-1">
+                                            <div *ngIf="employeeBanking[this.employeeBanking.length-1].status === 1" id="status-1">
                                                 <span>{{ 'Pending Approval' }}</span>
                                             </div>
                                         </div>
@@ -51,9 +51,9 @@
                                                 <span>{{ 'Action Required' }}</span>
                                             </div>
                                         </ng-template>
-                                        <div class="col-12" *ngIf="hasBankingData && employeeBanking.status ==2">
+                                        <div class="col-12" *ngIf="hasBankingData && employeeBanking[this.employeeBanking.length-1].status ==2">
                                             <div id="reject-reason" class="ps-3">
-                                                <h5>{{employeeBanking.declineReason}}</h5>
+                                                <h5>{{employeeBanking[this.employeeBanking.length-1].declineReason}}</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -94,7 +94,7 @@
                                         Account number must contain only numbers</mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Branch Code</mat-label>
                                     <input type="text" min="0" matInput placeholder="Enter branch code"
@@ -116,7 +116,7 @@
                                     <div [ngClass]="screenWidth <= 767 ?'':'row'">
                                         <div *ngIf="hasFile">
                                             <button mat-button color="primary"
-                                                [hidden]="employeeBanking.file.length == 0"
+                                                [hidden]="employeeBanking[this.employeeBanking.length-1].file.length == 0"
                                                 (click)="convertFileToBase64()">Download</button>
                                         </div>
                                         <div class="col-12 row d-flex justify-content-center align-content-center"

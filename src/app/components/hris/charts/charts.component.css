@@ -14,7 +14,7 @@
 .chart-width-tablet {
   border-radius: 1rem;
   min-height: 30% !important;
-  max-width: 48% !important;
+  max-width: 90% !important;
   margin-left: 10px;
 }
 
@@ -28,11 +28,32 @@
   line-height: 21px;
 }
 
-#canvas-container {
+#chart-body {
+  display: flex;
+}
+
+#canvas-container-bar {
+  max-width: 75vh;
+  max-height: 75vh;
+  text-align: center;
+  margin: 0 auto;
+}
+
+#canvas-container-pie {
   max-height: 50vh;
   max-width: 50vh;
   text-align: center;
   margin: 0 auto;
+}
+
+#bar-role-names {
+  text-align: left;
+  margin-top: 5%;
+}
+
+#pie-role-names {
+  text-align: left;
+  margin-top: 10%;
 }
 
 #menu-icon {
