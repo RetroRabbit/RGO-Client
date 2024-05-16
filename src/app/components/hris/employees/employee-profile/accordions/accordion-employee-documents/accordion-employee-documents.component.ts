@@ -44,6 +44,7 @@ export class AccordionEmployeeDocumentsComponent {
   showConfirmDialog: boolean = false;
   dialogTypeData!: Dialog;
   documentExists: boolean = false;
+  mouseEvent!: MouseEvent;
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
@@ -84,21 +85,47 @@ export class AccordionEmployeeDocumentsComponent {
   }
 
   captureUploadIndex(event: any) {
+    this.mouseEvent = event;
     this.uploadButtonIndex = event.srcElement.parentElement.id;
     const inputField = document.getElementById(`${this.uploadButtonIndex}-employee-document`) as HTMLInputElement;
-    inputField.click();
+    this.documentExists = this.filterDocumentsByCategory() != null;
+    const existingDocument = this.filterDocumentsByCategory();
+    this.showConfirmDialog = this.documentExists && existingDocument?.id !== 0;
+    if (this.showConfirmDialog) {
+      this.dialogTypeData.title = 'Replace Documents';
+      this.dialogTypeData.subtitle = 'This action will replace the current document with this new document.';
+      this.showDialog(0);
+    } else {
+      inputField.click();
+    }
   }
 
   uploadDocument(event: any) {
-    this.isLoadingUpload = true;
-    this.selectedFile = event.target.files[ 0 ];
-    this.documentsFileName = this.selectedFile.name;
-    if (this.allowedTypes.includes(this.selectedFile.type)) {
-      this.uploadProfileDocument();
+    if (!event) {
+      const inputField = document.createElement('input');
+      inputField.type = 'file';
+      inputField.accept = 'application/pdf';
+      inputField.style.display = 'none';
+      inputField.onchange = () => {
+        this.selectedFile = event.target.files[0];
+        this.uploadProfileDocument();
+      };
+      document.body.appendChild(inputField);
+      inputField.click();
+      document.body.removeChild(inputField);
+      return;
     } else {
-      this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
-      this.isLoadingUpload = false;
+      this.isLoadingUpload = true;
+      this.selectedFile = event.target.files[ 0 ];
+      this.documentsFileName = this.selectedFile.name;
+      if (this.allowedTypes.includes(this.selectedFile.type)) {
+        this.uploadProfileDocument();
+      } else {
+        this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
+        this.isLoadingUpload = false;
+      }
     }
+
   }
 
   uploadProfileDocument() {
@@ -274,8 +301,8 @@ export class AccordionEmployeeDocumentsComponent {
 
   dialogFeedBack(event: any) {
     this.showConfirmDialog = false;
-    if (event.confirmation) {
-      this.uploadProfileDocument();
+    if (event) {
+      this.uploadDocument(null);
     }
   }
 
