@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, HostListener, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -55,13 +55,18 @@ export class EmployeeApprovalsComponent {
     private snackBarService: SnackbarService,
     public router: Router,
     public cookieService: CookieService,
-    public selectedTabService: SystemNav
+    public selectedTabService: SystemNav,
+    private cdr: ChangeDetectorRef
   ) {
-      this.dialogTypeData = new DialogTypeData().dialogTypeData;
+    this.dialogTypeData = new DialogTypeData().dialogTypeData;
   }
 
   ngOnInit(): void {
     this.fetchData(this.selectedTabService.getSelectedTabIndex());
+  }
+
+  ngAfterContentChecked() {
+    this.cdr.detectChanges();
   }
 
   fetchData(active: number = this.selectedTabService.getSelectedTabIndex()): void {
@@ -69,13 +74,13 @@ export class EmployeeApprovalsComponent {
     this.employeeBankingandstarterkitService.getAllBankingAndStarterkits().subscribe({
       next: (data: BankingAndStarterKitDto[]) => {
         this.bankingAndStarterKitData = data;
-        this.updateStatusCounts(data)
-        this.buildFilteredArray(1);
-        this.selectedTabService.setSelectedTabIndex(active)
+        this.updateStatusCounts(data);
+        this.buildFilteredArray();
+        this.cdr.detectChanges();
       },
       error: () => this.snackBarService.showSnackbar("Error fetching banking and starter kit data", "snack-error"),
       complete: () => this.isLoading = false
-    })
+    });
   }
 
   updateStatusCounts(dtos: BankingAndStarterKitDto[]) {
@@ -122,47 +127,56 @@ export class EmployeeApprovalsComponent {
     });
   }
 
-  buildFilteredArray(status: number) {
+  buildFilteredArray() {
     this.filteredEmployeeDtos = [];
-    let indexVisistedArray: number[] = [];
+    let indexVisitedArray: number[] = [];
+    const selectedTabIndex = this.selectedTabService.getSelectedTabIndex();
+    const selectedStatus = selectedTabIndex === 2 ? 2 : selectedTabIndex === 1 ? 0 : 1;
+
     for (let i = 0; i < this.bankingAndStarterKitData.length; i++) {
-      if (!indexVisistedArray.includes(i)) {
+      if (!indexVisitedArray.includes(i)) {
         const currentDto = this.bankingAndStarterKitData[i];
-        if (currentDto.employeeBankingDto !== null && currentDto.employeeBankingDto.status == status) {
-          this.filterDocumentTypeAndStatus(currentDto, true, status);
+
+        if (currentDto.employeeBankingDto && currentDto.employeeBankingDto.status === selectedStatus) {
+          this.filterDocumentTypeAndStatus(currentDto, true, selectedStatus);
         }
-        if (currentDto.employeeDocumentDto !== null) {
+
+        if (currentDto.employeeDocumentDto) {
           const employeeDocumentsIndexes = this.findEmployeeDocuments(i, currentDto.employeeDocumentDto.employeeId);
           let documentsForEmployee: EmployeeDocument[] = [];
 
           employeeDocumentsIndexes.forEach(id => {
-            indexVisistedArray.push(id);
-            documentsForEmployee.push(this.bankingAndStarterKitData[id].employeeDocumentDto)
+            indexVisitedArray.push(id);
+            documentsForEmployee.push(this.bankingAndStarterKitData[id].employeeDocumentDto);
           });
 
           if (documentsForEmployee.length < 4) {
-            if (status == 1)
-              this.filterDocumentTypeAndStatus(currentDto, false, status);
-          }
-          else {
-            let sameStatuses = documentsForEmployee.every(document => document.status == documentsForEmployee[0].status);
+            if (selectedStatus === 1 || selectedStatus === 2) {
+              this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
+            }
+          } else {
+            let sameStatuses = documentsForEmployee.every(document => document.status === documentsForEmployee[0].status);
             if (!sameStatuses) {
-              if (status == 1)
-                this.filterDocumentTypeAndStatus(currentDto, false, status);
+              if (selectedStatus === 1 || selectedStatus === 2) {
+                this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
+              }
             } else {
-              if (status == documentsForEmployee[0].status)
-                this.filterDocumentTypeAndStatus(currentDto, false, status);
+              if (selectedStatus === documentsForEmployee[0].status) {
+                this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
+              }
             }
           }
         }
       }
     }
+
     this.filteredEmployeeDtos.sort((a, b) => (a.name < b.name ? -1 : 1));
     this.dataSource = new MatTableDataSource(this.filteredEmployeeDtos);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.sortByNameDefault(this.sort);
   }
+
 
   findEmployeeDocuments(startIndex: number, employeeId: number): number[] {
     let numberIndex: number[] = [];
@@ -188,12 +202,8 @@ export class EmployeeApprovalsComponent {
   }
 
   filterBankingAndDocumentsByStatus(status: number) {
-    if (status < 2)
-      this.selectedTabService.setSelectedTabIndex((status == 1) ? 0 : 1);
-    else
-      this.selectedTabService.setSelectedTabIndex(2);
-
-    this.buildFilteredArray(status);
+    this.selectedTabService.setSelectedTabIndex(status);
+    this.buildFilteredArray();
   }
 
   routeToApprovalPages(element: any) {
