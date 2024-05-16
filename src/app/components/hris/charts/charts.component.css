@@ -46,8 +46,14 @@
   margin: 0 auto;
 }
 
-#role-names {
+#bar-role-names {
   text-align: left;
+  margin-top: 5%;
+}
+
+#pie-role-names {
+  text-align: left;
+  margin-top: 10%;
 }
 
 #menu-icon {

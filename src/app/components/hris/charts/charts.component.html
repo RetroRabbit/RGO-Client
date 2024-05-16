@@ -80,17 +80,22 @@
     </div>
     <hr>
     <div id="chart-body" class="pb-2">
-      <div class="col-8 col-md-8" id="canvas-container-bar" *ngIf="chart.type == 'bar'">
+      <div class="col-9 col-md-9 col-sm-6" id="canvas-container-bar" *ngIf="chart.type == 'bar'">
         <canvas [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
           [datasets]='chart.datasets' [labels]="chart.type == 'bar'? chart.labels : chart.labels" [type]="chart.type"
           [options]="getChartOptions(chart.type)"></canvas>
       </div>
-      <div class="col-4 col-md-4" id="canvas-container-pie" *ngIf="chart.type == 'pie'">
+      <div class="col-9 col-md-9 col-sm-6" id="canvas-container-pie" *ngIf="chart.type == 'pie'">
         <canvas [plugins]="chart.type == 'bar' ? barChartPlugins : pieChartPlugins" baseChart
           [datasets]='chart.datasets' [labels]="chart.type == 'bar'? chart.labels : chart.labels" [type]="chart.type"
           [options]="getChartOptions(chart.type)"></canvas>
       </div>
-      <div class="col-4 col-md-4" id="role-names">Roles:
+      <div class="col-3 col-md-3 col-sm-6" id="bar-role-names" *ngIf="chart.type == 'bar' && chart.subtype == 'standard'">Roles:
+        <div *ngFor="let role of chart.roles;index as k">
+          - {{chart.roles[k]}}
+        </div>
+      </div>
+      <div class="col-3 col-md-3 col-sm-6" id="pie-role-names" *ngIf="chart.type == 'pie' && chart.subtype == 'standard'">Roles:
         <div *ngFor="let role of chart.roles;index as k">
           - {{chart.roles[k]}}
         </div>
