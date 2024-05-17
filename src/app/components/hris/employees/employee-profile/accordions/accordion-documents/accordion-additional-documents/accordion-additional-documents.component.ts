@@ -11,6 +11,7 @@ import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee
 import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-accordion-additional-documents',
@@ -31,9 +32,11 @@ export class AccordionDocumentsCustomDocumentsComponent {
   customFields: CustomField[] = [];
   additionalDocuments: EmployeeDocument[] = [];
   fileCategories = [];
+  roles: string[] = [];
   isLoadingUpload: boolean = false;
   uploadButtonIndex: number = 0;
   documentFormProgress: number = 0;
+  documentId: number = 0;
   selectedFile !: File;
   documentsFileName: string = "";
   PREVIOUS_PAGE = "previousPage";
@@ -48,10 +51,14 @@ export class AccordionDocumentsCustomDocumentsComponent {
     private employeeDocumentService: EmployeeDocumentService,
     private fb: FormBuilder,
     public navService: NavService,
+    private cookieService: CookieService,
+
     private snackBarService: SnackbarService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
 
   ngOnInit() {
+    const types: string = this.cookieService.get('userType');
+    this.roles = Object.keys(JSON.parse(types));
     this.getDocumentFields();
     this.getAdditionalDocuments();
   }
@@ -139,6 +146,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
     }
   }
 
+
   uploadDocumentDto(document: any) {
     const saveObj = {
       id: document.id,
@@ -190,10 +198,12 @@ export class AccordionDocumentsCustomDocumentsComponent {
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
           this.isLoadingUpload = false;
+
         }
       });
     }
   }
+
 
   getAdditionalDocuments() {
     if (this.employeeId != undefined) {
@@ -228,8 +238,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
     this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
   }
 
-  getFileName(index: number): EmployeeDocument {
-    var documentObject = this.additionalDocuments.find(document => document.employeeFileCategory == index) as EmployeeDocument;
+  getFileName(documentId: number): EmployeeDocument {
+    var documentObject = this.additionalDocuments.find(document => document.employeeFileCategory == documentId) as EmployeeDocument;
     return documentObject;
   }
 
@@ -266,9 +276,9 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
     if (documentObject == undefined)
       return false;
-
     return true;
   }
+
   getDocumentFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {

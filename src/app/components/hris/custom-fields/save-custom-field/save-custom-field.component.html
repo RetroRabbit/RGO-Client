@@ -39,7 +39,7 @@
                     <br>
                     <mat-radio-button [value]=4 [disabled]="isDisabledDocuments()">Options - Choices, which can be words or numbers</mat-radio-button>
                     <br>
-                    <mat-radio-button [value]=5 [disabled]="isDisabled()">Custom Documents - For file uploads, personal or required documents</mat-radio-button>
+                    <mat-radio-button [value]=5 [disabled]="isDisabled()">Documents - For file uploads, personal or required documents</mat-radio-button>
 
                 </mat-radio-group>
                 <div *ngIf="customFieldForm.get('type')?.value == 4 && customFieldForm.get('options') as optionsArray"
