@@ -1,4 +1,6 @@
 <div class="col-12" id="accordion-container">
+  <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData"
+  (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
   <mat-accordion id="accordion" class="row">
     <mat-expansion-panel class="mt-3 rounded-3">
       <mat-expansion-panel-header>
