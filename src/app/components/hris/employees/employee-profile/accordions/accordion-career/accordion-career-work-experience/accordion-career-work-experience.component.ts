@@ -31,8 +31,11 @@ export class AccordionCareerWorkExperienceComponent {
 
   workExperienceFormProgress: number = 0;
   editWorkExperience: boolean = false;
-  workExperienceData: any = [];
   workExperienceDto !: any;
+  workExperience: WorkExperience[] = [];
+  workExperienceData: any = [];
+  hasWorkExperienceData: boolean = false;
+  workExperienceId: number = 0;
 
   workExperienceForm: FormGroup = this.fb.group({
     title: { value: '', disabled: true },
@@ -53,22 +56,39 @@ export class AccordionCareerWorkExperienceComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
   }
 
-  ngOnInit() {
-    this.initializeForm();
+  ngOnInit(): void {
+    this.getWorkExperience();
   }
 
-  initializeForm() {
+  initializeForm(workExperienceDetails: WorkExperience) {
+
+    if(workExperienceDetails == null) {
+      this.hasWorkExperienceData = false;
+      return;
+    }
     this.workExperienceForm = this.fb.group({
-      title: [this.WorkExperience.workExperience.title, Validators.required],
-      employementType: [this.WorkExperience.workExperience.employementType, Validators.required],
-      companyName: [this.WorkExperience.workExperience.companyName, Validators.required],
-      location: [this.WorkExperience.workExperience.location, Validators.required],
-      startDate: [this.WorkExperience.workExperience.startDate, Validators.required],
-      endDate: [this.WorkExperience.workExperience.endDate, Validators.required]
+      title: [{ value: workExperienceDetails.title, disabled: true }, Validators.required],
+      employementType: [{ value: workExperienceDetails.employementType, disabled: true }, Validators.required],
+      companyName: [{ value: workExperienceDetails.companyName, disabled: true }, Validators.required],
+      location: [{ value: workExperienceDetails.location, disabled: true }, Validators.required],
+      startDate: [{ value: workExperienceDetails.startDate, disabled: true }, Validators.required],
+      endDate: [{ value: workExperienceDetails.endDate, disabled: true }, Validators.required]
     });
     this.workExperienceForm.disable();
+    this.hasWorkExperienceData = true;
     this.checkWorkExperienceFormProgress();
-    this.checkPropertyPermissions(Object.keys(this.workExperienceForm.controls), "Employee", true)
+  }
+  
+  getWorkExperience() {
+    this.workExperienceService.getWorkExperience(this.employeeProfile.employeeDetails.id).subscribe({
+      next: (data) => {
+        this.workExperienceData = data;
+        if (this.workExperience != null) {
+          this.workExperienceId = this.workExperience[this.workExperience.length - 1].id;
+        }
+        this.initializeForm(this.workExperience[this.workExperience.length - 1]);
+      }
+    })
   }
 
   uploadDocument() {
@@ -80,24 +100,15 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   editWorkExperiences() {
-    this.workExperienceForm.enable();
     this.editWorkExperience = true;
-    this.checkPropertyPermissions(Object.keys(this.workExperienceForm.controls), "Employee", false)
+    this.workExperienceForm.enable();
   }
 
   cancelWorkExperienceEdit() {
     this.editWorkExperience = false;
-    this.initializeForm();
     this.workExperienceForm.disable();
   }
 
-  getWorkExperience() {
-    this.workExperienceService.getWorkExperience(this.employeeProfile.employeeDetails.id).subscribe({
-      next: data => {
-        this.workExperienceData = data;
-      }
-    });
-  }
 
   saveWorkExperience() {
     // if (this.sharedAccordionFunctionality.workExperienceForm.valid) {
@@ -145,35 +156,4 @@ export class AccordionCareerWorkExperienceComponent {
     }
     this.workExperienceFormProgress = Math.round((filledCount / totalFields) * 100);
   }
-
-  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
-    fieldNames.forEach(fieldName => {
-      let control: AbstractControl<any, any> | null = null;
-      control = this.workExperienceForm.get(fieldName);
-
-      if (control) {
-        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
-          case PropertyAccessLevel.none:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
-            break;
-          case PropertyAccessLevel.read:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          case PropertyAccessLevel.write:
-            if (!initialLoad)
-              control.enable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          default:
-            if (!initialLoad)
-              control.enable();
-        }
-      }
-    });
-  }
-
 }
