@@ -128,7 +128,6 @@ input[type="number"] {
     border-radius: 28px;
     border: 1px solid var(--m-3-sys-light-primary, #0029C6);
     background: var(--m-3-sys-light-primary-container, #D7DFFF);
-    gap: 20px;
 }
 
 #back-button,
