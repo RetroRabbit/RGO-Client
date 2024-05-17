@@ -44,7 +44,6 @@ export class AccordionEmployeeDocumentsComponent {
   showConfirmDialog: boolean = false;
   dialogTypeData!: Dialog;
   documentExists: boolean = false;
-  mouseEvent!: MouseEvent;
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
@@ -85,7 +84,6 @@ export class AccordionEmployeeDocumentsComponent {
   }
 
   captureUploadIndex(event: any) {
-    this.mouseEvent = event;
     this.uploadButtonIndex = event.srcElement.parentElement.id;
     const inputField = document.getElementById(`${this.uploadButtonIndex}-employee-document`) as HTMLInputElement;
     this.documentExists = this.filterDocumentsByCategory() != null;
@@ -101,21 +99,7 @@ export class AccordionEmployeeDocumentsComponent {
   }
 
   uploadDocument(event: any) {
-    if (!event) {
-      const inputField = document.createElement('input');
-      inputField.type = 'file';
-      inputField.accept = 'application/pdf';
-      inputField.style.display = 'none';
-      inputField.onchange = () => {
-        this.selectedFile = event.target.files[0];
-        this.uploadProfileDocument();
-      };
-      document.body.appendChild(inputField);
-      inputField.click();
-      document.body.removeChild(inputField);
-      return;
-    } else {
-      this.isLoadingUpload = true;
+    this.isLoadingUpload = true;
       this.selectedFile = event.target.files[ 0 ];
       this.documentsFileName = this.selectedFile.name;
       if (this.allowedTypes.includes(this.selectedFile.type)) {
@@ -124,8 +108,6 @@ export class AccordionEmployeeDocumentsComponent {
         this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
         this.isLoadingUpload = false;
       }
-    }
-
   }
 
   uploadProfileDocument() {
@@ -302,7 +284,7 @@ export class AccordionEmployeeDocumentsComponent {
   dialogFeedBack(event: any) {
     this.showConfirmDialog = false;
     if (event) {
-      this.uploadDocument(null);
+      this.triggerInputField();
     }
   }
 
@@ -316,6 +298,11 @@ export class AccordionEmployeeDocumentsComponent {
       this.dialogTypeData.subtitle = 'This action will replace the current document with this new document.';
     }
     this.showConfirmDialog = true;
+  }
+
+  triggerInputField(){
+    const uploadField = document.getElementById(`${this.uploadButtonIndex}-employee-document`) as HTMLInputElement;
+    uploadField.click();
   }
 
 }
