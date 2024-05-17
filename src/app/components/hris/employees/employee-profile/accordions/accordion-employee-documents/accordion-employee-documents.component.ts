@@ -100,14 +100,14 @@ export class AccordionEmployeeDocumentsComponent {
 
   uploadDocument(event: any) {
     this.isLoadingUpload = true;
-      this.selectedFile = event.target.files[ 0 ];
-      this.documentsFileName = this.selectedFile.name;
-      if (this.allowedTypes.includes(this.selectedFile.type)) {
-        this.uploadProfileDocument();
-      } else {
-        this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
-        this.isLoadingUpload = false;
-      }
+    this.selectedFile = event.target.files[ 0 ];
+    this.documentsFileName = this.selectedFile.name;
+    if (this.allowedTypes.includes(this.selectedFile.type)) {
+      this.uploadProfileDocument();
+    } else {
+      this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
+      this.isLoadingUpload = false;
+    }
   }
 
   uploadProfileDocument() {
