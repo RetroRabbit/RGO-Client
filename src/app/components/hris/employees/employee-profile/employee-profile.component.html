@@ -351,15 +351,20 @@
       <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile"
         (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
 
-      <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
-        (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents-starterkit>
-
-      <app-accordion-employee-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
+      <app-accordion-documents-starterkit
+      [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile" (updateDocument)="updateDocumentProgress($event)">
+      </app-accordion-documents-starterkit>
+      <app-accordion-employee-documents
+      [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
       </app-accordion-employee-documents>
+      <app-accordion-my-documents
+      [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"(updateDocument)="updateDocumentProgress($event)">
+      </app-accordion-my-documents>
+      <app-accordion-additional-documents
+      [hidden]="selectedAccordion != 'Documents'" >
+      </app-accordion-additional-documents>
 
-      <app-accordion-my-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
-      (updateDocument)="updateDocumentProgress($event)"></app-accordion-my-documents>
-    <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'" ></app-accordion-additional-documents>
+      <app-accordion-career-work-experience [hidden]="selectedAccordion != 'Career Summary'"></app-accordion-career-work-experience>
 
     </div>
   </div>
