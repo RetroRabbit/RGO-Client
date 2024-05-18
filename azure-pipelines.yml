@@ -43,3 +43,15 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'rgo-client'
     publishLocation: 'Container'
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'HRIS-Dev'
+    appType: 'webAppLinux'
+    WebAppName: 'hris-client'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'HRIS-Dev'
+    SlotName: 'dev'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    RuntimeStack: 'NODE|18-lts'
