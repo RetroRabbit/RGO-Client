@@ -12,6 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { CookieService } from 'ngx-cookie-service';
+import { Console } from 'console';
+import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
 
 @Component({
   selector: 'app-accordion-additional-documents',
@@ -39,11 +41,12 @@ export class AccordionDocumentsCustomDocumentsComponent {
   documentId: number = 0;
   selectedFile !: File;
   documentsFileName: string = "";
+  DocumentTypeName: string = "";
   PREVIOUS_PAGE = "previousPage";
   allowedTypes = ['application/pdf'];
   base64String: string = "";
   employeeId = this.route.snapshot.params['id'];
-  dataSource = new MatTableDataSource<string>();
+  dataSource = new MatTableDataSource<FileCategory>(this.fileCategories);
 
   constructor(
     private customFieldService: CustomFieldService,
@@ -52,19 +55,15 @@ export class AccordionDocumentsCustomDocumentsComponent {
     private fb: FormBuilder,
     public navService: NavService,
     private cookieService: CookieService,
-
     private snackBarService: SnackbarService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
 
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
-    this.getDocumentFields();
-    this.getAdditionalDocuments();
-  }
-
-  getDocumentFields() {
     this.getDocumentFieldCodes();
+    this.getAdditionalDocuments();
+    console.log(this.additionalDocuments);
   }
 
   getDocumentsFieldCodes() {
@@ -134,7 +133,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
           employeeFileCategory: +this.uploadButtonIndex,
           blob: this.base64String,
           status: 1,
-          documentType: 2,
+          documentType: 3,
           uploadDate: new Date(),
           reason: '',
           counterSign: false,
@@ -153,14 +152,14 @@ export class AccordionDocumentsCustomDocumentsComponent {
       employeeId: document.employee.id,
       fileName: document.fileName,
       blob: this.base64String,
-      fileCategory: 0,
+      fileCategory: document.fileCategory,
       employeeFileCategory: +this.uploadButtonIndex,
       uploadDate: document.uploadDate,
       status: 1,
-      documentType: 2,
+      documentType: 3,
     }
     if (!document.id) {
-      this.employeeDocumentService.saveEmployeeDocument(saveObj, 2).subscribe({
+      this.employeeDocumentService.saveEmployeeDocument(saveObj, 3).subscribe({
         next: () => {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
@@ -185,7 +184,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
         reason: document.reason,
         status: 1,
         counterSign: false,
-        documentType: 2,
+        documentType: 3,
         lastUpdatedDate: document.lastUpdatedDate,
       }
       this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
@@ -198,16 +197,14 @@ export class AccordionDocumentsCustomDocumentsComponent {
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
           this.isLoadingUpload = false;
-
         }
       });
     }
   }
 
-
   getAdditionalDocuments() {
     if (this.employeeId != undefined) {
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 2).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 3).subscribe({
         next: data => {
           this.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
@@ -219,10 +216,12 @@ export class AccordionDocumentsCustomDocumentsComponent {
       });
     } else {
       this.employeeId = this.navService.employeeProfile.id;
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 0).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 3).subscribe({
         next: data => {
+
           this.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
+          console.log("doc", this.dataSource.data);
           this.calculateDocumentProgress();
         },
         error: error => {
@@ -234,12 +233,14 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   downloadDocument(event: any) {
     const id = event.srcElement.parentElement.id;
-    const documentObject = this.additionalDocuments.find(document => document.employeeFileCategory == id) as any;
+    const documentObject = this.additionalDocuments.find(document => document.fileCategory == id) as any;
     this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
   }
 
   getFileName(documentId: number): EmployeeDocument {
-    var documentObject = this.additionalDocuments.find(document => document.employeeFileCategory == documentId) as EmployeeDocument;
+
+    var documentObject = this.additionalDocuments.find(document => document.fileCategory == documentId) as EmployeeDocument;
+    console.log("DOC", documentObject)
     return documentObject;
   }
 
@@ -249,8 +250,9 @@ export class AccordionDocumentsCustomDocumentsComponent {
     inputField.click();
   }
 
+
   filterDocumentsByCategory(): EmployeeDocument | null {
-    var object = this.additionalDocuments.filter(document => document.employeeFileCategory == this.uploadButtonIndex);
+    var object = this.additionalDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
     if (object == null) {
       return null;
     }
@@ -263,17 +265,17 @@ export class AccordionDocumentsCustomDocumentsComponent {
       if (fieldName.code != null || fieldName.code != undefined) {
         const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
         formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
-        this.sharedAccordionFunctionality.additionalInfoForm = this.fb.group(formGroupConfig);
+        this.sharedAccordionFunctionality.additionalDocumentForm = this.fb.group(formGroupConfig);
         if (fieldName.required == true) {
-          this.sharedAccordionFunctionality.additionalInfoForm.controls[fieldName.code].setValidators(Validators.required);
+          this.sharedAccordionFunctionality.additionalDocumentForm.controls[fieldName.code].setValidators(Validators.required);
         }
-        this.sharedAccordionFunctionality.additionalInfoForm.disable();
+        this.sharedAccordionFunctionality.additionalDocumentForm.disable();
       }
     });
   }
+
   disableDownload(index: number) {
     const documentObject = this.additionalDocuments.find(document => document.employeeFileCategory == index);
-
     if (documentObject == undefined)
       return false;
     return true;

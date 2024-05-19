@@ -21,7 +21,7 @@
                 </div>
                 <div id="table-body" class="my-2">
                     <div class="row my-2 py-2" id="document-row" *ngFor="let fieldcode of customFields;let i = index">
-                        <div id="document" class="col-12 col-md-6 col-lg-6">
+                        <div id="document" class="col-12 col-md-6 col-lg-6" >
                             <h3>{{fieldcode.name}}</h3>
                             <div class="col-12" id="fileName" *ngIf="getFileName(i) as document;else NoFile" id="fileName">
                                 <p>{{document.fileName}}</p>
