@@ -11,11 +11,11 @@
     </div>
   </div>
   <div id="tab-buttons" class="mb-0">
-    <div id="tab" (click)="filterBankingAndDocumentsByStatus(1)"
+    <div id="tab" (click)="filterBankingAndDocumentsByStatus(0)"
       [ngClass]="this.selectedTabService.getSelectedTabIndex() === 0 ? 'activeTab' : ''">
       Pending ({{ pendingCount }})
     </div>
-    <div id="tab" (click)="filterBankingAndDocumentsByStatus(0)"
+    <div id="tab" (click)="filterBankingAndDocumentsByStatus(1)"
       [ngClass]="this.selectedTabService.getSelectedTabIndex() === 1 ? 'activeTab' : ''">
       Approved ({{ approvedCount }})
     </div>

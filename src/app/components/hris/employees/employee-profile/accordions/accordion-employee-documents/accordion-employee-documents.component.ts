@@ -9,6 +9,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
+import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 
 @Component({
   selector: 'app-accordion-employee-documents',
@@ -39,6 +41,9 @@ export class AccordionEmployeeDocumentsComponent {
   roles: string[] = [];
   isLoadingUpload: boolean = false;
   allowedTypes = ['application/pdf'];
+  showConfirmDialog: boolean = false;
+  dialogTypeData!: Dialog;
+  documentExists: boolean = false;
 
   constructor(
     private employeeDocumentService: EmployeeDocumentService,
@@ -47,7 +52,9 @@ export class AccordionEmployeeDocumentsComponent {
     public navService: NavService,
     private cookieService: CookieService,
     private authAccessService: AuthAccessService
-  ) { }
+  ) {
+    this.dialogTypeData = new DialogTypeData().dialogTypeData;
+  }
 
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
@@ -79,7 +86,16 @@ export class AccordionEmployeeDocumentsComponent {
   captureUploadIndex(event: any) {
     this.uploadButtonIndex = event.srcElement.parentElement.id;
     const inputField = document.getElementById(`${this.uploadButtonIndex}-employee-document`) as HTMLInputElement;
-    inputField.click();
+    this.documentExists = this.filterDocumentsByCategory() != null;
+    const existingDocument = this.filterDocumentsByCategory();
+    this.showConfirmDialog = this.documentExists && existingDocument?.id !== 0;
+    if (this.showConfirmDialog) {
+      this.dialogTypeData.title = 'Replace Documents';
+      this.dialogTypeData.subtitle = 'This action will replace the current document with this new document.';
+      this.showDialog(0);
+    } else {
+      inputField.click();
+    }
   }
 
   uploadDocument(event: any) {
@@ -263,6 +279,30 @@ export class AccordionEmployeeDocumentsComponent {
       return false;
 
     return true;
+  }
+
+  dialogFeedBack(event: any) {
+    this.showConfirmDialog = false;
+    if (event) {
+      this.triggerInputField();
+    }
+  }
+
+  showDialog(status: number) {
+    this.dialogTypeData.type = 'confirm';
+    this.dialogTypeData.confirmButtonText = 'Save';
+    this.dialogTypeData.denyButtonText = 'Cancel';
+
+    if (status === 0) {
+      this.dialogTypeData.title = 'Replace Documents'
+      this.dialogTypeData.subtitle = 'This action will replace the current document with this new document.';
+    }
+    this.showConfirmDialog = true;
+  }
+
+  triggerInputField(){
+    const uploadField = document.getElementById(`${this.uploadButtonIndex}-employee-document`) as HTMLInputElement;
+    uploadField.click();
   }
 
 }
