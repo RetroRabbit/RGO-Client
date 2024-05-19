@@ -27,7 +27,7 @@ steps:
 - script: |
     npm install -g @angular/cli
     npm install
-    ng build --configuration production
+    ng build --configuration development
   displayName: 'npm install and build'
 
 - task: ArchiveFiles@2
