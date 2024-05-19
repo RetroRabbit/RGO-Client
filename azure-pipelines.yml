@@ -47,6 +47,14 @@ stages:
       inputs:
         versionSpec: '18.x'
       displayName: 'Install Node.js'
+    - task: DownloadSecureFile@1
+      inputs:
+        secureFile: '.env'
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: $(Agent.TempDirectory)
+        Contents: '**\.env'
+        TargetFolder: $(Build.SourcesDirectory)
 
     - script: |
         npm install
@@ -76,6 +84,15 @@ stages:
         versionSpec: '18.x'
       displayName: 'Install Node.js'
 
+    - task: DownloadSecureFile@1
+      inputs:
+        secureFile: '.env'
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: $(Agent.TempDirectory)
+        Contents: '**\.env'
+        TargetFolder: $(Build.SourcesDirectory)
+        
     - script: |
         npm install
         npm run build -- --configuration=production
