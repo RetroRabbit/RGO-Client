@@ -73,8 +73,6 @@ stages:
         artifactName: 'staging-drop'
       displayName: 'Publish Artifact for Staging'
 
-    - task: AzureRmWebAppDeployment@4
-
 - stage: Production
   jobs:
   - job: BuildAndDeployProd
