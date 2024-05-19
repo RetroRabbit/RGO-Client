@@ -13,12 +13,6 @@ stages:
       inputs:
         versionSpec: '18.x'
       displayName: 'Install Node.js'
-
-
-    - script: |
-        npm install
-        npm run build -- --configuration=development
-      displayName: 'npm install and build for development'
     - task: DownloadSecureFile@1
       inputs:
         secureFile: '.env'
@@ -27,6 +21,12 @@ stages:
         SourceFolder: $(Agent.TempDirectory)
         Contents: '**\.env'
         TargetFolder: $(Build.SourcesDirectory)
+
+    - script: |
+        npm install
+        npm run build -- --configuration=development
+      displayName: 'npm install and build for development'
+
     - task: CopyFiles@2
       inputs:
         contents: 'dist/**'
