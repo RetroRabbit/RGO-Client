@@ -27,10 +27,9 @@ git checkout develop
 ```
 
 ### Install dependencies for the project
-```powershell / cmd / internal terminal
+```powershell
 #cd RGO-Client
 npm install
-npm install ngx-file-drop
 ```
 
 ### Running
