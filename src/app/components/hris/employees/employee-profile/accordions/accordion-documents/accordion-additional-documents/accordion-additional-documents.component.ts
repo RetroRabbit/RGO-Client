@@ -12,7 +12,6 @@ import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { CookieService } from 'ngx-cookie-service';
-import { Console } from 'console';
 import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
 
 @Component({
@@ -47,7 +46,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   base64String: string = "";
   employeeId = this.route.snapshot.params['id'];
   dataSource = new MatTableDataSource<FileCategory>(this.fileCategories);
-
+  selectedFieldCode: string = '';
   constructor(
     private customFieldService: CustomFieldService,
     private route: ActivatedRoute,
@@ -63,7 +62,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
     this.roles = Object.keys(JSON.parse(types));
     this.getDocumentFieldCodes();
     this.getAdditionalDocuments();
-    console.log(this.additionalDocuments);
   }
 
   getDocumentsFieldCodes() {
@@ -75,136 +73,79 @@ export class AccordionDocumentsCustomDocumentsComponent {
     })
   }
 
-  downloadFile(base64String: string, fileName: string) {
-    const commaIndex = base64String.indexOf(',');
-    if (commaIndex !== -1) {
-      base64String = base64String.slice(commaIndex + 1);
-    }
+  // downloadFile(base64String: string, fileName: string) {
+  //   const commaIndex = base64String.indexOf(',');
+  //   if (commaIndex !== -1) {
+  //     base64String = base64String.slice(commaIndex + 1);
+  //   }
 
-    const byteString = atob(base64String);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const intArray = new Uint8Array(arrayBuffer);
+  //   const byteString = atob(base64String);
+  //   const arrayBuffer = new ArrayBuffer(byteString.length);
+  //   const intArray = new Uint8Array(arrayBuffer);
 
-    for (let i = 0; i < byteString.length; i++) {
-      intArray[i] = byteString.charCodeAt(i);
-    }
+  //   for (let i = 0; i < byteString.length; i++) {
+  //     intArray[i] = byteString.charCodeAt(i);
+  //   }
 
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
-  }
+  //   const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+  //   const link = document.createElement('a');
+  //   link.href = window.URL.createObjectURL(blob);
+  //   link.download = fileName;
+  //   link.click();
+  // }
 
-  uploadDocument(event: any) {
-    this.isLoadingUpload = true;
-    this.selectedFile = event.target.files[0];
-    this.documentsFileName = this.selectedFile.name;
-    if (this.allowedTypes.includes(this.selectedFile.type)) {
-      this.uploadProfileDocument();
-    } else {
-      this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
-      this.isLoadingUpload = false;
-    }
-  }
+  // uploadDocument(event: any) {
+  //   this.isLoadingUpload = true;
+  //   this.selectedFile = event.target.files[0];
+  //   this.documentsFileName = this.selectedFile.name;
+  //   if (this.allowedTypes.includes(this.selectedFile.type)) {
+  //     this.uploadProfileDocument();
+  //   } else {
+  //     this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
+  //     this.isLoadingUpload = false;
+  //   }
+  // }
 
-  uploadProfileDocument() {
-    if (this.selectedFile) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.buildDocumentDto();
-      };
-      reader.readAsDataURL(this.selectedFile);
-    }
-  }
+  // uploadProfileDocument() {
+  //   if (this.selectedFile) {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       this.buildDocumentDto();
+  //     };
+  //     reader.readAsDataURL(this.selectedFile);
+  //   }
+  // }
 
-  buildDocumentDto() {
-    const existingValue = this.filterDocumentsByCategory();
-    if (this.selectedFile) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.base64String = reader.result as string;
-        let newDto: {} = {
-          id: existingValue != undefined ? existingValue?.id as number : 0,
-          employee: this.employeeProfile,
-          reference: "",
-          fileName: this.documentsFileName,
-          fileCategory: 0,
-          employeeFileCategory: +this.uploadButtonIndex,
-          blob: this.base64String,
-          status: 1,
-          documentType: 3,
-          uploadDate: new Date(),
-          reason: '',
-          counterSign: false,
-          lastUpdatedDate: new Date()
-        };
-        this.uploadDocumentDto(newDto);
-      };
-      reader.readAsDataURL(this.selectedFile);
-    }
-  }
-
-
-  uploadDocumentDto(document: any) {
-    const saveObj = {
-      id: document.id,
-      employeeId: document.employee.id,
-      fileName: document.fileName,
-      blob: this.base64String,
-      fileCategory: document.fileCategory,
-      employeeFileCategory: +this.uploadButtonIndex,
-      uploadDate: document.uploadDate,
-      status: 1,
-      documentType: 3,
-    }
-    if (!document.id) {
-      this.employeeDocumentService.saveEmployeeDocument(saveObj, 3).subscribe({
-        next: () => {
-          this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar("Document added", "snack-success");
-          this.getAdditionalDocuments();
-          this.calculateDocumentProgress();
-        },
-        error: (error) => {
-          this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar(error, "snack-error");
-        }
-      });
-    } else {
-      const updatedDocument = {
-        id: document.id,
-        employeeId: document.employee.id,
-        reference: document.reference,
-        fileName: document.fileName,
-        fileCategory: document.fileCategory,
-        employeeFileCategory: +this.uploadButtonIndex,
-        blob: document.blob,
-        uploadDate: document.uploadDate,
-        reason: document.reason,
-        status: 1,
-        counterSign: false,
-        documentType: 3,
-        lastUpdatedDate: document.lastUpdatedDate,
-      }
-      this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
-        next: () => {
-          this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar("Document updated", "snack-success");
-          this.getAdditionalDocuments();
-          this.calculateDocumentProgress();
-        },
-        error: (error) => {
-          this.snackBarService.showSnackbar(error, "snack-error");
-          this.isLoadingUpload = false;
-        }
-      });
-    }
-  }
+  // buildDocumentDto() {
+  //   const existingValue = this.filterDocumentsByCategory();
+  //   if (this.selectedFile) {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       this.base64String = reader.result as string;
+  //       let newDto: {} = {
+  //         id: existingValue != undefined ? existingValue?.id as number : 0,
+  //         employee: this.employeeProfile,
+  //         reference: "",
+  //         fileName: this.documentsFileName,
+  //         fileCategory: 0,
+  //         employeeFileCategory: +this.uploadButtonIndex,
+  //         blob: this.base64String,
+  //         status: 1,
+  //         documentType: 3,
+  //         uploadDate: new Date(),
+  //         reason: '',
+  //         counterSign: false,
+  //         lastUpdatedDate: new Date()
+  //       };
+  //       this.uploadDocumentDto(newDto);
+  //     };
+  //     reader.readAsDataURL(this.selectedFile);
+  //   }
+  // }
 
   getAdditionalDocuments() {
     if (this.employeeId != undefined) {
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 3).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 4).subscribe({
         next: data => {
           this.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
@@ -216,12 +157,10 @@ export class AccordionDocumentsCustomDocumentsComponent {
       });
     } else {
       this.employeeId = this.navService.employeeProfile.id;
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 3).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 4).subscribe({
         next: data => {
-
           this.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
-          console.log("doc", this.dataSource.data);
           this.calculateDocumentProgress();
         },
         error: error => {
@@ -230,26 +169,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
       });
     }
   }
-
-  downloadDocument(event: any) {
-    const id = event.srcElement.parentElement.id;
-    const documentObject = this.additionalDocuments.find(document => document.fileCategory == id) as any;
-    this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
-  }
-
-  getFileName(documentId: number): EmployeeDocument {
-
-    var documentObject = this.additionalDocuments.find(document => document.fileCategory == documentId) as EmployeeDocument;
-    console.log("DOC", documentObject)
-    return documentObject;
-  }
-
-  captureUploadIndex(event: any) {
-    this.uploadButtonIndex = event.srcElement.parentElement.id;
-    const inputField = document.getElementById(`${this.uploadButtonIndex}-document`) as HTMLInputElement;
-    inputField.click();
-  }
-
 
   filterDocumentsByCategory(): EmployeeDocument | null {
     var object = this.additionalDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
@@ -274,13 +193,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
     });
   }
 
-  disableDownload(index: number) {
-    const documentObject = this.additionalDocuments.find(document => document.employeeFileCategory == index);
-    if (documentObject == undefined)
-      return false;
-    return true;
-  }
-
   getDocumentFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
@@ -295,5 +207,153 @@ export class AccordionDocumentsCustomDocumentsComponent {
     const fetchedDocuments = this.additionalDocuments.filter(document => document.employeeFileCategory <= 9).length;
     this.documentFormProgress = fetchedDocuments / total * 100;
     this.updateDocument.emit(this.documentFormProgress);
+  }
+
+  captureUploadButtonIndex(event : any, category : any){
+    this.selectedFieldCode = category;
+    this.uploadButtonIndex = event.srcElement.offsetParent.id;
+    const inputField = document.getElementById(`${this.uploadButtonIndex}-additional-document`) as HTMLInputElement;
+    inputField.click();
+  }
+
+  captureFileUploaded(event : any){
+    this.isLoadingUpload = true;
+    this.selectedFile = event.target.files[0];
+    this.documentsFileName = this.selectedFile.name;
+    if(this.allowedTypes.includes(this.selectedFile.type)){
+      this.readUploadedDocument();
+    }
+    else{
+      this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
+      this.isLoadingUpload = false;
+    }
+  }
+
+  readUploadedDocument(){
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.createDocumentDto();
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  createDocumentDto(){
+    const existingValue = this.filterDocumentsByReference();
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.base64String = reader.result as string;
+        let newDto: {} = {
+          id: existingValue != undefined ? existingValue?.id as number : 0,
+          employeeId: this.employeeProfile.id,
+          fileName: this.documentsFileName,
+          fileCategory: 0,
+          employeeFileCategory: 0,
+          adminFileCategory: 0,
+          blob: this.base64String,
+          uploadDate: new Date(),
+          reference: this.selectedFieldCode,
+          lastUpdatedDate: new Date()
+        };
+        this.saveDocumentDto(newDto);
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  saveDocumentDto(document : any) {
+    if(!document.id) {
+      this.employeeDocumentService.saveEmployeeDocument(document, 4).subscribe({
+        next: () => {
+          this.isLoadingUpload = false;
+          this.snackBarService.showSnackbar("Document added", "snack-success");
+          this.getAdditionalDocuments();
+          this.calculateDocumentProgress();
+        },
+        error: (error : any) => {
+            this.isLoadingUpload = false;
+            this.snackBarService.showSnackbar(error, "snack-error");
+        }
+      })
+
+    } else {
+      const updatedDocument = {
+        id: document.id,
+        employeeId: document.employeeId,
+        reference: document.reference,
+        fileName: document.fileName,
+        fileCategory: document.fileCategory,
+        employeeFileCategory: +this.uploadButtonIndex,
+        blob: document.blob,
+        uploadDate: document.uploadDate,
+        reason: document.reason,
+        status: 1,
+        counterSign: false,
+        documentType: 4,
+        lastUpdatedDate: document.lastUpdatedDate,
+      }
+      this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
+        next: () => {
+          this.isLoadingUpload = false;
+          this.snackBarService.showSnackbar("Document updated", "snack-success");
+          this.getAdditionalDocuments();
+          this.calculateDocumentProgress();
+        },
+        error: (error) => {
+          this.snackBarService.showSnackbar(error, "snack-error");
+          this.isLoadingUpload = false;
+        }
+      });
+    }
+  }
+
+  getDocumentName(reference : any) : EmployeeDocument | null{
+    let documentFound = null;
+    this.additionalDocuments.forEach(document => {
+      if(document.reference == reference){
+        documentFound = document;
+      }
+    })
+    return documentFound;
+  }
+
+  disableDownloadButton(index : number) {
+    return this.additionalDocuments[index] != null;
+  }
+
+  downloadDocumentTrigger(index : number) {
+    this.downloadDocument(this.additionalDocuments[index].blob, this.additionalDocuments[index].fileName);
+  }
+
+  downloadDocument(base64String: string, fileName: string){
+    const commaIndex = base64String.indexOf(',');
+    if (commaIndex !== -1) {
+      base64String = base64String.slice(commaIndex + 1);
+    }
+
+    const byteString = atob(base64String);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const intArray = new Uint8Array(arrayBuffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+      intArray[i] = byteString.charCodeAt(i);
+    }
+
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+  }
+
+  filterDocumentsByReference(): EmployeeDocument | null {
+    let documentFound = null;
+    this.additionalDocuments.find(document => {
+      if(document.reference == this.selectedFieldCode)
+        documentFound = document
+    });
+    return documentFound;
   }
 }
