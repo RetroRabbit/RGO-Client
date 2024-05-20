@@ -58,7 +58,7 @@
           </div>
         </ng-template>
         <div class="col-12 my-2 d-none d-md-block" id="header-based"
-          *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnAddress">
+          *ngIf="navService.employeeProfile.id !== selectedEmployee.id && selectedEmployee.physicalAddress?.suburbOrDistrict != null; else OwnAddress">
           Based in {{ selectedEmployee.physicalAddress?.suburbOrDistrict }}
         </div>
         <ng-template #OwnAddress>
