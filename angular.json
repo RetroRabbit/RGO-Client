@@ -30,6 +30,21 @@
             "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
+            "local": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "4mb",
+                  "maximumError": "8mb"
+                }, 
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "10kb",
+                  "maximumError": "12kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -100,7 +115,7 @@
               "namedChunks": true
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "local"
         },
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
@@ -114,8 +129,12 @@
             "development": {
               "browserTarget": "RGO-Client:build:development"
             }
+            ,
+            "local": {
+              "browserTarget": "RGO-Client:build:local"
+            }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "local"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
