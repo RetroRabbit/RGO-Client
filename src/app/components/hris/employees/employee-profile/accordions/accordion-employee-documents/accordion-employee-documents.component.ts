@@ -180,6 +180,7 @@ export class AccordionEmployeeDocumentsComponent {
         fileName: document.fileName,
         fileCategory: document.fileCategory,
         employeeFileCategory: +this.uploadButtonIndex,
+        adminFileCategory: 0,
         blob: document.blob,
         uploadDate: document.uploadDate,
         reason: document.reason,
