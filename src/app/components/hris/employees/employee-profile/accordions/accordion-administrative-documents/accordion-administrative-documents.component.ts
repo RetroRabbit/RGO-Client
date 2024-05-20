@@ -84,7 +84,7 @@ export class AccordionAdministrativeDocumentsComponent {
 
   captureUploadIndex(event: any) {
     this.uploadButtonIndex = event.srcElement.parentElement.id;
-    const inputField = document.getElementById(`${this.uploadButtonIndex}-employee-document`) as HTMLInputElement;
+    const inputField = document.getElementById(`${this.uploadButtonIndex}-administrative-document`) as HTMLInputElement;
     this.documentExists = this.filterDocumentsByCategory() != null;
     const existingDocument = this.filterDocumentsByCategory();
     this.showConfirmDialog = this.documentExists && existingDocument?.id !== 0;
@@ -232,7 +232,7 @@ export class AccordionAdministrativeDocumentsComponent {
   }
 
   filterDocumentsByCategory(): EmployeeDocument | null {
-    var object = this.employeeDocuments.filter(document => document.employeeFileCategory == this.uploadButtonIndex);
+    var object = this.employeeDocuments.filter(document => document.adminFileCategory == this.uploadButtonIndex);
     if (object == null) {
       return null;
     }
@@ -240,18 +240,18 @@ export class AccordionAdministrativeDocumentsComponent {
   }
 
   getFileName(index: number): EmployeeDocument {
-    var documentObject = this.employeeDocuments.find(document => document.employeeFileCategory == index) as EmployeeDocument;
+    var documentObject = this.employeeDocuments.find(document => document.adminFileCategory == index) as EmployeeDocument;
     return documentObject;
   }
 
   downloadDocument(event: any) {
     const id = event.srcElement.parentElement.id;
-    const documentObject = this.employeeDocuments.find(document => document.employeeFileCategory == id) as any;
+    const documentObject = this.employeeDocuments.find(document => document.adminFileCategory == id) as any;
     this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
   }
 
   disableUploadButton(index: number): boolean {
-    const documentObject = this.employeeDocuments.find(document => document.employeeFileCategory == index);
+    const documentObject = this.employeeDocuments.find(document => document.adminFileCategory == index);
     if (this.authAccessService.isEmployee()) {
       return false;
     }
@@ -268,13 +268,13 @@ export class AccordionAdministrativeDocumentsComponent {
 
   calculateDocumentProgress() {
     const total = this.fileCategories.length;
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.employeeFileCategory <= 9).length;
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= 5).length;
     this.documentFormProgress = fetchedDocuments / total * 100;
     this.updateDocument.emit(this.documentFormProgress);
   }
 
   disableDownload(index: number) {
-    const documentObject = this.employeeDocuments.find(document => document.employeeFileCategory == index);
+    const documentObject = this.employeeDocuments.find(document => document.adminFileCategory == index);
 
     if (documentObject == undefined)
       return false;
@@ -302,7 +302,7 @@ export class AccordionAdministrativeDocumentsComponent {
   }
 
   triggerInputField(){
-    const uploadField = document.getElementById(`${this.uploadButtonIndex}-employee-document`) as HTMLInputElement;
+    const uploadField = document.getElementById(`${this.uploadButtonIndex}-administrative-document`) as HTMLInputElement;
     uploadField.click();
   }
 }
