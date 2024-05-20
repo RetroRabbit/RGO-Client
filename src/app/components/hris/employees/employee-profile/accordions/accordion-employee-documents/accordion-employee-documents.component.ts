@@ -40,7 +40,7 @@ export class AccordionEmployeeDocumentsComponent {
   selectedFile !: File;
   roles: string[] = [];
   isLoadingUpload: boolean = false;
-  allowedTypes = ['application/pdf'];
+  allowedTypes = [ 'application/pdf' ];
   showConfirmDialog: boolean = false;
   dialogTypeData!: Dialog;
   documentExists: boolean = false;
@@ -271,7 +271,7 @@ export class AccordionEmployeeDocumentsComponent {
 
   calculateDocumentProgress() {
     const total = this.fileCategories.length;
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.employeeFileCategory <= (total-1)).length;
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.employeeFileCategory <= (total - 1)).length;
     this.documentFormProgress = fetchedDocuments / total * 100;
     this.updateDocument.emit(this.documentFormProgress);
   }
@@ -304,7 +304,7 @@ export class AccordionEmployeeDocumentsComponent {
     this.showConfirmDialog = true;
   }
 
-  triggerInputField(){
+  triggerInputField() {
     const uploadField = document.getElementById(`${this.uploadButtonIndex}-employee-document`) as HTMLInputElement;
     uploadField.click();
   }

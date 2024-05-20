@@ -15,7 +15,7 @@ import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface
 @Component({
   selector: 'app-accordion-administrative-documents',
   templateUrl: './accordion-administrative-documents.component.html',
-  styleUrls: ['./accordion-administrative-documents.component.css']
+  styleUrls: [ './accordion-administrative-documents.component.css' ]
 })
 export class AccordionAdministrativeDocumentsComponent {
   @Output() updateDocument = new EventEmitter<number>();
@@ -39,7 +39,7 @@ export class AccordionAdministrativeDocumentsComponent {
   selectedFile !: File;
   roles: string[] = [];
   isLoadingUpload: boolean = false;
-  allowedTypes = ['application/pdf'];
+  allowedTypes = [ 'application/pdf' ];
   showConfirmDialog: boolean = false;
   dialogTypeData!: Dialog;
   documentExists: boolean = false;
@@ -217,7 +217,8 @@ export class AccordionAdministrativeDocumentsComponent {
           reference: "",
           fileName: this.documentsFileName,
           fileCategory: 0,
-          employeeFileCategory: +this.uploadButtonIndex,
+          employeeFileCategory: 0,
+          adminFileCategory: +this.uploadButtonIndex,
           blob: this.base64String,
           status: 1,
           documentType: 2,
@@ -269,7 +270,7 @@ export class AccordionAdministrativeDocumentsComponent {
 
   calculateDocumentProgress() {
     const total = this.fileCategories.length;
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= (total-1)).length;
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= (total - 1)).length;
     this.documentFormProgress = fetchedDocuments / total * 100;
     this.updateDocument.emit(this.documentFormProgress);
   }
@@ -302,7 +303,7 @@ export class AccordionAdministrativeDocumentsComponent {
     this.showConfirmDialog = true;
   }
 
-  triggerInputField(){
+  triggerInputField() {
     const uploadField = document.getElementById(`${this.uploadButtonIndex}-administrative-document`) as HTMLInputElement;
     uploadField.click();
   }
