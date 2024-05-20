@@ -18,7 +18,7 @@ import { NewCandidateComponent } from './components/ats/candidates/new-candidate
 import { ViewStarterKitApprovalComponent } from './components/hris/employees/employee-approvals/view-starter-kit-approval/view-starter-kit-approval.component';
 import { EmployeeOptionsComponent } from './components/hris/employees/employee-options/employee-options.component';
 import { ViewBankingApprovalComponent } from './components/hris/employees/employee-approvals/view-banking-approval/view-banking-approval.component';
-import { CareerSummaryQualificationsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-summary-qualifications/accordion-career-summary-qualifications.component';
+import { CareerSummaryQualificationsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-summary-qualifications/accordian-career-summary-qualifications.component';
 
 const routes: Routes = [
   { path: '', component: SignInComponent },

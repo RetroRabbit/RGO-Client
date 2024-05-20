@@ -17,8 +17,6 @@ export class EmployeeQualificationsService {
   }
 
   saveEmployeeQualification(employeeQualification: any): Observable<EmployeeQualifications> {
-    console.log("the post is happenin")
-    console.log(employeeQualification)
     return this.httpClient.post<EmployeeQualifications>(`${this.baseUrl}`, employeeQualification);
   }
 
@@ -30,8 +28,8 @@ export class EmployeeQualificationsService {
     return this.httpClient.get<EmployeeQualifications[]>(`${this.baseUrl}`);
   }
 
-  getEmployeeQualificationsById(employeeId?: number): Observable<EmployeeQualifications[]> {
-    return this.httpClient.get<EmployeeQualifications[]>(`${this.baseUrl}/${employeeId}`);
+  getEmployeeQualification(employeeId: number): Observable<EmployeeQualifications> {
+    return this.httpClient.get<EmployeeQualifications>(`${this.baseUrl}/${employeeId}`);
   }
 
   deleteEmployeeQualification(employeeQualificationId: number): Observable<EmployeeQualifications> {
