@@ -1,5 +1,5 @@
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
-import { Document } from 'src/app/models/hris/constants/employee-documents.constants';
+import { Document } from 'src/app/models/hris/constants/admin-documents.component';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
