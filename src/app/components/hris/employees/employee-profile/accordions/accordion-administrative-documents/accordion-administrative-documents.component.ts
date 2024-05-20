@@ -1,5 +1,3 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { Document } from 'src/app/models/hris/constants/employee-documents.constants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
@@ -11,14 +9,15 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 
 @Component({
-  selector: 'app-accordion-employee-documents',
-  templateUrl: './accordion-employee-documents.component.html',
-  styleUrls: [ './accordion-employee-documents.component.css' ]
+  selector: 'app-accordion-administrative-documents',
+  templateUrl: './accordion-administrative-documents.component.html',
+  styleUrls: ['./accordion-administrative-documents.component.css']
 })
-
-export class AccordionEmployeeDocumentsComponent {
+export class AccordionAdministrativeDocumentsComponent {
   @Output() updateDocument = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
 
