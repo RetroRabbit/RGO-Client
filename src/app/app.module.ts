@@ -82,7 +82,7 @@ import { AccordionProfileAdditionalComponent } from './components/hris/employees
 import { AccordionProfilePersonalDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
 import { AccordionProfileAddressDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { AccordionDocumentsAdditionalComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents-additional/accordion-ducuments-additional/accordion-documents-additional.component';
+import { AccordionDocumentsAdditionalComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-my-documents/accordion-my-documents.component';
 import { ViewStarterKitApprovalComponent } from './components/hris/employees/employee-approvals/view-starter-kit-approval/view-starter-kit-approval.component';
 import { ViewBankingApprovalComponent } from './components/hris/employees/employee-approvals/view-banking-approval/view-banking-approval.component';
 import { EmployeeOptionsComponent } from './components/hris/employees/employee-options/employee-options.component';
@@ -91,7 +91,7 @@ import { TopNavComponent } from './components/hris/nav-bar/types/top-nav/top-nav
 import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-nav.component';
 import { CareerSummaryQualificationsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-summary-qualifications/accordion-career-summary-qualifications.component';
 import { AccordionEmployeeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-employee-documents/accordion-employee-documents.component';
-import { AccordionDocumentsCustomDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-documents-custom-documents/accordion-documents-custom-documents.component';
+import { AccordionDocumentsCustomDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-additional-documents/accordion-additional-documents.component';
 
 @NgModule({
   declarations: [

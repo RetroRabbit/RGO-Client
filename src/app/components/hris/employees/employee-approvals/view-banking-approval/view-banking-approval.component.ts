@@ -107,6 +107,7 @@ export class ViewBankingApprovalComponent {
       next: () => {
         this.snackBarService.showSnackbar(`Bank statement has successfully updated`, "snack-success");
         this.backToApprovals();
+         this.changeDetector.detectChanges();
       },
       error: error => this.snackBarService.showSnackbar(`${error}`, "snack-error")
     })
@@ -126,9 +127,11 @@ export class ViewBankingApprovalComponent {
   dialogFeedBack(response: any): void {
     this.declineReason = response.declineReason;
     this.selectedReason = response.selectedReason;
-    if (!response.confirmatio)
-      this.updateBanking(2);
-    else
-      this.backToApprovals();
+    this.showConfirmDialog=false;
+    if(response.confirmation)
+      {
+    this.updateBanking(2);
+      }
+     
   }
 }
