@@ -6,7 +6,7 @@ export interface WorkExperience {
     employementType: string,
     companyName: string,
     location: string,
-    startDate: Date | string,
-    endDate: Date | string,
+    startDate: Date,
+    endDate: Date,
     employeeId?: EmployeeProfile
 }
