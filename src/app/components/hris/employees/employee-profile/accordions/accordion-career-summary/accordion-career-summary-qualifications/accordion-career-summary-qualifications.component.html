@@ -18,7 +18,7 @@
             <div class="flex-row">
                 <div *ngIf="!sharedAccordionFunctionality.editQualifications" class="col-12 mb-2 d-flex justify-content-end">
                     <button class="d-flex"
-                        mat-button id="edit-button" (click)="editQualificationsDetails($event)"
+                        mat-button id="edit-button" (click)="editQualificationsDetails()"
                         [ngClass]="screenWidth <= 767 ?'col-12':''">
                         <mat-icon>edit</mat-icon>Edit Details
                     </button>
@@ -58,17 +58,7 @@
                                                 </mat-error>
                                             </mat-form-field>
                                         </div>
-                                        <!-- <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.degree"
-                                            class="col-12 col-md-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Degree</mat-label>
-                                                <input matInput formControlName="degree" placeholder="e.g Bachelors">
-                                                <mat-error
-                                                    *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['degree'].hasError('required')">
-                                                    Degree is required
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div> -->
+
                                         <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.fieldOfStudy"
                                             class="col-12 col-md-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">

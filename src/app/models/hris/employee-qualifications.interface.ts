@@ -3,7 +3,6 @@ export interface EmployeeQualifications {
     employeeId?: number,
     highestQualification: number,
     school: string | null,
-    degree: string | null,
     fieldOfStudy: string | null,
     yearObtained: string | null,
     nqfLevel: number,

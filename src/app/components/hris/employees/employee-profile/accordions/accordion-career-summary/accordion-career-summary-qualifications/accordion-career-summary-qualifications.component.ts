@@ -27,8 +27,6 @@ export class CareerSummaryQualificationsComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
-
   constructor(
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     public sharedPropertyAccessService: SharedPropertyAccessService,
@@ -43,84 +41,60 @@ export class CareerSummaryQualificationsComponent {
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
-    console.log(this.employeeProfile);
     this.initializeForm();
   }
 
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+
   initializeForm() {
     this.sharedAccordionFunctionality.employeeQualificationForm = this.fb.group({
-      highestQualification: [this.employeeProfile!.employeeDetails.qualifications?.highestQualification, [Validators.required]],
-      school: [this.employeeProfile!.employeeDetails.qualifications?.school, [Validators.required]],
-      degree: [this.employeeProfile!.employeeDetails.qualifications?.degree, [Validators.required]],
-      fieldOfStudy: [this.employeeProfile!.employeeDetails.qualifications?.fieldOfStudy, [Validators.required]],
-      yearObtained: [this.employeeProfile!.employeeDetails.qualifications?.yearObtained, [Validators.pattern(/^(19|20)\d{2}$/), Validators.required]],
-      nqfLevel: [this.employeeProfile!.employeeDetails.qualifications?.nqfLevel, [Validators.required]],
+      highestQualification: [this.employeeProfile!.employeeDetails.qualifications?.highestQualification, Validators.required],
+      school: [this.employeeProfile!.employeeDetails.qualifications?.school, Validators.required],
+      fieldOfStudy: [this.employeeProfile!.employeeDetails.qualifications?.fieldOfStudy, Validators.required],
+      yearObtained: [this.employeeProfile!.employeeDetails.qualifications?.yearObtained, Validators.required],
+      nqfLevel: [this.employeeProfile!.employeeDetails.qualifications?.nqfLevel, Validators.required],
     });
-
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
     this.sharedAccordionFunctionality.checkQualificationsFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
-    this.fetchQualifications();
-    //this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualifications", true)
+    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualifications", true)
+  }  
+  
+  editQualificationsDetails() {
+    this.sharedAccordionFunctionality.editQualifications = true;
+    this.sharedAccordionFunctionality.employeeQualificationForm.enable();
   }
 
   fetchQualifications() {
-    const employeeId = this.navservice.employeeProfile.id!; // Assuming this is how you get the employee ID
-    if (employeeId != 0) {
-      this.employeeQualificationsService.getEmployeeQualificationById(employeeId).subscribe({
-        next: (qualifications: EmployeeQualifications) => {
-          console.log(qualifications)
-          this.sharedAccordionFunctionality.employeeQualificationForm.patchValue(qualifications);
-          this.sharedAccordionFunctionality.employeeQualificationForm.disable();
-        },
-        error: (error) => {
-          console.error("Failed to fetch qualifications:", error); // Log the error for debugging
-          this.snackBarService.showSnackbar("Failed to load qualifications.", "snack-error");
-        }
-      });
-    }
+   
   }
 
   saveQualificationsEdit() {
-    const updatedQualifications: EmployeeQualifications = {
-      id: this.employeeProfile!.employeeDetails.qualifications?.id || 0,
-      highestQualification: this.sharedAccordionFunctionality.employeeQualificationForm.value.highestQualification,
-      school: this.sharedAccordionFunctionality.employeeQualificationForm.value.school,
-      degree: this.sharedAccordionFunctionality.employeeQualificationForm.value.degree,
-      fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.value.fieldOfStudy,
-      yearObtained: this.sharedAccordionFunctionality.employeeQualificationForm.value.yearObtained,
-      nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.value.nqfLevel,
-      employeeId: this.navservice.employeeProfile.id
-    };
-
-    if (this.employeeProfile.employeeDetails.qualifications?.id == 0) {
-      this.employeeQualificationsService.saveEmployeeQualification(updatedQualifications).subscribe({
-        next: () => {
-          this.snackBarService.showSnackbar("Qualification saved successfully!", "snack-succes");
-          this.initializeForm();
+    if (this.sharedAccordionFunctionality.employeeQualificationForm.valid) {
+      const employeeQualificationFormValue = this.sharedAccordionFunctionality.employeeQualificationForm.value;
+      this.sharedAccordionFunctionality.employeeQualificationDto.id = 0;
+      this.sharedAccordionFunctionality.employeeQualificationDto.employeeId = this.navservice.employeeProfile.id || this.employeeProfile.employeeDetails.id;
+      this.sharedAccordionFunctionality.employeeQualificationDto.highestQualification = employeeQualificationFormValue.highestQualification.id;
+      this.sharedAccordionFunctionality.employeeQualificationDto.school = employeeQualificationFormValue.school;
+      this.sharedAccordionFunctionality.employeeQualificationDto.fieldOfStudy = employeeQualificationFormValue.fieldOfStudy;
+      this.sharedAccordionFunctionality.employeeQualificationDto.yearObtained = employeeQualificationFormValue.yearObtained;
+      this.sharedAccordionFunctionality.employeeQualificationDto.nqfLevel = employeeQualificationFormValue.nqfLevel.id;
+      this.employeeQualificationsService.saveEmployeeQualification(this.sharedAccordionFunctionality.employeeQualificationDto).subscribe({
+        next: (data) => {
+          this.snackBarService.showSnackbar("Qualifications saved", "snack-success");
+          this.sharedAccordionFunctionality.checkQualificationsFormProgress();
+          this.sharedAccordionFunctionality.totalProfileProgress();
+          this.sharedAccordionFunctionality.employeeQualificationForm.disable();
+          this.sharedAccordionFunctionality.editQualifications = false;
         },
         error: (error) => {
-          this.snackBarService.showSnackbar("Failed to save qualification.", "snack-error");
-          this.sharedAccordionFunctionality.employeeQualificationForm.markAllAsTouched();
-        }
-      });
-    } else{
-      this.employeeQualificationsService.updateEmployeeQualification(updatedQualifications, updatedQualifications.id).subscribe({
-        next:() => {
-          this.snackBarService.showSnackbar("Qualification saved successfully!", "snack-succes");
+          this.snackBarService.showSnackbar(error.error, "snack-error");
         },
-        error: () => {
-          this.snackBarService.showSnackbar("Failed to update qualification.", "snack-error");
-        }
       });
     }
-  }
-
-  editQualificationsDetails(event : any) {
-    console.log(event)
-    this.sharedAccordionFunctionality.employeeQualificationForm.enable();
-    this.sharedAccordionFunctionality.editQualifications = true;
-    //this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualifications", false)
+    else {
+      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+    }
   }
 
   cancelQualificationsEdit(){
@@ -132,7 +106,8 @@ export class CareerSummaryQualificationsComponent {
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     fieldNames.forEach(fieldName => {
       let control: AbstractControl<any, any> | null = null;
-      control = this.sharedAccordionFunctionality.employeeQualificationForm.get(fieldName);
+      control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
+
       if (control) {
         switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
           case PropertyAccessLevel.none:
@@ -158,5 +133,6 @@ export class CareerSummaryQualificationsComponent {
     });
   }
 }
+
 
 

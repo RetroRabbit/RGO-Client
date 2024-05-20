@@ -38,6 +38,16 @@ export class SharedAccordionFunctionality {
   clientId: number | undefined;
   peopleChampionId: number | undefined;
 
+  employeeQualificationDto: any = {
+    id: 0,
+    employeeId: 0,
+    highestQualification: 0,
+    school: "",
+    fieldOfStudy: "",
+    yearObtained: "",
+    nqfLevel: 0,
+  };
+
   panelOpenState: boolean = false;
   physicalEqualPostal: boolean = true;
   hasDisability: boolean | undefined = false;
@@ -138,9 +148,7 @@ export class SharedAccordionFunctionality {
     fieldOfStudy: { value: '', disabled: true },
     yearObtained: { value: '', disabled: true },
     nqfLevel: { value: '', disabled: true },
-    downloadDocument: { value: '', disabled: true },
-    addAnotherQualification: { value: '', disabled: true },
-    editQualification: { value: '', disabled: true }
+    qualificationDocument: { value: '', disabled: true },
   });
 
   additionalInfoForm: FormGroup = this.fb.group({});
