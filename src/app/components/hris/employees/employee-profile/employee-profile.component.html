@@ -90,7 +90,7 @@
               <div id="header-label">Team Lead</div>
               <div id="header-value" *ngIf="!usingSimpleProfile; else NonAdminTeamLead">
                 {{sharedAccordionFunctionality.employeeTeamLead ? sharedAccordionFunctionality.employeeTeamLead.name + '
-                ' + sharedAccordionFunctionality.employeeTeamLead.surname : 'Notassigned'}}
+                ' + sharedAccordionFunctionality.employeeTeamLead.surname : 'Not assigned'}}
               </div>
               <ng-template #NonAdminTeamLead>
                 {{simpleEmployee.teamLeadId ? simpleEmployee.teamLeadName : 'Not assigned'}}
