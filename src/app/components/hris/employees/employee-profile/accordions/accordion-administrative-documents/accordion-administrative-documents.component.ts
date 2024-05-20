@@ -268,7 +268,7 @@ export class AccordionAdministrativeDocumentsComponent {
 
   calculateDocumentProgress() {
     const total = this.fileCategories.length;
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= 5).length;
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= (total-1)).length;
     this.documentFormProgress = fetchedDocuments / total * 100;
     this.updateDocument.emit(this.documentFormProgress);
   }
