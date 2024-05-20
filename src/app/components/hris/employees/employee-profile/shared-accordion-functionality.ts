@@ -11,7 +11,7 @@ import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { nqfLevels } from 'src/app/models/hris/constants/nqfLevels.constant.';
 
@@ -131,16 +131,8 @@ export class SharedAccordionFunctionality {
     postalPostalCode: { value: '', disabled: true }
   });
 
-  employeeQualificationForm: FormGroup = this.fb.group({
-    highestQualification: { value: '', disabled: true },
-    school: { value: '', disabled: true },
-    degree: { value: '', disabled: true },
-    fieldOfStudy: { value: '', disabled: true },
-    yearObtained: { value: '', disabled: true },
-    nqfLevel: { value: '', disabled: true },
-    downloadDocument: { value: '', disabled: true },
-    addAnotherQualification: { value: '', disabled: true },
-    editQualification: { value: '', disabled: true }
+  employeeQualificationForm = this.fb.group({
+    qualifications: this.fb.array([])
   });
 
   additionalInfoForm: FormGroup = this.fb.group({});

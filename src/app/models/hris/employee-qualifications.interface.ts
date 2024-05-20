@@ -1,9 +1,10 @@
 export interface EmployeeQualifications {
     id : number;
-    highestQualification: string | null,
-    school: string | null,
-    degree: string | null,
-    fieldOfStudy: string | null,
-    yearObtained: string | null,
-    nqfLevel: string | null,
+    employeeId?: number;
+    highestQualification?: number ,
+    school?: string ,
+    degree?: string ,
+    fieldOfStudy?: string,
+    year?: Date["getUTCDate"],
+    nqfLevel?: number,
 }
