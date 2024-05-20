@@ -85,6 +85,7 @@ export class AccordionEmployeeDocumentsComponent {
 
   captureUploadIndex(event: any) {
     this.uploadButtonIndex = event.srcElement.parentElement.id;
+    console.log(`${this.uploadButtonIndex}-employee-document`);
     const inputField = document.getElementById(`${this.uploadButtonIndex}-employee-document`) as HTMLInputElement;
     this.documentExists = this.filterDocumentsByCategory() != null;
     const existingDocument = this.filterDocumentsByCategory();
@@ -155,6 +156,7 @@ export class AccordionEmployeeDocumentsComponent {
       blob: this.base64String,
       fileCategory: 0,
       employeeFileCategory: +this.uploadButtonIndex,
+      adminFileCategory: 0,
       uploadDate: document.uploadDate,
       status: 1,
       documentType: 3,
@@ -217,6 +219,7 @@ export class AccordionEmployeeDocumentsComponent {
           fileName: this.documentsFileName,
           fileCategory: 0,
           employeeFileCategory: +this.uploadButtonIndex,
+          adminFileCategory: 0,
           blob: this.base64String,
           status: 1,
           documentType: 3,

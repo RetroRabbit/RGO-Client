@@ -84,6 +84,7 @@ export class AccordionAdministrativeDocumentsComponent {
 
   captureUploadIndex(event: any) {
     this.uploadButtonIndex = event.srcElement.parentElement.id;
+    console.log(`${this.uploadButtonIndex}-administrative-document`);
     const inputField = document.getElementById(`${this.uploadButtonIndex}-administrative-document`) as HTMLInputElement;
     this.documentExists = this.filterDocumentsByCategory() != null;
     const existingDocument = this.filterDocumentsByCategory();
