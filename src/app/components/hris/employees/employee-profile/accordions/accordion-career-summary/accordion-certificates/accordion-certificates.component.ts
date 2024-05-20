@@ -66,7 +66,7 @@ export class AccordionCertificatesComponent {
   }
 
   cancelCertificateDetails(){
-    this.editCertificate = true;
+    this.editCertificate = false;
     this.certificateFrom.disable();
   }
 
@@ -92,5 +92,9 @@ export class AccordionCertificatesComponent {
   openFileInput(){
     const fileInput = document.getElementById('fileupload') as HTMLInputElement;
     fileInput.click();
+  }
+
+  onDocumentChange(){
+
   }
 }

@@ -11,17 +11,17 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="certificateFrom">
-                <div class="col-12 mb-2 d-flex justify-content-end">
-                    <button *ngIf="!editCertificate" mat-button id="edit-button" (click)="editCertificateDetails()"
-                        [ngClass]="screenWidth <= 767 ? 'col-12' : ''">
-                        <mat-icon>edit</mat-icon>Edit Details
-                    </button>
-                </div>
                 <div class="row">
+                    <div class="col-12 mb-2 d-flex justify-content-end">
+                        <button *ngIf="!editCertificate" mat-button id="edit-button" (click)="editCertificateDetails()"
+                            [ngClass]="screenWidth <= 767 ? 'col-12' : ''">
+                            <mat-icon>edit</mat-icon>Edit Details
+                        </button>
+                    </div>
                     <div class="col-12 col-md-6 my-2">
                         <mat-form-field appearance="outline" id="certificate-field">
                             <mat-label>Certificate Name</mat-label>
-                            <input type="text" matInput placeholder="Enter certificate name" formControlName="CertificateName">
+                            <input type="text" matInput placeholder="Name of certificate" formControlName="CertificateName">
                             <mat-error *ngIf="certificateFrom.controls['CertificateName'].hasError('required')">
                                 Certificate name is required
                             </mat-error>
@@ -30,7 +30,7 @@
                     <div class="col-12 col-md-6 my-2">
                         <mat-form-field appearance="outline" id="certificate-field">
                             <mat-label>Issuing Organization</mat-label>
-                            <input type="text" matInput placeholder="Enter issuing organization" formControlName="IssueOrganization">
+                            <input type="text" matInput placeholder="Issuing organization" formControlName="IssueOrganization">
                             <mat-error *ngIf="certificateFrom.controls['IssueOrganization'].hasError('required')">
                                 Issuing organization is required
                             </mat-error>
@@ -39,7 +39,7 @@
                     <div class="col-12 col-md-6 my-2">
                         <mat-form-field appearance="outline" id="certificate-field">
                             <mat-label>Issue Date</mat-label>
-                            <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="IssueDate">
+                            <input matInput [matDatepicker]="picker" placeholder="Issue date" formControlName="IssueDate">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                             <mat-error *ngIf="certificateFrom.controls['IssueDate'].hasError('required')">
@@ -47,13 +47,23 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="col-12 my-2">
+                    <div class="col-12 col-md-6 my-2">
+                        <mat-form-field appearance="outline" id="certificate-field">
+                            <mat-label>Upload Certificate</mat-label>
+                            <input matInput type="text" placeholder="Upload a certificate" formControlName="CertificateDocument">
+                            <input type="file" #uploadCVFile (change)="onDocumentChange()" hidden accept=".pdf" />
+                            <mat-error *ngIf="certificateFrom.controls['CertificateDocument'].hasError('required')">
+                                Certificate document is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <p id="base64"></p>
+                    <div class="col-12 col-md-6 my-2">
                         <mat-label [ngStyle]="{color: editCertificate ? 'black' : 'grey'}">
-                            Upload Certificate
+                            Proof of Certificate
                         </mat-label>
                         <div class="my-2">
                             <div [ngClass]="screenWidth <= 767 ? '' : 'row'">
-                                <div *ngIf="hasFile"></div>
                                 <div class="col-12 row d-flex justify-content-center align-content-center" [hidden]="!editCertificate" (click)="openFileInput()">
                                     <div class="col-12 row ms-1" *ngIf="certificatePDFName.length > 1">
                                         <div class="col-1 p-0">
@@ -75,7 +85,7 @@
                                             <img src="../../../../assets/img/file_upload.svg" alt="">
                                         </div>
                                         <div class="col-auto" id="uploadfile">
-                                            <h4 class="m-2" style="color: #0029C6;">Upload document here</h4>
+                                            <h4 class="m-2" style="color: #0029C6;">Add Another Certificate</h4>
                                             <input id="fileUpload" hidden type="file" [disabled]="!editCertificate" (change)="onFileSelected($event)" accept=".pdf">
                                         </div>
                                     </div>

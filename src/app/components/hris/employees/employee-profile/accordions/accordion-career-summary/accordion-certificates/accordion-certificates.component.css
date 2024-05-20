@@ -1,0 +1,24 @@
+#certificate-field {
+    width: 100%;
+}
+
+#last-updated {
+    color: #666666ff
+}
+
+#uploadfile:hover {
+    cursor: pointer;
+}
+
+#pdf-icon {
+    width: 14px;
+    height: 18px;
+}
+
+@media only screen and (max-width: 767px) {
+    #status-null {
+        width: 90%;
+        top: 110px;
+        left: 5%;
+    }
+}
