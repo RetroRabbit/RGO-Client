@@ -23,7 +23,7 @@
                         <mat-icon>edit</mat-icon>Edit Details
                     </button>
                 </div>
-                <div class="mat-expansion-panel-content" *ngFor="let qualification of qualifications">
+                <div class="mat-expansion-panel-content">
                     <form [formGroup]="sharedAccordionFunctionality.employeeQualificationForm">
                         <div class="row">
                             <div class="row">
@@ -58,7 +58,7 @@
                                                 </mat-error>
                                             </mat-form-field>
                                         </div>
-                                        <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.degree"
+                                        <!-- <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.degree"
                                             class="col-12 col-md-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Degree</mat-label>
@@ -68,7 +68,7 @@
                                                     Degree is required
                                                 </mat-error>
                                             </mat-form-field>
-                                        </div>
+                                        </div> -->
                                         <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.fieldOfStudy"
                                             class="col-12 col-md-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
@@ -78,21 +78,6 @@
                                                 <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['fieldOfStudy'].hasError('required')">
                                                     Field of study is required
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div>
-                                        <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.yearObtained"
-                                            class="col-12 col-md-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Year Obtained</mat-label>
-                                                <input matInput formControlName="yearObtained" placeholder="yyyy">
-                                                <mat-error
-                                                    *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['yearObtained'].hasError('required')">
-                                                    Year Obtained is required
-                                                </mat-error>
-                                                <mat-error
-                                                    *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['yearObtained'].hasError('pattern')">
-                                                    Year Obtained is must be in yyyy format
                                                 </mat-error>
                                             </mat-form-field>
                                         </div>
@@ -112,15 +97,26 @@
                                                 </mat-error>
                                             </mat-form-field>
                                         </div>
+                                        <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.yearObtained"
+                                        class="col-12 col-md-6 my-2">
+                                        <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Year Obtained</mat-label>
+                                            <input matInput formControlName="yearObtained" placeholder="yyyy">
+                                            <mat-error
+                                                *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['yearObtained'].hasError('required')">
+                                                Year Obtained is required
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['yearObtained'].hasError('pattern')">
+                                                Year Obtained is must be in yyyy format
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    <button *ngIf="sharedAccordionFunctionality.editQualifications" (click)="removeQualification()" mat-button id="remove-document-button" class="py-4">
-                        <mat-icon class="remove-document-button">remove</mat-icon>
-                        Remove Qualification
-                    </button>
                 </div>
             </div>
             
@@ -148,12 +144,7 @@
                 <div class="d-flex flex-column">
                     <button mat-button id="download-document-button" class="py-4">
                         <mat-icon class="download-document">save_alt</mat-icon>
-                        Download Document
-                    </button>
-                    <button  mat-button id="add-button"
-                        type="submit" (click)="addQualification()">
-                        <mat-icon>add</mat-icon>
-                        Add Another Qualification
+                        upload Document
                     </button>
                 </div>
                 

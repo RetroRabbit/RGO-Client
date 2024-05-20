@@ -28,7 +28,7 @@ export class EmployeeQualificationsService {
     return this.httpClient.get<EmployeeQualifications[]>(`${this.baseUrl}`);
   }
 
-  getEmployeeQualification(employeeId: number): Observable<EmployeeQualifications> {
+  getEmployeeQualificationById(employeeId: number): Observable<EmployeeQualifications> {
     return this.httpClient.get<EmployeeQualifications>(`${this.baseUrl}/${employeeId}`);
   }
 
