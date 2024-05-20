@@ -85,7 +85,6 @@ export class AccordionEmployeeDocumentsComponent {
 
   captureUploadIndex(event: any) {
     this.uploadButtonIndex = event.srcElement.parentElement.id;
-    console.log(`${this.uploadButtonIndex}-employee-document`);
     const inputField = document.getElementById(`${this.uploadButtonIndex}-employee-document`) as HTMLInputElement;
     this.documentExists = this.filterDocumentsByCategory() != null;
     const existingDocument = this.filterDocumentsByCategory();
