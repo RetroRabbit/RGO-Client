@@ -38,7 +38,10 @@ export class AccordionCertificatesComponent {
   employeeCertitificateDto !: EmployeeCertificates;
   fileUploaded: boolean = false;
   isValidCertificateFileSize = true;
+  hasUpdatedCertificateData: boolean = false;
   isValidCertificateFile = true;
+  base64File: string ="";
+  base64String: string = "";
 
   certificateForm: FormGroup = this.fb.group({
     CertificateName: [{ value: '', disabled: true }, Validators.required],
@@ -66,7 +69,7 @@ export class AccordionCertificatesComponent {
       CertificateName: [{ value: certificatesForm.certificateName, disabled: true }, Validators.required],
       IssueOrganization: [{ value: certificatesForm.issueOrganization, disabled: true }, Validators.required],
       IssueDate: [{ value: certificatesForm.issueDate, disabled: true }, Validators.required],
-      CertificateDocument: [{ value: certificatesForm.certificateDocument, disabled: true }, Validators.required],
+      CertificateDocument: [{ value: '', disabled: true }, Validators.required]
     });
     // this.hasFile = certificatesForm.file.length > 0;
     this.hasCertificateData = true;
@@ -94,14 +97,16 @@ export class AccordionCertificatesComponent {
       certificateName: employeeCertificateFormValue.CertificateName,
       issueOrganization: employeeCertificateFormValue.IssueOrganization,
       issueDate: employeeCertificateFormValue.IssueDate,
-      certificateDocument: employeeCertificateFormValue.CertificateDocument
+      certificateDocument: this.base64File
     }
     console.log(this.employeeCertitificateDto)
     if (this.hasCertificateData) {
+      this.employeeCertitificateDto.id = this.employeeCertitificateDto.id
       this.employeeCertificateService.updateCertification(this.employeeCertitificateDto).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Certificate details updated", "snack-success");
-         // this.getEmployeeCertificate();
+          this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
+          this.getEmployeeCertificate();
+          this.hasUpdatedCertificateData = true;
           this.editCertificate = false;
           this.certificateForm.disable();
         },
@@ -113,8 +118,8 @@ export class AccordionCertificatesComponent {
       console.log(this.employeeCertitificateDto)
       this.employeeCertificateService.saveCertification(this.employeeCertitificateDto).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Certificate details updated", "snack-success");
-        //  this.getEmployeeCertificate();
+          this.snackBarService.showSnackbar("Certificate info saved", "snack-success");
+          this.getEmployeeCertificate();
           this.editCertificate = false;
           this.certificateForm.disable();
         },
@@ -131,8 +136,8 @@ export class AccordionCertificatesComponent {
     if (this.selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
-        const base64String = reader.result as string;
-        this.certificateForm.patchValue({ 'file': base64String });
+        this.base64String = reader.result as string;
+        this.certificateForm.patchValue({ 'file': this.base64String });
       };
       reader.readAsDataURL(this.selectedFile);
     }
@@ -154,8 +159,9 @@ export class AccordionCertificatesComponent {
       this.fileUploaded = true;
       const file = event.target.files[0];
       this.certificateFileName = file.name;
+      this.fileConverter(file, )
       if (this.validatePortfolioFile(file)) {
-        this.fileConverter(file, 'CertificateDocument');
+        this.fileConverter(file);
       }
     }
   }
@@ -175,11 +181,10 @@ export class AccordionCertificatesComponent {
   }
 
   
-  fileConverter(file: File, controlName: string) {
+  fileConverter(file: File) {
     const reader = new FileReader();
     reader.addEventListener('loadend', () => {
-      const base64Data = reader.result as string;
-      this.certificateForm.patchValue({ [controlName]: base64Data });
+      this.base64File = reader.result as string;
     });
     reader.readAsDataURL(file);
   }
