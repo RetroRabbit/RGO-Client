@@ -149,6 +149,9 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
+    if (!this.sharedPropertyAccessService.accessProperties) {
+      return;
+    }
     fieldNames.forEach(fieldName => {
       let control: AbstractControl<any, any> | null = null;
       control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);

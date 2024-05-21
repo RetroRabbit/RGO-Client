@@ -78,20 +78,22 @@ export class SignInComponent {
           this.authAccessService.setEmployeeEmail(user?.email as string);
           this.navService.refreshEmployee();
           this.store.dispatch(GetLogin({ payload: googleID }));
-          if(window.innerWidth > 776) 
+          if(window.innerWidth > 776)
               this.navService.showNavbar = true;
-          else 
-            this.navService.showSideBar = true; 
-          
+          else
+            this.navService.showSideBar = true;
+
           this.sharedPropprtyAccessService.setAccessProperties();
-          if (this.authAccessService.isTalent()) {
-            this.navService.isHris = false;
-            this.router.navigateByUrl('/ats-dashboard');
-          }
+          // TODO: put back in
+          // if (this.authAccessService.isTalent()) {
+          //   this.navService.isHris = false;
+          //   this.router.navigateByUrl('/ats-dashboard');
+          // }
           if (
             this.authAccessService.isAdmin() ||
             this.authAccessService.isJourney() ||
-            this.authAccessService.isSuperAdmin()
+            this.authAccessService.isSuperAdmin() ||
+            this.authAccessService.isTalent()
           ) {
             this.navService.isHris = true;
             this.cookieService.set('isHris', String(this.navService.isHris))
