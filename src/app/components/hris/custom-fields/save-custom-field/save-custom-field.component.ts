@@ -35,7 +35,6 @@ export class SaveCustomFieldComponent {
   PREVIOUS_PAGE = "previousPage";
   optionsValid: boolean = true;
 
-
   customFieldForm: FormGroup = this.fb.group({
     code: ['', Validators.required],
     name: ['', [Validators.required]],
