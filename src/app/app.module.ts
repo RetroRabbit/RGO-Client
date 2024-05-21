@@ -139,7 +139,8 @@ import { AccordionAdministrativeDocumentsComponent } from './components/hris/emp
     SideNavComponent,
     AccordionEmployeeDocumentsComponent,
     AccordionDocumentsCustomDocumentsComponent,
-
+    AccordionCertificatesComponent,
+    AccordionAdministrativeDocumentsComponent
   ],
   imports: [
     BrowserModule,

@@ -3,10 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { Certificate } from 'crypto';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
 import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
-import { error } from 'console';
+
 @Component({
   selector: 'app-accordion-certificates',
   templateUrl: './accordion-certificates.component.html',
