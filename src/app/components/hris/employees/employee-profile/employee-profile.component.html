@@ -30,11 +30,11 @@
     <div class="col-8 col-md-10 offset-lg-0 col-lg-10 mt-3">
       <div class="row mt-3 px-0">
         <div class="col-11 col-md-6" id="header-name">
-          <h1 class="mb-0" *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnName">
+          <h1 class="mb-0" *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else OwnName">
             {{ selectedEmployee.name }} {{ selectedEmployee.surname }}
           </h1>
           <ng-template #OwnName>
-            <h1 class="mb-0" *ngIf="navService.employeeProfile.id == selectedEmployee.id">
+            <h1 class="mb-0" *ngIf="navService.employeeProfile?.id === selectedEmployee?.id">
               {{navService.getEmployeeProfile().name}} {{navService.getEmployeeProfile().surname}}
             </h1>
           </ng-template>
@@ -49,7 +49,7 @@
           </div>
         </div>
         <div class="col-12 my-2 d-none d-md-block" id="header-role"
-          *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnType">
+          *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else OwnType">
           {{selectedEmployee.employeeType?.name}} | Level {{ selectedEmployee.level }}
         </div>
         <ng-template #OwnType>
@@ -58,12 +58,11 @@
           </div>
         </ng-template>
         <div class="col-12 my-2 d-none d-md-block" id="header-based"
-          *ngIf="navService.employeeProfile.id !== selectedEmployee.id && selectedEmployee.physicalAddress?.suburbOrDistrict != null; else OwnAddress">
+          *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else OwnAddress">
           Based in {{ selectedEmployee.physicalAddress?.suburbOrDistrict }}
         </div>
         <ng-template #OwnAddress>
-          <div class="col-12 my-2 d-none d-md-block" id="header-based"
-            *ngIf="selectedEmployee.physicalAddress?.suburbOrDistrict != null">
+          <div class="col-12 my-2 d-none d-md-block" id="header-based" *ngIf="selectedEmployee?.physicalAddress?.suburbOrDistrict != null">
             Based in {{navService.getEmployeeProfile().physicalAddress?.suburbOrDistrict}}
           </div>
         </ng-template>
@@ -145,7 +144,7 @@
             </div>
             <div class="col-9 my-2">
               <div id="header-label">Start Date</div>
-              <div *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else NonAdminEngagementDate"
+              <div *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else NonAdminEngagementDate"
                 id="header-value">
                 {{ selectedEmployee.engagementDate| date:'d MMM yyyy' }}
               </div>
@@ -337,16 +336,16 @@
       </div>
     </div>
     <div id="accordions-body`" class="row m-2" *ngIf="employeeProfile">
-      <app-accordion-profile-employee-details [hidden]="selectedAccordion != 'Profile Details'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-employee-details>
-      <app-accordion-profile-personal-details [hidden]="selectedAccordion != 'Profile Details'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-personal-details>
-      <app-accordion-profile-contact-details [hidden]="selectedAccordion != 'Profile Details'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-contact-details>
-      <app-accordion-profile-address-details [hidden]="selectedAccordion != 'Profile Details'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-address-details>
-      <app-accordion-profile-additional [hidden]="selectedAccordion != 'Profile Details'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-additional>
+      <app-accordion-profile-employee-details *ngIf="selectedAccordion === 'Profile Details'"
+      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-employee-details>    
+      <app-accordion-profile-personal-details *ngIf="selectedAccordion === 'Profile Details'"
+      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-personal-details>
+      <app-accordion-profile-contact-details *ngIf="selectedAccordion === 'Profile Details'"
+      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-contact-details>
+      <app-accordion-profile-address-details *ngIf="selectedAccordion === 'Profile Details'"
+      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-address-details>
+      <app-accordion-profile-additional *ngIf="selectedAccordion === 'Profile Details'"
+      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-additional>
 
       <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile"
         (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
