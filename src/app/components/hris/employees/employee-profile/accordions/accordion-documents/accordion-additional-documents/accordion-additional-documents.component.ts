@@ -215,6 +215,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
         reference: document.reference,
         fileName: document.fileName,
         fileCategory: document.fileCategory,
+        adminFileCategory: document.adminFileCategory,
         employeeFileCategory: +this.uploadButtonIndex,
         blob: document.blob,
         uploadDate: document.uploadDate,
