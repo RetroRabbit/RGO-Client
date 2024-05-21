@@ -30,11 +30,47 @@
             "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
+            "local": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "4mb",
+                  "maximumError": "8mb"
+                }, 
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "10kb",
+                  "maximumError": "12kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
             "production": {
               "fileReplacements": [
                 {
                   "replace": "./src/environments/environment.ts",
                   "with": "./src/environments/environment.production.ts"
+                } 
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "4mb",
+                  "maximumError": "8mb"
+                }, 
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "10kb",
+                  "maximumError": "12kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "./src/environments/environment.ts",
+                  "with": "./src/environments/environment.staging.ts"
                 }
               ],
               "budgets": [
@@ -52,6 +88,25 @@
               "outputHashing": "all"
             },
             "development": {
+              "fileReplacements": [
+                {
+                  "replace": "./src/environments/environment.ts",
+                  "with": "./src/environments/environment.development.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "10mb",
+                  "maximumError": "12mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "36kb",
+                  "maximumError": "42kb"
+                }
+              ],
+              "outputHashing": "all",
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
@@ -60,7 +115,7 @@
               "namedChunks": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "local"
         },
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
@@ -68,11 +123,18 @@
             "production": {
               "browserTarget": "RGO-Client:build:production"
             },
+            "staging": {
+              "browserTarget": "RGO-Client:build:staging"
+            },
             "development": {
               "browserTarget": "RGO-Client:build:development"
             }
+            ,
+            "local": {
+              "browserTarget": "RGO-Client:build:local"
+            }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "local"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

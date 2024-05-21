@@ -294,6 +294,11 @@
     padding: 0.3rem 0.7rem;
 }
 
+:host ::ng-deep #status-3 {
+    background: rgb(32, 103, 209);
+    padding: 0.3rem 0.7rem;
+}
+
 :host ::ng-deep #status-null {
     background: white;
     color: #0029c6;
