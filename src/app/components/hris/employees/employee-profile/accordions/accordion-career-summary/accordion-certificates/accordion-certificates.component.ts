@@ -63,7 +63,7 @@ export class AccordionCertificatesComponent {
       return;
     }
     this.certificateForm = this.fb.group({
-      CertificateName: [{ value: certificatesForm.certficateName, disabled: true }, Validators.required],
+      CertificateName: [{ value: certificatesForm.certificateName, disabled: true }, Validators.required],
       IssueOrganization: [{ value: certificatesForm.issueOrganization, disabled: true }, Validators.required],
       IssueDate: [{ value: certificatesForm.issueDate, disabled: true }, Validators.required],
       CertificateDocument: [{ value: certificatesForm.certificateDocument, disabled: true }, Validators.required],
@@ -96,12 +96,12 @@ export class AccordionCertificatesComponent {
       issueDate: employeeCertificateFormValue.IssueDate,
       certificateDocument: employeeCertificateFormValue.CertificateDocument
     }
-
+    console.log(this.employeeCertitificateDto)
     if (this.hasCertificateData) {
       this.employeeCertificateService.updateCertification(this.employeeCertitificateDto).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Certificate details updated", "snack-success");
-          this.getEmployeeCertificate();
+         // this.getEmployeeCertificate();
           this.editCertificate = false;
           this.certificateForm.disable();
         },
@@ -110,10 +110,11 @@ export class AccordionCertificatesComponent {
         }
       })
     }else{
+   
       this.employeeCertificateService.saveCertitification(this.employeeCertitificateDto).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Certificate details updated", "snack-success");
-          this.getEmployeeCertificate();
+        //  this.getEmployeeCertificate();
           this.editCertificate = false;
           this.certificateForm.disable();
         },
