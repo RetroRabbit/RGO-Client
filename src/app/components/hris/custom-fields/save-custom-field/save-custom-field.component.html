@@ -23,7 +23,7 @@
                     <mat-radio-button [value]=0 (change)="checkOption($event)">Profile Details</mat-radio-button> <br>
                     <mat-radio-button [value]=1 (change)="checkOption($event)">Bank Information</mat-radio-button> <br>
                     <mat-radio-button [value]=2 (change)="checkOption($event)">Career Summary</mat-radio-button> <br>
-                    <mat-radio-button [value]=3 (change)="checkOptionDocuments($event)" [checked]="this.defaultDocumentsection">Documents</mat-radio-button>
+                    <mat-radio-button [value]=3 (change)="checkOptionDocuments($event)">Documents</mat-radio-button>
                 </mat-radio-group>
             </div>
             <div class="col-12">
@@ -39,7 +39,7 @@
                     <br>
                     <mat-radio-button [value]=4 [disabled]="isDisabledDocuments()">Options - Choices, which can be words or numbers</mat-radio-button>
                     <br>
-                    <mat-radio-button [value]=5 [disabled]="isDisabled()" [checked]="this.defaultDocumentType">Documents - For file uploads, personal or required documents</mat-radio-button>
+                    <mat-radio-button [value]=5 [disabled]="isDisabled()">Documents - For file uploads, personal or required documents</mat-radio-button>
 
                 </mat-radio-group>
                 <div *ngIf="customFieldForm.get('type')?.value == 4 && customFieldForm.get('options') as optionsArray; "

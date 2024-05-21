@@ -103,15 +103,20 @@ export class SaveCustomFieldComponent {
       const optionsToRemove = existingOptions.filter(option => !optionsArray.some((opt: any) => opt.option === option));
       const updatedOptions = optionsArray.filter((option: any) => !optionsToRemove.includes(option.option));
       var customField = new CustomField();
+      console.log(this.customFieldForm.value);
+
+
       customField = this.customFieldForm.value;
       customField.id = this.selectedCustomField ? this.selectedCustomField.id : 0,
         customField.options = this.customFieldForm.value['type'] == 4 ? updatedOptions : [],
         customField.status = 0;
+      customField.type = customField.category == 3 ? 5 : undefined;
 
       this.customFieldService.saveFieldCode(customField).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
           this.selectedCustomField = data;
+          console.log(data);
           this.customFieldForm.disable();
           this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
           this.systemService.selectedField = undefined;
@@ -123,6 +128,7 @@ export class SaveCustomFieldComponent {
       });
     }
     else {
+      console.log(this.customFieldForm.value['options']);
       this.snackBarService.showSnackbar("Some fields are still missing information", "snack-error");
     }
   }
