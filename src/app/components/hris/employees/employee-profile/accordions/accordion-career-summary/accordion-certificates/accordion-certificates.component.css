@@ -40,6 +40,12 @@
     margin-left: 10px;
 }
 
+#document-name{
+    gap: 20px;
+    text-align: center;
+    padding: 10px;
+}
+
 #add-button {
     background: var(--m-3-state-layers-light-on-surface-opacity-012, rgba(29, 27, 32, 0.12));
     color: var(--M3-sys-light-on-surface, #1D1B20);
