@@ -35,7 +35,7 @@ export class AccordionCertificatesComponent {
   certificatePDFName: String = "";
   certificateFilename: string = "";
   certificateFileName = "";
-  employeeCertitificateDto !: any;
+  employeeCertitificateDto !: EmployeeCertificates;
   fileUploaded: boolean = false;
   isValidCertificateFileSize = true;
   isValidCertificateFile = true;
@@ -91,7 +91,7 @@ export class AccordionCertificatesComponent {
     this.employeeCertitificateDto = {
       id: this.certificateId,
       employeeId: this.employeeProfile?.id,
-      certficateName: employeeCertificateFormValue.CertificateName,
+      certificateName: employeeCertificateFormValue.CertificateName,
       issueOrganization: employeeCertificateFormValue.IssueOrganization,
       issueDate: employeeCertificateFormValue.IssueDate,
       certificateDocument: employeeCertificateFormValue.CertificateDocument
@@ -110,8 +110,8 @@ export class AccordionCertificatesComponent {
         }
       })
     }else{
-   
-      this.employeeCertificateService.saveCertitification(this.employeeCertitificateDto).subscribe({
+      console.log(this.employeeCertitificateDto)
+      this.employeeCertificateService.saveCertification(this.employeeCertitificateDto).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Certificate details updated", "snack-success");
         //  this.getEmployeeCertificate();
