@@ -24,7 +24,7 @@ export class EmployeeCertificatesService{
     }
 
     getCertificationDetails(id: number | undefined): Observable<EmployeeCertificates[]> {
-      return this.httpClient.get<EmployeeCertificates[]>(`${this.baseUrl}?employeeI=${id}`)
+      return this.httpClient.get<EmployeeCertificates[]>(`${this.baseUrl}?employeeId=${id}`)
     }
 
     saveCertification(newCertification : EmployeeCertificates): Observable<EmployeeCertificates> {

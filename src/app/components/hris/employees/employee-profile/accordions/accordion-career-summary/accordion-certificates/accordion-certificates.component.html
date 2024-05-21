@@ -12,7 +12,7 @@
             </mat-expansion-panel-header>
             <form [formGroup]="certificateForm">
                 <div class="row">
-                    <div class="col-12 col-md-9 col-lg-10">
+                    <!-- <div class="col-12 col-md-9 col-lg-10">
                         <div class="row">
                             <div class="col-12 row">
                                 <div class="col-12 col-md-6 my-2">
@@ -136,9 +136,34 @@
                             (click)="editCertificateDetails()" [ngClass]="screenWidth <= 767 ? 'col-12' : ''">
                             <mat-icon>edit</mat-icon>Edit Details
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </form>
+            <div *ngFor="let certificate of employeeCertificates;let i = index">
+                 <div id="form-wrapper" *ngIf="editCertificate; else NoEdit">
+                    <input type="text" matInput placeholder="Name of certificate" [(ngModel)]="copyOfCertificates[i].certificateName" [value]="copyOfCertificates[i].certificateName">
+                    <input type="text" matInput placeholder="Name of organization" [(ngModel)]="copyOfCertificates[i].issueOrganization" [value]="copyOfCertificates[i].issueOrganization">
+                    <!-- <input type="text" matInput placeholder="Date issued" [(ngModel)]="copyOfCertificates[i].issueDate" [value]="copyOfCertificates[i].issueDate"> -->
+                    <input matInput [matDatepicker]="picker" placeholder="Issue date" [(ngModel)]="copyOfCertificates[i].issueDate" [value]="copyOfCertificates[i].issueDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                
+                </div> 
+                <ng-template #NoEdit>
+                    <div id="form-wrapper">
+                        <input type="text" disable matInput placeholder="Name of certificate" [(ngModel)]="employeeCertificates[i].certificateName" [value]="employeeCertificates[i].certificateName">
+                        <input type="text" disable matInput placeholder="Name of organization" [(ngModel)]="employeeCertificates[i].issueOrganization" [value]="employeeCertificates[i].issueOrganization">
+                        <input matInput [matDatepicker]="picker" placeholder="Issue date" [(ngModel)]="employeeCertificates[i].issueDate" [value]="employeeCertificates[i].issueDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                </ng-template>
+            </div>
+            <div>
+                <button *ngIf=!editCertificate (click)="editCertificateDetails()">Edit</button>
+                <button *ngIf=editCertificate>Save</button>
+                <button *ngIf=editCertificate (click)="cancelCertificateDetails()">Cancel</button>
+            </div>
         </mat-expansion-panel>
     </mat-accordion>
 </div>
