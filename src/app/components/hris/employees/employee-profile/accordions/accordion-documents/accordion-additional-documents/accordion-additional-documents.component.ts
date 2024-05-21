@@ -73,75 +73,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
     })
   }
 
-  // downloadFile(base64String: string, fileName: string) {
-  //   const commaIndex = base64String.indexOf(',');
-  //   if (commaIndex !== -1) {
-  //     base64String = base64String.slice(commaIndex + 1);
-  //   }
-
-  //   const byteString = atob(base64String);
-  //   const arrayBuffer = new ArrayBuffer(byteString.length);
-  //   const intArray = new Uint8Array(arrayBuffer);
-
-  //   for (let i = 0; i < byteString.length; i++) {
-  //     intArray[i] = byteString.charCodeAt(i);
-  //   }
-
-  //   const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-  //   const link = document.createElement('a');
-  //   link.href = window.URL.createObjectURL(blob);
-  //   link.download = fileName;
-  //   link.click();
-  // }
-
-  // uploadDocument(event: any) {
-  //   this.isLoadingUpload = true;
-  //   this.selectedFile = event.target.files[0];
-  //   this.documentsFileName = this.selectedFile.name;
-  //   if (this.allowedTypes.includes(this.selectedFile.type)) {
-  //     this.uploadProfileDocument();
-  //   } else {
-  //     this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
-  //     this.isLoadingUpload = false;
-  //   }
-  // }
-
-  // uploadProfileDocument() {
-  //   if (this.selectedFile) {
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       this.buildDocumentDto();
-  //     };
-  //     reader.readAsDataURL(this.selectedFile);
-  //   }
-  // }
-
-  // buildDocumentDto() {
-  //   const existingValue = this.filterDocumentsByCategory();
-  //   if (this.selectedFile) {
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       this.base64String = reader.result as string;
-  //       let newDto: {} = {
-  //         id: existingValue != undefined ? existingValue?.id as number : 0,
-  //         employee: this.employeeProfile,
-  //         reference: "",
-  //         fileName: this.documentsFileName,
-  //         fileCategory: 0,
-  //         employeeFileCategory: +this.uploadButtonIndex,
-  //         blob: this.base64String,
-  //         status: 1,
-  //         documentType: 3,
-  //         uploadDate: new Date(),
-  //         reason: '',
-  //         counterSign: false,
-  //         lastUpdatedDate: new Date()
-  //       };
-  //       this.uploadDocumentDto(newDto);
-  //     };
-  //     reader.readAsDataURL(this.selectedFile);
-  //   }
-  // }
 
   getAdditionalDocuments() {
     if (this.employeeId != undefined) {
@@ -209,27 +140,27 @@ export class AccordionDocumentsCustomDocumentsComponent {
     this.updateDocument.emit(this.documentFormProgress);
   }
 
-  captureUploadButtonIndex(event : any, category : any){
+  captureUploadButtonIndex(event: any, category: any) {
     this.selectedFieldCode = category;
     this.uploadButtonIndex = event.srcElement.offsetParent.id;
     const inputField = document.getElementById(`${this.uploadButtonIndex}-additional-document`) as HTMLInputElement;
     inputField.click();
   }
 
-  captureFileUploaded(event : any){
+  captureFileUploaded(event: any) {
     this.isLoadingUpload = true;
     this.selectedFile = event.target.files[0];
     this.documentsFileName = this.selectedFile.name;
-    if(this.allowedTypes.includes(this.selectedFile.type)){
+    if (this.allowedTypes.includes(this.selectedFile.type)) {
       this.readUploadedDocument();
     }
-    else{
+    else {
       this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
       this.isLoadingUpload = false;
     }
   }
 
-  readUploadedDocument(){
+  readUploadedDocument() {
     if (this.selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -239,7 +170,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
     }
   }
 
-  createDocumentDto(){
+  createDocumentDto() {
     const existingValue = this.filterDocumentsByReference();
     if (this.selectedFile) {
       const reader = new FileReader();
@@ -263,8 +194,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
     }
   }
 
-  saveDocumentDto(document : any) {
-    if(!document.id) {
+  saveDocumentDto(document: any) {
+    if (!document.id) {
       this.employeeDocumentService.saveEmployeeDocument(document, 4).subscribe({
         next: () => {
           this.isLoadingUpload = false;
@@ -272,9 +203,9 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.getAdditionalDocuments();
           this.calculateDocumentProgress();
         },
-        error: (error : any) => {
-            this.isLoadingUpload = false;
-            this.snackBarService.showSnackbar(error, "snack-error");
+        error: (error: any) => {
+          this.isLoadingUpload = false;
+          this.snackBarService.showSnackbar(error, "snack-error");
         }
       })
 
@@ -309,25 +240,25 @@ export class AccordionDocumentsCustomDocumentsComponent {
     }
   }
 
-  getDocumentName(reference : any) : EmployeeDocument | null{
+  getDocumentName(reference: any): EmployeeDocument | null {
     let documentFound = null;
     this.additionalDocuments.forEach(document => {
-      if(document.reference == reference){
+      if (document.reference == reference) {
         documentFound = document;
       }
     })
     return documentFound;
   }
 
-  disableDownloadButton(index : number) {
+  disableDownloadButton(index: number) {
     return this.additionalDocuments[index] != null;
   }
 
-  downloadDocumentTrigger(index : number) {
+  downloadDocumentTrigger(index: number) {
     this.downloadDocument(this.additionalDocuments[index].blob, this.additionalDocuments[index].fileName);
   }
 
-  downloadDocument(base64String: string, fileName: string){
+  downloadDocument(base64String: string, fileName: string) {
     const commaIndex = base64String.indexOf(',');
     if (commaIndex !== -1) {
       base64String = base64String.slice(commaIndex + 1);
@@ -351,7 +282,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   filterDocumentsByReference(): EmployeeDocument | null {
     let documentFound = null;
     this.additionalDocuments.find(document => {
-      if(document.reference == this.selectedFieldCode)
+      if (document.reference == this.selectedFieldCode)
         documentFound = document
     });
     return documentFound;
