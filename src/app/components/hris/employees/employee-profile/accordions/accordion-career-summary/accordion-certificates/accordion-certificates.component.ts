@@ -5,6 +5,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
 import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-accordion-certificates',
@@ -46,7 +47,6 @@ export class AccordionCertificatesComponent {
     CertificateName: [{ value: '', disabled: true }, Validators.required],
     IssueOrganization: [{ value: '', disabled: true }, Validators.required],
     IssueDate: [{ value: '', disabled: true }, Validators.required],
-    CertificateDocument: [{ value: '', disabled: true }, Validators.required]
   });
 
   constructor(
@@ -59,6 +59,21 @@ export class AccordionCertificatesComponent {
     this.getEmployeeCertificate();
   }
 
+  getEmployeeCertificate() {
+    this.employeeCertificateService.getCertificationDetails(this.employeeProfile.id).subscribe({
+      next: (data) => {
+        this.employeeCertificates = data;
+        if (this.employeeCertificates && this.employeeCertificates.length > 0) {
+          this.certificateId = this.employeeCertificates[this.employeeCertificates.length - 1].id;
+          this.initializeCertificatesForm(this.employeeCertificates[this.employeeCertificates.length - 1])
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching details', error)
+      }
+    })
+  }
+
   initializeCertificatesForm(certificatesForm: EmployeeCertificates) {
     if (certificatesForm == null) {
       this.hasCertificateData = false;
@@ -68,22 +83,9 @@ export class AccordionCertificatesComponent {
       CertificateName: [{ value: certificatesForm.certificateName, disabled: true }, Validators.required],
       IssueOrganization: [{ value: certificatesForm.issueOrganization, disabled: true }, Validators.required],
       IssueDate: [{ value: certificatesForm.issueDate, disabled: true }, Validators.required],
-      CertificateDocument: [{ value: '', disabled: true }, Validators.required]
     });
     // this.hasFile = certificatesForm.file.length > 0;
     this.hasCertificateData = true;
-  }
-
-  getEmployeeCertificate() {
-    this.employeeCertificateService.getCertificationDetails(this.employeeProfile.id).subscribe({
-      next: (data) => {
-        this.employeeCertificates = data;
-        if (this.employeeCertificates != null) {
-          this.certificateId = this.employeeCertificates[this.employeeCertificates.length - 1].id;
-        }
-        this.initializeCertificatesForm(this.employeeCertificates[this.employeeCertificates.length - 1])
-      }
-    })
   }
 
   saveCertificateDetails() {
@@ -98,9 +100,8 @@ export class AccordionCertificatesComponent {
       issueDate: employeeCertificateFormValue.IssueDate,
       certificateDocument: this.base64File
     }
-    console.log(this.employeeCertitificateDto)
     if (this.hasCertificateData) {
-      this.employeeCertitificateDto.id = this.employeeCertitificateDto.id
+      
       this.employeeCertificateService.updateCertification(this.employeeCertitificateDto).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
@@ -114,7 +115,6 @@ export class AccordionCertificatesComponent {
         }
       })
     }else{
-      console.log(this.employeeCertitificateDto)
       this.employeeCertificateService.saveCertification(this.employeeCertitificateDto).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Certificate info saved", "snack-success");
@@ -128,8 +128,6 @@ export class AccordionCertificatesComponent {
       })
     }
   }
-
-  downloadCertificate() { }
 
   uploadFile() {
     if (this.selectedFile) {

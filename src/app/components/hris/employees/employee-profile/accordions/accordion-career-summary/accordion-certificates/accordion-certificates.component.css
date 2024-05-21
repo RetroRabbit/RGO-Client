@@ -35,6 +35,10 @@
     width: 170px;
 }
 
+#upload-document-button{
+    color: #0029C6;
+    margin-left: 10px;
+}
 
 #add-button {
     background: var(--m-3-state-layers-light-on-surface-opacity-012, rgba(29, 27, 32, 0.12));
