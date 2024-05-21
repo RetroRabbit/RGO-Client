@@ -69,12 +69,17 @@ export class AccordionBankingComponent {
     this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
       next: (data) => {
         this.employeeBanking = data;
-        if (this.employeeBanking != null) {
+        if (this.employeeBanking && this.employeeBanking.length > 0) {
           this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
+          this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
+        } else {
+          console.warn("No banking details available.");
         }
-        this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
+      },
+      error: (err) => {
+        console.error("Error fetching banking details: ", err);
       }
-    })
+    });
   }
 
   initializeBankingForm(bankingDetails: EmployeeBanking) {
