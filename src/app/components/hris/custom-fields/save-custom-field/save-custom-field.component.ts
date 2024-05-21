@@ -147,9 +147,6 @@ export class SaveCustomFieldComponent {
     this.customFieldForm.patchValue({ code: code });
   }
 
-  onInputChange() {
-    console.log("hey")
-  }
   toggleShowAdvance() {
     this.showAdvanced = !this.showAdvanced;
   }
@@ -207,15 +204,15 @@ export class SaveCustomFieldComponent {
     this.showDocumentFields = true;
     this.showTypeFields = false;
     this.defaultDocumentType = true;
+    this.optionsValid = false;
   }
 
   onRadioChange(): void {
     if (this.selectedOption && this.fieldCodeCapture) {
-      this.optionsValid = false
+      this.optionsValid = false;
     }
     else {
-      this.optionsValid = true
+      this.optionsValid = true;
     }
   }
-
 }
