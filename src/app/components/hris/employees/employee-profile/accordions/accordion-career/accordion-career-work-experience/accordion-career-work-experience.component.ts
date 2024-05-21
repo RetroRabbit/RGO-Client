@@ -27,7 +27,7 @@ export class AccordionCareerWorkExperienceComponent {
 
   panelOpenState: boolean = false;
   @Input() WorkExperience!: { workExperience: WorkExperience }
-  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+  @Input() employeeProfile !: EmployeeProfile | SimpleEmployee
 
   workExperienceFormProgress: number = 0;
   editWorkExperience: boolean = false;
@@ -45,7 +45,8 @@ export class AccordionCareerWorkExperienceComponent {
     companyName: { value: '', disabled: true },
     location: { value: '', disabled: true },
     startDate: { value: '', disabled: true },
-    endDate: { value: '', disabled: true }
+    endDate: { value: '', disabled: true },
+    employeeId: { value: '', disabled: true }
   });
 
   constructor(
@@ -74,7 +75,8 @@ export class AccordionCareerWorkExperienceComponent {
       companyName: [{ value: workExperienceDetails.companyName, disabled: true }, Validators.required],
       location: [{ value: workExperienceDetails.location, disabled: true }, Validators.required],
       startDate: [{ value: workExperienceDetails.startDate, disabled: true }, Validators.required],
-      endDate: [{ value: workExperienceDetails.endDate, disabled: true }, Validators.required]
+      endDate: [{ value: workExperienceDetails.endDate, disabled: true }, Validators.required],
+      employeeId: [{ value: workExperienceDetails.employeeId, disabled: true }, Validators.required]
     });
     this.workExperienceForm.disable();
     this.hasWorkExperienceData = true;
@@ -82,7 +84,7 @@ export class AccordionCareerWorkExperienceComponent {
   }
   
   getWorkExperience() {
-    this.workExperienceService.getWorkExperience(this.employeeProfile.employeeDetails.id).subscribe({
+    this.workExperienceService.getWorkExperience(this.employeeProfile.id).subscribe({
       next: (data) => {
         this.workExperienceData = data;
         if (this.workExperience != null) {
@@ -93,11 +95,7 @@ export class AccordionCareerWorkExperienceComponent {
     })
   }
 
-  uploadDocument() {
-    console.log("Upload Document");
-  }
-
-  addAnotherDocument() {
+  addWorkExperience() {
     console.log("Add another document");
   }
 
@@ -115,16 +113,20 @@ export class AccordionCareerWorkExperienceComponent {
     this.editWorkExperience = false;
     this.isUpdated = true;
     const workExperienceFormValue = this.workExperienceForm.value;
+
+    const startDate = new Date(this.workExperienceForm.value.startDate);
+    const endDate = new Date(this.workExperienceForm.value.endDate);
+
     this.workExperienceDto = {
       id: this.workExperienceId,
       title: workExperienceFormValue.title,
       employementType: workExperienceFormValue.employementType,
-      companyName:workExperienceFormValue.companyName,
+      companyName: workExperienceFormValue.companyName,
       location: workExperienceFormValue.location,
-      startDate: workExperienceFormValue.startDate,
-      endDate: workExperienceFormValue.endDate,
-      employeeId: this.employeeProfile?.simpleEmployee.id
-    }
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),     
+      employeeId: this.employeeProfile?.id
+    };
 
     if (this.hasWorkExperienceData) {
       this.workExperienceService.update(this.workExperienceDto).subscribe({
@@ -132,7 +134,6 @@ export class AccordionCareerWorkExperienceComponent {
           this.snackBarService.showSnackbar("Banking details updated", "snack-success");
           this.getWorkExperience();
           this.checkWorkExperienceFormProgress();
-          // this.totalBankingProgress();
           this.hasUpdatedWorkExperience = true;
           this.editWorkExperience = false;
           this.workExperienceForm.disable();
@@ -148,7 +149,6 @@ export class AccordionCareerWorkExperienceComponent {
           this.snackBarService.showSnackbar("Banking details added", "snack-success");
           this.getWorkExperience();
           this.checkWorkExperienceFormProgress();
-          // this.totalBankingProgress();
           this.hasUpdatedWorkExperience = true;
           this.editWorkExperience = false;
           this.workExperienceForm.disable();
@@ -159,37 +159,6 @@ export class AccordionCareerWorkExperienceComponent {
       })
     }
   }
-  // saveWorkExperience() {
-  //   // if (this.sharedAccordionFunctionality.workExperienceForm.valid) {
-  //   //   const workExperienceFormValues = this.sharedAccordionFunctionality.workExperienceForm.value;
-
-  //   //   this.sharedAccordionFunctionality.workExperienceDto.title = workExperienceFormValues.title;
-  //   //   this.sharedAccordionFunctionality.workExperienceDto.employementType = workExperienceFormValues.employementType;
-  //   //   this.sharedAccordionFunctionality.workExperienceDto.companyName = workExperienceFormValues.companyName;
-  //   //   this.sharedAccordionFunctionality.workExperienceDto.location = workExperienceFormValues.location;
-  //   //   this.sharedAccordionFunctionality.workExperienceDto.startDate = workExperienceFormValues.startDate;
-  //   //   this.sharedAccordionFunctionality.workExperienceDto.endDate = workExperienceFormValues.endDate;
-  //   //   this.sharedAccordionFunctionality.workExperienceDto.employeeId = this.employeeProfile.employeeDetails.id;
-
-  //   //   console.log("DTO" + this.sharedAccordionFunctionality.workExperienceDto);
-  //   //   console.log("FORM" + this.sharedAccordionFunctionality.workExperienceForm);
-
-  //   //   this.workExperienceService.update(this.sharedAccordionFunctionality.workExperienceDto).subscribe({
-  //   //     next: (data) => {
-  //   //       this.snackBarService.showSnackbar("Contact details updated", "snack-success");
-  //   //       this.sharedAccordionFunctionality.checkWorkExperienceFormProgress();
-  //   //       this.sharedAccordionFunctionality.totalProfileProgress();
-  //   //       this.sharedAccordionFunctionality.workExperienceForm.disable();
-  //   //       this.sharedAccordionFunctionality.editContact = false;
-  //   //     },
-  //   //     error: (error) => { this.snackBarService.showSnackbar(error.error, "snack-error") },
-  //   //   });
-  //   // }
-  //   // else {
-  //   //   this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
-  //   // }
-  //   console.log("Saved");
-  // }
 
   checkWorkExperienceFormProgress() {
     let filledCount = 0;

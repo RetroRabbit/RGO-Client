@@ -79,13 +79,9 @@
                                         <mat-datepicker #picker2></mat-datepicker>
                                     </mat-form-field>
                                 </div>
-                                <div class="col-1 mt-2 d-flex align-items-center" id="download-document" (click)="uploadDocument()">
-                                    <mat-icon>download</mat-icon>
-                                    <span class="ml-3">Download Document</span>
-                                </div>
                                 <div class="pt-3">
                                     <button mat-button id="add-another-button" [disabled]="!editWorkExperience"
-                                        type="submit" (click)="addAnotherDocument()">
+                                        type="submit" (click)="addWorkExperience()">
                                         <mat-icon>add</mat-icon>
                                         Add Another Experience
                                     </button>
