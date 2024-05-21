@@ -51,32 +51,21 @@
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
-                                <div class="col-12 col-md-6 my-2">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Upload Certificate</mat-label>
-                                        <input matInput type="text" placeholder="Upload a certificate" formControlName="CertificateDocument" 
-                                        [value]="certificateFileName" (click)="uploadCertificateFile.click()">
-                                        <span mat-icon-button matSuffix class="pe-3">
-                                            <mat-icon >upload</mat-icon>
-                                        </span>
-                                        <input type="file" #uploadCertificateFile (change)="onDocumentChange($event)" hidden
-                                            accept=".pdf" />
-                                        <mat-error
-                                            *ngIf="certificateForm.controls['CertificateDocument'].hasError('required')">
-                                            Certificate document is required
-                                        </mat-error>
-                                    </mat-form-field>
+                            </div>
+                            <div class="col-3 d-md-flex">
+                                <div class="d-flex flex-column">
+                                    <button mat-button id="upload-document-button" class="py-4"
+                                        (click)="uploadCertificateFile.click()">
+                                        <mat-icon class="upload-document">save_alt</mat-icon>
+                                        Upload Document
+                                    </button>
+                                    <input type="file" #uploadCertificateFile (change)="onDocumentChange($event)" hidden
+                                        accept=".pdf" />
+                                    <div *ngIf="certificateFileName">
+                                        <p>{{ certificateFileName }}</p>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- <div class="col-3 d-md-flex">
-                                <div class="d-flex flex-column"> 
-                                    <button mat-button id="download-document-button"
-                                        class="py-4"> 
-                                        <mat-icon class="download-document">save_alt</mat-icon>
-                                        Download Document
-                                    </button>
-                                 </div>
-                            </div> -->
                             <p id="base64"></p>
                             <div class="col-12 col-md-6 my-2">
                                 <div class="my-2">
@@ -118,6 +107,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="col-12 d-block d-md-none" id="edit-buttons">
                                 <button *ngIf="editCertificate" mat-button id="save-button" type="submit"
                                     (click)="saveCertificateDetails()" class="col-12 mb-2">
