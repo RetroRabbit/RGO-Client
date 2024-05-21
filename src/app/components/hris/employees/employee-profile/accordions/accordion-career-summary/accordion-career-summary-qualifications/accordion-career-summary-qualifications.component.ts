@@ -11,6 +11,7 @@ import { EmployeeQualificationsService } from 'src/app/services/hris/employee/em
 import { EmployeeQualifications } from 'src/app/models/hris/employee-qualifications.interface';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { error } from 'console';
+import { nqfLevels } from 'src/app/models/hris/constants/nqfLevels.constant.';
 
 @Component({
   selector: 'app-career-summary-qualifications',
@@ -41,18 +42,22 @@ export class CareerSummaryQualificationsComponent {
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
-    this.initializeForm();
+    this.fetchQualificationsById();
+  }
+
+  ngAfterViewInit(){
+    this.fetchQualificationsById();
   }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
   initializeForm() {
     this.sharedAccordionFunctionality.employeeQualificationForm = this.fb.group({
-      highestQualification: [this.employeeProfile!.employeeDetails.qualifications?.highestQualification, Validators.required],
-      school: [this.employeeProfile!.employeeDetails.qualifications?.school, Validators.required],
-      fieldOfStudy: [this.employeeProfile!.employeeDetails.qualifications?.fieldOfStudy, Validators.required],
-      yearObtained: [this.employeeProfile!.employeeDetails.qualifications?.yearObtained, Validators.required],
-      nqfLevel: [this.employeeProfile!.employeeDetails.qualifications?.nqfLevel, Validators.required],
+      highestQualification: [this.sharedAccordionFunctionality.employeeQualificationDto.highestQualification, Validators.required],
+      school: [this.sharedAccordionFunctionality.employeeQualificationDto.school, Validators.required],
+      fieldOfStudy: [this.sharedAccordionFunctionality.employeeQualificationDto.fieldOfStudy, Validators.required],
+      year: [this.sharedAccordionFunctionality.employeeQualificationDto.year, Validators.required],
+      nqfLevel: [this.sharedAccordionFunctionality.employeeQualificationDto.nqfLevel, Validators.required],
     });
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
     this.sharedAccordionFunctionality.checkQualificationsFormProgress();
@@ -65,41 +70,67 @@ export class CareerSummaryQualificationsComponent {
     this.sharedAccordionFunctionality.employeeQualificationForm.enable();
   }
 
-  fetchQualifications() {
-   
+  fetchQualificationsById() {
+    var employeeId = this.navservice.employeeProfile.id!;
+    this.employeeQualificationsService.getEmployeeQualificationById(employeeId).subscribe({
+      next: (data) => {
+        this.sharedAccordionFunctionality.employeeQualificationDto.id = data.id;
+        this.sharedAccordionFunctionality.employeeQualificationDto.employeeId = data.employeeId;
+        this.sharedAccordionFunctionality.employeeQualificationDto.highestQualification = data.highestQualification;
+        this.sharedAccordionFunctionality.employeeQualificationDto.school = data.school;
+        this.sharedAccordionFunctionality.employeeQualificationDto.fieldOfStudy = data.fieldOfStudy;
+        this.sharedAccordionFunctionality.employeeQualificationDto.year = data.year;
+        this.sharedAccordionFunctionality.employeeQualificationDto.nqfLevel = data.nqfLevel;
+        console.log(this.sharedAccordionFunctionality.employeeQualificationDto);
+      },
+      error: (error) => {
+        this.snackBarService.showSnackbar(error.error, "snack-error");
+      }
+    })
+    this.initializeForm();
   }
 
   saveQualificationsEdit() {
     if (this.sharedAccordionFunctionality.employeeQualificationForm.valid) {
-      const employeeQualificationFormValue = this.sharedAccordionFunctionality.employeeQualificationForm.value;
-      this.sharedAccordionFunctionality.employeeQualificationDto.id = 0;
-      this.sharedAccordionFunctionality.employeeQualificationDto.employeeId = this.navservice.employeeProfile.id || this.employeeProfile.employeeDetails.id;
-      this.sharedAccordionFunctionality.employeeQualificationDto.highestQualification = employeeQualificationFormValue.highestQualification.id;
-      this.sharedAccordionFunctionality.employeeQualificationDto.school = employeeQualificationFormValue.school;
-      this.sharedAccordionFunctionality.employeeQualificationDto.fieldOfStudy = employeeQualificationFormValue.fieldOfStudy;
-      this.sharedAccordionFunctionality.employeeQualificationDto.yearObtained = employeeQualificationFormValue.yearObtained;
-      this.sharedAccordionFunctionality.employeeQualificationDto.nqfLevel = employeeQualificationFormValue.nqfLevel.id;
-      this.employeeQualificationsService.saveEmployeeQualification(this.sharedAccordionFunctionality.employeeQualificationDto).subscribe({
+      const existingQualificationId = this.sharedAccordionFunctionality.employeeQualificationDto.id;
+  
+      const updatedQualification: EmployeeQualifications = {
+        id: existingQualificationId || 0,
+        employeeId: this.navservice.employeeProfile.id || this.employeeProfile.employeeDetails.id,
+        highestQualification: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
+        school: this.sharedAccordionFunctionality.employeeQualificationForm.get("school")?.value,
+        fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.get("fieldOfStudy")?.value,
+        year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value,
+        nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("nqfLevel")?.value,
+      };
+  
+      const qualificationObservable = existingQualificationId
+        ? this.employeeQualificationsService.updateEmployeeQualification(updatedQualification, existingQualificationId)
+        : this.employeeQualificationsService.saveEmployeeQualification(updatedQualification);
+  
+      qualificationObservable.subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Qualifications saved", "snack-success");
-          this.sharedAccordionFunctionality.checkQualificationsFormProgress();
-          this.sharedAccordionFunctionality.totalProfileProgress();
-          this.sharedAccordionFunctionality.employeeQualificationForm.disable();
+          //this.fetchQualificationsById();  
+          this.snackBarService.showSnackbar(
+            existingQualificationId ? "Qualifications updated" : "Qualifications saved",
+            "snack-success"
+          );
+          this.fetchQualificationsById();
           this.sharedAccordionFunctionality.editQualifications = false;
+          this.sharedAccordionFunctionality.employeeQualificationForm.disable();
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error.error, "snack-error");
         },
       });
-    }
-    else {
+    } else {
       this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
   }
 
   cancelQualificationsEdit(){
+    this.fetchQualificationsById();
     this.sharedAccordionFunctionality.editQualifications = false;
-    this.initializeForm();
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
   }
 
@@ -133,6 +164,3 @@ export class CareerSummaryQualificationsComponent {
     });
   }
 }
-
-
-

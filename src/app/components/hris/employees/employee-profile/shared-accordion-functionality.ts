@@ -14,6 +14,7 @@ import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { nqfLevels } from 'src/app/models/hris/constants/nqfLevels.constant.';
+import { EmployeeQualifications } from 'src/app/models/hris/employee-qualifications.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -38,14 +39,14 @@ export class SharedAccordionFunctionality {
   clientId: number | undefined;
   peopleChampionId: number | undefined;
 
-  employeeQualificationDto: any = {
+  employeeQualificationDto: EmployeeQualifications = {
     id: 0,
     employeeId: 0,
     highestQualification: 0,
     school: "",
     fieldOfStudy: "",
-    yearObtained: "",
-    nqfLevel: 0,
+    year: "",
+    nqfLevel: nqfLevels,
   };
 
   panelOpenState: boolean = false;
@@ -147,7 +148,7 @@ export class SharedAccordionFunctionality {
     degree: { value: '', disabled: true },
     fieldOfStudy: { value: '', disabled: true },
     yearObtained: { value: '', disabled: true },
-    nqfLevel: { value: '', disabled: true },
+    nqfLevels: { value: '', disabled: true },
     qualificationDocument: { value: '', disabled: true },
   });
 

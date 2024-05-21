@@ -43,7 +43,13 @@
                   "maximumError": "12kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             },
             "production": {
               "fileReplacements": [

@@ -4,6 +4,6 @@ export interface EmployeeQualifications {
     highestQualification: number,
     school: string | null,
     fieldOfStudy: string | null,
-    yearObtained: string | null,
-    nqfLevel: number,
+    year: string | null,
+    nqfLevel: { id: number; value: string; }[],
 }

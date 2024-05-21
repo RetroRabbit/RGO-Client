@@ -42,7 +42,7 @@ export interface EmployeeProfilePermissions {
   school: boolean,
   degree: boolean,
   fieldOfStudy: boolean,
-  yearObtained: boolean,
+  year: boolean,
   nqfLevel: boolean,
   downloadDocument: boolean,
   addAnotherQualification: boolean,

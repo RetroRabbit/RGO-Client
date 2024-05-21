@@ -58,7 +58,7 @@ export class SharedPropertyAccessService {
         school : true,
         degree : true,
         fieldOfStudy : true,
-        yearObtained : true ,
+        year : true ,
         nqfLevel : true ,
         downloadDocument : true ,
         addAnotherQualification : true,

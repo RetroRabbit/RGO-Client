@@ -36,7 +36,7 @@
                                                 <mat-select formControlName="highestQualification"
                                                     placeholder="Highest Qualification" hideSingleSelectionIndicator="true">
                                                     <mat-option *ngFor="let level of sharedAccordionFunctionality.nqfLevels"
-                                                        [value]="level.value">
+                                                        [value]="level.id">
                                                         {{level.value}}
                                                     </mat-option>
                                                 </mat-select>
@@ -58,7 +58,6 @@
                                                 </mat-error>
                                             </mat-form-field>
                                         </div>
-
                                         <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.fieldOfStudy"
                                             class="col-12 col-md-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
@@ -77,7 +76,7 @@
                                                 <mat-label>NQF Level</mat-label>
                                                 <mat-select formControlName="nqfLevel" hideSingleSelectionIndicator="true">
                                                     <mat-option *ngFor="let level of sharedAccordionFunctionality.nqfLevels"
-                                                        [value]="level.value">
+                                                        [value]="level.id">
                                                         {{level.value}}
                                                     </mat-option>
                                                 </mat-select>
@@ -87,17 +86,17 @@
                                                 </mat-error>
                                             </mat-form-field>
                                         </div>
-                                        <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.yearObtained"
+                                        <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.year"
                                         class="col-12 col-md-6 my-2">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Year Obtained</mat-label>
-                                            <input matInput formControlName="yearObtained" placeholder="yyyy">
+                                            <input matInput formControlName="year" placeholder="yyyy">
                                             <mat-error
-                                                *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['yearObtained'].hasError('required')">
+                                                *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['year'].hasError('required')">
                                                 Year Obtained is required
                                             </mat-error>
                                             <mat-error
-                                                *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['yearObtained'].hasError('pattern')">
+                                                *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['year'].hasError('pattern')">
                                                 Year Obtained is must be in yyyy format
                                             </mat-error>
                                         </mat-form-field>
@@ -106,38 +105,36 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 d-block d-md-none" id="edit-buttons">
+                            <button *ngIf="sharedAccordionFunctionality.editQualifications" mat-button id="save-button"
+                                type="submit" (click)="saveQualificationsEdit()" class="col-12 mb-2">
+                                Save changes
+                            </button>
+                            <button *ngIf="sharedAccordionFunctionality.editQualifications" mat-button
+                                id="cancel-button" (click)="cancelQualificationsEdit()" class="col-12">
+                                Cancel
+                            </button>
+                        </div>
+                        <div class="col-12 d-none d-md-flex" id="edit-buttons">
+                            <button *ngIf="sharedAccordionFunctionality.editQualifications" mat-button
+                                id="cancel-button" (click)="cancelQualificationsEdit()">
+                                Cancel
+                            </button>
+                            <button *ngIf="sharedAccordionFunctionality.editQualifications" mat-button id="save-button"
+                                type="submit" (click)="saveQualificationsEdit()">
+                                Save changes
+                            </button>
+                        </div>
+                        <div class="col-3 d-md-flex">
+                            <div class="d-flex flex-column">
+                                <button mat-button id="download-document-button" class="py-4">
+                                    <mat-icon class="download-document">save_alt</mat-icon>
+                                    upload Document
+                                </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
-            </div>
-            
-            <div class="col-12 d-block d-md-none" id="edit-buttons">
-                <button *ngIf="sharedAccordionFunctionality.editQualifications" mat-button id="save-button"
-                    type="submit" (click)="saveQualificationsEdit()" class="col-12 mb-2">
-                    Save changes
-                </button>
-                <button *ngIf="sharedAccordionFunctionality.editQualifications" mat-button
-                    id="cancel-button" (click)="cancelQualificationsEdit()" class="col-12">
-                    Cancel
-                </button>
-            </div>
-            <div class="col-12 d-none d-md-flex" id="edit-buttons">
-                <button *ngIf="sharedAccordionFunctionality.editQualifications" mat-button
-                    id="cancel-button" (click)="cancelQualificationsEdit()">
-                    Cancel
-                </button>
-                <button *ngIf="sharedAccordionFunctionality.editQualifications" mat-button id="save-button"
-                    type="submit" (click)="saveQualificationsEdit()">
-                    Save changes
-                </button>
-            </div>
-            <div class="col-3 d-md-flex">
-                <div class="d-flex flex-column">
-                    <button mat-button id="download-document-button" class="py-4">
-                        <mat-icon class="download-document">save_alt</mat-icon>
-                        upload Document
-                    </button>
-                </div>
-                
             </div>
         </mat-expansion-panel>
     </mat-accordion>
