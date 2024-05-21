@@ -137,7 +137,7 @@
             }
             ,
             "local": {
-              "browserTarget": "RGO-Client:build:local"
+              "browserTarget": "RGO-Client:build"
             }
           },
           "defaultConfiguration": "local"
