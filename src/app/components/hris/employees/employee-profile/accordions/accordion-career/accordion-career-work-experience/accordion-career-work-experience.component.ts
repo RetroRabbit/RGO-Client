@@ -61,6 +61,7 @@ export class AccordionCareerWorkExperienceComponent {
 
   ngOnInit(): void {
     this.getWorkExperience();
+    console.log(this.workExperienceData);
   }
 
   initializeForm(workExperienceDetails: WorkExperience) {
@@ -95,6 +96,13 @@ export class AccordionCareerWorkExperienceComponent {
     })
   }
 
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   addWorkExperience() {
     console.log("Add another document");
   }
@@ -114,8 +122,8 @@ export class AccordionCareerWorkExperienceComponent {
     this.isUpdated = true;
     const workExperienceFormValue = this.workExperienceForm.value;
 
-    const startDate = new Date(this.workExperienceForm.value.startDate);
-    const endDate = new Date(this.workExperienceForm.value.endDate);
+    const startDate = this.formatDate(this.workExperienceForm.value.startDate);
+    const endDate = this.formatDate(this.workExperienceForm.value.endDate);
 
     this.workExperienceDto = {
       id: this.workExperienceId,
@@ -123,15 +131,15 @@ export class AccordionCareerWorkExperienceComponent {
       employementType: workExperienceFormValue.employementType,
       companyName: workExperienceFormValue.companyName,
       location: workExperienceFormValue.location,
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),     
+      startDate: startDate,
+      endDate: endDate,     
       employeeId: this.employeeProfile?.id
     };
 
     if (this.hasWorkExperienceData) {
       this.workExperienceService.update(this.workExperienceDto).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Banking details updated", "snack-success");
+          this.snackBarService.showSnackbar("Work experience details updated", "snack-success");
           this.getWorkExperience();
           this.checkWorkExperienceFormProgress();
           this.hasUpdatedWorkExperience = true;
@@ -146,7 +154,7 @@ export class AccordionCareerWorkExperienceComponent {
     else {
       this.workExperienceService.save(this.workExperienceDto).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Banking details added", "snack-success");
+          this.snackBarService.showSnackbar("Work experience details added", "snack-success");
           this.getWorkExperience();
           this.checkWorkExperienceFormProgress();
           this.hasUpdatedWorkExperience = true;
@@ -154,7 +162,7 @@ export class AccordionCareerWorkExperienceComponent {
           this.workExperienceForm.disable();
         }
         , error: (error) => {
-          this.snackBarService.showSnackbar("Failed to create banking information", "snack-error");
+          this.snackBarService.showSnackbar("Failed to create Work experience details", "snack-error");
         }
       })
     }
