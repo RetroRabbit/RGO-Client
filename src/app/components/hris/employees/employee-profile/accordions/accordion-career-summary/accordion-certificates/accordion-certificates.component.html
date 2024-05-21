@@ -10,7 +10,7 @@
                         information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <form [formGroup]="certificateFrom">
+            <form [formGroup]="certificateForm">
                 <div class="row">
                     <div class="col-12 col-md-9 col-lg-10">
                         <div class="row">
@@ -21,7 +21,7 @@
                                         <input type="text" matInput placeholder="Name of certificate"
                                             formControlName="CertificateName">
                                         <mat-error
-                                            *ngIf="certificateFrom.controls['CertificateName'].hasError('required')">
+                                            *ngIf="certificateForm.controls['CertificateName'].hasError('required')">
                                             Certificate name is required
                                         </mat-error>
                                     </mat-form-field>
@@ -32,7 +32,7 @@
                                         <input type="text" matInput placeholder="Issuing organization"
                                             formControlName="IssueOrganization">
                                         <mat-error
-                                            *ngIf="certificateFrom.controls['IssueOrganization'].hasError('required')">
+                                            *ngIf="certificateForm.controls['IssueOrganization'].hasError('required')">
                                             Issuing organization is required
                                         </mat-error>
                                     </mat-form-field>
@@ -46,7 +46,7 @@
                                             formControlName="IssueDate">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
-                                        <mat-error *ngIf="certificateFrom.controls['IssueDate'].hasError('required')">
+                                        <mat-error *ngIf="certificateForm.controls['IssueDate'].hasError('required')">
                                             Issue date is required
                                         </mat-error>
                                     </mat-form-field>
@@ -54,14 +54,15 @@
                                 <div class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Upload Certificate</mat-label>
-                                        <input matInput type="text" placeholder="Upload a certificate" formControlName="CertificateDocument" [value]="certificateFileName" (click)="uploadCertificateFile.click()">
+                                        <input matInput type="text" placeholder="Upload a certificate" formControlName="CertificateDocument" [value]="certificateFileName" 
+                                        (click)="uploadCertificateFile.click()">
                                         <span mat-icon-button matSuffix class="pe-3">
                                             <mat-icon >upload</mat-icon>
                                         </span>
-                                        <input type="file" #uploadCertificateFile (change)="onDocumentChange()" hidden
+                                        <input type="file" #uploadCertificateFile (change)="onDocumentChange($event)" hidden
                                             accept=".pdf" />
                                         <mat-error
-                                            *ngIf="certificateFrom.controls['CertificateDocument'].hasError('required')">
+                                            *ngIf="certificateForm.controls['CertificateDocument'].hasError('required')">
                                             Certificate document is required
                                         </mat-error>
                                     </mat-form-field>

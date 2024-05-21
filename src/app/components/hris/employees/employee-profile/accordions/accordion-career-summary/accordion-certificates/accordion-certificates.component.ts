@@ -5,6 +5,8 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { Certificate } from 'crypto';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
+import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
+import { error } from 'console';
 @Component({
   selector: 'app-accordion-certificates',
   templateUrl: './accordion-certificates.component.html',
@@ -24,14 +26,21 @@ export class AccordionCertificatesComponent {
   panelOpenState: boolean = false;
   hasFile: boolean = false;
   hasCertificateData = false;
+  employeeCertificates: EmployeeCertificates[] = [];
   certificateInformationProgress: number = 0;
+  certificateId: number = 0;
   editCertificate: boolean = false;
   isUpdated: boolean = false;
   selectedFile !: File;
   certificatePDFName: String = "";
+  certificateFilename: string = "";
   certificateFileName = "";
+  employeeCertitificateDto !: any;
+  fileUploaded: boolean = false;
+  isValidCertificateFileSize = true;
+  isValidCertificateFile = true;
 
-  certificateFrom: FormGroup = this.fb.group({
+  certificateForm: FormGroup = this.fb.group({
     CertificateName: [{ value: '', disabled: true }, Validators.required],
     IssueOrganization: [{ value: '', disabled: true }, Validators.required],
     IssueDate: [{ value: '', disabled: true }, Validators.required],
@@ -40,15 +49,20 @@ export class AccordionCertificatesComponent {
 
   constructor(
     private fb: FormBuilder,
-    private snackBarService: SnackbarService
-  ){}
+    private snackBarService: SnackbarService,
+    private employeeCertificateService: EmployeeCertificatesService
+  ) { }
 
-  initializeCertificatesForm(certificatesForm: EmployeeCertificates){
-    if(certificatesForm == null){
+  ngOnInit(): void {
+    this.getEmployeeCertificate();
+  }
+
+  initializeCertificatesForm(certificatesForm: EmployeeCertificates) {
+    if (certificatesForm == null) {
       this.hasCertificateData = false;
       return;
     }
-    this.certificateFrom = this.fb.group({
+    this.certificateForm = this.fb.group({
 
       Certificatename: [{ value: certificatesForm.CertficateName, disabled: true }, Validators.required],
       IssueOrganization: [{ value: certificatesForm.IssueOrganization, disabled: true }, Validators.required],
@@ -59,31 +73,66 @@ export class AccordionCertificatesComponent {
     this.hasCertificateData = true;
   }
 
-  saveCertificateDetails(){
+  getEmployeeCertificate() {
+    this.employeeCertificateService.getCertificationDetails(this.employeeProfile.id).subscribe({
+      next: (data) => {
+        this.employeeCertificates = data;
+        if (this.employeeCertificates != null) {
+          this.certificateId = this.employeeCertificates[this.employeeCertificates.length - 1].Id;
+        }
+        this.initializeCertificatesForm(this.employeeCertificates[this.employeeCertificates.length - 1])
+      }
+    })
+  }
+
+  saveCertificateDetails() {
     this.editCertificate = false;
     this.isUpdated = true;
-    
+    const employeeCertificateFormValue = this.certificateForm.value;
+    this.employeeCertitificateDto = {
+      id: this.certificateId,
+      EmployeeId: this.employeeProfile?.id,
+      CertficateName: employeeCertificateFormValue.CertficateName,
+      IssueOrganization: employeeCertificateFormValue.IssueOrganization,
+      IssueDate: employeeCertificateFormValue.IssueDate,
+      CertificateDocument: employeeCertificateFormValue.CertificateDocument
+    }
+
+    if (this.hasCertificateData) {
+      this.employeeCertificateService.updateCertification(this.employeeCertitificateDto).subscribe({
+        next: () => {
+          this.snackBarService.showSnackbar("Certificate details updated", "snack-success");
+          this.getEmployeeCertificate();
+          this.editCertificate = false;
+          this.certificateForm.disable();
+        },
+        error: (error) => {
+          this.snackBarService.showSnackbar(error, "snack-error");
+        }
+      })
+    }else{
+      this.employeeCertificateService.saveCertitification(this.employeeCertitificateDto).subscribe({
+        next: () => {
+          this.snackBarService.showSnackbar("Certificate details updated", "snack-success");
+          this.getEmployeeCertificate();
+          this.editCertificate = false;
+          this.certificateForm.disable();
+        },
+        error: (error) => {
+          this.snackBarService.showSnackbar(error, "snack-error");
+        }
+      })
+    }
   }
 
-  downloadCertificate(){ }
-
-  editCertificateDetails(){
-    this.editCertificate = true;
-    this.certificateFrom.enable();
-  }
-
-  cancelCertificateDetails(){
-    this.editCertificate = false;
-    this.certificateFrom.disable();
-  }
-
+  downloadCertificate() { }
 
   uploadFile() {
     if (this.selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
         const base64String = reader.result as string;
-        this.certificateFrom.patchValue({ 'file': base64String });
+        this.certificateForm.patchValue({ 'file': base64String });
       };
       reader.readAsDataURL(this.selectedFile);
     }
@@ -95,12 +144,53 @@ export class AccordionCertificatesComponent {
     this.uploadFile();
   }
 
-  openFileInput(){
+  openFileInput() {
     const fileInput = document.getElementById('fileupload') as HTMLInputElement;
     fileInput.click();
   }
 
-  onDocumentChange(){
+  onDocumentChange(event: any): void {
+    if (event.target.files && event.target.files.length) {
+      this.fileUploaded = true;
+      const file = event.target.files[0];
+      this.certificateFileName = file.name;
+      if (this.validatePortfolioFile(file)) {
+        this.fileConverter(file, 'portfolio');
+      }
+    }
+  }
 
+  validatePortfolioFile(file: File): boolean {
+    const allowedTypes = ['application/pdf'];
+    if (file.size > 10 * 1024 * 1024) {
+      this.isValidCertificateFileSize = false;
+      return false;
+    }
+    if (!allowedTypes.includes(file.type)) {
+      this.isValidCertificateFile = false;
+      return false;
+    }
+    this.isValidCertificateFileSize = true;
+    return true;
+  }
+
+  
+  fileConverter(file: File, controlName: string) {
+    const reader = new FileReader();
+    reader.addEventListener('loadend', () => {
+      const base64Data = reader.result as string;
+      this.certificateForm.patchValue({ [controlName]: base64Data });
+    });
+    reader.readAsDataURL(file);
+  }
+  
+  editCertificateDetails() {
+    this.editCertificate = true;
+    this.certificateForm.enable();
+  }
+
+  cancelCertificateDetails() {
+    this.editCertificate = false;
+    this.certificateForm.disable();
   }
 }
