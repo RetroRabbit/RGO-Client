@@ -73,7 +73,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
     })
   }
 
-
   getAdditionalDocuments() {
     if (this.employeeId != undefined) {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 4).subscribe({

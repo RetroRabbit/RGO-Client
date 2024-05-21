@@ -10,6 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
+import { MatRadioChange } from '@angular/material/radio';
 @Component({
   selector: 'app-save-custom-field',
   templateUrl: './save-custom-field.component.html',
@@ -23,13 +24,17 @@ export class SaveCustomFieldComponent {
   isUpdateClicked: boolean = false;
   isArchiveClicked: boolean = false;
   fieldCodeCapture: string = "";
+  selectedOption: string = "";
+  selectedOptionType: string = "";
   showAdvanced: boolean = false;
   showTypeFields: boolean = false;
   showDocumentFields: boolean = false;
-
+  defaultDocumentType: boolean = false;
+  defaultDocumentsection: boolean = false;
   isRequired: boolean = false;
   PREVIOUS_PAGE = "previousPage";
   optionsValid: boolean = true;
+
 
   customFieldForm: FormGroup = this.fb.group({
     code: ['', Validators.required],
@@ -138,11 +143,13 @@ export class SaveCustomFieldComponent {
     if (name == "") {
       code = this.fieldCodeCapture.toLowerCase().replaceAll(/[^a-zA-Z0-9]/g, "");
     } else {
-      code = name.toLowerCase().replaceAll(/[^a-zA-Z0-9]/g, "");
     }
     this.customFieldForm.patchValue({ code: code });
   }
 
+  onInputChange() {
+    console.log("hey")
+  }
   toggleShowAdvance() {
     this.showAdvanced = !this.showAdvanced;
   }
@@ -180,20 +187,35 @@ export class SaveCustomFieldComponent {
   }
 
   isDisabled() {
+    this.defaultDocumentsection = true;
     return this.showTypeFields;
   }
+
   isDisabledDocuments() {
+    this.selectedType = this.selectedCustomField?.type;
+    this.defaultDocumentsection = false;
     return this.showDocumentFields;
   }
 
   checkOption(option: any) {
     this.showTypeFields = true;
     this.showDocumentFields = false;
+    this.defaultDocumentType = false;
   }
 
   checkOptionDocuments(option: any) {
     this.showDocumentFields = true;
     this.showTypeFields = false;
+    this.defaultDocumentType = true;
+  }
+
+  onRadioChange(): void {
+    if (this.selectedOption && this.fieldCodeCapture) {
+      this.optionsValid = false
+    }
+    else {
+      this.optionsValid = true
+    }
   }
 
 }
