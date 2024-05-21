@@ -40,7 +40,7 @@ export class AccordionEmployeeDocumentsComponent {
   selectedFile !: File;
   roles: string[] = [];
   isLoadingUpload: boolean = false;
-  allowedTypes = [ 'application/pdf' ];
+  allowedTypes = ['application/pdf'];
   showConfirmDialog: boolean = false;
   dialogTypeData!: Dialog;
   documentExists: boolean = false;
@@ -122,7 +122,7 @@ export class AccordionEmployeeDocumentsComponent {
 
   getEmployeeDocuments() {
     if (this.employeeId != undefined) {
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 3).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 2).subscribe({
         next: data => {
           this.employeeDocuments = data;
           this.dataSource.data = this.fileCategories;
@@ -134,7 +134,7 @@ export class AccordionEmployeeDocumentsComponent {
       });
     } else {
       this.employeeId = this.navService.employeeProfile.id;
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 3).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 2).subscribe({
         next: data => {
           this.employeeDocuments = data;
           this.dataSource.data = this.fileCategories;
@@ -155,13 +155,12 @@ export class AccordionEmployeeDocumentsComponent {
       blob: this.base64String,
       fileCategory: 0,
       employeeFileCategory: +this.uploadButtonIndex,
-      adminFileCategory: 0,
       uploadDate: document.uploadDate,
       status: 1,
-      documentType: 3,
+      documentType: 2,
     }
     if (!document.id) {
-      this.employeeDocumentService.saveEmployeeDocument(saveObj, 3).subscribe({
+      this.employeeDocumentService.saveEmployeeDocument(saveObj, 2).subscribe({
         next: () => {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
@@ -181,13 +180,12 @@ export class AccordionEmployeeDocumentsComponent {
         fileName: document.fileName,
         fileCategory: document.fileCategory,
         employeeFileCategory: +this.uploadButtonIndex,
-        adminFileCategory: 0,
         blob: document.blob,
         uploadDate: document.uploadDate,
         reason: document.reason,
         status: 1,
         counterSign: false,
-        documentType: 3,
+        documentType: 2,
         lastUpdatedDate: document.lastUpdatedDate,
       }
       this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
@@ -218,10 +216,9 @@ export class AccordionEmployeeDocumentsComponent {
           fileName: this.documentsFileName,
           fileCategory: 0,
           employeeFileCategory: +this.uploadButtonIndex,
-          adminFileCategory: 0,
           blob: this.base64String,
           status: 1,
-          documentType: 3,
+          documentType: 2,
           uploadDate: new Date(),
           reason: '',
           counterSign: false,
@@ -270,7 +267,7 @@ export class AccordionEmployeeDocumentsComponent {
 
   calculateDocumentProgress() {
     const total = this.fileCategories.length;
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.employeeFileCategory <= (total - 1)).length;
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.employeeFileCategory <= 9).length;
     this.documentFormProgress = fetchedDocuments / total * 100;
     this.updateDocument.emit(this.documentFormProgress);
   }
@@ -303,8 +300,9 @@ export class AccordionEmployeeDocumentsComponent {
     this.showConfirmDialog = true;
   }
 
-  triggerInputField() {
+  triggerInputField(){
     const uploadField = document.getElementById(`${this.uploadButtonIndex}-employee-document`) as HTMLInputElement;
     uploadField.click();
   }
+
 }

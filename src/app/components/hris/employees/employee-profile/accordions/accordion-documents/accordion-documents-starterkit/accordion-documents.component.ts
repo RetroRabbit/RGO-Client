@@ -172,7 +172,6 @@ export class AccordionDocumentsComponent {
         fileName: document.fileName,
         fileCategory: document.fileCategory,
         employeeFileCategory: 0,
-        adminFileCategory: 0,
         blob: document.blob,
         uploadDate: document.uploadDate,
         reason: document.reason,

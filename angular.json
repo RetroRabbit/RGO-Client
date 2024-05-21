@@ -43,13 +43,7 @@
                   "maximumError": "12kb"
                 }
               ],
-              "outputHashing": "all",
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "outputHashing": "all"
             },
             "production": {
               "fileReplacements": [
@@ -137,7 +131,7 @@
             }
             ,
             "local": {
-              "browserTarget": "RGO-Client:build"
+              "browserTarget": "RGO-Client:build:local"
             }
           },
           "defaultConfiguration": "local"

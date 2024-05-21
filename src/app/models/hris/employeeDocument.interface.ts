@@ -5,7 +5,6 @@ export interface EmployeeDocument {
     fileName: string,
     fileCategory: number,
     employeeFileCategory: number,
-    adminFileCategory: number,
     blob: string,
     uploadDate: Date,
     reason: string,

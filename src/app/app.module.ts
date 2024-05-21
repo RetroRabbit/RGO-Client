@@ -92,7 +92,6 @@ import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-
 import { AccordionEmployeeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-employee-documents/accordion-employee-documents.component';
 import { AccordionDocumentsCustomDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-additional-documents/accordion-additional-documents.component';
 import { AccordionCertificatesComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-certificates/accordion-certificates.component';
-import { AccordionAdministrativeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-administrative-documents/accordion-administrative-documents.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +138,7 @@ import { AccordionAdministrativeDocumentsComponent } from './components/hris/emp
     SideNavComponent,
     AccordionEmployeeDocumentsComponent,
     AccordionDocumentsCustomDocumentsComponent,
+    AccordionCertificatesComponent,
 
   ],
   imports: [
