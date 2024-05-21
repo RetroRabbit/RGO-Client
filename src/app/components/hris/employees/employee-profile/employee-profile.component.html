@@ -58,7 +58,7 @@
           </div>
         </ng-template>
         <div class="col-12 my-2 d-none d-md-block" id="header-based"
-          *ngIf="navService.employeeProfile.id !== selectedEmployee.id; else OwnAddress">
+          *ngIf="navService.employeeProfile.id !== selectedEmployee.id && selectedEmployee.physicalAddress?.suburbOrDistrict != null; else OwnAddress">
           Based in {{ selectedEmployee.physicalAddress?.suburbOrDistrict }}
         </div>
         <ng-template #OwnAddress>
@@ -90,7 +90,7 @@
               <div id="header-label">Team Lead</div>
               <div id="header-value" *ngIf="!usingSimpleProfile; else NonAdminTeamLead">
                 {{sharedAccordionFunctionality.employeeTeamLead ? sharedAccordionFunctionality.employeeTeamLead.name + '
-                ' + sharedAccordionFunctionality.employeeTeamLead.surname : 'Notassigned'}}
+                ' + sharedAccordionFunctionality.employeeTeamLead.surname : 'Not assigned'}}
               </div>
               <ng-template #NonAdminTeamLead>
                 {{simpleEmployee.teamLeadId ? simpleEmployee.teamLeadName : 'Not assigned'}}
@@ -354,6 +354,9 @@
       <app-accordion-documents-starterkit
       [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile" (updateDocument)="updateDocumentProgress($event)">
       </app-accordion-documents-starterkit>
+      <app-accordion-administrative-documents *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin()" [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
+      </app-accordion-administrative-documents>
+
       <app-accordion-employee-documents
       [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
       </app-accordion-employee-documents>

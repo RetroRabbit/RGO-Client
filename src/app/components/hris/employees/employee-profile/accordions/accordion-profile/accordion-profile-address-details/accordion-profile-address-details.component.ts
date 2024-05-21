@@ -150,12 +150,12 @@ export class AccordionProfileAddressDetailsComponent {
             next: (data) => {
               this.employeeProfile!.employeeDetails.physicalAddress = physicalAddressDto;
               this.snackBarService.showSnackbar("Physical address updated", "snack-success");
+              this.navService.refreshEmployee();
               this.sharedAccordionFunctionality.addressDetailsForm.disable();
               this.sharedAccordionFunctionality.checkAddressFormProgress();
               this.sharedAccordionFunctionality.totalProfileProgress();
               this.getEmployeeFields();
               this.sharedAccordionFunctionality.editAddress = false;
-              this.navService.refreshEmployee();
             },
             error: (error: any) => {
               this.snackBarService.showSnackbar(error.error, "snack-error");
