@@ -1,10 +1,10 @@
 import { EmployeeProfile } from "./employee-profile.interface";
 
 export interface EmployeeCertificates{
-    Id: number,
-    EmployeeId: number,
-    CertficateName: string,
-    IssueOrganization: string,
-    IssueDate: Date,
-    CertificateDocument: string
+    id: number,
+    employeeId: number,
+    certficateName: string,
+    issueOrganization: string,
+    issueDate: Date,
+    certificateDocument: string
 }

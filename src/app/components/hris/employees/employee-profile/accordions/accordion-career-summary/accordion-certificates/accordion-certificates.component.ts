@@ -63,11 +63,10 @@ export class AccordionCertificatesComponent {
       return;
     }
     this.certificateForm = this.fb.group({
-
-      Certificatename: [{ value: certificatesForm.CertficateName, disabled: true }, Validators.required],
-      IssueOrganization: [{ value: certificatesForm.IssueOrganization, disabled: true }, Validators.required],
-      IssueDate: [{ value: certificatesForm.IssueDate, disabled: true }, Validators.required],
-      CertificateDocument: [{ value: certificatesForm.CertificateDocument, disabled: true }, Validators.required],
+      CertificateName: [{ value: certificatesForm.certficateName, disabled: true }, Validators.required],
+      IssueOrganization: [{ value: certificatesForm.issueOrganization, disabled: true }, Validators.required],
+      IssueDate: [{ value: certificatesForm.issueDate, disabled: true }, Validators.required],
+      CertificateDocument: [{ value: certificatesForm.certificateDocument, disabled: true }, Validators.required],
     });
     // this.hasFile = certificatesForm.file.length > 0;
     this.hasCertificateData = true;
@@ -78,7 +77,7 @@ export class AccordionCertificatesComponent {
       next: (data) => {
         this.employeeCertificates = data;
         if (this.employeeCertificates != null) {
-          this.certificateId = this.employeeCertificates[this.employeeCertificates.length - 1].Id;
+          this.certificateId = this.employeeCertificates[this.employeeCertificates.length - 1].id;
         }
         this.initializeCertificatesForm(this.employeeCertificates[this.employeeCertificates.length - 1])
       }
@@ -91,11 +90,11 @@ export class AccordionCertificatesComponent {
     const employeeCertificateFormValue = this.certificateForm.value;
     this.employeeCertitificateDto = {
       id: this.certificateId,
-      EmployeeId: this.employeeProfile?.id,
-      CertficateName: employeeCertificateFormValue.CertficateName,
-      IssueOrganization: employeeCertificateFormValue.IssueOrganization,
-      IssueDate: employeeCertificateFormValue.IssueDate,
-      CertificateDocument: employeeCertificateFormValue.CertificateDocument
+      employeeId: this.employeeProfile?.id,
+      certficateName: employeeCertificateFormValue.CertificateName,
+      issueOrganization: employeeCertificateFormValue.IssueOrganization,
+      issueDate: employeeCertificateFormValue.IssueDate,
+      certificateDocument: employeeCertificateFormValue.CertificateDocument
     }
 
     if (this.hasCertificateData) {
@@ -155,7 +154,7 @@ export class AccordionCertificatesComponent {
       const file = event.target.files[0];
       this.certificateFileName = file.name;
       if (this.validatePortfolioFile(file)) {
-        this.fileConverter(file, 'portfolio');
+        this.fileConverter(file, 'CertificateDocument');
       }
     }
   }
