@@ -10,6 +10,10 @@
     cursor: pointer;
 }
 
+#uploadfile{
+    max-width: 70%;
+}
+
 #pdf-icon {
     width: 14px;
     height: 18px;
@@ -21,4 +25,35 @@
         top: 110px;
         left: 5%;
     }
+}
+
+#edit-button-width {
+    border: none;
+    border-radius: 2rem;
+    background-color: #D7DFFF;
+    color: #0029C6;
+    width: 170px;
+}
+
+
+#add-button {
+    background: var(--m-3-state-layers-light-on-surface-opacity-012, rgba(29, 27, 32, 0.12));
+    color: var(--M3-sys-light-on-surface, #1D1B20);
+    text-align: center;
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+    border-radius: 20px;
+    padding: 20px;
+}
+.download-document , .add-qualification , #download-document-button {
+    color: #0029C6
+}
+
+#alignrow{
+    display: flex;
+    flex-direction: row;
+}
+
+#remove-document-button , .remove-document-button{
+    color: red;
 }

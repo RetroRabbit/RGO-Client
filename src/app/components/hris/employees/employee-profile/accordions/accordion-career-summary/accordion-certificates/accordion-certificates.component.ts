@@ -29,6 +29,7 @@ export class AccordionCertificatesComponent {
   isUpdated: boolean = false;
   selectedFile !: File;
   certificatePDFName: String = "";
+  certificateFileName = "";
 
   certificateFrom: FormGroup = this.fb.group({
     CertificateName: [{ value: '', disabled: true }, Validators.required],
@@ -58,6 +59,12 @@ export class AccordionCertificatesComponent {
     this.hasCertificateData = true;
   }
 
+  saveCertificateDetails(){
+    this.editCertificate = false;
+    this.isUpdated = true;
+    
+  }
+
   downloadCertificate(){ }
 
   editCertificateDetails(){
@@ -70,7 +77,6 @@ export class AccordionCertificatesComponent {
     this.certificateFrom.disable();
   }
 
-  saveCertificateDetails(){}
 
   uploadFile() {
     if (this.selectedFile) {
