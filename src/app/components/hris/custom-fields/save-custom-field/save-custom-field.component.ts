@@ -67,6 +67,7 @@ export class SaveCustomFieldComponent {
   }
 
   ngOnInit() {
+    this.onRadioChange();
     this.navService.hideNav();
     this.navService.showSystemNavbar = false;
     this.options.push(this.fb.control(''));
@@ -87,12 +88,12 @@ export class SaveCustomFieldComponent {
 
   addOption() {
     this.options.push(this.fb.control(''));
-    this.checkSelectedOption(5);
+    this.onRadioChange()
   }
 
   removeOption(index: number) {
     this.options.removeAt(index);
-    this.checkSelectedOption(5);
+    this.onRadioChange()
   }
 
   onSubmit() {
@@ -179,23 +180,12 @@ export class SaveCustomFieldComponent {
     });
   }
 
-  checkSelectedOption(e: any) {
-    this.selectedType = this.selectedCustomField?.type;
-    if (this.selectedType === null) {
-      this.optionsValid = true
-    }
-    else {
-      this.optionsValid = false
-    }
-  }
-
   isDisabled() {
     this.defaultDocumentsection = true;
     return this.showTypeFields;
   }
 
   isDisabledDocuments() {
-    this.selectedType = this.selectedCustomField?.type;
     this.defaultDocumentsection = false;
     return this.showDocumentFields;
   }
@@ -204,17 +194,18 @@ export class SaveCustomFieldComponent {
     this.showTypeFields = true;
     this.showDocumentFields = false;
     this.defaultDocumentType = false;
+    this.onRadioChange();
   }
 
   checkOptionDocuments(option: any) {
     this.showDocumentFields = true;
     this.showTypeFields = false;
     this.defaultDocumentType = true;
-    this.optionsValid = false;
+    this.onRadioChange();
   }
 
   onRadioChange(): void {
-    if (this.selectedOption && this.fieldCodeCapture) {
+    if ((this.selectedOption && this.fieldCodeCapture) || (this.selectedOption == '0' && this.fieldCodeCapture)) {
       this.optionsValid = false;
     }
     else {

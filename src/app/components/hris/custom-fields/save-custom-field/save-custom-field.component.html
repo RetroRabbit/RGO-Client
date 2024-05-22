@@ -7,7 +7,7 @@
                 <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Name</mat-label>
                     <input matInput formControlName="name" (input)="formatCustomFieldCodeFromName()"
-                        [(ngModel)]="fieldCodeCapture">
+                        [(ngModel)]="fieldCodeCapture" (change)="onRadioChange()" >
                 </mat-form-field>
             </div>
             <div class="col-12">
@@ -27,7 +27,7 @@
             </div>
             <div class="col-12">
                 <h1 id="radio-headings" class="mb-0">Select what type of field it should be</h1>
-                <mat-radio-group aria-label="Type" formControlName="type" (change)="checkSelectedOption($event)" (change)="onRadioChange()" [(ngModel)]="selectedOptionType">
+                <mat-radio-group aria-label="Type" formControlName="type" (change)="onRadioChange()" [(ngModel)]="selectedOptionType">
                     <mat-radio-button [value]=0 [disabled]="isDisabledDocuments()">Date - For specific calendar days, like birthdays</mat-radio-button>
                     <br>
                     <mat-radio-button [value]=1 [disabled]="isDisabledDocuments()">String - For storing text, like names or messages</mat-radio-button>
