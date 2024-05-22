@@ -59,14 +59,12 @@ export class AccordionCertificatesComponent {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.employeeProfile.id);
     this.getEmployeeCertificate();
-  }//its getting it as 15
+  }
 
   getEmployeeCertificate() {
     this.employeeCertificateService.getCertificationDetails(this.employeeProfile.id).subscribe({
       next: (data) => {
-        // console.log(data);
         this.employeeCertificates = data;
         if (this.employeeCertificates && this.employeeCertificates.length > 0) {  // come back
           this.certificateId = this.employeeCertificates[this.employeeCertificates.length - 1].id; // come back 
@@ -103,53 +101,50 @@ export class AccordionCertificatesComponent {
     let errorOccurred = false;
 
     this.newCertificates.forEach(newCertificate => {
-        this.employeeCertificateService.saveCertification(newCertificate).subscribe({
-            next: () => {
-                saveCount++;
-                if (saveCount === total && !errorOccurred) {
-                    this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
-                    this.hasUpdatedCertificateData = true;
-                    this.addingCertificate = false;
-                    // this.employeeCertificates.push(newCertificate)
-                    this.newCertificates = [];
-
-                }
-            },
-            error: (error) => {
-                errorOccurred = true;
-                this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
-                console.error(error);
-                
-                this.addingCertificate = false;
-                this.editCertificate = false;
-            }
-        });
+      this.employeeCertificateService.saveCertification(newCertificate).subscribe({
+        next: () => {
+          saveCount++;
+          if (saveCount === total && !errorOccurred) {
+            this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
+            this.hasUpdatedCertificateData = true;
+            this.addingCertificate = false;
+            this.newCertificates = [];
+            this.getEmployeeCertificate();
+          }
+        },
+        error: (error) => {
+          errorOccurred = true;
+          this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
+          this.addingCertificate = false;
+          this.editCertificate = false;
+        }
+      });
     });
-}
-
-  
+  }
 
   updateCertificateDetails() {
     this.isUpdated = true;
-    const editedCertificatesArray = this.findDifferenceInArrays();
-
+    let errorOccurred = false;
     let updateCount = 0;
+    const editedCertificatesArray = this.findDifferenceInArrays();
     const totalUpdates = editedCertificatesArray.length;
-    console.log(editedCertificatesArray[1])//its not saving
-    // editedCertificatesArray.forEach(certificate => {
-    //   this.employeeCertificateService.updateCertification(certificate).subscribe({
-    //     next: () =>  updateCount++
-    //   });
-    // });
 
-    // if(updateCount == totalUpdates){
-    //   this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
-    //   this.hasUpdatedCertificateData = true;
-    // }
-    // else{
-    //   this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
-    // }
-   this.editCertificate = false;
+    editedCertificatesArray.forEach(certificate => {
+      this.employeeCertificateService.updateCertification(certificate).subscribe({
+        next: () =>{  
+          updateCount++;
+        if(updateCount == totalUpdates && !errorOccurred){
+          this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
+          this.hasUpdatedCertificateData = true;
+          this.getEmployeeCertificate();
+        }
+      },
+      error: (error) =>{
+      this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
+      this.editCertificate = false;
+      }
+      });
+    });
   }
 
 
@@ -175,7 +170,7 @@ export class AccordionCertificatesComponent {
     fileInput.click();
   }
 
-  fileConverter(file: File,index: number, newOrUpdate: string) {
+  fileConverter(file: File, index: number, newOrUpdate: string) {
     const reader = new FileReader();
     reader.addEventListener('loadend', () => {
       this.base64String = reader.result as string;
@@ -205,7 +200,7 @@ export class AccordionCertificatesComponent {
     this.copyOfCertificates = this.employeeCertificates;
   }
 
-  copyEmployeeCertificates() { 
+  copyEmployeeCertificates() {
     this.employeeCertificates.forEach(certificate => {
       const copiedCert = JSON.parse(JSON.stringify(certificate));
       this.copyOfCertificates.push(copiedCert);
@@ -221,7 +216,7 @@ export class AccordionCertificatesComponent {
       certificateName: '',
       certificateDocument: this.base64String,
       documentName: '',
-      employeeId: this.employeeProfile.id as number 
+      employeeId: this.employeeProfile.id as number
     }
     this.newCertificates.push(newCertificate);
   }
@@ -237,7 +232,6 @@ export class AccordionCertificatesComponent {
     if (commaIndex !== -1) {
       base64String = base64String.slice(commaIndex + 1);
     }
-
     const byteString = atob(base64String);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const intArray = new Uint8Array(arrayBuffer);
@@ -257,8 +251,7 @@ export class AccordionCertificatesComponent {
     if (event.target.files && event.target.files.length) {
       this.fileUploaded = true;
       const file = event.target.files[0];
-      this.fileConverter(file,index,newOrUpdate);
-      console.log(this.base64String)
+      this.fileConverter(file, index, newOrUpdate);
     }
   }
 }
