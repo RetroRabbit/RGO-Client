@@ -41,7 +41,6 @@ export class AccordionCertificatesComponent {
   isValidCertificateFileSize = true;
   hasUpdatedCertificateData: boolean = false;
   isValidCertificateFile = true;
-  base64File: string = "";
   base64String: string = "";
 
   copyOfCertificates: EmployeeCertificates[] = [];
@@ -62,7 +61,6 @@ export class AccordionCertificatesComponent {
   ngOnInit(): void {
     // console.log(this.employeeProfile.id);
     this.getEmployeeCertificate();
-    console.log(this.employeeProfile.id)
   }//its getting it as 15
 
   getEmployeeCertificate() {
@@ -72,26 +70,12 @@ export class AccordionCertificatesComponent {
         this.employeeCertificates = data;
         if (this.employeeCertificates && this.employeeCertificates.length > 0) {  // come back
           this.certificateId = this.employeeCertificates[this.employeeCertificates.length - 1].id; // come back 
-          this.initializeCertificatesForm(this.employeeCertificates[this.employeeCertificates.length - 1])
         }
       },
       error: (error) => {
         console.error('Error fetching details', error)
       }
     })
-  }
-
-  initializeCertificatesForm(certificatesForm: EmployeeCertificates) {
-    if (certificatesForm == null) {
-      this.hasCertificateData = false;
-      return;
-    }
-    this.certificateForm = this.fb.group({
-      CertificateName: [{ value: certificatesForm.certificateName, disabled: true }, Validators.required],
-      IssueOrganization: [{ value: certificatesForm.issueOrganization, disabled: true }, Validators.required],
-      IssueDate: [{ value: certificatesForm.issueDate, disabled: true }, Validators.required],
-    });
-    this.hasCertificateData = true;
   }
 
   findDifferenceInArrays(): EmployeeCertificates[] {
@@ -114,26 +98,35 @@ export class AccordionCertificatesComponent {
 
   saveCertificateDetails() {
     this.isUpdated = true;
-   // const editedCertificatesArray = this.findDifferenceInArrays();
-
-    let saveCount = 0;
     const total = this.newCertificates.length;
-    console.log(this.newCertificates);
+    let saveCount = 0;
+    let errorOccurred = false;
+
     this.newCertificates.forEach(newCertificate => {
-      this.employeeCertificateService.saveCertification(newCertificate).subscribe({
-        next: () =>  { console.log(++saveCount)}
-      });
+        this.employeeCertificateService.saveCertification(newCertificate).subscribe({
+            next: () => {
+                saveCount++;
+                if (saveCount === total && !errorOccurred) {
+                    this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
+                    this.hasUpdatedCertificateData = true;
+                    this.addingCertificate = false;
+                    // this.employeeCertificates.push(newCertificate)
+                    this.newCertificates = [];
+
+                }
+            },
+            error: (error) => {
+                errorOccurred = true;
+                this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
+                console.error(error);
+                
+                this.addingCertificate = false;
+                this.editCertificate = false;
+            }
+        });
     });
-    console.log(`Save count: ${saveCount} vs Total save: ${total}`)
-    if(saveCount == total){
-      this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
-      this.hasUpdatedCertificateData = true;
-    }
-    else{
-      this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
-    }
-    this.addingCertificate = false;
-  }
+}
+
   
 
   updateCertificateDetails() {
@@ -142,20 +135,20 @@ export class AccordionCertificatesComponent {
 
     let updateCount = 0;
     const totalUpdates = editedCertificatesArray.length;
+    console.log(editedCertificatesArray[1])//its not saving
+    // editedCertificatesArray.forEach(certificate => {
+    //   this.employeeCertificateService.updateCertification(certificate).subscribe({
+    //     next: () =>  updateCount++
+    //   });
+    // });
 
-    editedCertificatesArray.forEach(certificate => {
-      this.employeeCertificateService.updateCertification(certificate).subscribe({
-        next: () =>  updateCount++
-      });
-    });
-
-    if(updateCount == totalUpdates){
-      this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
-      this.hasUpdatedCertificateData = true;
-    }
-    else{
-      this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
-    }
+    // if(updateCount == totalUpdates){
+    //   this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
+    //   this.hasUpdatedCertificateData = true;
+    // }
+    // else{
+    //   this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
+    // }
    this.editCertificate = false;
   }
 
@@ -177,44 +170,23 @@ export class AccordionCertificatesComponent {
     this.uploadFile();
   }
 
-
-
   openFileInput() {
     const fileInput = document.getElementById('fileupload') as HTMLInputElement;
     fileInput.click();
   }
 
-  // onDocumentChange(event: any): void {
-  //   if (event.target.files && event.target.files.length) {
-  //     this.fileUploaded = true;
-  //     const file = event.target.files[0];
-  //     this.certificateFileName = file.name;
-  //     this.fileConverter(file,)
-  //     if (this.validatePortfolioFile(file)) {
-  //       this.fileConverter(file);
-  //     }
-  //   }
-  // }
-
-  // validatePortfolioFile(file: File): boolean {
-  //   const allowedTypes = ['application/pdf'];
-  //   if (file.size > 10 * 1024 * 1024) {
-  //     this.isValidCertificateFileSize = false;
-  //     return false;
-  //   }
-  //   if (!allowedTypes.includes(file.type)) {
-  //     this.isValidCertificateFile = false;
-  //     return false;
-  //   }
-  //   this.isValidCertificateFileSize = true;
-  //   return true;
-  // }
-
-
-  fileConverter(file: File) {
+  fileConverter(file: File,index: number, newOrUpdate: string) {
     const reader = new FileReader();
     reader.addEventListener('loadend', () => {
-      this.base64File = reader.result as string;
+      this.base64String = reader.result as string;
+      if (newOrUpdate == 'update') {
+        this.copyOfCertificates[index].certificateDocument = this.base64String;
+        this.copyOfCertificates[index].documentName = file.name;
+      }
+      else if (newOrUpdate == 'new') {
+        this.newCertificates[index].certificateDocument = this.base64String;
+        this.newCertificates[index].documentName = file.name;
+      }
     });
     reader.readAsDataURL(file);
   }
@@ -233,7 +205,7 @@ export class AccordionCertificatesComponent {
     this.copyOfCertificates = this.employeeCertificates;
   }
 
-  copyEmployeeCertificates() { // deep copy of array
+  copyEmployeeCertificates() { 
     this.employeeCertificates.forEach(certificate => {
       const copiedCert = JSON.parse(JSON.stringify(certificate));
       this.copyOfCertificates.push(copiedCert);
@@ -285,15 +257,8 @@ export class AccordionCertificatesComponent {
     if (event.target.files && event.target.files.length) {
       this.fileUploaded = true;
       const file = event.target.files[0];
-      this.fileConverter(file);
-      if (newOrUpdate == 'update') {
-        this.copyOfCertificates[index].certificateDocument = this.base64File;
-        this.copyOfCertificates[index].documentName = file.name;
-      }
-      else if (newOrUpdate == 'new') {
-        this.newCertificates[index].certificateDocument = this.base64File;
-        this.newCertificates[index].documentName = file.name;
-      }
+      this.fileConverter(file,index,newOrUpdate);
+      console.log(this.base64String)
     }
   }
 }
