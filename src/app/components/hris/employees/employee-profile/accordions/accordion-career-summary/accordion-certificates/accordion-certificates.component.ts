@@ -40,10 +40,11 @@ export class AccordionCertificatesComponent {
   isValidCertificateFileSize = true;
   hasUpdatedCertificateData: boolean = false;
   isValidCertificateFile = true;
-  base64File: string ="";
+  base64File: string = "";
   base64String: string = "";
 
   copyOfCertificates: EmployeeCertificates[] = [];
+  newCertificates: EmployeeCertificates[] = [];
 
   certificateForm: FormGroup = this.fb.group({
     CertificateName: [{ value: '', disabled: true }, Validators.required],
@@ -58,14 +59,14 @@ export class AccordionCertificatesComponent {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.employeeProfile.id);
+    // console.log(this.employeeProfile.id);
     this.getEmployeeCertificate();
   }
 
   getEmployeeCertificate() {
     this.employeeCertificateService.getCertificationDetails(this.employeeProfile.id).subscribe({
       next: (data) => {
-        console.log(data);
+        // console.log(data);
         this.employeeCertificates = data;
         if (this.employeeCertificates && this.employeeCertificates.length > 0) {  // come back
           this.certificateId = this.employeeCertificates[this.employeeCertificates.length - 1].id; // come back 
@@ -91,14 +92,19 @@ export class AccordionCertificatesComponent {
     this.hasCertificateData = true;
   }
 
-  findDifferenceInArrays(): EmployeeCertificates[]{
+  findDifferenceInArrays(): EmployeeCertificates[] {
     let differenceArray: EmployeeCertificates[] = [];
 
-    for(let i = 0 ; i < this.employeeCertificates.length; i++){
-      if(this.employeeCertificates[i] !== this.copyOfCertificates[i]){
+    for (let i = 0; i < this.employeeCertificates.length; i++) {
+      if (this.employeeCertificates[i].certificateName != this.copyOfCertificates[i].certificateName) 
         differenceArray.push(this.copyOfCertificates[i]);
-      }
-    }
+      else if (this.employeeCertificates[i].issueOrganization != this.copyOfCertificates[i].issueOrganization)
+          differenceArray.push(this.copyOfCertificates[i]);
+      else if (this.employeeCertificates[i].issueDate != this.copyOfCertificates[i].issueDate)
+        differenceArray.push(this.copyOfCertificates[i]);
+      else if (this.employeeCertificates[i].certificateDocument != this.copyOfCertificates[i].certificateDocument)
+        differenceArray.push(this.copyOfCertificates[i]);
+      } 
     return differenceArray
   }
 
@@ -133,7 +139,7 @@ export class AccordionCertificatesComponent {
     //   certificateDocument: this.base64File
     // }
     // if (this.hasCertificateData) {
-      
+
     //   this.employeeCertificateService.updateCertification(this.employeeCertitificateDto).subscribe({
     //     next: () => {
     //       this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
@@ -188,7 +194,7 @@ export class AccordionCertificatesComponent {
       this.fileUploaded = true;
       const file = event.target.files[0];
       this.certificateFileName = file.name;
-      this.fileConverter(file, )
+      this.fileConverter(file,)
       if (this.validatePortfolioFile(file)) {
         this.fileConverter(file);
       }
@@ -209,7 +215,7 @@ export class AccordionCertificatesComponent {
     return true;
   }
 
-  
+
   fileConverter(file: File) {
     const reader = new FileReader();
     reader.addEventListener('loadend', () => {
@@ -217,13 +223,14 @@ export class AccordionCertificatesComponent {
     });
     reader.readAsDataURL(file);
   }
-  
+
   editCertificateDetails() {
     this.editCertificate = true;
     this.certificateForm.enable();
     this.copyOfCertificates = [];
-    this.copyOfCertificates = {...this.employeeCertificates};
-    console.log(this.copyOfCertificates);
+    // this.copyOfCertificates = {...this.employeeCertificates};
+    this.copyEmployeeCertificates();
+    // console.log(this.copyOfCertificates);
   }
 
   cancelCertificateDetails() {
@@ -231,4 +238,62 @@ export class AccordionCertificatesComponent {
     this.certificateForm.disable();
     this.copyOfCertificates = this.employeeCertificates;
   }
+
+  copyEmployeeCertificates() { // deep copy of array
+    this.employeeCertificates.forEach(certificate => {
+      const copiedCert = JSON.parse(JSON.stringify(certificate));
+      this.copyOfCertificates.push(copiedCert);
+    });
+  }
+
+  addNewCertificate(){
+    const newCertificate: EmployeeCertificates = {
+      id: 0,
+      issueDate: new Date,
+      issueOrganization: '',
+      certificateName: '',
+      certificateDocument: '',
+      documentName: ''
+    }
+    this.newCertificates.push(newCertificate);
+  }
+
+  removeNewCertificate(index : number){
+    this.newCertificates.splice(index,1);
+  }
+
+
+  downloadFile(base64String: string, fileName: string) {
+    const commaIndex = base64String.indexOf(',');
+    if (commaIndex !== -1) {
+      base64String = base64String.slice(commaIndex + 1);
+    }
+
+    const byteString = atob(base64String);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const intArray = new Uint8Array(arrayBuffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+      intArray[i] = byteString.charCodeAt(i);
+    }
+
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+  }
+
+  onFileChange(event: any, index : number): void {
+    if (event.target.files && event.target.files.length) {
+      this.fileUploaded = true;
+      const file = event.target.files[0];
+      // this.certificateFileName = file.name;
+      this.fileConverter(file);
+      this.copyOfCertificates[index].certificateDocument = this.base64File;
+      this.copyOfCertificates[index].documentName = file.name;
+    }
+  }
+
+ 
 }

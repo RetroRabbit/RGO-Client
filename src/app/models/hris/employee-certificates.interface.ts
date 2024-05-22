@@ -6,5 +6,6 @@ export interface EmployeeCertificates{
     certificateName: string,
     issueOrganization: string,
     issueDate: Date,
-    certificateDocument: string
+    certificateDocument: string,
+    documentName: string
 }
