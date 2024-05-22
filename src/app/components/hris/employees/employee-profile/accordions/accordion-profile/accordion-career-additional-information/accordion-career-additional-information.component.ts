@@ -51,24 +51,23 @@ export class AccordionCareerAdditionalInformationComponent {
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
-    this.initializeForm();
     this.getEmployeeFields();
     this.getClients();
+    this.getEmployeeData();
   }
-  initializeForm() { }
 
+  initializeForm(){}
   getEmployeeFields() {
     this.sharedAccordionFunctionality.employeePhysicalAddress = this.employeeProfile.employeeDetails.physicalAddress!;
     this.sharedAccordionFunctionality.employeePostalAddress = this.employeeProfile.employeeDetails.postalAddress!;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile.employeeDetails.disability;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
-    this.getEmployeeData();
+    // this.getEmployeeData();
     this.getEmployeeTypes();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
     }
     this.getEmployeeFieldCodes();
-    this.initializeForm();
     if (!this.authAccessService.isEmployee()) {
 
       this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
@@ -79,7 +78,7 @@ export class AccordionCareerAdditionalInformationComponent {
           this.sharedAccordionFunctionality.hasDisability = data.disability;
           this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
         }, complete: () => {
-          this.getEmployeeData();
+          // this.getEmployeeData();
           this.getEmployeeTypes();
           if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
             this.getAllEmployees();
@@ -94,7 +93,8 @@ export class AccordionCareerAdditionalInformationComponent {
   }
 
   getEmployeeData() {
-    this.employeeDataService.getEmployeeData(this.employeeProfile.employeeDetails.id).subscribe({
+    const id = this.employeeProfile.employeeDetails.id ? this.employeeProfile.employeeDetails.id : this.employeeProfile.simpleEmployee.id;
+    this.employeeDataService.getEmployeeData(id).subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employeeData = data;
       }
@@ -140,7 +140,7 @@ export class AccordionCareerAdditionalInformationComponent {
       next: data => {
         this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[2].id);
         this.checkAdditionalInformation();
-        this.sharedAccordionFunctionality.checkAdditionalFormProgress();
+        this.sharedAccordionFunctionality.checkCareerAdditionalFormProgress();
         this.sharedAccordionFunctionality.totalProfileProgress();
       }
     })
@@ -162,15 +162,14 @@ export class AccordionCareerAdditionalInformationComponent {
   }
 
   editAdditionalDetails() {
-    this.sharedAccordionFunctionality.additionalInfoForm.enable();
+    this.sharedAccordionFunctionality.additionalCareerInfoForm.enable();
     this.sharedAccordionFunctionality.editAdditional = true;
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.additionalInfoForm.controls), "Employee", false)
+    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.additionalCareerInfoForm.controls), "Employee", false)
   }
 
   cancelAdditionalEdit() {
     this.sharedAccordionFunctionality.editAdditional = false;
-    this.initializeForm();
-    this.sharedAccordionFunctionality.additionalInfoForm.disable();
+    this.sharedAccordionFunctionality.additionalCareerInfoForm.disable();
   }
 
   saveAdditionalEdit() {
@@ -179,42 +178,42 @@ export class AccordionCareerAdditionalInformationComponent {
         return fieldcode.id == data.fieldCodeId
       });
 
-      if (found != null) {
+      if (found) {
         var formatFound: any = fieldcode.code
         const employeeDataDto = {
           id: found.id,
           employeeId: found.employeeId,
           fieldcodeId: found.fieldCodeId,
-          value: this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value
+          value: this.sharedAccordionFunctionality.additionalCareerInfoForm.get(formatFound)?.value
         }
 
         this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
           next: (data) => {
             this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
-            this.sharedAccordionFunctionality.checkAdditionalFormProgress();
+            this.sharedAccordionFunctionality.checkCareerAdditionalFormProgress();
             this.sharedAccordionFunctionality.totalProfileProgress();
-            this.sharedAccordionFunctionality.additionalInfoForm.disable();
+            this.sharedAccordionFunctionality.additionalCareerInfoForm.disable();
             this.sharedAccordionFunctionality.editAdditional = false;
           },
           error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
         });
       }
-      else if (found == null) {
+      else {
         var formatFound: any = fieldcode?.code
         const employeeDataDto = {
           id: 0,
           employeeId: this.sharedAccordionFunctionality.selectedEmployee ? this.sharedAccordionFunctionality.selectedEmployee.id : this.employeeProfile?.employeeDetails.id,
           fieldcodeId: fieldcode.id,
-          value: this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value
+          value: this.sharedAccordionFunctionality.additionalCareerInfoForm.get(formatFound)?.value
         }
 
         if (employeeDataDto.value != '') {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
               this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
-              this.sharedAccordionFunctionality.checkAdditionalFormProgress();
+              this.sharedAccordionFunctionality.checkCareerAdditionalFormProgress();
               this.sharedAccordionFunctionality.totalProfileProgress();
-              this.sharedAccordionFunctionality.additionalInfoForm.disable();
+              this.sharedAccordionFunctionality.additionalCareerInfoForm.disable();
               this.sharedAccordionFunctionality.editAdditional = false;
             },
             error: (error) => {
@@ -231,7 +230,7 @@ export class AccordionCareerAdditionalInformationComponent {
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     fieldNames.forEach(fieldName => {
       let control: AbstractControl<any, any> | null = null;
-      control = this.sharedAccordionFunctionality.additionalInfoForm.get(fieldName);
+      control = this.sharedAccordionFunctionality.additionalCareerInfoForm.get(fieldName);
 
       if (control) {
         switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {

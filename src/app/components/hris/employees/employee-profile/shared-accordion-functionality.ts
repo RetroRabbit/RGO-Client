@@ -60,7 +60,7 @@ export class SharedAccordionFunctionality {
   contactFormProgress: number = 0;
   addressFormProgress: number = 0;
   additionalFormProgress: number = 0;
-
+  additionalCareerFormProgress: number = 0;
   genders = genders;
   races = races;
   levels = levels;
@@ -128,6 +128,8 @@ export class SharedAccordionFunctionality {
   });
 
   additionalInfoForm: FormGroup = this.fb.group({});
+
+  additionalCareerInfoForm: FormGroup = this.fb.group({});
 
   checkPersonalFormProgress() {
 
@@ -215,6 +217,23 @@ export class SharedAccordionFunctionality {
     let filledCount = 0;
     const formControls = this.additionalInfoForm.controls;
     let totalFields = Object.keys(this.additionalInfoForm.controls).length;
+
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '') {
+          filledCount++;
+        }
+      }
+    }
+    this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
+  }
+
+  checkCareerAdditionalFormProgress() {
+
+    let filledCount = 0;
+    const formControls = this.additionalCareerInfoForm.controls;
+    let totalFields = Object.keys(this.additionalCareerInfoForm.controls).length;
 
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
