@@ -54,6 +54,7 @@ export class AccordionProfileAdditionalComponent {
     this.initializeForm();
     this.getEmployeeFields();
     this.getClients();
+    this.getEmployeeData();
   }
   initializeForm() { }
 
@@ -176,10 +177,10 @@ export class AccordionProfileAdditionalComponent {
   saveAdditionalEdit() {
     for (const fieldcode of this.customFields) {
       const found = this.sharedAccordionFunctionality.employeeData.find((data) => {
-        return fieldcode.id == data.fieldCodeId
+        return fieldcode.id === data.fieldCodeId
       });
 
-      if (found != null) {
+      if (found) {
         var formatFound: any = fieldcode.code
         const employeeDataDto = {
           id: found.id,

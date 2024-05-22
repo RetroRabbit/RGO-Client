@@ -62,7 +62,7 @@ export class AccordionCareerAdditionalInformationComponent {
     this.sharedAccordionFunctionality.employeePostalAddress = this.employeeProfile.employeeDetails.postalAddress!;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile.employeeDetails.disability;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
-    // this.getEmployeeData();
+    this.getEmployeeData();
     this.getEmployeeTypes();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
@@ -78,7 +78,7 @@ export class AccordionCareerAdditionalInformationComponent {
           this.sharedAccordionFunctionality.hasDisability = data.disability;
           this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
         }, complete: () => {
-          // this.getEmployeeData();
+          this.getEmployeeData();
           this.getEmployeeTypes();
           if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
             this.getAllEmployees();
@@ -175,12 +175,13 @@ export class AccordionCareerAdditionalInformationComponent {
   saveAdditionalEdit() {
     for (const fieldcode of this.customFields) {
       const found = this.sharedAccordionFunctionality.employeeData.find((data) => {
-        return fieldcode.id == data.fieldCodeId
+        return fieldcode.id === data.fieldCodeId
       });
 
-      if (!found) {
+      if (found === undefined) {
         continue;
-      } else if (found) {
+      }
+      if (found) {
         var formatFound: any = fieldcode.code
         const employeeDataDto = {
           id: found.id,
