@@ -6,6 +6,7 @@ import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.inte
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
 import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
 import { error } from 'console';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-accordion-certificates',
@@ -66,6 +67,7 @@ export class AccordionCertificatesComponent {
     this.employeeCertificateService.getCertificationDetails(this.employeeProfile.id).subscribe({
       next: (data) => {
         this.employeeCertificates = data;
+        console.log(this.employeeCertificates);
         if (this.employeeCertificates && this.employeeCertificates.length > 0) {  // come back
           this.certificateId = this.employeeCertificates[this.employeeCertificates.length - 1].id; // come back 
         }
@@ -124,26 +126,21 @@ export class AccordionCertificatesComponent {
 
   updateCertificateDetails() {
     this.isUpdated = true;
-    let errorOccurred = false;
-    let updateCount = 0;
+    this.editCertificate = false; // Reset the edit flag early
     const editedCertificatesArray = this.findDifferenceInArrays();
-    const totalUpdates = editedCertificatesArray.length;
 
-    editedCertificatesArray.forEach(certificate => {
-      this.employeeCertificateService.updateCertification(certificate).subscribe({
-        next: () =>{  
-          updateCount++;
-        if(updateCount == totalUpdates && !errorOccurred){
-          this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
-          this.hasUpdatedCertificateData = true;
-          this.getEmployeeCertificate();
-        }
+    const updateObservables = editedCertificatesArray.map(certificate =>
+      this.employeeCertificateService.updateCertification(certificate)
+    );
+    forkJoin(updateObservables).subscribe({
+      next: () => {
+        this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
+        this.hasUpdatedCertificateData = true;
+        this.getEmployeeCertificate();
       },
-      error: (error) =>{
-      this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
-      this.editCertificate = false;
+      error: () => {
+        this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
       }
-      });
     });
   }
 
@@ -205,6 +202,7 @@ export class AccordionCertificatesComponent {
       const copiedCert = JSON.parse(JSON.stringify(certificate));
       this.copyOfCertificates.push(copiedCert);
     });
+    console.log(this.copyOfCertificates);
   }
 
   addNewCertificate() {
