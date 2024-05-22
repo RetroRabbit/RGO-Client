@@ -140,3 +140,17 @@
     width: 400px;
     max-width: 400px !important;
 }
+#NoDocuments{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.subtitle{
+    color: #0029C6;
+    font-size: 14px;
+}
+.headingTitle{
+    font-size: 22px;
+
+}

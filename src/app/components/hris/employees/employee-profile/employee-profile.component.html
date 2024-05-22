@@ -363,7 +363,7 @@
       [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"(updateDocument)="updateDocumentProgress($event)">
       </app-accordion-my-documents>
       <app-accordion-additional-documents
-      [hidden]="selectedAccordion != 'Documents'" >
+      [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
       </app-accordion-additional-documents>
 
       <app-accordion-career-work-experience [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile"></app-accordion-career-work-experience>
