@@ -1,5 +1,5 @@
 <div id="field-container" [ngClass]="navService.showNavContainer ? 'my-4' : 'my-2'">
-    <div id="form-container" class="py-4">
+    <div id="form-container" class="py-4" [ngClass]="this.isMobileScreen ? 'form-container-mobile' : ''">
         <h3>{{ systemService.isEditing ? 'Create a new custom field' : 'Edit a custom field' }}</h3>
         <form class="row mx-0" [formGroup]="customFieldForm">
             <h1 id="field-heading">Name and describe the field:</h1>

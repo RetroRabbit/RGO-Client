@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -29,6 +29,8 @@ export class SaveCustomFieldComponent {
   showAdvanced: boolean = false;
   showTypeFields: boolean = false;
   showDocumentFields: boolean = false;
+  isMobileScreen = false;
+  screenWidth = window.innerWidth;
   defaultDocumentType: boolean = false;
   defaultDocumentsection: boolean = false;
   isRequired: boolean = false;
@@ -48,6 +50,11 @@ export class SaveCustomFieldComponent {
     category: [-1, Validators.required],
     required: [false]
   });
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.isMobileScreen = window.innerWidth < 768;
+  }
 
   constructor(public router: Router,
     private customFieldService: CustomFieldService,
