@@ -361,7 +361,7 @@
 
       <app-accordion-my-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
       (updateDocument)="updateDocumentProgress($event)"></app-accordion-my-documents>
-    <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'" ></app-accordion-additional-documents>
+    <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"></app-accordion-additional-documents>
 
     </div>
   </div>
