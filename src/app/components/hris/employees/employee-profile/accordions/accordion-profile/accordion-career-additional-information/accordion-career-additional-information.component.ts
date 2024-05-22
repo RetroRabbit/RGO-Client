@@ -152,11 +152,11 @@ export class AccordionCareerAdditionalInformationComponent {
       if (fieldName.code != null || fieldName.code != undefined) {
         const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
         formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
-        this.sharedAccordionFunctionality.additionalInfoForm = this.fb.group(formGroupConfig);
+        this.sharedAccordionFunctionality.additionalCareerInfoForm = this.fb.group(formGroupConfig);
         if (fieldName.required == true) {
-          this.sharedAccordionFunctionality.additionalInfoForm.controls[fieldName.code].setValidators(Validators.required);
+          this.sharedAccordionFunctionality.additionalCareerInfoForm.controls[fieldName.code].setValidators(Validators.required);
         }
-        this.sharedAccordionFunctionality.additionalInfoForm.disable();
+        this.sharedAccordionFunctionality.additionalCareerInfoForm.disable();
       }
     });
   }
@@ -178,7 +178,9 @@ export class AccordionCareerAdditionalInformationComponent {
         return fieldcode.id == data.fieldCodeId
       });
 
-      if (found) {
+      if (!found) {
+        continue;
+      } else if (found) {
         var formatFound: any = fieldcode.code
         const employeeDataDto = {
           id: found.id,
@@ -197,8 +199,7 @@ export class AccordionCareerAdditionalInformationComponent {
           },
           error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
         });
-      }
-      else {
+      } else {
         var formatFound: any = fieldcode?.code
         const employeeDataDto = {
           id: 0,
