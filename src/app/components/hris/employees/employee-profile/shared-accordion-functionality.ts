@@ -147,8 +147,8 @@ export class SharedAccordionFunctionality {
     school: { value: '', disabled: true },
     degree: { value: '', disabled: true },
     fieldOfStudy: { value: '', disabled: true },
-    yearObtained: { value: '', disabled: true },
-    nqfLevels: { value: '', disabled: true },
+    year: { value: '', disabled: true },
+    nqfLevel: { value: '', disabled: true },
     qualificationDocument: { value: '', disabled: true },
   });
 

@@ -11,7 +11,6 @@ import { EmployeeQualificationsService } from 'src/app/services/hris/employee/em
 import { EmployeeQualifications } from 'src/app/models/hris/employee-qualifications.interface';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { error } from 'console';
-import { nqfLevels } from 'src/app/models/hris/constants/nqfLevels.constant.';
 
 @Component({
   selector: 'app-career-summary-qualifications',
@@ -45,10 +44,6 @@ export class CareerSummaryQualificationsComponent {
     this.fetchQualificationsById();
   }
 
-  ngAfterViewInit(){
-    this.fetchQualificationsById();
-  }
-
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
   initializeForm() {
@@ -56,9 +51,10 @@ export class CareerSummaryQualificationsComponent {
       highestQualification: [this.sharedAccordionFunctionality.employeeQualificationDto.highestQualification, Validators.required],
       school: [this.sharedAccordionFunctionality.employeeQualificationDto.school, Validators.required],
       fieldOfStudy: [this.sharedAccordionFunctionality.employeeQualificationDto.fieldOfStudy, Validators.required],
-      year: [this.sharedAccordionFunctionality.employeeQualificationDto.year, Validators.required],
+      year: [this.sharedAccordionFunctionality.employeeQualificationDto.year, [Validators.required, Validators.pattern(/^(19|20)\d{2}$/)]],
       nqfLevel: [this.sharedAccordionFunctionality.employeeQualificationDto.nqfLevel, Validators.required],
     });
+    this.sharedAccordionFunctionality.editQualifications = false;
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
     this.sharedAccordionFunctionality.checkQualificationsFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
@@ -79,15 +75,18 @@ export class CareerSummaryQualificationsComponent {
         this.sharedAccordionFunctionality.employeeQualificationDto.highestQualification = data.highestQualification;
         this.sharedAccordionFunctionality.employeeQualificationDto.school = data.school;
         this.sharedAccordionFunctionality.employeeQualificationDto.fieldOfStudy = data.fieldOfStudy;
-        this.sharedAccordionFunctionality.employeeQualificationDto.year = data.year;
+        if (data.year && data.year.endsWith("-01-01")) {
+          this.sharedAccordionFunctionality.employeeQualificationDto.year = data.year.substring(0, 4);
+        } else {
+          this.sharedAccordionFunctionality.employeeQualificationDto.year = data.year;
+        }
         this.sharedAccordionFunctionality.employeeQualificationDto.nqfLevel = data.nqfLevel;
-        console.log(this.sharedAccordionFunctionality.employeeQualificationDto);
+        this.initializeForm();
       },
       error: (error) => {
         this.snackBarService.showSnackbar(error.error, "snack-error");
       }
     })
-    this.initializeForm();
   }
 
   saveQualificationsEdit() {
@@ -100,7 +99,7 @@ export class CareerSummaryQualificationsComponent {
         highestQualification: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
         school: this.sharedAccordionFunctionality.employeeQualificationForm.get("school")?.value,
         fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.get("fieldOfStudy")?.value,
-        year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value,
+        year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value + "-01-01",
         nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("nqfLevel")?.value,
       };
   
@@ -109,17 +108,15 @@ export class CareerSummaryQualificationsComponent {
         : this.employeeQualificationsService.saveEmployeeQualification(updatedQualification);
   
       qualificationObservable.subscribe({
-        next: (data) => {
-          //this.fetchQualificationsById();  
+        next: () => {
+          this.fetchQualificationsById(); 
           this.snackBarService.showSnackbar(
             existingQualificationId ? "Qualifications updated" : "Qualifications saved",
             "snack-success"
           );
-          this.fetchQualificationsById();
-          this.sharedAccordionFunctionality.editQualifications = false;
-          this.sharedAccordionFunctionality.employeeQualificationForm.disable();
         },
         error: (error) => {
+          this.fetchQualificationsById();
           this.snackBarService.showSnackbar(error.error, "snack-error");
         },
       });
@@ -129,7 +126,6 @@ export class CareerSummaryQualificationsComponent {
   }
 
   cancelQualificationsEdit(){
-    this.fetchQualificationsById();
     this.sharedAccordionFunctionality.editQualifications = false;
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
   }
