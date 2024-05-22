@@ -128,6 +128,7 @@ export class SharedAccordionFunctionality {
   });
 
   additionalInfoForm: FormGroup = this.fb.group({});
+  additionalDocumentForm: FormGroup = this.fb.group({});
 
   checkPersonalFormProgress() {
 
