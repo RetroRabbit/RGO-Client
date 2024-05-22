@@ -26,6 +26,26 @@
         left: 5%;
     }
 }
+#add-another-button {
+    background: #0029c6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    padding: 0.5rem;
+    right: 0px;
+    height: 40px;
+    width: 30%;
+}
+
+#add-another-button:disabled{
+    background-color: #ddd;
+    color: #888;
+    cursor: not-allowed;
+}
+
+#delete-icon{
+    color: rgb(217, 63, 63);
+}
 
 #edit-button-width {
     border: none;
@@ -34,6 +54,13 @@
     color: #0029C6;
     width: 170px;
 }
+
+#edit-button-width:disabled{
+    background-color: #ddd;
+    color: #888;
+    cursor: not-allowed;
+}
+
 
 #upload-document-button{
     color: #0029C6;
