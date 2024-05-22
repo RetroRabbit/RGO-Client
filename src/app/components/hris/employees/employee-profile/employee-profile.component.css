@@ -205,6 +205,22 @@
     margin-right: 1rem;
 }
 
+:host ::ng-deep .upload-button {
+    border: none;
+    border-radius: 2rem;
+    background-color: #D7DFFF;
+    color: #0029C6;
+    height: 36px;
+}
+
+:host ::ng-deep .upload-disabled {
+    border: none;
+    border-radius: 2rem;
+    background-color: #E3E3E4;
+    color: #1D1B20;
+    height: 36px;
+}
+
 #uploadfile:hover {
     cursor: pointer;
 }

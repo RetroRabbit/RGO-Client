@@ -1,39 +1,8 @@
-#edit-button-width {
-    border: none;
-    border-radius: 2rem;
-    background-color: #D7DFFF;
-    color: #0029C6;
-    width: 170px;
+.upload-document-icon{
+
 }
 
-
-#add-button {
-    background: var(--m-3-state-layers-light-on-surface-opacity-012, rgba(29, 27, 32, 0.12));
-    color: var(--M3-sys-light-on-surface, #1D1B20);
-    text-align: center;
-    
-    /* M3/label/large */
-    font-family: Roboto;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 20px; /* 142.857% */
-    letter-spacing: 0.1px;
-    text-transform: capitalize;
-    border-radius: 20px;
-    padding: 20px;
-}
-.download-document , .add-qualification , #download-document-button {
-    color: #0029C6;
+#download-document-button {
     border-radius: 100px;
     background: var(--Primary-disabled-add_on, #E3E3E4);
-}
-
-#algnrow{
-    display: flex;
-    flex-direction: row;
-}
-
-#remove-document-button , .remove-document-button{
-    color: red;
 }

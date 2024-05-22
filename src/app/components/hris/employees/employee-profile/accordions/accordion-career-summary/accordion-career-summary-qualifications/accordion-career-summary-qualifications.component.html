@@ -14,7 +14,6 @@
                     </span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            
             <div class="flex-row">
                 <div *ngIf="!sharedAccordionFunctionality.editQualifications" class="col-12 mb-2 d-flex justify-content-end">
                     <button class="d-flex"
@@ -108,14 +107,22 @@
                         <div class="row">
                             <div class="col-6 d-md-flex">
                                 <div class="d-flex flex-start">
-                                    <div class="mt-3 me-2" formControlName="documentName" *ngIf="sharedAccordionFunctionality.employeeQualificationDto.documentName != undefined">
-                                     {{sharedAccordionFunctionality.employeeQualificationDto.documentName}}
+                                    <div [ngClass]="sharedAccordionFunctionality.employeeQualificationDto.documentName? 'd-block me-4 mt-3 ms-2': 'd-none'">
+                                        {{sharedAccordionFunctionality.employeeQualificationDto.documentName}}
                                     </div>
-                                    <button mat-button id="download-document-button" class="py-4" (click)="uploadFile.click()">
-                                        <mat-icon class="download-document">upload</mat-icon>
-                                        Upload Document Here
+                                    <button mat-button class="py-4" (click)="uploadFile.click()" [ngClass]="sharedAccordionFunctionality.editQualifications? 'upload-button row':'upload-disabled row'">
+                                        <div class="col-1 p-0" *ngIf="sharedAccordionFunctionality.editQualifications == true">
+                                            <img id="pdf-icon" alt="pdf-icon"
+                                                src="../../../../../../../../assets/img/file_upload.svg">
+                                        </div>
+                                        <div class="col-1 p-0" *ngIf="sharedAccordionFunctionality.editQualifications == false">
+                                            <img id="pdf-icon" alt="pdf-icon"
+                                                src="../../../../../../../../assets/img/file_upload_grey.svg">
+                                        </div>
+                                        <p class="col-11">Upload Document Here</p>
                                     </button>
-                                    <input formControlName="proofOfQualification" placeholder="Document Name" #uploadFile (change)="onFileChange($event)" type="file" accept=".pdf" hidden>
+                                    <input formControlName="proofOfQualification" hidden>
+                                    <input #uploadFile (change)="onFileChange($event)" type="file" accept=".pdf" hidden>
                                 </div>
                             </div>
                             <div class="col d-none d-md-flex" id="edit-buttons">
@@ -128,8 +135,7 @@
                                 Save changes
                             </button>
                             </div>
-                        </div>
-                        
+                        </div> 
                     </form>
                 </div>
             </div>

@@ -60,6 +60,7 @@ export class SharedPropertyAccessService {
         fieldOfStudy : true,
         year : true ,
         nqfLevel : true ,
+        proofOfQualification: true,
         downloadDocument : true ,
         addAnotherQualification : true,
         editQualification : true ,
