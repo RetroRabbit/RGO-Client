@@ -24,7 +24,9 @@
     padding: 20px;
 }
 .download-document , .add-qualification , #download-document-button {
-    color: #0029C6
+    color: #0029C6;
+    border-radius: 100px;
+    background: var(--Primary-disabled-add_on, #E3E3E4);
 }
 
 #algnrow{

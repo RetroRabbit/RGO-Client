@@ -38,6 +38,14 @@ export class CareerSummaryQualificationsComponent {
   }
 
   usingProfile: boolean = true;
+  isValidFile: boolean = false;
+  isValidFileSize: boolean = false;
+  fileUploaded: boolean = false;
+
+  fileName: string = '';
+  filePreview: string | ArrayBuffer | null = null;
+  base64File: string = "";
+  fileUrl: string = '';
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
@@ -53,6 +61,8 @@ export class CareerSummaryQualificationsComponent {
       fieldOfStudy: [this.sharedAccordionFunctionality.employeeQualificationDto.fieldOfStudy, Validators.required],
       year: [this.sharedAccordionFunctionality.employeeQualificationDto.year, [Validators.required, Validators.pattern(/^(19|20)\d{2}$/)]],
       nqfLevel: [this.sharedAccordionFunctionality.employeeQualificationDto.nqfLevel, Validators.required],
+      proofOfQualification: [this.sharedAccordionFunctionality.employeeQualificationDto.proofOfQualification],
+      documentName: [this.sharedAccordionFunctionality.employeeQualificationDto.documentName],
     });
     this.sharedAccordionFunctionality.editQualifications = false;
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
@@ -75,6 +85,8 @@ export class CareerSummaryQualificationsComponent {
         this.sharedAccordionFunctionality.employeeQualificationDto.highestQualification = data.highestQualification;
         this.sharedAccordionFunctionality.employeeQualificationDto.school = data.school;
         this.sharedAccordionFunctionality.employeeQualificationDto.fieldOfStudy = data.fieldOfStudy;
+        this.sharedAccordionFunctionality.employeeQualificationDto.proofOfQualification = data.proofOfQualification;
+        this.sharedAccordionFunctionality.employeeQualificationDto.documentName = data.documentName;
         if (data.year && data.year.endsWith("-01-01")) {
           this.sharedAccordionFunctionality.employeeQualificationDto.year = data.year.substring(0, 4);
         } else {
@@ -89,6 +101,40 @@ export class CareerSummaryQualificationsComponent {
     })
   }
 
+  onFileChange(event: any): void {
+    if (event.target.files && event.target.files.length) {
+      this.fileUploaded = true;
+      const file = event.target.files[0];
+      this.fileName = file.name;
+      if (this.validateFile(file)) {
+        this.fileConverter(file, 'proofOfQualification');
+      }
+    }
+  }
+
+  validateFile(file: File): boolean {
+    const allowedTypes = ['application/pdf'];
+    if (!allowedTypes.includes(file.type)) {
+      this.isValidFile = false;
+      return false;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      this.isValidFileSize = false;
+      return false;
+    }
+    this.isValidFileSize = true;
+    return true;
+  }
+
+  fileConverter(file: File, controlName: string) {
+    const reader = new FileReader();
+    reader.addEventListener('loadend', () => {
+      const base64Data = reader.result as string;
+      this.sharedAccordionFunctionality.employeeQualificationForm.patchValue({ [controlName]: base64Data });
+    });
+    reader.readAsDataURL(file);
+  }
+
   saveQualificationsEdit() {
     if (this.sharedAccordionFunctionality.employeeQualificationForm.valid) {
       const existingQualificationId = this.sharedAccordionFunctionality.employeeQualificationDto.id;
@@ -101,6 +147,8 @@ export class CareerSummaryQualificationsComponent {
         fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.get("fieldOfStudy")?.value,
         year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value + "-01-01",
         nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("nqfLevel")?.value,
+        proofOfQualification: this.sharedAccordionFunctionality.employeeQualificationForm.get("proofOfQualification")?.value,
+        documentName : this.sharedAccordionFunctionality.employeeQualificationForm.get("documentName")?.value,
       };
   
       const qualificationObservable = existingQualificationId

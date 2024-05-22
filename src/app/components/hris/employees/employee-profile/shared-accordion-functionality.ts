@@ -47,6 +47,8 @@ export class SharedAccordionFunctionality {
     fieldOfStudy: "",
     year: "",
     nqfLevel: nqfLevels,
+    proofOfQualification: "",
+    documentName: "",
   };
 
   panelOpenState: boolean = false;
@@ -149,7 +151,8 @@ export class SharedAccordionFunctionality {
     fieldOfStudy: { value: '', disabled: true },
     year: { value: '', disabled: true },
     nqfLevel: { value: '', disabled: true },
-    qualificationDocument: { value: '', disabled: true },
+    proofOfQualification: { value: '', disabled: true },
+    documentName: { value: '', disabled: true },
   });
 
   additionalInfoForm: FormGroup = this.fb.group({});
