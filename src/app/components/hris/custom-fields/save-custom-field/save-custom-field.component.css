@@ -1,14 +1,16 @@
 #field-container {
     background-color: white;
     border-radius: 20px;
-    width: 884px;
+    width: 100%;
+    max-width: 884px;
     min-height: 919px;
     text-align: center;
     margin: 0px auto;
 }
 
 #form-container>form {
-    width: 484px;
+    max-width: 484px;
+    width: 100%;
     min-height: 623px;
     margin: auto;
     display: inline-block;
@@ -19,6 +21,12 @@
     margin: auto;
     width: 400px;
     padding: 0;
+}
+
+.form-container-mobile {
+    padding: 25px; 
+    border-radius: 25px; 
+    min-height: auto; 
 }
 
 h3 {
@@ -58,7 +66,8 @@ h3 {
 
 #save-button {
     padding: 10px 24px;
-    width: 400px !important;
+    width: 100%;
+    max-width: 400px; 
 }
 
 button:disabled,
@@ -88,7 +97,8 @@ button[disabled],
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0.1px;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;  
 }
 
 #radio-headings {
