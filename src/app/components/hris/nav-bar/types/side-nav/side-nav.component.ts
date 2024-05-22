@@ -61,11 +61,12 @@ export class SideNavComponent {
 
   ngOnInit() {
     this.initialiseNavbar();
+    if(!this.authAccessService.isEmployee()){
     this.employeeService.getTotalEmployees().subscribe({
       next: (numEmployees: number) => {
         this.totalNumberOfEmployees = numEmployees;
       },
-    })
+    })};
   }
 
   initialiseNavbar(){

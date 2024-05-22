@@ -69,12 +69,17 @@ export class AccordionBankingComponent {
     this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
       next: (data) => {
         this.employeeBanking = data;
-        if (this.employeeBanking != null) {
+        if (this.employeeBanking && this.employeeBanking.length > 0) {
           this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
+          this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
+        } else {
+          console.warn("No banking details available.");
         }
-        this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
+      },
+      error: (err) => {
+        console.error("Error fetching banking details: ", err);
       }
-    })
+    });
   }
 
   initializeBankingForm(bankingDetails: EmployeeBanking) {
@@ -90,7 +95,7 @@ export class AccordionBankingComponent {
       branch: [{ value: bankingDetails.branch, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       file: [{ value: bankingDetails.file, disabled: true }, Validators.required],
     });
-    this.hasFile = bankingDetails.file.length > 0;
+    this.hasFile = !!(bankingDetails.file && bankingDetails.file.length > 0);
     this.hasBankingData = true;
     this.checkBankingInformationProgress();
     this.totalBankingProgress();
