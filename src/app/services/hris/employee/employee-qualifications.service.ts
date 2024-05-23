@@ -8,6 +8,7 @@ import { EmployeeQualifications } from 'src/app/models/hris/employee-qualificati
 @Injectable({
   providedIn: 'root'
 })
+
 export class EmployeeQualificationsService {
 
   baseUrl: string;
