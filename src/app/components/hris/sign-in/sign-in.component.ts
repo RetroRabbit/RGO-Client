@@ -35,6 +35,15 @@ export class SignInComponent {
   ngOnInit() {
     this.token = this.cookieService.get('userToken');
     this.userEmail = this.cookieService.get('userEmail');
+    if (this.token) {
+      const tokenPayload = JSON.parse(atob(this.token.split('.')[1]));
+      const expiryDate = new Date(tokenPayload.exp * 1000);
+  
+      if (expiryDate < new Date()) {
+        this.cookieService.deleteAll();
+        this.router.navigate(['/login']);
+      }
+    }
   }
 
   screenWidth: number = window.innerWidth;
@@ -54,15 +63,31 @@ export class SignInComponent {
         take(1),
         switchMap(() => this.auth.user$.pipe(take(1))),
         switchMap((user) => {
-          this.cookieService.set('userEmail', user?.email || '');
+          this.cookieService.set('userEmail', user?.email || '', {
+            path: '/',
+            secure: true,
+            sameSite: 'None'
+          }); 
           return this.authService.login(user?.email).pipe(
-            tap((token) => this.cookieService.set('userToken', token)),
+            tap((token) => {
+              this.cookieService.set('userToken', token, {
+                path: '/',
+                secure: true,
+                sameSite: 'None'
+              });
+            }),
             map((token) => ({ user, token }))
           );
         }),
         switchMap(({ user, token }) =>
           this.authService.FetchRoles(user?.email).pipe(
-            tap((roles) => this.cookieService.set('userType', roles)),
+            tap((roles) => {
+              this.cookieService.set('userType', roles, {
+                path: '/',
+                secure: true,
+                sameSite: 'None'
+              });
+            }),
             map((roles) => ({ user, token, roles }))
           )
         )
