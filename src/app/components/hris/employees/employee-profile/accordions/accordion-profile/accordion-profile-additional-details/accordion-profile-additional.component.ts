@@ -201,7 +201,7 @@ export class AccordionProfileAdditionalComponent {
           error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
         });
       }
-      else if (found === undefined) {
+      else {
         var formatFound: any = fieldcode?.code
         const employeeDataDto = {
           id: 0,

@@ -156,7 +156,6 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   getEmployeeData() {
-    // const id = this.employeeProfile.id ? this.employeeProfile.id : this.simpleEmployee.id
     this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employeeData = data;
