@@ -25,42 +25,47 @@
                         <div class="col-12 col-md-9 col-lg-10">
                             <div class="row">
                                 <h4 style="font-weight: 500;">Client Name | Start Date</h4>
+
                                 <div class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Client Name</mat-label>
                                         <input matInput formControlName="clientName">
-                                        <!-- <mat-error
-                                            *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['personalEmail'].hasError('required')">
-                                            Personal email is required
-                                        </mat-error> -->
                                     </mat-form-field>
                                 </div>
+
                                 <div class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Project Name</mat-label>
                                         <input matInput formControlName="projectName">
-                                        <!-- <mat-error
-                                            *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['email'].hasError('required')">
-                                            Work email is required
-                                        </mat-error> -->
                                     </mat-form-field>
                                 </div>
+
                                 <div class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Skill Set</mat-label>
                                         <mat-select formControlName="skillSet" multiple>
-                                            <mat-option *ngFor="let skill of skillSetList" [value]="skill">{{ skill }}</mat-option>
+                                            <mat-option *ngFor="let skill of skillSetList" [value]="skill">
+                                                <mat-checkbox [checked]="workExperienceForm.controls['skillSet'].value.includes(skill)">
+                                                    {{ skill }}
+                                                </mat-checkbox>
+                                            </mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
+                                
                                 <div class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Software</mat-label>
                                         <mat-select formControlName="software" multiple>
-                                            <mat-option *ngFor="let software of softwareList" [value]="software">{{ software }}</mat-option>
+                                            <mat-option *ngFor="let software of softwareList" [value]="software">
+                                                <mat-checkbox [checked]="workExperienceForm.controls['software'].value.includes(software)">
+                                                    {{ software }}
+                                                </mat-checkbox>
+                                            </mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
+
                                 <div class="col-12 col-md-6">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Start Date</mat-label>
@@ -69,6 +74,7 @@
                                         <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field>
                                 </div>
+
                                 <div class="col-12 col-md-6">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>End Date</mat-label>
@@ -77,6 +83,7 @@
                                         <mat-datepicker #picker2></mat-datepicker>
                                     </mat-form-field>
                                 </div>
+
                                 <div class="pt-3">
                                     <button mat-button id="add-another-button" [disabled]="!editWorkExperience"
                                         type="submit" (click)="addWorkExperience()">
