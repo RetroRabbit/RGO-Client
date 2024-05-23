@@ -21,7 +21,6 @@ export class AtsPageGuard {
     }
 
     if (this.navService.isHris == undefined) {
-      if (environment.development) {
         this.navService.isHris = Boolean(JSON.parse(this.cookieService.get('isHris')));
         this.authService.FetchRoles(this.cookieService.get('userEmail')).subscribe({
           next: roles => {
@@ -31,6 +30,5 @@ export class AtsPageGuard {
         return true;
       }
       this.authService.logout()
-    }
   }
 }

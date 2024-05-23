@@ -4,5 +4,5 @@ export const dataTypes = [
     { id: 2, value: 'Int' },
     { id: 3, value: 'Float' },
     { id: 4, value: 'Options' },
-    { id: 5, value: 'CustomDocuments' }
+    { id: 5, value: 'Documents' }
 ]
