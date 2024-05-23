@@ -102,7 +102,7 @@
                                             {{ fileName }}
                                         </div>
                                     </div>
-                                    <button [disabled]="isDisabledDownload" mat-button class="me-2" 
+                                    <button [disabled]="isDisabledDownload" mat-button class="me-2" id="file-buttons"
                                             (click)="downloadFile()"
                                         [ngClass]="sharedAccordionFunctionality.editQualifications ? 'download-button':'download-disabled'"
                                         *ngIf="this.employeeQualification && this.employeeQualification.documentName">
@@ -123,7 +123,7 @@
                                             </div>
                                         </div>
                                     </button>
-                                    <button [disabled]="isDisabledUpload" mat-button class="" (click)="uploadFile.click()"
+                                    <button [disabled]="isDisabledUpload" mat-button class="" (click)="uploadFile.click()" id="file-buttons"
                                         [ngClass]="sharedAccordionFunctionality.editQualifications? 'upload-button':'upload-disabled'">
                                         <div class="row">
                                             <div class="col-1 p-0 ms-3 mt-2"
