@@ -62,7 +62,6 @@ export class CareerSummaryQualificationsComponent {
       school: [this.sharedAccordionFunctionality.employeeQualificationDto.school, Validators.required],
       fieldOfStudy: [this.sharedAccordionFunctionality.employeeQualificationDto.fieldOfStudy, Validators.required],
       year: [this.sharedAccordionFunctionality.employeeQualificationDto.year, [Validators.required, Validators.pattern(/^(19|20)\d{2}$/)]],
-      nqfLevel: [this.sharedAccordionFunctionality.employeeQualificationDto.nqfLevel, Validators.required],
       proofOfQualification: [this.sharedAccordionFunctionality.employeeQualificationDto.proofOfQualification],
     });
     this.sharedAccordionFunctionality.editQualifications = false;
@@ -145,6 +144,26 @@ export class CareerSummaryQualificationsComponent {
     reader.readAsDataURL(file);
   }
 
+  downloadFile(base64String: string, fileName: string) {
+    const commaIndex = base64String.indexOf(',');
+    if (commaIndex !== -1) {
+      base64String = base64String.slice(commaIndex + 1);
+    }
+    const byteString = atob(base64String);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const intArray = new Uint8Array(arrayBuffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+      intArray[i] = byteString.charCodeAt(i);
+    }
+
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+  }
+
   saveQualificationsEdit() {
     if (this.sharedAccordionFunctionality.employeeQualificationForm.valid) {
       const existingQualificationId = this.sharedAccordionFunctionality.employeeQualificationDto.id;
@@ -156,7 +175,7 @@ export class CareerSummaryQualificationsComponent {
         school: this.sharedAccordionFunctionality.employeeQualificationForm.get("school")?.value,
         fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.get("fieldOfStudy")?.value,
         year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value + "-01-01",
-        nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("nqfLevel")?.value,
+        nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
         proofOfQualification: this.proofOfQualificationFinal,
         documentName : this.fileName,
       };
@@ -181,10 +200,6 @@ export class CareerSummaryQualificationsComponent {
     } else {
       this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
-  }
-
-  downloadFile(){
-
   }
 
   cancelQualificationsEdit(){

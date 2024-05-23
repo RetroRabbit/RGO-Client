@@ -64,24 +64,6 @@
                                                 </mat-error>
                                             </mat-form-field>
                                         </div>
-                                        <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.nqfLevel"
-                                            class="col-12 col-md-6 my-2">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>NQF Level</mat-label>
-                                                <mat-select formControlName="nqfLevel"
-                                                    hideSingleSelectionIndicator="true">
-                                                    <mat-option
-                                                        *ngFor="let level of sharedAccordionFunctionality.nqfLevels"
-                                                        [value]="level.id">
-                                                        {{level.id}}
-                                                    </mat-option>
-                                                </mat-select>
-                                                <mat-error
-                                                    *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['nqfLevel'].hasError('required')">
-                                                    NQF Level is required
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div>
                                         <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.year"
                                             class="col-12 col-md-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
@@ -127,28 +109,8 @@
                                             {{sharedAccordionFunctionality.employeeQualificationDto.documentName}}
                                         </div>
                                     </div>
-                                    <button [disabled]="isDisabledUpload" mat-button class="me-2" (click)="uploadFile.click()"
-                                        [ngClass]="sharedAccordionFunctionality.editQualifications? 'upload-button':'upload-disabled'">
-                                        <div class="row">
-                                            <div class="col-1 p-0 ms-3 mt-2"
-                                                *ngIf="sharedAccordionFunctionality.editQualifications == true">
-                                                <img id="pdf-icon" alt="pdf-icon"
-                                                    src="../../../../../../../../assets/img/file_upload_19px_blue.svg">
-                                            </div>
-                                            <div class="col-1 p-0 ms-3 mt-2"
-                                                *ngIf="sharedAccordionFunctionality.editQualifications == false">
-                                                <img id="pdf-icon" alt="pdf-icon"
-                                                    src="../../../../../../../../assets/img/file_upload_19px_grey.svg">
-                                            </div>
-                                            <div class="col-auto"
-                                                [ngStyle]="{'color' : sharedAccordionFunctionality.editQualifications ? '#0029C6' :'grey'}">
-                                                <h4 class="m-2">Upload</h4>
-                                            </div>
-                                        </div>
-                                    </button>
-                                    <input formControlName="proofOfQualification" hidden>
-                                    <input #uploadFile (change)="onFileChange($event)" type="file" accept=".pdf" hidden>
-                                    <button [disabled]="isDisabledDownload" mat-button class="" (click)="downloadFile()"
+                                    <button [disabled]="isDisabledDownload" mat-button class="me-2" 
+                                            (click)="downloadFile(sharedAccordionFunctionality.employeeQualificationDto.proofOfQualification, sharedAccordionFunctionality.employeeQualificationDto.documentName)"
                                         [ngClass]="sharedAccordionFunctionality.editQualifications? 'download-button':'download-disabled'"
                                         *ngIf="sharedAccordionFunctionality.employeeQualificationDto.documentName">
                                         <div class="row">
@@ -168,6 +130,27 @@
                                             </div>
                                         </div>
                                     </button>
+                                    <button [disabled]="isDisabledUpload" mat-button class="" (click)="uploadFile.click()"
+                                        [ngClass]="sharedAccordionFunctionality.editQualifications? 'upload-button':'upload-disabled'">
+                                        <div class="row">
+                                            <div class="col-1 p-0 ms-3 mt-2"
+                                                *ngIf="sharedAccordionFunctionality.editQualifications == true">
+                                                <img id="pdf-icon" alt="pdf-icon"
+                                                    src="../../../../../../../../assets/img/file_upload_19px_white.svg">
+                                            </div>
+                                            <div class="col-1 p-0 ms-3 mt-2"
+                                                *ngIf="sharedAccordionFunctionality.editQualifications == false">
+                                                <img id="pdf-icon" alt="pdf-icon"
+                                                    src="../../../../../../../../assets/img/file_upload_19px_grey.svg">
+                                            </div>
+                                            <div class="col-auto"
+                                                [ngStyle]="{'color' : sharedAccordionFunctionality.editQualifications ? '#FFF' :'grey'}">
+                                                <h4 class="m-2">Upload</h4>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <input formControlName="proofOfQualification" hidden>
+                                    <input #uploadFile (change)="onFileChange($event)" type="file" accept=".pdf" hidden>
                                 </div>
                             </div>
                             <div class="col d-none d-md-flex" id="edit-buttons">

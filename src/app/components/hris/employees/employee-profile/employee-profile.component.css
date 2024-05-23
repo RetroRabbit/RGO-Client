@@ -208,17 +208,19 @@
 :host ::ng-deep .upload-button {
     border: none;
     border-radius: 2rem;
-    background-color: #D7DFFF;
-    color: #0029C6;
+    background-color: #0029C6;
+    color: #FFF;
     height: 36px;
+    width: 140px;
 }
 
 :host ::ng-deep .upload-disabled {
     border: none;
     border-radius: 2rem;
     background-color: #E3E3E4;
-    color: var(--M3-sys-light-on-surface, #1D1B20);
+    color: var(--M3-sys-light-on-surface, rgba(29, 27, 32, 0.12));
     height: 36px;
+    width: 140px;
 }
 
 :host ::ng-deep .download-button {
@@ -227,14 +229,16 @@
     background-color: #FFF;
     color: #0029C6;
     height: 36px;
+    width: 140px;
 }
 
 :host ::ng-deep .download-disabled {
-    border: 1px solid grey;
+    border: 1px solid rgba(29, 27, 32, 0.12);
     border-radius: 2rem;
     background-color: #FFF;
-    color: var(--M3-sys-light-on-surface, #1D1B20);
+    color: var(--M3-sys-light-on-surface, rgba(29, 27, 32, 0.12));
     height: 36px;
+    width: 140px;
 }
 
 #uploadfile:hover {

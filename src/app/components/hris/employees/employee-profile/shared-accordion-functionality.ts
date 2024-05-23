@@ -150,7 +150,6 @@ export class SharedAccordionFunctionality {
     degree: { value: '', disabled: true },
     fieldOfStudy: { value: '', disabled: true },
     year: { value: '', disabled: true },
-    nqfLevel: { value: '', disabled: true },
     proofOfQualification: { value: '', disabled: true }
   });
 
