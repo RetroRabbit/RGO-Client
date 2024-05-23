@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CookieService } from 'ngx-cookie-service';
 import { FormControl, Validators } from '@angular/forms';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-accordion-my-documents',
@@ -16,7 +17,6 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
   styleUrls: ['./accordion-my-documents.component.css']
 })
 export class AccordionDocumentsAdditionalComponent {
-  @Output() updateDocument = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
 
   documentNameControl = new FormControl('', [
@@ -57,7 +57,7 @@ export class AccordionDocumentsAdditionalComponent {
     private snackBarService: SnackbarService,
     private cookieService: CookieService,
     public navService: NavService,
-  ) { }
+    public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
 
   ngOnInit() {
     const types: string = this.cookieService.get('userType');
@@ -127,6 +127,7 @@ export class AccordionDocumentsAdditionalComponent {
         this.isLoadingUpload = false;
         this.snackBarService.showSnackbar("Document added", "snack-success");
         this.getAdditionalDocuments();
+        this.sharedAccordionFunctionality.calculateDocumentProgress();
       },
       error: (error) => {
         this.isLoadingUpload = false;
@@ -179,6 +180,8 @@ export class AccordionDocumentsAdditionalComponent {
           this.employeeDocuments = data;
           this.dataSource.data = this.fileCategories;
           this.getAdditionalDocumentReferences();
+          this.sharedAccordionFunctionality.calculateDocumentProgress();
+
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -191,6 +194,7 @@ export class AccordionDocumentsAdditionalComponent {
           this.employeeDocuments = data;
           this.dataSource.data = this.fileCategories;
           this.getAdditionalDocumentReferences();
+          this.sharedAccordionFunctionality.calculateDocumentProgress();
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");

@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-accordion-documents-starterkit',
@@ -16,7 +17,6 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
   styleUrls: ['./accordion-documents.component.css']
 })
 export class AccordionDocumentsComponent {
-  @Output() updateDocument = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
 
   screenWidth = window.innerWidth;
@@ -28,8 +28,6 @@ export class AccordionDocumentsComponent {
 
   selectedEmployee!: EmployeeProfile;
   fileCategories = Document;
-  documentFormProgress: number = 0;
-  documentsProgress: number = 0;
   employeeDocuments: EmployeeDocument[] = [];
   documentsFileName: string = "";
   base64String: string = "";
@@ -49,10 +47,9 @@ export class AccordionDocumentsComponent {
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
     private cookieService: CookieService,
-
     private authAccessService: AuthAccessService,
     public navService: NavService,
-  ) { }
+    public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
 
   ngOnInit() {
     this.getEmployeeDocuments();
@@ -118,7 +115,7 @@ export class AccordionDocumentsComponent {
         next: data => {
           this.employeeDocuments = data;
           this.dataSource.data = this.fileCategories;
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateDocumentProgress();
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -130,7 +127,7 @@ export class AccordionDocumentsComponent {
         next: data => {
           this.employeeDocuments = data;
           this.dataSource.data = this.fileCategories;
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateDocumentProgress();
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -157,7 +154,7 @@ export class AccordionDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getEmployeeDocuments();
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateDocumentProgress();
         },
         error: (error) => {
           this.isLoadingUpload = false;
@@ -186,7 +183,7 @@ export class AccordionDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getEmployeeDocuments();
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateDocumentProgress();
 
         },
         error: (error) => {
@@ -268,12 +265,7 @@ export class AccordionDocumentsComponent {
     return true;
   }
 
-  calculateDocumentProgress() {
-    const total = this.fileCategories.length;
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
-    this.documentFormProgress = fetchedDocuments / total * 100;
-    this.updateDocument.emit(this.documentFormProgress);
-  }
+
 
   disableDownload(index: number) {
     const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);

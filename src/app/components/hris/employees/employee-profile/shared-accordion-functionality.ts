@@ -13,6 +13,8 @@ import { category } from 'src/app/models/hris/constants/fieldcodeCategory.consta
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { Document } from 'src/app/models/hris/constants/admin-documents.component';
+import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +22,7 @@ import { SharedPropertyAccessService } from 'src/app/services/hris/shared-proper
 
 export class SharedAccordionFunctionality {
   @Output() updateProfile = new EventEmitter<any>();
+  @Output() updateDocument = new EventEmitter<number>();
 
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
@@ -29,6 +32,8 @@ export class SharedAccordionFunctionality {
   filteredPeopleChamps: any = [];
   employeeData: EmployeeData[] = [];
   customFields: CustomField[] = [];
+  employeeDocuments: EmployeeDocument[] = [];
+
 
   foundClient: EmployeeProfile | undefined;
   foundTeamLead: any;
@@ -36,6 +41,9 @@ export class SharedAccordionFunctionality {
   employeeProfileDto?: any;
   clientId: number | undefined;
   peopleChampionId: number | undefined;
+
+  fileCategories = Document;
+
 
   panelOpenState: boolean = false;
   physicalEqualPostal: boolean = true;
@@ -54,8 +62,18 @@ export class SharedAccordionFunctionality {
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
 
-  employeeFormProgress: number = 0;
+
   profileFormProgress: number = 0;
+  documentFormProgress: number = 0;
+
+  startKitDocumentsProgress: number = 0;
+  employeeDocumentsProgress: number = 0;
+  myDocumentsProgress: number = 0;
+  additionalDocumentsProgress: number = 0;
+  adminDocumentsProgress: number = 0;
+
+
+  employeeFormProgress: number = 0;
   personalFormProgress: number = 0;
   contactFormProgress: number = 0;
   addressFormProgress: number = 0;
@@ -228,8 +246,19 @@ export class SharedAccordionFunctionality {
     this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
+  calculateDocumentProgress() {
+    const total = this.fileCategories.length;
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= (total - 1)).length;
+    this.documentFormProgress = fetchedDocuments / total * 100;
+  }
+
   totalProfileProgress() {
-    this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.additionalFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
+    this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
     this.updateProfile.emit(this.profileFormProgress);
+  }
+
+  totalDocumentsProgress() {
+    this.documentFormProgress = Math.floor((this.additionalDocumentsProgress + this.employeeDocumentsProgress + this.myDocumentsProgress + this.startKitDocumentsProgress + this.adminDocumentsProgress) / 5);
+    this.updateDocument.emit(this.documentFormProgress);
   }
 }

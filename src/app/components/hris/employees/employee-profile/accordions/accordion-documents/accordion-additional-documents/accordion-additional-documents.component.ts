@@ -20,7 +20,6 @@ import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
   styleUrls: ['./accordion-additional-documents.component.css']
 })
 export class AccordionDocumentsCustomDocumentsComponent {
-  @Output() updateDocument = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
 
   screenWidth = window.innerWidth;
@@ -79,7 +78,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
         next: data => {
           this.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateDocumentProgress();
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -91,7 +90,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
         next: data => {
           this.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateDocumentProgress();
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -132,12 +131,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
     })
   }
 
-  calculateDocumentProgress() {
-    const total = this.fileCategories.length;
-    const fetchedDocuments = this.additionalDocuments.filter(document => document.employeeFileCategory <= 9).length;
-    this.documentFormProgress = fetchedDocuments / total * 100;
-    this.updateDocument.emit(this.documentFormProgress);
-  }
 
   captureUploadButtonIndex(event: any, category: any) {
     this.selectedFieldCode = category;
@@ -200,7 +193,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getAdditionalDocuments();
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateDocumentProgress();
         },
         error: (error: any) => {
           this.isLoadingUpload = false;
@@ -230,7 +223,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getAdditionalDocuments();
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateDocumentProgress();
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
