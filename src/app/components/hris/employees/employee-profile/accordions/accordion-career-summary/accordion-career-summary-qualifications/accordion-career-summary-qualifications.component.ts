@@ -32,70 +32,39 @@ export class CareerSummaryQualificationsComponent {
     private fb: FormBuilder,
     private employeeQualificationsService : EmployeeQualificationsService,
     public navservice: NavService
-  ) { }
+  ) {}
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
-  usingProfile: boolean = true;
   isValidFile: boolean = false;
   isValidFileSize: boolean = false;
   fileUploaded: boolean = false;
+  isDisabledUpload: boolean = true;
+  isDisabledDownload: boolean = true;
 
   fileName: string = '';
   filePreview: string | ArrayBuffer | null = null;
   base64File: string = "";
   fileUrl: string = '';
   proofOfQualificationFinal: string = '';
-  isDisabledUpload: boolean = true;
-  isDisabledDownload: boolean = true;
+
+  employeeQualification!: EmployeeQualifications;
 
   ngOnInit() {
-    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.fetchQualificationsById();
   }
 
-  initializeForm() {
-    this.sharedAccordionFunctionality.employeeQualificationForm = this.fb.group({
-      highestQualification: [this.sharedAccordionFunctionality.employeeQualificationDto.highestQualification, Validators.required],
-      school: [this.sharedAccordionFunctionality.employeeQualificationDto.school, Validators.required],
-      fieldOfStudy: [this.sharedAccordionFunctionality.employeeQualificationDto.fieldOfStudy, Validators.required],
-      year: [this.sharedAccordionFunctionality.employeeQualificationDto.year, [Validators.required, Validators.pattern(/^(19|20)\d{2}$/)]],
-      proofOfQualification: [this.sharedAccordionFunctionality.employeeQualificationDto.proofOfQualification],
-    });
-    this.sharedAccordionFunctionality.editQualifications = false;
-    this.sharedAccordionFunctionality.employeeQualificationForm.disable();
-    this.isDisabledUpload = true;
-    this.isDisabledDownload = true;
-    this.sharedAccordionFunctionality.totalProfileProgress();
-    this.fileName = this.sharedAccordionFunctionality.employeeQualificationDto.documentName!;
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualifications", true)
-  }  
-  
-  editQualificationsDetails() {
-    this.sharedAccordionFunctionality.editQualifications = true;
-    this.sharedAccordionFunctionality.employeeQualificationForm.enable();
-    this.isDisabledUpload = false;
-    this.isDisabledDownload = false;
-  }
-
   fetchQualificationsById() {
-    var employeeId = this.employeeProfile.employeeDetails.id! || this.employeeProfile.simpleEmployee.id!;
-    this.employeeQualificationsService.getEmployeeQualificationById(employeeId).subscribe({
+    this.employeeQualificationsService.getEmployeeQualificationById(this.employeeProfile.employeeDetails.id as number).subscribe({
       next: (data) => {
-        this.sharedAccordionFunctionality.employeeQualificationDto.id = data.id;
-        this.sharedAccordionFunctionality.employeeQualificationDto.employeeId = data.employeeId;
-        this.sharedAccordionFunctionality.employeeQualificationDto.highestQualification = data.highestQualification;
-        this.sharedAccordionFunctionality.employeeQualificationDto.school = data.school;
-        this.sharedAccordionFunctionality.employeeQualificationDto.fieldOfStudy = data.fieldOfStudy;
-        this.sharedAccordionFunctionality.employeeQualificationDto.proofOfQualification = data.proofOfQualification;
-        this.sharedAccordionFunctionality.employeeQualificationDto.documentName = data.documentName;
-        this.proofOfQualificationFinal = data.proofOfQualification
-        if (data.year && data.year.endsWith("-01-01")) {
-          this.sharedAccordionFunctionality.employeeQualificationDto.year = data.year.substring(0, 4);
-        } else {
-          this.sharedAccordionFunctionality.employeeQualificationDto.year = data.year;
+        this.employeeQualification = data;
+        if(this.employeeQualification) {
+          if (data.year && data.year.endsWith("-01-01")) {
+            this.employeeQualification.year = data.year.substring(0, 4);
+          } else {
+            this.employeeQualification.year = data.year;
+          }
         }
-        this.sharedAccordionFunctionality.employeeQualificationDto.nqfLevel = data.nqfLevel;
         this.initializeForm();
       },
       error: (error) => {
@@ -104,14 +73,87 @@ export class CareerSummaryQualificationsComponent {
     })
   }
 
+  initializeForm() {
+    if(!this.employeeQualification){
+      this.sharedAccordionFunctionality.employeeQualificationForm = this.fb.group({
+        highestQualification: ["", Validators.required],
+        school: ["", Validators.required],
+        fieldOfStudy: ["", Validators.required],
+        year: ["", [Validators.required, Validators.pattern(/^(19|20)\d{2}$/)]],
+        proofOfQualification: [""],
+      });
+    } else {
+      this.sharedAccordionFunctionality.employeeQualificationForm = this.fb.group({
+        highestQualification: [this.employeeQualification.highestQualification, Validators.required],
+        school: [this.employeeQualification.school, Validators.required],
+        fieldOfStudy: [this.employeeQualification.fieldOfStudy, Validators.required],
+        year: [this.employeeQualification.year, [Validators.required, Validators.pattern(/^(19|20)\d{2}$/)]],
+        proofOfQualification: [this.employeeQualification.proofOfQualification],
+      });
+    }
+
+    this.sharedAccordionFunctionality.editQualifications = false;
+    this.sharedAccordionFunctionality.employeeQualificationForm.disable();
+    this.isDisabledUpload = true;
+    this.isDisabledDownload = true;
+    this.sharedAccordionFunctionality.totalProfileProgress();
+    this.fileName = this.employeeQualification ? this.employeeQualification.documentName : '';
+    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualifications", true)
+  }  
+
+  saveQualificationsEdit() {
+    if (this.sharedAccordionFunctionality.employeeQualificationForm.valid) {
+      const updatedQualification: EmployeeQualifications = {
+        id: this.employeeQualification ? this.employeeQualification.id : 0,
+        employeeId: this.employeeProfile.employeeDetails.id as number,
+        highestQualification: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
+        school: this.sharedAccordionFunctionality.employeeQualificationForm.get("school")?.value,
+        fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.get("fieldOfStudy")?.value,
+        year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value + "-01-01",
+        nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
+        proofOfQualification: this.base64File,
+        documentName : this.fileName,
+      };
+      const qualificationObservable = updatedQualification.id > 0
+        ? this.employeeQualificationsService.updateEmployeeQualification(updatedQualification, updatedQualification.id)
+        : this.employeeQualificationsService.saveEmployeeQualification(updatedQualification);
+  
+      qualificationObservable.subscribe({
+        next: () => {
+          this.snackBarService.showSnackbar(
+            updatedQualification.id > 0 ? "Qualifications updated" : "Qualifications saved","snack-success");
+        },
+        error: (error) => {
+          this.snackBarService.showSnackbar(error.error, "snack-error");
+        },
+        complete: () => this.fetchQualificationsById()
+      });
+    } else {
+      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+    }
+  }
+  
+  editQualificationsDetails() {
+    this.sharedAccordionFunctionality.editQualifications = true;
+    this.sharedAccordionFunctionality.employeeQualificationForm.enable();
+    this.isDisabledUpload = false;
+    this.isDisabledDownload = false;
+  }
+
+  cancelQualificationsEdit(){
+    this.sharedAccordionFunctionality.editQualifications = false;
+    this.isDisabledUpload = true;
+    this.isDisabledDownload = true;
+    this.sharedAccordionFunctionality.employeeQualificationForm.disable();
+  }
+
   onFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
       this.fileUploaded = true;
       const file = event.target.files[0];
       this.fileName = file.name;
-      this.sharedAccordionFunctionality.employeeQualificationDto.documentName = file.name;
       if (this.validateFile(file)) {
-        this.fileConverter(file, 'proofOfQualification');
+        this.fileConverter(file);
       }
     }
   }
@@ -130,22 +172,20 @@ export class CareerSummaryQualificationsComponent {
     return true;
   }
 
-  fileConverter(file: File, controlName: string) {
+  fileConverter(file: File) {
     const reader = new FileReader();
     reader.addEventListener('loadend', () => {
-      const base64Data = reader.result as string;
-      this.sharedAccordionFunctionality.employeeQualificationForm.patchValue({ [controlName]: base64Data });
-      this.proofOfQualificationFinal = base64Data;
+      this.base64File = reader.result as string;
     });
     reader.readAsDataURL(file);
   }
 
-  downloadFile(base64String: string, fileName: string) {
-    const commaIndex = base64String.indexOf(',');
+  downloadFile() {
+    const commaIndex = this.base64File.indexOf(',');
     if (commaIndex !== -1) {
-      base64String = base64String.slice(commaIndex + 1);
+      this.base64File = this.base64File.slice(commaIndex + 1);
     }
-    const byteString = atob(base64String);
+    const byteString = atob(this.base64File);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const intArray = new Uint8Array(arrayBuffer);
 
@@ -156,53 +196,8 @@ export class CareerSummaryQualificationsComponent {
     const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
+    link.download = this.fileName;
     link.click();
-  }
-
-  saveQualificationsEdit() {
-    if (this.sharedAccordionFunctionality.employeeQualificationForm.valid) {
-      const existingQualificationId = this.sharedAccordionFunctionality.employeeQualificationDto.id;
-  
-      const updatedQualification: EmployeeQualifications = {
-        id: existingQualificationId || 0,
-        employeeId: this.employeeProfile.employeeDetails.id! || this.employeeProfile.simpleEmployee.id!,
-        highestQualification: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
-        school: this.sharedAccordionFunctionality.employeeQualificationForm.get("school")?.value,
-        fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.get("fieldOfStudy")?.value,
-        year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value + "-01-01",
-        nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
-        proofOfQualification: this.proofOfQualificationFinal,
-        documentName : this.fileName,
-      };
-  
-      const qualificationObservable = existingQualificationId
-        ? this.employeeQualificationsService.updateEmployeeQualification(updatedQualification, existingQualificationId)
-        : this.employeeQualificationsService.saveEmployeeQualification(updatedQualification);
-  
-      qualificationObservable.subscribe({
-        next: () => {
-          this.fetchQualificationsById(); 
-          this.snackBarService.showSnackbar(
-            existingQualificationId ? "Qualifications updated" : "Qualifications saved",
-            "snack-success"
-          );
-        },
-        error: (error) => {
-          this.fetchQualificationsById();
-          this.snackBarService.showSnackbar(error.error, "snack-error");
-        },
-      });
-    } else {
-      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
-    }
-  }
-
-  cancelQualificationsEdit(){
-    this.sharedAccordionFunctionality.editQualifications = false;
-    this.isDisabledUpload = true;
-    this.isDisabledDownload = true;
-    this.sharedAccordionFunctionality.employeeQualificationForm.disable();
   }
 
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {

@@ -96,16 +96,16 @@
                             <div class="col-6 d-md-flex">
                                 <div class="d-flex flex-start">
                                     <div
-                                        [ngClass]="sharedAccordionFunctionality.employeeQualificationDto.documentName? 'd-block me-4 mt-2 ms-2 ': 'd-none'">
+                                        [ngClass]="fileName != '' ? 'd-block me-4 mt-2 ms-2 ': 'd-none'">
                                         <div
                                             [ngStyle]="{'color' : sharedAccordionFunctionality.editQualifications ? 'black' :'grey'}">
-                                            {{sharedAccordionFunctionality.employeeQualificationDto.documentName}}
+                                            {{ fileName }}
                                         </div>
                                     </div>
                                     <button [disabled]="isDisabledDownload" mat-button class="me-2" 
-                                            (click)="downloadFile(sharedAccordionFunctionality.employeeQualificationDto.proofOfQualification, sharedAccordionFunctionality.employeeQualificationDto.documentName)"
-                                        [ngClass]="sharedAccordionFunctionality.editQualifications? 'download-button':'download-disabled'"
-                                        *ngIf="sharedAccordionFunctionality.employeeQualificationDto.documentName">
+                                            (click)="downloadFile()"
+                                        [ngClass]="sharedAccordionFunctionality.editQualifications ? 'download-button':'download-disabled'"
+                                        *ngIf="this.employeeQualification && this.employeeQualification.documentName">
                                         <div class="row">
                                             <div class="col-1 p-0 ms-3 mt-2"
                                                 *ngIf="sharedAccordionFunctionality.editQualifications == true">

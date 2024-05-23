@@ -1,11 +1,11 @@
 export interface EmployeeQualifications {
     id : number;
-    employeeId?: number,
+    employeeId: number,
     highestQualification: number,
-    school: string | null,
-    fieldOfStudy: string | null,
-    year: string | null,
+    school: string,
+    fieldOfStudy: string,
+    year: string,
     nqfLevel: { id: number; value: string; }[],
     proofOfQualification: string,
-    documentName: string | null
+    documentName: string
 }
