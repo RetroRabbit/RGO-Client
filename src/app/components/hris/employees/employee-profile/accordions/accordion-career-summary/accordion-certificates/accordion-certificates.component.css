@@ -34,7 +34,11 @@
     padding: 0.5rem;
     right: 0px;
     height: 40px;
-    width: 30%;
+    width: 20%;
+}
+
+mat-icon{
+    cursor: pointer;
 }
 
 #add-another-button:disabled{

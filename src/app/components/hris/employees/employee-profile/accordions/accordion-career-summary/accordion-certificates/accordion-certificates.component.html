@@ -23,8 +23,8 @@
                                 <div class="row">
                                     <div class="row d-block">
                                         <div class="certificate-header" *ngIf="editCertificate">
-                                            <h3 class="mb-1">{{copyOfCertificates[i].certificateName}}</h3>
-                                            <mat-icon class="icon-color mb-1" (click)="removeExistingCertficate(i)">delete_outline</mat-icon>
+                                            <h3 class="mb-2">{{copyOfCertificates[i].certificateName}}</h3>
+                                            <mat-icon class="icon-color mb-2" (click)="removeExistingCertficate(i)">delete_outline</mat-icon>
                                         </div>
                                     </div>
                                     <div class="row d-block">
@@ -74,7 +74,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 ms-2">
-                                    <h3 class='mb-0' [ngStyle]="{'color': editCertificate ? 'black' : 'grey'}">Proof of certificate</h3>
+                                    <h3 class='ml-1' [ngStyle]="{'color': editCertificate ? 'black' : 'grey'}">Proof of certificate</h3>
                                 </div>
                                 <div class="col-12 col-md-6 my-2 mt-0">
                                     <div *ngIf="editCertificate; else NoEditDocument" class="d-flex align-items-start" id="document-name">
@@ -90,14 +90,17 @@
                                         </div>
                                     </div>
                                     <ng-template #NoEditDocument>
-                                        <span>{{employeeCertificates[i].documentName}}</span>
+                                        <div class="d-flex align-items-center">
+                                            <span class="ml-3">{{employeeCertificates[i].documentName}}</span>
                                         <button mat-button id="upload-document-button" class="py-4" (click)="downloadFile(employeeCertificates[i].certificateDocument, employeeCertificates[i].documentName)">
                                             <mat-icon class="upload-document">save_alt</mat-icon> download Document
                                         </button>
+                                    </div>
                                     </ng-template>
                                 </div>
                             </div>
                         </div>
+                        <hr>
                         <div *ngFor="let newCertificate of newCertificates; let i = index" class="row">
                             <div class="row d-block">
                                 <div class="certificate-header" *ngIf="addingCertificate">
@@ -107,7 +110,7 @@
                             </div>
                             <div class="row d-block">
                                 <div class="certificate-header" *ngIf="!addingCertificate">
-                                    <h3 class="mb-0">{{newCertificates[i].certificateName}}</h3>
+                                    <h3 class="mb-2">{{newCertificates[i].certificateName}}</h3>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 my-2">
@@ -143,6 +146,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr>
                         </div>
                     </div>
                     <div *ngIf="editCertificate"  class="col d-none d-md-flex" id="edit-buttons">
@@ -162,6 +166,7 @@
                         </button>
                     </div>
                     <div class="pt-3">
+                        <h2>Adde Another New Certificate Here</h2>
                         <button mat-button id="add-another-button" [disabled]="editCertificate" type="submit" (click)="addNewCertificate()">
                             <mat-icon>add</mat-icon> Add Another Experience
                         </button>
