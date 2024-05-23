@@ -29,7 +29,11 @@ export class NavService {
       next: (data) => {
         this.employeeProfile = data;
         this.authAccessService.setUserId(this.employeeProfile.id as number);
-        this.cookieService.set("userId", String(this.employeeProfile.id));
+        this.cookieService.set("userId", String(this.employeeProfile.id), {
+          path: '/',
+          secure: true,
+          sameSite: 'None'
+        });
       }
     });
   }
