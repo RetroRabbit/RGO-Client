@@ -122,8 +122,8 @@ export class AccordionEmployeeDocumentsComponent {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 3).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.employeeDocuments = data;
-          this.dataSource.data = this.sharedAccordionFunctionality.fileCategories;
-          this.sharedAccordionFunctionality.calculateDocumentProgress();
+          this.dataSource.data = this.sharedAccordionFunctionality.fileEmployeeCategories;
+          this.sharedAccordionFunctionality.calculateEmployeeDocumentProgress();
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -134,8 +134,8 @@ export class AccordionEmployeeDocumentsComponent {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 3).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.employeeDocuments = data;
-          this.dataSource.data = this.sharedAccordionFunctionality.fileCategories;
-          this.sharedAccordionFunctionality.calculateDocumentProgress();
+          this.dataSource.data = this.sharedAccordionFunctionality.fileEmployeeCategories;
+          this.sharedAccordionFunctionality.calculateEmployeeDocumentProgress();
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -163,7 +163,7 @@ export class AccordionEmployeeDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getEmployeeDocuments();
-          this.sharedAccordionFunctionality.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateEmployeeDocumentProgress();
         },
         error: (error) => {
           this.isLoadingUpload = false;
@@ -192,7 +192,7 @@ export class AccordionEmployeeDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getEmployeeDocuments();
-          this.sharedAccordionFunctionality.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateEmployeeDocumentProgress();
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");

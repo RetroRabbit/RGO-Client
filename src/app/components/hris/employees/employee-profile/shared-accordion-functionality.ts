@@ -43,6 +43,7 @@ export class SharedAccordionFunctionality {
   peopleChampionId: number | undefined;
 
   fileCategories = Document;
+  fileEmployeeCategories = Document;
 
 
   panelOpenState: boolean = false;
@@ -72,7 +73,8 @@ export class SharedAccordionFunctionality {
   additionalDocumentsProgress: number = 0;
   adminDocumentsProgress: number = 0;
 
-
+  AllDocumentsProgress: number = 0;
+  AllEmployeeDocumentsProgress: number = 0;
   employeeFormProgress: number = 0;
   personalFormProgress: number = 0;
   contactFormProgress: number = 0;
@@ -246,10 +248,20 @@ export class SharedAccordionFunctionality {
     this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
+  calculateEmployeeDocumentProgress() {
+    const total = this.fileEmployeeCategories.length;
+    console.log("total files", this.fileEmployeeCategories)
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= (total - 1)).length;
+    this.AllEmployeeDocumentsProgress = fetchedDocuments / total * 100;
+    console.log("this is employee documents checking", fetchedDocuments);
+  }
   calculateDocumentProgress() {
     const total = this.fileCategories.length;
+    console.log("total filess", total)
+
     const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= (total - 1)).length;
-    this.documentFormProgress = fetchedDocuments / total * 100;
+    this.AllDocumentsProgress = fetchedDocuments / total * 100;
+    console.log("this is checking", this.AllDocumentsProgress);
   }
 
   totalProfileProgress() {
@@ -259,6 +271,7 @@ export class SharedAccordionFunctionality {
 
   totalDocumentsProgress() {
     this.documentFormProgress = Math.floor((this.additionalDocumentsProgress + this.employeeDocumentsProgress + this.myDocumentsProgress + this.startKitDocumentsProgress + this.adminDocumentsProgress) / 5);
+    console.log("total doc progress", this.documentFormProgress);
     this.updateDocument.emit(this.documentFormProgress);
   }
 }

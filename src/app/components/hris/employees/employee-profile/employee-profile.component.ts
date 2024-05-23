@@ -25,6 +25,9 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { SharedAccordionFunctionality } from './shared-accordion-functionality';
+import { AccordionDocumentsAdditionalComponent } from './accordions/accordion-documents/accordion-my-documents/accordion-my-documents.component';
+import { AccordionAdministrativeDocumentsComponent } from './accordions/accordion-administrative-documents/accordion-administrative-documents.component';
+import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-employee-documents/accordion-employee-documents.component';
 
 @Component({
   selector: 'app-employee-profile',
@@ -34,6 +37,7 @@ import { SharedAccordionFunctionality } from './shared-accordion-functionality';
 
 export class EmployeeProfileComponent implements OnChanges {
   @Input() updateProfile!: { updateProfile: SharedAccordionFunctionality };
+  @Input() updateDocument!: { updateDocument: SharedAccordionFunctionality };
 
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
@@ -90,6 +94,10 @@ export class EmployeeProfileComponent implements OnChanges {
   @ViewChild(AccordionProfileContactDetailsComponent) contactAccordion!: AccordionProfileContactDetailsComponent;
   @ViewChild(AccordionProfileEmployeeDetailsComponent) employeeAccordion!: AccordionProfileEmployeeDetailsComponent;
   @ViewChild(AccordionProfilePersonalDetailsComponent) personalAccordion!: AccordionProfilePersonalDetailsComponent;
+  @ViewChild(AccordionDocumentsComponent) starterKitAccordion!: AccordionDocumentsComponent;
+  @ViewChild(AccordionDocumentsAdditionalComponent) additionalDocumentsAccordion!: AccordionDocumentsAdditionalComponent;
+  @ViewChild(AccordionAdministrativeDocumentsComponent) adminDocumentsAccordion!: AccordionAdministrativeDocumentsComponent;
+  @ViewChild(AccordionEmployeeDocumentsComponent) employeeDocumentAccordion!: AccordionEmployeeDocumentsComponent;
 
   imageUrl!: string;
   validateFile: any;
@@ -116,13 +124,21 @@ export class EmployeeProfileComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     changes['updateProfile'].currentValue
+    changes['updateDocument'].currentValue
   }
+
   ngOnDestroy() {
     this.displayEditButtons()
   }
   ngOnInit() {
-    this.sharedAccordionFunctionality.updateProfile.subscribe(progress => {
-      this.profileFormProgress = progress;
+    this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
+      this.profileFormProgress = profileProgress;
+
+      this.overallProgress();
+    });
+    this.sharedAccordionFunctionality.updateDocument.subscribe(documentProgress => {
+      this.documentFormProgress = documentProgress;
+
       this.overallProgress();
     });
 
@@ -279,11 +295,6 @@ export class EmployeeProfileComponent implements OnChanges {
   updateBankingProgress(update: any) {
     this.bankInformationProgress = update.progress;
     this.bankStatus = update.status;
-    this.overallProgress();
-  }
-
-  updateDocumentProgress(progress: number) {
-    this.documentFormProgress = progress;
     this.overallProgress();
   }
 
