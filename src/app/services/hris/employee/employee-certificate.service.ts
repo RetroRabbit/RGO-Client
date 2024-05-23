@@ -15,9 +15,9 @@ export class EmployeeCertificatesService{
       this.baseUrl =`${environment.HttpsBaseURL}/certification`
     }
 
-    // getCertificates(status : number): Observable<EmployeeCertificates[]>{
-    //     return this.httpClient.get<EmployeeCertificates[]>(`${this.baseUrl}?status=${status}`);
-    // }
+    deleteCertificate(id : number): Observable<EmployeeCertificates>{
+        return this.httpClient.delete<EmployeeCertificates>(`${this.baseUrl}?certificateId=${id}`);
+    }
 
     updateCertification(updatedEntry : any) :Observable<any> {
         return this.httpClient.put<EmployeeCertificates[]>(`${this.baseUrl}`, updatedEntry);

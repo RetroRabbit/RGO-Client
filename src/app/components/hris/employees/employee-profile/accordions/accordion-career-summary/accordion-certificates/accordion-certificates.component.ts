@@ -224,6 +224,17 @@ export class AccordionCertificatesComponent {
     this.newCertificates.splice(index, 1);
   }
 
+  removeExistingCertficate(index: number){
+    this.employeeCertificateService.deleteCertificate(this.copyOfCertificates[index].id).subscribe({
+      next: () => {
+        this.snackBarService.showSnackbar("Certificate deleted", "snack-success");
+      },
+      error: (error) => {
+        this.snackBarService.showSnackbar("Unable to delete", "snack-error");
+      }
+    })
+  }
+
 
   downloadFile(base64String: string, fileName: string) {
     const commaIndex = base64String.indexOf(',');
