@@ -337,7 +337,7 @@
     </div>
     <div id="accordions-body`" class="row m-2" *ngIf="employeeProfile">
       <app-accordion-profile-employee-details *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-employee-details>    
+      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-employee-details>
       <app-accordion-profile-personal-details *ngIf="selectedAccordion === 'Profile Details'"
       [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-personal-details>
       <app-accordion-profile-contact-details *ngIf="selectedAccordion === 'Profile Details'"
@@ -345,7 +345,8 @@
       <app-accordion-profile-address-details *ngIf="selectedAccordion === 'Profile Details'"
       [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-address-details>
       <app-accordion-profile-additional *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-additional>
+      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+      [employeeData]="employeeData"></app-accordion-profile-additional>
 
       <app-accordion-career-additional-information [hidden]="selectedAccordion != 'Career Summary'"
       [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-career-additional-information>

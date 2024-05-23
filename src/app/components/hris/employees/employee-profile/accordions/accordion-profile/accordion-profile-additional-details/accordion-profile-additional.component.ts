@@ -31,6 +31,7 @@ export class AccordionProfileAdditionalComponent {
     this.screenWidth = window.innerWidth;
   }
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+  @Input() employeeData: EmployeeData[] = [];
 
   customFields: CustomField[] = [];
   additionalFormProgress: number = 0;
@@ -53,7 +54,8 @@ export class AccordionProfileAdditionalComponent {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.getEmployeeFields();
     this.getClients();
-    this.getEmployeeData();
+    console.log(this.employeeData);
+    // this.getEmployeeData();
   }
   initializeForm() { }
 
@@ -62,7 +64,7 @@ export class AccordionProfileAdditionalComponent {
     this.sharedAccordionFunctionality.employeePostalAddress = this.employeeProfile.employeeDetails.postalAddress!;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile.employeeDetails.disability;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
-    this.getEmployeeData();
+    // this.getEmployeeData();
     this.getEmployeeTypes();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
@@ -79,7 +81,7 @@ export class AccordionProfileAdditionalComponent {
           this.sharedAccordionFunctionality.hasDisability = data.disability;
           this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
         }, complete: () => {
-          this.getEmployeeData();
+          // this.getEmployeeData();
           this.getEmployeeTypes();
           if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
             this.getAllEmployees();
@@ -175,10 +177,10 @@ export class AccordionProfileAdditionalComponent {
   }
 
   saveAdditionalEdit() {
-    this.getEmployeeData();
-    const empDataValues = this.sharedAccordionFunctionality.employeeData;
+    // this.getEmployeeData();
+    // const empDataValues = this.employeeData;
     for (const fieldcode of this.customFields) {
-      const found = empDataValues.find((data) => {
+      const found = this.employeeData.find((data) => {
         return fieldcode.id === data.fieldCodeId
       });
 
