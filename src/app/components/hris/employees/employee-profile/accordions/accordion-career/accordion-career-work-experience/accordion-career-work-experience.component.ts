@@ -39,11 +39,14 @@ export class AccordionCareerWorkExperienceComponent {
   isUpdated: boolean = false;
   hasUpdatedWorkExperience: boolean = false;
 
+  skillSetList: string[] = ['JavaScript', 'TypeScript', 'Angular', 'React', 'Node.js', 'Python'];
+  softwareList: string[] = ['VS Code', 'WebStorm', 'PyCharm', 'Eclipse', 'IntelliJ IDEA'];
+
   workExperienceForm: FormGroup = this.fb.group({
-    title: { value: '', disabled: true },
-    employementType: { value: '', disabled: true },
-    companyName: { value: '', disabled: true },
-    location: { value: '', disabled: true },
+    clientName: { value: '', disabled: true },
+    projectName: { value: '', disabled: true },
+    skillSet: { value: '', disabled: true },
+    software: { value: '', disabled: true },
     startDate: { value: '', disabled: true },
     endDate: { value: '', disabled: true },
     employeeId: { value: '', disabled: true }
@@ -65,16 +68,15 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   initializeForm(workExperienceDetails: WorkExperience) {
-
     if(workExperienceDetails == null) {
       this.hasWorkExperienceData = false;
       return;
     }
     this.workExperienceForm = this.fb.group({
-      title: [{ value: workExperienceDetails.title, disabled: true }, Validators.required],
-      employementType: [{ value: workExperienceDetails.employementType, disabled: true }, Validators.required],
-      companyName: [{ value: workExperienceDetails.companyName, disabled: true }, Validators.required],
-      location: [{ value: workExperienceDetails.location, disabled: true }, Validators.required],
+      clientName: [{ value: workExperienceDetails.clientName, disabled: true }, Validators.required],
+      projectName: [{ value: workExperienceDetails.projectName, disabled: true }, Validators.required],
+      skillSet: [{ value: workExperienceDetails.skillSet, disabled: true }, Validators.required],
+      software: [{ value: workExperienceDetails.software, disabled: true }, Validators.required],
       startDate: [{ value: workExperienceDetails.startDate, disabled: true }, Validators.required],
       endDate: [{ value: workExperienceDetails.endDate, disabled: true }, Validators.required],
       employeeId: [{ value: workExperienceDetails.employeeId, disabled: true }, Validators.required]
@@ -127,10 +129,10 @@ export class AccordionCareerWorkExperienceComponent {
 
     this.workExperienceDto = {
       id: this.workExperienceId,
-      title: workExperienceFormValue.title,
-      employementType: workExperienceFormValue.employementType,
-      companyName: workExperienceFormValue.companyName,
-      location: workExperienceFormValue.location,
+      clientName: workExperienceFormValue.clientName,
+      projectName: workExperienceFormValue.projectName,
+      skillSet: workExperienceFormValue.skillSet,
+      software: workExperienceFormValue.software,
       startDate: startDate,
       endDate: endDate,     
       employeeId: this.employeeProfile?.id

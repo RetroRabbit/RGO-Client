@@ -27,8 +27,8 @@
                                 <h4 style="font-weight: 500;">Client Name | Start Date</h4>
                                 <div class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Title</mat-label>
-                                        <input matInput formControlName="title">
+                                        <mat-label>Client Name</mat-label>
+                                        <input matInput formControlName="clientName">
                                         <!-- <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['personalEmail'].hasError('required')">
                                             Personal email is required
@@ -37,8 +37,8 @@
                                 </div>
                                 <div class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Employement Type</mat-label>
-                                        <input matInput formControlName="employementType">
+                                        <mat-label>Project Name</mat-label>
+                                        <input matInput formControlName="projectName">
                                         <!-- <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['email'].hasError('required')">
                                             Work email is required
@@ -47,21 +47,18 @@
                                 </div>
                                 <div class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Company Name</mat-label>
-                                        <input matInput formControlName="companyName">
-                                        <!-- <mat-error *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].hasError('required')">
-                                            Cellphone number is required
-                                        </mat-error> -->
+                                        <mat-label>Skill Set</mat-label>
+                                        <mat-select formControlName="skillSet" multiple>
+                                            <mat-option *ngFor="let skill of skillSetList" [value]="skill">{{ skill }}</mat-option>
+                                        </mat-select>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Location</mat-label>
-                                        <input matInput formControlName="location">
-                                        <!-- <mat-error
-                                            *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['houseNo'].hasError('pattern') && !sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].hasError('required')">
-                                            Home number must be a valid Cellphone Number
-                                        </mat-error> -->
+                                        <mat-label>Software</mat-label>
+                                        <mat-select formControlName="software" multiple>
+                                            <mat-option *ngFor="let software of softwareList" [value]="software">{{ software }}</mat-option>
+                                        </mat-select>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-12 col-md-6">
