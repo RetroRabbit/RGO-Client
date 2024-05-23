@@ -224,7 +224,7 @@ export class AccordionProfileAdditionalComponent {
               this.snackBarService.showSnackbar(error, "snack-error");
             }
           });
-        } else if (fieldcode.required) {
+        } else if (fieldcode.required === true && employeeDataDto.value === '') {
           this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
         }
       }
