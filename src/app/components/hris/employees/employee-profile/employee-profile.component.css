@@ -217,7 +217,23 @@
     border: none;
     border-radius: 2rem;
     background-color: #E3E3E4;
-    color: #1D1B20;
+    color: var(--M3-sys-light-on-surface, #1D1B20);
+    height: 36px;
+}
+
+:host ::ng-deep .download-button {
+    border: 1px solid #0029C6;
+    border-radius: 2rem;
+    background-color: #FFF;
+    color: #0029C6;
+    height: 36px;
+}
+
+:host ::ng-deep .download-disabled {
+    border: 1px solid grey;
+    border-radius: 2rem;
+    background-color: #FFF;
+    color: var(--M3-sys-light-on-surface, #1D1B20);
     height: 36px;
 }
 

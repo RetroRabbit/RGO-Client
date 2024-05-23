@@ -1,5 +1,5 @@
-.upload-document-icon{
-
+.document-name-disabled{
+    color: var(--M3-sys-light-on-surface, #1D1B20);
 }
 
 #download-document-button {

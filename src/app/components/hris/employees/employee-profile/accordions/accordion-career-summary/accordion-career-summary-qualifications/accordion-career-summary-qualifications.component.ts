@@ -46,6 +46,8 @@ export class CareerSummaryQualificationsComponent {
   base64File: string = "";
   fileUrl: string = '';
   proofOfQualificationFinal: string = '';
+  isDisabledUpload: boolean = true;
+  isDisabledDownload: boolean = true;
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
@@ -65,6 +67,8 @@ export class CareerSummaryQualificationsComponent {
     });
     this.sharedAccordionFunctionality.editQualifications = false;
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
+    this.isDisabledUpload = true;
+    this.isDisabledDownload = true;
     this.sharedAccordionFunctionality.checkQualificationsFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
     this.fileName = this.sharedAccordionFunctionality.employeeQualificationDto.documentName!;
@@ -74,6 +78,8 @@ export class CareerSummaryQualificationsComponent {
   editQualificationsDetails() {
     this.sharedAccordionFunctionality.editQualifications = true;
     this.sharedAccordionFunctionality.employeeQualificationForm.enable();
+    this.isDisabledUpload = false;
+    this.isDisabledDownload = false;
   }
 
   fetchQualificationsById() {
@@ -87,7 +93,7 @@ export class CareerSummaryQualificationsComponent {
         this.sharedAccordionFunctionality.employeeQualificationDto.fieldOfStudy = data.fieldOfStudy;
         this.sharedAccordionFunctionality.employeeQualificationDto.proofOfQualification = data.proofOfQualification;
         this.sharedAccordionFunctionality.employeeQualificationDto.documentName = data.documentName;
-        this.proofOfQualificationFinal = data.proofOfQualification!
+        this.proofOfQualificationFinal = data.proofOfQualification
         console.log(this.sharedAccordionFunctionality.employeeQualificationDto);
         if (data.year && data.year.endsWith("-01-01")) {
           this.sharedAccordionFunctionality.employeeQualificationDto.year = data.year.substring(0, 4);
@@ -177,8 +183,14 @@ export class CareerSummaryQualificationsComponent {
     }
   }
 
+  downloadFile(){
+
+  }
+
   cancelQualificationsEdit(){
     this.sharedAccordionFunctionality.editQualifications = false;
+    this.isDisabledUpload = true;
+    this.isDisabledDownload = true;
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
   }
 
