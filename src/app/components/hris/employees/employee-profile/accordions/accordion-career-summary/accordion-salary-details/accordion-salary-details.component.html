@@ -1,6 +1,6 @@
 <div class="col-12" id="accordion-container">
     <mat-accordion id="accordion" class="row">
-        <mat-expansion-panel class="mt-3 rounded-3">
+        <mat-expansion-panel class="mt-3 rounded-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Salary Details
@@ -11,9 +11,9 @@
                      <span class="d-none d-md-block d-lg-block">Missing Information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <form>
+            <form [formGroup]="salaryDetailsForm">
                 <div class="col-12 mb-2 d-flex justify-content-end">
-                    <button mat-button id="edit-button">
+                    <button *ngIf="!editSalary" mat-button id="edit-button" (click)="editSalaryDetails()">
                         <mat-icon>edit</mat-icon>Edit Details
                     </button>
                 </div>
@@ -23,15 +23,15 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h3>
-                                    Last Updated
+                                    Last Updated: 20 June 2022
                                     </h3>
                                 </div>
                                 <div class="col-12">
                                     <h3>
-                                    Developer
+                                    Developer | Level 4: 1 Year 3 Months
                                     </h3>
                                 </div>
-                                <div class="col-12">
+                                <div id="company-cost" class="col-12">
                                     <h3>
                                         Cost to Company
                                     </h3>
@@ -39,7 +39,7 @@
                                 <div class="col-12 col-md-6">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                       <mat-label>Remuneration</mat-label>
-                                      <input matInput>
+                                      <input type="text" min="0" matInput placeholder="Remuneration">
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -51,18 +51,18 @@
                         </div-->
                     </div>
                     <div class="col-12 d-none d-md-flex" id="edit-buttons">
-                        <button mat-button id="cancel-button">
+                        <button *ngIf="editSalary" mat-button id="cancel-button" (click)="cancelSalaryDetails()">
                             Cancel
                         </button>
-                        <button mat-button id="save-button">
+                        <button *ngIf="editSalary" mat-button id="save-button">
                             Save changes
                         </button>
                     </div>
                     <div class="col-12 d-block d-md-none" id="edit-buttons">
-                        <button mat-button id="save-button" class="col-12 mb-2">
+                        <button *ngIf="editSalary" mat-button id="save-button" class="col-12 mb-2">
                             Save changes
                         </button>
-                        <button mat-button id="cancel-button" class="col-12">
+                        <button *ngIf="editSalary" mat-button id="cancel-button" class="col-12" (click)="cancelSalaryDetails()">
                             Cancel
                         </button>
                     </div>
