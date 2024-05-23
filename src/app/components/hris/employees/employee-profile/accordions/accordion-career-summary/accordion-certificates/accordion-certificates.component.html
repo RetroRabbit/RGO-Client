@@ -77,12 +77,10 @@
                                     <h3 class='ml-1' [ngStyle]="{'color': editCertificate ? 'black' : 'grey'}">Proof of certificate</h3>
                                 </div>
                                 <div class="col-12 col-md-6 my-2 mt-0">
-                                    <div *ngIf="editCertificate; else NoEditDocument" class="d-flex align-items-start" id="document-name">
-                                        <div class="row">
-                                            <span class="mt-3" (click)="downloadFile(copyOfCertificates[i].certificateDocument, copyOfCertificates[i].documentName)"></span>
-                                        </div>
+                                    <!-- <div *ngIf="editCertificate; else NoEditDocument" class="d-flex align-items-start" id="document-name">
+                                     
                                         <div class="ml-2">
-                                            <span>{{employeeCertificates[i].documentName}}</span>
+                                      
                                             <button mat-button id="upload-document-button" class="py-4" (click)="uploadCertificateFile.click()">
                                                 <mat-icon class="upload-document">upload_alt</mat-icon> Upload Document
                                             </button>
@@ -96,7 +94,13 @@
                                             <mat-icon class="upload-document">save_alt</mat-icon> download Document
                                         </button>
                                     </div>
-                                    </ng-template>
+                                    </ng-template> -->
+                                    <button [disabled]="addingCertificate" mat-button id="cancel-button" type="submit" (click)="downloadFile(employeeCertificates[i].certificateDocument, employeeCertificates[i].documentName)">
+                                        download
+                                    </button>
+                                    <button  mat-button id="save-button"  (change)="onFileChange($event, i,'update')" accept=".pdf">
+                                        upload
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -134,7 +138,7 @@
                                 </mat-form-field>
                             </div>
                             <div class="col-12 col-md-6 my-2">
-                                <div class="d-flex align-items-start" id="document-name">
+                                <!-- <div class="d-flex align-items-start" id="document-name">
                                     <div class="row certificateFileName">
                                         <span class="mt-3">{{ newCertificates[i].documentName }}</span>
                                     </div>
@@ -144,7 +148,13 @@
                                         </button>
                                         <input type="file" #uploadCertificateFile (change)="onFileChange($event, i, 'new')" hidden accept=".pdf" />
                                     </div>
-                                </div>
+                                </div> -->
+                                <button  [disabled]="addingCertificate"  mat-button id="cancel-button" type="submit" (click)="downloadFile(employeeCertificates[i].certificateDocument, employeeCertificates[i].documentName)">
+                                    download
+                                </button>
+                                <button  mat-button id="save-button"  (change)="onFileChange($event, i,'new')"  accept=".pdf">
+                                    upload
+                                </button>
                             </div>
                             <hr>
                         </div>
