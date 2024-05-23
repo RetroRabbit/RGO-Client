@@ -62,14 +62,12 @@ export class AccordionCertificatesComponent {
 
   ngOnInit(): void {
     this.getEmployeeCertificate();
-    console.log(this.newCertificates)
   }
 
   getEmployeeCertificate() {
     this.employeeCertificateService.getCertificationDetails(this.employeeProfile.id).subscribe({
         next: (data) => {
             this.employeeCertificates = data;
-            console.log(this.employeeCertificates);
             if (!this.employeeCertificates || this.employeeCertificates.length === 0) {
                 this.addNewCertificate(); 
             } else {
@@ -210,7 +208,6 @@ export class AccordionCertificatesComponent {
       const copiedCert = JSON.parse(JSON.stringify(certificate));
       this.copyOfCertificates.push(copiedCert);
     });
-    console.log(this.copyOfCertificates);
   }
 
   addNewCertificate() {
