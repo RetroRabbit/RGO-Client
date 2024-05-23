@@ -25,6 +25,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { SharedAccordionFunctionality } from './shared-accordion-functionality';
+import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -109,6 +110,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private snackBarService: SnackbarService,
     public navService: NavService,
     private changeDetectorRef: ChangeDetectorRef,
+    private employeeDataService: EmployeeDataService,
     public authAccessService: AuthAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private clipboard: Clipboard) {
@@ -125,7 +127,6 @@ export class EmployeeProfileComponent implements OnChanges {
       this.profileFormProgress = progress;
       this.overallProgress();
     });
-
     this.employeeId = this.route.snapshot.params['id'];
     this.getClients();
     if (this.employeeId == undefined) {
@@ -154,6 +155,15 @@ export class EmployeeProfileComponent implements OnChanges {
     this.router.navigateByUrl('/dashboard')
   }
 
+  getEmployeeData() {
+    // const id = this.employeeProfile.id ? this.employeeProfile.id : this.simpleEmployee.id
+    this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
+      next: data => {
+        this.sharedAccordionFunctionality.employeeData = data;
+      }
+    });
+  }
+
   getSimpleEmployee() {
 
     this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
@@ -176,6 +186,7 @@ export class EmployeeProfileComponent implements OnChanges {
         this.selectedEmployee = employee;
         this.employeeProfile = employee;
         this.getEmployeeFields();
+        this.getEmployeeData();
         this.filterClients(this.employeeProfile.clientAllocated as string)
         this.isLoading = false;
       },

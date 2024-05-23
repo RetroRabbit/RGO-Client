@@ -129,7 +129,7 @@ export class AccordionCareerAdditionalInformationComponent {
 
   getEmployeeTypes() {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
-      next: data => {
+      next: (data) => {
         this.sharedAccordionFunctionality.employeeTypes = data;
       }
     });
@@ -178,9 +178,6 @@ export class AccordionCareerAdditionalInformationComponent {
         return fieldcode.id === data.fieldCodeId
       });
 
-      if (found === undefined) {
-        continue;
-      }
       if (found) {
         var formatFound: any = fieldcode.code
         const employeeDataDto = {

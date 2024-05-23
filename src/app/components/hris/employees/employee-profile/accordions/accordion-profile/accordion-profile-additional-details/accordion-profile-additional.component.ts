@@ -51,7 +51,6 @@ export class AccordionProfileAdditionalComponent {
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
-    this.initializeForm();
     this.getEmployeeFields();
     this.getClients();
     this.getEmployeeData();
@@ -95,7 +94,8 @@ export class AccordionProfileAdditionalComponent {
   }
 
   getEmployeeData() {
-    this.employeeDataService.getEmployeeData(this.employeeProfile.employeeDetails.id).subscribe({
+    const id = this.employeeProfile.employeeDetails.id ? this.employeeProfile.employeeDetails.id : this.employeeProfile.simpleEmployee.id;
+    this.employeeDataService.getEmployeeData(id).subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employeeData = data;
       }
@@ -175,8 +175,9 @@ export class AccordionProfileAdditionalComponent {
   }
 
   saveAdditionalEdit() {
+    const empDataValues = this.sharedAccordionFunctionality.employeeData;
     for (const fieldcode of this.customFields) {
-      const found = this.sharedAccordionFunctionality.employeeData.find((data) => {
+      const found = empDataValues.find((data) => {
         return fieldcode.id === data.fieldCodeId
       });
 
@@ -200,7 +201,7 @@ export class AccordionProfileAdditionalComponent {
           error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
         });
       }
-      else if (found == null) {
+      else if (found === undefined) {
         var formatFound: any = fieldcode?.code
         const employeeDataDto = {
           id: 0,
