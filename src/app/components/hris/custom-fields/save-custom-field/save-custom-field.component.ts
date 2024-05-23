@@ -63,7 +63,6 @@ export class SaveCustomFieldComponent {
     public navService: NavService,
     public systemService: SystemNav) {
     this.selectedCustomField = systemService.selectedField;
-
   }
 
   ngOnInit() {
@@ -74,7 +73,6 @@ export class SaveCustomFieldComponent {
     if (this.selectedCustomField) {
       this.populateCustomFieldForm();
     }
-
   }
 
   ngOnDestroy() {
