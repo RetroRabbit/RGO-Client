@@ -173,13 +173,15 @@ export class AccordionCareerAdditionalInformationComponent {
   }
 
   saveAdditionalEdit() {
+    this.getEmployeeData();
+    const empDataValues = this.sharedAccordionFunctionality.employeeData;
     for (const fieldcode of this.customFields) {
-      const found = this.sharedAccordionFunctionality.employeeData.find((data) => {
+      const found = empDataValues.find((data) => {
         return fieldcode.id === data.fieldCodeId
       });
 
       if (found) {
-        var formatFound: any = fieldcode.code
+        const formatFound: any = fieldcode.code
         const employeeDataDto = {
           id: found.id,
           employeeId: found.employeeId,
@@ -198,7 +200,7 @@ export class AccordionCareerAdditionalInformationComponent {
           error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
         });
       } else {
-        var formatFound: any = fieldcode?.code
+        const formatFound: any = fieldcode?.code
         const employeeDataDto = {
           id: 0,
           employeeId: this.sharedAccordionFunctionality.selectedEmployee ? this.sharedAccordionFunctionality.selectedEmployee.id : this.employeeProfile?.employeeDetails.id,
@@ -206,7 +208,7 @@ export class AccordionCareerAdditionalInformationComponent {
           value: this.sharedAccordionFunctionality.additionalCareerInfoForm.get(formatFound)?.value
         }
 
-        if (employeeDataDto.value != '') {
+        if (employeeDataDto.value) {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
               this.snackBarService.showSnackbar("Employee Details updated", "snack-success");

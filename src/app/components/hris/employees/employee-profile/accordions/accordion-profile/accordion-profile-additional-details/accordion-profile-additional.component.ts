@@ -175,6 +175,7 @@ export class AccordionProfileAdditionalComponent {
   }
 
   saveAdditionalEdit() {
+    this.getEmployeeData();
     const empDataValues = this.sharedAccordionFunctionality.employeeData;
     for (const fieldcode of this.customFields) {
       const found = empDataValues.find((data) => {
@@ -182,7 +183,7 @@ export class AccordionProfileAdditionalComponent {
       });
 
       if (found) {
-        var formatFound: any = fieldcode.code
+        const formatFound: any = fieldcode.code
         const employeeDataDto = {
           id: found.id,
           employeeId: found.employeeId,
@@ -202,7 +203,7 @@ export class AccordionProfileAdditionalComponent {
         });
       }
       else {
-        var formatFound: any = fieldcode?.code
+        const formatFound: any = fieldcode?.code
         const employeeDataDto = {
           id: 0,
           employeeId: this.sharedAccordionFunctionality.selectedEmployee ? this.sharedAccordionFunctionality.selectedEmployee.id : this.employeeProfile?.employeeDetails.id,
@@ -210,7 +211,7 @@ export class AccordionProfileAdditionalComponent {
           value: this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value
         }
 
-        if (employeeDataDto.value != '') {
+        if (employeeDataDto.value) {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
               this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
@@ -223,7 +224,7 @@ export class AccordionProfileAdditionalComponent {
               this.snackBarService.showSnackbar(error, "snack-error");
             }
           });
-        } else {
+        } else if (fieldcode.required) {
           this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
         }
       }
