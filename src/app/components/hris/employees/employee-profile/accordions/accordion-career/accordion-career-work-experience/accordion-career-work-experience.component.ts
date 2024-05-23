@@ -39,8 +39,14 @@ export class AccordionCareerWorkExperienceComponent {
   isUpdated: boolean = false;
   hasUpdatedWorkExperience: boolean = false;
 
-  skillSetList: string[] = ['JavaScript', 'TypeScript', 'Angular', 'React', 'Node.js', 'Python'];
-  softwareList: string[] = ['VS Code', 'WebStorm', 'PyCharm', 'Eclipse', 'IntelliJ IDEA'];
+  role: string | undefined = '';
+  skillSetList: string[] = [];
+  softwareList: string[] = [];
+
+  skillSetListForDeveloper: string[] = ['JavaScript', 'TypeScript', 'Angular', 'React', 'Node.js', 'Python'];
+  skillSetListForDesigner: string[] = ['Photoshop', 'Illustrator', 'Figma', 'Sketch'];
+  softwareListForDeveloper: string[] = ['VS Code', 'WebStorm', 'PyCharm', 'Eclipse', 'IntelliJ IDEA'];
+  softwareListForDesigner: string[] = ['Adobe Photoshop', 'Adobe Illustrator', 'Sketch', 'Figma'];
 
   workExperienceForm: FormGroup = this.fb.group({
     clientName: { value: '', disabled: true },
@@ -63,6 +69,7 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   ngOnInit(): void {
+    this.getEmployeeRole();
     this.getWorkExperience();
     console.log(this.workExperienceData);
   }
@@ -86,6 +93,27 @@ export class AccordionCareerWorkExperienceComponent {
     this.checkWorkExperienceFormProgress();
   }
   
+  getEmployeeRole() {
+    this.role = this.employeeProfile?.employeeType?.name;
+    console.log("The role is: " + this.role);
+    this.updateListsBasedOnRole();
+  }
+
+  updateListsBasedOnRole() {
+    if (this.role === 'Developer') {
+      this.skillSetList = this.skillSetListForDeveloper;
+      this.softwareList = this.softwareListForDeveloper;
+    } else if (this.role === 'Designer') {
+      this.skillSetList = this.skillSetListForDesigner;
+      this.softwareList = this.softwareListForDesigner;
+    }
+    else
+    {
+      this.skillSetList = ["No skill set available for this employee type"];
+      this.softwareList = ["No software is available for this employee type"];
+    }
+  }
+
   getWorkExperience() {
     this.workExperienceService.getWorkExperience(this.employeeProfile.id).subscribe({
       next: (data) => {

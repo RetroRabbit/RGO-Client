@@ -34,3 +34,10 @@
     color: #888;
     cursor: not-allowed;
 }
+
+.custom-mat-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 10px;
+}

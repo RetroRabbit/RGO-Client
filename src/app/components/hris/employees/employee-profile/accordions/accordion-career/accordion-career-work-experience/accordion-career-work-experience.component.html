@@ -1,127 +1,127 @@
 <div class="col-12" id="accordion-container">
     <mat-accordion id="accordion" class="row">
-        <mat-expansion-panel class="mt-3 rounded-3" (opened)="sharedAccordionFunctionality.panelOpenState = true"
-            (closed)="sharedAccordionFunctionality.panelOpenState = false">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    Work Experience
-                </mat-panel-title>
-                <mat-panel-description *ngIf="workExperienceFormProgress != 100" class="pe-0 pe-md-5">
-                    <mat-icon class="mx-1">error</mat-icon>
-                        <span class="d-none d-md-block d-lg-block"> Missing
-                            information
-                        </span>
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <form [formGroup]="workExperienceForm">
-                <div class="col-12 mb-2 d-flex justify-content-end">
-                    <button class="d-flex d-md-none col-12" *ngIf="!editWorkExperience" mat-button id="edit-button"
-                        (click)="editWorkExperiences()" [ngClass]="screenWidth <= 767 ?'col-12':''">
-                        <mat-icon>edit</mat-icon>Edit Details
-                    </button>
-                </div>
-                <div class="row">
-                    <div class="row">
-                        <div class="col-12 col-md-9 col-lg-10">
-                            <div class="row">
-                                <h4 style="font-weight: 500;">Client Name | Start Date</h4>
-
-                                <div class="col-12 col-md-6 my-2">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Client Name</mat-label>
-                                        <input matInput formControlName="clientName">
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="col-12 col-md-6 my-2">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Project Name</mat-label>
-                                        <input matInput formControlName="projectName">
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="col-12 col-md-6 my-2">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Skill Set</mat-label>
-                                        <mat-select formControlName="skillSet" multiple>
-                                            <mat-option *ngFor="let skill of skillSetList" [value]="skill">
-                                                <mat-checkbox [checked]="workExperienceForm.controls['skillSet'].value.includes(skill)">
-                                                    {{ skill }}
-                                                </mat-checkbox>
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                                
-                                <div class="col-12 col-md-6 my-2">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Software</mat-label>
-                                        <mat-select formControlName="software" multiple>
-                                            <mat-option *ngFor="let software of softwareList" [value]="software">
-                                                <mat-checkbox [checked]="workExperienceForm.controls['software'].value.includes(software)">
-                                                    {{ software }}
-                                                </mat-checkbox>
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="col-12 col-md-6">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Start Date</mat-label>
-                                        <input matInput [matDatepicker]="picker1" formControlName="startDate">
-                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker1></mat-datepicker>
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="col-12 col-md-6">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>End Date</mat-label>
-                                        <input matInput [matDatepicker]="picker2" formControlName="endDate">
-                                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker2></mat-datepicker>
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="pt-3">
-                                    <button mat-button id="add-another-button" [disabled]="!editWorkExperience"
-                                        type="submit" (click)="addWorkExperience()">
-                                        <mat-icon>add</mat-icon>
-                                        Add Another Experience
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
-                            <button *ngIf="!editWorkExperience" mat-button id="edit-button-width"
-                            (click)="editWorkExperiences()" [ngClass]="screenWidth <= 767 ?'col-12':''">
-                            <mat-icon>edit</mat-icon>Edit Details
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-12 d-none d-md-flex" id="edit-buttons">
-                        <button *ngIf="editWorkExperience" mat-button id="cancel-button"
-                            (click)="cancelWorkExperienceEdit()">
-                            Cancel
-                        </button>
-                        <button *ngIf="editWorkExperience" mat-button id="save-button"
-                            type="submit" (click)="saveWorkExperience()">
-                            Save changes
-                        </button>
-                    </div>
-                    <div class="col-12 d-block d-md-none" id="edit-buttons">
-                        <button *ngIf="editWorkExperience" mat-button id="save-button"
-                            type="submit" class="col-12 mb-2" (click)="saveWorkExperience()">
-                            Save changes
-                        </button>
-                        <button *ngIf="editWorkExperience" mat-button id="cancel-button"
-                            class="col-12" (click)="cancelWorkExperienceEdit()">
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </mat-expansion-panel>
+      <mat-expansion-panel class="mt-3 rounded-3" (opened)="sharedAccordionFunctionality.panelOpenState = true"
+          (closed)="sharedAccordionFunctionality.panelOpenState = false">
+          <mat-expansion-panel-header>
+              <mat-panel-title>
+                  Work Experience
+              </mat-panel-title>
+              <mat-panel-description *ngIf="workExperienceFormProgress != 100" class="pe-0 pe-md-5">
+                  <mat-icon class="mx-1">error</mat-icon>
+                      <span class="d-none d-md-block d-lg-block"> Missing
+                          information
+                      </span>
+              </mat-panel-description>
+          </mat-expansion-panel-header>
+          <form [formGroup]="workExperienceForm">
+              <div class="col-12 mb-2 d-flex justify-content-end">
+                  <button class="d-flex d-md-none col-12" *ngIf="!editWorkExperience" mat-button id="edit-button"
+                      (click)="editWorkExperiences()" [ngClass]="screenWidth <= 767 ?'col-12':''">
+                      <mat-icon>edit</mat-icon>Edit Details
+                  </button>
+              </div>
+              <div class="row">
+                  <div class="row">
+                      <div class="col-12 col-md-9 col-lg-10">
+                          <div class="row">
+                              <h4 style="font-weight: 500;">Client Name | Start Date</h4>
+  
+                              <div class="col-12 col-md-6 my-2">
+                                  <mat-form-field appearance="outline" style="width: 100%;">
+                                      <mat-label>Client Name</mat-label>
+                                      <input matInput formControlName="clientName">
+                                  </mat-form-field>
+                              </div>
+  
+                              <div class="col-12 col-md-6 my-2">
+                                  <mat-form-field appearance="outline" style="width: 100%;">
+                                      <mat-label>Project Name</mat-label>
+                                      <input matInput formControlName="projectName">
+                                  </mat-form-field>
+                              </div>
+  
+                              <div class="col-12 col-md-6 my-2">
+                                  <mat-form-field appearance="outline" style="width: 100%;">
+                                      <mat-label>Skill Set</mat-label>
+                                      <mat-select formControlName="skillSet" multiple>
+                                          <mat-option *ngFor="let skill of skillSetList" [value]="skill" class="custom-mat-option">
+                                              {{ skill }}
+                                              <mat-checkbox [checked]="workExperienceForm.controls['skillSet'].value.includes(skill)">
+                                              </mat-checkbox>
+                                          </mat-option>
+                                      </mat-select>
+                                  </mat-form-field>
+                              </div>
+  
+                              <div class="col-12 col-md-6 my-2">
+                                  <mat-form-field appearance="outline" style="width: 100%;">
+                                      <mat-label>Software</mat-label>
+                                      <mat-select formControlName="software" multiple>
+                                          <mat-option *ngFor="let software of softwareList" [value]="software" class="custom-mat-option">
+                                              {{ software }}
+                                              <mat-checkbox [checked]="workExperienceForm.controls['software'].value.includes(software)">
+                                              </mat-checkbox>
+                                          </mat-option>
+                                      </mat-select>
+                                  </mat-form-field>
+                              </div>
+  
+                              <div class="col-12 col-md-6">
+                                  <mat-form-field appearance="outline" style="width: 100%;">
+                                      <mat-label>Start Date</mat-label>
+                                      <input matInput [matDatepicker]="picker1" formControlName="startDate">
+                                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                      <mat-datepicker #picker1></mat-datepicker>
+                                  </mat-form-field>
+                              </div>
+  
+                              <div class="col-12 col-md-6">
+                                  <mat-form-field appearance="outline" style="width: 100%;">
+                                      <mat-label>End Date</mat-label>
+                                      <input matInput [matDatepicker]="picker2" formControlName="endDate">
+                                      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                      <mat-datepicker #picker2></mat-datepicker>
+                                  </mat-form-field>
+                              </div>
+  
+                              <div class="pt-3">
+                                  <button mat-button id="add-another-button" [disabled]="!editWorkExperience"
+                                      type="submit" (click)="addWorkExperience()">
+                                      <mat-icon>add</mat-icon>
+                                      Add Another Experience
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
+                          <button *ngIf="!editWorkExperience" mat-button id="edit-button-width"
+                          (click)="editWorkExperiences()" [ngClass]="screenWidth <= 767 ?'col-12':''">
+                          <mat-icon>edit</mat-icon>Edit Details
+                          </button>
+                      </div>
+                  </div>
+                  <div class="col-12 d-none d-md-flex" id="edit-buttons">
+                      <button *ngIf="editWorkExperience" mat-button id="cancel-button"
+                          (click)="cancelWorkExperienceEdit()">
+                          Cancel
+                      </button>
+                      <button *ngIf="editWorkExperience" mat-button id="save-button"
+                          type="submit" (click)="saveWorkExperience()">
+                          Save changes
+                      </button>
+                  </div>
+                  <div class="col-12 d-block d-md-none" id="edit-buttons">
+                      <button *ngIf="editWorkExperience" mat-button id="save-button"
+                          type="submit" class="col-12 mb-2" (click)="saveWorkExperience()">
+                          Save changes
+                      </button>
+                      <button *ngIf="editWorkExperience" mat-button id="cancel-button"
+                          class="col-12" (click)="cancelWorkExperienceEdit()">
+                          Cancel
+                      </button>
+                  </div>
+              </div>
+          </form>
+      </mat-expansion-panel>
     </mat-accordion>
-</div>
+  </div>  
