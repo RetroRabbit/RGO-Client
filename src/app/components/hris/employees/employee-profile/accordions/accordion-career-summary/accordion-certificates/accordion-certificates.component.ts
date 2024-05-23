@@ -126,7 +126,7 @@ export class AccordionCertificatesComponent {
 
   updateCertificateDetails() {
     this.isUpdated = true;
-    this.editCertificate = false; // Reset the edit flag early
+    this.editCertificate = false; 
     const editedCertificatesArray = this.findDifferenceInArrays();
 
     const updateObservables = editedCertificatesArray.map(certificate =>
@@ -224,16 +224,20 @@ export class AccordionCertificatesComponent {
     this.newCertificates.splice(index, 1);
   }
 
-  removeExistingCertficate(index: number){
-    this.employeeCertificateService.deleteCertificate(this.copyOfCertificates[index].id).subscribe({
-      next: () => {
-        this.snackBarService.showSnackbar("Certificate deleted", "snack-success");
-      },
-      error: (error) => {
-        this.snackBarService.showSnackbar("Unable to delete", "snack-error");
-      }
-    })
-  }
+  removeExistingCertficate(index: number) {
+    const certificateId = this.copyOfCertificates[index].id;
+    this.employeeCertificateService.deleteCertificate(certificateId).subscribe({
+        next: () => {
+            this.snackBarService.showSnackbar("Certificate deleted", "snack-success");
+            this.copyOfCertificates.splice(index, 1);
+            this.employeeCertificates.splice(index, 1);
+            this.editCertificate = false;
+        },
+        error: (error) => {
+            this.snackBarService.showSnackbar("Unable to delete", "snack-error");
+        }
+    });
+}
 
 
   downloadFile(base64String: string, fileName: string) {

@@ -145,19 +145,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col d-none d-md-flex" id="edit-buttons">
-                        <button *ngIf="editCertificate" mat-button id="cancel-button" (click)="cancelCertificateDetails()">
+                    <div *ngIf="editCertificate"  class="col d-none d-md-flex" id="edit-buttons">
+                        <button mat-button id="cancel-button" (click)="cancelCertificateDetails()">
                             Cancel
                         </button>
-                        <button *ngIf="editCertificate" mat-button id="save-button" type="submit" (click)="updateCertificateDetails()">
+                        <button  mat-button id="save-button" type="submit" (click)="updateCertificateDetails()">
                             Save changes
                         </button>
                     </div>
-                    <div class="col d-none d-md-flex" id="edit-buttons">
-                        <button *ngIf="addingCertificate" mat-button id="cancel-button" (click)="cancelCertificateDetails()">
+                    <div *ngIf="addingCertificate"  class="col d-none d-md-flex" id="edit-buttons">
+                        <button  mat-button id="cancel-button" (click)="cancelCertificateDetails()">
                             Cancel
                         </button>
-                        <button *ngIf="addingCertificate" mat-button id="save-button" type="submit" (click)="saveCertificateDetails()">
+                        <button  mat-button id="save-button" type="submit" (click)="saveCertificateDetails()">
                             Save changes
                         </button>
                     </div>
