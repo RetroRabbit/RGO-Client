@@ -57,12 +57,6 @@ export class AccordionCertificatesComponent {
     denyButtonText: "Cancel"
   };
 
-  certificateForm: FormGroup = this.fb.group({
-    CertificateName: [{ value: '', disabled: true }, Validators.required],
-    IssueOrganization: [{ value: '', disabled: true }, Validators.required],
-    IssueDate: [{ value: '', disabled: true }, Validators.required],
-  });
-
   constructor(
     private fb: FormBuilder,
     private snackBarService: SnackbarService,
@@ -187,7 +181,6 @@ export class AccordionCertificatesComponent {
 
   editCertificateDetails() {
     this.editCertificate = true;
-    this.certificateForm.enable();
     this.copyOfCertificates = [];
     this.copyEmployeeCertificates();
   }
@@ -195,7 +188,6 @@ export class AccordionCertificatesComponent {
   cancelCertificateDetails() {
     this.editCertificate = false;
     this.addingCertificate = false;
-    this.certificateForm.disable();
     this.copyOfCertificates = this.employeeCertificates;
     if (this.newCertificateIndex !== null) {
       this.newCertificates.splice(this.newCertificateIndex, 1);
