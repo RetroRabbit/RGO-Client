@@ -45,8 +45,8 @@
                                       <mat-label>Skill Set</mat-label>
                                       <mat-select formControlName="skillSet" multiple>
                                           <mat-option *ngFor="let skill of skillSetList" [value]="skill" class="custom-mat-option">
-                                              {{ skill }}
                                               <mat-checkbox [checked]="workExperienceForm.controls['skillSet'].value.includes(skill)">
+                                                {{ skill }}
                                               </mat-checkbox>
                                           </mat-option>
                                       </mat-select>
@@ -58,8 +58,8 @@
                                       <mat-label>Software</mat-label>
                                       <mat-select formControlName="software" multiple>
                                           <mat-option *ngFor="let software of softwareList" [value]="software" class="custom-mat-option">
-                                              {{ software }}
                                               <mat-checkbox [checked]="workExperienceForm.controls['software'].value.includes(software)">
+                                                {{ software }}
                                               </mat-checkbox>
                                           </mat-option>
                                       </mat-select>

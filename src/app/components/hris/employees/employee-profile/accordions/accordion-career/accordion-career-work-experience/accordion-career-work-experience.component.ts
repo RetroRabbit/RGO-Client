@@ -43,10 +43,26 @@ export class AccordionCareerWorkExperienceComponent {
   skillSetList: string[] = [];
   softwareList: string[] = [];
 
-  skillSetListForDeveloper: string[] = ['JavaScript', 'TypeScript', 'Angular', 'React', 'Node.js', 'Python'];
-  skillSetListForDesigner: string[] = ['Photoshop', 'Illustrator', 'Figma', 'Sketch'];
-  softwareListForDeveloper: string[] = ['VS Code', 'WebStorm', 'PyCharm', 'Eclipse', 'IntelliJ IDEA'];
-  softwareListForDesigner: string[] = ['Adobe Photoshop', 'Adobe Illustrator', 'Sketch', 'Figma'];
+  skillSetListForDeveloper: string[] = ['JavaScript', 'TypeScript', 'Angular', 'React', 'Node.js', 'Python', 'Java', 'C#', 'Ruby', 'Swift', 'Kotlin', 'SQL', 'HTML/CSS'];
+  softwareListForDeveloper: string[] = ['VS Code', 'WebStorm', 'PyCharm', 'Eclipse', 'IntelliJ IDEA', 'Visual Studio', 'Git', 'Docker', 'Jenkins', 'AWS', 'Azure'];
+
+  skillSetListForDesigner: string[] = ['Photoshop', 'Illustrator', 'Figma', 'Sketch', 'Adobe XD', 'InDesign', 'UX/UI Design', 'Graphic Design', 'Web Design', 'Branding', 'Typography', 'Wireframing', 'Prototyping'];
+  softwareListForDesigner: string[] = ['Adobe Photoshop', 'Adobe Illustrator', 'Sketch', 'Figma', 'Adobe XD', 'InDesign', 'CorelDRAW', 'Affinity Designer'];
+
+  skillSetListForScrumMaster: string[] = ['Agile Methodologies', 'Scrum Framework', 'Project Management', 'Team Facilitation', 'Sprint Planning', 'Retrospectives', 'JIRA', 'Confluence', 'Communication', 'Leadership'];
+  softwareListForScrumMaster: string[] = ['JIRA', 'Confluence', 'Trello', 'Asana', 'Microsoft Project', 'Slack', 'Zoom', 'Miro', 'Microsoft Teams'];
+
+  skillSetListForBusinessSupport: string[] = ['Administration', 'Office Management', 'Customer Service', 'Data Entry', 'Scheduling', 'Communication', 'Problem Solving', 'Microsoft Office Suite'];
+  softwareListForBusinessSupport: string[] = ['Microsoft Office (Word, Excel, PowerPoint, Outlook)', 'Google Workspace (Docs, Sheets, Slides, Calendar)', 'Trello', 'Asana', 'Slack', 'Zoom'];
+
+  skillSetListForAccountManager: string[] = ['Sales', 'Customer Relationship Management', 'Negotiation', 'Communication', 'Strategic Planning', 'Product Knowledge', 'CRM Software'];
+  softwareListForAccountManager: string[] = ['Salesforce', 'HubSpot', 'Microsoft Dynamics', 'Zoho CRM', 'Pipedrive', 'Trello', 'Asana', 'Microsoft Office'];
+
+  skillSetListForPeopleChampions: string[] = ['Recruitment', 'Employee Relations', 'Talent Management', 'Performance Management', 'HR Policies', 'Training and Development', 'Communication', 'Conflict Resolution'];
+  softwareListForPeopleChampions: string[] = ['Workday', 'SAP SuccessFactors', 'BambooHR', 'ADP Workforce Now', 'Greenhouse', 'Lever', 'LinkedIn Recruiter', 'Microsoft Office'];
+
+  skillSetListForExecutives: string[] = ['Leadership', 'Strategic Planning', 'Financial Acumen', 'Decision Making', 'Communication', 'Risk Management', 'Negotiation', 'Business Development'];
+  softwareListForExecutives: string[] = ['Microsoft Office (Excel, PowerPoint, Word)', 'Google Workspace', 'Trello', 'Asana', 'Slack', 'Zoom', 'Microsoft Teams', 'SAP', 'Oracle'];
 
   workExperienceForm: FormGroup = this.fb.group({
     clientName: { value: '', disabled: true },
@@ -69,9 +85,62 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   ngOnInit(): void {
-    this.getEmployeeRole();
+    this.getEmployeeType();
     this.getWorkExperience();
-    console.log(this.workExperienceData);
+  }
+
+  getEmployeeType() {
+    this.role = this.employeeProfile?.employeeType?.name;
+    this.updateListsBasedOnRole();
+  }
+
+  updateListsBasedOnRole() {
+    switch (this.role) {
+      case 'Developer':
+        this.skillSetList = this.skillSetListForDeveloper;
+        this.softwareList = this.softwareListForDeveloper;
+        break;
+      case 'Designer':
+        this.skillSetList = this.skillSetListForDesigner;
+        this.softwareList = this.softwareListForDesigner;
+        break;
+      case 'Scrum Master':
+        this.skillSetList = this.skillSetListForScrumMaster;
+        this.softwareList = this.softwareListForScrumMaster;
+        break;
+      case 'Business Support':
+        this.skillSetList = this.skillSetListForBusinessSupport;
+        this.softwareList = this.softwareListForBusinessSupport;
+        break;
+      case 'Account Manager':
+        this.skillSetList = this.skillSetListForAccountManager;
+        this.softwareList = this.softwareListForAccountManager;
+        break;
+      case 'People Champion':
+        this.skillSetList = this.skillSetListForPeopleChampions;
+        this.softwareList = this.softwareListForPeopleChampions;
+        break;
+      case 'Executive':
+        this.skillSetList = this.skillSetListForExecutives;
+        this.softwareList = this.softwareListForExecutives;
+        break;
+      default:
+        this.skillSetList = ["No skill set available for this employee type"];
+        this.softwareList = ["No software is available for this employee type"];
+        break;
+    }
+  }
+
+  getWorkExperience() {
+    this.workExperienceService.getWorkExperience(this.employeeProfile.id).subscribe({
+      next: (data) => {
+        this.workExperienceData = data;
+        if (this.workExperience != null) {
+          this.workExperienceId = this.workExperience[this.workExperience.length - 1].id;
+        }
+        this.initializeForm(this.workExperience[this.workExperience.length - 1]);
+      }
+    })
   }
 
   initializeForm(workExperienceDetails: WorkExperience) {
@@ -91,39 +160,6 @@ export class AccordionCareerWorkExperienceComponent {
     this.workExperienceForm.disable();
     this.hasWorkExperienceData = true;
     this.checkWorkExperienceFormProgress();
-  }
-  
-  getEmployeeRole() {
-    this.role = this.employeeProfile?.employeeType?.name;
-    console.log("The role is: " + this.role);
-    this.updateListsBasedOnRole();
-  }
-
-  updateListsBasedOnRole() {
-    if (this.role === 'Developer') {
-      this.skillSetList = this.skillSetListForDeveloper;
-      this.softwareList = this.softwareListForDeveloper;
-    } else if (this.role === 'Designer') {
-      this.skillSetList = this.skillSetListForDesigner;
-      this.softwareList = this.softwareListForDesigner;
-    }
-    else
-    {
-      this.skillSetList = ["No skill set available for this employee type"];
-      this.softwareList = ["No software is available for this employee type"];
-    }
-  }
-
-  getWorkExperience() {
-    this.workExperienceService.getWorkExperience(this.employeeProfile.id).subscribe({
-      next: (data) => {
-        this.workExperienceData = data;
-        if (this.workExperience != null) {
-          this.workExperienceId = this.workExperience[this.workExperience.length - 1].id;
-        }
-        this.initializeForm(this.workExperience[this.workExperience.length - 1]);
-      }
-    })
   }
 
   formatDate(date: Date): string {
