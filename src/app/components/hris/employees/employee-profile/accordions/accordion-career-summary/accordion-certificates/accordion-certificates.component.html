@@ -111,7 +111,7 @@
                                             Download
                                         </button>
                                     </div>
-                                    <div id="actionCellUpload" class="col-12 col-md-auto">
+                                    <div id="actionCellUpload" class="col-12 col-md-auto" *ngIf="editCertificate">
                                         <button type="file" mat-button color="primary" (click)="uploadCertificateFile.click()"
                                             accept=".pdf" [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
                                             <svg id="svg-icon-w" width="24" height="24" viewBox="0 0 24 24"
