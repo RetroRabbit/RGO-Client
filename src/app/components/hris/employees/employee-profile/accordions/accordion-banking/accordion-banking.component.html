@@ -12,7 +12,7 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="employeeBankingsForm">
-                <div class="col-12 mb-2  justify-content-end">
+                <div class="col-12 mb-2 d-flex justify-content-end">
                     <button *ngIf="!editBanking" mat-button id="edit-button" (click)="editBankingDetails()"
                         [ngClass]="screenWidth <= 767 ?'col-12':''">
                         <mat-icon>edit</mat-icon>Edit Details
