@@ -34,7 +34,7 @@
             {{ selectedEmployee.name }} {{ selectedEmployee.surname }}
           </h1>
           <ng-template #OwnName>
-            <h1 class="mb-0" *ngIf="navService.employeeProfile?.id === selectedEmployee?.id">
+            <h1 class="mb-0">
               {{navService.getEmployeeProfile().name}} {{navService.getEmployeeProfile().surname}}
             </h1>
           </ng-template>
@@ -62,7 +62,7 @@
           Based in {{ selectedEmployee.physicalAddress?.suburbOrDistrict }}
         </div>
         <ng-template #OwnAddress>
-          <div class="col-12 my-2 d-none d-md-block" id="header-based" *ngIf="selectedEmployee?.physicalAddress?.suburbOrDistrict != null">
+          <div class="col-12 my-2 d-none d-md-block" id="header-based">
             Based in {{navService.getEmployeeProfile().physicalAddress?.suburbOrDistrict}}
           </div>
         </ng-template>
