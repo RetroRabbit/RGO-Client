@@ -13,6 +13,8 @@ import { category } from 'src/app/models/hris/constants/fieldcodeCategory.consta
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { nqfLevels } from 'src/app/models/hris/constants/nqfLevels.constant.';
+import { EmployeeQualifications } from 'src/app/models/hris/employee-qualifications.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +39,18 @@ export class SharedAccordionFunctionality {
   clientId: number | undefined;
   peopleChampionId: number | undefined;
 
+  employeeQualificationDto: EmployeeQualifications = {
+    id: 0,
+    employeeId: 0,
+    highestQualification: 0,
+    school: "",
+    fieldOfStudy: "",
+    year: "",
+    nqfLevel: nqfLevels,
+    proofOfQualification: "",
+    documentName: "",
+  };
+
   panelOpenState: boolean = false;
   physicalEqualPostal: boolean = true;
   hasDisability: boolean | undefined = false;
@@ -45,7 +59,7 @@ export class SharedAccordionFunctionality {
   editAddress: boolean = false;
   editAdditional: boolean = false;
   editContact: boolean = false;
-
+  editQualifications: boolean = false;
   employeeType?: EmployeeType;
   employeeClient!: EmployeeProfile;
   employeeTeamLead!: EmployeeProfile;
@@ -64,6 +78,7 @@ export class SharedAccordionFunctionality {
   genders = genders;
   races = races;
   levels = levels;
+  nqfLevels = nqfLevels;
   disabilities = disabilities;
   category = category;
   fieldTypes = dataTypes;
@@ -125,6 +140,15 @@ export class SharedAccordionFunctionality {
     postalCountry: { value: '', disabled: true },
     postalProvince: { value: '', disabled: true },
     postalPostalCode: { value: '', disabled: true }
+  });
+
+  employeeQualificationForm: FormGroup = this.fb.group({
+    highestQualification: { value: '', disabled: true },
+    school: { value: '', disabled: true },
+    degree: { value: '', disabled: true },
+    fieldOfStudy: { value: '', disabled: true },
+    year: { value: '', disabled: true },
+    proofOfQualification: { value: '', disabled: true }
   });
 
   additionalInfoForm: FormGroup = this.fb.group({});
