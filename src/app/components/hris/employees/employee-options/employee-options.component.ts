@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 @Component({
   selector: 'app-employee-options',
   templateUrl: './employee-options.component.html',
@@ -11,10 +12,14 @@ export class EmployeeOptionsComponent {
   @Output() emitFieldCode = new EventEmitter<CustomField>();
   clicked: string = "";
 
-  constructor(public cookieService: CookieService, public systemNavItemService: SystemNav) {
+  constructor(public cookieService: CookieService, public systemNavItemService: SystemNav, private authAccessService: AuthAccessService) {
     if (!this.systemNavItemService.selectedEmployeeMenuItem) {
       this.systemNavItemService.selectedEmployeeMenuItem = "View Employees";
     }
+  }
+
+  hideSideMenuFromJourney(): boolean{
+    return this.authAccessService.isJourney();
   }
 
   displayEmployees(): void {
