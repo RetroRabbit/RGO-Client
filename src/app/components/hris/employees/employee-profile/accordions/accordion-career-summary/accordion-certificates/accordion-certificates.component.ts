@@ -35,8 +35,8 @@ export class AccordionCertificatesComponent {
   isUpdated: boolean = false;
   selectedFile !: File;
   certificatePDFName: String = "";
-  certificateFilename: string = "";
-  certificateFileName = "";
+  // certificateFilename: string = "";
+  certificateFileName: string = "";
   employeeCertitificateDto !: EmployeeCertificates;
   fileUploaded: boolean = false;
   isValidCertificateFileSize = true;
@@ -68,19 +68,35 @@ export class AccordionCertificatesComponent {
     this.employeeCertificateService.getCertificationDetails(this.employeeProfile.id).subscribe({
         next: (data) => {
             this.employeeCertificates = data;
-            if (!this.employeeCertificates || this.employeeCertificates.length === 0) {
-                this.addNewCertificate(); 
-            } else {
-                this.certificateId = this.employeeCertificates[this.employeeCertificates.length - 1].id;
-            }
+            // if (!this.employeeCertificates || this.employeeCertificates.length === 0) {
+            //     this.addNewCertificate(); 
+            // } else {
+            //     this.certificateId = this.employeeCertificates[this.employeeCertificates.length - 1].id;
+            // }
         },
         error: (error) => {
-            if (!this.employeeCertificates || this.employeeCertificates.length === 0) {
-                this.addNewCertificate(); 
-            }
+            // if (!this.employeeCertificates || this.employeeCertificates.length === 0) {
+            //     this.addNewCertificate(); 
+            // }
         }
     });
 }
+
+addNewCertificate() {
+  this.addingCertificate = true;
+  const newCertificate: EmployeeCertificates = {
+    id: 0,
+    issueDate: new Date,
+    issueOrganization: '',
+    certificateName: '',
+    certificateDocument: this.base64String,
+    documentName: '',
+    employeeId: this.employeeProfile.id as number
+  }
+  // this.newCertificateIndex = this.newCertificates.length - 1;
+  this.newCertificates.push(newCertificate);
+}
+
 
   findDifferenceInArrays(): EmployeeCertificates[] {
     let differenceArray: EmployeeCertificates[] = [];
@@ -100,6 +116,7 @@ export class AccordionCertificatesComponent {
     return differenceArray
   }
 
+  // copy what we did for update
   saveCertificateDetails() {
     this.isUpdated = true;
     const total = this.newCertificates.length;
@@ -154,7 +171,7 @@ export class AccordionCertificatesComponent {
       const reader = new FileReader();
       reader.onload = () => {
         this.base64String = reader.result as string;
-        this.certificateForm.patchValue({ 'file': this.base64String });
+        // this.certificateForm.patchValue({ 'file': this.base64String });
       };
       reader.readAsDataURL(this.selectedFile);
     }
@@ -171,19 +188,7 @@ export class AccordionCertificatesComponent {
     fileInput.click();
   }
 
-  fileConverter(file: File, index: number, newOrUpdate: string) {
-    const reader = new FileReader();
-    reader.addEventListener('loadend', () => {
-        this.base64String = reader.result as string;
-        const certificateToUpdate = newOrUpdate === 'update' ? this.copyOfCertificates[index] : this.newCertificates[index];
-        if (certificateToUpdate) {
-            certificateToUpdate.certificateDocument = this.base64String;
-            certificateToUpdate.documentName = file.name;
-        }
-    });
-    reader.readAsDataURL(file);
-}
-
+  
 
   editCertificateDetails() {
     this.editCertificate = true;
@@ -201,6 +206,7 @@ export class AccordionCertificatesComponent {
       this.newCertificates.splice(this.newCertificateIndex, 1);
       this.newCertificateIndex = null;
   }
+  this.newCertificates = [];
   }
 
   copyEmployeeCertificates() {
@@ -208,21 +214,6 @@ export class AccordionCertificatesComponent {
       const copiedCert = JSON.parse(JSON.stringify(certificate));
       this.copyOfCertificates.push(copiedCert);
     });
-  }
-
-  addNewCertificate() {
-    this.addingCertificate = true;
-    const newCertificate: EmployeeCertificates = {
-      id: 0,
-      issueDate: new Date,
-      issueOrganization: '',
-      certificateName: '',
-      certificateDocument: this.base64String,
-      documentName: '',
-      employeeId: this.employeeProfile.id as number
-    }
-    this.newCertificateIndex = this.newCertificates.length - 1;
-    this.newCertificates.push(newCertificate);
   }
 
   removeNewCertificate(index: number) {
@@ -268,9 +259,28 @@ export class AccordionCertificatesComponent {
 
   onFileChange(event: any, index: number, newOrUpdate: string): void {
     if (event.target.files && event.target.files.length) {
+
       this.fileUploaded = true;
       const file = event.target.files[0];
+      // this.certificateFileName = file.name;
       this.fileConverter(file, index, newOrUpdate);
     }
   }
+
+  fileConverter(file: File, index: number, newOrUpdate: string) {
+    const reader = new FileReader();
+    reader.addEventListener('loadend', () => {
+        this.base64String = reader.result as string;
+        if(newOrUpdate == 'update'){
+          this.copyOfCertificates[index].certificateDocument = this.base64String;
+          this.copyOfCertificates[index].documentName =  file.name;
+        }
+        else if(newOrUpdate == 'new'){
+          this.newCertificates[index].certificateDocument = this.base64String;
+          this.newCertificates[index].documentName = file.name;
+        }
+    });
+    reader.readAsDataURL(file);
+  }
+
 }
