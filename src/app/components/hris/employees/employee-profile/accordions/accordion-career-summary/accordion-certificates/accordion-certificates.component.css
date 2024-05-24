@@ -19,6 +19,7 @@
     padding: 0.5rem;
     width: 8rem;
   }
+  
   #actionCellDownload>button.disabledDownload {
     border: 1px solid #e3e3e4ff;
     border-radius: 2rem;
