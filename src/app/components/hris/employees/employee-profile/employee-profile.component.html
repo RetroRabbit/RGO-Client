@@ -368,6 +368,9 @@
 
       <app-accordion-career-work-experience [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile"></app-accordion-career-work-experience>
 
+    <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'" 
+    [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-career-summary-qualifications>
+
     </div>
   </div>
 </div>
