@@ -1,0 +1,129 @@
+#certificate-field {
+    width: 100%;
+}
+
+#actionCellDownload>button {
+    border: 1px solid #0029C6;
+    border-radius: 2rem;
+    background-color: white;
+    color: #0029C6;
+    padding: 0.5rem;
+    width: 8rem;
+  }
+  
+  #actionCellUpload>button {
+    background: #0029c6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    padding: 0.5rem;
+    width: 8rem;
+  }
+  
+  #actionCellDownload>button.disabledDownload {
+    border: 1px solid #e3e3e4ff;
+    border-radius: 2rem;
+    background-color: #e3e3e4ff;
+    color: #ffffff;
+    padding: 0.5rem;
+    width: 8rem;
+  }
+  
+  :host .upload-download-button {
+    width: 100% !important;
+  }
+
+#last-updated {
+    color: #666666ff
+}
+
+#uploadfile:hover {
+    cursor: pointer;
+}
+
+#uploadfile{
+    max-width: 70%;
+}
+
+#pdf-icon {
+    width: 14px;
+    height: 18px;
+}
+
+#add-another-button {
+    background: #0029c6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    padding: 0.5rem;
+    right: 0px;
+    height: 40px;
+    width: 30%;
+}
+
+mat-icon{
+    cursor: pointer;
+}
+
+#add-another-button:disabled{
+    background-color: #ddd;
+    color: #888;
+    cursor: not-allowed;
+}
+
+#delete-icon{
+    color: rgb(217, 63, 63);
+}
+
+#edit-button-width {
+    border: none;
+    border-radius: 2rem;
+    background-color: #D7DFFF;
+    color: #0029C6;
+    width: 170px;
+}
+
+#edit-button-width:disabled{
+    background-color: #ddd;
+    color: #888;
+    cursor: not-allowed;
+}
+
+#upload-document-button{
+    color: #0029C6;
+    margin-left: 10px;
+}
+
+#document-name{
+    gap: 20px;
+    text-align: center;
+    padding: 10px;
+}
+
+.certificate-header {
+    display: flex;
+    align-items: center;
+}
+
+.icon-color{
+    color: red;
+}
+
+.certificate-header h2 {
+    margin: 0; 
+    margin-right: 8px;
+    gap: 20px;
+}
+
+.download-document , .add-qualification , #download-document-button {
+    color: #0029C6
+}
+
+#alignrow{
+    display: flex;
+    flex-direction: row;
+}
+
+#remove-document-button , .remove-document-button{
+    color: red;
+}
