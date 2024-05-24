@@ -33,7 +33,6 @@ export class ConfirmDialogComponent {
   
   ngOnInit() {
     this.onResize();
-    console.log(this.dialogType)
   }
   ngAfterViewInit() {
     if (this.screenWidth > 767) {
