@@ -260,7 +260,6 @@ export class AccordionCertificatesComponent {
 
   onFileChange(event: any, index: number, newOrUpdate: string): void {
     if (event.target.files && event.target.files.length) {
-
       this.fileUploaded = true;
       const file = event.target.files[0];
       this.fileConverter(file, index, newOrUpdate);
