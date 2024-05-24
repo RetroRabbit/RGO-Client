@@ -217,6 +217,7 @@ export class AccordionCertificatesComponent {
       }
     }
   }
+  
   removeNewCertificate(index: number) {
     this.addingCertificate = false;
     this.newCertificates.splice(index, 1);
