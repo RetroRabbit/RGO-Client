@@ -13,7 +13,8 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 d-flex justify-content-end mb-3 mt-3">
-                        <button [disabled]="addingCertificate" mat-button id="edit-button-width" (click)="editCertificateDetails()">
+                        <button [disabled]="addingCertificate" mat-button id="edit-button-width"
+                            (click)="editCertificateDetails()">
                             <mat-icon>edit</mat-icon>Edit Details
                         </button>
                     </div>
@@ -24,7 +25,8 @@
                                     <div class="row d-block">
                                         <div class="certificate-header" *ngIf="editCertificate">
                                             <h3 class="mb-2">{{copyOfCertificates[i].certificateName}}</h3>
-                                            <mat-icon class="icon-color mb-2" (click)="removeExistingCertficate(i)">delete_outline</mat-icon>
+                                            <mat-icon class="icon-color mb-2"
+                                                (click)="removeExistingCertficate(i)">delete_outline</mat-icon>
                                         </div>
                                     </div>
                                     <div class="row d-block">
@@ -33,153 +35,199 @@
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 my-2">
-                                        <mat-form-field appearance="outline" class="w-100" *ngIf="editCertificate; else NoEditName">
+                                        <mat-form-field appearance="outline" class="w-100"
+                                            *ngIf="editCertificate; else NoEditName">
                                             <mat-label>Name of certificate</mat-label>
-                                            <input type="text" matInput placeholder="Name of certificate" [(ngModel)]="copyOfCertificates[i].certificateName" [value]="copyOfCertificates[i].certificateName">
+                                            <input type="text" matInput placeholder="Name of certificate"
+                                                [(ngModel)]="copyOfCertificates[i].certificateName"
+                                                [value]="copyOfCertificates[i].certificateName">
                                         </mat-form-field>
                                         <ng-template #NoEditName>
                                             <mat-form-field appearance="outline" class="w-100">
                                                 <mat-label>Name of certificate</mat-label>
-                                                <input type="text" disabled matInput placeholder="Name of certificate" [(ngModel)]="employeeCertificates[i].certificateName" [value]="employeeCertificates[i].certificateName">
+                                                <input type="text" disabled matInput placeholder="Name of certificate"
+                                                    [(ngModel)]="employeeCertificates[i].certificateName"
+                                                    [value]="employeeCertificates[i].certificateName">
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
                                     <div class="col-12 col-md-6 my-2">
-                                        <mat-form-field appearance="outline" class="w-100" *ngIf="editCertificate; else NoEditOrganization">
+                                        <mat-form-field appearance="outline" class="w-100"
+                                            *ngIf="editCertificate; else NoEditOrganization">
                                             <mat-label>Name of organization</mat-label>
-                                            <input type="text" matInput placeholder="Name of organization" [(ngModel)]="copyOfCertificates[i].issueOrganization" [value]="copyOfCertificates[i].issueOrganization">
+                                            <input type="text" matInput placeholder="Name of organization"
+                                                [(ngModel)]="copyOfCertificates[i].issueOrganization"
+                                                [value]="copyOfCertificates[i].issueOrganization">
                                         </mat-form-field>
                                         <ng-template #NoEditOrganization>
                                             <mat-form-field appearance="outline" class="w-100">
                                                 <mat-label>Name of organization</mat-label>
-                                                <input type="text" disabled matInput placeholder="Name of organization" [(ngModel)]="employeeCertificates[i].issueOrganization" [value]="employeeCertificates[i].issueOrganization">
+                                                <input type="text" disabled matInput placeholder="Name of organization"
+                                                    [(ngModel)]="employeeCertificates[i].issueOrganization"
+                                                    [value]="employeeCertificates[i].issueOrganization">
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
                                     <div class="col-12 col-md-6 my-2">
-                                        <mat-form-field class="w-100" appearance="outline" *ngIf="editCertificate; else NoEditIssueDate">
+                                        <mat-form-field class="w-100" appearance="outline"
+                                            *ngIf="editCertificate; else NoEditIssueDate">
                                             <mat-label>Issue date</mat-label>
-                                            <input matInput [matDatepicker]="picker" placeholder="Issue date" [(ngModel)]="copyOfCertificates[i].issueDate" [value]="copyOfCertificates[i].issueDate">
+                                            <input matInput [matDatepicker]="picker" placeholder="Issue date"
+                                                [(ngModel)]="copyOfCertificates[i].issueDate"
+                                                [value]="copyOfCertificates[i].issueDate">
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-datepicker #picker></mat-datepicker>
                                         </mat-form-field>
+                                        
                                         <ng-template #NoEditIssueDate>
                                             <mat-form-field class="w-100" appearance="outline">
                                                 <mat-label>Issue date</mat-label>
-                                                <input matInput disabled [matDatepicker]="picker" placeholder="Issue date" [(ngModel)]="employeeCertificates[i].issueDate" [value]="employeeCertificates[i].issueDate">
+                                                <input matInput disabled [matDatepicker]="picker"
+                                                    placeholder="Issue date"
+                                                    [(ngModel)]="employeeCertificates[i].issueDate"
+                                                    [value]="employeeCertificates[i].issueDate">
                                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker></mat-datepicker>
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
-                                </div>
-                                <div class="col-12 ms-2">
-                                    <h3 class='ml-1' [ngStyle]="{'color': editCertificate ? 'black' : 'grey'}">Proof of certificate</h3>
-                                </div>
-                                <div class="col-12 col-md-6 my-2 mt-0">
-                                    <!-- <div *ngIf="editCertificate; else NoEditDocument" class="d-flex align-items-start" id="document-name">
-                                     
-                                        <div class="ml-2">
-                                      
-                                            <button mat-button id="upload-document-button" class="py-4" (click)="uploadCertificateFile.click()">
-                                                <mat-icon class="upload-document">upload_alt</mat-icon> Upload Document
-                                            </button>
-                                            <input type="file" #uploadCertificateFile (change)="onFileChange($event, i,'update')" hidden accept=".pdf" />
-                                        </div>
+                                    <div class="col-12 ms-2">
+                                        <h3 class='ml-1' [ngStyle]="{'color': editCertificate ? 'black' : 'grey'}">Proof
+                                            of certificate</h3>
                                     </div>
-                                    <ng-template #NoEditDocument>
-                                        <div class="d-flex align-items-center">
-                                            <span class="ml-3">{{employeeCertificates[i].documentName}}</span>
-                                        <button mat-button id="upload-document-button" class="py-4" (click)="downloadFile(employeeCertificates[i].certificateDocument, employeeCertificates[i].documentName)">
-                                            <mat-icon class="upload-document">save_alt</mat-icon> download Document
+                                    <div id="actionCellDownload" class="col-12 col-md-auto mb-2">
+                                        <button mat-button color="primary"
+                                            (click)="downloadFile(employeeCertificates[i].certificateDocument, employeeCertificates[i].documentName)"
+                                            [disabled]="addingCertificate" 
+                                            [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
+                                            <svg id="svg-icon" width="19" height="19" viewBox="0 0 19 19" fill="white"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <g id="Icons/file_download">
+                                                    <path id="icon"
+                                                        d="M13.9414 11.75V14H4.94141V11.75H3.44141V14C3.44141 14.825 4.11641 15.5 4.94141 15.5H13.9414C14.7664 15.5 15.4414 14.825 15.4414 14V11.75H13.9414ZM13.1914 8.75L12.1339 7.6925L10.1914 9.6275V3.5H8.69141V9.6275L6.74891 7.6925L5.69141 8.75L9.44141 12.5L13.1914 8.75Z"
+                                                        fill="#0029C6" />
+                                                </g>
+                                            </svg>
+                                            Download
                                         </button>
                                     </div>
-                                    </ng-template> -->
-                                    <button [disabled]="addingCertificate" mat-button id="cancel-button" type="submit" (click)="downloadFile(employeeCertificates[i].certificateDocument, employeeCertificates[i].documentName)">
-                                        download
-                                    </button>
-                                    <button  mat-button id="save-button"  (change)="onFileChange($event, i,'update')" accept=".pdf">
-                                        upload
-                                    </button>
+                                    <div id="actionCellUpload" class="col-12 col-md-auto">
+                                        <button type="file" mat-button color="primary" (click)="uploadCertificateFile.click()"
+                                            accept=".pdf" [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
+                                            <svg id="svg-icon-w" width="24" height="24" viewBox="0 0 24 24"
+                                                fill="#e3e3e4ff" xmlns="http://www.w3.org/2000/svg">
+                                                <g id="Icons/file_upload">
+                                                    <path id="icon-w"
+                                                        d="M18 15V18H6V15H4V18C4 19.1 4.9 20 6 20H18C19.1 20 20 19.1 20 18V15H18ZM7 9L8.41 10.41L11 7.83V16H13V7.83L15.59 10.41L17 9L12 4L7 9Z"
+                                                        fill="#FFFFFF" />
+                                                </g>
+                                            </svg>
+                                            Upload
+                                        </button>
+                                        <input type="file" #uploadCertificateFile (chnage)="onFileChange($event, i,'new')" hidden accept=".pdf">
+                                    </div>
+                                </div>
+                                <div *ngFor="let newCertificate of newCertificates; let i = index" class="row">
+                                    <div class="row d-block">
+                                        <div class="certificate-header" *ngIf="addingCertificate">
+                                            <h3 class="mt-3 mb-0">Remove new certificate</h3>
+                                            <mat-icon class="icon-color"
+                                                (click)="removeNewCertificate(i)">delete_outline</mat-icon>
+                                        </div>
+                                    </div>
+                                    <div class="row d-block">
+                                        <div class="certificate-header" *ngIf="!addingCertificate">
+                                            <h3 class="mb-2">{{newCertificates[i].certificateName}}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 my-2">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Name of certificate</mat-label>
+                                            <input type="text" matInput placeholder="Name of certificate"
+                                                [(ngModel)]="newCertificates[i].certificateName"
+                                                [value]="newCertificates[i].certificateName">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-md-6 my-2">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Name of organization</mat-label>
+                                            <input type="text" matInput placeholder="Name of organization"
+                                                [(ngModel)]="newCertificates[i].issueOrganization"
+                                                [value]="newCertificates[i].issueOrganization">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-md-6 my-2">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Issue date</mat-label>
+                                            <input matInput [matDatepicker]="picker" placeholder="Issue date"
+                                                [(ngModel)]="newCertificates[i].issueDate"
+                                                [value]="newCertificates[i].issueDate">
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                <div class="col-7 row">
+                                    <div id="actionCellDownload" class="col-12 col-md-auto mb-2">
+                                        <button mat-button color="primary"
+                                            (click)="downloadFile(employeeCertificates[i].certificateDocument, employeeCertificates[i].documentName)"
+                                            [disabled]="addingCertificate"
+                                            [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
+                                            <svg id="svg-icon" width="19" height="19" viewBox="0 0 19 19" fill="white"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <g id="Icons/file_download">
+                                                    <path id="icon"
+                                                        d="M13.9414 11.75V14H4.94141V11.75H3.44141V14C3.44141 14.825 4.11641 15.5 4.94141 15.5H13.9414C14.7664 15.5 15.4414 14.825 15.4414 14V11.75H13.9414ZM13.1914 8.75L12.1339 7.6925L10.1914 9.6275V3.5H8.69141V9.6275L6.74891 7.6925L5.69141 8.75L9.44141 12.5L13.1914 8.75Z"
+                                                        fill="#0029C6" />
+                                                </g>
+                                            </svg>
+                                            Download
+                                        </button>
+                                        
+                                    </div>
+                                    <div id="actionCellUpload" class="col-12 col-md-auto">
+                                        <button type="file" mat-button color="primary" (click)="uploadCertificateFile.click()"
+                                            accept=".pdf" [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
+                                            <svg id="svg-icon-w" width="24" height="24" viewBox="0 0 24 24"
+                                                fill="#e3e3e4ff" xmlns="http://www.w3.org/2000/svg">
+                                                <g id="Icons/file_upload">
+                                                    <path id="icon-w"
+                                                        d="M18 15V18H6V15H4V18C4 19.1 4.9 20 6 20H18C19.1 20 20 19.1 20 18V15H18ZM7 9L8.41 10.41L11 7.83V16H13V7.83L15.59 10.41L17 9L12 4L7 9Z"
+                                                        fill="#ffffff"/>
+                                                </g>
+                                            </svg>
+                                            Upload
+                                        </button>
+                                        <input type="file" #uploadCertificateFile (chnage)="onFileChange($event, i,'new')" hidden accept=".pdf">
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </div>
                         <hr>
-                        <div *ngFor="let newCertificate of newCertificates; let i = index" class="row">
-                            <div class="row d-block">
-                                <div class="certificate-header" *ngIf="addingCertificate">
-                                    <h3 class="mb-0">Remove new certificate</h3>
-                                    <mat-icon class="icon-color" (click)="removeNewCertificate(i)">delete_outline</mat-icon>
-                                </div>
-                            </div>
-                            <div class="row d-block">
-                                <div class="certificate-header" *ngIf="!addingCertificate">
-                                    <h3 class="mb-2">{{newCertificates[i].certificateName}}</h3>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 my-2">
-                                <mat-form-field appearance="outline" class="w-100">
-                                    <mat-label>Name of certificate</mat-label>
-                                    <input type="text" matInput placeholder="Name of certificate" [(ngModel)]="newCertificates[i].certificateName" [value]="newCertificates[i].certificateName">
-                                </mat-form-field>
-                            </div>
-                            <div class="col-12 col-md-6 my-2">
-                                <mat-form-field appearance="outline" class="w-100">
-                                    <mat-label>Name of organization</mat-label>
-                                    <input type="text" matInput placeholder="Name of organization" [(ngModel)]="newCertificates[i].issueOrganization" [value]="newCertificates[i].issueOrganization">
-                                </mat-form-field>
-                            </div>
-                            <div class="col-12 col-md-6 my-2">
-                                <mat-form-field class="w-100" appearance="outline">
-                                    <mat-label>Issue date</mat-label>
-                                    <input matInput [matDatepicker]="picker" placeholder="Issue date" [(ngModel)]="newCertificates[i].issueDate" [value]="newCertificates[i].issueDate">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-12 col-md-6 my-2">
-                                <!-- <div class="d-flex align-items-start" id="document-name">
-                                    <div class="row certificateFileName">
-                                        <span class="mt-3">{{ newCertificates[i].documentName }}</span>
-                                    </div>
-                                    <div class="ml-2">
-                                        <button mat-button id="upload-document-button" class="py-4" (click)="uploadCertificateFile.click()">
-                                            <mat-icon class="upload-document">save_alt</mat-icon> Upload Document
-                                        </button>
-                                        <input type="file" #uploadCertificateFile (change)="onFileChange($event, i, 'new')" hidden accept=".pdf" />
-                                    </div>
-                                </div> -->
-                                <button  [disabled]="addingCertificate"  mat-button id="cancel-button" type="submit" (click)="downloadFile(employeeCertificates[i].certificateDocument, employeeCertificates[i].documentName)">
-                                    download
-                                </button>
-                                <button  mat-button id="save-button"  (change)="onFileChange($event, i,'new')"  accept=".pdf">
-                                    upload
-                                </button>
-                            </div>
+                        <div *ngIf="editCertificate" class="col d-none d-md-flex" id="edit-buttons">
+                            <button mat-button id="cancel-button" (click)="cancelCertificateDetails()">
+                                Cancel
+                            </button>
+                            <button mat-button id="save-button" type="submit" (click)="updateCertificateDetails()">
+                                Save changes
+                            </button>
+                        </div>
+                        <div *ngIf="addingCertificate" class="col d-none d-md-flex" id="edit-buttons">
+                            <button mat-button id="cancel-button" (click)="cancelCertificateDetails()">
+                                Cancel
+                            </button>
+                            <button mat-button id="save-button" type="submit" (click)="saveCertificateDetails()">
+                                Save changes
+                            </button>
                             <hr>
                         </div>
-                    </div>
-                    <div *ngIf="editCertificate"  class="col d-none d-md-flex" id="edit-buttons">
-                        <button mat-button id="cancel-button" (click)="cancelCertificateDetails()">
-                            Cancel
-                        </button>
-                        <button  mat-button id="save-button" type="submit" (click)="updateCertificateDetails()">
-                            Save changes
-                        </button>
-                    </div>
-                    <div *ngIf="addingCertificate"  class="col d-none d-md-flex" id="edit-buttons">
-                        <button  mat-button id="cancel-button" (click)="cancelCertificateDetails()">
-                            Cancel
-                        </button>
-                        <button  mat-button id="save-button" type="submit" (click)="saveCertificateDetails()">
-                            Save changes
-                        </button>
-                    </div>
-                    <div class="pt-3">
-                        <h2>Add Another New Certificate Here</h2>
-                        <button mat-button id="add-another-button" [disabled]="editCertificate" type="submit" (click)="addNewCertificate()">
-                            <mat-icon>add</mat-icon> Add Another Experience
-                        </button>
+                        <div class="pt-3">
+                            <h2>Add Another New Certificate Here</h2>
+                            <button mat-button id="add-another-button" [disabled]="editCertificate" type="submit"
+                                (click)="addNewCertificate()">
+                                <mat-icon>add</mat-icon> Add Another Experience
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
