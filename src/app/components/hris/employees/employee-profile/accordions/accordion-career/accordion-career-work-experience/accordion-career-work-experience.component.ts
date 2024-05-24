@@ -10,6 +10,7 @@ import { WorkExperience } from 'src/app/models/hris/work-experience.interface';
 import { WorkExperienceService } from 'src/app/services/hris/employee/employee-work-experience.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
+import { ROLES } from 'src/app/models/hris/constants/employee-skills-software-onType.constants';
 
 @Component({
   selector: 'app-accordion-career-work-experience',
@@ -43,27 +44,6 @@ export class AccordionCareerWorkExperienceComponent {
   skillSetList: string[] = [];
   softwareList: string[] = [];
 
-  skillSetListForDeveloper: string[] = ['JavaScript', 'TypeScript', 'Angular', 'React', 'Node.js', 'Python', 'Java', 'C#', 'Ruby', 'Swift', 'Kotlin', 'SQL', 'HTML/CSS'];
-  softwareListForDeveloper: string[] = ['VS Code', 'WebStorm', 'PyCharm', 'Eclipse', 'IntelliJ IDEA', 'Visual Studio', 'Git', 'Docker', 'Jenkins', 'AWS', 'Azure'];
-
-  skillSetListForDesigner: string[] = ['Photoshop', 'Illustrator', 'Figma', 'Sketch', 'Adobe XD', 'InDesign', 'UX/UI Design', 'Graphic Design', 'Web Design', 'Branding', 'Typography', 'Wireframing', 'Prototyping'];
-  softwareListForDesigner: string[] = ['Adobe Photoshop', 'Adobe Illustrator', 'Sketch', 'Figma', 'Adobe XD', 'InDesign', 'CorelDRAW', 'Affinity Designer'];
-
-  skillSetListForScrumMaster: string[] = ['Agile Methodologies', 'Scrum Framework', 'Project Management', 'Team Facilitation', 'Sprint Planning', 'Retrospectives', 'JIRA', 'Confluence', 'Communication', 'Leadership'];
-  softwareListForScrumMaster: string[] = ['JIRA', 'Confluence', 'Trello', 'Asana', 'Microsoft Project', 'Slack', 'Zoom', 'Miro', 'Microsoft Teams'];
-
-  skillSetListForBusinessSupport: string[] = ['Administration', 'Office Management', 'Customer Service', 'Data Entry', 'Scheduling', 'Communication', 'Problem Solving', 'Microsoft Office Suite'];
-  softwareListForBusinessSupport: string[] = ['Microsoft Office (Word, Excel, PowerPoint, Outlook)', 'Google Workspace (Docs, Sheets, Slides, Calendar)', 'Trello', 'Asana', 'Slack', 'Zoom'];
-
-  skillSetListForAccountManager: string[] = ['Sales', 'Customer Relationship Management', 'Negotiation', 'Communication', 'Strategic Planning', 'Product Knowledge', 'CRM Software'];
-  softwareListForAccountManager: string[] = ['Salesforce', 'HubSpot', 'Microsoft Dynamics', 'Zoho CRM', 'Pipedrive', 'Trello', 'Asana', 'Microsoft Office'];
-
-  skillSetListForPeopleChampions: string[] = ['Recruitment', 'Employee Relations', 'Talent Management', 'Performance Management', 'HR Policies', 'Training and Development', 'Communication', 'Conflict Resolution'];
-  softwareListForPeopleChampions: string[] = ['Workday', 'SAP SuccessFactors', 'BambooHR', 'ADP Workforce Now', 'Greenhouse', 'Lever', 'LinkedIn Recruiter', 'Microsoft Office'];
-
-  skillSetListForExecutives: string[] = ['Leadership', 'Strategic Planning', 'Financial Acumen', 'Decision Making', 'Communication', 'Risk Management', 'Negotiation', 'Business Development'];
-  softwareListForExecutives: string[] = ['Microsoft Office (Excel, PowerPoint, Word)', 'Google Workspace', 'Trello', 'Asana', 'Slack', 'Zoom', 'Microsoft Teams', 'SAP', 'Oracle'];
-
   workExperienceForm: FormGroup = this.fb.group({
     clientName: { value: '', disabled: true },
     projectName: { value: '', disabled: true },
@@ -87,6 +67,7 @@ export class AccordionCareerWorkExperienceComponent {
   ngOnInit(): void {
     this.getEmployeeType();
     this.getWorkExperience();
+    console.log(this.workExperienceData);
   }
 
   getEmployeeType() {
@@ -97,32 +78,32 @@ export class AccordionCareerWorkExperienceComponent {
   updateListsBasedOnRole() {
     switch (this.role) {
       case 'Developer':
-        this.skillSetList = this.skillSetListForDeveloper;
-        this.softwareList = this.softwareListForDeveloper;
+        this.skillSetList = ROLES.Developer.skillSetList;
+        this.softwareList = ROLES.Developer.softwareList;
         break;
       case 'Designer':
-        this.skillSetList = this.skillSetListForDesigner;
-        this.softwareList = this.softwareListForDesigner;
+        this.skillSetList = ROLES.Designer.skillSetList;
+        this.softwareList = ROLES.Designer.softwareList;
         break;
       case 'Scrum Master':
-        this.skillSetList = this.skillSetListForScrumMaster;
-        this.softwareList = this.softwareListForScrumMaster;
+        this.skillSetList = ROLES.ScrumMaster.skillSetList;
+        this.softwareList = ROLES.ScrumMaster.softwareList;
         break;
       case 'Business Support':
-        this.skillSetList = this.skillSetListForBusinessSupport;
-        this.softwareList = this.softwareListForBusinessSupport;
+        this.skillSetList = ROLES.BusinessSupport.skillSetList;
+        this.softwareList = ROLES.BusinessSupport.softwareList;
         break;
       case 'Account Manager':
-        this.skillSetList = this.skillSetListForAccountManager;
-        this.softwareList = this.softwareListForAccountManager;
+        this.skillSetList = ROLES.AccountManager.skillSetList;
+        this.softwareList = ROLES.AccountManager.softwareList;
         break;
       case 'People Champion':
-        this.skillSetList = this.skillSetListForPeopleChampions;
-        this.softwareList = this.softwareListForPeopleChampions;
+        this.skillSetList = ROLES.PeopleChampion.skillSetList;
+        this.softwareList = ROLES.PeopleChampion.softwareList;
         break;
       case 'Executive':
-        this.skillSetList = this.skillSetListForExecutives;
-        this.softwareList = this.softwareListForExecutives;
+        this.skillSetList = ROLES.Executive.skillSetList;
+        this.softwareList = ROLES.Executive.softwareList;
         break;
       default:
         this.skillSetList = ["No skill set available for this employee type"];
