@@ -5,7 +5,6 @@ import { EmployeeSalary } from 'src/app/models/hris/employee-salary.interface';
 import { EmployeeSalaryService } from 'src/app/services/hris/employee/employee-salary.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { error } from 'console';
 
 @Component({
   selector: 'app-accordion-salary-details',
@@ -24,9 +23,10 @@ export class AccordionSalaryDetailsComponent {
   @Input() employeeProfile!: EmployeeProfile | SimpleEmployee;
 
   panelOpenState: boolean = false;
-  employeeSalaryDetailsDto: any;
+  employeeSalaryDetailsDto!: any;
   employeeSalary: EmployeeSalary = {};
   editSalary: boolean = false;
+  message: string = "";
 
   salaryDetailsForm: FormGroup = this.fb.group({
     remuneration: [{ value: '', disable: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]]
@@ -53,8 +53,7 @@ export class AccordionSalaryDetailsComponent {
     this.employeeSalaryService.getEmployeeSalary(this.employeeProfile.id as number).subscribe({
       next: data => {
         this.employeeSalary = data;
-        console.log(this.employeeProfile.id);
-        console.log(this.employeeSalary);
+        this.getDate();
       },
       error: (error) => {
         this.snackBarService.showSnackbar("Error fetching salary details", "snack-error");
@@ -62,26 +61,37 @@ export class AccordionSalaryDetailsComponent {
     })
   }
 
+  getDate() {
+    let updateDate = this.employeeSalary.salaryUpdateDate;
+    let day = new Date(updateDate as Date).getDate();
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"];
+    let month = monthNames[new Date(updateDate as Date).getMonth()];
+    let year = new Date(updateDate as Date).getFullYear();
+    this.message = day + " " + month + " " + " " + year;
+  }
+
   saveEmployeeSalaryDetails() {
     if (this.salaryDetailsForm.valid) {
       this.editSalary = false;
       const salaryDetailsFormValue = this.salaryDetailsForm.value;
       this.employeeSalaryDetailsDto = {
+        employeeId: this.employeeProfile.id,
         id: this.employeeSalary.id,
-        employeeId: this.employeeSalary.employeeId,
         salary: this.employeeSalary.salary,
         minSalary: this.employeeSalary.minSalary,
         maxSalary: this.employeeSalary.maxSalary,
         remuneration: salaryDetailsFormValue.remuneration,
         band: this.employeeSalary.band,
         contribution: this.employeeSalary.contribution,
-        lastUpdateDate: Date.now()
+        salaryUpdateDate: this.employeeSalary.salaryUpdateDate
       }
       this.employeeSalaryService.updateEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Banking details updated", "snack-success");
+          this.snackBarService.showSnackbar("Salary details updated", "snack-success");
           this.editSalary = false;
           this.salaryDetailsForm.disable();
+          this.getDate();
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");

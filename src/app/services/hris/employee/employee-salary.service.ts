@@ -19,11 +19,11 @@ export class EmployeeSalaryService {
     }
 
     getAllEmployeeSalaries(): Observable<EmployeeSalary[]> {
-        return this.httpClient.get<EmployeeSalary[]>(`${this.baseUrl}`);
+        return this.httpClient.get<EmployeeSalary[]>(`${this.baseUrl}/all`);
     }
 
     getEmployeeSalary(employeeId: number): Observable<EmployeeSalary> {
-        return this.httpClient.get<EmployeeSalary>(`${this.baseUrl}?employeeId=${employeeId}`);
+        return this.httpClient.get<EmployeeSalary>(`${this.baseUrl}/${employeeId}`);
     }
 
     saveEmployeeSalary(employeeSalary: any): Observable<EmployeeSalary> {
