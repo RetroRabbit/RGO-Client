@@ -6,5 +6,6 @@ export interface EmployeeSalary {
     maxSalary?: number,
     remuneration?: number,
     band?: number,
-    contribution?: string
+    contribution?: string,
+    salaryUpdateDate?: Date;
 }
