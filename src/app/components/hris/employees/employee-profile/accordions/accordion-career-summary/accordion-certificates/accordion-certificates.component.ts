@@ -91,7 +91,6 @@ export class AccordionCertificatesComponent {
     this.newCertificates.push(newCertificate);
   }
 
-
   findDifferenceInArrays(): EmployeeCertificates[] {
     let differenceArray: EmployeeCertificates[] = [];
 
@@ -156,7 +155,6 @@ export class AccordionCertificatesComponent {
       }
     });
   }
-
 
   uploadFile() {
     if (this.selectedFile) {
@@ -224,7 +222,6 @@ export class AccordionCertificatesComponent {
     this.addingCertificate = false;
     this.newCertificates.splice(index, 1);
   }
-
 
   removeExistingCertficate(index: number) {
     const certificateId = this.copyOfCertificates[index].id;
