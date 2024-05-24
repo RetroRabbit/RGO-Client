@@ -5,7 +5,6 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
 import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
-import { error } from 'console';
 import { forkJoin } from 'rxjs';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 
@@ -35,10 +34,8 @@ export class AccordionCertificatesComponent {
   addingCertificate: boolean = false;
   isUpdated: boolean = false;
   showConfirmDialog: boolean = false;
-
   selectedFile !: File;
   certificatePDFName: String = "";
-  // certificateFilename: string = "";
   certificateFileName: string = "";
   employeeCertitificateDto !: EmployeeCertificates;
   fileUploaded: boolean = false;
@@ -47,9 +44,7 @@ export class AccordionCertificatesComponent {
   isValidCertificateFile = true;
   base64String: string = "";
   removeNewOrUpdate: string = '';
-
   removeIndex: number = 0;
-
   newCertificateIndex: number | null = null;
 
   copyOfCertificates: EmployeeCertificates[] = [];
@@ -81,36 +76,27 @@ export class AccordionCertificatesComponent {
 
   getEmployeeCertificate() {
     this.employeeCertificateService.getCertificationDetails(this.employeeProfile.id).subscribe({
-        next: (data) => {
-            this.employeeCertificates = data;
-            // if (!this.employeeCertificates || this.employeeCertificates.length === 0) {
-            //     this.addNewCertificate(); 
-            // } else {
-            //     this.certificateId = this.employeeCertificates[this.employeeCertificates.length - 1].id;
-            // }
-        },
-        error: (error) => {
-            // if (!this.employeeCertificates || this.employeeCertificates.length === 0) {
-            //     this.addNewCertificate(); 
-            // }
-        }
+      next: (data) => {
+        this.employeeCertificates = data;
+      },
+      error: (error) => {
+      }
     });
-}
-
-addNewCertificate() {
-  this.addingCertificate = true;
-  const newCertificate: EmployeeCertificates = {
-    id: 0,
-    issueDate: new Date,
-    issueOrganization: '',
-    certificateName: '',
-    certificateDocument: this.base64String,
-    documentName: '',
-    employeeId: this.employeeProfile.id as number
   }
-  // this.newCertificateIndex = this.newCertificates.length - 1;
-  this.newCertificates.push(newCertificate);
-}
+
+  addNewCertificate() {
+    this.addingCertificate = true;
+    const newCertificate: EmployeeCertificates = {
+      id: 0,
+      issueDate: new Date,
+      issueOrganization: '',
+      certificateName: '',
+      certificateDocument: this.base64String,
+      documentName: '',
+      employeeId: this.employeeProfile.id as number
+    }
+    this.newCertificates.push(newCertificate);
+  }
 
 
   findDifferenceInArrays(): EmployeeCertificates[] {
@@ -131,7 +117,6 @@ addNewCertificate() {
     return differenceArray
   }
 
-  // copy what we did for update
   saveCertificateDetails() {
     this.isUpdated = true;
     const total = this.newCertificates.length;
@@ -162,7 +147,7 @@ addNewCertificate() {
 
   updateCertificateDetails() {
     this.isUpdated = true;
-    this.editCertificate = false; 
+    this.editCertificate = false;
     const editedCertificatesArray = this.findDifferenceInArrays();
 
     const updateObservables = editedCertificatesArray.map(certificate =>
@@ -186,7 +171,6 @@ addNewCertificate() {
       const reader = new FileReader();
       reader.onload = () => {
         this.base64String = reader.result as string;
-        // this.certificateForm.patchValue({ 'file': this.base64String });
       };
       reader.readAsDataURL(this.selectedFile);
     }
@@ -203,8 +187,6 @@ addNewCertificate() {
     fileInput.click();
   }
 
-  
-
   editCertificateDetails() {
     this.editCertificate = true;
     this.certificateForm.enable();
@@ -220,8 +202,8 @@ addNewCertificate() {
     if (this.newCertificateIndex !== null) {
       this.newCertificates.splice(this.newCertificateIndex, 1);
       this.newCertificateIndex = null;
-  }
-  this.newCertificates = [];
+    }
+    this.newCertificates = [];
   }
 
   copyEmployeeCertificates() {
@@ -231,22 +213,22 @@ addNewCertificate() {
     });
   }
 
-  showDialog(newOrUpdate : string, index : number){
+  showDialog(newOrUpdate: string, index: number) {
     this.removeNewOrUpdate = newOrUpdate;
     this.removeIndex = index;
     this.showConfirmDialog = true;
   }
 
-  dialogFeedBack(confirmation : boolean) {
+  dialogFeedBack(confirmation: boolean) {
     this.showConfirmDialog = false;
-   if(confirmation){
-    if(this.removeNewOrUpdate == 'update'){
-      this.removeExistingCertficate(this.removeIndex);
+    if (confirmation) {
+      if (this.removeNewOrUpdate == 'update') {
+        this.removeExistingCertficate(this.removeIndex);
+      }
+      else {
+        this.removeNewCertificate(this.removeIndex);
+      }
     }
-    else { 
-      this.removeNewCertificate(this.removeIndex);
-    }
-   } 
   }
   removeNewCertificate(index: number) {
     this.addingCertificate = false;
@@ -257,18 +239,17 @@ addNewCertificate() {
   removeExistingCertficate(index: number) {
     const certificateId = this.copyOfCertificates[index].id;
     this.employeeCertificateService.deleteCertificate(certificateId).subscribe({
-        next: () => {
-            this.snackBarService.showSnackbar("Certificate deleted", "snack-success");
-            this.copyOfCertificates.splice(index, 1);
-            this.employeeCertificates.splice(index, 1);
-            this.editCertificate = false;
-        },
-        error: (error) => {
-            this.snackBarService.showSnackbar("Unable to delete", "snack-error");
-        }
+      next: () => {
+        this.snackBarService.showSnackbar("Certificate deleted", "snack-success");
+        this.copyOfCertificates.splice(index, 1);
+        this.employeeCertificates.splice(index, 1);
+        this.editCertificate = false;
+      },
+      error: (error) => {
+        this.snackBarService.showSnackbar("Unable to delete", "snack-error");
+      }
     });
-}
-
+  }
 
   downloadFile(base64String: string, fileName: string) {
     const commaIndex = base64String.indexOf(',');
@@ -295,7 +276,6 @@ addNewCertificate() {
 
       this.fileUploaded = true;
       const file = event.target.files[0];
-      // this.certificateFileName = file.name;
       this.fileConverter(file, index, newOrUpdate);
     }
   }
@@ -303,18 +283,16 @@ addNewCertificate() {
   fileConverter(file: File, index: number, newOrUpdate: string) {
     const reader = new FileReader();
     reader.addEventListener('loadend', () => {
-        this.base64String = reader.result as string;
-        if(newOrUpdate == 'update'){
-          this.copyOfCertificates[index].certificateDocument = this.base64String;
-          this.copyOfCertificates[index].documentName =  file.name;
-        }
-        else if(newOrUpdate == 'new'){
-          this.newCertificates[index].certificateDocument = this.base64String;
-          this.newCertificates[index].documentName = file.name;
-        }
+      this.base64String = reader.result as string;
+      if (newOrUpdate == 'update') {
+        this.copyOfCertificates[index].certificateDocument = this.base64String;
+        this.copyOfCertificates[index].documentName = file.name;
+      }
+      else if (newOrUpdate == 'new') {
+        this.newCertificates[index].certificateDocument = this.base64String;
+        this.newCertificates[index].documentName = file.name;
+      }
     });
     reader.readAsDataURL(file);
   }
-
-  
 }
