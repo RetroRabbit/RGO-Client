@@ -36,7 +36,7 @@ export interface EmployeeProfile {
   salaryDays?: number, 
   payRate?: number, 
   salary?: Number,
-  clientAllocated?: string,
+  clientAllocated?: number,
   teamLead?: number,
   physicalAddress?: EmployeeAddress,
   postalAddress?: EmployeeAddress,
