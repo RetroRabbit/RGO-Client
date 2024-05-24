@@ -69,7 +69,7 @@ export class AccordionProfileEmployeeDetailsComponent {
       surname: [ this.employeeProfile!.employeeDetails.surname, [ Validators.required,
       Validators.pattern(this.sharedAccordionFunctionality.namePattern) ] ],
       initials: [ this.employeeProfile!.employeeDetails.initials, [ Validators.pattern(this.sharedAccordionFunctionality.initialsPattern) ] ],
-      clientAllocated: this.employeeProfile!.employeeDetails.clientAllocated,
+      clientAllocated: this.usingProfile ? this.employeeProfile!.employeeDetails.clientAllocated : this.employeeProfile!.simpleEmployee.clientAllocatedName,
       employeeType: this.employeeProfile!.employeeDetails.employeeType!.name,
       level: this.employeeProfile!.employeeDetails.level,
       teamLead: this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
