@@ -60,15 +60,15 @@ export class SideNavComponent {
   }
 
   ngOnInit() {
-    this.initialiseNavbar();
-    if(!this.authAccessService.isEmployee()){
-    this.employeeService.getTotalEmployees().subscribe({
-      next: (numEmployees: number) => {
+    if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() ||this.authAccessService.isTalent()){
+      this.employeeService.getTotalEmployees().subscribe({
+      next: (numEmployees : number) => {
         this.totalNumberOfEmployees = numEmployees;
       },
     })};
+    this.initialiseNavbar();
   }
-
+  
   initialiseNavbar(){
     this.showSideNav = false;
   }
