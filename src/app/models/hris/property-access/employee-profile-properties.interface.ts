@@ -37,6 +37,15 @@ export interface EmployeeProfilePermissions {
   postalAddress: boolean,
   houseNo: boolean,
   emergencyContactName: boolean,
-  emergencyContactNo: boolean
+  emergencyContactNo: boolean,
+  highestQualification: boolean,
+  school: boolean,
+  degree: boolean,
+  fieldOfStudy: boolean,
+  year: boolean,
+  nqfLevel: boolean,
+  downloadDocument: boolean,
+  addAnotherQualification: boolean,
+  editQualification: boolean,
   [key: string]: boolean;
 }

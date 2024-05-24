@@ -53,7 +53,17 @@ export class SharedPropertyAccessService {
         postalAddress: true,
         houseNo: true,
         emergencyContactName: true,
-        emergencyContactNo: true
+        emergencyContactNo: true,
+        highestQualification : true,
+        school : true,
+        degree : true,
+        fieldOfStudy : true,
+        year : true ,
+        nqfLevel : true ,
+        proofOfQualification: true,
+        downloadDocument : true ,
+        addAnotherQualification : true,
+        editQualification : true ,
     };
 
     public employeeAddressPermissions: EmployeeAddressPermissions = {

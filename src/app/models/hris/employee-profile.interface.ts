@@ -1,4 +1,5 @@
 import { EmployeeAddress } from "./employee-address.interface";
+import { EmployeeQualifications } from "./employee-qualifications.interface";
 
 export interface EmployeeProfile {
   id?: number,
@@ -41,5 +42,6 @@ export interface EmployeeProfile {
   postalAddress?: EmployeeAddress,
   houseNo?: string,
   emergencyContactName?: string,
-  emergencyContactNo?: string
+  emergencyContactNo?: string,
+  qualifications? : EmployeeQualifications
 }
