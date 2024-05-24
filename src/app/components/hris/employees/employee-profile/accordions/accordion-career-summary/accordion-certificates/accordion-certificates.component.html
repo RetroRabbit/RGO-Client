@@ -1,3 +1,4 @@
+<app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData" (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
 <div class="col-12" id="accordion-container">
     <mat-accordion id="accordion" class="row">
         <mat-expansion-panel class="mt-3 rounded-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
@@ -26,8 +27,11 @@
                                         <div class="certificate-header" *ngIf="editCertificate">
                                             <h3 class="mb-2">{{copyOfCertificates[i].certificateName}}</h3>
                                             <mat-icon class="icon-color mb-2"
-                                                (click)="removeExistingCertficate(i)">delete_outline</mat-icon>
+                                                (click)="showDialog('update',i)">delete_outline</mat-icon>
+                                            <!-- <mat-icon class="icon-color mb-2"
+                                                (click)="removeExistingCertficate(i)">delete_outline</mat-icon> -->
                                         </div>
+                                        
                                     </div>
                                     <div class="row d-block">
                                         <div class="certificate-header" *ngIf="!editCertificate">
@@ -129,13 +133,13 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
+                      
                         <div *ngFor="let newCertificate of newCertificates; let i = index" class="row">
                             <div class="row d-block">
                                 <div class="certificate-header" *ngIf="addingCertificate">
-                                    <h3 class="mt-3 mb-0">Remove new certificate</h3>
+                                    <h3 class=" mb-0">Remove new certificate</h3>
                                     <mat-icon class="icon-color"
-                                        (click)="removeNewCertificate(i)">delete_outline</mat-icon>
+                                        (click)="showDialog('new',i)">delete_outline</mat-icon>
                                 </div>
                             </div>
                             <div class="row d-block">

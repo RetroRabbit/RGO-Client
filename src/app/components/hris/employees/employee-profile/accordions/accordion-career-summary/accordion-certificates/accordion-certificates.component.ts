@@ -7,6 +7,7 @@ import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.
 import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
 import { error } from 'console';
 import { forkJoin } from 'rxjs';
+import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 
 @Component({
   selector: 'app-accordion-certificates',
@@ -33,6 +34,8 @@ export class AccordionCertificatesComponent {
   editCertificate: boolean = false;
   addingCertificate: boolean = false;
   isUpdated: boolean = false;
+  showConfirmDialog: boolean = false;
+
   selectedFile !: File;
   certificatePDFName: String = "";
   // certificateFilename: string = "";
@@ -43,10 +46,22 @@ export class AccordionCertificatesComponent {
   hasUpdatedCertificateData: boolean = false;
   isValidCertificateFile = true;
   base64String: string = "";
+  removeNewOrUpdate: string = '';
+
+  removeIndex: number = 0;
+
   newCertificateIndex: number | null = null;
 
   copyOfCertificates: EmployeeCertificates[] = [];
   newCertificates: EmployeeCertificates[] = [];
+
+  dialogTypeData: Dialog = {
+    type: 'confirm',
+    title: 'Delete certificate',
+    subtitle: 'Are you sure you want to delete?',
+    confirmButtonText: 'Delete',
+    denyButtonText: "Cancel"
+  };
 
   certificateForm: FormGroup = this.fb.group({
     CertificateName: [{ value: '', disabled: true }, Validators.required],
@@ -216,10 +231,28 @@ addNewCertificate() {
     });
   }
 
+  showDialog(newOrUpdate : string, index : number){
+    this.removeNewOrUpdate = newOrUpdate;
+    this.removeIndex = index;
+    this.showConfirmDialog = true;
+  }
+
+  dialogFeedBack(confirmation : boolean) {
+    this.showConfirmDialog = false;
+   if(confirmation){
+    if(this.removeNewOrUpdate == 'update'){
+      this.removeExistingCertficate(this.removeIndex);
+    }
+    else { 
+      this.removeNewCertificate(this.removeIndex);
+    }
+   } 
+  }
   removeNewCertificate(index: number) {
     this.addingCertificate = false;
     this.newCertificates.splice(index, 1);
   }
+
 
   removeExistingCertficate(index: number) {
     const certificateId = this.copyOfCertificates[index].id;
@@ -283,4 +316,5 @@ addNewCertificate() {
     reader.readAsDataURL(file);
   }
 
+  
 }
