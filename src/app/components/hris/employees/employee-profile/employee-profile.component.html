@@ -365,6 +365,9 @@
       (updateDocument)="updateDocumentProgress($event)"></app-accordion-my-documents>
     <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"></app-accordion-additional-documents>
 
+    <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'" 
+    [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-career-summary-qualifications>
+
     </div>
   </div>
 </div>

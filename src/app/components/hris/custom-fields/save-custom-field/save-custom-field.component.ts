@@ -25,7 +25,7 @@ export class SaveCustomFieldComponent {
   isArchiveClicked: boolean = false;
   fieldCodeCapture: string = "";
   selectedOption: string = "";
-  selectedOptionType: string = "";
+  selectedOptionType: number = -1;
   showAdvanced: boolean = false;
   showTypeFields: boolean = false;
   showDocumentFields: boolean = false;
@@ -36,7 +36,6 @@ export class SaveCustomFieldComponent {
   isRequired: boolean = false;
   PREVIOUS_PAGE = "previousPage";
   optionsValid: boolean = true;
-
   customFieldForm: FormGroup = this.fb.group({
     code: ['', Validators.required],
     name: ['', [Validators.required]],
@@ -87,12 +86,12 @@ export class SaveCustomFieldComponent {
 
   addOption() {
     this.options.push(this.fb.control(''));
-    this.checkSelectedOption(5);
+    this.onValueChange()
   }
 
   removeOption(index: number) {
     this.options.removeAt(index);
-    this.checkSelectedOption(5);
+    this.onValueChange()
   }
 
   onSubmit() {
@@ -179,23 +178,12 @@ export class SaveCustomFieldComponent {
     });
   }
 
-  checkSelectedOption(e: any) {
-    this.selectedType = this.selectedCustomField?.type;
-    if (this.selectedType === null) {
-      this.optionsValid = true
-    }
-    else {
-      this.optionsValid = false
-    }
-  }
-
   isDisabled() {
     this.defaultDocumentsection = true;
     return this.showTypeFields;
   }
 
   isDisabledDocuments() {
-    this.selectedType = this.selectedCustomField?.type;
     this.defaultDocumentsection = false;
     return this.showDocumentFields;
   }
@@ -206,19 +194,22 @@ export class SaveCustomFieldComponent {
     this.defaultDocumentType = false;
   }
 
+  OnRadioChange(e: MatRadioChange) {
+    this.checkFields();
+  }
+
   checkOptionDocuments(option: any) {
+    this.selectedOptionType = 5;
     this.showDocumentFields = true;
     this.showTypeFields = false;
     this.defaultDocumentType = true;
-    this.optionsValid = false;
+    this.checkFields();
   }
 
-  onRadioChange(): void {
-    if (this.selectedOption && this.fieldCodeCapture) {
-      this.optionsValid = false;
-    }
-    else {
-      this.optionsValid = true;
-    }
+  checkFields(): void {
+    this.optionsValid = this.fieldCodeCapture ? false : true;
+  }
+  onValueChange(): void {
+    this.optionsValid = this.selectedOption && this.fieldCodeCapture && this.selectedOptionType ? false : true;
   }
 }
