@@ -1,5 +1,4 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
@@ -72,6 +71,7 @@ export class AccordionCertificatesComponent {
         this.employeeCertificates = data;
       },
       error: (error) => {
+        this.snackBarService.showSnackbar(error,"Failed to fetch certificates");
       }
     });
   }
