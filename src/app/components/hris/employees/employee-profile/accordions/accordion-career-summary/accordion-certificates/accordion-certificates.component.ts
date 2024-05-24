@@ -58,7 +58,6 @@ export class AccordionCertificatesComponent {
   };
 
   constructor(
-    private fb: FormBuilder,
     private snackBarService: SnackbarService,
     private employeeCertificateService: EmployeeCertificatesService
   ) { }
