@@ -19,12 +19,12 @@ import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/
 @Component({
   selector: 'app-accordion-career-additional-information',
   templateUrl: './accordion-career-additional-information.component.html',
-  styleUrls: ['./accordion-career-additional-information.component.css']
+  styleUrls: [ './accordion-career-additional-information.component.css' ]
 })
 export class AccordionCareerAdditionalInformationComponent {
   screenWidth = window.innerWidth;
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize', [ '$event' ])
   usingProfile: boolean = true;
 
   onResize() {
@@ -56,7 +56,7 @@ export class AccordionCareerAdditionalInformationComponent {
     this.getEmployeeData();
   }
 
-  initializeForm(){}
+  initializeForm() { }
   getEmployeeFields() {
     this.sharedAccordionFunctionality.employeePhysicalAddress = this.employeeProfile.employeeDetails.physicalAddress!;
     this.sharedAccordionFunctionality.employeePostalAddress = this.employeeProfile.employeeDetails.postalAddress!;
@@ -105,12 +105,12 @@ export class AccordionCareerAdditionalInformationComponent {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employees = data;
-        this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
-        this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
+        this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
+        this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
         this.clientService.getAllClients().subscribe({
           next: data => {
             this.sharedAccordionFunctionality.clients = data;
-            this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
+            this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
           }
         });
       }
@@ -124,7 +124,7 @@ export class AccordionCareerAdditionalInformationComponent {
   }
 
   getEmployeeClient(clientId: string) {
-    this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
+    this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
   }
 
   getEmployeeTypes() {
@@ -138,7 +138,7 @@ export class AccordionCareerAdditionalInformationComponent {
   getEmployeeFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
-        this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[2].id);
+        this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[ 2 ].id);
         this.checkAdditionalInformation();
         this.sharedAccordionFunctionality.checkCareerAdditionalFormProgress();
         this.sharedAccordionFunctionality.totalProfileProgress();
@@ -151,10 +151,10 @@ export class AccordionCareerAdditionalInformationComponent {
     this.customFields.forEach(fieldName => {
       if (fieldName.code != null || fieldName.code != undefined) {
         const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
-        formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
+        formGroupConfig[ fieldName.code ] = new FormControl({ value: customData[ 0 ] ? customData[ 0 ].value : '', disabled: true });
         this.sharedAccordionFunctionality.additionalCareerInfoForm = this.fb.group(formGroupConfig);
         if (fieldName.required == true) {
-          this.sharedAccordionFunctionality.additionalCareerInfoForm.controls[fieldName.code].setValidators(Validators.required);
+          this.sharedAccordionFunctionality.additionalCareerInfoForm.controls[ fieldName.code ].setValidators(Validators.required);
         }
         this.sharedAccordionFunctionality.additionalCareerInfoForm.disable();
       }
@@ -173,7 +173,6 @@ export class AccordionCareerAdditionalInformationComponent {
   }
 
   saveAdditionalEdit() {
-    this.getEmployeeData();
     const empDataValues = this.sharedAccordionFunctionality.employeeData;
     for (const fieldcode of this.customFields) {
       const found = empDataValues.find((data) => {
@@ -225,7 +224,14 @@ export class AccordionCareerAdditionalInformationComponent {
           this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
         }
       }
+
     }
+    const id = this.employeeProfile.employeeDetails.id ? this.employeeProfile.employeeDetails.id : this.employeeProfile.simpleEmployee.id;
+    this.employeeDataService.getEmployeeData(id).subscribe({
+      next: data => {
+        this.sharedAccordionFunctionality.employeeData = data;
+      }
+    });
   }
 
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
@@ -238,17 +244,17 @@ export class AccordionCareerAdditionalInformationComponent {
           case PropertyAccessLevel.none:
             if (!initialLoad)
               control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
+            this.sharedPropertyAccessService.employeeProfilePermissions[ fieldName ] = false;
             break;
           case PropertyAccessLevel.read:
             if (!initialLoad)
               control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+            this.sharedPropertyAccessService.employeeProfilePermissions[ fieldName ] = true;
             break;
           case PropertyAccessLevel.write:
             if (!initialLoad)
               control.enable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+            this.sharedPropertyAccessService.employeeProfilePermissions[ fieldName ] = true;
             break;
           default:
             if (!initialLoad)

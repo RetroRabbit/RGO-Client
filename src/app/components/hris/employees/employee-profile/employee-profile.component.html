@@ -345,8 +345,7 @@
       <app-accordion-profile-address-details *ngIf="selectedAccordion === 'Profile Details'"
       [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-address-details>
       <app-accordion-profile-additional *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
-      [employeeData]="employeeData"></app-accordion-profile-additional>
+      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-additional>
 
       <app-accordion-career-additional-information [hidden]="selectedAccordion != 'Career Summary'"
       [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-career-additional-information>

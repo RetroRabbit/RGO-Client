@@ -31,7 +31,6 @@ export class AccordionProfileAdditionalComponent {
     this.screenWidth = window.innerWidth;
   }
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
-  @Input() employeeData: EmployeeData[] = [];
 
   customFields: CustomField[] = [];
   additionalFormProgress: number = 0;
@@ -54,8 +53,7 @@ export class AccordionProfileAdditionalComponent {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.getEmployeeFields();
     this.getClients();
-    console.log(this.employeeData);
-    // this.getEmployeeData();
+    this.getEmployeeData();
   }
   initializeForm() { }
 
@@ -64,7 +62,6 @@ export class AccordionProfileAdditionalComponent {
     this.sharedAccordionFunctionality.employeePostalAddress = this.employeeProfile.employeeDetails.postalAddress!;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile.employeeDetails.disability;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
-    // this.getEmployeeData();
     this.getEmployeeTypes();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
@@ -81,7 +78,7 @@ export class AccordionProfileAdditionalComponent {
           this.sharedAccordionFunctionality.hasDisability = data.disability;
           this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
         }, complete: () => {
-          // this.getEmployeeData();
+          this.getEmployeeData();
           this.getEmployeeTypes();
           if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
             this.getAllEmployees();
@@ -177,10 +174,8 @@ export class AccordionProfileAdditionalComponent {
   }
 
   saveAdditionalEdit() {
-    // this.getEmployeeData();
-    // const empDataValues = this.employeeData;
     for (const fieldcode of this.customFields) {
-      const found = this.employeeData.find((data) => {
+      const found = this.sharedAccordionFunctionality.employeeData.find((data) => {
         return fieldcode.id === data.fieldCodeId
       });
 
@@ -231,6 +226,12 @@ export class AccordionProfileAdditionalComponent {
         }
       }
     }
+    const id = this.employeeProfile.employeeDetails.id ? this.employeeProfile.employeeDetails.id : this.employeeProfile.simpleEmployee.id;
+    this.employeeDataService.getEmployeeData(id).subscribe({
+      next: data => {
+        this.sharedAccordionFunctionality.employeeData = data;
+      }
+    });
   }
 
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {

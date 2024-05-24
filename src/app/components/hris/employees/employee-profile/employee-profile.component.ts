@@ -73,8 +73,6 @@ export class EmployeeProfileComponent implements OnChanges {
   clientId? = null;
   peopleChampionId = null;
   client: string = '';
-  employeeDataDto!: EmployeeData;
-  employeeData: EmployeeData[] = [];
   previousPage: string = '';
   currentPage: string = '';
 
@@ -160,7 +158,6 @@ export class EmployeeProfileComponent implements OnChanges {
     this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employeeData = data;
-        this.employeeData = data;
       }
     });
   }
