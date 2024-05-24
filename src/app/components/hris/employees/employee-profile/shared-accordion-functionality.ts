@@ -14,6 +14,8 @@ import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { Document } from 'src/app/models/hris/constants/admin-documents.component';
+import { EmployeeDocuments } from 'src/app/models/hris/constants/employee-documents.constants';
+
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 
 @Injectable({
@@ -42,9 +44,9 @@ export class SharedAccordionFunctionality {
   clientId: number | undefined;
   peopleChampionId: number | undefined;
 
-  fileCategories = Document;
+  fileAdminCategories = Document;
   fileEmployeeCategories = Document;
-
+  fileStarterKitCategories = Document;
 
   panelOpenState: boolean = false;
   physicalEqualPostal: boolean = true;
@@ -75,6 +77,7 @@ export class SharedAccordionFunctionality {
 
   AllDocumentsProgress: number = 0;
   AllEmployeeDocumentsProgress: number = 0;
+  documentStarterKitFormProgress: number = 0;
   employeeFormProgress: number = 0;
   personalFormProgress: number = 0;
   contactFormProgress: number = 0;
@@ -232,7 +235,6 @@ export class SharedAccordionFunctionality {
   }
 
   checkAdditionalFormProgress() {
-
     let filledCount = 0;
     const formControls = this.additionalInfoForm.controls;
     let totalFields = Object.keys(this.additionalInfoForm.controls).length;
@@ -251,12 +253,36 @@ export class SharedAccordionFunctionality {
   calculateEmployeeDocumentProgress() {
     const total = this.fileEmployeeCategories.length;
     console.log("total files", this.fileEmployeeCategories)
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= (total - 1)).length;
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.employeeFileCategory <= (total - 1)).length;
     this.AllEmployeeDocumentsProgress = fetchedDocuments / total * 100;
     console.log("this is employee documents checking", fetchedDocuments);
   }
-  calculateDocumentProgress() {
-    const total = this.fileCategories.length;
+  calculateAdminDocumentProgress() {
+    const total = this.fileEmployeeCategories.length;
+    console.log("total files", this.fileEmployeeCategories)
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.documentType == 1).length;
+    this.AllEmployeeDocumentsProgress = fetchedDocuments / total * 100;
+    console.log("this is Admin documents checking", fetchedDocuments);
+  }
+
+  caculateStarterKitDocuments() {
+    const total = this.fileStarterKitCategories.length;
+    console.log("starter kit files", this.fileStarterKitCategories)
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
+    this.documentStarterKitFormProgress = fetchedDocuments / total * 100;
+  }
+
+  calculateMyDocumentProgress() {
+    const total = this.fileAdminCategories.length;
+    console.log("total filess", total)
+
+    const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= (total - 1)).length;
+    this.AllDocumentsProgress = fetchedDocuments / total * 100;
+    console.log("this is checking", this.AllDocumentsProgress);
+  }
+
+  calculateAdditionalDocumentProgress() {
+    const total = this.fileAdminCategories.length;
     console.log("total filess", total)
 
     const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= (total - 1)).length;

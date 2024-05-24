@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
@@ -78,7 +78,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
         next: data => {
           this.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
-          this.sharedAccordionFunctionality.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -90,7 +90,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
         next: data => {
           this.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
-          this.sharedAccordionFunctionality.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -193,7 +193,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getAdditionalDocuments();
-          this.sharedAccordionFunctionality.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: (error: any) => {
           this.isLoadingUpload = false;
@@ -223,7 +223,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getAdditionalDocuments();
-          this.sharedAccordionFunctionality.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");

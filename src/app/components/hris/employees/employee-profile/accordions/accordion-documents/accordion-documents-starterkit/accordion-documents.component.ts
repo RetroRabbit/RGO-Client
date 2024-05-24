@@ -115,7 +115,7 @@ export class AccordionDocumentsComponent {
         next: data => {
           this.employeeDocuments = data;
           this.dataSource.data = this.fileCategories;
-          this.sharedAccordionFunctionality.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -127,7 +127,7 @@ export class AccordionDocumentsComponent {
         next: data => {
           this.employeeDocuments = data;
           this.dataSource.data = this.fileCategories;
-          this.sharedAccordionFunctionality.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -154,7 +154,7 @@ export class AccordionDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getEmployeeDocuments();
-          this.sharedAccordionFunctionality.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: (error) => {
           this.isLoadingUpload = false;
@@ -183,8 +183,7 @@ export class AccordionDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getEmployeeDocuments();
-          this.sharedAccordionFunctionality.calculateDocumentProgress();
-
+          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
