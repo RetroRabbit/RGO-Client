@@ -22,7 +22,6 @@ export class AccordionCertificatesComponent {
   }
 
   @Input() employeeProfile !: EmployeeProfile | SimpleEmployee;
-
   shouldUseSentInProfile: boolean = true;
   panelOpenState: boolean = false;
   hasFile: boolean = false;
@@ -149,7 +148,6 @@ export class AccordionCertificatesComponent {
     this.isUpdated = true;
     this.editCertificate = false;
     const editedCertificatesArray = this.findDifferenceInArrays();
-
     const updateObservables = editedCertificatesArray.map(certificate =>
       this.employeeCertificateService.updateCertification(certificate)
     );
