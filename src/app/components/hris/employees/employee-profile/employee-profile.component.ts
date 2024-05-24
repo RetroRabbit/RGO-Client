@@ -160,6 +160,7 @@ export class EmployeeProfileComponent implements OnChanges {
       }
     });
   }
+
   getEmployeeProfile() {
     const fetchProfile = this.usingSimpleProfile
       ? this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail())
