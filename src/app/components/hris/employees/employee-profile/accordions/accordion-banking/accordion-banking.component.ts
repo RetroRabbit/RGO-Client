@@ -88,7 +88,6 @@ export class AccordionBankingComponent {
       return;
     }
     this.employeeBankingsForm = this.fb.group({
-
       accountType: [{ value: bankingDetails.accountType, disabled: true }, Validators.required],
       bankName: [{ value: bankingDetails.bankName, disabled: true }, Validators.required],
       accountNo: [{ value: bankingDetails.accountNo, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
@@ -177,7 +176,6 @@ export class AccordionBankingComponent {
       declineReason: this.bankingReason,
       file: employeeBankingFormValue.file
     }
-
     if (this.hasBankingData) {
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {

@@ -92,6 +92,7 @@ import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-
 import { CareerSummaryQualificationsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-summary-qualifications/accordion-career-summary-qualifications.component';
 import { AccordionEmployeeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-employee-documents/accordion-employee-documents.component';
 import { AccordionDocumentsCustomDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-additional-documents/accordion-additional-documents.component';
+import { AccordionCertificatesComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-certificates/accordion-certificates.component';
 import { AccordionAdministrativeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-administrative-documents/accordion-administrative-documents.component';
 import { AccordionCareerAdditionalInformationComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-career-additional-information/accordion-career-additional-information.component';
 
@@ -141,9 +142,9 @@ import { AccordionCareerAdditionalInformationComponent } from './components/hris
     CareerSummaryQualificationsComponent,
     AccordionEmployeeDocumentsComponent,
     AccordionDocumentsCustomDocumentsComponent,
-    AccordionAdministrativeDocumentsComponent,
     AccordionCareerAdditionalInformationComponent,
-
+    AccordionCertificatesComponent,
+    AccordionAdministrativeDocumentsComponent
   ],
   imports: [
     BrowserModule,
