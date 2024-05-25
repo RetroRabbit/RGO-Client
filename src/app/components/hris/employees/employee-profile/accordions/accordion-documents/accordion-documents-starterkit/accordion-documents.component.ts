@@ -1,7 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
-import { Document } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -27,8 +26,6 @@ export class AccordionDocumentsComponent {
   }
 
   selectedEmployee!: EmployeeProfile;
-  fileCategories = Document;
-  employeeDocuments: EmployeeDocument[] = [];
   documentsFileName: string = "";
   base64String: string = "";
   uploadButtonIndex: number = 0;
@@ -113,9 +110,10 @@ export class AccordionDocumentsComponent {
     if (this.employeeId != undefined) {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 0).subscribe({
         next: data => {
-          this.employeeDocuments = data;
-          this.dataSource.data = this.fileCategories;
-          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
+          this.sharedAccordionFunctionality.starterkitDocuments = data;
+          this.dataSource.data = this.sharedAccordionFunctionality.fileStarterKitCategories;
+          this.sharedAccordionFunctionality.caculateStarterKitDocuments();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -125,9 +123,11 @@ export class AccordionDocumentsComponent {
       this.employeeId = this.navService.employeeProfile.id;
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 0).subscribe({
         next: data => {
-          this.employeeDocuments = data;
-          this.dataSource.data = this.fileCategories;
-          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
+          this.sharedAccordionFunctionality.starterkitDocuments = data;
+          this.dataSource.data = this.sharedAccordionFunctionality.fileStarterKitCategories;
+          this.sharedAccordionFunctionality.caculateStarterKitDocuments();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -154,7 +154,8 @@ export class AccordionDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getEmployeeDocuments();
-          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
+          this.sharedAccordionFunctionality.caculateStarterKitDocuments();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
         },
         error: (error) => {
           this.isLoadingUpload = false;
@@ -183,7 +184,8 @@ export class AccordionDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getEmployeeDocuments();
-          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
+          this.sharedAccordionFunctionality.caculateStarterKitDocuments();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -221,7 +223,7 @@ export class AccordionDocumentsComponent {
   }
 
   filterDocumentsByCategory(): EmployeeDocument | null {
-    var object = this.employeeDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
+    var object = this.sharedAccordionFunctionality.starterkitDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
     if (object == null) {
       return null;
     }
@@ -229,13 +231,13 @@ export class AccordionDocumentsComponent {
   }
 
   getFileName(index: number): EmployeeDocument {
-    var documentObject = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
+    var documentObject = this.sharedAccordionFunctionality.starterkitDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
     return documentObject;
   }
 
   downloadDocument(event: any) {
     const id = event.srcElement.parentElement.id;
-    const documentObject = this.employeeDocuments.find(document => document.fileCategory == id) as any;
+    const documentObject = this.sharedAccordionFunctionality.starterkitDocuments.find(document => document.fileCategory == id) as any;
     if (documentObject === undefined) {
       // TODO: download clean slate form
     }
@@ -249,7 +251,7 @@ export class AccordionDocumentsComponent {
   }
 
   disableUploadButton(index: number): boolean {
-    const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
+    const documentObject = this.sharedAccordionFunctionality.starterkitDocuments.find(document => document.fileCategory == index);
     if (this.authAccessService.isEmployee()) {
       return false;
     }
@@ -267,7 +269,7 @@ export class AccordionDocumentsComponent {
 
 
   disableDownload(index: number) {
-    const documentObject = this.employeeDocuments.find(document => document.fileCategory == index);
+    const documentObject = this.sharedAccordionFunctionality.starterkitDocuments.find(document => document.fileCategory == index);
 
     if (documentObject == undefined)
       return false;

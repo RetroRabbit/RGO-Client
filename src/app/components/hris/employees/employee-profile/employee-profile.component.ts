@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
-import { Document } from 'src/app/models/hris/constants/documents.contants';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { AccordionBankingComponent } from './accordions/accordion-banking/accordion-banking.component';
@@ -28,6 +27,8 @@ import { SharedAccordionFunctionality } from './shared-accordion-functionality';
 import { AccordionDocumentsAdditionalComponent } from './accordions/accordion-documents/accordion-my-documents/accordion-my-documents.component';
 import { AccordionAdministrativeDocumentsComponent } from './accordions/accordion-administrative-documents/accordion-administrative-documents.component';
 import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-employee-documents/accordion-employee-documents.component';
+import { CustomField } from 'src/app/models/hris/custom-field.interface';
+import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -46,13 +47,14 @@ export class EmployeeProfileComponent implements OnChanges {
   employeePostalAddress !: EmployeeAddress;
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
+  customFields: CustomField[] = [];
+
   employeeBanking !: EmployeeBanking;
 
   employeeId = this.route.snapshot.params['id'];
 
   selectedAccordion: string = 'Profile Details';
   selectedItem: string = 'Profile Details';
-  fileCategories = Document;
 
   editContact: boolean = false;
   showBackButtons: boolean = true;
@@ -108,7 +110,8 @@ export class EmployeeProfileComponent implements OnChanges {
     this.screenWidth = window.innerWidth;
   }
 
-  constructor(private cookieService: CookieService,
+  constructor(
+    private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
     private clientService: ClientService,
     private route: ActivatedRoute,
@@ -134,13 +137,13 @@ export class EmployeeProfileComponent implements OnChanges {
     this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
       this.profileFormProgress = profileProgress;
 
-      this.overallProgress();
     });
-    this.sharedAccordionFunctionality.updateDocument.subscribe(documentProgress => {
-      this.documentFormProgress = documentProgress;
+    this.sharedAccordionFunctionality.updateDocument.subscribe(progress => {
+      this.documentFormProgress = progress;
+      console.log("heres the progress for document", this.documentFormProgress);
+    });
 
-      this.overallProgress();
-    });
+    this.overallProgress();
 
     this.employeeId = this.route.snapshot.params['id'];
     this.getClients();

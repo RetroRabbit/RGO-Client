@@ -55,6 +55,7 @@ export class AccordionAdministrativeDocumentsComponent {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
     this.getEmployeeDocuments();
+
   }
 
   downloadFile(base64String: string, fileName: string) {
@@ -117,9 +118,10 @@ export class AccordionAdministrativeDocumentsComponent {
 
   getEmployeeDocuments() {
     if (this.employeeId != undefined) {
+
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 2).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.employeeDocuments = data;
+          this.sharedAccordionFunctionality.AdminstrativeDocuments = data;
           this.dataSource.data = this.sharedAccordionFunctionality.fileAdminCategories;
           this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
         },
@@ -131,9 +133,11 @@ export class AccordionAdministrativeDocumentsComponent {
       this.employeeId = this.navService.employeeProfile.id;
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 2).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.employeeDocuments = data;
+          this.sharedAccordionFunctionality.AdminstrativeDocuments = data;
           this.dataSource.data = this.sharedAccordionFunctionality.fileAdminCategories;
           this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -162,6 +166,8 @@ export class AccordionAdministrativeDocumentsComponent {
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: (error) => {
           this.isLoadingUpload = false;
@@ -191,6 +197,8 @@ export class AccordionAdministrativeDocumentsComponent {
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -229,7 +237,7 @@ export class AccordionAdministrativeDocumentsComponent {
   }
 
   filterDocumentsByCategory(): EmployeeDocument | null {
-    var object = this.sharedAccordionFunctionality.employeeDocuments.filter(document => document.adminFileCategory == this.uploadButtonIndex);
+    var object = this.sharedAccordionFunctionality.AdminstrativeDocuments.filter(document => document.adminFileCategory == this.uploadButtonIndex);
     if (object == null) {
       return null;
     }
@@ -237,18 +245,18 @@ export class AccordionAdministrativeDocumentsComponent {
   }
 
   getFileName(index: number): EmployeeDocument {
-    var documentObject = this.sharedAccordionFunctionality.employeeDocuments.find(document => document.adminFileCategory == index) as EmployeeDocument;
+    var documentObject = this.sharedAccordionFunctionality.AdminstrativeDocuments.find(document => document.adminFileCategory == index) as EmployeeDocument;
     return documentObject;
   }
 
   downloadDocument(event: any) {
     const id = event.srcElement.parentElement.id;
-    const documentObject = this.sharedAccordionFunctionality.employeeDocuments.find(document => document.adminFileCategory == id) as any;
+    const documentObject = this.sharedAccordionFunctionality.AdminstrativeDocuments.find(document => document.adminFileCategory == id) as any;
     this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
   }
 
   disableUploadButton(index: number): boolean {
-    const documentObject = this.sharedAccordionFunctionality.employeeDocuments.find(document => document.adminFileCategory == index);
+    const documentObject = this.sharedAccordionFunctionality.AdminstrativeDocuments.find(document => document.adminFileCategory == index);
     if (this.authAccessService.isEmployee()) {
       return false;
     }
@@ -263,13 +271,11 @@ export class AccordionAdministrativeDocumentsComponent {
     return true;
   }
 
-
   disableDownload(index: number) {
-    const documentObject = this.sharedAccordionFunctionality.employeeDocuments.find(document => document.adminFileCategory == index);
+    const documentObject = this.sharedAccordionFunctionality.AdminstrativeDocuments.find(document => document.adminFileCategory == index);
 
     if (documentObject == undefined)
       return false;
-
     return true;
   }
 

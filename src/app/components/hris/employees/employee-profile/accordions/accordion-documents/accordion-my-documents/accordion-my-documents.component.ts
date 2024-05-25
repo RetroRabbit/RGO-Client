@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
-import { AdditionalDocumentTypes, FileCategory } from 'src/app/models/hris/constants/documents.contants';
+import { MyDocumentTypes, FileCategory } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -34,7 +34,6 @@ export class AccordionDocumentsAdditionalComponent {
 
   isLoadingDocument: boolean = false;
   fileCategories: FileCategory[] = [];
-  employeeDocuments: EmployeeDocument[] = [];
   base64String: string = "";
   employeeId = this.route.snapshot.params['id'];
   previousPage: string = '';
@@ -45,7 +44,7 @@ export class AccordionDocumentsAdditionalComponent {
   roles: string[] = [];
   isLoadingUpload: boolean = false;
   documentId: number = 0;
-  documentTypes = AdditionalDocumentTypes;
+  documentTypes = MyDocumentTypes;
   newDocumentName: string = '';
   newDocumentType: string = '';
   otherSelected: boolean = false;
@@ -127,7 +126,9 @@ export class AccordionDocumentsAdditionalComponent {
         this.isLoadingUpload = false;
         this.snackBarService.showSnackbar("Document added", "snack-success");
         this.getAdditionalDocuments();
-        this.sharedAccordionFunctionality.caculateStarterKitDocuments();
+        this.sharedAccordionFunctionality.calculateMyDocumentProgress();
+        this.sharedAccordionFunctionality.totalDocumentsProgress();
+
       },
       error: (error) => {
         this.isLoadingUpload = false;
@@ -138,7 +139,7 @@ export class AccordionDocumentsAdditionalComponent {
   }
 
   downloadDocument(documentId: number) {
-    const documentObject = this.employeeDocuments.find(document => document.id == documentId) as any;
+    const documentObject = this.sharedAccordionFunctionality.myDocuments.find(document => document.id == documentId) as any;
     this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
   }
 
@@ -177,10 +178,11 @@ export class AccordionDocumentsAdditionalComponent {
     if (this.employeeId != undefined) {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 1).subscribe({
         next: data => {
-          this.employeeDocuments = data;
+          this.sharedAccordionFunctionality.myDocuments = data;
           this.dataSource.data = this.fileCategories;
           this.getAdditionalDocumentReferences();
-          this.sharedAccordionFunctionality.caculateStarterKitDocuments();
+          this.sharedAccordionFunctionality.calculateMyDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
 
         },
         error: error => {
@@ -191,10 +193,12 @@ export class AccordionDocumentsAdditionalComponent {
       this.employeeId = this.navService.employeeProfile.id;
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 1).subscribe({
         next: data => {
-          this.employeeDocuments = data;
+          this.sharedAccordionFunctionality.myDocuments = data;
           this.dataSource.data = this.fileCategories;
           this.getAdditionalDocumentReferences();
-          this.sharedAccordionFunctionality.caculateStarterKitDocuments();
+          this.sharedAccordionFunctionality.calculateMyDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -204,7 +208,7 @@ export class AccordionDocumentsAdditionalComponent {
   }
 
   getAdditionalDocumentReferences() {
-    const filteredDocuments = this.employeeDocuments.filter(document => document.reference !== "");
+    const filteredDocuments = this.sharedAccordionFunctionality.myDocuments.filter(document => document.reference !== "");
     this.fileCategories = filteredDocuments.map(document => ({
       name: document.reference,
       id: document.id,
@@ -212,7 +216,7 @@ export class AccordionDocumentsAdditionalComponent {
   }
 
   getFileName(documentId: number): EmployeeDocument {
-    var documentObject = this.employeeDocuments.find(document => document.id == documentId) as EmployeeDocument;
+    var documentObject = this.sharedAccordionFunctionality.myDocuments.find(document => document.id == documentId) as EmployeeDocument;
     return documentObject;
   }
 }

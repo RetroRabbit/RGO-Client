@@ -13,11 +13,13 @@ import { category } from 'src/app/models/hris/constants/fieldcodeCategory.consta
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
-import { Document } from 'src/app/models/hris/constants/admin-documents.component';
-import { EmployeeDocuments } from 'src/app/models/hris/constants/employee-documents.constants';
-
+import { AdminDocuments } from 'src/app/models/hris/constants/admin-documents.component';
+import { EmployeeDocumentsTypes } from 'src/app/models/hris/constants/employee-documents.constants';
+import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
-
+import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
+import { MyDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
+import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -25,6 +27,7 @@ import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface
 export class SharedAccordionFunctionality {
   @Output() updateProfile = new EventEmitter<any>();
   @Output() updateDocument = new EventEmitter<number>();
+  @Input() employeeProfile!: EmployeeProfile;
 
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
@@ -34,8 +37,13 @@ export class SharedAccordionFunctionality {
   filteredPeopleChamps: any = [];
   employeeData: EmployeeData[] = [];
   customFields: CustomField[] = [];
-  employeeDocuments: EmployeeDocument[] = [];
+  customFieldsDocuments: CustomField[] = [];
 
+  EmployeeDocuments: EmployeeDocument[] = [];
+  AdminstrativeDocuments: EmployeeDocument[] = [];
+  myDocuments: EmployeeDocument[] = [];
+  starterkitDocuments: EmployeeDocument[] = [];
+  AdditionalDocuments: EmployeeDocument[] = [];
 
   foundClient: EmployeeProfile | undefined;
   foundTeamLead: any;
@@ -44,9 +52,12 @@ export class SharedAccordionFunctionality {
   clientId: number | undefined;
   peopleChampionId: number | undefined;
 
-  fileAdminCategories = Document;
-  fileEmployeeCategories = Document;
-  fileStarterKitCategories = Document;
+  fileAdminCategories = AdminDocuments;
+  fileEmployeeCategories = EmployeeDocumentsTypes;
+  fileStarterKitCategories = StarterKitDocumentTypes;
+  fileMyDocumentCategories = MyDocumentTypes;
+  fileAdditionalCategories = this.customFields;
+
 
   panelOpenState: boolean = false;
   physicalEqualPostal: boolean = true;
@@ -64,7 +75,6 @@ export class SharedAccordionFunctionality {
   selectedEmployee!: EmployeeProfile;
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
-
 
   profileFormProgress: number = 0;
   documentFormProgress: number = 0;
@@ -98,7 +108,12 @@ export class SharedAccordionFunctionality {
 
   constructor(
     private fb: FormBuilder,
-    public sharedPropertyAccessService: SharedPropertyAccessService) { }
+    public sharedPropertyAccessService: SharedPropertyAccessService,
+    private employeeDocumentService: EmployeeDocumentService,
+    private customFieldService: CustomFieldService,
+
+
+  ) { }
 
   personalDetailsForm: FormGroup = this.fb.group({
     gender: { value: '', disabled: true },
@@ -179,6 +194,9 @@ export class SharedAccordionFunctionality {
     this.personalFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
+  getAdditionalDocumentFieldCodes() {
+
+  }
   checkEmployeeFormProgress() {
     let filledCount = 0;
     const formControls = this.employeeDetailsForm.controls;
@@ -252,42 +270,37 @@ export class SharedAccordionFunctionality {
 
   calculateEmployeeDocumentProgress() {
     const total = this.fileEmployeeCategories.length;
-    console.log("total files", this.fileEmployeeCategories)
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.employeeFileCategory <= (total - 1)).length;
+    const fetchedDocuments = this.EmployeeDocuments.length;
     this.AllEmployeeDocumentsProgress = fetchedDocuments / total * 100;
-    console.log("this is employee documents checking", fetchedDocuments);
   }
+
   calculateAdminDocumentProgress() {
-    const total = this.fileEmployeeCategories.length;
-    console.log("total files", this.fileEmployeeCategories)
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.documentType == 1).length;
-    this.AllEmployeeDocumentsProgress = fetchedDocuments / total * 100;
-    console.log("this is Admin documents checking", fetchedDocuments);
+    const total = this.fileAdminCategories.length;
+    const fetchedDocuments = this.AdminstrativeDocuments.length;
+    this.adminDocumentsProgress = fetchedDocuments / total * 100;
   }
 
   caculateStarterKitDocuments() {
     const total = this.fileStarterKitCategories.length;
-    console.log("starter kit files", this.fileStarterKitCategories)
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.status == 0).length;
+    const fetchedDocuments = this.starterkitDocuments.length;
     this.documentStarterKitFormProgress = fetchedDocuments / total * 100;
   }
 
   calculateMyDocumentProgress() {
-    const total = this.fileAdminCategories.length;
-    console.log("total filess", total)
-
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= (total - 1)).length;
-    this.AllDocumentsProgress = fetchedDocuments / total * 100;
-    console.log("this is checking", this.AllDocumentsProgress);
+    const total = this.myDocuments.length;
+    const fetchedDocuments = this.myDocuments.length;
+    this.myDocumentsProgress = fetchedDocuments / total * 100;
   }
 
   calculateAdditionalDocumentProgress() {
-    const total = this.fileAdminCategories.length;
-    console.log("total filess", total)
-
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= (total - 1)).length;
-    this.AllDocumentsProgress = fetchedDocuments / total * 100;
-    console.log("this is checking", this.AllDocumentsProgress);
+    this.customFieldService.getAllFieldCodes().subscribe({
+      next: data => {
+        this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
+        const total = this.customFieldsDocuments.length;
+        const fetchedDocuments = this.AdditionalDocuments.length;
+        this.additionalDocumentsProgress = fetchedDocuments / total * 100;
+      }
+    })
   }
 
   totalProfileProgress() {
@@ -296,8 +309,7 @@ export class SharedAccordionFunctionality {
   }
 
   totalDocumentsProgress() {
-    this.documentFormProgress = Math.floor((this.additionalDocumentsProgress + this.employeeDocumentsProgress + this.myDocumentsProgress + this.startKitDocumentsProgress + this.adminDocumentsProgress) / 5);
-    console.log("total doc progress", this.documentFormProgress);
+    this.documentFormProgress = Math.floor((this.AllEmployeeDocumentsProgress + this.myDocumentsProgress + this.startKitDocumentsProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 5);
     this.updateDocument.emit(this.documentFormProgress);
   }
 }

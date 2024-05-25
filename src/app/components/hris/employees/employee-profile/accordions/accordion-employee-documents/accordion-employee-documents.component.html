@@ -21,7 +21,7 @@
           </div>
         </div>
         <div id="table-body" class="my-2">
-          <div *ngFor="let category of sharedAccordionFunctionality.fileAdminCategories;let i = index" class="row my-2 py-2" id="document-row">
+          <div *ngFor="let category of sharedAccordionFunctionality.fileEmployeeCategories;let i = index" class="row my-2 py-2" id="document-row">
             <div id="document" class="col-12 col-md-6 col-lg-7">
               <h3>{{category}}</h3>
               <div class="col-12" *ngIf="getFileName(i) as document;else NoFile" id="fileName">
