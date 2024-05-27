@@ -280,9 +280,7 @@ export class AccordionDocumentsComponent {
 
     if (documentObject == undefined)
       return false;
-
-    if (documentObject?.status == 0 || documentObject?.status == 1)
-      return false;
-    return true;
+    else
+    return true
   }
 }
