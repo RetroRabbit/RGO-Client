@@ -12,7 +12,7 @@ export class NavService {
   public showSideBar: boolean = false;
   public showSystemNavbar: boolean = true;
   public unsavedChanges: boolean = false;
-  public isHris?: boolean;
+  public isHris: boolean = true;
   public employeeProfile!:EmployeeProfile;
 
   public expandSideNav: boolean = false;

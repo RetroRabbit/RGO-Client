@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
@@ -9,9 +9,9 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { ActivatedRoute } from '@angular/router';
-import { MatTableDataSource } from '@angular/material/table';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { CookieService } from 'ngx-cookie-service';
+import { MatTableDataSource } from '@angular/material/table';
 import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
 
 @Component({
@@ -20,7 +20,6 @@ import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
   styleUrls: ['./accordion-additional-documents.component.css']
 })
 export class AccordionDocumentsCustomDocumentsComponent {
-  @Output() updateDocument = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
 
   screenWidth = window.innerWidth;
@@ -31,7 +30,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
   }
 
   customFields: CustomField[] = [];
-  additionalDocuments: EmployeeDocument[] = [];
   fileCategories = [];
   roles: string[] = [];
   isLoadingUpload: boolean = false;
@@ -46,6 +44,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   base64String: string = "";
   employeeId = this.route.snapshot.params['id'];
   dataSource = new MatTableDataSource<FileCategory>(this.fileCategories);
+
   selectedFieldCode: string = '';
   constructor(
     private customFieldService: CustomFieldService,
@@ -77,9 +76,13 @@ export class AccordionDocumentsCustomDocumentsComponent {
     if (this.employeeId != undefined) {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 4).subscribe({
         next: data => {
-          this.additionalDocuments = data;
+          this.sharedAccordionFunctionality.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
-          this.calculateDocumentProgress();
+
+          this.sharedAccordionFunctionality.additionalDocuments = data;
+          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -89,9 +92,10 @@ export class AccordionDocumentsCustomDocumentsComponent {
       this.employeeId = this.navService.employeeProfile.id;
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 4).subscribe({
         next: data => {
-          this.additionalDocuments = data;
-          this.dataSource.data = this.fileCategories;
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.additionalDocuments = data;
+          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -101,7 +105,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   }
 
   filterDocumentsByCategory(): EmployeeDocument | null {
-    var object = this.additionalDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
+    var object = this.sharedAccordionFunctionality.additionalDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
     if (object == null) {
       return null;
     }
@@ -132,12 +136,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
     })
   }
 
-  calculateDocumentProgress() {
-    const total = this.fileCategories.length;
-    const fetchedDocuments = this.additionalDocuments.filter(document => document.employeeFileCategory <= 9).length;
-    this.documentFormProgress = fetchedDocuments / total * 100;
-    this.updateDocument.emit(this.documentFormProgress);
-  }
 
   captureUploadButtonIndex(event: any, category: any) {
     this.selectedFieldCode = category;
@@ -200,7 +198,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getAdditionalDocuments();
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
         },
         error: (error: any) => {
           this.isLoadingUpload = false;
@@ -230,7 +229,9 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getAdditionalDocuments();
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -242,20 +243,21 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   getDocumentName(reference: any): EmployeeDocument | null {
     let documentFound = null;
-    this.additionalDocuments.forEach(document => {
+    this.sharedAccordionFunctionality.additionalDocuments.forEach(document => {
       if (document.reference == reference) {
         documentFound = document;
       }
     })
     return documentFound;
+
   }
 
   disableDownloadButton(index: number) {
-    return this.additionalDocuments[index] != null;
+    return this.sharedAccordionFunctionality.additionalDocuments[index] != null;
   }
 
   downloadDocumentTrigger(index: number) {
-    this.downloadDocument(this.additionalDocuments[index].blob, this.additionalDocuments[index].fileName);
+    this.downloadDocument(this.sharedAccordionFunctionality.additionalDocuments[index].blob, this.sharedAccordionFunctionality.additionalDocuments[index].fileName);
   }
 
   downloadDocument(base64String: string, fileName: string) {
@@ -281,7 +283,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   filterDocumentsByReference(): EmployeeDocument | null {
     let documentFound = null;
-    this.additionalDocuments.find(document => {
+    this.sharedAccordionFunctionality.additionalDocuments.find(document => {
       if (document.reference == this.selectedFieldCode)
         documentFound = document
     });
