@@ -5,7 +5,7 @@ import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
-import { Document } from 'src/app/models/hris/constants/documents.contants';
+import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
 
 @Component({
   selector: 'app-pending-employee-starterkits',
@@ -26,7 +26,7 @@ export class ViewStarterKitApprovalComponent {
   documentId = this.route.snapshot.params['id'];
   employee: any;
   employeeDocuments: EmployeeDocument[] = [];
-  fileCategories = Document;
+  fileCategories = StarterKitDocumentTypes;
   screenWidth = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])
@@ -40,8 +40,7 @@ export class ViewStarterKitApprovalComponent {
     private snackBarService: SnackbarService,
     private documentService: EmployeeDocumentService,
     private changeDetector: ChangeDetectorRef,
-    private employeeService: EmployeeProfileService)
-    { }
+    private employeeService: EmployeeProfileService) { }
 
   ngOnInit(): void {
     this.getEmployeeDocuments(this.documentId);
@@ -85,7 +84,7 @@ export class ViewStarterKitApprovalComponent {
 
     const millisecondInDays = 1000 * 60 * 60 * 24;
     const milliDiff: number = new Date(currentDate).getTime() - new Date(updatedDate).getTime();
-    const totalDays = Math.floor(milliDiff/millisecondInDays);
+    const totalDays = Math.floor(milliDiff / millisecondInDays);
     const totalSeconds = Math.floor(milliDiff / 1000);
     const totalMinutes = Math.floor(totalSeconds / 60);
     const totalHours = Math.floor(totalMinutes / 60);

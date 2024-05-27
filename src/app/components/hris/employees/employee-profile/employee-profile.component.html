@@ -340,7 +340,7 @@
     </div>
     <div id="accordions-body`" class="row m-2" *ngIf="employeeProfile">
       <app-accordion-profile-employee-details *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-employee-details>    
+      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-employee-details>
       <app-accordion-profile-personal-details *ngIf="selectedAccordion === 'Profile Details'"
       [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-personal-details>
       <app-accordion-profile-contact-details *ngIf="selectedAccordion === 'Profile Details'"
@@ -354,7 +354,7 @@
         (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
 
       <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
-        (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents-starterkit>
+      ></app-accordion-documents-starterkit>
 
       <app-accordion-certificates [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile"></app-accordion-certificates>
       
@@ -365,7 +365,7 @@
       </app-accordion-employee-documents>
 
       <app-accordion-my-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
-      (updateDocument)="updateDocumentProgress($event)"></app-accordion-my-documents>
+      ></app-accordion-my-documents>
     <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"></app-accordion-additional-documents>
 
     <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'" 
