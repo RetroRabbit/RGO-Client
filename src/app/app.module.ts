@@ -93,6 +93,7 @@ import { CareerSummaryQualificationsComponent } from './components/hris/employee
 import { AccordionEmployeeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-employee-documents/accordion-employee-documents.component';
 import { AccordionDocumentsCustomDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-additional-documents/accordion-additional-documents.component';
 import { AccordionCareerWorkExperienceComponent } from './components/hris/employees/employee-profile/accordions/accordion-career/accordion-career-work-experience/accordion-career-work-experience.component';
+import { AccordionCertificatesComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-certificates/accordion-certificates.component';
 import { AccordionAdministrativeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-administrative-documents/accordion-administrative-documents.component';
 
 @NgModule({
@@ -142,8 +143,8 @@ import { AccordionAdministrativeDocumentsComponent } from './components/hris/emp
     AccordionEmployeeDocumentsComponent,
     AccordionDocumentsCustomDocumentsComponent,
     AccordionCareerWorkExperienceComponent,
-    AccordionAdministrativeDocumentsComponent,
-
+    AccordionCertificatesComponent,
+    AccordionAdministrativeDocumentsComponent
   ],
   imports: [
     BrowserModule,
