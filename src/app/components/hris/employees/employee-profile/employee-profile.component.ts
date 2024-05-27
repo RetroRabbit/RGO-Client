@@ -138,7 +138,6 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnInit() {
     this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
       this.profileFormProgress = profileProgress;
-
     });
     this.sharedAccordionFunctionality.updateDocument.subscribe(progress => {
       this.documentFormProgress = progress;

@@ -52,16 +52,11 @@ export class AccordionCareerAdditionalInformationComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.getEmployeeFields();
-    this.getClients();
     this.getEmployeeData();
   }
 
   initializeForm() { }
   getEmployeeFields() {
-    this.sharedAccordionFunctionality.employeePhysicalAddress = this.employeeProfile.employeeDetails.physicalAddress!;
-    this.sharedAccordionFunctionality.employeePostalAddress = this.employeeProfile.employeeDetails.postalAddress!;
-    this.sharedAccordionFunctionality.hasDisability = this.employeeProfile.employeeDetails.disability;
-    this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
     this.getEmployeeData();
     this.getEmployeeTypes();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
@@ -69,14 +64,9 @@ export class AccordionCareerAdditionalInformationComponent {
     }
     this.getEmployeeFieldCodes();
     if (!this.authAccessService.isEmployee()) {
-
       this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
         next: data => {
           this.employeeProfile.employeeDetails = data;
-          this.sharedAccordionFunctionality.employeePhysicalAddress = data.physicalAddress!;
-          this.sharedAccordionFunctionality.employeePostalAddress = data.postalAddress!;
-          this.sharedAccordionFunctionality.hasDisability = data.disability;
-          this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
         }, complete: () => {
           this.getEmployeeData();
           this.getEmployeeTypes();
@@ -115,16 +105,6 @@ export class AccordionCareerAdditionalInformationComponent {
         });
       }
     });
-  }
-
-  getClients() {
-    this.clientService.getAllClients().subscribe({
-      next: data => this.sharedAccordionFunctionality.clients = data
-    })
-  }
-
-  getEmployeeClient(clientId: string) {
-    this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
   }
 
   getEmployeeTypes() {
