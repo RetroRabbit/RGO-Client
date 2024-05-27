@@ -211,7 +211,7 @@ export class AccordionCareerAdditionalInformationComponent {
           value: this.sharedAccordionFunctionality.additionalCareerInfoForm.get(formatFound)?.value
         }
 
-        if (employeeDataDto.value != "") {
+        if (fieldcode.required === true && employeeDataDto.value != "") {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
               this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
