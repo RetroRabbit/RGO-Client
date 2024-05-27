@@ -273,11 +273,13 @@ export class AccordionCertificatesComponent {
       if (newOrUpdate == 'update') {
         this.copyOfCertificates[index].certificateDocument = this.base64String;
         this.copyOfCertificates[index].documentName = file.name;
+        this.snackBarService.showSnackbar('File replaced succesfully','snack-success');
       }
       else if (newOrUpdate == 'new') {
         this.newCertificates[index].certificateDocument = this.base64String;
         this.newCertificates[index].documentName = file.name;
       }
+      this.snackBarService.showSnackbar('File uploaded succesfully','snack-success');
     });
     reader.readAsDataURL(file);
   }
