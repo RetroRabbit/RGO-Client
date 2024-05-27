@@ -133,6 +133,7 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnDestroy() {
     this.displayEditButtons()
   }
+  
   ngOnInit() {
     this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
       this.profileFormProgress = profileProgress;
