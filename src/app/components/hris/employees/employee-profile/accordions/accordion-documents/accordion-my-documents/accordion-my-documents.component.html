@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div id="table-body" class="my-2">
-                    <div *ngFor="let document of employeeDocuments" class="row my-2 py-2" id="document-row">
+                    <div *ngFor="let document of sharedAccordionFunctionality.myDocuments" class="row my-2 py-2" id="document-row">
                         <div id="document" class="col-12 col-md-8 col-lg-8">
                             <h3>{{document.reference}}</h3>
                             <div class="col-12" *ngIf="getFileName(document.id) as document" id="fileName">

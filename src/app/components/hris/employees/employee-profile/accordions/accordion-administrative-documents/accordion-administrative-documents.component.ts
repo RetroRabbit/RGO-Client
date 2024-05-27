@@ -1,5 +1,4 @@
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
-import { Document } from 'src/app/models/hris/constants/admin-documents.component';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -11,35 +10,32 @@ import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
+import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-accordion-administrative-documents',
   templateUrl: './accordion-administrative-documents.component.html',
-  styleUrls: [ './accordion-administrative-documents.component.css' ]
+  styleUrls: ['./accordion-administrative-documents.component.css']
 })
 export class AccordionAdministrativeDocumentsComponent {
-  @Output() updateDocument = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
 
   screenWidth = window.innerWidth;
 
-  @HostListener('window:resize', [ '$event' ])
+  @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
   }
 
-  fileCategories = Document;
-  documentFormProgress: number = 0;
-  employeeDocuments: EmployeeDocument[] = [];
   documentsFileName: string = "";
   base64String: string = "";
   uploadButtonIndex: number = 0;
-  employeeId = this.route.snapshot.params[ 'id' ];
+  employeeId = this.route.snapshot.params['id'];
   dataSource = new MatTableDataSource<string>();
   selectedFile !: File;
   roles: string[] = [];
   isLoadingUpload: boolean = false;
-  allowedTypes = [ 'application/pdf' ];
+  allowedTypes = ['application/pdf'];
   showConfirmDialog: boolean = false;
   dialogTypeData!: Dialog;
   documentExists: boolean = false;
@@ -50,8 +46,8 @@ export class AccordionAdministrativeDocumentsComponent {
     private snackBarService: SnackbarService,
     public navService: NavService,
     private cookieService: CookieService,
-    private authAccessService: AuthAccessService
-  ) {
+    private authAccessService: AuthAccessService,
+    public sharedAccordionFunctionality: SharedAccordionFunctionality) {
     this.dialogTypeData = new DialogTypeData().dialogTypeData;
   }
 
@@ -59,6 +55,7 @@ export class AccordionAdministrativeDocumentsComponent {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
     this.getEmployeeDocuments();
+
   }
 
   downloadFile(base64String: string, fileName: string) {
@@ -72,10 +69,10 @@ export class AccordionAdministrativeDocumentsComponent {
     const intArray = new Uint8Array(arrayBuffer);
 
     for (let i = 0; i < byteString.length; i++) {
-      intArray[ i ] = byteString.charCodeAt(i);
+      intArray[i] = byteString.charCodeAt(i);
     }
 
-    const blob = new Blob([ arrayBuffer ], { type: 'application/pdf' });
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.download = fileName;
@@ -99,7 +96,7 @@ export class AccordionAdministrativeDocumentsComponent {
 
   uploadDocument(event: any) {
     this.isLoadingUpload = true;
-    this.selectedFile = event.target.files[ 0 ];
+    this.selectedFile = event.target.files[0];
     this.documentsFileName = this.selectedFile.name;
     if (this.allowedTypes.includes(this.selectedFile.type)) {
       this.uploadProfileDocument();
@@ -121,11 +118,14 @@ export class AccordionAdministrativeDocumentsComponent {
 
   getEmployeeDocuments() {
     if (this.employeeId != undefined) {
+
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 2).subscribe({
         next: data => {
-          this.employeeDocuments = data;
-          this.dataSource.data = this.fileCategories;
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.adminstrativeDocuments = data;
+          this.dataSource.data = this.sharedAccordionFunctionality.fileAdminCategories;
+          this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -135,9 +135,11 @@ export class AccordionAdministrativeDocumentsComponent {
       this.employeeId = this.navService.employeeProfile.id;
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 2).subscribe({
         next: data => {
-          this.employeeDocuments = data;
-          this.dataSource.data = this.fileCategories;
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.adminstrativeDocuments = data;
+          this.dataSource.data = this.sharedAccordionFunctionality.fileAdminCategories;
+          this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -165,7 +167,9 @@ export class AccordionAdministrativeDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getEmployeeDocuments();
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: (error) => {
           this.isLoadingUpload = false;
@@ -194,7 +198,9 @@ export class AccordionAdministrativeDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getEmployeeDocuments();
-          this.calculateDocumentProgress();
+          this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -227,32 +233,35 @@ export class AccordionAdministrativeDocumentsComponent {
           lastUpdatedDate: new Date()
         };
         this.uploadDocumentDto(newDto);
+        this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
+        this.sharedAccordionFunctionality.totalDocumentsProgress();
+
       };
       reader.readAsDataURL(this.selectedFile);
     }
   }
 
   filterDocumentsByCategory(): EmployeeDocument | null {
-    var object = this.employeeDocuments.filter(document => document.adminFileCategory == this.uploadButtonIndex);
+    var object = this.sharedAccordionFunctionality.adminstrativeDocuments.filter(document => document.adminFileCategory == this.uploadButtonIndex);
     if (object == null) {
       return null;
     }
-    return object[ 0 ];
+    return object[0];
   }
 
   getFileName(index: number): EmployeeDocument {
-    var documentObject = this.employeeDocuments.find(document => document.adminFileCategory == index) as EmployeeDocument;
+    var documentObject = this.sharedAccordionFunctionality.adminstrativeDocuments.find(document => document.adminFileCategory == index) as EmployeeDocument;
     return documentObject;
   }
 
   downloadDocument(event: any) {
     const id = event.srcElement.parentElement.id;
-    const documentObject = this.employeeDocuments.find(document => document.adminFileCategory == id) as any;
+    const documentObject = this.sharedAccordionFunctionality.adminstrativeDocuments.find(document => document.adminFileCategory == id) as any;
     this.downloadFile(documentObject?.blob as string, documentObject?.fileName as string);
   }
 
   disableUploadButton(index: number): boolean {
-    const documentObject = this.employeeDocuments.find(document => document.adminFileCategory == index);
+    const documentObject = this.sharedAccordionFunctionality.adminstrativeDocuments.find(document => document.adminFileCategory == index);
     if (this.authAccessService.isEmployee()) {
       return false;
     }
@@ -267,19 +276,11 @@ export class AccordionAdministrativeDocumentsComponent {
     return true;
   }
 
-  calculateDocumentProgress() {
-    const total = this.fileCategories.length;
-    const fetchedDocuments = this.employeeDocuments.filter(document => document.adminFileCategory <= (total - 1)).length;
-    this.documentFormProgress = fetchedDocuments / total * 100;
-    this.updateDocument.emit(this.documentFormProgress);
-  }
-
   disableDownload(index: number) {
-    const documentObject = this.employeeDocuments.find(document => document.adminFileCategory == index);
+    const documentObject = this.sharedAccordionFunctionality.adminstrativeDocuments.find(document => document.adminFileCategory == index);
 
     if (documentObject == undefined)
       return false;
-
     return true;
   }
 
