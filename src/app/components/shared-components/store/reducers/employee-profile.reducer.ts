@@ -42,7 +42,7 @@ export const initialState: EmployeeProfileState = {
       salaryDays: 0,
       payRate: 0,
       salary: 0,
-      clientAllocated: '',
+      clientAllocated: -1,
       teamLead: 0
   }
 };

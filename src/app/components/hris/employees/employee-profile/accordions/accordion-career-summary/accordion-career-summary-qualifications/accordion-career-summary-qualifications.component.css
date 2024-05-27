@@ -1,0 +1,8 @@
+.document-name-disabled{
+    color: var(--M3-sys-light-on-surface, #1D1B20);
+}
+
+#download-document-button {
+    border-radius: 100px;
+    background: var(--Primary-disabled-add_on, #E3E3E4);
+}
