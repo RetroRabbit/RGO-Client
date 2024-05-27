@@ -34,7 +34,7 @@
             {{ selectedEmployee.name }} {{ selectedEmployee.surname }}
           </h1>
           <ng-template #OwnName>
-            <h1 class="mb-0" *ngIf="navService.employeeProfile?.id === selectedEmployee?.id">
+            <h1 class="mb-0">
               {{navService.getEmployeeProfile().name}} {{navService.getEmployeeProfile().surname}}
             </h1>
           </ng-template>
@@ -62,7 +62,7 @@
           Based in {{ selectedEmployee.physicalAddress?.suburbOrDistrict }}
         </div>
         <ng-template #OwnAddress>
-          <div class="col-12 my-2 d-none d-md-block" id="header-based" *ngIf="selectedEmployee?.physicalAddress?.suburbOrDistrict != null">
+          <div class="col-12 my-2 d-none d-md-block" id="header-based">
             Based in {{navService.getEmployeeProfile().physicalAddress?.suburbOrDistrict}}
           </div>
         </ng-template>
@@ -126,9 +126,12 @@
             </div>
             <div class="col-9 my-2">
               <div id="header-label">Client Allocated</div>
-              <div id="header-value" *ngIf="sharedAccordionFunctionality.employeeClient !== undefined">
-                {{sharedAccordionFunctionality.employeeClient.name ?? 'None'}}
+              <div id="header-value" *ngIf="!usingSimpleProfile;else NonAdminClientName">
+                {{sharedAccordionFunctionality.employeeClient?.name ?? 'None'}}
               </div>
+              <ng-template #NonAdminClientName>
+                {{simpleEmployee.clientAllocatedName}}
+              </ng-template>
               <div id="header-value" *ngIf="employeeClient == undefined">
                 None
               </div>
@@ -353,6 +356,8 @@
       <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
       ></app-accordion-documents-starterkit>
 
+      <app-accordion-certificates [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile"></app-accordion-certificates>
+      
       <app-accordion-administrative-documents *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin()" [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
       </app-accordion-administrative-documents>
 
@@ -362,6 +367,9 @@
       <app-accordion-my-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
       ></app-accordion-my-documents>
     <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"></app-accordion-additional-documents>
+
+    <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'" 
+    [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-career-summary-qualifications>
 
     </div>
   </div>
