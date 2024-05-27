@@ -312,7 +312,6 @@ export class SharedAccordionFunctionality {
         this.additionalDocumentsProgress = fetchedDocuments / total * 100;
       }
     })
-    console.log("555", this.customFieldsDocuments);
   }
 
   totalProfileProgress() {
