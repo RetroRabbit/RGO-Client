@@ -1,4 +1,4 @@
-export const Document = [
+export const EmployeeDocumentsTypes = [
   "Equipment",
   "Employee Payslip",
   "ID Document",

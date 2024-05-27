@@ -1,4 +1,4 @@
-export const Document = [
+export const StarterKitDocumentTypes = [
     "Fixed Term Contract",
     "Retirement Annuity Form",
     "Medical Aid Form",
@@ -9,7 +9,7 @@ export interface FileCategory {
     id: number;
 }
 
-export const AdditionalDocumentTypes = [
+export const MyDocumentTypes = [
     "Acknowledgment of Debt",
     "Agreements",
     "Certification Approvals",

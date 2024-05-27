@@ -1,4 +1,4 @@
-export const Document = [
+export const AdminDocuments = [
   "Criminal Check",
   "MIE Consent Form",
   "Qualification Check",
