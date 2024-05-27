@@ -112,7 +112,7 @@
                 sharedAccordionFunctionality.employeePeopleChampion.surname: 'Not assigned'}}
               </div>
               <ng-template #NonAdminPeopleChampion>
-                {{simpleEmployee.peopleChampionName}}
+                {{simpleEmployee.peopleChampionName ? simpleEmployee.peopleChampionName : 'Not assigned'}}
               </ng-template>
             </div>
           </div>
