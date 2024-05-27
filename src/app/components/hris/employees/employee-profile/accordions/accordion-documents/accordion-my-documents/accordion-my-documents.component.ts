@@ -126,9 +126,6 @@ export class AccordionDocumentsAdditionalComponent {
         this.isLoadingUpload = false;
         this.snackBarService.showSnackbar("Document added", "snack-success");
         this.getAdditionalDocuments();
-        this.sharedAccordionFunctionality.calculateMyDocumentProgress();
-        this.sharedAccordionFunctionality.totalDocumentsProgress();
-
       },
       error: (error) => {
         this.isLoadingUpload = false;
@@ -181,9 +178,6 @@ export class AccordionDocumentsAdditionalComponent {
           this.sharedAccordionFunctionality.myDocuments = data;
           this.dataSource.data = this.fileCategories;
           this.getAdditionalDocumentReferences();
-          this.sharedAccordionFunctionality.calculateMyDocumentProgress();
-          this.sharedAccordionFunctionality.totalDocumentsProgress();
-
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -196,8 +190,6 @@ export class AccordionDocumentsAdditionalComponent {
           this.sharedAccordionFunctionality.myDocuments = data;
           this.dataSource.data = this.fileCategories;
           this.getAdditionalDocumentReferences();
-          this.sharedAccordionFunctionality.calculateMyDocumentProgress();
-          this.sharedAccordionFunctionality.totalDocumentsProgress();
 
         },
         error: error => {

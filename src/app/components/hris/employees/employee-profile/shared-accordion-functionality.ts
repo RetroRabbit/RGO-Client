@@ -303,13 +303,6 @@ export class SharedAccordionFunctionality {
     this.documentStarterKitFormProgress = fetchedDocuments / total * 100;
   }
 
-  calculateMyDocumentProgress() {
-    const total = this.myDocuments.length;
-    const fetchedDocuments = this.myDocuments.length;
-    const totalprogress = fetchedDocuments / total * 100;
-    this.myDocumentsProgress = isNaN(totalprogress) ? 0 : totalprogress;
-  }
-
   calculateAdditionalDocumentProgress() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
@@ -319,6 +312,7 @@ export class SharedAccordionFunctionality {
         this.additionalDocumentsProgress = fetchedDocuments / total * 100;
       }
     })
+    console.log("555", this.customFieldsDocuments);
   }
 
   totalProfileProgress() {
@@ -327,7 +321,7 @@ export class SharedAccordionFunctionality {
   }
 
   totalDocumentsProgress() {
-    this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.myDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 5);
+    this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 4);
     this.updateDocument.emit(this.documentFormProgress);
   }
 }
