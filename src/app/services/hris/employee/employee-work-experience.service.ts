@@ -16,7 +16,7 @@ export class WorkExperienceService {
     }
 
     getWorkExperience(id: number | undefined): Observable<WorkExperience> {
-        return this.httpClient.get<WorkExperience>(`${this.baseUrl}/?id=${id}`)
+        return this.httpClient.get<WorkExperience>(`${this.baseUrl}?id=${id}`)
       }
 
     save(experience: WorkExperience): Observable<WorkExperience> {
@@ -27,7 +27,7 @@ export class WorkExperienceService {
         return this.httpClient.put<WorkExperience>(`${this.baseUrl}`, experience);
     }
 
-    delete(experienceId: WorkExperience): Observable<WorkExperience> {
+    delete(experienceId: number): Observable<WorkExperience> {
         return this.httpClient.delete<WorkExperience>(`${this.baseUrl}/${experienceId}`);
     }
 }

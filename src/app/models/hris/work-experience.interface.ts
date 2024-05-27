@@ -8,5 +8,5 @@ export interface WorkExperience {
     software?: string[],
     startDate: Date,
     endDate: Date,
-    employeeId?: EmployeeProfile
+    employeeId: number
 }

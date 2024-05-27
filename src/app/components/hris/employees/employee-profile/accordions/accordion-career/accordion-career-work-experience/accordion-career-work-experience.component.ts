@@ -11,6 +11,8 @@ import { WorkExperienceService } from 'src/app/services/hris/employee/employee-w
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { ROLES } from 'src/app/models/hris/constants/employee-skills-software-onType.constants';
+import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-accordion-career-work-experience',
@@ -36,27 +38,32 @@ export class AccordionCareerWorkExperienceComponent {
   workExperience: WorkExperience[] = [];
   workExperienceData: any = [];
   hasWorkExperienceData: boolean = false;
-  workExperienceId: number = 0;
+  workExperienceId: number | undefined = 0;
   isUpdated: boolean = false;
   hasUpdatedWorkExperience: boolean = false;
+  addingWorkExperience: boolean = false;
+  showConfirmDialog: boolean = false;
+  removeNewOrUpdate: string = '';
+  removeIndex: number = 0;
+  newWorkExperienceIndex: number | null = null;
+
+  copyOfWorkExperience: WorkExperience[] = [];
+  newWorkExperience: WorkExperience[] = [];
 
   role: string | undefined = '';
   skillSetList: string[] = [];
   softwareList: string[] = [];
 
-  workExperienceForm: FormGroup = this.fb.group({
-    clientName: { value: '', disabled: true },
-    projectName: { value: '', disabled: true },
-    skillSet: { value: '', disabled: true },
-    software: { value: '', disabled: true },
-    startDate: { value: '', disabled: true },
-    endDate: { value: '', disabled: true },
-    employeeId: { value: '', disabled: true }
-  });
+  dialogTypeData: Dialog = {
+    type: 'confirm',
+    title: 'Delete certificate',
+    subtitle: 'Are you sure you want to delete?',
+    confirmButtonText: 'Delete',
+    denyButtonText: "Cancel"
+  };
 
   constructor(
     private fb: FormBuilder,
-    private employeeService: EmployeeService,
     private workExperienceService: WorkExperienceService,
     private snackBarService: SnackbarService,
     public authAccessService: AuthAccessService,
@@ -67,7 +74,6 @@ export class AccordionCareerWorkExperienceComponent {
   ngOnInit(): void {
     this.getEmployeeType();
     this.getWorkExperience();
-    console.log(this.workExperienceData);
   }
 
   getEmployeeType() {
@@ -116,117 +122,156 @@ export class AccordionCareerWorkExperienceComponent {
     this.workExperienceService.getWorkExperience(this.employeeProfile.id).subscribe({
       next: (data) => {
         this.workExperienceData = data;
-        if (this.workExperience != null) {
-          this.workExperienceId = this.workExperience[this.workExperience.length - 1].id;
-        }
-        this.initializeForm(this.workExperience[this.workExperience.length - 1]);
+        console.log(this.workExperienceData);
+      },
+      error: (error) => {
       }
-    })
-  }
-
-  initializeForm(workExperienceDetails: WorkExperience) {
-    if(workExperienceDetails == null) {
-      this.hasWorkExperienceData = false;
-      return;
-    }
-    this.workExperienceForm = this.fb.group({
-      clientName: [{ value: workExperienceDetails.clientName, disabled: true }, Validators.required],
-      projectName: [{ value: workExperienceDetails.projectName, disabled: true }, Validators.required],
-      skillSet: [{ value: workExperienceDetails.skillSet, disabled: true }, Validators.required],
-      software: [{ value: workExperienceDetails.software, disabled: true }, Validators.required],
-      startDate: [{ value: workExperienceDetails.startDate, disabled: true }, Validators.required],
-      endDate: [{ value: workExperienceDetails.endDate, disabled: true }, Validators.required],
-      employeeId: [{ value: workExperienceDetails.employeeId, disabled: true }, Validators.required]
     });
-    this.workExperienceForm.disable();
-    this.hasWorkExperienceData = true;
-    this.checkWorkExperienceFormProgress();
   }
 
-  formatDate(date: Date): string {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
+  addNewWorkExperience() {
+    this.addingWorkExperience = true;
+    const newWorkExperience: WorkExperience = {
+      id: 0,
+      clientName: '',
+      projectName: '',
+      skillSet: [],
+      software: [],
+      startDate: new Date,
+      endDate: new Date,
+      employeeId: this.employeeProfile.id as number
+    }
+    this.newWorkExperience.push(newWorkExperience);
   }
 
-  addWorkExperience() {
-    console.log("Add another document");
+  findDifferenceInArrays(): WorkExperience[] {
+    let differenceArray: WorkExperience[] = [];
+
+    for (let i = 0; i < this.workExperience.length; i++) {
+      if (this.workExperience[i].clientName != this.copyOfWorkExperience[i].clientName)
+        differenceArray.push(this.copyOfWorkExperience[i]);
+      else if (this.workExperience[i].projectName != this.copyOfWorkExperience[i].projectName)
+        differenceArray.push(this.copyOfWorkExperience[i]);
+      else if (this.workExperience[i].skillSet != this.copyOfWorkExperience[i].skillSet)
+        differenceArray.push(this.copyOfWorkExperience[i]);
+      else if (this.workExperience[i].software != this.copyOfWorkExperience[i].software)
+        differenceArray.push(this.copyOfWorkExperience[i]);
+      else if (this.workExperience[i].startDate != this.copyOfWorkExperience[i].startDate)
+        differenceArray.push(this.copyOfWorkExperience[i]);
+      else if (this.workExperience[i].endDate != this.copyOfWorkExperience[i].endDate)
+        differenceArray.push(this.copyOfWorkExperience[i]);
+      else if (this.workExperience[i].employeeId != this.copyOfWorkExperience[i].employeeId)
+        differenceArray.push(this.copyOfWorkExperience[i]);
+    }
+    return differenceArray
   }
 
   editWorkExperiences() {
     this.editWorkExperience = true;
-    this.workExperienceForm.enable();
+    this.copyOfWorkExperience = [];
+    this.copyWorkExperiences();
   }
 
   cancelWorkExperienceEdit() {
     this.editWorkExperience = false;
-    this.workExperienceForm.disable();
+    this.addingWorkExperience = false;
+    this.copyOfWorkExperience = this.workExperience;
+    if (this.newWorkExperienceIndex !== null) {
+      this.newWorkExperience.splice(this.newWorkExperienceIndex, 1);
+      this.newWorkExperienceIndex = null;
+    }
+    this.newWorkExperience = [];
+  }
+
+  copyWorkExperiences() {
+    this.workExperience.forEach(workExperience => {
+      const copiedExperience = JSON.parse(JSON.stringify(workExperience));
+      this.copyOfWorkExperience.push(copiedExperience);
+    });
+  }
+
+  showDialog(newOrUpdate: string, index: number) {
+    this.removeNewOrUpdate = newOrUpdate;
+    this.removeIndex = index;
+    this.showConfirmDialog = true;
+  }
+
+  dialogFeedBack(confirmation: boolean) {
+    this.showConfirmDialog = false;
+    if (confirmation) {
+      if (this.removeNewOrUpdate == 'update') {
+        this.removeExistingWorkExperience(this.removeIndex);
+      }
+      else {
+        this.removeExistingWorkExperience(this.removeIndex);
+      }
+    }
+  }
+
+  removeNewWorkExperience(index: number) {
+    this.addingWorkExperience = false;
+    this.newWorkExperience.splice(index, 1);
+  }
+
+  removeExistingWorkExperience(index: number) {
+    this.workExperienceId = this.copyOfWorkExperience[index].id;
+    this.workExperienceService.delete(this.workExperienceId).subscribe({
+      next: () => {
+        this.snackBarService.showSnackbar("Experience deleted", "snack-success");
+        this.copyOfWorkExperience.splice(index, 1);
+        this.workExperience.splice(index, 1);
+        this.editWorkExperience = false;
+      },
+      error: (error) => {
+        this.snackBarService.showSnackbar("Unable to delete", "snack-error");
+      }
+    });
   }
 
   saveWorkExperience() {
-    this.editWorkExperience = false;
     this.isUpdated = true;
-    const workExperienceFormValue = this.workExperienceForm.value;
+    const total = this.newWorkExperience.length;
+    let saveCount = 0;
+    let errorOccurred = false;
 
-    const startDate = this.formatDate(this.workExperienceForm.value.startDate);
-    const endDate = this.formatDate(this.workExperienceForm.value.endDate);
-
-    this.workExperienceDto = {
-      id: this.workExperienceId,
-      clientName: workExperienceFormValue.clientName,
-      projectName: workExperienceFormValue.projectName,
-      skillSet: workExperienceFormValue.skillSet,
-      software: workExperienceFormValue.software,
-      startDate: startDate,
-      endDate: endDate,     
-      employeeId: this.employeeProfile?.id
-    };
-
-    if (this.hasWorkExperienceData) {
-      this.workExperienceService.update(this.workExperienceDto).subscribe({
+    this.newWorkExperience.forEach(newWorkExperience => {
+      this.workExperienceService.save(newWorkExperience).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Work experience details updated", "snack-success");
-          this.getWorkExperience();
-          this.checkWorkExperienceFormProgress();
-          this.hasUpdatedWorkExperience = true;
-          this.editWorkExperience = false;
-          this.workExperienceForm.disable();
+          saveCount++;
+          if (saveCount === total && !errorOccurred) {
+            this.snackBarService.showSnackbar("Work experience info updated", "snack-success");
+            this.hasUpdatedWorkExperience = true;
+            this.addingWorkExperience = false;
+            this.newWorkExperience = [];
+            this.getWorkExperience();
+          }
         },
         error: (error) => {
-          this.snackBarService.showSnackbar(error, "snack-error");
-        }
-      })
-    }
-    else {
-      this.workExperienceService.save(this.workExperienceDto).subscribe({
-        next: () => {
-          this.snackBarService.showSnackbar("Work experience details added", "snack-success");
-          this.getWorkExperience();
-          this.checkWorkExperienceFormProgress();
-          this.hasUpdatedWorkExperience = true;
+          errorOccurred = true;
+          this.snackBarService.showSnackbar("Unable to update work experience", "snack-error");
+          this.addingWorkExperience = false;
           this.editWorkExperience = false;
-          this.workExperienceForm.disable();
         }
-        , error: (error) => {
-          this.snackBarService.showSnackbar("Failed to create Work experience details", "snack-error");
-        }
-      })
-    }
+      });
+    });
   }
 
-  checkWorkExperienceFormProgress() {
-    let filledCount = 0;
-    const formControls = this.workExperienceForm.controls;
-    const totalFields = Object.keys(this.workExperienceForm.controls).length;
-    for (const controlName in formControls) {
-      if (formControls.hasOwnProperty(controlName)) {
-        const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
-          filledCount++;
-        }
+  updateWorkExperience() {
+    this.isUpdated = true;
+    this.editWorkExperience = false;
+    const editedWorkExperienceArray = this.findDifferenceInArrays();
+    const updateObservables = editedWorkExperienceArray.map(workExperience =>
+      this.workExperienceService.update(workExperience)
+    );
+    forkJoin(updateObservables).subscribe({
+      next: () => {
+        this.snackBarService.showSnackbar("Work experience info updated", "snack-success");
+        this.hasUpdatedWorkExperience = true;
+        this.getWorkExperience();
+      },
+      error: () => {
+        this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
       }
-    }
-    this.workExperienceFormProgress = Math.round((filledCount / totalFields) * 100);
+    });
   }
 }

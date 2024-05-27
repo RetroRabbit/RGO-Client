@@ -1,21 +1,52 @@
-#experience-field {
+#certificate-field {
     width: 100%;
 }
 
-#edit-button-width {
-    border: none;
+#actionCellDownload>button {
+    border: 1px solid #0029C6;
     border-radius: 2rem;
-    background-color: #D7DFFF;
+    background-color: white;
     color: #0029C6;
-    width: 170px;
+    padding: 0.5rem;
+    width: 8rem;
+  }
+
+  #actionCellUpload>button {
+    background: #0029c6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    padding: 0.5rem;
+    width: 8rem;
+  }
+  #actionCellDownload>button.disabledDownload {
+    border: 1px solid #e3e3e4ff;
+    border-radius: 2rem;
+    background-color: #e3e3e4ff;
+    color: #ffffff;
+    padding: 0.5rem;
+    width: 8rem;
+  }
+
+  :host .upload-download-button {
+    width: 100% !important;
+  }
+
+#last-updated {
+    color: #666666ff
 }
 
-#download-document {
-    color: #0029C6;
-    width: 50%;
-    font-weight:500;
-    padding: 10px;
-    margin-left: 10px;
+#uploadfile:hover {
+    cursor: pointer;
+}
+
+#uploadfile{
+    max-width: 70%;
+}
+
+#pdf-icon {
+    width: 14px;
+    height: 18px;
 }
 
 #add-another-button {
@@ -29,15 +60,69 @@
     width: 30%;
 }
 
+mat-icon{
+    cursor: pointer;
+}
+
 #add-another-button:disabled{
     background-color: #ddd;
     color: #888;
     cursor: not-allowed;
 }
 
-.custom-mat-option {
+#delete-icon{
+    color: rgb(217, 63, 63);
+}
+
+#edit-button-width {
+    border: none;
+    border-radius: 2rem;
+    background-color: #D7DFFF;
+    color: #0029C6;
+    width: 170px;
+}
+
+#edit-button-width:disabled{
+    background-color: #ddd;
+    color: #888;
+    cursor: not-allowed;
+}
+
+#upload-document-button{
+    color: #0029C6;
+    margin-left: 10px;
+}
+
+#document-name{
+    gap: 20px;
+    text-align: center;
+    padding: 10px;
+}
+
+.certificate-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding-right: 10px;
+}
+
+.icon-color{
+    color: red;
+}
+
+.certificate-header h2 {
+    margin: 0; 
+    margin-right: 8px;
+    gap: 20px;
+}
+
+.download-document , .add-qualification , #download-document-button {
+    color: #0029C6
+}
+
+#alignrow{
+    display: flex;
+    flex-direction: row;
+}
+
+#remove-document-button , .remove-document-button{
+    color: red;
 }
