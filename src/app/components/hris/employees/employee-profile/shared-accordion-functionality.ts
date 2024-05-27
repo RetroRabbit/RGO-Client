@@ -39,11 +39,11 @@ export class SharedAccordionFunctionality {
   customFields: CustomField[] = [];
   customFieldsDocuments: CustomField[] = [];
 
-  EmployeeDocuments: EmployeeDocument[] = [];
-  AdminstrativeDocuments: EmployeeDocument[] = [];
+  employeeDocuments: EmployeeDocument[] = [];
+  adminstrativeDocuments: EmployeeDocument[] = [];
   myDocuments: EmployeeDocument[] = [];
   starterkitDocuments: EmployeeDocument[] = [];
-  AdditionalDocuments: EmployeeDocument[] = [];
+  additionalDocuments: EmployeeDocument[] = [];
 
   foundClient: EmployeeProfile | undefined;
   foundTeamLead: any;
@@ -56,8 +56,6 @@ export class SharedAccordionFunctionality {
   fileEmployeeCategories = EmployeeDocumentsTypes;
   fileStarterKitCategories = StarterKitDocumentTypes;
   fileMyDocumentCategories = MyDocumentTypes;
-  fileAdditionalCategories = this.customFields;
-
 
   panelOpenState: boolean = false;
   physicalEqualPostal: boolean = true;
@@ -79,15 +77,12 @@ export class SharedAccordionFunctionality {
   profileFormProgress: number = 0;
   documentFormProgress: number = 0;
 
-  startKitDocumentsProgress: number = 0;
-  employeeDocumentsProgress: number = 0;
   myDocumentsProgress: number = 0;
   additionalDocumentsProgress: number = 0;
   adminDocumentsProgress: number = 0;
-
-  AllDocumentsProgress: number = 0;
-  AllEmployeeDocumentsProgress: number = 0;
+  employeeDocumentsProgress: number = 0;
   documentStarterKitFormProgress: number = 0;
+
   employeeFormProgress: number = 0;
   personalFormProgress: number = 0;
   contactFormProgress: number = 0;
@@ -111,8 +106,6 @@ export class SharedAccordionFunctionality {
     public sharedPropertyAccessService: SharedPropertyAccessService,
     private employeeDocumentService: EmployeeDocumentService,
     private customFieldService: CustomFieldService,
-
-
   ) { }
 
   personalDetailsForm: FormGroup = this.fb.group({
@@ -270,17 +263,17 @@ export class SharedAccordionFunctionality {
 
   calculateEmployeeDocumentProgress() {
     const total = this.fileEmployeeCategories.length;
-    const fetchedDocuments = this.EmployeeDocuments.length;
-    this.AllEmployeeDocumentsProgress = fetchedDocuments / total * 100;
+    const fetchedDocuments = this.employeeDocuments.length;
+    this.employeeDocumentsProgress = fetchedDocuments / total * 100;
   }
 
   calculateAdminDocumentProgress() {
     const total = this.fileAdminCategories.length;
-    const fetchedDocuments = this.AdminstrativeDocuments.length;
+    const fetchedDocuments = this.adminstrativeDocuments.length;
     this.adminDocumentsProgress = fetchedDocuments / total * 100;
   }
 
-  caculateStarterKitDocuments() {
+  calculateStarterKitDocuments() {
     const total = this.fileStarterKitCategories.length;
     const fetchedDocuments = this.starterkitDocuments.length;
     this.documentStarterKitFormProgress = fetchedDocuments / total * 100;
@@ -297,7 +290,7 @@ export class SharedAccordionFunctionality {
       next: data => {
         this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
         const total = this.customFieldsDocuments.length;
-        const fetchedDocuments = this.AdditionalDocuments.length;
+        const fetchedDocuments = this.additionalDocuments.length;
         this.additionalDocumentsProgress = fetchedDocuments / total * 100;
       }
     })
@@ -309,7 +302,7 @@ export class SharedAccordionFunctionality {
   }
 
   totalDocumentsProgress() {
-    this.documentFormProgress = Math.floor((this.AllEmployeeDocumentsProgress + this.myDocumentsProgress + this.startKitDocumentsProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 5);
+    this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.myDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 5);
     this.updateDocument.emit(this.documentFormProgress);
   }
 }

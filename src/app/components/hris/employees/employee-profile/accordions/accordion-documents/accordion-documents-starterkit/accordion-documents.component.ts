@@ -112,7 +112,7 @@ export class AccordionDocumentsComponent {
         next: data => {
           this.sharedAccordionFunctionality.starterkitDocuments = data;
           this.dataSource.data = this.sharedAccordionFunctionality.fileStarterKitCategories;
-          this.sharedAccordionFunctionality.caculateStarterKitDocuments();
+          this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
         },
         error: error => {
@@ -125,7 +125,7 @@ export class AccordionDocumentsComponent {
         next: data => {
           this.sharedAccordionFunctionality.starterkitDocuments = data;
           this.dataSource.data = this.sharedAccordionFunctionality.fileStarterKitCategories;
-          this.sharedAccordionFunctionality.caculateStarterKitDocuments();
+          this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
 
         },
@@ -154,7 +154,7 @@ export class AccordionDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getEmployeeDocuments();
-          this.sharedAccordionFunctionality.caculateStarterKitDocuments();
+          this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
         },
         error: (error) => {
@@ -184,7 +184,7 @@ export class AccordionDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getEmployeeDocuments();
-          this.sharedAccordionFunctionality.caculateStarterKitDocuments();
+          this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
         },
         error: (error) => {
@@ -216,6 +216,8 @@ export class AccordionDocumentsComponent {
           lastUpdatedDate: new Date()
         };
         this.uploadDocumentDto(newDto);
+        this.sharedAccordionFunctionality.calculateStarterKitDocuments();
+        this.sharedAccordionFunctionality.totalDocumentsProgress();
 
       };
       reader.readAsDataURL(this.selectedFile);

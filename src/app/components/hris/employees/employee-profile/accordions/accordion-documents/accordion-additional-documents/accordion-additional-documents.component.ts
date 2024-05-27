@@ -76,11 +76,13 @@ export class AccordionDocumentsCustomDocumentsComponent {
     if (this.employeeId != undefined) {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 4).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.AdditionalDocuments = data;
+          this.sharedAccordionFunctionality.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
 
-          this.sharedAccordionFunctionality.AdditionalDocuments = data;
+          this.sharedAccordionFunctionality.additionalDocuments = data;
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
+          this.sharedAccordionFunctionality.totalDocumentsProgress();
+
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -90,7 +92,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
       this.employeeId = this.navService.employeeProfile.id;
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 4).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.AdditionalDocuments = data;
+          this.sharedAccordionFunctionality.additionalDocuments = data;
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
 
@@ -103,7 +105,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   }
 
   filterDocumentsByCategory(): EmployeeDocument | null {
-    var object = this.sharedAccordionFunctionality.AdditionalDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
+    var object = this.sharedAccordionFunctionality.additionalDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
     if (object == null) {
       return null;
     }
@@ -241,20 +243,21 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   getDocumentName(reference: any): EmployeeDocument | null {
     let documentFound = null;
-    this.sharedAccordionFunctionality.AdditionalDocuments.forEach(document => {
+    this.sharedAccordionFunctionality.additionalDocuments.forEach(document => {
       if (document.reference == reference) {
         documentFound = document;
       }
     })
     return documentFound;
+
   }
 
   disableDownloadButton(index: number) {
-    return this.sharedAccordionFunctionality.AdditionalDocuments[index] != null;
+    return this.sharedAccordionFunctionality.additionalDocuments[index] != null;
   }
 
   downloadDocumentTrigger(index: number) {
-    this.downloadDocument(this.sharedAccordionFunctionality.AdditionalDocuments[index].blob, this.sharedAccordionFunctionality.AdditionalDocuments[index].fileName);
+    this.downloadDocument(this.sharedAccordionFunctionality.additionalDocuments[index].blob, this.sharedAccordionFunctionality.additionalDocuments[index].fileName);
   }
 
   downloadDocument(base64String: string, fileName: string) {
@@ -280,7 +283,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   filterDocumentsByReference(): EmployeeDocument | null {
     let documentFound = null;
-    this.sharedAccordionFunctionality.AdditionalDocuments.find(document => {
+    this.sharedAccordionFunctionality.additionalDocuments.find(document => {
       if (document.reference == this.selectedFieldCode)
         documentFound = document
     });

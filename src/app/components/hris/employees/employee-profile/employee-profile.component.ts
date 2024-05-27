@@ -140,7 +140,6 @@ export class EmployeeProfileComponent implements OnChanges {
     });
     this.sharedAccordionFunctionality.updateDocument.subscribe(progress => {
       this.documentFormProgress = progress;
-      console.log("heres the progress for document", this.documentFormProgress);
     });
 
     this.overallProgress();
