@@ -92,7 +92,7 @@ import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-
 import { CareerSummaryQualificationsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-summary-qualifications/accordion-career-summary-qualifications.component';
 import { AccordionEmployeeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-employee-documents/accordion-employee-documents.component';
 import { AccordionDocumentsCustomDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-additional-documents/accordion-additional-documents.component';
-import { AccordionCareerWorkExperienceComponent } from './components/hris/employees/employee-profile/accordions/accordion-career/accordion-career-work-experience/accordion-career-work-experience.component';
+import { AccordionCareerWorkExperienceComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-work-experience/accordion-career-work-experience.component';
 import { AccordionCertificatesComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-certificates/accordion-certificates.component';
 import { AccordionAdministrativeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-administrative-documents/accordion-administrative-documents.component';
 
