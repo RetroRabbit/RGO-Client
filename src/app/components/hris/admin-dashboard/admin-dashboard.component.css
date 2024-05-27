@@ -636,3 +636,12 @@ div#results-container {
 .mat-mdc-progress-spinner {
   --mdc-circular-progress-active-indicator-color: #0029C6 !important;
 }
+
+.graph-top-text {
+  font-size: 22px;
+  line-height: 24px;
+}
+
+.graph-bottom-text {
+  font-size: 12px;
+}
