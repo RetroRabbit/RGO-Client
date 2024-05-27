@@ -350,9 +350,6 @@
       <app-accordion-profile-additional *ngIf="selectedAccordion === 'Profile Details'"
       [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-additional>
 
-      <app-accordion-salary-details [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
-      </app-accordion-salary-details>
-
       <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile"
         (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
 
@@ -373,6 +370,9 @@
 
     <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'" 
     [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-career-summary-qualifications>
+
+    <app-accordion-salary-details [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
+    </app-accordion-salary-details>
 
     </div>
   </div>

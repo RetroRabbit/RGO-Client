@@ -40,7 +40,6 @@ export class AccordionSalaryDetailsComponent {
 
   ngOnInit(): void {
     this.getEmployeeSalaryDetails();
-    this.initializeSalaryDetailsForm(this.employeeSalary);
   }
 
   initializeSalaryDetailsForm(salaryDetails: EmployeeSalary) {
@@ -53,6 +52,7 @@ export class AccordionSalaryDetailsComponent {
     this.employeeSalaryService.getEmployeeSalary(this.employeeProfile.id as number).subscribe({
       next: data => {
         this.employeeSalary = data;
+        this.initializeSalaryDetailsForm(this.employeeSalary);
         this.getDate();
       },
       error: (error) => {
@@ -72,9 +72,9 @@ export class AccordionSalaryDetailsComponent {
   }
 
   saveEmployeeSalaryDetails() {
+    const salaryDetailsFormValue = this.salaryDetailsForm.value;
     if (this.salaryDetailsForm.valid) {
       this.editSalary = false;
-      const salaryDetailsFormValue = this.salaryDetailsForm.value;
       this.employeeSalaryDetailsDto = {
         employeeId: this.employeeProfile.id,
         id: this.employeeSalary.id,
@@ -97,6 +97,9 @@ export class AccordionSalaryDetailsComponent {
           this.snackBarService.showSnackbar(error, "snack-error");
         }
       })
+    }
+    else if (salaryDetailsFormValue.remuneration < 0) {
+      this.snackBarService.showSnackbar("Remuneration cannot be less than zero", "snack-error");
     }
     else {
       this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
