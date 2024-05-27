@@ -48,7 +48,7 @@ export class AccordionCareerWorkExperienceComponent {
   newWorkExperienceIndex: number | null = null;
 
   copyOfWorkExperience: WorkExperience[] = [];
-  newWorkExperience: WorkExperience[] = [];
+  newWorkExperiences: WorkExperience[] = [];
 
   role: string | undefined = '';
   skillSetList: string[] = [];
@@ -141,7 +141,7 @@ export class AccordionCareerWorkExperienceComponent {
       endDate: new Date,
       employeeId: this.employeeProfile.id as number
     }
-    this.newWorkExperience.push(newWorkExperience);
+    this.newWorkExperiences.push(newWorkExperience);
   }
 
   findDifferenceInArrays(): WorkExperience[] {
@@ -177,10 +177,10 @@ export class AccordionCareerWorkExperienceComponent {
     this.addingWorkExperience = false;
     this.copyOfWorkExperience = this.workExperience;
     if (this.newWorkExperienceIndex !== null) {
-      this.newWorkExperience.splice(this.newWorkExperienceIndex, 1);
+      this.newWorkExperiences.splice(this.newWorkExperienceIndex, 1);
       this.newWorkExperienceIndex = null;
     }
-    this.newWorkExperience = [];
+    this.newWorkExperiences = [];
   }
 
   copyWorkExperiences() {
@@ -208,9 +208,9 @@ export class AccordionCareerWorkExperienceComponent {
     }
   }
 
-  removeNewWorkExperience(index: number) {
+  removenewWorkExperience(index: number) {
     this.addingWorkExperience = false;
-    this.newWorkExperience.splice(index, 1);
+    this.newWorkExperiences.splice(index, 1);
   }
 
   removeExistingWorkExperience(index: number) {
@@ -230,11 +230,11 @@ export class AccordionCareerWorkExperienceComponent {
 
   saveWorkExperience() {
     this.isUpdated = true;
-    const total = this.newWorkExperience.length;
+    const total = this.newWorkExperiences.length;
     let saveCount = 0;
     let errorOccurred = false;
 
-    this.newWorkExperience.forEach(newWorkExperience => {
+    this.newWorkExperiences.forEach(newWorkExperience => {
       this.workExperienceService.save(newWorkExperience).subscribe({
         next: () => {
           saveCount++;
@@ -242,7 +242,7 @@ export class AccordionCareerWorkExperienceComponent {
             this.snackBarService.showSnackbar("Work experience info updated", "snack-success");
             this.hasUpdatedWorkExperience = true;
             this.addingWorkExperience = false;
-            this.newWorkExperience = [];
+            this.newWorkExperiences = [];
             this.getWorkExperience();
           }
         },
