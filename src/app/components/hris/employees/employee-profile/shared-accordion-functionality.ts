@@ -282,7 +282,8 @@ export class SharedAccordionFunctionality {
   calculateMyDocumentProgress() {
     const total = this.myDocuments.length;
     const fetchedDocuments = this.myDocuments.length;
-    this.myDocumentsProgress = fetchedDocuments / total * 100;
+    const totalprogress = fetchedDocuments / total * 100;
+    this.myDocumentsProgress = isNaN(totalprogress) ? 0 : totalprogress;
   }
 
   calculateAdditionalDocumentProgress() {
