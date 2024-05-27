@@ -174,6 +174,10 @@ export class AccordionCareerAdditionalInformationComponent {
 
   saveAdditionalEdit() {
     const empDataValues = this.sharedAccordionFunctionality.employeeData;
+    if (!this.sharedAccordionFunctionality.additionalCareerInfoForm.valid) {
+      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+      return;
+    }
     for (const fieldcode of this.customFields) {
       const found = empDataValues.find((data) => {
         return fieldcode.id === data.fieldCodeId
@@ -188,20 +192,16 @@ export class AccordionCareerAdditionalInformationComponent {
           value: this.sharedAccordionFunctionality.additionalCareerInfoForm.get(formatFound)?.value
         }
 
-        if (fieldcode.required === true && employeeDataDto.value == "") {
-          this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
-        } else {
-          this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
-            next: (data) => {
-              this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
-              this.sharedAccordionFunctionality.checkCareerAdditionalFormProgress();
-              this.sharedAccordionFunctionality.totalProfileProgress();
-              this.sharedAccordionFunctionality.additionalCareerInfoForm.disable();
-              this.sharedAccordionFunctionality.editAdditional = false;
-            },
-            error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
-          });
-        }
+        this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
+          next: (data) => {
+            this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
+            this.sharedAccordionFunctionality.checkCareerAdditionalFormProgress();
+            this.sharedAccordionFunctionality.totalProfileProgress();
+            this.sharedAccordionFunctionality.additionalCareerInfoForm.disable();
+            this.sharedAccordionFunctionality.editAdditional = false;
+          },
+          error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
+        });
       } else {
         const formatFound: any = fieldcode?.code
         const employeeDataDto = {
@@ -211,7 +211,7 @@ export class AccordionCareerAdditionalInformationComponent {
           value: this.sharedAccordionFunctionality.additionalCareerInfoForm.get(formatFound)?.value
         }
 
-        if (fieldcode.required === true && employeeDataDto.value != "") {
+        if (employeeDataDto.value) {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
               this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
@@ -226,6 +226,7 @@ export class AccordionCareerAdditionalInformationComponent {
           });
         } else {
           this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+          return;
         }
       }
 
