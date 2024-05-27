@@ -1,4 +1,4 @@
-import { Component, HostListener, Input } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
@@ -30,6 +30,8 @@ export class AccordionProfileAdditionalComponent {
   onResize() {
     this.screenWidth = window.innerWidth;
   }
+  @Output() updateEmployeeProfile = new EventEmitter<any>();
+
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
   customFields: CustomField[] = [];
@@ -180,6 +182,8 @@ export class AccordionProfileAdditionalComponent {
             this.sharedAccordionFunctionality.totalProfileProgress();
             this.sharedAccordionFunctionality.additionalInfoForm.disable();
             this.sharedAccordionFunctionality.editAdditional = false;
+            this.getEmployeeData();
+            this.updateEmployeeProfile.emit(1);
           },
           error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
         });
@@ -200,6 +204,8 @@ export class AccordionProfileAdditionalComponent {
               this.sharedAccordionFunctionality.totalProfileProgress();
               this.sharedAccordionFunctionality.additionalInfoForm.disable();
               this.sharedAccordionFunctionality.editAdditional = false;
+              this.getEmployeeData();
+              this.updateEmployeeProfile.emit(1);
             },
             error: (error) => {
               this.snackBarService.showSnackbar(error, "snack-error");
@@ -211,7 +217,6 @@ export class AccordionProfileAdditionalComponent {
         }
       }
     }
-    this.getEmployeeData();
   }
 
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {

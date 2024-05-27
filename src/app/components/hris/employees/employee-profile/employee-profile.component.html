@@ -22,8 +22,8 @@
   <div id="profile-header" *ngIf="!isLoading" class="row ps-2 m-1">
     <div class="col-4 col-md-2 mt-4">
       <div id="profile-image">
-        <img (click)="uploadFile.click()" [src]="employeeProfile.photo || '../../assets/img/profileAts.png'" alt="Profile img"
-          class="rounded-circle profile-img">
+        <img (click)="uploadFile.click()" [src]="employeeProfile.photo || '../../assets/img/ProfileAts.png'"
+          alt="Profile img" class="rounded-circle profile-img">
         <input type="file" #uploadFile (change)="onFileChange($event)" hidden accept=".png, .svg,.jpg,.jpeg">
       </div>
     </div>
@@ -350,7 +350,8 @@
       <app-accordion-profile-address-details *ngIf="selectedAccordion === 'Profile Details'"
         [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-address-details>
       <app-accordion-profile-additional *ngIf="selectedAccordion === 'Profile Details'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-additional>
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+        (updateEmployeeProfile)="refreshEmployeeProfile()"></app-accordion-profile-additional>
 
       <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile"
         (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
@@ -377,7 +378,8 @@
         [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-career-summary-qualifications>
 
       <app-accordion-career-additional-information [hidden]="selectedAccordion != 'Career Summary'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-career-additional-information>
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+        (updateEmployeeProfile)="refreshEmployeeProfile()"></app-accordion-career-additional-information>
 
     </div>
   </div>

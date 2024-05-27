@@ -142,7 +142,6 @@ export class EmployeeProfileComponent implements OnChanges {
     this.sharedAccordionFunctionality.updateDocument.subscribe(progress => {
       this.documentFormProgress = progress;
     });
-    this.getEmployeeData();
     this.overallProgress();
 
     this.employeeId = this.route.snapshot.params['id'];
@@ -374,5 +373,12 @@ export class EmployeeProfileComponent implements OnChanges {
     if (stringifiedphysicalAddress === stringifiedpostalAddress) {
       this.sharedAccordionFunctionality.physicalEqualPostal = true;
     }
+  }
+
+  refreshEmployeeProfile() {
+    this.getEmployeeProfile();
+    this.getEmployeeFields();
+    this.getAllEmployees();
+    this.getClients();
   }
 }

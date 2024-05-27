@@ -1,4 +1,4 @@
-import { Component, HostListener, Input } from '@angular/core';
+import { Component, HostListener, Input, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
@@ -15,6 +15,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-accordion-career-additional-information',
@@ -30,6 +31,8 @@ export class AccordionCareerAdditionalInformationComponent {
   onResize() {
     this.screenWidth = window.innerWidth;
   }
+
+  @Output() updateEmployeeProfile = new EventEmitter<any>();
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
   customFields: CustomField[] = [];
@@ -179,6 +182,8 @@ export class AccordionCareerAdditionalInformationComponent {
             this.sharedAccordionFunctionality.totalProfileProgress();
             this.sharedAccordionFunctionality.additionalCareerInfoForm.disable();
             this.sharedAccordionFunctionality.editAdditional = false;
+            this.getEmployeeData();
+            this.updateEmployeeProfile.emit(1);
           },
           error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
         });
@@ -199,6 +204,8 @@ export class AccordionCareerAdditionalInformationComponent {
               this.sharedAccordionFunctionality.totalProfileProgress();
               this.sharedAccordionFunctionality.additionalCareerInfoForm.disable();
               this.sharedAccordionFunctionality.editAdditional = false;
+              this.getEmployeeData();
+              this.updateEmployeeProfile.emit(1);
             },
             error: (error) => {
               this.snackBarService.showSnackbar(error, "snack-error");
@@ -209,9 +216,7 @@ export class AccordionCareerAdditionalInformationComponent {
           return;
         }
       }
-
     }
-    this.getEmployeeData();
   }
 
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
