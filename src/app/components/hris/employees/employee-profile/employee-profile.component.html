@@ -30,7 +30,8 @@
     <div class="col-8 col-md-10 offset-lg-0 col-lg-10 mt-3">
       <div class="row mt-3 px-0">
         <div class="col-11 col-md-6" id="header-name">
-          <h1 class="mb-0" *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else OwnName">
+          <h1 class="mb-0"
+            *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else OwnName">
             {{ selectedEmployee.name }} {{ selectedEmployee.surname }}
           </h1>
           <ng-template #OwnName>
@@ -112,7 +113,7 @@
                 sharedAccordionFunctionality.employeePeopleChampion.surname: 'Not assigned'}}
               </div>
               <ng-template #NonAdminPeopleChampion>
-                {{simpleEmployee.peopleChampionName}}
+                {{simpleEmployee.peopleChampionName ? simpleEmployee.peopleChampionName : 'Not assigned'}}
               </ng-template>
             </div>
           </div>
@@ -147,7 +148,8 @@
             </div>
             <div class="col-9 my-2">
               <div id="header-label">Start Date</div>
-              <div *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else NonAdminEngagementDate"
+              <div
+                *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else NonAdminEngagementDate"
                 id="header-value">
                 {{ selectedEmployee.engagementDate| date:'d MMM yyyy' }}
               </div>
@@ -340,41 +342,43 @@
     </div>
     <div id="accordions-body`" class="row m-2" *ngIf="employeeProfile">
       <app-accordion-profile-employee-details *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-employee-details>
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-employee-details>
       <app-accordion-profile-personal-details *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-personal-details>
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-personal-details>
       <app-accordion-profile-contact-details *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-contact-details>
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-contact-details>
       <app-accordion-profile-address-details *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-address-details>
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-address-details>
       <app-accordion-profile-additional *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-additional>
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-additional>
 
       <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile"
-      (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
+        (updateBanking)="updateBankingProgress($event)"></app-accordion-banking>
 
-      <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
-      (updateDocument)="updateDocumentProgress($event)"></app-accordion-documents-starterkit>
+      <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'"
+        [employeeProfile]="employeeProfile"></app-accordion-documents-starterkit>
 
-      <app-accordion-certificates [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile"></app-accordion-certificates>
+      <app-accordion-certificates [hidden]="selectedAccordion != 'Career Summary'"
+        [employeeProfile]="employeeProfile"></app-accordion-certificates>
 
-      <app-accordion-administrative-documents *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin()" [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
+      <app-accordion-administrative-documents *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin()"
+        [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
       </app-accordion-administrative-documents>
 
       <app-accordion-employee-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
       </app-accordion-employee-documents>
 
-      <app-accordion-my-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"
-      (updateDocument)="updateDocumentProgress($event)"></app-accordion-my-documents>
-      <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile"></app-accordion-additional-documents>
+      <app-accordion-my-documents [hidden]="selectedAccordion != 'Documents'"
+        [employeeProfile]="employeeProfile"></app-accordion-my-documents>
+      <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'"
+        [employeeProfile]="employeeProfile"></app-accordion-additional-documents>
 
       <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-career-summary-qualifications>
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-career-summary-qualifications>
 
       <app-accordion-career-additional-information [hidden]="selectedAccordion != 'Career Summary'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-career-additional-information>
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-career-additional-information>
 
     </div>
   </div>
 </div>
-

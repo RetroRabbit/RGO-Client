@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
-import { Document } from 'src/app/models/hris/constants/documents.contants';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { AccordionBankingComponent } from './accordions/accordion-banking/accordion-banking.component';
@@ -26,6 +25,11 @@ import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.inte
 import { Clipboard } from '@angular/cdk/clipboard';
 import { SharedAccordionFunctionality } from './shared-accordion-functionality';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
+import { AccordionDocumentsAdditionalComponent } from './accordions/accordion-documents/accordion-my-documents/accordion-my-documents.component';
+import { AccordionAdministrativeDocumentsComponent } from './accordions/accordion-administrative-documents/accordion-administrative-documents.component';
+import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-employee-documents/accordion-employee-documents.component';
+import { CustomField } from 'src/app/models/hris/custom-field.interface';
+import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -35,6 +39,7 @@ import { EmployeeDataService } from 'src/app/services/hris/employee/employee-dat
 
 export class EmployeeProfileComponent implements OnChanges {
   @Input() updateProfile!: { updateProfile: SharedAccordionFunctionality };
+  @Input() updateDocument!: { updateDocument: SharedAccordionFunctionality };
 
   selectedEmployee!: EmployeeProfile;
   employeeProfile: EmployeeProfile = {};
@@ -43,13 +48,14 @@ export class EmployeeProfileComponent implements OnChanges {
   employeePostalAddress !: EmployeeAddress;
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
+  customFields: CustomField[] = [];
+
   employeeBanking !: EmployeeBanking;
 
   employeeId = this.route.snapshot.params['id'];
 
   selectedAccordion: string = 'Profile Details';
   selectedItem: string = 'Profile Details';
-  fileCategories = Document;
 
   editContact: boolean = false;
   showBackButtons: boolean = true;
@@ -90,6 +96,10 @@ export class EmployeeProfileComponent implements OnChanges {
   @ViewChild(AccordionProfileContactDetailsComponent) contactAccordion!: AccordionProfileContactDetailsComponent;
   @ViewChild(AccordionProfileEmployeeDetailsComponent) employeeAccordion!: AccordionProfileEmployeeDetailsComponent;
   @ViewChild(AccordionProfilePersonalDetailsComponent) personalAccordion!: AccordionProfilePersonalDetailsComponent;
+  @ViewChild(AccordionDocumentsComponent) starterKitAccordion!: AccordionDocumentsComponent;
+  @ViewChild(AccordionDocumentsAdditionalComponent) additionalDocumentsAccordion!: AccordionDocumentsAdditionalComponent;
+  @ViewChild(AccordionAdministrativeDocumentsComponent) adminDocumentsAccordion!: AccordionAdministrativeDocumentsComponent;
+  @ViewChild(AccordionEmployeeDocumentsComponent) employeeDocumentAccordion!: AccordionEmployeeDocumentsComponent;
 
   imageUrl!: string;
   validateFile: any;
@@ -100,7 +110,8 @@ export class EmployeeProfileComponent implements OnChanges {
     this.screenWidth = window.innerWidth;
   }
 
-  constructor(private cookieService: CookieService,
+  constructor(
+    private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
     private clientService: ClientService,
     private route: ActivatedRoute,
@@ -117,16 +128,24 @@ export class EmployeeProfileComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     changes['updateProfile'].currentValue
+    changes['updateDocument'].currentValue
   }
+
   ngOnDestroy() {
     this.displayEditButtons()
   }
+
   ngOnInit() {
-    this.sharedAccordionFunctionality.updateProfile.subscribe(progress => {
-      this.profileFormProgress = progress;
-      this.getEmployeeData();
-      this.overallProgress();
+    this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
+      this.profileFormProgress = profileProgress;
+
     });
+    this.sharedAccordionFunctionality.updateDocument.subscribe(progress => {
+      this.documentFormProgress = progress;
+    });
+    this.getEmployeeData();
+    this.overallProgress();
+
     this.employeeId = this.route.snapshot.params['id'];
     this.getClients();
     if (this.employeeId == undefined) {
@@ -292,11 +311,6 @@ export class EmployeeProfileComponent implements OnChanges {
   updateBankingProgress(update: any) {
     this.bankInformationProgress = update.progress;
     this.bankStatus = update.status;
-    this.overallProgress();
-  }
-
-  updateDocumentProgress(progress: number) {
-    this.documentFormProgress = progress;
     this.overallProgress();
   }
 

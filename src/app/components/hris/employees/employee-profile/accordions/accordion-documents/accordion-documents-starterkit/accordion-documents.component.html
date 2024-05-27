@@ -6,7 +6,7 @@
                 <mat-panel-title>
                     Starter Kit documents
                 </mat-panel-title>
-                <mat-panel-description *ngIf="documentFormProgress != 100" class="pe-0 pe-md-5">
+                <mat-panel-description *ngIf="sharedAccordionFunctionality.documentFormProgress != 100" class="pe-0 pe-md-5">
                     <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div id="table-body" class="my-2">
-                    <div *ngFor="let category of fileCategories;let i = index" class="row my-2 py-2" id="document-row">
+                    <div *ngFor="let category of sharedAccordionFunctionality.fileStarterKitCategories;let i = index" class="row my-2 py-2" id="document-row">
                         <div id="document" class="col-12 col-md-6 col-lg-6">
                             <h3>{{category}}</h3>
                             <div class="col-12" *ngIf="getFileName(i) as document;else NoFile" id="fileName">

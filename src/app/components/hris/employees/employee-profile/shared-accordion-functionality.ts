@@ -13,6 +13,13 @@ import { category } from 'src/app/models/hris/constants/fieldcodeCategory.consta
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { AdminDocuments } from 'src/app/models/hris/constants/admin-documents.component';
+import { EmployeeDocumentsTypes } from 'src/app/models/hris/constants/employee-documents.constants';
+import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
+import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
+import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
+import { MyDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
+import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { nqfLevels } from 'src/app/models/hris/constants/nqfLevels.constant.';
 import { EmployeeQualifications } from 'src/app/models/hris/employee-qualifications.interface';
 
@@ -22,6 +29,8 @@ import { EmployeeQualifications } from 'src/app/models/hris/employee-qualificati
 
 export class SharedAccordionFunctionality {
   @Output() updateProfile = new EventEmitter<any>();
+  @Output() updateDocument = new EventEmitter<number>();
+  @Input() employeeProfile!: EmployeeProfile;
 
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
@@ -31,6 +40,13 @@ export class SharedAccordionFunctionality {
   filteredPeopleChamps: any = [];
   employeeData: EmployeeData[] = [];
   customFields: CustomField[] = [];
+  customFieldsDocuments: CustomField[] = [];
+
+  employeeDocuments: EmployeeDocument[] = [];
+  adminstrativeDocuments: EmployeeDocument[] = [];
+  myDocuments: EmployeeDocument[] = [];
+  starterkitDocuments: EmployeeDocument[] = [];
+  additionalDocuments: EmployeeDocument[] = [];
 
   foundClient: EmployeeProfile | undefined;
   foundTeamLead: any;
@@ -39,6 +55,10 @@ export class SharedAccordionFunctionality {
   clientId: number | undefined;
   peopleChampionId: number | undefined;
 
+  fileAdminCategories = AdminDocuments;
+  fileEmployeeCategories = EmployeeDocumentsTypes;
+  fileStarterKitCategories = StarterKitDocumentTypes;
+  fileMyDocumentCategories = MyDocumentTypes;
   employeeQualificationDto: EmployeeQualifications = {
     id: 0,
     employeeId: 0,
@@ -68,8 +88,16 @@ export class SharedAccordionFunctionality {
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
 
-  employeeFormProgress: number = 0;
   profileFormProgress: number = 0;
+  documentFormProgress: number = 0;
+
+  myDocumentsProgress: number = 0;
+  additionalDocumentsProgress: number = 0;
+  adminDocumentsProgress: number = 0;
+  employeeDocumentsProgress: number = 0;
+  documentStarterKitFormProgress: number = 0;
+
+  employeeFormProgress: number = 0;
   personalFormProgress: number = 0;
   contactFormProgress: number = 0;
   addressFormProgress: number = 0;
@@ -90,7 +118,10 @@ export class SharedAccordionFunctionality {
 
   constructor(
     private fb: FormBuilder,
-    public sharedPropertyAccessService: SharedPropertyAccessService) { }
+    public sharedPropertyAccessService: SharedPropertyAccessService,
+    private employeeDocumentService: EmployeeDocumentService,
+    private customFieldService: CustomFieldService,
+  ) { }
 
   personalDetailsForm: FormGroup = this.fb.group({
     gender: { value: '', disabled: true },
@@ -182,6 +213,9 @@ export class SharedAccordionFunctionality {
     this.personalFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
+  getAdditionalDocumentFieldCodes() {
+
+  }
   checkEmployeeFormProgress() {
     let filledCount = 0;
     const formControls = this.employeeDetailsForm.controls;
@@ -238,7 +272,6 @@ export class SharedAccordionFunctionality {
   }
 
   checkAdditionalFormProgress() {
-
     let filledCount = 0;
     const formControls = this.additionalInfoForm.controls;
     let totalFields = Object.keys(this.additionalInfoForm.controls).length;
@@ -271,8 +304,42 @@ export class SharedAccordionFunctionality {
     this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
+  calculateEmployeeDocumentProgress() {
+    const total = this.fileEmployeeCategories.length;
+    const fetchedDocuments = this.employeeDocuments.length;
+    this.employeeDocumentsProgress = fetchedDocuments / total * 100;
+  }
+
+  calculateAdminDocumentProgress() {
+    const total = this.fileAdminCategories.length;
+    const fetchedDocuments = this.adminstrativeDocuments.length;
+    this.adminDocumentsProgress = fetchedDocuments / total * 100;
+  }
+
+  calculateStarterKitDocuments() {
+    const total = this.fileStarterKitCategories.length;
+    const fetchedDocuments = this.starterkitDocuments.length;
+    this.documentStarterKitFormProgress = fetchedDocuments / total * 100;
+  }
+
+  calculateAdditionalDocumentProgress() {
+    this.customFieldService.getAllFieldCodes().subscribe({
+      next: data => {
+        this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
+        const total = this.customFieldsDocuments.length;
+        const fetchedDocuments = this.additionalDocuments.length;
+        this.additionalDocumentsProgress = fetchedDocuments / total * 100;
+      }
+    })
+  }
+
   totalProfileProgress() {
-    this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.additionalFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
+    this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
     this.updateProfile.emit(this.profileFormProgress);
+  }
+
+  totalDocumentsProgress() {
+    this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 4);
+    this.updateDocument.emit(this.documentFormProgress);
   }
 }
