@@ -11,14 +11,8 @@ stages:
     steps:
     - task: NodeTool@0
       inputs:
-        versionSpec: '14.x'
+        versionSpec: '18.x'
       displayName: 'Install Node.js'
-
-
-    - script: |
-        npm install
-        npm run build -- --configuration=development
-      displayName: 'npm install and build for development'
     - task: DownloadSecureFile@1
       inputs:
         secureFile: '.env'
@@ -27,6 +21,12 @@ stages:
         SourceFolder: $(Agent.TempDirectory)
         Contents: '**\.env'
         TargetFolder: $(Build.SourcesDirectory)
+
+    - script: |
+        npm install
+        npm run build -- --configuration=development
+      displayName: 'npm install and build for development'
+
     - task: CopyFiles@2
       inputs:
         contents: 'dist/**'
@@ -47,6 +47,14 @@ stages:
       inputs:
         versionSpec: '18.x'
       displayName: 'Install Node.js'
+    - task: DownloadSecureFile@1
+      inputs:
+        secureFile: '.env'
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: $(Agent.TempDirectory)
+        Contents: '**\.env'
+        TargetFolder: $(Build.SourcesDirectory)
 
     - script: |
         npm install
@@ -65,8 +73,6 @@ stages:
         artifactName: 'staging-drop'
       displayName: 'Publish Artifact for Staging'
 
-    - task: AzureRmWebAppDeployment@4
-
 - stage: Production
   jobs:
   - job: BuildAndDeployProd
@@ -76,6 +82,15 @@ stages:
         versionSpec: '18.x'
       displayName: 'Install Node.js'
 
+    - task: DownloadSecureFile@1
+      inputs:
+        secureFile: '.env'
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: $(Agent.TempDirectory)
+        Contents: '**\.env'
+        TargetFolder: $(Build.SourcesDirectory)
+        
     - script: |
         npm install
         npm run build -- --configuration=production
@@ -92,4 +107,3 @@ stages:
         pathToPublish: '$(Build.ArtifactStagingDirectory)/prod'
         artifactName: 'prod-drop'
       displayName: 'Publish Artifact for Production'
-
