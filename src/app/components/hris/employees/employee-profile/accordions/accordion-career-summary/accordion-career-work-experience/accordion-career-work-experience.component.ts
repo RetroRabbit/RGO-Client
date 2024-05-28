@@ -121,8 +121,8 @@ export class AccordionCareerWorkExperienceComponent {
   getWorkExperience() {
     this.workExperienceService.getWorkExperience(this.employeeProfile.id).subscribe({
       next: (data) => {
-        this.workExperienceData = data;
-        console.log(this.workExperienceData);
+        this.workExperience = data;
+        console.log(this.workExperience);
       },
       error: (error) => {
       }

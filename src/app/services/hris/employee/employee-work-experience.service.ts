@@ -15,8 +15,8 @@ export class WorkExperienceService {
         this.baseUrl =`${environment.HttpsBaseURL}/work-experience`
     }
 
-    getWorkExperience(id: number | undefined): Observable<WorkExperience> {
-        return this.httpClient.get<WorkExperience>(`${this.baseUrl}?id=${id}`)
+    getWorkExperience(id: number | undefined): Observable<WorkExperience[]> {
+        return this.httpClient.get<WorkExperience[]>(`${this.baseUrl}?id=${id}`)
       }
 
     save(experience: WorkExperience): Observable<WorkExperience> {

@@ -5,7 +5,7 @@
         <mat-expansion-panel class="mt-3 rounded-3" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    Certificates
+                    Work Experiences
                 </mat-panel-title>
                 <mat-panel-description *ngIf="workExperienceFormProgress != 100" class="pe-0 pe-md-5">
                     <mat-icon class="mx-1">error</mat-icon>
@@ -267,7 +267,7 @@
                             <hr>
                         </div>
                         <div class="pt-3">
-                            <h2>Add Another New Work Experience here</h2>
+                            <h2>Add Another Work Experience here</h2>
                             <button mat-button id="add-another-button" [disabled]="editWorkExperience" type="submit"
                                 (click)="addNewWorkExperience()">
                                 <mat-icon>add</mat-icon> Add Another Work Experience
