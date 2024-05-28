@@ -43,7 +43,7 @@ export class AccordionSalaryDetailsComponent {
 
   ngOnInit(): void {
     this.getEmployeeSalaryDetails();
-    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
+    if (this.authAccessService.isSuperAdmin()) {
       this.isAdminUser = true;
     }
   }
