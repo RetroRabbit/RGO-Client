@@ -93,6 +93,7 @@ export class SharedAccordionFunctionality {
 
   myDocumentsProgress: number = 0;
   additionalDocumentsProgress: number = 0;
+  addDocProgress: number = 0;
   adminDocumentsProgress: number = 0;
   employeeDocumentsProgress: number = 0;
   documentStarterKitFormProgress: number = 0;
@@ -309,21 +310,21 @@ export class SharedAccordionFunctionality {
         this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
         const total = this.customFieldsDocuments.length;
         const fetchedDocuments = this.additionalDocuments.length;
+
         this.additionalDocumentsProgress = fetchedDocuments / total * 100;
+        this.totalDocumentsProgress();
       }
     })
-    this.handleProgressUpdate(this.additionalDocumentsProgress);
+    console.log("after subscribe", this.additionalDocumentsProgress)
+  }
 
-  }
-  handleProgressUpdate(progress: number) {
-    this.additionalDocumentsProgress = progress;
-  }
   totalProfileProgress() {
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
     this.updateProfile.emit(this.profileFormProgress);
   }
 
   totalDocumentsProgress() {
+    console.log("add doc on total function", this.additionalDocumentsProgress);
     this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 4);
     this.updateDocument.emit(this.documentFormProgress);
   }
