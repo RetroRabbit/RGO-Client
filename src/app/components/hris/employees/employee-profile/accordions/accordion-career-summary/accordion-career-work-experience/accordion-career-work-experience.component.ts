@@ -1,5 +1,5 @@
 import { Component, HostListener, Input } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+// import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
@@ -32,25 +32,27 @@ export class AccordionCareerWorkExperienceComponent {
   @Input() WorkExperience!: { workExperience: WorkExperience }
   @Input() employeeProfile !: EmployeeProfile | SimpleEmployee
 
-  workExperienceFormProgress: number = 0;
+  
   editWorkExperience: boolean = false;
-  workExperienceDto !: any;
-  workExperience: WorkExperience[] = [];
-  workExperienceData: any = [];
   hasWorkExperienceData: boolean = false;
-  workExperienceId: number | undefined = 0;
   isUpdated: boolean = false;
   hasUpdatedWorkExperience: boolean = false;
   addingWorkExperience: boolean = false;
   showConfirmDialog: boolean = false;
+  
   removeNewOrUpdate: string = '';
+  role: string = ''; 
+  // role: string | undefined = '';
+  
+  workExperienceFormProgress: number = 0;
   removeIndex: number = 0;
-  newWorkExperienceIndex: number | null = null;
-
+  // newWorkExperienceIndex: number | null = null;
+  
+  // workExperienceData: any = [];
+  workExperience: WorkExperience[] = [];
   copyOfWorkExperience: WorkExperience[] = [];
   newWorkExperiences: WorkExperience[] = [];
 
-  role: string | undefined = '';
   skillSetList: string[] = [];
   softwareList: string[] = [];
 
@@ -63,7 +65,7 @@ export class AccordionCareerWorkExperienceComponent {
   };
 
   constructor(
-    private fb: FormBuilder,
+    // private fb: FormBuilder,
     private workExperienceService: WorkExperienceService,
     private snackBarService: SnackbarService,
     public authAccessService: AuthAccessService,
@@ -76,8 +78,20 @@ export class AccordionCareerWorkExperienceComponent {
     this.getWorkExperience();
   }
 
+  getWorkExperience() {
+    this.workExperienceService.getWorkExperience(this.employeeProfile.id as number).subscribe({
+      next: (data) => {
+        this.workExperience = data;
+        console.log(this.workExperience);
+      },
+      error: (error) => {
+        this.snackBarService.showSnackbar(error,"Failed to fetch work experiences");
+      }
+    });
+  }
+
   getEmployeeType() {
-    this.role = this.employeeProfile?.employeeType?.name;
+    this.role = this.employeeProfile?.employeeType?.name as string;
     this.updateListsBasedOnRole();
   }
 
@@ -118,16 +132,7 @@ export class AccordionCareerWorkExperienceComponent {
     }
   }
 
-  getWorkExperience() {
-    this.workExperienceService.getWorkExperience(this.employeeProfile.id).subscribe({
-      next: (data) => {
-        this.workExperience = data;
-        console.log(this.workExperience);
-      },
-      error: (error) => {
-      }
-    });
-  }
+  
 
   addNewWorkExperience() {
     this.addingWorkExperience = true;
@@ -160,8 +165,8 @@ export class AccordionCareerWorkExperienceComponent {
         differenceArray.push(this.copyOfWorkExperience[i]);
       else if (this.workExperience[i].endDate != this.copyOfWorkExperience[i].endDate)
         differenceArray.push(this.copyOfWorkExperience[i]);
-      else if (this.workExperience[i].employeeId != this.copyOfWorkExperience[i].employeeId)
-        differenceArray.push(this.copyOfWorkExperience[i]);
+      // else if (this.workExperience[i].employeeId != this.copyOfWorkExperience[i].employeeId)
+      //   differenceArray.push(this.copyOfWorkExperience[i]);
     }
     return differenceArray
   }
@@ -172,23 +177,25 @@ export class AccordionCareerWorkExperienceComponent {
     this.copyWorkExperiences();
   }
 
-  cancelWorkExperienceEdit() {
-    this.editWorkExperience = false;
-    this.addingWorkExperience = false;
-    this.copyOfWorkExperience = this.workExperience;
-    if (this.newWorkExperienceIndex !== null) {
-      this.newWorkExperiences.splice(this.newWorkExperienceIndex, 1);
-      this.newWorkExperienceIndex = null;
-    }
-    this.newWorkExperiences = [];
-  }
-
   copyWorkExperiences() {
     this.workExperience.forEach(workExperience => {
       const copiedExperience = JSON.parse(JSON.stringify(workExperience));
       this.copyOfWorkExperience.push(copiedExperience);
     });
   }
+
+  cancelWorkExperienceEdit() { // change name
+    this.editWorkExperience = false;
+    this.addingWorkExperience = false;
+    // this.copyOfWorkExperience = this.workExperience;
+    // this.copyOfWorkExperience = [];
+    // if (this.newWorkExperienceIndex !== null) {
+    //   this.newWorkExperiences.splice(this.newWorkExperienceIndex, 1);
+    //   this.newWorkExperienceIndex = null;
+    // }
+    this.newWorkExperiences = [];
+  }
+
 
   showDialog(newOrUpdate: string, index: number) {
     this.removeNewOrUpdate = newOrUpdate;
@@ -209,13 +216,13 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   removenewWorkExperience(index: number) {
-    this.addingWorkExperience = false;
+   // this.addingWorkExperience = false;
     this.newWorkExperiences.splice(index, 1);
   }
 
   removeExistingWorkExperience(index: number) {
-    this.workExperienceId = this.copyOfWorkExperience[index].id;
-    this.workExperienceService.delete(this.workExperienceId).subscribe({
+    const deleteId = this.copyOfWorkExperience[index].id;
+    this.workExperienceService.delete(deleteId).subscribe({
       next: () => {
         this.snackBarService.showSnackbar("Experience deleted", "snack-success");
         this.copyOfWorkExperience.splice(index, 1);
@@ -239,7 +246,7 @@ export class AccordionCareerWorkExperienceComponent {
         next: () => {
           saveCount++;
           if (saveCount === total && !errorOccurred) {
-            this.snackBarService.showSnackbar("Work experience info updated", "snack-success");
+            this.snackBarService.showSnackbar("Work experience info added", "snack-success");
             this.hasUpdatedWorkExperience = true;
             this.addingWorkExperience = false;
             this.newWorkExperiences = [];
@@ -248,7 +255,7 @@ export class AccordionCareerWorkExperienceComponent {
         },
         error: (error) => {
           errorOccurred = true;
-          this.snackBarService.showSnackbar("Unable to update work experience", "snack-error");
+          this.snackBarService.showSnackbar("Unable to add work experience", "snack-error");
           this.addingWorkExperience = false;
           this.editWorkExperience = false;
         }

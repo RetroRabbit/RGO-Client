@@ -1,6 +1,6 @@
-#certificate-field {
+/* #certificate-field {
     width: 100%;
-}
+} */
 
 #actionCellDownload>button {
     border: 1px solid #0029C6;
@@ -99,7 +99,7 @@ mat-icon{
     padding: 10px;
 }
 
-.certificate-header {
+.experience-header {
     display: flex;
     align-items: center;
 }
@@ -108,7 +108,7 @@ mat-icon{
     color: red;
 }
 
-.certificate-header h2 {
+.experience-header h2 {
     margin: 0; 
     margin-right: 8px;
     gap: 20px;
@@ -116,6 +116,10 @@ mat-icon{
 
 .download-document , .add-qualification , #download-document-button {
     color: #0029C6
+}
+
+#clientNameHeading {
+    font-weight: 500;
 }
 
 #alignrow{

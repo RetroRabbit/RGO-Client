@@ -7,39 +7,33 @@
                 <mat-panel-title>
                     Work Experiences
                 </mat-panel-title>
-                <mat-panel-description *ngIf="workExperienceFormProgress != 100" class="pe-0 pe-md-5">
-                    <mat-icon class="mx-1">error</mat-icon>
-                    <span class="d-none d-md-block d-lg-block">Missing information</span>
-                </mat-panel-description>
             </mat-expansion-panel-header>
             <div class="col-12">
                 <div class="row">
-
-
                     <div class="col-12 d-flex justify-content-end mb-3 mt-3">
                         <button [disabled]="addingWorkExperience" mat-button id="edit-button-width"
                             (click)="editWorkExperiences()">
                             <mat-icon>edit</mat-icon>Edit Details
                         </button>
                     </div>
-
-
+                    
                     <div class="col-12 col-md-9 col-lg-10">
-                        <div *ngFor="let experience of workExperience; let i = index" class="col-12">
-                            <div id="form-wrapper" class="col-12">
-                                <div class="row">
+                        <div class="col-12">
+                            <div *ngFor="let experience of workExperience; let i = index" class="col-12">
+                                <div id="form-wrapper" class="col-12">
+                                    <div class="row">
 
 
                                     <div class="row d-block">
-                                        <div class="certificate-header" *ngIf="editWorkExperience">
+                                        <div class="experience-header" *ngIf="editWorkExperience">
                                             <h3 class="mb-2">Remove this experience</h3>
                                             <mat-icon class="icon-color mb-2" (click)="showDialog('update',i)">delete_outline</mat-icon>
                                         </div>
                                     </div>
 
                                     <div class="row d-block">
-                                        <div class="certificate-header" *ngIf="!editWorkExperience">
-                                            <h3 class="mb-1">{{workExperience[i].clientName}}</h3>
+                                        <div class="experience-header" *ngIf="!editWorkExperience">
+                                            <h3 class="mb-1" id="clientNameHeading">{{workExperience[i].clientName}}</h3>
                                         </div>
                                     </div>
 
@@ -79,9 +73,6 @@
                                         </ng-template>
                                     </div>
 
-                                    <!-- ENTER THE SKILLSET DROPDOWN AND SOFTWARE DROPDOWN HERE -->
-
-                                    <!-- SKILLSET DROPDOWN -->
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field appearance="outline" class="w-100" *ngIf="editWorkExperience; else NoEditSkillSet">
                                             <mat-label>Skillset</mat-label>
@@ -92,14 +83,13 @@
                                         <ng-template #NoEditSkillSet>
                                             <mat-form-field appearance="outline" class="w-100">
                                                 <mat-label>Skillset</mat-label>
-                                                <mat-select [(ngModel)]="workExperience[i].skillSet" multiple disabled>
+                                                    <mat-select [(ngModel)]="workExperience[i].skillSet" multiple disabled>
                                                     <mat-option *ngFor="let skill of skillSetList" [value]="skill">{{ skill }}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
 
-                                    <!-- SOFTWARE DROPDOWN -->
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field appearance="outline" class="w-100" *ngIf="editWorkExperience; else NoEditSoftware">
                                             <mat-label>Software</mat-label>
@@ -162,25 +152,22 @@
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
-
-
-
                                 </div>
                             </div>
-                        </div>
+                        </div> 
 
 
                         <div *ngFor="let experiences of newWorkExperiences; let i = index" class="row">
 
                             <div class="row d-block">
-                                <div class="certificate-header" *ngIf="addingWorkExperience">
+                                <div class="experience-header" *ngIf="addingWorkExperience">
                                     <h3 class=" mb-0">Remove new Work Experience</h3>
                                     <mat-icon class="icon-color" (click)="showDialog('new',i)">delete_outline</mat-icon>
                                 </div>
                             </div>
 
                             <div class="row d-block">
-                                <div class="certificate-header" *ngIf="!addingWorkExperience">
+                                <div class="experience-header" *ngIf="!addingWorkExperience">
                                     <h3 class="mb-2">{{newWorkExperiences[i].clientName}}</h3>
                                 </div>
                             </div>
@@ -203,9 +190,7 @@
                                 </mat-form-field>
                             </div>
 
-                            <!-- ENTER THE SKILLSET DROPDOWN AND SOFTWARE DROPDOWN HERE -->
-
-                            <!-- SKILLSET DROPDOWN FOR NEW WORK EXPERIENCE -->
+                            
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Skillset</mat-label>
@@ -215,7 +200,7 @@
                                 </mat-form-field>
                             </div>
 
-                            <!-- SOFTWARE DROPDOWN FOR NEW WORK EXPERIENCE -->
+                            
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Software</mat-label>
@@ -248,7 +233,9 @@
                             </div>
                             
                             <hr>
-                        </div>
+                        </div> 
+
+
                         <div *ngIf="editWorkExperience" class="col d-none d-md-flex" id="edit-buttons">
                             <button mat-button id="cancel-button" (click)="cancelWorkExperienceEdit()">
                                 Cancel
@@ -272,12 +259,13 @@
                                 (click)="addNewWorkExperience()">
                                 <mat-icon>add</mat-icon> Add Another Work Experience
                             </button>
-                        </div>
+                        </div> 
+
+
                     </div>
-
-
                 </div>
             </div>
+        </div>
         </mat-expansion-panel>
     </mat-accordion>
 </div>
