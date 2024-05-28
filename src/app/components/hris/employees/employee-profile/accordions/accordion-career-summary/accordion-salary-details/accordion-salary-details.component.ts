@@ -5,6 +5,7 @@ import { EmployeeSalary } from 'src/app/models/hris/employee-salary.interface';
 import { EmployeeSalaryService } from 'src/app/services/hris/employee/employee-salary.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 
 @Component({
   selector: 'app-accordion-salary-details',
@@ -27,6 +28,7 @@ export class AccordionSalaryDetailsComponent {
   employeeSalary: EmployeeSalary = {};
   editSalary: boolean = false;
   message: string = "";
+  isAdminUser: boolean = false;
 
   salaryDetailsForm: FormGroup = this.fb.group({
     remuneration: [{ value: '', disable: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]]
@@ -35,17 +37,30 @@ export class AccordionSalaryDetailsComponent {
   constructor(
     private fb: FormBuilder,
     private employeeSalaryService: EmployeeSalaryService,
-    private snackBarService: SnackbarService) {
+    private snackBarService: SnackbarService,
+    private authAccessService: AuthAccessService) {
   }
 
   ngOnInit(): void {
     this.getEmployeeSalaryDetails();
+    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
+      this.isAdminUser = true;
+    }
   }
 
   initializeSalaryDetailsForm(salaryDetails: EmployeeSalary) {
-    this.salaryDetailsForm = this.fb.group({
-      remuneration: [{ value: salaryDetails.remuneration, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-    });
+    if (salaryDetails != null) {
+      this.salaryDetailsForm = this.fb.group({
+        remuneration: [salaryDetails.remuneration , [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      });
+      this.getDate();
+    }
+    else {
+      this.salaryDetailsForm = this.fb.group({
+        remuneration: [ "", [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      });
+    }
+    this.salaryDetailsForm.disable();
   }
 
   getEmployeeSalaryDetails() {
@@ -53,7 +68,6 @@ export class AccordionSalaryDetailsComponent {
       next: data => {
         this.employeeSalary = data;
         this.initializeSalaryDetailsForm(this.employeeSalary);
-        this.getDate();
       },
       error: (error) => {
         this.snackBarService.showSnackbar("Error fetching salary details", "snack-error");
@@ -84,14 +98,14 @@ export class AccordionSalaryDetailsComponent {
         remuneration: salaryDetailsFormValue.remuneration,
         band: this.employeeSalary.band,
         contribution: this.employeeSalary.contribution,
-        salaryUpdateDate: this.employeeSalary.salaryUpdateDate
+        salaryUpdateDate: new Date()
       }
       this.employeeSalaryService.updateEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Salary details updated", "snack-success");
+          this.getDate();
           this.editSalary = false;
           this.salaryDetailsForm.disable();
-          this.getDate();
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
