@@ -223,6 +223,9 @@ export class ManageFieldCodeComponent {
         }
       });
     }
+    if (this.dataSource.filteredData.length === 0) {
+      this.filterText = ''; 
+    }
   }
 
   onSearch(event: Event) {
