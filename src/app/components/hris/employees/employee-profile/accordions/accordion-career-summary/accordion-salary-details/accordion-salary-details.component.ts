@@ -53,7 +53,7 @@ export class AccordionSalaryDetailsComponent {
       this.salaryDetailsForm = this.fb.group({
         remuneration: [salaryDetails.remuneration , [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       });
-      this.getDate();
+      this.getSalaryDate();
     }
     else {
       this.salaryDetailsForm = this.fb.group({
@@ -75,8 +75,42 @@ export class AccordionSalaryDetailsComponent {
     })
   }
 
-  getDate() {
-    let updateDate = this.employeeSalary.salaryUpdateDate;
+populateDto(salaryCopy: number) {
+  if (this.employeeSalary) {
+    this.employeeSalaryDetailsDto = {
+      employeeId: this.employeeSalary.id,
+      id: this.employeeSalary.id,
+      salary: this.employeeSalary.salary,
+      minSalary: this.employeeSalary.minSalary,
+      maxSalary: this.employeeSalary.maxSalary,
+      remuneration: salaryCopy,
+      band: this.employeeSalary.band,
+      contribution: this.employeeSalary.contribution,
+      salaryUpdateDate: new Date()
+    }
+  } else {
+    this.employeeSalaryDetailsDto = {
+      employeeId: this.employeeProfile.id,
+      id: 0,
+      salary: 0,
+      minSalary: 0,
+      maxSalary: 0,
+      remuneration: salaryCopy,
+      band: 0,
+      contribution: "",
+      salaryUpdateDate: new Date()
+    }
+  }
+  return this.employeeSalaryDetailsDto;
+}
+
+  getSalaryDate() {
+    let updateDate;
+    if (this.employeeSalary) {
+      updateDate = this.employeeSalary.salaryUpdateDate;
+    } else {
+      updateDate = this.employeeSalaryDetailsDto.salaryUpdateDate;
+    }
     let day = new Date(updateDate as Date).getDate();
     const monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"];
@@ -88,23 +122,13 @@ export class AccordionSalaryDetailsComponent {
   saveEmployeeSalaryDetails() {
     const salaryDetailsFormValue = this.salaryDetailsForm.value;
     if (this.salaryDetailsForm.valid) {
+      this.populateDto(salaryDetailsFormValue.remuneration)
       this.editSalary = false;
       if (this.employeeSalary) {
-        this.employeeSalaryDetailsDto = {
-          employeeId: this.employeeSalary.id,
-          id: this.employeeSalary.id,
-          salary: this.employeeSalary.salary,
-          minSalary: this.employeeSalary.minSalary,
-          maxSalary: this.employeeSalary.maxSalary,
-          remuneration: salaryDetailsFormValue.remuneration,
-          band: this.employeeSalary.band,
-          contribution: this.employeeSalary.contribution,
-          salaryUpdateDate: new Date()
-        }
         this.employeeSalaryService.updateEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
           next: () => {
             this.snackBarService.showSnackbar("Salary details has been updated", "snack-success");
-            this.getDate();
+            this.getSalaryDate();
             this.editSalary = false;
             this.salaryDetailsForm.disable();
           },
@@ -113,21 +137,10 @@ export class AccordionSalaryDetailsComponent {
           }
         })
       } else {
-        this.employeeSalaryDetailsDto = {
-          employeeId: this.employeeProfile.id,
-          id: 0,
-          salary: 0,
-          minSalary: 0,
-          maxSalary: 0,
-          remuneration: salaryDetailsFormValue.remuneration,
-          band: 0,
-          contribution: "",
-          salaryUpdateDate: new Date()
-        }
         this.employeeSalaryService.saveEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
           next: () => {
             this.snackBarService.showSnackbar("Salary details has been saved", "snack-success");
-            this.getDate();
+            this.getSalaryDate();
             this.editSalary = false;
             this.salaryDetailsForm.disable();
           },
