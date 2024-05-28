@@ -310,7 +310,6 @@ export class SharedAccordionFunctionality {
         this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
         const total = this.customFieldsDocuments.length;
         const fetchedDocuments = this.additionalDocuments.length;
-
         this.additionalDocumentsProgress = fetchedDocuments / total * 100;
         this.totalDocumentsProgress();
       }
@@ -323,11 +322,11 @@ export class SharedAccordionFunctionality {
   }
 
   totalDocumentsProgress() {
-    if(this.additionalDocumentsProgress == Infinity){
+    if (this.additionalDocumentsProgress == Infinity) {
       this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress) / 3);
-    this.updateDocument.emit(this.documentFormProgress);
+      this.updateDocument.emit(this.documentFormProgress);
     }
-    else{
+    else {
       this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 4);
       this.updateDocument.emit(this.documentFormProgress);
     }
