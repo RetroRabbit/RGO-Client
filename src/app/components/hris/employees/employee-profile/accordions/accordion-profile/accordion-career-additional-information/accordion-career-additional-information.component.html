@@ -6,14 +6,16 @@
         <mat-panel-title>
           Additional Information
         </mat-panel-title>
-        <mat-panel-description *ngIf="sharedAccordionFunctionality.additionalCareerFormProgress != 100" class="pe-0 pe-md-5">
+        <mat-panel-description *ngIf="sharedAccordionFunctionality.additionalCareerFormProgress != 100"
+          class="pe-0 pe-md-5">
           <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing information</span>
         </mat-panel-description>
       </mat-expansion-panel-header>
       <form [formGroup]="sharedAccordionFunctionality.additionalCareerInfoForm">
-        <div class="col-12 mb-2 d-flex justify-content-end">
-          <button class="col-12 d-md-none" *ngIf="!sharedAccordionFunctionality.editAdditional" mat-button id="edit-button"
-            (click)="editAdditionalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
+        <div *ngIf="employeeId != employeeProfile.employeeDetails.id"
+          class="col-12 mb-2 d-flex justify-content-end">
+          <button class="col-12 d-md-none" mat-button id="edit-button" (click)="editAdditionalDetails()"
+            [ngClass]="screenWidth <= 767 ?'col-12':''">
             <mat-icon>edit</mat-icon>Edit Details
           </button>
         </div>
@@ -59,11 +61,12 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
+          <div *ngIf="employeeId != employeeProfile.employeeDetails.id"
+            class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
             <button *ngIf="!sharedAccordionFunctionality.editAdditional" mat-button id="edit-button-width"
-            (click)="editAdditionalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
-            <mat-icon>edit</mat-icon>Edit Details
-          </button>
+              (click)="editAdditionalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
+              <mat-icon>edit</mat-icon>Edit Details
+            </button>
           </div>
         </div>
       </form>

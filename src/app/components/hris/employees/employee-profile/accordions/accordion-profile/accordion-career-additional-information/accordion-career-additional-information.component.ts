@@ -37,6 +37,7 @@ export class AccordionCareerAdditionalInformationComponent {
 
   customFields: CustomField[] = [];
   additionalFormProgress: number = 0;
+  employeeId: number | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -87,6 +88,7 @@ export class AccordionCareerAdditionalInformationComponent {
 
   getEmployeeData() {
     const id = this.employeeProfile.employeeDetails.id ? this.employeeProfile.employeeDetails.id : this.employeeProfile.simpleEmployee.id;
+    this.employeeId = id;
     this.employeeDataService.getEmployeeData(id).subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employeeData = data;
