@@ -51,7 +51,7 @@ export class AccordionCareerWorkExperienceComponent {
 
   dialogTypeData: Dialog = {
     type: 'confirm',
-    title: 'Delete certificate',
+    title: 'Delete Experience',
     subtitle: 'Are you sure you want to delete?',
     confirmButtonText: 'Delete',
     denyButtonText: "Cancel"
@@ -191,7 +191,7 @@ export class AccordionCareerWorkExperienceComponent {
         this.removeExistingWorkExperience(this.removeIndex);
       }
       else {
-        this.removeExistingWorkExperience(this.removeIndex);
+        this.removenewWorkExperience(this.removeIndex);
       }
     }
   }
