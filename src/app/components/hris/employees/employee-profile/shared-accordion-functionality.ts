@@ -315,7 +315,6 @@ export class SharedAccordionFunctionality {
         this.totalDocumentsProgress();
       }
     })
-    console.log("after subscribe", this.additionalDocumentsProgress)
   }
 
   totalProfileProgress() {
@@ -324,7 +323,6 @@ export class SharedAccordionFunctionality {
   }
 
   totalDocumentsProgress() {
-    console.log("add doc on total function", this.additionalDocumentsProgress);
     this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 4);
     this.updateDocument.emit(this.documentFormProgress);
   }
