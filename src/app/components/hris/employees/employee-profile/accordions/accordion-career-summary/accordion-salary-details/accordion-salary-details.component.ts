@@ -89,28 +89,53 @@ export class AccordionSalaryDetailsComponent {
     const salaryDetailsFormValue = this.salaryDetailsForm.value;
     if (this.salaryDetailsForm.valid) {
       this.editSalary = false;
-      this.employeeSalaryDetailsDto = {
-        employeeId: this.employeeProfile.id,
-        id: this.employeeSalary.id,
-        salary: this.employeeSalary.salary,
-        minSalary: this.employeeSalary.minSalary,
-        maxSalary: this.employeeSalary.maxSalary,
-        remuneration: salaryDetailsFormValue.remuneration,
-        band: this.employeeSalary.band,
-        contribution: this.employeeSalary.contribution,
-        salaryUpdateDate: new Date()
-      }
-      this.employeeSalaryService.updateEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
-        next: () => {
-          this.snackBarService.showSnackbar("Salary details updated", "snack-success");
-          this.getDate();
-          this.editSalary = false;
-          this.salaryDetailsForm.disable();
-        },
-        error: (error) => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+      if (this.employeeSalary) {
+        this.employeeSalaryDetailsDto = {
+          employeeId: this.employeeSalary.id,
+          id: this.employeeSalary.id,
+          salary: this.employeeSalary.salary,
+          minSalary: this.employeeSalary.minSalary,
+          maxSalary: this.employeeSalary.maxSalary,
+          remuneration: salaryDetailsFormValue.remuneration,
+          band: this.employeeSalary.band,
+          contribution: this.employeeSalary.contribution,
+          salaryUpdateDate: new Date()
         }
-      })
+        this.employeeSalaryService.updateEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
+          next: () => {
+            this.snackBarService.showSnackbar("Salary details has been updated", "snack-success");
+            this.getDate();
+            this.editSalary = false;
+            this.salaryDetailsForm.disable();
+          },
+          error: (error) => {
+            this.snackBarService.showSnackbar(error, "snack-error");
+          }
+        })
+      } else {
+        this.employeeSalaryDetailsDto = {
+          employeeId: this.employeeProfile.id,
+          id: 0,
+          salary: 0,
+          minSalary: 0,
+          maxSalary: 0,
+          remuneration: salaryDetailsFormValue.remuneration,
+          band: 0,
+          contribution: "",
+          salaryUpdateDate: new Date()
+        }
+        this.employeeSalaryService.saveEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
+          next: () => {
+            this.snackBarService.showSnackbar("Salary details has been saved", "snack-success");
+            this.getDate();
+            this.editSalary = false;
+            this.salaryDetailsForm.disable();
+          },
+          error: (error) => {
+            this.snackBarService.showSnackbar(error, "snack-error");
+          }
+        })
+      }
     }
     else if (salaryDetailsFormValue.remuneration < 0) {
       this.snackBarService.showSnackbar("Remuneration cannot be less than zero", "snack-error");
@@ -118,6 +143,7 @@ export class AccordionSalaryDetailsComponent {
     else {
       this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
     }
+
   }
 
   editSalaryDetails() {

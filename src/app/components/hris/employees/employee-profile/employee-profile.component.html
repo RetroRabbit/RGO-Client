@@ -371,7 +371,7 @@
     <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'" 
     [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-career-summary-qualifications>
 
-    <app-accordion-salary-details [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
+    <app-accordion-salary-details *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isEmployee()" [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
     </app-accordion-salary-details>
 
     </div>
