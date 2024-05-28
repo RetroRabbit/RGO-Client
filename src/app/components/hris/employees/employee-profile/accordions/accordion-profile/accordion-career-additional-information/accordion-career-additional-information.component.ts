@@ -16,6 +16,7 @@ import { SharedPropertyAccessService } from 'src/app/services/hris/shared-proper
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 import { EventEmitter } from '@angular/core';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 
 @Component({
   selector: 'app-accordion-career-additional-information',
@@ -38,6 +39,7 @@ export class AccordionCareerAdditionalInformationComponent {
   customFields: CustomField[] = [];
   additionalFormProgress: number = 0;
   employeeId: number | undefined;
+  loggedInProfile!: EmployeeData;
 
   constructor(
     private fb: FormBuilder,
@@ -50,16 +52,19 @@ export class AccordionCareerAdditionalInformationComponent {
     private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) {
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    public navService: NavService) {
   }
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
+    this.loggedInProfile = this.navService.getEmployeeProfile();
+    const id = this.employeeProfile.employeeDetails.id ? this.employeeProfile.employeeDetails.id : this.employeeProfile.simpleEmployee.id;
+    this.employeeId = id;
     this.getEmployeeFields();
     this.getEmployeeData();
   }
 
-  initializeForm() { }
   getEmployeeFields() {
     this.getEmployeeData();
     this.getEmployeeTypes();
@@ -78,7 +83,6 @@ export class AccordionCareerAdditionalInformationComponent {
             this.getAllEmployees();
           }
           this.getEmployeeFieldCodes();
-          this.initializeForm();
         }, error: () => {
           this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
         }
@@ -87,9 +91,7 @@ export class AccordionCareerAdditionalInformationComponent {
   }
 
   getEmployeeData() {
-    const id = this.employeeProfile.employeeDetails.id ? this.employeeProfile.employeeDetails.id : this.employeeProfile.simpleEmployee.id;
-    this.employeeId = id;
-    this.employeeDataService.getEmployeeData(id).subscribe({
+    this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employeeData = data;
       }

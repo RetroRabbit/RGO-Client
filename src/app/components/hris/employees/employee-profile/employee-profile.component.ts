@@ -151,15 +151,16 @@ export class EmployeeProfileComponent implements OnChanges {
       this.employeeId = this.authAccessService.getUserId();
     }
     if (this.authAccessService.isAdmin() ||
-      this.authAccessService.isSuperAdmin() ||
-      this.authAccessService.isJourney() ||
-      this.authAccessService.isTalent()) {
+    this.authAccessService.isSuperAdmin() ||
+    this.authAccessService.isJourney() ||
+    this.authAccessService.isTalent()) {
       this.usingSimpleProfile = false;
     }
     else {
       this.usingSimpleProfile = true;
     }
     this.getEmployeeProfile();
+    this.refreshEmployeeProfile();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
 

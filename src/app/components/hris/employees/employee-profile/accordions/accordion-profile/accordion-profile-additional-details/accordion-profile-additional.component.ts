@@ -58,19 +58,23 @@ export class AccordionProfileAdditionalComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.loggedInProfile = this.navService.getEmployeeProfile();
+    const id = this.employeeProfile.employeeDetails.id ? this.employeeProfile.employeeDetails.id : this.employeeProfile.simpleEmployee.id;
+    this.employeeId = id;
     this.getEmployeeFields();
-    // this.getEmployeeData();
+    this.getEmployeeData();
+    console.log('Navbar ID:',this.loggedInProfile.id);
+    console.log('Employee ID:',this.employeeId);
+    console.log('ID matches with nav profile:',this.employeeId === this.loggedInProfile.id);
+    console.log('Editable:',this.sharedAccordionFunctionality.editAdditional);
   }
-  initializeForm() { }
 
   getEmployeeFields() {
-    // this.getEmployeeData();
+    this.getEmployeeData();
     this.getEmployeeTypes();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
     }
     this.getEmployeeFieldCodes();
-    this.initializeForm();
     if (!this.authAccessService.isEmployee()) {
       this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
         next: data => {
@@ -82,7 +86,6 @@ export class AccordionProfileAdditionalComponent {
             this.getAllEmployees();
           }
           this.getEmployeeFieldCodes();
-          this.initializeForm();
         }, error: () => {
           this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
         }
@@ -91,9 +94,7 @@ export class AccordionProfileAdditionalComponent {
   }
 
   getEmployeeData() {
-    const id = this.employeeProfile.employeeDetails.id ? this.employeeProfile.employeeDetails.id : this.employeeProfile.simpleEmployee.id;
-    this.employeeId = id;
-    this.employeeDataService.getEmployeeData(id).subscribe({
+    this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employeeData = data;
       }
@@ -158,7 +159,6 @@ export class AccordionProfileAdditionalComponent {
 
   cancelAdditionalEdit() {
     this.sharedAccordionFunctionality.editAdditional = false;
-    this.initializeForm();
     this.sharedAccordionFunctionality.additionalInfoForm.disable();
   }
 
