@@ -43,6 +43,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   base64String: string = "";
   employeeId = this.route.snapshot.params['id'];
   dataSource = new MatTableDataSource<FileCategory>(this.fileCategories);
+  infinity = Infinity;
 
   selectedFieldCode: string = '';
   constructor(

@@ -323,7 +323,13 @@ export class SharedAccordionFunctionality {
   }
 
   totalDocumentsProgress() {
-    this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 4);
+    if(this.additionalDocumentsProgress == Infinity){
+      this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress) / 3);
     this.updateDocument.emit(this.documentFormProgress);
+    }
+    else{
+      this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 4);
+      this.updateDocument.emit(this.documentFormProgress);
+    }
   }
 }
