@@ -93,6 +93,7 @@ export class SharedAccordionFunctionality {
 
   myDocumentsProgress: number = 0;
   additionalDocumentsProgress: number = 0;
+  addDocProgress: number = 0;
   adminDocumentsProgress: number = 0;
   employeeDocumentsProgress: number = 0;
   documentStarterKitFormProgress: number = 0;
@@ -310,6 +311,7 @@ export class SharedAccordionFunctionality {
         const total = this.customFieldsDocuments.length;
         const fetchedDocuments = this.additionalDocuments.length;
         this.additionalDocumentsProgress = fetchedDocuments / total * 100;
+        this.totalDocumentsProgress();
       }
     })
   }
@@ -320,7 +322,13 @@ export class SharedAccordionFunctionality {
   }
 
   totalDocumentsProgress() {
-    this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 4);
-    this.updateDocument.emit(this.documentFormProgress);
+    if (this.additionalDocumentsProgress == Infinity) {
+      this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress) / 3);
+      this.updateDocument.emit(this.documentFormProgress);
+    }
+    else {
+      this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 4);
+      this.updateDocument.emit(this.documentFormProgress);
+    }
   }
 }
