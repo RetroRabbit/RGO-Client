@@ -245,8 +245,8 @@ export class AccordionProfileEmployeeDetailsComponent {
                 this.sharedAccordionFunctionality.checkEmployeeFormProgress();
                 this.sharedAccordionFunctionality.totalProfileProgress();
                 this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.sharedAccordionFunctionality.employeeProfileDto?.clientAllocated)[ 0 ];
-                this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.teamLead)[ 0 ];
-                this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.peopleChampion)[ 0 ];
+                this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.teamLead === this.sharedAccordionFunctionality.employeeProfileDto?.teamLead)[ 0 ];
+                this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.peopleChampion === this.sharedAccordionFunctionality.employeeProfileDto?.peopleChampion)[ 0 ];
                 this.sharedAccordionFunctionality.editEmployee = false;
                 this.sharedAccordionFunctionality.employeeDetailsForm.disable();
                 this.navService.refreshEmployee();
