@@ -22,8 +22,8 @@
   <div id="profile-header" *ngIf="!isLoading" class="row ps-2 m-1">
     <div class="col-4 col-md-2 mt-4">
       <div id="profile-image">
-        <img (click)="uploadFile.click()" [src]="employeeProfile.photo || '../../assets/img/ProfileAts.png'"
-          alt="Profile img" class="rounded-circle profile-img">
+        <img (click)="uploadFile.click()" [src]="employeeProfile.photo || '../../assets/img/default-profile-image.png'" alt="Profile img"
+          class="rounded-circle profile-img">
         <input type="file" #uploadFile (change)="onFileChange($event)" hidden accept=".png, .svg,.jpg,.jpeg">
       </div>
     </div>
@@ -380,6 +380,9 @@
       <app-accordion-career-additional-information [hidden]="selectedAccordion != 'Career Summary'"
         [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
         (updateEmployeeProfile)="refreshEmployeeProfile()"></app-accordion-career-additional-information>
+
+    <app-accordion-salary-details *ngIf="authAccessService.isSuperAdmin()" [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
+    </app-accordion-salary-details>
 
     </div>
   </div>
