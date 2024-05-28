@@ -16,27 +16,22 @@
                             <mat-icon>edit</mat-icon>Edit Details
                         </button>
                     </div>
-                    
                     <div class="col-12 col-md-9 col-lg-10">
                         <div class="col-12">
                             <div *ngFor="let experience of workExperience; let i = index" class="col-12">
                                 <div id="form-wrapper" class="col-12">
                                     <div class="row">
-
-
                                     <div class="row d-block">
                                         <div class="experience-header" *ngIf="editWorkExperience">
                                             <h3 class="mb-2">Remove this experience</h3>
                                             <mat-icon class="icon-color mb-2" (click)="showDialog('update',i)">delete_outline</mat-icon>
                                         </div>
                                     </div>
-
                                     <div class="row d-block">
                                         <div class="experience-header" *ngIf="!editWorkExperience">
                                             <h3 class="mb-1" id="clientNameHeading">{{workExperience[i].clientName}}</h3>
                                         </div>
                                     </div>
-
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field appearance="outline" class="w-100"
                                             *ngIf="editWorkExperience; else NoEditName">
@@ -54,7 +49,6 @@
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
-
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field appearance="outline" class="w-100"
                                             *ngIf="editWorkExperience; else NoEditProjectName">
@@ -72,7 +66,6 @@
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
-
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field appearance="outline" class="w-100" *ngIf="editWorkExperience; else NoEditSkillSet">
                                             <mat-label>Skillset</mat-label>
@@ -89,7 +82,6 @@
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
-
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field appearance="outline" class="w-100" *ngIf="editWorkExperience; else NoEditSoftware">
                                             <mat-label>Software</mat-label>
@@ -106,7 +98,6 @@
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
-
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field class="w-100" appearance="outline"
                                             *ngIf="editWorkExperience; else NoEditStartDate">
@@ -129,7 +120,6 @@
                                             </mat-form-field>
                                         </ng-template>
                                     </div>    
-                                    
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field class="w-100" appearance="outline"
                                             *ngIf="editWorkExperience; else NoEditEndDate">
@@ -156,22 +146,18 @@
                             </div>
                         </div> 
 
-
                         <div *ngFor="let experiences of newWorkExperiences; let i = index" class="row">
-
                             <div class="row d-block">
                                 <div class="experience-header" *ngIf="addingWorkExperience">
                                     <h3 class=" mb-0">Remove new Work Experience</h3>
                                     <mat-icon class="icon-color" (click)="showDialog('new',i)">delete_outline</mat-icon>
                                 </div>
                             </div>
-
                             <div class="row d-block">
                                 <div class="experience-header" *ngIf="!addingWorkExperience">
                                     <h3 class="mb-2">{{newWorkExperiences[i].clientName}}</h3>
                                 </div>
                             </div>
-
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Client Name</mat-label>
@@ -180,7 +166,6 @@
                                         [value]="newWorkExperiences[i].clientName">
                                 </mat-form-field>
                             </div>
-
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Project Name</mat-label>
@@ -188,9 +173,7 @@
                                         [(ngModel)]="newWorkExperiences[i].projectName"
                                         [value]="newWorkExperiences[i].projectName">
                                 </mat-form-field>
-                            </div>
-
-                            
+                            </div>                            
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Skillset</mat-label>
@@ -199,8 +182,6 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-
-                            
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Software</mat-label>
@@ -209,7 +190,6 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Start Date</mat-label>
@@ -220,7 +200,6 @@
                                     <mat-datepicker #picker1></mat-datepicker>
                                 </mat-form-field>
                             </div>
-
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>End Date</mat-label>
@@ -231,13 +210,11 @@
                                     <mat-datepicker #picker2></mat-datepicker>
                                 </mat-form-field>
                             </div>
-                            
                             <hr>
                         </div> 
 
-
                         <div *ngIf="editWorkExperience" class="col d-none d-md-flex" id="edit-buttons">
-                            <button mat-button id="cancel-button" (click)="cancelWorkExperienceEdit()">
+                            <button mat-button id="cancel-button" (click)="cancelWorkExperience()">
                                 Cancel
                             </button>
                             <button mat-button id="save-button" type="submit" (click)="updateWorkExperience()">
@@ -245,7 +222,7 @@
                             </button>
                         </div>
                         <div *ngIf="addingWorkExperience" class="col d-none d-md-flex" id="edit-buttons">
-                            <button mat-button id="cancel-button" (click)="cancelWorkExperienceEdit()">
+                            <button mat-button id="cancel-button" (click)="cancelWorkExperience()">
                                 Cancel
                             </button>
                             <button mat-button id="save-button" type="submit" (click)="saveWorkExperience()">
@@ -260,8 +237,6 @@
                                 <mat-icon>add</mat-icon> Add Another Work Experience
                             </button>
                         </div> 
-
-
                     </div>
                 </div>
             </div>

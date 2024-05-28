@@ -1,10 +1,7 @@
 import { Component, HostListener, Input } from '@angular/core';
-// import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
-import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 import { WorkExperience } from 'src/app/models/hris/work-experience.interface';
 import { WorkExperienceService } from 'src/app/services/hris/employee/employee-work-experience.service';
@@ -31,7 +28,6 @@ export class AccordionCareerWorkExperienceComponent {
   panelOpenState: boolean = false;
   @Input() WorkExperience!: { workExperience: WorkExperience }
   @Input() employeeProfile !: EmployeeProfile | SimpleEmployee
-
   
   editWorkExperience: boolean = false;
   hasWorkExperienceData: boolean = false;
@@ -42,13 +38,10 @@ export class AccordionCareerWorkExperienceComponent {
   
   removeNewOrUpdate: string = '';
   role: string = ''; 
-  // role: string | undefined = '';
   
   workExperienceFormProgress: number = 0;
   removeIndex: number = 0;
-  // newWorkExperienceIndex: number | null = null;
-  
-  // workExperienceData: any = [];
+
   workExperience: WorkExperience[] = [];
   copyOfWorkExperience: WorkExperience[] = [];
   newWorkExperiences: WorkExperience[] = [];
@@ -65,7 +58,6 @@ export class AccordionCareerWorkExperienceComponent {
   };
 
   constructor(
-    // private fb: FormBuilder,
     private workExperienceService: WorkExperienceService,
     private snackBarService: SnackbarService,
     public authAccessService: AuthAccessService,
@@ -132,8 +124,6 @@ export class AccordionCareerWorkExperienceComponent {
     }
   }
 
-  
-
   addNewWorkExperience() {
     this.addingWorkExperience = true;
     const newWorkExperience: WorkExperience = {
@@ -165,8 +155,6 @@ export class AccordionCareerWorkExperienceComponent {
         differenceArray.push(this.copyOfWorkExperience[i]);
       else if (this.workExperience[i].endDate != this.copyOfWorkExperience[i].endDate)
         differenceArray.push(this.copyOfWorkExperience[i]);
-      // else if (this.workExperience[i].employeeId != this.copyOfWorkExperience[i].employeeId)
-      //   differenceArray.push(this.copyOfWorkExperience[i]);
     }
     return differenceArray
   }
@@ -184,18 +172,11 @@ export class AccordionCareerWorkExperienceComponent {
     });
   }
 
-  cancelWorkExperienceEdit() { // change name
+  cancelWorkExperience() {
     this.editWorkExperience = false;
     this.addingWorkExperience = false;
-    // this.copyOfWorkExperience = this.workExperience;
-    // this.copyOfWorkExperience = [];
-    // if (this.newWorkExperienceIndex !== null) {
-    //   this.newWorkExperiences.splice(this.newWorkExperienceIndex, 1);
-    //   this.newWorkExperienceIndex = null;
-    // }
     this.newWorkExperiences = [];
   }
-
 
   showDialog(newOrUpdate: string, index: number) {
     this.removeNewOrUpdate = newOrUpdate;
@@ -216,7 +197,6 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   removenewWorkExperience(index: number) {
-   // this.addingWorkExperience = false;
     this.newWorkExperiences.splice(index, 1);
   }
 
