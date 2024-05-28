@@ -312,8 +312,12 @@ export class SharedAccordionFunctionality {
         this.additionalDocumentsProgress = fetchedDocuments / total * 100;
       }
     })
-  }
+    this.handleProgressUpdate(this.additionalDocumentsProgress);
 
+  }
+  handleProgressUpdate(progress: number) {
+    this.additionalDocumentsProgress = progress;
+  }
   totalProfileProgress() {
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
     this.updateProfile.emit(this.profileFormProgress);
