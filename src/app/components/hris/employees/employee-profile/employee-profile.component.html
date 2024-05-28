@@ -383,6 +383,9 @@
       [employeeProfile]="employeeProfile">
       </app-accordion-additional-documents>
 
+    <app-accordion-salary-details *ngIf="authAccessService.isSuperAdmin()" [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
+    </app-accordion-salary-details>
+
     </div>
   </div>
 </div>
