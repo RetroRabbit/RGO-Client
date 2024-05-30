@@ -29,7 +29,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  customFields: CustomField[] = [];
   fileCategories = [];
   roles: string[] = [];
   isLoadingUpload: boolean = false;
@@ -44,6 +43,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   base64String: string = "";
   employeeId = this.route.snapshot.params['id'];
   dataSource = new MatTableDataSource<FileCategory>(this.fileCategories);
+  infinity = Infinity;
 
   selectedFieldCode: string = '';
   constructor(
@@ -63,15 +63,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
     this.getAdditionalDocuments();
   }
 
-  getDocumentsFieldCodes() {
-    this.customFieldService.getAllFieldCodes().subscribe({
-      next: data => {
-        this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[3].id);
-        this.checkCustomDocumentsInformation();
-      }
-    })
-  }
-
   getAdditionalDocuments() {
     if (this.employeeId != undefined) {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 4).subscribe({
@@ -80,9 +71,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.dataSource.data = this.fileCategories;
 
           this.sharedAccordionFunctionality.additionalDocuments = data;
+          this.getDocumentFieldCodes();
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
-          this.sharedAccordionFunctionality.totalDocumentsProgress();
-
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -94,8 +84,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
         next: data => {
           this.sharedAccordionFunctionality.additionalDocuments = data;
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
-          this.sharedAccordionFunctionality.totalDocumentsProgress();
-
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -114,7 +102,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   checkCustomDocumentsInformation() {
     const formGroupConfig: any = {};
-    this.customFields.forEach(fieldName => {
+    this.sharedAccordionFunctionality.customFieldsDocuments.forEach(fieldName => {
       if (fieldName.code != null || fieldName.code != undefined) {
         const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
         formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
@@ -130,12 +118,11 @@ export class AccordionDocumentsCustomDocumentsComponent {
   getDocumentFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
-        this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[3].id);
+        this.sharedAccordionFunctionality.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[3].id);
         this.checkCustomDocumentsInformation();
       }
     })
   }
-
 
   captureUploadButtonIndex(event: any, category: any) {
     this.selectedFieldCode = category;
@@ -199,7 +186,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getAdditionalDocuments();
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
-          this.sharedAccordionFunctionality.totalDocumentsProgress();
         },
         error: (error: any) => {
           this.isLoadingUpload = false;
@@ -230,7 +216,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getAdditionalDocuments();
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
-          this.sharedAccordionFunctionality.totalDocumentsProgress();
 
         },
         error: (error) => {
