@@ -12,3 +12,12 @@
   align-items: center;
   flex-direction: column;
 }
+
+.subtitle {
+  color: #0029C6;
+  font-size: 14px;
+}
+
+.headingTitle {
+  font-size: 22px;
+}

@@ -11,7 +11,7 @@
           <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing information</span>
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <form [formGroup]="sharedAccordionFunctionality.additionalCareerInfoForm">
+      <form *ngIf="customFields.length > 0;else NoFieldCodes" [formGroup]="sharedAccordionFunctionality.additionalCareerInfoForm">
         <div *ngIf="employeeId === loggedInProfile.id && !sharedAccordionFunctionality.editAdditional"
           class="col-12 mb-2 d-flex justify-content-end">
           <button class="col-12 d-md-none" mat-button id="edit-button" (click)="editAdditionalDetails()"
