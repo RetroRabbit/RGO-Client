@@ -9,7 +9,7 @@
                     <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <div id="table" *ngIf="sharedAccordionFunctionality.customFieldsDocuments[0] != undefined; else NoFieldCodes">
+            <div id="table" *ngIf="unArchivedCustomDocuments[0] != undefined; else NoFieldCodes">
                 <div id="table-header" class="row pt-3 d-none d-md-flex d-lg-flex">
                     <div class="col-6" >
                         <h4 class="ms-2 mt-1">Document</h4>

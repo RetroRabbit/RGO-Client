@@ -13,7 +13,6 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
-import { ManageFieldCodeComponent } from 'src/app/components/hris/custom-fields/manage-field-code/manage-field-code.component';
 
 @Component({
   selector: 'app-accordion-additional-documents',
@@ -22,7 +21,6 @@ import { ManageFieldCodeComponent } from 'src/app/components/hris/custom-fields/
 })
 export class AccordionDocumentsCustomDocumentsComponent {
   @Input() employeeProfile!: EmployeeProfile;
-  @Input() archivedField!: { ArchivedField: ManageFieldCodeComponent };
 
   screenWidth = window.innerWidth;
 
