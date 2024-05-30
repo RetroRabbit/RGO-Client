@@ -187,7 +187,6 @@ export class SharedAccordionFunctionality {
   additionalDocumentForm: FormGroup = this.fb.group({});
 
   checkPersonalFormProgress() {
-
     let filledCount = 0;
     let totalFields = 0;
     const formControls = this.personalDetailsForm.controls;
@@ -212,9 +211,6 @@ export class SharedAccordionFunctionality {
     this.personalFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
-  getAdditionalDocumentFieldCodes() {
-
-  }
   checkEmployeeFormProgress() {
     let filledCount = 0;
     const formControls = this.employeeDetailsForm.controls;
@@ -318,16 +314,19 @@ export class SharedAccordionFunctionality {
 
   totalProfileProgress() {
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
+    console.log("2) ",this.profileFormProgress);
     this.updateProfile.emit(this.profileFormProgress);
   }
 
   totalDocumentsProgress() {
     if (this.additionalDocumentsProgress == Infinity) {
       this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress) / 3);
+      console.log("1) ",this.documentFormProgress);
       this.updateDocument.emit(this.documentFormProgress);
     }
     else {
       this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 4);
+      console.log("1) ",this.documentFormProgress);
       this.updateDocument.emit(this.documentFormProgress);
     }
   }

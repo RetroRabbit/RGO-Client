@@ -28,7 +28,6 @@ import { AccordionDocumentsAdditionalComponent } from './accordions/accordion-do
 import { AccordionAdministrativeDocumentsComponent } from './accordions/accordion-administrative-documents/accordion-administrative-documents.component';
 import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-employee-documents/accordion-employee-documents.component';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -135,12 +134,14 @@ export class EmployeeProfileComponent implements OnChanges {
   }
   
   ngOnInit() {
+    this.sharedAccordionFunctionality.totalDocumentsProgress();
+    this.sharedAccordionFunctionality.totalProfileProgress();
     this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
       this.profileFormProgress = profileProgress;
 
     });
-    this.sharedAccordionFunctionality.updateDocument.subscribe(progress => {
-      this.documentFormProgress = progress;
+    this.sharedAccordionFunctionality.updateDocument.subscribe(documentProgress => {
+      this.documentFormProgress = documentProgress;
     });
 
     this.overallProgress();
@@ -162,6 +163,17 @@ export class EmployeeProfileComponent implements OnChanges {
     }
     this.getEmployeeProfile();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+  }
+
+  ngAfterViewInit() {
+    this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
+      this.profileFormProgress = profileProgress;
+    });
+    this.sharedAccordionFunctionality.updateDocument.subscribe(documentProgress => {
+      this.documentFormProgress = documentProgress;
+    });
+
+    this.overallProgress();
   }
 
   goToEmployees() {
@@ -295,7 +307,8 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   overallProgress() {
-    this.overallFormProgress = Math.round((0.33 * this.profileFormProgress) + (0.33 * this.bankInformationProgress) + (0.33 * this.documentFormProgress));
+    this.overallFormProgress = Math.floor((this.profileFormProgress + this.bankInformationProgress + this.documentFormProgress)/3);
+    console.log("Profile Form Progress ",this.profileFormProgress, "Banki Info Progress ",this.bankInformationProgress,"Document Form Progress ", this.documentFormProgress)
   }
 
   updateBankingProgress(update: any) {
