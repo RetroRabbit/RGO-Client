@@ -13,6 +13,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
+import { ManageFieldCodeComponent } from 'src/app/components/hris/custom-fields/manage-field-code/manage-field-code.component';
 
 @Component({
   selector: 'app-accordion-additional-documents',
@@ -21,6 +22,7 @@ import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
 })
 export class AccordionDocumentsCustomDocumentsComponent {
   @Input() employeeProfile!: EmployeeProfile;
+  @Input() archivedField!: { ArchivedField: ManageFieldCodeComponent };
 
   screenWidth = window.innerWidth;
 
@@ -30,6 +32,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   }
 
   fileCategories = [];
+  unArchivedCustomDocuments: any = [];
   roles: string[] = [];
   isLoadingUpload: boolean = false;
   uploadButtonIndex: number = 0;
@@ -120,6 +123,21 @@ export class AccordionDocumentsCustomDocumentsComponent {
       next: data => {
         this.sharedAccordionFunctionality.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[3].id);
         this.checkCustomDocumentsInformation();
+        this.checkArchived(data);
+      }
+    })
+  }
+
+  checkArchived(fields: any) {
+    var index = 0;
+    fields.forEach((field: { category: number; status: any; }) => {
+      index++;
+      if (field.status == -1 && field.category == 3) {
+        fields.splice(index, 1);
+      }
+      else {
+        this.unArchivedCustomDocuments.push(field);
+        this.unArchivedCustomDocuments = this.unArchivedCustomDocuments.filter((field: any) => field.category == this.sharedAccordionFunctionality.category[3].id)
       }
     })
   }
