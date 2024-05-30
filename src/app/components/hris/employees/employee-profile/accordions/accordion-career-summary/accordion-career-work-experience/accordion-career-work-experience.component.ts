@@ -202,7 +202,7 @@ export class AccordionCareerWorkExperienceComponent {
 
   removeExistingWorkExperience(index: number) {
     const deleteId = this.copyOfWorkExperience[index].id;
-    this.workExperienceService.delete(deleteId).subscribe({
+    this.workExperienceService.deleteWorkExperience(deleteId).subscribe({
       next: () => {
         this.snackBarService.showSnackbar("Experience deleted", "snack-success");
         this.copyOfWorkExperience.splice(index, 1);
@@ -222,7 +222,7 @@ export class AccordionCareerWorkExperienceComponent {
     let errorOccurred = false;
 
     this.newWorkExperiences.forEach(newWorkExperience => {
-      this.workExperienceService.save(newWorkExperience).subscribe({
+      this.workExperienceService.saveWorkExperience(newWorkExperience).subscribe({
         next: () => {
           saveCount++;
           if (saveCount === total && !errorOccurred) {
@@ -248,7 +248,7 @@ export class AccordionCareerWorkExperienceComponent {
     this.editWorkExperience = false;
     const editedWorkExperienceArray = this.findDifferenceInArrays();
     const updateObservables = editedWorkExperienceArray.map(workExperience =>
-      this.workExperienceService.update(workExperience)
+      this.workExperienceService.updateWorkExperience(workExperience)
     );
     forkJoin(updateObservables).subscribe({
       next: () => {
