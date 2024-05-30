@@ -308,7 +308,6 @@ export class EmployeeProfileComponent implements OnChanges {
 
   overallProgress() {
     this.overallFormProgress = Math.floor((this.profileFormProgress + this.bankInformationProgress + this.documentFormProgress)/3);
-    console.log("Profile Form Progress ",this.profileFormProgress, "Banki Info Progress ",this.bankInformationProgress,"Document Form Progress ", this.documentFormProgress)
   }
 
   updateBankingProgress(update: any) {
@@ -364,6 +363,7 @@ export class EmployeeProfileComponent implements OnChanges {
     this.clipboard.copy(emailToCopy);
     this.snackBarService.showSnackbar("Email copied to clipboard", "snack-success");
   }
+  
   displayEditButtons() {
     this.sharedAccordionFunctionality.editEmployee = false;
     this.sharedAccordionFunctionality.editAdditional = false;
@@ -371,6 +371,7 @@ export class EmployeeProfileComponent implements OnChanges {
     this.sharedAccordionFunctionality.editContact = false;
     this.sharedAccordionFunctionality.editPersonal = false;
   }
+
   checkAddressMatch(data: EmployeeProfile) {
     var dataCopy: any = data;
     const stringifiedphysicalAddress = JSON.stringify(dataCopy.physicalAddress);

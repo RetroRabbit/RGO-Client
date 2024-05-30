@@ -33,6 +33,13 @@ export class SharedAccordionFunctionality {
   @Input() employeeProfile!: EmployeeProfile;
 
   employees: EmployeeProfile[] = [];
+  employeesForTeamLeadFilter :EmployeeProfile[] = [];
+  employeesForPeopleChampionFilter :EmployeeProfile[] = [];
+
+  employeesForAdditional :EmployeeProfile[] = [];
+  employeesForAddress :EmployeeProfile[] = [];
+  employeesForDetails :EmployeeProfile[] = [];
+
   clients: Client[] = [];
   employeeTypes: EmployeeType[] = [];
   filteredClients: Client[] = [];
@@ -314,19 +321,16 @@ export class SharedAccordionFunctionality {
 
   totalProfileProgress() {
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
-    console.log("2) ",this.profileFormProgress);
     this.updateProfile.emit(this.profileFormProgress);
   }
 
   totalDocumentsProgress() {
     if (this.additionalDocumentsProgress == Infinity) {
       this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress) / 3);
-      console.log("1) ",this.documentFormProgress);
       this.updateDocument.emit(this.documentFormProgress);
     }
     else {
       this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 4);
-      console.log("1) ",this.documentFormProgress);
       this.updateDocument.emit(this.documentFormProgress);
     }
   }
