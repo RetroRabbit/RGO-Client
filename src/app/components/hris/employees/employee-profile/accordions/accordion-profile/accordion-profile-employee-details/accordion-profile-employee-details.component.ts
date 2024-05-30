@@ -46,7 +46,7 @@ export class AccordionProfileEmployeeDetailsComponent {
     private employeeDataService: EmployeeDataService,
     private clientService: ClientService,
     private employeeTypeService: EmployeeTypeService,
-    private customFieldService: CustomFieldService, 
+    private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -406,7 +406,6 @@ export class AccordionProfileEmployeeDetailsComponent {
   getAllEmployees() {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.employees = data;
         this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
         this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
         this.clientService.getAllClients().subscribe({

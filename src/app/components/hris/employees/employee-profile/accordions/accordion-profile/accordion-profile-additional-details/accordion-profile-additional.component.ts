@@ -62,10 +62,6 @@ export class AccordionProfileAdditionalComponent {
     this.employeeId = id;
     this.getEmployeeFields();
     this.getEmployeeData();
-    console.log('Navbar ID:',this.loggedInProfile.id);
-    console.log('Employee ID:',this.employeeId);
-    console.log('ID matches with nav profile:',this.employeeId === this.loggedInProfile.id);
-    console.log('Editable:',this.sharedAccordionFunctionality.editAdditional);
   }
 
   getEmployeeFields() {
@@ -104,7 +100,6 @@ export class AccordionProfileAdditionalComponent {
   getAllEmployees() {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.employees = data;
         this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
         this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
         this.clientService.getAllClients().subscribe({
