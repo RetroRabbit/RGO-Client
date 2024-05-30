@@ -347,36 +347,30 @@
         [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
         (updateEmployeeProfile)="refreshEmployeeProfile()"></app-accordion-profile-additional>
 
-      <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'"
-      [employeeProfile]="employeeProfile"
+      <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile"
         (updateBanking)="updateBankingProgress($event)">
       </app-accordion-banking>
 
-      <app-accordion-certificates [hidden]="selectedAccordion != 'Career Summary'"
-      [employeeProfile]="employeeProfile">
-      </app-accordion-certificates>
-      <app-accordion-career-work-experience [hidden]="selectedAccordion != 'Career Summary'"
-      [employeeProfile]="employeeProfile">
-      </app-accordion-career-work-experience>
       <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}">
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}">
       </app-career-summary-qualifications>
+      <app-accordion-career-work-experience [hidden]="selectedAccordion != 'Career Summary'"
+        [employeeProfile]="employeeProfile">
+      </app-accordion-career-work-experience>
+      <app-accordion-certificates [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
+      </app-accordion-certificates>
 
       <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'"
-      [employeeProfile]="employeeProfile"
-      ></app-accordion-documents-starterkit>
-      <app-accordion-administrative-documents
-      *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin()"
-      [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
+        [employeeProfile]="employeeProfile"></app-accordion-documents-starterkit>
+      <app-accordion-administrative-documents *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin()"
+        [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
       </app-accordion-administrative-documents>
-      <app-accordion-employee-documents [hidden]="selectedAccordion != 'Documents'"
-      [employeeProfile]="employeeProfile">
+      <app-accordion-employee-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
       </app-accordion-employee-documents>
       <app-accordion-my-documents [hidden]="selectedAccordion != 'Documents'"
-      [employeeProfile]="employeeProfile"
-      ></app-accordion-my-documents>
+        [employeeProfile]="employeeProfile"></app-accordion-my-documents>
       <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'"
-      [employeeProfile]="employeeProfile">
+        [employeeProfile]="employeeProfile">
       </app-accordion-additional-documents>
 
       <app-accordion-salary-details *ngIf="authAccessService.isSuperAdmin()"
