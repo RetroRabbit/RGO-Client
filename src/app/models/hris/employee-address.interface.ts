@@ -1,12 +1,12 @@
 export interface EmployeeAddress {
     id: number;
-    unitNumber: string | null;
-    complexName: string | null;
-    streetName: string | null;
-    streetNumber: string | null;
-    suburbOrDistrict: string | null;
-    city: string | null;
-    country: string | null;
-    province: string | null;
-    postalCode: string | null;
+    unitNumber: string;
+    complexName: string;
+    streetName: string;
+    streetNumber: string;
+    suburbOrDistrict: string;
+    city: string;
+    country: string;
+    province: string;
+    postalCode: string;
 }
