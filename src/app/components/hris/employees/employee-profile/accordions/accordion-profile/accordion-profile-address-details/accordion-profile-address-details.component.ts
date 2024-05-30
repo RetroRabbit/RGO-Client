@@ -299,12 +299,11 @@ export class AccordionProfileAddressDetailsComponent {
   getAllEmployees() {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
-        this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
+        this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
+        this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
         this.clientService.getAllClients().subscribe({
           next: data => {
-            this.sharedAccordionFunctionality.clients = data;
-            this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
+            this.sharedAccordionFunctionality.employeeClient = data.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
           }
         });
       }
@@ -424,7 +423,7 @@ export class AccordionProfileAddressDetailsComponent {
       salary: this.employeeProfile!.employeeDetails.salary,
       salaryDays: this.employeeProfile!.employeeDetails.salaryDays,
       payRate: this.employeeProfile!.employeeDetails.payRate,
-      clientAllocated: this.employeeProfile!.employeeDetails.clientAllocated,
+      clientAllocated: this.usingProfile ? this.employeeProfile!.employeeDetails.clientAllocated : this.employeeProfile!.simpleEmployee.clientAllocatedId,
       teamLead: this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
       physicalAddress: {
         id: this.employeeProfile!.employeeDetails.physicalAddress?.id,
