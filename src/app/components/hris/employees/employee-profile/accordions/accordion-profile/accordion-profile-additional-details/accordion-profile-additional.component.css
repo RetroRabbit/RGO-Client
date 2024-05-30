@@ -5,3 +5,10 @@
     color: #0029C6;
     width: 170px;
 }
+
+#no-information {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
