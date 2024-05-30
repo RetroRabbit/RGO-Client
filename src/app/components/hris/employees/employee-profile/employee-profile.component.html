@@ -57,18 +57,11 @@
             {{navService.getEmployeeProfile().employeeType?.name}} | Level {{navService.getEmployeeProfile().level}}
           </div>
         </ng-template>
-        <div class="col-12 my-2 d-none d-md-block" id="header-based"
-          *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else OwnAddress">
-          Based in {{ selectedEmployee.physicalAddress?.suburbOrDistrict }}
+        <div class="col-12 my-2 d-none d-md-block" id="header-based">  
+          {{ basedInString }}
         </div>
-        <ng-template #OwnAddress>
-          <div class="col-12 my-2 d-none d-md-block" id="header-based">
-            Based in {{navService.getEmployeeProfile().physicalAddress?.suburbOrDistrict}}
-          </div>
-        </ng-template>
       </div>
     </div>
-
     <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
         'background-color': '#D7DFFF',
         'border': '2px solid #D7DFFF',
@@ -377,4 +370,3 @@
     </div>
   </div>
 </div>
-
