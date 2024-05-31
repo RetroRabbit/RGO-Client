@@ -329,7 +329,7 @@ export class SharedAccordionFunctionality {
         this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
         const total = this.customFieldsDocuments.length;
         const fetchedDocuments = this.additionalDocuments.length;
-        this.additionalDocumentsProgress = fetchedDocuments / total * 100;
+        total == 0 ? this.additionalDocumentsProgress = 0 : this.additionalDocumentsProgress = Math.round((fetchedDocuments / total) * 100);
         this.totalDocumentsProgress();
       }
     })
