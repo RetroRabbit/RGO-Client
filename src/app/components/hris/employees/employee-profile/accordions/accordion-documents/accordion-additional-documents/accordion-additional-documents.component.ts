@@ -131,7 +131,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
     var index = 0;
     fields.forEach((field: { category: number; status: any; }) => {
       index++;
-      if (this.fieldCodeStatus == field.status && field.category == 3) {
+      if (this.fieldCodeStatus == field.status && this.customDocumentsCategory == field.category) {
         fields.splice(index, 1);
       }
       else {
