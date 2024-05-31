@@ -34,7 +34,7 @@ import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
-  styleUrls: ['./employee-profile.component.css']
+  styleUrls: [ './employee-profile.component.css' ]
 })
 
 export class EmployeeProfileComponent implements OnChanges {
@@ -52,7 +52,7 @@ export class EmployeeProfileComponent implements OnChanges {
 
   employeeBanking !: EmployeeBanking;
 
-  employeeId = this.route.snapshot.params['id'];
+  employeeId = this.route.snapshot.params[ 'id' ];
 
   selectedAccordion: string = 'Profile Details';
   selectedItem: string = 'Profile Details';
@@ -105,7 +105,7 @@ export class EmployeeProfileComponent implements OnChanges {
   validateFile: any;
   snackBar: any;
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize', [ '$event' ])
   onResize() {
     this.screenWidth = window.innerWidth;
   }
@@ -127,8 +127,8 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    changes['updateProfile'].currentValue
-    changes['updateDocument'].currentValue
+    changes[ 'updateProfile' ].currentValue
+    changes[ 'updateDocument' ].currentValue
   }
 
   ngOnDestroy() {
@@ -144,16 +144,16 @@ export class EmployeeProfileComponent implements OnChanges {
     });
     this.overallProgress();
 
-    this.employeeId = this.route.snapshot.params['id'];
+    this.employeeId = this.route.snapshot.params[ 'id' ];
     this.getClients();
     if (this.employeeId == undefined) {
       this.showBackButtons = false;
       this.employeeId = this.authAccessService.getUserId();
     }
     if (this.authAccessService.isAdmin() ||
-    this.authAccessService.isSuperAdmin() ||
-    this.authAccessService.isJourney() ||
-    this.authAccessService.isTalent()) {
+      this.authAccessService.isSuperAdmin() ||
+      this.authAccessService.isJourney() ||
+      this.authAccessService.isTalent()) {
       this.usingSimpleProfile = false;
     }
     else {
@@ -189,8 +189,9 @@ export class EmployeeProfileComponent implements OnChanges {
       next: (data: any) => {
         if (this.usingSimpleProfile) {
           this.simpleEmployee = data;
+          this.employeeProfile = data;
           this.employeeId = data.id;
-          this.populateEmployeeAccordion(data);
+          this.populateEmployeeAccordion(this.simpleEmployee);
         } else {
           this.selectedEmployee = data;
           this.employeeProfile = data;
@@ -224,7 +225,7 @@ export class EmployeeProfileComponent implements OnChanges {
       },
       complete: () => {
         if (!this.usingSimpleProfile)
-        this.getAllEmployees();
+          this.getAllEmployees();
       },
       error: () => {
         const errorMessage = this.usingSimpleProfile ? 'Error fetching simple user profile' : 'Error fetching user profile';
@@ -237,17 +238,17 @@ export class EmployeeProfileComponent implements OnChanges {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
         this.employees = data;
-        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
-        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[ 0 ];
+        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[ 0 ];
         this.filterClients(this.employeeProfile?.clientAllocated as number);
       }
     });
   }
 
-  get basedInString() : string {
+  get basedInString(): string {
     let basedIn = '';
-    if(this.employeeProfile.physicalAddress !== undefined && this.employeeProfile.physicalAddress.suburbOrDistrict && this.employeeProfile.physicalAddress.suburbOrDistrict.length > 2){
-      basedIn = `Based in ${this.employeeProfile.physicalAddress.suburbOrDistrict}`; 
+    if (this.employeeProfile.physicalAddress !== undefined && this.employeeProfile.physicalAddress.suburbOrDistrict && this.employeeProfile.physicalAddress.suburbOrDistrict.length > 2) {
+      basedIn = `Based in ${this.employeeProfile.physicalAddress.suburbOrDistrict}`;
     }
     return basedIn;
   }
@@ -303,7 +304,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   filterClients(clientId: number) {
-    this.employeeClient = this.clients.filter(client => +clientId == client.id)[0];
+    this.employeeClient = this.clients.filter(client => +clientId == client.id)[ 0 ];
   }
 
   CaptureEvent(event: any) {
@@ -328,9 +329,9 @@ export class EmployeeProfileComponent implements OnChanges {
 
   onFileChange(e: any) {
     if (e.target.files) {
-      const selectedFile = e.target.files[0];
+      const selectedFile = e.target.files[ 0 ];
       const file = new FileReader();
-      file.readAsDataURL(e.target.files[0]);
+      file.readAsDataURL(e.target.files[ 0 ]);
       file.onload = (event: any) => {
         this.employeeProfile.photo = event.target.result;
         this.base64Image = event.target.result;
@@ -388,7 +389,9 @@ export class EmployeeProfileComponent implements OnChanges {
   refreshEmployeeProfile() {
     this.getEmployeeProfile();
     this.getEmployeeFields();
-    this.getAllEmployees();
+    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
+      this.getAllEmployees();
+    }
     this.getClients();
   }
 }
