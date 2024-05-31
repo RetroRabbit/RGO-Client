@@ -9,7 +9,7 @@
                     <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <div id="table" *ngIf="unArchivedCustomDocuments[0] != undefined; else NoFieldCodes">
+            <div id="table" *ngIf="unarchivedCustomDocuments[0] != undefined; else NoFieldCodes">
                 <div id="table-header" class="row pt-3 d-none d-md-flex d-lg-flex">
                     <div class="col-6" >
                         <h4 class="ms-2 mt-1">Document</h4>
@@ -19,8 +19,8 @@
                     </div>
                 </div>
                 </div>
-                <div id="table-body" class="my-2" *ngIf="unArchivedCustomDocuments[0] != undefined">
-                    <div class="row my-2 py-2" id="document-row" *ngFor="let fieldcode of unArchivedCustomDocuments;let i = index">
+                <div id="table-body" class="my-2" *ngIf="unarchivedCustomDocuments[0] != undefined">
+                    <div class="row my-2 py-2" id="document-row" *ngFor="let fieldcode of unarchivedCustomDocuments;let i = index">
                         <div id="document" class="col-12 col-md-6 col-lg-6" >
                             <h3>{{fieldcode.name}}</h3>
                             <div class="col-12" id="fileName" *ngIf="getDocumentName(fieldcode.name) as document;else NoFile" id="fileName">
