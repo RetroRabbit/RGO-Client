@@ -36,6 +36,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
   uploadButtonIndex: number = 0;
   documentFormProgress: number = 0;
   documentId: number = 0;
+  fieldCodeStatus: any = -1;
+  customDocumentsCategory: number = 3;
   selectedFile !: File;
   documentsFileName: string = "";
   DocumentTypeName: string = "";
@@ -119,7 +121,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
   getDocumentFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[3].id);
         this.checkCustomDocumentsInformation();
         this.checkArchived(data);
       }
@@ -130,7 +131,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
     var index = 0;
     fields.forEach((field: { category: number; status: any; }) => {
       index++;
-      if (field.status == -1 && field.category == 3) {
+      if (this.fieldCodeStatus == field.status && field.category == 3) {
         fields.splice(index, 1);
       }
       else {
