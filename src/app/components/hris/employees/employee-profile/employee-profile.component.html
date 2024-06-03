@@ -39,28 +39,28 @@
             </h1>
           </ng-template>
         </div>
-        <div class="col-12 col-md-6 mt-md-1" id="header-email">
-          <div class="row me-4 d-flex justify-content-start d-md-flex justify-content-md-end">
-            <div class="col-auto">
-              {{usingSimpleProfile ? simpleEmployee.email : employeeProfile.email}}
-            </div>
-            <div class="col-1 mt-2" id="header-email-clip" (click)="copyToClipboard()"><mat-icon>attachment</mat-icon>
-            </div>
-          </div>
-        </div>
         <div class="col-12 my-2 d-none d-md-block" id="header-role"
-          *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else OwnType">
-          {{selectedEmployee.employeeType?.name}} | Level {{ selectedEmployee.level }}
+        *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else OwnType">
+        {{selectedEmployee.employeeType?.name}} | Level {{ selectedEmployee.level }}
+      </div>
+      <ng-template #OwnType>
+        <div class="col-12 my-2 d-none d-md-block" id="header-role">
+          {{navService.getEmployeeProfile().employeeType?.name}} | Level {{navService.getEmployeeProfile().level}}
         </div>
-        <ng-template #OwnType>
-          <div class="col-12 my-2 d-none d-md-block" id="header-role">
-            {{navService.getEmployeeProfile().employeeType?.name}} | Level {{navService.getEmployeeProfile().level}}
-          </div>
-        </ng-template>
-        <div class="col-12 my-2 d-none d-md-block" id="header-based">  
-          {{ basedInString }}
+      </ng-template>
+      <div class="col-12 my-2 d-none d-md-block" id="header-based">  
+        {{ basedInString }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6 mt-md-1" id="header-based">
+      <div class="row me-4 d-flex justify-content-start d-md-flex ">
+        <div class="col-auto">
+          {{usingSimpleProfile ? simpleEmployee.email : employeeProfile.email}}
+        </div>
+        <div class="col-1 mt-2" id="header-email-clip" (click)="copyToClipboard()"><mat-icon>attachment</mat-icon>
         </div>
       </div>
+    </div>
     </div>
     <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
         'background-color': '#D7DFFF',
