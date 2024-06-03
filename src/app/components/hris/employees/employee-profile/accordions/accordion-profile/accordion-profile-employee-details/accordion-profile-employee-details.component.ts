@@ -317,7 +317,6 @@ export class AccordionProfileEmployeeDetailsComponent {
       this.sharedAccordionFunctionality.filteredEmployees = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) =>
         employee.name!.toLowerCase().includes(event.target.value.toLowerCase())
       );
-      console.log(this.sharedAccordionFunctionality.filteredEmployees)
     } else {
       this.sharedAccordionFunctionality.filteredEmployees = this.sharedAccordionFunctionality.employees;
     }

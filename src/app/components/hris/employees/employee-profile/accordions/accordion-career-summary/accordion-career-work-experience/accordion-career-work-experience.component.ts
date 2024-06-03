@@ -74,7 +74,6 @@ export class AccordionCareerWorkExperienceComponent {
     this.workExperienceService.getWorkExperience(this.employeeProfile.id as number).subscribe({
       next: (data) => {
         this.workExperience = data;
-        console.log(this.workExperience);
       },
       error: (error) => {
         this.snackBarService.showSnackbar(error,"Failed to fetch work experiences");
