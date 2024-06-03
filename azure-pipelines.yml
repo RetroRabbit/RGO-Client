@@ -107,4 +107,3 @@ stages:
         pathToPublish: '$(Build.ArtifactStagingDirectory)/prod'
         artifactName: 'prod-drop'
       displayName: 'Publish Artifact for Production'
-

@@ -40,7 +40,7 @@ export class EmployeeProfileComponent implements OnChanges {
   @Input() updateDocument!: { updateDocument: SharedAccordionFunctionality };
 
   selectedEmployee!: EmployeeProfile;
-  employeeProfile: EmployeeProfile = {};
+  employeeProfile!: EmployeeProfile;
   simpleEmployee!: SimpleEmployee;
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
@@ -220,6 +220,7 @@ export class EmployeeProfileComponent implements OnChanges {
     (fetchProfile as any).subscribe({
       next: (data: any) => {
         this.employeeProfile = data;
+        this.selectedEmployee = data;
         this.employeePhysicalAddress = data.physicalAddress!;
         this.employeePostalAddress = data.postalAddress!;
         this.checkAddressMatch(data);
@@ -244,6 +245,14 @@ export class EmployeeProfileComponent implements OnChanges {
         this.filterClients(this.employeeProfile?.clientAllocated as number);
       }
     });
+  }
+
+  get basedInString() : string {
+    let basedIn = '';
+    if(this.employeeProfile.physicalAddress !== undefined && this.employeeProfile.physicalAddress.suburbOrDistrict && this.employeeProfile.physicalAddress.suburbOrDistrict.length > 2){
+      basedIn = `Based in ${this.employeeProfile.physicalAddress.suburbOrDistrict}`; 
+    }
+    return basedIn;
   }
 
   populateEmployeeAccordion(employee: SimpleEmployee) {
