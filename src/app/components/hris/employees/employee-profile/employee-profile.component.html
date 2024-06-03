@@ -363,7 +363,7 @@
       [employeeProfile]="employeeProfile"
       ></app-accordion-documents-starterkit>
       <app-accordion-administrative-documents 
-      *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin()" 
+      *ngIf="authAccessService.isSuperAdmin() || authAccessService.isJourney()" 
       [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
       </app-accordion-administrative-documents>
       <app-accordion-employee-documents [hidden]="selectedAccordion != 'Documents'" 
