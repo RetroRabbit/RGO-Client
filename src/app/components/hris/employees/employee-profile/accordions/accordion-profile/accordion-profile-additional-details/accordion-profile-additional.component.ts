@@ -15,6 +15,8 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-accordion-profile-additional',
@@ -30,10 +32,12 @@ export class AccordionProfileAdditionalComponent {
   onResize() {
     this.screenWidth = window.innerWidth;
   }
+
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
   customFields: CustomField[] = [];
   additionalFormProgress: number = 0;
+  employeeId = this.route.snapshot.params['id'];
 
   constructor(
     private fb: FormBuilder,
@@ -46,16 +50,17 @@ export class AccordionProfileAdditionalComponent {
     private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) {
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    public navService: NavService,
+    private route: ActivatedRoute
+  ) {
   }
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
-    this.initializeForm();
     this.getEmployeeFields();
     this.getClients();
   }
-  initializeForm() { }
 
   getEmployeeFields() {
     this.sharedAccordionFunctionality.employeePhysicalAddress = this.employeeProfile.employeeDetails.physicalAddress!;
@@ -68,7 +73,6 @@ export class AccordionProfileAdditionalComponent {
       this.getAllEmployees();
     }
     this.getEmployeeFieldCodes();
-    this.initializeForm();
     if (!this.authAccessService.isEmployee()) {
 
       this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
@@ -85,7 +89,6 @@ export class AccordionProfileAdditionalComponent {
             this.getAllEmployees();
           }
           this.getEmployeeFieldCodes();
-          this.initializeForm();
         }, error: () => {
           this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
         }
@@ -94,18 +97,25 @@ export class AccordionProfileAdditionalComponent {
   }
 
   getEmployeeData() {
-    this.employeeDataService.getEmployeeData(this.employeeProfile.employeeDetails.id).subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.employeeData = data;
-      }
-    });
+    if (this.employeeId != undefined) {
+      this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
+        next: data => {
+          this.sharedAccordionFunctionality.employeeData = data;
+        }
+      });
+    } else {
+      this.employeeDataService.getEmployeeData(this.navService.employeeProfile.id).subscribe({
+        next: data => {
+          this.sharedAccordionFunctionality.employeeData = data;
+        }
+      });
+    }
   }
 
   getAllEmployees() {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.employeesForTeamLeadFilter = data;
-        //this.sharedAccordionFunctionality.employees = data;
+        this.sharedAccordionFunctionality.employees = data;
         this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
         this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
         this.clientService.getAllClients().subscribe({
@@ -169,7 +179,6 @@ export class AccordionProfileAdditionalComponent {
 
   cancelAdditionalEdit() {
     this.sharedAccordionFunctionality.editAdditional = false;
-    this.initializeForm();
     this.sharedAccordionFunctionality.additionalInfoForm.disable();
   }
 

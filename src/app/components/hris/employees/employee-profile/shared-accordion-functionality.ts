@@ -33,13 +33,6 @@ export class SharedAccordionFunctionality {
   @Input() employeeProfile!: EmployeeProfile;
 
   employees: EmployeeProfile[] = [];
-  employeesForTeamLeadFilter :EmployeeProfile[] = [];
-  employeesForPeopleChampionFilter :EmployeeProfile[] = [];
-
-  employeesForAdditional :EmployeeProfile[] = [];
-  employeesForAddress :EmployeeProfile[] = [];
-  employeesForDetails :EmployeeProfile[] = [];
-
   clients: Client[] = [];
   employeeTypes: EmployeeType[] = [];
   filteredClients: Client[] = [];

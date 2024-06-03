@@ -18,6 +18,7 @@ import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-accordion-profile-address-details',
@@ -38,6 +39,7 @@ export class AccordionProfileAddressDetailsComponent {
   selectedProvince: string = '';
   selectedPostalCountry: string = '';
   selectedPostalProvince: string = '';
+  employeeId = this.route.snapshot.params['id'];
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -60,7 +62,8 @@ export class AccordionProfileAddressDetailsComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeAddressService: EmployeeAddressService,
     public locationApiService: LocationApiService,
-    public navService: NavService
+    public navService: NavService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -289,18 +292,25 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   getEmployeeData() {
-    this.employeeDataService.getEmployeeData(this.employeeProfile.employeeDetails.id).subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.employeeData = data;
-      }
-    });
+    if (this.employeeId != undefined) {
+      this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
+        next: data => {
+          this.sharedAccordionFunctionality.employeeData = data;
+        }
+      });
+    } else {
+      this.employeeDataService.getEmployeeData(this.navService.employeeProfile.id).subscribe({
+        next: data => {
+          this.sharedAccordionFunctionality.employeeData = data;
+        }
+      });
+    }
   }
 
   getAllEmployees() {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.employeesForAddress = data;
-        
+        this.sharedAccordionFunctionality.employees = data;
         this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
         this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
         this.clientService.getAllClients().subscribe({

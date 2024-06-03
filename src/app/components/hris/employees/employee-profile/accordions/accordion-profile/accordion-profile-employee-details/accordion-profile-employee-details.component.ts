@@ -16,6 +16,7 @@ import { SharedPropertyAccessService } from 'src/app/services/hris/shared-proper
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-accordion-profile-employee-details',
@@ -26,6 +27,7 @@ export class AccordionProfileEmployeeDetailsComponent {
 
   screenWidth = window.innerWidth;
   existingIdNumber: boolean = false;
+  employeeId = this.route.snapshot.params['id'];
 
   @HostListener('window:resize', [ '$event' ])
   usingProfile: boolean = true;
@@ -50,7 +52,8 @@ export class AccordionProfileEmployeeDetailsComponent {
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-    private navService: NavService
+    private navService: NavService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -310,22 +313,22 @@ export class AccordionProfileEmployeeDetailsComponent {
 
   filterEmployees(event: any) {
     if (event) {
-      this.sharedAccordionFunctionality.filteredEmployees = this.sharedAccordionFunctionality.employeesForDetails.filter((employee: EmployeeProfile) =>
+      this.sharedAccordionFunctionality.filteredEmployees = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) =>
         employee.name!.toLowerCase().includes(event.target.value.toLowerCase())
       );
       console.log(this.sharedAccordionFunctionality.filteredEmployees)
     } else {
-      this.sharedAccordionFunctionality.filteredEmployees = this.sharedAccordionFunctionality.employeesForDetails;
+      this.sharedAccordionFunctionality.filteredEmployees = this.sharedAccordionFunctionality.employees;
     }
   }
 
   filterChampions(event: any) {
     if (event) {
-      this.sharedAccordionFunctionality.filteredPeopleChamps = this.sharedAccordionFunctionality.employeesForDetails.filter((champs: EmployeeProfile) =>
+      this.sharedAccordionFunctionality.filteredPeopleChamps = this.sharedAccordionFunctionality.employees.filter((champs: EmployeeProfile) =>
         champs.employeeType?.id == 7 && champs.name?.toLowerCase().includes(event.target.value.toLowerCase())
       );
     } else {
-      this.sharedAccordionFunctionality.filteredPeopleChamps = this.sharedAccordionFunctionality.employeesForDetails;
+      this.sharedAccordionFunctionality.filteredPeopleChamps = this.sharedAccordionFunctionality.employees;
     }
   }
 
@@ -397,18 +400,25 @@ export class AccordionProfileEmployeeDetailsComponent {
   }
 
   getEmployeeData() {
-    this.employeeDataService.getEmployeeData(this.employeeProfile.employeeDetails.id).subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.employeeData = data;
-      }
-    });
+    if (this.employeeId != undefined) {
+      this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
+        next: data => {
+          this.sharedAccordionFunctionality.employeeData = data;
+        }
+      });
+    } else {
+      this.employeeDataService.getEmployeeData(this.navService.employeeProfile.id).subscribe({
+        next: data => {
+          this.sharedAccordionFunctionality.employeeData = data;
+        }
+      });
+    }
   }
 
   getAllEmployees() {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.employeesForDetails = data;
-        //this.sharedAccordionFunctionality.employees = data;
+        this.sharedAccordionFunctionality.employees = data;
         this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
         this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
         this.clientService.getAllClients().subscribe({
