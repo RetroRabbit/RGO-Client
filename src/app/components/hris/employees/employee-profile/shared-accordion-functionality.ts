@@ -302,7 +302,7 @@ export class SharedAccordionFunctionality {
         }
       }
     }
-    this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
+    this.additionalCareerFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
   calculateEmployeeDocumentProgress() {
