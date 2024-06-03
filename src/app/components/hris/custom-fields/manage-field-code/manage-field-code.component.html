@@ -44,7 +44,7 @@
     }" />
     <div id="table-body" class="row">
       <div class="card px-0">
-        <div class="table-responsive p-0 m-0">
+        <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
           <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" *ngIf="!isLoading">
             <ng-container matColumnDef="id">
               <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
@@ -78,6 +78,16 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
           </mat-table>
           <mat-paginator hidden></mat-paginator>
+        </div>
+        <div *ngIf="!isLoading && dataSource.filteredData.length <= 0" class="d-flex flex-row justify-content-center align-items-center">
+          <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
+          <span id="noSearchResults" class="col-6 d-flex flex-column justify-content-center align-items-center">
+            <h1>No Matches Found</h1>
+            <h2>
+              It looks like there are no results matching your search criteria.<br>
+              Try again or create a new entry by selecting 'Add New Field'.
+            </h2>
+          </span>
         </div>
       </div>
       <div class="d-flex flex-row justify-content-center align-items-center mt-2"
