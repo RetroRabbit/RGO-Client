@@ -344,8 +344,8 @@ export class AccordionProfileAddressDetailsComponent {
     this.getEmployeeFieldCodes();
     this.initializeForm();
     if (!this.authAccessService.isEmployee()) {
-
-      this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
+      const currentEmployeeId = this.employeeId != undefined ? this.employeeId : this.navService.employeeProfile.id
+      this.employeeProfileService.getEmployeeById(currentEmployeeId).subscribe({
         next: data => {
           this.employeeProfile.employeeDetails = data;
           this.sharedAccordionFunctionality.employeePhysicalAddress = data.physicalAddress!;
