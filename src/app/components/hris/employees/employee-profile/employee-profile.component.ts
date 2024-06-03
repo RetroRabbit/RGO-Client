@@ -134,11 +134,8 @@ export class EmployeeProfileComponent implements OnChanges {
   }
   
   ngOnInit() {
-    this.sharedAccordionFunctionality.totalDocumentsProgress();
-    this.sharedAccordionFunctionality.totalProfileProgress();
     this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
       this.profileFormProgress = profileProgress;
-
     });
     this.sharedAccordionFunctionality.updateDocument.subscribe(documentProgress => {
       this.documentFormProgress = documentProgress;
@@ -163,17 +160,6 @@ export class EmployeeProfileComponent implements OnChanges {
     }
     this.getEmployeeProfile();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
-  }
-
-  ngAfterViewInit() {
-    this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
-      this.profileFormProgress = profileProgress;
-    });
-    this.sharedAccordionFunctionality.updateDocument.subscribe(documentProgress => {
-      this.documentFormProgress = documentProgress;
-    });
-
-    this.overallProgress();
   }
 
   goToEmployees() {
