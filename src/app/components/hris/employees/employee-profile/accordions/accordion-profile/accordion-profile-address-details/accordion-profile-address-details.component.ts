@@ -229,7 +229,7 @@ export class AccordionProfileAddressDetailsComponent {
       error: (error: any) => {
         this.snackBarService.showSnackbar(error,'Could not load countries')
       },
-      complete: () => {    
+      complete: () => {
         this.selectedCountry = this.employeeProfile!.employeeDetails.physicalAddress?.country!
         if(this.selectedCountry == " ")
           {
@@ -264,7 +264,7 @@ export class AccordionProfileAddressDetailsComponent {
       error: (error: any) => {
         this.snackBarService.showSnackbar(error,'Could not load countries')
       },
-      complete: () => {    
+      complete: () => {
         this.selectedPostalCountry = this.employeeProfile!.employeeDetails.postalAddress?.country!
         if(this.selectedPostalCountry == " ")
           {

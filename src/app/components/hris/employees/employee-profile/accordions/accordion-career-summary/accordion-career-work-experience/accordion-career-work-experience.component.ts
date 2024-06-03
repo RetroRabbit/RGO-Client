@@ -28,17 +28,17 @@ export class AccordionCareerWorkExperienceComponent {
   panelOpenState: boolean = false;
   @Input() WorkExperience!: { workExperience: WorkExperience }
   @Input() employeeProfile !: EmployeeProfile | SimpleEmployee
-  
+
   editWorkExperience: boolean = false;
   hasWorkExperienceData: boolean = false;
   isUpdated: boolean = false;
   hasUpdatedWorkExperience: boolean = false;
   addingWorkExperience: boolean = false;
   showConfirmDialog: boolean = false;
-  
+
   removeNewOrUpdate: string = '';
-  role: string = ''; 
-  
+  role: string = '';
+
   workExperienceFormProgress: number = 0;
   removeIndex: number = 0;
 

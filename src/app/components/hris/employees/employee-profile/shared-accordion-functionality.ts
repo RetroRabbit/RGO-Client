@@ -103,7 +103,7 @@ export class SharedAccordionFunctionality {
   contactFormProgress: number = 0;
   addressFormProgress: number = 0;
   additionalFormProgress: number = 0;
-
+  additionalCareerFormProgress: number = 0;
   genders = genders;
   races = races;
   levels = levels;
@@ -185,6 +185,8 @@ export class SharedAccordionFunctionality {
 
   additionalInfoForm: FormGroup = this.fb.group({});
   additionalDocumentForm: FormGroup = this.fb.group({});
+
+  additionalCareerInfoForm: FormGroup = this.fb.group({});
 
   checkPersonalFormProgress() {
     let filledCount = 0;
@@ -282,6 +284,23 @@ export class SharedAccordionFunctionality {
     this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
+  checkCareerAdditionalFormProgress() {
+
+    let filledCount = 0;
+    const formControls = this.additionalCareerInfoForm.controls;
+    let totalFields = Object.keys(this.additionalCareerInfoForm.controls).length;
+
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '') {
+          filledCount++;
+        }
+      }
+    }
+    this.additionalCareerFormProgress = Math.round((filledCount / totalFields) * 100);
+  }
+
   calculateEmployeeDocumentProgress() {
     const total = this.fileEmployeeCategories.length;
     const fetchedDocuments = this.employeeDocuments.length;
@@ -306,7 +325,7 @@ export class SharedAccordionFunctionality {
         this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
         const total = this.customFieldsDocuments.length;
         const fetchedDocuments = this.additionalDocuments.length;
-        this.additionalDocumentsProgress = fetchedDocuments / total * 100;
+        total == 0 ? this.additionalDocumentsProgress = 0 : this.additionalDocumentsProgress = Math.round((fetchedDocuments / total) * 100);
         this.totalDocumentsProgress();
       }
     })
