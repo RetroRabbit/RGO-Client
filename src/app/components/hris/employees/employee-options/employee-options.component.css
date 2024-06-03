@@ -28,10 +28,16 @@ h5{
     padding-left: 12px;
 }
 
+#approvals-text {
+    align-items: end;
+    justify-content: right;
+}
+
 #icon-text-container {
     display: flex;
     align-items: center;
-    justify-content: left;
+    margin-right: 10px;
+    justify-content: space-between;
     padding: 12px;
     border-radius: 100px;
     transition: 0.5s background-color;
@@ -40,6 +46,7 @@ h5{
 #icon-text-container:hover{
     background: var(--m-3-white, #FFF);
     cursor: pointer;
+    align-items: end;
 }
 
 #icon-text-container > #mat-icon{
@@ -47,6 +54,7 @@ h5{
 }
 
 #icon-text-container > span{
+    flex-grow: 1;
     color: var(--m-3-sys-light-on-surface-variant, #49454F);
     font-family: Roboto;
     font-size: 14px;

@@ -3,6 +3,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { EmployeeApprovalsComponent } from '../employee-approvals/employee-approvals.component';
 @Component({
   selector: 'app-employee-options',
   templateUrl: './employee-options.component.html',
@@ -12,10 +13,19 @@ export class EmployeeOptionsComponent {
   @Output() emitFieldCode = new EventEmitter<CustomField>();
   clicked: string = "";
 
-  constructor(public cookieService: CookieService, public systemNavItemService: SystemNav, private authAccessService: AuthAccessService) {
+  constructor(public cookieService: CookieService,
+     public systemNavItemService: SystemNav,
+     private authAccessService: AuthAccessService,
+     public employeeApprovals : EmployeeApprovalsComponent,
+     public selectedTabService: SystemNav
+    ) {
     if (!this.systemNavItemService.selectedEmployeeMenuItem) {
       this.systemNavItemService.selectedEmployeeMenuItem = "View Employees";
     }
+  }
+
+  ngOnInit() : void {
+    this.employeeApprovals.fetchData(this.selectedTabService.getSelectedTabIndex());
   }
 
   hideSideMenuFromJourney(): boolean{

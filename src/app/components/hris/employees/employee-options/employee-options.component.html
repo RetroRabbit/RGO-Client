@@ -5,7 +5,8 @@
       <div id="button-container">
         <div id="icon-text-container" (click)="displayEmployeeApprovals()" [ngClass]="systemNavItemService.selectedEmployeeMenuItem =='Employee Approvals' ? 'active' : ''">
           <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
-          <span>Approvals</span>
+          <span id="approvals-text">Approvals</span>
+          <div id="pending-count">{{employeeApprovals.pendingCount}}</div>
         </div>
       </div>
       <div id="button-container">
