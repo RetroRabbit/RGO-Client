@@ -29,6 +29,7 @@ import { AccordionAdministrativeDocumentsComponent } from './accordions/accordio
 import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-employee-documents/accordion-employee-documents.component';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
+import { AppModule } from 'src/app/app.module';
 
 @Component({
   selector: 'app-employee-profile',
@@ -162,6 +163,10 @@ export class EmployeeProfileComponent implements OnChanges {
     }
     this.getEmployeeProfile();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+  }
+
+  openTerminationForm() {
+    this.router.navigateByUrl('/end-employment')
   }
 
   goToEmployees() {
