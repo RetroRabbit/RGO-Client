@@ -59,8 +59,7 @@ export class AccordionCareerAdditionalInformationComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.loggedInProfile = this.navService.getEmployeeProfile();
-    const id = this.employeeProfile.employeeDetails.id ? this.employeeProfile.employeeDetails.id : this.employeeProfile.simpleEmployee.id;
-    this.employeeId = id;
+    this.employeeId = this.employeeProfile.employeeDetails.id ? this.employeeProfile.employeeDetails.id : this.employeeProfile.simpleEmployee.id;
     this.getEmployeeFields();
     this.getEmployeeData();
   }
