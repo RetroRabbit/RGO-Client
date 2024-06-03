@@ -51,7 +51,7 @@ h5{
     margin:0px 16px;
 }
 
-#icon-text-container > span{
+#icon-text-container > span {
     flex-grow: 1;
     color: var(--m-3-sys-light-on-surface-variant, #49454F);
     font-family: Roboto;
