@@ -24,7 +24,6 @@ h5{
     font-weight: 500;
     line-height: 24px;
     letter-spacing: 0.15px;
-
     padding-left: 12px;
 }
 
@@ -36,9 +35,9 @@ h5{
 #icon-text-container {
     display: flex;
     align-items: center;
-    margin-right: 10px;
     justify-content: space-between;
     padding: 12px;
+    padding-right: 20px;
     border-radius: 100px;
     transition: 0.5s background-color;
 }
