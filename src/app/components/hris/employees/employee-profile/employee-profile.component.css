@@ -169,6 +169,16 @@
     border-top-right-radius: 100px;
 }
 
+#EndEmploymentButton>button {
+    border: 1px solid #0029C6;
+    border-radius: 2rem;
+    background-color: white;
+    margin-right: 15px;
+    color: #0029C6;
+    padding: 1.3rem;
+    width: 11rem;
+  }
+
 :host ::ng-deep .mat-expansion-panel {
     padding: 0;
 }

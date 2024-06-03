@@ -96,6 +96,7 @@ import { AccordionCertificatesComponent } from './components/hris/employees/empl
 import { AccordionAdministrativeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-administrative-documents/accordion-administrative-documents.component';
 import { AccordionCareerWorkExperienceComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-work-experience/accordion-career-work-experience.component';
 import { AccordionSalaryDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-salary-details/accordion-salary-details.component';
+import { EmployeeTerminationComponent } from './components/hris/employees/employee-termination/employee-termination.component';
 
 @NgModule({
   declarations: [
@@ -147,6 +148,7 @@ import { AccordionSalaryDetailsComponent } from './components/hris/employees/emp
     AccordionAdministrativeDocumentsComponent,
     AccordionCareerWorkExperienceComponent,
     AccordionSalaryDetailsComponent,
+    EmployeeTerminationComponent,
 
   ],
   imports: [
