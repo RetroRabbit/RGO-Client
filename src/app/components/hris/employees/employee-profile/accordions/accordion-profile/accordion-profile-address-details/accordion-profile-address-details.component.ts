@@ -400,8 +400,9 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   initializeEmployeeProfileDto() {
+    const currentEmployeeId = this.employeeId != undefined ? this.employeeId : this.navService.employeeProfile.id
     this.sharedAccordionFunctionality.employeeProfileDto = {
-      id: this.employeeProfile!.employeeDetails.id,
+      id: currentEmployeeId,
       employeeNumber: this.employeeProfile!.employeeDetails.employeeNumber,
       taxNumber: this.employeeProfile!.employeeDetails.taxNumber,
       engagementDate: this.employeeProfile!.employeeDetails.engagementDate,

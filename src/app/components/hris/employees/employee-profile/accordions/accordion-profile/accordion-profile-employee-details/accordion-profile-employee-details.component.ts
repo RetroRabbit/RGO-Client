@@ -97,7 +97,7 @@ export class AccordionProfileEmployeeDetailsComponent {
 
   initializeEmployeeProfileDto() {
     this.sharedAccordionFunctionality.employeeProfileDto = {
-      id: this.employeeProfile!.employeeDetails.id,
+      id: currentEmployeeId,
       employeeNumber: this.employeeProfile!.employeeDetails.employeeNumber,
       taxNumber: this.employeeProfile!.employeeDetails.taxNumber,
       engagementDate: this.employeeProfile!.employeeDetails.engagementDate,
@@ -464,6 +464,7 @@ export class AccordionProfileEmployeeDetailsComponent {
   toggleEqualFields() {
     this.sharedAccordionFunctionality.physicalEqualPostal = !this.sharedAccordionFunctionality.physicalEqualPostal;
   }
+
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     if (!this.sharedPropertyAccessService.accessProperties) {
       return;
