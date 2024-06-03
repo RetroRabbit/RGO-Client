@@ -290,3 +290,7 @@ a:hover {
   align-items: center;
   flex-shrink: 0;
 }
+
+h1 {
+  text-align: center;
+}

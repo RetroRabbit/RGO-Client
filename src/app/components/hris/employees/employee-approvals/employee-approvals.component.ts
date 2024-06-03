@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, HostListener, ViewChild, ElementRef, ChangeDetectorRef, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -13,6 +13,10 @@ import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface'
 import { BankingAndStarterKitDto } from 'src/app/models/hris/banking-and-starterkit.interface';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
+
+@Injectable({
+  providedIn: 'root'
+})
 
 @Component({
   selector: 'app-employee-approvals',
