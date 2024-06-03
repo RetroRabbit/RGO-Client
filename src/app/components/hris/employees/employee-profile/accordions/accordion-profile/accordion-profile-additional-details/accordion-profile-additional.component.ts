@@ -101,7 +101,7 @@ export class AccordionProfileAdditionalComponent {
         }
       });
     } else {
-      this.employeeDataService.getEmployeeData(this.navService.employeeProfile.id).subscribe({
+      this.employeeDataService.getEmployeeData(this.loggedInProfile.id).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.employeeData = data;
         }
