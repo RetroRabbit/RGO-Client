@@ -46,7 +46,6 @@ h5{
 #icon-text-container:hover{
     background: var(--m-3-white, #FFF);
     cursor: pointer;
-    align-items: end;
 }
 
 #icon-text-container > #mat-icon{
