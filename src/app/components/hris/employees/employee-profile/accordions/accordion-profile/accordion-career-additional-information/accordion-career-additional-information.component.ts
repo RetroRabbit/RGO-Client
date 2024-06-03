@@ -214,9 +214,6 @@ export class AccordionCareerAdditionalInformationComponent {
               this.snackBarService.showSnackbar(error, "snack-error");
             }
           });
-        } else {
-          this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
-          return;
         }
       }
     }
