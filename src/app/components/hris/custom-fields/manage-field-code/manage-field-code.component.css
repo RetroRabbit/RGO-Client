@@ -274,3 +274,17 @@ mat-header-row {
 .justify-edit-end {
   justify-content: flex-end;
 }
+
+#noSearchResults h1{
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+#noSearchResults h2 {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+  text-align: center;
+}
