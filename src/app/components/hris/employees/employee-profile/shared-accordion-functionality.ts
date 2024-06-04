@@ -189,7 +189,6 @@ export class SharedAccordionFunctionality {
   additionalCareerInfoForm: FormGroup = this.fb.group({});
 
   checkPersonalFormProgress() {
-
     let filledCount = 0;
     let totalFields = 0;
     const formControls = this.personalDetailsForm.controls;
@@ -214,9 +213,6 @@ export class SharedAccordionFunctionality {
     this.personalFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
-  getAdditionalDocumentFieldCodes() {
-
-  }
   checkEmployeeFormProgress() {
     let filledCount = 0;
     const formControls = this.employeeDetailsForm.controls;

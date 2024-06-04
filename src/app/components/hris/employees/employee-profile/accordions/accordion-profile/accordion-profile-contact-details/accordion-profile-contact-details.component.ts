@@ -66,6 +66,7 @@ export class AccordionProfileContactDetailsComponent {
     this.initializeForm();
     this.sharedAccordionFunctionality.employeeContactForm.disable();
   }
+  
   saveContactEdit() {
     if (this.sharedAccordionFunctionality.employeeContactForm.valid) {
       const employeeContactFormValues = this.sharedAccordionFunctionality.employeeContactForm.value;
