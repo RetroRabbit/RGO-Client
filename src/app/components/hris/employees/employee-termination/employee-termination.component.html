@@ -14,6 +14,9 @@
                         <mat-option *ngFor="let termination of terminationOption; index as i"
                             [value]="termination">{{termination}}</mat-option>
                     </mat-select>
+                    <mat-error *ngIf="newterminationform.controls['terminationOption'].hasError('pattern')">
+                        Please select terminationOption
+                    </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Date of Notice</mat-label>
@@ -21,6 +24,9 @@
                         formControlName="dateOfNotice">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
+                    <mat-error *ngIf="newterminationform.controls['dateOfNotice'].hasError('pattern')">
+                        Please select day of notice
+                    </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Last Day of Employment</mat-label>
@@ -28,12 +34,18 @@
                         formControlName="lastDayOfEmployment">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
+                    <mat-error *ngIf="newterminationform.controls['lastDayOfEmployment'].hasError('pattern')">
+                        Please select Last day of employment
+                    </mat-error>
                 </mat-form-field>
                 <div class="col-md-12 col-lg-7 my-2">
                     <h2 class="align-items-left">Is this person eligible for reemployment?:</h2>
                     <mat-radio-group formControlName="reEmployment">
                         <mat-radio-button [value]="true">Yes</mat-radio-button><br />
                         <mat-radio-button [value]="false">No</mat-radio-button><br />
+                        <mat-error *ngIf="newterminationform.controls['reEmployment'].hasError('pattern')">
+                            Please enter a valid Cellphone number
+                        </mat-error>
                     </mat-radio-group>
                 </div>
                 
