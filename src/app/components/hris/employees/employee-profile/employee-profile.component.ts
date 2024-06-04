@@ -322,11 +322,6 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   overallProgress() {
-    console.table({
-      'Profile': this.profileFormProgress,
-      'Banking': this.bankInformationProgress,
-      'Document': this.documentFormProgress,
-    });
     this.overallFormProgress = Math.round((this.profileFormProgress + this.bankInformationProgress + this.documentFormProgress)/3);
   }
 
