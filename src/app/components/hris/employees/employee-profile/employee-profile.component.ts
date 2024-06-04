@@ -59,6 +59,7 @@ export class EmployeeProfileComponent implements OnChanges {
 
   editContact: boolean = false;
   showBackButtons: boolean = true;
+  isAdminUser: boolean = false;
 
   employeeClient!: EmployeeProfile;
   employeeTeamLead!: EmployeeProfile;
@@ -136,6 +137,10 @@ export class EmployeeProfileComponent implements OnChanges {
   }
   
   ngOnInit() {
+    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()){
+      this.isAdminUser = true ;
+    }
+
     this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
       this.profileFormProgress = profileProgress;
 

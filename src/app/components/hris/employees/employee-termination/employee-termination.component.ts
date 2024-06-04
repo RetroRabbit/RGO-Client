@@ -4,6 +4,7 @@ import { terminationOptions } from 'src/app/models/hris/constants/terminationOpt
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 
 @Component({
   selector: 'app-employee-termination',
@@ -33,7 +34,7 @@ export class EmployeeTerminationComponent implements OnInit {
     private navService: NavService,
     private fb: FormBuilder,
     private router: Router,
-    private snackBarService : SnackbarService
+    private snackBarService : SnackbarService,
   ) { }
 
   ngOnInit() {
@@ -51,7 +52,8 @@ export class EmployeeTerminationComponent implements OnInit {
       dateOfNotice: new FormControl<Date | null>(null, Validators.required),
       lastDayOfEmployment: new FormControl<Date | null>(null, Validators.required),
       reEmployment: new FormControl<boolean>(false, Validators.required),
-      offBoardingTasks: new FormControl<boolean>(false, Validators.required),
+      companyEquipement: new FormControl<boolean>(false, Validators.required),
+      companyAccounts: new FormControl<boolean>(false, Validators.required),
       exitInterviewDoc: new FormControl<boolean>(false, Validators.required),
       additionalComments: new FormControl<string>(''),
     });

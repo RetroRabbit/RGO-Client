@@ -92,6 +92,7 @@ p {
     height: 0%;
     justify-content: right;
     gap: 12;
+    margin-left: 80px;
 }
 
 #doc-upload {
@@ -158,6 +159,20 @@ p {
     letter-spacing: 0.1px;
 }
 
+#change-close-color{
+    color: #B3261E;
+}
+
+#change-color-heading{
+    color: #B3261E;
+    font-weight: bold;
+}
+
 .info-text {
 color: #625B71;
+}
+
+.warning-message{
+    color: #B3261E;
+    font-weight: bold;
 }

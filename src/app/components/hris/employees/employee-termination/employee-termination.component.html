@@ -39,7 +39,7 @@
                     </mat-error>
                 </mat-form-field>
                 <div class="col-md-12 col-lg-7 my-2">
-                    <h2 class="align-items-left">Is this person eligible for reemployment?:</h2>
+                    <h2 class="align-items-left">Is this person eligible for reemployment?</h2>
                     <mat-radio-group formControlName="reEmployment">
                         <mat-radio-button [value]="true">Yes</mat-radio-button><br />
                         <mat-radio-button [value]="false">No</mat-radio-button><br />
@@ -48,29 +48,32 @@
                         </mat-error>
                     </mat-radio-group>
                 </div>
-
                 <div class="col-md-12 col-lg-7 my-2">
                     <h2>Off-boarding tasks</h2>
-                    <mat-checkbox formControlName="offBoardingTasks">Handed Back Company Equipement</mat-checkbox>
+                    <mat-checkbox formControlName="companyEquipement">Handed Back Company Equipment</mat-checkbox>
                 </div>
                 <div class="col-md-12 col-lg-7 my-2 mb-3">
-                    <mat-checkbox formControlName="offBoardingTasks">Transafered Company Accounts</mat-checkbox>
+                    <mat-checkbox formControlName="companyAccounts">Transferred Company Accounts</mat-checkbox>
+                    <!-- <mat-error *ngIf="!newterminationform.value.companyEquipement && !newterminationform.value.companyAccounts">
+                        You need to select all of the above
+                        <mat-icon *ngIf="!newterminationform.value.companyEquipement && !newterminationform.value.companyAccounts" id="change-close-color">error</mat-icon>
+                    </mat-error> -->
                 </div>
                 <div id="doc-upload" class="col-md-12 col-lg-7 my-2 p-3 mt-3"
                     style="border: 1px solid #ccc; border-radius: 10px;">
                     <div class="d-flex justify-content-md-start">
                         <div class="justify-content-md-start">
-                            <h3>Exit interview document</h3>
+                            <h3>Exit interview document*</h3>
                             <p class="info-text">PDF only</p>
                             <p>{{this.interviewFilename}}</p>
                         </div>
                         <div id="actionCellUpload" class="col-12 col-md-auto align-items-right">
                             <div id="removeDocButton"
-                            class="col-12 col-md-6 mt-md-1  d-flex justify-content-end d-md-flex ">
-                            <button mat-button color="warn" (click)="removeDocument()">Remove
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </div>
+                                class="col-12 col-md-6 mt-md-1  d-flex justify-content-end d-md-flex ">
+                                <button mat-button color="warn" (click)="removeDocument()">Remove
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </div>
                             <button type="file" mat-button color="primary" (click)="uploadFile.click()" accept=".pdf"
                                 [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
                                 <svg id="svg-icon-w" width="24" height="24" viewBox="0 0 24 24" fill="#e3e3e4ff"

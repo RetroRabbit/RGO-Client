@@ -40,7 +40,8 @@
           </ng-template>
         </div>
         <div id="EndEmploymentButton" class="col-12 col-md-6 mt-md-1  d-flex justify-content-end d-md-flex ">
-                <button mat-button color="primary" (click)="openTerminationForm()">End Employment</button>
+                <button 
+               *ngIf="this.isAdminUser" mat-button color="primary" (click)="openTerminationForm()">End Employment</button>
         </div>
         <div class="col-12 my-2 d-none d-md-block" id="header-role"
         *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else OwnType">
