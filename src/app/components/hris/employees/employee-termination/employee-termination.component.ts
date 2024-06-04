@@ -50,7 +50,7 @@ export class EmployeeTerminationComponent implements OnInit {
       terminationOption: new FormControl('', Validators.required),
       dateOfNotice: new FormControl<Date | null>(null, Validators.required),
       lastDayOfEmployment: new FormControl<Date | null>(null, Validators.required),
-      reEmployment: new FormControl<boolean>(true, Validators.required),
+      reEmployment: new FormControl<boolean>(false, Validators.required),
       offBoardingTasks: new FormControl<boolean>(false, Validators.required),
       exitInterviewDoc: new FormControl<boolean>(false, Validators.required),
       additionalComments: new FormControl<string>(''),
