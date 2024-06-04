@@ -35,7 +35,7 @@ export class AccordionAdministrativeDocumentsComponent {
   selectedFile !: File;
   roles: string[] = [];
   isLoadingUpload: boolean = false;
-  allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
+  allowedTypes = ['application/pdf', 'image/png', 'image/jpg'];
   showConfirmDialog: boolean = false;
   dialogTypeData!: Dialog;
   documentExists: boolean = false;
