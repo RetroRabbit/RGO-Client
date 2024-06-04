@@ -38,9 +38,9 @@ export class EmployeeTerminationComponent implements OnInit {
       terminationOption: new FormControl(''),
       dateOfNotice: new FormControl<Date | null>(null),
       lastDayOfEmployment: new FormControl<Date | null>(null),
-      // reEmployment: new FormControl<boolean>(true),
-      // offBoardingTasks: new FormControl<boolean>(false),
-      // exitInterviewDoc: new FormControl<boolean>(false),
+      reEmployment: new FormControl<boolean>(true),
+      offBoardingTasks: new FormControl<boolean>(false),
+      exitInterviewDoc: new FormControl<boolean>(false),
       additionalComments: new FormControl<string>(''),
     });
   }
@@ -59,6 +59,10 @@ export class EmployeeTerminationComponent implements OnInit {
     if (uploadCVInputElement) {
       uploadCVInputElement.value = '';
     }
+  }
+
+  onFileChange(){
+    
   }
 
   uploadDocument(event: any) {

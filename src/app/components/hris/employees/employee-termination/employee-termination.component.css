@@ -13,7 +13,6 @@
     font-family: "Roboto", sans-serif;
 }
 
-
 p {
     color: #0029c6;
     font-family: Roboto;
@@ -30,7 +29,7 @@ p {
     width: 70%;
     margin-top: 70px;
     margin-bottom: 70px;
-    height: 1089px;
+    height: 1189px;
     padding: 55PX 120px;
     flex-direction: column;
     align-items: center;
@@ -45,6 +44,16 @@ p {
 .warning-message {
     color: #B3261E;
     font-weight: bold;
+}
+
+#removeDocButton>button {
+    border: 1px solid #B3261E;
+    border-radius: 2rem;
+    background-color: white;
+    margin-right: 15px;
+    color: #B3261E;
+    padding: 1.3rem;
+    width: 11rem;
 }
 
 #save-button {
@@ -66,14 +75,47 @@ p {
     letter-spacing: 0.1px;
 }
 
+#actionCellUpload>button {
+    background: #0029c6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    padding: 0.5rem;
+    width: 8rem;
+}
+
+#actionCellDownload>button.disabledDownload {
+    border: 1px solid #e3e3e4ff;
+    border-radius: 2rem;
+    background-color: #e3e3e4ff;
+    color: #ffffff;
+    padding: 0.5rem;
+    width: 8rem;
+}
+
 #footer {
     gap: 15px;
     display: flex;
     margin-top: 20px;
     margin-bottom: 30px;
     height: 0%;
-    justify-content: unset;
+    justify-content: right;
     gap: 12;
+}
+
+#doc-upload {
+    width: 640px;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+#comments-field {
+    display: inline-flex;
+    height: 150px;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
 }
 
 #form-heading {

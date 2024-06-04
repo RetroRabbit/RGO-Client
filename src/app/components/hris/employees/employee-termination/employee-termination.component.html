@@ -11,70 +11,80 @@
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Termination Option</mat-label>
                     <mat-select hideSingleSelectionIndicator="true" formControlName="terminationOption">
-                        <mat-option *ngFor="let termination of terminationOption; index as i" [value]="termination">{{termination}}</mat-option>
+                        <mat-option *ngFor="let termination of terminationOption; index as i"
+                            [value]="termination">{{termination}}</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Date of Notice</mat-label>
-                    <input matInput [matDatepicker]="picker1" placeholder="Date of Notice" formControlName="dateOfNotice">
+                    <input matInput [matDatepicker]="picker1" placeholder="Date of Notice"
+                        formControlName="dateOfNotice">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Last Day of Employment</mat-label>
-                    <input matInput [matDatepicker]="picker2" placeholder="Last day of Employment" formControlName="lastDayOfEmployment">
+                    <input matInput [matDatepicker]="picker2" placeholder="Last day of Employment"
+                        formControlName="lastDayOfEmployment">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
                 </mat-form-field>
                 <div class="col-md-12 col-lg-7 my-2">
-                    <h2 class="text-center">Is this person eligible for reemployment?:</h2>
+                    <h2 class="align-items-left">Is this person eligible for reemployment?:</h2>
                     <mat-radio-group formControlName="reEmployment">
                         <mat-radio-button [value]="true">Yes</mat-radio-button><br />
                         <mat-radio-button [value]="false">No</mat-radio-button><br />
                     </mat-radio-group>
                 </div>
-                <h2 class="text-center">Off boarding task</h2>
+                
                 <div class="col-md-12 col-lg-7 my-2">
-                    <mat-checkbox formControlName="offBoardingTasks">Off-boarding tasks completed</mat-checkbox>
+                    <h2>Off-boarding tasks</h2>
+                    <mat-checkbox formControlName="offBoardingTasks">Handed Back Company Equipement</mat-checkbox>
                 </div>
-                <div class="col-md-12 col-lg-7 my-2">
-                    <mat-checkbox formControlName="exitInterviewDoc">Exit interview document received</mat-checkbox>
+                <div class="col-md-12 col-lg-7 my-2 mb-3">
+                    <mat-checkbox formControlName="exitInterviewDoc">Transafered Company Accounts</mat-checkbox>
                 </div>
-                <div class="col-md-12 col-lg-7 my-2 p-2" style="border: 1px solid #ccc; border-radius: 10px;">
+                <div id="doc-upload" class="col-md-12 col-lg-7 my-2 p-3 mt-3" style="border: 1px solid #ccc; border-radius: 10px;">
                     <h3>Exit interview document</h3>
-                    <div class="d-flex justify-content-between">
-                        <button mat-button color="primary" 
-                            [ngStyle]="{'background-color': '' ? '#0029c6' : '#e3e3e4ff'}"
-                            [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
-                            <svg id="svg-icon-w" width="24" height="24" viewBox="0 0 24 24" fill="#e3e3e4ff"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g id="Icons/file_upload">
-                                    <path id="icon-w"
-                                        d="M18 15V18H6V15H4V18C4 19.1 4.9 20 6 20H18C19.1 20 20 19.1 20 18V15H18ZM7 9L8.41 10.41L11 7.83V16H13V7.83L15.59 10.41L17 9L12 4L7 9Z"
-                                        fill="#0029C6" />
-                                </g>
-                            </svg> Upload
-                        </button>
-                        <button mat-button color="warn" (click)="removeDocument()">
-                            <svg id="svg-icon-w" width="24" height="24" viewBox="0 0 24 24" fill="#e3e3e4ff"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g id="Icons/delete">
-                                    <path id="icon-w"
-                                        d="M15 4V3C15 2.45 14.55 2 14 2H10C9.45 2 9 2.45 9 3V4H4V6H20V4H15ZM6 6V18C6 19.1 6.9 20 8 20H16C17.1 20 18 19.1 18 18V6H6Z"
-                                        fill="#FF0000" />
-                                </g>
-                            </svg> Remove
-                        </button>
+                    <div class="d-flex justify-content-end">
+                        <h3>PDF only</h3>
+                        <div id="removeDocButton"
+                            class="col-12 col-md-6 mt-md-1  d-flex justify-content-end d-md-flex ">
+                            <button mat-button color="warn" (click)="removeDocument()">Remove
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                        <div id="actionCellUpload" class="col-12 col-md-auto" >
+                            <button type="file" mat-button color="primary"
+                                (click)="uploadCertificateFile.click()" accept=".pdf"
+                                [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
+                                <svg id="svg-icon-w" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="#e3e3e4ff" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="Icons/file_upload">
+                                        <path id="icon-w"
+                                            d="M18 15V18H6V15H4V18C4 19.1 4.9 20 6 20H18C19.1 20 20 19.1 20 18V15H18ZM7 9L8.41 10.41L11 7.83V16H13V7.83L15.59 10.41L17 9L12 4L7 9Z"
+                                            fill="#FFFFFF" />
+                                    </g>
+                                </svg>
+                                Upload
+                            </button>
+                            <input type="file" #uploadCertificateFile
+                                (change)="onFileChange()" hidden accept=".pdf">
+                        </div>
                     </div>
-                    <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf">
+                    <input formControlName="exitInterviewDoc" hidden type="file" (change)="uploadDocument($event)"
+                        accept=".pdf">
                 </div>
-                <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
-                    <mat-label>Contact number</mat-label>
-                    <input matInput type="text" formControlName="additionalComments" placeholder="additional comments" />
+                <mat-form-field Id="comments-field" appearance="outline" class="col-md-12 col-lg-7 my-2 mt-3">
+                    <mat-label>Additional comments</mat-label>
+                    <input matInput type="text" formControlName="additionalComments"
+                        placeholder="additional comments" />
                 </mat-form-field>
-                <div id="footer" class="col-md-12 align-items-center">
-                    <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''" (click)="goToPreviousPage()">Cancel</button>
-                    <button id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''" (click)="saveTermination()">Save</button>
+                <div id="footer" class="col-md-6 align-items-right">
+                    <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
+                        (click)="goToPreviousPage()">Cancel</button>
+                    <button id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
+                        (click)="saveTermination()">Save</button>
                 </div>
             </div>
         </form>
