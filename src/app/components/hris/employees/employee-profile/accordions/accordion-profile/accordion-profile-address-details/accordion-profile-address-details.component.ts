@@ -18,6 +18,7 @@ import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-accordion-profile-address-details',
@@ -38,6 +39,7 @@ export class AccordionProfileAddressDetailsComponent {
   selectedProvince: string = '';
   selectedPostalCountry: string = '';
   selectedPostalProvince: string = '';
+  employeeId = this.route.snapshot.params['id'];
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -60,7 +62,8 @@ export class AccordionProfileAddressDetailsComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeAddressService: EmployeeAddressService,
     public locationApiService: LocationApiService,
-    public navService: NavService
+    public navService: NavService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -226,7 +229,7 @@ export class AccordionProfileAddressDetailsComponent {
       error: (error: any) => {
         this.snackBarService.showSnackbar(error,'Could not load countries')
       },
-      complete: () => {    
+      complete: () => {
         this.selectedCountry = this.employeeProfile!.employeeDetails.physicalAddress?.country!
         if(this.selectedCountry == " ")
           {
@@ -261,7 +264,7 @@ export class AccordionProfileAddressDetailsComponent {
       error: (error: any) => {
         this.snackBarService.showSnackbar(error,'Could not load countries')
       },
-      complete: () => {    
+      complete: () => {
         this.selectedPostalCountry = this.employeeProfile!.employeeDetails.postalAddress?.country!
         if(this.selectedPostalCountry == " ")
           {
@@ -289,23 +292,30 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   getEmployeeData() {
-    this.employeeDataService.getEmployeeData(this.employeeProfile.employeeDetails.id).subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.employeeData = data;
-      }
-    });
+    if (this.employeeId != undefined) {
+      this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
+        next: data => {
+          this.sharedAccordionFunctionality.employeeData = data;
+        }
+      });
+    } else {
+      this.employeeDataService.getEmployeeData(this.navService.employeeProfile.id).subscribe({
+        next: data => {
+          this.sharedAccordionFunctionality.employeeData = data;
+        }
+      });
+    }
   }
 
   getAllEmployees() {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employees = data;
-        this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
-        this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
+        this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
+        this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
         this.clientService.getAllClients().subscribe({
           next: data => {
-            this.sharedAccordionFunctionality.clients = data;
-            this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
+            this.sharedAccordionFunctionality.employeeClient = data.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
           }
         });
       }
@@ -334,8 +344,8 @@ export class AccordionProfileAddressDetailsComponent {
     this.getEmployeeFieldCodes();
     this.initializeForm();
     if (!this.authAccessService.isEmployee()) {
-
-      this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
+      const currentEmployeeId = this.employeeId != undefined ? this.employeeId : this.navService.employeeProfile.id
+      this.employeeProfileService.getEmployeeById(currentEmployeeId).subscribe({
         next: data => {
           this.employeeProfile.employeeDetails = data;
           this.sharedAccordionFunctionality.employeePhysicalAddress = data.physicalAddress!;
@@ -390,8 +400,9 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   initializeEmployeeProfileDto() {
+    const currentEmployeeId = this.employeeId != undefined ? this.employeeId : this.navService.employeeProfile.id
     this.sharedAccordionFunctionality.employeeProfileDto = {
-      id: this.employeeProfile!.employeeDetails.id,
+      id: currentEmployeeId,
       employeeNumber: this.employeeProfile!.employeeDetails.employeeNumber,
       taxNumber: this.employeeProfile!.employeeDetails.taxNumber,
       engagementDate: this.employeeProfile!.employeeDetails.engagementDate,
@@ -425,7 +436,7 @@ export class AccordionProfileAddressDetailsComponent {
       salary: this.employeeProfile!.employeeDetails.salary,
       salaryDays: this.employeeProfile!.employeeDetails.salaryDays,
       payRate: this.employeeProfile!.employeeDetails.payRate,
-      clientAllocated: this.employeeProfile!.employeeDetails.clientAllocated,
+      clientAllocated: this.usingProfile ? this.employeeProfile!.employeeDetails.clientAllocated : this.employeeProfile!.simpleEmployee.clientAllocatedId,
       teamLead: this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
       physicalAddress: {
         id: this.employeeProfile!.employeeDetails.physicalAddress?.id,

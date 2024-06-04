@@ -1,0 +1,16 @@
+#company-cost {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+#edit-button-width {
+    border: none;
+    border-radius: 2rem;
+    background-color: #D7DFFF;
+    color: #0029C6;
+    width: 170px;
+}
+
+#space {
+    padding-bottom: 20px;
+}

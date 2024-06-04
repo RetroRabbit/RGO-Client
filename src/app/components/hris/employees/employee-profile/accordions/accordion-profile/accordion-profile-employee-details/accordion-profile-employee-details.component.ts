@@ -16,6 +16,7 @@ import { SharedPropertyAccessService } from 'src/app/services/hris/shared-proper
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-accordion-profile-employee-details',
@@ -26,6 +27,7 @@ export class AccordionProfileEmployeeDetailsComponent {
 
   screenWidth = window.innerWidth;
   existingIdNumber: boolean = false;
+  employeeId = this.route.snapshot.params['id'];
 
   @HostListener('window:resize', [ '$event' ])
   usingProfile: boolean = true;
@@ -46,11 +48,12 @@ export class AccordionProfileEmployeeDetailsComponent {
     private employeeDataService: EmployeeDataService,
     private clientService: ClientService,
     private employeeTypeService: EmployeeTypeService,
-    private customFieldService: CustomFieldService, 
+    private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-    private navService: NavService
+    private navService: NavService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -93,8 +96,9 @@ export class AccordionProfileEmployeeDetailsComponent {
   }
 
   initializeEmployeeProfileDto() {
+    const currentEmployeeId = this.employeeId != undefined ? this.employeeId : this.navService.employeeProfile.id
     this.sharedAccordionFunctionality.employeeProfileDto = {
-      id: this.employeeProfile!.employeeDetails.id,
+      id: currentEmployeeId,
       employeeNumber: this.employeeProfile!.employeeDetails.employeeNumber,
       taxNumber: this.employeeProfile!.employeeDetails.taxNumber,
       engagementDate: this.employeeProfile!.employeeDetails.engagementDate,
@@ -128,7 +132,7 @@ export class AccordionProfileEmployeeDetailsComponent {
       salary: this.employeeProfile!.employeeDetails.salary,
       salaryDays: this.employeeProfile!.employeeDetails.salaryDays,
       payRate: this.employeeProfile!.employeeDetails.payRate,
-      clientAllocated: this.employeeProfile!.employeeDetails.clientAllocated,
+      clientAllocated: this.usingProfile ? this.employeeProfile!.employeeDetails.clientAllocated : this.employeeProfile!.simpleEmployee.clientAllocatedId,
       teamLead: this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
       physicalAddress: {
         id: this.employeeProfile!.employeeDetails.physicalAddress?.id,
@@ -181,7 +185,7 @@ export class AccordionProfileEmployeeDetailsComponent {
 
     if (this.sharedAccordionFunctionality.foundTeamLead != null) {
       this.sharedAccordionFunctionality.employeeDetailsForm.get('teamLead')?.setValue(this.sharedAccordionFunctionality.foundTeamLead.name + ' ' + this.sharedAccordionFunctionality.foundTeamLead.surname);
-      this.employeeProfile.employeeDetails.id = this.sharedAccordionFunctionality.foundTeamLead.id
+      this.sharedAccordionFunctionality.employeeTeamLead.id = this.sharedAccordionFunctionality.foundTeamLead.id
     }
 
     if (this.sharedAccordionFunctionality.foundClient != null) {
@@ -396,23 +400,30 @@ export class AccordionProfileEmployeeDetailsComponent {
   }
 
   getEmployeeData() {
-    this.employeeDataService.getEmployeeData(this.employeeProfile.employeeDetails.id).subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.employeeData = data;
-      }
-    });
+    if (this.employeeId != undefined) {
+      this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
+        next: data => {
+          this.sharedAccordionFunctionality.employeeData = data;
+        }
+      });
+    } else {
+      this.employeeDataService.getEmployeeData(this.navService.employeeProfile.id).subscribe({
+        next: data => {
+          this.sharedAccordionFunctionality.employeeData = data;
+        }
+      });
+    }
   }
 
   getAllEmployees() {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employees = data;
-        this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
-        this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
+        this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
+        this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
         this.clientService.getAllClients().subscribe({
           next: data => {
-            this.sharedAccordionFunctionality.clients = data;
-            this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
+            this.sharedAccordionFunctionality.employeeClient = data.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
           }
         });
       }
@@ -453,6 +464,7 @@ export class AccordionProfileEmployeeDetailsComponent {
   toggleEqualFields() {
     this.sharedAccordionFunctionality.physicalEqualPostal = !this.sharedAccordionFunctionality.physicalEqualPostal;
   }
+
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     if (!this.sharedPropertyAccessService.accessProperties) {
       return;

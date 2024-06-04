@@ -29,13 +29,15 @@ export class AccordionDocumentsCustomDocumentsComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  customFields: CustomField[] = [];
   fileCategories = [];
+  unarchivedCustomDocuments: any = [];
   roles: string[] = [];
   isLoadingUpload: boolean = false;
   uploadButtonIndex: number = 0;
   documentFormProgress: number = 0;
   documentId: number = 0;
+  fieldCodeStatus: any = -1;
+  customDocumentsCategory: number = 3;
   selectedFile !: File;
   documentsFileName: string = "";
   DocumentTypeName: string = "";
@@ -44,6 +46,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   base64String: string = "";
   employeeId = this.route.snapshot.params['id'];
   dataSource = new MatTableDataSource<FileCategory>(this.fileCategories);
+  infinity = Infinity;
 
   selectedFieldCode: string = '';
   constructor(
@@ -63,15 +66,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
     this.getAdditionalDocuments();
   }
 
-  getDocumentsFieldCodes() {
-    this.customFieldService.getAllFieldCodes().subscribe({
-      next: data => {
-        this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[3].id);
-        this.checkCustomDocumentsInformation();
-      }
-    })
-  }
-
   getAdditionalDocuments() {
     if (this.employeeId != undefined) {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 4).subscribe({
@@ -80,9 +74,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.dataSource.data = this.fileCategories;
 
           this.sharedAccordionFunctionality.additionalDocuments = data;
+          this.getDocumentFieldCodes();
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
-          this.sharedAccordionFunctionality.totalDocumentsProgress();
-
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -94,8 +87,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
         next: data => {
           this.sharedAccordionFunctionality.additionalDocuments = data;
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
-          this.sharedAccordionFunctionality.totalDocumentsProgress();
-
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -114,7 +105,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   checkCustomDocumentsInformation() {
     const formGroupConfig: any = {};
-    this.customFields.forEach(fieldName => {
+    this.sharedAccordionFunctionality.customFieldsDocuments.forEach(fieldName => {
       if (fieldName.code != null || fieldName.code != undefined) {
         const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
         formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
@@ -130,12 +121,25 @@ export class AccordionDocumentsCustomDocumentsComponent {
   getDocumentFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
-        this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[3].id);
         this.checkCustomDocumentsInformation();
+        this.checkArchived(data);
       }
     })
   }
 
+  checkArchived(fields: any) {
+    var index = 0;
+    fields.forEach((field: { category: number; status: any; }) => {
+      index++;
+      if (this.fieldCodeStatus == field.status && this.customDocumentsCategory == field.category) {
+        fields.splice(index, 1);
+      }
+      else {
+        this.unarchivedCustomDocuments.push(field);
+        this.unarchivedCustomDocuments = this.unarchivedCustomDocuments.filter((field: any) => field.category == this.sharedAccordionFunctionality.category[3].id)
+      }
+    })
+  }
 
   captureUploadButtonIndex(event: any, category: any) {
     this.selectedFieldCode = category;
@@ -199,7 +203,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.snackBarService.showSnackbar("Document added", "snack-success");
           this.getAdditionalDocuments();
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
-          this.sharedAccordionFunctionality.totalDocumentsProgress();
         },
         error: (error: any) => {
           this.isLoadingUpload = false;
@@ -230,7 +233,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.snackBarService.showSnackbar("Document updated", "snack-success");
           this.getAdditionalDocuments();
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
-          this.sharedAccordionFunctionality.totalDocumentsProgress();
 
         },
         error: (error) => {
