@@ -35,7 +35,7 @@ export class AccordionAdministrativeDocumentsComponent {
   selectedFile !: File;
   roles: string[] = [];
   isLoadingUpload: boolean = false;
-  allowedTypes = ['application/pdf'];
+  allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
   showConfirmDialog: boolean = false;
   dialogTypeData!: Dialog;
   documentExists: boolean = false;
@@ -101,7 +101,7 @@ export class AccordionAdministrativeDocumentsComponent {
     if (this.allowedTypes.includes(this.selectedFile.type)) {
       this.uploadProfileDocument();
     } else {
-      this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
+      this.snackBarService.showSnackbar("Please upload a PDF, PNG or JPG", "snack-error");
       this.isLoadingUpload = false;
     }
   }
