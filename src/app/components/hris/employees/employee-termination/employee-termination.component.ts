@@ -20,9 +20,14 @@ export class EmployeeTerminationComponent implements OnInit {
   newterminationform!: FormGroup;
   terminationOption: string[] = terminationOptions.map((termination) => termination.value);
   isMobileScreen = false;
+  fileUploaded: boolean = false;
   selectedFile !: File;
   screenWidth = window.innerWidth;
   interviewFilename: string = "";
+  interviewFileUploaded: boolean = false;
+  isvalidFile: boolean = false;
+  isvalidFileSize: boolean = false;
+  base64String: string = "";
 
   constructor(
     private navService: NavService,
@@ -34,6 +39,10 @@ export class EmployeeTerminationComponent implements OnInit {
   ngOnInit() {
     this.initializeForm();
     this.navService.hideNav();
+  }
+  
+  ngOnDestroy() {
+    this.navService.showNav();
   }
 
   initializeForm() {
@@ -51,18 +60,45 @@ export class EmployeeTerminationComponent implements OnInit {
 
   removeDocument() {
     this.interviewFilename = '';
-    const uploadCVInputElement = document.getElementById('uploadCVFile') as HTMLInputElement;
-    if (uploadCVInputElement) {
-      uploadCVInputElement.value = '';
+    const uploadedDoc = document.getElementById('uploadCVFile') as HTMLInputElement;
+    if (uploadedDoc) {
+      uploadedDoc.value = '';
+    }
+    this.snackBarService.showSnackbar('File removed succesfully','snack-success');
+  }
+  onCVFileChange(event: any): void {
+    if (event.target.files && event.target.files.length) {
+      this.interviewFileUploaded = true;
+      const file = event.target.files[0];
+      this.interviewFilename = file.name;
+      if (this.validateCVFile(file)) {
+        this.fileConverter(file, 'exitInterviewDoc');
+      }
     }
   }
 
-  onFileChange(){
-
+  fileConverter(file: File, controlName: string) {
+    const reader = new FileReader();
+    reader.addEventListener('loadend', () => {
+      const base64Data = reader.result as string;
+      this.newterminationform.patchValue({ [controlName]: base64Data });
+      this.snackBarService.showSnackbar('File uploaded succesfully','snack-success');
+    });
+    reader.readAsDataURL(file);
   }
 
-  uploadDocument(event: any) {
-    
+  validateCVFile(file: File): boolean {
+    const allowedTypes = ['application/pdf'];
+    if (!allowedTypes.includes(file.type)) {
+      this.isvalidFile = false;
+      return false;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      this.isvalidFileSize = false;
+      return false;
+    }
+    this.isvalidFileSize = true;
+    return true;
   }
 
   goToPreviousPage() {
@@ -74,10 +110,4 @@ export class EmployeeTerminationComponent implements OnInit {
     // Save termination logic
   }
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      // Handle file upload
-    }
-  }
 }

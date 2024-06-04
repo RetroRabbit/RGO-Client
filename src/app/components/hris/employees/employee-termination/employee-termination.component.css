@@ -84,15 +84,6 @@ p {
     width: 8rem;
 }
 
-#actionCellDownload>button.disabledDownload {
-    border: 1px solid #e3e3e4ff;
-    border-radius: 2rem;
-    background-color: #e3e3e4ff;
-    color: #ffffff;
-    padding: 0.5rem;
-    width: 8rem;
-}
-
 #footer {
     gap: 15px;
     display: flex;
@@ -131,6 +122,7 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 95px
 }
 
 #actionCellUpload>button {
