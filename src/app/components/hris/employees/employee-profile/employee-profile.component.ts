@@ -29,7 +29,6 @@ import { AccordionDocumentsAdditionalComponent } from './accordions/accordion-do
 import { AccordionAdministrativeDocumentsComponent } from './accordions/accordion-administrative-documents/accordion-administrative-documents.component';
 import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-employee-documents/accordion-employee-documents.component';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -139,8 +138,8 @@ export class EmployeeProfileComponent implements OnChanges {
     this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
       this.profileFormProgress = profileProgress;
     });
-    this.sharedAccordionFunctionality.updateDocument.subscribe(progress => {
-      this.documentFormProgress = progress;
+    this.sharedAccordionFunctionality.updateDocument.subscribe(documentProgress => {
+      this.documentFormProgress = documentProgress;
     });
     this.overallProgress();
 
@@ -314,7 +313,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   overallProgress() {
-    this.overallFormProgress = Math.round((0.33 * this.profileFormProgress) + (0.33 * this.bankInformationProgress) + (0.33 * this.documentFormProgress));
+    this.overallFormProgress = Math.floor((this.profileFormProgress + this.bankInformationProgress + this.documentFormProgress)/3);
   }
 
   updateBankingProgress(update: any) {
@@ -370,6 +369,7 @@ export class EmployeeProfileComponent implements OnChanges {
     this.clipboard.copy(emailToCopy);
     this.snackBarService.showSnackbar("Email copied to clipboard", "snack-success");
   }
+  
   displayEditButtons() {
     this.sharedAccordionFunctionality.editEmployee = false;
     this.sharedAccordionFunctionality.editAdditional = false;
@@ -377,6 +377,7 @@ export class EmployeeProfileComponent implements OnChanges {
     this.sharedAccordionFunctionality.editContact = false;
     this.sharedAccordionFunctionality.editPersonal = false;
   }
+
   checkAddressMatch(data: EmployeeProfile) {
     var dataCopy: any = data;
     const stringifiedphysicalAddress = JSON.stringify(dataCopy.physicalAddress);
