@@ -27,7 +27,10 @@ import {
   forkJoin,
   map,
   of,
+  pipe,
+  skipWhile,
   switchMap,
+  takeWhile,
   tap,
 } from 'rxjs';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
@@ -35,7 +38,8 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
-
+import { EmployeeStatus } from 'src/app/models/hris/constants/employee-status.constants';
+import { stat } from 'fs/promises';
 @Component({
   selector: 'app-view-employee',
   templateUrl: './view-employee.component.html',
@@ -48,6 +52,8 @@ export class ViewEmployeeComponent {
   @Output() addEmployeeEvent = new EventEmitter<void>();
   @Output() managePermissionsEvent = new EventEmitter<void>();
   _searchQuery: string = '';
+  filteredEmployees: EmployeeProfile[] = [];
+
 
   @Input()
   set searchQuery(text: string) {
@@ -71,11 +77,14 @@ export class ViewEmployeeComponent {
     ),
     first()
   );
+  employeeStatus: string[] = EmployeeStatus;
+  employeeTerminated: string[] = [];
 
   peopleChampions: Observable<GenericDropDownObject[]> = this.getPeopleChampionsForFilter();
   usertypes: Observable<GenericDropDownObject[]> = this.getUserTypesForFilter();
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
   currentUserTypeFilter: GenericDropDownObject = new GenericDropDownObject;
+  employeestatusFilter: GenericDropDownObject = new GenericDropDownObject;
 
   defaultPageSize: number = 10
   onAddEmployeeClick(): void {
@@ -100,7 +109,7 @@ export class ViewEmployeeComponent {
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
-
+    this.getTerminatedEmployees();
     this.onResize();
     if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
       this._searchQuery = this.cookieService.get('searchString');
@@ -141,6 +150,7 @@ export class ViewEmployeeComponent {
       )
       .subscribe((data) => {
         this.setupDataSource(data);
+        console.log("here", data)
         this.isLoading = false;
         this.applySearchFilter();
       });
@@ -190,6 +200,8 @@ export class ViewEmployeeComponent {
 
   private setupDataSource(data: any[]): void {
     this.dataSource = new MatTableDataSource(data);
+
+    console.log("in here", this.dataSource)
     this.ngZone.run(() => {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
@@ -198,6 +210,32 @@ export class ViewEmployeeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
+
+  private getDataSource() {
+    this.datasSource = new MatTableDataSource(this.filteredEmployees);
+    console.log("HEYYYYY", this.datasSource);
+    this.ngZone.run(() => {
+      this.datasSource.sort = this.sort;
+      this.datasSource.paginator = this.paginator;
+      this.paginator._changePageSize(this.defaultPageSize);
+    });
+    this.datasSource._updateChangeSubscription();
+  }
+
+  getFormattedDate(date: Date) {
+    const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    return formattedDate;
+  }
+
+  getTenureDifference(date1: Date, date2: Date) {
+    const millisecondsDiff = date2.getTime() - date1.getTime();
+    const secondsDiff = millisecondsDiff / 1000;
+    const minutesDiff = secondsDiff / 60;
+    const hoursDiff = minutesDiff / 60;
+    const daysDiff = Math.floor(hoursDiff / 24);
+    return { days: daysDiff, hours: Math.floor(hoursDiff % 24), minutes: Math.floor(minutesDiff % 60), seconds: Math.floor(secondsDiff % 60) };
+
+  }
   sortRoles(roles: string[]): string[] {
     const adminRoles = roles
       .filter((role) => role.toLowerCase().includes('admin'))
@@ -249,8 +287,10 @@ export class ViewEmployeeComponent {
   }
 
   displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];
+  displayedTerminatedColumns: string[] = ['Name', 'Position', 'Tenure', 'LastDay', 'Reason'];
 
   dataSource: MatTableDataSource<EmployeeData> = new MatTableDataSource();
+  datasSource: MatTableDataSource<EmployeeProfile> = new MatTableDataSource();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -293,7 +333,6 @@ export class ViewEmployeeComponent {
     for (let i = startPage; i <= endPage; i++) {
       pages.push(i + 1);
     }
-
     return pages;
   }
 
@@ -404,6 +443,18 @@ export class ViewEmployeeComponent {
         return champions;
       })
     );
+  }
+
+  getTerminatedEmployees() {
+    this.employeeService.getEmployeeProfiles().subscribe({
+      next: data => {
+        this.filteredEmployees = data.filter((emp: any) => emp.active == false)
+        this.getDataSource();
+        this.isLoading = false;
+        console.log(this.filteredEmployees);
+
+      }
+    });
   }
 
   getUserTypesForFilter(): Observable<GenericDropDownObject[]> {
