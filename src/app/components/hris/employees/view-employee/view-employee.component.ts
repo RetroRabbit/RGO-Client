@@ -53,7 +53,7 @@ export class ViewEmployeeComponent {
   @Output() managePermissionsEvent = new EventEmitter<void>();
   _searchQuery: string = '';
   filteredEmployees: EmployeeProfile[] = [];
-
+  getPreviousEmployees: boolean = false;
 
   @Input()
   set searchQuery(text: string) {
@@ -213,7 +213,6 @@ export class ViewEmployeeComponent {
 
   private getDataSource() {
     this.datasSource = new MatTableDataSource(this.filteredEmployees);
-    console.log("HEYYYYY", this.datasSource);
     this.ngZone.run(() => {
       this.datasSource.sort = this.sort;
       this.datasSource.paginator = this.paginator;
@@ -224,7 +223,8 @@ export class ViewEmployeeComponent {
 
   getFormattedDate(date: Date) {
     const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-    return formattedDate;
+    const formattedDates = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    return formattedDates;
   }
 
   getTenureDifference(date1: Date, date2: Date) {
@@ -452,9 +452,19 @@ export class ViewEmployeeComponent {
         this.getDataSource();
         this.isLoading = false;
         console.log(this.filteredEmployees);
-
       }
     });
+  }
+
+
+  toggleEmployees(event: any) {
+    const selectedEmployeeStatus = event.value;
+    if (selectedEmployeeStatus == 'Previous Employees') {
+      this.getPreviousEmployees = true;
+    }
+    else {
+      this.getPreviousEmployees = false
+    }
   }
 
   getUserTypesForFilter(): Observable<GenericDropDownObject[]> {

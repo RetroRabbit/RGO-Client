@@ -61,9 +61,9 @@
             <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
               [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
               <mat-label>Employee Status Filter</mat-label>
-              <mat-select hideSingleSelectionIndicator="true">
-                <mat-option *ngFor="let status of employeeStatus" [value]=""
-                  class="menu-item-button" >
+              <mat-select hideSingleSelectionIndicator="true" (selectionChange)="toggleEmployees($event)">
+                <mat-option *ngFor="let status of employeeStatus" [value]="status"
+                  class="menu-item-button">
                   {{ status }}
                 </mat-option>
               </mat-select>
@@ -72,7 +72,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row" [hidden]="getPreviousEmployees">
       <div class="card px-0">
         <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
           <mat-table [dataSource]="dataSource" matSort>
@@ -188,7 +188,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row"  [hidden]="!getPreviousEmployees">
       <div class="card px-0">
         <div [hidden]="isLoading || datasSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
           <mat-table [dataSource]="datasSource" matSort>
@@ -217,7 +217,7 @@
               <mat-header-cell *matHeaderCellDef mat-sort-header
                 class="boldArrow d-none d-md-flex">Tenure</mat-header-cell>
               <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
-                {{ employee.Level == 0 ? "N/A" : employee.Level }}
+                {{ employee.engagementDate }}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Client">
