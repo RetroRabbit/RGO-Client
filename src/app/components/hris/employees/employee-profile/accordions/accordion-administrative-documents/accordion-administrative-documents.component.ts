@@ -55,7 +55,7 @@ export class AccordionAdministrativeDocumentsComponent {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
     this.getEmployeeDocuments();
-
+    this.sharedAccordionFunctionality.totalDocumentsProgress();
   }
 
   downloadFile(base64String: string, fileName: string) {
@@ -125,7 +125,6 @@ export class AccordionAdministrativeDocumentsComponent {
           this.dataSource.data = this.sharedAccordionFunctionality.fileAdminCategories;
           this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
-
         },
         error: error => {
           this.snackBarService.showSnackbar(error, "snack-error");
