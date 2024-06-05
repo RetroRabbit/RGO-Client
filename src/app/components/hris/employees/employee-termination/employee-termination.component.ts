@@ -170,6 +170,5 @@ export class EmployeeTerminationComponent implements OnInit {
   setTerminationOption(option: number) {
     this.newterminationform.controls['terminationOption'].setValue(option);
     this.terminationOptionValue = option;
-    console.table(this.terminationOptionValue)
   }
 }
