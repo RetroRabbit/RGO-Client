@@ -40,7 +40,7 @@
                 </mat-form-field>
                 <div class="col-md-12 col-lg-7 my-2">
                     <h2 class="align-items-left">Is this person eligible for reemployment?</h2>
-                    <mat-radio-group formControlName="reEmployment">
+                    <mat-radio-group formControlName="reEmploymentStatus">
                         <mat-radio-button [value]="true">Yes</mat-radio-button><br />
                         <mat-radio-button [value]="false">No</mat-radio-button><br />
                         <mat-error *ngIf="newterminationform.controls['reEmployment'].hasError('required')">
@@ -65,7 +65,7 @@
                         <div class="justify-content-md-start">
                             <h3>Exit interview document*</h3>
                             <p class="info-text">PDF only</p>
-                            <p>{{this.interviewFilename}}</p>
+                            <p>{{this.interviewDocFilename}}</p>
                         </div>
                         <div id="actionCellUpload" class="col-12 col-md-auto align-items-right">
                             <div id="removeDocButton"
@@ -88,6 +88,12 @@
                             </button>
                             <input formControlName="exitInterviewDoc" type="file" #uploadFile
                                 (change)="onCVFileChange($event)" hidden accept=".pdf">
+                            <!-- <mat-error
+                                *ngIf="!newterminationform.value.exitInterviewDoc">
+                                Please Upload The Exit Interview Document<mat-icon
+                                    *ngIf="!newterminationform.value.exitInterviewDoc"
+                                    id="change-close-color">error</mat-icon>
+                            </mat-error> -->
                         </div>
                     </div>
                 </div>
@@ -100,7 +106,7 @@
                     <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
                         (click)="goToPreviousPage()">Cancel</button>
                     <button id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile button-top' : ''"
-                        (click)="saveTermination()">Save</button>
+                        (click)="SaveEmployeeTermination('/profile')">Save</button>
                 </div>
             </div>
         </form>

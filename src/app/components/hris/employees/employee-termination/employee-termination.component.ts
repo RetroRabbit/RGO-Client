@@ -1,10 +1,13 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { terminationOptions } from 'src/app/models/hris/constants/terminationOptions.constants';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
+import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
 
 @Component({
   selector: 'app-employee-termination',
@@ -12,19 +15,21 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
   styleUrls: ['./employee-termination.component.css']
 })
 export class EmployeeTerminationComponent implements OnInit {
+
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
     this.screenWidth = window.innerWidth;
   }
 
+  selectedEmployee!: EmployeeProfile;
   newterminationform!: FormGroup;
   terminationOption: string[] = terminationOptions.map((termination) => termination.value);
   isMobileScreen = false;
   fileUploaded: boolean = false;
   selectedFile !: File;
   screenWidth = window.innerWidth;
-  interviewFilename: string = "";
+  interviewDocFilename: string = "";
   interviewFileUploaded: boolean = false;
   isvalidFile: boolean = false;
   isvalidFileSize: boolean = false;
@@ -35,6 +40,8 @@ export class EmployeeTerminationComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private snackBarService : SnackbarService,
+    public employeeService : EmployeeService,
+    private employeeTerminationService : EmployeeTerminationService
   ) { }
 
   ngOnInit() {
@@ -51,17 +58,43 @@ export class EmployeeTerminationComponent implements OnInit {
       terminationOption: new FormControl('', Validators.required),
       dateOfNotice: new FormControl<Date | null>(null, Validators.required),
       lastDayOfEmployment: new FormControl<Date | null>(null, Validators.required),
-      reEmployment: new FormControl<boolean>(false, Validators.required),
+      reEmploymentStatus: new FormControl<boolean>(false, Validators.required),
       companyEquipement: new FormControl<boolean>(false, Validators.required),
       companyAccounts: new FormControl<boolean>(false, Validators.required),
       exitInterviewDoc: new FormControl<boolean>(false, Validators.required),
       additionalComments: new FormControl<string>(''),
     });
   }
+
+  SaveEmployeeTermination(nextPage: string) {
+    const newterminationform = this.newterminationform.value;
+    const employeeTerminationDto = {
+      id: 0,
+      employeeId: this.selectedEmployee.id,
+      terminationOption: newterminationform.terminationOption ,
+      dayOfNotice: newterminationform.dayOfNotice,
+      lastDayOfEmploymen: newterminationform.lastDayOfEmployment,
+      reemploymentStatus: newterminationform.reEmploymentStatus,
+      equipmentStatus: newterminationform.companyEquipement,
+      accountsStatus: newterminationform.companyAccounts,
+      terminationDocument:newterminationform.exitInterviewDoc,
+      documentName:this.interviewDocFilename,
+      terminationComments:newterminationform.additionalComments
+    }
+    this.employeeTerminationService.saveEmployeeTermination(employeeTerminationDto).subscribe({
+      next: (data) => 
+        this.snackBarService.showSnackbar("Employee termination saved", "snakc-success"),
+      error: (error) =>
+        this.snackBarService.showSnackbar(error, "Could not save termination"),
+      complete: () => {
+        this.router.navigateByUrl(nextPage);
+      }
+    })
+  }
   
 
   removeDocument() {
-    this.interviewFilename = '';
+    this.interviewDocFilename = '';
     const uploadedDoc = document.getElementById('uploadCVFile') as HTMLInputElement;
     if (uploadedDoc) {
       uploadedDoc.value = '';
@@ -72,7 +105,7 @@ export class EmployeeTerminationComponent implements OnInit {
     if (event.target.files && event.target.files.length) {
       this.interviewFileUploaded = true;
       const file = event.target.files[0];
-      this.interviewFilename = file.name;
+      this.interviewDocFilename = file.name;
       if (this.validateCVFile(file)) {
         this.fileConverter(file, 'exitInterviewDoc');
       }
@@ -107,9 +140,4 @@ export class EmployeeTerminationComponent implements OnInit {
     this.router.navigateByUrl('/profile');
     this.navService.showNav();
   }
-
-  saveTermination() {
-    // Save termination logic
-  }
-
 }
