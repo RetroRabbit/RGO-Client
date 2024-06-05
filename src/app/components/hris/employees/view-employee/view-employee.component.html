@@ -72,10 +72,10 @@
         </div>
       </div>
     </div>
-    <div class="row" [hidden]="getPreviousEmployees">
+    <div class="row" [hidden]="getPreviousEmployees" >
       <div class="card px-0">
         <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
-          <mat-table [dataSource]="dataSource" matSort>
+          <mat-table [dataSource]="dataSource" matSort #table1="matSort" >
             <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
               'background-color': '#D7DFFF',
               'border': '2px solid #D7DFFF',
@@ -187,11 +187,10 @@
         </div>
       </div>
     </div>
-
     <div class="row"  [hidden]="!getPreviousEmployees">
       <div class="card px-0">
         <div [hidden]="isLoading || terminatedDataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
-          <mat-table [dataSource]="terminatedDataSource" matSort>
+          <mat-table (matSortChange)="sortByNameDefault($event)" [dataSource]="terminatedDataSource" matSort matSortActive="terminatedPosition" #table2="matSort" matSortDirection="desc">
             <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
               'background-color': '#D7DFFF',
               'border': '2px solid #D7DFFF',
@@ -200,35 +199,32 @@
               width: '100%',
             }">
             </ngx-skeleton-loader>
-            <ng-container matColumnDef="Name">
-              <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Name</mat-header-cell>
+            <ng-container matColumnDef="terminatedNames">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow" >Name</mat-header-cell>
               <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '50%' : '25%'}">
                 {{ employee.name }}
               </mat-cell>
             </ng-container>
-            <ng-container matColumnDef="Position">
-              <mat-header-cell *matHeaderCellDef mat-sort-header
-                class="boldArrow d-none d-md-flex">Position</mat-header-cell>
+            <ng-container matColumnDef="terminatedPosition">
+              <mat-header-cell *matHeaderCellDef >Position</mat-header-cell>
               <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
                 {{ employee.employeeType.name}}
               </mat-cell>
             </ng-container>
-            <ng-container matColumnDef="Tenure">
-              <mat-header-cell *matHeaderCellDef mat-sort-header
-                class="boldArrow d-none d-md-flex">Tenure</mat-header-cell>
+            <ng-container matColumnDef="Tenure" >
+              <mat-header-cell *matHeaderCellDef>Tenure</mat-header-cell>
               <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
                 {{this.getTenureDifference(employee.engagementDate,employee.terminationDate)}}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Last Day">
-              <mat-header-cell *matHeaderCellDef mat-sort-header
-                class="boldArrow d-none d-md-flex">Last Day</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef>Last Day</mat-header-cell>
               <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
                 {{getFormattedTerminatedDate(employee.terminationDate)}}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Reason">
-              <mat-header-cell *matHeaderCellDef  mat-sort-header class="boldArrow d-none d-md-flex">Reason</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef>Reason</mat-header-cell>
               <mat-cell *matCellDef="let employee" class="row justify-content-start">
                 {{employee.inactiveReason}}
               </mat-cell>

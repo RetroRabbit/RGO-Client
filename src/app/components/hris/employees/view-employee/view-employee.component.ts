@@ -3,7 +3,7 @@ import { EmployeeService } from 'src/app/services/hris/employee/employee.service
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -84,7 +84,6 @@ export class ViewEmployeeComponent {
   usertypes: Observable<GenericDropDownObject[]> = this.getUserTypesForFilter();
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
   currentUserTypeFilter: GenericDropDownObject = new GenericDropDownObject;
-  employeestatusFilter: GenericDropDownObject = new GenericDropDownObject;
 
   defaultPageSize: number = 10
   onAddEmployeeClick(): void {
@@ -111,7 +110,6 @@ export class ViewEmployeeComponent {
     this.dataSource.paginator = this.paginator;
     this.terminatedDataSource.paginator = this.paginator;
 
-    this.getTerminatedEmployees();
     this.onResize();
     if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
       this._searchQuery = this.cookieService.get('searchString');
@@ -124,6 +122,9 @@ export class ViewEmployeeComponent {
 
   ngAfterViewInit() {
     this.getEmployees();
+    this.getTerminatedEmployees();
+    this.terminatedDataSource.sort = this.sort2;
+
     this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
   }
 
@@ -152,7 +153,6 @@ export class ViewEmployeeComponent {
       )
       .subscribe((data) => {
         this.setupDataSource(data);
-        console.log("here", data)
         this.isLoading = false;
         this.applySearchFilter();
       });
@@ -204,23 +204,38 @@ export class ViewEmployeeComponent {
     this.dataSource = new MatTableDataSource(data);
 
     this.ngZone.run(() => {
-      this.dataSource.sort = this.sort;
+      this.dataSource.sort = this.sort1;
+      console.log('dataSource2 sort:', this.dataSource.sort);
       this.dataSource.paginator = this.paginator;
       this.paginator._changePageSize(this.defaultPageSize);
     });
     this.dataSource._updateChangeSubscription();
   }
 
-
   private getDataSource() {
     this.terminatedDataSource = new MatTableDataSource(this.filteredEmployees);
 
     this.ngZone.run(() => {
-      this.terminatedDataSource.sort = this.sort;
+      this.terminatedDataSource.sort = this.sort2;
       this.terminatedDataSource.paginator = this.paginator;
+      this.sortByNameDefault(this.sort2);
       this.paginator._changePageSize(this.defaultPageSize);
     });
     this.terminatedDataSource._updateChangeSubscription();
+  }
+
+  sortByNameDefault(sort: Sort) {
+    if (!this.dataSource || !sort.active || sort.direction === '') {
+      return;
+    }
+
+    this.terminatedDataSource.data = this.terminatedDataSource.data.sort((a: any, b: any) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'terminatedNames': return this.compareNames(a.name, b.name, isAsc);
+        default: return 0;
+      }
+    });
   }
 
   getFormattedTerminatedDate(date: any) {
@@ -236,13 +251,13 @@ export class ViewEmployeeComponent {
     const newDate1Obj = new Date(date1);
     const newDate2Obj = new Date(date2);
 
-    let yearsDiff = newDate2Obj.getFullYear() - newDate1Obj.getFullYear();
-    let monthsDiff = newDate2Obj.getMonth() - newDate1Obj.getMonth();
+    let years = newDate2Obj.getFullYear() - newDate1Obj.getFullYear();
+    let months = newDate2Obj.getMonth() - newDate1Obj.getMonth();
 
-    monthsDiff = (monthsDiff + 12) % 12;
-    yearsDiff -= Math.floor(monthsDiff / 12);
+    months = (months + 12) % 12;
+    years -= Math.floor(months / 12);
 
-    return (yearsDiff > 0 ? `${yearsDiff} ${yearsDiff === 1 ? 'year' : 'years'}` : '') + (monthsDiff > 0 ? `${monthsDiff} ${monthsDiff === 1 ? 'month' : 'months'}` : '');
+    return (years > 0 ? `${years} ${years === 1 ? 'year' : 'years'}` : '') + (months > 0 ? "" + ` ${months} ${months === 1 ? 'month' : 'months'}` : '');
   }
 
   sortRoles(roles: string[]): string[] {
@@ -299,12 +314,18 @@ export class ViewEmployeeComponent {
   }
 
   displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];
-  displayedTerminatedColumns: string[] = ['Name', 'Position', 'Tenure', 'Last Day', 'Reason'];
+  displayedTerminatedColumns: string[] = ['terminatedNames', 'terminatedPosition', 'Tenure', 'Last Day', 'Reason'];
 
   dataSource: MatTableDataSource<EmployeeData> = new MatTableDataSource();
   terminatedDataSource: MatTableDataSource<EmployeeProfile> = new MatTableDataSource();
 
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatSort) sortTerminated!: MatSort;
+
+  @ViewChild('table1', { read: MatSort, static: true }) sort1!: MatSort;
+  @ViewChild('table2', { read: MatSort, static: true }) sort2!: MatSort;
+
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   screenWidth: number = 992;
@@ -503,5 +524,9 @@ export class ViewEmployeeComponent {
     const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
     const result = capitalizedWords.join(' ');
     return result;
+  }
+
+  compareNames(a: string, b: string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }
