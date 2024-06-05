@@ -50,6 +50,7 @@ export class AccordionDocumentsComponent {
 
   ngOnInit() {
     this.getEmployeeDocuments();
+    this.sharedAccordionFunctionality.totalDocumentsProgress()
   }
 
   openFileInput() {
