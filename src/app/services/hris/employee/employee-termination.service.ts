@@ -12,10 +12,10 @@ export class EmployeeTerminationService {
     baseUrl: string;
 
     constructor(private httpClient: HttpClient) {
-        this.baseUrl = `${environment.HttpsBaseURL}/employee-termination`
+        this.baseUrl = `${environment.HttpsBaseURL}/termination`
     }
     
-    saveEmployeeTermination(EmployeeTermination: any): Observable<EmployeeTermination> {
+    saveEmployeeTermination(EmployeeTermination: EmployeeTermination): Observable<EmployeeTermination> {
         return this.httpClient.post<EmployeeTermination>(`${this.baseUrl}`, EmployeeTermination);
     }
     

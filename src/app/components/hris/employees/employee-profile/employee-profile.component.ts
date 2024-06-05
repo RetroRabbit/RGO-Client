@@ -170,7 +170,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   openTerminationForm() {
-    this.router.navigateByUrl('/end-employment')
+    this.router.navigateByUrl('/end-employment/'+this.employeeId)
   }
 
   goToEmployees() {

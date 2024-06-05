@@ -2,12 +2,13 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { terminationOptions } from 'src/app/models/hris/constants/terminationOptions.constants';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
+import { SharedAccordionFunctionality } from '../employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-employee-termination',
@@ -16,6 +17,7 @@ import { EmployeeTerminationService } from 'src/app/services/hris/employee/emplo
 })
 export class EmployeeTerminationComponent implements OnInit {
 
+  @Input() employeeProfile!: EmployeeProfile;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
@@ -34,6 +36,7 @@ export class EmployeeTerminationComponent implements OnInit {
   isvalidFile: boolean = false;
   isvalidFileSize: boolean = false;
   base64String: string = "";
+  employeeId = this.route.snapshot.params[ 'id' ];
 
   constructor(
     private navService: NavService,
@@ -41,7 +44,9 @@ export class EmployeeTerminationComponent implements OnInit {
     private router: Router,
     private snackBarService : SnackbarService,
     public employeeService : EmployeeService,
-    private employeeTerminationService : EmployeeTerminationService
+    private employeeTerminationService : EmployeeTerminationService,
+    public sharedAccordion : SharedAccordionFunctionality,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -67,20 +72,19 @@ export class EmployeeTerminationComponent implements OnInit {
   }
 
   SaveEmployeeTermination(nextPage: string) {
-    console.log(this.newterminationform.value)
     const newterminationform = this.newterminationform.value;
     const employeeTerminationDto = {
       id: 0,
-      employeeId: this.selectedEmployee.id,
-      terminationOption: newterminationform.terminationOption ,
+      employeeId: this.employeeId,
+      terminationOption: newterminationform.terminationOption,
       dayOfNotice: newterminationform.dayOfNotice,
       lastDayOfEmployment: newterminationform.lastDayOfEmployment,
       reemploymentStatus: newterminationform.reEmploymentStatus,
-      equipmentStatus: newterminationform.companyEquipement,
-      accountsStatus: newterminationform.companyAccounts,
-      terminationDocument:newterminationform.exitInterviewDoc,
-      documentName:this.base64String,
-      terminationComments:newterminationform.additionalComments
+      equipmentStatus: newterminationform.equipmentStatus,
+      accountsStatus: newterminationform.accountsStatus,
+      terminationDocument:this.base64String,
+      documentName:newterminationform.terminationDocument,
+      terminationComments:newterminationform.terminationComments
     }
     console.log(employeeTerminationDto)
     this.employeeTerminationService.saveEmployeeTermination(employeeTerminationDto).subscribe({
@@ -108,7 +112,7 @@ export class EmployeeTerminationComponent implements OnInit {
       this.interviewFileUploaded = true;
       const file = event.target.files[0];
       this.interviewDocFilename = file.name;
-      if (this.validateCVFile(file)) {
+      if (this.validateFile(file)) {
         this.fileConverter(file, 'exitInterviewDoc');
       }
     }
@@ -120,11 +124,12 @@ export class EmployeeTerminationComponent implements OnInit {
       const base64Data = reader.result as string;
       this.newterminationform.patchValue({ [controlName]: base64Data });
       this.snackBarService.showSnackbar('File uploaded succesfully','snack-success');
+      this.base64String = base64Data;
     });
     reader.readAsDataURL(file);
   }
 
-  validateCVFile(file: File): boolean {
+  validateFile(file: File): boolean {
     const allowedTypes = ['application/pdf'];
     if (!allowedTypes.includes(file.type)) {
       this.isvalidFile = false;
