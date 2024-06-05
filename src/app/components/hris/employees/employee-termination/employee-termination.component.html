@@ -21,10 +21,10 @@
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Date of Notice</mat-label>
                     <input matInput [matDatepicker]="picker1" placeholder="Date of Notice"
-                        formControlName="dateOfNotice">
+                        formControlName="dayOfNotice">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
-                    <mat-error *ngIf="newterminationform.controls['dateOfNotice'].hasError('required')">
+                    <mat-error *ngIf="newterminationform.controls['dayOfNotice'].hasError('required')">
                         Please select day of notice
                     </mat-error>
                 </mat-form-field>
@@ -43,17 +43,17 @@
                     <mat-radio-group formControlName="reEmploymentStatus">
                         <mat-radio-button [value]="true">Yes</mat-radio-button><br />
                         <mat-radio-button [value]="false">No</mat-radio-button><br />
-                        <mat-error *ngIf="newterminationform.controls['reEmployment'].hasError('required')">
+                        <mat-error *ngIf="newterminationform.controls['reEmploymentStatus'].hasError('required')">
                             Please enter a valid Cellphone number
                         </mat-error>
                     </mat-radio-group>
                 </div>
                 <div class="col-md-12 col-lg-7 my-2">
                     <h2>Off-boarding tasks</h2>
-                    <mat-checkbox formControlName="companyEquipement">Handed Back Company Equipment</mat-checkbox>
+                    <mat-checkbox formControlName="equipmentStatus">Handed Back Company Equipment</mat-checkbox>
                 </div>
                 <div class="col-md-12 col-lg-7 my-2 mb-3">
-                    <mat-checkbox formControlName="companyAccounts">Transferred Company Accounts</mat-checkbox>
+                    <mat-checkbox formControlName="accountsStatus">Transferred Company Accounts</mat-checkbox>
                     <!-- <mat-error *ngIf="!newterminationform.value.companyEquipement && !newterminationform.value.companyAccounts">
                         You need to select all of the above
                         <mat-icon *ngIf="!newterminationform.value.companyEquipement && !newterminationform.value.companyAccounts" id="change-close-color">error</mat-icon>
@@ -86,7 +86,7 @@
                                 </svg>
                                 Upload
                             </button>
-                            <input formControlName="exitInterviewDoc" type="file" #uploadFile
+                            <input formControlName="terminationDocument" type="file" #uploadFile
                                 (change)="onCVFileChange($event)" hidden accept=".pdf">
                             <!-- <mat-error
                                 *ngIf="!newterminationform.value.exitInterviewDoc">
@@ -99,7 +99,7 @@
                 </div>
                 <mat-form-field Id="comments-field" appearance="outline" class="col-md-12 col-lg-7 my-2 mt-3">
                     <mat-label>Additional comments</mat-label>
-                    <input matInput type="text" formControlName="additionalComments"
+                    <input matInput type="text" formControlName="terminationComments"
                         placeholder="additional comments" />
                 </mat-form-field>
                 <div id="footer" class="col-md-6 align-items-right">

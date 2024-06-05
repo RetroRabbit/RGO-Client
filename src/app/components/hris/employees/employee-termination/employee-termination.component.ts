@@ -56,31 +56,33 @@ export class EmployeeTerminationComponent implements OnInit {
   initializeForm() {
     this.newterminationform = this.fb.group({
       terminationOption: new FormControl('', Validators.required),
-      dateOfNotice: new FormControl<Date | null>(null, Validators.required),
+      dayOfNotice: new FormControl<Date | null>(null, Validators.required),
       lastDayOfEmployment: new FormControl<Date | null>(null, Validators.required),
       reEmploymentStatus: new FormControl<boolean>(false, Validators.required),
-      companyEquipement: new FormControl<boolean>(false, Validators.required),
-      companyAccounts: new FormControl<boolean>(false, Validators.required),
-      exitInterviewDoc: new FormControl<boolean>(false, Validators.required),
-      additionalComments: new FormControl<string>(''),
+      equipmentStatus: new FormControl<boolean>(false, Validators.required),
+      accountsStatus: new FormControl<boolean>(false, Validators.required),
+      terminationDocument: new FormControl<string>('', Validators.required),
+      terminationComments: new FormControl<string>(''),
     });
   }
 
   SaveEmployeeTermination(nextPage: string) {
+    console.log(this.newterminationform.value)
     const newterminationform = this.newterminationform.value;
     const employeeTerminationDto = {
       id: 0,
       employeeId: this.selectedEmployee.id,
       terminationOption: newterminationform.terminationOption ,
       dayOfNotice: newterminationform.dayOfNotice,
-      lastDayOfEmploymen: newterminationform.lastDayOfEmployment,
+      lastDayOfEmployment: newterminationform.lastDayOfEmployment,
       reemploymentStatus: newterminationform.reEmploymentStatus,
       equipmentStatus: newterminationform.companyEquipement,
       accountsStatus: newterminationform.companyAccounts,
       terminationDocument:newterminationform.exitInterviewDoc,
-      documentName:this.interviewDocFilename,
+      documentName:this.base64String,
       terminationComments:newterminationform.additionalComments
     }
+    console.log(employeeTerminationDto)
     this.employeeTerminationService.saveEmployeeTermination(employeeTerminationDto).subscribe({
       next: (data) => 
         this.snackBarService.showSnackbar("Employee termination saved", "snakc-success"),
