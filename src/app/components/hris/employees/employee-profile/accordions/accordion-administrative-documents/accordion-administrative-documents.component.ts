@@ -57,28 +57,28 @@ export class AccordionAdministrativeDocumentsComponent {
     this.getEmployeeDocuments();
 
   }
-
+  
   downloadFile(base64String: string, fileName: string) {
     const commaIndex = base64String.indexOf(',');
     if (commaIndex !== -1) {
       base64String = base64String.slice(commaIndex + 1);
     }
-
+    
     const byteString = atob(base64String);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const intArray = new Uint8Array(arrayBuffer);
-
+    
     for (let i = 0; i < byteString.length; i++) {
       intArray[i] = byteString.charCodeAt(i);
     }
-
+    
     const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.download = fileName;
     link.click();
   }
-
+  
   captureUploadIndex(event: any) {
     this.uploadButtonIndex = event.srcElement.parentElement.id;
     const inputField = document.getElementById(`${this.uploadButtonIndex}-administrative-document`) as HTMLInputElement;
@@ -93,15 +93,23 @@ export class AccordionAdministrativeDocumentsComponent {
       inputField.click();
     }
   }
+  
+  getAcceptedFileTypes(category: string): string {
+    return category === 'Written Approval of Offer' ? '.pdf, .png, .jpg, .jpeg' : '.pdf';
+  }
 
-  uploadDocument(event: any) {
+  uploadDocument(event: any, category: string) {
     this.isLoadingUpload = true;
     this.selectedFile = event.target.files[0];
     this.documentsFileName = this.selectedFile.name;
-    if (this.allowedTypes.includes(this.selectedFile.type)) {
+    
+    const allowedTypes = this.getAcceptedFileTypes(category).split(', ').map(type => type.replace('.', ''));
+    const fileType = this.selectedFile.type.split('/').pop()?.toLowerCase();
+    
+    if (fileType && allowedTypes.includes(fileType)) {
       this.uploadProfileDocument();
     } else {
-      this.snackBarService.showSnackbar("Please upload a PDF, PNG or JPG", "snack-error");
+      this.snackBarService.showSnackbar("Please upload the correct file type", "snack-error");
       this.isLoadingUpload = false;
     }
   }
