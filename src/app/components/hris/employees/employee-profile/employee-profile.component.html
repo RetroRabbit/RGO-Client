@@ -22,15 +22,16 @@
   <div id="profile-header" *ngIf="!isLoading" class="row ps-2 m-1">
     <div class="col-4 col-md-2 mt-4">
       <div id="profile-image">
-        <img (click)="uploadFile.click()" [src]="employeeProfile.photo || '../../assets/img/default-profile-image.png'" alt="Profile img"
-          class="rounded-circle profile-img">
+        <img (click)="uploadFile.click()" [src]="employeeProfile.photo || '../../assets/img/default-profile-image.png'"
+          alt="Profile img" class="rounded-circle profile-img">
         <input type="file" #uploadFile (change)="onFileChange($event)" hidden accept=".png, .svg,.jpg,.jpeg">
       </div>
     </div>
     <div class="col-8 col-md-10 offset-lg-0 col-lg-10 mt-3">
       <div class="row mt-3 px-0">
         <div class="col-11 col-md-6" id="header-name">
-          <h1 class="mb-0" *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else OwnName">
+          <h1 class="mb-0"
+            *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else OwnName">
             {{ selectedEmployee.name }} {{ selectedEmployee.surname }}
           </h1>
           <ng-template #OwnName>
@@ -57,7 +58,7 @@
             {{navService.getEmployeeProfile().employeeType?.name}} | Level {{navService.getEmployeeProfile().level}}
           </div>
         </ng-template>
-        <div class="col-12 my-2 d-none d-md-block" id="header-based">  
+        <div class="col-12 my-2 d-none d-md-block" id="header-based">
           {{ basedInString }}
         </div>
       </div>
@@ -140,7 +141,8 @@
             </div>
             <div class="col-9 my-2">
               <div id="header-label">Start Date</div>
-              <div *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else NonAdminEngagementDate"
+              <div
+                *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else NonAdminEngagementDate"
                 id="header-value">
                 {{ selectedEmployee.engagementDate| date:'d MMM yyyy' }}
               </div>
@@ -332,52 +334,52 @@
       </div>
     </div>
     <div id="accordions-body`" class="row m-2" *ngIf="employeeProfile">
-      
-      <app-accordion-profile-employee-details *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-employee-details>
-      <app-accordion-profile-personal-details *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-personal-details>
-      <app-accordion-profile-contact-details *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-contact-details>
-      <app-accordion-profile-address-details *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-address-details>
-      <app-accordion-profile-additional *ngIf="selectedAccordion === 'Profile Details'"
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-additional>
 
-      <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" 
-      [employeeProfile]="employeeProfile"
+      <app-accordion-profile-employee-details *ngIf="selectedAccordion === 'Profile Details'"
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-employee-details>
+      <app-accordion-profile-personal-details *ngIf="selectedAccordion === 'Profile Details'"
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-personal-details>
+      <app-accordion-profile-contact-details *ngIf="selectedAccordion === 'Profile Details'"
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-contact-details>
+      <app-accordion-profile-address-details *ngIf="selectedAccordion === 'Profile Details'"
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-address-details>
+      <app-accordion-profile-additional *ngIf="selectedAccordion === 'Profile Details'"
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+        (updateEmployeeProfile)="refreshEmployeeProfile()"></app-accordion-profile-additional>
+
+      <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile"
         (updateBanking)="updateBankingProgress($event)">
       </app-accordion-banking>
 
-      <app-accordion-certificates [hidden]="selectedAccordion != 'Career Summary'" 
-      [employeeProfile]="employeeProfile">
-      </app-accordion-certificates>
-      <app-accordion-career-work-experience [hidden]="selectedAccordion != 'Career Summary'" 
-      [employeeProfile]="employeeProfile">
-      </app-accordion-career-work-experience>
-      <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'" 
-      [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}">
+      <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'"
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}">
       </app-career-summary-qualifications>
-      
-      <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'" 
-      [employeeProfile]="employeeProfile"
-      ></app-accordion-documents-starterkit>
-      <app-accordion-administrative-documents 
-      *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin()" 
-      [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
+      <app-accordion-career-work-experience [hidden]="selectedAccordion != 'Career Summary'"
+        [employeeProfile]="employeeProfile">
+      </app-accordion-career-work-experience>
+      <app-accordion-certificates [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
+      </app-accordion-certificates>
+
+      <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'"
+        [employeeProfile]="employeeProfile"></app-accordion-documents-starterkit>
+      <app-accordion-administrative-documents *ngIf="authAccessService.isSuperAdmin() || authAccessService.isJourney()"
+        [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
       </app-accordion-administrative-documents>
-      <app-accordion-employee-documents [hidden]="selectedAccordion != 'Documents'" 
-      [employeeProfile]="employeeProfile">
+      <app-accordion-employee-documents [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
       </app-accordion-employee-documents>
-      <app-accordion-my-documents [hidden]="selectedAccordion != 'Documents'" 
-      [employeeProfile]="employeeProfile"
-      ></app-accordion-my-documents>
-      <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'" 
-      [employeeProfile]="employeeProfile">
+      <app-accordion-my-documents [hidden]="selectedAccordion != 'Documents'"
+        [employeeProfile]="employeeProfile"></app-accordion-my-documents>
+      <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'"
+        [employeeProfile]="employeeProfile">
       </app-accordion-additional-documents>
 
-    <app-accordion-salary-details *ngIf="authAccessService.isSuperAdmin()" [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
-    </app-accordion-salary-details>
+      <app-accordion-salary-details *ngIf="authAccessService.isSuperAdmin()"
+        [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
+      </app-accordion-salary-details>
+
+      <app-accordion-career-additional-information [hidden]="selectedAccordion != 'Career Summary'"
+        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+        (updateEmployeeProfile)="refreshEmployeeProfile()"></app-accordion-career-additional-information>
 
     </div>
   </div>
