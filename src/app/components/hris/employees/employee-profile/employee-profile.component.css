@@ -71,7 +71,17 @@
 
 .resigned-status {
     border: 1px solid #ccc;
-    padding: 5px;
+    padding: 8px;
+    text-align: center;
+    margin-right: 20px;
+    border-radius: 10px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; 
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
 }
 
 #profile-header {
@@ -178,7 +188,7 @@
     border: 1px solid #0029C6;
     border-radius: 2rem;
     background-color: white;
-    margin-right: 15px;
+    margin-right: 20px;
     color: #0029C6;
     padding: 1.3rem;
     width: 11rem;

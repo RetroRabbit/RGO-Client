@@ -43,5 +43,6 @@ export interface EmployeeProfile {
   houseNo?: string,
   emergencyContactName?: string,
   emergencyContactNo?: string,
-  qualifications? : EmployeeQualifications
+  qualifications? : EmployeeQualifications,
+  active? : boolean
 }
