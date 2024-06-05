@@ -135,16 +135,23 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ngOnInit() {
-    this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
-      this.profileFormProgress = profileProgress;
+    this.sharedAccordionFunctionality.updateProfile.subscribe({
+      next: (data: number) => {
+        this.profileFormProgress = data;
+        this.overallProgress();
+      }
     });
-    this.sharedAccordionFunctionality.updateDocument.subscribe(documentProgress => {
-      this.documentFormProgress = documentProgress;
+
+    this.sharedAccordionFunctionality.updateDocument.subscribe({
+      next: (data: number) => {
+        this.documentFormProgress = data;
+        this.overallProgress();
+      }
     });
-    this.overallProgress();
 
     this.employeeId = this.route.snapshot.params[ 'id' ];
     this.getClients();
+
     if (this.employeeId == undefined) {
       this.showBackButtons = false;
       this.employeeId = this.authAccessService.getUserId();
@@ -158,6 +165,7 @@ export class EmployeeProfileComponent implements OnChanges {
     else {
       this.usingSimpleProfile = true;
     }
+
     this.getEmployeeProfile();
     this.refreshEmployeeProfile();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
@@ -313,7 +321,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   overallProgress() {
-    this.overallFormProgress = Math.floor((this.profileFormProgress + this.bankInformationProgress + this.documentFormProgress)/3);
+    this.overallFormProgress = Math.round((this.profileFormProgress + this.bankInformationProgress + this.documentFormProgress)/3);
   }
 
   updateBankingProgress(update: any) {
