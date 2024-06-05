@@ -123,8 +123,6 @@ export class ViewEmployeeComponent {
   ngAfterViewInit() {
     this.getEmployees();
     this.getTerminatedEmployees();
-    this.terminatedDataSource.sort = this.sort2;
-
     this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
   }
 
@@ -204,7 +202,7 @@ export class ViewEmployeeComponent {
     this.dataSource = new MatTableDataSource(data);
 
     this.ngZone.run(() => {
-      this.dataSource.sort = this.sort1;
+      this.dataSource.sort = this.sortcurrentEmployees;
       console.log('dataSource2 sort:', this.dataSource.sort);
       this.dataSource.paginator = this.paginator;
       this.paginator._changePageSize(this.defaultPageSize);
@@ -216,16 +214,16 @@ export class ViewEmployeeComponent {
     this.terminatedDataSource = new MatTableDataSource(this.filteredEmployees);
 
     this.ngZone.run(() => {
-      this.terminatedDataSource.sort = this.sort2;
+      this.terminatedDataSource.sort = this.sortPreviousEmployees;
       this.terminatedDataSource.paginator = this.paginator;
-      this.sortByNameDefault(this.sort2);
+      this.sortByNameDefault(this.sortPreviousEmployees);
       this.paginator._changePageSize(this.defaultPageSize);
     });
     this.terminatedDataSource._updateChangeSubscription();
   }
 
   sortByNameDefault(sort: Sort) {
-    if (!this.dataSource || !sort.active || sort.direction === '') {
+    if (!this.terminatedDataSource || !sort.active || sort.direction === '') {
       return;
     }
 
@@ -319,13 +317,8 @@ export class ViewEmployeeComponent {
   dataSource: MatTableDataSource<EmployeeData> = new MatTableDataSource();
   terminatedDataSource: MatTableDataSource<EmployeeProfile> = new MatTableDataSource();
 
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatSort) sortTerminated!: MatSort;
-
-  @ViewChild('table1', { read: MatSort, static: true }) sort1!: MatSort;
-  @ViewChild('table2', { read: MatSort, static: true }) sort2!: MatSort;
-
-
+  @ViewChild('currentTable', { read: MatSort, static: true }) sortcurrentEmployees!: MatSort;
+  @ViewChild('terminatedTable', { read: MatSort, static: true }) sortPreviousEmployees!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   screenWidth: number = 992;

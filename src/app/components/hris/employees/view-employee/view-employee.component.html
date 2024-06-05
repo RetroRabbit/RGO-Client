@@ -75,7 +75,7 @@
     <div class="row" [hidden]="getPreviousEmployees" >
       <div class="card px-0">
         <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
-          <mat-table [dataSource]="dataSource" matSort #table1="matSort" >
+          <mat-table [dataSource]="dataSource" matSort #currentTable="matSort" >
             <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
               'background-color': '#D7DFFF',
               'border': '2px solid #D7DFFF',
@@ -190,7 +190,7 @@
     <div class="row"  [hidden]="!getPreviousEmployees">
       <div class="card px-0">
         <div [hidden]="isLoading || terminatedDataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
-          <mat-table (matSortChange)="sortByNameDefault($event)" [dataSource]="terminatedDataSource" matSort matSortActive="terminatedPosition" #table2="matSort" matSortDirection="desc">
+          <mat-table (matSortChange)="sortByNameDefault($event)" [dataSource]="terminatedDataSource" matSort matSortActive="terminatedPosition" #terminatedTable="matSort" matSortDirection="desc">
             <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
               'background-color': '#D7DFFF',
               'border': '2px solid #D7DFFF',
