@@ -109,6 +109,8 @@ export class ViewEmployeeComponent {
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
+    this.terminatedDataSource.paginator = this.paginator;
+
     this.getTerminatedEmployees();
     this.onResize();
     if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
@@ -201,7 +203,6 @@ export class ViewEmployeeComponent {
   private setupDataSource(data: any[]): void {
     this.dataSource = new MatTableDataSource(data);
 
-    console.log("in here", this.dataSource)
     this.ngZone.run(() => {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
@@ -212,30 +213,38 @@ export class ViewEmployeeComponent {
 
 
   private getDataSource() {
-    this.datasSource = new MatTableDataSource(this.filteredEmployees);
+    this.terminatedDataSource = new MatTableDataSource(this.filteredEmployees);
+
     this.ngZone.run(() => {
-      this.datasSource.sort = this.sort;
-      this.datasSource.paginator = this.paginator;
+      this.terminatedDataSource.sort = this.sort;
+      this.terminatedDataSource.paginator = this.paginator;
       this.paginator._changePageSize(this.defaultPageSize);
     });
-    this.datasSource._updateChangeSubscription();
+    this.terminatedDataSource._updateChangeSubscription();
   }
 
-  getFormattedDate(date: Date) {
-    const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-    const formattedDates = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    return formattedDates;
+  getFormattedTerminatedDate(date: any) {
+    const newDate = new Date(date);
+    const year = newDate.getFullYear();
+    const month = String(newDate.getMonth() + 1).padStart(2, '0');
+    const day = String(newDate.getDate()).padStart(2, '0');
+
+    return `${day}/${month}/${year}`
   }
 
-  getTenureDifference(date1: Date, date2: Date) {
-    const millisecondsDiff = date2.getTime() - date1.getTime();
-    const secondsDiff = millisecondsDiff / 1000;
-    const minutesDiff = secondsDiff / 60;
-    const hoursDiff = minutesDiff / 60;
-    const daysDiff = Math.floor(hoursDiff / 24);
-    return { days: daysDiff, hours: Math.floor(hoursDiff % 24), minutes: Math.floor(minutesDiff % 60), seconds: Math.floor(secondsDiff % 60) };
+  getTenureDifference(date1: any, date2: any) {
+    const newDate1Obj = new Date(date1);
+    const newDate2Obj = new Date(date2);
 
+    let yearsDiff = newDate2Obj.getFullYear() - newDate1Obj.getFullYear();
+    let monthsDiff = newDate2Obj.getMonth() - newDate1Obj.getMonth();
+
+    monthsDiff = (monthsDiff + 12) % 12;
+    yearsDiff -= Math.floor(monthsDiff / 12);
+
+    return (yearsDiff > 0 ? `${yearsDiff} ${yearsDiff === 1 ? 'year' : 'years'}` : '') + (monthsDiff > 0 ? `${monthsDiff} ${monthsDiff === 1 ? 'month' : 'months'}` : '');
   }
+
   sortRoles(roles: string[]): string[] {
     const adminRoles = roles
       .filter((role) => role.toLowerCase().includes('admin'))
@@ -250,7 +259,10 @@ export class ViewEmployeeComponent {
 
   reset(): void {
     this.dataSource.filter = '';
+    this.terminatedDataSource.filter = '';
+
     this.dataSource._updateChangeSubscription();
+    this.terminatedDataSource._updateChangeSubscription();
   }
 
   ViewUser(email: string) {
@@ -287,10 +299,10 @@ export class ViewEmployeeComponent {
   }
 
   displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];
-  displayedTerminatedColumns: string[] = ['Name', 'Position', 'Tenure', 'LastDay', 'Reason'];
+  displayedTerminatedColumns: string[] = ['Name', 'Position', 'Tenure', 'Last Day', 'Reason'];
 
   dataSource: MatTableDataSource<EmployeeData> = new MatTableDataSource();
-  datasSource: MatTableDataSource<EmployeeProfile> = new MatTableDataSource();
+  terminatedDataSource: MatTableDataSource<EmployeeProfile> = new MatTableDataSource();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -303,7 +315,11 @@ export class ViewEmployeeComponent {
 
   applySearchFilter() {
     this.dataSource.filter = this.searchQuery.trim().toLowerCase();
+    this.terminatedDataSource.filter = this.searchQuery.trim().toLowerCase();
+
     this.dataSource._updateChangeSubscription();
+    this.terminatedDataSource._updateChangeSubscription();
+
   }
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
@@ -375,6 +391,7 @@ export class ViewEmployeeComponent {
   set pageSize(size: number) {
     this.paginator.pageSize = size;
     this.dataSource._updateChangeSubscription();
+    this.terminatedDataSource._updateChangeSubscription();
   }
 
   get start(): number {
@@ -392,6 +409,8 @@ export class ViewEmployeeComponent {
   goToPage(page: number): void {
     this.paginator.pageIndex = page - 1;
     this.dataSource._updateChangeSubscription();
+    this.terminatedDataSource._updateChangeSubscription();
+
   }
 
   changePeopleChampionFilter(champion: GenericDropDownObject) {
@@ -455,7 +474,6 @@ export class ViewEmployeeComponent {
       }
     });
   }
-
 
   toggleEmployees(event: any) {
     const selectedEmployeeStatus = event.value;

@@ -12,7 +12,9 @@ main {
     border-color: #E8EFFF;
     overflow: hidden;
 }
-
+#mainFilterContainer{
+    width:800px;
+}
 mat-header-row {
     background-color: var(--background-light);
 }
