@@ -69,6 +69,11 @@
     border: 1px solid black;
 }
 
+.resigned-status {
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
 #profile-header {
     background-color: white;
     border-radius: 2rem;

@@ -110,14 +110,6 @@ export class EmployeeTerminationComponent implements OnInit {
     })
   }
 
-  onDateChange(event: MatDatepickerInputEvent<Date>, controlName: string) {
-    const date = event.value;
-    if (date) {
-      const dateString = date.toISOString().split('T')[0];
-      this.newterminationform.controls[controlName].setValue(dateString);
-    }
-  }
-
   removeDocument() {
     this.interviewDocFilename = '';
     const uploadedDoc = document.getElementById('uploadCVFile') as HTMLInputElement;
