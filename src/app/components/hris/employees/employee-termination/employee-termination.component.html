@@ -12,7 +12,7 @@
                     <mat-label>Termination Option</mat-label>
                     <mat-select hideSingleSelectionIndicator="true" formControlName="terminationOption">
                         <mat-option *ngFor="let termination of terminationOption; index as i"
-                            [value]="termination">{{termination}}</mat-option>
+                            [value]="termination" (onSelectionChange)="setTerminationOption(i)">{{termination}}</mat-option>
                     </mat-select>
                     <mat-error *ngIf="newterminationform.controls['terminationOption'].hasError('required')">
                         Please select terminationOption
@@ -20,14 +20,13 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Date of Notice</mat-label>
-                    <input matInput [matDatepicker]="picker1" placeholder="Date of Notice"
-                        formControlName="dayOfNotice">
-                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                    <mat-datepicker #picker1></mat-datepicker>
+                    <input matInput formControlName="dayOfNotice" [matDatepicker]="datePicker" />
+                    <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #datePicker></mat-datepicker>
                     <mat-error *ngIf="newterminationform.controls['dayOfNotice'].hasError('required')">
-                        Please select day of notice
+                      Start date is required
                     </mat-error>
-                </mat-form-field>
+                  </mat-form-field>
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Last Day of Employment</mat-label>
                     <input matInput [matDatepicker]="picker2" placeholder="Last day of Employment"

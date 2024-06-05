@@ -4,11 +4,11 @@ import { terminationOptions } from 'src/app/models/hris/constants/terminationOpt
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
 import { SharedAccordionFunctionality } from '../employee-profile/shared-accordion-functionality';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-employee-termination',
@@ -25,35 +25,47 @@ export class EmployeeTerminationComponent implements OnInit {
   }
 
   selectedEmployee!: EmployeeProfile;
-  newterminationform!: FormGroup;
+  newterminationform: FormGroup = this.fb.group({
+    terminationOption: new FormControl('', Validators.required),
+    dayOfNotice: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
+    lastDayOfEmployment: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
+    reEmploymentStatus: new FormControl<boolean>(false, Validators.required),
+    equipmentStatus: new FormControl<boolean>(false, Validators.required),
+    accountsStatus: new FormControl<boolean>(false, Validators.required),
+    terminationDocument: new FormControl<string>('', Validators.required),
+    terminationComments: new FormControl<string>(''),
+  });;
   terminationOption: string[] = terminationOptions.map((termination) => termination.value);
-  isMobileScreen = false;
-  fileUploaded: boolean = false;
   selectedFile !: File;
   screenWidth = window.innerWidth;
-  interviewDocFilename: string = "";
+
+  isMobileScreen: boolean = false;
+  fileUploaded: boolean = false;
   interviewFileUploaded: boolean = false;
   isvalidFile: boolean = false;
   isvalidFileSize: boolean = false;
+
+  terminationOptionValue: number = 0;
+
+  interviewDocFilename: string = "";
   base64String: string = "";
-  employeeId = this.route.snapshot.params[ 'id' ];
+  employeeId = this.route.snapshot.params['id'];
 
   constructor(
     private navService: NavService,
     private fb: FormBuilder,
     private router: Router,
-    private snackBarService : SnackbarService,
-    public employeeService : EmployeeService,
-    private employeeTerminationService : EmployeeTerminationService,
-    public sharedAccordion : SharedAccordionFunctionality,
+    private snackBarService: SnackbarService,
+    public employeeService: EmployeeService,
+    private employeeTerminationService: EmployeeTerminationService,
+    public sharedAccordion: SharedAccordionFunctionality,
     private route: ActivatedRoute,
   ) { }
-
   ngOnInit() {
     this.initializeForm();
     this.navService.hideNav();
   }
-  
+
   ngOnDestroy() {
     this.navService.showNav();
   }
@@ -61,8 +73,8 @@ export class EmployeeTerminationComponent implements OnInit {
   initializeForm() {
     this.newterminationform = this.fb.group({
       terminationOption: new FormControl('', Validators.required),
-      dayOfNotice: new FormControl<Date | null>(null, Validators.required),
-      lastDayOfEmployment: new FormControl<Date | null>(null, Validators.required),
+      dayOfNotice: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
+      lastDayOfEmployment: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
       reEmploymentStatus: new FormControl<boolean>(false, Validators.required),
       equipmentStatus: new FormControl<boolean>(false, Validators.required),
       accountsStatus: new FormControl<boolean>(false, Validators.required),
@@ -75,29 +87,36 @@ export class EmployeeTerminationComponent implements OnInit {
     const newterminationform = this.newterminationform.value;
     const employeeTerminationDto = {
       id: 0,
-      employeeId: this.employeeId,
-      terminationOption: newterminationform.terminationOption,
+      employeeId: +this.employeeId,
+      terminationOption: this.terminationOptionValue,
       dayOfNotice: newterminationform.dayOfNotice,
       lastDayOfEmployment: newterminationform.lastDayOfEmployment,
       reemploymentStatus: newterminationform.reEmploymentStatus,
       equipmentStatus: newterminationform.equipmentStatus,
       accountsStatus: newterminationform.accountsStatus,
-      terminationDocument:this.base64String,
-      documentName:newterminationform.terminationDocument,
-      terminationComments:newterminationform.terminationComments
+      terminationDocument: this.base64String,
+      documentName: newterminationform.terminationDocument,
+      terminationComments: newterminationform.terminationComments
     }
-    console.log(employeeTerminationDto)
+
     this.employeeTerminationService.saveEmployeeTermination(employeeTerminationDto).subscribe({
-      next: (data) => 
-        this.snackBarService.showSnackbar("Employee termination saved", "snakc-success"),
+      next: (data) =>
+        this.snackBarService.showSnackbar("Employee termination saved", "snack-success"),
       error: (error) =>
-        this.snackBarService.showSnackbar(error, "Could not save termination"),
+        this.snackBarService.showSnackbar("error", "Could not save termination"),
       complete: () => {
         this.router.navigateByUrl(nextPage);
       }
     })
   }
-  
+
+  onDateChange(event: MatDatepickerInputEvent<Date>, controlName: string) {
+    const date = event.value;
+    if (date) {
+      const dateString = date.toISOString().split('T')[0];
+      this.newterminationform.controls[controlName].setValue(dateString);
+    }
+  }
 
   removeDocument() {
     this.interviewDocFilename = '';
@@ -105,7 +124,7 @@ export class EmployeeTerminationComponent implements OnInit {
     if (uploadedDoc) {
       uploadedDoc.value = '';
     }
-    this.snackBarService.showSnackbar('File removed succesfully','snack-success');
+    this.snackBarService.showSnackbar('File removed succesfully', 'snack-success');
   }
   onCVFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
@@ -123,7 +142,7 @@ export class EmployeeTerminationComponent implements OnInit {
     reader.addEventListener('loadend', () => {
       const base64Data = reader.result as string;
       this.newterminationform.patchValue({ [controlName]: base64Data });
-      this.snackBarService.showSnackbar('File uploaded succesfully','snack-success');
+      this.snackBarService.showSnackbar('File uploaded succesfully', 'snack-success');
       this.base64String = base64Data;
     });
     reader.readAsDataURL(file);
@@ -146,5 +165,11 @@ export class EmployeeTerminationComponent implements OnInit {
   goToPreviousPage() {
     this.router.navigateByUrl('/profile');
     this.navService.showNav();
+  }
+
+  setTerminationOption(option: number) {
+    this.newterminationform.controls['terminationOption'].setValue(option);
+    this.terminationOptionValue = option;
+    console.table(this.terminationOptionValue)
   }
 }
