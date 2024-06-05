@@ -299,3 +299,7 @@ mat-cell {
     top: 34px;
     left: 20px;
 }
+
+#no-employee-display {
+    text-align: center;
+  }
