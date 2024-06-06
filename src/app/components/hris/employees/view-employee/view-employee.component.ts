@@ -480,7 +480,6 @@ export class ViewEmployeeComponent {
         this.filteredEmployees = data.filter((emp: any) => emp.active == false)
         this.getTerminatedDataSource();
         this.isLoading = false;
-        console.log(this.filteredEmployees);
       }
     });
   }
