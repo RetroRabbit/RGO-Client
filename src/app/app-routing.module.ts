@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: 'view-banking-approval/:id', component: ViewBankingApprovalComponent},
   { path: 'career-summary', component: CareerSummaryQualificationsComponent},
   { path: 'view-starter-kit-approval/:id', component: ViewStarterKitApprovalComponent},
-  { path: 'end-employment/:id', component: EmployeeTerminationComponent } //kom terug vir id
+  { path: 'end-employment/:id', component: EmployeeTerminationComponent }
 ];
 
 @NgModule({
