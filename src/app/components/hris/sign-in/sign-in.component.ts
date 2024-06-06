@@ -10,6 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { AppComponent } from 'src/app/app.component';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -29,10 +30,15 @@ export class SignInComponent {
     public navService: NavService,
     private authAccessService: AuthAccessService,
     private NgZone: NgZone,
-    private sharedPropprtyAccessService: SharedPropertyAccessService
+    private sharedPropprtyAccessService: SharedPropertyAccessService,
+    private appComponent: AppComponent,
   ) { }
 
   ngOnInit() {
+    if(this.appComponent.hasSignedIn()){
+      this.initialUserNavigation();
+      return
+    }
     this.token = this.cookieService.get('userToken');
     this.userEmail = this.cookieService.get('userEmail');
     if (this.token) {
@@ -53,6 +59,12 @@ export class SignInComponent {
     this.NgZone.run(() => {
       this.screenWidth = window.innerWidth;
     });
+  }
+
+  @HostListener('window:popstate', ['$event'])
+
+  onPopState() {
+      location.reload()
   }
 
   Login() {
@@ -109,7 +121,13 @@ export class SignInComponent {
             this.navService.showSideBar = true;
 
           this.sharedPropprtyAccessService.setAccessProperties();
-          // TODO: put back in
+          this.initialUserNavigation();
+        },
+      });
+  }
+
+  initialUserNavigation(){
+  // TODO: put back in
           // if (this.authAccessService.isTalent()) {
           //   this.navService.isHris = false;
           //   this.router.navigateByUrl('/ats-dashboard');
@@ -125,7 +143,5 @@ export class SignInComponent {
             this.router.navigateByUrl('/dashboard');
           }
           else if (this.authAccessService.isEmployee()) { this.router.navigateByUrl('/profile'); }
-        },
-      });
   }
 }

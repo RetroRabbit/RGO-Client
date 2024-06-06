@@ -21,7 +21,6 @@ export class AppComponent {
   }
   
   title = 'HRIS';
-  showNav = this.navService.showNavbar;
   screenWidth !: number;
   roles!: string[];
   employeeProfile: EmployeeProfile | undefined;
