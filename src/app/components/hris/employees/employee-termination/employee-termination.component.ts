@@ -50,7 +50,7 @@ export class EmployeeTerminationComponent implements OnInit {
     private route: ActivatedRoute,
   ) {
     this.newterminationform = this.fb.group({
-      terminationOption: new FormControl('', Validators.required),
+    terminationOption: new FormControl('', Validators.required),
     dayOfNotice: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
     lastDayOfEmployment: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
     reEmploymentStatus: new FormControl<boolean>(false, Validators.required),
