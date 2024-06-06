@@ -77,6 +77,7 @@ export class ViewEmployeeComponent {
     ),
     first()
   );
+
   employeeStatus: string[] = EmployeeStatus;
   employeeTerminated: string[] = [];
 
@@ -210,7 +211,7 @@ export class ViewEmployeeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
-  private getDataSource() {
+  private getTerminatedDataSource() {
     this.terminatedDataSource = new MatTableDataSource(this.filteredEmployees);
 
     this.ngZone.run(() => {
@@ -333,7 +334,6 @@ export class ViewEmployeeComponent {
 
     this.dataSource._updateChangeSubscription();
     this.terminatedDataSource._updateChangeSubscription();
-
   }
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
@@ -482,7 +482,7 @@ export class ViewEmployeeComponent {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
         this.filteredEmployees = data.filter((emp: any) => emp.active == false)
-        this.getDataSource();
+        this.getTerminatedDataSource();
         this.isLoading = false;
         console.log(this.filteredEmployees);
       }
