@@ -175,7 +175,7 @@ export class AccordionSalaryDetailsComponent {
       this.snackBarService.showSnackbar("Remuneration cannot be less than zero", "snack-error");
     }
     else {
-      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+      this.snackBarService.showSnackbar("Please enter Remuneration", "snack-error");
     }
 
   }
