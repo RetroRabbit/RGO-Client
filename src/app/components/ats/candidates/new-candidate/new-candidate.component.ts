@@ -1,7 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CandidateService } from 'src/app/services/ats/candidate/candidate.service';
@@ -30,7 +29,6 @@ export class NewCandidateComponent {
   }
 
   constructor(
-    private cookieService: CookieService,
     private candidateService: CandidateService,
     private router: Router,
     private snackBarService: SnackbarService,

@@ -56,6 +56,11 @@
   color: grey;
 }
 
+#helperText {
+  color: grey;
+  font-weight:500;
+}
+
 #svg-icon-w #icon-w {
   fill: white;
 }
