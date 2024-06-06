@@ -46,7 +46,7 @@
               Status: Resigned
             </div>
           </ng-container>
-          <button *ngIf="this.isAdminUser" mat-button color="primary"
+          <button *ngIf="this.isAdminUser && employeeProfile.active" mat-button color="primary"
             (click)="openTerminationForm()">End Employment
           </button>
         </div>
