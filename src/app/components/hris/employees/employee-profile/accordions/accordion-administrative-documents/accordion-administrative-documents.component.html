@@ -23,7 +23,9 @@
         <div id="table-body" class="my-2">
           <div *ngFor="let category of sharedAccordionFunctionality.fileAdminCategories;let i = index" class="row my-2 py-2" id="document-row">
             <div id="document" class="col-12 col-md-6 col-lg-7">
-              <h3>{{category}}</h3>
+              <h3 class="mt-2">{{category}}</h3>
+              <div *ngIf="category == 'Written Approval of Offer'" id="helperText" class="mb-2">PDF,PNG,JPG</div>
+              <div *ngIf="category != 'Written Approval of Offer'" id="helperText" class="mb-2">PDF</div>
               <div class="col-12" *ngIf="getFileName(i) as document;else NoFile" id="fileName">
                 <p>{{document.fileName}}</p>
               </div>
@@ -31,7 +33,7 @@
                 <p>Download & upload document here</p>
               </ng-template>
             </div>
-            <div ngClass="{{ screenWidth >= 1200 ? 'pt-4 padding-row-buttons' : ''}}" class="col-12 col-md-4 col-lg-5 py-2">
+            <div ngClass="{{ screenWidth >= 1200 ? 'pt-4 padding-row-buttons' : ''}}" class="col-12 col-md-4 col-lg-5 py-2 mt-2">
               <div class="row">
                 <div id="actionCellDownload" class="col-12 col-md-auto mb-2">
                   <button *ngIf="disableDownload(i);else DisabledDownload" mat-button color="primary" (click)="downloadDocument($event)" [disabled]="!disableDownload(i)"
@@ -76,7 +78,7 @@
                     </svg> Upload
                   </button>
                 </div>
-                <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf"
+                <input hidden type="file" (change)="uploadDocument($event, category)" [accept]="getAcceptedFileTypes(category)"
                   [id]="i + '-administrative-document'">
               </div>
             </div>
