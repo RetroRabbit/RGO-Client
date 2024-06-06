@@ -13,8 +13,8 @@ main {
     overflow: hidden;
 }
 
-#mainFilterContainer{
-    width:80%;
+#mainFilterContainer {
+    width: 80%;
 }
 
 mat-header-row {
@@ -306,4 +306,4 @@ mat-cell {
 
 #no-employee-display {
     text-align: center;
-  }
+}

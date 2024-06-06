@@ -48,8 +48,14 @@ export class ViewEmployeeComponent {
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() addEmployeeEvent = new EventEmitter<void>();
   @Output() managePermissionsEvent = new EventEmitter<void>();
+
+  @ViewChild('currentTable', { read: MatSort, static: true }) sortcurrentEmployees!: MatSort;
+  @ViewChild('terminatedTable', { read: MatSort, static: true }) sortPreviousEmployees!: MatSort;
+
   _searchQuery: string = '';
   filteredEmployees: EmployeeProfile[] = [];
+  employeeTerminated: string[] = [];
+  employeeStatus: string[] = EmployeeStatus;
   getPreviousEmployees: boolean = false;
 
   @Input()
@@ -74,9 +80,6 @@ export class ViewEmployeeComponent {
     ),
     first()
   );
-
-  employeeStatus: string[] = EmployeeStatus;
-  employeeTerminated: string[] = [];
 
   peopleChampions: Observable<GenericDropDownObject[]> = this.getPeopleChampionsForFilter();
   usertypes: Observable<GenericDropDownObject[]> = this.getUserTypesForFilter();
@@ -224,10 +227,10 @@ export class ViewEmployeeComponent {
       return;
     }
 
-    this.terminatedDataSource.data = this.terminatedDataSource.data.sort((a: any, b: any) => {
+    this.terminatedDataSource.data = this.terminatedDataSource.data.sort((employeeName1: any, employeeName2: any) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
-        case 'terminatedNames': return this.sortTerminatedNames(a.name, b.name, isAsc);
+        case 'terminatedNames': return this.sortTerminatedNames(employeeName1.name, employeeName2.name, isAsc);
         default: return 0;
       }
     });
@@ -313,8 +316,6 @@ export class ViewEmployeeComponent {
   dataSource: MatTableDataSource<EmployeeData> = new MatTableDataSource();
   terminatedDataSource: MatTableDataSource<EmployeeProfile> = new MatTableDataSource();
 
-  @ViewChild('currentTable', { read: MatSort, static: true }) sortcurrentEmployees!: MatSort;
-  @ViewChild('terminatedTable', { read: MatSort, static: true }) sortPreviousEmployees!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   screenWidth: number = 992;
