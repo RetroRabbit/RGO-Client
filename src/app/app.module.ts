@@ -166,11 +166,16 @@ import { AccordionSalaryDetailsComponent } from './components/hris/employees/emp
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),
     AuthModule.forRoot({
-      domain: process.env['AUTH0_Domain_key'] || 'null',
-      clientId: process.env['AUTH0_CLIENT_ID'] || 'null',
+      // domain: process.env['AUTH0_Domain_key'] || 'null',
+      // clientId: process.env['AUTH0_CLIENT_ID'] || 'null',
+      domain: 'dev-o6d2moyfh4iz7sat.us.auth0.com',
+      clientId: 'KCfaIe9htqDBs5TbKOh8hb6COr7Iybl3',
       authorizationParams: {
         redirect_uri: environment.redirect_uri,
+        audience: 'https://webapi/',
       },
+      useRefreshTokens: true,
+      cacheLocation: 'localstorage',
     }),
     HttpClientModule,
     BrowserAnimationsModule,
