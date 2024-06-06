@@ -41,12 +41,12 @@
           </ng-template>
         </div>
         <div id="EndEmploymentButton" class="col-12 col-md-6 mt-md-1  d-flex justify-content-end d-md-flex ">
-          <ng-container *ngIf="!employeeProfile.active">
+          <ng-container *ngIf="!employeeProfile.active && this.isAdminUser">
             <div class="resigned-status">
               Status: Resigned
             </div>
           </ng-container>
-          <button *ngIf="this.isAdminUser && employeeProfile.active" mat-button color="primary"
+          <button *ngIf="this.isAdminUser" mat-button color="primary"
             (click)="openTerminationForm()">End Employment
           </button>
         </div>
