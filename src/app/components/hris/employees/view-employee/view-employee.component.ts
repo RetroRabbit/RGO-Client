@@ -213,7 +213,6 @@ export class ViewEmployeeComponent {
     this.ngZone.run(() => {
       this.terminatedDataSource.sort = this.sortPreviousEmployees;
       this.terminatedDataSource.paginator = this.paginator;
-      this.sortByNameDefault(this.sortPreviousEmployees);
       this.paginator._changePageSize(this.defaultPageSize);
     });
     this.terminatedDataSource._updateChangeSubscription();
