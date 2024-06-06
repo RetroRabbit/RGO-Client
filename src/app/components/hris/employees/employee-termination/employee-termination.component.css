@@ -1,0 +1,188 @@
+.heading-text {
+    width: 332px;
+    text-align: center;
+    color: #0029c6;
+    font-size: 16px;
+    font-family: Inter;
+    font-weight: 400;
+    line-height: 22px;
+    word-wrap: break-word;
+}
+
+.roboto-font {
+    font-family: "Roboto", sans-serif;
+}
+
+p {
+    color: #0029c6;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+.container {
+    background-color: white;
+    border-radius: 20px;
+    width: 70%;
+    margin-top: 70px;
+    margin-bottom: 70px;
+    height: 1189px;
+    padding: 55PX 120px;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    flex-shrink: 0;
+}
+
+.no-border {
+    border: none;
+}
+
+.warning-message {
+    color: #B3261E;
+    font-weight: bold;
+}
+
+#removeDocButton>button {
+    border: 1px solid #B3261E;
+    border-radius: 2rem;
+    background-color: white;
+    margin-right: 15px;
+    color: #B3261E;
+    padding: 1.3rem;
+    width: 11rem;
+}
+
+#save-button {
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: #0029c6;
+    border-radius: 30px;
+    border: none;
+    color: #FFF;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#actionCellUpload>button {
+    background: #0029c6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    padding: 0.5rem;
+    width: 8rem;
+}
+
+#footer {
+    gap: 15px;
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    height: 0%;
+    justify-content: right;
+    gap: 12;
+    margin-left: 80px;
+}
+
+#doc-upload {
+    width: 640px;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+#comments-field {
+    display: inline-flex;
+    height: 150px;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+#form-heading {
+    font-family: Roboto;
+    font-size: 57px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 64px;
+    letter-spacing: -0.25px;
+}
+
+#actionCellUpload {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 95px
+}
+
+#actionCellUpload>button {
+    background: #0029C6;
+    border: none;
+    border-radius: 4rem;
+    color: white;
+    padding: 1.4rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    gap: 0.5rem;
+}
+
+#cancel-button {
+    display: flex;
+    padding: 10px 24px;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    height: 40px;
+    background: #fff;
+    border-radius: 30px;
+    border: 1px solid #0029c6;
+    color: #0029c6;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+#change-close-color {
+    color: #B3261E;
+    align-items: baseline;
+}
+
+#change-color-heading {
+    color: #B3261E;
+    font-weight: bold;
+}
+
+.info-text {
+    color: #625B71;
+}
+
+.error-border {
+    border-color: red !important;
+}
+
+.mat-error {
+    display: flex;
+    align-items: center;
+}
+
+.warning-message {
+    color: #B3261E;
+    font-weight: bold;
+}

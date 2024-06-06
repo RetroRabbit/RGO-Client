@@ -25,7 +25,7 @@
 
 #header-email {
     color: #555454;
-    text-align: right;
+    text-align: left;
     font-family: Poppins;
     font-size: 16px;
     font-style: normal;
@@ -67,6 +67,21 @@
 
 .container-fluid {
     border: 1px solid black;
+}
+
+.resigned-status {
+    border: 1px solid #ccc;
+    padding: 15px;
+    text-align: center;
+    margin-right: 20px;
+    border-radius: 10px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; 
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
 }
 
 #profile-header {
@@ -168,6 +183,16 @@
     border-top-left-radius: 100px;
     border-top-right-radius: 100px;
 }
+
+#EndEmploymentButton>button {
+    border: 1px solid #0029C6;
+    border-radius: 2rem;
+    background-color: white;
+    margin-right: 20px;
+    color: #0029C6;
+    padding: 1.3rem;
+    width: 11rem;
+  }
 
 :host ::ng-deep .mat-expansion-panel {
     padding: 0;
