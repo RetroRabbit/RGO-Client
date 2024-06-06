@@ -108,7 +108,6 @@ export class EmployeeTerminationComponent implements OnInit {
       documentName: newterminationform.terminationDocument,
       terminationComments: newterminationform.terminationComments
     };
-    console.log(employeeTerminationDto)
     this.employeeTerminationService.saveEmployeeTermination(employeeTerminationDto).subscribe({
       next: () => this.snackBarService.showSnackbar("Employee termination saved", "snack-success"),
       error: () => this.snackBarService.showSnackbar("error", "Could not save termination"),
