@@ -30,11 +30,11 @@ export interface EmployeeProfile {
   email?: string,
   personalEmail?: string,
   cellphoneNo?: string,
-  photo ?: string, 
-  notes?: string, 
+  photo?: string,
+  notes?: string,
   leaveInterval?: number,
-  salaryDays?: number, 
-  payRate?: number, 
+  salaryDays?: number,
+  payRate?: number,
   salary?: Number,
   clientAllocated?: number,
   teamLead?: number,
@@ -43,6 +43,7 @@ export interface EmployeeProfile {
   houseNo?: string,
   emergencyContactName?: string,
   emergencyContactNo?: string,
-  qualifications? : EmployeeQualifications,
-  active? : boolean
+  qualifications?: EmployeeQualifications,
+  active?: boolean,
+  inactiveReason?: string
 }
