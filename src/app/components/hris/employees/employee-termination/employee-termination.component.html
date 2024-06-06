@@ -47,17 +47,17 @@
                         </mat-error>
                     </mat-radio-group>
                 </div>
+                <h2 class="col-md-12 col-lg-7 my-2">Off-boarding tasks</h2>
                 <div class="col-md-12 col-lg-7 my-2 ms-4">
-                    <h2>Off-boarding tasks</h2>
                     <mat-checkbox formControlName="equipmentStatus">Handed Back Company Equipment</mat-checkbox>
                 </div>
                 <div class="col-md-12 col-lg-7 my-2 ms-4 align-items-left">
                     <mat-checkbox formControlName="accountsStatus">Transferred Company Accounts</mat-checkbox>
                     <mat-error class="d-flex align-items-center mt-3" *ngIf="!checkboxesValid && formSubmitted">
-                        <div>
-                            <mat-icon id="change-close-color">error</mat-icon>
-                        </div>
                         <div>You need to select both of the above</div>
+                        <div>
+                            <mat-icon class="ms-2" id="change-close-color">error</mat-icon>
+                        </div>
                     </mat-error>
                 </div>
                 <div id="doc-upload" class="col-md-12 col-lg-7 my-2 p-3 mt-3"
