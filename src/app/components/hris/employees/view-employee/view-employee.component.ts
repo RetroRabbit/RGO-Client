@@ -204,17 +204,18 @@ export class ViewEmployeeComponent {
       this.dataSource.paginator = this.paginator;
       this.paginator._changePageSize(this.defaultPageSize);
     });
+
     this.dataSource._updateChangeSubscription();
   }
 
   private getTerminatedDataSource() {
     this.terminatedDataSource = new MatTableDataSource(this.filteredEmployees);
-
     this.ngZone.run(() => {
       this.terminatedDataSource.sort = this.sortPreviousEmployees;
       this.terminatedDataSource.paginator = this.paginator;
       this.paginator._changePageSize(this.defaultPageSize);
     });
+
     this.terminatedDataSource._updateChangeSubscription();
   }
 
@@ -269,7 +270,6 @@ export class ViewEmployeeComponent {
   reset(): void {
     this.dataSource.filter = '';
     this.terminatedDataSource.filter = '';
-
     this.dataSource._updateChangeSubscription();
     this.terminatedDataSource._updateChangeSubscription();
   }
