@@ -29,6 +29,7 @@ import { AccordionDocumentsAdditionalComponent } from './accordions/accordion-do
 import { AccordionAdministrativeDocumentsComponent } from './accordions/accordion-administrative-documents/accordion-administrative-documents.component';
 import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-employee-documents/accordion-employee-documents.component';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
+import { AppModule } from 'src/app/app.module';
 
 @Component({
   selector: 'app-employee-profile',
@@ -58,6 +59,7 @@ export class EmployeeProfileComponent implements OnChanges {
 
   editContact: boolean = false;
   showBackButtons: boolean = true;
+  isAdminUser: boolean = false;
 
   employeeClient!: EmployeeProfile;
   employeeTeamLead!: EmployeeProfile;
@@ -135,6 +137,9 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ngOnInit() {
+    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()){
+      this.isAdminUser = true ;
+    }
     this.sharedAccordionFunctionality.updateProfile.subscribe({
       next: (data: number) => {
         this.profileFormProgress = data;
@@ -169,6 +174,10 @@ export class EmployeeProfileComponent implements OnChanges {
     this.getEmployeeProfile();
     this.refreshEmployeeProfile();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+  }
+
+  openTerminationForm() {
+    this.router.navigateByUrl('/end-employment/'+this.employeeId)
   }
 
   goToEmployees() {
