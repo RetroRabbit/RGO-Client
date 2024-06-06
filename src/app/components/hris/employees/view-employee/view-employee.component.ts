@@ -27,19 +27,16 @@ import {
   forkJoin,
   map,
   of,
-  pipe,
-  skipWhile,
   switchMap,
-  takeWhile,
   tap,
 } from 'rxjs';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
+import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface'
 import { EmployeeStatus } from 'src/app/models/hris/constants/employee-status.constants';
-import { stat } from 'fs/promises';
+
 @Component({
   selector: 'app-view-employee',
   templateUrl: './view-employee.component.html',
