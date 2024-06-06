@@ -51,12 +51,21 @@ export class ViewEmployeeComponent {
 
   @ViewChild('currentTable', { read: MatSort, static: true }) sortcurrentEmployees!: MatSort;
   @ViewChild('terminatedTable', { read: MatSort, static: true }) sortPreviousEmployees!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   _searchQuery: string = '';
   filteredEmployees: EmployeeProfile[] = [];
   employeeTerminated: string[] = [];
   employeeStatus: string[] = EmployeeStatus;
   getPreviousEmployees: boolean = false;
+  isLoading: boolean = true;
+  defaultPageSize: number = 10
+
+  displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];
+  displayedTerminatedColumns: string[] = ['terminatedNames', 'terminatedPosition', 'Tenure', 'Last Day', 'Reason'];
+
+  dataSource: MatTableDataSource<EmployeeData> = new MatTableDataSource();
+  terminatedDataSource: MatTableDataSource<EmployeeProfile> = new MatTableDataSource();
 
   @Input()
   set searchQuery(text: string) {
@@ -86,7 +95,6 @@ export class ViewEmployeeComponent {
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
   currentUserTypeFilter: GenericDropDownObject = new GenericDropDownObject;
 
-  defaultPageSize: number = 10
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
     this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
@@ -126,8 +134,6 @@ export class ViewEmployeeComponent {
     this.getTerminatedEmployees();
     this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
   }
-
-  isLoading: boolean = true;
 
   getEmployees(): void {
     this.isLoading = true;
@@ -310,13 +316,6 @@ export class ViewEmployeeComponent {
       .subscribe();
   }
 
-  displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];
-  displayedTerminatedColumns: string[] = ['terminatedNames', 'terminatedPosition', 'Tenure', 'Last Day', 'Reason'];
-
-  dataSource: MatTableDataSource<EmployeeData> = new MatTableDataSource();
-  terminatedDataSource: MatTableDataSource<EmployeeProfile> = new MatTableDataSource();
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   screenWidth: number = 992;
   @HostListener('window:resize', ['$event'])
