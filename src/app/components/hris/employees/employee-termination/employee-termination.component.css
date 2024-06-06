@@ -159,20 +159,30 @@ p {
     letter-spacing: 0.1px;
 }
 
-#change-close-color{
+#change-close-color {
     color: #B3261E;
+    align-items: baseline;
 }
 
-#change-color-heading{
+#change-color-heading {
     color: #B3261E;
     font-weight: bold;
 }
 
 .info-text {
-color: #625B71;
+    color: #625B71;
 }
 
-.warning-message{
+.error-border {
+    border-color: red !important;
+}
+
+.mat-error {
+    display: flex;
+    align-items: center;
+}
+
+.warning-message {
     color: #B3261E;
     font-weight: bold;
 }

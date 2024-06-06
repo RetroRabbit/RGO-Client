@@ -7,7 +7,6 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
-import { SharedAccordionFunctionality } from '../employee-profile/shared-accordion-functionality';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
@@ -24,19 +23,9 @@ export class EmployeeTerminationComponent implements OnInit {
     this.screenWidth = window.innerWidth;
   }
 
-  selectedEmployee!: EmployeeProfile;
-  newterminationform: FormGroup = this.fb.group({
-    terminationOption: new FormControl('', Validators.required),
-    dayOfNotice: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
-    lastDayOfEmployment: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
-    reEmploymentStatus: new FormControl<boolean>(false, Validators.required),
-    equipmentStatus: new FormControl<boolean>(false, Validators.required),
-    accountsStatus: new FormControl<boolean>(false, Validators.required),
-    terminationDocument: new FormControl<string>('', Validators.required),
-    terminationComments: new FormControl<string>(''),
-  });;
+  newterminationform: FormGroup;
   terminationOption: string[] = terminationOptions.map((termination) => termination.value);
-  selectedFile !: File;
+  selectedFile!: File;
   screenWidth = window.innerWidth;
 
   isMobileScreen: boolean = false;
@@ -44,9 +33,10 @@ export class EmployeeTerminationComponent implements OnInit {
   interviewFileUploaded: boolean = false;
   isvalidFile: boolean = false;
   isvalidFileSize: boolean = false;
+  checkboxesValid: boolean = true;
+  formSubmitted: boolean = false;
 
   terminationOptionValue: number = 0;
-
   interviewDocFilename: string = "";
   base64String: string = "";
   employeeId = this.route.snapshot.params['id'];
@@ -58,9 +48,20 @@ export class EmployeeTerminationComponent implements OnInit {
     private snackBarService: SnackbarService,
     public employeeService: EmployeeService,
     private employeeTerminationService: EmployeeTerminationService,
-    public sharedAccordion: SharedAccordionFunctionality,
     private route: ActivatedRoute,
-  ) { }
+  ) {
+    this.newterminationform = this.fb.group({
+      terminationOption: new FormControl('', Validators.required),
+    dayOfNotice: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
+    lastDayOfEmployment: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
+    reEmploymentStatus: new FormControl<boolean>(false, Validators.required),
+    equipmentStatus: new FormControl<boolean>(false, Validators.required),
+    accountsStatus: new FormControl<boolean>(false, Validators.required),
+    terminationDocument: new FormControl<string>('', Validators.required),
+    terminationComments: new FormControl<string>(''),
+  });
+  }
+
   ngOnInit() {
     this.initializeForm();
     this.navService.hideNav();
@@ -73,17 +74,27 @@ export class EmployeeTerminationComponent implements OnInit {
   initializeForm() {
     this.newterminationform = this.fb.group({
       terminationOption: new FormControl('', Validators.required),
-      dayOfNotice: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
-      lastDayOfEmployment: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
+      dayOfNotice: new FormControl<Date | string>('', Validators.required),
+      lastDayOfEmployment: new FormControl<Date | string>('', Validators.required),
       reEmploymentStatus: new FormControl<boolean>(false, Validators.required),
       equipmentStatus: new FormControl<boolean>(false, Validators.required),
       accountsStatus: new FormControl<boolean>(false, Validators.required),
       terminationDocument: new FormControl<string>('', Validators.required),
       terminationComments: new FormControl<string>(''),
     });
+    this.newterminationform.valueChanges.subscribe(() => {
+      this.checkCheckboxesValid();
+    });
+    this.checkCheckboxesValid();
   }
 
   SaveEmployeeTermination(nextPage: string) {
+    this.formSubmitted = true;
+    this.checkCheckboxesValid();
+    if (!this.checkboxesValid) {
+      return;
+    }
+
     const newterminationform = this.newterminationform.value;
     const employeeTerminationDto = {
       id: 0,
@@ -97,17 +108,15 @@ export class EmployeeTerminationComponent implements OnInit {
       terminationDocument: this.base64String,
       documentName: newterminationform.terminationDocument,
       terminationComments: newterminationform.terminationComments
-    }
-
+    };
+    console.log(employeeTerminationDto)
     this.employeeTerminationService.saveEmployeeTermination(employeeTerminationDto).subscribe({
-      next: (data) =>
-        this.snackBarService.showSnackbar("Employee termination saved", "snack-success"),
-      error: (error) =>
-        this.snackBarService.showSnackbar("error", "Could not save termination"),
+      next: () => this.snackBarService.showSnackbar("Employee termination saved", "snack-success"),
+      error: () => this.snackBarService.showSnackbar("error", "Could not save termination"),
       complete: () => {
         this.router.navigateByUrl(nextPage);
       }
-    })
+    });
   }
 
   removeDocument() {
@@ -116,8 +125,9 @@ export class EmployeeTerminationComponent implements OnInit {
     if (uploadedDoc) {
       uploadedDoc.value = '';
     }
-    this.snackBarService.showSnackbar('File removed succesfully', 'snack-success');
+    this.snackBarService.showSnackbar('File removed successfully', 'snack-success');
   }
+
   onCVFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
       this.interviewFileUploaded = true;
@@ -134,7 +144,7 @@ export class EmployeeTerminationComponent implements OnInit {
     reader.addEventListener('loadend', () => {
       const base64Data = reader.result as string;
       this.newterminationform.patchValue({ [controlName]: base64Data });
-      this.snackBarService.showSnackbar('File uploaded succesfully', 'snack-success');
+      this.snackBarService.showSnackbar('File uploaded successfully', 'snack-success');
       this.base64String = base64Data;
     });
     reader.readAsDataURL(file);
@@ -162,5 +172,12 @@ export class EmployeeTerminationComponent implements OnInit {
   setTerminationOption(option: number) {
     this.newterminationform.controls['terminationOption'].setValue(option);
     this.terminationOptionValue = option;
+  }
+
+  checkCheckboxesValid() {
+    const equipmentStatusChecked = this.newterminationform.get('equipmentStatus')?.value;
+    const accountsStatusChecked = this.newterminationform.get('accountsStatus')?.value;
+
+    this.checkboxesValid = equipmentStatusChecked && accountsStatusChecked;
   }
 }
