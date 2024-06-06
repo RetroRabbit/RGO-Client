@@ -148,13 +148,13 @@
             </div>
             <div class="col-9 my-2">
               <div id="header-label">Start Date</div>
-              <div
-                *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else NonAdminEngagementDate"
-                id="header-value">
-                {{ selectedEmployee.engagementDate| date:'d MMM yyyy' }}
+              <div id="header-value" *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else NonAdminEngagementDate">              
+                {{ selectedEmployee.engagementDate | date:'d MMM yyyy' }}
               </div>
               <ng-template #NonAdminEngagementDate>
-                {{ navService.getEmployeeProfile().engagementDate| date:'d MMM yyyy' }}
+                <div id="header-value" >
+                  {{ navService.getEmployeeProfile().engagementDate| date:'d MMM yyyy' }}
+                </div>
               </ng-template>
             </div>
           </div>
@@ -276,7 +276,6 @@
       </div>
     </div>
   </div>
-
   <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
           'background-color': '#D7DFFF',
           'border': '2px solid #D7DFFF',
