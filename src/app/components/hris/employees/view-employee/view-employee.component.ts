@@ -227,7 +227,7 @@ export class ViewEmployeeComponent {
     this.terminatedDataSource.data = this.terminatedDataSource.data.sort((a: any, b: any) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
-        case 'terminatedNames': return this.compareNames(a.name, b.name, isAsc);
+        case 'terminatedNames': return this.sortTerminatedNames(a.name, b.name, isAsc);
         default: return 0;
       }
     });
@@ -514,7 +514,7 @@ export class ViewEmployeeComponent {
     return result;
   }
 
-  compareNames(a: string, b: string, isAsc: boolean) {
+  sortTerminatedNames(a: string, b: string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }
