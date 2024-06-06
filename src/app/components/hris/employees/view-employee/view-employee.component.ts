@@ -514,7 +514,7 @@ export class ViewEmployeeComponent {
     return result;
   }
 
-  sortTerminatedNames(a: string, b: string, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  sortTerminatedNames(EmployeeName1: string, EmployeeName2: string, isAsc: boolean) {
+    return (EmployeeName1 < EmployeeName2 ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }
