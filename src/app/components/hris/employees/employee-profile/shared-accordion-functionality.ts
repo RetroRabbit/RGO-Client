@@ -30,6 +30,7 @@ import { EmployeeQualifications } from 'src/app/models/hris/employee-qualificati
 export class SharedAccordionFunctionality {
   @Output() updateProfile = new EventEmitter<any>();
   @Output() updateDocument = new EventEmitter<number>();
+  @Output() updateCareer = new EventEmitter<number>();
   @Input() employeeProfile!: EmployeeProfile;
 
   employees: EmployeeProfile[] = [];
@@ -41,6 +42,8 @@ export class SharedAccordionFunctionality {
   employeeData: EmployeeData[] = [];
   customFields: CustomField[] = [];
   customFieldsDocuments: CustomField[] = [];
+  customFieldsCareerSummary: CustomField[] = [];
+
 
   employeeDocuments: EmployeeDocument[] = [];
   adminstrativeDocuments: EmployeeDocument[] = [];
@@ -90,10 +93,10 @@ export class SharedAccordionFunctionality {
 
   profileFormProgress: number = 0;
   documentFormProgress: number = 0;
+  careerFormProgress: number = 0;
 
   myDocumentsProgress: number = 0;
   additionalDocumentsProgress: number = 0;
-  addDocProgress: number = 0;
   adminDocumentsProgress: number = 0;
   employeeDocumentsProgress: number = 0;
   documentStarterKitFormProgress: number = 0;
@@ -103,7 +106,13 @@ export class SharedAccordionFunctionality {
   contactFormProgress: number = 0;
   addressFormProgress: number = 0;
   additionalFormProgress: number = 0;
+
+  qaulificationFormProgress: number = 0;
+  workExpFormProgress: number = 0;
+  certificateformProgress: number = 0;
+  salaryDetailsFormProgress: number = 0;
   additionalCareerFormProgress: number = 0;
+
   genders = genders;
   races = races;
   levels = levels;
@@ -185,7 +194,6 @@ export class SharedAccordionFunctionality {
 
   additionalInfoForm: FormGroup = this.fb.group({});
   additionalDocumentForm: FormGroup = this.fb.group({});
-
   additionalCareerInfoForm: FormGroup = this.fb.group({});
 
   checkPersonalFormProgress() {
@@ -284,23 +292,6 @@ export class SharedAccordionFunctionality {
     this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
-  checkCareerAdditionalFormProgress() {
-
-    let filledCount = 0;
-    const formControls = this.additionalCareerInfoForm.controls;
-    let totalFields = Object.keys(this.additionalCareerInfoForm.controls).length;
-
-    for (const controlName in formControls) {
-      if (formControls.hasOwnProperty(controlName)) {
-        const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
-          filledCount++;
-        }
-      }
-    }
-    this.additionalCareerFormProgress = Math.round((filledCount / totalFields) * 100);
-  }
-
   calculateEmployeeDocumentProgress() {
     const total = this.fileEmployeeCategories.length;
     const fetchedDocuments = this.employeeDocuments.length;
@@ -331,9 +322,44 @@ export class SharedAccordionFunctionality {
     })
   }
 
+
+
+  calculateQaulificationProgress() {
+    let filledCount = 0;
+    const formControls = this.employeeDetailsForm.controls;
+    const totalFields = Object.keys(this.employeeDetailsForm.controls).length;
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.value != null && control.value != '') {
+          filledCount++;
+        }
+      }
+    }
+    this.employeeFormProgress = Math.round((filledCount / totalFields) * 100);
+  }
+
+  calculateCareerAdditionalFormProgress() {
+
+    this.customFieldService.getAllFieldCodes().subscribe({
+      next: data => {
+        this.customFieldsCareerSummary = data.filter((data: CustomField) => data.category === this.category[2].id);
+        const total = this.customFieldsDocuments.length;
+        const fetchedDocuments = this.additionalDocuments.length;
+        total == 0 ? this.additionalDocumentsProgress = 0 : this.additionalDocumentsProgress = Math.round((fetchedDocuments / total) * 100);
+        console.log("Progress", total);
+
+      }
+    })
+  }
+
   totalProfileProgress() {
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
     this.updateProfile.emit(this.profileFormProgress);
+  }
+
+  totalCareerProgress() {
+
   }
 
   totalDocumentsProgress() {
