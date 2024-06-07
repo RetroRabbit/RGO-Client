@@ -49,10 +49,9 @@ export class SignInComponent {
       // Now the user is authenticated, retrieve the tokens
       const idToken = await this.authService.getIdToken();
       const accessToken = await this.authService.getAccessToken();
-      
+
       // Use this to get photo url from google
-      const userInfo = this.authService.getUserInfo();
-      const photoUrl = (await userInfo).picture;
+      const photoUrl = idToken.picture;
 
       // Set cookies
       this.cookieService.set('userEmail', idToken.email || '', {
@@ -68,57 +67,48 @@ export class SignInComponent {
       });
 
       const decodedAccessToken = this.authService.decodeJwt(accessToken);
-      const assignedRoleFromAuth0 = decodedAccessToken?.assignedRole || [];
+      const assignedRoleFromAuth0 = decodedAccessToken?.role || [];
       this.cookieService.set('userType', JSON.stringify(assignedRoleFromAuth0), {
         path: '/',
         secure: true,
         sameSite: 'None'
       });
 
-    // Fetch and set the role types
-    const roleByEmailFromDb = await firstValueFrom(this.authService.FetchRoleByEmailFromDb(idToken.email));
-    if (roleByEmailFromDb) {
-      // Check if the role from the DB matches the role assigned from the token
-      if (roleByEmailFromDb[assignedRoleFromAuth0]) {
-        this.authAccessService.setRoles(roleByEmailFromDb[assignedRoleFromAuth0]);
+    if (assignedRoleFromAuth0) {
+      this.authAccessService.setRoles(assignedRoleFromAuth0);
 
-        const userData: Token = {
-          email: idToken.email,
-          token: accessToken,
-          roles: this.authAccessService.getRoles(),
-        };
+      const userData: Token = {
+        email: idToken.email,
+        token: accessToken,
+        roles: assignedRoleFromAuth0,
+      };
         
-        this.authAccessService.setEmployeeEmail(idToken.email as string);
-        this.navService.refreshEmployee();  
-        
-        this.authService.store.dispatch(GetLogin({ payload: userData }));
-        if(window.innerWidth > 776)
-            this.navService.showNavbar = true;
-        else {
-          this.navService.showSideBar = true;
-        }
-
-        this.sharedPropprtyAccessService.setAccessProperties();
-
-        if (this.authAccessService.isTalent()) {
-            this.navService.isHris = false;
-            this.router.navigateByUrl('/ats-dashboard');
-        } else if (
-            this.authAccessService.isAdmin() ||
-            this.authAccessService.isJourney() ||
-            this.authAccessService.isSuperAdmin()
-        ) {
-            this.navService.isHris = true;
-            this.cookieService.set('isHris', String(this.navService.isHris));
-            this.router.navigateByUrl('/dashboard');
-        } else {
-            this.router.navigateByUrl('/profile');
-        }
-
-      } 
+      this.authAccessService.setEmployeeEmail(idToken.email as string);
+      this.navService.refreshEmployee();  
+      
+      this.authService.store.dispatch(GetLogin({ payload: userData }));
+      if(window.innerWidth > 776)
+          this.navService.showNavbar = true;
       else {
-        throw new Error("Mismatch between role and permission. Possible token tampering.");
-      } 
+        this.navService.showSideBar = true;
+      }
+
+      this.sharedPropprtyAccessService.setAccessProperties();
+
+      if (this.authAccessService.isTalent()) {
+          this.navService.isHris = false;
+          this.router.navigateByUrl('/ats-dashboard');
+      } else if (
+          this.authAccessService.isAdmin() ||
+          this.authAccessService.isJourney() ||
+          this.authAccessService.isSuperAdmin()
+      ) {
+          this.navService.isHris = true;
+          this.cookieService.set('isHris', String(this.navService.isHris));
+          this.router.navigateByUrl('/dashboard');
+      } else {
+          this.router.navigateByUrl('/profile');
+      }
     }
     else {
       throw new Error('No roles returned.');
