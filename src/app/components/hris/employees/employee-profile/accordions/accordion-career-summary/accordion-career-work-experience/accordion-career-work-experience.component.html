@@ -29,7 +29,7 @@
                                     </div>
                                     <div class="row d-block">
                                         <div class="experience-header" *ngIf="!editWorkExperience">
-                                            <h3 class="mb-1" id="clientNameHeading">{{workExperience[i].clientName}}</h3>
+                                            <h3 class="mb-1" id="clientNameHeading">{{workExperience[i].clientName}} | {{ formatDate(workExperience[i].startDate) }}</h3>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 my-2">
