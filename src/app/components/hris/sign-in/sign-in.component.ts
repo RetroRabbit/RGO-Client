@@ -68,51 +68,55 @@ export class SignInComponent {
 
       const decodedAccessToken = this.authService.decodeJwt(accessToken);
       const assignedRoleFromAuth0 = decodedAccessToken?.role || [];
-      this.cookieService.set('userType', JSON.stringify(assignedRoleFromAuth0), {
-        path: '/',
-        secure: true,
-        sameSite: 'None'
-      });
+      const validRoles = ['SuperAdmin', 'Employee', 'Talent', 'Journey', 'Admin'];
+      const filteredRoles = assignedRoleFromAuth0.filter((role: string) => validRoles.includes(role));
 
-    if (assignedRoleFromAuth0) {
-      this.authAccessService.setRoles(assignedRoleFromAuth0);
+      if (filteredRoles.length > 0) {
 
-      const userData: Token = {
-        email: idToken.email,
-        token: accessToken,
-        roles: assignedRoleFromAuth0,
-      };
-        
-      this.authAccessService.setEmployeeEmail(idToken.email as string);
-      this.navService.refreshEmployee();  
-      
-      this.authService.store.dispatch(GetLogin({ payload: userData }));
-      if(window.innerWidth > 776)
+        this.cookieService.set('userType', JSON.stringify(assignedRoleFromAuth0), {
+          path: '/',
+          secure: true,
+          sameSite: 'None'
+        });
+
+        this.authAccessService.setRoles(assignedRoleFromAuth0);
+
+        const userData: Token = {
+          email: idToken.email,
+          token: accessToken,
+          roles: assignedRoleFromAuth0,
+        };
+
+        this.authAccessService.setEmployeeEmail(idToken.email as string);
+        this.navService.refreshEmployee();
+
+        this.authService.store.dispatch(GetLogin({ payload: userData }));
+        if (window.innerWidth > 776)
           this.navService.showNavbar = true;
-      else {
-        this.navService.showSideBar = true;
-      }
+        else {
+          this.navService.showSideBar = true;
+        }
 
-      this.sharedPropprtyAccessService.setAccessProperties();
+        this.sharedPropprtyAccessService.setAccessProperties();
 
-      if (this.authAccessService.isTalent()) {
+        if (this.authAccessService.isTalent()) {
           this.navService.isHris = false;
           this.router.navigateByUrl('/ats-dashboard');
-      } else if (
+        } else if (
           this.authAccessService.isAdmin() ||
           this.authAccessService.isJourney() ||
           this.authAccessService.isSuperAdmin()
-      ) {
+        ) {
           this.navService.isHris = true;
           this.cookieService.set('isHris', String(this.navService.isHris));
           this.router.navigateByUrl('/dashboard');
-      } else {
+        } else {
           this.router.navigateByUrl('/profile');
+        }
       }
-    }
-    else {
-      throw new Error('No roles returned.');
-    }
+      else {
+        console.error("Login failed: User has invalid or no role assigned");
+      }
     } catch (error) {
       window.alert("Login failed.");
       console.error("Login failed:", error);

@@ -22,7 +22,7 @@ export class AuthService {
     public store: Store<Auth0.AppState>,
   ) { }
 
-  login(): Observable<any> {
+  login(): Observable<boolean> {
     return this.auth0
       .loginWithPopup()
       .pipe(
@@ -30,10 +30,10 @@ export class AuthService {
         take(1),
         tap((isAuthenticated) => {
           if (isAuthenticated) {
-            console.log("Login successful");
+            console.log("Authenticated successful");
             this.isAuthenticated$.next(true);
           } else {
-            console.log("Login failed");
+            console.log("Authenticated failed");
             this.isAuthenticated$.next(false);
           }
         })
