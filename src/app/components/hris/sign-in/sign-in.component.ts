@@ -98,11 +98,12 @@ export class SignInComponent {
         }
 
         this.sharedPropprtyAccessService.setAccessProperties();
-
-        if (this.authAccessService.isTalent()) {
-          this.navService.isHris = false;
-          this.router.navigateByUrl('/ats-dashboard');
-        } else if (
+        // TODO: put back in
+        // if (this.authAccessService.isTalent()) {
+          // this.navService.isHris = false;
+          // this.router.navigateByUrl('/ats-dashboard');
+        // } else if (
+        if ( this.authAccessService.isTalent() ||
           this.authAccessService.isAdmin() ||
           this.authAccessService.isJourney() ||
           this.authAccessService.isSuperAdmin()
