@@ -11,7 +11,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 d-flex justify-content-end mb-3 mt-3">
-                        <button [disabled]="addingWorkExperience" mat-button id="edit-button-width"
+                        <button [disabled]="addingWorkExperience || workExperience.length == 0" mat-button id="edit-button-width"
                             (click)="editWorkExperiences()">
                             <mat-icon>edit</mat-icon>Edit Details
                         </button>
@@ -29,7 +29,7 @@
                                     </div>
                                     <div class="row d-block">
                                         <div class="experience-header" *ngIf="!editWorkExperience">
-                                            <h3 class="mb-1" id="clientNameHeading">{{workExperience[i].clientName}}</h3>
+                                            <h3 class="mb-1" id="clientNameHeading">{{workExperience[i].clientName}} | {{ formatDate(workExperience[i].startDate) }}</h3>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 my-2">

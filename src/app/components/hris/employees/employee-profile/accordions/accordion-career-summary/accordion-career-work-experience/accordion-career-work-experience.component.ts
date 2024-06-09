@@ -10,11 +10,13 @@ import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.inte
 import { ROLES } from 'src/app/models/hris/constants/employee-skills-software-onType.constants';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { forkJoin } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-accordion-career-work-experience',
   templateUrl: './accordion-career-work-experience.component.html',
-  styleUrls: ['./accordion-career-work-experience.component.css']
+  styleUrls: ['./accordion-career-work-experience.component.css'],
+  providers: [DatePipe]
 })
 export class AccordionCareerWorkExperienceComponent {
 
@@ -62,12 +64,17 @@ export class AccordionCareerWorkExperienceComponent {
     private snackBarService: SnackbarService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) {
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    private datePipe: DatePipe) {
   }
 
   ngOnInit(): void {
     this.getEmployeeType();
     this.getWorkExperience();
+  }
+
+  formatDate(date: string | Date): string {
+    return this.datePipe.transform(date, 'dd MMMM yyyy')!;
   }
 
   getWorkExperience() {
