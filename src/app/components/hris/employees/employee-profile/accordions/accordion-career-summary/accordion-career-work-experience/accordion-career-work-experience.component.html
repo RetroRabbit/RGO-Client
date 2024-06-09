@@ -11,14 +11,14 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 d-flex justify-content-end mb-3 mt-3">
-                        <button [disabled]="addingWorkExperience || workExperience.length == 0" mat-button id="edit-button-width"
+                        <button [disabled]="addingWorkExperience || sharedAccordionFunctionality.workExperience.length == 0" mat-button id="edit-button-width"
                             (click)="editWorkExperiences()">
                             <mat-icon>edit</mat-icon>Edit Details
                         </button>
                     </div>
                     <div class="col-12 col-md-9 col-lg-10">
                         <div class="col-12">
-                            <div *ngFor="let experience of workExperience; let i = index" class="col-12">
+                            <div *ngFor="let experience of sharedAccordionFunctionality.workExperience; let i = index" class="col-12">
                                 <div id="form-wrapper" class="col-12">
                                     <div class="row">
                                     <div class="row d-block">
@@ -29,7 +29,7 @@
                                     </div>
                                     <div class="row d-block">
                                         <div class="experience-header" *ngIf="!editWorkExperience">
-                                            <h3 class="mb-1" id="clientNameHeading">{{workExperience[i].clientName}} | {{ formatDate(workExperience[i].startDate) }}</h3>
+                                            <h3 class="mb-1" id="clientNameHeading">{{sharedAccordionFunctionality.workExperience[i].clientName}} | {{ formatDate(sharedAccordionFunctionality.workExperience[i].startDate) }}</h3>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 my-2">
@@ -44,8 +44,8 @@
                                             <mat-form-field appearance="outline" class="w-100">
                                                 <mat-label>Client Name</mat-label>
                                                 <input type="text" disabled matInput placeholder="Client Name"
-                                                    [(ngModel)]="workExperience[i].clientName"
-                                                    [value]="workExperience[i].clientName">
+                                                    [(ngModel)]="sharedAccordionFunctionality.workExperience[i].clientName"
+                                                    [value]="sharedAccordionFunctionality.workExperience[i].clientName">
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
@@ -61,8 +61,8 @@
                                             <mat-form-field appearance="outline" class="w-100">
                                                 <mat-label>Project Name</mat-label>
                                                 <input type="text" disabled matInput placeholder="Project Name"
-                                                    [(ngModel)]="workExperience[i].projectName"
-                                                    [value]="workExperience[i].projectName">
+                                                    [(ngModel)]="sharedAccordionFunctionality.workExperience[i].projectName"
+                                                    [value]="sharedAccordionFunctionality.workExperience[i].projectName">
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
@@ -76,7 +76,7 @@
                                         <ng-template #NoEditSkillSet>
                                             <mat-form-field appearance="outline" class="w-100">
                                                 <mat-label>Skillset</mat-label>
-                                                    <mat-select [(ngModel)]="workExperience[i].skillSet" multiple disabled>
+                                                    <mat-select [(ngModel)]="sharedAccordionFunctionality.workExperience[i].skillSet" multiple disabled>
                                                     <mat-option *ngFor="let skill of skillSetList" [value]="skill">{{ skill }}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
@@ -92,7 +92,7 @@
                                         <ng-template #NoEditSoftware>
                                             <mat-form-field appearance="outline" class="w-100">
                                                 <mat-label>Software</mat-label>
-                                                <mat-select [(ngModel)]="workExperience[i].software" multiple disabled>
+                                                <mat-select [(ngModel)]="sharedAccordionFunctionality.workExperience[i].software" multiple disabled>
                                                     <mat-option *ngFor="let software of softwareList" [value]="software">{{ software }}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
@@ -113,13 +113,13 @@
                                                 <mat-label>Start Date</mat-label>
                                                 <input matInput disabled [matDatepicker]="picker1"
                                                     placeholder="Start Date"
-                                                    [(ngModel)]="workExperience[i].startDate"
-                                                    [value]="workExperience[i].startDate">
+                                                    [(ngModel)]="sharedAccordionFunctionality.workExperience[i].startDate"
+                                                    [value]="sharedAccordionFunctionality.workExperience[i].startDate">
                                                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker1></mat-datepicker>
                                             </mat-form-field>
                                         </ng-template>
-                                    </div>    
+                                    </div>
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field class="w-100" appearance="outline"
                                             *ngIf="editWorkExperience; else NoEditEndDate">
@@ -135,8 +135,8 @@
                                                 <mat-label>End Date</mat-label>
                                                 <input matInput disabled [matDatepicker]="picker2"
                                                     placeholder="End Date"
-                                                    [(ngModel)]="workExperience[i].endDate"
-                                                    [value]="workExperience[i].endDate">
+                                                    [(ngModel)]="sharedAccordionFunctionality.workExperience[i].endDate"
+                                                    [value]="sharedAccordionFunctionality.workExperience[i].endDate">
                                                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker2></mat-datepicker>
                                             </mat-form-field>
@@ -144,9 +144,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
 
-                        <div *ngFor="let experiences of newWorkExperiences; let i = index" class="row">
+                        <div *ngFor="let experiences of sharedAccordionFunctionality.newWorkExperiences; let i = index" class="row">
                             <div class="row d-block">
                                 <div class="experience-header" *ngIf="addingWorkExperience">
                                     <h3 class=" mb-0">Remove new Work Experience</h3>
@@ -155,29 +155,29 @@
                             </div>
                             <div class="row d-block">
                                 <div class="experience-header" *ngIf="!addingWorkExperience">
-                                    <h3 class="mb-2">{{newWorkExperiences[i].clientName}}</h3>
+                                    <h3 class="mb-2">{{sharedAccordionFunctionality.newWorkExperiences[i].clientName}}</h3>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Client Name</mat-label>
                                     <input type="text" matInput placeholder="Client Name"
-                                        [(ngModel)]="newWorkExperiences[i].clientName"
-                                        [value]="newWorkExperiences[i].clientName">
+                                        [(ngModel)]="sharedAccordionFunctionality.newWorkExperiences[i].clientName"
+                                        [value]="sharedAccordionFunctionality.newWorkExperiences[i].clientName">
                                 </mat-form-field>
                             </div>
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Project Name</mat-label>
                                     <input type="text" matInput placeholder="Project Name"
-                                        [(ngModel)]="newWorkExperiences[i].projectName"
-                                        [value]="newWorkExperiences[i].projectName">
+                                        [(ngModel)]="sharedAccordionFunctionality.newWorkExperiences[i].projectName"
+                                        [value]="sharedAccordionFunctionality.newWorkExperiences[i].projectName">
                                 </mat-form-field>
-                            </div>                            
+                            </div>
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Skillset</mat-label>
-                                    <mat-select [(ngModel)]="newWorkExperiences[i].skillSet" multiple>
+                                    <mat-select [(ngModel)]="sharedAccordionFunctionality.newWorkExperiences[i].skillSet" multiple>
                                         <mat-option *ngFor="let skill of skillSetList" [value]="skill">{{ skill }}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -185,7 +185,7 @@
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Software</mat-label>
-                                    <mat-select [(ngModel)]="newWorkExperiences[i].software" multiple>
+                                    <mat-select [(ngModel)]="sharedAccordionFunctionality.newWorkExperiences[i].software" multiple>
                                         <mat-option *ngFor="let software of softwareList" [value]="software">{{ software }}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -194,8 +194,8 @@
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Start Date</mat-label>
                                     <input matInput [matDatepicker]="picker1" placeholder="Start Date"
-                                        [(ngModel)]="newWorkExperiences[i].startDate"
-                                        [value]="newWorkExperiences[i].startDate">
+                                        [(ngModel)]="sharedAccordionFunctionality.newWorkExperiences[i].startDate"
+                                        [value]="sharedAccordionFunctionality.newWorkExperiences[i].startDate">
                                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                     <mat-datepicker #picker1></mat-datepicker>
                                 </mat-form-field>
@@ -204,14 +204,14 @@
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>End Date</mat-label>
                                     <input matInput [matDatepicker]="picker2" placeholder="End Date"
-                                        [(ngModel)]="newWorkExperiences[i].endDate"
-                                        [value]="newWorkExperiences[i].endDate">
+                                        [(ngModel)]="sharedAccordionFunctionality.newWorkExperiences[i].endDate"
+                                        [value]="sharedAccordionFunctionality.newWorkExperiences[i].endDate">
                                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                     <mat-datepicker #picker2></mat-datepicker>
                                 </mat-form-field>
                             </div>
                             <hr>
-                        </div> 
+                        </div>
 
                         <div *ngIf="editWorkExperience" class="col d-none d-md-flex" id="edit-buttons">
                             <button mat-button id="cancel-button" (click)="cancelWorkExperience()">
@@ -236,7 +236,7 @@
                                 (click)="addNewWorkExperience()">
                                 <mat-icon>add</mat-icon> Add Another Work Experience
                             </button>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>

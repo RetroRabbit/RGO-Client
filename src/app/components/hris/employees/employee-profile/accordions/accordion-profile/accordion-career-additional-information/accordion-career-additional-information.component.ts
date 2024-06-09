@@ -38,7 +38,6 @@ export class AccordionCareerAdditionalInformationComponent {
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
   customFields: CustomField[] = [];
-  additionalFormProgress: number = 0;
   employeeId: number | undefined;
   loggedInProfile!: EmployeeData;
 
@@ -96,6 +95,7 @@ export class AccordionCareerAdditionalInformationComponent {
       this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.employeeData = data;
+
         }
       });
     } else {
