@@ -83,6 +83,15 @@ export class AuthService {
     }
   }
 
+  async RenewIfAccessTokenExpired(token: string): Promise<string> {
+    const decodedToken = this.decodeJwt(token);
+    const expirationTime = decodedToken?.exp * 1000;
+    if (Date.now() >= expirationTime) {
+      return await this.getAccessToken();
+    }
+    return token;
+  }
+  
   async getUserInfo(): Promise<Auth0.User> {
     await firstValueFrom(this.isAuthenticated$.pipe(
       take(1), // Take the first value emitted by isAuthenticated$
