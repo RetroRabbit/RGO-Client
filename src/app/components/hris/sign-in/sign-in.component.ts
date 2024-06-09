@@ -43,17 +43,14 @@ export class SignInComponent {
 
   async Login() {
     try {
-      // Wait for the login process to complete
       await firstValueFrom(this.authService.login());
       
-      // Now the user is authenticated, retrieve the tokens
       const idToken = await this.authService.getIdToken();
       const accessToken = await this.authService.getAccessToken();
 
       // Use this to get photo url from google
       const photoUrl = idToken.picture;
 
-      // Set cookies
       this.cookieService.set('userEmail', idToken.email || '', {
         path: '/',
         secure: true,
@@ -116,8 +113,8 @@ export class SignInComponent {
         }
       }
       else {
-        console.error("Login failed: User has invalid or no role assigned");
-      }
+        console.error("Login failed: User has invalid or no role assigned.");
+        window.alert("Login failed. User has invalid or no role assigned.");}
     } catch (error) {
       window.alert("Login failed.");
       console.error("Login failed:", error);

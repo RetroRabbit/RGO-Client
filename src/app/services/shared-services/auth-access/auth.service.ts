@@ -1,10 +1,8 @@
-import { Injectable, NgModule } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as Auth0 from '@auth0/auth0-angular';
-import { catchError, switchMap, take, tap, map } from 'rxjs/operators';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError, EMPTY } from 'rxjs';
+import { switchMap, take, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { Store } from '@ngrx/store';
 
 @Injectable({
@@ -14,11 +12,9 @@ import { Store } from '@ngrx/store';
 export class AuthService {
 
   private isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private baseUrl: string = `${environment.HttpsBaseURL}/auth/`;
 
   constructor(
     private auth0: Auth0.AuthService,
-    private httpClient: HttpClient,
     public store: Store<Auth0.AppState>,
   ) { }
 
@@ -30,10 +26,10 @@ export class AuthService {
         take(1),
         tap((isAuthenticated) => {
           if (isAuthenticated) {
-            console.log("Authenticated successful");
+            console.log("Authenticated successful.");
             this.isAuthenticated$.next(true);
           } else {
-            console.log("Authenticated failed");
+            console.error("Authenticated failed.");
             this.isAuthenticated$.next(false);
           }
         })
@@ -42,13 +38,13 @@ export class AuthService {
 
   async getIdToken(): Promise<any> {
     await firstValueFrom(this.isAuthenticated$.pipe(
-      take(1), // Take the first value emitted by isAuthenticated$
+      take(1),
       tap(isAuthenticated => {
         if (!isAuthenticated) {
-          throw new Error('User not authenticated');
+          throw new Error('User not authenticated.');
         }
       })
-    )); // Wait for the user to be authenticated
+    ));
 
     const idToken = await firstValueFrom(this.auth0.idTokenClaims$.pipe(take(1)));
     if (idToken) {
@@ -62,13 +58,13 @@ export class AuthService {
 
   async getAccessToken(): Promise<string> {
     await firstValueFrom(this.isAuthenticated$.pipe(
-      take(1), // Take the first value emitted by isAuthenticated$
+      take(1),
       tap(isAuthenticated => {
         if (!isAuthenticated) {
           throw new Error('User not authenticated');
         }
       })
-    )); // Wait for the user to be authenticated
+    ));
 
     const accessToken = await firstValueFrom(this.auth0.getAccessTokenSilently().pipe(take(1)));
     if (accessToken) {
@@ -79,7 +75,7 @@ export class AuthService {
       console.log("Permissions:", permissions);
       return accessToken;
     } else {
-      throw new Error('Failed to retrieve access token (data is null or undefined)');
+      throw new Error('Failed to retrieve access token (data is null or undefined).');
     }
   }
 
@@ -94,20 +90,20 @@ export class AuthService {
   
   async getUserInfo(): Promise<Auth0.User> {
     await firstValueFrom(this.isAuthenticated$.pipe(
-      take(1), // Take the first value emitted by isAuthenticated$
+      take(1),
       tap(isAuthenticated => {
         if (!isAuthenticated) {
-          throw new Error('User not authenticated');
+          throw new Error('User not authenticated.');
         }
       })
-    )); // Wait for the user to be authenticated
+    ));
 
     const userInfo = await firstValueFrom(this.auth0.user$.pipe(take(1)));
     if (userInfo) {
       console.log("userinfo",userInfo);
       return userInfo;
     } else {
-      throw new Error('Failed to retrieve user info (data is null or undefined)');
+      throw new Error('Failed to retrieve user info (data is null or undefined).');
     }
   }
   
@@ -137,24 +133,5 @@ export class AuthService {
       logoutParams: { returnTo: document.location.origin },
     });
   }
-
-  FetchRoleByEmailFromDb(employeeEmail: string | undefined): Observable<any> {
-    let header: HttpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.httpClient
-      .get(
-        `${this.baseUrl}roles?email=${encodeURIComponent(employeeEmail ?? "")}`,
-        { headers: header, responseType: 'json' }
-      )
-      .pipe(
-        tap((response) => console.log('FetchRoleByEmailFromDb response:', response)), // Add logging here
-        catchError(err => {
-          if (err.status === 404) {
-            window.alert("Contact admin to create your account.");
-          }
-          return EMPTY;
-        })
-      );
-  }
-
 
 }
