@@ -325,12 +325,17 @@ export class SharedAccordionFunctionality {
         this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
         const total = this.customFieldsDocuments.length;
         const fetchedDocuments = this.additionalDocuments.length;
-        total == 0 ? this.additionalDocumentsProgress = 0 : this.additionalDocumentsProgress = Math.round((fetchedDocuments / total) * 100);
+        
+        if (fetchedDocuments === 0) {
+          this.additionalDocumentsProgress = total === 0 ? 100 : 0; 
+        } else {
+          this.additionalDocumentsProgress = total == 0 ? 0 : Math.round((fetchedDocuments / total) * 100);
+        }
         this.totalDocumentsProgress();
       }
-    })
+    });
   }
-
+  
   totalProfileProgress() {
     this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
     this.updateProfile.emit(this.profileFormProgress);
