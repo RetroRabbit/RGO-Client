@@ -84,12 +84,10 @@
                     <mat-icon>check_small</mat-icon>
                     <span>Account Handover</span>
                 </div>
+              {{ this.terminationData.dayOfNotice | date:'d MMM yyyy'}}  {{ selectedEmployee.engagementDate | date:'d MMM yyyy' }}
             </div>
         </div>
     </div>
-    
-
-
     </div>
     <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
         'background-color': '#D7DFFF',

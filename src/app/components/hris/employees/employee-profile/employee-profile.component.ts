@@ -36,7 +36,7 @@ import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.int
 @Component({
   selector: 'app-employee-profile',
   templateUrl: './employee-profile.component.html',
-  styleUrls: [ './employee-profile.component.css' ]
+  styleUrls: ['./employee-profile.component.css']
 })
 
 export class EmployeeProfileComponent implements OnChanges {
@@ -55,7 +55,7 @@ export class EmployeeProfileComponent implements OnChanges {
 
   employeeBanking !: EmployeeBanking;
 
-  employeeId = this.route.snapshot.params[ 'id' ];
+  employeeId = this.route.snapshot.params['id'];
 
   selectedAccordion: string = 'Profile Details';
   selectedItem: string = 'Profile Details';
@@ -109,7 +109,7 @@ export class EmployeeProfileComponent implements OnChanges {
   validateFile: any;
   snackBar: any;
 
-  @HostListener('window:resize', [ '$event' ])
+  @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
   }
@@ -132,8 +132,8 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    changes[ 'updateProfile' ].currentValue
-    changes[ 'updateDocument' ].currentValue
+    changes['updateProfile'].currentValue
+    changes['updateDocument'].currentValue
   }
 
   ngOnDestroy() {
@@ -141,8 +141,8 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ngOnInit() {
-    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()){
-      this.isAdminUser = true ;
+    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
+      this.isAdminUser = true;
     }
     this.sharedAccordionFunctionality.updateProfile.subscribe({
       next: (data: number) => {
@@ -158,7 +158,7 @@ export class EmployeeProfileComponent implements OnChanges {
       }
     });
 
-    this.employeeId = this.route.snapshot.params[ 'id' ];
+    this.employeeId = this.route.snapshot.params['id'];
     this.getClients();
 
     if (this.employeeId == undefined) {
@@ -177,12 +177,11 @@ export class EmployeeProfileComponent implements OnChanges {
 
     this.getEmployeeProfile();
     this.refreshEmployeeProfile();
-    this.getTerminationInfo();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
 
   openTerminationForm() {
-    this.router.navigateByUrl('/end-employment/'+this.employeeId)
+    this.router.navigateByUrl('/end-employment/' + this.employeeId)
   }
 
   goToEmployees() {
@@ -200,18 +199,18 @@ export class EmployeeProfileComponent implements OnChanges {
       }
     });
   }
-
-  getTerminationInfo(){
-    this.employeeTerminationService.getTerminationDetails(this.employeeId).subscribe({
-        next: (data: EmployeeTermination) => {
-            this.terminationData = data;
-        },
-        error: err => {
-            console.error('Error fetching termination details', err);
-        }
+  getTerminationInfo(): void {
+    this.employeeTerminationService.getTerminationDetails(this.selectedEmployee.id).subscribe({
+      next: (data: EmployeeTermination) => {
+        this.terminationData = data;
+        console.table(this.terminationData);
+      },
+      error: err => {
+        this.snackBarService.showSnackbar('Error fetching termination details', err);
+      }
     });
-    console.log(this.terminationData)
-}
+  }
+
 
   getEmployeeProfile() {
     const fetchProfile = this.usingSimpleProfile
@@ -235,6 +234,9 @@ export class EmployeeProfileComponent implements OnChanges {
         this.isLoading = false;
       },
       complete: () => {
+        if (!this.employeeProfile.active) {
+          this.getTerminationInfo();
+        }
         this.changeDetectorRef.detectChanges();
       },
       error: (error: any) => {
@@ -271,8 +273,8 @@ export class EmployeeProfileComponent implements OnChanges {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
         this.employees = data;
-        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[ 0 ];
-        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[ 0 ];
+        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
+        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
         this.filterClients(this.employeeProfile?.clientAllocated as number);
       }
     });
@@ -337,7 +339,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   filterClients(clientId: number) {
-    this.employeeClient = this.clients.filter(client => +clientId == client.id)[ 0 ];
+    this.employeeClient = this.clients.filter(client => +clientId == client.id)[0];
   }
 
   CaptureEvent(event: any) {
@@ -347,7 +349,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   overallProgress() {
-    this.overallFormProgress = Math.round((this.profileFormProgress + this.bankInformationProgress + this.documentFormProgress)/3);
+    this.overallFormProgress = Math.round((this.profileFormProgress + this.bankInformationProgress + this.documentFormProgress) / 3);
   }
 
   updateBankingProgress(update: any) {
@@ -362,9 +364,9 @@ export class EmployeeProfileComponent implements OnChanges {
 
   onFileChange(e: any) {
     if (e.target.files) {
-      const selectedFile = e.target.files[ 0 ];
+      const selectedFile = e.target.files[0];
       const file = new FileReader();
-      file.readAsDataURL(e.target.files[ 0 ]);
+      file.readAsDataURL(e.target.files[0]);
       file.onload = (event: any) => {
         this.employeeProfile.photo = event.target.result;
         this.base64Image = event.target.result;
@@ -403,7 +405,7 @@ export class EmployeeProfileComponent implements OnChanges {
     this.clipboard.copy(emailToCopy);
     this.snackBarService.showSnackbar("Email copied to clipboard", "snack-success");
   }
-  
+
   displayEditButtons() {
     this.sharedAccordionFunctionality.editEmployee = false;
     this.sharedAccordionFunctionality.editAdditional = false;
