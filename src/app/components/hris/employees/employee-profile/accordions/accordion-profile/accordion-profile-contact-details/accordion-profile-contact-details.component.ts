@@ -70,20 +70,15 @@ export class AccordionProfileContactDetailsComponent {
   saveContactDetails() {
     if (this.sharedAccordionFunctionality.employeeContactForm.valid) {
       const employeeContactFormValues = this.sharedAccordionFunctionality.employeeContactForm.value;
+      this.employeeProfile.employeeDetails.personalEmail = employeeContactFormValues.personalEmail;
+      this.employeeProfile.employeeDetails.email = employeeContactFormValues.email;
+      this.employeeProfile.employeeDetails.cellphoneNo = employeeContactFormValues.cellphoneNo;
+      this.employeeProfile.employeeDetails.emergencyContactName = employeeContactFormValues.emergencyContactName;
+      this.employeeProfile.employeeDetails.emergencyContactNo = employeeContactFormValues.emergencyContactNo;
+      this.employeeProfile.employeeDetails.houseNo = employeeContactFormValues.houseNo;
 
-      this.sharedAccordionFunctionality.employeeProfileDto!.personalEmail = employeeContactFormValues.personalEmail;
-      this.sharedAccordionFunctionality.employeeProfileDto!.email = employeeContactFormValues.email;
-      this.sharedAccordionFunctionality.employeeProfileDto!.cellphoneNo = employeeContactFormValues.cellphoneNo;
-      this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactName = employeeContactFormValues.emergencyContactName;
-      this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactNo = employeeContactFormValues.emergencyContactNo;
-      this.sharedAccordionFunctionality.employeeProfileDto!.houseNo = employeeContactFormValues.houseNo;
-
-      this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
+      this.employeeService.updateEmployee(this.employeeProfile.employeeDetails).subscribe({
         next: (data) => {
-          
-          this.employeeProfile.employeeDetails.emergencyContactName = employeeContactFormValues.emergencyContactName;
-          
-
           this.snackBarService.showSnackbar("Contact details updated", "snack-success");
           this.sharedAccordionFunctionality.checkContactFormProgress();
           this.sharedAccordionFunctionality.totalProfileProgress();
