@@ -119,10 +119,10 @@ export class AccordionProfilePersonalDetailsComponent {
   savePersonalEdit() {
     if (this.sharedAccordionFunctionality.personalDetailsForm.valid) {
       const personalDetailsFormValue = this.sharedAccordionFunctionality.personalDetailsForm.value;
-      this.sharedAccordionFunctionality.employeeProfileDto.disability = personalDetailsFormValue.disability;
-      this.sharedAccordionFunctionality.employeeProfileDto.disabilityNotes = personalDetailsFormValue.disabilityNotes;
-      this.sharedAccordionFunctionality.employeeProfileDto.race = personalDetailsFormValue.race;
-      this.sharedAccordionFunctionality.employeeProfileDto.gender = personalDetailsFormValue.gender;
+      this.sharedAccordionFunctionality.employeeProfileDto!.disability = personalDetailsFormValue.disability;
+      this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = personalDetailsFormValue.disabilityNotes;
+      this.sharedAccordionFunctionality.employeeProfileDto!.race = personalDetailsFormValue.race;
+      this.sharedAccordionFunctionality.employeeProfileDto!.gender = personalDetailsFormValue.gender;
       this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Personal details updated", "snack-success");
