@@ -44,6 +44,7 @@
     color: #0000ff;
     transform: rotate(-45deg);
     width: 20px;
+    
 }
 
 #header-label {
@@ -70,12 +71,44 @@
 }
 
 .resigned-status {
-    border: 1px solid #ccc;
+    border: 1px solid #B3261E;
     padding: 15px;
+    color: #B3261E;
     text-align: center;
     margin-right: 20px;
     border-radius: 10px;
     font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; 
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+}
+
+.resigned-info {
+    border: 1px solid #006E2B;
+    padding: 5px;
+    color: #006E2B;
+    text-align: center;
+    margin-right: 20px;
+    border-radius: 10px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; 
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+}
+
+.email-info {
+    gap: 10px;
+    color: #555454;
+    text-align: center;
+    margin-right: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--m-3-state-layers-light-on-surface-variant-opacity-012, rgba(73, 69, 79, 0.12));
     font-size: 14px;
     font-style: normal;
     font-weight: 500;

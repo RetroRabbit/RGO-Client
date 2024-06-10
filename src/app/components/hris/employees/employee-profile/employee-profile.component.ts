@@ -30,6 +30,8 @@ import { AccordionAdministrativeDocumentsComponent } from './accordions/accordio
 import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-employee-documents/accordion-employee-documents.component';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { AppModule } from 'src/app/app.module';
+import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
+import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
 
 @Component({
   selector: 'app-employee-profile',
@@ -46,6 +48,7 @@ export class EmployeeProfileComponent implements OnChanges {
   simpleEmployee!: SimpleEmployee;
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
+  terminationData !: EmployeeTermination
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
   customFields: CustomField[] = [];
@@ -119,6 +122,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private router: Router,
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
+    private employeeTerminationService: EmployeeTerminationService,
     public navService: NavService,
     private changeDetectorRef: ChangeDetectorRef,
     private employeeDataService: EmployeeDataService,
@@ -173,6 +177,7 @@ export class EmployeeProfileComponent implements OnChanges {
 
     this.getEmployeeProfile();
     this.refreshEmployeeProfile();
+    this.getTerminationInfo();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
 
@@ -195,6 +200,18 @@ export class EmployeeProfileComponent implements OnChanges {
       }
     });
   }
+
+  getTerminationInfo(){
+    this.employeeTerminationService.getTerminationDetails(this.employeeId).subscribe({
+        next: (data: EmployeeTermination) => {
+            this.terminationData = data;
+        },
+        error: err => {
+            console.error('Error fetching termination details', err);
+        }
+    });
+    console.log(this.terminationData)
+}
 
   getEmployeeProfile() {
     const fetchProfile = this.usingSimpleProfile
