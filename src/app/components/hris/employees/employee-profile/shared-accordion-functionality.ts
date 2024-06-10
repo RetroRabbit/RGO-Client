@@ -48,10 +48,10 @@ export class SharedAccordionFunctionality {
   starterkitDocuments: EmployeeDocument[] = [];
   additionalDocuments: EmployeeDocument[] = [];
 
-  foundClient: EmployeeProfile | undefined;
+  foundClient: Client | undefined;
   foundTeamLead: any;
   foundChampion: EmployeeProfile | undefined;
-  employeeProfileDto?: any;
+  employeeProfileDto?: EmployeeProfile = new EmployeeProfile();
   clientId: number | undefined;
   peopleChampionId: number | undefined;
 
@@ -81,7 +81,7 @@ export class SharedAccordionFunctionality {
   editContact: boolean = false;
   editQualifications: boolean = false;
   employeeType?: EmployeeType;
-  employeeClient!: EmployeeProfile;
+  employeeClient!: Client;
   employeeTeamLead!: EmployeeProfile;
   employeePeopleChampion!: EmployeeProfile;
   selectedEmployee!: EmployeeProfile;

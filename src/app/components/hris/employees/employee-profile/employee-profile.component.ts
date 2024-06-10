@@ -61,7 +61,7 @@ export class EmployeeProfileComponent implements OnChanges {
   showBackButtons: boolean = true;
   isAdminUser: boolean = false;
 
-  employeeClient!: EmployeeProfile;
+  employeeClient!: Client;
   employeeTeamLead!: EmployeeProfile;
   employeePeopleChampion!: EmployeeProfile;
 
