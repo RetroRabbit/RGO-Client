@@ -75,7 +75,7 @@ export class EmployeeTerminationComponent implements OnInit {
       terminationOption: new FormControl('', Validators.required),
       dayOfNotice: new FormControl<Date | string>('', Validators.required),
       lastDayOfEmployment: new FormControl<Date | string>('', Validators.required),
-      reEmploymentStatus: new FormControl<boolean>(false, Validators.required),
+      reEmploymentStatus: new FormControl<boolean>(true, Validators.required),
       equipmentStatus: new FormControl<boolean>(false, Validators.required),
       accountsStatus: new FormControl<boolean>(false, Validators.required),
       terminationDocument: new FormControl<string>('', Validators.required),
