@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import * as Auth0 from '@auth0/auth0-angular';
-import { switchMap, take, tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import { Store } from '@ngrx/store';
 
 @Injectable({
@@ -15,6 +17,7 @@ export class AuthService {
 
   constructor(
     private auth0: Auth0.AuthService,
+    private httpClient: HttpClient,
     public store: Store<Auth0.AppState>,
   ) { }
 
@@ -132,6 +135,17 @@ export class AuthService {
     this.auth0.logout({
       logoutParams: { returnTo: document.location.origin },
     });
+  }
+
+  async checkBackendConnection(): Promise<boolean> {
+    const header: HttpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
+    const isConnected = await firstValueFrom(
+      this.httpClient.get(`${environment.HttpsBaseURL}/auth/`, { headers: header, responseType: 'json' }).pipe(
+        map(() => true),
+        catchError(() => of(false))
+      )
+    );
+    return isConnected;
   }
 
 }

@@ -29,9 +29,6 @@ export class SignInComponent {
     private sharedPropprtyAccessService: SharedPropertyAccessService
   ) { }
 
-  ngOnInit() {
-  }
-
   screenWidth: number = window.innerWidth;
   @HostListener('window:resize', ['$event'])
 
@@ -97,10 +94,10 @@ export class SignInComponent {
         this.sharedPropprtyAccessService.setAccessProperties();
         // TODO: put back in
         // if (this.authAccessService.isTalent()) {
-          // this.navService.isHris = false;
-          // this.router.navigateByUrl('/ats-dashboard');
+        // this.navService.isHris = false;
+        // this.router.navigateByUrl('/ats-dashboard');
         // } else if (
-        if ( this.authAccessService.isTalent() ||
+        if (this.authAccessService.isTalent() ||
           this.authAccessService.isAdmin() ||
           this.authAccessService.isJourney() ||
           this.authAccessService.isSuperAdmin()
@@ -114,7 +111,8 @@ export class SignInComponent {
       }
       else {
         console.error("Login failed: User has invalid or no role assigned.");
-        window.alert("Login failed. User has invalid or no role assigned.");}
+        window.alert("Login failed. User has invalid or no role assigned.");
+      }
     } catch (error) {
       window.alert("Login failed.");
       console.error("Login failed:", error);
