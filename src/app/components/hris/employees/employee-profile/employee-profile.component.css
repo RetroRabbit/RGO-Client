@@ -93,19 +93,26 @@
     text-transform: capitalize;
 }
 
-.download-doc {
-    display: flex;
-    height: 40px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-}
-
 .resigned-info {
     border: 1px solid #006E2B;
     padding: 5px;
     color: #006E2B;
+    text-align: center;
+    margin-right: 30px;
+    border-radius: 10px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+}
+
+.resigned-info-notEligible {
+    border: 1px solid #B3261E;
+    padding: 5px;
+    color: #B3261E;
     text-align: center;
     margin-right: 30px;
     border-radius: 10px;
@@ -131,6 +138,16 @@
     line-height: 20px;
     letter-spacing: 0.1px;
     text-transform: capitalize;
+}
+
+#download-button {
+    color: #0029C6;
+    display: flex;
+    height: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
 #profile-header {
