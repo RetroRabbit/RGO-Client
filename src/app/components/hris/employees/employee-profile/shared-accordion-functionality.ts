@@ -345,8 +345,6 @@ export class SharedAccordionFunctionality {
     });
   }
 
-
-
   calculateQaulificationProgress() {
     let filledCount = 0;
     const formControls = this.employeeQualificationForm.controls;
