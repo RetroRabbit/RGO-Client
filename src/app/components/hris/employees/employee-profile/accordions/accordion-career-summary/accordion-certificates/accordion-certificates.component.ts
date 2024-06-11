@@ -93,6 +93,8 @@ export class AccordionCertificatesComponent {
       employeeId: this.employeeProfile.id as number
     }
     this.newCertificates.push(newCertificate);
+    this.sharedAccordionFunctionality.calculateCareerCertficatesFormProgress();
+    this.sharedAccordionFunctionality.totalCareerProgress();
   }
 
   findDifferenceInArrays(): EmployeeCertificates[] {
@@ -129,6 +131,8 @@ export class AccordionCertificatesComponent {
             this.addingCertificate = false;
             this.newCertificates = [];
             this.getEmployeeCertificate();
+            this.sharedAccordionFunctionality.calculateCareerCertficatesFormProgress();
+            this.sharedAccordionFunctionality.totalCareerProgress();
           }
         },
         error: (error) => {
@@ -234,6 +238,9 @@ export class AccordionCertificatesComponent {
         this.snackBarService.showSnackbar("Certificate deleted", "snack-success");
         this.copyOfCertificates.splice(index, 1);
         this.sharedAccordionFunctionality.employeeCertificates.splice(index, 1);
+        this.sharedAccordionFunctionality.employeeCertificatesFields = this.sharedAccordionFunctionality.employeeCertificatesFields - 4;
+        this.sharedAccordionFunctionality.calculateCareerCertficatesFormProgress();
+        this.sharedAccordionFunctionality.totalCareerProgress();
         this.editCertificate = false;
       },
       error: (error) => {

@@ -210,13 +210,16 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   removeExistingWorkExperience(index: number) {
+
     const deleteId = this.copyOfWorkExperience[index].id;
     this.workExperienceService.deleteWorkExperience(deleteId).subscribe({
       next: () => {
         this.snackBarService.showSnackbar("Experience deleted", "snack-success");
         this.copyOfWorkExperience.splice(index, 1);
         this.sharedAccordionFunctionality.workExperience.splice(index, 1);
-        // this.sharedAccordionFunctionality.workExpereinceFormFields = this.sharedAccordionFunctionality.workExpereinceFormFields - 6;
+        this.sharedAccordionFunctionality.workExpereinceFormFields = this.sharedAccordionFunctionality.workExpereinceFormFields - 6;
+        this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
+        this.sharedAccordionFunctionality.totalCareerProgress();
         this.editWorkExperience = false;
       },
       error: (error) => {
