@@ -12,6 +12,7 @@ import { EmployeeService } from 'src/app/services/hris/employee/employee.service
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
 import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
+import { Employee } from 'src/app/models/hris/employee.interface';
 
 @Component({
   selector: 'app-new-candidate',
@@ -73,7 +74,7 @@ export class NewCandidateComponent {
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
   employeesReferrals: Observable<GenericDropDownObject[]> = this.getEmployees();
   filteredEmployees!: Observable<GenericDropDownObject[]>;
-  allEmployees: EmployeeProfile[] = [];
+  allEmployees: Employee[] = [];
   optionValid: boolean = false;
 
   ngOnInit(): void {

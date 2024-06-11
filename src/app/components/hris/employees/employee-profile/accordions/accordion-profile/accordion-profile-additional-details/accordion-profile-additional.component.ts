@@ -39,7 +39,7 @@ export class AccordionProfileAdditionalComponent {
   customFields: CustomField[] = [];
   additionalFormProgress: number = 0;
   employeeId : number | undefined;
-  loggedInProfile!: EmployeeProfile;
+  loggedInProfile!: EmployeeProfile | SimpleEmployee;
 
   constructor(
     private fb: FormBuilder,

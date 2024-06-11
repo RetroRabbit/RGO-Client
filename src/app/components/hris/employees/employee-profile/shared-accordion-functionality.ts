@@ -60,10 +60,10 @@ export class SharedAccordionFunctionality {
   newWorkExperiences: WorkExperience[] = [];
 
 
-  foundClient: EmployeeProfile | undefined;
+  foundClient: Client | undefined;
   foundTeamLead: any;
   foundChampion: EmployeeProfile | undefined;
-  employeeProfileDto?: any;
+  employeeProfileDto?: EmployeeProfile = new EmployeeProfile();
   clientId: number | undefined;
   peopleChampionId: number | undefined;
 
@@ -96,7 +96,7 @@ export class SharedAccordionFunctionality {
   editContact: boolean = false;
   editQualifications: boolean = false;
   employeeType?: EmployeeType;
-  employeeClient!: EmployeeProfile;
+  employeeClient!: Client;
   employeeTeamLead!: EmployeeProfile;
   employeePeopleChampion!: EmployeeProfile;
   selectedEmployee!: EmployeeProfile;
@@ -334,10 +334,15 @@ export class SharedAccordionFunctionality {
         this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
         const total = this.customFieldsDocuments.length;
         const fetchedDocuments = this.additionalDocuments.length;
-        total == 0 ? this.additionalDocumentsProgress = 0 : this.additionalDocumentsProgress = Math.round((fetchedDocuments / total) * 100);
+
+        if (fetchedDocuments === 0) {
+          this.additionalDocumentsProgress = total === 0 ? 100 : 0;
+        } else {
+          this.additionalDocumentsProgress = total == 0 ? 0 : Math.round((fetchedDocuments / total) * 100);
+        }
         this.totalDocumentsProgress();
       }
-    })
+    });
   }
 
 
