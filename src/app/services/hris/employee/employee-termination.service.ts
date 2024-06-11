@@ -14,6 +14,11 @@ export class EmployeeTerminationService {
     constructor(private httpClient: HttpClient) {
         this.baseUrl = `${environment.HttpsBaseURL}/termination`
     }
+
+    getTerminationDetails(employeeId: number | undefined): Observable<EmployeeTermination> {
+        const queryParams = `?employeeId=${employeeId}`;
+        return this.httpClient.get<EmployeeTermination>(`${this.baseUrl}${queryParams}`);
+    }
     
     saveEmployeeTermination(EmployeeTermination: EmployeeTermination): Observable<EmployeeTermination> {
         return this.httpClient.post<EmployeeTermination>(`${this.baseUrl}`, EmployeeTermination);
