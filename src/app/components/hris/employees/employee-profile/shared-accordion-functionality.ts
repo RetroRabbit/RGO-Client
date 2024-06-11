@@ -404,7 +404,6 @@ export class SharedAccordionFunctionality {
       ));
 
       const FilledCount = this.filteredFilledWorkExp.length;
-
       if (FilledCount == 0 && this.workExpereinceFormFields == 0) {
         this.workExpFormProgress = 0;
       }
@@ -442,14 +441,12 @@ export class SharedAccordionFunctionality {
     }
 
     const FilledCount = this.filteredFilledCerificate.length;
-
     if (FilledCount == 0 && this.employeeCertificatesFields == 0) {
       this.certificateformProgress = 0;
     }
     else {
       this.certificateformProgress = Math.round((FilledCount / this.employeeCertificatesFields) * 100);
     }
-
   }
 
   calculatesalaryDetails() {
