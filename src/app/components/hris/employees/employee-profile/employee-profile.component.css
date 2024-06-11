@@ -135,16 +135,6 @@
     text-transform: capitalize;
 }
 
-#download-button {
-    color: #0029C6;
-    display: flex;
-    height: 40px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-}
-
 #profile-header {
     background-color: white;
     border-radius: 2rem;
