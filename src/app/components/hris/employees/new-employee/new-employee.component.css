@@ -562,3 +562,16 @@ button[disabled],
         flex-direction: row;
     }
 }
+
+.cellphone-label {
+    margin-left: 95px; 
+  }
+  
+.cellphone-container:focus-within .cellphone-label,
+.cellphone-container.has-value .cellphone-label {  
+    margin-left: 0; 
+}
+
+.cellphone-container{
+    margin-bottom: 1rem;
+}
