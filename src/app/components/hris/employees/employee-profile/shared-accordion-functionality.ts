@@ -377,7 +377,7 @@ export class SharedAccordionFunctionality {
 
   calculateCareerWorkExperienceFormProgress() {
     const target: any = [...this.workExperience];
-
+    console.log("Fields" + this.workExpereinceFormFields);
     if (this.workExperience.length === 0) {
       this.workExpereinceFormFields = 0;
       this.filteredFilledWorkExp = 0;
@@ -391,7 +391,7 @@ export class SharedAccordionFunctionality {
         }
       }
       target.filter((obj: any) => Object.values(obj).every((value: any) =>
-        value.length === 0 ? console.log("hey") : this.filteredFilledWorkExp.push(value)));
+        value.length === 0 ? null : this.filteredFilledWorkExp.push(value)));
 
       const FilledCount = this.filteredFilledWorkExp.length;
 
@@ -401,7 +401,9 @@ export class SharedAccordionFunctionality {
 
   calculateCareerCertficatesFormProgress() {
     const target: any = [...this.employeeCertificates];
-    const newTarget: any = [];
+
+    console.log("Fields" + this.employeeCertificatesFields);
+
     if (this.employeeCertificates.length === 0) {
       this.employeeCertificatesFields = 0;
       this.filteredFilledCerificate.length = 0;
@@ -415,7 +417,7 @@ export class SharedAccordionFunctionality {
         }
       }
       target.filter((obj: any) => Object.values(obj).every((value: any) =>
-        value.length === 0 ? console.log("hey") : this.filteredFilledCerificate.push(value)));
+        value.length === 0 ? null : this.filteredFilledCerificate.push(value)));
     }
     const FilledCount = this.filteredFilledCerificate.length;
     this.certificateformProgress = Math.round((FilledCount / this.employeeCertificatesFields) * 100);
