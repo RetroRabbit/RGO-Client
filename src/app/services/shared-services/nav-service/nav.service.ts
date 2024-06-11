@@ -3,6 +3,7 @@ import { EmployeeProfileService }  from '../../hris/employee/employee-profile.se
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { AuthAccessService } from '../auth-access/auth-access.service';
 import { CookieService } from 'ngx-cookie-service';
+import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class NavService {
   public showSystemNavbar: boolean = true;
   public unsavedChanges: boolean = false;
   public isHris: boolean = true;
-  public employeeProfile!:EmployeeProfile;
+  public employeeProfile!:EmployeeProfile | SimpleEmployee;
 
   public expandSideNav: boolean = false;
   public showNavContainer: boolean = true;

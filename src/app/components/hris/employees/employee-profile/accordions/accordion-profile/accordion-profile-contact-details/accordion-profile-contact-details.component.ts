@@ -43,12 +43,12 @@ export class AccordionProfileContactDetailsComponent {
 
   initializeForm() {
     this.sharedAccordionFunctionality.employeeContactForm = this.fb.group({
-      email: [this.employeeProfile!.employeeDetails.email, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.emailPattern)]],
-      personalEmail: [this.employeeProfile!.employeeDetails.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
-      cellphoneNo: [this.employeeProfile!.employeeDetails.cellphoneNo, [Validators.required, Validators.maxLength(10), Validators.pattern(/^[0][6-8][0-9]{8}$/)]],
-      houseNo: [this.employeeProfile!.employeeDetails.houseNo, [Validators.minLength(4), Validators.pattern(/^[0][6-8][0-9]{8}$/)]],
-      emergencyContactName: [this.employeeProfile!.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
-      emergencyContactNo: [this.employeeProfile!.employeeDetails.emergencyContactNo, [Validators.required, Validators.pattern(/^[0][6-8][0-9]{8}$/), Validators.maxLength(10)]]
+      email: [this.employeeProfile.employeeDetails.email, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.emailPattern)]],
+      personalEmail: [this.employeeProfile.employeeDetails.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
+      cellphoneNo: [this.employeeProfile.employeeDetails.cellphoneNo, [Validators.required, Validators.maxLength(10), Validators.pattern(/^[0][6-8][0-9]{8}$/)]],
+      houseNo: [this.employeeProfile.employeeDetails.houseNo, [Validators.minLength(4), Validators.pattern(/^[0][6-8][0-9]{8}$/)]],
+      emergencyContactName: [this.employeeProfile.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
+      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required, Validators.pattern(/^[0][6-8][0-9]{8}$/), Validators.maxLength(10)]]
     });
     this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.sharedAccordionFunctionality.checkContactFormProgress();
@@ -67,18 +67,17 @@ export class AccordionProfileContactDetailsComponent {
     this.sharedAccordionFunctionality.employeeContactForm.disable();
   }
   
-  saveContactEdit() {
+  saveContactDetails() {
     if (this.sharedAccordionFunctionality.employeeContactForm.valid) {
       const employeeContactFormValues = this.sharedAccordionFunctionality.employeeContactForm.value;
+      this.employeeProfile.employeeDetails.personalEmail = employeeContactFormValues.personalEmail;
+      this.employeeProfile.employeeDetails.email = employeeContactFormValues.email;
+      this.employeeProfile.employeeDetails.cellphoneNo = employeeContactFormValues.cellphoneNo;
+      this.employeeProfile.employeeDetails.emergencyContactName = employeeContactFormValues.emergencyContactName;
+      this.employeeProfile.employeeDetails.emergencyContactNo = employeeContactFormValues.emergencyContactNo;
+      this.employeeProfile.employeeDetails.houseNo = employeeContactFormValues.houseNo;
 
-      this.sharedAccordionFunctionality.employeeProfileDto.personalEmail = employeeContactFormValues.personalEmail;
-      this.sharedAccordionFunctionality.employeeProfileDto.email = employeeContactFormValues.email;
-      this.sharedAccordionFunctionality.employeeProfileDto.cellphoneNo = employeeContactFormValues.cellphoneNo;
-      this.sharedAccordionFunctionality.employeeProfileDto.emergencyContactName = employeeContactFormValues.emergencyContactName;
-      this.sharedAccordionFunctionality.employeeProfileDto.emergencyContactNo = employeeContactFormValues.emergencyContactNo;
-      this.sharedAccordionFunctionality.employeeProfileDto.houseNo = employeeContactFormValues.houseNo;
-
-      this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
+      this.employeeService.updateEmployee(this.employeeProfile.employeeDetails).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Contact details updated", "snack-success");
           this.sharedAccordionFunctionality.checkContactFormProgress();

@@ -29,6 +29,7 @@ import { AccordionDocumentsAdditionalComponent } from './accordions/accordion-do
 import { AccordionAdministrativeDocumentsComponent } from './accordions/accordion-administrative-documents/accordion-administrative-documents.component';
 import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-employee-documents/accordion-employee-documents.component';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
+import { AppModule } from 'src/app/app.module';
 
 @Component({
   selector: 'app-employee-profile',
@@ -58,8 +59,9 @@ export class EmployeeProfileComponent implements OnChanges {
 
   editContact: boolean = false;
   showBackButtons: boolean = true;
+  isAdminUser: boolean = false;
 
-  employeeClient!: EmployeeProfile;
+  employeeClient!: Client;
   employeeTeamLead!: EmployeeProfile;
   employeePeopleChampion!: EmployeeProfile;
 
@@ -135,16 +137,26 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ngOnInit() {
-    this.sharedAccordionFunctionality.updateProfile.subscribe(profileProgress => {
-      this.profileFormProgress = profileProgress;
+    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()){
+      this.isAdminUser = true ;
+    }
+    this.sharedAccordionFunctionality.updateProfile.subscribe({
+      next: (data: number) => {
+        this.profileFormProgress = data;
+        this.overallProgress();
+      }
     });
-    this.sharedAccordionFunctionality.updateDocument.subscribe(documentProgress => {
-      this.documentFormProgress = documentProgress;
+
+    this.sharedAccordionFunctionality.updateDocument.subscribe({
+      next: (data: number) => {
+        this.documentFormProgress = data;
+        this.overallProgress();
+      }
     });
-    this.overallProgress();
 
     this.employeeId = this.route.snapshot.params[ 'id' ];
     this.getClients();
+
     if (this.employeeId == undefined) {
       this.showBackButtons = false;
       this.employeeId = this.authAccessService.getUserId();
@@ -158,9 +170,14 @@ export class EmployeeProfileComponent implements OnChanges {
     else {
       this.usingSimpleProfile = true;
     }
+
     this.getEmployeeProfile();
     this.refreshEmployeeProfile();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+  }
+
+  openTerminationForm() {
+    this.router.navigateByUrl('/end-employment/'+this.employeeId)
   }
 
   goToEmployees() {
@@ -313,7 +330,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   overallProgress() {
-    this.overallFormProgress = Math.floor((this.profileFormProgress + this.bankInformationProgress + this.documentFormProgress)/3);
+    this.overallFormProgress = Math.round((this.profileFormProgress + this.bankInformationProgress + this.documentFormProgress)/3);
   }
 
   updateBankingProgress(update: any) {
