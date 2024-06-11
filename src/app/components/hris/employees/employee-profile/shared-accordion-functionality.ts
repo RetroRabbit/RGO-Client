@@ -382,15 +382,15 @@ export class SharedAccordionFunctionality {
     let newTargetWorkExp: any = [];
     this.filteredFilledWorkExp.length = 0;
 
-    for (const element of this.workExperience) {
-      targetWorkExp.push(element);
-    }
-
-    if (targetWorkExp.length === 0) {
+    if (this.workExperience.length === 0) {
       this.workExpereinceFormFields = 0;
       this.filteredFilledWorkExp.length = 0;
     }
     else {
+
+      for (const element of this.workExperience) {
+        targetWorkExp.push(element);
+      }
       targetWorkExp.filter((element: any) => {
         const { employeeId, id, ...samplearray } = element;
         newTargetWorkExp.push(samplearray);
@@ -404,7 +404,13 @@ export class SharedAccordionFunctionality {
       ));
 
       const FilledCount = this.filteredFilledWorkExp.length;
-      this.workExpFormProgress = Math.round((FilledCount / this.workExpereinceFormFields) * 100);
+
+      if (FilledCount == 0 && this.workExpereinceFormFields == 0) {
+        this.workExpFormProgress = 0;
+      }
+      else {
+        this.workExpFormProgress = Math.round((FilledCount / this.workExpereinceFormFields) * 100);
+      }
     }
   }
 
@@ -413,15 +419,15 @@ export class SharedAccordionFunctionality {
     let newTargetCertficates: any = [];
     this.filteredFilledCerificate.length = 0;
 
-    for (const element of this.employeeCertificates) {
-      targetCertficates.push(element);
-    }
-
     if (this.employeeCertificates.length === 0) {
       this.employeeCertificatesFields = 0;
       this.filteredFilledCerificate.length = 0;
     }
     else {
+      for (const element of this.employeeCertificates) {
+        targetCertficates.push(element);
+      }
+
       targetCertficates.filter((element: any) => {
         const { employeeId, id, ...samplearray } = element;
         newTargetCertficates.push(samplearray);
@@ -436,7 +442,14 @@ export class SharedAccordionFunctionality {
     }
 
     const FilledCount = this.filteredFilledCerificate.length;
-    this.certificateformProgress = Math.round((FilledCount / this.employeeCertificatesFields) * 100);
+
+    if (FilledCount == 0 && this.employeeCertificatesFields == 0) {
+      this.certificateformProgress = 0;
+    }
+    else {
+      this.certificateformProgress = Math.round((FilledCount / this.employeeCertificatesFields) * 100);
+    }
+
   }
 
   calculatesalaryDetails() {
@@ -460,7 +473,7 @@ export class SharedAccordionFunctionality {
   }
 
   totalCareerProgress() {
-    this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qaulificationFormProgress + this.workExpFormProgress + this.certificateformProgress + this.salaryDetailsFormProgress) / 5);
+    this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qaulificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 5);
     this.updateCareer.emit(this.careerFormProgress);
   }
 
