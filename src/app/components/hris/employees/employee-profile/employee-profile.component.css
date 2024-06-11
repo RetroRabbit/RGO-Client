@@ -120,22 +120,6 @@
     text-transform: capitalize;
 }
 
-.resigned-info-notEligible {
-    border: 1px solid #B3261E;
-    padding: 5px;
-    color: #B3261E;
-    text-align: center;
-    margin-right: 30px;
-    border-radius: 10px;
-    font-family: Roboto;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 20px;
-    letter-spacing: 0.1px;
-    text-transform: capitalize;
-}
-
 .email-info {
     gap: 10px;
     color: #555454;
@@ -450,10 +434,6 @@
 div.row {
     padding: 0;
 }
-
-/* #svg-icon-w #icon-w {
-    fill: white;
-} */
 
 #overall-progress-bar {
     border-color: #0029C6;
