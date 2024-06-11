@@ -72,7 +72,7 @@
             {{usingSimpleProfile ? simpleEmployee.email : employeeProfile.email}}
           </div>
           <div class="col d-flex align-items-center ms-3"
-            *ngIf="!employeeProfile.active && this.isAdminUser && this.terminationData?.reemploymentStatus == true" else notEligible>
+            *ngIf="!employeeProfile.active && this.isAdminUser && this.terminationData?.reemploymentStatus == true">
             <div class="resigned-info me-2 d-flex align-items-center">
               <mat-icon>check_small</mat-icon>
               <span>Eligible For Reemployment</span>
