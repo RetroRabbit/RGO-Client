@@ -20,7 +20,7 @@ mat-icon{
 }
 
 #delete-icon{
-    color: rgb(217, 63, 63);
+    color: rgb(184, 2, 2);
 }
 
 #edit-button-width {
@@ -29,6 +29,13 @@ mat-icon{
     background-color: #D7DFFF;
     color: #0029C6;
     width: 170px;
+}
+
+#delete-button {
+    border: none;
+    border-radius: 2rem;
+    color: rgb(184, 2, 2);
+    width: 120px;
 }
 
 #edit-button-width:disabled{
@@ -40,10 +47,15 @@ mat-icon{
 .experience-header {
     display: flex;
     align-items: center;
+    width: 100%;
+}
+
+#experience-remove {
+    margin-left: 720px;
 }
 
 .icon-color{
-    color: red;
+    color: rgb(184, 2, 2);
 }
 
 .experience-header h2 {
