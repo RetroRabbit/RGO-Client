@@ -19,10 +19,6 @@ mat-icon{
     cursor: not-allowed;
 }
 
-#delete-icon{
-    color: rgb(184, 2, 2);
-}
-
 #edit-button-width {
     border: none;
     border-radius: 2rem;
@@ -47,7 +43,6 @@ mat-icon{
 .experience-header {
     display: flex;
     align-items: center;
-    width: 100%;
 }
 
 #experience-remove {
