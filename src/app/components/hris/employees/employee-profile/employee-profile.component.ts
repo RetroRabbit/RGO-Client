@@ -85,6 +85,7 @@ export class EmployeeProfileComponent implements OnChanges {
   client: string = '';
   previousPage: string = '';
   currentPage: string = '';
+  base64String: string = "";
 
   isLoading: boolean = true;
   usingSimpleProfile: boolean = false;
@@ -203,7 +204,6 @@ export class EmployeeProfileComponent implements OnChanges {
     this.employeeTerminationService.getTerminationDetails(this.selectedEmployee.id).subscribe({
       next: (data: EmployeeTermination) => {
         this.terminationData = data;
-        console.table(this.terminationData);
       },
       error: err => {
         this.snackBarService.showSnackbar('Error fetching termination details', err);
@@ -286,6 +286,26 @@ export class EmployeeProfileComponent implements OnChanges {
       basedIn = `Based in ${this.employeeProfile.physicalAddress.suburbOrDistrict}`;
     }
     return basedIn;
+  }
+
+   downloadFile(base64String: string, fileName: string) {
+    const commaIndex = base64String.indexOf(',');
+    if (commaIndex !== -1) {
+      base64String = base64String.slice(commaIndex + 1);
+    }
+    const byteString = atob(base64String);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const intArray = new Uint8Array(arrayBuffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+      intArray[i] = byteString.charCodeAt(i);
+    }
+
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
   }
 
   populateEmployeeAccordion(employee: SimpleEmployee) {
