@@ -1,5 +1,5 @@
 import { Component, HostListener } from "@angular/core";
-import { AuthService } from "@auth0/auth0-angular";
+import { AuthService } from "./services/shared-services/auth-access/auth.service";
 import { CookieService } from "ngx-cookie-service";
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeProfile } from "./models/hris/employee-profile.interface";
@@ -36,7 +36,7 @@ export class AppComponent {
 
 
   constructor(
-    private auth: AuthService,
+    private authService: AuthService,
     private authAccess: AuthAccessService,
     public cookieService: CookieService,
     public navService: NavService){
@@ -60,9 +60,7 @@ export class AppComponent {
   }
 
   logout() {
-    this.auth.logout({
-      logoutParams: { returnTo: document.location.origin }
-    });
+    this.authService.logout()
   }
 
   hasSignedIn(): boolean 

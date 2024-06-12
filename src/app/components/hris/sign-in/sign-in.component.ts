@@ -1,16 +1,15 @@
 import { Component, HostListener, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { GetLogin } from '../../shared-components/store/actions/login-in.actions';
-import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../../../models/hris/token.interface';
-import { map, switchMap, take, tap } from 'rxjs';
 import { AuthService } from '../../../services/shared-services/auth-access/auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import { firstValueFrom } from 'rxjs';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AppComponent } from 'src/app/app.component';
+
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -22,8 +21,6 @@ export class SignInComponent {
   userEmail: string | null = null;
 
   constructor(
-    private store: Store<Auth0.AppState>,
-    private auth: Auth0.AuthService,
     private authService: AuthService,
     private router: Router,
     private cookieService: CookieService,
@@ -38,17 +35,6 @@ export class SignInComponent {
     if(this.appComponent.hasSignedIn()){
       this.initialUserNavigation();
       return
-    }
-    this.token = this.cookieService.get('userToken');
-    this.userEmail = this.cookieService.get('userEmail');
-    if (this.token) {
-      const tokenPayload = JSON.parse(atob(this.token.split('.')[1]));
-      const expiryDate = new Date(tokenPayload.exp * 1000);
-  
-      if (expiryDate < new Date()) {
-        this.cookieService.deleteAll();
-        this.router.navigate(['/login']);
-      }
     }
   }
 
@@ -67,81 +53,99 @@ export class SignInComponent {
       location.reload()
   }
 
-  Login() {
-    this.cookieService.deleteAll();
-    this.auth
-      .loginWithPopup()
-      .pipe(
-        take(1),
-        switchMap(() => this.auth.user$.pipe(take(1))),
-        switchMap((user) => {
-          this.cookieService.set('userEmail', user?.email || '', {
-            path: '/',
-            secure: true,
-            sameSite: 'None'
-          }); 
-          return this.authService.login(user?.email).pipe(
-            tap((token) => {
-              this.cookieService.set('userToken', token, {
-                path: '/',
-                secure: true,
-                sameSite: 'None'
-              });
-            }),
-            map((token) => ({ user, token }))
-          );
-        }),
-        switchMap(({ user, token }) =>
-          this.authService.FetchRoles(user?.email).pipe(
-            tap((roles) => {
-              this.cookieService.set('userType', roles, {
-                path: '/',
-                secure: true,
-                sameSite: 'None'
-              });
-            }),
-            map((roles) => ({ user, token, roles }))
-          )
-        )
-      )
-      .subscribe({
-        next: ({ user, token, roles }) => {
-          this.authAccessService.setRoles(roles);
-          const googleID: Token = {
-            email: user?.email,
-            token: token,
-            roles: roles,
-          };
-          this.authAccessService.setEmployeeEmail(user?.email as string);
-          this.navService.refreshEmployee();
-          this.store.dispatch(GetLogin({ payload: googleID }));
-          if(window.innerWidth > 776)
-              this.navService.showNavbar = true;
-          else
-            this.navService.showSideBar = true;
+  async Login() {
+    try {    
+      //TODO: check if server is online otherwise dont continue
+      // const isBackendConnected = await this.authService.checkBackendConnection();
+      // if (!isBackendConnected) {
+      //   window.alert("Backend is not available.");
+      //   return;
+      // }
 
-          this.sharedPropprtyAccessService.setAccessProperties();
-          this.initialUserNavigation();
-        },
+      await firstValueFrom(this.authService.login());
+      
+      const idToken = await this.authService.getIdToken();
+      const accessToken = await this.authService.getAccessToken();
+
+      // Use this to get photo url from google
+      const photoUrl = idToken.picture;
+
+      this.cookieService.set('userEmail', idToken.email || '', {
+        path: '/',
+        secure: true,
+        sameSite: 'None'
       });
+
+      this.cookieService.set('accessToken', accessToken || '', {
+        path: '/',
+        secure: true,
+        sameSite: 'None'
+      });
+
+      const decodedAccessToken = this.authService.decodeJwt(accessToken);
+      const assignedRoleFromAuth0 = decodedAccessToken?.role || [];
+      const validRoles = ['SuperAdmin', 'Employee', 'Talent', 'Journey', 'Admin'];
+      const filteredRoles = assignedRoleFromAuth0.filter((role: string) => validRoles.includes(role));
+
+      if (filteredRoles.length > 0) {
+
+        this.cookieService.set('userType', JSON.stringify(assignedRoleFromAuth0), {
+          path: '/',
+          secure: true,
+          sameSite: 'None'
+        });
+
+        this.authAccessService.setRoles(assignedRoleFromAuth0);
+
+        const userData: Token = {
+          email: idToken.email,
+          token: accessToken,
+          roles: assignedRoleFromAuth0,
+        };
+
+        this.authAccessService.setEmployeeEmail(idToken.email as string);
+        this.navService.refreshEmployee();
+
+        this.authService.store.dispatch(GetLogin({ payload: userData }));
+        if (window.innerWidth > 776)
+          this.navService.showNavbar = true;
+        else {
+          this.navService.showSideBar = true;
+        }
+
+        this.sharedPropprtyAccessService.setAccessProperties();
+        this.initialUserNavigation();
+      }
+      else {
+        console.error("Login failed: User has invalid or no role assigned.");
+        window.alert("Login failed. User has invalid or no role assigned.");
+      }
+    } catch (error) {
+      window.alert("Login failed.");
+      console.error("Login failed:", error);
+    }
   }
 
   initialUserNavigation(){
-  // TODO: put back in
-          // if (this.authAccessService.isTalent()) {
-          //   this.navService.isHris = false;
-          //   this.router.navigateByUrl('/ats-dashboard');
-          // }
-          if (
-            this.authAccessService.isAdmin() ||
-            this.authAccessService.isJourney() ||
-            this.authAccessService.isSuperAdmin() ||
-            this.authAccessService.isTalent()
-          ) {
-            this.navService.isHris = true;
-            this.cookieService.set('isHris', String(this.navService.isHris))
-            this.router.navigateByUrl('/dashboard');
-          }
-          else if (this.authAccessService.isEmployee()) { this.router.navigateByUrl('/profile'); }
+    // TODO: put back in once ATS is available
+    // if (this.authAccessService.isTalent()) {
+    // this.navService.isHris = false;
+    // this.router.navigateByUrl('/ats-dashboard');
+    // } else if (
+      if (
+        this.authAccessService.isAdmin() ||
+        this.authAccessService.isJourney() ||
+        this.authAccessService.isSuperAdmin() ||
+        this.authAccessService.isTalent()
+      ) {
+        this.navService.isHris = true;
+        this.cookieService.set('isHris', String(this.navService.isHris));
+        this.router.navigateByUrl('/dashboard');
+      } else if (this.authAccessService.isEmployee()) {
+        this.router.navigateByUrl('/profile');
+      } else {
+        this.router.navigate(['/login']);
+      }
+
+    }
   }
-}
