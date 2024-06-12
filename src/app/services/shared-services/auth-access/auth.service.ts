@@ -29,10 +29,8 @@ export class AuthService {
         take(1),
         tap((isAuthenticated) => {
           if (isAuthenticated) {
-            console.log("Authenticated successful.");
             this.isAuthenticated$.next(true);
           } else {
-            console.error("Authenticated failed.");
             this.isAuthenticated$.next(false);
           }
         })
@@ -51,8 +49,6 @@ export class AuthService {
 
     const idToken = await firstValueFrom(this.auth0.idTokenClaims$.pipe(take(1)));
     if (idToken) {
-      console.log("json id token:", idToken);
-      console.log("Extracted id token:", idToken.__raw);
       return idToken;
     } else {
       throw new Error('Failed to retrieve id token (data is null or undefined)');
@@ -71,11 +67,8 @@ export class AuthService {
 
     const accessToken = await firstValueFrom(this.auth0.getAccessTokenSilently().pipe(take(1)));
     if (accessToken) {
-      console.log("Extracted access token:", accessToken);
       const decodedAccessToken = this.decodeJwt(accessToken);
-      console.log("json access token:", decodedAccessToken);
       const permissions = decodedAccessToken.permissions || [];
-      console.log("Permissions:", permissions);
       return accessToken;
     } else {
       throw new Error('Failed to retrieve access token (data is null or undefined).');
@@ -103,7 +96,6 @@ export class AuthService {
 
     const userInfo = await firstValueFrom(this.auth0.user$.pipe(take(1)));
     if (userInfo) {
-      console.log("userinfo",userInfo);
       return userInfo;
     } else {
       throw new Error('Failed to retrieve user info (data is null or undefined).');

@@ -14,7 +14,7 @@ export class HrisPageGuard {
   ) { }
 
   canActivate(): any {
-    if (true == this.navService.isHris) {
+    if (this.navService.isHris === true) {
       return true;
     }
 

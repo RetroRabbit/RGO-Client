@@ -14,7 +14,7 @@ export class AtsPageGuard {
   ) { }
 
   canActivate(): any {
-    if (false == this.navService.isHris) {
+    if (this.navService.isHris === false) {
       return true;
     }
 

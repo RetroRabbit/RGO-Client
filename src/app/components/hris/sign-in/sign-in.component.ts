@@ -8,6 +8,7 @@ import { firstValueFrom } from 'rxjs';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-sign-in',
@@ -26,8 +27,16 @@ export class SignInComponent {
     public navService: NavService,
     private authAccessService: AuthAccessService,
     private NgZone: NgZone,
-    private sharedPropprtyAccessService: SharedPropertyAccessService
+    private sharedPropprtyAccessService: SharedPropertyAccessService,
+    private appComponent: AppComponent,
   ) { }
+
+  ngOnInit() {
+    if(this.appComponent.hasSignedIn()){
+      this.initialUserNavigation();
+      return
+    }
+  }
 
   screenWidth: number = window.innerWidth;
   @HostListener('window:resize', ['$event'])
@@ -38,8 +47,20 @@ export class SignInComponent {
     });
   }
 
+  @HostListener('window:popstate', ['$event'])
+
+  onPopState() {
+      location.reload()
+  }
+
   async Login() {
-    try {
+    try {    
+      const isBackendConnected = await this.authService.checkBackendConnection();
+      if (!isBackendConnected) {
+        window.alert("Backend is not available.");
+        return;
+      }
+
       await firstValueFrom(this.authService.login());
       
       const idToken = await this.authService.getIdToken();
@@ -92,22 +113,7 @@ export class SignInComponent {
         }
 
         this.sharedPropprtyAccessService.setAccessProperties();
-        // TODO: put back in
-        // if (this.authAccessService.isTalent()) {
-        // this.navService.isHris = false;
-        // this.router.navigateByUrl('/ats-dashboard');
-        // } else if (
-        if (this.authAccessService.isTalent() ||
-          this.authAccessService.isAdmin() ||
-          this.authAccessService.isJourney() ||
-          this.authAccessService.isSuperAdmin()
-        ) {
-          this.navService.isHris = true;
-          this.cookieService.set('isHris', String(this.navService.isHris));
-          this.router.navigateByUrl('/dashboard');
-        } else {
-          this.router.navigateByUrl('/profile');
-        }
+        this.initialUserNavigation();
       }
       else {
         console.error("Login failed: User has invalid or no role assigned.");
@@ -119,4 +125,26 @@ export class SignInComponent {
     }
   }
 
-}
+  initialUserNavigation(){
+    // TODO: put back in once ATS is available
+    // if (this.authAccessService.isTalent()) {
+    // this.navService.isHris = false;
+    // this.router.navigateByUrl('/ats-dashboard');
+    // } else if (
+      if (
+        this.authAccessService.isAdmin() ||
+        this.authAccessService.isJourney() ||
+        this.authAccessService.isSuperAdmin() ||
+        this.authAccessService.isTalent()
+      ) {
+        this.navService.isHris = true;
+        this.cookieService.set('isHris', String(this.navService.isHris));
+        this.router.navigateByUrl('/dashboard');
+      } else if (this.authAccessService.isEmployee()) {
+        this.router.navigateByUrl('/profile');
+      } else {
+        this.router.navigate(['/login']);
+      }
+
+    }
+  }
