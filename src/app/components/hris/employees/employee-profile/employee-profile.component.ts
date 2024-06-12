@@ -57,7 +57,6 @@ export class EmployeeProfileComponent implements OnChanges {
   employeeBanking !: EmployeeBanking;
 
   employeeId = this.route.snapshot.params['id'];
-  employeeId = this.route.snapshot.params['id'];
 
   selectedAccordion: string = 'Profile Details';
   selectedItem: string = 'Profile Details';
@@ -139,8 +138,6 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     changes['updateProfile'].currentValue
     changes['updateDocument'].currentValue
-    changes['updateProfile'].currentValue
-    changes['updateDocument'].currentValue
   }
 
   ngOnDestroy() {
@@ -150,9 +147,7 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnInit() {
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
       this.isAdminUser = true;
-      if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
-        this.isAdminUser = true;
-      }
+
       this.sharedAccordionFunctionality.updateProfile.subscribe({
         next: (data: number) => {
           this.profileFormProgress = data;
@@ -166,6 +161,7 @@ export class EmployeeProfileComponent implements OnChanges {
           this.overallProgress();
         }
       });
+
       this.sharedAccordionFunctionality.updateCareer.subscribe({
         next: (data: number) => {
           this.careerFormProgress = data;
@@ -174,13 +170,13 @@ export class EmployeeProfileComponent implements OnChanges {
       });
 
       this.employeeId = this.route.snapshot.params['id'];
-      this.employeeId = this.route.snapshot.params['id'];
       this.getClients();
 
       if (this.employeeId == undefined) {
         this.showBackButtons = false;
         this.employeeId = this.authAccessService.getUserId();
       }
+
       if (this.authAccessService.isAdmin() ||
         this.authAccessService.isSuperAdmin() ||
         this.authAccessService.isJourney() ||
@@ -195,282 +191,282 @@ export class EmployeeProfileComponent implements OnChanges {
       this.refreshEmployeeProfile();
       this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
     }
+  }
 
-    openTerminationForm() {
-      this.router.navigateByUrl('/end-employment/' + this.employeeId)
-      this.router.navigateByUrl('/end-employment/' + this.employeeId)
-    }
+  openTerminationForm() {
+    this.router.navigateByUrl('/end-employment/' + this.employeeId)
+  }
 
-    goToEmployees() {
-      this.router.navigateByUrl('/employees')
-    }
+  goToEmployees() {
+    this.router.navigateByUrl('/employees')
+  }
 
-    goToDashboard() {
-      this.router.navigateByUrl('/dashboard')
-    }
+  goToDashboard() {
+    this.router.navigateByUrl('/dashboard')
+  }
 
-    getEmployeeData() {
-      this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
-        next: data => {
-          this.sharedAccordionFunctionality.employeeData = data;
-        }
-      });
-    }
-    getTerminationInfo(): void {
-      this.employeeTerminationService.getTerminationDetails(this.selectedEmployee.id).subscribe({
-        next: (data: EmployeeTermination) => {
-          this.terminationData = data;
-        },
-        error: err => {
-          this.snackBarService.showSnackbar('Error fetching termination details', err);
-        }
-      });
-    }
+  getEmployeeData() {
+    this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
+      next: data => {
+        this.sharedAccordionFunctionality.employeeData = data;
+      }
+    });
+  }
+
+  getTerminationInfo(): void {
+    this.employeeTerminationService.getTerminationDetails(this.selectedEmployee.id).subscribe({
+      next: (data: EmployeeTermination) => {
+        this.terminationData = data;
+      },
+      error: err => {
+        this.snackBarService.showSnackbar('Error fetching termination details', err);
+      }
+    });
+  }
 
 
-    getEmployeeProfile() {
-      const fetchProfile = this.usingSimpleProfile
-        ? this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail())
-        : this.employeeProfileService.getEmployeeById(this.employeeId);
+  getEmployeeProfile() {
+    const fetchProfile = this.usingSimpleProfile
+      ? this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail())
+      : this.employeeProfileService.getEmployeeById(this.employeeId);
 
-      (fetchProfile as any).subscribe({
-        next: (data: any) => {
-          if (this.usingSimpleProfile) {
-            this.simpleEmployee = data;
-            this.employeeProfile = data;
-            this.employeeId = data.id;
-            this.populateEmployeeAccordion(this.simpleEmployee);
-          } else {
-            this.selectedEmployee = data;
-            this.employeeProfile = data;
-          }
-          this.getEmployeeFields();
-          this.getEmployeeData();
-          this.filterClients(this.employeeProfile.clientAllocated as number);
-          this.isLoading = false;
-        },
-        complete: () => {
-          if (!this.employeeProfile.active) {
-            this.getTerminationInfo();
-          }
-          this.changeDetectorRef.detectChanges();
-        },
-        error: (error: any) => {
-          this.snackBarService.showSnackbar(error, 'snack-error');
-        }
-      })
-    }
-
-    getEmployeeFields() {
-      const fetchProfile = this.usingSimpleProfile
-        ? this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail())
-        : this.employeeProfileService.getEmployeeById(this.employeeId);
-
-      (fetchProfile as any).subscribe({
-        next: (data: any) => {
+    (fetchProfile as any).subscribe({
+      next: (data: any) => {
+        if (this.usingSimpleProfile) {
+          this.simpleEmployee = data;
           this.employeeProfile = data;
+          this.employeeId = data.id;
+          this.populateEmployeeAccordion(this.simpleEmployee);
+        } else {
           this.selectedEmployee = data;
-          this.employeePhysicalAddress = data.physicalAddress!;
-          this.employeePostalAddress = data.postalAddress!;
-          this.checkAddressMatch(data);
-        },
-        complete: () => {
-          if (!this.usingSimpleProfile)
-            this.getAllEmployees();
-        },
-        error: () => {
-          const errorMessage = this.usingSimpleProfile ? 'Error fetching simple user profile' : 'Error fetching user profile';
-          this.snackBarService.showSnackbar(errorMessage, 'snack-error');
+          this.employeeProfile = data;
         }
-      })
-    }
+        this.getEmployeeFields();
+        this.getEmployeeData();
+        this.filterClients(this.employeeProfile.clientAllocated as number);
+        this.isLoading = false;
+      },
+      complete: () => {
+        if (!this.employeeProfile.active) {
+          this.getTerminationInfo();
+        }
+        this.changeDetectorRef.detectChanges();
+      },
+      error: (error: any) => {
+        this.snackBarService.showSnackbar(error, 'snack-error');
+      }
+    })
+  }
 
-    getAllEmployees() {
-      this.employeeService.getEmployeeProfiles().subscribe({
-        next: data => {
-          this.employees = data;
-          this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
-          this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-          this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
-          this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-          this.filterClients(this.employeeProfile?.clientAllocated as number);
-        }
-      });
-    }
+  getEmployeeFields() {
+    const fetchProfile = this.usingSimpleProfile
+      ? this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail())
+      : this.employeeProfileService.getEmployeeById(this.employeeId);
+
+    (fetchProfile as any).subscribe({
+      next: (data: any) => {
+        this.employeeProfile = data;
+        this.selectedEmployee = data;
+        this.employeePhysicalAddress = data.physicalAddress!;
+        this.employeePostalAddress = data.postalAddress!;
+        this.checkAddressMatch(data);
+      },
+      complete: () => {
+        if (!this.usingSimpleProfile)
+          this.getAllEmployees();
+      },
+      error: () => {
+        const errorMessage = this.usingSimpleProfile ? 'Error fetching simple user profile' : 'Error fetching user profile';
+        this.snackBarService.showSnackbar(errorMessage, 'snack-error');
+      }
+    })
+  }
+
+  getAllEmployees() {
+    this.employeeService.getEmployeeProfiles().subscribe({
+      next: data => {
+        this.employees = data;
+        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
+        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
+        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+        this.filterClients(this.employeeProfile?.clientAllocated as number);
+      }
+    });
+  }
 
   get basedInString(): string {
-      let basedIn = '';
-      if (this.employeeProfile.physicalAddress !== undefined && this.employeeProfile.physicalAddress.suburbOrDistrict && this.employeeProfile.physicalAddress.suburbOrDistrict.length > 2) {
-        basedIn = `Based in ${this.employeeProfile.physicalAddress.suburbOrDistrict}`;
+    let basedIn = '';
+    if (this.employeeProfile.physicalAddress !== undefined && this.employeeProfile.physicalAddress.suburbOrDistrict && this.employeeProfile.physicalAddress.suburbOrDistrict.length > 2) {
+      basedIn = `Based in ${this.employeeProfile.physicalAddress.suburbOrDistrict}`;
+    }
+    return basedIn;
+  }
+
+  downloadFile(base64String: string, fileName: string) {
+    const commaIndex = base64String.indexOf(',');
+    if (commaIndex !== -1) {
+      base64String = base64String.slice(commaIndex + 1);
+    }
+    const byteString = atob(base64String);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const intArray = new Uint8Array(arrayBuffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+      intArray[i] = byteString.charCodeAt(i);
+    }
+
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+  }
+
+  populateEmployeeAccordion(employee: SimpleEmployee) {
+    Object.assign(this.employeeProfile, {
+      clientAllocated: employee.clientAllocatedId,
+      teamLead: employee.teamLeadId,
+      peopleChampion: employee.peopleChampionId,
+      physicalAddress: employee.physicalAddress,
+      postalAddress: employee.postalAddress,
+      cellphoneNo: employee.cellphoneNo,
+      countryOfBirth: employee.countryOfBirth,
+      dateOfBirth: employee.dateOfBirth,
+      disability: employee.disability,
+      disabilityNotes: employee.disabilityNotes,
+      email: employee.email,
+      emergencyContactName: employee.emergencyContactName,
+      emergencyContactNo: employee.emergencyContactNo,
+      employeeNumber: employee.employeeNumber,
+      employeeType: employee.employeeType,
+      engagementDate: employee.engagementDate,
+      gender: employee.gender,
+      houseNo: employee.houseNo,
+      id: employee.id,
+      idNumber: employee.idNumber,
+      initials: employee.initials,
+      leaveInterval: employee.leaveInterval,
+      level: employee.level,
+      name: employee.name,
+      nationality: employee.nationality,
+      notes: employee.notes,
+      passportCountryIssue: employee.passportCountryIssue,
+      passportExpirationDate: employee.passportExpirationDate,
+      passportNumber: employee.passportNumber,
+      payRate: employee.payRate,
+      personalEmail: employee.personalEmail,
+      photo: employee.photo,
+      race: employee.race,
+      salary: employee.salary,
+      salaryDays: employee.salaryDays,
+      surname: employee.surname,
+      taxNumber: employee.taxNumber
+    });
+  }
+
+  getClients() {
+    this.clientService.getAllClients().subscribe({
+      next: data => {
+        this.clients = data;
       }
-      return basedIn;
-    }
+    })
+  }
 
-    downloadFile(base64String: string, fileName: string) {
-      const commaIndex = base64String.indexOf(',');
-      if (commaIndex !== -1) {
-        base64String = base64String.slice(commaIndex + 1);
+  filterClients(clientId: number) {
+    this.employeeClient = this.clients.filter(client => +clientId == client.id)[0];
+    this.employeeClient = this.clients.filter(client => +clientId == client.id)[0];
+  }
+
+  CaptureEvent(event: any) {
+    const target = event.target as HTMLAnchorElement;
+    this.selectedItem = target.innerText;
+    this.selectedAccordion = target.innerText;
+  }
+
+  overallProgress() {
+    this.overallFormProgress = Math.round((this.profileFormProgress + this.careerFormProgress + this.bankInformationProgress + this.documentFormProgress) / 4);
+  }
+
+  updateBankingProgress(update: any) {
+    this.bankInformationProgress = update.progress;
+    this.bankStatus = update.status;
+    this.overallProgress();
+  }
+
+  updateProfileProgress() {
+    this.getEmployeeProfile();
+  }
+
+  onFileChange(e: any) {
+    if (e.target.files) {
+      const selectedFile = e.target.files[0];
+      const file = new FileReader();
+      file.readAsDataURL(e.target.files[0]);
+      file.readAsDataURL(e.target.files[0]);
+      file.onload = (event: any) => {
+        this.employeeProfile.photo = event.target.result;
+        this.base64Image = event.target.result;
+        this.updateUser();
+      };
+      file.onerror = (error) => {
+        this.snackBarService.showSnackbar('Error uploading file', 'snack-error')
       }
-      const byteString = atob(base64String);
-      const arrayBuffer = new ArrayBuffer(byteString.length);
-      const intArray = new Uint8Array(arrayBuffer);
-
-      for (let i = 0; i < byteString.length; i++) {
-        intArray[i] = byteString.charCodeAt(i);
-      }
-
-      const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(blob);
-      link.download = fileName;
-      link.click();
-    }
-
-    populateEmployeeAccordion(employee: SimpleEmployee) {
-      Object.assign(this.employeeProfile, {
-        clientAllocated: employee.clientAllocatedId,
-        teamLead: employee.teamLeadId,
-        peopleChampion: employee.peopleChampionId,
-        physicalAddress: employee.physicalAddress,
-        postalAddress: employee.postalAddress,
-        cellphoneNo: employee.cellphoneNo,
-        countryOfBirth: employee.countryOfBirth,
-        dateOfBirth: employee.dateOfBirth,
-        disability: employee.disability,
-        disabilityNotes: employee.disabilityNotes,
-        email: employee.email,
-        emergencyContactName: employee.emergencyContactName,
-        emergencyContactNo: employee.emergencyContactNo,
-        employeeNumber: employee.employeeNumber,
-        employeeType: employee.employeeType,
-        engagementDate: employee.engagementDate,
-        gender: employee.gender,
-        houseNo: employee.houseNo,
-        id: employee.id,
-        idNumber: employee.idNumber,
-        initials: employee.initials,
-        leaveInterval: employee.leaveInterval,
-        level: employee.level,
-        name: employee.name,
-        nationality: employee.nationality,
-        notes: employee.notes,
-        passportCountryIssue: employee.passportCountryIssue,
-        passportExpirationDate: employee.passportExpirationDate,
-        passportNumber: employee.passportNumber,
-        payRate: employee.payRate,
-        personalEmail: employee.personalEmail,
-        photo: employee.photo,
-        race: employee.race,
-        salary: employee.salary,
-        salaryDays: employee.salaryDays,
-        surname: employee.surname,
-        taxNumber: employee.taxNumber
-      });
-    }
-
-    getClients() {
-      this.clientService.getAllClients().subscribe({
-        next: data => {
-          this.clients = data;
-        }
-      })
-    }
-
-    filterClients(clientId: number) {
-      this.employeeClient = this.clients.filter(client => +clientId == client.id)[0];
-      this.employeeClient = this.clients.filter(client => +clientId == client.id)[0];
-    }
-
-    CaptureEvent(event: any) {
-      const target = event.target as HTMLAnchorElement;
-      this.selectedItem = target.innerText;
-      this.selectedAccordion = target.innerText;
-    }
-
-    overallProgress() {
-      this.overallFormProgress = Math.round((this.profileFormProgress + this.careerFormProgress + this.bankInformationProgress + this.documentFormProgress) / 4);
-    }
-
-    updateBankingProgress(update: any) {
-      this.bankInformationProgress = update.progress;
-      this.bankStatus = update.status;
-      this.overallProgress();
-    }
-
-    updateProfileProgress() {
-      this.getEmployeeProfile();
-    }
-
-    onFileChange(e: any) {
-      if (e.target.files) {
-        const selectedFile = e.target.files[0];
-        const selectedFile = e.target.files[0];
-        const file = new FileReader();
-        file.readAsDataURL(e.target.files[0]);
-        file.readAsDataURL(e.target.files[0]);
-        file.onload = (event: any) => {
-          this.employeeProfile.photo = event.target.result;
-          this.base64Image = event.target.result;
-          this.updateUser();
-        };
-        file.onerror = (error) => {
-          this.snackBarService.showSnackbar('Error uploading file', 'snack-error')
-        }
-      }
-    }
-
-    updateUser() {
-      const updatedEmp = { ...this.employeeProfile, photo: this.base64Image };
-      this.employeeService.updateEmployee(updatedEmp).subscribe({
-        next: () => {
-          this.getEmployeeProfile();
-          this.snackBarService.showSnackbar('Updated your profile picture', 'snack-success');
-          this.navService.refreshEmployee();
-        },
-        error: () => {
-          this.snackBarService.showSnackbar('Failed to update employee profile picture', 'snack-error');
-        }
-      });
-    }
-
-    copyToClipboard() {
-      let emailToCopy: string;
-      if (this.simpleEmployee && this.simpleEmployee.email) {
-        emailToCopy = this.simpleEmployee.email;
-      } else if (this.employeeProfile && this.employeeProfile.email) {
-        emailToCopy = this.employeeProfile.email;
-      } else {
-        this.snackBarService.showSnackbar("No email address available to copy", "snack-error");
-        return;
-      }
-      this.clipboard.copy(emailToCopy);
-      this.snackBarService.showSnackbar("Email copied to clipboard", "snack-success");
-    }
-
-
-    displayEditButtons() {
-      this.sharedAccordionFunctionality.editEmployee = false;
-      this.sharedAccordionFunctionality.editAdditional = false;
-      this.sharedAccordionFunctionality.editAddress = false;
-      this.sharedAccordionFunctionality.editContact = false;
-      this.sharedAccordionFunctionality.editPersonal = false;
-    }
-
-    checkAddressMatch(data: EmployeeProfile) {
-      var dataCopy: any = data;
-      const stringifiedphysicalAddress = JSON.stringify(dataCopy.physicalAddress);
-      const stringifiedpostalAddress = JSON.stringify(dataCopy.postalAddress);
-      if (stringifiedphysicalAddress === stringifiedpostalAddress) {
-        this.sharedAccordionFunctionality.physicalEqualPostal = true;
-      }
-    }
-
-    refreshEmployeeProfile() {
-      this.getEmployeeProfile();
-      this.getEmployeeFields();
-      if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
-        this.getAllEmployees();
-      }
-      this.getClients();
     }
   }
+
+  updateUser() {
+    const updatedEmp = { ...this.employeeProfile, photo: this.base64Image };
+    this.employeeService.updateEmployee(updatedEmp).subscribe({
+      next: () => {
+        this.getEmployeeProfile();
+        this.snackBarService.showSnackbar('Updated your profile picture', 'snack-success');
+        this.navService.refreshEmployee();
+      },
+      error: () => {
+        this.snackBarService.showSnackbar('Failed to update employee profile picture', 'snack-error');
+      }
+    });
+  }
+
+  copyToClipboard() {
+    let emailToCopy: string;
+    if (this.simpleEmployee && this.simpleEmployee.email) {
+      emailToCopy = this.simpleEmployee.email;
+    } else if (this.employeeProfile && this.employeeProfile.email) {
+      emailToCopy = this.employeeProfile.email;
+    } else {
+      this.snackBarService.showSnackbar("No email address available to copy", "snack-error");
+      return;
+    }
+    this.clipboard.copy(emailToCopy);
+    this.snackBarService.showSnackbar("Email copied to clipboard", "snack-success");
+  }
+
+
+  displayEditButtons() {
+    this.sharedAccordionFunctionality.editEmployee = false;
+    this.sharedAccordionFunctionality.editAdditional = false;
+    this.sharedAccordionFunctionality.editAddress = false;
+    this.sharedAccordionFunctionality.editContact = false;
+    this.sharedAccordionFunctionality.editPersonal = false;
+  }
+
+  checkAddressMatch(data: EmployeeProfile) {
+    var dataCopy: any = data;
+    const stringifiedphysicalAddress = JSON.stringify(dataCopy.physicalAddress);
+    const stringifiedpostalAddress = JSON.stringify(dataCopy.postalAddress);
+    if (stringifiedphysicalAddress === stringifiedpostalAddress) {
+      this.sharedAccordionFunctionality.physicalEqualPostal = true;
+    }
+  }
+
+  refreshEmployeeProfile() {
+    this.getEmployeeProfile();
+    this.getEmployeeFields();
+    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
+      this.getAllEmployees();
+    }
+    this.getClients();
+  }
+}
