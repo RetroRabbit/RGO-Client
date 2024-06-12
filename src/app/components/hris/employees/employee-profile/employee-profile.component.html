@@ -242,19 +242,24 @@
         </div>
       </div>
     </div>
-    <div class="col-11 px-4 d-none d-md-block col-md-12 mb-md-3 mb-lg-0">
+    <div class="col-12 px-4 d-none d-md-block col-md-12 mb-md-3 mb-lg-0">
       <div class="row " id="accordion-progress">
-        <div class="col-2 py-3 col-md-3" id="progress-stats"
+        <div class="col-3 py-3 col-md-3" id="progress-stats"
           style="background-color: {{ profileFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ profileFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ profileFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
           <h5>Profile Details {{ profileFormProgress }}%</h5>
         </div>
         <div class="col border" id="horizontal"></div>
-        <div class="col-2 py-3 col-md-4 col-lg-3" id="progress-stats"
+        <div class="col-3 py-3 col-md-4 col-lg-3" id="progress-stats"
+          style="background-color: {{ careerFormProgress === 100 ? '#d7dfff' : 'white'}};color: {{ careerFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ careerFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
+          <h5>Career Summary {{careerFormProgress}}%</h5>
+        </div>
+        <div class="col border" id="horizontal"></div>
+        <div class="col-3 py-3 col-md-4 col-lg-3" id="progress-stats"
           style="background-color: {{ bankInformationProgress === 100 && bankStatus == 0 ? '#d7dfff' : 'white' }}; color: {{ bankInformationProgress === 100 && bankStatus == 0 ? '#0029c6' : 'grey' }}; border: {{ bankInformationProgress === 100 && bankStatus == 0 ? '1px solid #0029c6' : '1px solid grey' }}">
           <h5>Bank Information {{bankInformationProgress}}%</h5>
         </div>
         <div class="col border" id="horizontal"></div>
-        <div class="col-2 py-3 col-md-3" id="progress-stats"
+        <div class="col-3 py-3 col-md-3" id="progress-stats"
           style="background-color: {{ documentFormProgress === 100 ? '#d7dfff' : 'white' }}; color: {{ documentFormProgress === 100 ? '#0029c6' : 'grey' }}; border: {{ documentFormProgress === 100 ? '1px solid #0029c6' : '1px solid grey' }}">
           <h5>Documents {{documentFormProgress}}%</h5>
         </div>

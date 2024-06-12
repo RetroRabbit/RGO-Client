@@ -6,6 +6,7 @@ import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.
 import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
 import { forkJoin } from 'rxjs';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
+import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 
 @Component({
   selector: 'app-accordion-certificates',
@@ -25,7 +26,6 @@ export class AccordionCertificatesComponent {
   panelOpenState: boolean = false;
   hasFile: boolean = false;
   hasCertificateData = false;
-  employeeCertificates: EmployeeCertificates[] = [];
   certificateInformationProgress: number = 0;
   certificateId: number = 0;
   editCertificate: boolean = false;
@@ -58,7 +58,9 @@ export class AccordionCertificatesComponent {
 
   constructor(
     private snackBarService: SnackbarService,
-    private employeeCertificateService: EmployeeCertificatesService
+    private employeeCertificateService: EmployeeCertificatesService,
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+
   ) { }
 
   ngOnInit(): void {
@@ -68,10 +70,13 @@ export class AccordionCertificatesComponent {
   getEmployeeCertificate() {
     this.employeeCertificateService.getCertificationDetails(this.employeeProfile.id).subscribe({
       next: (data) => {
-        this.employeeCertificates = data;
+        this.sharedAccordionFunctionality.employeeCertificates = data;
+        this.sharedAccordionFunctionality.employeeCertificatesFields = this.sharedAccordionFunctionality.employeeCertificatesFields * this.sharedAccordionFunctionality.employeeCertificates.length;
+        this.sharedAccordionFunctionality.calculateCareerCertficatesFormProgress();
+        this.sharedAccordionFunctionality.totalCareerProgress();
       },
       error: (error) => {
-        this.snackBarService.showSnackbar(error,"Failed to fetch certificates");
+        this.snackBarService.showSnackbar(error, "Failed to fetch certificates");
       }
     });
   }
@@ -88,21 +93,23 @@ export class AccordionCertificatesComponent {
       employeeId: this.employeeProfile.id as number
     }
     this.newCertificates.push(newCertificate);
+    this.sharedAccordionFunctionality.calculateCareerCertficatesFormProgress();
+    this.sharedAccordionFunctionality.totalCareerProgress();
   }
 
   findDifferenceInArrays(): EmployeeCertificates[] {
     let differenceArray: EmployeeCertificates[] = [];
 
-    for (let i = 0; i < this.employeeCertificates.length; i++) {
-      if (this.employeeCertificates[i].certificateName != this.copyOfCertificates[i].certificateName)
+    for (let i = 0; i < this.sharedAccordionFunctionality.employeeCertificates.length; i++) {
+      if (this.sharedAccordionFunctionality.employeeCertificates[i].certificateName != this.copyOfCertificates[i].certificateName)
         differenceArray.push(this.copyOfCertificates[i]);
-      else if (this.employeeCertificates[i].issueOrganization != this.copyOfCertificates[i].issueOrganization)
+      else if (this.sharedAccordionFunctionality.employeeCertificates[i].issueOrganization != this.copyOfCertificates[i].issueOrganization)
         differenceArray.push(this.copyOfCertificates[i]);
-      else if (this.employeeCertificates[i].issueDate != this.copyOfCertificates[i].issueDate)
+      else if (this.sharedAccordionFunctionality.employeeCertificates[i].issueDate != this.copyOfCertificates[i].issueDate)
         differenceArray.push(this.copyOfCertificates[i]);
-      else if (this.employeeCertificates[i].certificateDocument != this.copyOfCertificates[i].certificateDocument)
+      else if (this.sharedAccordionFunctionality.employeeCertificates[i].certificateDocument != this.copyOfCertificates[i].certificateDocument)
         differenceArray.push(this.copyOfCertificates[i]);
-      else if (this.employeeCertificates[i].documentName != this.copyOfCertificates[i].documentName)
+      else if (this.sharedAccordionFunctionality.employeeCertificates[i].documentName != this.copyOfCertificates[i].documentName)
         differenceArray.push(this.copyOfCertificates[i]);
     }
     return differenceArray
@@ -124,6 +131,8 @@ export class AccordionCertificatesComponent {
             this.addingCertificate = false;
             this.newCertificates = [];
             this.getEmployeeCertificate();
+            this.sharedAccordionFunctionality.calculateCareerCertficatesFormProgress();
+            this.sharedAccordionFunctionality.totalCareerProgress();
           }
         },
         error: (error) => {
@@ -185,7 +194,7 @@ export class AccordionCertificatesComponent {
   cancelCertificateDetails() {
     this.editCertificate = false;
     this.addingCertificate = false;
-    this.copyOfCertificates = this.employeeCertificates;
+    this.copyOfCertificates = this.sharedAccordionFunctionality.employeeCertificates;
     if (this.newCertificateIndex !== null) {
       this.newCertificates.splice(this.newCertificateIndex, 1);
       this.newCertificateIndex = null;
@@ -194,7 +203,7 @@ export class AccordionCertificatesComponent {
   }
 
   copyEmployeeCertificates() {
-    this.employeeCertificates.forEach(certificate => {
+    this.sharedAccordionFunctionality.employeeCertificates.forEach(certificate => {
       const copiedCert = JSON.parse(JSON.stringify(certificate));
       this.copyOfCertificates.push(copiedCert);
     });
@@ -217,7 +226,7 @@ export class AccordionCertificatesComponent {
       }
     }
   }
-  
+
   removeNewCertificate(index: number) {
     this.newCertificates.splice(index, 1);
   }
@@ -228,7 +237,10 @@ export class AccordionCertificatesComponent {
       next: () => {
         this.snackBarService.showSnackbar("Certificate deleted", "snack-success");
         this.copyOfCertificates.splice(index, 1);
-        this.employeeCertificates.splice(index, 1);
+        this.sharedAccordionFunctionality.employeeCertificates.splice(index, 1);
+        this.sharedAccordionFunctionality.employeeCertificatesFields = this.sharedAccordionFunctionality.employeeCertificatesFields - 4;
+        this.sharedAccordionFunctionality.calculateCareerCertficatesFormProgress();
+        this.sharedAccordionFunctionality.totalCareerProgress();
         this.editCertificate = false;
       },
       error: (error) => {
@@ -272,13 +284,13 @@ export class AccordionCertificatesComponent {
       if (newOrUpdate == 'update') {
         this.copyOfCertificates[index].certificateDocument = this.base64String;
         this.copyOfCertificates[index].documentName = file.name;
-        this.snackBarService.showSnackbar('File replaced succesfully','snack-success');
+        this.snackBarService.showSnackbar('File replaced succesfully', 'snack-success');
       }
       else if (newOrUpdate == 'new') {
         this.newCertificates[index].certificateDocument = this.base64String;
         this.newCertificates[index].documentName = file.name;
       }
-      this.snackBarService.showSnackbar('File uploaded succesfully','snack-success');
+      this.snackBarService.showSnackbar('File uploaded succesfully', 'snack-success');
     });
     reader.readAsDataURL(file);
   }

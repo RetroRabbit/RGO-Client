@@ -6,7 +6,7 @@
                     Salary Details
                 </mat-panel-title>
             </mat-expansion-panel-header>
-            <form [formGroup]="salaryDetailsForm">
+            <form [formGroup]="sharedAccordionFunctionality.salaryDetailsForm">
                 <div class="col-12 mb-2 d-flex justify-content-end" id="space">
                 </div>
                 <button class="d-flex d-md-none col-12" *ngIf="!editSalary" mat-button id="edit-button" (click)="editSalaryDetails()"
@@ -36,7 +36,7 @@
                                       <mat-label>Remuneration</mat-label>
                                       <input type="text" min="0" matInput placeholder="Remuneration" formControlName="remuneration">
                                       <mat-error
-                                      *ngIf="salaryDetailsForm.controls['remuneration'].hasError('required')">
+                                      *ngIf="sharedAccordionFunctionality.salaryDetailsForm.controls['remuneration'].hasError('required')">
                                       Remuneration is required</mat-error>
                                     </mat-form-field>
                                 </div>

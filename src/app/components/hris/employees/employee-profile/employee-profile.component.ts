@@ -42,6 +42,7 @@ import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.int
 export class EmployeeProfileComponent implements OnChanges {
   @Input() updateProfile!: { updateProfile: SharedAccordionFunctionality };
   @Input() updateDocument!: { updateDocument: SharedAccordionFunctionality };
+  @Input() updateCareer!: { updateCareer: SharedAccordionFunctionality };
 
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
@@ -71,6 +72,7 @@ export class EmployeeProfileComponent implements OnChanges {
   profileFormProgress: number = 0;
   overallFormProgress: number = 0;
   documentFormProgress: number = 0;
+  careerFormProgress: number = 0;
   bankingFormProgress: number = 0;
   bankInformationProgress: number = 0;
   documentsProgress: number = 0;
@@ -111,6 +113,7 @@ export class EmployeeProfileComponent implements OnChanges {
   snackBar: any;
 
   @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
   }
@@ -144,41 +147,50 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnInit() {
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
       this.isAdminUser = true;
-    }
-    this.sharedAccordionFunctionality.updateProfile.subscribe({
-      next: (data: number) => {
-        this.profileFormProgress = data;
-        this.overallProgress();
+
+      this.sharedAccordionFunctionality.updateProfile.subscribe({
+        next: (data: number) => {
+          this.profileFormProgress = data;
+          this.overallProgress();
+        }
+      });
+
+      this.sharedAccordionFunctionality.updateDocument.subscribe({
+        next: (data: number) => {
+          this.documentFormProgress = data;
+          this.overallProgress();
+        }
+      });
+
+      this.sharedAccordionFunctionality.updateCareer.subscribe({
+        next: (data: number) => {
+          this.careerFormProgress = data;
+          this.overallProgress();
+        }
+      });
+
+      this.employeeId = this.route.snapshot.params['id'];
+      this.getClients();
+
+      if (this.employeeId == undefined) {
+        this.showBackButtons = false;
+        this.employeeId = this.authAccessService.getUserId();
       }
-    });
 
-    this.sharedAccordionFunctionality.updateDocument.subscribe({
-      next: (data: number) => {
-        this.documentFormProgress = data;
-        this.overallProgress();
+      if (this.authAccessService.isAdmin() ||
+        this.authAccessService.isSuperAdmin() ||
+        this.authAccessService.isJourney() ||
+        this.authAccessService.isTalent()) {
+        this.usingSimpleProfile = false;
       }
-    });
+      else {
+        this.usingSimpleProfile = true;
+      }
 
-    this.employeeId = this.route.snapshot.params['id'];
-    this.getClients();
-
-    if (this.employeeId == undefined) {
-      this.showBackButtons = false;
-      this.employeeId = this.authAccessService.getUserId();
+      this.getEmployeeProfile();
+      this.refreshEmployeeProfile();
+      this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
     }
-    if (this.authAccessService.isAdmin() ||
-      this.authAccessService.isSuperAdmin() ||
-      this.authAccessService.isJourney() ||
-      this.authAccessService.isTalent()) {
-      this.usingSimpleProfile = false;
-    }
-    else {
-      this.usingSimpleProfile = true;
-    }
-
-    this.getEmployeeProfile();
-    this.refreshEmployeeProfile();
-    this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
 
   openTerminationForm() {
@@ -200,6 +212,7 @@ export class EmployeeProfileComponent implements OnChanges {
       }
     });
   }
+
   getTerminationInfo(): void {
     this.employeeTerminationService.getTerminationDetails(this.selectedEmployee.id).subscribe({
       next: (data: EmployeeTermination) => {
@@ -275,6 +288,8 @@ export class EmployeeProfileComponent implements OnChanges {
         this.employees = data;
         this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
         this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
+        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
         this.filterClients(this.employeeProfile?.clientAllocated as number);
       }
     });
@@ -288,7 +303,7 @@ export class EmployeeProfileComponent implements OnChanges {
     return basedIn;
   }
 
-   downloadFile(base64String: string, fileName: string) {
+  downloadFile(base64String: string, fileName: string) {
     const commaIndex = base64String.indexOf(',');
     if (commaIndex !== -1) {
       base64String = base64String.slice(commaIndex + 1);
@@ -360,6 +375,7 @@ export class EmployeeProfileComponent implements OnChanges {
 
   filterClients(clientId: number) {
     this.employeeClient = this.clients.filter(client => +clientId == client.id)[0];
+    this.employeeClient = this.clients.filter(client => +clientId == client.id)[0];
   }
 
   CaptureEvent(event: any) {
@@ -369,7 +385,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   overallProgress() {
-    this.overallFormProgress = Math.round((this.profileFormProgress + this.bankInformationProgress + this.documentFormProgress) / 3);
+    this.overallFormProgress = Math.round((this.profileFormProgress + this.careerFormProgress + this.bankInformationProgress + this.documentFormProgress) / 4);
   }
 
   updateBankingProgress(update: any) {
@@ -386,6 +402,7 @@ export class EmployeeProfileComponent implements OnChanges {
     if (e.target.files) {
       const selectedFile = e.target.files[0];
       const file = new FileReader();
+      file.readAsDataURL(e.target.files[0]);
       file.readAsDataURL(e.target.files[0]);
       file.onload = (event: any) => {
         this.employeeProfile.photo = event.target.result;
@@ -425,6 +442,7 @@ export class EmployeeProfileComponent implements OnChanges {
     this.clipboard.copy(emailToCopy);
     this.snackBarService.showSnackbar("Email copied to clipboard", "snack-success");
   }
+
 
   displayEditButtons() {
     this.sharedAccordionFunctionality.editEmployee = false;
