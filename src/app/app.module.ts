@@ -98,6 +98,7 @@ import { AccordionCareerAdditionalInformationComponent } from './components/hris
 import { AccordionCareerWorkExperienceComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-work-experience/accordion-career-work-experience.component';
 import { AccordionSalaryDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-salary-details/accordion-salary-details.component';
 import { EmployeeTerminationComponent } from './components/hris/employees/employee-termination/employee-termination.component';
+import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 
 @NgModule({
   declarations: [
@@ -209,6 +210,7 @@ import { EmployeeTerminationComponent } from './components/hris/employees/employ
     MatSortModule,
     MatButtonToggleModule,
     DragDropModule,
+    NgxMatIntlTelInputComponent,
     NgxSkeletonLoaderModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {

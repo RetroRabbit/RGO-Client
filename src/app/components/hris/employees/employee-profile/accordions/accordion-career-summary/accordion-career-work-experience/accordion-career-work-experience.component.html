@@ -21,15 +21,18 @@
                             <div *ngFor="let experience of sharedAccordionFunctionality.workExperience; let i = index" class="col-12">
                                 <div id="form-wrapper" class="col-12">
                                     <div class="row">
-                                    <div class="row d-block">
-                                        <div class="experience-header" *ngIf="editWorkExperience">
-                                            <h3 class="mb-2">Remove this experience</h3>
-                                            <mat-icon class="icon-color mb-2" (click)="showDialog('update',i)">delete_outline</mat-icon>
+                                    <div class="d-flex">
+                                        <div class="row d-block">
+                                            <div class="experience-header">
+                                                <h3 class="mb-1" id="clientNameHeading">{{workExperience[i].clientName}} | {{ formatDate(workExperience[i].startDate) }}</h3>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row d-block">
-                                        <div class="experience-header" *ngIf="!editWorkExperience">
-                                            <h3 class="mb-1" id="clientNameHeading">{{sharedAccordionFunctionality.workExperience[i].clientName}} | {{ formatDate(sharedAccordionFunctionality.workExperience[i].startDate) }}</h3>
+                                        <div class="row d-block" id="experience-remove">
+                                            <div class="experience-header" *ngIf="editWorkExperience">
+                                                <button mat-button id="delete-button" (click)="showDialog('update',i)">
+                                                    <mat-icon class="icon-color mb-1">delete_outline</mat-icon>Delete
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 my-2">
@@ -142,6 +145,7 @@
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
+                                    <hr>
                                 </div>
                             </div>
                         </div>
@@ -149,8 +153,9 @@
                         <div *ngFor="let experiences of sharedAccordionFunctionality.newWorkExperiences; let i = index" class="row">
                             <div class="row d-block">
                                 <div class="experience-header" *ngIf="addingWorkExperience">
-                                    <h3 class=" mb-0">Remove new Work Experience</h3>
-                                    <mat-icon class="icon-color" (click)="showDialog('new',i)">delete_outline</mat-icon>
+                                    <button mat-button id="delete-button" (click)="showDialog('new',i)">
+                                        <mat-icon class="icon-color mb-1">delete_outline</mat-icon>Delete
+                                    </button>
                                 </div>
                             </div>
                             <div class="row d-block">

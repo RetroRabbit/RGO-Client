@@ -1,6 +1,8 @@
 #header-name {
     font-family: Poppins;
     text-align: left;
+    font-size: 36px;
+    font-weight: 400;
 }
 
 #header-role {
@@ -44,6 +46,7 @@
     color: #0000ff;
     transform: rotate(-45deg);
     width: 20px;
+
 }
 
 #header-label {
@@ -69,9 +72,16 @@
     border: 1px solid black;
 }
 
+.data-info {
+    margin-top: 10px;
+    font-weight: 500;
+    margin-right: 20px;
+}
+
 .resigned-status {
-    border: 1px solid #ccc;
-    padding: 15px;
+    border: 1px solid #B3261E;
+    padding: 10px;
+    color: #B3261E;
     text-align: center;
     margin-right: 20px;
     border-radius: 10px;
@@ -79,7 +89,48 @@
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
-    line-height: 20px; 
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+}
+
+.download-doc {
+    display: flex;
+    height: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+    gap: 8px;
+    margin-right: 20px;
+}
+
+.resigned-info {
+    border: 1px solid #006E2B;
+    padding: 5px;
+    color: #006E2B;
+    text-align: center;
+    margin-right: 30px;
+    border-radius: 10px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-transform: capitalize;
+}
+
+.email-info {
+    gap: 10px;
+    color: #555454;
+    text-align: center;
+    margin-right: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--m-3-state-layers-light-on-surface-variant-opacity-012, rgba(73, 69, 79, 0.12));
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
     letter-spacing: 0.1px;
     text-transform: capitalize;
 }
@@ -157,13 +208,13 @@
     letter-spacing: 0.1px;
 }
 
-.nav-item-mobile{
-  width: 150px;
-  max-width: 100%;
-  overflow-x: scroll;
-  flex-shrink: 0;
-  display: flex;
-  margin-left: 7%;
+.nav-item-mobile {
+    width: 150px;
+    max-width: 100%;
+    overflow-x: scroll;
+    flex-shrink: 0;
+    display: flex;
+    margin-left: 7%;
 }
 
 #selected-line-box {
@@ -192,7 +243,7 @@
     color: #0029C6;
     padding: 1.3rem;
     width: 11rem;
-  }
+}
 
 :host ::ng-deep .mat-expansion-panel {
     padding: 0;
@@ -364,20 +415,17 @@
 :host ::ng-deep #reject-reason {
     color: #b3261eff;
 }
-  .col-2>#line{
+
+.col-2>#line {
     min-height: 2rem;
-    width:0px;
+    width: 0px;
     border: 1px solid grey;
-  }
+}
 
-  div.row {
-   padding: 0;
-  }
+div.row {
+    padding: 0;
+}
 
-/* #svg-icon-w #icon-w {
-    fill: white;
-} */
-
-#overall-progress-bar{
+#overall-progress-bar {
     border-color: #0029C6;
 }

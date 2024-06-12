@@ -87,14 +87,22 @@
                       {{ peopleChampion.surname }}</mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class=" mb-3">
-                  <mat-label>Phone Number</mat-label>
-                  <input matInput formControlName="cellphoneNo" />
-                  <mat-error *ngIf="newEmployeeForm.controls['cellphoneNo'].hasError('required')">
+                <mat-form-field appearance="outline" class="cellphone-container">
+                  <mat-label class="cellphone-label">Cellphone Number</mat-label>
+                  <ngx-mat-intl-tel-input
+                    #inputField
+                    matInput
+                    [preferredCountries]="['us', 'gb']"
+                    [enablePlaceholder]="true"
+                    [enableSearch]="true"
+                    formControlName="cellphoneNo"
+                    (input)="onCellphoneInputCheck(inputField.value ?? '')"
+                  ></ngx-mat-intl-tel-input>
+                  <mat-error *ngIf="newEmployeeForm.controls['cellphoneNo'].hasError('required') && newEmployeeForm.controls['cellphoneNo'].value=='' ">
                     Phone number is required
                   </mat-error>
                   <mat-error
-                    *ngIf="newEmployeeForm.controls['cellphoneNo'].hasError('pattern') && !newEmployeeForm.controls['cellphoneNo'].hasError('required')">
+                    *ngIf="newEmployeeForm.controls['cellphoneNo'].value != '' && newEmployeeForm.controls['cellphoneNo'].invalid">
                     This is not a valid phone number
                   </mat-error>
                 </mat-form-field>
