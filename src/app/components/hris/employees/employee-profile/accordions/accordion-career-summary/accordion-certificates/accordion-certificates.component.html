@@ -15,13 +15,13 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 d-flex justify-content-end mb-3 mt-3">
-                        <button [disabled]="addingCertificate" mat-button id="edit-button-width"
+                        <button [disabled]="addingCertificate || sharedAccordionFunctionality.employeeCertificates.length == 0" mat-button id="edit-button-width"
                             (click)="editCertificateDetails()">
                             <mat-icon>edit</mat-icon>Edit Details
                         </button>
                     </div>
                     <div class="col-12 col-md-9 col-lg-10">
-                        <div *ngFor="let certificate of employeeCertificates; let i = index" class="col-12">
+                        <div *ngFor="let certificate of sharedAccordionFunctionality.employeeCertificates; let i = index" class="col-12">
                             <div id="form-wrapper" class="col-12">
                                 <div class="row">
                                     <div class="row d-block">
@@ -33,7 +33,7 @@
                                     </div>
                                     <div class="row d-block">
                                         <div class="certificate-header" *ngIf="!editCertificate">
-                                            <h3 class="mb-1">{{employeeCertificates[i].certificateName}}</h3>
+                                            <h3 class="mb-1">{{sharedAccordionFunctionality.employeeCertificates[i].certificateName}}</h3>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 my-2">
@@ -48,8 +48,8 @@
                                             <mat-form-field appearance="outline" class="w-100">
                                                 <mat-label>Name of certificate</mat-label>
                                                 <input type="text" disabled matInput placeholder="Name of certificate"
-                                                    [(ngModel)]="employeeCertificates[i].certificateName"
-                                                    [value]="employeeCertificates[i].certificateName">
+                                                    [(ngModel)]="sharedAccordionFunctionality.employeeCertificates[i].certificateName"
+                                                    [value]="sharedAccordionFunctionality.employeeCertificates[i].certificateName">
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
@@ -65,8 +65,8 @@
                                             <mat-form-field appearance="outline" class="w-100">
                                                 <mat-label>Name of organization</mat-label>
                                                 <input type="text" disabled matInput placeholder="Name of organization"
-                                                    [(ngModel)]="employeeCertificates[i].issueOrganization"
-                                                    [value]="employeeCertificates[i].issueOrganization">
+                                                    [(ngModel)]="sharedAccordionFunctionality.employeeCertificates[i].issueOrganization"
+                                                    [value]="sharedAccordionFunctionality.employeeCertificates[i].issueOrganization">
                                             </mat-form-field>
                                         </ng-template>
                                     </div>
@@ -85,8 +85,8 @@
                                                 <mat-label>Issue date</mat-label>
                                                 <input matInput disabled [matDatepicker]="picker"
                                                     placeholder="Issue date"
-                                                    [(ngModel)]="employeeCertificates[i].issueDate"
-                                                    [value]="employeeCertificates[i].issueDate">
+                                                    [(ngModel)]="sharedAccordionFunctionality.employeeCertificates[i].issueDate"
+                                                    [value]="sharedAccordionFunctionality.employeeCertificates[i].issueDate">
                                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker></mat-datepicker>
                                             </mat-form-field>
@@ -98,7 +98,7 @@
                                     </div>
                                     <div id="actionCellDownload" class="col-12 col-md-auto mb-2">
                                         <button mat-button color="primary"
-                                            (click)="downloadFile(employeeCertificates[i].certificateDocument, employeeCertificates[i].documentName)"
+                                            (click)="downloadFile(sharedAccordionFunctionality.employeeCertificates[i].certificateDocument, sharedAccordionFunctionality.employeeCertificates[i].documentName)"
                                             [disabled]="addingCertificate"
                                             [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
                                             <svg id="svg-icon" width="19" height="19" viewBox="0 0 19 19" fill="white"
@@ -186,7 +186,6 @@
                                         </svg>
                                         Download
                                     </button>
-
                                 </div>
                                 <div id="actionCellUpload" class="col-12 col-md-auto">
                                     <button type="file" mat-button color="primary"

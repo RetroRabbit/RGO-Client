@@ -105,7 +105,7 @@
                                     <button [disabled]="isDisabledDownload" mat-button class="me-2" id="file-buttons"
                                             (click)="downloadFile()"
                                         [ngClass]="sharedAccordionFunctionality.editQualifications ? 'download-button':'download-disabled'"
-                                        *ngIf="this.employeeQualification && this.employeeQualification.documentName">
+                                        *ngIf="this.sharedAccordionFunctionality.employeeQualification && this.sharedAccordionFunctionality.employeeQualification.documentName">
                                         <div class="row">
                                             <div class="col-1 p-0 ms-3 mt-2"
                                                 *ngIf="sharedAccordionFunctionality.editQualifications == true">

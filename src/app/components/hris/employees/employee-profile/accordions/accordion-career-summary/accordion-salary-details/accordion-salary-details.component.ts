@@ -8,6 +8,7 @@ import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.inte
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 
 @Component({
   selector: 'app-accordion-salary-details',
@@ -33,9 +34,7 @@ export class AccordionSalaryDetailsComponent {
   isAdminUser: boolean = false;
   employeeId: number | undefined;
 
-  salaryDetailsForm: FormGroup = this.fb.group({
-    remuneration: [{ value: '', disable: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]]
-  });
+
 
   constructor(
     private fb: FormBuilder,
@@ -43,7 +42,9 @@ export class AccordionSalaryDetailsComponent {
     private snackBarService: SnackbarService,
     private authAccessService: AuthAccessService,
     public navservice: NavService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+  ) {
   }
 
   ngOnInit(): void {
@@ -56,32 +57,34 @@ export class AccordionSalaryDetailsComponent {
 
   initializeSalaryDetailsForm(salaryDetails: EmployeeSalary) {
     if (salaryDetails != null) {
-      this.salaryDetailsForm = this.fb.group({
+      this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
         remuneration: [salaryDetails.remuneration, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       });
       this.getSalaryDate();
     }
     else {
-      this.salaryDetailsForm = this.fb.group({
+      this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
         remuneration: ["", [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       });
     }
-    this.salaryDetailsForm.disable();
+    this.sharedAccordionFunctionality.salaryDetailsForm.disable();
   }
 
   getEmployeeSalaryDetails() {
-    if(this.employeeId == undefined){
+    if (this.employeeId == undefined) {
       this.employeeSalaryService.getEmployeeSalary(this.navservice.employeeProfile.id as number).subscribe({
         next: data => {
           this.employeeSalary = data;
           this.initializeSalaryDetailsForm(this.employeeSalary);
+          this.sharedAccordionFunctionality.calculatesalaryDetails();
+          this.sharedAccordionFunctionality.totalCareerProgress();
         },
         error: (error) => {
           this.snackBarService.showSnackbar("Error fetching salary details", "snack-error");
         }
       })
     }
-    else{
+    else {
       this.employeeSalaryService.getEmployeeSalary(this.employeeId).subscribe({
         next: data => {
           this.employeeSalary = data;
@@ -97,7 +100,7 @@ export class AccordionSalaryDetailsComponent {
   populateDto(salaryCopy: number) {
     if (this.employeeSalary) {
       this.employeeSalaryDetailsDto = {
-        employeeId: this.employeeId != undefined? this.employeeId : this.navservice.employeeProfile.id,
+        employeeId: this.employeeId != undefined ? this.employeeId : this.navservice.employeeProfile.id,
         id: this.employeeSalary.id,
         salary: this.employeeSalary.salary,
         minSalary: this.employeeSalary.minSalary,
@@ -109,7 +112,7 @@ export class AccordionSalaryDetailsComponent {
       }
     } else {
       this.employeeSalaryDetailsDto = {
-        employeeId: this.employeeId != undefined? this.employeeId : this.navservice.employeeProfile.id,
+        employeeId: this.employeeId != undefined ? this.employeeId : this.navservice.employeeProfile.id,
         id: 0,
         salary: 0,
         minSalary: 0,
@@ -139,8 +142,8 @@ export class AccordionSalaryDetailsComponent {
   }
 
   saveEmployeeSalaryDetails() {
-    const salaryDetailsFormValue = this.salaryDetailsForm.value;
-    if (this.salaryDetailsForm.valid) {
+    const salaryDetailsFormValue = this.sharedAccordionFunctionality.salaryDetailsForm.value;
+    if (this.sharedAccordionFunctionality.salaryDetailsForm.valid) {
       this.populateDto(salaryDetailsFormValue.remuneration)
       this.editSalary = false;
       if (this.employeeSalary) {
@@ -149,8 +152,10 @@ export class AccordionSalaryDetailsComponent {
             this.snackBarService.showSnackbar("Salary details has been updated", "snack-success");
             this.getSalaryDate();
             this.editSalary = false;
-            this.salaryDetailsForm.disable();
+            this.sharedAccordionFunctionality.salaryDetailsForm.disable();
             this.getEmployeeSalaryDetails();
+            this.sharedAccordionFunctionality.calculatesalaryDetails();
+            this.sharedAccordionFunctionality.totalCareerProgress();
           },
           error: (error) => {
             this.snackBarService.showSnackbar(error, "snack-error");
@@ -162,8 +167,10 @@ export class AccordionSalaryDetailsComponent {
             this.snackBarService.showSnackbar("Salary details has been saved", "snack-success");
             this.getSalaryDate();
             this.editSalary = false;
-            this.salaryDetailsForm.disable();
+            this.sharedAccordionFunctionality.salaryDetailsForm.disable();
             this.getEmployeeSalaryDetails();
+            this.sharedAccordionFunctionality.calculatesalaryDetails();
+            this.sharedAccordionFunctionality.totalCareerProgress();
           },
           error: (error) => {
             this.snackBarService.showSnackbar(error, "snack-error");
@@ -175,18 +182,18 @@ export class AccordionSalaryDetailsComponent {
       this.snackBarService.showSnackbar("Remuneration cannot be less than zero", "snack-error");
     }
     else {
-      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+      this.snackBarService.showSnackbar("Please enter the correct Remuneration", "snack-error");
     }
 
   }
 
   editSalaryDetails() {
     this.editSalary = true;
-    this.salaryDetailsForm.enable();
+    this.sharedAccordionFunctionality.salaryDetailsForm.enable();
   }
 
   cancelSalaryDetails() {
     this.editSalary = false;
-    this.salaryDetailsForm.disable();
+    this.sharedAccordionFunctionality.salaryDetailsForm.disable();
   }
 }
