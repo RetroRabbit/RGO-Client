@@ -151,3 +151,6 @@ body {
 .mat-accent .mat-pseudo-checkbox-indeterminate {
   background: #0029C6 !important;
 }
+.sr-only {
+  display: none !important;
+}

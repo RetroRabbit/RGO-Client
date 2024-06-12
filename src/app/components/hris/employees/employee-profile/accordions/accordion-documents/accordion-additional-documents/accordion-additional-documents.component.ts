@@ -30,7 +30,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   }
 
   fileCategories = [];
-  unarchivedCustomDocuments: any = [];
+  unarchivedCustomDocuments: CustomField[] = [];
   roles: string[] = [];
   isLoadingUpload: boolean = false;
   uploadButtonIndex: number = 0;
@@ -127,10 +127,10 @@ export class AccordionDocumentsCustomDocumentsComponent {
     })
   }
 
-  checkArchived(fields: any) {
+  checkArchived(fields: CustomField[]) {
+    this.unarchivedCustomDocuments = [];
     var index = 0;
-    fields.forEach((field: { category: number; status: any; }) => {
-      index++;
+    fields.forEach((field) => {
       if (this.fieldCodeStatus == field.status && this.customDocumentsCategory == field.category) {
         fields.splice(index, 1);
       }
@@ -138,6 +138,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
         this.unarchivedCustomDocuments.push(field);
         this.unarchivedCustomDocuments = this.unarchivedCustomDocuments.filter((field: any) => field.category == this.sharedAccordionFunctionality.category[3].id)
       }
+      index++;
     })
   }
 
