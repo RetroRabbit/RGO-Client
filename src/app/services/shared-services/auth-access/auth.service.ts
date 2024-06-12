@@ -118,7 +118,6 @@ export class AuthService {
       const payload = token.split('.')[1];
       return JSON.parse(this.base64UrlDecode(payload));
     } catch (e) {
-      console.error('Invalid JWT Token', e);
       return null;
     }
   }

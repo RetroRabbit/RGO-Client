@@ -55,11 +55,12 @@ export class SignInComponent {
 
   async Login() {
     try {    
-      const isBackendConnected = await this.authService.checkBackendConnection();
-      if (!isBackendConnected) {
-        window.alert("Backend is not available.");
-        return;
-      }
+      //TODO: check if server is online otherwise dont continue
+      // const isBackendConnected = await this.authService.checkBackendConnection();
+      // if (!isBackendConnected) {
+      //   window.alert("Backend is not available.");
+      //   return;
+      // }
 
       await firstValueFrom(this.authService.login());
       
