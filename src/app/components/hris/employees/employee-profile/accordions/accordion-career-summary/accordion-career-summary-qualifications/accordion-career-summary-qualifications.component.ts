@@ -119,9 +119,6 @@ export class CareerSummaryQualificationsComponent {
       const qualificationObservable = updatedQualification.id > 0
         ? this.employeeQualificationsService.updateEmployeeQualification(updatedQualification, updatedQualification.id)
         : this.employeeQualificationsService.saveEmployeeQualification(updatedQualification);
-
-      this.sharedAccordionFunctionality.calculateQaulificationProgress();
-      this.sharedAccordionFunctionality.totalCareerProgress();
       qualificationObservable.subscribe({
         next: () => {
           this.snackBarService.showSnackbar(

@@ -402,7 +402,7 @@ export class SharedAccordionFunctionality {
       ));
 
       const FilledCount = this.filteredFilledWorkExp.length;
-      if (FilledCount == 0 && this.workExpereinceFormFields == 0) {
+      if (FilledCount == 0 || this.workExpereinceFormFields == 0) {
         this.workExpFormProgress = 0;
       }
       else {
@@ -439,7 +439,7 @@ export class SharedAccordionFunctionality {
     }
 
     const FilledCount = this.filteredFilledCerificate.length;
-    if (FilledCount == 0 && this.employeeCertificatesFields == 0) {
+    if (FilledCount == 0 || this.employeeCertificatesFields == 0) {
       this.certificateformProgress = 0;
     }
     else {
@@ -468,8 +468,13 @@ export class SharedAccordionFunctionality {
   }
 
   totalCareerProgress() {
-    this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qaulificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 5);
-    this.updateCareer.emit(this.careerFormProgress);
+    if (this.additionalCareerFormProgress == Infinity) {
+      this.careerFormProgress = Math.floor((this.qaulificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 4);
+    }
+    else {
+      this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qaulificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 5);
+      this.updateCareer.emit(this.careerFormProgress);
+    }
   }
 
   totalDocumentsProgress() {
