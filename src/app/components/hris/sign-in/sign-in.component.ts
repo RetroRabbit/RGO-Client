@@ -139,7 +139,7 @@ export class SignInComponent {
 
 
   initialUserNavigation(){
-  // TODO: put back in
+  // TODO: put back in when ats available
           // if (this.authAccessService.isTalent()) {
           //   this.navService.isHris = false;
           //   this.router.navigateByUrl('/ats-dashboard');
