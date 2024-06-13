@@ -60,7 +60,7 @@ export class AppComponent {
   }
 
   logout() {
-    this.authService.logout()
+    this.authService.logout();
   }
 
   hasSignedIn(): boolean 

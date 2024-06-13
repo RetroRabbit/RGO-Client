@@ -1,15 +1,16 @@
 import { Component, HostListener, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { GetLogin } from '../../shared-components/store/actions/login-in.actions';
+import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../../../models/hris/token.interface';
+import { map, switchMap, take, tap } from 'rxjs';
 import { AuthService } from '../../../services/shared-services/auth-access/auth.service';
 import { CookieService } from 'ngx-cookie-service';
-import { firstValueFrom } from 'rxjs';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AppComponent } from 'src/app/app.component';
-
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -21,6 +22,8 @@ export class SignInComponent {
   userEmail: string | null = null;
 
   constructor(
+    private store: Store<Auth0.AppState>,
+    private auth: Auth0.AuthService,
     private authService: AuthService,
     private router: Router,
     private cookieService: CookieService,
@@ -35,6 +38,18 @@ export class SignInComponent {
     if(this.appComponent.hasSignedIn()){
       this.initialUserNavigation();
       return
+    }
+    this.token = this.cookieService.get('accessToken');
+    this.userEmail = this.cookieService.get('userEmail');
+    
+    if (this.token) {
+      const tokenPayload = JSON.parse(atob(this.token.split('.')[1]));
+      const expiryDate = new Date(tokenPayload.exp * 1000);
+  
+      if (expiryDate < new Date()) {
+        this.cookieService.deleteAll();
+        this.router.navigate(['/login']);
+      }
     }
   }
 
@@ -53,99 +68,93 @@ export class SignInComponent {
       location.reload()
   }
 
-  async Login() {
-    try {    
-      //TODO: check if server is online otherwise dont continue
-      // const isBackendConnected = await this.authService.checkBackendConnection();
-      // if (!isBackendConnected) {
-      //   window.alert("Backend is not available.");
-      //   return;
-      // }
-
-      await firstValueFrom(this.authService.login());
-      
-      const idToken = await this.authService.getIdToken();
-      const accessToken = await this.authService.getAccessToken();
-
-      // Use this to get photo url from google
-      const photoUrl = idToken.picture;
-
-      this.cookieService.set('userEmail', idToken.email || '', {
-        path: '/',
-        secure: true,
-        sameSite: 'None'
-      });
-
-      this.cookieService.set('accessToken', accessToken || '', {
-        path: '/',
-        secure: true,
-        sameSite: 'None'
-      });
-
-      const decodedAccessToken = this.authService.decodeJwt(accessToken);
-      const assignedRoleFromAuth0 = decodedAccessToken?.role || [];
-      const validRoles = ['SuperAdmin', 'Employee', 'Talent', 'Journey', 'Admin'];
-      const filteredRoles = assignedRoleFromAuth0.filter((role: string) => validRoles.includes(role));
-
-      if (filteredRoles.length > 0) {
-
-        this.cookieService.set('userType', JSON.stringify(assignedRoleFromAuth0), {
-          path: '/',
-          secure: true,
-          sameSite: 'None'
-        });
-
-        this.authAccessService.setRoles(assignedRoleFromAuth0);
-
-        const userData: Token = {
-          email: idToken.email,
-          token: accessToken,
-          roles: assignedRoleFromAuth0,
-        };
-
-        this.authAccessService.setEmployeeEmail(idToken.email as string);
-        this.navService.refreshEmployee();
-
-        this.authService.store.dispatch(GetLogin({ payload: userData }));
-        if (window.innerWidth > 776)
-          this.navService.showNavbar = true;
-        else {
-          this.navService.showSideBar = true;
+  Login() {
+    const validRoles = ['SuperAdmin', 'Employee', 'Talent', 'Journey', 'Admin'];
+    this.cookieService.deleteAll();
+    this.authService.checkConnection()
+      .pipe(
+        switchMap(() => this.auth.loginWithPopup()),
+        take(1),
+        switchMap(() => this.auth.user$.pipe(take(1))),
+        switchMap((user) =>
+          this.auth.getAccessTokenSilently().pipe(
+            map((token) => {
+              const decodedToken = this.authService.decodeJwt(token);
+              const role = decodedToken.role || [];
+              const filteredRoles = role.filter((role: string) => validRoles.includes(role));
+              
+              if (filteredRoles.length === 0) {
+                window.alert("No valid role found.");
+                throw new Error("No valid role found.");
+              }
+              
+              this.cookieService.set('userEmail', user?.email || '', {
+                path: '/',
+                secure: true,
+                sameSite: 'None'
+              });
+  
+              this.cookieService.set('accessToken', token, {
+                path: '/',
+                secure: true,
+                sameSite: 'None'
+              });
+  
+              this.cookieService.set('userType', JSON.stringify(filteredRoles), {
+                path: '/',
+                secure: true,
+                sameSite: 'None'
+              });
+  
+              return { user, token, role: filteredRoles };
+            })
+          )
+        )
+      )
+      .subscribe({
+        next: ({ user, token, role }) => {
+          this.authAccessService.setRoles(role);
+          const userData: Token = {
+            email: user?.email,
+            token: token,
+            roles: role,
+          };
+          this.authAccessService.setEmployeeEmail(user?.email as string);
+          this.navService.refreshEmployee();
+          this.store.dispatch(GetLogin({ payload: userData }));
+  
+          if (window.innerWidth > 776)
+            this.navService.showNavbar = true;
+          else
+            this.navService.showSideBar = true;
+  
+          this.sharedPropprtyAccessService.setAccessProperties();
+          this.initialUserNavigation();
+        },
+        error: (err) => {
+          console.error("Login process error:", err);
         }
+      });
+  }  
 
-        this.sharedPropprtyAccessService.setAccessProperties();
-        this.initialUserNavigation();
-      }
-      else {
-        console.error("Login failed: User has invalid or no role assigned.");
-        window.alert("Login failed. User has invalid or no role assigned.");
-      }
-    } catch (error) {
-      window.alert("Login failed.");
-      console.error("Login failed:", error);
-    }
-  }
 
   initialUserNavigation(){
-    // TODO: put back in once ATS is available
-    // if (this.authAccessService.isTalent()) {
-    // this.navService.isHris = false;
-    // this.router.navigateByUrl('/ats-dashboard');
-    // } else if (
-      if (
-        this.authAccessService.isAdmin() ||
-        this.authAccessService.isJourney() ||
-        this.authAccessService.isSuperAdmin() ||
-        this.authAccessService.isTalent()
-      ) {
-        this.navService.isHris = true;
-        this.cookieService.set('isHris', String(this.navService.isHris));
-        this.router.navigateByUrl('/dashboard');
-      } else if (this.authAccessService.isEmployee()) {
-        this.router.navigateByUrl('/profile');
-      } else {
-        this.router.navigate(['/login']);
-      }
-
-    }
+  // TODO: put back in
+          // if (this.authAccessService.isTalent()) {
+          //   this.navService.isHris = false;
+          //   this.router.navigateByUrl('/ats-dashboard');
+          // }
+          if (
+            this.authAccessService.isAdmin() ||
+            this.authAccessService.isJourney() ||
+            this.authAccessService.isSuperAdmin() ||
+            this.authAccessService.isTalent()
+          ) {
+            this.navService.isHris = true;
+            this.cookieService.set('isHris', String(this.navService.isHris))
+            this.router.navigateByUrl('/dashboard');
+          }
+          else if (this.authAccessService.isEmployee()) { this.router.navigateByUrl('/profile'); }
+          else this.router.navigateByUrl('/login');
   }
+}
