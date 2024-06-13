@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as Auth0 from '@auth0/auth0-angular';
-import { Observable, take, EMPTY, catchError, map } from 'rxjs';
+import { Observable, take, EMPTY, catchError, map, firstValueFrom } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,31 +18,38 @@ export class AuthService {
   }
 
   isAuthenticated(): Observable<boolean> {
-    return this.auth0.isAuthenticated$.pipe(take(1))
+    return this.auth0.isAuthenticated$.pipe(take(1));
   }
 
-  checkConnection(): Observable<string> {
-    let header: HttpHeaders = new HttpHeaders();
-    return this.client
-      .post(
-        `${this.baseUrl}`,
-        "",
-        { headers: header, responseType: 'text' })
-      .pipe(
-        map(type => type),
-        catchError(err => {
-          if (err.status === 404 || err.status === 0) {
-            window.alert("No connection to server.");
-          }
-          return EMPTY;
-        })
-      );
+  async getAccessToken(): Promise<string> {
+    await firstValueFrom(this.isAuthenticated().pipe(
+      tap(isAuthenticated => {
+        if (!isAuthenticated) {
+          throw new Error('User not authenticated');
+        }
+      })
+    ));
+
+    try {
+      const accessToken = await firstValueFrom(this.auth0.getAccessTokenSilently().pipe(take(1)));
+      if (accessToken) {
+        return accessToken;
+      } else {
+        throw new Error('Failed to retrieve access token (data is null or undefined).');
+      }
+    } catch (error) {
+      throw new Error(`Error retrieving access token: ${error}`);
+    }
   }
 
-  logout() {
-    this.auth0.logout({
-      logoutParams: { returnTo: document.location.origin },
-    });
+  async RenewIfAccessTokenExpired(token: string): Promise<string> {
+    const decodedToken = this.decodeJwt(token);
+    const expirationTime = decodedToken?.exp * 1000;
+
+    if (Date.now() >= expirationTime) {
+      return await this.getAccessToken();
+    }
+    return token;
   }
 
   base64UrlDecode(str: string): string {
@@ -64,4 +72,28 @@ export class AuthService {
     }
   }
   
+  logout() {
+    this.auth0.logout({
+      logoutParams: { returnTo: document.location.origin },
+    });
+  }
+  
+  checkConnection(): Observable<string> {
+    let header: HttpHeaders = new HttpHeaders();
+    return this.client
+      .post(
+        `${this.baseUrl}`,
+        "",
+        { headers: header, responseType: 'text' })
+      .pipe(
+        map(type => type),
+        catchError(err => {
+          if (err.status === 404 || err.status === 0) {
+            window.alert("No connection to server.");
+          }
+          return EMPTY;
+        })
+      );
+  }
+
 }
