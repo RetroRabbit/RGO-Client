@@ -71,9 +71,9 @@ export class SignInComponent {
   Login() {
     const validRoles = ['SuperAdmin', 'Employee', 'Talent', 'Journey', 'Admin'];
     this.cookieService.deleteAll();
-    
-    this.auth.loginWithPopup()
+    this.authService.checkConnection()
       .pipe(
+        switchMap(() => this.auth.loginWithPopup()),
         take(1),
         switchMap(() => this.auth.user$.pipe(take(1))),
         switchMap((user) =>
@@ -135,7 +135,7 @@ export class SignInComponent {
           console.error("Login process error:", err);
         }
       });
-}
+  }  
 
 
   initialUserNavigation(){
