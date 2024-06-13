@@ -43,11 +43,9 @@ export class CareerSummaryQualificationsComponent {
   isDisabledDownload: boolean = true;
 
   fileName: string = '';
-  filePreview: string | ArrayBuffer | null = null;
   base64File: string = "";
   fileUrl: string = '';
   proofOfQualificationFinal: string = '';
-
 
   ngOnInit() {
     this.fetchQualificationsById();
@@ -210,7 +208,6 @@ export class CareerSummaryQualificationsComponent {
     fieldNames.forEach(fieldName => {
       let control: AbstractControl<any, any> | null = null;
       control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
-
       if (control) {
         switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
           case PropertyAccessLevel.none:
