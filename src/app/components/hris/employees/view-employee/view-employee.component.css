@@ -13,6 +13,10 @@ main {
     overflow: hidden;
 }
 
+#mainFilterContainer {
+    width: 80%;
+}
+
 mat-header-row {
     background-color: var(--background-light);
 }
@@ -300,6 +304,6 @@ mat-cell {
     left: 20px;
 }
 
-h3 {
+#no-employee-display {
     text-align: center;
 }

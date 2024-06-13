@@ -1,5 +1,5 @@
-import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -105,6 +105,15 @@ export class NewEmployeeComponent implements OnInit {
     3: { name: '', state: true },
   };
 
+  onCellphoneInputCheck(value: string): void {
+    const container = document.querySelector('.cellphone-container');
+    if (value) {
+      container?.classList.add('has-value');
+    } else {
+      container?.classList.remove('has-value');
+    }
+  }
+
   ngOnInit(): void {
     this.loadCountries();
 
@@ -208,8 +217,7 @@ export class NewEmployeeComponent implements OnInit {
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),
     ]),
     personalEmail: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]),
-    cellphoneNo: new FormControl('', [Validators.pattern(/^[0][6-8][0-9]{8}$/), Validators.maxLength(10)
-    ]),
+    cellphoneNo: new FormControl<string>('', [Validators.required]),
     photo: new FormControl<string>(''),
     notes: new FormControl<string>(''),
     leaveInterval: new FormControl(0, Validators.pattern(/^[0-9]*$/)),
@@ -459,6 +467,11 @@ export class NewEmployeeComponent implements OnInit {
       this.newEmployeeForm.value.disability;
     } else {
       this.snackBarService.showSnackbar("Please select a value for disability ", "snack-error");
+      this.isLoadingAddEmployee = false;
+      return;
+    }
+    if(this.newEmployeeForm.value.cellphoneNo == null || this.newEmployeeForm.controls.cellphoneNo.invalid){
+      this.snackBarService.showSnackbar("Please enter a valid cellphone number", "snack-error");
       this.isLoadingAddEmployee = false;
       return;
     }

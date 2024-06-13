@@ -56,6 +56,7 @@ export class AccordionEmployeeDocumentsComponent {
     const types: string = this.cookieService.get('userType');
     this.roles = Object.keys(JSON.parse(types));
     this.getEmployeeDocuments();
+    this.sharedAccordionFunctionality.totalDocumentsProgress()
   }
 
   downloadFile(base64String: string, fileName: string) {

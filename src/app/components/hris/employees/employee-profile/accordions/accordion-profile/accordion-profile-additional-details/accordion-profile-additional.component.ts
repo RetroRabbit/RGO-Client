@@ -38,9 +38,8 @@ export class AccordionProfileAdditionalComponent {
 
   customFields: CustomField[] = [];
   additionalFormProgress: number = 0;
-  employeeId = this.route.snapshot.params['id'];
-  currentId : number | undefined;
-  loggedInProfile!: EmployeeProfile;
+  employeeId : number | undefined;
+  loggedInProfile!: EmployeeProfile | SimpleEmployee;
 
   constructor(
     private fb: FormBuilder,
@@ -62,8 +61,7 @@ export class AccordionProfileAdditionalComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.loggedInProfile = this.navService.getEmployeeProfile();
-    const id = this.employeeProfile.employeeDetails.id ? this.employeeProfile.employeeDetails.id : this.employeeProfile.simpleEmployee.id;
-    this.currentId = id;
+    this.employeeId = this.route.snapshot.params['id'];
     this.getEmployeeFields();
     this.getEmployeeData();
   }
@@ -179,11 +177,12 @@ export class AccordionProfileAdditionalComponent {
         return fieldcode.id === data.fieldCodeId
       });
 
+
       if (found) {
         const formatFound: any = fieldcode.code
         const employeeDataDto = {
           id: found.id,
-          employeeId: found.employeeId,
+          employeeId: this.employeeId != undefined ? this.employeeId: this.loggedInProfile.id!,
           fieldcodeId: found.fieldCodeId,
           value: this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value
         }
@@ -204,7 +203,7 @@ export class AccordionProfileAdditionalComponent {
         const formatFound: any = fieldcode?.code
         const employeeDataDto = {
           id: 0,
-          employeeId: this.sharedAccordionFunctionality.selectedEmployee ? this.sharedAccordionFunctionality.selectedEmployee.id : this.employeeProfile?.employeeDetails.id,
+          employeeId: this.employeeId != undefined ? this.employeeId: this.loggedInProfile.id!,
           fieldcodeId: fieldcode.id,
           value: this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value
         }
