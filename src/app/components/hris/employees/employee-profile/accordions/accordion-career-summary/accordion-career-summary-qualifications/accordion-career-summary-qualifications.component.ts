@@ -130,7 +130,7 @@ export class CareerSummaryQualificationsComponent {
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
         error: (error) => {
-          this.snackBarService.showSnackbar(error.error, "snack-error");
+          this.snackBarService.showSnackbar("Please upload a qualification document", "snack-error");
         },
         complete: () => this.fetchQualificationsById()
       });
