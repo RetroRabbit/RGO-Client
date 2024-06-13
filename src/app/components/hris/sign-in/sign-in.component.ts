@@ -148,7 +148,7 @@ export class SignInComponent {
             this.authAccessService.isAdmin() ||
             this.authAccessService.isJourney() ||
             this.authAccessService.isSuperAdmin() ||
-            this.authAccessService.isTalent() || this.authAccessService.isEmployee()
+            this.authAccessService.isTalent()
           ) {
             this.navService.isHris = true;
             this.cookieService.set('isHris', String(this.navService.isHris))

@@ -145,8 +145,8 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ngOnInit() {
-    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
-      this.isAdminUser = true;
+    // if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
+      // this.isAdminUser = true;
 
       this.sharedAccordionFunctionality.updateProfile.subscribe({
         next: (data: number) => {
@@ -190,7 +190,7 @@ export class EmployeeProfileComponent implements OnChanges {
       this.getEmployeeProfile();
       this.refreshEmployeeProfile();
       this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
-    }
+    // }
   }
 
   openTerminationForm() {
