@@ -15,9 +15,9 @@ export class AuthInterceptor implements HttpInterceptor {
      private toast: NgToastService) {
     this.getToken();
   }
-
+  //TODO: check if access token expired
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    const token = this.cookieService.get('userToken');
+    const token = this.cookieService.get('accessToken');
     const authReq = req.clone({
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`,
