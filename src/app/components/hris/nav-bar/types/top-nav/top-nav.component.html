@@ -98,6 +98,20 @@
             </div>
           </div>
         </div>
+        <div *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+          <div id="nav-item-container">
+            <div id="nav-item">
+              <div (click)="changeNav('/data-reports')"
+                [ngClass]="router.url == '/data-reports' ? 'active' : 'idle'">
+                Data Reports
+              </div>
+              <div *ngIf="router.url == '/data-reports'" id="selected-line-box">
+                <div id="selected-line">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="navigation" *ngIf="!navService.isHris">
         <div class="row">

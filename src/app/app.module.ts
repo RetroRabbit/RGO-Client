@@ -99,6 +99,7 @@ import { AccordionCareerWorkExperienceComponent } from './components/hris/employ
 import { AccordionSalaryDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-salary-details/accordion-salary-details.component';
 import { EmployeeTerminationComponent } from './components/hris/employees/employee-termination/employee-termination.component';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
+import { DataReportsComponent } from './components/hris/data-reports/data-reports.component';
 
 @NgModule({
   declarations: [
@@ -152,7 +153,7 @@ import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
     AccordionCareerWorkExperienceComponent,
     AccordionSalaryDetailsComponent,
     EmployeeTerminationComponent,
-
+    DataReportsComponent,
   ],
   imports: [
     BrowserModule,

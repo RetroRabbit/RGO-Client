@@ -20,6 +20,7 @@ import { EmployeeOptionsComponent } from './components/hris/employees/employee-o
 import { ViewBankingApprovalComponent } from './components/hris/employees/employee-approvals/view-banking-approval/view-banking-approval.component';
 import { CareerSummaryQualificationsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-summary-qualifications/accordion-career-summary-qualifications.component';
 import { EmployeeTerminationComponent } from './components/hris/employees/employee-termination/employee-termination.component';
+import { DataReportsComponent } from './components/hris/data-reports/data-reports.component';
 
 const routes: Routes = [
   { path: '', component: SignInComponent },
@@ -39,7 +40,8 @@ const routes: Routes = [
   { path: 'view-banking-approval/:id', component: ViewBankingApprovalComponent},
   { path: 'career-summary', component: CareerSummaryQualificationsComponent},
   { path: 'view-starter-kit-approval/:id', component: ViewStarterKitApprovalComponent},
-  { path: 'end-employment/:id', component: EmployeeTerminationComponent }
+  { path: 'end-employment/:id', component: EmployeeTerminationComponent },
+  { path: 'data-reports', component: DataReportsComponent, canActivate: [HrisPageGuard] }
 ];
 
 @NgModule({
