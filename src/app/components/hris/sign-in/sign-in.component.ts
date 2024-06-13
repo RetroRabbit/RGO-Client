@@ -41,7 +41,7 @@ export class SignInComponent {
     }
     this.token = this.cookieService.get('accessToken');
     this.userEmail = this.cookieService.get('userEmail');
-    //TODO: fix this expiry check
+    
     if (this.token) {
       const tokenPayload = JSON.parse(atob(this.token.split('.')[1]));
       const expiryDate = new Date(tokenPayload.exp * 1000);
@@ -155,5 +155,6 @@ export class SignInComponent {
             this.router.navigateByUrl('/dashboard');
           }
           else if (this.authAccessService.isEmployee()) { this.router.navigateByUrl('/profile'); }
+          else this.router.navigateByUrl('/login');
   }
 }
