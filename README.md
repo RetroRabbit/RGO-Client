@@ -26,6 +26,9 @@ Make sure to have Git installed to run any Git command lines.
 git checkout develop
 ```
 
+### .env File
+Ensure the .env file is available in the root directory of the project.
+
 ### Install dependencies for the project
 ```powershell
 #cd RGO-Client
@@ -39,6 +42,8 @@ ng serve (run 'npm start' if the command does not work.)
 ```
 
 Runs on [this](http:/localhost:4200) location
+
+To close use "ctrl+c", enter y 
 
 
 # Naming Conventions
