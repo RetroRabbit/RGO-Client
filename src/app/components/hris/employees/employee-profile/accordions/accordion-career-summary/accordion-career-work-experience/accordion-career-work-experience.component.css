@@ -45,8 +45,8 @@ mat-icon{
     align-items: center;
 }
 
-#experience-remove {
-    margin-left: 720px;
+#experience-remove-new {
+    justify-content: end;
 }
 
 .icon-color{
