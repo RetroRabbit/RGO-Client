@@ -132,7 +132,8 @@ export class SignInComponent {
           this.initialUserNavigation();
         },
         error: (err) => {
-          console.error("Login process error:", err);
+          window.alert("Something went wrong.");
+          throw new Error("Something went wrong.", err);
         }
       });
   }  
