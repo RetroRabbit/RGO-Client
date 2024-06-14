@@ -11,7 +11,7 @@ import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AdminDocuments } from 'src/app/models/hris/constants/admin-documents.component';
 import { EmployeeDocumentsTypes } from 'src/app/models/hris/constants/employee-documents.constants';
@@ -256,19 +256,32 @@ export class SharedAccordionFunctionality {
 
   checkContactFormProgress() {
     let filledCount = 0;
+    let requiredFields = 0;
     const formControls = this.employeeContactForm.controls;
-    const totalFields = Object.keys(this.employeeContactForm.controls).length;
+  
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
-          filledCount++;
+        let isRequired = false;
+        if (control.validator) {
+          const validator = control.validator({} as AbstractControl);
+          isRequired = validator && validator['required'] ? true : false;
+        }
+        if (isRequired) {
+          requiredFields++;
+          if (control.value != null && control.value !== '') {
+            filledCount++;
+          }
         }
       }
     }
-    this.contactFormProgress = Math.round((filledCount / totalFields) * 100);
+    if (requiredFields === 0) {
+      this.contactFormProgress = 100;
+    } else {
+      this.contactFormProgress = Math.round((filledCount / requiredFields) * 100);
+    }
   }
-
+  
   checkAddressFormProgress() {
     let filledCount = 0;
     const formControls = this.addressDetailsForm.controls;
