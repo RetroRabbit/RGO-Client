@@ -22,13 +22,13 @@
                                 <div id="form-wrapper" class="col-12">
                                     <div class="row">
                                     <div class="d-flex">
-                                        <div class="row d-block">
+                                        <div class="col-6">
                                             <div class="experience-header">
                                                 <h3 class="mb-1" id="clientNameHeading">{{sharedAccordionFunctionality.workExperience[i].clientName}} | {{ formatDate(sharedAccordionFunctionality.workExperience[i].startDate) }}</h3>
                                             </div>
                                         </div>
-                                        <div class="row d-block" id="experience-remove">
-                                            <div class="experience-header" *ngIf="editWorkExperience">
+                                        <div class="col-6 justify-content-end">
+                                            <div class="experience-header"id="experience-remove-new" *ngIf="editWorkExperience">
                                                 <button mat-button id="delete-button" (click)="showDialog('update',i)">
                                                     <mat-icon class="icon-color mb-1">delete_outline</mat-icon>Delete
                                                 </button>
@@ -152,7 +152,7 @@
 
                         <div *ngFor="let experiences of sharedAccordionFunctionality.newWorkExperiences; let i = index" class="row">
                             <div class="row d-block">
-                                <div class="experience-header" *ngIf="addingWorkExperience">
+                                <div class="experience-header" id="experience-remove-new" *ngIf="addingWorkExperience">
                                     <button mat-button id="delete-button" (click)="showDialog('new',i)">
                                         <mat-icon class="icon-color mb-1">delete_outline</mat-icon>Delete
                                     </button>

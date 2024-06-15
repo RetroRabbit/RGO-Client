@@ -403,7 +403,6 @@ export class EmployeeProfileComponent implements OnChanges {
       const selectedFile = e.target.files[0];
       const file = new FileReader();
       file.readAsDataURL(e.target.files[0]);
-      file.readAsDataURL(e.target.files[0]);
       file.onload = (event: any) => {
         this.employeeProfile.photo = event.target.result;
         this.base64Image = event.target.result;
