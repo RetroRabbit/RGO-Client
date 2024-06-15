@@ -274,6 +274,7 @@ export class AccordionCertificatesComponent {
       this.fileUploaded = true;
       const file = event.target.files[0];
       this.fileConverter(file, index, newOrUpdate);
+      this.certificateFileName = file.name;
     }
   }
 

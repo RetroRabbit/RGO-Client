@@ -400,15 +400,11 @@ export class SharedAccordionFunctionality {
         }
       }
       ));
-
-      const FilledCount = this.filteredFilledWorkExp.length;
-      if (FilledCount == 0 || this.workExpereinceFormFields == 0) {
-        this.workExpFormProgress = 0;
-      }
-      else {
-        this.workExpFormProgress = Math.round((FilledCount / this.workExpereinceFormFields) * 100);
-      }
     }
+
+    const FilledCount = this.filteredFilledWorkExp.length;
+    this.workExpFormProgress = FilledCount === 0 || this.workExpereinceFormFields == 0 ? 0
+      : Math.round((FilledCount / this.workExpereinceFormFields) * 100);
   }
 
   calculateCareerCertficatesFormProgress() {
@@ -426,7 +422,7 @@ export class SharedAccordionFunctionality {
       }
 
       targetCertficates.filter((element: any) => {
-        const { employeeId, id, ...samplearray } = element;
+        const { employeeId, id, certificateDocument, ...samplearray } = element;
         newTargetCertficates.push(samplearray);
       });
 
@@ -439,12 +435,8 @@ export class SharedAccordionFunctionality {
     }
 
     const FilledCount = this.filteredFilledCerificate.length;
-    if (FilledCount == 0 || this.employeeCertificatesFields == 0) {
-      this.certificateformProgress = 0;
-    }
-    else {
-      this.certificateformProgress = Math.round((FilledCount / this.employeeCertificatesFields) * 100);
-    }
+    this.employeeCertificatesFields = FilledCount === 0 || this.workExpereinceFormFields == 0 ? 0
+      : Math.round((FilledCount / this.employeeCertificatesFields) * 100);
   }
 
   calculatesalaryDetails() {
@@ -460,6 +452,7 @@ export class SharedAccordionFunctionality {
       }
     }
     this.salaryDetailsFormProgress = Math.round((filledCount / totalFields) * 100);
+    console.log("salary perc:", this.salaryDetailsFormProgress);
   }
 
   totalProfileProgress() {
