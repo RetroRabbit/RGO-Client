@@ -16,11 +16,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { FormControl, Validators } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
-import { ChartComponent } from '../charts/charts.component';
+import { ChartComponent } from '../../charts/charts.component';
+import { Router } from '@angular/router';
+
 @Component({
     selector: 'app-data-reports',
     templateUrl: './data-reports.component.html',
@@ -28,10 +29,14 @@ import { ChartComponent } from '../charts/charts.component';
 })
 export class DataReportsComponent {
     
+    constructor(private router: Router,) {
+    }
+
     dataObjects = [
         { name: "Availability Snapshot", code: "AS01"},
         { name: "Open-Source Contributions Tracker", code: "OSCT01"},
-    ];
+    ]; // TODO : Pull this from back-end -> /data-reports/get-data-report-list
+
     screenWidth = window.innerWidth;
 
     @HostListener('window:resize', ['$event'])
@@ -42,5 +47,9 @@ export class DataReportsComponent {
 
     ngOnInit() {
       this.onResize();
+    }
+
+    onViewReport(code: string): void {
+      this.router.navigateByUrl('/data-reports/' + code);
     }
 }
