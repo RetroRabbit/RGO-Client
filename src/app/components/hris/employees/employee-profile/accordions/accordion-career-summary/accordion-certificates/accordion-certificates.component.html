@@ -7,10 +7,6 @@
                 <mat-panel-title>
                     Certificates
                 </mat-panel-title>
-                <!-- <mat-panel-description *ngIf="certificateInformationProgress != 100" class="pe-0 pe-md-5">
-                    <mat-icon class="mx-1">error</mat-icon>
-                    <span class="d-none d-md-block d-lg-block">Missing information</span>
-                </mat-panel-description> -->
             </mat-expansion-panel-header>
             <div class="col-12">
                 <div class="row">
@@ -24,16 +20,18 @@
                         <div *ngFor="let certificate of sharedAccordionFunctionality.employeeCertificates; let i = index" class="col-12">
                             <div id="form-wrapper" class="col-12">
                                 <div class="row">
-                                    <div class="row d-block">
-                                        <div class="certificate-header" *ngIf="editCertificate">
-                                            <h3 class="mb-2">{{copyOfCertificates[i].certificateName}}</h3>
-                                            <mat-icon class="icon-color mb-2"
-                                                (click)="showDialog('update',i)">delete_outline</mat-icon>
+                                    <div class="d-flex">
+                                        <div class="col-6">
+                                            <div class="certificate-header">
+                                                <h3 class="mb-1" id="certificateNameHeading">{{sharedAccordionFunctionality.employeeCertificates[i].certificateName}}</h3>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row d-block">
-                                        <div class="certificate-header" *ngIf="!editCertificate">
-                                            <h3 class="mb-1">{{sharedAccordionFunctionality.employeeCertificates[i].certificateName}}</h3>
+                                        <div class="col-6 justify-content-end">
+                                            <div class="certificate-header" id="certificate-remove-new" *ngIf="editCertificate">
+                                                <button mat-button id="delete-button" (click)="showDialog('update',i)">
+                                                    <mat-icon class="icon-color mb-1">delete_outline</mat-icon>Delete
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 my-2">
@@ -112,7 +110,7 @@
                                             Download
                                         </button>
                                     </div>
-                                    <div id="actionCellUpload" class="col-12 col-md-auto" *ngIf="editCertificate">
+                                    <div id="actionCellUpload" class="col-12 col-md-auto mb-1" *ngIf="editCertificate">
                                         <button type="file" mat-button color="primary"
                                             (click)="uploadCertificateFile.click()" accept=".pdf"
                                             [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
@@ -129,14 +127,16 @@
                                         <input type="file" #uploadCertificateFile
                                             (change)="onFileChange($event, i,'update')" hidden accept=".pdf">
                                     </div>
+                                    <hr>
                                 </div>
                             </div>
                         </div>
                         <div *ngFor="let newCertificate of newCertificates; let i = index" class="row">
                             <div class="row d-block">
-                                <div class="certificate-header" *ngIf="addingCertificate">
-                                    <h3 class=" mb-0">Remove new certificate</h3>
-                                    <mat-icon class="icon-color" (click)="showDialog('new',i)">delete_outline</mat-icon>
+                                <div class="certificate-header" id="certificate-remove-new" *ngIf="addingCertificate">
+                                    <button mat-button id="delete-button" (click)="showDialog('new',i)">
+                                        <mat-icon class="icon-color mb-1">delete_outline</mat-icon>Delete
+                                    </button>
                                 </div>
                             </div>
                             <div class="row d-block">
@@ -228,7 +228,7 @@
                             <h2>Add Another New Certificate Here</h2>
                             <button mat-button id="add-another-button" [disabled]="editCertificate" type="submit"
                                 (click)="addNewCertificate()">
-                                <mat-icon>add</mat-icon> Add Another Experience
+                                <mat-icon>add</mat-icon> Add Another Certificate
                             </button>
                         </div>
                     </div>

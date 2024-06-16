@@ -106,13 +106,33 @@ mat-icon{
 }
 
 .icon-color{
-    color: red;
+    color: rgb(184, 2, 2);
 }
 
 .certificate-header h2 {
     margin: 0; 
     margin-right: 8px;
     gap: 20px;
+}
+
+.certificate-header {
+    display: flex;
+    align-items: center;
+}
+
+#certificateNameHeading {
+    font-weight: 500;
+}
+
+#delete-button {
+    border: none;
+    border-radius: 2rem;
+    color: rgb(184, 2, 2);
+    width: 120px;
+}
+
+#certificate-remove-new {
+    justify-content: end;
 }
 
 .download-document , .add-qualification , #download-document-button {
