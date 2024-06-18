@@ -585,7 +585,7 @@ export class NewEmployeeComponent implements OnInit {
         : this.newEmployeeForm.value.disabilityNotes?.trim();
     this.newEmployeeForm.value.photo =
       this.newEmployeeForm.value.photo === ''
-        ? 'TBA'
+        ? ''
         : this.newEmployeeForm.value.photo?.trim();
   }
 
