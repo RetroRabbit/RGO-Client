@@ -39,8 +39,9 @@ export class SignInComponent {
       this.initialUserNavigation();
       return
     }
-    this.token = this.cookieService.get('userToken');
+    this.token = this.cookieService.get('accessToken');
     this.userEmail = this.cookieService.get('userEmail');
+    
     if (this.token) {
       const tokenPayload = JSON.parse(atob(this.token.split('.')[1]));
       const expiryDate = new Date(tokenPayload.exp * 1000);
@@ -68,66 +69,78 @@ export class SignInComponent {
   }
 
   Login() {
+    const validRoles = ['SuperAdmin', 'Employee', 'Talent', 'Journey', 'Admin'];
     this.cookieService.deleteAll();
-    this.auth
-      .loginWithPopup()
+    this.authService.checkConnection()
       .pipe(
+        switchMap(() => this.auth.loginWithPopup()),
         take(1),
         switchMap(() => this.auth.user$.pipe(take(1))),
-        switchMap((user) => {
-          this.cookieService.set('userEmail', user?.email || '', {
-            path: '/',
-            secure: true,
-            sameSite: 'None'
-          }); 
-          return this.authService.login(user?.email).pipe(
-            tap((token) => {
-              this.cookieService.set('userToken', token, {
+        switchMap((user) =>
+          this.auth.getAccessTokenSilently().pipe(
+            map((token) => {
+              const decodedToken = this.authService.decodeJwt(token);
+              const role = decodedToken.role || [];
+              const filteredRoles = role.filter((role: string) => validRoles.includes(role));
+              
+              if (filteredRoles.length === 0) {
+                window.alert("No valid role found.");
+                throw new Error("No valid role found.");
+              }
+              
+              this.cookieService.set('userEmail', user?.email || '', {
                 path: '/',
                 secure: true,
                 sameSite: 'None'
               });
-            }),
-            map((token) => ({ user, token }))
-          );
-        }),
-        switchMap(({ user, token }) =>
-          this.authService.FetchRoles(user?.email).pipe(
-            tap((roles) => {
-              this.cookieService.set('userType', roles, {
+  
+              this.cookieService.set('accessToken', token, {
                 path: '/',
                 secure: true,
                 sameSite: 'None'
               });
-            }),
-            map((roles) => ({ user, token, roles }))
+  
+              this.cookieService.set('userType', JSON.stringify(filteredRoles), {
+                path: '/',
+                secure: true,
+                sameSite: 'None'
+              });
+  
+              return { user, token, role: filteredRoles };
+            })
           )
         )
       )
       .subscribe({
-        next: ({ user, token, roles }) => {
-          this.authAccessService.setRoles(roles);
-          const googleID: Token = {
+        next: ({ user, token, role }) => {
+          this.authAccessService.setRoles(role);
+          const userData: Token = {
             email: user?.email,
             token: token,
-            roles: roles,
+            roles: role,
           };
           this.authAccessService.setEmployeeEmail(user?.email as string);
           this.navService.refreshEmployee();
-          this.store.dispatch(GetLogin({ payload: googleID }));
-          if(window.innerWidth > 776)
-              this.navService.showNavbar = true;
+          this.store.dispatch(GetLogin({ payload: userData }));
+  
+          if (window.innerWidth > 776)
+            this.navService.showNavbar = true;
           else
             this.navService.showSideBar = true;
-
+  
           this.sharedPropprtyAccessService.setAccessProperties();
           this.initialUserNavigation();
         },
+        error: (err) => {
+          window.alert("Something went wrong.");
+          throw new Error("Something went wrong.", err);
+        }
       });
-  }
+  }  
+
 
   initialUserNavigation(){
-  // TODO: put back in
+  // TODO: put back in when ats available
           // if (this.authAccessService.isTalent()) {
           //   this.navService.isHris = false;
           //   this.router.navigateByUrl('/ats-dashboard');
@@ -143,5 +156,6 @@ export class SignInComponent {
             this.router.navigateByUrl('/dashboard');
           }
           else if (this.authAccessService.isEmployee()) { this.router.navigateByUrl('/profile'); }
+          else this.router.navigateByUrl('/login');
   }
 }
