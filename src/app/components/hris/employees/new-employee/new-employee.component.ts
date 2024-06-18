@@ -95,6 +95,7 @@ export class NewEmployeeComponent implements OnInit {
   isSameAddress: boolean = true;
   isSavedEmployee: boolean = false;
   existingIdNumber: boolean = false;
+  isValidStarterkitFile: boolean = false;
   empId: number = 0;
   isSouthAfrica = false;
 
@@ -132,7 +133,7 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
-      this.navService.hideNav();
+    this.navService.hideNav();
   }
 
   loadCountries(): void {
@@ -275,6 +276,13 @@ export class NewEmployeeComponent implements OnInit {
       if (droppedFile.fileEntry.isFile) {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         fileEntry.file((file: File) => {
+          const allowedTypes = ['application/pdf'];
+          if (!allowedTypes.includes(file.type)) {
+            this.isValidStarterkitFile = false;
+            this.snackBarService.showSnackbar("Please upload a PDF document", "snack-error");
+            return;
+          }
+          this.isValidStarterkitFile = true;
           const reader = new FileReader();
           reader.onload = (e) => {
             const base64String = e.target?.result as string;
@@ -452,10 +460,12 @@ export class NewEmployeeComponent implements OnInit {
 
   onSubmit(reset: boolean = false): void {
     this.existingIdNumber = false;
-    this.isLoadingAddEmployee = true;
+    if (!this.newEmployeeForm.controls['idNumber'].valid) {
+      this.snackBarService.showSnackbar("Please enter a valid ID number", "snack-error");
+      return;
+    }
     if (this.isDirty == true)
       return;
-
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
@@ -470,12 +480,11 @@ export class NewEmployeeComponent implements OnInit {
       this.isLoadingAddEmployee = false;
       return;
     }
-    if(this.newEmployeeForm.value.cellphoneNo == null || this.newEmployeeForm.controls.cellphoneNo.invalid){
+    if (this.newEmployeeForm.value.cellphoneNo == null || this.newEmployeeForm.controls.cellphoneNo.invalid) {
       this.snackBarService.showSnackbar("Please enter a valid cellphone number", "snack-error");
       this.isLoadingAddEmployee = false;
       return;
     }
-
     this.newEmployeeForm.patchValue({ id: 0 });
     this.newEmployeeForm.value.initials = this.newEmployeeForm.value.initials?.toUpperCase();
     this.newEmployeeForm.value.cellphoneNo =
@@ -519,6 +528,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveEmployee(): void {
+    this.isLoadingAddEmployee = true;
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
         this.isSavedEmployee = true;
