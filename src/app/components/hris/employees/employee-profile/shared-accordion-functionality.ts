@@ -241,24 +241,45 @@ export class SharedAccordionFunctionality {
 
   checkEmployeeFormProgress() {
     let filledCount = 0;
+    let requiredFields = 0;
     const formControls = this.employeeDetailsForm.controls;
-    const totalFields = Object.keys(this.employeeDetailsForm.controls).length;
+
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
-          filledCount++;
+        let isRequired = false;
+        if (control.validator) {
+
+          const validator = control.validator({} as AbstractControl);
+
+          isRequired = validator && validator['required'] ? true : false;
+          console.log("HEELLLO", isRequired);
+
+        }
+
+        if (isRequired) {
+          requiredFields++;
+          if (control.value != null && control.value != '') {
+            filledCount++;
+            console.log("HEELLLO", control.value);
+
+          }
         }
       }
     }
-    this.employeeFormProgress = Math.round((filledCount / totalFields) * 100);
+    if (requiredFields === 0) {
+      this.employeeFormProgress = 100;
+
+    } else {
+      this.employeeFormProgress = Math.round((filledCount / requiredFields) * 100);
+    }
   }
 
   checkContactFormProgress() {
     let filledCount = 0;
     let requiredFields = 0;
     const formControls = this.employeeContactForm.controls;
-  
+
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
@@ -281,34 +302,34 @@ export class SharedAccordionFunctionality {
       this.contactFormProgress = Math.round((filledCount / requiredFields) * 100);
     }
   }
-  
-  checkAddressFormProgress() {
-  let filledCount = 0;
-  let requiredFields = 0;
-  const formControls = this.addressDetailsForm.controls;
 
-  for (const controlName in formControls) {
-    if (formControls.hasOwnProperty(controlName)) {
-      const control = formControls[controlName]; 
-      let isRequired = false;
-      if (control.validator) {
-        const validator = control.validator({} as AbstractControl); 
-        isRequired = validator && validator['required'] ? true : false; 
-      }
-      if (isRequired) {
-        requiredFields++;
-        if (control.value != null && control.value !== '') {
-          filledCount++;
+  checkAddressFormProgress() {
+    let filledCount = 0;
+    let requiredFields = 0;
+    const formControls = this.addressDetailsForm.controls;
+
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        let isRequired = false;
+        if (control.validator) {
+          const validator = control.validator({} as AbstractControl);
+          isRequired = validator && validator['required'] ? true : false;
+        }
+        if (isRequired) {
+          requiredFields++;
+          if (control.value != null && control.value !== '') {
+            filledCount++;
+          }
         }
       }
     }
+    if (requiredFields === 0) {
+      this.addressFormProgress = 100;
+    } else {
+      this.addressFormProgress = Math.round((filledCount / requiredFields) * 100);
+    }
   }
-  if (requiredFields === 0) {
-    this.addressFormProgress = 100;
-  } else {
-    this.addressFormProgress = Math.round((filledCount / requiredFields) * 100);
-  }
-}
 
 
   checkAdditionalFormProgress() {
