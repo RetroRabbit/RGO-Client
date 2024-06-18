@@ -435,7 +435,7 @@ export class SharedAccordionFunctionality {
     }
 
     const FilledCount = this.filteredFilledCerificate.length;
-    this.employeeCertificatesFields = FilledCount === 0 || this.workExpereinceFormFields == 0 ? 0
+    this.certificateformProgress = FilledCount === 0 || this.workExpereinceFormFields == 0 ? 0
       : Math.round((FilledCount / this.employeeCertificatesFields) * 100);
   }
 
@@ -452,7 +452,6 @@ export class SharedAccordionFunctionality {
       }
     }
     this.salaryDetailsFormProgress = Math.round((filledCount / totalFields) * 100);
-    console.log("salary perc:", this.salaryDetailsFormProgress);
   }
 
   totalProfileProgress() {
