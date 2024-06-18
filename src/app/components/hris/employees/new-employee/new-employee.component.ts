@@ -95,6 +95,7 @@ export class NewEmployeeComponent implements OnInit {
   isSameAddress: boolean = true;
   isSavedEmployee: boolean = false;
   existingIdNumber: boolean = false;
+  isValidStarterkitFile: boolean = false;
   empId: number = 0;
   isSouthAfrica = false;
 
@@ -275,6 +276,13 @@ export class NewEmployeeComponent implements OnInit {
       if (droppedFile.fileEntry.isFile) {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         fileEntry.file((file: File) => {
+          const allowedTypes = ['application/pdf'];
+          if (!allowedTypes.includes(file.type)) {
+            this.isValidStarterkitFile = false;
+            this.snackBarService.showSnackbar("Please upload a PDF document", "snack-error");
+            return;
+          }
+          this.isValidStarterkitFile = true;
           const reader = new FileReader();
           reader.onload = (e) => {
             const base64String = e.target?.result as string;
@@ -480,17 +488,17 @@ export class NewEmployeeComponent implements OnInit {
     this.newEmployeeForm.patchValue({ id: 0 });
     this.newEmployeeForm.value.initials = this.newEmployeeForm.value.initials?.toUpperCase();
     this.newEmployeeForm.value.cellphoneNo =
-    this.newEmployeeForm.value.cellphoneNo?.toString().trim();
+      this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
       employeeNumber: this.newEmployeeForm.value.surname?.substring(0, 3).toUpperCase() + '000',
       engagementDate: new Date(
         new Date(this.newEmployeeForm.value.engagementDate!)
-        .setUTCHours(0, 0, 0, 0)
+          .setUTCHours(0, 0, 0, 0)
         + (
           new Date(this.newEmployeeForm.value.engagementDate!).toDateString() ===
-          new Date().toDateString()
-          ? 0
-          : 24 * 60 * 60 * 1000
+            new Date().toDateString()
+            ? 0
+            : 24 * 60 * 60 * 1000
         )
       ).toISOString()
       ,
@@ -499,7 +507,7 @@ export class NewEmployeeComponent implements OnInit {
       postalAddress: this.postalAddressObj,
       peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
     });
-    
+
     const employeeEmail: string = this.newEmployeeForm.value.email!;
     this.checkBlankRequiredFields();
     this.employeeService.checkDuplicateIdNumber(this.newEmployeeForm.value.idNumber as string, 0).subscribe({
