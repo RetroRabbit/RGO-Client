@@ -77,7 +77,7 @@ export class NewEmployeeComponent implements OnInit {
   provinces: string[] = [];
   countries: string[] = [];
   cities: string[] = [];
-  imagePreview: string | ArrayBuffer | null = null;
+  imagePreview: string = '';
   previewImage: string = '';
   imageUrl: string = '';
   countrySelected: string = '';
