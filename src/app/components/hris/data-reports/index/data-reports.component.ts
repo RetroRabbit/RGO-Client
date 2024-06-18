@@ -1,26 +1,9 @@
-import { Component, Output, EventEmitter, HostListener } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
-import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
-import { SystemNav } from 'src/app/services/hris/system-nav.service';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
-import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { Subscription, catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
-import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { EmployeeType } from 'src/app/models/hris/employee-type.model';
-import { ChartService } from 'src/app/services/hris/charts.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { ChartData } from 'src/app/models/hris/charts.interface';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { FormControl, Validators } from '@angular/forms';
-import { TemplateRef } from '@angular/core';
-import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
-import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
-import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
-import { ChartComponent } from '../../charts/charts.component';
+import { Component, HostListener } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
+import { DataReportList } from 'src/app/models/hris/data-report-list';
 
 @Component({
     selector: 'app-data-reports',
@@ -28,14 +11,13 @@ import { Router } from '@angular/router';
     styleUrls: ['./data-reports.component.css']
 })
 export class DataReportsComponent {
-    
-    constructor(private router: Router,) {
+    baseUrl: string;
+    constructor(private router: Router, private httpClient: HttpClient) {
+      this.baseUrl = `${environment.HttpsBaseURL}/data-reports`
     }
 
-    dataObjects = [
-        { name: "Availability Snapshot", code: "AS01"},
-        { name: "Open-Source Contributions Tracker", code: "OSCT01"},
-    ]; // TODO : Pull this from back-end -> /data-reports/get-data-report-list
+    dataObjects: DataReportList[] = [
+    ];
 
     screenWidth = window.innerWidth;
 
@@ -47,9 +29,22 @@ export class DataReportsComponent {
 
     ngOnInit() {
       this.onResize();
+      this.populateDataReportList();
     }
 
     onViewReport(code: string): void {
       this.router.navigateByUrl('/data-reports/' + code);
+    }
+
+    fetchDataReportList(): Observable<DataReportList[]>{
+      return this.httpClient.get<DataReportList[]>(`${this.baseUrl}/get-data-report-list`);
+    }
+
+    populateDataReportList(){
+      this.fetchDataReportList().subscribe({
+        next: data => {
+          this.dataObjects = data;
+        }
+      })
     }
 }

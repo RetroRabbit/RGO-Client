@@ -1,10 +1,10 @@
 <div>
     <main class="container-fluid">
         <div class="mt-4 mx-0 px-0">
+            <div class="card-header" style="margin-bottom: 0px;">
+                {{ dataObjects.reportName}}
+            </div>
             <div class="card">
-                <div class="card-header" style="margin-bottom: 0px;">
-                    {{ dataObjects.reportName }}
-                </div>
                 <div class="card-body p-0">
                     <table class="table table-sm">
                         <thead class="table-primary">
@@ -14,11 +14,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let data of dataObjects.data; let  i = index" >
+                            <tr *ngFor="let data of dataObjects.data; let  i = index">
                                 <td *ngFor="let column of dataObjects.columns">
                                     <span *ngIf="!column.isCustom">{{ getProperty(data, column.prop) }}</span>
-                                    <input *ngIf="column.isCustom && column.fieldType == 'Checkbox'" type="checkbox" name="{{column.prop + data.Id}}" (change)="UpdateCustomInput(i, column, $event)" [checked]="getProperty(data, column.prop) == 'true'"  class="form-check-inline form-check-input form-control"/>
-                                    <textarea *ngIf="column.isCustom && column.fieldType == 'Text'" type="text" name="{{column.prop + data.Id}}" (change)="UpdateCustomInput(i, column, $event)" rows="1" class="form-control form-control-sm">{{getProperty(data, column.prop)}}</textarea>
+                                    <input *ngIf="column.isCustom && column.fieldType == 'Checkbox'" type="checkbox"
+                                        name="{{column.prop + data.Id}}" (change)="UpdateCustomInput(i, column, $event)"
+                                        [checked]="getProperty(data, column.prop) == 'true'"
+                                        class="form-check-inline form-check-input form-control" />
+                                    <textarea *ngIf="column.isCustom && column.fieldType == 'Text'" type="text"
+                                        name="{{column.prop + data.Id}}" (change)="UpdateCustomInput(i, column, $event)"
+                                        rows="1"
+                                        class="form-control form-control-sm">{{getProperty(data, column.prop)}}</textarea>
                                 </td>
                                 <td (click)="onViewEmployee(data.Id)">></td>
                             </tr>

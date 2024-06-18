@@ -1,28 +1,11 @@
-import { Component, Output, EventEmitter, HostListener } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
-import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
-import { SystemNav } from 'src/app/services/hris/system-nav.service';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
-import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { Subscription, catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
-import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { EmployeeType } from 'src/app/models/hris/employee-type.model';
-import { ChartService } from 'src/app/services/hris/charts.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { ChartData } from 'src/app/models/hris/charts.interface';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { FormControl, Validators } from '@angular/forms';
-import { TemplateRef } from '@angular/core';
-import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
-import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
-import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
-import { ChartComponent } from '../../charts/charts.component';
-import { Router } from '@angular/router';
+import { Component, HostListener, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataReport } from 'src/app/models/hris/data-report.interface';
 import { DataReportColumns } from 'src/app/models/hris/data-report-columns.interface';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
     selector: 'app-data-report-detail',
@@ -31,94 +14,26 @@ import { DataReportColumns } from 'src/app/models/hris/data-report-columns.inter
 })
 export class DataReportDetailComponent {
     
-    constructor(private router: Router,) {
+    baseUrl: string;
+    dataReportCode: string;
+
+    constructor(private router: Router,
+      private httpClient: HttpClient,
+      private cookieService: CookieService,
+      private route: ActivatedRoute) {
+        this.baseUrl = `${environment.HttpsBaseURL}/data-reports`
+        this.dataReportCode = this.route.snapshot.params["code"]
     }
 
     dataObjects : DataReport = {
       reportName: "Open-Source Contributions Tracker",
-      reportId: 1,
-      columns: [
-        {
-          id: 1,
-          name: "Name",
-          prop: "Name",
-          sequence: 0,
-          isCustom: false,
-          fieldType: null
-        },
-        {
-          id: 2,
-          name: "Surname",
-          prop: "Surname",
-          sequence: 1,
-          isCustom: false,
-          fieldType: null
-        },
-        {
-          id: 3,
-          name: "Role",
-          prop: "Role",
-          sequence: 2,
-          isCustom: false,
-          fieldType: null
-        },
-        {
-          id: 4,
-          name: "Level",
-          prop: "Level",
-          sequence: 3,
-          isCustom: false,
-          fieldType: null
-        },
-        {
-          id: 5,
-          name: "Location",
-          prop: "Location",
-          sequence: 4,
-          isCustom: false,
-          fieldType: null
-        },
-        {
-          id: 6,
-          name: "NQF Level",
-          prop: "NqfLevel",
-          sequence: 5,
-          isCustom: false,
-          fieldType: null
-        },
-        {
-          id: 7,
-          name: "Open Source",
-          prop: "OpenSource",
-          sequence: 6,
-          isCustom: true,
-          fieldType: "Checkbox"
-        },
-        {
-          id: 8,
-          name: "Notes",
-          prop: "Notes",
-          sequence: 7,
-          isCustom: true,
-          fieldType: "Text"
-        }
-      ],
-      data: [
-        {
-          Id: 2,
-          Name: "Alicia",
-          Surname: "Manders",
-          Role: "Developer",
-          Level: 4,
-          Location: "Pretoria",
-          NqfLevel: "NQF 5",
-          OpenSource: "true",
-          Notes: "false"
-        }
-      ]
+      reportId: 0,
+      columns: [],
+      data: []
     }; // TODO : Pull this from back-end -> /data-reports/get-data-report?code=reportCode
 
     screenWidth = window.innerWidth;
+    PREVIOUS_PAGE = 'previousPage';
 
     @HostListener('window:resize', ['$event'])
     
@@ -128,10 +43,29 @@ export class DataReportDetailComponent {
 
     ngOnInit() {
       this.onResize();
+      this.populateReportData();
+    }
+
+    fetchReportData(reportCode: string): Observable<DataReport>{
+      return this.httpClient.get<DataReport>(`${this.baseUrl}/get-data-report?code=${reportCode}`);
+    }
+
+    populateReportData(){
+      this.fetchReportData("AS01").subscribe({
+        next: data => {
+          this.dataObjects.reportId = data.reportId;
+          this.dataObjects.reportName = data.reportName;
+          this.dataObjects.columns = data.columns;
+          this.dataObjects.data = data.data;
+        }
+      })
     }
 
     onViewEmployee(employeeId: number): void {
+      this.dataReportCode = this.route.snapshot.params["code"]
       this.router.navigateByUrl('/profile/' + employeeId);
+      this.cookieService.set(this.PREVIOUS_PAGE, '/data-reports/'+ this.dataReportCode);
+
       //TODO : Set return path so user can navigate back to table view from employee view
     }
 

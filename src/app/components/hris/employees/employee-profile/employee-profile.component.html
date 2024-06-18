@@ -10,6 +10,11 @@
       <mat-icon>arrow_back</mat-icon>
       <span>Back to Dashboard</span>
     </button>
+    <button mat-button class="btn" id="back-button" (click)="goToDataReports(dataReportsCode)"
+      *ngIf="previousPage.includes('/data-reports') &&  showBackButtons">
+      <mat-icon>arrow_back</mat-icon>
+      <span>Back to Data Reports</span>
+    </button>
   </div>
   <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
             'background-color': '#D7DFFF',
