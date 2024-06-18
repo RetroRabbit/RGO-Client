@@ -283,29 +283,33 @@ export class SharedAccordionFunctionality {
   }
   
   checkAddressFormProgress() {
-    let filledCount = 0;
-    const formControls = this.addressDetailsForm.controls;
-    let totalFields = 0;
-    if (this.physicalEqualPostal) {
-      totalFields = (Object.keys(this.addressDetailsForm.controls).length) / 2;
-    }
-    else if (!this.physicalEqualPostal) {
-      totalFields = (Object.keys(this.addressDetailsForm.controls).length);
-    }
+  let filledCount = 0;
+  let requiredFields = 0;
+  const formControls = this.addressDetailsForm.controls;
 
-    for (const controlName in formControls) {
-      if (formControls.hasOwnProperty(controlName)) {
-        const control = formControls[controlName];
-        if (this.physicalEqualPostal && controlName.includes("physical") && control.value != null && control.value != " " && control.value != "") {
-          filledCount++;
-        }
-        else if (!this.physicalEqualPostal && control.value != null && control.value != " " && control.value != "") {
+  for (const controlName in formControls) {
+    if (formControls.hasOwnProperty(controlName)) {
+      const control = formControls[controlName]; 
+      let isRequired = false;
+      if (control.validator) {
+        const validator = control.validator({} as AbstractControl); 
+        isRequired = validator && validator['required'] ? true : false; 
+      }
+      if (isRequired) {
+        requiredFields++;
+        if (control.value != null && control.value !== '') {
           filledCount++;
         }
       }
     }
-    this.addressFormProgress = Math.round((filledCount / totalFields) * 100);
   }
+  if (requiredFields === 0) {
+    this.addressFormProgress = 100;
+  } else {
+    this.addressFormProgress = Math.round((filledCount / requiredFields) * 100);
+  }
+}
+
 
   checkAdditionalFormProgress() {
     let filledCount = 0;
