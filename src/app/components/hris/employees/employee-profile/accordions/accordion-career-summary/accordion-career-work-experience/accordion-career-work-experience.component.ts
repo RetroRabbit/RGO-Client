@@ -79,7 +79,6 @@ export class AccordionCareerWorkExperienceComponent {
     this.workExperienceService.getWorkExperience(this.employeeProfile.id as number).subscribe({
       next: (data) => {
         this.sharedAccordionFunctionality.workExperience = data;
-        this.sharedAccordionFunctionality.workExpereinceFormFields = this.sharedAccordionFunctionality.workExpereinceFormFields * this.sharedAccordionFunctionality.workExperience.length;
         this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
@@ -270,6 +269,8 @@ export class AccordionCareerWorkExperienceComponent {
         this.snackBarService.showSnackbar("Work experience info updated", "snack-success");
         this.hasUpdatedWorkExperience = true;
         this.getWorkExperience();
+        this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
+        this.sharedAccordionFunctionality.totalCareerProgress();
       },
       error: () => {
         this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
