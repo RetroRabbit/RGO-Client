@@ -43,8 +43,7 @@ ng serve (run 'npm start' if the command does not work.)
 
 Runs on [this](http:/localhost:4200) location
 
-To close use "ctrl+c", enter y 
-
+To stop the run use "ctrl+c", enter y on the console running the project
 
 # Naming Conventions
 
