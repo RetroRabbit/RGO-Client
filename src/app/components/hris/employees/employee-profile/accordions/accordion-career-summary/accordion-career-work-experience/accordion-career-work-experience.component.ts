@@ -271,7 +271,6 @@ export class AccordionCareerWorkExperienceComponent {
         this.getWorkExperience();
         this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
-
       },
       error: () => {
         this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
