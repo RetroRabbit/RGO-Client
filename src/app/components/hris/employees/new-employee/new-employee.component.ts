@@ -77,7 +77,7 @@ export class NewEmployeeComponent implements OnInit {
   provinces: string[] = [];
   countries: string[] = [];
   cities: string[] = [];
-  imagePreview: string | ArrayBuffer | null = null;
+  imagePreview: string = '';
   previewImage: string = '';
   imageUrl: string = '';
   countrySelected: string = '';
@@ -383,6 +383,7 @@ export class NewEmployeeComponent implements OnInit {
   }
   public fileLeave(event: Event) {
   }
+  
   public removeFileByIndex(index: number): void {
     if (index >= 0 && index < this.files.length) {
       this.files.splice(index, 1);
@@ -593,7 +594,7 @@ export class NewEmployeeComponent implements OnInit {
         : this.newEmployeeForm.value.disabilityNotes?.trim();
     this.newEmployeeForm.value.photo =
       this.newEmployeeForm.value.photo === ''
-        ? 'TBA'
+        ? ''
         : this.newEmployeeForm.value.photo?.trim();
   }
 
