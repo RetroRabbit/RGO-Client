@@ -98,7 +98,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+        <div *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney() || authAccessService.isSuperAdmin()">
           <div id="nav-item-container">
             <div id="nav-item">
               <div (click)="changeNav('/data-reports')"
