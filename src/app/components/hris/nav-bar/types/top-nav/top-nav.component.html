@@ -44,7 +44,7 @@
         </svg>
       </div>
       <div id="navigation" *ngIf="navService.isHris">
-        <div *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+        <div *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney() || authAccessService.isSuperAdmin()">
           <div id="nav-item-container" class="col-auto">
             <div id="nav-item">
               <div (click)="changeNav('/dashboard')" [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
@@ -70,7 +70,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+        <div *ngIf="authAccessService.isSuperAdmin() || authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
           <div id="nav-item-container">
             <div id="nav-item">
               <div (click)="changeNav('/employees')"
@@ -84,7 +84,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="authAccessService.isAdmin()">
+        <div *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin()">
           <div id="nav-item-container">
             <div id="nav-item">
               <div (click)="changeNav('/system-settings')"

@@ -177,6 +177,8 @@ import { DataReportDetailComponent } from './components/hris/data-reports/detail
       authorizationParams: {
         redirect_uri: environment.redirect_uri,
       },
+      useRefreshTokens: true,
+      cacheLocation: 'localstorage',
     }),
     HttpClientModule,
     BrowserAnimationsModule,
