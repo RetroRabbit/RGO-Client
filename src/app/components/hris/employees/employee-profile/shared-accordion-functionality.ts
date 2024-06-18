@@ -125,8 +125,8 @@ export class SharedAccordionFunctionality {
   salaryDetailsFormProgress: number = 0;
   additionalCareerFormProgress: number = 0;
 
-  workExpereinceFormFields: number = 6;
-  employeeCertificatesFields: number = 4;
+  workExpereinceFormFields: number = 0;
+  employeeCertificatesFields: number = 0;
 
   genders = genders;
   races = races;
@@ -379,13 +379,13 @@ export class SharedAccordionFunctionality {
     let targetWorkExp: any = [];
     let newTargetWorkExp: any = [];
     this.filteredFilledWorkExp.length = 0;
+    this.workExpereinceFormFields = 6 * this.workExperience.length;
 
     if (this.workExperience.length === 0) {
       this.workExpereinceFormFields = 0;
       this.filteredFilledWorkExp.length = 0;
     }
     else {
-
       for (const element of this.workExperience) {
         targetWorkExp.push(element);
       }
@@ -411,6 +411,7 @@ export class SharedAccordionFunctionality {
     let targetCertficates: any = [];
     let newTargetCertficates: any = [];
     this.filteredFilledCerificate.length = 0;
+    this.employeeCertificatesFields = 4 * this.employeeCertificates.length;
 
     if (this.employeeCertificates.length === 0) {
       this.employeeCertificatesFields = 0;
@@ -435,7 +436,7 @@ export class SharedAccordionFunctionality {
     }
 
     const FilledCount = this.filteredFilledCerificate.length;
-    this.certificateformProgress = FilledCount === 0 || this.workExpereinceFormFields == 0 ? 0
+    this.certificateformProgress = FilledCount === 0 || this.employeeCertificatesFields == 0 ? 0
       : Math.round((FilledCount / this.employeeCertificatesFields) * 100);
   }
 
