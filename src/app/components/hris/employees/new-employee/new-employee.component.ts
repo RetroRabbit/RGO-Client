@@ -132,7 +132,7 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
-      this.navService.hideNav();
+    this.navService.hideNav();
   }
 
   loadCountries(): void {
@@ -452,10 +452,12 @@ export class NewEmployeeComponent implements OnInit {
 
   onSubmit(reset: boolean = false): void {
     this.existingIdNumber = false;
-    this.isLoadingAddEmployee = true;
+    if (!this.newEmployeeForm.controls['idNumber'].valid) {
+      this.snackBarService.showSnackbar("Please enter a valid ID number", "snack-error");
+      return;
+    }
     if (this.isDirty == true)
       return;
-
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
@@ -470,26 +472,25 @@ export class NewEmployeeComponent implements OnInit {
       this.isLoadingAddEmployee = false;
       return;
     }
-    if(this.newEmployeeForm.value.cellphoneNo == null || this.newEmployeeForm.controls.cellphoneNo.invalid){
+    if (this.newEmployeeForm.value.cellphoneNo == null || this.newEmployeeForm.controls.cellphoneNo.invalid) {
       this.snackBarService.showSnackbar("Please enter a valid cellphone number", "snack-error");
       this.isLoadingAddEmployee = false;
       return;
     }
-
     this.newEmployeeForm.patchValue({ id: 0 });
     this.newEmployeeForm.value.initials = this.newEmployeeForm.value.initials?.toUpperCase();
     this.newEmployeeForm.value.cellphoneNo =
-      this.newEmployeeForm.value.cellphoneNo?.toString().trim();
+    this.newEmployeeForm.value.cellphoneNo?.toString().trim();
     this.newEmployeeForm.patchValue({
       employeeNumber: this.newEmployeeForm.value.surname?.substring(0, 3).toUpperCase() + '000',
       engagementDate: new Date(
         new Date(this.newEmployeeForm.value.engagementDate!)
-          .setUTCHours(0, 0, 0, 0)
+        .setUTCHours(0, 0, 0, 0)
         + (
           new Date(this.newEmployeeForm.value.engagementDate!).toDateString() ===
-            new Date().toDateString()
-            ? 0
-            : 24 * 60 * 60 * 1000
+          new Date().toDateString()
+          ? 0
+          : 24 * 60 * 60 * 1000
         )
       ).toISOString()
       ,
@@ -498,7 +499,7 @@ export class NewEmployeeComponent implements OnInit {
       postalAddress: this.postalAddressObj,
       peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
     });
-
+    
     const employeeEmail: string = this.newEmployeeForm.value.email!;
     this.checkBlankRequiredFields();
     this.employeeService.checkDuplicateIdNumber(this.newEmployeeForm.value.idNumber as string, 0).subscribe({
@@ -519,6 +520,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveEmployee(): void {
+    this.isLoadingAddEmployee = true;
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
         this.isSavedEmployee = true;
