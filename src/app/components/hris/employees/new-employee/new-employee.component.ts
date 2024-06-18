@@ -379,6 +379,11 @@ export class NewEmployeeComponent implements OnInit {
     });
   }
 
+  public fileOver(event: Event) {
+  }
+  public fileLeave(event: Event) {
+  }
+  
   public removeFileByIndex(index: number): void {
     if (index >= 0 && index < this.files.length) {
       this.files.splice(index, 1);
