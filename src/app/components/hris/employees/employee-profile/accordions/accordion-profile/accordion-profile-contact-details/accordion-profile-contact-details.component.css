@@ -5,3 +5,44 @@
     color: #0029C6;
     width: 170px;
 }
+
+.telephone-label {
+    margin-left: 95px; 
+}
+
+.telephone-container.has-value .telephone-label,
+.telephone-container:focus-within .telephone-label {  
+    margin-left: 0; 
+}
+
+.label-active{
+    margin-left: 0px;
+}
+
+  
+
+.home-number-label{
+    margin-left: 95px;
+}
+
+.cellphone-container:focus-within .home-number-label,
+.cellphone-container.has-value .home-number-label {  
+    margin-left: 0; 
+}
+
+.emergency-contact-label{
+    margin-left: 95px;
+}
+
+.cellphone-container:focus-within .emergency-contact-label,
+.cellphone-container.has-value .emergency-contact-label {  
+    margin-left: 0; 
+}
+
+.has-value {
+    margin-left: 0px;
+}
+
+.no-value {
+    margin-left: 95px;
+}

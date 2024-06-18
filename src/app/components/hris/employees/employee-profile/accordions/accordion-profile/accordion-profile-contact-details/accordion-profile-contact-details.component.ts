@@ -1,5 +1,5 @@
-import { Component, HostListener, Input } from '@angular/core';
-import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -8,6 +8,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
+import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 
 @Component({
   selector: 'app-accordion-profile-contact-details',
@@ -16,8 +17,13 @@ import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/
 })
 export class AccordionProfileContactDetailsComponent {
 
+  fieldsToSubscribe: string[] = ['cellphoneNo', 'houseNo', 'emergencyContactNo'];
+  @ViewChild('cellphoneField')
+  cellphoneField!: NgxMatIntlTelInputComponent; 
+
   screenWidth = window.innerWidth;
   usingProfile: boolean = true;
+  inputCheck: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -36,19 +42,68 @@ export class AccordionProfileContactDetailsComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
   }
 
+
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
+    this.sharedAccordionFunctionality.employeeContactForm.disable();
+    this.fieldsToSubscribe.forEach(field => {
+      const value = this.sharedAccordionFunctionality.employeeContactForm.get(field)?.value;
+      this.onInputCheck(field);
+    });
+  }
+
+  ngAfterViewInit() {
+    // this.checkInitialValue();
+       this.fieldsToSubscribe.forEach(field => {
+      this.onSubscribe(field);
+   });
+  } 
+  
+  checkInitialValue(field:string) {
+    // const value = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
+    // this.onInputCheck(value);
+    const control = this.sharedAccordionFunctionality.employeeContactForm.get(field);
+    const value = control?.value;
+    console.log(`Initial value of ${field}:`, value);
+    this.onInputCheck(field);
+  }
+
+  onSubscribe(field:string){
+    // this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.valueChanges.subscribe(value => {
+    //   this.onInputCheck(value);
+    // });
+    const control = this.sharedAccordionFunctionality.employeeContactForm.get(field);
+    control?.valueChanges.subscribe(value => {
+      console.log(`Value changed for ${field}:`, value);
+      this.onInputCheck(value);
+      const checkError = this.sharedAccordionFunctionality.employeeContactForm.controls[field].invalid;
+      if(checkError){
+        this.onInputCheck("invalid value");
+      } 
+    });  
+  }
+
+  onInputCheck(value: string): void {
+    const container = document.querySelector('.telephone-container');
+    console.log('onInputCheck called with value:', value);
+
+    // add a check here to see if the form has this value
+    if (value) {
+      container?.classList.add('has-value');
+    } else {
+      container?.classList.remove('has-value');
+    }
   }
 
   initializeForm() {
     this.sharedAccordionFunctionality.employeeContactForm = this.fb.group({
       email: [this.employeeProfile.employeeDetails.email, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.emailPattern)]],
       personalEmail: [this.employeeProfile.employeeDetails.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
-      cellphoneNo: [this.employeeProfile.employeeDetails.cellphoneNo, [Validators.required, Validators.maxLength(10), Validators.pattern(/^[0][6-8][0-9]{8}$/)]],
-      houseNo: [this.employeeProfile.employeeDetails.houseNo, [Validators.minLength(4), Validators.pattern(/^[0][6-8][0-9]{8}$/)]],
+      cellphoneNo: [this.employeeProfile.employeeDetails.cellphoneNo, [Validators.required]],
+      houseNo: [this.employeeProfile.employeeDetails.houseNo, [Validators.minLength(4)]],
       emergencyContactName: [this.employeeProfile.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
-      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required, Validators.pattern(/^[0][6-8][0-9]{8}$/), Validators.maxLength(10)]]
+      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required]]
     });
     this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.sharedAccordionFunctionality.checkContactFormProgress();
@@ -59,6 +114,13 @@ export class AccordionProfileContactDetailsComponent {
     this.sharedAccordionFunctionality.employeeContactForm.enable();
     this.sharedAccordionFunctionality.editContact = true;
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", false)
+
+    setTimeout(() => {
+      this.fieldsToSubscribe.forEach(field => {
+        this.checkInitialValue(field);
+        this.onSubscribe(field);
+      });
+    }, 0);
   }
 
   cancelContactEdit() {
