@@ -243,12 +243,10 @@ export class SharedAccordionFunctionality {
     let filledCount = 0;
     let requiredFields = 0;
     const formControls = this.employeeDetailsForm.controls;
-
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
         let isRequired = false;
-
         if (control.validator) {
           if (controlName !== 'idNumber') {
             const validator = control.validator({} as AbstractControl);
@@ -258,7 +256,6 @@ export class SharedAccordionFunctionality {
             isRequired = true;
           }
         }
-
         if (isRequired) {
           requiredFields++;
           if (control.value != null && control.value != '') {
@@ -329,7 +326,6 @@ export class SharedAccordionFunctionality {
       this.addressFormProgress = Math.round((filledCount / requiredFields) * 100);
     }
   }
-
 
   checkAdditionalFormProgress() {
     let filledCount = 0;
