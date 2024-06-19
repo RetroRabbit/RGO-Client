@@ -47,9 +47,6 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Initials</mat-label>
                     <input matInput formControlName="initials">
-                    <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['initials'].hasError('required')">
-                      Initials are required
-                    </mat-error>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['initials'].hasError('pattern') && !sharedAccordionFunctionality.employeeDetailsForm.controls['initials'].hasError('required')">
                       Initials must not contain numbers
                     </mat-error>
@@ -157,6 +154,9 @@
                     <input matInput [matDatepicker]="picker1" class="form-control" formControlName="dateOfBirth">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
+                    <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['dateOfBirth'].hasError('required')">
+                      Date of Birth is required
+                    </mat-error>
                   </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.engagementDate"
@@ -166,6 +166,9 @@
                     <input matInput [matDatepicker]="picker2" formControlName="engagementDate">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
+                    <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['engagementDate'].hasError('required')">
+                      Start Date is required
+                    </mat-error>
                   </mat-form-field>
                 </div>
               </div>
