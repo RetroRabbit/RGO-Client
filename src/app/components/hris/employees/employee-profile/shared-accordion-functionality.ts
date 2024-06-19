@@ -248,21 +248,21 @@ export class SharedAccordionFunctionality {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
         let isRequired = false;
+
         if (control.validator) {
-
-          const validator = control.validator({} as AbstractControl);
-
-          isRequired = validator && validator['required'] ? true : false;
-          console.log("HEELLLO", isRequired);
-
+          if (controlName !== 'idNumber') {
+            const validator = control.validator({} as AbstractControl);
+            isRequired = validator && validator['required'] ? true : false;
+          }
+          else {
+            isRequired = true;
+          }
         }
 
         if (isRequired) {
           requiredFields++;
           if (control.value != null && control.value != '') {
             filledCount++;
-            console.log("HEELLLO", control.value);
-
           }
         }
       }
