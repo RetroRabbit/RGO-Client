@@ -17,22 +17,22 @@ stages:
       inputs:
         secureFile: 'develop_env'
 
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: $(Agent.TempDirectory)
+        Contents: '**\develop_env'
+        TargetFolder: $(Build.SourcesDirectory)
+
     - script: |
         echo "Current directory:"
         pwd
         echo "Listing files in current directory:"
         ls -al
         echo "Listing files in the secure file directory:"
-        ls -al $(Agent.TempDirectory)/downloadSecureFile
+        ls -al $(Agent.TempDirectory)
         echo "Renaming develop_env to .env"
-        mv $(Agent.TempDirectory)/downloadSecureFile/develop_env $(System.DefaultWorkingDirectory)/.env
+        mv $(Build.SourcesDirectory)/develop_env $(Build.SourcesDirectory)/.env
       displayName: 'Rename develop_env to .env'
-
-    - task: CopyFiles@2
-      inputs:
-        SourceFolder: $(Agent.TempDirectory)
-        Contents: '**\.env'
-        TargetFolder: $(Build.SourcesDirectory)
 
     - script: |
         npm install
