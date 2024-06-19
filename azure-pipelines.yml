@@ -24,15 +24,8 @@ stages:
         TargetFolder: $(Build.SourcesDirectory)
 
     - script: |
-        echo "Current directory:"
-        pwd
-        echo "Listing files in current directory:"
-        ls -al
-        echo "Listing files in the secure file directory:"
-        ls -al $(Agent.TempDirectory)
-        echo "Renaming develop_env to .env"
         mv $(Build.SourcesDirectory)/develop_env $(Build.SourcesDirectory)/.env
-      displayName: 'Rename develop_env to .env'
+      displayName: 'set up .env file'
 
     - script: |
         npm install
