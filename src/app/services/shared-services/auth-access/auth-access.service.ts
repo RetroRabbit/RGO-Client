@@ -1,19 +1,31 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthAccessService {
-
-  public constructor(private cookieService: CookieService)
-  { }
+  public constructor(
+    private cookieService: CookieService,
+    private httpClient: HttpClient,
+  )
+  { 
+    this.baseUrl = `${environment.HttpsBaseURL}/auth`
+  }
+  baseUrl: string;
 
   private roles: string = '';
 
   private employeeEmail: string = '';
 
   private userId: number = -1;
+
+  RemoveUserRole(employeeId : string, roleId : string){
+    return this.httpClient.put<string>(
+      `${environment.HttpsBaseURL}/userId=${employeeId}`,roleId);
+  }
 
   setEmployeeEmail(email: string) {
     this.employeeEmail = email;
