@@ -119,7 +119,7 @@ export class SharedAccordionFunctionality {
   addressFormProgress: number = 0;
   additionalFormProgress: number = 0;
 
-  qaulificationFormProgress: number = 0;
+  qualificationFormProgress: number = 0;
   workExpFormProgress: number = 0;
   certificateformProgress: number = 0;
   salaryDetailsFormProgress: number = 0;
@@ -378,7 +378,7 @@ export class SharedAccordionFunctionality {
     });
   }
 
-  calculateQaulificationProgress() {
+  calculateQualificationProgress() {
     let filledCount = 0;
     const formControls = this.employeeQualificationForm.controls;
     const totalFields = Object.keys(this.employeeQualificationForm.controls).length;
@@ -390,7 +390,7 @@ export class SharedAccordionFunctionality {
         }
       }
     }
-    this.qaulificationFormProgress = Math.round((filledCount / totalFields) * 100);
+    this.qualificationFormProgress = Math.round((filledCount / totalFields) * 100);
   }
 
   calculateCareerAdditionalFormProgress() {
@@ -495,10 +495,10 @@ export class SharedAccordionFunctionality {
 
   totalCareerProgress() {
     if (this.additionalCareerFormProgress == Infinity) {
-      this.careerFormProgress = Math.floor((this.qaulificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 4);
+      this.careerFormProgress = Math.floor((this.qualificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 4);
     }
     else {
-      this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qaulificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 5);
+      this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qualificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 5);
       this.updateCareer.emit(this.careerFormProgress);
     }
   }
