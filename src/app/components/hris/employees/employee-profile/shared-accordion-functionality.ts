@@ -279,7 +279,6 @@ export class SharedAccordionFunctionality {
     let filledCount = 0;
     let requiredFields = 0;
     const formControls = this.employeeContactForm.controls;
-
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
