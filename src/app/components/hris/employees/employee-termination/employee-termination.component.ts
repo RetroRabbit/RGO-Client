@@ -7,7 +7,6 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
-import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 
 @Component({
   selector: 'app-employee-termination',
@@ -49,7 +48,6 @@ export class EmployeeTerminationComponent implements OnInit {
     public employeeService: EmployeeService,
     private employeeTerminationService: EmployeeTerminationService,
     private route: ActivatedRoute,
-    private authAccessService: AuthAccessService
   ) {
     this.newterminationform = this.fb.group({
     terminationOption: new FormControl('', Validators.required),
