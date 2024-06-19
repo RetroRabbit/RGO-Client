@@ -11,6 +11,8 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AppComponent } from 'src/app/app.component';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
+import { error } from 'console';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -28,6 +30,7 @@ export class SignInComponent {
     private router: Router,
     private cookieService: CookieService,
     public navService: NavService,
+    private snackBarService: SnackbarService,
     private authAccessService: AuthAccessService,
     private NgZone: NgZone,
     private sharedPropprtyAccessService: SharedPropertyAccessService,
@@ -84,8 +87,7 @@ export class SignInComponent {
               const filteredRoles = role.filter((role: string) => validRoles.includes(role));
               
               if (filteredRoles.length === 0) {
-                window.alert("No valid role found.");
-                throw new Error("No valid role found.");
+                throw new Error("Something went wrong.");
               }
               
               this.cookieService.set('userEmail', user?.email || '', {
@@ -131,9 +133,8 @@ export class SignInComponent {
           this.sharedPropprtyAccessService.setAccessProperties();
           this.initialUserNavigation();
         },
-        error: (err) => {
-          window.alert("Something went wrong.");
-          throw new Error("Something went wrong.", err);
+        error: () => {
+          this.snackBarService.showSnackbar("Something went wrong.","snack-error");
         }
       });
   }  
