@@ -63,7 +63,7 @@ export class CareerSummaryQualificationsComponent {
           }
         }
         this.initializeForm();
-        this.sharedAccordionFunctionality.calculateQaulificationProgress();
+        this.sharedAccordionFunctionality.calculateQualificationProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
       error: (error) => {
@@ -117,14 +117,11 @@ export class CareerSummaryQualificationsComponent {
       const qualificationObservable = updatedQualification.id > 0
         ? this.employeeQualificationsService.updateEmployeeQualification(updatedQualification, updatedQualification.id)
         : this.employeeQualificationsService.saveEmployeeQualification(updatedQualification);
-
-      this.sharedAccordionFunctionality.calculateQaulificationProgress();
-      this.sharedAccordionFunctionality.totalCareerProgress();
       qualificationObservable.subscribe({
         next: () => {
           this.snackBarService.showSnackbar(
             updatedQualification.id > 0 ? "Qualifications updated" : "Qualifications saved", "snack-success");
-          this.sharedAccordionFunctionality.calculateQaulificationProgress();
+          this.sharedAccordionFunctionality.calculateQualificationProgress();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
         error: (error) => {

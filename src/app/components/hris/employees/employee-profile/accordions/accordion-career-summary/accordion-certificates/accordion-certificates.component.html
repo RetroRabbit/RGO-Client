@@ -94,6 +94,12 @@
                                         <h3 class='ml-1' [ngStyle]="{'color': editCertificate ? 'black' : 'grey'}">Proof
                                             of certificate</h3>
                                     </div>
+                                    <div>
+                                    <div
+                                        [ngStyle]="{'color' : editCertificate ? 'black' :'grey'}">
+                                        {{ sharedAccordionFunctionality.employeeCertificates[i].documentName}}
+                                    </div>
+                                </div>
                                     <div id="actionCellDownload" class="col-12 col-md-auto mb-2">
                                         <button mat-button color="primary"
                                             (click)="downloadFile(sharedAccordionFunctionality.employeeCertificates[i].certificateDocument, sharedAccordionFunctionality.employeeCertificates[i].documentName)"
