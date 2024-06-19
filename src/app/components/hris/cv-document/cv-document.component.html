@@ -13,32 +13,28 @@
             <mat-divider></mat-divider>
             <div class="skill">
                 <mat-icon id="category-icon">lan</mat-icon>
-                <h3>Javascript</h3>
+                <h3>{{skillSet}}</h3>
             </div>
-            <div class="skill">
-                <mat-icon id="menu-icon">lan</mat-icon>
-                <h3>Javascript</h3>
-            </div>
+
         </div>
         <div class="container-certification">
             <h1>Certifications & Exams</h1>
             <mat-divider></mat-divider>
+            <h3>{{organizationName}}</h3>
             <div class="cert">
             <mat-icon id="menu-icon">star rate</mat-icon>
-             <h3>C++ Certified Programmer - 2018</h3>
+             <h4>{{certificateName}} | {{issueDate}}</h4>
             </div>
-            <div class="cert">
-                <mat-icon id="menu-icon">star rate</mat-icon>
-                 <h3>C++ Certified Programmer - 2018</h3>
-                </div>
+
 
         </div>
         <div class="container-experience">
             <h1>Their professional Experience</h1>
             <mat-divider></mat-divider>
             <div class="container-project">
-                 <h2>Role</h2>
-                <h3>Name of project</h3>
+                 <h3>{{role}}</h3>
+                 <h4>{{client}} | {{date}}</h4>
+                <h4>{{projectName}}</h4>
                 <p>This project was a payment distribution and invoicing system, which was designed to run debit orders for
                     Clients (via the FNB Bank integration) in order to help manage the customer's money flow. This project also
                     contained a debt collection element. During this time Eduan was in charge of managing the team as well
@@ -46,16 +42,6 @@
                     Technologies used: MSsql, ASP.Net and MVC</p>
 
             </div>
-            <div class="container-project">
-                <h2>Role</h2>
-               <h3>Name of project</h3>
-               <p>This project was a payment distribution and invoicing system, which was designed to run debit orders for
-                   Clients (via the FNB Bank integration) in order to help manage the customer's money flow. This project also
-                   contained a debt collection element. During this time Eduan was in charge of managing the team as well
-                   as building the architecture of the system.
-                   Technologies used: MSsql, ASP.Net and MVC</p>
-
-           </div>
 
 
         </div>

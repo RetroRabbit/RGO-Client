@@ -5,6 +5,7 @@ import { EmployeeCertificatesService } from 'src/app/services/hris/employee/empl
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeQualificationsService } from 'src/app/services/hris/employee/employee-qualifications.service';
+import { WorkExperienceService } from 'src/app/services/hris/employee/employee-work-experience.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 
@@ -24,7 +25,14 @@ export class CvDocumentComponent {
   nqf: number | undefined = 0;
   education: string | undefined = '';
   school: string | undefined = '';
-
+  client: string | undefined = '';
+  projectName: string | undefined = '';
+  projectRole: string | undefined = '';
+  date: any | undefined = '';
+  issueDate: any | undefined = '';
+  certificateName: string | undefined = '';
+  organizationName: string | undefined = '';
+  skillSet: any | undefined = '';
 
 
   constructor(
@@ -34,6 +42,7 @@ export class CvDocumentComponent {
     private employeeDataService: EmployeeDataService,
     private employeeQaulificationService: EmployeeQualificationsService,
     private employeeCertificationService: EmployeeCertificatesService,
+    private employeeWorkExperienceService: WorkExperienceService,
     public navService: NavService,
 
   ) { }
@@ -48,6 +57,7 @@ export class CvDocumentComponent {
     this.getEmployeeGeneralInformation();
     this.getQaulifications();
     this.getCertfications();
+    this.getEmployeeWorkExp();
 
   }
 
@@ -65,7 +75,17 @@ export class CvDocumentComponent {
   }
 
   getEmployeeWorkExp() {
+    this.employeeWorkExperienceService.getWorkExperience(this.employeeId).subscribe({
+      next: data => {
+        console.log(data);
+        this.client = data[0].clientName;
+        this.projectName = data[0].projectName;
+        const newDate = new Date(data[0].endDate);
+        this.date = newDate.getFullYear();
+        this.skillSet = data[0].skillSet;
 
+      }
+    })
   }
   getQaulifications() {
     this.employeeQaulificationService.getEmployeeQualificationById(this.employeeId).subscribe({
@@ -80,7 +100,14 @@ export class CvDocumentComponent {
   getCertfications() {
     this.employeeCertificationService.getCertificationDetails(this.employeeId).subscribe({
       next: data => {
-        console.log(data)
+        console.log(data);
+        this.organizationName = data[0].issueOrganization;
+        this.certificateName = data[0].certificateName;
+        const newDate = new Date(data[0].issueDate);
+        this.issueDate = newDate.getFullYear();
+
+
+
 
       }
     })

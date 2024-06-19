@@ -1,9 +1,9 @@
 .container {
-    margin-top: 70px;
+    margin-top: 20px;
     background:white;
     border-radius: 10px;
+    width:60%;
     height:100%;
-    width:60%
 }
 .container-summary{
     /* border:1px solid red; */
@@ -11,7 +11,7 @@
     margin-left:10%;
 }
 .container-summary > p{
-    margin-top:50px;
+    margin-top:10px;
 }
 .container-skills{
     /* border:1px solid red; */
@@ -21,7 +21,7 @@
     flex-direction: column;
 }
 .container-skills >h1{
-    margin-top:25px;
+    margin-top:10px;
 }
 .skill{
     display: flex;
@@ -51,7 +51,7 @@
     margin-left:10%;
 }
 .container-certification >h1{
-    margin-top:25px;
+    margin-top:10px;
 }
 .container-experience{
     /* border:1px solid red; */
@@ -61,5 +61,9 @@
     flex-direction: column;
 }
 .container-experience >h1{
-    margin-top:25px;
+    margin-top:10px;
+}
+.container-project>h4{
+    font-weight: 500;
+
 }
