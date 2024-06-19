@@ -114,7 +114,6 @@ export class EmployeeTerminationComponent implements OnInit {
       next: () => this.snackBarService.showSnackbar("Employee termination saved", "snack-success"),
       error: () => this.snackBarService.showSnackbar("error", "Could not save termination"),
       complete: () => {
-        this.authAccessService.RemoveUserRole(`${this.employeeProfile.id}`,`${this.employeeProfile.employeeType?.id}`);
         this.router.navigateByUrl(nextPage);
       }
     });

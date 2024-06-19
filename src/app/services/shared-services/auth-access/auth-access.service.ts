@@ -22,11 +22,6 @@ export class AuthAccessService {
 
   private userId: number = -1;
 
-  RemoveUserRole(employeeId : string, roleId : string){
-    return this.httpClient.put<string>(
-      `${environment.HttpsBaseURL}/userId=${employeeId}`,roleId);
-  }
-
   setEmployeeEmail(email: string) {
     this.employeeEmail = email;
   }
