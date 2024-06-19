@@ -174,6 +174,8 @@ import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
       authorizationParams: {
         redirect_uri: environment.redirect_uri,
       },
+      useRefreshTokens: true,
+      cacheLocation: 'localstorage',
     }),
     HttpClientModule,
     BrowserAnimationsModule,

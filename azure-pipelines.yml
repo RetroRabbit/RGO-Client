@@ -15,12 +15,17 @@ stages:
       displayName: 'Install Node.js'
     - task: DownloadSecureFile@1
       inputs:
-        secureFile: '.env'
+        secureFile: 'develop_env'
+
     - task: CopyFiles@2
       inputs:
         SourceFolder: $(Agent.TempDirectory)
-        Contents: '**\.env'
+        Contents: '**\develop_env'
         TargetFolder: $(Build.SourcesDirectory)
+
+    - script: |
+        mv $(Build.SourcesDirectory)/develop_env $(Build.SourcesDirectory)/.env
+      displayName: 'set up .env file'
 
     - script: |
         npm install
@@ -49,12 +54,17 @@ stages:
       displayName: 'Install Node.js'
     - task: DownloadSecureFile@1
       inputs:
-        secureFile: '.env'
+        secureFile: 'staging_env'
+
     - task: CopyFiles@2
       inputs:
         SourceFolder: $(Agent.TempDirectory)
-        Contents: '**\.env'
+        Contents: '**\staging_env'
         TargetFolder: $(Build.SourcesDirectory)
+
+    - script: |
+        mv $(Build.SourcesDirectory)/staging_env $(Build.SourcesDirectory)/.env
+      displayName: 'set up .env file'
 
     - script: |
         npm install
@@ -84,13 +94,18 @@ stages:
 
     - task: DownloadSecureFile@1
       inputs:
-        secureFile: '.env'
+        secureFile: 'production_env'
+        
     - task: CopyFiles@2
       inputs:
         SourceFolder: $(Agent.TempDirectory)
-        Contents: '**\.env'
+        Contents: '**\production_env'
         TargetFolder: $(Build.SourcesDirectory)
         
+    - script: |
+        mv $(Build.SourcesDirectory)/production_env $(Build.SourcesDirectory)/.env
+      displayName: 'set up .env file'
+
     - script: |
         npm install
         npm run build -- --configuration=production

@@ -43,11 +43,9 @@ export class CareerSummaryQualificationsComponent {
   isDisabledDownload: boolean = true;
 
   fileName: string = '';
-  filePreview: string | ArrayBuffer | null = null;
   base64File: string = "";
   fileUrl: string = '';
   proofOfQualificationFinal: string = '';
-
 
   ngOnInit() {
     this.fetchQualificationsById();
@@ -65,7 +63,7 @@ export class CareerSummaryQualificationsComponent {
           }
         }
         this.initializeForm();
-        this.sharedAccordionFunctionality.calculateQaulificationProgress();
+        this.sharedAccordionFunctionality.calculateQualificationProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
       error: (error) => {
@@ -119,18 +117,15 @@ export class CareerSummaryQualificationsComponent {
       const qualificationObservable = updatedQualification.id > 0
         ? this.employeeQualificationsService.updateEmployeeQualification(updatedQualification, updatedQualification.id)
         : this.employeeQualificationsService.saveEmployeeQualification(updatedQualification);
-
-      this.sharedAccordionFunctionality.calculateQaulificationProgress();
-      this.sharedAccordionFunctionality.totalCareerProgress();
       qualificationObservable.subscribe({
         next: () => {
           this.snackBarService.showSnackbar(
             updatedQualification.id > 0 ? "Qualifications updated" : "Qualifications saved", "snack-success");
-          this.sharedAccordionFunctionality.calculateQaulificationProgress();
+          this.sharedAccordionFunctionality.calculateQualificationProgress();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
         error: (error) => {
-          this.snackBarService.showSnackbar(error.error, "snack-error");
+          this.snackBarService.showSnackbar("Please upload a qualification document", "snack-error");
         },
         complete: () => this.fetchQualificationsById()
       });
@@ -210,7 +205,6 @@ export class CareerSummaryQualificationsComponent {
     fieldNames.forEach(fieldName => {
       let control: AbstractControl<any, any> | null = null;
       control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
-
       if (control) {
         switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
           case PropertyAccessLevel.none:

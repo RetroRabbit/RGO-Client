@@ -51,7 +51,7 @@
         <span class="list-number">{{ totalNumberOfEmployees }}</span>
     </a>
 
-    <a class="sidenav-list-item" (click)="changeNav('/system-settings')" [ngClass]="router.url == '/system-settings' ? 'active-list-item' : 'idle'" *ngIf="authAccessService.isAdmin()">
+    <a class="sidenav-list-item" (click)="changeNav('/system-settings')" [ngClass]="router.url == '/system-settings' ? 'active-list-item' : 'idle'" *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin()">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             class="list-icon">
             <mask id="mask0_7793_43996" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
