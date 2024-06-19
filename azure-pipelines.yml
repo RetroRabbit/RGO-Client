@@ -56,15 +56,15 @@ stages:
       inputs:
         secureFile: 'staging_env'
 
-    - script: |
-        mv staging_env .env
-      displayName: 'Rename staging_env to .env'    
-           
     - task: CopyFiles@2
       inputs:
         SourceFolder: $(Agent.TempDirectory)
-        Contents: '**\.env'
+        Contents: '**\staging_env'
         TargetFolder: $(Build.SourcesDirectory)
+
+    - script: |
+        mv $(Build.SourcesDirectory)/staging_env $(Build.SourcesDirectory)/.env
+      displayName: 'set up .env file'
 
     - script: |
         npm install
@@ -96,16 +96,16 @@ stages:
       inputs:
         secureFile: 'production_env'
         
-    - script: |
-        mv production_env .env
-      displayName: 'Rename production_env to .env'    
-        
     - task: CopyFiles@2
       inputs:
         SourceFolder: $(Agent.TempDirectory)
-        Contents: '**\.env'
+        Contents: '**\production_env'
         TargetFolder: $(Build.SourcesDirectory)
         
+    - script: |
+        mv $(Build.SourcesDirectory)/production_env $(Build.SourcesDirectory)/.env
+      displayName: 'set up .env file'
+
     - script: |
         npm install
         npm run build -- --configuration=production
