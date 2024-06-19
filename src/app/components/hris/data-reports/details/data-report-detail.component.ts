@@ -25,12 +25,7 @@ export class DataReportDetailComponent {
         this.dataReportCode = this.route.snapshot.params["code"]
     }
 
-    dataObjects : DataReport = {
-      reportName: "Open-Source Contributions Tracker",
-      reportId: 0,
-      columns: [],
-      data: []
-    }; // TODO : Pull this from back-end -> /data-reports/get-data-report?code=reportCode
+    dataObjects : DataReport = {}; // TODO : Pull this from back-end -> /data-reports/get-data-report?code=reportCode
 
     screenWidth = window.innerWidth;
     PREVIOUS_PAGE = 'previousPage';
@@ -43,15 +38,16 @@ export class DataReportDetailComponent {
 
     ngOnInit() {
       this.onResize();
-      this.populateReportData();
+      this.dataReportCode = this.route.snapshot.params["id"]
+      this.populateReportData(this.dataReportCode);
     }
 
     fetchReportData(reportCode: string): Observable<DataReport>{
       return this.httpClient.get<DataReport>(`${this.baseUrl}/get-data-report?code=${reportCode}`);
     }
 
-    populateReportData(){
-      this.fetchReportData("AS01").subscribe({
+    populateReportData(dataReportCode: string){
+      this.fetchReportData(dataReportCode).subscribe({
         next: data => {
           this.dataObjects.reportId = data.reportId;
           this.dataObjects.reportName = data.reportName;
@@ -61,10 +57,9 @@ export class DataReportDetailComponent {
       })
     }
 
-    onViewEmployee(employeeId: number): void {
-      this.dataReportCode = this.route.snapshot.params["code"]
+    onViewEmployee(employeeId: number, dataReportCode: string): void {
       this.router.navigateByUrl('/profile/' + employeeId);
-      this.cookieService.set(this.PREVIOUS_PAGE, '/data-reports/'+ this.dataReportCode);
+      this.cookieService.set(this.PREVIOUS_PAGE, '/data-reports/'+ dataReportCode);
 
       //TODO : Set return path so user can navigate back to table view from employee view
     }
@@ -77,10 +72,10 @@ export class DataReportDetailComponent {
     UpdateCustomInput(index: number, column: DataReportColumns, e: any) {
       var reportId = this.dataObjects.reportId
       var columnId = column.id;
-      var employeeId = this.dataObjects.data[index].Id;
+      var employeeId = this.dataObjects.data![index].Id;
       var input = e.srcElement.value;
 
-      this.dataObjects.data[index][column.prop] = input;
+      this.dataObjects.data![index][column.prop] = input;
       
       //TODO : submit change to BE & provide popup to notify changes has been saved
 

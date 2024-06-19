@@ -14,7 +14,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let data of dataObjects.data; let  i = index">
+                            <tr *ngFor="let data of dataObjects.data; let  i = index" class="report-rows">
                                 <td *ngFor="let column of dataObjects.columns">
                                     <span *ngIf="!column.isCustom">{{ getProperty(data, column.prop) }}</span>
                                     <input *ngIf="column.isCustom && column.fieldType == 'Checkbox'" type="checkbox"
@@ -26,7 +26,15 @@
                                         rows="1"
                                         class="form-control form-control-sm">{{getProperty(data, column.prop)}}</textarea>
                                 </td>
-                                <td (click)="onViewEmployee(data.Id)">></td>
+                                <td (click)="onViewEmployee(data.Id, dataReportCode)" class="search-employee">
+                                    <div [ngStyle]="{ display: screenWidth <= 350 ? 'none' : '' }" id="search-arrow"
+                                        class="mt-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none">
+                                            <path d="M10 17L15 12L10 7V17Z" fill="#0029C6" />
+                                        </svg>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
