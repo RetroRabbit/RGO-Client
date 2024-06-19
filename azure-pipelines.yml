@@ -18,7 +18,14 @@ stages:
         secureFile: 'develop_env'
 
     - script: |
-        mv develop_env .env
+        echo "Current directory:"
+        pwd
+        echo "Listing files in current directory:"
+        ls -al
+        echo "Listing files in the secure file directory:"
+        ls -al $(Agent.TempDirectory)/downloadSecureFile
+        echo "Renaming develop_env to .env"
+        mv $(Agent.TempDirectory)/downloadSecureFile/develop_env $(System.DefaultWorkingDirectory)/.env
       displayName: 'Rename develop_env to .env'
 
     - task: CopyFiles@2
