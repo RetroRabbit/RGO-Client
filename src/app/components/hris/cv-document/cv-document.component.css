@@ -1,0 +1,65 @@
+.container {
+    margin-top: 70px;
+    background:white;
+    border-radius: 10px;
+    height:100%;
+    width:60%
+}
+.container-summary{
+    /* border:1px solid red; */
+    width:80%;
+    margin-left:10%;
+}
+.container-summary > p{
+    margin-top:50px;
+}
+.container-skills{
+    /* border:1px solid red; */
+    width:80%;
+    margin-left:10%;
+    display: flex;
+    flex-direction: column;
+}
+.container-skills >h1{
+    margin-top:25px;
+}
+.skill{
+    display: flex;
+    flex-direction: row;
+    margin-top:10px;
+
+}
+.skill >h3{
+    margin-left: 10px;
+}
+.cert{
+  display: flex;
+  flex-direction: row;
+  margin-top:10px;
+}
+.cert >h3{
+    margin-left: 10px;
+}
+
+.category-icon{
+    height:10%;
+    width:10%;
+}
+.container-certification{
+    /* border:1px solid red; */
+    width:80%;
+    margin-left:10%;
+}
+.container-certification >h1{
+    margin-top:25px;
+}
+.container-experience{
+    /* border:1px solid red; */
+    width:80%;
+    margin-left:10%;
+    display: flex;
+    flex-direction: column;
+}
+.container-experience >h1{
+    margin-top:25px;
+}

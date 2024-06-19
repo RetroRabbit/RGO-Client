@@ -470,24 +470,7 @@ export class EmployeeProfileComponent implements OnChanges {
     this.getClients();
   }
 
-  ExportCVDocument() {
-    const doc = new jsPDF('p', 'cm', 'a4');
-    let data: any = document.querySelector('#html2pdf');
-    // const text =
-    const textwidth = doc.getStringUnitWidth(data)
-    const centeredX =
-      doc.setFontSize(16);
-    const underline = 22;
-
-    // doc.line()
-    doc.text("Employee Resume", 10, 2);
-
-    doc.setFontSize(12);
-    doc.text("Work Experience", 10, 5);
-
-    doc.save('MyNameDate');
-
-
-
+  ViewCVDocument() {
+    this.router.navigateByUrl('/view-cv-document');
   }
 }
