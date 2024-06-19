@@ -32,6 +32,8 @@ import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { AppModule } from 'src/app/app.module';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-employee-profile',
@@ -146,50 +148,50 @@ export class EmployeeProfileComponent implements OnChanges {
 
   ngOnInit() {
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
-       this.isAdminUser = true;
+      this.isAdminUser = true;
     }
-      this.sharedAccordionFunctionality.updateProfile.subscribe({
-        next: (data: number) => {
-          this.profileFormProgress = data;
-          this.overallProgress();
-        }
-      });
-
-      this.sharedAccordionFunctionality.updateDocument.subscribe({
-        next: (data: number) => {
-          this.documentFormProgress = data;
-          this.overallProgress();
-        }
-      });
-
-      this.sharedAccordionFunctionality.updateCareer.subscribe({
-        next: (data: number) => {
-          this.careerFormProgress = data;
-          this.overallProgress();
-        }
-      });
-
-      this.employeeId = this.route.snapshot.params['id'];
-      this.getClients();
-
-      if (this.employeeId == undefined) {
-        this.showBackButtons = false;
-        this.employeeId = this.authAccessService.getUserId();
+    this.sharedAccordionFunctionality.updateProfile.subscribe({
+      next: (data: number) => {
+        this.profileFormProgress = data;
+        this.overallProgress();
       }
+    });
 
-      if (this.authAccessService.isAdmin() ||
-        this.authAccessService.isSuperAdmin() ||
-        this.authAccessService.isJourney() ||
-        this.authAccessService.isTalent()) {
-        this.usingSimpleProfile = false;
+    this.sharedAccordionFunctionality.updateDocument.subscribe({
+      next: (data: number) => {
+        this.documentFormProgress = data;
+        this.overallProgress();
       }
-      else {
-        this.usingSimpleProfile = true;
-      }
+    });
 
-      this.getEmployeeProfile();
-      this.refreshEmployeeProfile();
-      this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+    this.sharedAccordionFunctionality.updateCareer.subscribe({
+      next: (data: number) => {
+        this.careerFormProgress = data;
+        this.overallProgress();
+      }
+    });
+
+    this.employeeId = this.route.snapshot.params['id'];
+    this.getClients();
+
+    if (this.employeeId == undefined) {
+      this.showBackButtons = false;
+      this.employeeId = this.authAccessService.getUserId();
+    }
+
+    if (this.authAccessService.isAdmin() ||
+      this.authAccessService.isSuperAdmin() ||
+      this.authAccessService.isJourney() ||
+      this.authAccessService.isTalent()) {
+      this.usingSimpleProfile = false;
+    }
+    else {
+      this.usingSimpleProfile = true;
+    }
+
+    this.getEmployeeProfile();
+    this.refreshEmployeeProfile();
+    this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
 
   openTerminationForm() {
@@ -466,5 +468,26 @@ export class EmployeeProfileComponent implements OnChanges {
       this.getAllEmployees();
     }
     this.getClients();
+  }
+
+  ExportCVDocument() {
+    const doc = new jsPDF('p', 'cm', 'a4');
+    let data: any = document.querySelector('#html2pdf');
+    // const text =
+    const textwidth = doc.getStringUnitWidth(data)
+    const centeredX =
+      doc.setFontSize(16);
+    const underline = 22;
+
+    // doc.line()
+    doc.text("Employee Resume", 10, 2);
+
+    doc.setFontSize(12);
+    doc.text("Work Experience", 10, 5);
+
+    doc.save('MyNameDate');
+
+
+
   }
 }
