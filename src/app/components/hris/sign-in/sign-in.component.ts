@@ -87,7 +87,7 @@ export class SignInComponent {
               const filteredRoles = role.filter((role: string) => validRoles.includes(role));
               
               if (filteredRoles.length === 0) {
-                throw new Error("Something went wrong.");
+                throw new Error("Contact admin regarding your account.");
               }
               
               this.cookieService.set('userEmail', user?.email || '', {
@@ -134,7 +134,7 @@ export class SignInComponent {
           this.initialUserNavigation();
         },
         error: () => {
-          this.snackBarService.showSnackbar("Something went wrong.","snack-error");
+          this.snackBarService.showSnackbar("Contact admin regarding your account.","snack-error");
         }
       });
   }  
