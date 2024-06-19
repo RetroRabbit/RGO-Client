@@ -15,7 +15,12 @@ stages:
       displayName: 'Install Node.js'
     - task: DownloadSecureFile@1
       inputs:
-        secureFile: '.env'
+        secureFile: 'develop_env'
+
+    - script: |
+        mv develop_env .env
+      displayName: 'Rename develop_env to .env'
+
     - task: CopyFiles@2
       inputs:
         SourceFolder: $(Agent.TempDirectory)
@@ -49,7 +54,12 @@ stages:
       displayName: 'Install Node.js'
     - task: DownloadSecureFile@1
       inputs:
-        secureFile: '.env'
+        secureFile: 'staging_env'
+
+    - script: |
+        mv staging_env .env
+      displayName: 'Rename staging_env to .env'    
+           
     - task: CopyFiles@2
       inputs:
         SourceFolder: $(Agent.TempDirectory)
@@ -84,7 +94,12 @@ stages:
 
     - task: DownloadSecureFile@1
       inputs:
-        secureFile: '.env'
+        secureFile: 'production_env'
+        
+    - script: |
+        mv production_env .env
+      displayName: 'Rename production_env to .env'    
+        
     - task: CopyFiles@2
       inputs:
         SourceFolder: $(Agent.TempDirectory)
