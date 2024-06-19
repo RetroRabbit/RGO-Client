@@ -59,6 +59,7 @@ export class SharedAccordionFunctionality {
   employeeCertificates: EmployeeCertificates[] = [];
   newWorkExperiences: WorkExperience[] = [];
 
+  foundClient: Client | undefined;
   foundTeamLead: any;
   foundChampion: EmployeeProfile | undefined;
   employeeProfileDto?: EmployeeProfile = new EmployeeProfile();
