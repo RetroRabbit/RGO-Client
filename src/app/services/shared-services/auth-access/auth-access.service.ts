@@ -1,7 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,12 +7,8 @@ import { environment } from '../../../../environments/environment';
 export class AuthAccessService {
   public constructor(
     private cookieService: CookieService,
-    private httpClient: HttpClient,
   )
-  { 
-    this.baseUrl = `${environment.HttpsBaseURL}/auth`
-  }
-  baseUrl: string;
+  {}
 
   private roles: string = '';
 
