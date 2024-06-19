@@ -57,9 +57,9 @@ export class DataReportDetailComponent {
       })
     }
 
-    onViewEmployee(employeeId: number, dataReportCode: string): void {
+    onViewEmployee(employeeId: number): void {
       this.router.navigateByUrl('/profile/' + employeeId);
-      this.cookieService.set(this.PREVIOUS_PAGE, '/data-reports/'+ dataReportCode);
+      this.cookieService.set(this.PREVIOUS_PAGE, '/data-reports/'+ this.dataReportCode);
 
       //TODO : Set return path so user can navigate back to table view from employee view
     }

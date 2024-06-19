@@ -26,7 +26,7 @@
                                         rows="1"
                                         class="form-control form-control-sm">{{getProperty(data, column.prop)}}</textarea>
                                 </td>
-                                <td (click)="onViewEmployee(data.Id, dataReportCode)" class="search-employee">
+                                <td (click)="onViewEmployee(data.Id)" class="search-employee">
                                     <div [ngStyle]="{ display: screenWidth <= 350 ? 'none' : '' }" id="search-arrow"
                                         class="mt-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
