@@ -482,7 +482,7 @@ export class SharedAccordionFunctionality {
       this.careerFormProgress = Math.floor((this.qualificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 4);
     }
     else {
-      this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qaulificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 5);
+      this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qualificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 5);
       this.updateCareer.emit(this.careerFormProgress);
     }
   }
