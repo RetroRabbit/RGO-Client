@@ -1,7 +1,15 @@
 <div>
     <main class="container-fluid">
         <div class="mt-4 mx-0 px-0">
-            <div class="card-header" style="margin-bottom: 0px;">
+            <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
+                'background-color': '#D7DFFF',
+                'border': '2px solid #D7DFFF',
+                'border-radius': '1rem',
+                'height': '700px',
+                width: '100%',
+              }">
+            </ngx-skeleton-loader>
+            <div class="card-header h4">
                 {{ dataObjects.reportName}}
             </div>
             <div class="card">
@@ -9,12 +17,12 @@
                     <table class="table table-sm">
                         <thead class="table-primary">
                             <tr>
-                                <th *ngFor="let column of dataObjects.columns">{{ column.name }}</th>
+                                <th *ngFor="let column of dataObjects.columns" class="h5">{{ column.name }}</th>
                                 <th>&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let data of dataObjects.data; let  i = index" class="report-rows">
+                            <tr *ngFor="let data of dataObjects.data; let  i = index" class="report-rows h6">
                                 <td *ngFor="let column of dataObjects.columns">
                                     <span *ngIf="!column.isCustom">{{ getProperty(data, column.prop) }}</span>
                                     <input *ngIf="column.isCustom && column.fieldType == 'Checkbox'" type="checkbox"
@@ -22,8 +30,8 @@
                                         [checked]="getProperty(data, column.prop) == 'true'"
                                         class="form-check-inline form-check-input form-control" />
                                     <textarea *ngIf="column.isCustom && column.fieldType == 'Text'" type="text"
-                                        name="{{column.prop + data.Id}}" (change)="UpdateCustomInput(i, column, $event)"
-                                        rows="1"
+                                        cdkTextareaAutosize name="{{column.prop + data.Id}}"
+                                        (change)="UpdateCustomInput(i, column, $event)" rows="1"
                                         class="form-control form-control-sm">{{getProperty(data, column.prop)}}</textarea>
                                 </td>
                                 <td (click)="onViewEmployee(data.Id)" class="search-employee">

@@ -102,10 +102,10 @@
           <div id="nav-item-container">
             <div id="nav-item">
               <div (click)="changeNav('/data-reports')"
-                [ngClass]="router.url == '/data-reports' ? 'active' : 'idle'">
-                Data Reports
+                [ngClass]="router.url == '/data-reports' ||  router.url.includes('/data-reports') ? 'active' : 'idle'">
+                Reporting
               </div>
-              <div *ngIf="router.url == '/data-reports'" id="selected-line-box">
+              <div *ngIf="router.url == '/data-reports' ||  router.url.includes('/data-reports')" id="selected-line-box">
                 <div id="selected-line">
                 </div>
               </div>
