@@ -19,6 +19,7 @@ import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute } from '@angular/router';
+import { Client } from 'src/app/models/hris/client.interface';
 
 @Component({
   selector: 'app-accordion-profile-address-details',
@@ -40,6 +41,8 @@ export class AccordionProfileAddressDetailsComponent {
   selectedPostalCountry: string = '';
   selectedPostalProvince: string = '';
   employeeId = this.route.snapshot.params['id'];
+  foundClient?: Client;
+  foundTeamLead?: EmployeeProfile;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -146,11 +149,11 @@ export class AccordionProfileAddressDetailsComponent {
         postalCode: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalPostalCode'] : addressDetailFormValue['postalPostalCode'],
       };
       this.employeeAddressService.update(postalAddressDto).subscribe({
-        next: (postalData) => {
+        next: () => {
           this.employeeProfile!.employeeDetails.postalAddress = postalAddressDto;
           this.snackBarService.showSnackbar("Postal Details updated", "snack-success");
           this.employeeAddressService.update(physicalAddressDto).subscribe({
-            next: (data) => {
+            next: () => {
               this.employeeProfile!.employeeDetails.physicalAddress = physicalAddressDto;
               this.snackBarService.showSnackbar("Physical address updated", "snack-success");
               this.navService.refreshEmployee();
@@ -196,7 +199,7 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   loadProvinces(country: string): void {
-    this.locationApiService.getProvinces(this.selectedCountry).subscribe({
+    this.locationApiService.getProvinces(country).subscribe({
       next: (data) => this.provinces = data
     });
   }
@@ -470,7 +473,7 @@ export class AccordionProfileAddressDetailsComponent {
     this.sharedAccordionFunctionality.foundTeamLead = this.sharedAccordionFunctionality.employees.find((data: any) => {
       return data.id == this.employeeProfile!.employeeDetails.teamLead
     });
-    this.sharedAccordionFunctionality.foundClient = this.sharedAccordionFunctionality.clients.find((data: any) => {
+    this.foundClient = this.sharedAccordionFunctionality.clients.find((data: any) => {
       return data.id == this.employeeProfile!.employeeDetails.clientAllocated
     });
     this.sharedAccordionFunctionality.foundChampion = this.sharedAccordionFunctionality.employees.find((data: any) => {
@@ -485,9 +488,9 @@ export class AccordionProfileAddressDetailsComponent {
       this.employeeProfile.employeeDetails.id = this.sharedAccordionFunctionality.foundTeamLead.id
     }
 
-    if (this.sharedAccordionFunctionality.foundClient != null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('clientAllocated')?.setValue(this.sharedAccordionFunctionality.foundClient.name);
-      this.sharedAccordionFunctionality.clientId = this.sharedAccordionFunctionality.foundClient.id
+    if (this.foundClient != null) {
+      this.sharedAccordionFunctionality.employeeDetailsForm.get('clientAllocated')?.setValue(this.foundClient.name);
+      this.sharedAccordionFunctionality.clientId = this.foundClient.id
     }
 
     if (this.sharedAccordionFunctionality.foundChampion != null) {
