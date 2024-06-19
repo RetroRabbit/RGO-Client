@@ -464,7 +464,7 @@ export class SharedAccordionFunctionality {
     }
   }
 
-  calculatesalaryDetails() {
+  calculateSalaryDetails() {
     let filledCount = 0;
     const formControls = this.salaryDetailsForm.controls;
     const totalFields = Object.keys(this.salaryDetailsForm.controls).length;
