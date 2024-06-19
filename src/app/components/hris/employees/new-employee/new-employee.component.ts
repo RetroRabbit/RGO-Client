@@ -133,7 +133,7 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
-    this.navService.hideNav();
+      // this.navService.hideNav();
   }
 
   loadCountries(): void {
