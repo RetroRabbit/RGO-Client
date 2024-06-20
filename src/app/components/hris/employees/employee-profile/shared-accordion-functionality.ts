@@ -17,7 +17,6 @@ import { AdminDocuments } from 'src/app/models/hris/constants/admin-documents.co
 import { EmployeeDocumentsTypes } from 'src/app/models/hris/constants/employee-documents.constants';
 import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
-import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { MyDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { nqfLevels } from 'src/app/models/hris/constants/nqfLevels.constant.';
@@ -143,7 +142,6 @@ export class SharedAccordionFunctionality {
   constructor(
     private fb: FormBuilder,
     public sharedPropertyAccessService: SharedPropertyAccessService,
-    private employeeDocumentService: EmployeeDocumentService,
     private customFieldService: CustomFieldService,
   ) { }
 
@@ -239,8 +237,8 @@ export class SharedAccordionFunctionality {
   }
 
   checkEmployeeFormProgress() {
-    let filledCount = 0;
-    let requiredFields = 0;
+    let numberOfPopulatedFields = 0;
+    let numberOfRequiredFields = 0;
     const formControls = this.employeeDetailsForm.controls;
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
@@ -256,24 +254,24 @@ export class SharedAccordionFunctionality {
           }
         }
         if (isRequired) {
-          requiredFields++;
+          numberOfRequiredFields++;
           if (control.value != null && control.value != '') {
-            filledCount++;
+            numberOfPopulatedFields++;
           }
         }
       }
     }
-    if (requiredFields === 0) {
+    if (numberOfRequiredFields === 0) {
       this.employeeFormProgress = 100;
 
     } else {
-      this.employeeFormProgress = Math.round((filledCount / requiredFields) * 100);
+      this.employeeFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
     }
   }
 
   checkContactFormProgress() {
-    let filledCount = 0;
-    let requiredFields = 0;
+    let numberOfPopulatedFields = 0;
+    let numberOfRequiredFields = 0;
     const formControls = this.employeeContactForm.controls;
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
@@ -284,23 +282,23 @@ export class SharedAccordionFunctionality {
           isRequired = validator && validator['required'] ? true : false;
         }
         if (isRequired) {
-          requiredFields++;
+          numberOfRequiredFields++;
           if (control.value != null && control.value !== '') {
-            filledCount++;
+            numberOfPopulatedFields++;
           }
         }
       }
     }
-    if (requiredFields === 0) {
+    if (numberOfRequiredFields === 0) {
       this.contactFormProgress = 100;
     } else {
-      this.contactFormProgress = Math.round((filledCount / requiredFields) * 100);
+      this.contactFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
     }
   }
 
   checkAddressFormProgress() {
-    let filledCount = 0;
-    let requiredFields = 0;
+    let numberOfPopulatedFields = 0;
+    let numberOfRequiredFields = 0;
     const formControls = this.addressDetailsForm.controls;
 
     for (const controlName in formControls) {
@@ -312,22 +310,22 @@ export class SharedAccordionFunctionality {
           isRequired = validator && validator['required'] ? true : false;
         }
         if (isRequired) {
-          requiredFields++;
+          numberOfRequiredFields++;
           if (control.value != null && control.value !== '') {
-            filledCount++;
+            numberOfPopulatedFields++;
           }
         }
       }
     }
-    if (requiredFields === 0) {
+    if (numberOfRequiredFields === 0) {
       this.addressFormProgress = 100;
     } else {
-      this.addressFormProgress = Math.round((filledCount / requiredFields) * 100);
+      this.addressFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
     }
   }
 
   checkAdditionalFormProgress() {
-    let filledCount = 0;
+    let numberOfPopulatedFields = 0;
     const formControls = this.additionalInfoForm.controls;
     let totalFields = Object.keys(this.additionalInfoForm.controls).length;
 
@@ -335,11 +333,11 @@ export class SharedAccordionFunctionality {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
         if (control.value != null && control.value != '') {
-          filledCount++;
+          numberOfPopulatedFields++;
         }
       }
     }
-    this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
+    this.additionalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
   }
 
   calculateEmployeeDocumentProgress() {
@@ -439,9 +437,9 @@ export class SharedAccordionFunctionality {
       : Math.round((FilledCount / this.workExperienceFormFields) * 100);
   }
 
-  calculateCareerCertficatesFormProgress() {
-    let targetCertficates: any = [];
-    let newTargetCertficates: any = [];
+  calculateCareerCertificatesFormProgress() {
+    let targetCertificates: any = [];
+    let newTargetCertificates: any = [];
     this.filteredFilledCertificate.length = 0;
     this.employeeCertificatesFields = 4 * this.employeeCertificates.length;
 
@@ -451,15 +449,15 @@ export class SharedAccordionFunctionality {
     }
     else {
       for (const element of this.employeeCertificates) {
-        targetCertficates.push(element);
+        targetCertificates.push(element);
       }
 
-      targetCertficates.filter((element: any) => {
+      targetCertificates.filter((element: any) => {
         const { employeeId, id, certificateDocument, ...samplearray } = element;
-        newTargetCertficates.push(samplearray);
+        newTargetCertificates.push(samplearray);
       });
 
-      newTargetCertficates.filter((obj: any) => Object.values(obj).some((value: any) => {
+      newTargetCertificates.filter((obj: any) => Object.values(obj).some((value: any) => {
         if (value.length !== 0) {
           this.filteredFilledCertificate.push(value)
         }
