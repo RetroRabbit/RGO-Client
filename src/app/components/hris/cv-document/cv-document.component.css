@@ -1,9 +1,16 @@
+
 .container {
     margin-top: 20px;
     background:white;
     border-radius: 10px;
     width:60%;
-    height:100%;
+    font-family: "Roboto", sans-serif;
+    overflow: hidden;
+    min-height: 90vh;
+    height: 100%;
+}
+.retro-logo{
+margin-left:350px;
 }
 .container-summary{
     /* border:1px solid red; */
@@ -21,7 +28,7 @@
     flex-direction: column;
 }
 .container-skills >h1{
-    margin-top:10px;
+    margin-top:14px;
 }
 .skill{
     display: flex;
@@ -29,29 +36,57 @@
     margin-top:10px;
 
 }
-.skill >h3{
-    margin-left: 10px;
+.skill >h5{
+    margin-left: 12px;
 }
 .cert{
   display: flex;
   flex-direction: row;
   margin-top:10px;
 }
-.cert >h3{
+.cert >h5{
     margin-left: 10px;
 }
 
 .category-icon{
-    height:10%;
-    width:10%;
+    height:10px;
+    width:10px;
 }
 .container-certification{
-    /* border:1px solid red; */
     width:80%;
     margin-left:10%;
 }
 .container-certification >h1{
     margin-top:10px;
+}
+.container-certification >h3{
+    margin-top:10px;
+    font-weight: 500;
+}
+.container-certification >h5{
+    margin-left:15px;
+}
+.doc-name-info > button{
+    width:350px;
+    display: flex;
+    flex-direction: row;
+    border:none;
+    background-color: transparent;
+}
+.doc-name-info > button:hover{
+
+    background-color: transparent;
+}
+.btn-download > p{
+    color:#0029c6;
+    margin-left:5px;
+    font-size: 12px;
+    border:none;
+    display: flex;
+    flex-direction: row;
+}
+.container-doc-name{
+    margin-top:-15px;
 }
 .container-experience{
     /* border:1px solid red; */
@@ -65,5 +100,12 @@
 }
 .container-project>h4{
     font-weight: 500;
+    margin-top: 10px;
+
+}
+@media print {
+     .container {
+        width:150%;
+    }
 
 }

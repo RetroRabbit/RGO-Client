@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
+import { WorkExperience } from 'src/app/models/hris/work-experience.interface';
 import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
@@ -16,24 +18,23 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 })
 export class CvDocumentComponent {
   employeeId = this.route.snapshot.params['id'];
+
+  employeeWorkexp: WorkExperience[] = [];
+  employeeCert: EmployeeCertificates[] = [];
   usingSimpleProfile: boolean = false;
   loggedInProfile!: EmployeeData;
   name: string | undefined = '';
   surname: string | undefined = '';
   role: string | undefined = '';
   level: number | undefined = 0;
-  nqf: number | undefined = 0;
   education: string | undefined = '';
   school: string | undefined = '';
-  client: string | undefined = '';
-  projectName: string | undefined = '';
-  projectRole: string | undefined = '';
-  date: any | undefined = '';
-  issueDate: any | undefined = '';
-  certificateName: string | undefined = '';
-  organizationName: string | undefined = '';
+  nqf: string | undefined = '';
   skillSet: any | undefined = '';
-
+  issueDate: any | undefined = '';
+  endDate: any | undefined = '';
+  numberOfYears: any | undefined = '';
+  pronoun: string | undefined = '';
 
   constructor(
     private employeeProfileService: EmployeeProfileService,
@@ -58,6 +59,7 @@ export class CvDocumentComponent {
     this.getQaulifications();
     this.getCertfications();
     this.getEmployeeWorkExp();
+    this.getEmployeeData();
 
   }
 
@@ -69,20 +71,54 @@ export class CvDocumentComponent {
         this.role = data.employeeType?.name;
         this.level = data.level;
         console.log(data);
+        if (data.gender == 1) {
+          this.pronoun = 'He'
+        }
+        else {
+          this.pronoun = 'Her'
+        }
       }
     })
 
   }
+  getEmployeeData() {
+    this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
+      next: data => {
+        this.nqf = data[2].value;
+        //this.school = data[1]
+        console.log(data);
+      }
+    })
+  }
 
+  getYears(date1: any) {
+    const newDate1Obj = new Date(date1);
+    const newDate2Obj = new Date();
+
+    let years = newDate2Obj.getFullYear() - newDate1Obj.getFullYear();
+    let months = newDate2Obj.getMonth() - newDate1Obj.getMonth();
+
+    months = (months + 12) % 12;
+    years -= Math.floor(months / 12);
+    console.log("DATE", months, years)
+
+    const numYears = (years > 0 ? `${years} ${years === 1 ? 'year' : 'years'}` : 0 + ' years' + (months > 0 ? "" + ` ${months} ${months === 1 ? 'month' : 'months'}` : ''));
+
+    this.numberOfYears = numYears;
+
+  }
   getEmployeeWorkExp() {
     this.employeeWorkExperienceService.getWorkExperience(this.employeeId).subscribe({
       next: data => {
         console.log(data);
-        this.client = data[0].clientName;
-        this.projectName = data[0].projectName;
-        const newDate = new Date(data[0].endDate);
-        this.date = newDate.getFullYear();
-        this.skillSet = data[0].skillSet;
+        for (let i = 0; i < data.length; i++) {
+          this.employeeWorkexp.push(data[i]);
+          console.log("obj", data[i]);
+          const newDate = new Date(data[i].endDate);
+          const year = newDate.getFullYear();
+          this.endDate = year;
+          this.getYears(data[i].startDate);
+        }
 
       }
     })
@@ -91,8 +127,8 @@ export class CvDocumentComponent {
     this.employeeQaulificationService.getEmployeeQualificationById(this.employeeId).subscribe({
       next: data => {
         console.log(data)
-        this.education = data.fieldOfStudy;
         this.school = data.school;
+
       }
     })
   }
@@ -101,21 +137,26 @@ export class CvDocumentComponent {
     this.employeeCertificationService.getCertificationDetails(this.employeeId).subscribe({
       next: data => {
         console.log(data);
-        this.organizationName = data[0].issueOrganization;
-        this.certificateName = data[0].certificateName;
-        const newDate = new Date(data[0].issueDate);
-        this.issueDate = newDate.getFullYear();
+        for (let i = 0; i < data.length; i++) {
 
-
-
+          this.employeeCert.push(data[i]);
+          const newDate = new Date(data[i].issueDate);
+          const year = newDate.getFullYear();
+          const month = newDate.getUTCMonth();
+          this.issueDate = month + " " + year;
+          console.log("obj", data[i]);
+        }
 
       }
     })
   }
 
-  convertFileToBase64() {
-
-  }
+  // downloadFile(event: any) {
+  //   const id = event.srcElement.parentElement.id;
+  //   console.log("ID", id)
+  //   const documentObject = this.employeeCert.find(document => document.id = id);
+  //   this.downloadCertDocument(documentObject?.certificateDocument as string, documentObject?.certificateName as string)
+  // }
 
   downloadCertDocument(base64String: string, fileName: string) {
     const commaIndex = base64String.indexOf(',');
