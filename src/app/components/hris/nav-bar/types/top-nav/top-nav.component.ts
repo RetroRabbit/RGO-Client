@@ -64,9 +64,16 @@ export class TopNavComponent {
     this.roles = Object.keys(JSON.parse(types));
     this.navService.refreshEmployee();
     this.isLoading = false;
-    this.chartService.getAllCharts().subscribe({
-      next: (data: any) => (this.charts = data),
-    });
+    if (
+      this.authAccessService.isAdmin() ||
+      this.authAccessService.isJourney() ||
+      this.authAccessService.isSuperAdmin() ||
+      this.authAccessService.isTalent()
+    ) {    
+        this.chartService.getAllCharts().subscribe({
+        next: (data: any) => (this.charts = data),
+        });
+    }
   }
 
   searchQuery: string = '';
