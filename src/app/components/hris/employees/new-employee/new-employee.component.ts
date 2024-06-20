@@ -529,9 +529,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveEmployee(): void {
-
     if (this.newEmployeeForm.invalid) {
-
       this.newEmployeeForm.markAllAsTouched();
 
       if (this.newEmployeeForm.controls['disabilityNotes'].value == null) {
@@ -541,7 +539,6 @@ export class NewEmployeeComponent implements OnInit {
       }
       return;
     }
-
     this.isLoadingAddEmployee = true;
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
