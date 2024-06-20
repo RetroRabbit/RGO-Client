@@ -192,7 +192,7 @@ export class NewEmployeeComponent implements OnInit {
     reportingLine: new FormControl<EmployeeProfile | null>(null),
     highestQualication: new FormControl<string>(''),
     disability: new FormControl<boolean | null>(false, [Validators.required]),
-    disabilityNotes: new FormControl<string>(''),
+    disabilityNotes: new FormControl<string>('', [Validators.required]),
     countryOfBirth: new FormControl<string>(''),
     nationality: new FormControl<string>(''),
     level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
@@ -529,6 +529,19 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveEmployee(): void {
+
+    if (this.newEmployeeForm.invalid) {
+
+      this.newEmployeeForm.markAllAsTouched();
+
+      if (this.newEmployeeForm.controls['disabilityNotes'].value == null) {
+        this.snackBarService.showSnackbar('Disability Notes are required when disability is selected as Yes.', "snack-error");
+      } else {
+        this.snackBarService.showSnackbar('Oops! Some fields are still missing information.', "snack-error");
+      }
+      return;
+    }
+
     this.isLoadingAddEmployee = true;
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
@@ -552,7 +565,7 @@ export class NewEmployeeComponent implements OnInit {
           stepper?.next();
           this.isLoadingAddEmployee = false;
         }
-        this.snackBarService.showSnackbar(`This email already exists`, "snack-error");
+        this.snackBarService.showSnackbar(`Oops! Some fields are still missing information.`, "snack-error");
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
       },
