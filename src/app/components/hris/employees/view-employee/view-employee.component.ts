@@ -55,7 +55,6 @@ export class ViewEmployeeComponent {
 
   _searchQuery: string = '';
   filteredEmployees: EmployeeProfile[] = [];
-  employeeTerminated: string[] = [];
   employeeStatus: string[] = EmployeeStatus;
   getPreviousEmployees: boolean = false;
   isLoading: boolean = true;
@@ -108,7 +107,6 @@ export class ViewEmployeeComponent {
     private cookieService: CookieService,
     private ngZone: NgZone,
     private router: Router,
-    private navService: NavService,
     private snackBarService: SnackbarService,
     public authAccessService: AuthAccessService,
     private employeeTypeService: EmployeeTypeService
@@ -315,7 +313,6 @@ export class ViewEmployeeComponent {
       .subscribe();
   }
 
-
   screenWidth: number = 992;
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -432,13 +429,16 @@ export class ViewEmployeeComponent {
   }
 
   filterEmployeeTable() {
+    console.log(this.currentChampionFilter)
+    console.log(this.currentUserTypeFilter)
+    console.log(this.getPreviousEmployees)
     this.isLoading = true;
     const clients$: Observable<Client[]> = this.clientService
       .getAllClients()
       .pipe(catchError(() => of([] as Client[])));
-
+    
     this.employeeService
-      .filterEmployees(this.currentChampionFilter.id || 0, this.currentUserTypeFilter.id || 0)
+      .filterEmployees(this.currentChampionFilter.id || 0, this.currentUserTypeFilter.id || 0, this.getPreviousEmployees)
       .pipe(
         switchMap((employees: EmployeeProfile[]) =>
           this.combineEmployeesWithRolesAndClients(employees, clients$)
@@ -453,6 +453,7 @@ export class ViewEmployeeComponent {
         first()
       )
       .subscribe((data) => {
+        console.log(data)
         this.setupDataSource(data);
         this.isLoading = false;
         this.applySearchFilter();
@@ -485,6 +486,7 @@ export class ViewEmployeeComponent {
   toggleEmployees(event: any) {
     const selectedEmployeeStatus = event.value;
     if (selectedEmployeeStatus == 'Previous Employees') {
+      this.currentChampionFilter = { id: 0, name: 'All' }; 
       this.getPreviousEmployees = true;
     }
     else {

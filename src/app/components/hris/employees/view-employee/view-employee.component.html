@@ -27,20 +27,26 @@
       <div [ngClass]="screenWidth < 992 ?
         'col-12 row d-flex justify-content-space-between' :
         'col-5 row d-flex justify-content-space-between pt-1'" id="mainFilterContainer">
-        <div class="col-4 p-6 d-md-block">
-          <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-            <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
-              [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-              <mat-label>People Champion Filter</mat-label>
-              <mat-select hideSingleSelectionIndicator="true">
-                <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
-                  class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
-                  {{ champion.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
+       <div class="col-4 p-6 d-md-block">
+        <div (click)="$event.stopPropagation()" class="row col-12 px-0">
+          <mat-form-field
+            appearance="outline"
+            class="col-md-12 col-lg-12 mt-3 me-5"
+            [ngClass]="{ 'roles-input-mobile': screenWidth <= 1200 }">
+            <mat-label>People Champion Filter</mat-label>
+            <mat-select [disabled]="getPreviousEmployees" hideSingleSelectionIndicator="true">
+              <mat-option
+                *ngFor="let champion of peopleChampions | async"
+                [value]="champion.id"
+                class="menu-item-button"
+                (click)="changePeopleChampionFilter(champion)">
+                {{ champion.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
+      </div>
+      
         <div class="col-4 ps-0  d-md-block">
           <div (click)="$event.stopPropagation()" class="row col-12 px-0">
             <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"

@@ -79,9 +79,12 @@ export class EmployeeService {
   *
   * @returns List of EmployeeDto objects.
   */
-  filterEmployees(championID: number, employeeType: number): Observable<EmployeeProfile[]> {
-    var queryParams = `?PeopleChampId=${encodeURIComponent(championID)}`
-    queryParams += `&employeeType=${encodeURIComponent(employeeType)}`
-    return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/filter-employees${queryParams}`);
-  }
+ // employee.service.ts
+filterEmployees(championID: number, employeeType: number, activeStatus: boolean = true): Observable<EmployeeProfile[]> {
+  const queryParams = `?PeopleChampId=${encodeURIComponent(championID)}
+                        &employeeType=${encodeURIComponent(employeeType)}
+                        &activeStatus=${activeStatus}`;
+  return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/filter-employees${queryParams}`);
+}
+
 }
