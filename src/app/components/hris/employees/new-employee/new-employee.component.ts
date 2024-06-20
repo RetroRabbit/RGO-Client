@@ -628,15 +628,30 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   validateFile(file: File): boolean {
-    if (file.size > 4194304) {
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    const maxSizeInBytes = 4194304; // 4MB
+  
+    if (!validTypes.includes(file.type)) {
+      // alert('Only JPEG, JPG, and PNG files are allowed!');
+      this.snackBarService.showSnackbar(`Only JPEG, JPG, and PNG files are allowed!`, "snack-error");
       return false;
     }
+  
+    if (file.size > maxSizeInBytes) {
+      // alert('File size must be less than 4MB!');
+      this.snackBarService.showSnackbar(`File size must be less than 4MB!`, "snack-error");
+      return false;
+    }
+  
     return true;
   }
 
-  clearUpload() {
-    var input = document.getElementById('imageUpload') as HTMLInputElement;
+  clearUpload(): void {
+    const input = document.getElementById('imageUpload') as HTMLInputElement;
     input.value = '';
+    this.imageName = '';
+    this.imagePreview = '';
+    this.newEmployeeForm.patchValue({ 'photo': null });
   }
 
   imageConverter(file: File) {

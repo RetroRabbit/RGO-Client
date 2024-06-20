@@ -177,24 +177,29 @@
                 class="row justify-content-center align-items-center col-md-12 p-0">
                 <div class="row flex-column justify-content-center align-items-center roboto-font">
                   <h1 class=" pb-3" id="heading">Additional Information</h1>
+
+
                   <div class=" pb-3">
                     <mat-form-field appearance="outline" class="w-100">
                       <mat-label>Profile photo</mat-label>
-                      <input matInput type="text" [value]="imageName" />
+                      <input matInput type="text" [value]="imageName"/>
                       <span mat-icon-button matSuffix (click)="uploadFile.click()" class="pe-3">
                         <mat-icon id="file-upload-cursor">file_upload</mat-icon>
-                        <input type="file" #uploadFile (change)="onFileChange($event)" hidden />
+                        <input type="file" #uploadFile (change)="onFileChange($event)" hidden accept=".jpeg, .jpg, .png"/>
                       </span>
                     </mat-form-field>
                     <div id="image-preview" *ngIf="imageUrl !== ''">
                       <img [src]="imageUrl" />
                     </div>
                   </div>
+
+
                   <div class="row flex-column col-lg-12 col-md-12 pb-3">
                     <span class="col-lg-7 fs-5 roboto-font pb-3">Gender</span>
                     <mat-radio-group class="col-lg-7 row d-flex" formControlName="gender">
-                      <mat-radio-button class="p-0" *ngFor="let gender of genders; index as i" [value]="i">{{ gender
-                        }}</mat-radio-button>
+                      <mat-radio-button class="p-0" *ngFor="let gender of genders; index as i" [value]="i">
+                        {{ gender}}
+                      </mat-radio-button>
                     </mat-radio-group>
                   </div>
                   <mat-form-field appearance="outline" class="">
