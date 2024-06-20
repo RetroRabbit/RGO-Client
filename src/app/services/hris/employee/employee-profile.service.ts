@@ -25,6 +25,7 @@ export class EmployeeProfileService {
               private employeeStore:Store<{employees:EmployeeState}>, 
               private cookieService: CookieService) { }
 
+  //Endpoint not working, ID expected.
   GetEmployeeProfile(): Observable<EmployeeProfile> {
     let result = this.client.get<EmployeeProfile>(`${environment.HttpsBaseURL}/employees`);
     return result;

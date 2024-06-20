@@ -1,4 +1,5 @@
 import { NgModule, isDevMode } from '@angular/core';
+import {MatBadgeModule} from '@angular/material/badge'
 import { SignInComponent } from './components/hris/sign-in/sign-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthConfigService, AuthModule } from '@auth0/auth0-angular';
@@ -213,6 +214,7 @@ import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
     MatButtonToggleModule,
     DragDropModule,
     NgxMatIntlTelInputComponent,
+    MatBadgeModule,
     NgxSkeletonLoaderModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {

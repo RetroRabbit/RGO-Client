@@ -76,7 +76,8 @@
           <div id="nav-item-container">
             <div id="nav-item">
               <div (click)="changeNav('/employees')"
-                [ngClass]="router.url.includes('/employees') ||  router.url.includes('/view-') ? 'active' : 'idle'">
+                [ngClass]="router.url.includes('/employees') ||  router.url.includes('/view-') ? 'active' : 'idle'"  
+                [matBadge]="empBankStarterService.pendingCount$ | async" matBadgeSize="small">
                 Employees
               </div>
               <div *ngIf="router.url.includes('/employees') ||  router.url.includes('/view-')" id="selected-line-box">
