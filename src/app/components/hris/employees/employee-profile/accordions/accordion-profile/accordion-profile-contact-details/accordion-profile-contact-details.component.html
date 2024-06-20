@@ -58,8 +58,7 @@
                                 </div>
                                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.cellphoneNo"
                                     class="col-12 col-md-6 my-2">
-                                    <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container" data-field="cellphoneNo">
-                                        <mat-label class="telephone-label">Cellphone Number</mat-label>
+                                    <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container">
                                         <ngx-mat-intl-tel-input
                                         #cellphoneField
                                         matInput
@@ -68,21 +67,18 @@
                                         [enableSearch]="true"
                                         [required]="true"
                                         formControlName="cellphoneNo"
-                                        (input)="onInputCheck('cellphoneNo')"
                                         ></ngx-mat-intl-tel-input>
+                                        <mat-label class="telephone-label" [ngClass]="isLabelHover(sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'])? 'default-label':'shifted-label'">Cellphone Number</mat-label>
                                         <mat-error *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].hasError('required') && sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value == '' ">
                                             Cellphone number is required
                                         </mat-error>
-                                        <mat-error *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value != ' ' && sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].invalid">
+                                        <mat-error *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value != '' && sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].invalid">
                                            Please enter a valid Cellphone number
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.houseNo" class="col-12 col-md-6 my-2">
-                                    <!-- <mat-form-field appearance="outline" style="width: 100%;" data-field="houseNo"> -->
-                                    <!-- <mat-form-field appearance="outline" style="width: 100%;" [ngClass]="employeeProfile.employeeDetails.houseNo ? 'telephone-container has-value' : 'telephone-container no-value'" data-field="houseNo"> -->
-                                    <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container" data-field="houseNo">
-                                        <mat-label class="telephone-label">Home Number</mat-label>
+                                    <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container" data-field="houseNo">  
                                         <ngx-mat-intl-tel-input
                                         #cellphoneField
                                         matInput
@@ -90,28 +86,16 @@
                                         [enablePlaceholder]="true"
                                         [enableSearch]="true"
                                         formControlName="houseNo"
+                                       
                                         ></ngx-mat-intl-tel-input>
+                                        <mat-label class="telephone-label" [ngClass]="isLabelHover(sharedAccordionFunctionality.employeeContactForm.controls['houseNo'])? 'default-label':'shifted-label'">Home Number</mat-label>
+
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['houseNo'].value != '' && sharedAccordionFunctionality.employeeContactForm.controls['houseNo'].invalid">
                                             Home number must be a valid Cellphone Number
                                         </mat-error>
                                     </mat-form-field>
-                                    <!-- <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container" data-field="houseNo">
-                                        <mat-label class="telephone-label">Home Number</mat-label>
-                                        <ngx-mat-intl-tel-input
-                                        #cellphoneField
-                                        matInput
-                                        [preferredCountries]="['za', 'gb']"
-                                        [enablePlaceholder]="true"
-                                        [enableSearch]="true"
-                                        formControlName="houseNo"
-                                        (input)="onInputCheck('cellphoneNo')"
-                                        ></ngx-mat-intl-tel-input>
-                                        <mat-error
-                                            *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['houseNo'].value != '' && sharedAccordionFunctionality.employeeContactForm.controls['houseNo'].invalid">
-                                            Home number must be a valid Cellphone Number
-                                        </mat-error>
-                                    </mat-form-field> -->
+                                    
                                 </div>
                                 <div class="col-12">
                                     <h3 [ngStyle]="{'color' : sharedAccordionFunctionality.editPersonal ? 'black' :'grey'}">
@@ -133,7 +117,7 @@
                                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.emergencyContactNo"
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container" data-field="emergencyContactNo">
-                                        <mat-label class="telephone-label">Emergency contact number</mat-label>
+                                        <mat-label class="telephone-label" [ngClass]="isLabelHover(sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'])? 'default-label':'shifted-label'">Emergency contact number</mat-label>
                                         <ngx-mat-intl-tel-input
                                         #cellphoneField
                                         matInput
@@ -142,12 +126,16 @@
                                         [enableSearch]="true"
                                         [required]="true"
                                         formControlName="emergencyContactNo"
-                                        (input)="onInputCheck('emergencyContactNo')"
+                                       
                                         ></ngx-mat-intl-tel-input>
                                         
                                         <mat-error
-                                        *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].value != '' && sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].invalid">
+                                            *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].hasError('required') && sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].value == ''">
                                             Emergency contact number is required
+                                        </mat-error>
+                                        <mat-error
+                                            *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].value != '' && sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].invalid">
+                                            Emergency contact number must be a valid Cellphone Number
                                         </mat-error>
                                     </mat-form-field>
                                 </div>

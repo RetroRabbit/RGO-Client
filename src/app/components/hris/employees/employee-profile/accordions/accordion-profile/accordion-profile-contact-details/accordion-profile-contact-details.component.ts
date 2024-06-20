@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -19,11 +19,16 @@ export class AccordionProfileContactDetailsComponent {
 
   fieldsToSubscribe: string[] = ['cellphoneNo', 'houseNo', 'emergencyContactNo'];
   @ViewChild('cellphoneField')
-  cellphoneField!: NgxMatIntlTelInputComponent; 
+  cellphoneField!: NgxMatIntlTelInputComponent;
 
   screenWidth = window.innerWidth;
   usingProfile: boolean = true;
-  inputCheck: boolean = false;
+  inputStatus: { [key: string]: boolean } = {
+    cellphoneNo: false,
+    houseNo: false,
+  };
+  isCellphoneEmpty: boolean = true;
+  isHouseNoEmpty: boolean = true;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -46,55 +51,106 @@ export class AccordionProfileContactDetailsComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
-    this.sharedAccordionFunctionality.employeeContactForm.disable();
-    this.fieldsToSubscribe.forEach(field => {
-      const value = this.sharedAccordionFunctionality.employeeContactForm.get(field)?.value;
-      this.onInputCheck(field);
-    });
-  }
-
-  ngAfterViewInit() {
-    // this.checkInitialValue();
-       this.fieldsToSubscribe.forEach(field => {
-      this.onSubscribe(field);
-   });
-  } 
-  
-  checkInitialValue(field:string) {
-    // const value = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
-    // this.onInputCheck(value);
-    const control = this.sharedAccordionFunctionality.employeeContactForm.get(field);
-    const value = control?.value;
-    console.log(`Initial value of ${field}:`, value);
-    this.onInputCheck(field);
-  }
-
-  onSubscribe(field:string){
-    // this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.valueChanges.subscribe(value => {
-    //   this.onInputCheck(value);
+    // this.checkInputStatus();
+    // this.sharedAccordionFunctionality.employeeContactForm.disable();
+    // this.fieldsToSubscribe.forEach(field => {
+    //   const value = this.sharedAccordionFunctionality.employeeContactForm.get(field)?.value;
+    //   this.onInputCheck(field);
     // });
-    const control = this.sharedAccordionFunctionality.employeeContactForm.get(field);
-    control?.valueChanges.subscribe(value => {
-      console.log(`Value changed for ${field}:`, value);
-      this.onInputCheck(value);
-      const checkError = this.sharedAccordionFunctionality.employeeContactForm.controls[field].invalid;
-      if(checkError){
-        this.onInputCheck("invalid value");
-      } 
-    });  
   }
 
-  onInputCheck(value: string): void {
-    const container = document.querySelector('.telephone-container');
-    console.log('onInputCheck called with value:', value);
+  // checkInputStatus(): void {
+  //   this.isCellphoneEmpty = !this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
+  //   this.isHouseNoEmpty = !this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value;
+  // }
 
-    // add a check here to see if the form has this value
-    if (value) {
-      container?.classList.add('has-value');
-    } else {
-      container?.classList.remove('has-value');
+  // onInputChange(fieldName: string): void {
+  //   console.log("current form control value:", this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value);
+  //   if (fieldName === 'cellphoneNo') {
+  //     const cellphoneNoValid = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
+  //     this.isCellphoneEmpty = !cellphoneNoValid && cellphoneNoValid;
+  //   } else if (fieldName === 'houseNo') {
+  //     this.isHouseNoEmpty = !this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value;
+  //   }
+  // }
+  isLabelHover(formControl: AbstractControl): boolean {
+    if (!formControl) {
+      return false;
     }
+  
+    // Condition 1: value is undefined and control is untouched
+    if (!formControl.value && !formControl.touched) {
+      return false;
+    }
+  
+    // Condition 2: value is defined and control is untouched
+    if (formControl.value && !formControl.touched) {
+      return true;
+    }
+  
+    // Condition 3: value is undefined and control is touched
+    if (!formControl.value && formControl.touched) {
+      // Reset touched state to allow condition 1 to be reevaluated
+      formControl.markAsUntouched();
+      return true;
+    }
+  
+    // Condition 4: value is defined and control is touched
+    if (formControl.value && formControl.touched) {
+      return true;
+    }
+  
+    return true;
   }
+  
+
+  // isValidCellphone(): boolean {
+  //   if()
+  //   return (this.sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].hasError('required') && this.sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value == '') || this.sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value != '' && this.sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].invalid;
+  // }
+  //if the value is empty then return false :95px
+  //if the input has a value and is invalid return false :0px
+  //if the input has a value and is valid return true :0px
+
+  // ngAfterViewInit() {
+  //   this.checkInitialValue();
+  //      this.fieldsToSubscribe.forEach(field => {
+  //     this.onSubscribe(field);
+  //  });
+  // } 
+
+  // checkInitialValue(field:string) {
+  //   const value = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
+  //   this.onInputCheck(value);
+  //   const control = this.sharedAccordionFunctionality.employeeContactForm.get(field);
+  //   const value = control?.value;
+  //   console.log(`Initial value of ${field}:`, value);
+  //   this.onInputCheck(field);
+  // }
+
+  // onSubscribe(field:string){
+  //   this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.valueChanges.subscribe(value => {
+  //     this.onInputCheck(value);
+  //   });
+  //   const control = this.sharedAccordionFunctionality.employeeContactForm.get(field);
+  //   control?.valueChanges.subscribe(value => {
+  //     this.onInputCheck(value);
+  //     const checkError = this.sharedAccordionFunctionality.employeeContactForm.controls[field].invalid;
+  //     if(checkError){
+  //       this.onInputCheck("invalid value");
+  //     } 
+  //   });  
+  // }
+
+  // onInputCheck(value: string): void {
+  //   const container = document.querySelector('.telephone-label');
+  //   console.log('onInputCheck called with value:', value);
+  //   if (value) {
+  //     container?.classList.add('telephone-label-has-value');
+  //   } else {
+  //     container?.classList.remove('telephone-label-no-value');
+  //   }
+  // }
 
   initializeForm() {
     this.sharedAccordionFunctionality.employeeContactForm = this.fb.group({
@@ -114,21 +170,21 @@ export class AccordionProfileContactDetailsComponent {
     this.sharedAccordionFunctionality.employeeContactForm.enable();
     this.sharedAccordionFunctionality.editContact = true;
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", false)
-
-    setTimeout(() => {
-      this.fieldsToSubscribe.forEach(field => {
-        this.checkInitialValue(field);
-        this.onSubscribe(field);
-      });
-    }, 0);
+    // setTimeout(() => {
+    //   this.fieldsToSubscribe.forEach(field => {
+    //     this.checkInitialValue(field);
+    //     this.onSubscribe(field);
+    //   });
+    // }, 0);
   }
 
   cancelContactEdit() {
     this.sharedAccordionFunctionality.editContact = false;
     this.initializeForm();
     this.sharedAccordionFunctionality.employeeContactForm.disable();
+    // this.checkInputStatus();
   }
-  
+
   saveContactDetails() {
     if (this.sharedAccordionFunctionality.employeeContactForm.valid) {
       const employeeContactFormValues = this.sharedAccordionFunctionality.employeeContactForm.value;

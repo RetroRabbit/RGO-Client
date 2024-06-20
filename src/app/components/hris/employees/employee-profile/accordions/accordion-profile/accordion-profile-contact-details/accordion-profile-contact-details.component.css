@@ -6,43 +6,56 @@
     width: 170px;
 }
 
-.telephone-label {
-    margin-left: 95px; 
-}
+ /* .telephone-label-has-value{
+    margin-left: 0px;
+} */
 
-.telephone-container.has-value .telephone-label,
+/* .telephone-label{
+    margin-left: 95px;
+}   */
+
 .telephone-container:focus-within .telephone-label {  
     margin-left: 0; 
-}
+} 
 
-.label-active{
-    margin-left: 0px;
-}
+/* .telephone-container:focus-within .telephone-label,
+.telephone-container.has-value .telephone-label {  
+    margin-left: 0; 
+} */
 
-  
+/* .telephone-container:placeholder-shown .telephone-label{
+    margin-left: 0px!important;
+} */
 
-.home-number-label{
-    margin-left: 95px;
-}
+/* .telephone-container:not(:placeholder-shown) .telephone-label{
+    margin-left: 95px !important;
+}*/
+
+ /* .home-number-label{
+    margin-left: 95px !important;
+} 
 
 .cellphone-container:focus-within .home-number-label,
 .cellphone-container.has-value .home-number-label {  
-    margin-left: 0; 
+    margin-left: 0 !important; 
 }
 
 .emergency-contact-label{
-    margin-left: 95px;
+    margin-left: 95px!important;
 }
 
 .cellphone-container:focus-within .emergency-contact-label,
 .cellphone-container.has-value .emergency-contact-label {  
-    margin-left: 0; 
-}
-
-.has-value {
-    margin-left: 0px;
-}
-
-.no-value {
+    margin-left: 0!important; 
+} */
+.shifted-label {
     margin-left: 95px;
+  }
+.telephone-container.ng-invalid-required .telephone-label{
+    margin-left: 0;
 }
+
+.default-label{
+    margin-left: 0;
+} 
+
