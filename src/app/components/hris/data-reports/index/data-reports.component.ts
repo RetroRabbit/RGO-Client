@@ -1,9 +1,10 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, TemplateRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { DataReportList } from 'src/app/models/hris/data-report-list';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-data-reports',
@@ -12,7 +13,9 @@ import { DataReportList } from 'src/app/models/hris/data-report-list';
 })
 export class DataReportsComponent {
     baseUrl: string;
-    constructor(private router: Router, private httpClient: HttpClient) {
+    constructor(private router: Router, 
+      private httpClient: HttpClient,
+      private dialog: MatDialog) {
       this.baseUrl = `${environment.HttpsBaseURL}/data-reports`
     }
 
@@ -22,6 +25,10 @@ export class DataReportsComponent {
     screenWidth = window.innerWidth;
 
     @HostListener('window:resize', ['$event'])
+
+    
+    @ViewChild('dialogTemplate', { static: true })
+    dialogTemplate!: TemplateRef<any>;
     
     onResize() {
       this.screenWidth = window.innerWidth;
@@ -46,5 +53,15 @@ export class DataReportsComponent {
           this.dataObjects = data;
         }
       })
+    }
+
+    showAddReportModal(){
+      this.dialog.open(this.dialogTemplate, {
+        width: '500px',
+      });
+    }
+
+    addReport(){
+      
     }
 }

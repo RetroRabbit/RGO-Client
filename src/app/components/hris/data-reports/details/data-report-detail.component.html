@@ -18,21 +18,25 @@
                         <thead class="table-primary">
                             <tr>
                                 <th *ngFor="let column of dataObjects.columns" class="h5">{{ column.name }}</th>
-                                <th>&nbsp;</th>
+                                <th class="table-add" (click)="addColumn()">
+                                    <div class="d-flex justify-content-center">
+                                        <p class="m-0 h5">+</p>
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let data of dataObjects.data; let  i = index" class="report-rows h6">
-                                <td *ngFor="let column of dataObjects.columns">
+                                <td *ngFor="let column of dataObjects.columns" class=" report-table justify-content-center">
                                     <span *ngIf="!column.isCustom">{{ getProperty(data, column.prop) }}</span>
                                     <input *ngIf="column.isCustom && column.fieldType == 'Checkbox'" type="checkbox"
                                         name="{{column.prop + data.Id}}" (change)="UpdateCustomInput(i, column, $event)"
                                         [checked]="getProperty(data, column.prop) == 'true'"
-                                        class="form-check-inline form-check-input form-control" />
+                                        class="form-check-inline form-check-input form-control report-checkbox"/>
                                     <textarea *ngIf="column.isCustom && column.fieldType == 'Text'" type="text"
                                         cdkTextareaAutosize name="{{column.prop + data.Id}}"
                                         (change)="UpdateCustomInput(i, column, $event)" rows="1"
-                                        class="form-control form-control-sm">{{getProperty(data, column.prop)}}</textarea>
+                                        class="form-control form-control-sm text-area-table p-0">{{getProperty(data, column.prop)}}</textarea>
                                 </td>
                                 <td (click)="onViewEmployee(data.Id)" class="search-employee">
                                     <div [ngStyle]="{ display: screenWidth <= 350 ? 'none' : '' }" id="search-arrow"

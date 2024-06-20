@@ -5,3 +5,32 @@
 
 .report-rows{
 }
+
+.report-table{
+    border: 1px solid lightgrey;
+    /* width: min-content; */
+}
+
+.report-checkbox{
+    width: 24px;
+    height: 24px;
+}
+
+.text-area-table{
+    border: none;
+}
+
+.text-area-table:hover{
+    border: none;
+}
+
+.table-add{
+    background-color: #ffffff;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.table-add:hover{
+    background-color: #D7DFFF;
+    font-size: 1.25rem;
+}
