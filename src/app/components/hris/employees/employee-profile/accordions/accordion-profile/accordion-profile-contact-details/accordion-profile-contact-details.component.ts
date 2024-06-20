@@ -73,7 +73,7 @@ export class AccordionProfileContactDetailsComponent {
   //     this.isHouseNoEmpty = !this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value;
   //   }
   // }
-  isLabelHover(formControl: AbstractControl): boolean {
+  shiftInputLabel(formControl: AbstractControl): boolean {
     if (!formControl) {
       return false;
     }

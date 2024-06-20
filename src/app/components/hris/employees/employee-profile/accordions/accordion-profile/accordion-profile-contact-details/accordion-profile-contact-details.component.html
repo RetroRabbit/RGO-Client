@@ -68,7 +68,7 @@
                                         [required]="true"
                                         formControlName="cellphoneNo"
                                         ></ngx-mat-intl-tel-input>
-                                        <mat-label class="telephone-label" [ngClass]="isLabelHover(sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'])? 'default-label':'shifted-label'">Cellphone Number</mat-label>
+                                        <mat-label class="telephone-label" [ngClass]="shiftInputLabel(sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'])? 'default-label':'shifted-label'">Cellphone Number</mat-label>
                                         <mat-error *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].hasError('required') && sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value == '' ">
                                             Cellphone number is required
                                         </mat-error>
@@ -88,7 +88,7 @@
                                         formControlName="houseNo"
                                        
                                         ></ngx-mat-intl-tel-input>
-                                        <mat-label class="telephone-label" [ngClass]="isLabelHover(sharedAccordionFunctionality.employeeContactForm.controls['houseNo'])? 'default-label':'shifted-label'">Home Number</mat-label>
+                                        <mat-label class="telephone-label" [ngClass]="shiftInputLabel(sharedAccordionFunctionality.employeeContactForm.controls['houseNo'])? 'default-label':'shifted-label'">Home Number</mat-label>
 
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['houseNo'].value != '' && sharedAccordionFunctionality.employeeContactForm.controls['houseNo'].invalid">
@@ -117,7 +117,7 @@
                                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.emergencyContactNo"
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container" data-field="emergencyContactNo">
-                                        <mat-label class="telephone-label" [ngClass]="isLabelHover(sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'])? 'default-label':'shifted-label'">Emergency contact number</mat-label>
+                                        <mat-label class="telephone-label" [ngClass]="shiftInputLabel(sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'])? 'default-label':'shifted-label'">Emergency contact number</mat-label>
                                         <ngx-mat-intl-tel-input
                                         #cellphoneField
                                         matInput
