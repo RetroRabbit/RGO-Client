@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
+import { NavItem } from 'src/app/models/hris/report-menu-item.interface';
 
 @Component({
   selector: 'app-data-report-detail',
@@ -23,6 +24,93 @@ export class DataReportDetailComponent {
   screenWidth = window.innerWidth;
   PREVIOUS_PAGE = 'previousPage';
 
+  navItems: NavItem[] = [
+    {
+      displayName: 'AngularMix',
+      iconName: 'close',
+      children: [
+        {
+          displayName: 'Speakers',
+          iconName: 'group',
+          children: [
+            {
+              displayName: 'Michael Prentice',
+              iconName: 'person',
+              route: 'michael-prentice',
+              children: [
+                {
+                  displayName: 'Delight your Organization',
+                  iconName: 'star_rate',
+                  route: 'material-design'
+                }
+              ]
+            },
+            {
+              displayName: 'Stephen Fluin',
+              iconName: 'person',
+              route: 'stephen-fluin',
+              children: [
+                {
+                  displayName: 'What\'s up with the Web?',
+                  iconName: 'star_rate',
+                  route: 'what-up-web'
+                }
+              ]
+            },
+            {
+              displayName: 'Mike Brocchi',
+              iconName: 'person',
+              route: 'mike-brocchi',
+              children: [
+                {
+                  displayName: 'My ally, the CLI',
+                  iconName: 'star_rate',
+                  route: 'my-ally-cli'
+                },
+                {
+                  displayName: 'Become an Angular Tailor',
+                  iconName: 'star_rate',
+                  route: 'become-angular-tailer'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          displayName: 'Sessions',
+          iconName: 'speaker_notes',
+          children: [
+            {
+              displayName: 'Delight your Organization',
+              iconName: 'star_rate',
+              route: 'material-design'
+            },
+            {
+              displayName: 'What\'s up with the Web?',
+              iconName: 'star_rate',
+              route: 'what-up-web'
+            },
+            {
+              displayName: 'My ally, the CLI',
+              iconName: 'star_rate',
+              route: 'my-ally-cli'
+            },
+            {
+              displayName: 'Become an Angular Tailor',
+              iconName: 'star_rate',
+              route: 'become-angular-tailer'
+            }
+          ]
+        },
+        {
+          displayName: 'Feedback',
+          iconName: 'feedback',
+          route: 'feedback'
+        }
+      ]
+    }
+  ];
+
   constructor(private router: Router,
     private httpClient: HttpClient,
     private cookieService: CookieService,
@@ -31,7 +119,7 @@ export class DataReportDetailComponent {
     this.baseUrl = `${environment.HttpsBaseURL}/data-reports`
     this.dataReportCode = this.route.snapshot.params["code"]
   }
-
+  
   @HostListener('window:resize', ['$event'])
 
   onResize() {

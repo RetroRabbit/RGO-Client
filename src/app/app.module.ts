@@ -101,6 +101,7 @@ import { EmployeeTerminationComponent } from './components/hris/employees/employ
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 import { DataReportsComponent } from './components/hris/data-reports/index/data-reports.component';
 import { DataReportDetailComponent } from './components/hris/data-reports/details/data-report-detail.component';
+import { MenuItemComponent } from './components/hris/data-reports/report-menu/menu-item.component';
 
 @NgModule({
   declarations: [
@@ -156,6 +157,7 @@ import { DataReportDetailComponent } from './components/hris/data-reports/detail
     EmployeeTerminationComponent,
     DataReportsComponent,
     DataReportDetailComponent,
+    MenuItemComponent,
   ],
   imports: [
     BrowserModule,
