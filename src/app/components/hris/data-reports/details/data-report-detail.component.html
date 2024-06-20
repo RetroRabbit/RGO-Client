@@ -19,9 +19,28 @@
                             <tr>
                                 <th *ngFor="let column of dataObjects.columns" class="h5">{{ column.name }}</th>
                                 <th class="table-add" (click)="addColumn()">
-                                    <div class="d-flex justify-content-center">
+                                    <div class="d-flex justify-content-center" [mat-menu-trigger-for]="addNewColumn">
                                         <p class="m-0 h5">+</p>
                                     </div>
+                                    <mat-menu #addNewColumn="matMenu">
+                                        <button mat-menu-item [matMenuTriggerFor]="employeeFields">Employee Fields</button>
+                                        <button mat-menu-item [matMenuTriggerFor]="customFields">Custom Fields</button>
+                                    </mat-menu>
+                                        <mat-menu #employeeFields="matMenu">
+                                            <button mat-menu-item>Name</button>
+                                            <button mat-menu-item>Surname</button>
+                                            <button mat-menu-item [matMenuTriggerFor]="physicalAdress">Physical Adress</button>
+                                        </mat-menu>
+                                            <mat-menu #physicalAdress="matMenu">
+                                                <button mat-menu-item>Street Name</button>
+                                                <button mat-menu-item>Street Number</button>
+                                            </mat-menu>
+
+                                        <mat-menu #customFields="matMenu">
+                                            <button mat-menu-item>Checkbox</button>
+                                            <button mat-menu-item>Text</button>
+                                            <button mat-menu-item>FieldCodes</button>
+                                        </mat-menu>
                                 </th>
                             </tr>
                         </thead>
