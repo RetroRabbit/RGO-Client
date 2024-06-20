@@ -18,58 +18,33 @@
                         <thead class="table-primary">
                             <tr>
                                 <th *ngFor="let column of dataObjects.columns" class="h5">{{ column.name }}</th>
-                                <th class="table-add" (click)="addColumn()">
-                                    <!--<div class="d-flex justify-content-center" [mat-menu-trigger-for]="addNewColumn">
-                                        <p class="m-0 h5">+</p>
-                                    </div>-->
-
-                                        <span *ngFor="let item of navItems">
-                                          <!-- Handle branch node buttons here -->
-                                          <span *ngIf="item.children && item.children.length > 0">
-                                            <button mat-raised-button color="primary" [matMenuTriggerFor]="menu.childMenu">
-                                              {{item.displayName}}
-                                              <mat-icon>expand_more</mat-icon>
-                                            </button>
+                                <th class="table-add">
+                                    <span *ngFor="let item of navItems">
+                                        <span *ngIf="item.children && item.children.length > 0">
+                                            <div class="d-flex justify-content-center"
+                                                [mat-menu-trigger-for]="menu.childMenu">
+                                                <p class="m-0 h5">+</p>
+                                            </div>
                                             <app-menu-item #menu [items]="item.children"></app-menu-item>
-                                          </span>
-                                          <!-- Leaf node buttons here -->
-                                          <span *ngIf="!item.children || item.children.length === 0">
-                                            <button mat-button color="primary" [routerLink]="item.route">
-                                              {{item.displayName}}
-                                            </button>
-                                          </span>
                                         </span>
-
-                                    <!--<mat-menu #addNewColumn="matMenu">
-                                        <button mat-menu-item [matMenuTriggerFor]="employeeFields">Employee Fields</button>
-                                        <button mat-menu-item [matMenuTriggerFor]="customFields">Custom Fields</button>
-                                    </mat-menu>
-                                        <mat-menu #employeeFields="matMenu">
-                                            <button mat-menu-item>Name</button>
-                                            <button mat-menu-item>Surname</button>
-                                            <button mat-menu-item [matMenuTriggerFor]="physicalAdress">Physical Adress</button>
-                                        </mat-menu>
-                                            <mat-menu #physicalAdress="matMenu">
-                                                <button mat-menu-item>Street Name</button>
-                                                <button mat-menu-item>Street Number</button>
-                                            </mat-menu>
-
-                                        <mat-menu #customFields="matMenu">
-                                            <button mat-menu-item>Checkbox</button>
-                                            <button mat-menu-item>Text</button>
-                                            <button mat-menu-item>FieldCodes</button>
-                                        </mat-menu>-->
+                                        <span *ngIf="!item.children || item.children.length === 0">
+                                            <button mat-button color="primary" [routerLink]="item.prop">
+                                                {{item.displayName}}
+                                            </button>
+                                        </span>
+                                    </span>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let data of dataObjects.data; let  i = index" class="report-rows h6">
-                                <td *ngFor="let column of dataObjects.columns" class=" report-table justify-content-center">
+                                <td *ngFor="let column of dataObjects.columns"
+                                    class=" report-table justify-content-center">
                                     <span *ngIf="!column.isCustom">{{ getProperty(data, column.prop) }}</span>
                                     <input *ngIf="column.isCustom && column.fieldType == 'Checkbox'" type="checkbox"
                                         name="{{column.prop + data.Id}}" (change)="UpdateCustomInput(i, column, $event)"
                                         [checked]="getProperty(data, column.prop) == 'true'"
-                                        class="form-check-inline form-check-input form-control report-checkbox"/>
+                                        class="form-check-inline form-check-input form-control report-checkbox" />
                                     <textarea *ngIf="column.isCustom && column.fieldType == 'Text'" type="text"
                                         cdkTextareaAutosize name="{{column.prop + data.Id}}"
                                         (change)="UpdateCustomInput(i, column, $event)" rows="1"

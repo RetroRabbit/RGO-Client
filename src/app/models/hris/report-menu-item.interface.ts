@@ -1,7 +1,6 @@
 export interface NavItem {
     displayName: string;
-    iconName: string;
-    route?: string;
+    prop?: string;
     children?: NavItem[];
   }
   

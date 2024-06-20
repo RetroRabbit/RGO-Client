@@ -26,87 +26,54 @@ export class DataReportDetailComponent {
 
   navItems: NavItem[] = [
     {
-      displayName: 'AngularMix',
-      iconName: 'close',
+      displayName: '',
       children: [
         {
-          displayName: 'Speakers',
-          iconName: 'group',
+          displayName: 'Employee',
+          prop: '',
           children: [
             {
-              displayName: 'Michael Prentice',
-              iconName: 'person',
-              route: 'michael-prentice',
-              children: [
-                {
-                  displayName: 'Delight your Organization',
-                  iconName: 'star_rate',
-                  route: 'material-design'
-                }
-              ]
+              displayName: 'Name',
+              prop: 'Name',
             },
             {
-              displayName: 'Stephen Fluin',
-              iconName: 'person',
-              route: 'stephen-fluin',
-              children: [
-                {
-                  displayName: 'What\'s up with the Web?',
-                  iconName: 'star_rate',
-                  route: 'what-up-web'
-                }
-              ]
+              displayName: 'Surname',
+              prop: 'Surname',
             },
             {
-              displayName: 'Mike Brocchi',
-              iconName: 'person',
-              route: 'mike-brocchi',
+              displayName: 'Physical Adress',
+              prop: 'PhysicalAdress',
               children: [
                 {
-                  displayName: 'My ally, the CLI',
-                  iconName: 'star_rate',
-                  route: 'my-ally-cli'
+                  displayName: 'Street Name',
+                  prop:'StreetName'
                 },
                 {
-                  displayName: 'Become an Angular Tailor',
-                  iconName: 'star_rate',
-                  route: 'become-angular-tailer'
+                  displayName: 'Street Number',
+                  prop: 'StreetNumber'
                 }
               ]
             }
           ]
         },
         {
-          displayName: 'Sessions',
-          iconName: 'speaker_notes',
+          displayName: 'Custom',
+          prop: 'Custom',
           children: [
             {
-              displayName: 'Delight your Organization',
-              iconName: 'star_rate',
-              route: 'material-design'
+              displayName: 'Text',
+              prop: 'Text'
             },
             {
-              displayName: 'What\'s up with the Web?',
-              iconName: 'star_rate',
-              route: 'what-up-web'
+              displayName: 'Checkbox',
+              prop: 'Checkbox',
             },
             {
-              displayName: 'My ally, the CLI',
-              iconName: 'star_rate',
-              route: 'my-ally-cli'
+              displayName: 'FieldCode',
+              prop: 'FieldCode'
             },
-            {
-              displayName: 'Become an Angular Tailor',
-              iconName: 'star_rate',
-              route: 'become-angular-tailer'
-            }
           ]
         },
-        {
-          displayName: 'Feedback',
-          iconName: 'feedback',
-          route: 'feedback'
-        }
       ]
     }
   ];
