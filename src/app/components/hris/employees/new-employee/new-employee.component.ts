@@ -629,16 +629,14 @@ export class NewEmployeeComponent implements OnInit {
 
   validateFile(file: File): boolean {
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    const maxSizeInBytes = 4194304; // 4MB
+    const maxSizeInBytes = 4194304;
   
     if (!validTypes.includes(file.type)) {
-      // alert('Only JPEG, JPG, and PNG files are allowed!');
       this.snackBarService.showSnackbar(`Only JPEG, JPG, and PNG files are allowed!`, "snack-error");
       return false;
     }
   
     if (file.size > maxSizeInBytes) {
-      // alert('File size must be less than 4MB!');
       this.snackBarService.showSnackbar(`File size must be less than 4MB!`, "snack-error");
       return false;
     }
