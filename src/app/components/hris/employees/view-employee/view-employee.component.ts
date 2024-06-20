@@ -56,7 +56,7 @@ export class ViewEmployeeComponent {
   _searchQuery: string = '';
   filteredEmployees: EmployeeProfile[] = [];
   employeeStatus: string[] = EmployeeStatus;
-  getPreviousEmployees: boolean = false;
+  getActiveEmployees: boolean = true;
   isLoading: boolean = true;
   defaultPageSize: number = 10
 
@@ -431,14 +431,14 @@ export class ViewEmployeeComponent {
   filterEmployeeTable() {
     console.log(this.currentChampionFilter)
     console.log(this.currentUserTypeFilter)
-    console.log(this.getPreviousEmployees)
+    console.log(this.getActiveEmployees)
     this.isLoading = true;
     const clients$: Observable<Client[]> = this.clientService
       .getAllClients()
       .pipe(catchError(() => of([] as Client[])));
     
     this.employeeService
-      .filterEmployees(this.currentChampionFilter.id || 0, this.currentUserTypeFilter.id || 0, this.getPreviousEmployees)
+      .filterEmployees(this.currentChampionFilter.id || 0, this.currentUserTypeFilter.id || 0, this.getActiveEmployees)
       .pipe(
         switchMap((employees: EmployeeProfile[]) =>
           this.combineEmployeesWithRolesAndClients(employees, clients$)
@@ -487,10 +487,11 @@ export class ViewEmployeeComponent {
     const selectedEmployeeStatus = event.value;
     if (selectedEmployeeStatus == 'Previous Employees') {
       this.currentChampionFilter = { id: 0, name: 'All' }; 
-      this.getPreviousEmployees = true;
+      this.getActiveEmployees = false;
     }
     else {
-      this.getPreviousEmployees = false
+      this.getActiveEmployees = true
+      this.currentChampionFilter = { id: 0, name: 'All' }; 
     }
   }
 

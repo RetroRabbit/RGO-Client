@@ -34,7 +34,7 @@
             class="col-md-12 col-lg-12 mt-3 me-5"
             [ngClass]="{ 'roles-input-mobile': screenWidth <= 1200 }">
             <mat-label>People Champion Filter</mat-label>
-            <mat-select [disabled]="getPreviousEmployees" hideSingleSelectionIndicator="true">
+            <mat-select [disabled]="!getActiveEmployees" hideSingleSelectionIndicator="true">
               <mat-option
                 *ngFor="let champion of peopleChampions | async"
                 [value]="champion.id"
@@ -78,7 +78,7 @@
         </div>
       </div>
     </div>
-    <div class="row" [hidden]="getPreviousEmployees" >
+    <div class="row" [hidden]="!getActiveEmployees" >
       <div class="card px-0">
         <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
           <mat-table [dataSource]="dataSource" matSort #currentTable="matSort" >
@@ -196,7 +196,7 @@
         </div>
       </div>
     </div>
-    <div class="row"  [hidden]="!getPreviousEmployees">
+    <div class="row"  [hidden]="getActiveEmployees">
       <div class="card px-0">
         <div [hidden]="isLoading || terminatedDataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
           <mat-table (matSortChange)="sortByNameDefault($event)" [dataSource]="terminatedDataSource" matSort matSortActive="terminatedPosition" #terminatedTable="matSort" matSortDirection="desc">
