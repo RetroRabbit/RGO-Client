@@ -128,6 +128,7 @@ export class CvDocumentComponent {
       next: data => {
         console.log(data)
         this.school = data.school;
+        this.education = data.fieldOfStudy;
 
       }
     })
@@ -142,8 +143,7 @@ export class CvDocumentComponent {
           this.employeeCert.push(data[i]);
           const newDate = new Date(data[i].issueDate);
           const year = newDate.getFullYear();
-          const month = newDate.getUTCMonth();
-          this.issueDate = month + " " + year;
+          this.issueDate = year;
           console.log("obj", data[i]);
         }
 
