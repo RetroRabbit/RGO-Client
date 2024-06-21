@@ -119,7 +119,6 @@ export class SignInComponent {
                   })
                 );
               }
-  
               return of({ user, token, role: filteredRoles });
             })
           )
