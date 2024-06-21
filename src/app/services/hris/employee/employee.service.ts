@@ -42,32 +42,53 @@ export class EmployeeService {
   getEmployeeProfiles(): Observable<EmployeeProfile[]> {
     return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/all`);
   }
-
+ /**
+ * @summary  Adds employee and Full Employee DTO and information
+ */
   addEmployee(newEmployee: any): Observable<any> {
     return this.httpClient.post<any>(`${this.baseUrl}`, newEmployee);
   }
-
+   /**
+ * @summary  Gets all the Full Employee DTO and information by email
+ *
+ * @returns EmployeeProfile object.
+ */
   get(email: string): Observable<EmployeeProfile> {
     return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}/by-email?email=${encodeURIComponent(email)}`);
   }
-
+   /**
+ * @summary  Checks for duplicate id number
+ *
+ */
   checkDuplicateIdNumber(idNumber: string, employeeId: number): Observable<boolean> {
     return this.httpClient.get<boolean>(`${this.baseUrl}/id-number?idNumber=${encodeURIComponent(idNumber)}&employeeId=${employeeId}`);
   }
-
+    /**
+ * @summary  
+ * @param employee updated employee object
+ */
   updateEmployee(employee: any): Observable<any> {
     const queryParams = `?userEmail=${this.authAccessService.getEmployeeEmail()}`
     return this.httpClient.put<any>(`${this.baseUrl}${queryParams}`, employee)
   }
-
+  /**
+ * @summary  Checks for duplicate id number
+ *
+ */
   getTotalEmployees(): Observable<number> {
     return this.httpClient.get<number>(`${this.baseUrl}/count`);
   }
-
+  /**
+ * @summary Gets churnrate info
+ *
+ */
   getChurnRate(): Observable<ChurnRateDataCard> {
     return this.httpClient.get<ChurnRateDataCard>(`${this.baseUrl}/churn-rate`);
   }
-
+  /**
+ * @summary gets count of datacards
+ *
+ */
   getEmployeeCountData(): Observable<EmployeeCountDataCard> {
     return this.httpClient.get<EmployeeCountDataCard>(`${this.baseUrl}/card-count`);
   }
@@ -76,10 +97,10 @@ export class EmployeeService {
   * to exclude a parameter from the filter pass through a 0 for said parameter
   * @param  championID filters those that have the same CHampion ID
   * @param employeeType filters by the type of employee
+  * @param activeStatus filters by the active statys of emplyee
   *
   * @returns List of EmployeeDto objects.
   */
- // employee.service.ts
 filterEmployees(championID: number, employeeType: number, activeStatus: boolean = true): Observable<EmployeeProfile[]> {
   const queryParams = `?PeopleChampId=${encodeURIComponent(championID)}
                         &employeeType=${encodeURIComponent(employeeType)}
