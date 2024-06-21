@@ -8,7 +8,7 @@ import { ChartService } from 'src/app/services/hris/charts.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
-import { EmpBankStarterService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
+import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 
 @Component({
   selector: 'app-top-nav',
@@ -48,7 +48,7 @@ export class TopNavComponent {
     public cookieService: CookieService,
     public navService: NavService,
     public authAccessService: AuthAccessService,
-    public empBankStarterService: EmpBankStarterService
+    public employeeBankStarterkitService: EmployeeBankingandstarterkitService
   ) {
     this.screenWidth = window.innerWidth;
     this.dialogTypeData = new DialogTypeData().dialogTypeData;
@@ -57,7 +57,7 @@ export class TopNavComponent {
   ngOnInit() {
     this.signIn();
     this.isLoading = true
-    this.empBankStarterService.getAllBankingAndStarterkits();
+    this.employeeBankStarterkitService.getAllBankingAndStarterkits();
   }
 
   signIn() {

@@ -10,7 +10,7 @@ import { NotificationService } from '../notification.service';
 @Injectable({
   providedIn: 'root',
 })
-export class EmpBankStarterService {
+export class EmployeeBankingandstarterkitService {
   readonly APPROVED_STATUS = 0;
   readonly PENDING_STATUS = 1;
   readonly DECLINED_STATUS = 2;

@@ -6,7 +6,7 @@
         <div id="icon-text-container" (click)="displayEmployeeApprovals()" [ngClass]="systemNavItemService.selectedEmployeeMenuItem =='Employee Approvals' ? 'active' : ''">
           <mat-icon id="mat-icon">mode_edit_24px</mat-icon>
           <span id="approvals-text">Approvals</span>
-          <div>{{empBankStarterService.pendingCount$ | async}}</div>
+          <div>{{employeeBankStarterkitService.pendingCount$ | async}}</div>
         </div>
       </div>
       <div id="button-container">

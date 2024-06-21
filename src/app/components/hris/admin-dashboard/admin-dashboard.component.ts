@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
-import { EmpBankStarterService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
+import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -90,7 +90,7 @@ export class AdminDashboardComponent {
   rolesSelected: string[] = [];
   categoriesSelected: string[] = [];
   constructor(
-    private empBankStarterService: EmpBankStarterService,
+    private employeeBankStarterkitService: EmployeeBankingandstarterkitService,
     private employeeService: EmployeeService,
     public chartService: ChartService,
     private cookieService: CookieService,
@@ -155,7 +155,7 @@ export class AdminDashboardComponent {
     this.getEmployeeTypes();
     this.getEmployeeTableColumns();
     this.getDataCardsData();
-    this.empBankStarterService.getAllBankingAndStarterkits()
+    this.employeeBankStarterkitService.getAllBankingAndStarterkits()
 
     this.categoryControl.valueChanges.subscribe((value) => {
       this.selectedCategories = value;

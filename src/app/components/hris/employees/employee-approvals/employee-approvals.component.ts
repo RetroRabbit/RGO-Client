@@ -8,7 +8,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
-import { EmpBankStarterService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
+import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 import { BankingAndStarterKitDto } from 'src/app/models/hris/banking-and-starterkit.interface';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
@@ -55,7 +55,7 @@ export class EmployeeApprovalsComponent {
   }
 
   constructor(
-    public empBankStarterService: EmpBankStarterService,
+    public employeeBankStarterkitService: EmployeeBankingandstarterkitService,
     private snackBarService: SnackbarService,
     public router: Router,
     public cookieService: CookieService,
@@ -75,12 +75,12 @@ export class EmployeeApprovalsComponent {
 
   fetchBankStarterKits(): void {
     this.isLoading = true;
-    this.empBankStarterService.getAllBankingAndStarterkits();
+    this.employeeBankStarterkitService.getAllBankingAndStarterkits();
     this.subscribeToData();
   }
 
   subscribeToData(): void {
-    this.empBankStarterService.bankingAndStarterKitData$
+    this.employeeBankStarterkitService.bankingAndStarterKitData$
     .pipe(takeUntil(this.destroy$))
     .subscribe((data: BankingAndStarterKitDto[]) => {
       this.bankingAndStarterKitData = data;

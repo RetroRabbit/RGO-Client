@@ -4,7 +4,7 @@ import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeApprovalsComponent } from '../employee-approvals/employee-approvals.component';
-import { EmpBankStarterService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
+import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 @Component({
   selector: 'app-employee-options',
   templateUrl: './employee-options.component.html',
@@ -18,7 +18,7 @@ export class EmployeeOptionsComponent {
      public systemNavItemService: SystemNav,
      private authAccessService: AuthAccessService,
      public employeeApprovals : EmployeeApprovalsComponent,
-     public empBankStarterService: EmpBankStarterService
+     public employeeBankStarterkitService: EmployeeBankingandstarterkitService
     ) {
     if (!this.systemNavItemService.selectedEmployeeMenuItem) {
       this.systemNavItemService.selectedEmployeeMenuItem = "View Employees";
