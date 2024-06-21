@@ -7,7 +7,7 @@
         <app-menu-item #menu [items]="child.children"></app-menu-item>
       </span>
       <span *ngIf="!child.children || child.children.length === 0">
-        <button mat-menu-item [routerLink]="child.prop">
+        <button mat-menu-item (click)="addColumn(child.id)">
           <span>{{child.name}}</span>
         </button>
       </span>

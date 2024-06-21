@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import { MatMenu } from '@angular/material/menu';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import {Router} from '@angular/router';
 import { NavItem } from 'src/app/models/hris/report-menu-item.interface';
 @Component({
@@ -15,5 +15,9 @@ export class MenuItemComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  addColumn(id: number) {
+    console.log(id);
   }
 }

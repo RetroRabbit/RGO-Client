@@ -708,7 +708,7 @@ export class DataReportDetailComponent {
     })
   }
 
-  addColumn() {
-
+  addColumn(prop?: string) {
+    console.log(prop);
   }
 }
