@@ -55,7 +55,7 @@ export class EmployeeApprovalsComponent {
   }
 
   constructor(
-    public employeeBankStarterkitService: EmployeeBankingandstarterkitService,
+    public employeeBankingandstarterkitService: EmployeeBankingandstarterkitService,
     private snackBarService: SnackbarService,
     public router: Router,
     public cookieService: CookieService,
@@ -75,12 +75,12 @@ export class EmployeeApprovalsComponent {
 
   fetchBankStarterKits(): void {
     this.isLoading = true;
-    this.employeeBankStarterkitService.getAllBankingAndStarterkits();
+    this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
     this.subscribeToData();
   }
 
   subscribeToData(): void {
-    this.employeeBankStarterkitService.bankingAndStarterKitData$
+    this.employeeBankingandstarterkitService.bankingAndStarterKitData$
     .pipe(takeUntil(this.destroy$))
     .subscribe((data: BankingAndStarterKitDto[]) => {
       this.bankingAndStarterKitData = data;

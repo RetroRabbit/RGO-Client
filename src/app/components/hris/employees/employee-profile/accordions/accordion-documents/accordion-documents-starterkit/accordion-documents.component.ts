@@ -48,7 +48,7 @@ export class AccordionDocumentsComponent {
     private authAccessService: AuthAccessService,
     public navService: NavService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-    public employeeBankStarterkitService: EmployeeBankingandstarterkitService
+    public employeeBankingandstarterkitService: EmployeeBankingandstarterkitService
   ) { }
 
   ngOnInit() {
@@ -160,7 +160,7 @@ export class AccordionDocumentsComponent {
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
-          this.employeeBankStarterkitService.getAllBankingAndStarterkits();
+          this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
         },
         error: (error) => {
           this.isLoadingUpload = false;
@@ -191,7 +191,7 @@ export class AccordionDocumentsComponent {
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
-          this.employeeBankStarterkitService.getAllBankingAndStarterkits();
+          this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");

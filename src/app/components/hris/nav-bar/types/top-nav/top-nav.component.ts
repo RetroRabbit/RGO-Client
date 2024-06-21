@@ -48,7 +48,7 @@ export class TopNavComponent {
     public cookieService: CookieService,
     public navService: NavService,
     public authAccessService: AuthAccessService,
-    public employeeBankStarterkitService: EmployeeBankingandstarterkitService
+    public employeeBankingandstarterkitService: EmployeeBankingandstarterkitService
   ) {
     this.screenWidth = window.innerWidth;
     this.dialogTypeData = new DialogTypeData().dialogTypeData;
@@ -57,7 +57,7 @@ export class TopNavComponent {
   ngOnInit() {
     this.signIn();
     this.isLoading = true
-    this.employeeBankStarterkitService.getAllBankingAndStarterkits();
+    this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
   }
 
   signIn() {

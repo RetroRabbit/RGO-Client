@@ -18,7 +18,7 @@ export class EmployeeOptionsComponent {
      public systemNavItemService: SystemNav,
      private authAccessService: AuthAccessService,
      public employeeApprovals : EmployeeApprovalsComponent,
-     public employeeBankStarterkitService: EmployeeBankingandstarterkitService
+     public employeeBankingandstarterkitService: EmployeeBankingandstarterkitService
     ) {
     if (!this.systemNavItemService.selectedEmployeeMenuItem) {
       this.systemNavItemService.selectedEmployeeMenuItem = "View Employees";

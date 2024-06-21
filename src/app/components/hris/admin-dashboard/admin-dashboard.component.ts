@@ -90,7 +90,7 @@ export class AdminDashboardComponent {
   rolesSelected: string[] = [];
   categoriesSelected: string[] = [];
   constructor(
-    private employeeBankStarterkitService: EmployeeBankingandstarterkitService,
+    private employeeBankingandstarterkitService: EmployeeBankingandstarterkitService,
     private employeeService: EmployeeService,
     public chartService: ChartService,
     private cookieService: CookieService,
@@ -155,7 +155,7 @@ export class AdminDashboardComponent {
     this.getEmployeeTypes();
     this.getEmployeeTableColumns();
     this.getDataCardsData();
-    this.employeeBankStarterkitService.getAllBankingAndStarterkits()
+    this.employeeBankingandstarterkitService.getAllBankingAndStarterkits()
 
     this.categoryControl.valueChanges.subscribe((value) => {
       this.selectedCategories = value;
