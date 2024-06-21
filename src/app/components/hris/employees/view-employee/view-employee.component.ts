@@ -50,7 +50,7 @@ export class ViewEmployeeComponent {
   @Output() managePermissionsEvent = new EventEmitter<void>();
 
   @ViewChild('currentTable', { read: MatSort, static: true }) sortcurrentEmployees!: MatSort;
-  @ViewChild('terminatedTable', { read: MatSort, static: true }) sortPreviousEmployees!: MatSort;
+  // @ViewChild('terminatedTable', { read: MatSort, static: true }) sortPreviousEmployees!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   _searchQuery: string = '';
@@ -63,8 +63,8 @@ export class ViewEmployeeComponent {
   displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];
   displayedTerminatedColumns: string[] = ['terminatedNames', 'terminatedPosition', 'Tenure', 'Last Day', 'Reason'];
 
-  dataSource: MatTableDataSource<EmployeeData> = new MatTableDataSource();
-  terminatedDataSource: MatTableDataSource<EmployeeProfile> = new MatTableDataSource();
+  dataSource: MatTableDataSource<EmployeeProfile> = new MatTableDataSource();
+  //terminatedDataSource: MatTableDataSource<EmployeeProfile> = new MatTableDataSource();
 
   @Input()
   set searchQuery(text: string) {
@@ -115,7 +115,7 @@ export class ViewEmployeeComponent {
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
-    this.terminatedDataSource.paginator = this.paginator;
+    //this.terminatedDataSource.paginator = this.paginator;
 
     this.onResize();
     if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
@@ -129,7 +129,7 @@ export class ViewEmployeeComponent {
 
   ngAfterViewInit() {
     this.getEmployees();
-    this.getTerminatedEmployees();
+    //this.getTerminatedEmployees();
     this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
   }
 
@@ -197,6 +197,9 @@ export class ViewEmployeeComponent {
           Client: client ? client.name : 'None',
           Roles: sortedRoles,
           Email: employee.email,
+          engagementDate: employee.engagementDate,
+          terminationDate: employee.terminationDate,
+          inactiveReason: employee.inactiveReason
         };
       }
     );
@@ -215,23 +218,23 @@ export class ViewEmployeeComponent {
     this.dataSource._updateChangeSubscription();
   }
 
-  private getTerminatedDataSource() {
-    this.terminatedDataSource = new MatTableDataSource(this.filteredEmployees);
-    this.ngZone.run(() => {
-      this.terminatedDataSource.sort = this.sortPreviousEmployees;
-      this.terminatedDataSource.paginator = this.paginator;
-      this.paginator._changePageSize(this.defaultPageSize);
-    });
+  // private getTerminatedDataSource() {
+  //   this.terminatedDataSource = new MatTableDataSource(this.filteredEmployees);
+  //   this.ngZone.run(() => {
+  //     this.terminatedDataSource.sort = this.sortPreviousEmployees;
+  //     this.terminatedDataSource.paginator = this.paginator;
+  //     this.paginator._changePageSize(this.defaultPageSize);
+  //   });
 
-    this.terminatedDataSource._updateChangeSubscription();
-  }
+  //   this.terminatedDataSource._updateChangeSubscription();
+  // }
 
   sortByNameDefault(sort: Sort) {
-    if (!this.terminatedDataSource || !sort.active || sort.direction === '') {
+    if (!this.dataSource || !sort.active || sort.direction === '') {
       return;
     }
 
-    this.terminatedDataSource.data = this.terminatedDataSource.data.sort((employeeName1: any, employeeName2: any) => {
+    this.dataSource.data = this.dataSource.data.sort((employeeName1: any, employeeName2: any) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'terminatedNames': return this.sortTerminatedNames(employeeName1.name, employeeName2.name, isAsc);
@@ -275,9 +278,9 @@ export class ViewEmployeeComponent {
 
   reset(): void {
     this.dataSource.filter = '';
-    this.terminatedDataSource.filter = '';
+    //  this.terminatedDataSource.filter = '';
     this.dataSource._updateChangeSubscription();
-    this.terminatedDataSource._updateChangeSubscription();
+    // this.terminatedDataSource._updateChangeSubscription();
   }
 
   ViewUser(email: string) {
@@ -321,10 +324,10 @@ export class ViewEmployeeComponent {
 
   applySearchFilter() {
     this.dataSource.filter = this.searchQuery.trim().toLowerCase();
-    this.terminatedDataSource.filter = this.searchQuery.trim().toLowerCase();
+    // this.terminatedDataSource.filter = this.searchQuery.trim().toLowerCase();
 
     this.dataSource._updateChangeSubscription();
-    this.terminatedDataSource._updateChangeSubscription();
+    // this.terminatedDataSource._updateChangeSubscription();
   }
 
   pageSizes: number[] = [1, 5, 10, 25, 100];
@@ -396,7 +399,7 @@ export class ViewEmployeeComponent {
   set pageSize(size: number) {
     this.paginator.pageSize = size;
     this.dataSource._updateChangeSubscription();
-    this.terminatedDataSource._updateChangeSubscription();
+    // this.terminatedDataSource._updateChangeSubscription();
   }
 
   get start(): number {
@@ -414,7 +417,7 @@ export class ViewEmployeeComponent {
   goToPage(page: number): void {
     this.paginator.pageIndex = page - 1;
     this.dataSource._updateChangeSubscription();
-    this.terminatedDataSource._updateChangeSubscription();
+    // this.terminatedDataSource._updateChangeSubscription();
 
   }
 
@@ -436,7 +439,7 @@ export class ViewEmployeeComponent {
     const clients$: Observable<Client[]> = this.clientService
       .getAllClients()
       .pipe(catchError(() => of([] as Client[])));
-    
+
     this.employeeService
       .filterEmployees(this.currentChampionFilter.id || 0, this.currentUserTypeFilter.id || 0, this.getActiveEmployees)
       .pipe(
@@ -453,7 +456,7 @@ export class ViewEmployeeComponent {
         first()
       )
       .subscribe((data) => {
-        console.log(data)
+        console.table(data)
         this.setupDataSource(data);
         this.isLoading = false;
         this.applySearchFilter();
@@ -473,25 +476,25 @@ export class ViewEmployeeComponent {
     );
   }
 
-  getTerminatedEmployees() {
-    this.employeeService.getEmployeeProfiles().subscribe({
-      next: data => {
-        this.filteredEmployees = data.filter((emp: any) => emp.active == false)
-        this.getTerminatedDataSource();
-        this.isLoading = false;
-      }
-    });
-  }
+  // getTerminatedEmployees() {
+  //   this.employeeService.getEmployeeProfiles().subscribe({
+  //     next: data => {
+  //       this.filteredEmployees = data.filter((emp: any) => emp.active == false)
+  //       this.getTerminatedDataSource();
+  //       this.isLoading = false;
+  //     }
+  //   });
+  // }
 
   toggleEmployees(event: any) {
     const selectedEmployeeStatus = event.value;
     if (selectedEmployeeStatus == 'Previous Employees') {
-      this.currentChampionFilter = { id: 0, name: 'All' }; 
+      this.currentChampionFilter = { id: 0, name: 'All' };
       this.getActiveEmployees = false;
     }
     else {
       this.getActiveEmployees = true
-      this.currentChampionFilter = { id: 0, name: 'All' }; 
+      this.currentChampionFilter = { id: 0, name: 'All' };
     }
   }
 

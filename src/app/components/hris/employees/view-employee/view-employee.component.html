@@ -198,8 +198,8 @@
     </div>
     <div class="row"  [hidden]="getActiveEmployees">
       <div class="card px-0">
-        <div [hidden]="isLoading || terminatedDataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
-          <mat-table (matSortChange)="sortByNameDefault($event)" [dataSource]="terminatedDataSource" matSort matSortActive="terminatedPosition" #terminatedTable="matSort" matSortDirection="desc">
+        <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
+          <mat-table (matSortChange)="sortByNameDefault($event)" [dataSource]="dataSource" matSort matSortActive="terminatedPosition" #terminatedTable="matSort" matSortDirection="desc">
             <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
               'background-color': '#D7DFFF',
               'border': '2px solid #D7DFFF',
@@ -210,32 +210,32 @@
             </ngx-skeleton-loader>
             <ng-container matColumnDef="terminatedNames">
               <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow" >Name</mat-header-cell>
-              <mat-cell *matCellDef="let employee" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '50%' : '25%'}">
-                {{ employee.name }}
+              <mat-cell *matCellDef="let employees" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '50%' : '25%'}">
+                {{ employees.Name }}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="terminatedPosition">
               <mat-header-cell *matHeaderCellDef >Position</mat-header-cell>
-              <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
-                {{ employee.employeeType.name}}
+              <mat-cell *matCellDef="let employees" class="d-none d-md-flex">
+                {{ employees.Position}}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Tenure" >
               <mat-header-cell *matHeaderCellDef>Tenure</mat-header-cell>
-              <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
-                {{this.getTenureDifference(employee.engagementDate,employee.terminationDate)}}
+              <mat-cell *matCellDef="let employees" class="d-none d-md-flex">
+                {{this.getTenureDifference(employees.engagementDate,employees.terminationDate)}}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Last Day">
               <mat-header-cell *matHeaderCellDef>Last Day</mat-header-cell>
-              <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
-                {{getFormattedTerminatedDate(employee.terminationDate)}}
+              <mat-cell *matCellDef="let employees" class="d-none d-md-flex">
+                {{getFormattedTerminatedDate(employees.terminationDate)}}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Reason">
               <mat-header-cell *matHeaderCellDef>Reason</mat-header-cell>
-              <mat-cell *matCellDef="let employee" class="row justify-content-start">
-                {{employee.inactiveReason}}
+              <mat-cell *matCellDef="let employees" class="row justify-content-start">
+                {{employees.inactiveReason}}
               </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedTerminatedColumns"></mat-header-row>
@@ -244,7 +244,7 @@
           </mat-table>
           <mat-paginator hidden></mat-paginator>
         </div>
-        <div *ngIf="!isLoading && terminatedDataSource.filteredData.length <= 0"
+        <div *ngIf="!isLoading && dataSource.filteredData.length <= 0"
           class="d-flex flex-row justify-content-center align-items-center">
           <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
           <span id="noResults" class="col-6 d-flex flex-column justify-content-center align-items-center">
@@ -262,7 +262,7 @@
       }">
       </ngx-skeleton-loader>
       <div class="d-flex flex-row justify-content-center align-items-center mt-3"
-        *ngIf="!isLoading && terminatedDataSource.filteredData.length > 0">
+        *ngIf="!isLoading && dataSource.filteredData.length > 0">
         <div class="col-lg-4 col-md-4 fs-6 d-none d-md-flex" id="paginatorText">
           <span class="fw-medium d-none d-md-flex me-1">
             Showing {{ start }}-{{ end }}
