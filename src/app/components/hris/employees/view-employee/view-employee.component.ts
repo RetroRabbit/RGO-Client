@@ -491,10 +491,11 @@ export class ViewEmployeeComponent {
     if (selectedEmployeeStatus == 'Previous Employees') {
       this.currentChampionFilter = { id: 0, name: 'All' };
       this.getActiveEmployees = false;
+      this.filterEmployeeTable()
     }
     else {
-      this.getActiveEmployees = true
-      this.currentChampionFilter = { id: 0, name: 'All' };
+      this.getActiveEmployees = true;
+      this.filterEmployeeTable()
     }
   }
 
