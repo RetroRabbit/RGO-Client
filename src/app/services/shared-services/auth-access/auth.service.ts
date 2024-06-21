@@ -81,10 +81,10 @@ export class AuthService {
   checkConnection(): Observable<string> {
     let header: HttpHeaders = new HttpHeaders();
     return this.client
-      .post(
+      .get(
         `${this.baseUrl}`,
-        "",
-        { headers: header, responseType: 'text' })
+        { headers: header, responseType: 'text' }
+      )
       .pipe(
         map(type => type),
         catchError(err => {
@@ -94,6 +94,25 @@ export class AuthService {
           return EMPTY;
         })
       );
-  }
+  }  
+
+  checkUserExistenceInDatabase(): Observable<string> {
+    let header: HttpHeaders = new HttpHeaders();
+    return this.client
+      .post(
+        `${this.baseUrl}`,
+        "",
+        { headers: header, responseType: 'text' }
+      )
+      .pipe(
+        map(type => type),
+        catchError(err => {
+          if (err.status === 404 || err.status === 0) {
+            window.alert("Contact Admin about your account.");
+          }
+          return EMPTY;
+        })
+      );
+  }  
 
 }
