@@ -44,6 +44,7 @@ export class EmployeeService {
   }
  /**
  * @summary  Adds employee and Full Employee DTO and information
+ * @param newEmployee new employee dto to be added
  */
   addEmployee(newEmployee: any): Observable<any> {
     return this.httpClient.post<any>(`${this.baseUrl}`, newEmployee);
@@ -58,7 +59,7 @@ export class EmployeeService {
   }
    /**
  * @summary  Checks for duplicate id number
- *
+ * @param idNumber idnumber that needs to be checked
  */
   checkDuplicateIdNumber(idNumber: string, employeeId: number): Observable<boolean> {
     return this.httpClient.get<boolean>(`${this.baseUrl}/id-number?idNumber=${encodeURIComponent(idNumber)}&employeeId=${employeeId}`);
