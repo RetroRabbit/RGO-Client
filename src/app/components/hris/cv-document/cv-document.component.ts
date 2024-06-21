@@ -21,6 +21,8 @@ export class CvDocumentComponent {
 
   employeeWorkexp: WorkExperience[] = [];
   employeeCert: EmployeeCertificates[] = [];
+  skills: any = [];
+  filteredSkills: any = [];
   usingSimpleProfile: boolean = false;
   loggedInProfile!: EmployeeData;
   name: string | undefined = '';
@@ -85,7 +87,6 @@ export class CvDocumentComponent {
     this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
       next: data => {
         this.nqf = data[2].value;
-        //this.school = data[1]
         console.log(data);
       }
     })
@@ -107,29 +108,45 @@ export class CvDocumentComponent {
     this.numberOfYears = numYears;
 
   }
+
   getEmployeeWorkExp() {
     this.employeeWorkExperienceService.getWorkExperience(this.employeeId).subscribe({
       next: data => {
         console.log(data);
         for (let i = 0; i < data.length; i++) {
           this.employeeWorkexp.push(data[i]);
-          console.log("obj", data[i]);
-          const newDate = new Date(data[i].endDate);
-          const year = newDate.getFullYear();
-          this.endDate = year;
-          this.getYears(data[i].startDate);
+          this.skills.push(data[i].skillSet);
+          //  console.log("skills 1111", data[i].skillSet?[i].length);
+          const arr1 = this.skills[i];
+          console.log("heyyyyyyy", this.skills)
+          if (data[i].skillSet?.length !== 0) {
+          }
         }
+        for (let i = 0; i < this.skills.length; i++) {
+          console.log("HMMMMMM", this.skills[i][i]);
+        }
+        this.skills = this.skills.sort();
+        const filt = this.skills.filter((skill: any, index: any) => {
+          this.skills.indexOf(skill) !== index;
+        });
+
+        console.log("skills", filt);
+
+        // const newDate = new Date(data[i].endDate);
+        // const year = newDate.getFullYear();
+        // this.endDate = year;
+        // this.getYears(data[i].startDate);
 
       }
     })
   }
+
   getQaulifications() {
     this.employeeQaulificationService.getEmployeeQualificationById(this.employeeId).subscribe({
       next: data => {
         console.log(data)
         this.school = data.school;
         this.education = data.fieldOfStudy;
-
       }
     })
   }
