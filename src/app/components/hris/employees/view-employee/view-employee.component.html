@@ -27,26 +27,21 @@
       <div [ngClass]="screenWidth < 992 ?
         'col-12 row d-flex justify-content-space-between' :
         'col-5 row d-flex justify-content-space-between pt-1'" id="mainFilterContainer">
-       <div class="col-4 p-6 d-md-block">
-        <div (click)="$event.stopPropagation()" class="row col-12 px-0">
-          <mat-form-field
-            appearance="outline"
-            class="col-md-12 col-lg-12 mt-3 me-5"
-            [ngClass]="{ 'roles-input-mobile': screenWidth <= 1200 }">
-            <mat-label>People Champion Filter</mat-label>
-            <mat-select [disabled]="!getActiveEmployees" hideSingleSelectionIndicator="true">
-              <mat-option
-                *ngFor="let champion of peopleChampions | async"
-                [value]="champion.id"
-                class="menu-item-button"
-                (click)="changePeopleChampionFilter(champion)">
-                {{ champion.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div class="col-4 p-6 d-md-block">
+          <div (click)="$event.stopPropagation()" class="row col-12 px-0">
+            <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
+              [ngClass]="{ 'roles-input-mobile': screenWidth <= 1200 }">
+              <mat-label>People Champion Filter</mat-label>
+              <mat-select [disabled]="!getActiveEmployees" hideSingleSelectionIndicator="true">
+                <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
+                  class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
+                  {{ champion.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
-      </div>
-      
+
         <div class="col-4 ps-0  d-md-block">
           <div (click)="$event.stopPropagation()" class="row col-12 px-0">
             <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
@@ -68,8 +63,7 @@
               [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
               <mat-label>Employee Status Filter</mat-label>
               <mat-select hideSingleSelectionIndicator="true" (selectionChange)="toggleEmployees($event)">
-                <mat-option *ngFor="let status of employeeStatus" [value]="status"
-                  class="menu-item-button">
+                <mat-option *ngFor="let status of employeeStatus" [value]="status" class="menu-item-button">
                   {{ status }}
                 </mat-option>
               </mat-select>
@@ -78,10 +72,10 @@
         </div>
       </div>
     </div>
-    <div class="row" [hidden]="!getActiveEmployees" >
+    <div class="row" [hidden]="!getActiveEmployees">
       <div class="card px-0">
         <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
-          <mat-table [dataSource]="dataSource" matSort #currentTable="matSort" >
+          <mat-table [dataSource]="dataSource" matSort #currentTable="matSort">
             <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
               'background-color': '#D7DFFF',
               'border': '2px solid #D7DFFF',
@@ -196,10 +190,11 @@
         </div>
       </div>
     </div>
-    <div class="row"  [hidden]="getActiveEmployees">
+    <div class="row" [hidden]="getActiveEmployees">
       <div class="card px-0">
         <div [hidden]="isLoading || dataSource.filteredData.length <= 0" class="table-responsive p-0 m-0">
-          <mat-table (matSortChange)="sortByNameDefault($event)" [dataSource]="dataSource" matSort matSortActive="terminatedPosition" #terminatedTable="matSort" matSortDirection="desc">
+          <mat-table (matSortChange)="sortByNameDefault($event)" [dataSource]="dataSource" matSort
+            matSortActive="terminatedPosition" #terminatedTable="matSort" matSortDirection="desc">
             <ngx-skeleton-loader *ngIf="isLoading" [count]="1" appearance="line" animation="pulse" [theme]="{
               'background-color': '#D7DFFF',
               'border': '2px solid #D7DFFF',
@@ -209,18 +204,18 @@
             }">
             </ngx-skeleton-loader>
             <ng-container matColumnDef="terminatedNames">
-              <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow" >Name</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Name</mat-header-cell>
               <mat-cell *matCellDef="let employees" [ngStyle]="{'max-width': isAdminOrSuperAdmin ? '50%' : '25%'}">
                 {{ employees.Name }}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="terminatedPosition">
-              <mat-header-cell *matHeaderCellDef >Position</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef>Position</mat-header-cell>
               <mat-cell *matCellDef="let employees" class="d-none d-md-flex">
                 {{ employees.Position}}
               </mat-cell>
             </ng-container>
-            <ng-container matColumnDef="Tenure" >
+            <ng-container matColumnDef="Tenure">
               <mat-header-cell *matHeaderCellDef>Tenure</mat-header-cell>
               <mat-cell *matCellDef="let employees" class="d-none d-md-flex">
                 {{this.getTenureDifference(employees.engagementDate,employees.terminationDate)}}
@@ -229,13 +224,13 @@
             <ng-container matColumnDef="Last Day">
               <mat-header-cell *matHeaderCellDef>Last Day</mat-header-cell>
               <mat-cell *matCellDef="let employees" class="d-none d-md-flex">
-                {{getFormattedTerminatedDate(employees.terminationDate)}}
+                {{ getFormattedTerminatedDate(employees.terminationDate) }}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Reason">
               <mat-header-cell *matHeaderCellDef>Reason</mat-header-cell>
               <mat-cell *matCellDef="let employees" class="row justify-content-start">
-                {{employees.inactiveReason}}
+                {{ employees.inactiveReason }}
               </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedTerminatedColumns"></mat-header-row>
