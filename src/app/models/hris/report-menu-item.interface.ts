@@ -1,6 +1,6 @@
 export interface NavItem {
-    displayName: string;
-    prop?: string;
-    children?: NavItem[];
-  }
-  
+  id: number;
+  name: string;
+  prop?: string;
+  children?: NavItem[];
+}
