@@ -102,6 +102,8 @@ import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 import { DataReportsComponent } from './components/hris/data-reports/index/data-reports.component';
 import { DataReportDetailComponent } from './components/hris/data-reports/details/data-report-detail.component';
 import { MenuItemComponent } from './components/hris/data-reports/report-menu/menu-item.component';
+import { TableModule } from 'primeng/table';
+
 
 @NgModule({
   declarations: [
@@ -218,6 +220,7 @@ import { MenuItemComponent } from './components/hris/data-reports/report-menu/me
     MatButtonToggleModule,
     DragDropModule,
     NgxMatIntlTelInputComponent,
+    TableModule,
     NgxSkeletonLoaderModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {

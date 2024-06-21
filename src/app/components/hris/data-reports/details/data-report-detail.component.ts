@@ -9,6 +9,11 @@ import { CookieService } from 'ngx-cookie-service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { NavItem } from 'src/app/models/hris/report-menu-item.interface';
 
+
+import { TableModule } from 'primeng/table';
+import { CommonModule } from '@angular/common';
+
+
 @Component({
   selector: 'app-data-report-detail',
   templateUrl: './data-report-detail.component.html',
