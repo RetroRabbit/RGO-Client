@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { filter } from 'rxjs';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { WorkExperience } from 'src/app/models/hris/work-experience.interface';
@@ -76,8 +77,11 @@ export class CvDocumentComponent {
         if (data.gender == 1) {
           this.pronoun = 'He'
         }
-        else {
+        else if (data.gender == 0) {
           this.pronoun = 'Her'
+        }
+        else {
+          this.pronoun = 'They'
         }
       }
     })
@@ -87,7 +91,6 @@ export class CvDocumentComponent {
     this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
       next: data => {
         this.nqf = data[2].value;
-        console.log(data);
       }
     })
   }
@@ -101,10 +104,7 @@ export class CvDocumentComponent {
 
     months = (months + 12) % 12;
     years -= Math.floor(months / 12);
-    console.log("DATE", months, years)
-
     const numYears = (years > 0 ? `${years} ${years === 1 ? 'year' : 'years'}` : 0 + ' years' + (months > 0 ? "" + ` ${months} ${months === 1 ? 'month' : 'months'}` : ''));
-
     this.numberOfYears = numYears;
 
   }
@@ -112,31 +112,17 @@ export class CvDocumentComponent {
   getEmployeeWorkExp() {
     this.employeeWorkExperienceService.getWorkExperience(this.employeeId).subscribe({
       next: data => {
-        console.log(data);
-        for (let i = 0; i < data.length; i++) {
-          this.employeeWorkexp.push(data[i]);
-          this.skills.push(data[i].skillSet);
-          //  console.log("skills 1111", data[i].skillSet?[i].length);
-          const arr1 = this.skills[i];
-          console.log("heyyyyyyy", this.skills)
-          if (data[i].skillSet?.length !== 0) {
-          }
-        }
-        for (let i = 0; i < this.skills.length; i++) {
-          console.log("HMMMMMM", this.skills[i][i]);
-        }
-        this.skills = this.skills.sort();
-        const filt = this.skills.filter((skill: any, index: any) => {
-          this.skills.indexOf(skill) !== index;
+        data.forEach((element) => {
+          this.employeeWorkexp.push(element);
+          const newDate = new Date(element.endDate);
+          const year = newDate.getFullYear();
+          this.endDate = year;
+          this.getYears(element.startDate);
+          element.skillSet?.forEach(item => {
+            this.skills.push(item);
+          });
         });
-
-        console.log("skills", filt);
-
-        // const newDate = new Date(data[i].endDate);
-        // const year = newDate.getFullYear();
-        // this.endDate = year;
-        // this.getYears(data[i].startDate);
-
+        this.filteredSkills = [...new Set(this.skills)];
       }
     })
   }
@@ -155,25 +141,15 @@ export class CvDocumentComponent {
     this.employeeCertificationService.getCertificationDetails(this.employeeId).subscribe({
       next: data => {
         console.log(data);
-        for (let i = 0; i < data.length; i++) {
-
-          this.employeeCert.push(data[i]);
-          const newDate = new Date(data[i].issueDate);
+        data.forEach((item) => {
+          this.employeeCert.push(item);
+          const newDate = new Date(item.issueDate);
           const year = newDate.getFullYear();
           this.issueDate = year;
-          console.log("obj", data[i]);
-        }
-
+        })
       }
     })
   }
-
-  // downloadFile(event: any) {
-  //   const id = event.srcElement.parentElement.id;
-  //   console.log("ID", id)
-  //   const documentObject = this.employeeCert.find(document => document.id = id);
-  //   this.downloadCertDocument(documentObject?.certificateDocument as string, documentObject?.certificateName as string)
-  // }
 
   downloadCertDocument(base64String: string, fileName: string) {
     const commaIndex = base64String.indexOf(',');
@@ -183,7 +159,6 @@ export class CvDocumentComponent {
     }
 
     const byteCharacters = atob(base64String);
-
     const byteNumbers = new ArrayBuffer(byteCharacters.length);
     const intArr = new Uint8Array(byteNumbers);
 
