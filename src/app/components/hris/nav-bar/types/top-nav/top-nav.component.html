@@ -44,7 +44,8 @@
         </svg>
       </div>
       <div id="navigation" *ngIf="navService.isHris">
-        <div *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney() || authAccessService.isSuperAdmin()">
+        <div
+          *ngIf="authAccessService.isSuperAdmin() || authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
           <div id="nav-item-container" class="col-auto">
             <div id="nav-item">
               <div (click)="changeNav('/dashboard')" [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
@@ -70,7 +71,8 @@
             </div>
           </div>
         </div>
-        <div *ngIf="authAccessService.isSuperAdmin() || authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+        <div
+          *ngIf="authAccessService.isSuperAdmin() || authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
           <div id="nav-item-container">
             <div id="nav-item">
               <div (click)="changeNav('/employees')"
@@ -119,28 +121,27 @@
       </div>
     </div>
   </div>
-  <div [id]="navService.showTopNavMenu ? 'drop-down-container-closed' : 'drop-down-container-open'" class="col-4 mt-3 p-3 rounded-3" >
+  <div [id]="navService.showTopNavMenu ? 'drop-down-container-closed' : 'drop-down-container-open'"
+    class="col-4 mt-3 p-3 rounded-3">
     <div id="drop-down-content">
       <div class="me-3">
-      <button id="options-trigger" (click)="navService.showTopNavMenu = !navService.showTopNavMenu">
-        <mat-icon [id]="!navService.showTopNavMenu ? 'menu-icon-closed' : 'menu-icon-open'">play_arrow</mat-icon>
-      </button>
+        <button id="options-trigger" (click)="navService.showTopNavMenu = !navService.showTopNavMenu">
+          <mat-icon [id]="!navService.showTopNavMenu ? 'menu-icon-closed' : 'menu-icon-open'">play_arrow</mat-icon>
+        </button>
+      </div>
+      <div [hidden]="screenWidth < 992 && !navService.showTopNavMenu" id="employee-info">
+        <h4> {{ navService.employeeProfile?.name }} {{ navService.employeeProfile?.surname }} </h4>
+        <h5> {{ navService.employeeProfile?.employeeType?.name }} </h5>
+      </div>
+      <div class="ms-2" id="image-container" [hidden]="screenWidth < 992 && !navService.showTopNavMenu">
+        <img *ngIf="navService.employeeProfile"
+          [src]="navService.employeeProfile.photo || '../../../../../../assets/img/default-profile-image.png'"
+          alt="Profile">
+      </div>
     </div>
-    <div [hidden]="screenWidth < 992 && !navService.showTopNavMenu" id="employee-info">
-      <h4> {{ navService.employeeProfile?.name }} {{ navService.employeeProfile?.surname }} </h4>
-      <h5> {{ navService.employeeProfile?.employeeType?.name }} </h5>
-    </div>
-    <div class="ms-2" id="image-container" [hidden]="screenWidth < 992 && !navService.showTopNavMenu">
-      <img *ngIf="navService.employeeProfile && navService.employeeProfile.photo; else NoProfilePhoto"
-        [src]="navService.employeeProfile.photo" alt="Profile Photo">
-      <ng-template #NoProfilePhoto>
-        <img src="../../assets/img/default-profile-image.png" alt="Profile Photo">
-      </ng-template>
+    <div [hidden]="!navService.showTopNavMenu" class="px-5" id="logout">
+      <div class="my-2"></div>
+      <h4 (click)="logout()">Log Out</h4>
     </div>
   </div>
-  <div [hidden]="!navService.showTopNavMenu" class="px-5" id="logout">
-    <div class="my-2"></div>
-    <h4 (click)="logout()">Log Out</h4>
-  </div>
-</div>
 </div>
