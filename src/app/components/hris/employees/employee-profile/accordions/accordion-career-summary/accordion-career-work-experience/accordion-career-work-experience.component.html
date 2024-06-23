@@ -146,10 +146,20 @@
 
                                         </ng-template>
                                     </div>
-                                    <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-form-field class="example-full-width" appearance="outline" *ngIf="editWorkExperience; else NoEditProjectDescription">
                                         <mat-label>Project description</mat-label>
-                                        <textarea matInput placeholder="This project was based on...."></textarea>
+                                        <textarea [(ngModel)]="copyOfWorkExperience[i].projectDescription"
+                                        [value]="copyOfWorkExperience[i].projectDescription"
+                                         matInput placeholder="This project was based on...."></textarea>
                                       </mat-form-field>
+                                      <ng-template #NoEditProjectDescription>
+                                      <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-label>Project description</mat-label>
+                                        <textarea [(ngModel)]="sharedAccordionFunctionality.workExperience[i].projectDescription"
+                                        [value]="sharedAccordionFunctionality.workExperience[i].projectDescription"
+                                         matInput placeholder="This project was based on...."></textarea>
+                                      </mat-form-field>
+                                      </ng-template>
                                     <hr>
                                 </div>
                             </div>
