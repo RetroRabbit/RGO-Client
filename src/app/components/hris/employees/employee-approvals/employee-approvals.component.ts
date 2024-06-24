@@ -105,7 +105,7 @@ export class EmployeeApprovalsComponent {
       if (!indexVisitedArray.includes(i)) {
         const currentDto = this.bankingAndStarterKitData[i];
 
-        //BANKING
+   
         if (currentDto.employeeBankingDto && currentDto.employeeBankingDto.status === selectedStatus) {
           this.filterDocumentTypeAndStatus(currentDto, true, selectedStatus);
         }
