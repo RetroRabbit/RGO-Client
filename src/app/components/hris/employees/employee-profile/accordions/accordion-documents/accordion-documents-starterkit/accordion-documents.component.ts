@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
+import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 
 @Component({
   selector: 'app-accordion-documents-starterkit',
@@ -46,7 +47,9 @@ export class AccordionDocumentsComponent {
     private cookieService: CookieService,
     private authAccessService: AuthAccessService,
     public navService: NavService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    public employeeBankingandstarterkitService: EmployeeBankingandstarterkitService
+  ) { }
 
   ngOnInit() {
     this.getEmployeeDocuments();
@@ -111,7 +114,7 @@ export class AccordionDocumentsComponent {
     if (this.employeeId != undefined) {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 0).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.starterkitDocuments = data;
+          this.sharedAccordionFunctionality.starterKitDocuments = data;
           this.dataSource.data = this.sharedAccordionFunctionality.fileStarterKitCategories;
           this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
@@ -124,7 +127,7 @@ export class AccordionDocumentsComponent {
       this.employeeId = this.navService.employeeProfile.id;
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 0).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.starterkitDocuments = data;
+          this.sharedAccordionFunctionality.starterKitDocuments = data;
           this.dataSource.data = this.sharedAccordionFunctionality.fileStarterKitCategories;
           this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
@@ -157,6 +160,7 @@ export class AccordionDocumentsComponent {
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
+          this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
         },
         error: (error) => {
           this.isLoadingUpload = false;
@@ -187,6 +191,7 @@ export class AccordionDocumentsComponent {
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
+          this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
@@ -226,7 +231,7 @@ export class AccordionDocumentsComponent {
   }
 
   filterDocumentsByCategory(): EmployeeDocument | null {
-    var object = this.sharedAccordionFunctionality.starterkitDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
+    var object = this.sharedAccordionFunctionality.starterKitDocuments.filter(document => document.fileCategory == this.uploadButtonIndex);
     if (object == null) {
       return null;
     }
@@ -234,13 +239,13 @@ export class AccordionDocumentsComponent {
   }
 
   getFileName(index: number): EmployeeDocument {
-    var documentObject = this.sharedAccordionFunctionality.starterkitDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
+    var documentObject = this.sharedAccordionFunctionality.starterKitDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
     return documentObject;
   }
 
   downloadDocument(event: any) {
     const id = event.srcElement.parentElement.id;
-    const documentObject = this.sharedAccordionFunctionality.starterkitDocuments.find(document => document.fileCategory == id) as any;
+    const documentObject = this.sharedAccordionFunctionality.starterKitDocuments.find(document => document.fileCategory == id) as any;
     if (documentObject === undefined) {
       // TODO: download clean slate form
     }
@@ -254,7 +259,7 @@ export class AccordionDocumentsComponent {
   }
 
   disableUploadButton(index: number): boolean {
-    const documentObject = this.sharedAccordionFunctionality.starterkitDocuments.find(document => document.fileCategory == index);
+    const documentObject = this.sharedAccordionFunctionality.starterKitDocuments.find(document => document.fileCategory == index);
     if (this.authAccessService.isEmployee()) {
       return false;
     }
@@ -272,7 +277,7 @@ export class AccordionDocumentsComponent {
 
 
   disableDownload(index: number) {
-    const documentObject = this.sharedAccordionFunctionality.starterkitDocuments.find(document => document.fileCategory == index);
+    const documentObject = this.sharedAccordionFunctionality.starterKitDocuments.find(document => document.fileCategory == index);
 
     if (documentObject == undefined)
       return false;

@@ -16,6 +16,7 @@ import { Chart } from 'chart.js';
 import { pieChartOptions, barChartOptions } from 'src/app/models/hris/constants/chartOptions.constants';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 
 @Component({
   selector: 'app-chart',
@@ -29,6 +30,7 @@ export class ChartComponent implements OnInit {
     private chartService: ChartService,
     public dialog: MatDialog,
     private renderer: Renderer2,
+    private navService: NavService,
     @Inject(DOCUMENT) private document: Document,
     private employeeService: EmployeeService,
     private snackBarService: SnackbarService
@@ -100,7 +102,8 @@ export class ChartComponent implements OnInit {
   }
 
   createAndDisplayChart(): void {
-    this.chartService.getAllCharts().subscribe({
+    if (this.navService.employeeProfile?.id) {
+      this.chartService.getEmployeeCharts(this.navService.employeeProfile.id).subscribe({
       next: data => {
         data = this.configureChartColors(data);
         if (data.length > 0) {
@@ -119,6 +122,7 @@ export class ChartComponent implements OnInit {
       }
     });
   }
+}
 
   getNumberOfEmployees(): void {
     this.employeeService.getTotalEmployees().subscribe({
