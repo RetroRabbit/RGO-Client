@@ -110,7 +110,7 @@ export class EmployeeApprovalsComponent {
           this.filterDocumentTypeAndStatus(currentDto, true, selectedStatus);
         }
 
-        //STARTERKITS
+     
         if (currentDto.employeeDocumentDto) {
           const employeeDocumentsIndexes = this.findEmployeeDocuments(i, currentDto.employeeDocumentDto.employeeId);
           let documentsForEmployee: EmployeeDocument[] = [];
