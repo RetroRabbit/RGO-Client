@@ -36,19 +36,90 @@ export class AccordionProfileContactDetailsComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
   }
 
+
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
+    this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.valueChanges.subscribe(value => {
+      this.checkHouseNumberValue(value);
+    });
+    this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.valueChanges.subscribe(value => {
+      this.checkEmergencyNumberValue(value);
+    });
+    this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.valueChanges.subscribe(value => {
+      this.checkCellphoneNumberValue(value);
+    });
+  }
+
+  ngAfterViewInit(): void {
+    const initialHouseNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value;
+    this.checkHouseNumberValue(initialHouseNumberValue);
+    const initialEmergencyNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value;
+    this.checkEmergencyNumberValue(initialEmergencyNumberValue);
+    const initialCellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
+    this.checkCellphoneNumberValue(initialCellphoneNumberValue);
+  }
+
+  checkCellphoneNumberValue(value: string) {
+    const cellphoneNumberContainer = document.querySelector('.cellphone-number-label');
+    const cellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("cellphoneNo");
+
+    if (cellphoneNumberValue?.hasValidator(Validators.required)) {
+      if (value) {
+        cellphoneNumberContainer?.classList.remove('shift-label');
+      }
+      else if (value && cellphoneNumberValue.invalid) {
+        cellphoneNumberContainer?.classList.remove('shift-label');
+      } else if (value && !cellphoneNumberValue.invalid) {
+        cellphoneNumberContainer?.classList.remove('shift-label');
+      }
+      else {
+        cellphoneNumberContainer?.classList.add('shift-label');
+      }
+    }
+  }
+
+  checkEmergencyNumberValue(value: string) {
+    const emergencyNumberContainer = document.querySelector('.emergency-number-label');
+    const emergencyNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("emergencyContactNo");
+
+    if (emergencyNumberValue?.hasValidator(Validators.required)) {
+      if (value && emergencyNumberValue.invalid) {
+        emergencyNumberContainer?.classList.remove('shift-label');
+      } else if (value && !emergencyNumberValue.invalid) {
+        emergencyNumberContainer?.classList.remove('shift-label');
+      }
+      else {
+        emergencyNumberContainer?.classList.add('shift-label');
+      }
+    }
+  }
+
+  checkHouseNumberValue(value: string) {
+    const houseNumberContainer = document.querySelector('.house-number-label');
+    const houseNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("houseNo");
+
+    if (value) {
+      houseNumberContainer?.classList.remove('shift-label');
+    }
+    else if (value === null && !houseNumberValue?.invalid) {
+      houseNumberContainer?.classList.add('shift-label');
+    } else if (value === null && houseNumberValue?.invalid) {
+      houseNumberContainer?.classList.remove('shift-label');
+    }
+    else {
+      houseNumberContainer?.classList.add('shift-label');
+    }
   }
 
   initializeForm() {
     this.sharedAccordionFunctionality.employeeContactForm = this.fb.group({
       email: [this.employeeProfile.employeeDetails.email, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.emailPattern)]],
       personalEmail: [this.employeeProfile.employeeDetails.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
-      cellphoneNo: [this.employeeProfile.employeeDetails.cellphoneNo, [Validators.required, Validators.maxLength(10), Validators.pattern(/^[0][6-8][0-9]{8}$/)]],
-      houseNo: [this.employeeProfile.employeeDetails.houseNo, [Validators.minLength(4), Validators.pattern(/^[0][6-8][0-9]{8}$/)]],
+      cellphoneNo: [this.employeeProfile.employeeDetails.cellphoneNo, [Validators.required]],
+      houseNo: [this.employeeProfile.employeeDetails.houseNo, [Validators.minLength(4)]],
       emergencyContactName: [this.employeeProfile.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
-      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required, Validators.pattern(/^[0][6-8][0-9]{8}$/), Validators.maxLength(10)]]
+      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required]]
     });
     this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.sharedAccordionFunctionality.checkContactFormProgress();
@@ -58,7 +129,8 @@ export class AccordionProfileContactDetailsComponent {
   editContactDetails() {
     this.sharedAccordionFunctionality.employeeContactForm.enable();
     this.sharedAccordionFunctionality.editContact = true;
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", false)
+    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", false);
+
   }
 
   cancelContactEdit() {
@@ -66,7 +138,7 @@ export class AccordionProfileContactDetailsComponent {
     this.initializeForm();
     this.sharedAccordionFunctionality.employeeContactForm.disable();
   }
-  
+
   saveContactDetails() {
     if (this.sharedAccordionFunctionality.employeeContactForm.valid) {
       const employeeContactFormValues = this.sharedAccordionFunctionality.employeeContactForm.value;
