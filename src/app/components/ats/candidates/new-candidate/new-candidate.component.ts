@@ -43,7 +43,7 @@ export class NewCandidateComponent {
   schools: string[] = schools.map((school) => school.value);
   qualifications: string[] = qualifications.map((qualification) => qualification.value);
   years: number[] = [];
-  imagePreview: string | ArrayBuffer | null = null;
+  imagePreview: string = '';
   previewImage: string = '';
   imageName: string = '';
   imageUrl: string = '';

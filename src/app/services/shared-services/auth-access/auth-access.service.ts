@@ -5,9 +5,10 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root',
 })
 export class AuthAccessService {
-
-  public constructor(private cookieService: CookieService)
-  { }
+  public constructor(
+    private cookieService: CookieService,
+  )
+  {}
 
   private roles: string = '';
 

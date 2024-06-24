@@ -13,15 +13,15 @@
   <div id="tab-buttons" class="mb-0">
     <div id="tab" (click)="filterBankingAndDocumentsByStatus(0)"
       [ngClass]="this.selectedTabService.getSelectedTabIndex() === 0 ? 'activeTab' : ''">
-      Pending ({{ pendingCount }})
+      Pending ({{ employeeBankingandstarterkitService.pendingCount$.getValue() }})
     </div>
     <div id="tab" (click)="filterBankingAndDocumentsByStatus(1)"
       [ngClass]="this.selectedTabService.getSelectedTabIndex() === 1 ? 'activeTab' : ''">
-      Approved ({{ approvedCount }})
+      Approved ({{ employeeBankingandstarterkitService.approvedCount$.getValue() }})
     </div>
     <div id="tab" (click)="filterBankingAndDocumentsByStatus(2)"
       [ngClass]="this.selectedTabService.getSelectedTabIndex() === 2 ? 'activeTab' : ''">
-      Declined ({{ declinedCount }})
+      Declined ({{ employeeBankingandstarterkitService.declinedCount$.getValue() }})
     </div>
   </div>
   <hr class="m-0 p-0">

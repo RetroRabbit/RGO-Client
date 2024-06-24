@@ -4,13 +4,14 @@ import { Store } from '@ngrx/store';
 import { GetLogin } from '../../shared-components/store/actions/login-in.actions';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../../../models/hris/token.interface';
-import { map, switchMap, take, tap } from 'rxjs';
+import { EMPTY, catchError, of, switchMap, take } from 'rxjs';
 import { AuthService } from '../../../services/shared-services/auth-access/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AppComponent } from 'src/app/app.component';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -28,6 +29,7 @@ export class SignInComponent {
     private router: Router,
     private cookieService: CookieService,
     public navService: NavService,
+    private snackBarService: SnackbarService,
     private authAccessService: AuthAccessService,
     private NgZone: NgZone,
     private sharedPropprtyAccessService: SharedPropertyAccessService,
@@ -78,16 +80,11 @@ export class SignInComponent {
         switchMap(() => this.auth.user$.pipe(take(1))),
         switchMap((user) =>
           this.auth.getAccessTokenSilently().pipe(
-            map((token) => {
+            switchMap((token) => {
               const decodedToken = this.authService.decodeJwt(token);
               const role = decodedToken.role || [];
               const filteredRoles = role.filter((role: string) => validRoles.includes(role));
-              
-              if (filteredRoles.length === 0) {
-                window.alert("No valid role found.");
-                throw new Error("No valid role found.");
-              }
-              
+  
               this.cookieService.set('userEmail', user?.email || '', {
                 path: '/',
                 secure: true,
@@ -106,7 +103,23 @@ export class SignInComponent {
                 sameSite: 'None'
               });
   
-              return { user, token, role: filteredRoles };
+              if (filteredRoles.length === 0) {
+                return this.authService.checkUserExistenceInDatabase().pipe(
+                  switchMap(response => {
+                    if (response === 'User found.') {
+                      this.snackBarService.showSnackbar("Account finalized. You may now log in.", "snack-success");
+                    } else {
+                      this.snackBarService.showSnackbar("Contact admin regarding your account.", "snack-error");
+                    }
+                    return EMPTY;
+                  }),
+                  catchError(() => {
+                    this.snackBarService.showSnackbar("Contact admin regarding your account.", "snack-error");
+                    return EMPTY;
+                  })
+                );
+              }
+              return of({ user, token, role: filteredRoles });
             })
           )
         )
@@ -131,9 +144,8 @@ export class SignInComponent {
           this.sharedPropprtyAccessService.setAccessProperties();
           this.initialUserNavigation();
         },
-        error: (err) => {
-          window.alert("Something went wrong.");
-          throw new Error("Something went wrong.", err);
+        error: () => {
+          this.snackBarService.showSnackbar("Contact admin regarding your account.","snack-error");
         }
       });
   }  
