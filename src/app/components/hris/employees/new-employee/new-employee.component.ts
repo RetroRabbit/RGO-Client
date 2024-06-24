@@ -48,7 +48,9 @@ export class NewEmployeeComponent implements OnInit {
     private _formBuilder: FormBuilder,
     public navService: NavService,
     public locationApiService: LocationApiService,
-  ) { }
+  ) {
+    this.navService.hideNav();
+  }
 
   firstFormGroup = this._formBuilder.group({
     firstCtrl: ['', Validators.required],
@@ -133,7 +135,6 @@ export class NewEmployeeComponent implements OnInit {
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
       });
-    this.navService.hideNav();
   }
 
   loadCountries(): void {

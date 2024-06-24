@@ -22,6 +22,10 @@
   min-width: 80px;
 }
 
+.mat-badge-content {
+  background-color: #0029C6;
+}
+
 #nav-item>div {
   text-align: center;
   color: #49454f;
