@@ -410,7 +410,7 @@ export class AdminDashboardComponent {
         this.selectedTypes,
         this.chartName,
         this.chartType,
-        this.navService.employeeProfile.id || 0
+        this.navService.employeeProfile.id!
       )
       .subscribe({
         next: () => {

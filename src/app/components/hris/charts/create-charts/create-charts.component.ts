@@ -48,7 +48,7 @@ export class CreateChartsComponent {
   }
 
   createChart() {
-    this.ChartService.createChart(this.selectedDataItems, this.selectedDataItems, this.chartName, this.chartType, this.navService.employeeProfile.id || 0)
+    this.ChartService.createChart(this.selectedDataItems, this.selectedDataItems, this.chartName, this.chartType, this.navService.employeeProfile.id!)
       .subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Chart created", "snack-success");

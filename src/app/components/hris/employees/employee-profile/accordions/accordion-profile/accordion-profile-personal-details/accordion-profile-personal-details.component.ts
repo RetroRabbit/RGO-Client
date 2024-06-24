@@ -18,7 +18,6 @@ import { Client } from 'src/app/models/hris/client.interface';
 export class AccordionProfilePersonalDetailsComponent {
 
   screenWidth = window.innerWidth;
-  foundClient: Client | undefined;
 
   @HostListener('window:resize', ['$event'])
   usingProfile: boolean = true;
@@ -68,7 +67,7 @@ export class AccordionProfilePersonalDetailsComponent {
     this.sharedAccordionFunctionality.employees.find((data: any) => {
       return data.id == this.employeeProfile!.employeeDetails.teamLead
     });
-    this.foundClient = this.sharedAccordionFunctionality.clients.find((data: any) => {
+    this.sharedAccordionFunctionality.foundClient = this.sharedAccordionFunctionality.clients.find((data: any) => {
       return data.id == this.employeeProfile!.employeeDetails.clientAllocated
     });
     this.sharedAccordionFunctionality.foundChampion = this.sharedAccordionFunctionality.employees.find((data: any) => {
@@ -83,9 +82,9 @@ export class AccordionProfilePersonalDetailsComponent {
       this.employeeProfile.employeeDetails.id = this.sharedAccordionFunctionality.foundTeamLead.id
     }
 
-    if (this.foundClient != null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('clientAllocated')?.setValue(this.foundClient.name);
-      this.sharedAccordionFunctionality.clientId = this.foundClient.id
+    if (this.sharedAccordionFunctionality.foundClient != null) {
+      this.sharedAccordionFunctionality.employeeDetailsForm.get('clientAllocated')?.setValue(this.sharedAccordionFunctionality.foundClient.name);
+      this.sharedAccordionFunctionality.clientId = this.sharedAccordionFunctionality.foundClient.id
     }
 
     if (this.sharedAccordionFunctionality.foundChampion != null) {

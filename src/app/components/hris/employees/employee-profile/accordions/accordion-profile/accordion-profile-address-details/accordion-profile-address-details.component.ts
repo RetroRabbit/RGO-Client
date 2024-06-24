@@ -41,8 +41,7 @@ export class AccordionProfileAddressDetailsComponent {
   selectedPostalCountry: string = '';
   selectedPostalProvince: string = '';
   employeeId = this.route.snapshot.params['id'];
-  foundClient?: Client;
-  foundTeamLead?: EmployeeProfile;
+
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -473,7 +472,7 @@ export class AccordionProfileAddressDetailsComponent {
     this.sharedAccordionFunctionality.foundTeamLead = this.sharedAccordionFunctionality.employees.find((data: any) => {
       return data.id == this.employeeProfile!.employeeDetails.teamLead
     });
-    this.foundClient = this.sharedAccordionFunctionality.clients.find((data: any) => {
+    this.sharedAccordionFunctionality.foundClient = this.sharedAccordionFunctionality.clients.find((data: any) => {
       return data.id == this.employeeProfile!.employeeDetails.clientAllocated
     });
     this.sharedAccordionFunctionality.foundChampion = this.sharedAccordionFunctionality.employees.find((data: any) => {
@@ -488,9 +487,9 @@ export class AccordionProfileAddressDetailsComponent {
       this.employeeProfile.employeeDetails.id = this.sharedAccordionFunctionality.foundTeamLead.id
     }
 
-    if (this.foundClient != null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('clientAllocated')?.setValue(this.foundClient.name);
-      this.sharedAccordionFunctionality.clientId = this.foundClient.id
+    if (this.sharedAccordionFunctionality.foundClient != null) {
+      this.sharedAccordionFunctionality.employeeDetailsForm.get('clientAllocated')?.setValue(this.sharedAccordionFunctionality.foundClient.name);
+      this.sharedAccordionFunctionality.clientId = this.sharedAccordionFunctionality.foundClient.id
     }
 
     if (this.sharedAccordionFunctionality.foundChampion != null) {
