@@ -124,7 +124,7 @@ export class EmployeeApprovalsComponent {
               this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
             }
           } else {
-            //Statusses for Approved and Declined will only be applicable if all Documents Uploaded match the same status.
+       
             let sameStatuses = documentsForEmployee.every(document => document.status === documentsForEmployee[0].status);
             if (!sameStatuses) {
               if (selectedStatus === this.PENDING) {
