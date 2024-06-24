@@ -10,6 +10,7 @@ import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 import { BankingAndStarterKitDto } from 'src/app/models/hris/banking-and-starterkit.interface';
+import { EmployeeDocumentsStatus } from 'src/app/models/hris/constants/enums/employeeDocumentsStatus';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 import { Subject, takeUntil } from 'rxjs';
@@ -43,9 +44,6 @@ export class EmployeeApprovalsComponent {
   screenWidth: number = 992;
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   dialogTypeData!: Dialog;
-  APPROVED = 0;
-  PENDING = 1;
-  DECLINED = 2;
   MIN_STARTERKIT_DOCUMENTS_UPLOADED = 3
   private destroy$ = new Subject<void>();
 
@@ -97,9 +95,9 @@ export class EmployeeApprovalsComponent {
     this.filteredEmployeeDtos = [];
     let indexVisitedArray: number[] = [];
     const selectedTabIndex = this.selectedTabService.getSelectedTabIndex();
-    const selectedStatus = selectedTabIndex === 0 ? this.PENDING : 
-                           selectedTabIndex === 1 ? this.APPROVED : 
-                                                    this.DECLINED ;
+    const selectedStatus = selectedTabIndex === 0 ? EmployeeDocumentsStatus.PENDING : 
+                           selectedTabIndex === 1 ? EmployeeDocumentsStatus.APPROVED : 
+                                                    EmployeeDocumentsStatus.DECLINED ;
 
     for (let i = 0; i < this.bankingAndStarterKitData.length; i++) {
       if (!indexVisitedArray.includes(i)) {
@@ -120,14 +118,14 @@ export class EmployeeApprovalsComponent {
             documentsForEmployee.push(this.bankingAndStarterKitData[id].employeeDocumentDto);
           });
           if (documentsForEmployee.length < this.MIN_STARTERKIT_DOCUMENTS_UPLOADED) {
-            if (selectedStatus === this.PENDING ) {
+            if (selectedStatus === EmployeeDocumentsStatus.PENDING ) {
               this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
             }
           } else {
        
             let sameStatuses = documentsForEmployee.every(document => document.status === documentsForEmployee[0].status);
             if (!sameStatuses) {
-              if (selectedStatus === this.PENDING) {
+              if (selectedStatus === EmployeeDocumentsStatus.PENDING) {
                 this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
               }
             } else {

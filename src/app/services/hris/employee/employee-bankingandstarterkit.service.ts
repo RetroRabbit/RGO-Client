@@ -6,16 +6,12 @@ import { BankingAndStarterKitDto } from 'src/app/models/hris/banking-and-starter
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { NotificationService } from '../notification.service';
+import { DOCUMENTS_UPLOADED, EmployeeDocumentsStatus } from 'src/app/models/hris/constants/enums/employeeDocumentsStatus';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmployeeBankingandstarterkitService {
-  readonly APPROVED_STATUS = 0;
-  readonly PENDING_STATUS = 1;
-  readonly DECLINED_STATUS = 2;
-  readonly MIN_STARTERKIT_DOCUMENTS_UPLOADED = 3;
-
   bankingAndStarterKitData$ = new BehaviorSubject<BankingAndStarterKitDto[]>([]);
   approvedCount$ = new BehaviorSubject<number>(0);
   pendingCount$ = new BehaviorSubject<number>(0);
@@ -53,19 +49,19 @@ export class EmployeeBankingandstarterkitService {
       .map((dto) => dto.employeeDocumentDto)
       .filter(Boolean);
 
-    approvedCount = bankingDtos.filter((dto) => dto.status == this.APPROVED_STATUS).length;
-    pendingCount = bankingDtos.filter((dto) => dto.status == this.PENDING_STATUS).length;
-    declinedCount = bankingDtos.filter((dto) => dto.status == this.DECLINED_STATUS).length;
+    approvedCount = bankingDtos.filter((dto) => dto.status == EmployeeDocumentsStatus.APPROVED).length;
+    pendingCount = bankingDtos.filter((dto) => dto.status == EmployeeDocumentsStatus.PENDING).length;
+    declinedCount = bankingDtos.filter((dto) => dto.status == EmployeeDocumentsStatus.DECLINED).length;
 
     let employeeIds = [...new Set(documentDtos.map((dto) => dto.employeeId))];
 
     employeeIds.forEach((id) => {
       let employeeDocuments = documentDtos.filter((dto) => dto.employeeId == id);
-      if (employeeDocuments.length < this.MIN_STARTERKIT_DOCUMENTS_UPLOADED) {
+      if (employeeDocuments.length < DOCUMENTS_UPLOADED.MIN_STARTERKIT) {
         pendingCount++;
-      } else if (employeeDocuments.every((document) => document.status == this.APPROVED_STATUS)) {
+      } else if (employeeDocuments.every((document) => document.status == EmployeeDocumentsStatus.APPROVED)) {
         approvedCount++;
-      } else if (employeeDocuments.every((document) => document.status == this.DECLINED_STATUS)) {
+      } else if (employeeDocuments.every((document) => document.status == EmployeeDocumentsStatus.DECLINED)) {
         declinedCount++;
       } else {
         pendingCount++;
