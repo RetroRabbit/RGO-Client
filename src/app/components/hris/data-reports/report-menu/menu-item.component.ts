@@ -1,7 +1,13 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
+import { DataReport } from 'src/app/models/hris/data-report.interface';
 import { NavItem } from 'src/app/models/hris/report-menu-item.interface';
+import { DataReportingService } from 'src/app/services/hris/data-reporting.service';
+import { ReportColumnRequest } from 'src/app/models/hris/report-column-request.interface';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
+import { error } from 'console';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-menu-item',
   templateUrl: './menu-item.component.html',
@@ -9,15 +15,77 @@ import { NavItem } from 'src/app/models/hris/report-menu-item.interface';
 })
 export class MenuItemComponent implements OnInit {
   @Input() items: NavItem[] = [];
+  @Input() dataReport: DataReport = {};
   @ViewChild('childMenu') public childMenu!: MatMenu;
+  
+  @ViewChild('dialogTemplate', { static: true })
+  dialogTemplate!: TemplateRef<any>;
+  requestData: ReportColumnRequest = {
+    id: 0,
+    reportId: 0,
+    menuId: 0,
+    sequence: 0,
+    name: ''
+  };
+  nameInput?: string;
 
-  constructor(public router: Router) {
+  constructor(public router: Router, private dataReportingService: DataReportingService, private snackBarService: SnackbarService, private dialog: MatDialog) {
   }
 
   ngOnInit() {
   }
 
-  addColumn(id: number) {
-    console.log(id);
+  addColumn(child: NavItem) {
+    this.requestData = {
+      id: 0,
+      menuId: child.id,
+      reportId: this.dataReport.reportId!,
+      customType: child.prop,
+      name: child.name,
+      sequence: 0,
+    };
+
+    if(this.requestData.customType == "Text" || this.requestData.customType == "CheckBox"){
+      this.showAddReportModal(this.requestData)
+      return
+    }
+
+    this.dataReportingService.addColumnToReport(this.requestData).subscribe({
+      next: data => {
+        console.log(data)
+        this.snackBarService.showSnackbar("Column Added", "snack-success")
+      },
+      error: error =>{
+        this.snackBarService.showSnackbar("Column Adding failed", "snack-error")
+      }
+    })
+  }
+
+  addCustomColumn(requestData: ReportColumnRequest){
+    requestData = {
+      id: 0,
+      menuId: requestData.id,
+      reportId: requestData.reportId,
+      customType: requestData.customType,
+      name: this.nameInput!,
+      sequence: 0,
+    };
+
+    this.dataReportingService.addColumnToReport(requestData).subscribe({
+      next: data => {
+        console.log(data)
+        this.snackBarService.showSnackbar("Column Added", "snack-success")
+      },
+      error: error =>{
+        this.snackBarService.showSnackbar("Column Adding failed", "snack-error")
+      }
+    })
+  }
+
+  showAddReportModal(request: ReportColumnRequest){
+    this.requestData = request;
+    this.dialog.open(this.dialogTemplate, {
+      width: '500px'
+    });
   }
 }

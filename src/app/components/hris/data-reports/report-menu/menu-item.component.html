@@ -1,15 +1,51 @@
 <mat-menu #childMenu="matMenu" [overlapTrigger]="false">
-    <span *ngFor="let child of items">
-      <span *ngIf="child.children && child.children.length > 0">
-        <button mat-menu-item color="primary" [matMenuTriggerFor]="menu.childMenu">
-          <span>{{child.name}}</span>
-        </button>
-        <app-menu-item #menu [items]="child.children"></app-menu-item>
-      </span>
-      <span *ngIf="!child.children || child.children.length === 0">
-        <button mat-menu-item (click)="addColumn(child.id)">
-          <span>{{child.name}}</span>
-        </button>
-      </span>
+  <span *ngFor="let child of items">
+    <span *ngIf="child.children && child.children.length > 0">
+      <button mat-menu-item color="primary" [matMenuTriggerFor]="menu.childMenu">
+        <span>{{child.name}}</span>
+      </button>
+      <app-menu-item #menu [items]="child.children" [dataReport]="dataReport"></app-menu-item>
     </span>
-  </mat-menu>
+    <span *ngIf="!child.children || child.children.length === 0">
+      <button mat-menu-item (click)="addColumn(child)">
+        <span>{{child.name}}</span>
+      </button>
+    </span>
+  </span>
+</mat-menu>
+<ng-template #dialogTemplate>
+  <div class="container-fluid p-4">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12" id="dialog-header">
+        <h2 mat-dialog-title id="dialog-title">Add a Custom {{requestData.customType}} Column</h2>
+        <div class="subtitle-container">
+          <h5 id="dialog-subtitle">
+            Add a Custom Column based on specific needs
+          </h5>
+        </div>
+      </div>
+      <div class="col-12" id="dialog-body">
+        <div class="row">
+          <div class="mt-3 px-4 offset-1 col-10">
+            <mat-form-field appearance="outline" style="width: 100%" class="mb-3">
+              <mat-label>Column Name</mat-label>
+              <input matInput [(ngModel)] = "nameInput" type="text" required="required" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div mat-dialog-actions class="row">
+          <div class="col-12 d-flex justify-content-center align-items-center mb-3" id="dialog-save">
+            <button (click)="addCustomColumn(requestData)">Save</button>
+          </div>
+          <div class="col-12 d-flex justify-content-center align-items-center" id="dialog-close">
+            <button mat-dialog-close>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
