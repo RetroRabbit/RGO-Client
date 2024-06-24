@@ -12,16 +12,22 @@
 }
 
 .report-checkbox{
-    width: 24px;
+    width: 100%;
     height: 24px;
 }
 
 .text-area-table{
     border: none;
+    background-color: transparent;
 }
 
 .text-area-table:hover{
     border: none;
+    background-color: transparent;
+}
+
+.text-area-table:focus{
+    box-shadow: none;
 }
 
 .table-add{
@@ -33,4 +39,8 @@
 .table-add:hover{
     background-color: #D7DFFF;
     font-size: 1.25rem;
+}
+
+.editable-field{
+    background-color: #efefef;
 }

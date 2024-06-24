@@ -36,4 +36,8 @@ export class DataReportingService {
     moveColumnOnReport(columnInput: ReportColumnRequest): Observable<ReportColumnRequest> {
         return this.httpClient.put<ReportColumnRequest>(`${this.baseUrl}/ui/move-column-on-report`, columnInput)
     }
+
+    addOrUpdateReport(input: any): Observable<any> {
+        return this.httpClient.put<any>(`${this.baseUrl}/update-report`, input)
+    }
 }

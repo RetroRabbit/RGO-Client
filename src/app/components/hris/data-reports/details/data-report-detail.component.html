@@ -9,10 +9,10 @@
                 width: '100%',
               }">
             </ngx-skeleton-loader>
-            <div class="card-header h4">
-                {{ dataObjects.reportName}}
+            <div class="card-header h4" *ngIf="!isLoading">
+                {{ dataObjects.reportName}}({{dataObjects.reportId}})
             </div>
-            <div class="card">
+            <div class="card" *ngIf="!isLoading">
                 <div class="card-body p-0">
                     <div class="card">
                         <p-table [value]="dataObjects.data!" [columns]="dataObjects.columns" [reorderableColumns]="isReorderable? true : false"
@@ -40,7 +40,7 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-rowData let-columns="columns"  let-index="rowIndex">
                                 <tr  class="report-rows h6">
-                                    <td *ngFor="let col of columns" class=" report-table justify-content-center">
+                                    <td *ngFor="let col of columns" class="report-table justify-content-center" [ngClass]="col.isCustom? 'editable-field' : ''">
                                         <span *ngIf="!col.isCustom">{{ rowData[col.prop] }}</span>
                                         <input *ngIf="col.isCustom && col.fieldType == 'Checkbox'" type="checkbox"
                                             name="{{col.prop + rowData['Id']}}"
