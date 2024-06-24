@@ -397,12 +397,16 @@ export class SharedAccordionFunctionality {
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
+        if (control.value != null && control.value != "") {
           filledCount++;
         }
       }
     }
     this.additionalCareerFormProgress = Math.round((filledCount / totalFields) * 100);
+    if(Number.isNaN(this.additionalCareerFormProgress))
+      {
+        this.additionalCareerFormProgress = 0;
+      }
   }
 
   calculateCareerWorkExperienceFormProgress() {
