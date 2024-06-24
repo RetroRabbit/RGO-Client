@@ -406,6 +406,10 @@ export class SharedAccordionFunctionality {
       }
     }
     this.additionalCareerFormProgress = Math.round((filledCount / totalFields) * 100);
+    if(Number.isNaN(this.additionalCareerFormProgress))
+      {
+        this.additionalCareerFormProgress = 0;
+      }
   }
 
   calculateCareerWorkExperienceFormProgress() {
