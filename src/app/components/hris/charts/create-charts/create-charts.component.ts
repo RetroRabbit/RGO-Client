@@ -37,7 +37,7 @@ export class CreateChartsComponent {
     private router: Router,
     private cookieService: CookieService,
     private snackBarService: SnackbarService, 
-    navService : NavService) {
+    private navService : NavService) {
   }
 
   ngOnInit(): void {
@@ -48,14 +48,14 @@ export class CreateChartsComponent {
   }
 
   createChart() {
-    this.ChartService.createChart(this.selectedDataItems, this.selectedDataItems, this.chartName, this.chartType)
+    this.ChartService.createChart(this.selectedDataItems, this.selectedDataItems, this.chartName, this.chartType, this.navService.employeeProfile.id!)
       .subscribe({
-        next: response => {
+        next: () => {
           this.snackBarService.showSnackbar("Chart created", "snack-success");
           this.router.navigateByUrl('/charts')
           this.cookieService.set('currentPage', "Charts");
         },
-        error: error => {
+        error: () => {
           this.snackBarService.showSnackbar("Failed to create chart", "snack-error");
         }
       }
@@ -69,7 +69,7 @@ export class CreateChartsComponent {
           this.chartData = data.data;
           this.chartLabels = data.labels;
         },
-        error: error => {
+        error: () => {
           this.snackBarService.showSnackbar("Failed to get chart data", "snack-error");
         }
       });

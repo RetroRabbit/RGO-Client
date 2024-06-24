@@ -8,6 +8,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
+import { Client } from 'src/app/models/hris/client.interface';
 
 @Component({
   selector: 'app-accordion-profile-personal-details',
@@ -63,7 +64,7 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   checkEmployeeDetailsUsingEmployeeProfile() {
-    this.sharedAccordionFunctionality.foundTeamLead = this.sharedAccordionFunctionality.employees.find((data: any) => {
+    this.sharedAccordionFunctionality.employees.find((data: any) => {
       return data.id == this.employeeProfile!.employeeDetails.teamLead
     });
     this.sharedAccordionFunctionality.foundClient = this.sharedAccordionFunctionality.clients.find((data: any) => {

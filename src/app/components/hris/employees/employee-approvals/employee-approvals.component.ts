@@ -9,22 +9,22 @@ import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
-import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { BankingAndStarterKitDto } from 'src/app/models/hris/banking-and-starterkit.interface';
+import { EmployeeDocumentsStatus } from 'src/app/models/hris/constants/enums/employeeDocumentsStatus';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 @Component({
   selector: 'app-employee-approvals',
   templateUrl: './employee-approvals.component.html',
-  styleUrls: ['./employee-approvals.component.css']
+  styleUrls: ['./employee-approvals.component.css'],
 })
 export class EmployeeApprovalsComponent {
-  PREVIOUS_PAGE = "previousPage";
+  PREVIOUS_PAGE = 'previousPage';
 
   searchTerm: string = '';
   filterText: string = '';
@@ -44,6 +44,8 @@ export class EmployeeApprovalsComponent {
   screenWidth: number = 992;
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   dialogTypeData!: Dialog;
+  MIN_STARTERKIT_DOCUMENTS_UPLOADED = 3
+  private destroy$ = new Subject<void>();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -55,7 +57,7 @@ export class EmployeeApprovalsComponent {
   }
 
   constructor(
-    private employeeBankingandstarterkitService: EmployeeBankingandstarterkitService,
+    public employeeBankingandstarterkitService: EmployeeBankingandstarterkitService,
     private snackBarService: SnackbarService,
     public router: Router,
     public cookieService: CookieService,
@@ -66,68 +68,26 @@ export class EmployeeApprovalsComponent {
   }
 
   ngOnInit(): void {
-    this.fetchData(this.selectedTabService.getSelectedTabIndex());
+    this.subscribeToData();
   }
 
   ngAfterContentChecked() {
     this.cdr.detectChanges();
   }
 
-  fetchData(active: number = this.selectedTabService.getSelectedTabIndex()): void {
+  fetchBankStarterKits(): void {
     this.isLoading = true;
-    this.employeeBankingandstarterkitService.getAllBankingAndStarterkits().subscribe({
-      next: (data: BankingAndStarterKitDto[]) => {
-        this.bankingAndStarterKitData = data;
-        this.updateStatusCounts(data);
-        this.buildFilteredArray();
-        this.cdr.detectChanges();
-      },
-      error: () => this.snackBarService.showSnackbar("Error fetching banking and starter kit data", "snack-error"),
-      complete: () => this.isLoading = false
-    });
+    this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
+    this.subscribeToData();
   }
 
-  updateStatusCounts(dtos: BankingAndStarterKitDto[]) {
-    this.pendingCount = 0;
-    this.approvedCount = 0;
-    this.declinedCount = 0;
-
-    let bankingDtos: EmployeeBanking[] = [];
-    let documentDtos: EmployeeDocument[] = [];
-
-    dtos.forEach(dto => {
-      if (dto.employeeBankingDto) {
-        bankingDtos.push(dto.employeeBankingDto)
-      }
-      else {
-        documentDtos.push(dto.employeeDocumentDto)
-      }
-    })
-
-    this.pendingCount = bankingDtos.filter(dto => dto.status == 1).length;
-    this.approvedCount = bankingDtos.filter(dto => dto.status == 0).length;
-    this.declinedCount = bankingDtos.filter(dto => dto.status == 2).length;
-
-    let employeeIds: number[] = [];
-    documentDtos.forEach(dto => {
-      if (!employeeIds.includes(dto.employeeId))
-        employeeIds.push(dto.employeeId)
-    });
-
-    employeeIds.forEach(id => {
-      let employeeDocuments = documentDtos.filter(dto => {
-        return dto.employeeId == id
-      })
-      if (employeeDocuments.length < 4)
-        this.pendingCount++
-      else {
-        if (employeeDocuments.every(document => document.status == 0))
-          this.approvedCount++
-        else if (employeeDocuments.every(document => document.status == 2))
-          this.declinedCount++
-        else
-          this.pendingCount++
-      }
+  subscribeToData(): void {
+    this.employeeBankingandstarterkitService.bankingAndStarterKitData$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((data: BankingAndStarterKitDto[]) => {
+      this.bankingAndStarterKitData = data;
+      this.buildFilteredArray();
+      this.cdr.detectChanges();
     });
   }
 
@@ -135,16 +95,20 @@ export class EmployeeApprovalsComponent {
     this.filteredEmployeeDtos = [];
     let indexVisitedArray: number[] = [];
     const selectedTabIndex = this.selectedTabService.getSelectedTabIndex();
-    const selectedStatus = selectedTabIndex === 2 ? 2 : selectedTabIndex === 1 ? 0 : 1;
+    const selectedStatus = selectedTabIndex === 0 ? EmployeeDocumentsStatus.PENDING : 
+                           selectedTabIndex === 1 ? EmployeeDocumentsStatus.APPROVED : 
+                                                    EmployeeDocumentsStatus.DECLINED ;
 
     for (let i = 0; i < this.bankingAndStarterKitData.length; i++) {
       if (!indexVisitedArray.includes(i)) {
         const currentDto = this.bankingAndStarterKitData[i];
 
+   
         if (currentDto.employeeBankingDto && currentDto.employeeBankingDto.status === selectedStatus) {
           this.filterDocumentTypeAndStatus(currentDto, true, selectedStatus);
         }
 
+     
         if (currentDto.employeeDocumentDto) {
           const employeeDocumentsIndexes = this.findEmployeeDocuments(i, currentDto.employeeDocumentDto.employeeId);
           let documentsForEmployee: EmployeeDocument[] = [];
@@ -153,15 +117,15 @@ export class EmployeeApprovalsComponent {
             indexVisitedArray.push(id);
             documentsForEmployee.push(this.bankingAndStarterKitData[id].employeeDocumentDto);
           });
-
-          if (documentsForEmployee.length < 4) {
-            if (selectedStatus === 1 || selectedStatus === 2) {
+          if (documentsForEmployee.length < this.MIN_STARTERKIT_DOCUMENTS_UPLOADED) {
+            if (selectedStatus === EmployeeDocumentsStatus.PENDING ) {
               this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
             }
           } else {
+       
             let sameStatuses = documentsForEmployee.every(document => document.status === documentsForEmployee[0].status);
             if (!sameStatuses) {
-              if (selectedStatus === 1 || selectedStatus === 2) {
+              if (selectedStatus === EmployeeDocumentsStatus.PENDING) {
                 this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
               }
             } else {
@@ -201,7 +165,9 @@ export class EmployeeApprovalsComponent {
       surname: documentOrBanking.surname as string,
       update: isBanking ? 'Banking Details' : 'Starter Kit',
       approval: status,
-      date: isBanking ? documentOrBanking.employeeBankingDto.pendingUpdateDate : documentOrBanking.employeeDocumentDto.uploadDate
+      date: isBanking
+        ? documentOrBanking.employeeBankingDto.pendingUpdateDate
+        : documentOrBanking.employeeDocumentDto.uploadDate,
     });
   }
 
@@ -318,6 +284,11 @@ export class EmployeeApprovalsComponent {
   }
 
   getType(id: number) {
-    return dataTypes.find(type => type.id == id)?.value;
+    return dataTypes.find((type) => type.id == id)?.value;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

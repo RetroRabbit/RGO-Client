@@ -72,7 +72,7 @@ export class AccordionCertificatesComponent {
       next: (data) => {
         this.sharedAccordionFunctionality.employeeCertificates = data;
         this.sharedAccordionFunctionality.employeeCertificatesFields = this.sharedAccordionFunctionality.employeeCertificatesFields * this.sharedAccordionFunctionality.employeeCertificates.length;
-        this.sharedAccordionFunctionality.calculateCareerCertficatesFormProgress();
+        this.sharedAccordionFunctionality.calculateCareerCertificatesFormProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
       error: (error) => {
@@ -93,7 +93,7 @@ export class AccordionCertificatesComponent {
       employeeId: this.employeeProfile.id as number
     }
     this.newCertificates.push(newCertificate);
-    this.sharedAccordionFunctionality.calculateCareerCertficatesFormProgress();
+    this.sharedAccordionFunctionality.calculateCareerCertificatesFormProgress();
     this.sharedAccordionFunctionality.totalCareerProgress();
   }
 
@@ -131,7 +131,7 @@ export class AccordionCertificatesComponent {
             this.addingCertificate = false;
             this.newCertificates = [];
             this.getEmployeeCertificate();
-            this.sharedAccordionFunctionality.calculateCareerCertficatesFormProgress();
+            this.sharedAccordionFunctionality.calculateCareerCertificatesFormProgress();
             this.sharedAccordionFunctionality.totalCareerProgress();
           }
         },
@@ -239,7 +239,7 @@ export class AccordionCertificatesComponent {
         this.copyOfCertificates.splice(index, 1);
         this.sharedAccordionFunctionality.employeeCertificates.splice(index, 1);
         this.sharedAccordionFunctionality.employeeCertificatesFields = this.sharedAccordionFunctionality.employeeCertificatesFields - 4;
-        this.sharedAccordionFunctionality.calculateCareerCertficatesFormProgress();
+        this.sharedAccordionFunctionality.calculateCareerCertificatesFormProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
         this.editCertificate = false;
       },

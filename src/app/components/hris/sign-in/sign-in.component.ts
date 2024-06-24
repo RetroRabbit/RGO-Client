@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { GetLogin } from '../../shared-components/store/actions/login-in.actions';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../../../models/hris/token.interface';
-import { map, switchMap, take, tap } from 'rxjs';
+import { EMPTY, catchError, of, switchMap, take } from 'rxjs';
 import { AuthService } from '../../../services/shared-services/auth-access/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
@@ -80,15 +80,11 @@ export class SignInComponent {
         switchMap(() => this.auth.user$.pipe(take(1))),
         switchMap((user) =>
           this.auth.getAccessTokenSilently().pipe(
-            map((token) => {
+            switchMap((token) => {
               const decodedToken = this.authService.decodeJwt(token);
               const role = decodedToken.role || [];
               const filteredRoles = role.filter((role: string) => validRoles.includes(role));
-              
-              if (filteredRoles.length === 0) {
-                throw new Error("Contact admin regarding your account.");
-              }
-              
+  
               this.cookieService.set('userEmail', user?.email || '', {
                 path: '/',
                 secure: true,
@@ -107,7 +103,23 @@ export class SignInComponent {
                 sameSite: 'None'
               });
   
-              return { user, token, role: filteredRoles };
+              if (filteredRoles.length === 0) {
+                return this.authService.checkUserExistenceInDatabase().pipe(
+                  switchMap(response => {
+                    if (response === 'User found.') {
+                      this.snackBarService.showSnackbar("Account finalized. You may now log in.", "snack-success");
+                    } else {
+                      this.snackBarService.showSnackbar("Contact admin regarding your account.", "snack-error");
+                    }
+                    return EMPTY;
+                  }),
+                  catchError(() => {
+                    this.snackBarService.showSnackbar("Contact admin regarding your account.", "snack-error");
+                    return EMPTY;
+                  })
+                );
+              }
+              return of({ user, token, role: filteredRoles });
             })
           )
         )
