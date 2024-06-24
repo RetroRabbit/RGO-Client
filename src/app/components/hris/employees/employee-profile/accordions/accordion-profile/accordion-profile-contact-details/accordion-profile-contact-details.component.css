@@ -6,63 +6,18 @@
     width: 170px;
 }
 
- /* .telephone-label-has-value{
-    margin-left: 0px;
-} */
-
-/* .telephone-label{
-    margin-left: 95px;
-}   */
-
-.telephone-container:focus-within .telephone-label {  
+.telephone-container:focus-within .cellphone-number-label {  
     margin-left: 0 !important; 
 } 
-.telephone-container:focus-within .emergency-label {  
+
+.telephone-container:focus-within .emergency-number-label {  
     margin-left: 0 !important; 
 } 
-.telephone-container:focus-within .house-label {  
+
+.telephone-container:focus-within .house-number-label {  
     margin-left: 0 !important; 
 } 
-/* .telephone-container:focus-within .telephone-label,
-.telephone-container.has-value .telephone-label {  
-    margin-left: 0; 
-} */
-
-/* .telephone-container:placeholder-shown .telephone-label{
-    margin-left: 0px!important;
-} */
-
-/* .telephone-container:not(:placeholder-shown) .telephone-label{
-    margin-left: 95px !important;
-}*/
-
- /* .home-number-label{
-    margin-left: 95px !important;
-} 
-
-.cellphone-container:focus-within .home-number-label,
-.cellphone-container.has-value .home-number-label {  
-    margin-left: 0 !important; 
-}
-
-.emergency-contact-label{
-    margin-left: 95px!important;
-}
-
-.cellphone-container:focus-within .emergency-contact-label,
-.cellphone-container.has-value .emergency-contact-label {  
-    margin-left: 0!important; 
-} */
-.mat-form-field.ng-invalid.empty .telephone-label {
-    margin-left: 0; /* Reset any default margin */
-  }
   
-  .shifted-label {
-    margin-left: 95px; /* No need for !important here */
-  }
-
-
-
-
-
-
+.shift-label {
+    margin-left: 95px; 
+}

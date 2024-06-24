@@ -1,5 +1,5 @@
-import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, HostListener, Input } from '@angular/core';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -8,7 +8,6 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
-import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 
 @Component({
   selector: 'app-accordion-profile-contact-details',
@@ -17,19 +16,9 @@ import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 })
 export class AccordionProfileContactDetailsComponent {
 
-  fieldsToSubscribe: string[] = ['cellphoneNo', 'houseNo', 'emergencyContactNo'];
-  @ViewChild('cellphoneField')
-  cellphoneField!: NgxMatIntlTelInputComponent;
-
   screenWidth = window.innerWidth;
   usingProfile: boolean = true;
-  inputStatus: { [key: string]: boolean } = {
-    cellphoneNo: false,
-    houseNo: false,
-  };
-  isCellphoneEmpty: boolean = true;
-  isHouseNoEmpty: boolean = true;
-  checkplaceholder:boolean = false;
+
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
@@ -51,220 +40,77 @@ export class AccordionProfileContactDetailsComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
-    // this.checkInputStatus();
-    // this.sharedAccordionFunctionality.employeeContactForm.disable();
-      // this.checkHouseValue(this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value);
-
-    // Subscribe to value changes of the input field
     this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.valueChanges.subscribe(value => {
-      console.log(value)
-      this.checkHouseValue(value);
+      this.checkHouseNumberValue(value);
     });
     this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.valueChanges.subscribe(value => {
-      console.log(value)
-      this.checkEmergencyValue(value);
+      this.checkEmergencyNumberValue(value);
     });
     this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.valueChanges.subscribe(value => {
-      console.log(value)
-      this.checkValue(value);
-    });
-
-    this.sharedAccordionFunctionality.employeeContactForm.statusChanges.subscribe(() => {
-      this.checkEmergencyValue(this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value);
+      this.checkCellphoneNumberValue(value);
     });
   }
 
   ngAfterViewInit(): void {
-    // Call checkHouseValue after the view has been fully initialized
-    const initialValue = this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value;
-    this.checkHouseValue(initialValue);
-    const initialEmerencyValue = this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value;
-    this.checkEmergencyValue(initialEmerencyValue);
-    const initialCellphoneValue = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
-    this.checkValue(initialCellphoneValue);
+    const initialHouseNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value;
+    this.checkHouseNumberValue(initialHouseNumberValue);
+    const initialEmergencyNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value;
+    this.checkEmergencyNumberValue(initialEmergencyNumberValue);
+    const initialCellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
+    this.checkCellphoneNumberValue(initialCellphoneNumberValue);
   }
 
-  // checkInputStatus(): void {
-  //   this.isCellphoneEmpty = !this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
-  //   this.isHouseNoEmpty = !this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value;
-  // }
+  checkCellphoneNumberValue(value: string) {
+    const cellphoneNumberContainer = document.querySelector('.cellphone-number-label');
+    const cellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("cellphoneNo");
 
-  // onInputChange(fieldName: string): void {
-  //   console.log("current form control value:", this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value);
-  //   if (fieldName === 'cellphoneNo') {
-  //     const cellphoneNoValid = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
-  //     this.isCellphoneEmpty = !cellphoneNoValid && cellphoneNoValid;
-  //   } else if (fieldName === 'houseNo') {
-  //     this.isHouseNoEmpty = !this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value;
-  //   }
-  // }
-  shiftInputLabel(formControl: AbstractControl): boolean {
-    if (!formControl) {
-      return false;
-    }
-  
-    // Condition 1: value is undefined and control is untouched
-    if (!formControl.value && !formControl.touched) {
-      return false;
-    }
-  
-    // Condition 2: value is defined and control is untouched
-    if (formControl.value && !formControl.touched) {
-      return true;
-    }
-  
-    // Condition 3: value is undefined and control is touched
-    if (!formControl.value && formControl.touched) {
-      // Reset touched state to allow condition 1 to be reevaluated
-      formControl.markAsUntouched();
-      return true;
-    }
-  
-    // Condition 4: value is defined and control is touched
-    if (formControl.value && formControl.touched) {
-      return true;
-    }
-    if(formControl.value == null && !formControl.touched){
-      return true;
-    }
-  
-    return true;
-  }
-  
-  disableField(fieldName: string) {
-    const control = this.sharedAccordionFunctionality.employeeContactForm.get(fieldName);
-    if (control) {
-      control.disable();
-    }
-  }
-  checkValue(value: string){
-    const container = document.querySelector('.telephone-label');
-    const cellphoneValue = this.sharedAccordionFunctionality.employeeContactForm.get("cellphoneNo");
-    if (cellphoneValue?.hasValidator(Validators.required)) {
-      // If the field is required
-      if(value){
-         this.checkplaceholder = true;
-         container?.classList.remove('shifted-label');
-        }
-     else if (value && cellphoneValue.invalid) {
-        this.checkplaceholder = true;
-        container?.classList.remove('shifted-label');
-      } else if (value && !cellphoneValue.invalid) {
-        this.checkplaceholder = true;
-        container?.classList.remove('shifted-label');
+    if (cellphoneNumberValue?.hasValidator(Validators.required)) {
+      if (value) {
+        cellphoneNumberContainer?.classList.remove('shift-label');
+      }
+      else if (value && cellphoneNumberValue.invalid) {
+        cellphoneNumberContainer?.classList.remove('shift-label');
+      } else if (value && !cellphoneNumberValue.invalid) {
+        cellphoneNumberContainer?.classList.remove('shift-label');
       }
       else {
-        this.checkplaceholder = false;
-        container?.classList.add('shifted-label');
+        cellphoneNumberContainer?.classList.add('shift-label');
       }
-    } 
+    }
   }
 
-  checkEmergencyValue(value: string |null):void{
-    const container = document.querySelector('.emergency-label');
-    const emergencyValue = this.sharedAccordionFunctionality.employeeContactForm.get("emergencyContactNo");
-    if (emergencyValue?.hasValidator(Validators.required)) {
-      // If the field is required
-      if (value && emergencyValue.invalid) {
-        this.checkplaceholder = true;
-        container?.classList.remove('shifted-label');
-      } else if (value && !emergencyValue.invalid) {
-        this.checkplaceholder = true;
-        container?.classList.remove('shifted-label');
+  checkEmergencyNumberValue(value: string) {
+    const emergencyNumberContainer = document.querySelector('.emergency-number-label');
+    const emergencyNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("emergencyContactNo");
+
+    if (emergencyNumberValue?.hasValidator(Validators.required)) {
+      if (value && emergencyNumberValue.invalid) {
+        emergencyNumberContainer?.classList.remove('shift-label');
+      } else if (value && !emergencyNumberValue.invalid) {
+        emergencyNumberContainer?.classList.remove('shift-label');
       }
       else {
-        this.checkplaceholder = false;
-        container?.classList.add('shifted-label');
+        emergencyNumberContainer?.classList.add('shift-label');
       }
-    } 
-    // else {
-
-    // if(value){
-    //  this.checkplaceholder = true;
-    //  container?.classList.remove('shifted-label');
-    // }
-    // else if (value === null && !emergencyValue?.invalid) {
-    //   this.checkplaceholder = true;
-    //   container?.classList.add('shifted-label');
-    // } else if (value === null &&  emergencyValue?.invalid) {
-    //   this.checkplaceholder = false;
-    //   container?.classList.remove('shifted-label');
-    // }
-    // else{
-    //   container?.classList.add('shifted-label');
-    // }
-  // }
-  }
-
-  checkHouseValue(value: string | null):void{
-    const container = document.querySelector('.house-label');
-    const houseValue = this.sharedAccordionFunctionality.employeeContactForm.get("houseNo");
-
-    if(value){
-     this.checkplaceholder = true;
-     container?.classList.remove('shifted-label');
-    }
-    else if (value === null && !houseValue?.invalid) {
-      this.checkplaceholder = true;
-      container?.classList.add('shifted-label');
-    } else if (value === null &&  houseValue?.invalid) {
-      this.checkplaceholder = false;
-      container?.classList.remove('shifted-label');
-    }
-    else{
-      container?.classList.add('shifted-label');
     }
   }
-  // this.phoneForm.patchValue({
-  //   phone: '+4781549300'
-  // });
-  // isValidCellphone(): boolean {
-  //   if()
-  //   return (this.sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].hasError('required') && this.sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value == '') || this.sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value != '' && this.sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].invalid;
-  // }
-  //if the value is empty then return false :95px
-  //if the input has a value and is invalid return false :0px
-  //if the input has a value and is valid return true :0px
 
-  // ngAfterViewInit() {
-  //   this.checkInitialValue();
-  //      this.fieldsToSubscribe.forEach(field => {
-  //     this.onSubscribe(field);
-  //  });
-  // } 
+  checkHouseNumberValue(value: string) {
+    const houseNumberContainer = document.querySelector('.house-number-label');
+    const houseNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("houseNo");
 
-  // checkInitialValue(field:string) {
-  //   const value = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
-  //   this.onInputCheck(value);
-  //   const control = this.sharedAccordionFunctionality.employeeContactForm.get(field);
-  //   const value = control?.value;
-  //   console.log(`Initial value of ${field}:`, value);
-  //   this.onInputCheck(field);
-  // }
-
-  // onSubscribe(field:string){
-  //   this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.valueChanges.subscribe(value => {
-  //     this.onInputCheck(value);
-  //   });
-  //   const control = this.sharedAccordionFunctionality.employeeContactForm.get(field);
-  //   control?.valueChanges.subscribe(value => {
-  //     this.onInputCheck(value);
-  //     const checkError = this.sharedAccordionFunctionality.employeeContactForm.controls[field].invalid;
-  //     if(checkError){
-  //       this.onInputCheck("invalid value");
-  //     } 
-  //   });  
-  // }
-
-  // onInputCheck(value: string): void {
-  //   const container = document.querySelector('.telephone-label');
-  //   console.log('onInputCheck called with value:', value);
-  //   if (value) {
-  //     container?.classList.add('telephone-label-has-value');
-  //   } else {
-  //     container?.classList.remove('telephone-label-no-value');
-  //   }
-  // }
+    if (value) {
+      houseNumberContainer?.classList.remove('shift-label');
+    }
+    else if (value === null && !houseNumberValue?.invalid) {
+      houseNumberContainer?.classList.add('shift-label');
+    } else if (value === null && houseNumberValue?.invalid) {
+      houseNumberContainer?.classList.remove('shift-label');
+    }
+    else {
+      houseNumberContainer?.classList.add('shift-label');
+    }
+  }
 
   initializeForm() {
     this.sharedAccordionFunctionality.employeeContactForm = this.fb.group({
@@ -284,15 +130,13 @@ export class AccordionProfileContactDetailsComponent {
     this.sharedAccordionFunctionality.employeeContactForm.enable();
     this.sharedAccordionFunctionality.editContact = true;
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", false);
-    this.checkEmergencyValue(this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value);
- 
+
   }
 
   cancelContactEdit() {
     this.sharedAccordionFunctionality.editContact = false;
     this.initializeForm();
     this.sharedAccordionFunctionality.employeeContactForm.disable();
-    // this.checkInputStatus();
   }
 
   saveContactDetails() {
