@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
+import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 
 @Component({
   selector: 'app-accordion-documents-starterkit',
@@ -46,7 +47,9 @@ export class AccordionDocumentsComponent {
     private cookieService: CookieService,
     private authAccessService: AuthAccessService,
     public navService: NavService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    public employeeBankingandstarterkitService: EmployeeBankingandstarterkitService
+  ) { }
 
   ngOnInit() {
     this.getEmployeeDocuments();
@@ -157,6 +160,7 @@ export class AccordionDocumentsComponent {
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
+          this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
         },
         error: (error) => {
           this.isLoadingUpload = false;
@@ -187,6 +191,7 @@ export class AccordionDocumentsComponent {
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
+          this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error, "snack-error");
