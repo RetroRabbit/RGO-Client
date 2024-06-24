@@ -14,7 +14,7 @@ export class EmployeeBankingandstarterkitService {
   readonly APPROVED_STATUS = 0;
   readonly PENDING_STATUS = 1;
   readonly DECLINED_STATUS = 2;
-  readonly MIN_DOCUMENT_COUNT = 4;
+  readonly MIN_STARTERKIT_DOCUMENTS_UPLOADED = 3;
 
   bankingAndStarterKitData$ = new BehaviorSubject<BankingAndStarterKitDto[]>([]);
   approvedCount$ = new BehaviorSubject<number>(0);
@@ -61,7 +61,7 @@ export class EmployeeBankingandstarterkitService {
 
     employeeIds.forEach((id) => {
       let employeeDocuments = documentDtos.filter((dto) => dto.employeeId == id);
-      if (employeeDocuments.length < this.MIN_DOCUMENT_COUNT) {
+      if (employeeDocuments.length < this.MIN_STARTERKIT_DOCUMENTS_UPLOADED) {
         pendingCount++;
       } else if (employeeDocuments.every((document) => document.status == this.APPROVED_STATUS)) {
         approvedCount++;

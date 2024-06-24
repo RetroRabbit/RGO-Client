@@ -43,6 +43,10 @@ export class EmployeeApprovalsComponent {
   screenWidth: number = 992;
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   dialogTypeData!: Dialog;
+  APPROVED = 0;
+  PENDING = 1;
+  DECLINED = 2;
+  MIN_STARTERKIT_DOCUMENTS_UPLOADED = 3
   private destroy$ = new Subject<void>();
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -93,16 +97,20 @@ export class EmployeeApprovalsComponent {
     this.filteredEmployeeDtos = [];
     let indexVisitedArray: number[] = [];
     const selectedTabIndex = this.selectedTabService.getSelectedTabIndex();
-    const selectedStatus = selectedTabIndex === 2 ? 2 : selectedTabIndex === 1 ? 0 : 1;
+    const selectedStatus = selectedTabIndex === 0 ? this.PENDING : 
+                           selectedTabIndex === 1 ? this.APPROVED : 
+                                                    this.DECLINED ;
 
     for (let i = 0; i < this.bankingAndStarterKitData.length; i++) {
       if (!indexVisitedArray.includes(i)) {
         const currentDto = this.bankingAndStarterKitData[i];
 
+        //BANKING
         if (currentDto.employeeBankingDto && currentDto.employeeBankingDto.status === selectedStatus) {
           this.filterDocumentTypeAndStatus(currentDto, true, selectedStatus);
         }
 
+        //STARTERKITS
         if (currentDto.employeeDocumentDto) {
           const employeeDocumentsIndexes = this.findEmployeeDocuments(i, currentDto.employeeDocumentDto.employeeId);
           let documentsForEmployee: EmployeeDocument[] = [];
@@ -111,15 +119,16 @@ export class EmployeeApprovalsComponent {
             indexVisitedArray.push(id);
             documentsForEmployee.push(this.bankingAndStarterKitData[id].employeeDocumentDto);
           });
-
-          if (documentsForEmployee.length < 4) {
-            if (selectedStatus === 1 || selectedStatus === 2) {
+          //If there are less than 3 documents uploaded for an employee, Status is pending.
+          if (documentsForEmployee.length < this.MIN_STARTERKIT_DOCUMENTS_UPLOADED) {
+            if (selectedStatus === this.PENDING ) {
               this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
             }
           } else {
+            //Statusses for Approved and Declined will only be applicable if all Documents Uploaded match the same status.
             let sameStatuses = documentsForEmployee.every(document => document.status === documentsForEmployee[0].status);
             if (!sameStatuses) {
-              if (selectedStatus === 1 || selectedStatus === 2) {
+              if (selectedStatus === this.PENDING) {
                 this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
               }
             } else {
