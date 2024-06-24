@@ -64,7 +64,7 @@
           <div
             *ngIf="!sharedAccordionFunctionality.editAdditional"
             class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
-            <button *ngIf="employeeId == undefined && !sharedAccordionFunctionality.editAdditional" mat-button id="edit-button-width"
+            <button *ngIf="employeeId != undefined && !sharedAccordionFunctionality.editAdditional" mat-button id="edit-button-width"
               (click)="editAdditionalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
               <mat-icon>edit</mat-icon>Edit Details
             </button>
