@@ -15,9 +15,14 @@
 }   */
 
 .telephone-container:focus-within .telephone-label {  
-    margin-left: 0; 
+    margin-left: 0 !important; 
 } 
-
+.telephone-container:focus-within .emergency-label {  
+    margin-left: 0 !important; 
+} 
+.telephone-container:focus-within .house-label {  
+    margin-left: 0 !important; 
+} 
 /* .telephone-container:focus-within .telephone-label,
 .telephone-container.has-value .telephone-label {  
     margin-left: 0; 
@@ -48,14 +53,16 @@
 .cellphone-container.has-value .emergency-contact-label {  
     margin-left: 0!important; 
 } */
-.shifted-label {
-    margin-left: 95px;
+.mat-form-field.ng-invalid.empty .telephone-label {
+    margin-left: 0; /* Reset any default margin */
   }
-.telephone-container.ng-invalid-required .telephone-label{
-    margin-left: 0;
-}
+  
+  .shifted-label {
+    margin-left: 95px; /* No need for !important here */
+  }
 
-.default-label{
-    margin-left: 0;
-} 
+
+
+
+
 

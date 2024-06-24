@@ -29,7 +29,7 @@ export class AccordionProfileContactDetailsComponent {
   };
   isCellphoneEmpty: boolean = true;
   isHouseNoEmpty: boolean = true;
-
+  checkplaceholder:boolean = false;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
@@ -53,10 +53,31 @@ export class AccordionProfileContactDetailsComponent {
     this.initializeForm();
     // this.checkInputStatus();
     // this.sharedAccordionFunctionality.employeeContactForm.disable();
-    // this.fieldsToSubscribe.forEach(field => {
-    //   const value = this.sharedAccordionFunctionality.employeeContactForm.get(field)?.value;
-    //   this.onInputCheck(field);
-    // });
+      // this.checkHouseValue(this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value);
+
+    // Subscribe to value changes of the input field
+    this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.valueChanges.subscribe(value => {
+      console.log(value)
+      this.checkHouseValue(value);
+    });
+    this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.valueChanges.subscribe(value => {
+      console.log(value)
+      this.checkEmergencyValue(value);
+    });
+    this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.valueChanges.subscribe(value => {
+      console.log(value)
+      this.checkValue(value);
+    });
+  }
+
+  ngAfterViewInit(): void {
+    // Call checkHouseValue after the view has been fully initialized
+    const initialValue = this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value;
+    this.checkHouseValue(initialValue);
+    const initialEmerencyValue = this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value;
+    this.checkEmergencyValue(initialEmerencyValue);
+    const initialCellphoneValue = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
+    this.checkValue(initialCellphoneValue);
   }
 
   // checkInputStatus(): void {
@@ -99,11 +120,80 @@ export class AccordionProfileContactDetailsComponent {
     if (formControl.value && formControl.touched) {
       return true;
     }
+    if(formControl.value == null && !formControl.touched){
+      return true;
+    }
   
     return true;
   }
   
+  disableField(fieldName: string) {
+    const control = this.sharedAccordionFunctionality.employeeContactForm.get(fieldName);
+    if (control) {
+      control.disable();
+    }
+  }
+  checkValue(value: string){
+    const container = document.querySelector('.telephone-label');
+    const cellphoneValue = this.sharedAccordionFunctionality.employeeContactForm.get("cellphoneNo");
+    if(value){
+     this.checkplaceholder = true;
+     container?.classList.remove('shifted-label');
+    }
+    else if (value === null && !cellphoneValue?.invalid) {
+      this.checkplaceholder = true;
+      container?.classList.add('shifted-label');
+    } else if (value === null &&  cellphoneValue?.invalid) {
+      this.checkplaceholder = false;
+      container?.classList.remove('shifted-label');
+    }
+    else{
+      container?.classList.add('shifted-label');
+    }
+  }
 
+  checkEmergencyValue(value: string |null):void{
+    const container = document.querySelector('.emergency-label');
+    const emergencyValue = this.sharedAccordionFunctionality.employeeContactForm.get("emergencyContactNo");
+
+    if(value){
+     this.checkplaceholder = true;
+     container?.classList.remove('shifted-label');
+    }
+    else if (value === null && !emergencyValue?.invalid) {
+      this.checkplaceholder = true;
+      container?.classList.add('shifted-label');
+    } else if (value === null &&  emergencyValue?.invalid) {
+      this.checkplaceholder = false;
+      container?.classList.remove('shifted-label');
+    }
+    else{
+      container?.classList.add('shifted-label');
+    }
+  }
+
+  checkHouseValue(value: string | null):void{
+    const container = document.querySelector('.house-label');
+    const houseValue = this.sharedAccordionFunctionality.employeeContactForm.get("houseNo");
+
+    if(value){
+     this.checkplaceholder = true;
+     container?.classList.remove('shifted-label');
+    }
+    else if (value === null && !houseValue?.invalid) {
+      this.checkplaceholder = true;
+      container?.classList.add('shifted-label');
+    } else if (value === null &&  houseValue?.invalid) {
+      this.checkplaceholder = false;
+      container?.classList.remove('shifted-label');
+    }
+    else{
+      container?.classList.add('shifted-label');
+    }
+  }
+  // this.phoneForm.patchValue({
+  //   phone: '+4781549300'
+  // });
   // isValidCellphone(): boolean {
   //   if()
   //   return (this.sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].hasError('required') && this.sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value == '') || this.sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value != '' && this.sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].invalid;
