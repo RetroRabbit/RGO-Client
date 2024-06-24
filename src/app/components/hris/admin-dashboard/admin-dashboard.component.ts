@@ -227,20 +227,22 @@ export class AdminDashboardComponent {
   }
 
   getCharts() {
-    this.chartService.getAllCharts().subscribe({
-      next: (data) => {
-        this.charts = data;
-      },
-      error: () => {
-        this.snackBarService.showSnackbar(
-          'Failed to fetch charts',
-          'snack-error'
-        );
-      },
-      complete: () => {
-        this.loadCounter++;
-      },
-    });
+    if (this.navService.employeeProfile?.id) {
+      this.chartService.getEmployeeCharts(this.navService.employeeProfile.id).subscribe({
+        next: (data) => {
+          this.charts = data;
+        },
+        error: () => {
+          this.snackBarService.showSnackbar(
+            'Failed to fetch charts',
+            'snack-error'
+          );
+        },
+        complete: () => {
+          this.loadCounter++;
+        },
+      });
+    }
   }
 
   getEmployeeTypes() {
@@ -405,7 +407,8 @@ export class AdminDashboardComponent {
         this.selectedCategories,
         this.selectedTypes,
         this.chartName,
-        this.chartType
+        this.chartType,
+        this.navService.employeeProfile.id || 0
       )
       .subscribe({
         next: () => {
