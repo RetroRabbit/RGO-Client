@@ -19,7 +19,6 @@ import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute } from '@angular/router';
-import { Client } from 'src/app/models/hris/client.interface';
 
 @Component({
   selector: 'app-accordion-profile-address-details',
