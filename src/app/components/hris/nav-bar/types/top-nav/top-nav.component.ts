@@ -71,9 +71,11 @@ export class TopNavComponent {
       this.authAccessService.isSuperAdmin() ||
       this.authAccessService.isTalent()
     ) {    
-        this.chartService.getAllCharts().subscribe({
-        next: (data: any) => (this.charts = data),
+      if (this.navService.employeeProfile?.id) {
+        this.chartService.getEmployeeCharts(this.navService.employeeProfile.id).subscribe({
+          next: (data: any) => (this.charts = data),
         });
+      }
     }
   }
 

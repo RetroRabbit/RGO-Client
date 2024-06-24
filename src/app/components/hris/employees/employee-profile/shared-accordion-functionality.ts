@@ -17,7 +17,6 @@ import { AdminDocuments } from 'src/app/models/hris/constants/admin-documents.co
 import { EmployeeDocumentsTypes } from 'src/app/models/hris/constants/employee-documents.constants';
 import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
-import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { MyDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { nqfLevels } from 'src/app/models/hris/constants/nqfLevels.constant.';
@@ -42,7 +41,7 @@ export class SharedAccordionFunctionality {
   filteredEmployees: any = [];
   filteredPeopleChamps: any = [];
   filteredFilledWorkExp: any = [];
-  filteredFilledCerificate: any = [];
+  filteredFilledCertificate: any = [];
 
   employeeData: EmployeeData[] = [];
   customFields: CustomField[] = [];
@@ -50,15 +49,14 @@ export class SharedAccordionFunctionality {
   customFieldsCareerSummary: CustomField[] = [];
 
   employeeDocuments: EmployeeDocument[] = [];
-  adminstrativeDocuments: EmployeeDocument[] = [];
+  administrativeDocuments: EmployeeDocument[] = [];
   myDocuments: EmployeeDocument[] = [];
-  starterkitDocuments: EmployeeDocument[] = [];
+  starterKitDocuments: EmployeeDocument[] = [];
   additionalDocuments: EmployeeDocument[] = [];
 
   workExperience: WorkExperience[] = [];
   employeeCertificates: EmployeeCertificates[] = [];
   newWorkExperiences: WorkExperience[] = [];
-
 
   foundClient: Client | undefined;
   foundTeamLead: any;
@@ -121,11 +119,11 @@ export class SharedAccordionFunctionality {
 
   qualificationFormProgress: number = 0;
   workExpFormProgress: number = 0;
-  certificateformProgress: number = 0;
+  certificateFormProgress: number = 0;
   salaryDetailsFormProgress: number = 0;
   additionalCareerFormProgress: number = 0;
 
-  workExpereinceFormFields: number = 0;
+  workExperienceFormFields: number = 0;
   employeeCertificatesFields: number = 0;
 
   genders = genders;
@@ -144,7 +142,6 @@ export class SharedAccordionFunctionality {
   constructor(
     private fb: FormBuilder,
     public sharedPropertyAccessService: SharedPropertyAccessService,
-    private employeeDocumentService: EmployeeDocumentService,
     private customFieldService: CustomFieldService,
   ) { }
 
@@ -215,7 +212,7 @@ export class SharedAccordionFunctionality {
   });
 
   checkPersonalFormProgress() {
-    let filledCount = 0;
+    let numberOfPopulatedFields = 0;
     let totalFields = 0;
     const formControls = this.personalDetailsForm.controls;
 
@@ -229,19 +226,19 @@ export class SharedAccordionFunctionality {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
         if (control.value != null && control.value != '' && this.hasDisability != false && control.value != "na") {
-          filledCount++;
+          numberOfPopulatedFields++;
         }
         else if (controlName.includes("disability") && this.hasDisability == false) {
-          filledCount++;
+          numberOfPopulatedFields++;
         }
       }
     }
-    this.personalFormProgress = Math.round((filledCount / totalFields) * 100);
+    this.personalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
   }
 
   checkEmployeeFormProgress() {
-    let filledCount = 0;
-    let requiredFields = 0;
+    let numberOfPopulatedFields = 0;
+    let numberOfRequiredFields = 0;
     const formControls = this.employeeDetailsForm.controls;
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
@@ -257,24 +254,24 @@ export class SharedAccordionFunctionality {
           }
         }
         if (isRequired) {
-          requiredFields++;
+          numberOfRequiredFields++;
           if (control.value != null && control.value != '') {
-            filledCount++;
+            numberOfPopulatedFields++;
           }
         }
       }
     }
-    if (requiredFields === 0) {
+    if (numberOfRequiredFields === 0) {
       this.employeeFormProgress = 100;
 
     } else {
-      this.employeeFormProgress = Math.round((filledCount / requiredFields) * 100);
+      this.employeeFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
     }
   }
 
   checkContactFormProgress() {
-    let filledCount = 0;
-    let requiredFields = 0;
+    let numberOfPopulatedFields = 0;
+    let numberOfRequiredFields = 0;
     const formControls = this.employeeContactForm.controls;
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
@@ -285,23 +282,23 @@ export class SharedAccordionFunctionality {
           isRequired = validator && validator['required'] ? true : false;
         }
         if (isRequired) {
-          requiredFields++;
+          numberOfRequiredFields++;
           if (control.value != null && control.value !== '') {
-            filledCount++;
+            numberOfPopulatedFields++;
           }
         }
       }
     }
-    if (requiredFields === 0) {
+    if (numberOfRequiredFields === 0) {
       this.contactFormProgress = 100;
     } else {
-      this.contactFormProgress = Math.round((filledCount / requiredFields) * 100);
+      this.contactFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
     }
   }
 
   checkAddressFormProgress() {
-    let filledCount = 0;
-    let requiredFields = 0;
+    let numberOfPopulatedFields = 0;
+    let numberOfRequiredFields = 0;
     const formControls = this.addressDetailsForm.controls;
 
     for (const controlName in formControls) {
@@ -313,22 +310,22 @@ export class SharedAccordionFunctionality {
           isRequired = validator && validator['required'] ? true : false;
         }
         if (isRequired) {
-          requiredFields++;
+          numberOfRequiredFields++;
           if (control.value != null && control.value !== '') {
-            filledCount++;
+            numberOfPopulatedFields++;
           }
         }
       }
     }
-    if (requiredFields === 0) {
+    if (numberOfRequiredFields === 0) {
       this.addressFormProgress = 100;
     } else {
-      this.addressFormProgress = Math.round((filledCount / requiredFields) * 100);
+      this.addressFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
     }
   }
 
   checkAdditionalFormProgress() {
-    let filledCount = 0;
+    let numberOfPopulatedFields = 0;
     const formControls = this.additionalInfoForm.controls;
     let totalFields = Object.keys(this.additionalInfoForm.controls).length;
 
@@ -336,11 +333,11 @@ export class SharedAccordionFunctionality {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
         if (control.value != null && control.value != '') {
-          filledCount++;
+          numberOfPopulatedFields++;
         }
       }
     }
-    this.additionalFormProgress = Math.round((filledCount / totalFields) * 100);
+    this.additionalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
   }
 
   calculateEmployeeDocumentProgress() {
@@ -351,13 +348,13 @@ export class SharedAccordionFunctionality {
 
   calculateAdminDocumentProgress() {
     const total = this.fileAdminCategories.length;
-    const fetchedDocuments = this.adminstrativeDocuments.length;
+    const fetchedDocuments = this.administrativeDocuments.length;
     this.adminDocumentsProgress = fetchedDocuments / total * 100;
   }
 
   calculateStarterKitDocuments() {
     const total = this.fileStarterKitCategories.length;
-    const fetchedDocuments = this.starterkitDocuments.length;
+    const fetchedDocuments = this.starterKitDocuments.length;
     this.documentStarterKitFormProgress = fetchedDocuments / total * 100;
   }
 
@@ -412,10 +409,10 @@ export class SharedAccordionFunctionality {
     let targetWorkExp: any = [];
     let newTargetWorkExp: any = [];
     this.filteredFilledWorkExp.length = 0;
-    this.workExpereinceFormFields = 6 * this.workExperience.length;
+    this.workExperienceFormFields = 6 * this.workExperience.length;
 
     if (this.workExperience.length === 0) {
-      this.workExpereinceFormFields = 0;
+      this.workExperienceFormFields = 0;
       this.filteredFilledWorkExp.length = 0;
     }
     else {
@@ -436,44 +433,44 @@ export class SharedAccordionFunctionality {
     }
 
     const FilledCount = this.filteredFilledWorkExp.length;
-    this.workExpFormProgress = FilledCount === 0 || this.workExpereinceFormFields == 0 ? 0
-      : Math.round((FilledCount / this.workExpereinceFormFields) * 100);
+    this.workExpFormProgress = FilledCount === 0 || this.workExperienceFormFields == 0 ? 0
+      : Math.round((FilledCount / this.workExperienceFormFields) * 100);
   }
 
-  calculateCareerCertficatesFormProgress() {
-    let targetCertficates: any = [];
-    let newTargetCertficates: any = [];
-    this.filteredFilledCerificate.length = 0;
+  calculateCareerCertificatesFormProgress() {
+    let targetCertificates: any = [];
+    let newTargetCertificates: any = [];
+    this.filteredFilledCertificate.length = 0;
     this.employeeCertificatesFields = 4 * this.employeeCertificates.length;
 
     if (this.employeeCertificates.length === 0) {
       this.employeeCertificatesFields = 0;
-      this.filteredFilledCerificate.length = 0;
+      this.filteredFilledCertificate.length = 0;
     }
     else {
       for (const element of this.employeeCertificates) {
-        targetCertficates.push(element);
+        targetCertificates.push(element);
       }
 
-      targetCertficates.filter((element: any) => {
+      targetCertificates.filter((element: any) => {
         const { employeeId, id, certificateDocument, ...samplearray } = element;
-        newTargetCertficates.push(samplearray);
+        newTargetCertificates.push(samplearray);
       });
 
-      newTargetCertficates.filter((obj: any) => Object.values(obj).some((value: any) => {
+      newTargetCertificates.filter((obj: any) => Object.values(obj).some((value: any) => {
         if (value.length !== 0) {
-          this.filteredFilledCerificate.push(value)
+          this.filteredFilledCertificate.push(value)
         }
       }
       ));
     }
 
-    const FilledCount = this.filteredFilledCerificate.length;
-    this.certificateformProgress = FilledCount === 0 || this.employeeCertificatesFields == 0 ? 0
+    const FilledCount = this.filteredFilledCertificate.length;
+    this.certificateFormProgress = FilledCount === 0 || this.employeeCertificatesFields == 0 ? 0
       : Math.round((FilledCount / this.employeeCertificatesFields) * 100);
   }
 
-  calculatesalaryDetails() {
+  calculateSalaryDetails() {
     let filledCount = 0;
     const formControls = this.salaryDetailsForm.controls;
     const totalFields = Object.keys(this.salaryDetailsForm.controls).length;
@@ -495,10 +492,10 @@ export class SharedAccordionFunctionality {
 
   totalCareerProgress() {
     if (this.additionalCareerFormProgress == Infinity) {
-      this.careerFormProgress = Math.floor((this.qualificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 4);
+      this.careerFormProgress = Math.floor((this.qualificationFormProgress + this.certificateFormProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 4);
     }
     else {
-      this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qualificationFormProgress + this.certificateformProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 5);
+      this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qualificationFormProgress + this.certificateFormProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 5);
       this.updateCareer.emit(this.careerFormProgress);
     }
   }
