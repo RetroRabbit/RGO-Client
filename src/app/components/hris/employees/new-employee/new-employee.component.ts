@@ -120,6 +120,16 @@ export class NewEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.loadCountries();
 
+    this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
+      const disabilityNotesControl = this.newEmployeeForm.get('disabilityNotes');
+      if (value === true) {
+        disabilityNotesControl?.setValidators([Validators.required]);
+      } else {
+        disabilityNotesControl?.clearValidators();
+      }
+      disabilityNotesControl?.updateValueAndValidity();
+    });
+
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.employeeTypes = data.sort((a, b) => {
@@ -193,7 +203,7 @@ export class NewEmployeeComponent implements OnInit {
     reportingLine: new FormControl<EmployeeProfile | null>(null),
     highestQualication: new FormControl<string>(''),
     disability: new FormControl<boolean | null>(false, [Validators.required]),
-    disabilityNotes: new FormControl<string>('', [Validators.required]),
+    disabilityNotes: new FormControl<string>(''),
     countryOfBirth: new FormControl<string>(''),
     nationality: new FormControl<string>(''),
     level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
