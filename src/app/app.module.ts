@@ -1,4 +1,5 @@
 import { NgModule, isDevMode } from '@angular/core';
+import {MatBadgeModule} from '@angular/material/badge'
 import { SignInComponent } from './components/hris/sign-in/sign-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthConfigService, AuthModule } from '@auth0/auth0-angular';
@@ -220,6 +221,7 @@ import { TableModule } from 'primeng/table';
     MatButtonToggleModule,
     DragDropModule,
     NgxMatIntlTelInputComponent,
+    MatBadgeModule,
     TableModule,
     NgxSkeletonLoaderModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
