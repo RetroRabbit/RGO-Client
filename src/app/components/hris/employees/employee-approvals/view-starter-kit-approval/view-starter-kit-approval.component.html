@@ -19,8 +19,7 @@
         <div id="approval-header" class="row p-2">
             <div class="col-2 mt-3 mb-3">
                 <div id="profile-image">
-                    <img [src]="employee?.photo == '' || employee?.photo == 'TBA' ? 
-                        '../../../../../assets/img/default-profile-image.png' : employee?.photo"
+                    <img [src]="employee?.photo == '' ? '../../../../../assets/img/profile.png' : employee?.photo"
                         alt="">
                 </div>
             </div>
@@ -53,12 +52,12 @@
                     <div class="col-3">
                         <button id="button-approve" (click)="updateDocument(i, 0)"
                             [disabled]="getFile(i)?.status == 0"><mat-icon id="button-icon"
-                                class="mx-3">check_small</mat-icon>{{getFile(i)?.status == 0 ? 'Approved' : 'Accept'}}</button>
+                                class="mx-3">check_small</mat-icon>Accept</button>
                     </div>
                     <div class="col-3">
                         <button id="button-decline" (click)="openDialog(i)"
                             [disabled]="getFile(i)?.status == 2"><mat-icon id="button-icon"
-                                class="mx-3">close</mat-icon>{{getFile(i)?.status == 2 ? 'Declined' : 'Decline'}}</button>
+                                class="mx-3">close</mat-icon>Decline</button>
                     </div>
                 </div>
             </div>

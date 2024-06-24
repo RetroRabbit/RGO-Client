@@ -6,7 +6,6 @@ import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
-import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 
 @Component({
   selector: 'app-pending-employee-starterkits',
@@ -24,7 +23,7 @@ export class ViewStarterKitApprovalComponent {
   activeButtonIndex: number | null = null;
   activeButtonType: 'approve' | 'decline' | null = null;
   dialogTypeData!: Dialog;
-  employeedId = this.route.snapshot.params['id'];
+  documentId = this.route.snapshot.params['id'];
   employee: any;
   employeeDocuments: EmployeeDocument[] = [];
   fileCategories = StarterKitDocumentTypes;
@@ -41,11 +40,10 @@ export class ViewStarterKitApprovalComponent {
     private snackBarService: SnackbarService,
     private documentService: EmployeeDocumentService,
     private changeDetector: ChangeDetectorRef,
-    private employeeService: EmployeeProfileService,
-    private employeeBankingStarterkitService: EmployeeBankingandstarterkitService) { }
+    private employeeService: EmployeeProfileService) { }
 
   ngOnInit(): void {
-    this.getEmployeeDocuments(this.employeedId);
+    this.getEmployeeDocuments(this.documentId);
   }
 
   ngAfterContentChecked() {
@@ -56,18 +54,17 @@ export class ViewStarterKitApprovalComponent {
     this.router.navigateByUrl('/employees')
   }
 
-  getEmployeeDocuments(employeedId: number) {
-    let staterkitDocuments = 0
-    this.documentService.getAllEmployeeDocuments(employeedId, staterkitDocuments).subscribe({
+  getEmployeeDocuments(id: number) {
+    this.documentService.getAllEmployeeDocuments(id, 0).subscribe({
       next: documents => {
         this.employeeDocuments = documents;
-        this.employeeService.getEmployeeById(employeedId).subscribe({
+        this.employeeService.getEmployeeById(this.employeeDocuments[this.employeeDocuments.length - 1].employeeId).subscribe({
           next: employee => {
             this.employee = employee;
             this.isLoading = false;
           }
         });
-        if(this.employeeDocuments.length > 0) this.lastUpdatedMessage = this.getNewDate();
+        this.lastUpdatedMessage = this.getNewDate();
       },
       error: () => this.snackBarService.showSnackbar(`Error fetching employee documents`, "snack-error")
     })
@@ -167,7 +164,7 @@ export class ViewStarterKitApprovalComponent {
       next: () => {
         this.snackBarService.showSnackbar(`Document has successfully updated`, "snack-success");
         this.lastUpdatedMessage = this.getNewDate();
-        this.getEmployeeDocuments(this.employeedId);
+        this.getEmployeeDocuments(this.documentId);
       },
       error: () => this.snackBarService.showSnackbar(`Something happened.Please try again later`, "snack-error")
     });
