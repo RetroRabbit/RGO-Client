@@ -119,7 +119,6 @@ export class EmployeeApprovalsComponent {
             indexVisitedArray.push(id);
             documentsForEmployee.push(this.bankingAndStarterKitData[id].employeeDocumentDto);
           });
-          //If there are less than 3 documents uploaded for an employee, Status is pending.
           if (documentsForEmployee.length < this.MIN_STARTERKIT_DOCUMENTS_UPLOADED) {
             if (selectedStatus === this.PENDING ) {
               this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
