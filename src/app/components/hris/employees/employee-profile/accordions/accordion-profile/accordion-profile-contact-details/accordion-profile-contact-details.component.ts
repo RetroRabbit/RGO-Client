@@ -68,6 +68,10 @@ export class AccordionProfileContactDetailsComponent {
       console.log(value)
       this.checkValue(value);
     });
+
+    this.sharedAccordionFunctionality.employeeContactForm.statusChanges.subscribe(() => {
+      this.checkEmergencyValue(this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -136,40 +140,60 @@ export class AccordionProfileContactDetailsComponent {
   checkValue(value: string){
     const container = document.querySelector('.telephone-label');
     const cellphoneValue = this.sharedAccordionFunctionality.employeeContactForm.get("cellphoneNo");
-    if(value){
-     this.checkplaceholder = true;
-     container?.classList.remove('shifted-label');
-    }
-    else if (value === null && !cellphoneValue?.invalid) {
-      this.checkplaceholder = true;
-      container?.classList.add('shifted-label');
-    } else if (value === null &&  cellphoneValue?.invalid) {
-      this.checkplaceholder = false;
-      container?.classList.remove('shifted-label');
-    }
-    else{
-      container?.classList.add('shifted-label');
-    }
+    if (cellphoneValue?.hasValidator(Validators.required)) {
+      // If the field is required
+      if(value){
+         this.checkplaceholder = true;
+         container?.classList.remove('shifted-label');
+        }
+     else if (value && cellphoneValue.invalid) {
+        this.checkplaceholder = true;
+        container?.classList.remove('shifted-label');
+      } else if (value && !cellphoneValue.invalid) {
+        this.checkplaceholder = true;
+        container?.classList.remove('shifted-label');
+      }
+      else {
+        this.checkplaceholder = false;
+        container?.classList.add('shifted-label');
+      }
+    } 
   }
 
   checkEmergencyValue(value: string |null):void{
     const container = document.querySelector('.emergency-label');
     const emergencyValue = this.sharedAccordionFunctionality.employeeContactForm.get("emergencyContactNo");
+    if (emergencyValue?.hasValidator(Validators.required)) {
+      // If the field is required
+      if (value && emergencyValue.invalid) {
+        this.checkplaceholder = true;
+        container?.classList.remove('shifted-label');
+      } else if (value && !emergencyValue.invalid) {
+        this.checkplaceholder = true;
+        container?.classList.remove('shifted-label');
+      }
+      else {
+        this.checkplaceholder = false;
+        container?.classList.add('shifted-label');
+      }
+    } 
+    // else {
 
-    if(value){
-     this.checkplaceholder = true;
-     container?.classList.remove('shifted-label');
-    }
-    else if (value === null && !emergencyValue?.invalid) {
-      this.checkplaceholder = true;
-      container?.classList.add('shifted-label');
-    } else if (value === null &&  emergencyValue?.invalid) {
-      this.checkplaceholder = false;
-      container?.classList.remove('shifted-label');
-    }
-    else{
-      container?.classList.add('shifted-label');
-    }
+    // if(value){
+    //  this.checkplaceholder = true;
+    //  container?.classList.remove('shifted-label');
+    // }
+    // else if (value === null && !emergencyValue?.invalid) {
+    //   this.checkplaceholder = true;
+    //   container?.classList.add('shifted-label');
+    // } else if (value === null &&  emergencyValue?.invalid) {
+    //   this.checkplaceholder = false;
+    //   container?.classList.remove('shifted-label');
+    // }
+    // else{
+    //   container?.classList.add('shifted-label');
+    // }
+  // }
   }
 
   checkHouseValue(value: string | null):void{
@@ -259,13 +283,9 @@ export class AccordionProfileContactDetailsComponent {
   editContactDetails() {
     this.sharedAccordionFunctionality.employeeContactForm.enable();
     this.sharedAccordionFunctionality.editContact = true;
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", false)
-    // setTimeout(() => {
-    //   this.fieldsToSubscribe.forEach(field => {
-    //     this.checkInitialValue(field);
-    //     this.onSubscribe(field);
-    //   });
-    // }, 0);
+    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", false);
+    this.checkEmergencyValue(this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value);
+ 
   }
 
   cancelContactEdit() {
