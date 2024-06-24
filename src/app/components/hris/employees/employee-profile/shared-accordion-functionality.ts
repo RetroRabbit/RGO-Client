@@ -400,7 +400,7 @@ export class SharedAccordionFunctionality {
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
+        if (control.value != null && control.value != "") {
           filledCount++;
         }
       }
