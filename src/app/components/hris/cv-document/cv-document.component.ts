@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import jsPDF from 'jspdf';
 import { filter } from 'rxjs';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
@@ -172,4 +173,23 @@ export class CvDocumentComponent {
     link.download = fileName;
     link.click();
   }
+
+  downloadPDF() {
+    // var doc = new jsPDF();
+
+    // var docHTML = document.querySelector("#doc-page");
+
+    // if(docHTML){
+    //   doc.html(document.getElementById('doc-page')){
+    //     callback:function(doc){
+    //       doc.save('')
+    //     }
+    //   })
+
+  }
+
+
+
+
+}
 }
