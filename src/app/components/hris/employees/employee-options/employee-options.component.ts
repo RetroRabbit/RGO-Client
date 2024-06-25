@@ -29,8 +29,8 @@ export class EmployeeOptionsComponent {
     this.employeeApprovals.fetchBankStarterKits();
   }
 
-  hideSideMenuFromJourney(): boolean{
-    return this.authAccessService.isJourney();
+  hideSideMenuFromJourneyAndTalent(): boolean{
+    return this.authAccessService.isJourney() || this.authAccessService.isTalent();
   }
 
   displayEmployees(): void {
