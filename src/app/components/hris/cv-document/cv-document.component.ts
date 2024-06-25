@@ -25,6 +25,7 @@ export class CvDocumentComponent {
   employeeCert: EmployeeCertificates[] = [];
   skills: any = [];
   filteredSkills: any = [];
+  displaySkills: string = '';
   usingSimpleProfile: boolean = false;
   loggedInProfile!: EmployeeData;
   name: string | undefined = '';
@@ -121,9 +122,11 @@ export class CvDocumentComponent {
           this.getYears(element.startDate);
           element.skillSet?.forEach(item => {
             this.skills.push(item);
+
           });
         });
         this.filteredSkills = [...new Set(this.skills)];
+        // this.displaySkills = this.filteredSkills.map((skill: any) => skill.toUpperCase());
       }
     })
   }
@@ -174,21 +177,44 @@ export class CvDocumentComponent {
     link.click();
   }
 
-  downloadPDF() {
-    // var doc = new jsPDF();
+  async downloadPDF() {
 
-    // var docHTML = document.querySelector("#doc-page");
+    var doc = new jsPDF('p', 'pt', 'a4');
+    var docHTML = document.querySelector<HTMLElement>("#doc-page")!;
+    let srcwidth = document.querySelector<HTMLElement>("#doc-page")!.scrollWidth;
+    var btn = document.querySelector<HTMLElement>("#button-pdf")!;
+    //var content: any = document.getElementById('doc-page')?;
 
-    // if(docHTML){
-    //   doc.html(document.getElementById('doc-page')){
-    //     callback:function(doc){
-    //       doc.save('')
-    //     }
-    //   })
+    // var string = doc.output('datauristring');
+    var newWindow = window.open();
+
+    // Output as Data URI
+
+    //   await doc.html(docHTML, {
+
+    //     callback: (doc) => {
+    //       // return doc;
+    //       printButton?.addEventListener('click', function () {
+
+
+    //       });
+    //     },
+    //   });
+
+
+    // }
+    //var newWin: = window.frames["printf"];
+
+    // newWindow?.document.write(content);
+
+    // newWindow?.print();
+    // newWindow?.close();
+    // document.getElementById("printf").contentWindow.print();
 
   }
-
-
-
-
+  printIframeContent() {
+    var iframe = document.getElementById("printableIframe");
+    iframe?.focus(); // Focus the iframe before printing
+    window.print();
+  }
 }

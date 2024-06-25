@@ -36,6 +36,7 @@
     "ng-angular-popup": "^0.4.7",
     "ng-multiselect-dropdown": "^1.0.0",
     "ng2-charts": "^5.0.3",
+    "ng2-pdf-viewer": "^10.2.2",
     "ngx-cookie-service": "^16.0.1",
     "ngx-file-drop": "^16.0.0",
     "ngx-mat-intl-tel-input-v16": "^16.0.3",
