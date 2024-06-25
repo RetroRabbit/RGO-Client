@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataReport } from 'src/app/models/hris/data-report.interface';
 import { DataReportColumns } from 'src/app/models/hris/data-report-columns.interface';
@@ -9,6 +9,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { NavItem } from 'src/app/models/hris/report-menu-item.interface';
 import { DataReportingService } from 'src/app/services/hris/data-reporting.service';
 import { ReportColumnRequest } from 'src/app/models/hris/report-column-request.interface';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -26,6 +27,8 @@ export class DataReportDetailComponent {
   screenWidth = window.innerWidth;
   PREVIOUS_PAGE = 'previousPage';
   isReorderable: boolean = true;
+  disabledName: boolean = false;
+  repertName?: string;
 
   navItems: NavItem[] = [];
 
@@ -33,7 +36,8 @@ export class DataReportDetailComponent {
     private cookieService: CookieService,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
-    private dataReportingService: DataReportingService) {
+    private dataReportingService: DataReportingService,
+    private dialog: MatDialog) {
     this.dataReportCode = this.route.snapshot.params["code"]
     this.dataReportingService.fetchMenuItems().subscribe({
       next: data => {
@@ -43,6 +47,9 @@ export class DataReportDetailComponent {
   }
 
   @HostListener('window:resize', ['$event'])
+
+  @ViewChild('dialogTemplate', { static: true })
+  dialogTemplate!: TemplateRef<any>;
 
   onResize() {
     this.screenWidth = window.innerWidth;
@@ -62,6 +69,7 @@ export class DataReportDetailComponent {
         this.dataObjects.reportName = data.reportName;
         this.dataObjects.columns = data.columns;
         this.dataObjects.data = data.data;
+        this.repertName = data.reportName;
         this.isLoading = false;
         this.populateMenu()
       },
@@ -131,5 +139,19 @@ export class DataReportDetailComponent {
         this.snackBarService.showSnackbar("Report Update Failed", "snack-error")
       }
     })
+  }
+
+  showEditReportModal(){
+    this.dialog.open(this.dialogTemplate, {
+      width: '500px',
+    });
+  }
+
+  editReportName(){
+
+  }
+
+  editReportCode(){
+    
   }
 }
