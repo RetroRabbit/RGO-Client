@@ -41,7 +41,7 @@ const routes: Routes = [
   { path: 'career-summary', component: CareerSummaryQualificationsComponent },
   { path: 'view-starter-kit-approval/:id', component: ViewStarterKitApprovalComponent },
   { path: 'end-employment/:id', component: EmployeeTerminationComponent },
-  { path: 'view-cv-document', component: CvDocumentComponent }
+  { path: 'view-cv-document/:id', component: CvDocumentComponent }
 ];
 
 @NgModule({

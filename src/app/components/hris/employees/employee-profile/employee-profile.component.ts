@@ -173,10 +173,14 @@ export class EmployeeProfileComponent implements OnChanges {
 
     this.employeeId = this.route.snapshot.params['id'];
     this.getClients();
+    console.log("HERERE ID ALL", this.employeeId)
+
 
     if (this.employeeId == undefined) {
       this.showBackButtons = false;
       this.employeeId = this.authAccessService.getUserId();
+      console.log("HERERE ID second", this.employeeId)
+
     }
 
     if (this.authAccessService.isAdmin() ||
@@ -224,7 +228,6 @@ export class EmployeeProfileComponent implements OnChanges {
       }
     });
   }
-
 
   getEmployeeProfile() {
     const fetchProfile = this.usingSimpleProfile
@@ -471,6 +474,8 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ViewCVDocument() {
-    this.router.navigateByUrl('/view-cv-document');
+
+    this.router.navigateByUrl('/view-cv-document/' + this.selectedEmployee.id);
+
   }
 }

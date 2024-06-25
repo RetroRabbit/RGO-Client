@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import jsPDF from 'jspdf';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
+import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { WorkExperience } from 'src/app/models/hris/work-experience.interface';
 import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
@@ -18,9 +20,13 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 })
 
 export class CvDocumentComponent {
+
   employeeId = this.route.snapshot.params['id'];
+  selectedEmployee!: EmployeeProfile;
+  employeeProfile!: EmployeeProfile;
   employeeWorkexp: WorkExperience[] = [];
   employeeCert: EmployeeCertificates[] = [];
+  loggedInProfile!: EmployeeData;
   skills: any = [];
   filteredSkills: any = [];
   displaySkills: string = '';
@@ -51,10 +57,10 @@ export class CvDocumentComponent {
 
   ) { }
 
-
   ngOnInit() {
     this.employeeId = this.route.snapshot.params['id'];
-    console.log(this.employeeId);
+    this.loggedInProfile = this.navService.getEmployeeProfile();
+
     if (this.employeeId == undefined) {
       this.employeeId = this.authAccessService.getUserId();
     }
@@ -63,12 +69,14 @@ export class CvDocumentComponent {
     this.getCertfications();
     this.getEmployeeWorkExp();
     this.getEmployeeData();
-
   }
 
   getEmployeeGeneralInformation() {
     this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
       next: data => {
+        this.selectedEmployee = data;
+        this.employeeProfile = data;
+
         this.name = data.name;
         this.surname = data.surname;
         this.role = data.employeeType?.name;
@@ -89,8 +97,8 @@ export class CvDocumentComponent {
   getEmployeeData() {
     this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
       next: data => {
-        this.nqf = data[2].value;
-        this.numberOfYears = data[4].value;
+        this.nqf = data[2]?.value ?? '';
+        this.numberOfYears = data[4]?.value ?? 0;
       }
     })
   }
@@ -138,7 +146,6 @@ export class CvDocumentComponent {
 
   downloadCertDocument(base64String: string, fileName: string) {
     const commaIndex = base64String.indexOf(',');
-
     if (commaIndex! + -1) {
       base64String = base64String.slice(commaIndex + 1);
     }
