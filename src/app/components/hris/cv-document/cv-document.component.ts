@@ -37,7 +37,7 @@ export class CvDocumentComponent {
   level: number | undefined = 0;
   education: string | undefined = '';
   school: string | undefined = '';
-  nqf: string | undefined = '';
+  nqf: number | undefined = 0;
   skillSet: any | undefined = '';
   issueDate: any | undefined = '';
   endDate: any | undefined = '';
@@ -68,39 +68,32 @@ export class CvDocumentComponent {
     this.getQaulifications();
     this.getCertfications();
     this.getEmployeeWorkExp();
-    this.getEmployeeData();
   }
 
   getEmployeeGeneralInformation() {
     this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
       next: data => {
-        this.selectedEmployee = data;
-        this.employeeProfile = data;
-
         this.name = data.name;
         this.surname = data.surname;
         this.role = data.employeeType?.name;
         this.level = data.level;
-        if (data.gender == 1) {
-          this.pronoun = 'He'
-        }
-        else if (data.gender == 0) {
-          this.pronoun = 'Her'
-        }
-        else {
-          this.pronoun = 'They'
-        }
+        this.getExprienceYears(data.engagementDate);
       }
     })
   }
 
-  getEmployeeData() {
-    this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
-      next: data => {
-        this.nqf = data[2]?.value ?? '';
-        this.numberOfYears = data[4]?.value ?? 0;
-      }
-    })
+  getExprienceYears(date: any) {
+    const newDate1Obj = new Date(date);
+    const newDate2Obj = new Date();
+
+    let years = newDate2Obj.getFullYear() - newDate1Obj.getFullYear();
+    let months = newDate2Obj.getMonth() - newDate1Obj.getMonth();
+
+    months = (months + 12) % 12;
+    years -= Math.floor(months / 12);
+    const numYears = (years > 0 ? `${years} ${years === 1 ? 'year' : 'years'}` : 0 + ' years' + (months > 0 ? "" + ` ${months} ${months === 1 ? 'month' : 'months'}` : ''));
+    this.numberOfYears = numYears;
+
   }
 
   getEmployeeWorkExp() {
@@ -126,6 +119,7 @@ export class CvDocumentComponent {
         console.log(data)
         this.school = data.school;
         this.education = data.fieldOfStudy;
+        this.nqf = data.highestQualification;
       }
     })
   }
@@ -133,7 +127,6 @@ export class CvDocumentComponent {
   getCertfications() {
     this.employeeCertificationService.getCertificationDetails(this.employeeId).subscribe({
       next: data => {
-        console.log(data);
         data.forEach((item) => {
           this.employeeCert.push(item);
           const newDate = new Date(item.issueDate);

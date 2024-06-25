@@ -57,11 +57,16 @@
       <mat-divider></mat-divider>
 
       <div class="container-content">
-          <div class="container-summary">
-              <p>{{name}} {{surname}} is a {{role}} (Level {{level}}).{{pronoun}} highest qualification is a {{nqf}} in {{education}} from the {{school}} and has {{numberOfYears}} experience in her field.</p>
+          <div class="container-summary" *ngIf="name && surname && role && level && nqf && education &&school && numberOfYears; else OwnName">
+              <p>{{name}} {{surname}} is a {{role}} (Level {{level}}).Their highest qualification is a NQF Level {{nqf}} in {{education}} from the {{school}} and has {{numberOfYears}} experience in her field.</p>
           </div>
+          <ng-template #OwnName>
+          <div class="container-summary">
+            <p></p>
+        </div>
+        </ng-template>
 
-          <div class="container-skills">
+          <div class="container-skills" *ngIf="filteredSkills.length !== 0; else emptyskills">
               <h2>Skills</h2>
               <mat-divider></mat-divider>
               <div class="skill" *ngFor="let skill of filteredSkills;let i = index">
@@ -69,7 +74,12 @@
                   <h5>{{filteredSkills[i]}}</h5>
               </div>
           </div>
-          <div class="container-certification">
+          <ng-template #emptyskills>
+          <div class="container-skills">
+          </div>
+        </ng-template>
+
+          <div class="container-certification" *ngIf="employeeCert.length !== 0; else emptyCertificates">
               <h2>Certifications & Exams</h2>
               <mat-divider></mat-divider>
               <div class="sub-cert" *ngFor="let experience of employeeCert;let i = index">
@@ -86,7 +96,12 @@
               </div>
           </div>
           </div>
-          <div class="container-experience">
+          <ng-template #emptyCertificates>
+              <div class="container-certification"  >
+         </div>
+          </ng-template>
+
+          <div class="container-experience" *ngIf="employeeWorkexp.length !== 0; else emptyWorkExp">
               <h2>Their professional Experience</h2>
               <mat-divider></mat-divider>
               <div class="container-project" *ngFor="let cert of employeeWorkexp;let i = index" >
@@ -96,9 +111,14 @@
                  <p>{{employeeWorkexp[i].projectDescription}}</p>
               </div>
           </div>
+          <ng-template #emptyWorkExp>
+            <div class="container-experience">
+            </div>
+          </ng-template>
+
       </div>
   </div>
-  <div class="container-missing-info" id="doc-page" *ngIf="employeeWorkexp.length <= 0 || employeeCert.length <= 0 || filteredSkills.length <= 0">
+  <div class="container-missing-info" id="doc-page" *ngIf="employeeWorkexp.length <= 0 && employeeCert.length <= 0 && filteredSkills.length <= 0">
     <div
     class="d-flex justify-content-center align-items-center" id="main-content">
     <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
