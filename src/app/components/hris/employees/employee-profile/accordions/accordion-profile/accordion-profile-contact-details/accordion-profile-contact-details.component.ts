@@ -45,10 +45,10 @@ export class AccordionProfileContactDetailsComponent {
     this.sharedAccordionFunctionality.employeeContactForm = this.fb.group({
       email: [this.employeeProfile.employeeDetails.email, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.emailPattern)]],
       personalEmail: [this.employeeProfile.employeeDetails.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
-      cellphoneNo: [this.employeeProfile.employeeDetails.cellphoneNo, [Validators.required, Validators.maxLength(10), Validators.pattern(/^[0][6-8][0-9]{8}$/)]],
-      houseNo: [this.employeeProfile.employeeDetails.houseNo, [Validators.minLength(4), Validators.pattern(/^[0][6-8][0-9]{8}$/)]],
+      cellphoneNo: [this.employeeProfile.employeeDetails.cellphoneNo, [Validators.required, Validators.maxLength(13), Validators.pattern(/^(\+[1-9][0-9][6-8][0-9]{8})|([0][6-8][0-9]{8})$/)]],
+      houseNo: [this.employeeProfile.employeeDetails.houseNo, [Validators.maxLength(13), Validators.pattern(/^(\+[1-9][0-9][6-8][0-9]{8})|([0][6-8][0-9]{8})$/)]],
       emergencyContactName: [this.employeeProfile.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
-      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required, Validators.pattern(/^[0][6-8][0-9]{8}$/), Validators.maxLength(10)]]
+      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required, Validators.pattern(/^(\+[1-9][0-9][6-8][0-9]{8})|([0][6-8][0-9]{8})$/), Validators.maxLength(13)]]
     });
     this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.sharedAccordionFunctionality.checkContactFormProgress();
