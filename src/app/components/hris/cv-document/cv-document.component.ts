@@ -1,9 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import jsPDF from 'jspdf';
-import { filter } from 'rxjs';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
-import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { WorkExperience } from 'src/app/models/hris/work-experience.interface';
 import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
@@ -18,16 +16,15 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
   templateUrl: './cv-document.component.html',
   styleUrls: ['./cv-document.component.css']
 })
+
 export class CvDocumentComponent {
   employeeId = this.route.snapshot.params['id'];
-
   employeeWorkexp: WorkExperience[] = [];
   employeeCert: EmployeeCertificates[] = [];
   skills: any = [];
   filteredSkills: any = [];
   displaySkills: string = '';
   usingSimpleProfile: boolean = false;
-  loggedInProfile!: EmployeeData;
   name: string | undefined = '';
   surname: string | undefined = '';
   role: string | undefined = '';
@@ -40,6 +37,7 @@ export class CvDocumentComponent {
   endDate: any | undefined = '';
   numberOfYears: any | undefined = '';
   pronoun: string | undefined = '';
+  isLoading: boolean = true;
 
   constructor(
     private employeeProfileService: EmployeeProfileService,
@@ -75,7 +73,6 @@ export class CvDocumentComponent {
         this.surname = data.surname;
         this.role = data.employeeType?.name;
         this.level = data.level;
-        console.log(data);
         if (data.gender == 1) {
           this.pronoun = 'He'
         }
@@ -87,28 +84,15 @@ export class CvDocumentComponent {
         }
       }
     })
-
   }
+
   getEmployeeData() {
     this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
       next: data => {
         this.nqf = data[2].value;
+        this.numberOfYears = data[4].value;
       }
     })
-  }
-
-  getYears(date1: any) {
-    const newDate1Obj = new Date(date1);
-    const newDate2Obj = new Date();
-
-    let years = newDate2Obj.getFullYear() - newDate1Obj.getFullYear();
-    let months = newDate2Obj.getMonth() - newDate1Obj.getMonth();
-
-    months = (months + 12) % 12;
-    years -= Math.floor(months / 12);
-    const numYears = (years > 0 ? `${years} ${years === 1 ? 'year' : 'years'}` : 0 + ' years' + (months > 0 ? "" + ` ${months} ${months === 1 ? 'month' : 'months'}` : ''));
-    this.numberOfYears = numYears;
-
   }
 
   getEmployeeWorkExp() {
@@ -119,14 +103,11 @@ export class CvDocumentComponent {
           const newDate = new Date(element.endDate);
           const year = newDate.getFullYear();
           this.endDate = year;
-          this.getYears(element.startDate);
           element.skillSet?.forEach(item => {
             this.skills.push(item);
-
           });
         });
         this.filteredSkills = [...new Set(this.skills)];
-        // this.displaySkills = this.filteredSkills.map((skill: any) => skill.toUpperCase());
       }
     })
   }
@@ -178,43 +159,12 @@ export class CvDocumentComponent {
   }
 
   async downloadPDF() {
-
     var doc = new jsPDF('p', 'pt', 'a4');
     var docHTML = document.querySelector<HTMLElement>("#doc-page")!;
-    let srcwidth = document.querySelector<HTMLElement>("#doc-page")!.scrollWidth;
-    var btn = document.querySelector<HTMLElement>("#button-pdf")!;
-    //var content: any = document.getElementById('doc-page')?;
-
-    // var string = doc.output('datauristring');
-    var newWindow = window.open();
-
-    // Output as Data URI
-
-    //   await doc.html(docHTML, {
-
-    //     callback: (doc) => {
-    //       // return doc;
-    //       printButton?.addEventListener('click', function () {
-
-
-    //       });
-    //     },
-    //   });
-
-
-    // }
-    //var newWin: = window.frames["printf"];
-
-    // newWindow?.document.write(content);
-
-    // newWindow?.print();
-    // newWindow?.close();
-    // document.getElementById("printf").contentWindow.print();
-
-  }
-  printIframeContent() {
-    var iframe = document.getElementById("printableIframe");
-    iframe?.focus(); // Focus the iframe before printing
-    window.print();
+    await doc.html(docHTML, {
+      callback: () => {
+        window.print();
+      },
+    });
   }
 }

@@ -155,7 +155,7 @@
                                       <ng-template #NoEditProjectDescription>
                                       <mat-form-field class="example-full-width" appearance="outline">
                                         <mat-label>Project description</mat-label>
-                                        <textarea [(ngModel)]="sharedAccordionFunctionality.workExperience[i].projectDescription"
+                                        <textarea matInput disabled [(ngModel)]="sharedAccordionFunctionality.workExperience[i].projectDescription"
                                         [value]="sharedAccordionFunctionality.workExperience[i].projectDescription"
                                          matInput placeholder="This project was based on...."></textarea>
                                       </mat-form-field>
