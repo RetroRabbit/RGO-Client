@@ -145,7 +145,8 @@
                     Date of birth is required
                   </mat-error>
                 </mat-form-field>
-                <div class=" mb-3"> <span class="roboto-font pb-3">Do you have any disabilities?</span>
+                <div class="mb-3">
+                  <span class="roboto-font pb-3">Do you have any disabilities?</span>
                   <mat-radio-group formControlName="disability" class="row">
                     <mat-radio-button class="col-12 p-1" *ngFor="let check of [false, true]" [value]="check">
                       {{ check ? "Yes" : "No"}}
@@ -155,9 +156,12 @@
                     Disability is required
                   </mat-error>
                 </div>
-                <mat-form-field appearance="outline" class="" *ngIf="newEmployeeForm.controls['disability'].value">
+                <mat-form-field appearance="outline" *ngIf="newEmployeeForm.controls['disability'].value">
                   <mat-label>Disability Notes</mat-label>
                   <textarea matInput type="text" formControlName="disabilityNotes"></textarea>
+                  <mat-error *ngIf="newEmployeeForm.controls['disabilityNotes'].hasError('required')">
+                    Disability Notes are required
+                  </mat-error>
                 </mat-form-field>
               </div>
               <form [formGroup]="settingsForm"
@@ -176,10 +180,10 @@
                   <div class=" pb-3">
                     <mat-form-field appearance="outline" class="w-100">
                       <mat-label>Profile photo</mat-label>
-                      <input matInput type="text" [value]="imageName" />
+                      <input matInput type="text" [value]="imageName"/>
                       <span mat-icon-button matSuffix (click)="uploadFile.click()" class="pe-3">
                         <mat-icon id="file-upload-cursor">file_upload</mat-icon>
-                        <input type="file" #uploadFile (change)="onFileChange($event)" hidden />
+                        <input type="file" #uploadFile (change)="onFileChange($event)" hidden accept=".jpeg, .jpg, .png"/>
                       </span>
                     </mat-form-field>
                     <div id="image-preview" *ngIf="imageUrl !== ''">
@@ -189,8 +193,9 @@
                   <div class="row flex-column col-lg-12 col-md-12 pb-3">
                     <span class="col-lg-7 fs-5 roboto-font pb-3">Gender</span>
                     <mat-radio-group class="col-lg-7 row d-flex" formControlName="gender">
-                      <mat-radio-button class="p-0" *ngFor="let gender of genders; index as i" [value]="i">{{ gender
-                        }}</mat-radio-button>
+                      <mat-radio-button class="p-0" *ngFor="let gender of genders; index as i" [value]="i">
+                        {{ gender}}
+                      </mat-radio-button>
                     </mat-radio-group>
                   </div>
                   <mat-form-field appearance="outline" class="">

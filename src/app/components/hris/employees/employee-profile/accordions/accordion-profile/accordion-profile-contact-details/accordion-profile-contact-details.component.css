@@ -5,3 +5,19 @@
     color: #0029C6;
     width: 170px;
 }
+
+.telephone-container:focus-within .cellphone-number-label {  
+    margin-left: 0 !important; 
+} 
+
+.telephone-container:focus-within .emergency-number-label {  
+    margin-left: 0 !important; 
+} 
+
+.telephone-container:focus-within .house-number-label {  
+    margin-left: 0 !important; 
+} 
+  
+.shift-label {
+    margin-left: 95px; 
+}
