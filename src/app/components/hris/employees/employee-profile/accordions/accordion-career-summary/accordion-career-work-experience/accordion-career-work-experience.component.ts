@@ -216,7 +216,7 @@ export class AccordionCareerWorkExperienceComponent {
         this.snackBarService.showSnackbar("Experience deleted", "snack-success");
         this.copyOfWorkExperience.splice(index, 1);
         this.sharedAccordionFunctionality.workExperience.splice(index, 1);
-        this.sharedAccordionFunctionality.workExpereinceFormFields = this.sharedAccordionFunctionality.workExpereinceFormFields - 6;
+        this.sharedAccordionFunctionality.workExperienceFormFields = this.sharedAccordionFunctionality.workExperienceFormFields - 6;
         this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
         this.editWorkExperience = false;

@@ -10,6 +10,7 @@ import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 import { BankingAndStarterKitDto } from 'src/app/models/hris/banking-and-starterkit.interface';
+import { EmployeeDocumentsStatus } from 'src/app/models/hris/constants/enums/employeeDocumentsStatus';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 import { Subject, takeUntil } from 'rxjs';
@@ -43,6 +44,7 @@ export class EmployeeApprovalsComponent {
   screenWidth: number = 992;
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   dialogTypeData!: Dialog;
+  MIN_STARTERKIT_DOCUMENTS_UPLOADED = 3
   private destroy$ = new Subject<void>();
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -93,16 +95,20 @@ export class EmployeeApprovalsComponent {
     this.filteredEmployeeDtos = [];
     let indexVisitedArray: number[] = [];
     const selectedTabIndex = this.selectedTabService.getSelectedTabIndex();
-    const selectedStatus = selectedTabIndex === 2 ? 2 : selectedTabIndex === 1 ? 0 : 1;
+    const selectedStatus = selectedTabIndex === 0 ? EmployeeDocumentsStatus.PENDING : 
+                           selectedTabIndex === 1 ? EmployeeDocumentsStatus.APPROVED : 
+                                                    EmployeeDocumentsStatus.DECLINED ;
 
     for (let i = 0; i < this.bankingAndStarterKitData.length; i++) {
       if (!indexVisitedArray.includes(i)) {
         const currentDto = this.bankingAndStarterKitData[i];
 
+   
         if (currentDto.employeeBankingDto && currentDto.employeeBankingDto.status === selectedStatus) {
           this.filterDocumentTypeAndStatus(currentDto, true, selectedStatus);
         }
 
+     
         if (currentDto.employeeDocumentDto) {
           const employeeDocumentsIndexes = this.findEmployeeDocuments(i, currentDto.employeeDocumentDto.employeeId);
           let documentsForEmployee: EmployeeDocument[] = [];
@@ -111,15 +117,15 @@ export class EmployeeApprovalsComponent {
             indexVisitedArray.push(id);
             documentsForEmployee.push(this.bankingAndStarterKitData[id].employeeDocumentDto);
           });
-
-          if (documentsForEmployee.length < 4) {
-            if (selectedStatus === 1 || selectedStatus === 2) {
+          if (documentsForEmployee.length < this.MIN_STARTERKIT_DOCUMENTS_UPLOADED) {
+            if (selectedStatus === EmployeeDocumentsStatus.PENDING ) {
               this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
             }
           } else {
+       
             let sameStatuses = documentsForEmployee.every(document => document.status === documentsForEmployee[0].status);
             if (!sameStatuses) {
-              if (selectedStatus === 1 || selectedStatus === 2) {
+              if (selectedStatus === EmployeeDocumentsStatus.PENDING) {
                 this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
               }
             } else {
