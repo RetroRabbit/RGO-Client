@@ -18,15 +18,19 @@
                         Please select terminationOption
                     </mat-error>
                 </mat-form-field>
+
+                
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Date of Notice</mat-label>
                     <input matInput formControlName="dayOfNotice" [matDatepicker]="datePicker" />
                     <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
                     <mat-datepicker #datePicker></mat-datepicker>
                     <mat-error *ngIf="newterminationform.controls['dayOfNotice'].hasError('required')">
-                        Start date is required
+                        Please select a day of notice
                     </mat-error>
                 </mat-form-field>
+
+
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Last Day of Employment</mat-label>
                     <input matInput [matDatepicker]="picker2" placeholder="Last day of Employment"
@@ -36,7 +40,12 @@
                     <mat-error *ngIf="newterminationform.controls['lastDayOfEmployment'].hasError('required')">
                         Please select Last day of employment
                     </mat-error>
+                    <mat-error *ngIf="newterminationform.errors?.['dateInvalid']">
+                        Last day of employment cannot be earlier than date of notice
+                    </mat-error>
                 </mat-form-field>
+
+
                 <div class="col-md-12 col-lg-7 my-2">
                     <h2 class="align-items-left">Is this person eligible for reemployment?</h2>
                     <mat-radio-group formControlName="reEmploymentStatus">

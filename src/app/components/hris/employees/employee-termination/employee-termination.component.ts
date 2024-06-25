@@ -1,5 +1,5 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { terminationOptions } from 'src/app/models/hris/constants/terminationOptions.constants';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -178,4 +178,15 @@ export class EmployeeTerminationComponent implements OnInit {
 
     this.checkboxesValid = equipmentStatusChecked && accountsStatusChecked;
   }
+
+  dateValidator(control: AbstractControl): ValidationErrors | null {
+    const dayOfNotice = control.get('dayOfNotice')?.value;
+    const lastDayOfEmployment = control.get('lastDayOfEmployment')?.value;
+
+    if (dayOfNotice && lastDayOfEmployment && new Date(lastDayOfEmployment) < new Date(dayOfNotice)) {
+      return { dateInvalid: true };
+    }
+    return null;
+  }
+
 }
