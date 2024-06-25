@@ -134,7 +134,6 @@ export class TopNavComponent {
     return this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin();
   }
 
-
   dialogFeedBack(event: any) {
     this.showConfirmDialog = false;
     if (event) {
