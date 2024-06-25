@@ -73,7 +73,7 @@ export class AccordionCareerAdditionalInformationComponent {
     }
     this.getEmployeeFieldCodes();
     if (!this.authAccessService.isEmployee()) {
-      this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
+      this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id).subscribe({
         next: data => {
           this.employeeProfile.employeeDetails = data;
         }, complete: () => {
@@ -148,7 +148,7 @@ export class AccordionCareerAdditionalInformationComponent {
         const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
         formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
         this.sharedAccordionFunctionality.additionalCareerInfoForm = this.fb.group(formGroupConfig);
-        if (fieldName.required == true) {
+        if (fieldName.required) {
           this.sharedAccordionFunctionality.additionalCareerInfoForm.controls[fieldName.code].setValidators(Validators.required);
         }
         this.sharedAccordionFunctionality.additionalCareerInfoForm.disable();
@@ -177,7 +177,6 @@ export class AccordionCareerAdditionalInformationComponent {
       const found = empDataValues.find((data) => {
         return fieldcode.id === data.fieldCodeId
       });
-
       if (found) {
         const formatFound: any = fieldcode.code
         const employeeDataDto = {
@@ -186,7 +185,6 @@ export class AccordionCareerAdditionalInformationComponent {
           fieldcodeId: found.fieldCodeId,
           value: this.sharedAccordionFunctionality.additionalCareerInfoForm.get(formatFound)?.value
         }
-
         this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
           next: (data) => {
             this.snackBarService.showSnackbar("Employee Details updated", "snack-success");

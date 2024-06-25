@@ -41,6 +41,7 @@ export class AccordionProfileAddressDetailsComponent {
   selectedPostalProvince: string = '';
   employeeId = this.route.snapshot.params['id'];
 
+
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
@@ -146,11 +147,11 @@ export class AccordionProfileAddressDetailsComponent {
         postalCode: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalPostalCode'] : addressDetailFormValue['postalPostalCode'],
       };
       this.employeeAddressService.update(postalAddressDto).subscribe({
-        next: (postalData) => {
+        next: () => {
           this.employeeProfile!.employeeDetails.postalAddress = postalAddressDto;
           this.snackBarService.showSnackbar("Postal Details updated", "snack-success");
           this.employeeAddressService.update(physicalAddressDto).subscribe({
-            next: (data) => {
+            next: () => {
               this.employeeProfile!.employeeDetails.physicalAddress = physicalAddressDto;
               this.snackBarService.showSnackbar("Physical address updated", "snack-success");
               this.navService.refreshEmployee();
@@ -196,7 +197,7 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   loadProvinces(country: string): void {
-    this.locationApiService.getProvinces(this.selectedCountry).subscribe({
+    this.locationApiService.getProvinces(country).subscribe({
       next: (data) => this.provinces = data
     });
   }

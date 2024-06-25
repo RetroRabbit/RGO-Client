@@ -1,5 +1,5 @@
 export const StarterKitDocumentTypes = [
-    "Fixed Term Contract",
+    "Retro Rabbit Employment Contract",
     "Retirement Annuity Form",
     "Medical Aid Form",
 ]

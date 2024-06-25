@@ -65,8 +65,8 @@
       </div>
       <div class="col-12 col-md-12 mt-md-1" id="header-based">
         <div class="row me-4 d-flex justify-content-start align-items-center">
-          <div class="email-info col-auto d-flex align-items-center">
-            <div class="col-auto mt-2" id="header-email-clip" (click)="copyToClipboard()">
+          <div class="email-info col-auto d-flex align-items-center" (click)="copyToClipboard()">
+            <div class="col-auto mt-2" id="header-email-clip">
               <mat-icon>attachment</mat-icon>
             </div>
             {{usingSimpleProfile ? simpleEmployee.email : employeeProfile.email}}

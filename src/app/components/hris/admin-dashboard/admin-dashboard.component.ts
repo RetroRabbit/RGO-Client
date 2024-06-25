@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
-import { ChartComponent } from '../charts/charts.component';
+import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -90,6 +90,7 @@ export class AdminDashboardComponent {
   rolesSelected: string[] = [];
   categoriesSelected: string[] = [];
   constructor(
+    private employeeBankingandstarterkitService: EmployeeBankingandstarterkitService,
     private employeeService: EmployeeService,
     public chartService: ChartService,
     private cookieService: CookieService,
@@ -154,6 +155,7 @@ export class AdminDashboardComponent {
     this.getEmployeeTypes();
     this.getEmployeeTableColumns();
     this.getDataCardsData();
+    this.employeeBankingandstarterkitService.getAllBankingAndStarterkits()
 
     this.categoryControl.valueChanges.subscribe((value) => {
       this.selectedCategories = value;
@@ -227,20 +229,22 @@ export class AdminDashboardComponent {
   }
 
   getCharts() {
-    this.chartService.getAllCharts().subscribe({
-      next: (data) => {
-        this.charts = data;
-      },
-      error: () => {
-        this.snackBarService.showSnackbar(
-          'Failed to fetch charts',
-          'snack-error'
-        );
-      },
-      complete: () => {
-        this.loadCounter++;
-      },
-    });
+    if (this.navService.employeeProfile?.id) {
+      this.chartService.getEmployeeCharts(this.navService.employeeProfile.id).subscribe({
+        next: (data) => {
+          this.charts = data;
+        },
+        error: () => {
+          this.snackBarService.showSnackbar(
+            'Failed to fetch charts',
+            'snack-error'
+          );
+        },
+        complete: () => {
+          this.loadCounter++;
+        },
+      });
+    }
   }
 
   getEmployeeTypes() {
@@ -405,7 +409,8 @@ export class AdminDashboardComponent {
         this.selectedCategories,
         this.selectedTypes,
         this.chartName,
-        this.chartType
+        this.chartType,
+        this.navService.employeeProfile.id!
       )
       .subscribe({
         next: () => {
