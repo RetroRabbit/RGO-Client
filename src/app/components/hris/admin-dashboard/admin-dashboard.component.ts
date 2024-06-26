@@ -46,16 +46,16 @@ export class AdminDashboardComponent {
 
   PREVIOUS_PAGE: string = 'previousPage';
   chartName: string = '';
-  chartType: any = '';
+  chartType: string = '';
   chartData: number[] = [];
   charts: ChartData[] = [];
   categories: string[] = [];
-  chartCategory: any = '';
-  chartRoles: any = '';
+  chartCategory: string = '';
+  chartRoles: string = '';
   filteredCategories: string[] = this.categories;
   selectedCategories: string[] = [];
   types: string[] = [];
-  filteredTypes: any[] = this.types;
+  filteredTypes: string[] = this.types;
   selectedTypes: string[] = [];
   employeeProfiles: EmployeeProfile[] = [];
   totalNumberOfEmployees: number = 0;
@@ -104,7 +104,7 @@ export class AdminDashboardComponent {
       this.chartType = this.chartService.activeChart.type
       this.chartName = this.chartService.activeChart.name
       this.categoriesSelected = this.chartService.activeChart.dataTypes[0].replace("'", " ").split(",")
-      var roles = this.chartService.activeChart.name.split("-")[1].split(",")
+      let roles = this.chartService.activeChart.name.split("-")[1].split(",")
       for (let i = 0; i < roles.length; i++) {
         roles[i] = roles[i].trim(" ")
       }

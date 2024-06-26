@@ -53,11 +53,11 @@
                     <div class="col-9 pt-1 px-4">
                       <div>
                         <div>
-                          {{ employee.employeeType?.name }} - L{{
+                          {{ employee.employeeType.name }} - L{{
                           employee?.level
                           }}
                         </div>
-                        <div>{{ employee?.name }} {{ employee?.surname }}</div>
+                        <div>{{ employee.name }} {{ employee.surname }}</div>
                       </div>
                     </div>
                     <div [ngStyle]="{ display: screenWidth <= 350 ? 'none' : '' }" id="search-arrow" class="col-1 mt-3">

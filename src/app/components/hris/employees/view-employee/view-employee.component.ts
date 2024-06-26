@@ -161,11 +161,24 @@ export class ViewEmployeeComponent {
     employees: EmployeeProfile[],
     clients$: Observable<Client[]>
   ): Observable<EmployeeData[]> {
+
+    let employeeRoles;
+
+    this.employeeRoleService.getAllEmployeeRoles().subscribe({
+      next: roles => {
+        employeeRoles = roles;
+      }
+    });
+
+    console.log(employeeRoles)
+
     const rolesRequests$ = employees.map((employee) =>
       this.employeeRoleService
         .getRoles(employee.email!)
         .pipe(catchError(() => of([] as string[])))
     );
+
+    console.log(rolesRequests$)
 
     return forkJoin([of(employees), clients$, ...rolesRequests$]).pipe(
       map(([employees, clients, ...rolesList]) =>

@@ -69,20 +69,7 @@ export class SharedAccordionFunctionality {
   fileEmployeeCategories = EmployeeDocumentsTypes;
   fileStarterKitCategories = StarterKitDocumentTypes;
   fileMyDocumentCategories = MyDocumentTypes;
-  employeeQualification!: EmployeeQualifications;
-
-
-  employeeQualificationDto: EmployeeQualifications = {
-    id: 0,
-    employeeId: 0,
-    highestQualification: 0,
-    school: "",
-    fieldOfStudy: "",
-    year: "",
-    nqfLevel: nqfLevels,
-    proofOfQualification: "",
-    documentName: "",
-  };
+  employeeQualification: EmployeeQualifications = new EmployeeQualifications();
 
   panelOpenState: boolean = false;
   physicalEqualPostal: boolean = true;

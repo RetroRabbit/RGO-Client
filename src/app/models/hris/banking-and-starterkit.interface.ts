@@ -1,7 +1,7 @@
 import { EmployeeBanking } from "./employee-banking.interface";
 import { EmployeeDocument } from "./employeeDocument.interface";
 
-export interface BankingAndStarterKitDto {
+export interface BankingAndStarterKit {
     employeeBankingDto: EmployeeBanking;
     employeeDocumentDto: EmployeeDocument;
     name: string | null;

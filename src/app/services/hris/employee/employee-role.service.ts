@@ -36,4 +36,8 @@ export class EmployeeRoleService {
   updateRole(email: string, role: string): Observable<any> {
     return this.httpClient.put<any>(`${this.baseUrl}?email=${encodeURIComponent(email)}&role=${encodeURIComponent(role)}`, {});
   }
+
+  getAllEmployeeRoles(): Observable<any[]> {
+    return this.httpClient.get<any[]>(`${this.baseUrl}/roles`);
+  }
 }

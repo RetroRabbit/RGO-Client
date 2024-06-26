@@ -29,7 +29,6 @@ import { AccordionDocumentsAdditionalComponent } from './accordions/accordion-do
 import { AccordionAdministrativeDocumentsComponent } from './accordions/accordion-administrative-documents/accordion-administrative-documents.component';
 import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-employee-documents/accordion-employee-documents.component';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { AppModule } from 'src/app/app.module';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
 
@@ -49,7 +48,7 @@ export class EmployeeProfileComponent implements OnChanges {
   simpleEmployee!: SimpleEmployee;
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
-  terminationData !: EmployeeTermination
+  terminationData: EmployeeTermination = new EmployeeTermination();
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
   customFields: CustomField[] = [];
@@ -407,7 +406,7 @@ export class EmployeeProfileComponent implements OnChanges {
         this.base64Image = event.target.result;
         this.updateUser();
       };
-      file.onerror = (error) => {
+      file.onerror = () => {
         this.snackBarService.showSnackbar('Error uploading file', 'snack-error')
       }
     }
@@ -452,9 +451,9 @@ export class EmployeeProfileComponent implements OnChanges {
 
   checkAddressMatch(data: EmployeeProfile) {
     var dataCopy: any = data;
-    const stringifiedphysicalAddress = JSON.stringify(dataCopy.physicalAddress);
-    const stringifiedpostalAddress = JSON.stringify(dataCopy.postalAddress);
-    if (stringifiedphysicalAddress === stringifiedpostalAddress) {
+    const stringifiedPhysicalAddress = JSON.stringify(dataCopy.physicalAddress);
+    const stringifiedPostalAddress = JSON.stringify(dataCopy.postalAddress);
+    if (stringifiedPhysicalAddress === stringifiedPostalAddress) {
       this.sharedAccordionFunctionality.physicalEqualPostal = true;
     }
   }

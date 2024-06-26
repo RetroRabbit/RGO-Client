@@ -413,10 +413,7 @@ export class AccordionProfileAddressDetailsComponent {
     this.sharedAccordionFunctionality.employeeProfileDto!.countryOfBirth = this.employeeProfile!.employeeDetails.countryOfBirth,
     this.sharedAccordionFunctionality.employeeProfileDto!.nationality = this.employeeProfile!.employeeDetails.nationality,
     this.sharedAccordionFunctionality.employeeProfileDto!.level = this.employeeProfile!.employeeDetails.level,
-    this.sharedAccordionFunctionality.employeeProfileDto!.employeeType = {
-      id: this.employeeProfile!.employeeDetails.employeeType!.id,
-      name: this.employeeProfile!.employeeDetails.employeeType!.name,
-    },
+    this.sharedAccordionFunctionality.employeeProfileDto!.employeeType = this.employeeProfile!.employeeDetails.employeeType,
     this.sharedAccordionFunctionality.employeeProfileDto!.name = this.employeeProfile!.employeeDetails.name,
     this.sharedAccordionFunctionality.employeeProfileDto!.initials = this.employeeProfile!.employeeDetails.initials,
     this.sharedAccordionFunctionality.employeeProfileDto!.surname = this.employeeProfile!.employeeDetails.surname,

@@ -41,7 +41,7 @@ export class AccordionSalaryDetailsComponent {
     private employeeSalaryService: EmployeeSalaryService,
     private snackBarService: SnackbarService,
     private authAccessService: AuthAccessService,
-    public navservice: NavService,
+    public navService: NavService,
     private route: ActivatedRoute,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
   ) {
@@ -72,7 +72,7 @@ export class AccordionSalaryDetailsComponent {
 
   getEmployeeSalaryDetails() {
     if (this.employeeId == undefined) {
-      this.employeeSalaryService.getEmployeeSalary(this.navservice.employeeProfile.id as number).subscribe({
+      this.employeeSalaryService.getEmployeeSalary(this.navService.employeeProfile.id as number).subscribe({
         next: data => {
           this.employeeSalary = data;
           this.initializeSalaryDetailsForm(this.employeeSalary);
@@ -100,7 +100,7 @@ export class AccordionSalaryDetailsComponent {
   populateDto(salaryCopy: number) {
     if (this.employeeSalary) {
       this.employeeSalaryDetailsDto = {
-        employeeId: this.employeeId != undefined ? this.employeeId : this.navservice.employeeProfile.id,
+        employeeId: this.employeeId != undefined ? this.employeeId : this.navService.employeeProfile.id,
         id: this.employeeSalary.id,
         salary: this.employeeSalary.salary,
         minSalary: this.employeeSalary.minSalary,
@@ -112,7 +112,7 @@ export class AccordionSalaryDetailsComponent {
       }
     } else {
       this.employeeSalaryDetailsDto = {
-        employeeId: this.employeeId != undefined ? this.employeeId : this.navservice.employeeProfile.id,
+        employeeId: this.employeeId != undefined ? this.employeeId : this.navService.employeeProfile.id,
         id: 0,
         salary: 0,
         minSalary: 0,

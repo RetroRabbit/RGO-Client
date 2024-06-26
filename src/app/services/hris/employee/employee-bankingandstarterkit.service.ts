@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap, map, catchError, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { BankingAndStarterKitDto } from 'src/app/models/hris/banking-and-starterkit.interface';
+import { BankingAndStarterKit } from 'src/app/models/hris/banking-and-starterkit.interface';
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { NotificationService } from '../notification.service';
@@ -16,7 +16,7 @@ export class EmployeeBankingandstarterkitService {
   readonly DECLINED_STATUS = 2;
   readonly MIN_DOCUMENT_COUNT = 4;
 
-  bankingAndStarterKitData$ = new BehaviorSubject<BankingAndStarterKitDto[]>([]);
+  bankingAndStarterKitData$ = new BehaviorSubject<BankingAndStarterKit[]>([]);
   approvedCount$ = new BehaviorSubject<number>(0);
   pendingCount$ = new BehaviorSubject<number>(0);
   declinedCount$ = new BehaviorSubject<number>(0);
@@ -28,7 +28,7 @@ export class EmployeeBankingandstarterkitService {
 
   getAllBankingAndStarterkits() {
   this.httpClient
-    .get<BankingAndStarterKitDto[]>(`${this.baseUrl}/banking-starterkits`)
+    .get<BankingAndStarterKit[]>(`${this.baseUrl}/banking-starterkits`)
     .subscribe({
       next: (data: any[]) => {
         this.bankingAndStarterKitData$.next(data);
@@ -40,7 +40,7 @@ export class EmployeeBankingandstarterkitService {
     });
   }
 
-  getStatusCounts(dtos: BankingAndStarterKitDto[]) {
+  getStatusCounts(dtos: BankingAndStarterKit[]) {
     let approvedCount = 0;
     let pendingCount = 0;
     let declinedCount = 0;

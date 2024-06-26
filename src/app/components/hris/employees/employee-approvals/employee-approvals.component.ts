@@ -9,7 +9,7 @@ import { dataTypes } from 'src/app/models/hris/constants/types.constants';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
-import { BankingAndStarterKitDto } from 'src/app/models/hris/banking-and-starterkit.interface';
+import { BankingAndStarterKit } from 'src/app/models/hris/banking-and-starterkit.interface';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 import { Subject, takeUntil } from 'rxjs';
@@ -28,7 +28,7 @@ export class EmployeeApprovalsComponent {
   searchTerm: string = '';
   filterText: string = '';
 
-  bankingAndStarterKitData: BankingAndStarterKitDto[] = [];
+  bankingAndStarterKitData: BankingAndStarterKit[] = [];
   filteredEmployeeDtos: any[] = [];
   filteredEmployeeIds: number[] = [];
   displayedColumns: string[] = ['name', 'type', 'date', 'status', 'action'];
@@ -82,7 +82,7 @@ export class EmployeeApprovalsComponent {
   subscribeToData(): void {
     this.employeeBankingandstarterkitService.bankingAndStarterKitData$
     .pipe(takeUntil(this.destroy$))
-    .subscribe((data: BankingAndStarterKitDto[]) => {
+    .subscribe((data: BankingAndStarterKit[]) => {
       this.bankingAndStarterKitData = data;
       this.buildFilteredArray();
       this.cdr.detectChanges();
@@ -152,7 +152,7 @@ export class EmployeeApprovalsComponent {
     return numberIndex;
   }
 
-  filterDocumentTypeAndStatus(documentOrBanking: BankingAndStarterKitDto, isBanking: boolean, status: number) {
+  filterDocumentTypeAndStatus(documentOrBanking: BankingAndStarterKit, isBanking: boolean, status: number) {
     this.filteredEmployeeDtos.push({
       employeeId: documentOrBanking.employeeId,
       name: documentOrBanking.name as string,

@@ -2,7 +2,7 @@ export class EmployeeType {
 
     EmployeeType() {
         this.id = 0;
-        this.name = "";
+        this.name = '';
     }
 
     id?: number;

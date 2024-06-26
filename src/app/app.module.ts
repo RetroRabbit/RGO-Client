@@ -13,7 +13,6 @@ import { AuthService } from './services/shared-services/auth-access/auth.service
 import { AuthInterceptor } from './components/shared-components/interceptor/auth0.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EmployeeProfileComponent } from './components/hris/employees/employee-profile/employee-profile.component';
-import { EmployeeProfileReducer } from './components/shared-components/store/reducers/employee-profile.reducer';
 import { EmployeeProfileEffects } from './components/shared-components/store/effects/employeeprofile.effects';
 import { NgChartsModule } from 'ng2-charts';
 import { ChartComponent } from './components/hris/charts/charts.component';
@@ -166,7 +165,6 @@ import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
     ClipboardModule,
     StoreModule.forRoot({
       app: LoginReducer,
-      employee: EmployeeProfileReducer,
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),
     AuthModule.forRoot({
