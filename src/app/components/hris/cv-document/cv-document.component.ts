@@ -24,13 +24,11 @@ export class CvDocumentComponent {
   employeeId = this.route.snapshot.params['id'];
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
-  employeeWorkexp: WorkExperience[] = [];
-  employeeCert: EmployeeCertificates[] = [];
+  employeeWorkExp: WorkExperience[] = [];
+  employeeCertificate: EmployeeCertificates[] = [];
   loggedInProfile!: EmployeeData;
   skills: any = [];
   filteredSkills: any = [];
-  displaySkills: string = '';
-  usingSimpleProfile: boolean = false;
   name: string | undefined = '';
   surname: string | undefined = '';
   role: string | undefined = '';
@@ -49,12 +47,10 @@ export class CvDocumentComponent {
     private employeeProfileService: EmployeeProfileService,
     private route: ActivatedRoute,
     public authAccessService: AuthAccessService,
-    private employeeDataService: EmployeeDataService,
     private employeeQaulificationService: EmployeeQualificationsService,
     private employeeCertificationService: EmployeeCertificatesService,
     private employeeWorkExperienceService: WorkExperienceService,
     public navService: NavService,
-
   ) { }
 
   ngOnInit() {
@@ -93,14 +89,13 @@ export class CvDocumentComponent {
     years -= Math.floor(months / 12);
     const numYears = (years > 0 ? `${years} ${years === 1 ? 'year' : 'years'}` : 0 + ' years' + (months > 0 ? "" + ` ${months} ${months === 1 ? 'month' : 'months'}` : ''));
     this.numberOfYears = numYears;
-
   }
 
   getEmployeeWorkExp() {
     this.employeeWorkExperienceService.getWorkExperience(this.employeeId).subscribe({
       next: data => {
         data.forEach((element) => {
-          this.employeeWorkexp.push(element);
+          this.employeeWorkExp.push(element);
           const newDate = new Date(element.endDate);
           const year = newDate.getFullYear();
           this.endDate = year;
@@ -128,7 +123,7 @@ export class CvDocumentComponent {
     this.employeeCertificationService.getCertificationDetails(this.employeeId).subscribe({
       next: data => {
         data.forEach((item) => {
-          this.employeeCert.push(item);
+          this.employeeCertificate.push(item);
           const newDate = new Date(item.issueDate);
           const year = newDate.getFullYear();
           this.issueDate = year;

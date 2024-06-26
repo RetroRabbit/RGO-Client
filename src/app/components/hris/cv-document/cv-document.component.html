@@ -1,4 +1,4 @@
-<div class="container" id="doc-page" *ngIf="employeeWorkexp.length !== 0 && employeeCert.length !== 0 && filteredSkills.length !== 0">
+<div class="container" id="doc-page" *ngIf="employeeWorkExp.length !== 0 && employeeCertificate.length !== 0 && filteredSkills.length !== 0">
     <button mat-button color="primary" id="button-pdf"
     (click) = "downloadPDF()">
    <svg id="svg-icon" width="19" height="19" viewBox="0 0 19 19" fill="white"
@@ -55,22 +55,20 @@
          <h1 class="text-center">{{name}} {{surname}}'s CV</h1>
       </div>
       <mat-divider></mat-divider>
-
       <div class="container-content">
-          <div class="container-summary" *ngIf="name && surname && role && level && nqf && education &&school && numberOfYears; else OwnName">
+          <div class="container-summary" *ngIf="name && surname && role && level && nqf && education &&school && numberOfYears; else emptyDescription">
               <p>{{name}} {{surname}} is a {{role}} (Level {{level}}).Their highest qualification is a NQF Level {{nqf}} in {{education}} from the {{school}} and has {{numberOfYears}} experience in her field.</p>
           </div>
-          <ng-template #OwnName>
+          <ng-template #emptyDescription>
           <div class="container-summary">
             <p></p>
         </div>
         </ng-template>
-
-          <div class="container-skills" *ngIf="filteredSkills.length !== 0; else emptyskills">
+          <div class="container-skills d-flex flex-column" *ngIf="filteredSkills.length !== 0; else emptyskills">
               <h2>Skills</h2>
               <mat-divider></mat-divider>
-              <div class="skill" *ngFor="let skill of filteredSkills;let i = index">
-                  <mat-icon id="category-icon">check</mat-icon>
+              <div class="skill d-flex flex-row mt-3" *ngFor="let skill of filteredSkills;let i = index">
+                  <mat-icon>check</mat-icon>
                   <h5>{{filteredSkills[i]}}</h5>
               </div>
           </div>
@@ -78,47 +76,45 @@
           <div class="container-skills">
           </div>
         </ng-template>
-
-          <div class="container-certification" *ngIf="employeeCert.length !== 0; else emptyCertificates">
+          <div class="container-certification" *ngIf="employeeCertificate.length !== 0; else emptyCertificates">
               <h2>Certifications & Exams</h2>
               <mat-divider></mat-divider>
-              <div class="sub-cert" *ngFor="let experience of employeeCert;let i = index">
-              <h3>{{employeeCert[i].issueOrganization}}</h3>
-              <div class="cert">
-               <h4>{{employeeCert[i].certificateName}} | issued in {{issueDate}}</h4>
+              <div class="sub-cert" *ngFor="let experience of employeeCertificate;let i = index">
+              <h3 class="mt-1">{{employeeCertificate[i].issueOrganization}}</h3>
+              <div class="cert d-flex flex-row mt-3">
+               <h4>{{employeeCertificate[i].certificateName}} | issued in {{issueDate}}</h4>
               </div>
               <div class="container-doc-name col-auto d-flex align-items-center">
                   <div class="doc-name-info col-auto mt-2" id="header-email-clip">
-                    <button (click)="downloadCertDocument(employeeCert[i].certificateDocument, employeeCert[i].documentName)" class="btn-download"><mat-icon>attachment</mat-icon>
-                    <h4>{{employeeCert[i].documentName}}</h4>
+                    <button (click)="downloadCertDocument(employeeCertificate[i].certificateDocument, employeeCertificate[i].documentName)" class="btn-download d-flex flex-row"><mat-icon>attachment</mat-icon>
+                    <h4 class="d-flex flex-row">{{employeeCertificate[i].documentName}}</h4>
                     </button>
                   </div>
               </div>
           </div>
           </div>
           <ng-template #emptyCertificates>
-              <div class="container-certification"  >
-         </div>
+              <div class="container-certification">
+             </div>
           </ng-template>
 
-          <div class="container-experience" *ngIf="employeeWorkexp.length !== 0; else emptyWorkExp">
+          <div class="container-experience d-flex flex-column mt-4" *ngIf="employeeWorkExp.length !== 0; else emptyWorkExp">
               <h2>Their professional Experience</h2>
               <mat-divider></mat-divider>
-              <div class="container-project" *ngFor="let cert of employeeWorkexp;let i = index" >
-                   <h4>{{employeeWorkexp[i].clientName}} | {{endDate}}</h4>
-                  <h4>{{employeeWorkexp[i].projectName}}</h4>
-                  <h5>{{employeeWorkexp[i].software}}</h5>
-                 <p>{{employeeWorkexp[i].projectDescription}}</p>
+              <div class="container-project" *ngFor="let cert of employeeWorkExp;let i = index" >
+                   <h4>{{employeeWorkExp[i].clientName}} | {{endDate}}</h4>
+                   <h4>{{employeeWorkExp[i].projectName}}</h4>
+                   <h5>{{employeeWorkExp[i].software}}</h5>
+                   <p>{{employeeWorkExp[i].projectDescription}}</p>
               </div>
           </div>
           <ng-template #emptyWorkExp>
             <div class="container-experience">
             </div>
           </ng-template>
-
       </div>
   </div>
-  <div class="container-missing-info" id="doc-page" *ngIf="employeeWorkexp.length <= 0 && employeeCert.length <= 0 && filteredSkills.length <= 0">
+  <div class="container-missing-info" id="doc-page" *ngIf="employeeWorkExp.length <= 0 && employeeCertificate.length <= 0 && filteredSkills.length <= 0">
     <div
     class="d-flex justify-content-center align-items-center" id="main-content">
     <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
