@@ -470,8 +470,6 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ViewCVDocument() {
-
     this.router.navigateByUrl('/view-cv-document/' + this.selectedEmployee.id);
-
   }
 }
