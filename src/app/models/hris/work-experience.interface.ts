@@ -8,5 +8,6 @@ export interface WorkExperience {
     software?: string[],
     startDate: Date,
     endDate: Date,
+    projectDescription: string,
     employeeId: number
 }

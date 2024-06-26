@@ -213,3 +213,26 @@ button#options-trigger {
   font-weight: 400;
   line-height: 16px;
 }
+@media print {
+  #header {
+    display: none;
+  }
+  #nav-item>div {
+      display: none;
+      color: #fff;
+    }
+   .container {
+      width:100%;
+  }
+  #drop-down-container-open {
+     display: none;
+  }
+
+  #drop-down-container-closed {
+    display: none;
+
+  }
+  #retro-logo{
+    display: none;
+  }
+}
