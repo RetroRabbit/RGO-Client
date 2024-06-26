@@ -118,7 +118,7 @@ export class ChartComponent implements OnInit {
         }
       },
       error: () => {
-        this.snackBarService.showSnackbar("Chart display unsuccessful", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Display Chart", "snack-error");
       }
     });
   }
@@ -163,12 +163,12 @@ export class ChartComponent implements OnInit {
       };
       this.chartService.updateChart(this.updateFormData).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Update successful", "snack-success");
+          this.snackBarService.showSnackbar("Updated", "snack-success");
           this.resetPage();
           this.createAndDisplayChart();
         },
         error: () => {
-          this.snackBarService.showSnackbar("Update unsuccessful", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Update Chart", "snack-error");
 
         }
       });
@@ -194,12 +194,12 @@ export class ChartComponent implements OnInit {
     if (this.chartData[selectedIndex]) {
       this.chartService.deleteChart(this.chartData[selectedIndex].id).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Delete successful", "snack-success");
+          this.snackBarService.showSnackbar("Deleted", "snack-success");
           this.resetPage();
           this.createAndDisplayChart();
         },
         error: () => {
-          this.snackBarService.showSnackbar("Failed to delete graph", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Delete Chart", "snack-error");
         }
       });
     }
@@ -214,7 +214,7 @@ export class ChartComponent implements OnInit {
           }
         });
       }, error: () => {
-        this.snackBarService.showSnackbar("Failed to fetch people champion", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Retrieve People Champion", "snack-error");
       }, complete: () => {
         this.createAndDisplayChart();
       },

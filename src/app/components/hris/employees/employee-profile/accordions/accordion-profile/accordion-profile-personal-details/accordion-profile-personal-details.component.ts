@@ -126,19 +126,19 @@ export class AccordionProfilePersonalDetailsComponent {
       this.sharedAccordionFunctionality.employeeProfileDto!.gender = personalDetailsFormValue.gender;
       this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Personal details updated", "snack-success");
+          this.snackBarService.showSnackbar("Updated", "snack-success");
           this.sharedAccordionFunctionality.checkPersonalFormProgress();
           this.sharedAccordionFunctionality.totalProfileProgress();
           this.sharedAccordionFunctionality.personalDetailsForm.disable();
           this.sharedAccordionFunctionality.editPersonal = false;
         },
         error: (error) => {
-          this.snackBarService.showSnackbar(error.error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Save Personal Information", "snack-error");
         },
       });
     }
     else {
-      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+      this.snackBarService.showSnackbar("Some Fields Are Still Missing Information", "snack-error");
     }
   }
 

@@ -222,9 +222,9 @@ export class EmployeeDetailsComponent implements OnInit {
         next: (data) => {
           this.cookieService.set('currentPage', 'Employees');
           this.saveEmployeeCustomData();
-          this.snackBarService.showSnackbar("Employee details updated", "snack-success");
+          this.snackBarService.showSnackbar("Updated", "snack-success");
         },
-        error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
+        error: (error) => { this.snackBarService.showSnackbar("Unable to Update Information", "snack-error") },
       });
     }
   }
@@ -264,7 +264,7 @@ export class EmployeeDetailsComponent implements OnInit {
               this.cookieService.set('currentPage', 'Employees');
             },
             error: (error) => {
-              this.snackBarService.showSnackbar(error, "snack-error");
+              this.snackBarService.showSnackbar("Unable to Save Information", "snack-error");
             }
           });
         }

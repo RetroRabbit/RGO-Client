@@ -76,7 +76,7 @@ export class AccordionCertificatesComponent {
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
       error: (error) => {
-        this.snackBarService.showSnackbar(error, "Failed to fetch certificates");
+        this.snackBarService.showSnackbar("Unable to Fetch Certificates", "snack-error");
       }
     });
   }
@@ -126,7 +126,7 @@ export class AccordionCertificatesComponent {
         next: () => {
           saveCount++;
           if (saveCount === total && !errorOccurred) {
-            this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
+            this.snackBarService.showSnackbar("Saved", "snack-success");
             this.hasUpdatedCertificateData = true;
             this.addingCertificate = false;
             this.newCertificates = [];
@@ -137,7 +137,7 @@ export class AccordionCertificatesComponent {
         },
         error: (error) => {
           errorOccurred = true;
-          this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Update All Fields", "snack-error");
           this.addingCertificate = false;
           this.editCertificate = false;
         }
@@ -154,12 +154,12 @@ export class AccordionCertificatesComponent {
     );
     forkJoin(updateObservables).subscribe({
       next: () => {
-        this.snackBarService.showSnackbar("Certificate info updated", "snack-success");
+        this.snackBarService.showSnackbar("Updated", "snack-success");
         this.hasUpdatedCertificateData = true;
         this.getEmployeeCertificate();
       },
       error: () => {
-        this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Update All Fields", "snack-error");
       }
     });
   }
@@ -235,7 +235,7 @@ export class AccordionCertificatesComponent {
     const certificateId = this.copyOfCertificates[index].id;
     this.employeeCertificateService.deleteCertificate(certificateId).subscribe({
       next: () => {
-        this.snackBarService.showSnackbar("Certificate deleted", "snack-success");
+        this.snackBarService.showSnackbar("Deleted", "snack-success");
         this.copyOfCertificates.splice(index, 1);
         this.sharedAccordionFunctionality.employeeCertificates.splice(index, 1);
         this.sharedAccordionFunctionality.employeeCertificatesFields = this.sharedAccordionFunctionality.employeeCertificatesFields - 4;
@@ -244,7 +244,7 @@ export class AccordionCertificatesComponent {
         this.editCertificate = false;
       },
       error: (error) => {
-        this.snackBarService.showSnackbar("Unable to delete", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Delete Certificate", "snack-error");
       }
     });
   }
@@ -285,13 +285,13 @@ export class AccordionCertificatesComponent {
       if (newOrUpdate == 'update') {
         this.copyOfCertificates[index].certificateDocument = this.base64String;
         this.copyOfCertificates[index].documentName = file.name;
-        this.snackBarService.showSnackbar('File replaced succesfully', 'snack-success');
+        this.snackBarService.showSnackbar("Updated", "snack-success");
       }
       else if (newOrUpdate == 'new') {
         this.newCertificates[index].certificateDocument = this.base64String;
         this.newCertificates[index].documentName = file.name;
+        this.snackBarService.showSnackbar("Saved", "snack-success");
       }
-      this.snackBarService.showSnackbar('File uploaded succesfully', 'snack-success');
     });
     reader.readAsDataURL(file);
   }

@@ -109,7 +109,7 @@ export class AccordionAdministrativeDocumentsComponent {
     if (fileType && allowedTypes.includes(fileType)) {
       this.uploadProfileDocument();
     } else {
-      this.snackBarService.showSnackbar("Please upload the correct file type", "snack-error");
+      this.snackBarService.showSnackbar("Upload Correct File Type", "snack-error");
       this.isLoadingUpload = false;
     }
   }
@@ -135,7 +135,7 @@ export class AccordionAdministrativeDocumentsComponent {
           this.sharedAccordionFunctionality.totalDocumentsProgress();
         },
         error: error => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Retrieve Administrative Documents", "snack-error");
         }
       });
     } else {
@@ -149,7 +149,7 @@ export class AccordionAdministrativeDocumentsComponent {
 
         },
         error: error => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Retrieve Administrative Documents", "snack-error");
         }
       });
     }
@@ -172,7 +172,7 @@ export class AccordionAdministrativeDocumentsComponent {
       this.employeeDocumentService.saveEmployeeDocument(saveObj, 2).subscribe({
         next: () => {
           this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar("Document added", "snack-success");
+          this.snackBarService.showSnackbar("Save", "snack-success");
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
@@ -180,7 +180,7 @@ export class AccordionAdministrativeDocumentsComponent {
         },
         error: (error) => {
           this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Save Document", "snack-error");
         }
       });
     } else {
@@ -203,14 +203,14 @@ export class AccordionAdministrativeDocumentsComponent {
       this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
         next: () => {
           this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar("Document updated", "snack-success");
+          this.snackBarService.showSnackbar("Updated", "snack-success");
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
 
         },
         error: (error) => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Update Document", "snack-error");
           this.isLoadingUpload = false;
         }
       });

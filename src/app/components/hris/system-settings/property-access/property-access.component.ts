@@ -102,17 +102,11 @@ export class PropertyAccessComponent {
             .UpdateProperties(ropertyId, permission.id || 0)
             .pipe(
                 tap(() => {
-                    this.snackBarService.showSnackbar(
-                        'Property Access changed successfully!',
-                        'snack-success'
-                    );
+                    this.snackBarService.showSnackbar("Updated", "snack-success");
                     this.getAccessProperties();
                 }),
                 catchError((error) => {
-                    this.snackBarService.showSnackbar(
-                        'Falied to change Property Access',
-                        'snack-error'
-                    );
+                    this.snackBarService.showSnackbar('Unable to Change Property Access', 'snack-error');
                     return of(null);
                 })
             )

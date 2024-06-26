@@ -34,7 +34,7 @@ export class PendingBankDetailsComponent {
       next: data => {
         this.pendingBankApplications = data;
       }, error: error=>{
-        this.snackBarService.showSnackbar("Failed to fetch", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Fetch Bank Information", "snack-error");
       }, complete: () => {
         this.isLoading = false;
       }
@@ -89,20 +89,20 @@ export class PendingBankDetailsComponent {
     delete updateData.employee;
 
     if(updateData.status == 2 && this.declineReason == ''){
-      this.snackBarService.showSnackbar("You must provide a reason for rejecting an application", "snack-error");
+      this.snackBarService.showSnackbar("You Must Provide a Reason for Rejecting an Application", "snack-error");
       return;
     }
     if(updateData.status == 1){
-      this.snackBarService.showSnackbar("You must provide a response to submit", "snack-error");
+      this.snackBarService.showSnackbar("You Must Provide a Response to Submit", "snack-error");
       return;
     }
     this.employeeBankingService.updatePending(updateData).subscribe( (data) => {
-      this.snackBarService.showSnackbar(`${this.copyOfSelected?.accountNo} has been updated`, "snack-success");
+      this.snackBarService.showSnackbar("Updated", "snack-success");
       this.showTable();
       this.ngOnInit();
     },
     (error) => {
-      this.snackBarService.showSnackbar("Please try again later", "snack-error");
+      this.snackBarService.showSnackbar("Unable to Update Pending Bank Information", "snack-error");
     });
   }
 }
