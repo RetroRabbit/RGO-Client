@@ -80,7 +80,7 @@ export class EmployeeTerminationComponent implements OnInit {
       accountsStatus: new FormControl<boolean>(false, Validators.required),
       terminationDocument: new FormControl<string>('', Validators.required),
       terminationComments: new FormControl<string>(''),
-    });
+    }, {validator: this.dateValidator });
     this.newterminationform.valueChanges.subscribe(() => {
       this.checkCheckboxesValid();
     });
@@ -182,7 +182,7 @@ export class EmployeeTerminationComponent implements OnInit {
   dateValidator(control: AbstractControl): ValidationErrors | null {
     const dayOfNotice = control.get('dayOfNotice')?.value;
     const lastDayOfEmployment = control.get('lastDayOfEmployment')?.value;
-
+  
     if (dayOfNotice && lastDayOfEmployment && new Date(lastDayOfEmployment) < new Date(dayOfNotice)) {
       return { dateInvalid: true };
     }
