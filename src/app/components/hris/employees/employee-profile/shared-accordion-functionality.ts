@@ -326,18 +326,30 @@ export class SharedAccordionFunctionality {
 
   checkAdditionalFormProgress() {
     let numberOfPopulatedFields = 0;
+    let numberOfRequiredFields = 0;
     const formControls = this.additionalInfoForm.controls;
-    let totalFields = Object.keys(this.additionalInfoForm.controls).length;
 
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
-          numberOfPopulatedFields++;
+        let isRequired = false;
+        if (control.validator) {
+          const validator = control.validator({} as AbstractControl);
+          isRequired = validator && validator['required'] ? true : false;
+        }
+        if (isRequired) {
+          numberOfRequiredFields++;
+          if (control.value != null && control.value !== '') {
+            numberOfPopulatedFields++;
+          }
         }
       }
     }
-    this.additionalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
+    if (numberOfRequiredFields === 0) {
+      this.additionalFormProgress = 100;
+    } else {
+      this.additionalFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
+    }
   }
 
   calculateEmployeeDocumentProgress() {
