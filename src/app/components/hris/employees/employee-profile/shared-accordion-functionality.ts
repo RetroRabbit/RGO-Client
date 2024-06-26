@@ -415,17 +415,16 @@ export class SharedAccordionFunctionality {
       }
     }
     this.additionalCareerFormProgress = Math.round((filledCount / totalFields) * 100);
-    if(Number.isNaN(this.additionalCareerFormProgress))
-      {
-        this.additionalCareerFormProgress = 0;
-      }
+    if (Number.isNaN(this.additionalCareerFormProgress)) {
+      this.additionalCareerFormProgress = 0;
+    }
   }
 
   calculateCareerWorkExperienceFormProgress() {
     let targetWorkExp: any = [];
     let newTargetWorkExp: any = [];
     this.filteredFilledWorkExp.length = 0;
-    this.workExperienceFormFields = 6 * this.workExperience.length;
+    this.workExperienceFormFields = 7 * this.workExperience.length;
 
     if (this.workExperience.length === 0) {
       this.workExperienceFormFields = 0;
