@@ -9,6 +9,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { ActivatedRoute } from '@angular/router';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 
 @Component({
   selector: 'app-accordion-salary-details',
@@ -34,11 +35,10 @@ export class AccordionSalaryDetailsComponent {
   isAdminUser: boolean = false;
   employeeId: number | undefined;
 
-
-
   constructor(
     private fb: FormBuilder,
     private employeeSalaryService: EmployeeSalaryService,
+    private employeeProfileService: EmployeeProfileService,
     private snackBarService: SnackbarService,
     private authAccessService: AuthAccessService,
     public navservice: NavService,
@@ -69,6 +69,17 @@ export class AccordionSalaryDetailsComponent {
     }
     this.sharedAccordionFunctionality.salaryDetailsForm.disable();
   }
+
+  // getTaxNumber() {
+  //   this.employeeProfileService.getEmployeeById().subscribe({
+  //     next: data => {
+
+
+  //     }
+  //   })
+
+
+  //}
 
   getEmployeeSalaryDetails() {
     if (this.employeeId == undefined) {

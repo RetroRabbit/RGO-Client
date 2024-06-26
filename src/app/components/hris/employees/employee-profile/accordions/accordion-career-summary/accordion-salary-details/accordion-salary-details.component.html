@@ -45,6 +45,14 @@
                                       Remuneration is required</mat-error>
                                     </mat-form-field>
                                 </div>
+                                <div class="col-12 col-md-6">
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                      <mat-label>Tax Number</mat-label>
+                                      <input type="text" min="0" matInput placeholder="Tax Number" formControlName="taxNumber">
+                                      <mat-error>
+                                      Tax Number is required</mat-error>
+                                    </mat-form-field>
+                                </div>
                             </div>
                         </div>
                         <div *ngIf="isAdminUser" class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">

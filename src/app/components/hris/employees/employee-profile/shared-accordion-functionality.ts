@@ -71,7 +71,6 @@ export class SharedAccordionFunctionality {
   fileMyDocumentCategories = MyDocumentTypes;
   employeeQualification!: EmployeeQualifications;
 
-
   employeeQualificationDto: EmployeeQualifications = {
     id: 0,
     employeeId: 0,
@@ -150,7 +149,10 @@ export class SharedAccordionFunctionality {
     race: { value: '', disabled: true },
     disability: { value: '', disabled: true },
     disabilityNotes: { value: '', disabled: true },
-    disabilityList: { value: '', disabled: true }
+    disabilityList: { value: '', disabled: true },
+    nationality: { value: '', disabled: true },
+    countryOfBirth: { value: '', disabled: true },
+
   });
 
   employeeContactForm: FormGroup = this.fb.group({
@@ -208,7 +210,8 @@ export class SharedAccordionFunctionality {
   additionalDocumentForm: FormGroup = this.fb.group({});
   additionalCareerInfoForm: FormGroup = this.fb.group({});
   salaryDetailsForm: FormGroup = this.fb.group({
-    remuneration: [{ value: '', disable: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]]
+    remuneration: [{ value: '', disable: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+    taxNumber: [{ value: '', disable: true }]
   });
 
   checkPersonalFormProgress() {

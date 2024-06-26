@@ -37,6 +37,8 @@ export class AccordionProfilePersonalDetailsComponent {
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
       disability: [this.employeeProfile!.employeeDetails.disability, Validators.required],
+      nationality: [this.employeeProfile.employeeDetails.nationality, Validators.required],
+      countryOfBirth: [this.employeeProfile.employeeDetails.countryOfBirth],
       disabilityList: "",
       disabilityNotes: [this.employeeProfile!.employeeDetails.disabilityNotes]
     });
@@ -124,6 +126,8 @@ export class AccordionProfilePersonalDetailsComponent {
       this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = personalDetailsFormValue.disabilityNotes;
       this.sharedAccordionFunctionality.employeeProfileDto!.race = personalDetailsFormValue.race;
       this.sharedAccordionFunctionality.employeeProfileDto!.gender = personalDetailsFormValue.gender;
+      this.sharedAccordionFunctionality.employeeProfileDto!.nationality = personalDetailsFormValue.nationality;
+      this.sharedAccordionFunctionality.employeeProfileDto!.countryOfBirth = personalDetailsFormValue.countryOfBirth;
       this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Personal details updated", "snack-success");
