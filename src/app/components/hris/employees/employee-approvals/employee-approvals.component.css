@@ -239,15 +239,15 @@ mat-header-row {
 }
 
 .approved {
-  color: #0FAF4B;
+  /*color: #0FAF4B;*/
 }
 
 .declined {
-  color: #B3261E;
+  /*color: #B3261E;*/
 }
 
 .pending {
-  color: #0029C6;
+  /*color: #0029C6;*/
 }
 
 .image-styling {

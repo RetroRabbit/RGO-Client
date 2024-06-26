@@ -9,9 +9,7 @@
                 <mat-panel-description *ngIf="sharedAccordionFunctionality.contactFormProgress != 100"
                     class="pe-0 pe-md-5">
                     <mat-icon class="mx-1">error</mat-icon>
-                    <span class="d-none d-md-block d-lg-block"> Missing
-                        information
-                    </span>
+                    <span class="d-none d-md-block d-lg-block">Missing Information</span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="sharedAccordionFunctionality.employeeContactForm">
@@ -158,13 +156,13 @@
                         </button>
                         <button *ngIf="sharedAccordionFunctionality.editContact" mat-button id="save-button"
                             type="submit" (click)="saveContactDetails()">
-                            Save changes
+                            Save
                         </button>
                     </div>
                     <div class="col-12 d-block d-md-none" id="edit-buttons">
                         <button *ngIf="sharedAccordionFunctionality.editContact" mat-button id="save-button"
                             type="submit" class="col-12 mb-2" (click)="saveContactDetails()">
-                            Save changes
+                            Save
                         </button>
                         <button *ngIf="sharedAccordionFunctionality.editContact" mat-button id="cancel-button"
                             class="col-12" (click)="cancelContactEdit()">
