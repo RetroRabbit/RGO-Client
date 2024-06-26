@@ -27,19 +27,19 @@ export class CvDocumentComponent {
   employeeWorkExp: WorkExperience[] = [];
   employeeCertificate: EmployeeCertificates[] = [];
   loggedInProfile!: EmployeeData;
-  skills: any = [];
-  filteredSkills: any = [];
+  skills: string[] = [];
+  filteredSkills: string[] = [];
   name: string | undefined = '';
   surname: string | undefined = '';
   role: string | undefined = '';
   level: number | undefined = 0;
   education: string | undefined = '';
   school: string | undefined = '';
-  nqf: number | undefined = 0;
-  skillSet: any | undefined = '';
-  issueDate: any | undefined = '';
-  endDate: any | undefined = '';
-  numberOfYears: any | undefined = '';
+  nqf: number = 0;
+  skillSet: string | undefined = '';
+  issueDate: number | undefined = 0;
+  endDate: number | undefined = 0;
+  numberOfYears: string | undefined = '';
   pronoun: string | undefined = '';
   isLoading: boolean = true;
 
