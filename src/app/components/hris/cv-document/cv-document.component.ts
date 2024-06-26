@@ -60,13 +60,13 @@ export class CvDocumentComponent {
     if (this.employeeId == undefined) {
       this.employeeId = this.authAccessService.getUserId();
     }
-    this.getEmployeeGeneralInformation();
-    this.getQaulifications();
-    this.getCertfications();
+    this.getEmployeeInformation();
+    this.getQualifications();
+    this.getCertifications();
     this.getEmployeeWorkExp();
   }
 
-  getEmployeeGeneralInformation() {
+  getEmployeeInformation() {
     this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
       next: data => {
         this.name = data.name;
@@ -108,7 +108,7 @@ export class CvDocumentComponent {
     })
   }
 
-  getQaulifications() {
+  getQualifications() {
     this.employeeQaulificationService.getEmployeeQualificationById(this.employeeId).subscribe({
       next: data => {
         console.log(data)
@@ -119,7 +119,7 @@ export class CvDocumentComponent {
     })
   }
 
-  getCertfications() {
+  getCertifications() {
     this.employeeCertificationService.getCertificationDetails(this.employeeId).subscribe({
       next: data => {
         data.forEach((item) => {
