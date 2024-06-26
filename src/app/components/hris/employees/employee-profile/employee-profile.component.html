@@ -118,11 +118,6 @@
         <div *ngIf="!employeeProfile.active && this.isAdminUser" class="mt-4">
           <h3 class="data-info">Additional Comments</h3>
           {{ this.terminationData?.terminationComments ?? 'None'}}
-          <div  class="download-doc">
-            <div id="html2pdf">
-              <h1 > Some content here </h1>
-            </div>
-          </div>
         <div  class="download-doc">
           <button mat-button color="primary"
             (click)="downloadFile(this.terminationData.terminationDocument, this.terminationData.documentName)"
