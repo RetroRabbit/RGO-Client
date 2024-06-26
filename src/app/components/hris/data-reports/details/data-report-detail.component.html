@@ -10,7 +10,7 @@
               }">
             </ngx-skeleton-loader>
             <div class="card-header mb-2 row" *ngIf="!isLoading">
-               
+
             </div>
             <div class="card" *ngIf="!isLoading">
                 <div class="card-body p-0">
@@ -37,10 +37,12 @@
                                             <div *ngIf="nameDiv?.errors?.['maxlength']"> max. length 5 </div>
                                             <div *ngIf="nameDiv?.errors?.['pattern']"> letters only</div>
                                           </div> -->
-                                        <input type="text" [value]="dataObjects.reportName" (change)="editReportName()"
-                                            class="form-control h4" />
-                                        <input type="text" [value]="dataObjects.reportId" (change)="editReportName()"
-                                            class="form-control h4" />
+                                        <input type="text" [value]="dataObjects.reportName" [(ngModel)]="reportName"
+                                            (change)="editReportName(dataObjects.reportId!)"
+                                            class="form-control h4 header-text" />
+                                        <input type="text" [value]="dataObjects.reportCode!" [(ngModel)]="reportCode"
+                                            (change)="editReportName(dataObjects.reportId!)"
+                                            class="form-control h4 header-text" />
                                     </div>
                                     <div class="col-7 row">
                                         <!-- <div class="col">
@@ -55,12 +57,13 @@
                                                 </mat-form-field>
                                             </div>
                                         </div> -->
-                                        <button mat-button id="edit-button" class="col-2" (click)="showEditReportModal()">
+                                        <button mat-button id="edit-button" class="col-2"
+                                            (click)="showEditReportModal()">
                                             <mat-icon>edit</mat-icon>Access
                                         </button>
                                     </div>
                                 </div>
-                             </ng-template>
+                            </ng-template>
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <th *ngFor="let col of columns" class="h5" pReorderableColumn>{{ col.name }}</th>
@@ -118,26 +121,22 @@
             <div class="container-fluid p-4">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12" id="dialog-header">
-                        <h2 mat-dialog-title id="dialog-title">Add a New Report</h2>
+                        <h2 mat-dialog-title id="dialog-title">Edit access to columns</h2>
                         <div class="subtitle-container">
                             <h5 id="dialog-subtitle">
-                                Add a Report based on your needs by using the options below
+                                Edit access to columns based on your needs by using the options below
                             </h5>
                         </div>
                     </div>
                     <div class="col-12" id="dialog-body">
                         <div class="row">
                             <div class="mt-3 px-4 offset-1 col-10">
-                                <mat-form-field appearance="outline" style="width: 100%" class="mb-3">
-                                    <mat-label>Report title</mat-label>
-                                    <input matInput type="text" required="required" />
-                                </mat-form-field>
-                            </div>
-                            <div class="mt-3 px-4 offset-1 col-10">
-                                <mat-form-field appearance="outline" style="width: 100%" class="mb-3">
-                                    <mat-label>Peport Code</mat-label>
-                                    <input matInput type="text" required="required" />
-                                </mat-form-field>
+                                <div *ngFor="let column of dataObjects.columns">
+                                    <mat-radio-button [value]="dataObjects.viewOnly">
+                                        {{column.name}}
+                                    </mat-radio-button>
+                                </div>
+
                             </div>
                         </div>
                     </div>

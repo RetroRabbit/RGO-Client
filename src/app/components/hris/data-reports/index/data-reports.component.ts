@@ -77,6 +77,8 @@ export class DataReportsComponent {
 
       this.dataReportingService.addOrUpdateReport(input).subscribe({
         next: data => {
+          this.populateDataReportList();
+          this.dialog.closeAll();
           this.snackBarService.showSnackbar("Report Added", "snack-success")
         },
         error: error => {

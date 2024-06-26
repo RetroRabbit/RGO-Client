@@ -2,8 +2,6 @@ import { Component, HostListener, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataReport } from 'src/app/models/hris/data-report.interface';
 import { DataReportColumns } from 'src/app/models/hris/data-report-columns.interface';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { NavItem } from 'src/app/models/hris/report-menu-item.interface';
@@ -28,7 +26,8 @@ export class DataReportDetailComponent {
   PREVIOUS_PAGE = 'previousPage';
   isReorderable: boolean = true;
   disabledName: boolean = false;
-  repertName?: string;
+  reportName?: string;
+  reportCode?: string;
 
   navItems: NavItem[] = [];
 
@@ -69,14 +68,15 @@ export class DataReportDetailComponent {
         this.dataObjects.reportName = data.reportName;
         this.dataObjects.columns = data.columns;
         this.dataObjects.data = data.data;
-        this.repertName = data.reportName;
+        this.reportName = data.reportName;
+        this.reportCode = data.reportCode
         this.isLoading = false;
         this.populateMenu()
       },
     })
   }
 
-  populateMenu(){
+  populateMenu() {
     this.dataReportingService.fetchMenuItems().subscribe({
       next: data => {
         this.navItems = data;
@@ -114,6 +114,7 @@ export class DataReportDetailComponent {
 
     this.dataReportingService.updateReportData(reportInput).subscribe({
       next: data => {
+        this.populateReportData(this.dataObjects.reportCode!);
         this.snackBarService.showSnackbar("Report Updated", "snack-success")
       },
       error: error => {
@@ -122,7 +123,7 @@ export class DataReportDetailComponent {
     })
   }
 
-  moveColumn(event: any, dataReport: DataReport){
+  moveColumn(event: any, dataReport: DataReport) {
     var requestData: ReportColumnRequest = {
       id: event.columns[event.dropIndex].id,
       reportId: dataReport.reportId!,
@@ -133,6 +134,7 @@ export class DataReportDetailComponent {
 
     this.dataReportingService.moveColumnOnReport(requestData).subscribe({
       next: data => {
+        this.populateReportData(this.dataObjects.reportCode!);
         this.snackBarService.showSnackbar("Report Updated", "snack-success")
       },
       error: error => {
@@ -141,17 +143,27 @@ export class DataReportDetailComponent {
     })
   }
 
-  showEditReportModal(){
+  showEditReportModal() {
     this.dialog.open(this.dialogTemplate, {
       width: '500px',
     });
   }
 
-  editReportName(){
+  editReportName(reportId: number) {
+    var input = {
+      reportId: reportId,
+      name: this.reportName,
+      code: this.reportCode
+    }
 
-  }
-
-  editReportCode(){
-    
+    this.dataReportingService.addOrUpdateReport(input).subscribe({
+      next: data => {
+        this.populateReportData(this.dataObjects.reportCode!);
+        this.snackBarService.showSnackbar("Report Added", "snack-success")
+      },
+      error: error => {
+        this.snackBarService.showSnackbar("Report Creation Failed", "snack-error")
+      }
+    })
   }
 }

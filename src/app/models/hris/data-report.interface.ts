@@ -5,4 +5,6 @@ export interface DataReport {
     reportId?: number,
     columns?: DataReportColumns[],
     data?: any[],
+    reportCode?:string,
+    viewOnly?: string
 }
