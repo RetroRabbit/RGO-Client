@@ -29,7 +29,7 @@
           </div>
           <div class="col-12 row mt-3 justify-content justify-content-md-end ms-lg-3" id="edit-controls">
             <button mat-button class="col-12 col-md-5 col-lg-12" id="save-button" (click)="updateChart()">
-              Save changes
+              Save
             </button>
             <button mat-button class="col-12 mt-0 col-md-5  col-lg-12 offset-md-2 ms-md-5 ms-lg-0" id="cancel-button"
               (click)="showUpdateForm = false">Cancel</button>
@@ -64,16 +64,16 @@
         </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="pdfPreview(i)">
-            <mat-icon id="chart-icon-menu" class="pe-3">keyboard_backspace</mat-icon> Export graph
+            <mat-icon id="chart-icon-menu" class="pe-3">keyboard_backspace</mat-icon> Export Graph
           </button>
           <button mat-menu-item (click)="generateReport(i)">
-            <mat-icon class="pe-3">arrow_forward_ios</mat-icon> View graph details
+            <mat-icon class="pe-3">arrow_forward_ios</mat-icon> View Graph Details
           </button>
           <button mat-menu-item (click)="editChart(i)">
-            <mat-icon class="pe-3">edit</mat-icon> Edit graph
+            <mat-icon class="pe-3">edit</mat-icon> Edit Graph
           </button>
           <button mat-menu-item (click)="confirmDelete(i)">
-            <mat-icon class="pe-3">delete_outline</mat-icon> Delete graph
+            <mat-icon class="pe-3">delete_outline</mat-icon> Delete Graph
           </button>
         </mat-menu>
       </div>

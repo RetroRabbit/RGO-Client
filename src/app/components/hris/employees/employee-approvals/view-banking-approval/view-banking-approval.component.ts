@@ -105,11 +105,11 @@ export class ViewBankingApprovalComponent {
 
     this.employeeBankingService.updatePending(copyOfBanking).subscribe({
       next: () => {
-        this.snackBarService.showSnackbar(`Bank statement has successfully updated`, "snack-success");
+        this.snackBarService.showSnackbar("Updated", "snack-success");
         this.backToApprovals();
          this.changeDetector.detectChanges();
       },
-      error: error => this.snackBarService.showSnackbar(`${error}`, "snack-error")
+      error: error => this.snackBarService.showSnackbar("Unable to Update Banking Approval", "snack-error")
     })
   }
 

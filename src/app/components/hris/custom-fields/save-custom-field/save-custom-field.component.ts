@@ -115,7 +115,7 @@ export class SaveCustomFieldComponent {
 
       this.customFieldService.saveFieldCode(customField).subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Custom field has been saved successfully", "snack-success");
+          this.snackBarService.showSnackbar("Saved", "snack-success");
           this.selectedCustomField = data;
           this.customFieldForm.disable();
           this.cookieService.set(this.PREVIOUS_PAGE, '/system-settings');
@@ -123,12 +123,12 @@ export class SaveCustomFieldComponent {
           this.router.navigateByUrl('/system-settings');
         },
         error: (error) => {
-          this.snackBarService.showSnackbar(error.error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Save Field Code", "snack-error");
         }
       });
     }
     else {
-      this.snackBarService.showSnackbar("Some fields are still missing information", "snack-error");
+      this.snackBarService.showSnackbar("Some Fields Are Still Missing Information", "snack-error");
     }
   }
 

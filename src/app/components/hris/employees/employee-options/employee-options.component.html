@@ -1,7 +1,7 @@
 <main class="row mx-0 my-4">
-        <div class="col-2 mt-4" id="side-menu" *ngIf="!hideSideMenuFromJourney()">    
+    <div class="col-2 mt-4" id="side-menu" *ngIf="!hideSideMenuFromJourneyAndTalent()">    
       <h1>Employees</h1>
-      <h5>Manage employees</h5>
+      <h5>Manage Employees</h5>
       <div id="button-container">
         <div id="icon-text-container" (click)="displayEmployeeApprovals()" [ngClass]="systemNavItemService.selectedEmployeeMenuItem =='Employee Approvals' ? 'active' : ''">
           <mat-icon id="mat-icon">mode_edit_24px</mat-icon>

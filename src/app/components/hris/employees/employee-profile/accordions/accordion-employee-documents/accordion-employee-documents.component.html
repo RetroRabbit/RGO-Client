@@ -8,7 +8,7 @@
           Employee Documents
         </mat-panel-title>
         <mat-panel-description *ngIf="sharedAccordionFunctionality.employeeDocumentsProgress != 100" class="pe-0 pe-md-5">
-          <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
+          <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing Information</span>
         </mat-panel-description>
       </mat-expansion-panel-header>
       <div id="table">
@@ -28,7 +28,7 @@
                 <p>{{document.fileName}}</p>
               </div>
               <ng-template #NoFile>
-                <p>Download & upload document here</p>
+                <p>Download & Upload Document Here</p>
               </ng-template>
             </div>
             <div ngClass="{{ screenWidth >= 1200 ? 'pt-4 padding-row-buttons' : ''}}" class="col-12 col-md-4 col-lg-5 py-2">

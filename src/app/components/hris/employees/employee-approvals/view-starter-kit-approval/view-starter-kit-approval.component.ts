@@ -69,7 +69,7 @@ export class ViewStarterKitApprovalComponent {
         });
         if(this.employeeDocuments.length > 0) this.lastUpdatedMessage = this.getNewDate();
       },
-      error: () => this.snackBarService.showSnackbar(`Error fetching employee documents`, "snack-error")
+      error: () => this.snackBarService.showSnackbar(`Unable to Fetch Documents`, "snack-error")
     })
   }
 
@@ -165,11 +165,11 @@ export class ViewStarterKitApprovalComponent {
 
     this.documentService.updateEmployeeDocument(copyOfDocument as EmployeeDocument).subscribe({
       next: () => {
-        this.snackBarService.showSnackbar(`Document has successfully updated`, "snack-success");
+        this.snackBarService.showSnackbar("Updated", "snack-success");
         this.lastUpdatedMessage = this.getNewDate();
         this.getEmployeeDocuments(this.employeedId);
       },
-      error: () => this.snackBarService.showSnackbar(`Something happened.Please try again later`, "snack-error")
+      error: () => this.snackBarService.showSnackbar(`Unable to Update Document`, "snack-error")
     });
   }
 

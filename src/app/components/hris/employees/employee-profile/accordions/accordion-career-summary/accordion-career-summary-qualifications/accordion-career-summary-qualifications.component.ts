@@ -67,7 +67,7 @@ export class CareerSummaryQualificationsComponent {
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
       error: (error) => {
-        this.snackBarService.showSnackbar(error.error, "snack-error");
+        this.snackBarService.showSnackbar("Unable to Fetch Qualification", "snack-error");
       }
     })
   }
@@ -119,18 +119,17 @@ export class CareerSummaryQualificationsComponent {
         : this.employeeQualificationsService.saveEmployeeQualification(updatedQualification);
       qualificationObservable.subscribe({
         next: () => {
-          this.snackBarService.showSnackbar(
-            updatedQualification.id > 0 ? "Qualifications updated" : "Qualifications saved", "snack-success");
+          this.snackBarService.showSnackbar(updatedQualification.id > 0 ? "Updated" : "Saved", "snack-success");
           this.sharedAccordionFunctionality.calculateQualificationProgress();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
         error: (error) => {
-          this.snackBarService.showSnackbar("Please upload a qualification document", "snack-error");
+          this.snackBarService.showSnackbar("Upload a copy of your Qualification Document", "snack-error");
         },
         complete: () => this.fetchQualificationsById()
       });
     } else {
-      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+      this.snackBarService.showSnackbar("Please Fill in the Required Fields", "snack-error");
     }
   }
 

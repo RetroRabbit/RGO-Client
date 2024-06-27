@@ -217,10 +217,7 @@ export class AdminDashboardComponent {
         this.searchResults = [];
       },
       error: () => {
-        this.snackBarService.showSnackbar(
-          'Failed to fetch employees',
-          'snack-error'
-        );
+        this.snackBarService.showSnackbar('Unable to Fetch Employees', 'snack-error');
       },
       complete: () => {
         this.loadCounter++;
@@ -235,10 +232,7 @@ export class AdminDashboardComponent {
           this.charts = data;
         },
         error: () => {
-          this.snackBarService.showSnackbar(
-            'Failed to fetch charts',
-            'snack-error'
-          );
+          this.snackBarService.showSnackbar('Unable to Fetch Charts', 'snack-error');
         },
         complete: () => {
           this.loadCounter++;
@@ -362,43 +356,31 @@ export class AdminDashboardComponent {
         };
         this.chartService.updateChart(updatedChart).subscribe({
           next: () => {
-            this.snackBarService.showSnackbar("Update successful", "snack-success");
+            this.snackBarService.showSnackbar("Updated", "snack-success");
             this.chartService.isEditing = false
             this.dialog.closeAll();
           },
           error: () => {
-            this.snackBarService.showSnackbar("Update unsuccessful", "snack-error");
+            this.snackBarService.showSnackbar("Unable to Update Chart", "snack-error");
           }
         });
       }
       return
     }
     if (!this.chartType) {
-      this.snackBarService.showSnackbar(
-        'Please select a chart type',
-        'snack-error'
-      );
+      this.snackBarService.showSnackbar('Chart Type Required', 'snack-error');
       return;
     }
     if (!this.chartName) {
-      this.snackBarService.showSnackbar(
-        'Please enter a chart name',
-        'snack-error'
-      );
+      this.snackBarService.showSnackbar('Chart Name Required', 'snack-error');
       return;
     }
     if (this.selectedCategories.length < 1) {
-      this.snackBarService.showSnackbar(
-        'Please select a category',
-        'snack-error'
-      );
+      this.snackBarService.showSnackbar('Category Required', 'snack-error');
       return;
     }
     if (this.selectedTypes.length < 1) {
-      this.snackBarService.showSnackbar(
-        'Please select at least one employee role',
-        'snack-error'
-      );
+      this.snackBarService.showSnackbar('Select at Least One Employee Role', 'snack-error');
       return;
     }
 
@@ -414,7 +396,7 @@ export class AdminDashboardComponent {
       )
       .subscribe({
         next: () => {
-          this.snackBarService.showSnackbar('Chart created', 'snack-success');
+          this.snackBarService.showSnackbar("Created", "snack-success");
           this.dialog.closeAll();
           this.selectedCategories = [];
           this.selectedTypes = [];
@@ -424,10 +406,7 @@ export class AdminDashboardComponent {
           this.isLoadingChart = false;
         },
         error: () => {
-          this.snackBarService.showSnackbar(
-            'Failed to create chart',
-            'snack-error'
-          );
+          this.snackBarService.showSnackbar('Unable to Create Chart', 'snack-error');
           this.isLoadingChart = false;
         },
       });

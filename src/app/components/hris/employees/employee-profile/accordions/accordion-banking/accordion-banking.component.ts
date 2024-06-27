@@ -179,7 +179,7 @@ export class AccordionBankingComponent {
     if (this.hasBankingData) {
       this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Banking details updated", "snack-success");
+          this.snackBarService.showSnackbar("Updated", "snack-success");
           this.getEmployeeBankingData();
           this.checkBankingInformationProgress();
           this.totalBankingProgress();
@@ -188,14 +188,14 @@ export class AccordionBankingComponent {
           this.employeeBankingsForm.disable();
         },
         error: (error) => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Save Banking Information", "snack-error");
         }
       })
     }
     else {
       this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Banking details added", "snack-success");
+          this.snackBarService.showSnackbar("Saved", "snack-success");
           this.getEmployeeBankingData();
           this.checkBankingInformationProgress();
           this.totalBankingProgress();
@@ -204,7 +204,7 @@ export class AccordionBankingComponent {
           this.employeeBankingsForm.disable();
         }
         , error: (error) => {
-          this.snackBarService.showSnackbar("Failed to create banking information", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Save Banking Information", "snack-error");
         }
       })
     }

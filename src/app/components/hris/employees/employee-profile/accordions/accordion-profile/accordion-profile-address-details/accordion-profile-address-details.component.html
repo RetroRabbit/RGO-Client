@@ -7,7 +7,7 @@
           Address Details
         </mat-panel-title>
         <mat-panel-description *ngIf="sharedAccordionFunctionality.addressFormProgress != 100" class="pe-0 pe-md-5">
-          <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block"> Missing information</span>
+          <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing Information</span>
         </mat-panel-description>
       </mat-expansion-panel-header>
       <form [formGroup]="sharedAccordionFunctionality.addressDetailsForm">
@@ -201,7 +201,7 @@
           <div class="col-12 d-block d-md-none" id="edit-buttons">
             <button *ngIf="sharedAccordionFunctionality.editAddress" mat-button id="save-button" type="submit"
               (click)="saveAddressEdit()" class="col-12 mb-2">
-              Save changes
+              Save
             </button>
             <button *ngIf="sharedAccordionFunctionality.editAddress" mat-button id="cancel-button"
               (click)="cancelAddressEdit()" class="col-12">
@@ -215,7 +215,7 @@
             </button>
             <button *ngIf="sharedAccordionFunctionality.editAddress" mat-button id="save-button" type="submit"
               (click)="saveAddressEdit()">
-              Save changes
+              Save
             </button>
           </div>
         </div>

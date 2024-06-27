@@ -151,17 +151,17 @@ export class AccordionProfileContactDetailsComponent {
 
       this.employeeService.updateEmployee(this.employeeProfile.employeeDetails).subscribe({
         next: (data) => {
-          this.snackBarService.showSnackbar("Contact details updated", "snack-success");
+          this.snackBarService.showSnackbar("Updated", "snack-success");
           this.sharedAccordionFunctionality.checkContactFormProgress();
           this.sharedAccordionFunctionality.totalProfileProgress();
           this.sharedAccordionFunctionality.employeeContactForm.disable();
           this.sharedAccordionFunctionality.editContact = false;
         },
-        error: (error) => { this.snackBarService.showSnackbar(error.error, "snack-error") },
+        error: (error) => { this.snackBarService.showSnackbar("Unable to Save Contact Information", "snack-error") },
       });
     }
     else {
-      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+      this.snackBarService.showSnackbar("Some Fields Are Still Missing Information", "snack-error");
     }
   }
 

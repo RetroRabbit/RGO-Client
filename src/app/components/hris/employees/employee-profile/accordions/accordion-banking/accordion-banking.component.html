@@ -110,7 +110,7 @@
                             <p id="base64"></p>
                             <div class="col-12  col-md-5 my-2">
                                 <mat-label [ngStyle]="{color: editBanking ? 'black' : 'grey'}">
-                                    Proof of account
+                                    Proof of Account
                                 </mat-label>
                                 <div class="my-2">
                                     <div [ngClass]="screenWidth <= 767 ?'':'row'">
@@ -159,7 +159,7 @@
                     <div class="col-12 d-block d-md-none" id="edit-buttons">
                         <button *ngIf="editBanking" mat-button id="save-button" (click)="saveBankingDetails()"
                             class="col-12 mb-2">
-                            Save changes
+                            Save
                         </button>
                         <button *ngIf="editBanking" mat-button id="cancel-button" (click)="cancelBankingDetails()"
                             class="col-12">
@@ -171,7 +171,7 @@
                             Cancel
                         </button>
                         <button *ngIf="editBanking" mat-button id="save-button" (click)="saveBankingDetails()">
-                            Save changes
+                            Save
                         </button>
                     </div>
                 </div>
