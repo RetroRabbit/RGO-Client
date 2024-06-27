@@ -177,7 +177,6 @@ export class AccordionCareerAdditionalInformationComponent {
       const found = empDataValues.find((data) => {
         return fieldcode.id === data.fieldCodeId
       });
-
       if (found) {
         const formatFound: any = fieldcode.code
         const employeeDataDto = {
@@ -186,7 +185,6 @@ export class AccordionCareerAdditionalInformationComponent {
           fieldcodeId: found.fieldCodeId,
           value: this.sharedAccordionFunctionality.additionalCareerInfoForm.get(formatFound)?.value
         }
-
         this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
           next: (data) => {
             this.snackBarService.showSnackbar("Employee Details updated", "snack-success");

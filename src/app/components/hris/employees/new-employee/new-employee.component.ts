@@ -120,6 +120,16 @@ export class NewEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.loadCountries();
 
+    this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
+      const disabilityNotesControl = this.newEmployeeForm.get('disabilityNotes');
+      if (value === true) {
+        disabilityNotesControl?.setValidators([Validators.required]);
+      } else {
+        disabilityNotesControl?.clearValidators();
+      }
+      disabilityNotesControl?.updateValueAndValidity();
+    });
+
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.employeeTypes = data.sort((a, b) => {
@@ -530,6 +540,16 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveEmployee(): void {
+    if (this.newEmployeeForm.invalid) {
+      this.newEmployeeForm.markAllAsTouched();
+
+      if (this.newEmployeeForm.controls['disabilityNotes'].value == null) {
+        this.snackBarService.showSnackbar('Disability Notes are required when disability is selected as Yes.', "snack-error");
+      } else {
+        this.snackBarService.showSnackbar('Oops! Some fields are still missing information.', "snack-error");
+      }
+      return;
+    }
     this.isLoadingAddEmployee = true;
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
@@ -553,7 +573,7 @@ export class NewEmployeeComponent implements OnInit {
           stepper?.next();
           this.isLoadingAddEmployee = false;
         }
-        this.snackBarService.showSnackbar(`This email already exists`, "snack-error");
+        this.snackBarService.showSnackbar(`Oops! Some fields are still missing information.`, "snack-error");
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
       },
@@ -616,15 +636,28 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   validateFile(file: File): boolean {
-    if (file.size > 4194304) {
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    const maxSizeInBytes = 4194304;
+  
+    if (!validTypes.includes(file.type)) {
+      this.snackBarService.showSnackbar(`Only JPEG, JPG, and PNG files are allowed!`, "snack-error");
       return false;
     }
+  
+    if (file.size > maxSizeInBytes) {
+      this.snackBarService.showSnackbar(`File size must be less than 4MB!`, "snack-error");
+      return false;
+    }
+  
     return true;
   }
 
-  clearUpload() {
-    var input = document.getElementById('imageUpload') as HTMLInputElement;
+  clearUpload(): void {
+    const input = document.getElementById('imageUpload') as HTMLInputElement;
     input.value = '';
+    this.imageName = '';
+    this.imagePreview = '';
+    this.newEmployeeForm.patchValue({ 'photo': null });
   }
 
   imageConverter(file: File) {

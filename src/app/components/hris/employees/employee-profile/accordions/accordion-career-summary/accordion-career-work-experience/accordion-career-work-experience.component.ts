@@ -140,6 +140,7 @@ export class AccordionCareerWorkExperienceComponent {
       software: [],
       startDate: new Date,
       endDate: new Date,
+      projectDescription: '',
       employeeId: this.employeeProfile.id as number
     }
     this.sharedAccordionFunctionality.newWorkExperiences.push(newWorkExperience);
@@ -160,6 +161,8 @@ export class AccordionCareerWorkExperienceComponent {
       else if (this.sharedAccordionFunctionality.workExperience[i].startDate != this.copyOfWorkExperience[i].startDate)
         differenceArray.push(this.copyOfWorkExperience[i]);
       else if (this.sharedAccordionFunctionality.workExperience[i].endDate != this.copyOfWorkExperience[i].endDate)
+        differenceArray.push(this.copyOfWorkExperience[i]);
+      else if (this.sharedAccordionFunctionality.workExperience[i].projectDescription != this.copyOfWorkExperience[i].projectDescription)
         differenceArray.push(this.copyOfWorkExperience[i]);
     }
     return differenceArray
@@ -216,7 +219,7 @@ export class AccordionCareerWorkExperienceComponent {
         this.snackBarService.showSnackbar("Experience deleted", "snack-success");
         this.copyOfWorkExperience.splice(index, 1);
         this.sharedAccordionFunctionality.workExperience.splice(index, 1);
-        this.sharedAccordionFunctionality.workExperienceFormFields = this.sharedAccordionFunctionality.workExperienceFormFields - 6;
+        this.sharedAccordionFunctionality.workExperienceFormFields = this.sharedAccordionFunctionality.workExperienceFormFields - 7;
         this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
         this.editWorkExperience = false;

@@ -75,9 +75,9 @@
           *ngIf="authAccessService.isSuperAdmin() || authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
           <div id="nav-item-container">
             <div id="nav-item">
-              <div (click)="changeNav('/employees')"
+              <div (click)="changeNav('/employees')" 
                 [ngClass]="router.url.includes('/employees') ||  router.url.includes('/view-') ? 'active' : 'idle'"  
-                [matBadge]="employeeBankingandstarterkitService.pendingCount$ | async" matBadgeSize="small">
+                [matBadge]="employeeBankingandstarterkitService.pendingCount$ | async" [matBadgeHidden] = "!hasAccessToApprovals() || employeeBankingandstarterkitService.pendingCount$.getValue() <= 0" matBadgeSize="small">
                 Employees
               </div>
               <div *ngIf="router.url.includes('/employees') ||  router.url.includes('/view-')" id="selected-line-box">

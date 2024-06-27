@@ -86,13 +86,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.sharedAccordionFunctionality.totalProfileProgress();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", true)
 
-    this.sharedAccordionFunctionality.personalDetailsForm = this.fb.group({
-      gender: [ this.employeeProfile!.employeeDetails.gender, Validators.required ],
-      race: [ this.employeeProfile!.employeeDetails.race, Validators.required ],
-      disability: [ this.employeeProfile!.employeeDetails.disability, Validators.required ],
-      disabilityList: "",
-      disabilityNotes: [ this.employeeProfile!.employeeDetails.disabilityNotes ]
-    });
   }
 
   initializeEmployeeProfileDto() {
