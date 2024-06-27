@@ -75,7 +75,7 @@ export class SignInComponent {
     this.cookieService.deleteAll();
     this.authService.checkConnection()
       .pipe(
-        switchMap(() => this.auth.loginWithPopup()),
+        switchMap(() => this.auth.loginWithPopup({authorizationParams: {screen_hint: "login"}})),
         take(1),
         switchMap(() => this.auth.user$.pipe(take(1))),
         switchMap((user) =>
