@@ -222,6 +222,7 @@ export class SharedAccordionFunctionality {
     else {
       totalFields = (Object.keys(this.personalDetailsForm.controls).length) - 2;
     }
+    console.log("numberOfPopulatedFields", numberOfPopulatedFields)
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
@@ -233,7 +234,9 @@ export class SharedAccordionFunctionality {
         }
       }
     }
+    console.log("numberOfPopulatedFields after Forloop", numberOfPopulatedFields)
     this.personalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
+    console.log("this.personalFormProgress", this.personalFormProgress)
   }
 
   checkEmployeeFormProgress() {
