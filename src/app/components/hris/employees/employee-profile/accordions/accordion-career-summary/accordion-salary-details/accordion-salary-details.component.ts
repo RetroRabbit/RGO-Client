@@ -30,6 +30,8 @@ export class AccordionSalaryDetailsComponent {
   panelOpenState: boolean = false;
   employeeSalaryDetailsDto!: any;
   employeeSalary: EmployeeSalary = {};
+  taxNumber: string | undefined = '';
+  // employeeInformation:EmployeeProfile[] = [];
   editSalary: boolean = false;
   message: string = "";
   isAdminUser: boolean = false;
@@ -50,43 +52,61 @@ export class AccordionSalaryDetailsComponent {
   ngOnInit(): void {
     this.employeeId = this.route.snapshot.params["id"];
     this.getEmployeeSalaryDetails();
+    this.getTaxNumber();
     if (this.authAccessService.isSuperAdmin()) {
       this.isAdminUser = true;
     }
   }
 
-  initializeSalaryDetailsForm(salaryDetails: EmployeeSalary) {
+  initializeSalaryDetailsForm(salaryDetails: EmployeeSalary, taxNumber: string | undefined) {
+    console.log("Arrived", taxNumber);
     if (salaryDetails != null) {
       this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
         remuneration: [salaryDetails.remuneration, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+        taxNumber: [taxNumber]
       });
       this.getSalaryDate();
     }
     else {
       this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
         remuneration: ["", [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+        taxNumber: [""]
       });
     }
     this.sharedAccordionFunctionality.salaryDetailsForm.disable();
   }
 
-  // getTaxNumber() {
-  //   this.employeeProfileService.getEmployeeById().subscribe({
-  //     next: data => {
+  getTaxNumber() {
+    if (this.employeeId == undefined) {
+      this.employeeProfileService.getEmployeeById(this.navservice.employeeProfile.id as number).subscribe({
+        next: data => {
+          this.taxNumber = data.taxNumber;
+          console.log("tax ", this.taxNumber);
+          this.getEmployeeSalaryDetails(this.taxNumber);
+        }
+      })
+    }
+    else {
+      this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
+        next: data => {
+          this.taxNumber = data.taxNumber;
+          this.initializeSalaryDetailsForm(this.employeeSalary, this.taxNumber);
+          console.log("tax ", this.taxNumber);
+          this.getEmployeeSalaryDetails(this.taxNumber);
+        },
+        error: (error) => {
+          this.snackBarService.showSnackbar("Error fetching salary details", "snack-error");
+        }
+      })
+    }
+  }
 
-
-  //     }
-  //   })
-
-
-  //}
-
-  getEmployeeSalaryDetails() {
+  getEmployeeSalaryDetails(taxNumber: string | undefined) {
     if (this.employeeId == undefined) {
       this.employeeSalaryService.getEmployeeSalary(this.navservice.employeeProfile.id as number).subscribe({
         next: data => {
           this.employeeSalary = data;
-          this.initializeSalaryDetailsForm(this.employeeSalary);
+          this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
           this.sharedAccordionFunctionality.calculateSalaryDetails();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
@@ -99,7 +119,7 @@ export class AccordionSalaryDetailsComponent {
       this.employeeSalaryService.getEmployeeSalary(this.employeeId).subscribe({
         next: data => {
           this.employeeSalary = data;
-          this.initializeSalaryDetailsForm(this.employeeSalary);
+          this.initializeSalaryDetailsForm(this.employeeSalary, this.taxNumber);
         },
         error: (error) => {
           this.snackBarService.showSnackbar("Error fetching salary details", "snack-error");
