@@ -58,7 +58,7 @@ export class EmployeeTerminationComponent implements OnInit {
     accountsStatus: new FormControl<boolean>(false, Validators.required),
     terminationDocument: new FormControl<string>('', Validators.required),
     terminationComments: new FormControl<string>(''),
-  });
+  }, { validators: this.dateRangeValidator });
   }
 
   ngOnInit() {
@@ -80,11 +80,26 @@ export class EmployeeTerminationComponent implements OnInit {
       accountsStatus: new FormControl<boolean>(false, Validators.required),
       terminationDocument: new FormControl<string>('', Validators.required),
       terminationComments: new FormControl<string>(''),
-    }, {validator: this.dateValidator });
+    }, { validators: this.dateRangeValidator });
     this.newterminationform.valueChanges.subscribe(() => {
       this.checkCheckboxesValid();
     });
     this.checkCheckboxesValid();
+  }
+
+  dateRangeValidator(control: AbstractControl): ValidationErrors | null {
+    const dayOfNotice = control.get('dayOfNotice')?.value;
+    const lastDayOfEmployment = control.get('lastDayOfEmployment')?.value;
+
+    if (!dayOfNotice || !lastDayOfEmployment) {
+      return null;
+    }
+
+    if (new Date(dayOfNotice) > new Date(lastDayOfEmployment)) {
+      return { 'dateRangeInvalid': true };
+    }
+
+    return null;
   }
 
   SaveEmployeeTermination(nextPage: string) {
@@ -177,16 +192,6 @@ export class EmployeeTerminationComponent implements OnInit {
     const accountsStatusChecked = this.newterminationform.get('accountsStatus')?.value;
 
     this.checkboxesValid = equipmentStatusChecked && accountsStatusChecked;
-  }
-
-  dateValidator(control: AbstractControl): ValidationErrors | null {
-    const dayOfNotice = control.get('dayOfNotice')?.value;
-    const lastDayOfEmployment = control.get('lastDayOfEmployment')?.value;
-  
-    if (dayOfNotice && lastDayOfEmployment && new Date(lastDayOfEmployment) < new Date(dayOfNotice)) {
-      return { dateInvalid: true };
-    }
-    return null;
   }
 
 }

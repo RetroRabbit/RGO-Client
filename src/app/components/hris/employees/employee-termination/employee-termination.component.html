@@ -40,9 +40,11 @@
                     <mat-error *ngIf="newterminationform.controls['lastDayOfEmployment'].hasError('required')">
                         Please select Last day of employment
                     </mat-error>
-                    <mat-error *ngIf="newterminationform.get('lastDayOfEmployment')?.hasError('dateInvalid')">
-                        Last day of employment cannot be earlier than date of notice
+
+                    <mat-error *ngIf="newterminationform.errors?.['dateRangeInvalid']">
+                        Last day of employment cannot be earlier than the day of notice
                     </mat-error>
+
                 </mat-form-field>
 
 
