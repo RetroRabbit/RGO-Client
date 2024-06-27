@@ -117,7 +117,7 @@ export class NewCandidateComponent {
       highestQualification: new FormControl<string>(''),
       school: new FormControl<string>(''),
       endDate: new FormControl<number>(0),
-      race: new FormControl<number | null>(-1),
+      race: new FormControl<number | null>(null),
       photo: new FormControl<string>(''),
     })
   }

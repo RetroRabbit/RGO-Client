@@ -29,21 +29,11 @@
                   </mat-radio-group>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.race" class="col-12 col-md-6 my-2">
-                  <mat-form-field appearance="outline" style="width: 100%;" >
-                    <mat-label>Race</mat-label>
-                    <mat-select formControlName="race" hideSingleSelectionIndicator="true" >
-                      <mat-option *ngFor="let race of sharedAccordionFunctionality.races; index as i" [value]="i">
-                        {{race.value}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.race" class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Country</mat-label>
+                    <mat-label>Race</mat-label>
                     <mat-select formControlName="race"
                       hideSingleSelectionIndicator="true">
-                      <mat-option *ngFor="let race of  sharedAccordionFunctionality.races" [value]="race"> {{ race.value }} </mat-option>
+                      <mat-option *ngFor="let race of sharedAccordionFunctionality.races;" [value]="race" > {{ race.value }} </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>

@@ -214,29 +214,41 @@ export class SharedAccordionFunctionality {
   checkPersonalFormProgress() {
     let numberOfPopulatedFields = 0;
     let totalFields = 0;
-    const formControls = this.personalDetailsForm.controls;
+    let numberOfRequiredFields = 0;
 
+    const formControls = this.personalDetailsForm.controls;
+    let isRequired = false;
     if (this.hasDisability) {
       totalFields = (Object.keys(this.personalDetailsForm.controls).length);
     }
     else {
       totalFields = (Object.keys(this.personalDetailsForm.controls).length) - 2;
     }
-    console.log("numberOfPopulatedFields", numberOfPopulatedFields)
+
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (control.value != null && control.value != '' && this.hasDisability != false && control.value != "na") {
-          numberOfPopulatedFields++;
+        if (control.validator) {
+          const validator = control.validator({} as AbstractControl);
+          isRequired = validator && validator['required'] ? true : false;
         }
-        else if (controlName.includes("disability") && this.hasDisability == false) {
-          numberOfPopulatedFields++;
+        if (isRequired) {
+          numberOfRequiredFields++;
+          if (control.value !== null && control.value !== -1 && control.value !== '' && this.hasDisability !== false && control.value !== "na") {
+            numberOfPopulatedFields++;
+          }
+          else if (controlName.includes("disability") && this.hasDisability == false) {
+            numberOfPopulatedFields++;
+          }
         }
       }
     }
-    console.log("numberOfPopulatedFields after Forloop", numberOfPopulatedFields)
-    this.personalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
-    console.log("this.personalFormProgress", this.personalFormProgress)
+
+    if (numberOfRequiredFields === 0) {
+      this.personalFormProgress = 100;
+    } else {
+      this.personalFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
+    }
   }
 
   checkEmployeeFormProgress() {

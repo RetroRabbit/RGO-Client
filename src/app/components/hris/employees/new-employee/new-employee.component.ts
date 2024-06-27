@@ -224,7 +224,7 @@ export class NewEmployeeComponent implements OnInit {
       new Date(Date.now())
     ),
     passportCountryIssue: new FormControl<string>(''),
-    race: new FormControl<number>(-1),
+    race: new FormControl<number | null>(null),
     gender: new FormControl<number | null>(null),
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),
     ]),
@@ -394,7 +394,7 @@ export class NewEmployeeComponent implements OnInit {
   }
   public fileLeave(event: Event) {
   }
-  
+
   public removeFileByIndex(index: number): void {
     if (index >= 0 && index < this.files.length) {
       this.files.splice(index, 1);
@@ -638,17 +638,17 @@ export class NewEmployeeComponent implements OnInit {
   validateFile(file: File): boolean {
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
     const maxSizeInBytes = 4194304;
-  
+
     if (!validTypes.includes(file.type)) {
       this.snackBarService.showSnackbar(`Only JPEG, JPG, and PNG files are allowed!`, "snack-error");
       return false;
     }
-  
+
     if (file.size > maxSizeInBytes) {
       this.snackBarService.showSnackbar(`File size must be less than 4MB!`, "snack-error");
       return false;
     }
-  
+
     return true;
   }
 
