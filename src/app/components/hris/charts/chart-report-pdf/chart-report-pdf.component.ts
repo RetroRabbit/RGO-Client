@@ -88,7 +88,7 @@ export class ChartReportPdfComponent {
           container.removeAttribute("style");
         }
       }).catch(() => {
-        this.snackBarService.showSnackbar("Error generating PDF", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Generating PDF", "snack-error");
 
         if (originalStyle !== null) {
           container.setAttribute("style", originalStyle);
@@ -97,7 +97,7 @@ export class ChartReportPdfComponent {
         }
       });
     } else {
-      this.snackBarService.showSnackbar("Error generating pdf","snack-error");
+      this.snackBarService.showSnackbar("Unable to Generating PDF","snack-error");
     }
 
   }

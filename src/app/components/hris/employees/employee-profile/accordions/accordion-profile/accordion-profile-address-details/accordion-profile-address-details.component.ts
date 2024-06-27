@@ -149,11 +149,11 @@ export class AccordionProfileAddressDetailsComponent {
       this.employeeAddressService.update(postalAddressDto).subscribe({
         next: () => {
           this.employeeProfile!.employeeDetails.postalAddress = postalAddressDto;
-          this.snackBarService.showSnackbar("Postal Details updated", "snack-success");
+          this.snackBarService.showSnackbar("Updated", "snack-success");
           this.employeeAddressService.update(physicalAddressDto).subscribe({
             next: () => {
               this.employeeProfile!.employeeDetails.physicalAddress = physicalAddressDto;
-              this.snackBarService.showSnackbar("Physical address updated", "snack-success");
+              this.snackBarService.showSnackbar("Updated", "snack-success");
               this.navService.refreshEmployee();
               this.sharedAccordionFunctionality.addressDetailsForm.disable();
               this.sharedAccordionFunctionality.checkAddressFormProgress();
@@ -162,16 +162,16 @@ export class AccordionProfileAddressDetailsComponent {
               this.sharedAccordionFunctionality.editAddress = false;
             },
             error: (error: any) => {
-              this.snackBarService.showSnackbar(error.error, "snack-error");
+              this.snackBarService.showSnackbar("Unable to Update Address Information", "snack-error");
             },
           });
         },
-        error: (postalError: any) => {
-          this.snackBarService.showSnackbar(postalError, "snack-error");
+        error: (error: any) => {
+          this.snackBarService.showSnackbar("Unable to Update Address Information", "snack-error");
         },
       });
     } else {
-      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+      this.snackBarService.showSnackbar("Some Fields Are Still Missing Information", "snack-error");
     }
     this.cancelAddressEdit();
   }
@@ -228,7 +228,7 @@ export class AccordionProfileAddressDetailsComponent {
         this.countries = data
       },
       error: (error: any) => {
-        this.snackBarService.showSnackbar(error,'Could not load countries')
+        this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error")
       },
       complete: () => {
         this.selectedCountry = this.employeeProfile!.employeeDetails.physicalAddress?.country!
@@ -239,7 +239,7 @@ export class AccordionProfileAddressDetailsComponent {
         this.locationApiService.getProvinces(this.selectedCountry).subscribe({
           next: (data) => this.provinces = data,
           error: (error: any) => {
-            this.snackBarService.showSnackbar(error,'Could not load Provinces')
+            this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error")
            },
           complete: () => {
             this.selectedProvince = this.employeeProfile!.employeeDetails.physicalAddress?.province!
@@ -263,7 +263,7 @@ export class AccordionProfileAddressDetailsComponent {
         this.postalCountries = data
       },
       error: (error: any) => {
-        this.snackBarService.showSnackbar(error,'Could not load countries')
+        this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error")
       },
       complete: () => {
         this.selectedPostalCountry = this.employeeProfile!.employeeDetails.postalAddress?.country!
@@ -274,7 +274,7 @@ export class AccordionProfileAddressDetailsComponent {
         this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
           next: (data) => this.postalProvinces = data,
           error: (error: any) => {
-            this.snackBarService.showSnackbar(error,'Could not load Provinces')
+            this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error")
            },
           complete: () => {
             this.selectedPostalProvince = this.employeeProfile!.employeeDetails.postalAddress?.province!
@@ -362,7 +362,7 @@ export class AccordionProfileAddressDetailsComponent {
           this.getEmployeeFieldCodes();
           this.initializeForm();
         }, error: () => {
-          this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Fetch User Profile", "snack-error");
         }
       })
     }

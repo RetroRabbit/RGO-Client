@@ -109,8 +109,8 @@ export class EmployeeTerminationComponent implements OnInit {
       terminationComments: newterminationform.terminationComments
     };
     this.employeeTerminationService.saveEmployeeTermination(employeeTerminationDto).subscribe({
-      next: () => this.snackBarService.showSnackbar("Employee termination saved", "snack-success"),
-      error: () => this.snackBarService.showSnackbar("error", "Could not save termination"),
+      next: () => this.snackBarService.showSnackbar("Saved", "snack-success"),
+      error: () => this.snackBarService.showSnackbar("Unable to Save Termination", 'snack-error'),
       complete: () => {
         this.router.navigateByUrl(nextPage);
       }
@@ -123,7 +123,7 @@ export class EmployeeTerminationComponent implements OnInit {
     if (uploadedDoc) {
       uploadedDoc.value = '';
     }
-    this.snackBarService.showSnackbar('File removed successfully', 'snack-success');
+    this.snackBarService.showSnackbar('Success', 'snack-success');
   }
 
   onCVFileChange(event: any): void {
@@ -142,7 +142,7 @@ export class EmployeeTerminationComponent implements OnInit {
     reader.addEventListener('loadend', () => {
       const base64Data = reader.result as string;
       this.newterminationform.patchValue({ [controlName]: base64Data });
-      this.snackBarService.showSnackbar('File uploaded successfully', 'snack-success');
+      this.snackBarService.showSnackbar('Success', 'snack-success');
       this.base64String = base64Data;
     });
     reader.readAsDataURL(file);

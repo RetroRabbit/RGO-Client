@@ -223,7 +223,7 @@
                         (click)="validateAndCheckCandidateEmail()">Next</button>
                     <button *ngIf="isValidEmail && !isBlacklisted && !candidateExists && !candidateWarning"
                         id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
-                        (click)="saveAndAddAnotherCandidate()">Save and add another</button>
+                        (click)="saveAndAddAnotherCandidate()">Save and Add Another</button>
                     <button *ngIf="isBlacklisted || candidateWarning || candidateExists" id="save-button">Go to
                         Profile</button>
                     <button *ngIf="isValidEmail && !isBlacklisted && !candidateExists && !candidateWarning"

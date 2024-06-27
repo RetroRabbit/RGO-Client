@@ -238,7 +238,7 @@ export class AccordionProfileEmployeeDetailsComponent {
           if (!foundDuplicateId) {
             this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
               next: () => {
-                this.snackBarService.showSnackbar("Employee details updated", "snack-success");
+                this.snackBarService.showSnackbar("Updated", "snack-success");
                 this.sharedAccordionFunctionality.checkEmployeeFormProgress();
                 this.sharedAccordionFunctionality.totalProfileProgress();
                 this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.sharedAccordionFunctionality.employeeProfileDto?.clientAllocated)[ 0 ];
@@ -249,17 +249,17 @@ export class AccordionProfileEmployeeDetailsComponent {
                 this.navService.refreshEmployee();
               },
               error: () => {
-                this.snackBarService.showSnackbar("Failed to update employee details", "snack-error");
+                this.snackBarService.showSnackbar("Unable to Update Employee Details", "snack-error");
               }
             });
           } else {
-            this.snackBarService.showSnackbar("ID Number already used by another employee", "snack-error");
+            this.snackBarService.showSnackbar("ID Number Already in Use", "snack-error");
           }
         },
       })
     }
     else {
-      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+      this.snackBarService.showSnackbar("Some Fields Are Still Missing Information", "snack-error");
     }
   }
 
@@ -386,7 +386,7 @@ export class AccordionProfileEmployeeDetailsComponent {
           this.getEmployeeFieldCodes();
           this.initializeForm();
         }, error: () => {
-          this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Fetch User Profile", "snack-error");
         }
       })
     }

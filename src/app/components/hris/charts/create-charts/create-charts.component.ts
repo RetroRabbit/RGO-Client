@@ -51,12 +51,12 @@ export class CreateChartsComponent {
     this.ChartService.createChart(this.selectedDataItems, this.selectedDataItems, this.chartName, this.chartType, this.navService.employeeProfile.id!)
       .subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Chart created", "snack-success");
+          this.snackBarService.showSnackbar("Created", "snack-success");
           this.router.navigateByUrl('/charts')
           this.cookieService.set('currentPage', "Charts");
         },
         error: () => {
-          this.snackBarService.showSnackbar("Failed to create chart", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Create Chart", "snack-error");
         }
       }
     );
@@ -70,11 +70,11 @@ export class CreateChartsComponent {
           this.chartLabels = data.labels;
         },
         error: () => {
-          this.snackBarService.showSnackbar("Failed to get chart data", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Get Chart Data", "snack-error");
         }
       });
     } else {
-      this.snackBarService.showSnackbar("No data selected. Please select data items.", "snack-error");
+      this.snackBarService.showSnackbar("Data Items Not Selected", "snack-error");
     }
   }
 
@@ -86,11 +86,11 @@ export class CreateChartsComponent {
           this.chartLabels = data.labels;
         },
         error: () => {
-          this.snackBarService.showSnackbar("Failed to get chart data.", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Get Chart Data", "snack-error");
         }
       });
     } else {
-      this.snackBarService.showSnackbar("No data selected. Please select data items", "snack-error");
+      this.snackBarService.showSnackbar("Data Items Not Selected", "snack-error");
     }
   }
 

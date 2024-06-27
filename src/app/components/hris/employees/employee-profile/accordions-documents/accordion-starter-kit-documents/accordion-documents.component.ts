@@ -116,7 +116,7 @@ export class AccordionDocumentsComponent {
           this.calculateDocumentProgress();
         },
         error: error => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Retrieve Starter Kit Documents", "snack-error");
         }
       })
     } else {
@@ -128,7 +128,7 @@ export class AccordionDocumentsComponent {
           this.calculateDocumentProgress();
         },
         error: error => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Retrieve Starter Kit Documents", "snack-error");
         }
       })
     }
@@ -150,13 +150,13 @@ export class AccordionDocumentsComponent {
       this.employeeDocumentService.saveEmployeeDocument(saveObj, 0).subscribe({
         next: () => {
           this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar("Document added", "snack-success");
+          this.snackBarService.showSnackbar("Saved", "snack-success");
           this.getEmployeeDocuments();
           this.calculateDocumentProgress();
         },
         error: (error) => {
           this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Save Document", "snack-error");
         }
       });
     } else {
@@ -177,13 +177,13 @@ export class AccordionDocumentsComponent {
       this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
         next: () => {
           this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar("Document updated", "snack-success");
+          this.snackBarService.showSnackbar("Updated", "snack-success");
           this.getEmployeeDocuments();
           this.calculateDocumentProgress();
 
         },
         error: (error) => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Update Document", "snack-error");
           this.isLoadingUpload = false;
         }
       });

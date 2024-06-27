@@ -84,7 +84,7 @@ export class AccordionCareerAdditionalInformationComponent {
           }
           this.getEmployeeFieldCodes();
         }, error: () => {
-          this.snackBarService.showSnackbar("Error fetching user profile", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Fetch User Profile", "snack-error");
         }
       })
     }
@@ -170,7 +170,7 @@ export class AccordionCareerAdditionalInformationComponent {
   saveAdditionalEdit() {
     const empDataValues = this.sharedAccordionFunctionality.employeeData;
     if (!this.sharedAccordionFunctionality.additionalCareerInfoForm.valid) {
-      this.snackBarService.showSnackbar("Please fill in the required fields", "snack-error");
+      this.snackBarService.showSnackbar("Some Fields Are Still Missing Information", "snack-error");
       return;
     }
     for (const fieldcode of this.customFields) {
@@ -187,7 +187,7 @@ export class AccordionCareerAdditionalInformationComponent {
         }
         this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
           next: (data) => {
-            this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
+            this.snackBarService.showSnackbar("Updated", "snack-success");
             this.sharedAccordionFunctionality.calculateCareerAdditionalFormProgress();
             this.sharedAccordionFunctionality.totalCareerProgress();
             this.sharedAccordionFunctionality.additionalCareerInfoForm.disable();
@@ -195,7 +195,7 @@ export class AccordionCareerAdditionalInformationComponent {
             this.getEmployeeData();
             this.updateEmployeeProfile.emit(1);
           },
-          error: (error) => { this.snackBarService.showSnackbar(error, "snack-error") },
+          error: (error) => { this.snackBarService.showSnackbar("Unable to Update Career Information", "snack-error") },
         });
       } else {
         const formatFound: any = fieldcode?.code
@@ -209,7 +209,7 @@ export class AccordionCareerAdditionalInformationComponent {
         if (employeeDataDto.value) {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
-              this.snackBarService.showSnackbar("Employee Details updated", "snack-success");
+              this.snackBarService.showSnackbar("Saved", "snack-success");
               this.sharedAccordionFunctionality.calculateCareerAdditionalFormProgress();
               this.sharedAccordionFunctionality.totalCareerProgress();
               this.sharedAccordionFunctionality.additionalCareerInfoForm.disable();
@@ -218,7 +218,7 @@ export class AccordionCareerAdditionalInformationComponent {
               this.updateEmployeeProfile.emit(1);
             },
             error: (error) => {
-              this.snackBarService.showSnackbar(error, "snack-error");
+              this.snackBarService.showSnackbar("Unable to Save Career Information", "snack-error");
             }
           });
         }
