@@ -49,7 +49,8 @@
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                       <mat-label>Tax Number</mat-label>
                                       <input type="text" min="0" matInput placeholder="Tax Number" formControlName="taxNumber">
-                                      <mat-error>
+                                      <mat-error
+                                      *ngIf="sharedAccordionFunctionality.salaryDetailsForm.controls['taxNumber'].hasError('required')">
                                       Tax Number is required</mat-error>
                                     </mat-form-field>
                                 </div>

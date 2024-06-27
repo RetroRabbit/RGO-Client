@@ -8,7 +8,6 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
-import { Client } from 'src/app/models/hris/client.interface';
 
 @Component({
   selector: 'app-accordion-profile-personal-details',
@@ -37,10 +36,11 @@ export class AccordionProfilePersonalDetailsComponent {
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
       disability: [this.employeeProfile!.employeeDetails.disability, Validators.required],
-      nationality: [this.employeeProfile.employeeDetails.nationality, Validators.required],
-      countryOfBirth: [this.employeeProfile.employeeDetails.countryOfBirth],
+      nationality: [this.employeeProfile!.employeeDetails.nationality],
+      countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth],
       disabilityList: "",
       disabilityNotes: [this.employeeProfile!.employeeDetails.disabilityNotes]
+
     });
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
     this.sharedAccordionFunctionality.checkPersonalFormProgress();
@@ -126,8 +126,10 @@ export class AccordionProfilePersonalDetailsComponent {
       this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = personalDetailsFormValue.disabilityNotes;
       this.sharedAccordionFunctionality.employeeProfileDto!.race = personalDetailsFormValue.race;
       this.sharedAccordionFunctionality.employeeProfileDto!.gender = personalDetailsFormValue.gender;
-      this.sharedAccordionFunctionality.employeeProfileDto!.nationality = personalDetailsFormValue.nationality;
       this.sharedAccordionFunctionality.employeeProfileDto!.countryOfBirth = personalDetailsFormValue.countryOfBirth;
+      this.sharedAccordionFunctionality.employeeProfileDto!.nationality = personalDetailsFormValue.nationality;
+
+      console.log("DTO", this.sharedAccordionFunctionality.employeeProfileDto)
       this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Personal details updated", "snack-success");
@@ -138,6 +140,7 @@ export class AccordionProfilePersonalDetailsComponent {
         },
         error: (error) => {
           this.snackBarService.showSnackbar(error.error, "snack-error");
+          console.log(error);
         },
       });
     }
