@@ -1,5 +1,5 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { terminationOptions } from 'src/app/models/hris/constants/terminationOptions.constants';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -34,6 +34,7 @@ export class EmployeeTerminationComponent implements OnInit {
   isvalidFileSize: boolean = false;
   checkboxesValid: boolean = true;
   formSubmitted: boolean = false;
+  dateInvalid: boolean = false;
 
   terminationOptionValue: number = 0;
   interviewDocFilename: string = "";
@@ -72,63 +73,62 @@ export class EmployeeTerminationComponent implements OnInit {
 
   initializeForm() {
     this.newterminationform = this.fb.group({
-      terminationOption: new FormControl('', Validators.required),
-      dayOfNotice: new FormControl<Date | string>('', Validators.required),
-      lastDayOfEmployment: new FormControl<Date | string>('', Validators.required),
-      reEmploymentStatus: new FormControl<boolean>(true, Validators.required),
-      equipmentStatus: new FormControl<boolean>(false, Validators.required),
-      accountsStatus: new FormControl<boolean>(false, Validators.required),
-      terminationDocument: new FormControl<string>('', Validators.required),
-      terminationComments: new FormControl<string>(''),
+        terminationOption: new FormControl('', Validators.required),
+        dayOfNotice: new FormControl<Date | string>('', Validators.required),
+        lastDayOfEmployment: new FormControl<Date | string>('', Validators.required),
+        reEmploymentStatus: new FormControl<boolean>(true, Validators.required),
+        equipmentStatus: new FormControl<boolean>(false, Validators.required),
+        accountsStatus: new FormControl<boolean>(false, Validators.required),
+        terminationDocument: new FormControl<string>('', Validators.required),
+        terminationComments: new FormControl<string>(''),
     }, { validators: this.dateRangeValidator });
     this.newterminationform.valueChanges.subscribe(() => {
-      this.checkCheckboxesValid();
+        this.checkCheckboxesValid();
     });
     this.checkCheckboxesValid();
-  }
+}
 
-  dateRangeValidator(control: AbstractControl): ValidationErrors | null {
+  dateRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const dayOfNotice = control.get('dayOfNotice')?.value;
     const lastDayOfEmployment = control.get('lastDayOfEmployment')?.value;
 
-    if (!dayOfNotice || !lastDayOfEmployment) {
-      return null;
+    if (dayOfNotice != null && lastDayOfEmployment != null) {
+      const isInvalid = new Date(dayOfNotice) > new Date(lastDayOfEmployment);
+      return isInvalid ? { dateRangeInvalid: true } : null;
     }
-
-    if (new Date(dayOfNotice) > new Date(lastDayOfEmployment)) {
-      return { 'dateRangeInvalid': true };
-    }
-
     return null;
-  }
+  };
 
   SaveEmployeeTermination(nextPage: string) {
     this.formSubmitted = true;
     this.checkCheckboxesValid();
-    if (!this.checkboxesValid) {
-      return;
+
+    this.newterminationform.updateValueAndValidity();
+
+    if (!this.checkboxesValid || !this.newterminationform.valid) {
+        return;
     }
 
     const newterminationform = this.newterminationform.value;
     const employeeTerminationDto = {
-      id: 0,
-      employeeId: +this.employeeId,
-      terminationOption: this.terminationOptionValue,
-      dayOfNotice: newterminationform.dayOfNotice,
-      lastDayOfEmployment: newterminationform.lastDayOfEmployment,
-      reemploymentStatus: newterminationform.reEmploymentStatus,
-      equipmentStatus: newterminationform.equipmentStatus,
-      accountsStatus: newterminationform.accountsStatus,
-      terminationDocument: this.base64String,
-      documentName: newterminationform.terminationDocument,
-      terminationComments: newterminationform.terminationComments
+        id: 0,
+        employeeId: +this.employeeId,
+        terminationOption: this.terminationOptionValue,
+        dayOfNotice: newterminationform.dayOfNotice,
+        lastDayOfEmployment: newterminationform.lastDayOfEmployment,
+        reemploymentStatus: newterminationform.reEmploymentStatus,
+        equipmentStatus: newterminationform.equipmentStatus,
+        accountsStatus: newterminationform.accountsStatus,
+        terminationDocument: this.base64String,
+        documentName: newterminationform.terminationDocument,
+        terminationComments: newterminationform.terminationComments
     };
     this.employeeTerminationService.saveEmployeeTermination(employeeTerminationDto).subscribe({
-      next: () => this.snackBarService.showSnackbar("Saved", "snack-success"),
-      error: () => this.snackBarService.showSnackbar("Unable to Save Termination", 'snack-error'),
-      complete: () => {
-        this.router.navigateByUrl(nextPage);
-      }
+        next: () => this.snackBarService.showSnackbar("Saved", "snack-success"),
+        error: () => this.snackBarService.showSnackbar("Unable to Save Termination", 'snack-error'),
+        complete: () => {
+            this.router.navigateByUrl(nextPage);
+        }
     });
   }
 
@@ -193,5 +193,4 @@ export class EmployeeTerminationComponent implements OnInit {
 
     this.checkboxesValid = equipmentStatusChecked && accountsStatusChecked;
   }
-
 }
