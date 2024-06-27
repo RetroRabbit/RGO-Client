@@ -30,8 +30,8 @@ export class AccordionSalaryDetailsComponent {
   panelOpenState: boolean = false;
   employeeSalaryDetailsDto!: any;
   employeeSalary: EmployeeSalary = {};
-  taxNumber: string | undefined = '';
-  // employeeInformation:EmployeeProfile[] = [];
+  taxNumber: string = '';
+  //employeeInformation:EmployeeProfile[] = [];
   editSalary: boolean = false;
   message: string = "";
   isAdminUser: boolean = false;
@@ -51,8 +51,8 @@ export class AccordionSalaryDetailsComponent {
 
   ngOnInit(): void {
     this.employeeId = this.route.snapshot.params["id"];
-    this.getEmployeeSalaryDetails();
-    this.getTaxNumber();
+    //this.getEmployeeSalaryDetails();
+    this.getEmployeeDetails();
     if (this.authAccessService.isSuperAdmin()) {
       this.isAdminUser = true;
     }
@@ -76,20 +76,17 @@ export class AccordionSalaryDetailsComponent {
     this.sharedAccordionFunctionality.salaryDetailsForm.disable();
   }
 
-  getTaxNumber() {
+  getEmployeeDetails() {
     if (this.employeeId == undefined) {
       this.employeeProfileService.getEmployeeById(this.navservice.employeeProfile.id as number).subscribe({
         next: data => {
-          this.taxNumber = data.taxNumber;
-          console.log("tax ", this.taxNumber);
-          this.getEmployeeSalaryDetails(this.taxNumber);
+          this.getEmployeeSalaryDetails(data.taxNumber);
         }
       })
     }
     else {
       this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
         next: data => {
-          this.taxNumber = data.taxNumber;
           this.initializeSalaryDetailsForm(this.employeeSalary, this.taxNumber);
           console.log("tax ", this.taxNumber);
           this.getEmployeeSalaryDetails(this.taxNumber);
@@ -184,7 +181,7 @@ export class AccordionSalaryDetailsComponent {
             this.getSalaryDate();
             this.editSalary = false;
             this.sharedAccordionFunctionality.salaryDetailsForm.disable();
-            this.getEmployeeSalaryDetails();
+            this.getEmployeeDetails();
             this.sharedAccordionFunctionality.calculateSalaryDetails();
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
@@ -199,7 +196,7 @@ export class AccordionSalaryDetailsComponent {
             this.getSalaryDate();
             this.editSalary = false;
             this.sharedAccordionFunctionality.salaryDetailsForm.disable();
-            this.getEmployeeSalaryDetails();
+            this.getEmployeeDetails();
             this.sharedAccordionFunctionality.calculateSalaryDetails();
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
