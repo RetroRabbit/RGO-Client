@@ -7,7 +7,7 @@
           Employee Details
         </mat-panel-title>
         <mat-panel-description *ngIf="sharedAccordionFunctionality.employeeFormProgress != 100" class="pe-0 pe-md-5">
-          <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing information</span>
+          <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing Information</span>
         </mat-panel-description>
       </mat-expansion-panel-header>
       <form [formGroup]="sharedAccordionFunctionality.employeeDetailsForm" (submit)="saveEmployeeEdit()">
@@ -185,13 +185,13 @@
               Cancel
             </button>
             <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="save-button" type="submit">
-              Save changes
+              Save
             </button>
           </div>
           <div class="col-12 d-block d-md-none d-lg-none" id="edit-buttons">
             <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="save-button" type="submit"
               class="col-12 mb-2">
-              Save changes
+              Save
             </button>
             <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="cancel-button"
               (click)="cancelEmployeeEdit()" class="col-12">

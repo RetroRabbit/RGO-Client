@@ -84,11 +84,11 @@ export class AddEmployeeEventComponent {
       this.employeeDateService.updateEmployeeDate(employeeDate).subscribe(
         () => {
           this.isLoading = false
-          this.snackBarService.showSnackbar("Event updated successfully", "snack-success")
+          this.snackBarService.showSnackbar("Updated", "snack-success")
         },
         () => {
           this.isLoading = false
-          this.snackBarService.showSnackbar("Failed to update event", "snack-error")
+          this.snackBarService.showSnackbar("Unable to Update Event", "snack-error")
         }
       );
       return
@@ -97,11 +97,11 @@ export class AddEmployeeEventComponent {
     this.employeeDateService.saveEmployeeDate(event).subscribe(
       () => {
         this.isLoading = false
-        this.snackBarService.showSnackbar("Event saved successfully", "snack-success")
+        this.snackBarService.showSnackbar("Saved", "snack-success")
       },
       () => {
         this.isLoading = false
-        this.snackBarService.showSnackbar("Failed to save event", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Update Event", "snack-error");
       }
     );
   }

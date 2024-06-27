@@ -220,7 +220,7 @@ export class EmployeeProfileComponent implements OnChanges {
         this.terminationData = data;
       },
       error: err => {
-        this.snackBarService.showSnackbar('Error fetching termination details', err);
+        this.snackBarService.showSnackbar('Unable to Fetch Termination Details', err);
       }
     });
   }
@@ -253,7 +253,7 @@ export class EmployeeProfileComponent implements OnChanges {
         this.changeDetectorRef.detectChanges();
       },
       error: (error: any) => {
-        this.snackBarService.showSnackbar(error, 'snack-error');
+        this.snackBarService.showSnackbar("Unable to Retrieve Profile", 'snack-error');
       }
     })
   }
@@ -276,8 +276,7 @@ export class EmployeeProfileComponent implements OnChanges {
           this.getAllEmployees();
       },
       error: () => {
-        const errorMessage = this.usingSimpleProfile ? 'Error fetching simple user profile' : 'Error fetching user profile';
-        this.snackBarService.showSnackbar(errorMessage, 'snack-error');
+        this.snackBarService.showSnackbar("Unable to Retrieve Profile", 'snack-error');
       }
     })
   }
@@ -409,7 +408,7 @@ export class EmployeeProfileComponent implements OnChanges {
         this.updateUser();
       };
       file.onerror = (error) => {
-        this.snackBarService.showSnackbar('Error uploading file', 'snack-error')
+        this.snackBarService.showSnackbar('Unable to Upload File', 'snack-error')
       }
     }
   }
@@ -419,11 +418,11 @@ export class EmployeeProfileComponent implements OnChanges {
     this.employeeService.updateEmployee(updatedEmp).subscribe({
       next: () => {
         this.getEmployeeProfile();
-        this.snackBarService.showSnackbar('Updated your profile picture', 'snack-success');
+        this.snackBarService.showSnackbar("Updated", "snack-success");
         this.navService.refreshEmployee();
       },
       error: () => {
-        this.snackBarService.showSnackbar('Failed to update employee profile picture', 'snack-error');
+        this.snackBarService.showSnackbar('Unable to Update Employee Profile Picture', 'snack-error');
       }
     });
   }
@@ -435,11 +434,11 @@ export class EmployeeProfileComponent implements OnChanges {
     } else if (this.employeeProfile && this.employeeProfile.email) {
       emailToCopy = this.employeeProfile.email;
     } else {
-      this.snackBarService.showSnackbar("No email address available to copy", "snack-error");
+      this.snackBarService.showSnackbar("No Email Address Available to Copy", "snack-error");
       return;
     }
     this.clipboard.copy(emailToCopy);
-    this.snackBarService.showSnackbar("Email copied to clipboard", "snack-success");
+    this.snackBarService.showSnackbar("Copied to Clipboard", "snack-success");
   }
 
 

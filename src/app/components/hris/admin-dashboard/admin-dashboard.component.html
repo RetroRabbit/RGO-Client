@@ -20,7 +20,7 @@
             <button mat-button (click)="searchQuery = ''" *ngIf="searchQuery !== ''" id="back-button">
               <mat-icon>arrow_back</mat-icon>
             </button>
-            <input type="search" id="employee-search" name="searchbar" placeholder="Search for employees"
+            <input type="search" id="employee-search" name="searchbar" placeholder="Search"
               [(ngModel)]="searchQuery" (input)="searchEmployees()" autocomplete="off" />
 
             <div [ngStyle]="{ display: screenWidth <= 350 ? 'none' : '' }" id="search-icon" (click)="searchEmployees()"
@@ -116,7 +116,7 @@
           <div class="col-9 my-2" style="justify-content: left">
             <div id="header-label">Employee Count</div>
             <div id="total-employees">
-              Total employees: <b>{{ totalNumberOfEmployees }}</b>
+              Total Employees: <b>{{ totalNumberOfEmployees }}</b>
             </div>
             <hr />
             <div class="row">
@@ -198,12 +198,13 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+            
         <div>
-          <span class="span-billable">
+          <span class="span-billable" id="subheaders">
             {{ employeeCount.billableEmployeesPercentage }}% Billable
           </span>
+        </div>
+          </div>
         </div>
       </div>
 
