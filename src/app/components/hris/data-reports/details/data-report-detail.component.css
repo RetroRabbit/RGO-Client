@@ -90,6 +90,7 @@
 
   .close-icon {
     color: red;
-    float: right; /* Ensure right alignment */
-    margin-left: 10px; /* Optional spacing between text and icon */
+    float: right;
+    margin-left: 10px;
+    cursor: pointer;
   }

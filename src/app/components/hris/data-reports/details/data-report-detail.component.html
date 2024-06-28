@@ -116,7 +116,7 @@
                             <div class="mt-3 px-4 offset-1 col-10">
                                 <form *ngIf="modalAddingNew" [formGroup]="dataReportForm" id="dataReportForm">
                                     <mat-form-field appearance="outline" class="col-12">
-                                        <mat-label>Select level</mat-label>
+                                        <mat-label>Select Access type</mat-label>
                                         <mat-select formControlName="accessType" hideSingleSelectionIndicator="true"
                                             (selectionChange)="accessChange()">
                                             <mat-option [value]="'Employees'">Employees</mat-option>
@@ -149,16 +149,20 @@
                                     </mat-checkbox>
                                 </form>
                                 <div *ngIf="!modalAddingNew">
-                                    <h3>Roles with Access</h3>
+                                    <h3 *ngIf="accessRoleList.length > 0">Roles with Access</h3>
                                     <div class="row" *ngFor="let access of accessRoleList">
-                                      <h5>{{ access.name }}</h5>
-                                      <mat-icon class="close-icon">close</mat-icon>
+                                      <h5 class="col-6">{{ access.name }}</h5>
+                                      <div class="col-6">
+                                        <mat-icon (click)="archiveAccess(access.id)" class="close-icon" >close</mat-icon>
+                                      </div>
                                     </div>
                                   
-                                    <h3>People with Access</h3>
+                                    <h3 *ngIf="accessEmployeeList.length > 0">People with Access</h3>
                                     <div class="row" *ngFor="let access of accessEmployeeList">
-                                      <h5>{{ access.name }}</h5>
-                                      <mat-icon class="close-icon">close</mat-icon>
+                                      <h5 class="col-6">{{ access.name }}</h5>
+                                      <div class="col-6">
+                                        <mat-icon (click)="archiveAccess(access.id)" class="close-icon">close</mat-icon>
+                                      </div>
                                     </div>
                                   </div>
                             </div>
@@ -180,7 +184,7 @@
                                 <button (click)="updateAccess()">Save</button>
                             </div>
                             <div class="col-12 d-flex justify-content-center align-items-center" id="dialog-close">
-                                <button (click)="modalAddingNew = false">
+                                <button (click)="goBack()">
                                     Back
                                 </button>
                             </div>

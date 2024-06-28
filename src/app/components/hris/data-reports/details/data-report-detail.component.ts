@@ -261,7 +261,6 @@ export class DataReportDetailComponent {
         this.selectedEmployeeId = undefined;
         this.selectedRoleId = undefined;
         this.selectedViewOnly = undefined;
-        this.dialog.closeAll();
         this.populateReportData(this.dataReportCode)
         this.modalAddingNew = false;
         this.snackBarService.showSnackbar("Access Added", "snack-success")
@@ -270,5 +269,22 @@ export class DataReportDetailComponent {
         this.snackBarService.showSnackbar("Access Adding failed", "snack-error")
       }
     })
+  }
+
+  archiveAccess(accessId: number) {
+    this.dataReportingService.archiveReportAccess(accessId).subscribe({
+      next: data => {
+        this.populateReportData(this.reportCode!);
+        this.snackBarService.showSnackbar("Access Archived", "snack-success")
+      },
+      error: error =>{
+        this.snackBarService.showSnackbar("Access Archiving failed", "snack-error")
+      }
+    })
+  }
+
+  goBack(){
+    this.modalAddingNew = false;
+    this.dataReportForm.reset();
   }
 }

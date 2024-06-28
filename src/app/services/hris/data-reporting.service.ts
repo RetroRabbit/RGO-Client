@@ -50,4 +50,8 @@ export class DataReportingService {
     updateReportAccess(input: ReportAccessRequest): Observable<ReportAccessRequest>{
         return this.httpClient.put<ReportAccessRequest>(`${this.baseUrl}/update-report-access`, input)
     }
+
+    archiveReportAccess(accessId: number): Observable<any>{
+        return this.httpClient.delete<any>(`${this.baseUrl}/archive-report-access?accessId=${accessId}`)
+    }
 }
