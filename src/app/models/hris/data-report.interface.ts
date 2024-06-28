@@ -1,3 +1,4 @@
+import { AccessList } from "./data-report-access.interface";
 import { DataReportColumns } from "./data-report-columns.interface";
 
 export interface DataReport {
@@ -6,5 +7,6 @@ export interface DataReport {
     columns?: DataReportColumns[],
     data?: any[],
     reportCode?:string,
-    viewOnly?: string
+    viewOnly?: string,
+    accessList?: AccessList[]
 }

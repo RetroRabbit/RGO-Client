@@ -104,6 +104,7 @@ import { DataReportsComponent } from './components/hris/data-reports/index/data-
 import { DataReportDetailComponent } from './components/hris/data-reports/details/data-report-detail.component';
 import { MenuItemComponent } from './components/hris/data-reports/report-menu/menu-item.component';
 import { TableModule } from 'primeng/table';
+import { Button, ButtonModule } from 'primeng/button';
 
 
 @NgModule({
@@ -223,6 +224,7 @@ import { TableModule } from 'primeng/table';
     NgxMatIntlTelInputComponent,
     MatBadgeModule,
     TableModule,
+    ButtonModule,
     NgxSkeletonLoaderModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
