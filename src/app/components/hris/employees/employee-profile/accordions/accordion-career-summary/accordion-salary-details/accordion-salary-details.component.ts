@@ -43,14 +43,12 @@ export class AccordionSalaryDetailsComponent {
     private employeeSalaryService: EmployeeSalaryService,
     private employeeProfileService: EmployeeProfileService,
     private employeeService: EmployeeService,
-
     private snackBarService: SnackbarService,
     private authAccessService: AuthAccessService,
     public navservice: NavService,
     private route: ActivatedRoute,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     this.employeeId = this.route.snapshot.params["id"];
@@ -138,13 +136,10 @@ export class AccordionSalaryDetailsComponent {
         band: this.employeeSalary.band,
         contribution: this.employeeSalary.contribution,
         salaryUpdateDate: new Date(),
-
       }
-
       this.employeeTaxDetailsDto = {
         taxNumber: taxNumber
       }
-
     } else {
       this.employeeSalaryDetailsDto = {
         employeeId: this.employeeId != undefined ? this.employeeId : this.navservice.employeeProfile.id,
@@ -157,7 +152,6 @@ export class AccordionSalaryDetailsComponent {
         contribution: "",
         salaryUpdateDate: new Date(),
       }
-
       this.employeeTaxDetailsDto = {
         taxNumber: taxNumber
       }

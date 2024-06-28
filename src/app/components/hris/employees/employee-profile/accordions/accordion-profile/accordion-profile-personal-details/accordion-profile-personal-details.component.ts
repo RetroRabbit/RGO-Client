@@ -129,7 +129,6 @@ export class AccordionProfilePersonalDetailsComponent {
       this.sharedAccordionFunctionality.employeeProfileDto!.countryOfBirth = personalDetailsFormValue.countryOfBirth;
       this.sharedAccordionFunctionality.employeeProfileDto!.nationality = personalDetailsFormValue.nationality;
 
-      console.log("DTO", this.sharedAccordionFunctionality.employeeProfileDto)
       this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Updated", "snack-success");
