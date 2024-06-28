@@ -107,14 +107,14 @@ export class SignInComponent {
                 return this.authService.checkUserExistenceInDatabase().pipe(
                   switchMap(response => {
                     if (response === 'User found.') {
-                      this.snackBarService.showSnackbar("Account finalized. You may now log in.", "snack-success");
+                      this.snackBarService.showSnackbar("Account Finalized. You May Now Log in.", "snack-success");
                     } else {
-                      this.snackBarService.showSnackbar("Contact admin regarding your account.", "snack-error");
+                      this.snackBarService.showSnackbar("Contact Admin Regarding Your Account.", "snack-error");
                     }
                     return EMPTY;
                   }),
                   catchError(() => {
-                    this.snackBarService.showSnackbar("Contact admin regarding your account.", "snack-error");
+                    this.snackBarService.showSnackbar("Contact Admin Regarding Your Account.", "snack-error");
                     return EMPTY;
                   })
                 );

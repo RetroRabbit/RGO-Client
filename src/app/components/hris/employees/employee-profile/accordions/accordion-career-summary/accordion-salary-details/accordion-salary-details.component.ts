@@ -108,7 +108,7 @@ export class AccordionSalaryDetailsComponent {
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
         error: (error) => {
-          this.snackBarService.showSnackbar("Error fetching salary details", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Fetch Salary Details", "snack-error");
         }
       })
     }
@@ -119,7 +119,7 @@ export class AccordionSalaryDetailsComponent {
           this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
         },
         error: (error) => {
-          this.snackBarService.showSnackbar("Error fetching salary details", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Fetch Salary Details", "snack-error");
         }
       })
     }
@@ -190,7 +190,7 @@ export class AccordionSalaryDetailsComponent {
       if (this.employeeSalary) {
         this.employeeSalaryService.updateEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
           next: () => {
-            this.snackBarService.showSnackbar("Salary details has been updated", "snack-success");
+            this.snackBarService.showSnackbar("Updated", "snack-success");
             this.getSalaryDate();
             this.editSalary = false;
             this.sharedAccordionFunctionality.salaryDetailsForm.disable();
@@ -199,7 +199,7 @@ export class AccordionSalaryDetailsComponent {
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
           error: (error) => {
-            this.snackBarService.showSnackbar(error, "snack-error");
+            this.snackBarService.showSnackbar("Unable to Update Salary Information", "snack-error");
           }
         }),
           this.employeeService.updateEmployee(this.employeeProfile).subscribe({
@@ -210,7 +210,7 @@ export class AccordionSalaryDetailsComponent {
       } else {
         this.employeeSalaryService.saveEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
           next: () => {
-            this.snackBarService.showSnackbar("Salary details has been saved", "snack-success");
+            this.snackBarService.showSnackbar("Saved", "snack-success");
             this.getSalaryDate();
             this.editSalary = false;
             this.sharedAccordionFunctionality.salaryDetailsForm.disable();
@@ -219,16 +219,16 @@ export class AccordionSalaryDetailsComponent {
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
           error: (error) => {
-            this.snackBarService.showSnackbar(error, "snack-error");
+            this.snackBarService.showSnackbar("Unable to Save Salary Information", "snack-error");
           }
         })
       }
     }
     else if (salaryDetailsFormValue.remuneration < 0) {
-      this.snackBarService.showSnackbar("Remuneration cannot be less than zero", "snack-error");
+      this.snackBarService.showSnackbar("Remuneration Cannot Be Less Than Zero", "snack-error");
     }
     else {
-      this.snackBarService.showSnackbar("Please enter the correct Remuneration", "snack-error");
+      this.snackBarService.showSnackbar("Please Enter the Correct Remuneration", "snack-error");
     }
   }
 

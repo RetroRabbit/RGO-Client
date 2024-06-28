@@ -94,7 +94,7 @@ export class NewCandidateComponent {
   getAllEmployees() {
     this.employeeService.getAll().subscribe({
       next: data => this.allEmployees = data,
-      error: error => this.snackBarService.showSnackbar(error, "Could not get all employees")
+      error: error => this.snackBarService.showSnackbar("Unable to Get All Employees", "snack-error")
     })
   }
 
@@ -233,7 +233,7 @@ export class NewCandidateComponent {
     const email = this.newCandidateForm.get('email')?.value as string;
 
     if (!email) {
-      this.snackBarService.showSnackbar("Oops, some fields are still missing information.", "snack-error");
+      this.snackBarService.showSnackbar("Some Fields Are Still Missing Information", "snack-error");
       return;
     }
 
@@ -241,7 +241,7 @@ export class NewCandidateComponent {
     this.isValidEmail = emailPattern.test(email);
 
     if (!this.isValidEmail) {
-      this.snackBarService.showSnackbar("Please enter a valid email address", "snack-error");
+      this.snackBarService.showSnackbar("Please Enter a Valid Email Address", "snack-error");
       return;
     }
     this.checkEmail(email);
@@ -263,7 +263,7 @@ export class NewCandidateComponent {
               this.isBlacklisted = true;
               break;
             default:
-              this.snackBarService.showSnackbar("This email already exists in our records.", "snack-info");
+              this.snackBarService.showSnackbar("Email Already Registered", "snack-info");
           }
         } else {
           this.candidateExists = false;
@@ -447,9 +447,9 @@ export class NewCandidateComponent {
       }
       this.candidateService.addCandidate(candidateDto).subscribe({
         next: (data) =>
-          this.snackBarService.showSnackbar("Candidate added successfully", "snack-success"),
+          this.snackBarService.showSnackbar("Added", "snack-success"),
         error: (error) =>
-          this.snackBarService.showSnackbar(error, "Could not add canididate"),
+          this.snackBarService.showSnackbar("Unable to Add Canididate", "snack-error"),
         complete: () => {
           this.router.navigateByUrl(nextPage);
         }

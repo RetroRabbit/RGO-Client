@@ -281,12 +281,12 @@ export class RoleManagerComponent implements OnInit {
       }
     });
     this.temporaryRoleAccessChanges = [];
-    this.snackBarService.showSnackbar("Permissions updated successfully", "snack-success");
+    this.snackBarService.showSnackbar("Saved", "snack-success");
   }
 
   discardChanges() {
     this.ngOnInit();
-    this.snackBarService.showSnackbar("Changes discarded successfully", "snack-success");
+    this.snackBarService.showSnackbar("Discarded", "snack-success");
   }
 
   onAdd(role: string, permission: string, grouping: string): void {
@@ -296,7 +296,7 @@ export class RoleManagerComponent implements OnInit {
       },
       error: (error) => {
         this.failed = true
-        this.snackBarService.showSnackbar("Failed to updated permissions", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Update Permissions", "snack-error");
       }
     })
   }
@@ -307,7 +307,7 @@ export class RoleManagerComponent implements OnInit {
         this.deleted = true;
       },
       error: (error) => {
-        this.snackBarService.showSnackbar("Failed to delete permissions", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Delete Permissions", "snack-error");
         this.deleted = true
       },
     })

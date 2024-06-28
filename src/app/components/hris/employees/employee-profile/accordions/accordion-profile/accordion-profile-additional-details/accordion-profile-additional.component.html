@@ -7,7 +7,7 @@
           Additional Information
         </mat-panel-title>
         <mat-panel-description *ngIf="sharedAccordionFunctionality.additionalFormProgress != 100 && customFields.length > 0" class="pe-0 pe-md-5">
-          <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing information</span>
+          <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing Information</span>
         </mat-panel-description>
       </mat-expansion-panel-header>
       <form *ngIf="customFields.length > 0;else NoFieldCodes" [formGroup]="sharedAccordionFunctionality.additionalInfoForm">
@@ -20,53 +20,55 @@
           </button>
         </div>
         <div class="row">
-          <div class="col-12 col-md-9 col-lg-10">
-            <div class="row">
-              <div class="col-12 row">
-                <div class="col-12 col-md-6 my-2" *ngFor="let fieldcode of customFields">
-                  <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>{{fieldcode.name}}</mat-label>
-                    <div *ngIf="fieldcode.type == sharedAccordionFunctionality.fieldTypes[4].id">
-                      <mat-select formControlName="{{fieldcode.code}}" hideSingleSelectionIndicator="true">
-                        <mat-option *ngFor="let option of fieldcode.options" [value]="option.option">
-                          {{option.option}}
-                        </mat-option>
-                      </mat-select>
-                    </div>
-                    <div *ngIf="fieldcode.type != sharedAccordionFunctionality.fieldTypes[4].id">
-                      <input matInput formControlName="{{fieldcode.code}}">
-                    </div>
-                  </mat-form-field>
+          <div class="row">
+            <div class="col-12 col-md-9 col-lg-10">
+              <div class="row">
+                <div class="col-12 row">
+                  <div class="col-12 col-md-6 my-2" *ngFor="let fieldcode of customFields">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                      <mat-label>{{fieldcode.name}}</mat-label>
+                      <div *ngIf="fieldcode.type == sharedAccordionFunctionality.fieldTypes[4].id">
+                        <mat-select formControlName="{{fieldcode.code}}" hideSingleSelectionIndicator="true">
+                          <mat-option *ngFor="let option of fieldcode.options" [value]="option.option">
+                            {{option.option}}
+                          </mat-option>
+                        </mat-select>
+                      </div>
+                      <div *ngIf="fieldcode.type != sharedAccordionFunctionality.fieldTypes[4].id">
+                        <input matInput formControlName="{{fieldcode.code}}">
+                      </div>
+                    </mat-form-field>
+                  </div>
                 </div>
               </div>
-              <div class="col-12 d-block d-md-none" id="edit-buttons">
-                <button *ngIf="sharedAccordionFunctionality.editAdditional" mat-button id="save-button" type="submit"
-                  (click)="saveAdditionalEdit()" class="col-12 mb-2">
-                  Save changes
-                </button>
-                <button *ngIf="sharedAccordionFunctionality.editAdditional" mat-button id="cancel-button"
-                  (click)="cancelAdditionalEdit()" class="col-12">
-                  Cancel
-                </button>
-              </div>
-              <div class="col-12 d-none d-md-flex" id="edit-buttons">
-                <button *ngIf="sharedAccordionFunctionality.editAdditional" mat-button id="cancel-button"
-                  (click)="cancelAdditionalEdit()">
-                  Cancel
-                </button>
-                <button *ngIf="sharedAccordionFunctionality.editAdditional" mat-button id="save-button" type="submit"
-                  (click)="saveAdditionalEdit()">
-                  Save changes
-                </button>
-              </div>
+            </div>
+            <div
+              *ngIf="!sharedAccordionFunctionality.editAdditional"
+              class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
+              <button *ngIf="employeeId == undefined && !sharedAccordionFunctionality.editAdditional" mat-button id="edit-button-width"
+                (click)="editAdditionalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
+                <mat-icon>edit</mat-icon>Edit Details
+              </button>
             </div>
           </div>
-          <div
-            *ngIf="!sharedAccordionFunctionality.editAdditional"
-            class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
-            <button *ngIf="employeeId == undefined && !sharedAccordionFunctionality.editAdditional" mat-button id="edit-button-width"
-              (click)="editAdditionalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
-              <mat-icon>edit</mat-icon>Edit Details
+          <div class="col-12 d-block d-md-none" id="edit-buttons">
+            <button *ngIf="sharedAccordionFunctionality.editAdditional" mat-button id="save-button" type="submit"
+              (click)="saveAdditionalEdit()" class="col-12 mb-2">
+              Save
+            </button>
+            <button *ngIf="sharedAccordionFunctionality.editAdditional" mat-button id="cancel-button"
+              (click)="cancelAdditionalEdit()" class="col-12">
+              Cancel
+            </button>
+          </div>
+          <div class="col-12 d-none d-md-flex" id="edit-buttons">
+            <button *ngIf="sharedAccordionFunctionality.editAdditional" mat-button id="cancel-button"
+              (click)="cancelAdditionalEdit()">
+              Cancel
+            </button>
+            <button *ngIf="sharedAccordionFunctionality.editAdditional" mat-button id="save-button" type="submit"
+              (click)="saveAdditionalEdit()">
+              Save
             </button>
           </div>
         </div>

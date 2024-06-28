@@ -142,10 +142,7 @@ export class ViewEmployeeComponent {
           this.combineEmployeesWithRolesAndClients(employees, clients$)
         ),
         catchError((error) => {
-          this.snackBarService.showSnackbar(
-            'Failed to load employees',
-            'snack-error'
-          );
+          this.snackBarService.showSnackbar('Unable to Retrieve Employees', 'snack-error');
           return of([]);
         }),
         first()
@@ -345,17 +342,11 @@ export class ViewEmployeeComponent {
       .updateRole(email, role)
       .pipe(
         tap(() => {
-          this.snackBarService.showSnackbar(
-            'Role changed successfully!',
-            'snack-success'
-          );
+          this.snackBarService.showSnackbar("Updated", "snack-success");
           this.getEmployees();
         }),
         catchError((error) => {
-          this.snackBarService.showSnackbar(
-            'Falied to change role',
-            'snack-error'
-          );
+          this.snackBarService.showSnackbar('Unable to Change Role', 'snack-error');
           return of(null);
         })
       )
@@ -421,10 +412,7 @@ export class ViewEmployeeComponent {
           this.combineEmployeesWithRolesAndClients(employees, clients$)
         ),
         catchError((error) => {
-          this.snackBarService.showSnackbar(
-            'Failed to load employees',
-            'snack-error'
-          );
+          this.snackBarService.showSnackbar('Unable to Retrieve Employees', 'snack-error');
           return of([]);
         }),
         first()
