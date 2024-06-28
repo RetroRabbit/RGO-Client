@@ -6,23 +6,12 @@ import { CookieService } from 'ngx-cookie-service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { NavItem } from 'src/app/models/hris/report-menu-item.interface';
 import { DataReportingService } from 'src/app/services/hris/data-reporting.service';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { ReportColumnRequest } from 'src/app/models/hris/report-column-request.interface';
 import { MatDialog } from '@angular/material/dialog';
-import { SortEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { subscribe } from 'diagnostics_channel';
-import { Employee } from 'src/app/models/hris/employee.interface';
-import { RoleService } from 'src/app/services/hris/role.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { AccessList } from 'src/app/models/hris/data-report-access.interface';
-
-
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
+import { ReportAccessRequest } from 'src/app/models/hris/data-report-access-request.interface';
 
 
 @Component({
@@ -40,28 +29,32 @@ export class DataReportDetailComponent {
   screenWidth = window.innerWidth;
   PREVIOUS_PAGE = 'previousPage';
   isReorderable: boolean = true;
-  disabledName: boolean = false;
+  //disabledName: boolean = false;
   reportName?: string;
   reportCode?: string;
-  isSorted: boolean | null = false;
+  //isSorted: boolean | null = false;
   //initialValue: DataReport = {}
   //exportColumns!: ExportColumn[];
-  exportColumns!: any[];
-  selectedData: DataReport ={}
+  //exportColumns!: any[];
+  //selectedData: DataReport ={}
 
-  employeeData!: Employee[];
-  employeeRoles!: Map<string, string[]>;
+  employeeData!: [{ id: number; name: string; }];
+  employeeRoles!: [{ id: number; name: string; }];
 
   navItems: NavItem[] = [];
 
   dataReportForm!: FormGroup;
-  accessTypeSelected!: string;
+  //accessTypeSelected!: string;
   filteredEmployees: any = [];
+
   selectedEmployeeId?: number;
+  selectedRoleId?: number;
+  selectedViewOnly?: boolean;
 
   modalAddingNew: boolean = false;
-  accessEmployeeList: AccessList[] = []
-  accessRoleList: AccessList[] = []
+  accessEmployeeList: AccessList[] = [];
+  accessRoleList: AccessList[] = [];
+  accessRequest!: ReportAccessRequest;
 
   constructor(private router: Router,
     private cookieService: CookieService,
@@ -69,8 +62,6 @@ export class DataReportDetailComponent {
     private snackBarService: SnackbarService,
     private dataReportingService: DataReportingService,
     private dialog: MatDialog,
-    private employeeService: EmployeeService,
-    private roleService: RoleService,
     private fb: FormBuilder) {
     this.dataReportCode = this.route.snapshot.params["code"]
     this.dataReportingService.fetchMenuItems().subscribe({
@@ -96,9 +87,6 @@ export class DataReportDetailComponent {
     this.onResize();
     this.dataReportCode = this.route.snapshot.params["id"];
     this.populateReportData(this.dataReportCode);
-    this.getAllEmployeeData();
-    this.getAllRoles();
-    this.initializeForm()
   }
 
   populateReportData(dataReportCode: string) {
@@ -114,6 +102,8 @@ export class DataReportDetailComponent {
         this.accessRoleList = data.accessList?.filter(access => access.roleId != null || access.roleId != undefined)!;
         this.isLoading = false;
         this.populateMenu()
+        this.getAccessAvailability();
+        this.initializeForm()
       },
     })
     //this.exportColumns = this.dataObjects.columns!.map((col:any) => ({ title: col.name, dataKey: col.prop }));
@@ -210,28 +200,22 @@ export class DataReportDetailComponent {
     })
   }
 
-  getAllEmployeeData(){
-    this.employeeService.getAll().subscribe({
+  getAccessAvailability(){
+    this.dataReportingService.getReportAccess(this.dataObjects.reportId!).subscribe({
       next: data => {
-        this.employeeData = data;
-      }
-    })
-  }
-
-  getAllRoles(){
-    this.roleService.getAllRoles().subscribe({
-      next: data => {
-        this.employeeRoles = data
-        console.table(data.entries)
+        this.employeeRoles = data.role
+        this.employeeData = data.employee
+        console.table(data)
       }
     })
   }
 
   initializeForm() {
     this.dataReportForm = this.fb.group({
-      accessType: new FormControl<string>('', [Validators.required]),
+      accessType: new FormControl<string>('' , [Validators.required]),
       employeeAccess: new FormControl<string>('', [Validators.required]),
       roleAccess: new FormControl<string>('', [Validators.required]),
+      viewOnly: new FormControl<boolean>( false,[Validators.required])
     })
   }
 
@@ -242,19 +226,49 @@ export class DataReportDetailComponent {
   filterEmployees(event: any) {
     console.log("filtering")
     if (event) {
-      this.filteredEmployees = this.employeeData.filter((employee: Employee) => employee.name?.toLowerCase().includes(event.target.value.toLowerCase())
-      );
+      this.filteredEmployees = this.employeeData.filter(employee => employee.name?.toLowerCase().includes(event.target.value.toLowerCase()));
     } else {
       this.filteredEmployees = this.employeeData;
     }
   }
 
-  getId(data: any) {
+  getEmployeeId(data: any) {
       this.selectedEmployeeId = data.id;
-      console.log(this.selectedEmployeeId)
+  }
+
+  getRoleId(data: any){
+    this.selectedRoleId = data.id
+  }
+
+  getViewOnlyStatus(data: any){
+    this.selectedViewOnly = data;
+    console.log(data)
   }
 
   modalBack(){
     this.modalAddingNew = false;
+  }
+
+  updateAccess(){
+    this.accessRequest = {reportId: this.dataObjects.reportId! , access: [{
+      employeeId: this.selectedEmployeeId!,
+      roleId: this.selectedRoleId,
+      viewOnly: this.selectedViewOnly!
+    }]}
+
+    this.dataReportingService.updateReportAccess(this.accessRequest).subscribe({
+      next: data => {
+        this.selectedEmployeeId = undefined;
+        this.selectedRoleId = undefined;
+        this.selectedViewOnly = undefined;
+        this.dialog.closeAll();
+        this.populateReportData(this.dataReportCode)
+        this.modalAddingNew = false;
+        this.snackBarService.showSnackbar("Access Added", "snack-success")
+      },
+      error: error =>{
+        this.snackBarService.showSnackbar("Access Adding failed", "snack-error")
+      }
+    })
   }
 }

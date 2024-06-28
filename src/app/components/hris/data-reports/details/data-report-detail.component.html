@@ -130,7 +130,7 @@
                                             [matAutocomplete]="auto" (input)="filterEmployees($event)">
                                         <mat-autocomplete #auto="matAutocomplete">
                                             <mat-option *ngFor="let employee of filteredEmployees"
-                                                [value]='employee.name + " " + employee.surname' (onSelectionChange)="getId(employee)">
+                                                [value]='employee.name + " " + employee.surname' (onSelectionChange)="getEmployeeId(employee)">
                                                 {{ employee.name }} {{ employee.surname}}
                                             </mat-option>
                                         </mat-autocomplete>
@@ -139,18 +139,28 @@
                                         appearance="outline" class="col-12">
                                         <mat-label>Role</mat-label>
                                         <mat-select formControlName="roleAccess" hideSingleSelectionIndicator="true">
-                                            <mat-option *ngFor="let role of employeeRoles" [value]="role">
-                                                {{role}}
+                                            <mat-option *ngFor="let role of employeeRoles" [value]="role.id" (onSelectionChange)="getRoleId(role)">
+                                                {{role.name}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
+                                    <mat-checkbox [checked]="dataReportForm.controls['viewOnly'].value" (change)="getViewOnlyStatus($event.checked)">
+                                        View Only?
+                                    </mat-checkbox>
                                 </form>
                                 <div *ngIf="!modalAddingNew">
                                     <h3>Roles with Access</h3>
-                                    <h4 *ngFor="let access of accessRoleList">{{access.name}}</h4>
+                                    <div class="row" *ngFor="let access of accessRoleList">
+                                      <h5>{{ access.name }}</h5>
+                                      <mat-icon class="close-icon">close</mat-icon>
+                                    </div>
+                                  
                                     <h3>People with Access</h3>
-                                    <h4 *ngFor="let access of accessEmployeeList">{{access.name}}</h4>
-                                </div>
+                                    <div class="row" *ngFor="let access of accessEmployeeList">
+                                      <h5>{{ access.name }}</h5>
+                                      <mat-icon class="close-icon">close</mat-icon>
+                                    </div>
+                                  </div>
                             </div>
                         </div>
                     </div>
@@ -167,7 +177,7 @@
                         </div>
                         <div mat-dialog-actions class="row" *ngIf="modalAddingNew">
                             <div class="col-12 d-flex justify-content-center align-items-center mb-3" id="dialog-save">
-                                <button>Save</button>
+                                <button (click)="updateAccess()">Save</button>
                             </div>
                             <div class="col-12 d-flex justify-content-center align-items-center" id="dialog-close">
                                 <button (click)="modalAddingNew = false">

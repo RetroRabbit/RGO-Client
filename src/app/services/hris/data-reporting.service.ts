@@ -5,6 +5,8 @@ import { DataReport } from "src/app/models/hris/data-report.interface";
 import { environment } from "src/environments/environment";
 import { NavItem } from "src/app/models/hris/report-menu-item.interface";
 import { ReportColumnRequest } from "src/app/models/hris/report-column-request.interface";
+import { AccessAvailability } from "src/app/models/hris/data-report-access-availability.interface";
+import { ReportAccessRequest } from "src/app/models/hris/data-report-access-request.interface";
 
 
 @Injectable({
@@ -39,5 +41,13 @@ export class DataReportingService {
 
     addOrUpdateReport(input: any): Observable<any> {
         return this.httpClient.put<any>(`${this.baseUrl}/update-report`, input)
+    }
+
+    getReportAccess(reportId:number): Observable<AccessAvailability>{
+        return this.httpClient.get<AccessAvailability>(`${this.baseUrl}/get-report-access-availability?reportId=${reportId}`)
+    }
+
+    updateReportAccess(input: ReportAccessRequest): Observable<ReportAccessRequest>{
+        return this.httpClient.put<ReportAccessRequest>(`${this.baseUrl}/update-report-access`, input)
     }
 }
