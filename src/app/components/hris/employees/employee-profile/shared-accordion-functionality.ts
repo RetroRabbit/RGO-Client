@@ -235,30 +235,30 @@ export class SharedAccordionFunctionality {
         }
 
         if (isRequired) {
-          if(this.hasDisability !== false ){
-           numberOfRequiredFields=5;
-          }else{
-            numberOfRequiredFields=3;
+          if (this.hasDisability !== false) {
+            numberOfRequiredFields = 5;
+          }
+          else {
+            numberOfRequiredFields = 3;
           }
 
-          if(this.hasDisability == false){
-            if (control.value !== null && control.value !== ''  && control.value !== "na"  ) {
+          if (this.hasDisability == false) {
+            if (control.value !== null && control.value !== '' && control.value !== "na") {
               numberOfPopulatedFields++;
-             }
+            }
           }
-          else if(this.hasDisability == true && control.value !== null && control.value !== ''  && control.value !== "na" ){
+          else if (this.hasDisability == true && control.value !== null && control.value !== '' && control.value !== "na") {
             numberOfPopulatedFields++;
           }
-          
+
+        }
       }
     }
-    }
-    if (numberOfRequiredFields === 0) {
+    if (totalFields === 0) {
       this.personalFormProgress = 100;
     } else {
       this.personalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
     }
-
   }
 
   checkEmployeeFormProgress() {
