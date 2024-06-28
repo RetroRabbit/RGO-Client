@@ -290,7 +290,7 @@ export class NewEmployeeComponent implements OnInit {
           const allowedTypes = ['application/pdf'];
           if (!allowedTypes.includes(file.type)) {
             this.isValidStarterkitFile = false;
-            this.snackBarService.showSnackbar("Please upload a PDF document", "snack-error");
+            this.snackBarService.showSnackbar("Please Upload a PDF", "snack-error");
             return;
           }
           this.isValidStarterkitFile = true;
@@ -320,7 +320,7 @@ export class NewEmployeeComponent implements OnInit {
                 this.categories[category].name = file.name;
               },
               error: (error: any) => {
-                this.snackBarService.showSnackbar("Failed to compile documents", "snack-error");
+                this.snackBarService.showSnackbar("Unable to Compile Documents", "snack-error");
               }
             });
           };
@@ -372,11 +372,11 @@ export class NewEmployeeComponent implements OnInit {
     this.employeeDocumentModels.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel, 0).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Files have been uploaded", "snack-success");
+          this.snackBarService.showSnackbar("Saved", "snack-success");
           this.isLoadingAddEmployee = false;
         },
         error: (error: any) => {
-          this.snackBarService.showSnackbar("Failed to save documents", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Upload Starter Kit Document", "snack-error");
           this.isLoadingAddEmployee = false;
         }, complete: () => {
           this.employeeDocumentModels = [];
@@ -473,7 +473,7 @@ export class NewEmployeeComponent implements OnInit {
   onSubmit(reset: boolean = false): void {
     this.existingIdNumber = false;
     if (!this.newEmployeeForm.controls['idNumber'].valid) {
-      this.snackBarService.showSnackbar("Please enter a valid ID number", "snack-error");
+      this.snackBarService.showSnackbar("Valid ID Number Required", "snack-error");
       return;
     }
     if (this.isDirty == true)
@@ -481,19 +481,19 @@ export class NewEmployeeComponent implements OnInit {
     if (this.newEmployeeForm.value.email !== null && this.newEmployeeForm.value.email !== undefined && this.newEmployeeForm.value.email.endsWith(this.COMPANY_EMAIL)) {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
-      this.snackBarService.showSnackbar("Please enter an official Retro Rabbit email address", "snack-error");
+      this.snackBarService.showSnackbar("Retro Rabbit Email Address Required", "snack-error");
       this.isLoadingAddEmployee = false;
       return;
     }
     if (this.newEmployeeForm.value.disability !== null && this.newEmployeeForm.value.disability !== undefined) {
       this.newEmployeeForm.value.disability;
     } else {
-      this.snackBarService.showSnackbar("Please select a value for disability ", "snack-error");
+      this.snackBarService.showSnackbar("Specify Disability Status", "snack-error");
       this.isLoadingAddEmployee = false;
       return;
     }
     if (this.newEmployeeForm.value.cellphoneNo == null || this.newEmployeeForm.controls.cellphoneNo.invalid) {
-      this.snackBarService.showSnackbar("Please enter a valid cellphone number", "snack-error");
+      this.snackBarService.showSnackbar("Calid Cellphone Number Required", "snack-error");
       this.isLoadingAddEmployee = false;
       return;
     }
@@ -526,14 +526,14 @@ export class NewEmployeeComponent implements OnInit {
       next: (data: boolean) => {
         this.existingIdNumber = data;
         if (this.existingIdNumber) {
-          this.snackBarService.showSnackbar("ID Number already exists", "snack-error");
+          this.snackBarService.showSnackbar("ID Number Already Exists", "snack-error");
           this.isLoadingAddEmployee = false;
         } else {
           this.saveEmployee();
         }
       },
       error: () => {
-        this.snackBarService.showSnackbar("Failed to check duplicate ID number", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Verify Duplicate ID Number", "snack-error");
         this.isLoadingAddEmployee = false;
       }
     });
@@ -544,9 +544,9 @@ export class NewEmployeeComponent implements OnInit {
       this.newEmployeeForm.markAllAsTouched();
 
       if (this.newEmployeeForm.controls['disabilityNotes'].value == null) {
-        this.snackBarService.showSnackbar('Disability Notes are required when disability is selected as Yes.', "snack-error");
+        this.snackBarService.showSnackbar('Disability Notes Mandatory for \'Yes\'', "snack-error");
       } else {
-        this.snackBarService.showSnackbar('Oops! Some fields are still missing information.', "snack-error");
+        this.snackBarService.showSnackbar('Some Fields Are Still Missing Information', "snack-error");
       }
       return;
     }
@@ -554,7 +554,7 @@ export class NewEmployeeComponent implements OnInit {
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
         this.isSavedEmployee = true;
-        this.snackBarService.showSnackbar(`${this.newEmployeeForm.value.name} has been added`, "snack-success");
+        this.snackBarService.showSnackbar("Saved", "snack-success");
         if (!this.existingIdNumber) {
           this.myStepper.next();
         }
@@ -573,7 +573,7 @@ export class NewEmployeeComponent implements OnInit {
           stepper?.next();
           this.isLoadingAddEmployee = false;
         }
-        this.snackBarService.showSnackbar(`Oops! Some fields are still missing information.`, "snack-error");
+        this.snackBarService.showSnackbar(`Some Fields Are Still Missing Information`, "snack-error");
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
       },
@@ -640,12 +640,12 @@ export class NewEmployeeComponent implements OnInit {
     const maxSizeInBytes = 4194304;
 
     if (!validTypes.includes(file.type)) {
-      this.snackBarService.showSnackbar(`Only JPEG, JPG, and PNG files are allowed!`, "snack-error");
+      this.snackBarService.showSnackbar(`Only JPEG, JPG, and PNG Files Are Allowed!`, "snack-error");
       return false;
     }
 
     if (file.size > maxSizeInBytes) {
-      this.snackBarService.showSnackbar(`File size must be less than 4MB!`, "snack-error");
+      this.snackBarService.showSnackbar(`File Size Must Be Less Than 4mb!`, "snack-error");
       return false;
     }
 

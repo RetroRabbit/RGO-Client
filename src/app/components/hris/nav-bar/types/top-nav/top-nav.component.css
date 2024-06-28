@@ -4,6 +4,10 @@
   position: relative;
 }
 
+#topNavName{
+  cursor: pointer;
+}
+
 #navigation {
   padding-bottom: 0;
   bottom: 0;

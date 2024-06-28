@@ -76,9 +76,9 @@ export class ManageEmployeeEventsComponent {
     this.employeeDateService.deleteEmployeeDate(employeeDateInput.id).subscribe(
       () => {
         this.updateEvents({})
-        this.snackBarService.showSnackbar("Event deleted succesfully", "snack-success")
+        this.snackBarService.showSnackbar("Deleted", "snack-success")
       },
-      () => this.snackBarService.showSnackbar("Failed to delete event", "snack-error")
+      () => this.snackBarService.showSnackbar("Unable to Delete Event", "snack-error")
     );
   }
 

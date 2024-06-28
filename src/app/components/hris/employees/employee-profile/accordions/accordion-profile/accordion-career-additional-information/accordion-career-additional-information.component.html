@@ -8,7 +8,7 @@
         </mat-panel-title>
         <mat-panel-description *ngIf="sharedAccordionFunctionality.additionalCareerFormProgress != 100 && customFields.length > 0"
           class="pe-0 pe-md-5">
-          <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing information</span>
+          <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing Information</span>
         </mat-panel-description>
       </mat-expansion-panel-header>
       <form *ngIf="customFields.length > 0;else NoFieldCodes" [formGroup]="sharedAccordionFunctionality.additionalCareerInfoForm">
@@ -42,7 +42,7 @@
               <div class="col-12 d-block d-md-none" id="edit-buttons">
                 <button *ngIf="sharedAccordionFunctionality.editAdditional" mat-button id="save-button" type="submit"
                   (click)="saveAdditionalEdit()" class="col-12 mb-2">
-                  Save changes
+                  Save
                 </button>
                 <button *ngIf="sharedAccordionFunctionality.editAdditional" mat-button id="cancel-button"
                   (click)="cancelAdditionalEdit()" class="col-12">
@@ -56,7 +56,7 @@
                 </button>
                 <button *ngIf="sharedAccordionFunctionality.editAdditional" mat-button id="save-button" type="submit"
                   (click)="saveAdditionalEdit()">
-                  Save changes
+                  Save
                 </button>
               </div>
             </div>

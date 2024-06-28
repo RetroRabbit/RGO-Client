@@ -90,6 +90,10 @@ export class TopNavComponent {
     this.router.navigateByUrl("/");
   }
 
+  goToProfile() {
+    this.router.navigateByUrl('/profile/' + this.navService.employeeProfile.id);
+  }
+
   changeNav(route: string) {
     if (this.navService.unsavedChanges) {
       this.tempRoute = route;

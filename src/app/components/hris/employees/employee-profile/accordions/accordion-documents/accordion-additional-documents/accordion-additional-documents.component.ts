@@ -78,7 +78,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: error => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Retrieve Additional Documents", "snack-error");
         }
       });
     } else {
@@ -89,7 +89,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: error => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Retrieve Additional Documents", "snack-error");
         }
       });
     }
@@ -157,7 +157,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
       this.readUploadedDocument();
     }
     else {
-      this.snackBarService.showSnackbar("Please upload a PDF", "snack-error");
+      this.snackBarService.showSnackbar("Upload PDF Only", "snack-error");
       this.isLoadingUpload = false;
     }
   }
@@ -201,13 +201,13 @@ export class AccordionDocumentsCustomDocumentsComponent {
       this.employeeDocumentService.saveEmployeeDocument(document, 4).subscribe({
         next: () => {
           this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar("Document added", "snack-success");
+          this.snackBarService.showSnackbar("Saved", "snack-success");
           this.getAdditionalDocuments();
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: (error: any) => {
           this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Save Document", "snack-error");
         }
       })
 
@@ -231,13 +231,13 @@ export class AccordionDocumentsCustomDocumentsComponent {
       this.employeeDocumentService.updateEmployeeDocument(updatedDocument).subscribe({
         next: () => {
           this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar("Document updated", "snack-success");
+          this.snackBarService.showSnackbar("Updated", "snack-success");
           this.getAdditionalDocuments();
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
 
         },
         error: (error) => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Update Document", "snack-error");
           this.isLoadingUpload = false;
         }
       });

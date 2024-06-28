@@ -103,7 +103,7 @@ export class ManageFieldCodeComponent {
         }
       },
       error: () => {
-        this.snackBarService.showSnackbar("Error fetching field codes", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Fetch Field Codes", "snack-error");
         this.isLoading = false;
       }
     })
@@ -172,7 +172,7 @@ export class ManageFieldCodeComponent {
 
       this.customFieldService.saveFieldCode(fieldCodeDto).subscribe({
         next: () => {
-          this.snackBarService.showSnackbar("Field code saved", "snack-success");
+          this.snackBarService.showSnackbar("Saved", "snack-success");
           this.newFieldCodeForm.disable();
         },
         error: (error) => {
@@ -180,7 +180,7 @@ export class ManageFieldCodeComponent {
             this.isUnique = false;
           }
           else {
-            this.snackBarService.showSnackbar(error, "snack-error");
+            this.snackBarService.showSnackbar("Unable to Save Field Code", "snack-error");
           }
         }
       });
@@ -346,10 +346,10 @@ export class ManageFieldCodeComponent {
     updatedField.status = 0;
     this.customFieldService.updateFieldCode(updatedField).subscribe({
       next: (data) => {
-        this.snackBarService.showSnackbar("Field code updated", "snack-success");
+        this.snackBarService.showSnackbar("Updated", "snack-success");
         this.fetchData(this.activeTab);
       }, error: (error) => {
-        this.snackBarService.showSnackbar(error, "snack-error");
+        this.snackBarService.showSnackbar("Unable to Update Field Code", "snack-error");
       }
     });
   }
@@ -379,10 +379,10 @@ export class ManageFieldCodeComponent {
       })
     });
     if (unsuccessfulSubmits == 0) {
-      this.snackBarService.showSnackbar("Fields moved successfully", "snack-success");
+      this.snackBarService.showSnackbar("Updated", "snack-success");
     }
     else {
-      this.snackBarService.showSnackbar(`${unsuccessfulSubmits} failed to move`, "snack-error");
+      this.snackBarService.showSnackbar(`Unable to Move ${unsuccessfulSubmits}`, "snack-error");
     }
   }
 

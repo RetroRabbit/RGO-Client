@@ -75,11 +75,11 @@ export class AccordionDocumentsAdditionalComponent {
   addNewAdditionalDocument() {
     if (this.newDocumentType == "Other") {
       if (this.newDocumentName == "") {
-        this.snackBarService.showSnackbar("Please enter a title", "snack-error")
+        this.snackBarService.showSnackbar("Title Missing", "snack-error")
         return;
       }
       if (this.newDocumentName.length <= 4) {
-        this.snackBarService.showSnackbar("Please enter a longer title", "snack-error")
+        this.snackBarService.showSnackbar("Longer Title Required", "snack-error")
         return;
       }
       const inputField = document.getElementById('upload-new-additional-document');
@@ -89,7 +89,7 @@ export class AccordionDocumentsAdditionalComponent {
       this.documentNameControl.clearValidators;
       this.newDocumentName = this.newDocumentType;
       if (this.newDocumentName == "") {
-        this.snackBarService.showSnackbar("Please enter a title", "snack-error")
+        this.snackBarService.showSnackbar("Title Missing", "snack-error")
         return;
       }
       const inputField = document.getElementById('upload-new-additional-document');
@@ -124,12 +124,12 @@ export class AccordionDocumentsAdditionalComponent {
     this.employeeDocumentService.saveEmployeeDocument(document, 1).subscribe({
       next: () => {
         this.isLoadingUpload = false;
-        this.snackBarService.showSnackbar("Document added", "snack-success");
+        this.snackBarService.showSnackbar("Saved", "snack-success");
         this.getAdditionalDocuments();
       },
       error: (error) => {
         this.isLoadingUpload = false;
-        this.snackBarService.showSnackbar(error, "snack-error");
+        this.snackBarService.showSnackbar("Unable to Upload Document", "snack-error");
 
       }
     });
@@ -164,10 +164,10 @@ export class AccordionDocumentsAdditionalComponent {
   deleteAdditionalDocument(documentId: number) {
     this.employeeDocumentService.deleteEmployeeDocument(documentId).subscribe({
       next: () => {
-        this.snackBarService.showSnackbar("Document successfully deleted", "snack-success");
+        this.snackBarService.showSnackbar("Deleted", "snack-success");
         this.getAdditionalDocuments();
       },
-      error: () => this.snackBarService.showSnackbar("Failed to delete document", "snack-warning")
+      error: () => this.snackBarService.showSnackbar("Unable to Delete Document", "snack-warning")
     });
   }
 
@@ -180,7 +180,7 @@ export class AccordionDocumentsAdditionalComponent {
           this.getAdditionalDocumentReferences();
         },
         error: error => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Retrieve Employee Documents", "snack-error");
         }
       })
     } else {
@@ -193,7 +193,7 @@ export class AccordionDocumentsAdditionalComponent {
 
         },
         error: error => {
-          this.snackBarService.showSnackbar(error, "snack-error");
+          this.snackBarService.showSnackbar("Unable to Retrieve Employee Documents", "snack-error");
         }
       })
     }
