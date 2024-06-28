@@ -7,7 +7,7 @@ import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
-
+import { EmployeeDocumentsStatus } from 'src/app/models/hris/constants/enums/employeeDocumentsStatus';
 @Component({
   selector: 'app-pending-employee-starterkits',
   templateUrl: './view-starter-kit-approval.component.html',
@@ -20,7 +20,7 @@ export class ViewStarterKitApprovalComponent {
   lastUpdatedMessage: string = "";
   isLoading: boolean = true;
   showConfirmDialog: boolean = false;
-  documenetIndex: number = 0;
+  documentIndex: number = 0;
   activeButtonIndex: number | null = null;
   activeButtonType: 'approve' | 'decline' | null = null;
   dialogTypeData!: Dialog;
@@ -110,8 +110,6 @@ export class ViewStarterKitApprovalComponent {
   }
 
   getFile(index: number): EmployeeDocument | null {
-    if (index > this.employeeDocuments.length - 1) return null;
-
     var documentObject = this.employeeDocuments.find(document => document.fileCategory == index) as EmployeeDocument;
     return documentObject;
   }
@@ -154,11 +152,11 @@ export class ViewStarterKitApprovalComponent {
   }
 
   updateDocument(documentIndex: number, updateStatus: number = 0) {
-    let copyOfDocument = updateStatus == 2 ? { ...this.getFile(this.documenetIndex) } : { ...this.getFile(documentIndex) };
+    let copyOfDocument = { ...this.getFile(documentIndex) };
     copyOfDocument.status = updateStatus;
     copyOfDocument.lastUpdatedDate = new Date();
 
-    if (updateStatus == 2)
+    if (updateStatus == EmployeeDocumentsStatus.DECLINED)
       copyOfDocument.reason = `${this.selectedReason} ${this.declineReason}`;
     else
       copyOfDocument.reason = ``;
@@ -168,13 +166,14 @@ export class ViewStarterKitApprovalComponent {
         this.snackBarService.showSnackbar("Updated", "snack-success");
         this.lastUpdatedMessage = this.getNewDate();
         this.getEmployeeDocuments(this.employeedId);
+        this.employeeBankingStarterkitService.getAllBankingAndStarterkits();
       },
       error: () => this.snackBarService.showSnackbar(`Unable to Update Document`, "snack-error")
     });
   }
 
   openDialog(documentIndex: number): void {
-    this.documenetIndex = documentIndex;
+    this.documentIndex = documentIndex;
     this.dialogTypeData = {
       type: 'decline',
       title: 'Decline update',
@@ -189,8 +188,7 @@ export class ViewStarterKitApprovalComponent {
     this.declineReason = response.declineReason;
     this.selectedReason = response.selectedReason;
     if (response.confirmation)
-      this.updateDocument(this.documenetIndex, 2);
-
+      this.updateDocument(this.documentIndex, EmployeeDocumentsStatus.DECLINED);
     this.showConfirmDialog = false;
   }
 

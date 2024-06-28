@@ -7,6 +7,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-banking.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
+import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 
 @Component({
   selector: 'app-accordion-banking',
@@ -56,7 +57,8 @@ export class AccordionBankingComponent {
   constructor(
     private fb: FormBuilder,
     private employeeBankingService: EmployeeBankingService,
-    private snackBarService: SnackbarService) {
+    private snackBarService: SnackbarService,
+    private employeeBankingStarterkitService: EmployeeBankingandstarterkitService) {
   }
 
   ngOnInit(): void {
@@ -183,6 +185,7 @@ export class AccordionBankingComponent {
           this.getEmployeeBankingData();
           this.checkBankingInformationProgress();
           this.totalBankingProgress();
+          this.employeeBankingStarterkitService.getAllBankingAndStarterkits();
           this.hasUpdatedBanking = true;
           this.editBanking = false;
           this.employeeBankingsForm.disable();
@@ -199,6 +202,7 @@ export class AccordionBankingComponent {
           this.getEmployeeBankingData();
           this.checkBankingInformationProgress();
           this.totalBankingProgress();
+          this.employeeBankingStarterkitService.incrementPendingCount();
           this.hasUpdatedBanking = true;
           this.editBanking = false;
           this.employeeBankingsForm.disable();
