@@ -34,6 +34,8 @@ export class AccordionSalaryDetailsComponent {
   isAdminUser: boolean = false;
   employeeId: number | undefined;
 
+
+
   constructor(
     private fb: FormBuilder,
     private employeeSalaryService: EmployeeSalaryService,
@@ -182,6 +184,7 @@ export class AccordionSalaryDetailsComponent {
     else {
       this.snackBarService.showSnackbar("Please Enter the Correct Remuneration", "snack-error");
     }
+
   }
 
   editSalaryDetails() {
