@@ -220,7 +220,6 @@ export class SharedAccordionFunctionality {
     let numberOfRequiredFields = 0;
 
     const formControls = this.personalDetailsForm.controls;
-    let isRequired = false;
     if (this.hasDisability) {
       totalFields = (Object.keys(this.personalDetailsForm.controls).length);
     }
@@ -231,26 +230,14 @@ export class SharedAccordionFunctionality {
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (control.validator) {
-          const validator = control.validator({} as AbstractControl);
-          isRequired = validator && validator['required'] ? true : false;
+        if (control.value != null && control.value != '' && this.hasDisability != false && control.value != "na") {
+          numberOfPopulatedFields++;
         }
-        if (isRequired) {
-          numberOfRequiredFields++;
-          if (control.value !== null && control.value !== -1 && control.value !== '' && this.hasDisability !== false && control.value !== "na") {
-            numberOfPopulatedFields++;
-          }
-          else if (controlName.includes("disability") && this.hasDisability == false) {
-            numberOfPopulatedFields++;
-          }
+        else if (controlName.includes("disability") && this.hasDisability == false) {
+          numberOfPopulatedFields++;
         }
+        this.personalFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
       }
-    }
-
-    if (numberOfRequiredFields === 0) {
-      this.personalFormProgress = 100;
-    } else {
-      this.personalFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
     }
   }
 
