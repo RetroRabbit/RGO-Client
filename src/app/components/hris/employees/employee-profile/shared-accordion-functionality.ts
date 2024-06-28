@@ -217,7 +217,6 @@ export class SharedAccordionFunctionality {
   checkPersonalFormProgress() {
     let numberOfPopulatedFields = 0;
     let totalFields = 0;
-    let numberOfRequiredFields = 0;
 
     const formControls = this.personalDetailsForm.controls;
     if (this.hasDisability) {
@@ -236,7 +235,7 @@ export class SharedAccordionFunctionality {
         else if (controlName.includes("disability") && this.hasDisability == false) {
           numberOfPopulatedFields++;
         }
-        this.personalFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
+        this.personalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
       }
     }
   }
