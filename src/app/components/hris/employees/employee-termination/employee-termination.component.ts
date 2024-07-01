@@ -7,6 +7,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
+import { endDateAfterStartDateValidator } from 'src/app/components/shared-components/dateValidator';
 
 @Component({
   selector: 'app-employee-termination',
@@ -59,7 +60,7 @@ export class EmployeeTerminationComponent implements OnInit {
     accountsStatus: new FormControl<boolean>(false, Validators.required),
     terminationDocument: new FormControl<string>('', Validators.required),
     terminationComments: new FormControl<string>(''),
-  }, { validators: this.dateRangeValidator });
+  });
   }
 
   ngOnInit() {
@@ -81,23 +82,13 @@ export class EmployeeTerminationComponent implements OnInit {
         accountsStatus: new FormControl<boolean>(false, Validators.required),
         terminationDocument: new FormControl<string>('', Validators.required),
         terminationComments: new FormControl<string>(''),
-    }, { validators: this.dateRangeValidator });
+    }, { validator: endDateAfterStartDateValidator('dayOfNotice', 'lastDayOfEmployment')});
+    
     this.newterminationform.valueChanges.subscribe(() => {
         this.checkCheckboxesValid();
     });
     this.checkCheckboxesValid();
-}
-
-  dateRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const dayOfNotice = control.get('dayOfNotice')?.value;
-    const lastDayOfEmployment = control.get('lastDayOfEmployment')?.value;
-
-    if (dayOfNotice != null && lastDayOfEmployment != null) {
-      const isInvalid = new Date(dayOfNotice) > new Date(lastDayOfEmployment);
-      return isInvalid ? { dateRangeInvalid: true } : null;
-    }
-    return null;
-  };
+  }
 
   SaveEmployeeTermination(nextPage: string) {
     this.formSubmitted = true;
@@ -124,7 +115,7 @@ export class EmployeeTerminationComponent implements OnInit {
         terminationComments: newterminationform.terminationComments
     };
     this.employeeTerminationService.saveEmployeeTermination(employeeTerminationDto).subscribe({
-        next: () => this.snackBarService.showSnackbar("Saved", "snack-success"),
+        next: () => this.snackBarService.showSnackbar("Employee Terminated", "snack-success"),
         error: () => this.snackBarService.showSnackbar("Unable to Save Termination", 'snack-error'),
         complete: () => {
             this.router.navigateByUrl(nextPage);
