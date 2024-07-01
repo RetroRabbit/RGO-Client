@@ -7,7 +7,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
-import { endDateAfterStartDateValidator } from 'src/app/components/shared-components/dateValidator';
+import { endDateAfterStartDateValidator } from 'src/app/components/shared-components/form-validators/dateValidator';
 
 @Component({
   selector: 'app-employee-termination',
@@ -83,7 +83,7 @@ export class EmployeeTerminationComponent implements OnInit {
         terminationDocument: new FormControl<string>('', Validators.required),
         terminationComments: new FormControl<string>(''),
     }, { validator: endDateAfterStartDateValidator('dayOfNotice', 'lastDayOfEmployment')});
-    
+
     this.newterminationform.valueChanges.subscribe(() => {
         this.checkCheckboxesValid();
     });

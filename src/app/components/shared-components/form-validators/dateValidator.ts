@@ -12,7 +12,17 @@ export function endDateAfterStartDateValidator(startDateKey: string, endDateKey:
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    return end >= start ? null : { endDateAfterStartDate: true };
+    if (end >= start) {
+        control.get(startDateKey)?.setErrors(null);
+        control.get(endDateKey)?.setErrors(null);
+        return null;
+    }
+    else {
+        control.get(startDateKey)?.setErrors({'incorrect': true});
+        control.get(endDateKey)?.setErrors({'incorrect': true});
+        return { endDateAfterStartDate: true }
+    }
+
   };
 }
 

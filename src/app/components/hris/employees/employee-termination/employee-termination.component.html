@@ -41,7 +41,7 @@
                         Please select Last day of employment
                     </mat-error>
                 </mat-form-field>
-                <div *ngIf="newterminationform.hasError('endDateAfterStartDate')" class="warning-message text-center">
+                <div *ngIf="newterminationform.hasError('endDateAfterStartDate')" class="text-center custom-validate-error">
                     *The last day of employment cannot be before the date of notice.
                 </div>
 
