@@ -35,7 +35,6 @@ export class EmployeeTerminationComponent implements OnInit {
   isvalidFileSize: boolean = false;
   checkboxesValid: boolean = true;
   formSubmitted: boolean = false;
-  dateInvalid: boolean = false;
 
   terminationOptionValue: number = 0;
   interviewDocFilename: string = "";
