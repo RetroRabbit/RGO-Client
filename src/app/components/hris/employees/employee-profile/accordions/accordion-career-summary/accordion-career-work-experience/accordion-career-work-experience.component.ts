@@ -83,7 +83,7 @@ export class AccordionCareerWorkExperienceComponent {
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
       error: (error) => {
-        this.snackBarService.showSnackbar(error, "Failed to fetch work experiences");
+        this.snackBarService.showSnackbar("Unable to Fetch Work Experiences", "snack-error");
       }
     });
   }
@@ -140,6 +140,7 @@ export class AccordionCareerWorkExperienceComponent {
       software: [],
       startDate: new Date,
       endDate: new Date,
+      projectDescription: '',
       employeeId: this.employeeProfile.id as number
     }
     this.sharedAccordionFunctionality.newWorkExperiences.push(newWorkExperience);
@@ -160,6 +161,8 @@ export class AccordionCareerWorkExperienceComponent {
       else if (this.sharedAccordionFunctionality.workExperience[i].startDate != this.copyOfWorkExperience[i].startDate)
         differenceArray.push(this.copyOfWorkExperience[i]);
       else if (this.sharedAccordionFunctionality.workExperience[i].endDate != this.copyOfWorkExperience[i].endDate)
+        differenceArray.push(this.copyOfWorkExperience[i]);
+      else if (this.sharedAccordionFunctionality.workExperience[i].projectDescription != this.copyOfWorkExperience[i].projectDescription)
         differenceArray.push(this.copyOfWorkExperience[i]);
     }
     return differenceArray
@@ -213,16 +216,16 @@ export class AccordionCareerWorkExperienceComponent {
     const deleteId = this.copyOfWorkExperience[index].id;
     this.workExperienceService.deleteWorkExperience(deleteId).subscribe({
       next: () => {
-        this.snackBarService.showSnackbar("Experience deleted", "snack-success");
+        this.snackBarService.showSnackbar("Updated", "snack-success");
         this.copyOfWorkExperience.splice(index, 1);
         this.sharedAccordionFunctionality.workExperience.splice(index, 1);
-        this.sharedAccordionFunctionality.workExperienceFormFields = this.sharedAccordionFunctionality.workExperienceFormFields - 6;
+        this.sharedAccordionFunctionality.workExperienceFormFields = this.sharedAccordionFunctionality.workExperienceFormFields - 7;
         this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
         this.editWorkExperience = false;
       },
       error: (error) => {
-        this.snackBarService.showSnackbar("Unable to delete", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Delete Experience", "snack-error");
       }
     });
   }
@@ -238,7 +241,7 @@ export class AccordionCareerWorkExperienceComponent {
         next: () => {
           saveCount++;
           if (saveCount === total && !errorOccurred) {
-            this.snackBarService.showSnackbar("Work experience info added", "snack-success");
+            this.snackBarService.showSnackbar("Saved", "snack-success");
             this.hasUpdatedWorkExperience = true;
             this.addingWorkExperience = false;
             this.sharedAccordionFunctionality.newWorkExperiences = [];
@@ -249,7 +252,7 @@ export class AccordionCareerWorkExperienceComponent {
         },
         error: (error) => {
           errorOccurred = true;
-          this.snackBarService.showSnackbar("Unable to add work experience", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Add Work Experience", "snack-error");
           this.addingWorkExperience = false;
           this.editWorkExperience = false;
         }
@@ -266,14 +269,14 @@ export class AccordionCareerWorkExperienceComponent {
     );
     forkJoin(updateObservables).subscribe({
       next: () => {
-        this.snackBarService.showSnackbar("Work experience info updated", "snack-success");
+        this.snackBarService.showSnackbar("Updated", "snack-success");
         this.hasUpdatedWorkExperience = true;
         this.getWorkExperience();
         this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
       error: () => {
-        this.snackBarService.showSnackbar("Unable to update all fields", "snack-error");
+        this.snackBarService.showSnackbar("Unable to Update All Fields", "snack-error");
       }
     });
   }

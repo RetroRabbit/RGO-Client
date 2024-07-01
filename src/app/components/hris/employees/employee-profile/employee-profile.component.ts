@@ -32,6 +32,8 @@ import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { AppModule } from 'src/app/app.module';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-employee-profile',
@@ -147,50 +149,50 @@ export class EmployeeProfileComponent implements OnChanges {
 
   ngOnInit() {
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
-       this.isAdminUser = true;
+      this.isAdminUser = true;
     }
-      this.sharedAccordionFunctionality.updateProfile.subscribe({
-        next: (data: number) => {
-          this.profileFormProgress = data;
-          this.overallProgress();
-        }
-      });
-
-      this.sharedAccordionFunctionality.updateDocument.subscribe({
-        next: (data: number) => {
-          this.documentFormProgress = data;
-          this.overallProgress();
-        }
-      });
-
-      this.sharedAccordionFunctionality.updateCareer.subscribe({
-        next: (data: number) => {
-          this.careerFormProgress = data;
-          this.overallProgress();
-        }
-      });
-
-      this.employeeId = this.route.snapshot.params['id'];
-      this.getClients();
-
-      if (this.employeeId == undefined) {
-        this.showBackButtons = false;
-        this.employeeId = this.authAccessService.getUserId();
+    this.sharedAccordionFunctionality.updateProfile.subscribe({
+      next: (data: number) => {
+        this.profileFormProgress = data;
+        this.overallProgress();
       }
+    });
 
-      if (this.authAccessService.isAdmin() ||
-        this.authAccessService.isSuperAdmin() ||
-        this.authAccessService.isJourney() ||
-        this.authAccessService.isTalent()) {
-        this.usingSimpleProfile = false;
+    this.sharedAccordionFunctionality.updateDocument.subscribe({
+      next: (data: number) => {
+        this.documentFormProgress = data;
+        this.overallProgress();
       }
-      else {
-        this.usingSimpleProfile = true;
-      }
+    });
 
-      this.getEmployeeProfile();
-      this.refreshEmployeeProfile();
-      this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+    this.sharedAccordionFunctionality.updateCareer.subscribe({
+      next: (data: number) => {
+        this.careerFormProgress = data;
+        this.overallProgress();
+      }
+    });
+
+    this.employeeId = this.route.snapshot.params['id'];
+    this.getClients();
+
+    if (this.employeeId == undefined) {
+      this.showBackButtons = false;
+      this.employeeId = this.authAccessService.getUserId();
+    }
+
+    if (this.authAccessService.isAdmin() ||
+      this.authAccessService.isSuperAdmin() ||
+      this.authAccessService.isJourney() ||
+      this.authAccessService.isTalent()) {
+      this.usingSimpleProfile = false;
+    }
+    else {
+      this.usingSimpleProfile = true;
+    }
+
+    this.getEmployeeProfile();
+    this.refreshEmployeeProfile();
+    this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
 
   openTerminationForm() {
@@ -223,11 +225,10 @@ export class EmployeeProfileComponent implements OnChanges {
         this.terminationData = data;
       },
       error: err => {
-        this.snackBarService.showSnackbar('Error fetching termination details', err);
+        this.snackBarService.showSnackbar('Unable to Fetch Termination Details', err);
       }
     });
   }
-
 
   getEmployeeProfile() {
     const fetchProfile = this.usingSimpleProfile
@@ -257,7 +258,7 @@ export class EmployeeProfileComponent implements OnChanges {
         this.changeDetectorRef.detectChanges();
       },
       error: (error: any) => {
-        this.snackBarService.showSnackbar(error, 'snack-error');
+        this.snackBarService.showSnackbar("Unable to Retrieve Profile", 'snack-error');
       }
     })
   }
@@ -280,8 +281,7 @@ export class EmployeeProfileComponent implements OnChanges {
           this.getAllEmployees();
       },
       error: () => {
-        const errorMessage = this.usingSimpleProfile ? 'Error fetching simple user profile' : 'Error fetching user profile';
-        this.snackBarService.showSnackbar(errorMessage, 'snack-error');
+        this.snackBarService.showSnackbar("Unable to Retrieve Profile", 'snack-error');
       }
     })
   }
@@ -413,7 +413,7 @@ export class EmployeeProfileComponent implements OnChanges {
         this.updateUser();
       };
       file.onerror = (error) => {
-        this.snackBarService.showSnackbar('Error uploading file', 'snack-error')
+        this.snackBarService.showSnackbar('Unable to Upload File', 'snack-error')
       }
     }
   }
@@ -423,11 +423,11 @@ export class EmployeeProfileComponent implements OnChanges {
     this.employeeService.updateEmployee(updatedEmp).subscribe({
       next: () => {
         this.getEmployeeProfile();
-        this.snackBarService.showSnackbar('Updated your profile picture', 'snack-success');
+        this.snackBarService.showSnackbar("Updated", "snack-success");
         this.navService.refreshEmployee();
       },
       error: () => {
-        this.snackBarService.showSnackbar('Failed to update employee profile picture', 'snack-error');
+        this.snackBarService.showSnackbar('Unable to Update Employee Profile Picture', 'snack-error');
       }
     });
   }
@@ -439,11 +439,11 @@ export class EmployeeProfileComponent implements OnChanges {
     } else if (this.employeeProfile && this.employeeProfile.email) {
       emailToCopy = this.employeeProfile.email;
     } else {
-      this.snackBarService.showSnackbar("No email address available to copy", "snack-error");
+      this.snackBarService.showSnackbar("No Email Address Available to Copy", "snack-error");
       return;
     }
     this.clipboard.copy(emailToCopy);
-    this.snackBarService.showSnackbar("Email copied to clipboard", "snack-success");
+    this.snackBarService.showSnackbar("Copied to Clipboard", "snack-success");
   }
 
 
@@ -471,5 +471,9 @@ export class EmployeeProfileComponent implements OnChanges {
       this.getAllEmployees();
     }
     this.getClients();
+  }
+
+  ViewCVDocument() {
+    this.router.navigateByUrl('/view-cv-document/' + this.selectedEmployee.id);
   }
 }

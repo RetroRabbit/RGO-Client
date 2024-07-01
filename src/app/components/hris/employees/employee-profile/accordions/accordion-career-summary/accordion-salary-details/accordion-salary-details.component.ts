@@ -9,6 +9,8 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { ActivatedRoute } from '@angular/router';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
+import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 
 @Component({
   selector: 'app-accordion-salary-details',
@@ -28,59 +30,83 @@ export class AccordionSalaryDetailsComponent {
 
   panelOpenState: boolean = false;
   employeeSalaryDetailsDto!: any;
+  employeeTaxDetailsDto!: any;
   employeeSalary: EmployeeSalary = {};
+  employeeProfileInfo: any = [];
   editSalary: boolean = false;
   message: string = "";
   isAdminUser: boolean = false;
   employeeId: number | undefined;
 
-
-
   constructor(
     private fb: FormBuilder,
     private employeeSalaryService: EmployeeSalaryService,
+    private employeeProfileService: EmployeeProfileService,
+    private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
     private authAccessService: AuthAccessService,
     public navservice: NavService,
     private route: ActivatedRoute,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     this.employeeId = this.route.snapshot.params["id"];
-    this.getEmployeeSalaryDetails();
+    this.getEmployeeDetails();
     if (this.authAccessService.isSuperAdmin()) {
       this.isAdminUser = true;
     }
   }
 
-  initializeSalaryDetailsForm(salaryDetails: EmployeeSalary) {
+  initializeSalaryDetailsForm(salaryDetails: EmployeeSalary, taxNumber: string | undefined) {
     if (salaryDetails != null) {
       this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
         remuneration: [salaryDetails.remuneration, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+        taxNumber: [this.employeeProfile!.taxNumber, [Validators.required]]
       });
       this.getSalaryDate();
     }
     else {
       this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
         remuneration: ["", [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+        taxNumber: ["", [Validators.required]]
       });
     }
     this.sharedAccordionFunctionality.salaryDetailsForm.disable();
   }
 
-  getEmployeeSalaryDetails() {
+  getEmployeeDetails() {
+    if (this.employeeId == undefined) {
+      this.employeeProfileService.getEmployeeById(this.navservice.employeeProfile.id as number).subscribe({
+        next: data => {
+          this.getEmployeeSalaryDetails(data.taxNumber);
+        }
+      })
+    }
+    else {
+      this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
+        next: data => {
+          this.initializeSalaryDetailsForm(this.employeeSalary, data.taxNumber);
+          this.getEmployeeSalaryDetails(data.taxNumber);
+        },
+        error: (error) => {
+          this.snackBarService.showSnackbar("Error fetching salary details", "snack-error");
+        }
+      })
+    }
+  }
+
+  getEmployeeSalaryDetails(taxNumber: string | undefined) {
     if (this.employeeId == undefined) {
       this.employeeSalaryService.getEmployeeSalary(this.navservice.employeeProfile.id as number).subscribe({
         next: data => {
           this.employeeSalary = data;
-          this.initializeSalaryDetailsForm(this.employeeSalary);
+          this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
           this.sharedAccordionFunctionality.calculateSalaryDetails();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
         error: (error) => {
-          this.snackBarService.showSnackbar("Error fetching salary details", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Fetch Salary Details", "snack-error");
         }
       })
     }
@@ -88,16 +114,17 @@ export class AccordionSalaryDetailsComponent {
       this.employeeSalaryService.getEmployeeSalary(this.employeeId).subscribe({
         next: data => {
           this.employeeSalary = data;
-          this.initializeSalaryDetailsForm(this.employeeSalary);
+          this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
         },
         error: (error) => {
-          this.snackBarService.showSnackbar("Error fetching salary details", "snack-error");
+          this.snackBarService.showSnackbar("Unable to Fetch Salary Details", "snack-error");
         }
       })
     }
   }
 
-  populateDto(salaryCopy: number) {
+  populateDto(salaryCopy: number, taxNumber: number) {
+
     if (this.employeeSalary) {
       this.employeeSalaryDetailsDto = {
         employeeId: this.employeeId != undefined ? this.employeeId : this.navservice.employeeProfile.id,
@@ -108,7 +135,10 @@ export class AccordionSalaryDetailsComponent {
         remuneration: salaryCopy,
         band: this.employeeSalary.band,
         contribution: this.employeeSalary.contribution,
-        salaryUpdateDate: new Date()
+        salaryUpdateDate: new Date(),
+      }
+      this.employeeTaxDetailsDto = {
+        taxNumber: taxNumber
       }
     } else {
       this.employeeSalaryDetailsDto = {
@@ -120,7 +150,10 @@ export class AccordionSalaryDetailsComponent {
         remuneration: salaryCopy,
         band: 0,
         contribution: "",
-        salaryUpdateDate: new Date()
+        salaryUpdateDate: new Date(),
+      }
+      this.employeeTaxDetailsDto = {
+        taxNumber: taxNumber
       }
     }
     return this.employeeSalaryDetailsDto;
@@ -143,48 +176,54 @@ export class AccordionSalaryDetailsComponent {
 
   saveEmployeeSalaryDetails() {
     const salaryDetailsFormValue = this.sharedAccordionFunctionality.salaryDetailsForm.value;
+    const employeeDetailsForm = this.sharedAccordionFunctionality.employeeDetailsForm.value;
     if (this.sharedAccordionFunctionality.salaryDetailsForm.valid) {
-      this.populateDto(salaryDetailsFormValue.remuneration)
+      this.populateDto(salaryDetailsFormValue.remuneration, salaryDetailsFormValue.taxNumber)
+      this.employeeProfile.taxNumber = salaryDetailsFormValue.taxNumber;
       this.editSalary = false;
       if (this.employeeSalary) {
         this.employeeSalaryService.updateEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
           next: () => {
-            this.snackBarService.showSnackbar("Salary details has been updated", "snack-success");
+            this.snackBarService.showSnackbar("Updated", "snack-success");
             this.getSalaryDate();
             this.editSalary = false;
             this.sharedAccordionFunctionality.salaryDetailsForm.disable();
-            this.getEmployeeSalaryDetails();
+            this.getEmployeeDetails();
             this.sharedAccordionFunctionality.calculateSalaryDetails();
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
           error: (error) => {
-            this.snackBarService.showSnackbar(error, "snack-error");
+            this.snackBarService.showSnackbar("Unable to Update Salary Information", "snack-error");
           }
-        })
+        }),
+          this.employeeService.updateEmployee(this.employeeProfile).subscribe({
+            next: (data) => {
+              this.snackBarService.showSnackbar("Employee tax updated", "snack-success");
+            }
+          })
       } else {
         this.employeeSalaryService.saveEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
           next: () => {
-            this.snackBarService.showSnackbar("Salary details has been saved", "snack-success");
+            this.snackBarService.showSnackbar("Saved", "snack-success");
             this.getSalaryDate();
             this.editSalary = false;
             this.sharedAccordionFunctionality.salaryDetailsForm.disable();
-            this.getEmployeeSalaryDetails();
+            this.getEmployeeDetails();
             this.sharedAccordionFunctionality.calculateSalaryDetails();
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
           error: (error) => {
-            this.snackBarService.showSnackbar(error, "snack-error");
+            this.snackBarService.showSnackbar("Unable to Save Salary Information", "snack-error");
           }
         })
       }
     }
     else if (salaryDetailsFormValue.remuneration < 0) {
-      this.snackBarService.showSnackbar("Remuneration cannot be less than zero", "snack-error");
+      this.snackBarService.showSnackbar("Remuneration Cannot Be Less Than Zero", "snack-error");
     }
     else {
-      this.snackBarService.showSnackbar("Please enter the correct Remuneration", "snack-error");
+      this.snackBarService.showSnackbar("Please Enter the Correct Remuneration", "snack-error");
     }
-
   }
 
   editSalaryDetails() {

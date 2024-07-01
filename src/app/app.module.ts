@@ -100,6 +100,7 @@ import { AccordionCareerWorkExperienceComponent } from './components/hris/employ
 import { AccordionSalaryDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-salary-details/accordion-salary-details.component';
 import { EmployeeTerminationComponent } from './components/hris/employees/employee-termination/employee-termination.component';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
+import { CvDocumentComponent } from './components/hris/cv-document/cv-document.component';
 import { DataReportsComponent } from './components/hris/data-reports/index/data-reports.component';
 import { DataReportDetailComponent } from './components/hris/data-reports/details/data-report-detail.component';
 import { MenuItemComponent } from './components/hris/data-reports/report-menu/menu-item.component';
@@ -159,6 +160,8 @@ import { Button, ButtonModule } from 'primeng/button';
     AccordionCareerWorkExperienceComponent,
     AccordionSalaryDetailsComponent,
     EmployeeTerminationComponent,
+    CvDocumentComponent,
+
     DataReportsComponent,
     DataReportDetailComponent,
     MenuItemComponent,

@@ -75,9 +75,9 @@
           *ngIf="authAccessService.isSuperAdmin() || authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
           <div id="nav-item-container">
             <div id="nav-item">
-              <div (click)="changeNav('/employees')"
+              <div (click)="changeNav('/employees')" 
                 [ngClass]="router.url.includes('/employees') ||  router.url.includes('/view-') ? 'active' : 'idle'"  
-                [matBadge]="employeeBankingandstarterkitService.pendingCount$ | async" [matBadgeHidden] = "employeeBankingandstarterkitService.pendingCount$.getValue() <= 0" matBadgeSize="small">
+                [matBadge]="employeeBankingandstarterkitService.pendingCount$ | async" [matBadgeHidden] = "!hasAccessToApprovals() || employeeBankingandstarterkitService.pendingCount$.getValue() <= 0" matBadgeSize="small">
                 Employees
               </div>
               <div *ngIf="router.url.includes('/employees') ||  router.url.includes('/view-')" id="selected-line-box">
@@ -137,7 +137,7 @@
     </div>
   </div>
   <div [id]="navService.showTopNavMenu ? 'drop-down-container-closed' : 'drop-down-container-open'"
-    class="col-4 mt-3 p-3 rounded-3">
+    class="col-4 p-3 rounded-3">
     <div id="drop-down-content">
       <div class="me-3">
         <button id="options-trigger" (click)="navService.showTopNavMenu = !navService.showTopNavMenu">
@@ -145,7 +145,7 @@
         </button>
       </div>
       <div [hidden]="screenWidth < 992 && !navService.showTopNavMenu" id="employee-info">
-        <h4> {{ navService.employeeProfile?.name }} {{ navService.employeeProfile?.surname }} </h4>
+        <h4 id="topNavName" (click)="goToProfile()"> {{ navService.employeeProfile?.name }} {{ navService.employeeProfile?.surname }} </h4>
         <h5> {{ navService.employeeProfile?.employeeType?.name }} </h5>
       </div>
       <div class="ms-2" id="image-container" [hidden]="screenWidth < 992 && !navService.showTopNavMenu">

@@ -54,6 +54,20 @@
           <button *ngIf="this.isAdminUser && employeeProfile.active" mat-button color="primary"
             (click)="openTerminationForm()">End Employment
           </button>
+          <button mat-button color="primary"
+          (click) = "ViewCVDocument()"
+         [ngClass]="screenWidth <= 767 ?'upload-download-button':''">
+         <svg id="svg-icon" width="19" height="19" viewBox="0 0 19 19" fill="white"
+             xmlns="http://www.w3.org/2000/svg">
+             <g id="Icons/file_download">
+                 <path id="icon"
+                     d="M13.9414 11.75V14H4.94141V11.75H3.44141V14C3.44141 14.825 4.11641 15.5 4.94141 15.5H13.9414C14.7664 15.5 15.4414 14.825 15.4414 14V11.75H13.9414ZM13.1914 8.75L12.1339 7.6925L10.1914 9.6275V3.5H8.69141V9.6275L6.74891 7.6925L5.69141 8.75L9.44141 12.5L13.1914 8.75Z"
+
+                     fill="#0029C6" />
+             </g>
+         </svg>
+         View CV
+     </button>
         </div>
         <div class="col-12 my-2 d-none d-md-block" id="header-role"
           *ngIf="navService.employeeProfile && selectedEmployee && navService.employeeProfile.id !== selectedEmployee.id; else OwnType">
@@ -235,8 +249,7 @@
           </div>
         </div>
         <div class="col-9">
-          <h4 style="margin:0"> {{usingSimpleProfile ? simpleEmployee.name :employeeProfile.name}}'s profile
-            progess </h4>
+          <h4 style="margin:0"> {{usingSimpleProfile ? simpleEmployee.name :employeeProfile.name}}'s Profile Progress </h4>
         </div>
       </div>
     </div>

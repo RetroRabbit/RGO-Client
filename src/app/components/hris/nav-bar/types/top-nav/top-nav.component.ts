@@ -90,6 +90,10 @@ export class TopNavComponent {
     this.router.navigateByUrl("/");
   }
 
+  goToProfile() {
+    this.router.navigateByUrl('/profile/' + this.navService.employeeProfile.id);
+  }
+
   changeNav(route: string) {
     if (this.navService.unsavedChanges) {
       this.tempRoute = route;
@@ -128,6 +132,10 @@ export class TopNavComponent {
 
   hasAccessToAts(): boolean {
     return this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent() || this.authAccessService.isJourney();
+  }
+
+  hasAccessToApprovals(): boolean {
+    return this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin();
   }
 
   dialogFeedBack(event: any) {

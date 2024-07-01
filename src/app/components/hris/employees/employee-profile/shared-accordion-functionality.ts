@@ -149,6 +149,8 @@ export class SharedAccordionFunctionality {
     gender: { value: '', disabled: true },
     race: { value: '', disabled: true },
     disability: { value: '', disabled: true },
+    countryOfBirth: { value: '', disabled: true },
+    nationality: { value: '', disabled: true },
     disabilityNotes: { value: '', disabled: true },
     disabilityList: { value: '', disabled: true }
   });
@@ -208,20 +210,22 @@ export class SharedAccordionFunctionality {
   additionalDocumentForm: FormGroup = this.fb.group({});
   additionalCareerInfoForm: FormGroup = this.fb.group({});
   salaryDetailsForm: FormGroup = this.fb.group({
-    remuneration: [{ value: '', disable: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]]
+    remuneration: [{ value: '', disable: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+    taxNumber: [{ value: '', disable: true }]
   });
 
   checkPersonalFormProgress() {
     let numberOfPopulatedFields = 0;
     let totalFields = 0;
-    const formControls = this.personalDetailsForm.controls;
 
+    const formControls = this.personalDetailsForm.controls;
     if (this.hasDisability) {
       totalFields = (Object.keys(this.personalDetailsForm.controls).length);
     }
     else {
       totalFields = (Object.keys(this.personalDetailsForm.controls).length) - 2;
     }
+
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
@@ -231,9 +235,9 @@ export class SharedAccordionFunctionality {
         else if (controlName.includes("disability") && this.hasDisability == false) {
           numberOfPopulatedFields++;
         }
+        this.personalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
       }
     }
-    this.personalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
   }
 
   checkEmployeeFormProgress() {
@@ -326,18 +330,30 @@ export class SharedAccordionFunctionality {
 
   checkAdditionalFormProgress() {
     let numberOfPopulatedFields = 0;
+    let numberOfRequiredFields = 0;
     const formControls = this.additionalInfoForm.controls;
-    let totalFields = Object.keys(this.additionalInfoForm.controls).length;
 
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
-          numberOfPopulatedFields++;
+        let isRequired = false;
+        if (control.validator) {
+          const validator = control.validator({} as AbstractControl);
+          isRequired = validator && validator['required'] ? true : false;
+        }
+        if (isRequired) {
+          numberOfRequiredFields++;
+          if (control.value != null && control.value !== '') {
+            numberOfPopulatedFields++;
+          }
         }
       }
     }
-    this.additionalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
+    if (numberOfRequiredFields === 0) {
+      this.additionalFormProgress = 100;
+    } else {
+      this.additionalFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
+    }
   }
 
   calculateEmployeeDocumentProgress() {
@@ -403,17 +419,16 @@ export class SharedAccordionFunctionality {
       }
     }
     this.additionalCareerFormProgress = Math.round((filledCount / totalFields) * 100);
-    if(Number.isNaN(this.additionalCareerFormProgress))
-      {
-        this.additionalCareerFormProgress = 0;
-      }
+    if (Number.isNaN(this.additionalCareerFormProgress)) {
+      this.additionalCareerFormProgress = 0;
+    }
   }
 
   calculateCareerWorkExperienceFormProgress() {
     let targetWorkExp: any = [];
     let newTargetWorkExp: any = [];
     this.filteredFilledWorkExp.length = 0;
-    this.workExperienceFormFields = 6 * this.workExperience.length;
+    this.workExperienceFormFields = 7 * this.workExperience.length;
 
     if (this.workExperience.length === 0) {
       this.workExperienceFormFields = 0;

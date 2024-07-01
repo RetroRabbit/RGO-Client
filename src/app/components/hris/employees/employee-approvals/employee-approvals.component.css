@@ -238,18 +238,6 @@ mat-header-row {
   border-color: #1D1B201F !important;
 }
 
-.approved {
-  color: #0FAF4B;
-}
-
-.declined {
-  color: #B3261E;
-}
-
-.pending {
-  color: #0029C6;
-}
-
 .image-styling {
   /* margin-top: 25px;
   border-radius: 20px;

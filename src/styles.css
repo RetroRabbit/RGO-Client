@@ -8,6 +8,10 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.mdc-button__label{
+  margin-right: 0px !important;
+}
+
 .mat-mdc-radio-button.mat-accent {
   --mdc-radio-disabled-selected-icon-color: #000;
   --mdc-radio-disabled-unselected-icon-color: #000;
