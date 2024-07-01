@@ -149,6 +149,8 @@ export class SharedAccordionFunctionality {
     gender: { value: '', disabled: true },
     race: { value: '', disabled: true },
     disability: { value: '', disabled: true },
+    countryOfBirth: { value: '', disabled: true },
+    nationality: { value: '', disabled: true },
     disabilityNotes: { value: '', disabled: true },
     disabilityList: { value: '', disabled: true }
   });
@@ -208,13 +210,17 @@ export class SharedAccordionFunctionality {
   additionalDocumentForm: FormGroup = this.fb.group({});
   additionalCareerInfoForm: FormGroup = this.fb.group({});
   salaryDetailsForm: FormGroup = this.fb.group({
-    remuneration: [{ value: '', disable: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]]
+    remuneration: [{ value: '', disable: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+    taxNumber: [{ value: '', disable: true }]
   });
 
   checkPersonalFormProgress() {
     let numberOfPopulatedFields = 0;
     let totalFields = 0;
+    let numberOfRequiredFields = 0;
+
     const formControls = this.personalDetailsForm.controls;
+    let isRequired = false;
 
     if (this.hasDisability) {
       totalFields = (Object.keys(this.personalDetailsForm.controls).length);
@@ -222,18 +228,41 @@ export class SharedAccordionFunctionality {
     else {
       totalFields = (Object.keys(this.personalDetailsForm.controls).length) - 2;
     }
+
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (control.value != null && control.value != '' && this.hasDisability != false && control.value != "na") {
-          numberOfPopulatedFields++;
+
+        if (control.validator) {
+          const validator = control.validator({} as AbstractControl);
+          isRequired = validator && validator['required'] ? true : false;
         }
-        else if (controlName.includes("disability") && this.hasDisability == false) {
-          numberOfPopulatedFields++;
+
+        if (isRequired) {
+          if (this.hasDisability !== false) {
+            numberOfRequiredFields = 5;
+          }
+          else {
+            numberOfRequiredFields = 3;
+          }
+
+          if (this.hasDisability == false) {
+            if (control.value !== null && control.value !== '' && control.value !== "na") {
+              numberOfPopulatedFields++;
+            }
+          }
+          else if (this.hasDisability == true && control.value !== null && control.value !== '' && control.value !== "na") {
+            numberOfPopulatedFields++;
+          }
         }
+        this.personalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
       }
     }
-    this.personalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
+    if (totalFields === 0) {
+      this.personalFormProgress = 100;
+    } else {
+      this.personalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
+    }
   }
 
   checkEmployeeFormProgress() {

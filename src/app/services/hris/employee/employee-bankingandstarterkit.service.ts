@@ -72,4 +72,12 @@ export class EmployeeBankingandstarterkitService {
     this.pendingCount$.next(pendingCount);
     this.declinedCount$.next(declinedCount);
   }
+
+  incrementPendingCount(){
+    this.pendingCount$.next(this.pendingCount$.value + 1);
+  } 
+  
+  decrementPendingCount(){
+    this.pendingCount$.next(this.pendingCount$.value - 1);
+  }
 }
