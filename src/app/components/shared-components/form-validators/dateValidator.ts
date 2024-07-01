@@ -22,7 +22,6 @@ export function endDateAfterStartDateValidator(startDateKey: string, endDateKey:
         control.get(endDateKey)?.setErrors({'incorrect': true});
         return { endDateAfterStartDate: true }
     }
-
   };
 }
 
