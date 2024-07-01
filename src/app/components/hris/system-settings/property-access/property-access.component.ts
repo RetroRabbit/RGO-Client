@@ -21,7 +21,7 @@ export class PropertyAccessComponent {
     dataSource: MatTableDataSource<PropertyAccess> = new MatTableDataSource();
     isLoading: boolean = true;
     permissions: Observable<GenericDropDownObject[]> = this.getEnumKeys(PropertyAccessLevel);
-    displayedColumns: string[] = ['id', 'role', 'table', 'field', 'accessLevel'];
+    displayedColumns: string[] = ['id', 'description', 'table', 'field', 'accessLevel'];
     pageSizes: number[] = [1, 5, 10, 25, 50, 100];
 
     screenWidth: number = 992;
@@ -92,10 +92,24 @@ export class PropertyAccessComponent {
         this.dataSource = new MatTableDataSource(data);
         this.ngZone.run(() => {
             this.dataSource.paginator = this.paginator;
+            this.dataSource.sortingDataAccessor = this.sortPropertyAccessData;
             this.dataSource.sort = this.sort;
         });
         this.dataSource._updateChangeSubscription();
     }
+
+    sortPropertyAccessData(data: PropertyAccess, property: string): string | number { 
+        switch (property) {  
+            case 'description':
+                return data.role.description;
+            case 'table':
+                return data.table;
+            case 'field':
+                return data.field;
+            default:
+                return ""; 
+        } 
+    } 
 
     changePermissions(ropertyId: number, permission: GenericDropDownObject): void {
         this.accessPropertiesService
