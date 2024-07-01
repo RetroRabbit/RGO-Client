@@ -299,6 +299,19 @@ export class DataReportDetailComponent {
     })
   }
 
+  archiveColumn(id:number){
+    console.log(id)
+    this.dataReportingService.archiveColumnOnReport(id).subscribe({
+      next: data => {
+        this.populateReportData(this.reportCode!);
+        this.snackBarService.showSnackbar("Column Archived", "snack-success")
+      },
+      error: error =>{
+        this.snackBarService.showSnackbar("Column Archiving failed", "snack-error")
+      }
+    })
+  }
+
   goBack(){
     this.modalAddingNew = false;
     this.dataReportForm.reset();

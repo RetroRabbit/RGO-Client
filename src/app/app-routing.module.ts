@@ -21,6 +21,8 @@ import { ViewBankingApprovalComponent } from './components/hris/employees/employ
 import { CareerSummaryQualificationsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-summary-qualifications/accordion-career-summary-qualifications.component';
 import { EmployeeTerminationComponent } from './components/hris/employees/employee-termination/employee-termination.component';
 import { CvDocumentComponent } from './components/hris/cv-document/cv-document.component';
+import { DataReportsComponent } from './components/hris/data-reports/index/data-reports.component';
+import { DataReportDetailComponent } from './components/hris/data-reports/details/data-report-detail.component';
 
 const routes: Routes = [
   { path: '', component: SignInComponent },
@@ -41,7 +43,10 @@ const routes: Routes = [
   { path: 'career-summary', component: CareerSummaryQualificationsComponent },
   { path: 'view-starter-kit-approval/:id', component: ViewStarterKitApprovalComponent },
   { path: 'end-employment/:id', component: EmployeeTerminationComponent },
-  { path: 'view-cv-document/:id', component: CvDocumentComponent }
+  { path: 'view-cv-document/:id', component: CvDocumentComponent },
+  { path: 'data-reports', component: DataReportsComponent },
+  { path: 'data-reports/:id', component: DataReportDetailComponent }
+
 ];
 
 @NgModule({

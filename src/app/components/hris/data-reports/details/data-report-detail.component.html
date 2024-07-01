@@ -43,7 +43,13 @@
                                 <tr>
                                     <th *ngFor="let col of columns" class="h5" pReorderableColumn
                                         pSortableColumn="{{col.name}}">
-                                        {{ col.name }} <p-sortIcon field="{{col.name}}" />
+                                        <div class="col-12 row">
+                                            <h2 class="col-7">{{ col.name }}</h2>
+                                            <p-sortIcon field="{{col.name}}" class="col-2" />
+                                            <div class="col-3 mt-1">
+                                                <mat-icon (click)="archiveColumn(col.id)" class="close-icon">close</mat-icon>
+                                            </div>
+                                        </div>
                                     </th>
                                     <th class="table-add" pFrozenColumn alignFrozen="right">
                                         <span *ngFor="let item of navItems">
@@ -74,17 +80,20 @@
                                     <td *ngFor="let col of columns" class="report-table justify-content-center"
                                         [ngClass]="col.isCustom? 'editable-field' : ''">
                                         <span *ngIf="!col.isCustom ">{{ rowData[col.prop] }}</span>
-                                        <input [disabled]="nonEditable" *ngIf="col.isCustom && col.fieldType == 'Checkbox'" type="checkbox"
+                                        <input [disabled]="nonEditable"
+                                            *ngIf="col.isCustom && col.fieldType == 'Checkbox'" type="checkbox"
                                             name="{{col.prop + rowData['Id']}}"
                                             (change)="UpdateCustomInput(index, col, $event)"
                                             [checked]="rowData[col.prop] == 'true'"
                                             class="form-check-inline form-check-input form-control report-checkbox" />
-                                        <textarea [readOnly]="nonEditable" *ngIf="col.isCustom && col.fieldType == 'Text'" type="text"
+                                        <textarea [readOnly]="nonEditable"
+                                            *ngIf="col.isCustom && col.fieldType == 'Text'" type="text"
                                             cdkTextareaAutosize name="{{col.prop + rowData['Id']}}"
                                             (change)="UpdateCustomInput(index, col, $event)" rows="1"
                                             class="form-control form-control-sm text-area-table p-0">{{rowData[col.prop]}}</textarea>
                                     </td>
-                                    <td pFrozenColumn alignFrozen="right" (click)="onViewEmployee(rowData['Id'])" class="search-employee">
+                                    <td pFrozenColumn alignFrozen="right" (click)="onViewEmployee(rowData['Id'])"
+                                        class="search-employee">
                                         <div [ngStyle]="{ display: screenWidth <= 350 ? 'none' : '' }" id="search-arrow"
                                             class="mt-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -131,7 +140,8 @@
                                             [matAutocomplete]="auto" (input)="filterEmployees($event)">
                                         <mat-autocomplete #auto="matAutocomplete">
                                             <mat-option *ngFor="let employee of filteredEmployees"
-                                                [value]='employee.name + " " + employee.surname' (onSelectionChange)="getEmployeeId(employee)">
+                                                [value]='employee.name + " " + employee.surname'
+                                                (onSelectionChange)="getEmployeeId(employee)">
                                                 {{ employee.name }} {{ employee.surname}}
                                             </mat-option>
                                         </mat-autocomplete>
@@ -140,32 +150,36 @@
                                         appearance="outline" class="col-12">
                                         <mat-label>Role</mat-label>
                                         <mat-select formControlName="roleAccess" hideSingleSelectionIndicator="true">
-                                            <mat-option *ngFor="let role of employeeRoles" [value]="role.id" (onSelectionChange)="getRoleId(role)">
+                                            <mat-option *ngFor="let role of employeeRoles" [value]="role.id"
+                                                (onSelectionChange)="getRoleId(role)">
                                                 {{role.name}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
-                                    <mat-checkbox [checked]="dataReportForm.controls['viewOnly'].value" (change)="getViewOnlyStatus($event.checked)">
+                                    <mat-checkbox [checked]="dataReportForm.controls['viewOnly'].value"
+                                        (change)="getViewOnlyStatus($event.checked)">
                                         View Only?
                                     </mat-checkbox>
                                 </form>
                                 <div *ngIf="!modalAddingNew">
                                     <h3 *ngIf="accessRoleList.length > 0">Roles with Access</h3>
                                     <div class="row" *ngFor="let access of accessRoleList">
-                                      <h5 class="col-6">{{ access.name }}</h5>
-                                      <div class="col-6">
-                                        <mat-icon (click)="archiveAccess(access.id)" class="close-icon" >close</mat-icon>
-                                      </div>
+                                        <h5 class="col-6">{{ access.name }}</h5>
+                                        <div class="col-6">
+                                            <mat-icon (click)="archiveAccess(access.id)"
+                                                class="close-icon">close</mat-icon>
+                                        </div>
                                     </div>
-                                  
+
                                     <h3 *ngIf="accessEmployeeList.length > 0">People with Access</h3>
                                     <div class="row" *ngFor="let access of accessEmployeeList">
-                                      <h5 class="col-6">{{ access.name }}</h5>
-                                      <div class="col-6">
-                                        <mat-icon (click)="archiveAccess(access.id)" class="close-icon">close</mat-icon>
-                                      </div>
+                                        <h5 class="col-6">{{ access.name }}</h5>
+                                        <div class="col-6">
+                                            <mat-icon (click)="archiveAccess(access.id)"
+                                                class="close-icon">close</mat-icon>
+                                        </div>
                                     </div>
-                                  </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -175,7 +189,7 @@
                                 <button (click)="modalAddingNew = true">Add New Access</button>
                             </div>
                             <div class="col-12 d-flex justify-content-center align-items-center" id="dialog-close">
-                                <button mat-dialog-close >
+                                <button mat-dialog-close>
                                     Close
                                 </button>
                             </div>
