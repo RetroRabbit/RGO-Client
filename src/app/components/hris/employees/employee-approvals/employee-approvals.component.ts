@@ -129,7 +129,8 @@ export class EmployeeApprovalsComponent {
                 this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
               }
             } else {
-              if (selectedStatus === documentsForEmployee[0].status) {
+              if (selectedStatus === documentsForEmployee[0].status ||
+                 documentsForEmployee[0].status === EmployeeDocumentsStatus.ACTIONREQUIRED) {
                 this.filterDocumentTypeAndStatus(currentDto, false, selectedStatus);
               }
             }

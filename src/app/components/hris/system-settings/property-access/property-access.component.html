@@ -40,7 +40,7 @@
                         <mat-cell *matCellDef="let permission" class="hide-id-column">
                         </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="role">
+                    <ng-container matColumnDef="description">
                         <mat-header-cell *matHeaderCellDef mat-sort-header class="boldArrow">Role</mat-header-cell>
                         <mat-cell *matCellDef="let permission" class="roles-width">
                             {{splitAndCapitalizeCamelCase(permission.role.description)}}
