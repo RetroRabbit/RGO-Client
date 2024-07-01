@@ -18,15 +18,17 @@
                         Please select terminationOption
                     </mat-error>
                 </mat-form-field>
+
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Date of Notice</mat-label>
                     <input matInput formControlName="dayOfNotice" [matDatepicker]="datePicker" />
                     <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
                     <mat-datepicker #datePicker></mat-datepicker>
                     <mat-error *ngIf="newterminationform.controls['dayOfNotice'].hasError('required')">
-                        Start date is required
+                        Please select a day of notice
                     </mat-error>
                 </mat-form-field>
+
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Last Day of Employment</mat-label>
                     <input matInput [matDatepicker]="picker2" placeholder="Last day of Employment"
@@ -37,13 +39,18 @@
                         Please select Last day of employment
                     </mat-error>
                 </mat-form-field>
+                
+                <div *ngIf="newterminationform.hasError('endDateAfterStartDate')" class="text-center custom-validate-error">
+                    *The last day of employment cannot be before the date of notice.
+                </div>
+
                 <div class="col-md-12 col-lg-7 my-2">
                     <h2 class="align-items-left">Is this person eligible for reemployment?</h2>
                     <mat-radio-group formControlName="reEmploymentStatus">
                         <mat-radio-button [value]="true">Yes</mat-radio-button><br />
                         <mat-radio-button [value]="false">No</mat-radio-button><br />
                         <mat-error *ngIf="newterminationform.controls['reEmploymentStatus'].hasError('required')">
-                            Please enter a valid Cellphone number
+                            Please select an option
                         </mat-error>
                     </mat-radio-group>
                 </div>

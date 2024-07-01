@@ -186,3 +186,7 @@ p {
     color: #B3261E;
     font-weight: bold;
 }
+
+.custom-validate-error {
+    color: #f44336;
+}
