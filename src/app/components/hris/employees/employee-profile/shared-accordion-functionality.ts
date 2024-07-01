@@ -254,7 +254,6 @@ export class SharedAccordionFunctionality {
           else if (this.hasDisability == true && control.value !== null && control.value !== '' && control.value !== "na") {
             numberOfPopulatedFields++;
           }
-
         }
         this.personalFormProgress = Math.round((numberOfPopulatedFields / totalFields) * 100);
       }
