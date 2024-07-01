@@ -15,7 +15,8 @@
                         <p-table #dt [value]="dataObjects.data!" [columns]="dataObjects.columns" dataKey="id"
                             [reorderableColumns]="isReorderable? true : false" [tableStyle]="{'min-width': '10rem'}"
                             (onColReorder)="moveColumn($event,  dataObjects)" sortMode="multiple"
-                            [exportFilename]="'report.csv'" [exportHeader]="'true'" [csvSeparator]="','">
+                            [exportFilename]="'report.csv'" [exportHeader]="'true'" [csvSeparator]="','"
+                            [scrollable]="true" scrollHeight="600px">
                             <ng-template pTemplate="caption">
                                 <div class="flex align-items-center justify-content-between row">
                                     <div class="h4 col-5">
@@ -44,7 +45,7 @@
                                         pSortableColumn="{{col.name}}">
                                         {{ col.name }} <p-sortIcon field="{{col.name}}" />
                                     </th>
-                                    <th class="table-add">
+                                    <th class="table-add" pFrozenColumn alignFrozen="right">
                                         <span *ngFor="let item of navItems">
                                             <span *ngIf="item.children && item.children.length > 0">
                                                 <div class="d-flex justify-content-center"
@@ -72,18 +73,18 @@
                                 <tr class="report-rows h6">
                                     <td *ngFor="let col of columns" class="report-table justify-content-center"
                                         [ngClass]="col.isCustom? 'editable-field' : ''">
-                                        <span *ngIf="!col.isCustom">{{ rowData[col.prop] }}</span>
-                                        <input *ngIf="col.isCustom && col.fieldType == 'Checkbox'" type="checkbox"
+                                        <span *ngIf="!col.isCustom ">{{ rowData[col.prop] }}</span>
+                                        <input [disabled]="nonEditable" *ngIf="col.isCustom && col.fieldType == 'Checkbox'" type="checkbox"
                                             name="{{col.prop + rowData['Id']}}"
                                             (change)="UpdateCustomInput(index, col, $event)"
                                             [checked]="rowData[col.prop] == 'true'"
                                             class="form-check-inline form-check-input form-control report-checkbox" />
-                                        <textarea *ngIf="col.isCustom && col.fieldType == 'Text'" type="text"
+                                        <textarea [readOnly]="nonEditable" *ngIf="col.isCustom && col.fieldType == 'Text'" type="text"
                                             cdkTextareaAutosize name="{{col.prop + rowData['Id']}}"
                                             (change)="UpdateCustomInput(index, col, $event)" rows="1"
                                             class="form-control form-control-sm text-area-table p-0">{{rowData[col.prop]}}</textarea>
                                     </td>
-                                    <td (click)="onViewEmployee(rowData['Id'])" class="search-employee">
+                                    <td pFrozenColumn alignFrozen="right" (click)="onViewEmployee(rowData['Id'])" class="search-employee">
                                         <div [ngStyle]="{ display: screenWidth <= 350 ? 'none' : '' }" id="search-arrow"
                                             class="mt-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

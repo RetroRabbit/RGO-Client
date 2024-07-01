@@ -55,6 +55,7 @@ export class DataReportDetailComponent {
   accessEmployeeList: AccessList[] = [];
   accessRoleList: AccessList[] = [];
   accessRequest!: ReportAccessRequest;
+  nonEditable: boolean = true;
 
   constructor(private router: Router,
     private cookieService: CookieService,
@@ -96,17 +97,32 @@ export class DataReportDetailComponent {
         this.dataObjects.reportName = data.reportName;
         this.dataObjects.columns = data.columns;
         this.dataObjects.data = data.data;
+        this.dataObjects.viewOnly = data.viewOnly;
         this.reportName = data.reportName;
         this.reportCode = data.reportCode
         this.accessEmployeeList = data.accessList?.filter(access => access.roleId == null || access.roleId == undefined)!;
         this.accessRoleList = data.accessList?.filter(access => access.roleId != null || access.roleId != undefined)!;
         this.isLoading = false;
+
+        console.log(data.viewOnly)
+
+        if(data.viewOnly){
+          this.nonEditable = true;
+        }
+        else{
+          this.nonEditable = false;
+        }
+
         this.populateMenu()
         this.getAccessAvailability();
         this.initializeForm()
       },
     })
     //this.exportColumns = this.dataObjects.columns!.map((col:any) => ({ title: col.name, dataKey: col.prop }));
+  }
+
+  disableEdit(){
+    
   }
 
   populateMenu() {

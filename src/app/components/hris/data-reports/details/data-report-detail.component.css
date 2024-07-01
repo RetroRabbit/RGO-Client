@@ -1,4 +1,13 @@
 .search-employee{
+    border: 1px solid lightgray;
+    background-color: #ffffff;
+    width: 24px;
+    cursor: pointer;
+}
+
+.search-employee:hover{
+    border: 1px solid #D7DFFF;
+    background-color: #ffffff;
     width: 24px;
     cursor: pointer;
 }
@@ -94,3 +103,5 @@
     margin-left: 10px;
     cursor: pointer;
   }
+
+  
