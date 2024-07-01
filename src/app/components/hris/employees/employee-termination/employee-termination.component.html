@@ -19,7 +19,6 @@
                     </mat-error>
                 </mat-form-field>
 
-                
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Date of Notice</mat-label>
                     <input matInput formControlName="dayOfNotice" [matDatepicker]="datePicker" />
@@ -29,7 +28,6 @@
                         Please select a day of notice
                     </mat-error>
                 </mat-form-field>
-
 
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Last Day of Employment</mat-label>
@@ -41,6 +39,7 @@
                         Please select Last day of employment
                     </mat-error>
                 </mat-form-field>
+                
                 <div *ngIf="newterminationform.hasError('endDateAfterStartDate')" class="text-center custom-validate-error">
                     *The last day of employment cannot be before the date of notice.
                 </div>
