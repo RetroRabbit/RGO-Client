@@ -224,7 +224,7 @@ export class NewEmployeeComponent implements OnInit {
       new Date(Date.now())
     ),
     passportCountryIssue: new FormControl<string>(''),
-    race: new FormControl<number>(-1),
+    race: new FormControl<number | null>(null),
     gender: new FormControl<number | null>(null),
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),
     ]),
@@ -605,14 +605,6 @@ export class NewEmployeeComponent implements OnInit {
       this.newEmployeeForm.value.idNumber === '0'
         ? 'TBA'
         : this.newEmployeeForm.value.idNumber?.toString().trim();
-    this.newEmployeeForm.value.disabilityNotes =
-      this.newEmployeeForm.value.disabilityNotes === ''
-        ? 'TBA'
-        : this.newEmployeeForm.value.disabilityNotes?.trim();
-    this.newEmployeeForm.value.disabilityNotes =
-      this.newEmployeeForm.value.disabilityNotes === ''
-        ? 'TBA'
-        : this.newEmployeeForm.value.disabilityNotes?.trim();
     this.newEmployeeForm.value.photo =
       this.newEmployeeForm.value.photo === ''
         ? ''
