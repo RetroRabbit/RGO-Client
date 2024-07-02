@@ -181,7 +181,6 @@ export class AdminDashboardComponent {
 
     this.employeeService.getEmployeeCountData().subscribe({
       next: (data: EmployeeCountDataCard) => {
-        console.log(data);
         this.employeeCount = data;
       },
       complete: () => {
@@ -191,6 +190,7 @@ export class AdminDashboardComponent {
 
     this.employeeService.getChurnRate().subscribe({
       next: (data: ChurnRateDataCard) => {
+        console.log(data)
         this.churnRate = data;
       },
       complete: () => {
