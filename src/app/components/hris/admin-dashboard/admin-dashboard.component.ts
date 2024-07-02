@@ -59,6 +59,7 @@ export class AdminDashboardComponent {
   selectedTypes: string[] = [];
   employeeProfiles: EmployeeProfile[] = [];
   totalNumberOfEmployees: number = 0;
+  growthRate: number = 0;
   roles: string[] = [];
   searchQuery: string = '';
   searchResults: EmployeeProfile[] = [];
@@ -194,6 +195,15 @@ export class AdminDashboardComponent {
         this.isLoading = false;
       }
     });
+
+    this.employeeService.getGrowthrate().subscribe({
+      next: (data: number ) => {
+        this.growthRate = data
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    })
   }
 
   getEmployeeTableColumns() {
