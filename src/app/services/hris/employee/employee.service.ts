@@ -79,6 +79,11 @@ export class EmployeeService {
   getTotalEmployees(): Observable<number> {
     return this.httpClient.get<number>(`${this.baseUrl}/count`);
   }
+
+  getGrowthrate(): Observable<number> {
+    return this.httpClient.get<number>(`${this.baseUrl}/growth-rate`);
+  }
+
   /**
  * @summary Gets churnrate info
  *
