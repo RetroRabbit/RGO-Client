@@ -28,7 +28,7 @@
                                             class="form-control h4 header-text" />
                                     </div>
                                     <div class="col-7 row d-flex justify-content-end me-1">
-                                        <button mat-button id="edit-button" class="col-2"
+                                        <button *ngIf="!nonEditable" mat-button id="edit-button" class="col-2"
                                             (click)="showEditReportModal()">
                                             <mat-icon>lock_open</mat-icon>Access
                                         </button>
@@ -61,7 +61,7 @@
                                                 <p-columnFilter *ngIf="col.fieldType == 'Checkbox'" type="boolean"
                                                     field="{{col.name}}" display="menu" [showClearButton]="true" />
                                             </div>
-                                            <div class="icon-container d-flex align-items-center justify-content-center">
+                                            <div *ngIf="!nonEditable" class="icon-container d-flex align-items-center justify-content-center">
                                                 <div class="d-flex align-items-center justify-content-end">
                                                     <mat-icon (click)="archiveColumn(col.id)"
                                                         class="close-icon">close</mat-icon>
@@ -70,21 +70,23 @@
                                         </div>
                                     </th>
                                     <th class="table-add" pFrozenColumn alignFrozen="right">
-                                        <span *ngFor="let item of navItems">
-                                            <span *ngIf="item.children && item.children.length > 0">
-                                                <div class="d-flex justify-content-center"
-                                                    [matMenuTriggerFor]="menu.childMenu">
-                                                    <p class="m-0 h5">+</p>
-                                                </div>
-                                                <app-menu-item #menu [items]="item.children"
-                                                    [dataReport]="dataObjects"></app-menu-item>
+                                        <div *ngIf="!nonEditable">
+                                            <span *ngFor="let item of navItems">
+                                                <span *ngIf="item.children && item.children.length > 0">
+                                                    <div class="d-flex justify-content-center"
+                                                        [matMenuTriggerFor]="menu.childMenu">
+                                                        <p class="m-0 h5">+</p>
+                                                    </div>
+                                                    <app-menu-item #menu [items]="item.children"
+                                                        [dataReport]="dataObjects"></app-menu-item>
+                                                </span>
+                                                <span *ngIf="!item.children || item.children.length === 0">
+                                                    <button mat-button color="primary">
+                                                        {{item.name}}
+                                                    </button>
+                                                </span>
                                             </span>
-                                            <span *ngIf="!item.children || item.children.length === 0">
-                                                <button mat-button color="primary">
-                                                    {{item.name}}
-                                                </button>
-                                            </span>
-                                        </span>
+                                        </div>
                                     </th>
                                 </tr>
                             </ng-template>

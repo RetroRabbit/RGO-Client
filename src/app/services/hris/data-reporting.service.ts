@@ -39,8 +39,8 @@ export class DataReportingService {
         return this.httpClient.put<ReportColumnRequest>(`${this.baseUrl}/ui/move-column-on-report`, columnInput)
     }
 
-    archiveColumnOnReport(coulmnId: number): Observable<number>{
-        return this.httpClient.delete<number>(`${this.baseUrl}/ui/archive-column-from-report`)
+    archiveColumnOnReport(columnId: number): Observable<any>{
+        return this.httpClient.delete<any>(`${this.baseUrl}/ui/archive-column-from-report?columnId=${columnId}`)
     }
 
     addOrUpdateReport(input: any): Observable<any> {

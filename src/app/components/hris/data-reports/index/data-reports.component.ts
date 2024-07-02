@@ -7,6 +7,8 @@ import { DataReportList } from 'src/app/models/hris/data-report-list';
 import { MatDialog } from '@angular/material/dialog';
 import { DataReportingService } from 'src/app/services/hris/data-reporting.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
+import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 
 @Component({
     selector: 'app-data-reports',
@@ -17,12 +19,15 @@ export class DataReportsComponent {
     baseUrl: string;
     titleInput?: string;
     codeInput?: string;
+    role: string[] = [];
 
     constructor(private router: Router, 
       private httpClient: HttpClient,
       private dialog: MatDialog,
       private dataReportingService: DataReportingService,
-      private snackBarService: SnackbarService) {
+      private snackBarService: SnackbarService,
+      private employeeRoleService: EmployeeRoleService,
+      private authAccessService: AuthAccessService) {
       this.baseUrl = `${environment.HttpsBaseURL}/data-reports`
     }
 
@@ -43,11 +48,21 @@ export class DataReportsComponent {
 
     ngOnInit() {
       this.onResize();
+      this.getRole();
       this.populateDataReportList();
     }
 
     onViewReport(code: string): void {
       this.router.navigateByUrl('/data-reports/' + code);
+    }
+
+    getRole(){
+      var email = this.authAccessService.getEmployeeEmail()
+      this.employeeRoleService.getRoles(email).subscribe({
+        next: data => {
+          this.role = data
+        }
+      })
     }
 
     fetchDataReportList(): Observable<DataReportList[]>{

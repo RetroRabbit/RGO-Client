@@ -12,6 +12,9 @@ import { Table } from 'primeng/table';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccessList } from 'src/app/models/hris/data-report-access.interface';
 import { ReportAccessRequest } from 'src/app/models/hris/data-report-access-request.interface';
+import { MenuItemComponent } from '../report-menu/menu-item.component';
+import { delay } from 'rxjs';
+import { nextTick } from 'process';
 
 
 @Component({
@@ -78,6 +81,8 @@ export class DataReportDetailComponent {
   dialogTemplate!: TemplateRef<any>;
 
   @ViewChild('dt') dt!: Table ;
+
+  @ViewChild(MenuItemComponent) menuItemComponent!: MenuItemComponent;
 
   onResize() {
     this.screenWidth = window.innerWidth;

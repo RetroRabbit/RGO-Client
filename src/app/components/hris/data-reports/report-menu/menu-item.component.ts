@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { DataReport } from 'src/app/models/hris/data-report.interface';
@@ -6,8 +6,8 @@ import { NavItem } from 'src/app/models/hris/report-menu-item.interface';
 import { DataReportingService } from 'src/app/services/hris/data-reporting.service';
 import { ReportColumnRequest } from 'src/app/models/hris/report-column-request.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { error } from 'console';
 import { MatDialog } from '@angular/material/dialog';
+import { DataReportDetailComponent } from '../details/data-report-detail.component';
 @Component({
   selector: 'app-menu-item',
   templateUrl: './menu-item.component.html',
@@ -29,7 +29,11 @@ export class MenuItemComponent implements OnInit {
   };
   nameInput?: string;
 
-  constructor(public router: Router, private dataReportingService: DataReportingService, private snackBarService: SnackbarService, private dialog: MatDialog) {
+  constructor(public router: Router,
+  private dataReportingService: DataReportingService, 
+  private snackBarService: SnackbarService, 
+  private dialog: MatDialog,
+  private dataReportDetailComponent: DataReportDetailComponent) {
   }
 
   ngOnInit() {
@@ -52,8 +56,9 @@ export class MenuItemComponent implements OnInit {
 
     this.dataReportingService.addColumnToReport(this.requestData).subscribe({
       next: data => {
-        console.log(data)
         this.snackBarService.showSnackbar("Column Added", "snack-success")
+        this.dialog.closeAll();
+        this.dataReportDetailComponent.populateReportData(this.dataReportDetailComponent.dataReportCode);
       },
       error: error =>{
         this.snackBarService.showSnackbar("Column Adding failed", "snack-error")
@@ -73,8 +78,9 @@ export class MenuItemComponent implements OnInit {
 
     this.dataReportingService.addColumnToReport(requestData).subscribe({
       next: data => {
-        console.log(data)
         this.snackBarService.showSnackbar("Column Added", "snack-success")
+        this.dialog.closeAll();
+        this.dataReportDetailComponent.populateReportData(this.dataReportDetailComponent.dataReportCode);
       },
       error: error =>{
         this.snackBarService.showSnackbar("Column Adding failed", "snack-error")
