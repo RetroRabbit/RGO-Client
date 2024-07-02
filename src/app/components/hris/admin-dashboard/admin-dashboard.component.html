@@ -146,7 +146,7 @@
             </div>
             <div class="col">
               <div id="subheaders">
-                  <p *ngIf="this.growthRate<0" class="growthRateNegative"> {{ this.growthRate }} % Decrease from last month</p>
+                  <p *ngIf="this.growthRate<0" class="growthRatePositive"> {{ this.growthRate }} % Decrease from last month</p>
                   <p *ngIf="this.growthRate>0" class="growthRatePositive"> {{ this.growthRate }} % Increase from last month</p>
               </div>
             </div>
@@ -182,33 +182,33 @@
           <div class="col-9 my-2">
             <div id="header-label">Project Allocation</div>
             <div id="total-employees">
-              On Bench: <b>{{ employeeCount.totalNumberOfEmployeesOnBench }}</b>
+              On Project: <b>{{ employeeCount.totalNumberOfEmployeesOnClient }}/{{this.totalNumberOfEmployees}}</b>
             </div>
             <hr />
             <div class="row">
               <div class="col">
                 <div id="subheaders">
-                  Developers: <b>{{ employeeCount.devsOnBenchCount }}</b>
+                  Billing: <b>{{ 0 }}</b>
                 </div>
               </div>
               <div class="col">
                 <div id="subheaders">
-                  Scrum Masters:
-                  <b>{{ employeeCount.scrumMastersOnBenchCount }}</b>
+                 Not Billing:
+                  <b>{{ 0 }}</b>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <div id="subheaders">
-                  Designers: <b>{{ employeeCount.designersOnBenchCount }}</b>
+                  On Bench: <b>{{ employeeCount.totalNumberOfEmployeesOnBench }}</b>
                 </div>
               </div>
             </div>
             
         <div>
           <span class="span-billable" id="subheaders">
-            {{ employeeCount.billableEmployeesPercentage }}% Billable
+            {{ employeeCount.billableEmployeesPercentage }}% Billed
           </span>
         </div>
           </div>

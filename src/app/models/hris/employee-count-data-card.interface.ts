@@ -11,6 +11,7 @@ export class EmployeeCountDataCard {
         this.totalNumberOfEmployeesOnBench = 0;
         this.billableEmployeesPercentage = 0;
         this.employeeTotalDifference = 0;
+        this.totalNumberOfEmployeesOnClient = 0;
         this.isIncrease = false;
     }
 
@@ -22,6 +23,7 @@ export class EmployeeCountDataCard {
     designersOnBenchCount?: number;
     scrumMastersOnBenchCount?: number;
     totalNumberOfEmployeesOnBench?: number;
+    totalNumberOfEmployeesOnClient?: number;
     billableEmployeesPercentage?: number;
     employeeTotalDifference?: number;
     isIncrease?: boolean;

@@ -176,10 +176,12 @@ export class AdminDashboardComponent {
       complete: () => {
         this.isLoading = false;
       }
+      
     });
 
     this.employeeService.getEmployeeCountData().subscribe({
       next: (data: EmployeeCountDataCard) => {
+        console.log(data);
         this.employeeCount = data;
       },
       complete: () => {
