@@ -3,7 +3,7 @@ export interface ReportAccessRequest {
     access: ReportAccessRequestItem[];
 }
 
-export interface ReportAccessRequestItem{
+export interface ReportAccessRequestItem {
     employeeId: number;
     roleId?: number;
     viewOnly: boolean;

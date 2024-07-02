@@ -6,7 +6,7 @@ export interface DataReport {
     reportId?: number,
     columns?: DataReportColumns[],
     data?: any[],
-    reportCode?:string,
+    reportCode?: string,
     viewOnly?: boolean,
     accessList?: AccessList[]
 }

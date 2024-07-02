@@ -13,9 +13,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { AccessList } from 'src/app/models/hris/data-report-access.interface';
 import { ReportAccessRequest } from 'src/app/models/hris/data-report-access-request.interface';
 import { MenuItemComponent } from '../report-menu/menu-item.component';
-import { delay } from 'rxjs';
-import { nextTick } from 'process';
-
 
 @Component({
   selector: 'app-data-report-detail',
@@ -25,40 +22,27 @@ import { nextTick } from 'process';
 
 export class DataReportDetailComponent {
   [x: string]: any;
-
-  dataReportCode: string;
-  isLoading: boolean = false;
-  dataObjects: DataReport = {};
   screenWidth = window.innerWidth;
   PREVIOUS_PAGE = 'previousPage';
-  isReorderable: boolean = true;
-  //disabledName: boolean = false;
+  dataReportCode: string;
   reportName?: string;
   reportCode?: string;
-  //isSorted: boolean | null = false;
-  //initialValue: DataReport = {}
-  //exportColumns!: ExportColumn[];
-  //exportColumns!: any[];
-  //selectedData: DataReport ={}
-
-  employeeData!: [{ id: number; name: string; }];
-  employeeRoles!: [{ id: number; name: string; }];
-
-  navItems: NavItem[] = [];
-
-  dataReportForm!: FormGroup;
-  //accessTypeSelected!: string;
-  filteredEmployees: any = [];
-
   selectedEmployeeId?: number;
   selectedRoleId?: number;
-  selectedViewOnly?: boolean;
-
-  modalAddingNew: boolean = false;
+  dataReportForm!: FormGroup;
+  accessRequest!: ReportAccessRequest;
+  dataObjects: DataReport = {};
   accessEmployeeList: AccessList[] = [];
   accessRoleList: AccessList[] = [];
-  accessRequest!: ReportAccessRequest;
+  filteredEmployees: any = [];
+  navItems: NavItem[] = [];
+  employeeData!: [{ id: number; name: string; }];
+  employeeRoles!: [{ id: number; name: string; }];
+  isLoading: boolean = false;
+  modalAddingNew: boolean = false;
   nonEditable: boolean = true;
+  selectedViewOnly?: boolean;
+  isReorderable: boolean = true;
 
   constructor(private router: Router,
     private cookieService: CookieService,
@@ -76,12 +60,8 @@ export class DataReportDetailComponent {
   }
 
   @HostListener('window:resize', ['$event'])
-
-  @ViewChild('dialogTemplate', { static: true })
-  dialogTemplate!: TemplateRef<any>;
-
-  @ViewChild('dt') dt!: Table ;
-
+  @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
+  @ViewChild('dt') dt!: Table;
   @ViewChild(MenuItemComponent) menuItemComponent!: MenuItemComponent;
 
   onResize() {
@@ -109,12 +89,10 @@ export class DataReportDetailComponent {
         this.accessRoleList = data.accessList?.filter(access => access.roleId != null || access.roleId != undefined)!;
         this.isLoading = false;
 
-        console.log(data.viewOnly)
-
-        if(data.viewOnly){
+        if (data.viewOnly) {
           this.nonEditable = true;
         }
-        else{
+        else {
           this.nonEditable = false;
         }
 
@@ -123,11 +101,6 @@ export class DataReportDetailComponent {
         this.initializeForm()
       },
     })
-    //this.exportColumns = this.dataObjects.columns!.map((col:any) => ({ title: col.name, dataKey: col.prop }));
-  }
-
-  disableEdit(){
-    
   }
 
   populateMenu() {
@@ -221,31 +194,25 @@ export class DataReportDetailComponent {
     })
   }
 
-  getAccessAvailability(){
+  getAccessAvailability() {
     this.dataReportingService.getReportAccess(this.dataObjects.reportId!).subscribe({
       next: data => {
         this.employeeRoles = data.role
         this.employeeData = data.employee
-        console.table(data)
       }
     })
   }
 
   initializeForm() {
     this.dataReportForm = this.fb.group({
-      accessType: new FormControl<string>('' , [Validators.required]),
+      accessType: new FormControl<string>('', [Validators.required]),
       employeeAccess: new FormControl<string>('', [Validators.required]),
       roleAccess: new FormControl<string>('', [Validators.required]),
-      viewOnly: new FormControl<boolean>( false,[Validators.required])
+      viewOnly: new FormControl<boolean>(false, [Validators.required])
     })
   }
 
-  accessChange(){
-    console.log(this.dataReportForm.controls['accessType'].value)
-  }
-
   filterEmployees(event: any) {
-    console.log("filtering")
     if (event) {
       this.filteredEmployees = this.employeeData.filter(employee => employee.name?.toLowerCase().includes(event.target.value.toLowerCase()));
     } else {
@@ -254,28 +221,29 @@ export class DataReportDetailComponent {
   }
 
   getEmployeeId(data: any) {
-      this.selectedEmployeeId = data.id;
+    this.selectedEmployeeId = data.id;
   }
 
-  getRoleId(data: any){
+  getRoleId(data: any) {
     this.selectedRoleId = data.id
   }
 
-  getViewOnlyStatus(data: any){
+  getViewOnlyStatus(data: any) {
     this.selectedViewOnly = data;
-    console.log(data)
   }
 
-  modalBack(){
+  modalBack() {
     this.modalAddingNew = false;
   }
 
-  updateAccess(){
-    this.accessRequest = {reportId: this.dataObjects.reportId! , access: [{
-      employeeId: this.selectedEmployeeId!,
-      roleId: this.selectedRoleId,
-      viewOnly: this.selectedViewOnly!
-    }]}
+  updateAccess() {
+    this.accessRequest = {
+      reportId: this.dataObjects.reportId!, access: [{
+        employeeId: this.selectedEmployeeId!,
+        roleId: this.selectedRoleId,
+        viewOnly: this.selectedViewOnly!
+      }]
+    }
 
     this.dataReportingService.updateReportAccess(this.accessRequest).subscribe({
       next: data => {
@@ -286,7 +254,7 @@ export class DataReportDetailComponent {
         this.modalAddingNew = false;
         this.snackBarService.showSnackbar("Access Added", "snack-success")
       },
-      error: error =>{
+      error: error => {
         this.snackBarService.showSnackbar("Access Adding failed", "snack-error")
       }
     })
@@ -298,26 +266,25 @@ export class DataReportDetailComponent {
         this.populateReportData(this.reportCode!);
         this.snackBarService.showSnackbar("Access Archived", "snack-success")
       },
-      error: error =>{
+      error: error => {
         this.snackBarService.showSnackbar("Access Archiving failed", "snack-error")
       }
     })
   }
 
-  archiveColumn(id:number){
-    console.log(id)
+  archiveColumn(id: number) {
     this.dataReportingService.archiveColumnOnReport(id).subscribe({
       next: data => {
         this.populateReportData(this.reportCode!);
         this.snackBarService.showSnackbar("Column Archived", "snack-success")
       },
-      error: error =>{
+      error: error => {
         this.snackBarService.showSnackbar("Column Archiving failed", "snack-error")
       }
     })
   }
 
-  goBack(){
+  goBack() {
     this.modalAddingNew = false;
     this.dataReportForm.reset();
   }

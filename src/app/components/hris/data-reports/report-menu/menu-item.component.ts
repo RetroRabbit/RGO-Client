@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatMenu } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { DataReport } from 'src/app/models/hris/data-report.interface';
 import { NavItem } from 'src/app/models/hris/report-menu-item.interface';
@@ -17,9 +17,8 @@ export class MenuItemComponent implements OnInit {
   @Input() items: NavItem[] = [];
   @Input() dataReport: DataReport = {};
   @ViewChild('childMenu') public childMenu!: MatMenu;
-  
-  @ViewChild('dialogTemplate', { static: true })
-  dialogTemplate!: TemplateRef<any>;
+  @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
+
   requestData: ReportColumnRequest = {
     id: 0,
     reportId: 0,
@@ -27,13 +26,14 @@ export class MenuItemComponent implements OnInit {
     sequence: 0,
     name: ''
   };
+  
   nameInput?: string;
 
   constructor(public router: Router,
-  private dataReportingService: DataReportingService, 
-  private snackBarService: SnackbarService, 
-  private dialog: MatDialog,
-  private dataReportDetailComponent: DataReportDetailComponent) {
+    private dataReportingService: DataReportingService,
+    private snackBarService: SnackbarService,
+    private dialog: MatDialog,
+    private dataReportDetailComponent: DataReportDetailComponent) {
   }
 
   ngOnInit() {
@@ -49,7 +49,7 @@ export class MenuItemComponent implements OnInit {
       sequence: 0,
     };
 
-    if(this.requestData.customType == "Text" || this.requestData.customType == "CheckBox"){
+    if (this.requestData.customType == "Text" || this.requestData.customType == "CheckBox") {
       this.showAddReportModal(this.requestData)
       return
     }
@@ -60,13 +60,13 @@ export class MenuItemComponent implements OnInit {
         this.dialog.closeAll();
         this.dataReportDetailComponent.populateReportData(this.dataReportDetailComponent.dataReportCode);
       },
-      error: error =>{
+      error: error => {
         this.snackBarService.showSnackbar("Column Adding failed", "snack-error")
       }
     })
   }
 
-  addCustomColumn(requestData: ReportColumnRequest){
+  addCustomColumn(requestData: ReportColumnRequest) {
     requestData = {
       id: 0,
       menuId: requestData.id,
@@ -82,13 +82,13 @@ export class MenuItemComponent implements OnInit {
         this.dialog.closeAll();
         this.dataReportDetailComponent.populateReportData(this.dataReportDetailComponent.dataReportCode);
       },
-      error: error =>{
+      error: error => {
         this.snackBarService.showSnackbar("Column Adding failed", "snack-error")
       }
     })
   }
 
-  showAddReportModal(request: ReportColumnRequest){
+  showAddReportModal(request: ReportColumnRequest) {
     this.requestData = request;
     this.dialog.open(this.dialogTemplate, {
       width: '500px'

@@ -1,66 +1,66 @@
 <div class="container">
-    <main class="container-fluid mt-5">
-        <div class="mt-4 mx-0 px-0">
-            <div class="row">
-                <div *ngFor="let dataO of dataObjects" class="col-4">
-                    <div class="card mb-3" (click)="this.onViewReport(dataO.code)">
-                        <div class="card-body data-report-card">
-                            <p>{{dataO.code}}</p>
-                            <div></div>
-                            <h4 class="text-center">{{dataO.name}}</h4>
-                        </div>
-                    </div>
-                </div>
-                <div *ngIf="role[0] == 'SuperAdmin' || role[0] == 'Admin' " class="col-4">
-                    <div class="card data-report-card-add" (click)="showAddReportModal()">
-                        <div class="card-body  d-flex align-items-center justify-content-center">
-                            <h1 class="text-center m-0">+</h1>
-                        </div>
-                    </div>
-                </div>
+  <main class="container-fluid mt-5">
+    <div class="mt-4 mx-0 px-0">
+      <div class="row">
+        <div *ngFor="let dataO of dataObjects" class="col-4">
+          <div class="card mb-3" (click)="this.onViewReport(dataO.code)">
+            <div class="card-body data-report-card">
+              <p>{{dataO.code}}</p>
+              <div></div>
+              <h4 class="text-center">{{dataO.name}}</h4>
             </div>
+          </div>
         </div>
-        <ng-template #dialogTemplate>
-            <div class="container-fluid p-4">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12" id="dialog-header">
-                      <h2 mat-dialog-title id="dialog-title">Add a New Report</h2>
-                      <div class="subtitle-container">
-                        <h5 id="dialog-subtitle">
-                          Add a Report based on your needs by using the options below
-                        </h5>
-                      </div>
-                    </div>
-                    <div class="col-12" id="dialog-body">
-                      <div class="row">
-                        <div class="mt-3 px-4 offset-1 col-10">
-                          <mat-form-field appearance="outline" style="width: 100%" class="mb-3">
-                            <mat-label>Report title</mat-label>
-                            <input matInput type="text" [(ngModel)] = "titleInput"  required="required" />
-                          </mat-form-field>
-                        </div>
-                        <div class="mt-3 px-4 offset-1 col-10">
-                            <mat-form-field appearance="outline" style="width: 100%" class="mb-3">
-                              <mat-label>Peport Code</mat-label>
-                              <input matInput type="text" [(ngModel)] = "codeInput" required="required" />
-                            </mat-form-field>
-                          </div>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <div mat-dialog-actions class="row">
-                        <div class="col-12 d-flex justify-content-center align-items-center mb-3" id="dialog-save">
-                          <button (click)="addReport()">Save</button>
-                        </div>
-                        <div class="col-12 d-flex justify-content-center align-items-center" id="dialog-close">
-                          <button mat-dialog-close>
-                            Close
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+        <div *ngIf="role[0] == 'SuperAdmin' || role[0] == 'Admin' " class="col-4">
+          <div class="card data-report-card-add" (click)="showAddReportModal()">
+            <div class="card-body  d-flex align-items-center justify-content-center">
+              <h1 class="text-center m-0">+</h1>
             </div>
-          </ng-template>
-    </main>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #dialogTemplate>
+      <div class="container-fluid p-4">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12" id="dialog-header">
+            <h2 mat-dialog-title id="dialog-title">Add a New Report</h2>
+            <div class="subtitle-container">
+              <h5 id="dialog-subtitle">
+                Add a Report based on your needs by using the options below
+              </h5>
+            </div>
+          </div>
+          <div class="col-12" id="dialog-body">
+            <div class="row">
+              <div class="mt-3 px-4 offset-1 col-10">
+                <mat-form-field appearance="outline" style="width: 100%" class="mb-3">
+                  <mat-label>Report title</mat-label>
+                  <input matInput type="text" [(ngModel)]="titleInput" required="required" />
+                </mat-form-field>
+              </div>
+              <div class="mt-3 px-4 offset-1 col-10">
+                <mat-form-field appearance="outline" style="width: 100%" class="mb-3">
+                  <mat-label>Peport Code</mat-label>
+                  <input matInput type="text" [(ngModel)]="codeInput" required="required" />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div mat-dialog-actions class="row">
+              <div class="col-12 d-flex justify-content-center align-items-center mb-3" id="dialog-save">
+                <button (click)="addReport()">Save</button>
+              </div>
+              <div class="col-12 d-flex justify-content-center align-items-center" id="dialog-close">
+                <button mat-dialog-close>
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </main>
 </div>

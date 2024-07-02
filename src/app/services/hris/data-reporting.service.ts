@@ -7,6 +7,7 @@ import { NavItem } from "src/app/models/hris/report-menu-item.interface";
 import { ReportColumnRequest } from "src/app/models/hris/report-column-request.interface";
 import { AccessAvailability } from "src/app/models/hris/data-report-access-availability.interface";
 import { ReportAccessRequest } from "src/app/models/hris/data-report-access-request.interface";
+import { DataReportList } from "src/app/models/hris/data-report-list";
 
 
 @Injectable({
@@ -39,7 +40,7 @@ export class DataReportingService {
         return this.httpClient.put<ReportColumnRequest>(`${this.baseUrl}/ui/move-column-on-report`, columnInput)
     }
 
-    archiveColumnOnReport(columnId: number): Observable<any>{
+    archiveColumnOnReport(columnId: number): Observable<any> {
         return this.httpClient.delete<any>(`${this.baseUrl}/ui/archive-column-from-report?columnId=${columnId}`)
     }
 
@@ -47,15 +48,19 @@ export class DataReportingService {
         return this.httpClient.put<any>(`${this.baseUrl}/update-report`, input)
     }
 
-    getReportAccess(reportId:number): Observable<AccessAvailability>{
+    getReportAccess(reportId: number): Observable<AccessAvailability> {
         return this.httpClient.get<AccessAvailability>(`${this.baseUrl}/get-report-access-availability?reportId=${reportId}`)
     }
 
-    updateReportAccess(input: ReportAccessRequest): Observable<ReportAccessRequest>{
+    updateReportAccess(input: ReportAccessRequest): Observable<ReportAccessRequest> {
         return this.httpClient.put<ReportAccessRequest>(`${this.baseUrl}/update-report-access`, input)
     }
 
-    archiveReportAccess(accessId: number): Observable<any>{
+    archiveReportAccess(accessId: number): Observable<any> {
         return this.httpClient.delete<any>(`${this.baseUrl}/archive-report-access?accessId=${accessId}`)
+    }
+
+    fetchDataReportList(): Observable<DataReportList[]> {
+        return this.httpClient.get<DataReportList[]>(`${this.baseUrl}/get-data-report-list`);
     }
 }
