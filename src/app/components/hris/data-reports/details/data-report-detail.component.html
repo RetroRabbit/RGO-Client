@@ -14,9 +14,9 @@
                     <div class="card">
                         <p-table #dt [value]="dataObjects.data!" [columns]="dataObjects.columns" dataKey="id"
                             [reorderableColumns]="isReorderable? true : false" [tableStyle]="{'min-width': '10rem'}"
-                            (onColReorder)="moveColumn($event,  dataObjects)" sortMode="multiple"
+                            (onColReorder)="moveColumn($event, dataObjects)" sortMode="multiple"
                             [exportFilename]="'report.csv'" [exportHeader]="'true'" [csvSeparator]="','"
-                            [scrollable]="true" scrollHeight="600px">
+                            [scrollable]="true" scrollHeight="800px">
                             <ng-template pTemplate="caption">
                                 <div class="flex align-items-center justify-content-between row">
                                     <div class="h4 col-5">
@@ -27,27 +27,45 @@
                                             (change)="editReportName(dataObjects.reportId!)"
                                             class="form-control h4 header-text" />
                                     </div>
-                                    <div class="col-7 row">
+                                    <div class="col-7 row d-flex justify-content-end me-1">
                                         <button mat-button id="edit-button" class="col-2"
                                             (click)="showEditReportModal()">
-                                            <mat-icon>edit</mat-icon>Access
+                                            <mat-icon>lock_open</mat-icon>Access
                                         </button>
-                                        <button mat-button id="edit-button" class="col-2" label="Export"
+                                        <button mat-button id="edit-button" class="col-2 ms-1" label="Export"
                                             icon="pi pi-file-download" (click)="dt.exportCSV()">
-                                            <mat-icon>export</mat-icon>Export
+                                            <mat-icon>import_export</mat-icon>Export
                                         </button>
                                     </div>
                                 </div>
                             </ng-template>
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
-                                    <th *ngFor="let col of columns" class="h5" pReorderableColumn
-                                        pSortableColumn="{{col.name}}">
+                                    <th *ngFor="let col of columns" class="h5 pb-0" style="min-width: 150px" pReorderableColumn>
                                         <div class="col-12 row">
-                                            <h2 class="col-7">{{ col.name }}</h2>
-                                            <p-sortIcon field="{{col.name}}" class="col-2" />
-                                            <div class="col-3 mt-1">
-                                                <mat-icon (click)="archiveColumn(col.id)" class="close-icon">close</mat-icon>
+                                            <h2 class="mb-0 column-names">{{ col.name }}</h2>
+                                        </div>
+                                    </th>
+                                    <th class="table-add" pFrozenColumn alignFrozen="right">
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th *ngFor="let col of columns" class="pb-0 pt-0" style="min-width: 150px" pSortableColumn="{{col.name}}">
+                                        <div class="row">
+                                            <div class="icon-container d-flex align-items-center justify-content-center">
+                                                <p-sortIcon field="{{col.name}}" />
+                                            </div>
+                                            <div class="icon-container d-flex align-items-center justify-content-center">
+                                                <p-columnFilter *ngIf="col.fieldType != 'Checkbox'" type="text"
+                                                    display="menu" field="{{col.name}}" [showClearButton]="true" />
+                                                <p-columnFilter *ngIf="col.fieldType == 'Checkbox'" type="boolean"
+                                                    field="{{col.name}}" display="menu" [showClearButton]="true" />
+                                            </div>
+                                            <div class="icon-container d-flex align-items-center justify-content-center">
+                                                <div class="d-flex align-items-center justify-content-end">
+                                                    <mat-icon (click)="archiveColumn(col.id)"
+                                                        class="close-icon">close</mat-icon>
+                                                </div>
                                             </div>
                                         </div>
                                     </th>
@@ -69,16 +87,11 @@
                                         </span>
                                     </th>
                                 </tr>
-                                <tr>
-                                    <th *ngFor="let col of columns">
-                                        <p-columnFilter type="text" field="{{col.name}}" [showClearButton]="false" />
-                                    </th>
-                                </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-rowData let-columns="columns" let-index="rowIndex">
                                 <tr class="report-rows h6">
                                     <td *ngFor="let col of columns" class="report-table justify-content-center"
-                                        [ngClass]="col.isCustom? 'editable-field' : ''">
+                                        [ngClass]="col.isCustom? 'editable-field' : ''" style="min-width: 150px">
                                         <span *ngIf="!col.isCustom ">{{ rowData[col.prop] }}</span>
                                         <input [disabled]="nonEditable"
                                             *ngIf="col.isCustom && col.fieldType == 'Checkbox'" type="checkbox"

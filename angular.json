@@ -23,7 +23,8 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.css"
+              "src/styles.css",
+              "primeng/resources/themes/md-light-indigo/theme.css"
             ],
             "scripts": [],
             "serviceWorker": true,
