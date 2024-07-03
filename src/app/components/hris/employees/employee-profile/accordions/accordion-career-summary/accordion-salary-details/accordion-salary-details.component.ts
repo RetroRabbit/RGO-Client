@@ -225,7 +225,7 @@ export class AccordionSalaryDetailsComponent {
       this.snackBarService.showSnackbar("Tax Number Cannot Be Empty", "snack-error");
     }
     else {
-      this.snackBarService.showSnackbar("Please Enter Correct Information", "snack-error");
+      this.snackBarService.showSnackbar("Please Enter the Correct Information", "snack-error");
     }
   }
 
