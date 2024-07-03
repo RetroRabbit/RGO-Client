@@ -62,14 +62,14 @@ export class AccordionSalaryDetailsComponent {
     if (salaryDetails != null) {
       this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
         remuneration: [salaryDetails.remuneration, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-        taxNumber: [this.employeeProfile!.taxNumber, [Validators.required]]
+        taxNumber: [this.employeeProfile!.taxNumber, [Validators.required, Validators.pattern(/^[01239]\d{9}$/)]]
       });
       this.getSalaryDate();
     }
     else {
       this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
         remuneration: ["", [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-        taxNumber: ["", [Validators.required]]
+        taxNumber: ["", [Validators.required, Validators.pattern(/^[01239]\d{9}$/)]]
       });
     }
     this.sharedAccordionFunctionality.salaryDetailsForm.disable();
@@ -221,8 +221,11 @@ export class AccordionSalaryDetailsComponent {
     else if (salaryDetailsFormValue.remuneration < 0) {
       this.snackBarService.showSnackbar("Remuneration Cannot Be Less Than Zero", "snack-error");
     }
+    else if (salaryDetailsFormValue.taxNumber < 0) {
+      this.snackBarService.showSnackbar("Tax Number Cannot Be Empty", "snack-error");
+    }
     else {
-      this.snackBarService.showSnackbar("Please Enter the Correct Remuneration", "snack-error");
+      this.snackBarService.showSnackbar("Please Enter Correct Information", "snack-error");
     }
   }
 

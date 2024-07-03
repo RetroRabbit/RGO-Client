@@ -8,6 +8,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
+import { LocationApiService } from 'src/app/services/hris/location-api.service';
 
 @Component({
   selector: 'app-accordion-profile-personal-details',
@@ -17,6 +18,7 @@ import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/propert
 export class AccordionProfilePersonalDetailsComponent {
 
   screenWidth = window.innerWidth;
+  countries: string[] = [];
 
   @HostListener('window:resize', ['$event'])
   usingProfile: boolean = true;
@@ -27,6 +29,7 @@ export class AccordionProfilePersonalDetailsComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
+    this.loadCountries();
   }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
@@ -36,8 +39,8 @@ export class AccordionProfilePersonalDetailsComponent {
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
       disability: [this.employeeProfile!.employeeDetails.disability, Validators.required],
-      nationality: [this.employeeProfile!.employeeDetails.nationality],
-      countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth],
+      nationality: [this.employeeProfile!.employeeDetails.nationality, Validators.required],
+      countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth, Validators.required],
       disabilityList: "",
       disabilityNotes: [this.employeeProfile!.employeeDetails.disabilityNotes]
 
@@ -55,8 +58,10 @@ export class AccordionProfilePersonalDetailsComponent {
     private snackBarService: SnackbarService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) {
-  }
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    public locationApiService: LocationApiService) { }
+
+
 
   checkEmployeeDetails() {
     if (this.usingProfile)
@@ -153,6 +158,13 @@ export class AccordionProfilePersonalDetailsComponent {
     this.initializeForm();
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
   }
+
+  loadCountries(): void {
+    this.locationApiService.getCountries().subscribe({
+      next: (data) => this.countries = data
+    });
+  }
+
 
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     if (!this.sharedPropertyAccessService.accessProperties) {
