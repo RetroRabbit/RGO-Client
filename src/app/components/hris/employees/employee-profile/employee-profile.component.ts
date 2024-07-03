@@ -95,7 +95,7 @@ export class EmployeeProfileComponent implements OnChanges {
   usingSimpleProfile: boolean = false;
   teamLead: number | null = null;
   PREVIOUS_PAGE = "previousPage";
-  dataReportsCode = "AS01"
+
   bankStatus: number = 0;
   base64Image: string = '';
   screenWidth = window.innerWidth;
@@ -207,7 +207,7 @@ export class EmployeeProfileComponent implements OnChanges {
     this.router.navigateByUrl('/dashboard')
   }
 
-  goToDataReports(dataReportCode: string) {
+  goToDataReports() {
     this.router.navigateByUrl(this.previousPage)
   }
 
