@@ -165,7 +165,6 @@ export class AccordionProfilePersonalDetailsComponent {
     });
   }
 
-
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     if (!this.sharedPropertyAccessService.accessProperties) {
       return;
