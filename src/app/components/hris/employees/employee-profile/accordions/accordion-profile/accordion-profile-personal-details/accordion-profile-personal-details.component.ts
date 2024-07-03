@@ -61,8 +61,6 @@ export class AccordionProfilePersonalDetailsComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     public locationApiService: LocationApiService) { }
 
-
-
   checkEmployeeDetails() {
     if (this.usingProfile)
       this.checkEmployeeDetailsUsingEmployeeProfile()
