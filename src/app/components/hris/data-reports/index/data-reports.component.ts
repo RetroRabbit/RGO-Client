@@ -7,6 +7,7 @@ import { DataReportingService } from 'src/app/services/hris/data-reporting.servi
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { DataReport } from 'src/app/models/hris/data-report.interface';
 
 @Component({
   selector: 'app-data-reports',
@@ -19,6 +20,8 @@ export class DataReportsComponent {
   codeInput?: string;
   role: string[] = [];
   dataObjects: DataReportList[] = [];
+  dataReport: any;
+  isLoading: boolean = false;
 
   constructor(private router: Router,
     private dialog: MatDialog,
@@ -86,6 +89,18 @@ export class DataReportsComponent {
       },
       error: error => {
         this.snackBarService.showSnackbar("Report Creation Failed", "snack-error")
+      }
+    })
+  }
+
+  deleteReport(code: string) {
+    this.dataReportingService.deleteDataReport(code).subscribe({
+      next: data => {
+        this.snackBarService.showSnackbar("Report Deleted", "snack-success")
+        this.populateDataReportList();
+      },
+      error: error => {
+        this.snackBarService.showSnackbar("Report Deletion Failed", "snack-error")
       }
     })
   }

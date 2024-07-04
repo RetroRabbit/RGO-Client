@@ -63,4 +63,8 @@ export class DataReportingService {
     fetchDataReportList(): Observable<DataReportList[]> {
         return this.httpClient.get<DataReportList[]>(`${this.baseUrl}/get-data-report-list`);
     }
+
+    deleteDataReport(code: string): Observable<any> {
+        return this.httpClient.delete<any>(`${this.baseUrl}/delete-report?code=${code}`)
+    }
 }

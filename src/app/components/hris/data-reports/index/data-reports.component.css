@@ -37,3 +37,68 @@
     padding: 7px;
     width: 80%;
   }
+
+  :host ::ng-deep #edit-button {
+    border: none;
+    border-radius: 2rem;
+    background-color: #D7DFFF;
+    color: #0029C6;
+    padding: 1rem;
+  }
+  
+  :host ::ng-deep #edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  :host ::ng-deep #edit-buttons>button {
+    margin-right: 1rem;
+  }
+
+  .close-icon {
+    color: red;
+    cursor: pointer;
+  }
+  
+  .icon-container {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+  }
+
+  .delete-report {
+    border: 1px solid lightgray;
+    background-color: #ffffff;
+    width: 24px;
+    cursor: pointer;
+  }
+  
+  .delete-report:hover {
+    border: 1px solid #D7DFFF;
+    background-color: #ffffff;
+    width: 24px;
+    cursor: pointer;
+  }
+
+  .close-icon {
+    color: red;
+    cursor: pointer;
+  }
+  
+  .icon-container {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .icon-container:hover {
+    color: rgba(0, 0, 0, 0.6);
+    border-color: #f000;
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .report-table {
+    border: 1px solid lightgrey;
+  }
