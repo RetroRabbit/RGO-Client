@@ -121,7 +121,7 @@
                       {{ splitAndCapitalizeCamelCase(employee.Roles.length > 0 ? employee.Roles[0] : "N/A") }}
                     </mat-label>
                     <mat-select hideSingleSelectionIndicator="true">
-                      <mat-option *ngFor="let role of roles | async" [value]="role"
+                      <mat-option *ngFor="let role of roles" [value]="role"
                         (click)="changeRole(employee.Email, role)">
                         {{ splitAndCapitalizeCamelCase(role) }}
                       </mat-option>
