@@ -32,7 +32,7 @@
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Last Day of Employment</mat-label>
                     <input matInput [matDatepicker]="picker2" placeholder="Last day of Employment"
-                        formControlName="lastDayOfEmployment">
+                        formControlName="lastDayOfEmployment" [matDatepickerFilter]="endDateFilter">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
                     <mat-error *ngIf="newterminationform.controls['lastDayOfEmployment'].hasError('required')">
