@@ -32,7 +32,7 @@
             <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
               [ngClass]="{ 'roles-input-mobile': screenWidth <= 1200 }">
               <mat-label>People Champion Filter</mat-label>
-              <mat-select [disabled]="!getActiveEmployees" hideSingleSelectionIndicator="true">
+              <mat-select [disabled]="!getActiveEmployees" hideSingleSelectionIndicator="true" [(value)]="selectedChampion!.id">
                 <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
                   class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
                   {{ champion.name }}
