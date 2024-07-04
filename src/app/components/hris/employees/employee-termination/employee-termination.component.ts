@@ -116,6 +116,14 @@ export class EmployeeTerminationComponent implements OnInit {
     });
   }
 
+  endDateFilter = (date: Date | null): boolean => {
+    const startDate = this.newterminationform.get('dayOfNotice')?.value;
+    if (!date || !startDate) {
+      return true;
+    }
+    return date.getTime() >= new Date(startDate).getTime();
+  }
+
   removeDocument() {
     this.interviewDocFilename = '';
     const uploadedDoc = document.getElementById('uploadCVFile') as HTMLInputElement;
