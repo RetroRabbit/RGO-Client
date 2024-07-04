@@ -100,12 +100,12 @@ export class ViewEmployeeComponent {
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
 
-    // this.peopleChampions.subscribe({
-    //   next: data => {
-    //     this.selectedChampion = data.find(x => x.id == this.authAccessService.getUserId())
-    //     console.log(this.selectedChampion)
-    //   }
-    // })
+    this.peopleChampions.subscribe({
+      next: data => {
+        this.selectedChampion = data.find(x => x.id == 0)
+        console.log(this.selectedChampion)
+      }
+    })
     
     this.onResize();
     if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
