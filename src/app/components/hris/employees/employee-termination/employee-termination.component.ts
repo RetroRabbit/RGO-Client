@@ -82,16 +82,10 @@ export class EmployeeTerminationComponent implements OnInit {
         terminationDocument: new FormControl<string>('', Validators.required),
         terminationComments: new FormControl<string>(''),
     }, { validator: endDateAfterStartDateValidator('dayOfNotice', 'lastDayOfEmployment')});
-
-    // this.newterminationform.valueChanges.subscribe(() => {
-    //     // this.checkCheckboxesValid();
-    // });
-    // this.checkCheckboxesValid();
   }
 
   SaveEmployeeTermination(nextPage: string) {
     this.formSubmitted = true;
-    // this.checkCheckboxesValid();
 
     this.newterminationform.updateValueAndValidity();
 
@@ -176,11 +170,4 @@ export class EmployeeTerminationComponent implements OnInit {
     this.newterminationform.controls['terminationOption'].setValue(option);
     this.terminationOptionValue = option;
   }
-
-  // checkCheckboxesValid() {
-  //   const equipmentStatusChecked = this.newterminationform.get('equipmentStatus')?.value;
-  //   const accountsStatusChecked = this.newterminationform.get('accountsStatus')?.value;
-
-  //   this.checkboxesValid = equipmentStatusChecked && accountsStatusChecked;
-  // }
 }
