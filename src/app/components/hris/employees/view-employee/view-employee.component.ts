@@ -10,27 +10,8 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { ClientService } from 'src/app/services/hris/client.service';
 import { Client } from 'src/app/models/hris/client.interface';
 import { EmployeeData } from 'src/app/models/hris/employeedata.interface';
-import {
-  Component,
-  Output,
-  EventEmitter,
-  ViewChild,
-  HostListener,
-  NgZone,
-  Input,
-  ViewEncapsulation,
-} from '@angular/core';
-import {
-  Observable,
-  catchError,
-  first,
-  forkJoin,
-  map,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
-import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { Component,Output,EventEmitter,ViewChild,HostListener,NgZone,Input,ViewEncapsulation } from '@angular/core';
+import { Observable,catchError,first,forkJoin,map,of,switchMap,tap } from 'rxjs';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
@@ -58,6 +39,7 @@ export class ViewEmployeeComponent {
   getActiveEmployees: boolean = true;
   isLoading: boolean = true;
   defaultPageSize: number = 10
+  selectedChampion?: GenericDropDownObject;
 
   displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];
   displayedTerminatedColumns: string[] = ['terminatedNames', 'terminatedPosition', 'Tenure', 'Last Day', 'Reason'];
@@ -76,6 +58,10 @@ export class ViewEmployeeComponent {
 
   get isAdminOrSuperAdmin() {
     return this.authAccessService.isSuperAdmin() || this.authAccessService.isAdmin();
+  }
+
+  get isJourney() {
+    return this.authAccessService.isJourney();
   }
 
   PREVIOUS_PAGE = 'previousPage';
@@ -114,6 +100,13 @@ export class ViewEmployeeComponent {
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
 
+    // this.peopleChampions.subscribe({
+    //   next: data => {
+    //     this.selectedChampion = data.find(x => x.id == this.authAccessService.getUserId())
+    //     console.log(this.selectedChampion)
+    //   }
+    // })
+    
     this.onResize();
     if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
       this._searchQuery = this.cookieService.get('searchString');
@@ -121,6 +114,16 @@ export class ViewEmployeeComponent {
 
     if (!this.isAdminOrSuperAdmin) {
       this.displayedColumns = ['Name', 'Position', 'Level', 'Client'];
+    }
+
+    if(this.isJourney){
+      console.log("isjourney")
+      this.peopleChampions.subscribe({
+        next: data => {
+          this.selectedChampion = data.find(x => x.id == this.authAccessService.getUserId())
+          console.log(this.selectedChampion)
+        }
+      })
     }
   }
 
