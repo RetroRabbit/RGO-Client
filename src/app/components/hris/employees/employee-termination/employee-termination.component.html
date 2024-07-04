@@ -55,17 +55,14 @@
                     </mat-radio-group>
                 </div>
 
-
                 <h2 class="col-md-12 col-lg-7 my-2">Off-Boarding Tasks</h2>
                 <div class="col-md-12 col-lg-7 my-2 ms-4">
                     <mat-checkbox formControlName="equipmentStatus">Handed Back Company Equipment</mat-checkbox>
                 </div>
 
-
                 <div class="col-md-12 col-lg-7 my-2 ms-4 align-items-left">
                     <mat-checkbox formControlName="accountsStatus">Transferred Company Accounts</mat-checkbox>
                 </div>
-
 
                 <div id="doc-upload" class="col-md-12 col-lg-7 my-2 p-3 mt-3"
                     [ngClass]="{'error-border': formSubmitted && !newterminationform.value.terminationDocument}"
