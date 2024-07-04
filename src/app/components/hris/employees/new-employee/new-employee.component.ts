@@ -335,9 +335,9 @@ export class NewEmployeeComponent implements OnInit {
     Object.keys(formGroup.controls).forEach(controlName => {
       const control = formGroup.get(controlName);
       if (control instanceof FormControl) {
-        control.clearValidators();
-        control.updateValueAndValidity();
         control.reset();
+        control.markAsUntouched(); 
+        control.updateValueAndValidity();
       } else if (control instanceof FormGroup) {
         this.clearFormErrorsAndValues(control);
       }
@@ -353,7 +353,6 @@ export class NewEmployeeComponent implements OnInit {
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
     this.removeAllDocuments();
   }
-
   saveAndAddAnother() {
     this.isSavedEmployee = false;
     this.clearFormErrorsAndValues(this.newEmployeeForm);
@@ -365,7 +364,9 @@ export class NewEmployeeComponent implements OnInit {
     this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
     this.newEmployeeForm.controls['disability'].setValue(false);
     this.myStepper.reset();
+    this.newEmployeeForm.markAsUntouched()
   }
+  
 
   onUploadDocument(nextPage: string): void {
     this.isLoadingAddEmployee = true;
