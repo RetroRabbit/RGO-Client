@@ -319,7 +319,7 @@ export class NewEmployeeComponent implements OnInit {
                 this.categories[category].state = false;
                 this.categories[category].name = file.name;
               },
-              error: (error: any) => {
+              error: () => {
                 this.snackBarService.showSnackbar("Unable to Compile Documents", "snack-error");
               }
             });
@@ -335,9 +335,7 @@ export class NewEmployeeComponent implements OnInit {
     Object.keys(formGroup.controls).forEach(controlName => {
       const control = formGroup.get(controlName);
       if (control instanceof FormControl) {
-        control.reset();
-        control.markAsUntouched(); 
-        control.updateValueAndValidity();
+        control.clearValidators();
       } else if (control instanceof FormGroup) {
         this.clearFormErrorsAndValues(control);
       }
@@ -354,6 +352,7 @@ export class NewEmployeeComponent implements OnInit {
     this.removeAllDocuments();
   }
   saveAndAddAnother() {
+    this.newEmployeeForm.reset();
     this.isSavedEmployee = false;
     this.clearFormErrorsAndValues(this.newEmployeeForm);
     this.clearFormErrorsAndValues(this.uploadDocumentForm);
@@ -363,6 +362,7 @@ export class NewEmployeeComponent implements OnInit {
     this.removeAllDocuments();
     this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
     this.newEmployeeForm.controls['disability'].setValue(false);
+    this.newEmployeeForm.controls['cellphoneNo'].reset();
     this.myStepper.reset();
     this.newEmployeeForm.markAsUntouched()
   }
@@ -561,6 +561,7 @@ export class NewEmployeeComponent implements OnInit {
         }
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
+        this.newEmployeeForm.reset();
       },
       error: (error: any, stepper?: MatStepper) => {
         let message = '';
