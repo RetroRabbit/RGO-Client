@@ -103,7 +103,6 @@ export class ViewEmployeeComponent {
     this.peopleChampions.subscribe({
       next: data => {
         this.selectedChampion = data.find(x => x.id == 0)
-        console.log(this.selectedChampion)
       }
     })
     
@@ -117,11 +116,9 @@ export class ViewEmployeeComponent {
     }
 
     if(this.isJourney){
-      console.log("isjourney")
       this.peopleChampions.subscribe({
         next: data => {
           this.selectedChampion = data.find(x => x.id == this.authAccessService.getUserId())
-          console.log(this.selectedChampion)
         }
       })
     }

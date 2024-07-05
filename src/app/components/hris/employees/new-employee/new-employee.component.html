@@ -156,6 +156,12 @@
                     Disability is required
                   </mat-error>
                 </div>
+                <mat-form-field appearance="outline" class=" mb-3" *ngIf="newEmployeeForm.controls['disability'].value">
+                  <mat-label>Disability Types</mat-label>
+                  <mat-select formControlName="disabilityType" hideSingleSelectionIndicator="true">
+                    <mat-option *ngFor="let type of disabilityType" [value]="type.id">{{ type.value }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
                 <mat-form-field appearance="outline" *ngIf="newEmployeeForm.controls['disability'].value">
                   <mat-label>Disability Notes</mat-label>
                   <textarea matInput type="text" formControlName="disabilityNotes"></textarea>

@@ -39,6 +39,7 @@ export class AccordionProfilePersonalDetailsComponent {
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
       disability: [this.employeeProfile!.employeeDetails.disability, Validators.required],
+      disabilityType: [this.employeeProfile!.employeeDetails.disabilityType],
       nationality: [this.employeeProfile!.employeeDetails.nationality, Validators.required],
       countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth, Validators.required],
       disabilityList: "",
@@ -126,6 +127,7 @@ export class AccordionProfilePersonalDetailsComponent {
     if (this.sharedAccordionFunctionality.personalDetailsForm.valid) {
       const personalDetailsFormValue = this.sharedAccordionFunctionality.personalDetailsForm.value;
       this.sharedAccordionFunctionality.employeeProfileDto!.disability = personalDetailsFormValue.disability;
+      this.sharedAccordionFunctionality.employeeProfileDto!.disabilityType = personalDetailsFormValue.disabilityType;
       this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = personalDetailsFormValue.disabilityNotes;
       this.sharedAccordionFunctionality.employeeProfileDto!.race = personalDetailsFormValue.race;
       this.sharedAccordionFunctionality.employeeProfileDto!.gender = personalDetailsFormValue.gender;

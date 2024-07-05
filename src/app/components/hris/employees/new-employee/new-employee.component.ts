@@ -20,6 +20,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/id-validator.service';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
+import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
 
 @Component({
   selector: 'app-new-employee',
@@ -100,6 +101,7 @@ export class NewEmployeeComponent implements OnInit {
   isValidStarterkitFile: boolean = false;
   empId: number = 0;
   isSouthAfrica = false;
+  disabilityType = disabilities
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -122,6 +124,16 @@ export class NewEmployeeComponent implements OnInit {
 
     this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
       const disabilityNotesControl = this.newEmployeeForm.get('disabilityNotes');
+      if (value === true) {
+        disabilityNotesControl?.setValidators([Validators.required]);
+      } else {
+        disabilityNotesControl?.clearValidators();
+      }
+      disabilityNotesControl?.updateValueAndValidity();
+    });
+
+    this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
+      const disabilityNotesControl = this.newEmployeeForm.get('disabilityType');
       if (value === true) {
         disabilityNotesControl?.setValidators([Validators.required]);
       } else {
@@ -193,16 +205,14 @@ export class NewEmployeeComponent implements OnInit {
   postalAddress: FormGroup = this.createAddressForm();
   newEmployeeForm = new FormGroup({
     id: new FormControl<number>(0, [Validators.pattern(/^[0-9]*$/), Validators.required]),
-    employeeNumber: new FormControl<string>(
-      '0',
-      Validators.pattern(/^(\w{3})(\d{3})$/)
-    ),
+    employeeNumber: new FormControl<string>('0', Validators.pattern(/^(\w{3})(\d{3})$/)),
     taxNumber: new FormControl<string>('0000000000', Validators.pattern(/^\d{10}$/)),
     engagementDate: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
     terminationDate: new FormControl<Date | string | null>(null),
     reportingLine: new FormControl<EmployeeProfile | null>(null),
     highestQualication: new FormControl<string>(''),
     disability: new FormControl<boolean | null>(false, [Validators.required]),
+    disabilityType: new FormControl<number>(-1),
     disabilityNotes: new FormControl<string>(''),
     countryOfBirth: new FormControl<string>(''),
     nationality: new FormControl<string>(''),
@@ -214,20 +224,14 @@ export class NewEmployeeComponent implements OnInit {
     Validators.pattern(this.initialsPattern)]),
     surname: new FormControl<string>('', [Validators.required,
     Validators.pattern(this.namePattern)]),
-    dateOfBirth: new FormControl<Date | string>(
-      new Date(Date.now()),
-      Validators.required
-    ),
+    dateOfBirth: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
     idNumber: new FormControl<string>('', [Validators.required, this.customValidationService.idNumberValidator]),
     passportNumber: new FormControl<string>(''),
-    passportExpiryDate: new FormControl<Date | string | null>(
-      new Date(Date.now())
-    ),
+    passportExpiryDate: new FormControl<Date | string | null>(new Date(Date.now())),
     passportCountryIssue: new FormControl<string>(''),
     race: new FormControl<number | null>(null),
     gender: new FormControl<number | null>(null),
-    email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),
-    ]),
+    email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),]),
     personalEmail: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]),
     cellphoneNo: new FormControl<string>('', [Validators.required]),
     photo: new FormControl<string>(''),
@@ -729,5 +733,4 @@ export class NewEmployeeComponent implements OnInit {
       this.categories[catNum].state = true;
     });
   }
-
 }
