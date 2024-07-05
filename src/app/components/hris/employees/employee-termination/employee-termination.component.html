@@ -39,7 +39,6 @@
                         Please select the last day of employment
                     </mat-error>
                 </mat-form-field>
-                
                 <div *ngIf="newterminationform.hasError('endDateAfterStartDate')" class="text-center custom-validate-error">
                     *The last day of employment cannot be before the date of notice
                 </div>
@@ -59,7 +58,6 @@
                 <div class="col-md-12 col-lg-7 my-2 ms-4">
                     <mat-checkbox formControlName="equipmentStatus">Handed Back Company Equipment</mat-checkbox>
                 </div>
-
                 <div class="col-md-12 col-lg-7 my-2 ms-4 align-items-left">
                     <mat-checkbox formControlName="accountsStatus">Transferred Company Accounts</mat-checkbox>
                 </div>
