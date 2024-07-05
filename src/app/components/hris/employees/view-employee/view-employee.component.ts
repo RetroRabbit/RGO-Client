@@ -329,13 +329,11 @@ export class ViewEmployeeComponent {
   }
 
   changePeopleChampionFilter(champion: GenericDropDownObject) {
-    console.log("changePeopleChampionFilter")
     this.currentChampionFilter = champion;
     this.filterEmployeeTable();
   }
 
   changeUserTypeFilter(employeeType: GenericDropDownObject) {
-    console.log("changeUserTypeFilter")
     this.currentUserTypeFilter = employeeType;
     this.filterEmployeeTable();
   }
