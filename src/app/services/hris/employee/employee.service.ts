@@ -7,6 +7,7 @@ import { environment } from '../../../../environments/environment';
 import { AuthAccessService } from '../../shared-services/auth-access/auth-access.service';
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
 import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
+import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
 
 
 @Injectable({
@@ -102,11 +103,11 @@ export class EmployeeService {
   *
   * @returns List of EmployeeDto objects.
   */
-filterEmployees(championID: number, employeeType: number, activeStatus: boolean = true): Observable<EmployeeProfile[]> {
+filterEmployees(championID: number, employeeType: number, activeStatus: boolean = true): Observable<EmployeeFilterView[]> {
   const queryParams = `?PeopleChampId=${encodeURIComponent(championID)}
                         &employeeType=${encodeURIComponent(employeeType)}
                         &activeStatus=${activeStatus}`;
-  return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/filter-employees${queryParams}`);
+  return this.httpClient.get<EmployeeFilterView[]>(`${this.baseUrl}/filter-employees${queryParams}`);
 }
 
 }
