@@ -213,23 +213,14 @@ export class ViewEmployeeComponent {
     this.cookieService.set('selectedUser', email);
   }
 
-  employeeClickEvent(employee: {
-    Name: string;
-    Position: string | undefined;
-    Level: number | undefined;
-    Client: string;
-    Roles: string[];
-    Email: string;
-  }): void {
+  employeeClickEvent(employee: any): void {
     this.employeeService.get(employee.Email).
-      pipe(
-        tap((data) => {
-          this.selectedEmployee.emit(data);
-          this._searchQuery = '';
-          this.router.navigateByUrl('/profile/' + data.id)
-          this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
-        })
-      )
+      subscribe((data) => {
+        this.selectedEmployee.emit(data);
+        this._searchQuery = '';
+        this.router.navigateByUrl('/profile/' + data.id)
+        this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
+      })
   }
 
   screenWidth: number = 992;
