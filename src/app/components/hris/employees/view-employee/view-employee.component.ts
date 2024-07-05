@@ -1,4 +1,4 @@
-import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
+import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,35 +7,15 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { ClientService } from 'src/app/services/hris/client.service';
-import { Client } from 'src/app/models/hris/client.interface';
 import { EmployeeData } from 'src/app/models/hris/employeedata.interface';
-import {
-  Component,
-  Output,
-  EventEmitter,
-  ViewChild,
-  HostListener,
-  NgZone,
-  Input,
-  ViewEncapsulation,
-} from '@angular/core';
-import {
-  Observable,
-  catchError,
-  first,
-  forkJoin,
-  map,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
-import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { Component, Output, EventEmitter, ViewChild, HostListener, NgZone, Input, ViewEncapsulation } from '@angular/core';
+import { Observable, catchError, first, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface'
 import { EmployeeStatus } from 'src/app/models/hris/constants/employee-status.constants';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 
 @Component({
   selector: 'app-view-employee',
@@ -45,6 +25,18 @@ import { EmployeeStatus } from 'src/app/models/hris/constants/employee-status.co
 })
 
 export class ViewEmployeeComponent {
+
+  constructor(
+    private employeeService: EmployeeService,
+    private employeeRoleService: EmployeeRoleService,
+    private cookieService: CookieService,
+    private ngZone: NgZone,
+    private router: Router,
+    private snackBarService: SnackbarService,
+    public authAccessService: AuthAccessService,
+    private employeeTypeService: EmployeeTypeService
+  ) { }
+
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
   @Output() addEmployeeEvent = new EventEmitter<void>();
   @Output() managePermissionsEvent = new EventEmitter<void>();
@@ -53,16 +45,21 @@ export class ViewEmployeeComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   _searchQuery: string = '';
-  filteredEmployees: EmployeeProfile[] = [];
+  filteredEmployees: EmployeeFilterView[] = [];
   employeeStatus: string[] = EmployeeStatus;
   getActiveEmployees: boolean = true;
   isLoading: boolean = true;
   defaultPageSize: number = 10
-
-  displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client', 'Roles'];
+  selectedChampion?: GenericDropDownObject = { id: 0, name: 'All' } as GenericDropDownObject;
+  displayedColumns: string[] = ['Name', 'Position', 'Level', 'Client'];
   displayedTerminatedColumns: string[] = ['terminatedNames', 'terminatedPosition', 'Tenure', 'Last Day', 'Reason'];
-
-  dataSource: MatTableDataSource<EmployeeProfile> = new MatTableDataSource();
+  dataSource: MatTableDataSource<EmployeeFilterView> = new MatTableDataSource();
+  PREVIOUS_PAGE = 'previousPage';
+  roles: string[] = [];
+  peopleChampions: Observable<GenericDropDownObject[]> = new Observable;
+  usertypes: Observable<GenericDropDownObject[]> = new Observable;
+  currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
+  currentUserTypeFilter: GenericDropDownObject = new GenericDropDownObject;
 
   @Input()
   set searchQuery(text: string) {
@@ -78,19 +75,40 @@ export class ViewEmployeeComponent {
     return this.authAccessService.isSuperAdmin() || this.authAccessService.isAdmin();
   }
 
-  PREVIOUS_PAGE = 'previousPage';
+  get isJourney() {
+    return this.authAccessService.isJourney();
+  }
 
-  roles: Observable<string[]> = this.employeeRoleService.getAllRoles().pipe(
-    map((roles: string[]) =>
-      roles.filter((role) => !role.includes('SuperAdmin'))
-    ),
-    first()
-  );
+  ngOnInit() {
+    this.dataSource.paginator = this.paginator;
+    this.usertypes = this.getUserTypesForFilter();
+    this.peopleChampions = this.getPeopleChampionsForFilter();
+    this.employeeRoleService.getAllRoles().subscribe((data: string[]) => {
+      this.roles = data.filter((role) => !role.includes('SuperAdmin'));
+    });
 
-  peopleChampions: Observable<GenericDropDownObject[]> = this.getPeopleChampionsForFilter();
-  usertypes: Observable<GenericDropDownObject[]> = this.getUserTypesForFilter();
-  currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
-  currentUserTypeFilter: GenericDropDownObject = new GenericDropDownObject;
+    this.onResize();
+
+    if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
+      this._searchQuery = this.cookieService.get('searchString');
+    }
+
+    if (this.isAdminOrSuperAdmin) {
+      this.displayedColumns = ['Name', 'Position', 'Level', 'Client', 'Roles'];
+    }
+
+    this.peopleChampions.subscribe({
+      next: data =>
+        this.selectedChampion = this.isJourney
+          ? data.find(x => x.id == this.authAccessService.getUserId() ?? 0)
+          : data.find(x => x.id == 0)
+    })
+  }
+
+  ngAfterViewInit() {
+    this.filterEmployeeTable();
+    this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
+  }
 
   onAddEmployeeClick(): void {
     this.addEmployeeEvent.emit();
@@ -98,97 +116,25 @@ export class ViewEmployeeComponent {
     this.router.navigateByUrl('/create-employee');
   }
 
-  constructor(
-    private employeeService: EmployeeService,
-    private employeeRoleService: EmployeeRoleService,
-    private clientService: ClientService,
-    private cookieService: CookieService,
-    private ngZone: NgZone,
-    private router: Router,
-    private snackBarService: SnackbarService,
-    public authAccessService: AuthAccessService,
-    private employeeTypeService: EmployeeTypeService
-  ) {
-  }
-
-  ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-
-    this.onResize();
-    if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
-      this._searchQuery = this.cookieService.get('searchString');
-    }
-
-    if (!this.isAdminOrSuperAdmin) {
-      this.displayedColumns = ['Name', 'Position', 'Level', 'Client'];
-    }
-  }
-
-  ngAfterViewInit() {
-    this.getEmployees();
-    this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
-  }
-
-  getEmployees(): void {
-    this.isLoading = true;
-    const clients$: Observable<Client[]> = this.clientService
-      .getAllClients()
-      .pipe(catchError(() => of([] as Client[])));
-
-    this.employeeService
-      .getEmployeeProfiles()
-      .pipe(
-        switchMap((employees: EmployeeProfile[]) =>
-          this.combineEmployeesWithRolesAndClients(employees, clients$)
-        ),
-        catchError((error) => {
-          this.snackBarService.showSnackbar('Unable to Retrieve Employees', 'snack-error');
-          return of([]);
-        }),
-        first()
-      )
-      .subscribe((data) => {
-        this.setupDataSource(data);
-        this.isLoading = false;
-        this.applySearchFilter();
-      });
-  }
-
   private combineEmployeesWithRolesAndClients(
-    employees: EmployeeProfile[],
-    clients$: Observable<Client[]>
+    employees: EmployeeFilterView[]
   ): Observable<EmployeeData[]> {
-    const rolesRequests$ = employees.map((employee) =>
-      this.employeeRoleService
-        .getRoles(employee.email!)
-        .pipe(catchError(() => of([] as string[])))
-    );
-
-    return forkJoin([of(employees), clients$, ...rolesRequests$]).pipe(
-      map(([employees, clients, ...rolesList]) =>
-        this.constructEmployeeData(employees, clients, rolesList)
-      )
+    return forkJoin([of(employees)]).pipe(
+      map(([employees]) => this.constructEmployeeData(employees))
     );
   }
 
   private constructEmployeeData(
-    employees: EmployeeProfile[],
-    clients: Client[],
-    rolesList: string[][]
+    employees: EmployeeFilterView[]
   ): EmployeeData[] {
     const employeeDataList: EmployeeData[] = employees.map(
-      (employee, index) => {
-        const client = clients.find(
-          (client) =>
-            employee.clientAllocated && client.id === +employee.clientAllocated
-        );
-        const sortedRoles = this.sortRoles(rolesList[index]);
+      (employee) => {
         return {
           Name: `${employee.name} ${employee.surname}`,
-          Position: employee.employeeType!.name,
+          Position: employee.position,
           Level: employee.level,
-          Client: client ? client.name : 'None',
-          Roles: sortedRoles,
+          Client: employee.clientAllocated ?? 'None',
+          Roles: [employee.roleDescription],
           Email: employee.email,
           engagementDate: employee.engagementDate,
           terminationDate: employee.terminationDate,
@@ -267,33 +213,14 @@ export class ViewEmployeeComponent {
     this.cookieService.set('selectedUser', email);
   }
 
-  employeeClickEvent(employee: {
-    Name: string;
-    Position: string | undefined;
-    Level: number | undefined;
-    Client: string;
-    Roles: string[];
-    Email: string | undefined;
-  }): void {
-    this.employeeService
-      .getEmployeeProfiles()
-      .pipe(
-        map(
-          (employees: EmployeeProfile[]) =>
-            employees.filter(
-              (emp: EmployeeProfile) =>
-                `${emp.name} ${emp.surname}` === `${employee.Name}`
-            )[0]
-        ),
-        tap((data) => {
-          this.selectedEmployee.emit(data);
-          this._searchQuery = '';
-          this.router.navigateByUrl('/profile/' + data.id)
-          this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
-        }),
-        first()
-      )
-      .subscribe();
+  employeeClickEvent(employee: any): void {
+    this.employeeService.get(employee.Email).
+      subscribe((data) => {
+        this.selectedEmployee.emit(data);
+        this._searchQuery = '';
+        this.router.navigateByUrl('/profile/' + data.id)
+        this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
+      })
   }
 
   screenWidth: number = 992;
@@ -337,16 +264,16 @@ export class ViewEmployeeComponent {
     return pages;
   }
 
-  changeRole(email: string, role: string): void {
+  changeRole(email: string, newRole: string): void {
     this.employeeRoleService
-      .updateRole(email, role)
+      .updateRole(email, newRole)
       .pipe(
         tap(() => {
           this.snackBarService.showSnackbar("Updated", "snack-success");
-          this.getEmployees();
         }),
-        catchError((error) => {
-          this.snackBarService.showSnackbar('Unable to Change Role', 'snack-error');
+        catchError((er) => {
+          this.snackBarService.showSnackbar(er.error, 'snack-error');
+          this.filterEmployeeTable();
           return of(null);
         })
       )
@@ -401,16 +328,11 @@ export class ViewEmployeeComponent {
 
   filterEmployeeTable() {
     this.isLoading = true;
-    const clients$: Observable<Client[]> = this.clientService
-      .getAllClients()
-      .pipe(catchError(() => of([] as Client[])));
 
     this.employeeService
       .filterEmployees(this.currentChampionFilter.id || 0, this.currentUserTypeFilter.id || 0, this.getActiveEmployees)
       .pipe(
-        switchMap((employees: EmployeeProfile[]) =>
-          this.combineEmployeesWithRolesAndClients(employees, clients$)
-        ),
+        switchMap((employees: EmployeeFilterView[]) => this.combineEmployeesWithRolesAndClients(employees)),
         catchError((error) => {
           this.snackBarService.showSnackbar('Unable to Retrieve Employees', 'snack-error');
           return of([]);
