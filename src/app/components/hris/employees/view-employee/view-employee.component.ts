@@ -97,15 +97,12 @@ export class ViewEmployeeComponent {
       this.displayedColumns = ['Name', 'Position', 'Level', 'Client', 'Roles'];
     }
 
-    if (this.isJourney) {
-
-      this.peopleChampions.subscribe({
-        next: data => this.selectedChampion = data.find(x => x.id == this.authAccessService.getUserId() ?? 0)
-      })
-
-    } else {
-      this.peopleChampions.subscribe({ next: data => this.selectedChampion = data.find(x => x.id == 0) })
-    }
+    this.peopleChampions.subscribe({
+      next: data =>
+        this.selectedChampion = this.isJourney
+          ? data.find(x => x.id == this.authAccessService.getUserId() ?? 0)
+          : data.find(x => x.id == 0)
+    })
   }
 
   ngAfterViewInit() {
