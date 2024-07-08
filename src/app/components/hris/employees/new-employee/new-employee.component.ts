@@ -20,6 +20,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/id-validator.service';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
+import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 
 @Component({
   selector: 'app-new-employee',
@@ -66,6 +67,7 @@ export class NewEmployeeComponent implements OnInit {
   public filename = "";
   imageName: string = "";
   @ViewChild('stepper') private myStepper!: MatStepper;
+  @ViewChild('inputField') inputField!: NgxMatIntlTelInputComponent;
 
   employeeTypes: EmployeeType[] = [];
   employeeDocumentModels: EmployeeDocument[] = [];
@@ -364,6 +366,7 @@ export class NewEmployeeComponent implements OnInit {
     this.newEmployeeForm.controls['disability'].setValue(false);
     this.newEmployeeForm.controls['cellphoneNo'].reset();
     this.myStepper.reset();
+    this.newEmployeeForm.get('cellphoneNo')?.reset();
     this.newEmployeeForm.markAsUntouched()
   }
   
