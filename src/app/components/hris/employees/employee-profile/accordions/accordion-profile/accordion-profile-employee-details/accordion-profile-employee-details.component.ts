@@ -248,9 +248,7 @@ export class AccordionProfileEmployeeDetailsComponent {
                 this.sharedAccordionFunctionality.employeeDetailsForm.disable();
                 this.navService.refreshEmployee();
               },
-              error: () => {
-                this.snackBarService.showSnackbar("Unable to Update Employee Details", "snack-error");
-              }
+              error: (er) => this.snackBarService.showError(er),
             });
           } else {
             this.snackBarService.showSnackbar("ID Number Already in Use", "snack-error");
@@ -377,7 +375,8 @@ export class AccordionProfileEmployeeDetailsComponent {
           this.sharedAccordionFunctionality.employeePostalAddress = data.postalAddress!;
           this.sharedAccordionFunctionality.hasDisability = data.disability;
           this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
-        }, complete: () => {
+        }, 
+        complete: () => {
           this.getEmployeeData();
           this.getEmployeeTypes();
           if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
@@ -385,9 +384,8 @@ export class AccordionProfileEmployeeDetailsComponent {
           }
           this.getEmployeeFieldCodes();
           this.initializeForm();
-        }, error: () => {
-          this.snackBarService.showSnackbar("Unable to Fetch User Profile", "snack-error");
-        }
+        }, 
+        error: (er) => this.snackBarService.showError(er),
       })
     }
   }

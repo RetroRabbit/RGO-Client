@@ -82,9 +82,7 @@ export class AccordionCareerWorkExperienceComponent {
         this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
-      error: (error) => {
-        this.snackBarService.showSnackbar("Unable to Fetch Work Experiences", "snack-error");
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -224,9 +222,7 @@ export class AccordionCareerWorkExperienceComponent {
         this.sharedAccordionFunctionality.totalCareerProgress();
         this.editWorkExperience = false;
       },
-      error: (error) => {
-        this.snackBarService.showSnackbar("Unable to Delete Experience", "snack-error");
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -250,9 +246,9 @@ export class AccordionCareerWorkExperienceComponent {
             this.sharedAccordionFunctionality.totalCareerProgress();
           }
         },
-        error: (error) => {
+        error: (er) => {
           errorOccurred = true;
-          this.snackBarService.showSnackbar("Unable to Add Work Experience", "snack-error");
+          this.snackBarService.showError(er);
           this.addingWorkExperience = false;
           this.editWorkExperience = false;
         }
@@ -275,9 +271,7 @@ export class AccordionCareerWorkExperienceComponent {
         this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
-      error: () => {
-        this.snackBarService.showSnackbar("Unable to Update All Fields", "snack-error");
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 }

@@ -272,7 +272,7 @@ export class ViewEmployeeComponent {
           this.snackBarService.showSnackbar("Updated", "snack-success");
         }),
         catchError((er) => {
-          this.snackBarService.showSnackbar(er.error, 'snack-error');
+          this.snackBarService.showError(er);
           this.filterEmployeeTable();
           return of(null);
         })

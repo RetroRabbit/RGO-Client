@@ -52,6 +52,13 @@ export class AuthAccessService {
     return this.roles.includes('Employee');
   }
 
+  isSupport() {
+    return this.isAdmin() ||
+    this.isSuperAdmin() ||
+    this.isJourney() ||
+    this.isTalent()
+  }
+
   setUserId(Id: number) {
     this.userId = Id;
   }

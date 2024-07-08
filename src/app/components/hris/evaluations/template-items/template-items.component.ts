@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { EvaluationTemplateItemService } from 'src/app/services/hris/evaluations/evaluation-template-item.service';
 import { EvaluationTemplateService } from 'src/app/services/hris/evaluations/evaluation-template.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 
 @Component({
   selector: 'app-template-items',
@@ -29,21 +30,22 @@ export class TemplateItemsComponent {
 
   constructor(
     private evaluationtemplate: EvaluationTemplateService,
-    private evaluationTemplateItemService: EvaluationTemplateItemService
+    private evaluationTemplateItemService: EvaluationTemplateItemService,
+    private snackBarService: SnackbarService,
   ) { }
 
   saveTemplate(): void {
     const { template } = this.templateForm.value;
     this.evaluationtemplate.save(template).subscribe({
       next: () => this.templates$ = this.evaluationtemplate.getAll(),
-      error: () => { }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
   deleteTemplate(template: string): void {
     this.evaluationtemplate.delete(template).subscribe({
       next: () => this.templates$ = this.evaluationtemplate.getAll(),
-      error: () => { }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 

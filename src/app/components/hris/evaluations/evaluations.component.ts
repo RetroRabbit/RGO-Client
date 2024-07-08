@@ -12,6 +12,7 @@ import { EvaluationRatingInput } from 'src/app/models/hris/evaluation-rating-inp
 import { EvaluationAudienceService } from 'src/app/services/hris/evaluations/evaluation-audience.service';
 import { EmployeeEvaluationsRatingService } from 'src/app/services/hris/evaluations/employee-evaluations-rating.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 
 @Component({
   selector: 'app-evaluations',
@@ -79,7 +80,8 @@ export class EvaluationsComponent {
     private evaluationTemplateItemService: EvaluationTemplateItemService,
     private evaluationAudienceService: EvaluationAudienceService,
     private cookieService: CookieService,
-    private navService: NavService
+    private navService: NavService,
+    private snackBarService: SnackbarService,
   ) {
   }
 
@@ -199,7 +201,7 @@ export class EvaluationsComponent {
         this.EvaluationForm.reset();
         this.backToEvaluations();
       },
-      error: error => {}
+      error: (er) => this.snackBarService.showError(er),
   });
   }
 
@@ -213,7 +215,7 @@ export class EvaluationsComponent {
           this.fetchAudience();
           this.updateRatings();
         },
-        error: error => {}
+        error: (er) => this.snackBarService.showError(er),
   });
   }
 
@@ -254,7 +256,7 @@ export class EvaluationsComponent {
           subject: this.selectedEvaluation?.subject,
         });
       },
-      error: error => {}
+      error: (er) => this.snackBarService.showError(er),
   });
   }
 
@@ -303,7 +305,7 @@ export class EvaluationsComponent {
           subject: this.selectedEvaluation?.subject,
         });
       },
-      error: error => { }
+      error: (er) => this.snackBarService.showError(er),
   });
   }
 
@@ -327,7 +329,7 @@ export class EvaluationsComponent {
           subject: this.selectedEvaluation?.subject,
         });
       },
-      error: error => { }
+      error: (er) => this.snackBarService.showError(er),
   });
   }
 
@@ -352,7 +354,7 @@ export class EvaluationsComponent {
         this.EvaluationForm.reset();
         this.backToEvaluations();
       },
-      error: error => {}
+      error: (er) => this.snackBarService.showError(er),
   });
   }
 
@@ -364,8 +366,9 @@ export class EvaluationsComponent {
         this.EvaluationForm.reset();
         this.backToEvaluations();
       },
-      error: error => {
+      error: er => {
         this.EvaluationForm.reset();
+        this.snackBarService.showError(er);
       }
   });
   }

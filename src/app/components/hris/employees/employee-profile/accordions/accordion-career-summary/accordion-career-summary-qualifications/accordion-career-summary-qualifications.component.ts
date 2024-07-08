@@ -48,6 +48,8 @@ export class CareerSummaryQualificationsComponent {
   proofOfQualificationFinal: string = '';
 
   ngOnInit() {
+    console.log(this.employeeProfile);
+
     this.fetchQualificationsById();
   }
 
@@ -66,9 +68,7 @@ export class CareerSummaryQualificationsComponent {
         this.sharedAccordionFunctionality.calculateQualificationProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
-      error: (error) => {
-        this.snackBarService.showSnackbar("Unable to Fetch Qualification", "snack-error");
-      }
+      error: (er) => this.snackBarService.showError(er),
     })
   }
 
@@ -123,9 +123,7 @@ export class CareerSummaryQualificationsComponent {
           this.sharedAccordionFunctionality.calculateQualificationProgress();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Upload a copy of your Qualification Document", "snack-error");
-        },
+        error: (er) => this.snackBarService.showError(er),
         complete: () => this.fetchQualificationsById()
       });
     } else {

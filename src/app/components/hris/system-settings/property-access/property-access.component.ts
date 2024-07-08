@@ -132,8 +132,7 @@ export class PropertyAccessComponent {
             next: (data: any) => {
                 this.getAccessProperties()
             },
-            error: (error: any) => {
-            }
+            error: (er: any) => this.snackBarService.showError(er),
         });
     }
 

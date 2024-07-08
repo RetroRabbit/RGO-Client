@@ -117,9 +117,7 @@ export class ChartComponent implements OnInit {
           this.captureCharts.emit(0);
         }
       },
-      error: () => {
-        this.snackBarService.showSnackbar("Unable to Display Chart", "snack-error");
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 }
@@ -167,10 +165,7 @@ export class ChartComponent implements OnInit {
           this.resetPage();
           this.createAndDisplayChart();
         },
-        error: () => {
-          this.snackBarService.showSnackbar("Unable to Update Chart", "snack-error");
-
-        }
+        error: (er) => this.snackBarService.showError(er),
       });
     }
   }
@@ -198,9 +193,7 @@ export class ChartComponent implements OnInit {
           this.resetPage();
           this.createAndDisplayChart();
         },
-        error: () => {
-          this.snackBarService.showSnackbar("Unable to Delete Chart", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       });
     }
   }
@@ -213,9 +206,9 @@ export class ChartComponent implements OnInit {
             this.employeeNames[employee.id] = `${employee.name} ${employee.surname}`;
           }
         });
-      }, error: () => {
-        this.snackBarService.showSnackbar("Unable to Retrieve People Champion", "snack-error");
-      }, complete: () => {
+      }, 
+      error: (er) => this.snackBarService.showError(er),
+      complete: () => {
         this.createAndDisplayChart();
       },
 

@@ -78,9 +78,7 @@ export class AccordionBankingComponent {
           console.warn("No banking details available.");
         }
       },
-      error: (err) => {
-        console.error("Error fetching banking details: ", err);
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -190,9 +188,7 @@ export class AccordionBankingComponent {
           this.editBanking = false;
           this.employeeBankingsForm.disable();
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Save Banking Information", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       })
     }
     else {
@@ -206,10 +202,8 @@ export class AccordionBankingComponent {
           this.hasUpdatedBanking = true;
           this.editBanking = false;
           this.employeeBankingsForm.disable();
-        }
-        , error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Save Banking Information", "snack-error");
-        }
+        },
+        error: (er) => this.snackBarService.showError(er),
       })
     }
   }

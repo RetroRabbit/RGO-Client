@@ -127,9 +127,9 @@ export class AccordionDocumentsAdditionalComponent {
         this.snackBarService.showSnackbar("Saved", "snack-success");
         this.getAdditionalDocuments();
       },
-      error: (error) => {
+      error: (er) => {
         this.isLoadingUpload = false;
-        this.snackBarService.showSnackbar("Unable to Upload Document", "snack-error");
+        this.snackBarService.showError(er);
 
       }
     });
@@ -167,7 +167,7 @@ export class AccordionDocumentsAdditionalComponent {
         this.snackBarService.showSnackbar("Deleted", "snack-success");
         this.getAdditionalDocuments();
       },
-      error: () => this.snackBarService.showSnackbar("Unable to Delete Document", "snack-warning")
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -179,9 +179,7 @@ export class AccordionDocumentsAdditionalComponent {
           this.dataSource.data = this.fileCategories;
           this.getAdditionalDocumentReferences();
         },
-        error: error => {
-          this.snackBarService.showSnackbar("Unable to Retrieve Employee Documents", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       })
     } else {
       this.employeeId = this.navService.employeeProfile.id;
@@ -192,9 +190,7 @@ export class AccordionDocumentsAdditionalComponent {
           this.getAdditionalDocumentReferences();
 
         },
-        error: error => {
-          this.snackBarService.showSnackbar("Unable to Retrieve Employee Documents", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       })
     }
   }

@@ -7,6 +7,7 @@ import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface'
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { NotificationService } from '../notification.service';
 import { DOCUMENTS_UPLOADED, EmployeeDocumentsStatus } from 'src/app/models/hris/constants/enums/employeeDocumentsStatus';
+import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,9 @@ export class EmployeeBankingandstarterkitService {
   declinedCount$ = new BehaviorSubject<number>(0);
   baseUrl: string;
 
-  constructor(private httpClient: HttpClient, public toast: NotificationService) {
+  constructor(private httpClient: HttpClient, 
+    public toast: NotificationService,
+    private snackBarService: SnackbarService) {
     this.baseUrl = environment.HttpsBaseURL;
   }
 
@@ -30,9 +33,7 @@ export class EmployeeBankingandstarterkitService {
         this.bankingAndStarterKitData$.next(data);
         this.getStatusCounts(data);
       },
-      error: (error: any) => {
-        this.toast.showToast('Error fetching banking and starter kits',error.message, 5000);
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 

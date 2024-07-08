@@ -109,7 +109,7 @@ export class ViewBankingApprovalComponent {
         this.backToApprovals();
          this.changeDetector.detectChanges();
       },
-      error: error => this.snackBarService.showSnackbar("Unable to Update Banking Approval", "snack-error")
+      error: (er) => this.snackBarService.showError(er),
     })
   }
 
