@@ -9,6 +9,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
+import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
 
 @Component({
   selector: 'app-accordion-profile-personal-details',
@@ -123,12 +124,26 @@ export class AccordionProfilePersonalDetailsComponent {
     this.sharedAccordionFunctionality.hasDisability = event.value;
   }
 
+  setTypeOther(event: any) {
+    console.log(event)
+    if(event.source.value == 'Other'){
+      this.sharedAccordionFunctionality.typeOther = true;
+    }
+    else{
+      this.sharedAccordionFunctionality.typeOther = false;
+    }
+  }
+
   savePersonalEdit() {
     if (this.sharedAccordionFunctionality.personalDetailsForm.valid) {
       const personalDetailsFormValue = this.sharedAccordionFunctionality.personalDetailsForm.value;
       this.sharedAccordionFunctionality.employeeProfileDto!.disability = personalDetailsFormValue.disability;
-      this.sharedAccordionFunctionality.employeeProfileDto!.disabilityType = personalDetailsFormValue.disabilityType;
-      this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = personalDetailsFormValue.disabilityNotes;
+      if(this.sharedAccordionFunctionality.typeOther == false){
+        this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = personalDetailsFormValue.disabilityType;
+      }
+      else{
+        this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = personalDetailsFormValue.disabilityNotes;
+      }
       this.sharedAccordionFunctionality.employeeProfileDto!.race = personalDetailsFormValue.race;
       this.sharedAccordionFunctionality.employeeProfileDto!.gender = personalDetailsFormValue.gender;
       this.sharedAccordionFunctionality.employeeProfileDto!.countryOfBirth = personalDetailsFormValue.countryOfBirth;
