@@ -171,8 +171,9 @@ export class AdminDashboardComponent {
 
   getDataCardsData() {
     this.isLoading = true;
-    this.dashboardService.getTotalEmployees().subscribe({
+    this.employeeService.getTotalEmployees().subscribe({
       next: (data: number) => {
+        console.log("total emp"+ data)
         this.totalNumberOfEmployees = data;
       },
       complete: () => {
@@ -183,6 +184,7 @@ export class AdminDashboardComponent {
 
     this.dashboardService.getEmployeeCountData().subscribe({
       next: (data: EmployeeCountDataCard) => {
+        console.log("emp  count "+ data)
         this.employeeCount = data;
       },
       complete: () => {
@@ -192,7 +194,7 @@ export class AdminDashboardComponent {
 
     this.dashboardService.getChurnRate().subscribe({
       next: (data: ChurnRateDataCard) => {
-        console.log(data)
+        console.log("churn rate "+data)
         this.churnRate = data;
       },
       complete: () => {
@@ -202,6 +204,7 @@ export class AdminDashboardComponent {
 
     this.dashboardService.getGrowthrate().subscribe({
       next: (data: number ) => {
+        console.log("growthrate "+ data)
         this.growthRate = data
       },
       complete: () => {

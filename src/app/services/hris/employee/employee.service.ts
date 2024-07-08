@@ -33,7 +33,6 @@ export class EmployeeService {
   getAll(): Observable<Employee[]> {
     return this.httpClient.get<Employee[]>(`${this.baseUrl}/all`);
   }
-
   /**
  * @summary  Gets all the Full Employee DTO and information
  *
