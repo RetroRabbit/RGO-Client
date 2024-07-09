@@ -272,9 +272,14 @@
             </div>
           </div>
         </div>
-        <div *ngIf="screenWidth <= 767">
+        <div id="increase" *ngIf="employeeCount.isIncrease === true && screenWidth <= 767">
           <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group" width="25px" height="25px" />
-          <span class="card-style">{{ churnRate.churnRate }}%</span>
+          <span class="card-style">{{ churnRate.churnRateDifference }}%</span>
+          <span class="card-info">increase from last month</span>
+        </div>
+        <div id="decrease" *ngIf="employeeCount.isIncrease === false && screenWidth <= 767">
+          <img src="../../../assets/img/arrow_down_24px.svg" alt="group" class="group" width="25px" height="25px" />
+          <span class="card-style">{{ churnRate.churnRateDifference }}%</span>
           <span class="card-info">decrease from last month</span>
         </div>
       </div>
