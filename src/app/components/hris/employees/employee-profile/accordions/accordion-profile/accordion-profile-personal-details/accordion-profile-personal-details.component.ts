@@ -10,6 +10,7 @@ import { SharedAccordionFunctionality } from '../../../shared-accordion-function
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
+import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
 
 @Component({
   selector: 'app-accordion-profile-personal-details',
@@ -20,6 +21,7 @@ export class AccordionProfilePersonalDetailsComponent {
 
   screenWidth = window.innerWidth;
   countries: string[] = [];
+  isCustomType: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   usingProfile: boolean = true;
@@ -31,16 +33,26 @@ export class AccordionProfilePersonalDetailsComponent {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
     this.loadCountries();
+    this.checkDisabilityType();
   }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+
+  checkDisabilityType(){
+    if(disabilities.map(x => x.value).includes(this.employeeProfile.employeeDetails.disabilityNotes!)){
+      this.isCustomType = false;
+    }
+    else{
+      this.isCustomType = true
+    }
+  }
 
   initializeForm() {
     this.sharedAccordionFunctionality.personalDetailsForm = this.fb.group({
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
       disability: [this.employeeProfile!.employeeDetails.disability, Validators.required],
-      disabilityType: [this.employeeProfile!.employeeDetails.disabilityType],
+      disabilityType: [!this.isCustomType ? this.employeeProfile.employeeDetails.disabilityNotes: "Other"],
       nationality: [this.employeeProfile!.employeeDetails.nationality, Validators.required],
       countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth, Validators.required],
       disabilityList: "",

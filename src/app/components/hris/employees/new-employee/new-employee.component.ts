@@ -101,7 +101,10 @@ export class NewEmployeeComponent implements OnInit {
   isValidStarterkitFile: boolean = false;
   empId: number = 0;
   isSouthAfrica = false;
-  disabilityType = disabilities
+  disabilityType = disabilities;
+
+  typeOther: boolean = false;
+  hasDisability: boolean = false;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -122,25 +125,25 @@ export class NewEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.loadCountries();
 
-    this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
-      const disabilityNotesControl = this.newEmployeeForm.get('disabilityNotes');
-      if (value === true) {
-        disabilityNotesControl?.setValidators([Validators.required]);
-      } else {
-        disabilityNotesControl?.clearValidators();
-      }
-      disabilityNotesControl?.updateValueAndValidity();
-    });
+    // this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
+    //   const disabilityNotesControl = this.newEmployeeForm.get('disabilityNotes');
+    //   if (value === true) {
+    //     disabilityNotesControl?.setValidators([Validators.required]);
+    //   } else {
+    //     disabilityNotesControl?.clearValidators();
+    //   }
+    //   disabilityNotesControl?.updateValueAndValidity();
+    // });
 
-    this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
-      const disabilityNotesControl = this.newEmployeeForm.get('disabilityType');
-      if (value === true) {
-        disabilityNotesControl?.setValidators([Validators.required]);
-      } else {
-        disabilityNotesControl?.clearValidators();
-      }
-      disabilityNotesControl?.updateValueAndValidity();
-    });
+    // this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
+    //   const disabilityNotesControl = this.newEmployeeForm.get('disabilityType');
+    //   if (value === true) {
+    //     disabilityNotesControl?.setValidators([Validators.required]);
+    //   } else {
+    //     disabilityNotesControl?.clearValidators();
+    //   }
+    //   disabilityNotesControl?.updateValueAndValidity();
+    // });
 
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
@@ -212,7 +215,7 @@ export class NewEmployeeComponent implements OnInit {
     reportingLine: new FormControl<EmployeeProfile | null>(null),
     highestQualication: new FormControl<string>(''),
     disability: new FormControl<boolean | null>(false, [Validators.required]),
-    disabilityType: new FormControl<number>(-1),
+    disabilityType: new FormControl<string>(''),
     disabilityNotes: new FormControl<string>(''),
     countryOfBirth: new FormControl<string>(''),
     nationality: new FormControl<string>(''),
@@ -546,15 +549,14 @@ export class NewEmployeeComponent implements OnInit {
   saveEmployee(): void {
     if (this.newEmployeeForm.invalid) {
       this.newEmployeeForm.markAllAsTouched();
-
-      if (this.newEmployeeForm.controls['disabilityNotes'].value == null) {
-        this.snackBarService.showSnackbar('Disability Notes Mandatory for \'Yes\'', "snack-error");
-      } else {
-        this.snackBarService.showSnackbar('Some Fields Are Still Missing Information', "snack-error");
-      }
-      return;
     }
     this.isLoadingAddEmployee = true;
+    if(this.typeOther == false){
+      this.newEmployeeForm.value.disabilityNotes = this.newEmployeeForm.value.disabilityType;
+    }
+    else{
+      this.newEmployeeForm.value.disabilityNotes = this.newEmployeeForm.value.disabilityNotes;
+    }
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
         this.isSavedEmployee = true;
@@ -732,5 +734,19 @@ export class NewEmployeeComponent implements OnInit {
       this.employeeDocumentModels = this.employeeDocumentModels.filter(file => file.fileCategory !== catNum);
       this.categories[catNum].state = true;
     });
+  }
+
+  setHasDisability(event: any) {
+    this.hasDisability = event.value;
+  }
+
+  setTypeOther(event: any) {
+    console.log(event)
+    if(event.source.value == 'Other'){
+      this.typeOther = true;
+    }
+    else{
+      this.typeOther = false;
+    }
   }
 }
