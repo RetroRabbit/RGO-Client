@@ -125,25 +125,25 @@ export class NewEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.loadCountries();
 
-    // this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
-    //   const disabilityNotesControl = this.newEmployeeForm.get('disabilityNotes');
-    //   if (value === true) {
-    //     disabilityNotesControl?.setValidators([Validators.required]);
-    //   } else {
-    //     disabilityNotesControl?.clearValidators();
-    //   }
-    //   disabilityNotesControl?.updateValueAndValidity();
-    // });
+    this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
+      const disabilityNotesControl = this.newEmployeeForm.get('disabilityType');
+      if (value === true) {
+        disabilityNotesControl?.setValidators([Validators.required]);
+      } else {
+        disabilityNotesControl?.clearValidators();
+      }
+      disabilityNotesControl?.updateValueAndValidity();
+    });
 
-    // this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
-    //   const disabilityNotesControl = this.newEmployeeForm.get('disabilityType');
-    //   if (value === true) {
-    //     disabilityNotesControl?.setValidators([Validators.required]);
-    //   } else {
-    //     disabilityNotesControl?.clearValidators();
-    //   }
-    //   disabilityNotesControl?.updateValueAndValidity();
-    // });
+    this.newEmployeeForm.get('disabilityTpe')?.valueChanges.subscribe(value => {
+      const disabilityNotesControl = this.newEmployeeForm.get('disabilityNotes');
+      if (value == 'Other') {
+        disabilityNotesControl?.setValidators([Validators.required]);
+      } else {
+        disabilityNotesControl?.clearValidators();
+      }
+      disabilityNotesControl?.updateValueAndValidity();
+    });
 
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {

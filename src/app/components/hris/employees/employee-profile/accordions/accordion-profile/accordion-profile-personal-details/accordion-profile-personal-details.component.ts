@@ -34,6 +34,26 @@ export class AccordionProfilePersonalDetailsComponent {
     this.initializeForm();
     this.loadCountries();
     this.checkDisabilityType();
+
+    this.sharedAccordionFunctionality.personalDetailsForm.get('disability')?.valueChanges.subscribe(value => {
+      const disabilityNotesControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');
+      if (value === true) {
+        disabilityNotesControl?.setValidators([Validators.required]);
+      } else {
+        disabilityNotesControl?.clearValidators();
+      }
+      disabilityNotesControl?.updateValueAndValidity();
+    });
+
+    this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType')?.valueChanges.subscribe(value => {
+      const disabilityNotesControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityNotes');
+      if (value == 'Other') {
+        disabilityNotesControl?.setValidators([Validators.required]);
+      } else {
+        disabilityNotesControl?.clearValidators();
+      }
+      disabilityNotesControl?.updateValueAndValidity();
+    });
   }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
