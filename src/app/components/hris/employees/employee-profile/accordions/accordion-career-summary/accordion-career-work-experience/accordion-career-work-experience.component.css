@@ -71,3 +71,7 @@ mat-icon{
 #remove-document-button , .remove-document-button{
     color: red;
 }
+
+#project-description-width{
+    width:880px;
+}
