@@ -175,6 +175,7 @@ export class AdminDashboardComponent {
       next: (data: number) => {
         console.log("total emp"+ data)
         this.totalNumberOfEmployees = data;
+       
       },
       complete: () => {
         this.isLoading = false;
@@ -184,7 +185,7 @@ export class AdminDashboardComponent {
 
     this.dashboardService.getEmployeeCountData().subscribe({
       next: (data: EmployeeCountDataCard) => {
-        console.log("emp  count "+ data)
+        console.log(data)
         this.employeeCount = data;
       },
       complete: () => {
