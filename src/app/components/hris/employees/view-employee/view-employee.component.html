@@ -11,7 +11,7 @@
             <input mat-Input [(ngModel)]="searchQuery" [ngClass]="searchQuery === '' ? 'no-text ms-5' : 'ms-0' "
               class="bg-transparent" id="search-input" placeholder="Search" autocomplete="off" />
             <button mat-button id="search-button">
-              <mat-icon>search</mat-icon>
+              <mat-icon>Search</mat-icon>
             </button>
           </div>
         </div>
@@ -31,7 +31,7 @@
           <div (click)="$event.stopPropagation()" class="row col-12 px-0">
             <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
               [ngClass]="{ 'roles-input-mobile': screenWidth <= 1200 }">
-              <mat-label>People Champion Filter</mat-label>
+              <mat-label>People Champion</mat-label>
               <mat-select [disabled]="!getActiveEmployees" hideSingleSelectionIndicator="true" [(value)]="selectedChampion!.id">
                 <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
                   class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
@@ -46,7 +46,7 @@
           <div (click)="$event.stopPropagation()" class="row col-12 px-0">
             <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
               [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-              <mat-label>User Type Filter</mat-label>
+              <mat-label>Role</mat-label>
               <mat-select hideSingleSelectionIndicator="true">
                 <mat-option *ngFor="let userType of usertypes | async" [value]="userType.id" class="menu-item-button"
                   (click)="changeUserTypeFilter(userType)">
