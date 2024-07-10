@@ -111,7 +111,6 @@ export class CvDocumentComponent {
   getQualifications() {
     this.employeeQaulificationService.getEmployeeQualificationById(this.employeeId).subscribe({
       next: data => {
-        console.log(data)
         this.school = data.school;
         this.education = data.fieldOfStudy;
         this.nqf = data.highestQualification;

@@ -87,6 +87,12 @@ export class ViewEmployeeComponent {
       this.roles = data.filter((role) => !role.includes('SuperAdmin'));
     });
 
+    this.peopleChampions.subscribe({
+      next: data => {
+        this.selectedChampion = data.find(x => x.id == 0)
+      }
+    })
+    
     this.onResize();
 
     if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
@@ -97,6 +103,13 @@ export class ViewEmployeeComponent {
       this.displayedColumns = ['Name', 'Position', 'Level', 'Client', 'Roles'];
     }
 
+    if(this.isJourney){
+      this.peopleChampions.subscribe({
+        next: data => {
+          this.selectedChampion = data.find(x => x.id == this.authAccessService.getUserId())
+        }
+      })
+    }
     this.peopleChampions.subscribe({
       next: data =>
         this.selectedChampion = this.isJourney
