@@ -214,6 +214,9 @@ export class AccordionBankingComponent {
     this.hasUpdatedBanking = true;
     this.editBanking = false;
     this.employeeBankingsForm.disable();
+    if(message = "Saved"){ 
+      this.employeeBankingStarterkitService.incrementPendingCount();
+    }
   }
 
   totalBankingProgress() {
