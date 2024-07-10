@@ -31,12 +31,13 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   fileCategories = [];
   unarchivedCustomDocuments: CustomField[] = [];
+  customFields: CustomField[] = [];
   roles: string[] = [];
   isLoadingUpload: boolean = false;
   uploadButtonIndex: number = 0;
   documentFormProgress: number = 0;
   documentId: number = 0;
-  fieldCodeStatus: number = -1;
+  fieldCodeStatus: any = -1;
   customDocumentsCategory: number = 3;
   selectedFile !: File;
   documentsFileName: string = "";
@@ -47,8 +48,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
   employeeId = this.route.snapshot.params['id'];
   dataSource = new MatTableDataSource<FileCategory>(this.fileCategories);
   infinity = Infinity;
-
   selectedFieldCode: string = '';
+
   constructor(
     private customFieldService: CustomFieldService,
     private route: ActivatedRoute,
@@ -136,7 +137,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
       }
       else {
         this.unarchivedCustomDocuments.push(field);
-        this.unarchivedCustomDocuments = this.unarchivedCustomDocuments.filter((field: any) => field.category == this.sharedAccordionFunctionality.category[3].id)
+        this.customFields = this.unarchivedCustomDocuments.filter((field: any) => field.category == this.sharedAccordionFunctionality.category[3].id)
       }
       index++;
     })
