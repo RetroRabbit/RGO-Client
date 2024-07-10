@@ -24,7 +24,7 @@
             <div class="col-12 col-md-9 col-lg-10">
               <div class="row">
                 <div class="col-12 row">
-                  <div class="col-12 col-md-6 my-2" *ngFor="let fieldcode of customFields">
+                  <div class="col-12 col-md-6 my-2" *ngFor="let fieldcode of unarchivedCustomDocuments">
                     <mat-form-field appearance="outline" style="width: 100%;">
                       <mat-label>{{fieldcode.name}}</mat-label>
                       <div *ngIf="fieldcode.type == sharedAccordionFunctionality.fieldTypes[4].id">

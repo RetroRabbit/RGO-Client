@@ -36,7 +36,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   uploadButtonIndex: number = 0;
   documentFormProgress: number = 0;
   documentId: number = 0;
-  fieldCodeStatus: any = -1;
+  fieldCodeStatus: number = -1;
   customDocumentsCategory: number = 3;
   selectedFile !: File;
   documentsFileName: string = "";
