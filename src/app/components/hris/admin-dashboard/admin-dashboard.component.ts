@@ -193,7 +193,6 @@ export class AdminDashboardComponent {
 
     this.dashboardService.getChurnRate().subscribe({
       next: (data: ChurnRateDataCard) => {
-        console.log(data)
         this.churnRate = data;
       },
       complete: () => {
