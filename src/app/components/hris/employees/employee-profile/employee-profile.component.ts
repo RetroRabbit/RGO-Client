@@ -297,7 +297,7 @@ export class EmployeeProfileComponent implements OnChanges {
   get basedInString(): string {
     let basedIn = '';
     if (this.employeeProfile.physicalAddress !== undefined && this.employeeProfile.physicalAddress.suburbOrDistrict && this.employeeProfile.physicalAddress.suburbOrDistrict.length > 2) {
-      basedIn = `Based in ${this.employeeProfile.physicalAddress.suburbOrDistrict}`;
+      basedIn = `Based in ${this.employeeProfile.physicalAddress.city}`;
     }
     return basedIn;
   }
