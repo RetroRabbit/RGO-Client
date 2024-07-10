@@ -182,14 +182,7 @@ export class AccordionBankingComponent {
       if (this.hasBankingData) {
         this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
           next: () => {
-            this.snackBarService.showSnackbar("Updated", "snack-success");
-            this.getEmployeeBankingData();
-            this.checkBankingInformationProgress();
-            this.totalBankingProgress();
-            this.employeeBankingStarterkitService.getAllBankingAndStarterkits();
-            this.hasUpdatedBanking = true;
-            this.editBanking = false;
-            this.employeeBankingsForm.disable();
+            this.addOrUpdateBanking("Updated")
           },
           error: (error) => {
             this.snackBarService.showSnackbar("Unable to Save Banking Information", "snack-error");
@@ -199,14 +192,7 @@ export class AccordionBankingComponent {
       else {
         this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
           next: () => {
-            this.snackBarService.showSnackbar("Saved", "snack-success");
-            this.getEmployeeBankingData();
-            this.checkBankingInformationProgress();
-            this.totalBankingProgress();
-            this.employeeBankingStarterkitService.incrementPendingCount();
-            this.hasUpdatedBanking = true;
-            this.editBanking = false;
-            this.employeeBankingsForm.disable();
+            this.addOrUpdateBanking("Saved")
           }
           , error: (error) => {
             this.snackBarService.showSnackbar("Unable to Save Banking Information", "snack-error");
@@ -217,6 +203,17 @@ export class AccordionBankingComponent {
     else{
       this.snackBarService.showSnackbar("Add a Proof of account", "snack-error")
     }
+  }
+
+  addOrUpdateBanking(message: string) {
+    this.snackBarService.showSnackbar(message, "snack-success");
+    this.getEmployeeBankingData();
+    this.checkBankingInformationProgress();
+    this.totalBankingProgress();
+    this.employeeBankingStarterkitService.getAllBankingAndStarterkits();
+    this.hasUpdatedBanking = true;
+    this.editBanking = false;
+    this.employeeBankingsForm.disable();
   }
 
   totalBankingProgress() {
