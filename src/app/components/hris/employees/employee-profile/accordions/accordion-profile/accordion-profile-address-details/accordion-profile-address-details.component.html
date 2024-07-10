@@ -39,19 +39,19 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.suburbOrDistrict"
+                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.city"
                   class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Suburb/District</mat-label>
-                    <mat-select formControlName="physicalSuburb" hideSingleSelectionIndicator="true">
+                    <mat-label>City/Town</mat-label>
+                    <mat-select formControlName="physicalCity" hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.city" class="col-12 col-md-6">
+                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.suburbOrDistrict" class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>City/Town</mat-label>
-                    <input matInput formControlName="physicalCity">
+                    <mat-label>Suburb/District</mat-label>
+                    <input matInput formControlName="physicalSuburb">
                   </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.unitNumber" class="col-12 col-md-6">
@@ -143,19 +143,19 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.suburbOrDistrict"
+                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.city"
                   class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Suburb/District</mat-label>
-                    <mat-select formControlName="postalSuburb" hideSingleSelectionIndicator="true">
+                    <mat-label>City/Town</mat-label>
+                    <mat-select formControlName="postalCity" hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let city of postalCities" [value]="city">{{ city }}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.city" class="col-12 col-md-6">
+                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.suburbOrDistrict" class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>City/Town</mat-label>
-                    <input matInput formControlName="postalCity">
+                    <mat-label>Suburb/District</mat-label>
+                    <input matInput formControlName="postalSuburb">
                   </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.unitNumber" class="col-12 col-md-6">
