@@ -1,10 +1,22 @@
 export const banks = [
-    {id:0, value: "Absa"},
-    {id:1, value: "Capitec"},
-    {id:2, value: "First National Bank"},
-    {id:3, value: "Nedbank"},
-    {id:4, value: "Standard Bank"},
-    {id:5, value: "Tymebank"},
-    {id:6, value: "Discovery Bank"},
-    {id:7, value: "African Bank"}
-  ]
+  { id: 0, value: "Absa Group Limited" },
+  { id: 1, value: "Capitec Bank Limited" },
+  { id: 2, value: "First National Bank" },
+  { id: 3, value: "Nedbank" },
+  { id: 4, value: "Standard Bank" },
+  { id: 5, value: "TymeBank" },
+  { id: 6, value: "Discovery Bank" },
+  { id: 7, value: "African Bank Limited" },
+  { id: 8, value: "Bidvest Bank Limited" },
+  { id: 9, value: "Discovery Limited" },
+  { id: 10, value: "FirstRand Bank" },
+  { id: 11, value: "RMB" },
+  { id: 12, value: "Investec Bank Limited" },
+  { id: 13, value: "Imperial Bank" },
+  { id: 14, value: "Grindrod Bank Limited" },
+  { id: 15, value: "Mercantile Bank Limited" },
+  { id: 16, value: "Bank Zero" },
+  { id: 17, value: "Ithala Bank" },
+  { id: 18, value: "Sasfin Bank Limited" },
+  { id: 19, value: "Ubank Limited" }
+]
