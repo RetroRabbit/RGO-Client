@@ -741,7 +741,6 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   setTypeOther(event: any) {
-    console.log(event)
     if(event.source.value == 'Other'){
       this.typeOther = true;
     }
