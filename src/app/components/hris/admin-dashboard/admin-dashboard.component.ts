@@ -178,7 +178,6 @@ export class AdminDashboardComponent {
       complete: () => {
         this.isLoading = false;
       }
-      
     });
 
     this.dashboardService.getEmployeeCountData().subscribe({
