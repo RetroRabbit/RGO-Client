@@ -90,8 +90,8 @@ export class AccordionProfileAddressDetailsComponent {
       postalComplexName: [this.employeeProfile!.employeeDetails.postalAddress?.complexName?.trim()],
       postalStreetNumber: [this.employeeProfile!.employeeDetails.postalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       postalStreetName: [this.employeeProfile!.employeeDetails.postalAddress?.streetName?.trim(), Validators.required],
-      postalSuburb: [this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict?.trim()],
       postalCity: [this.employeeProfile!.employeeDetails.postalAddress?.city?.trim(), Validators.required],
+      postalSuburb: [this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict?.trim()],
       postalCountry: [this.employeeProfile!.employeeDetails.postalAddress?.country?.trim(), Validators.required],
       postalProvince: [this.employeeProfile!.employeeDetails.postalAddress?.province?.trim(), Validators.required],
       postalPostalCode: [this.employeeProfile!.employeeDetails.postalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]]
