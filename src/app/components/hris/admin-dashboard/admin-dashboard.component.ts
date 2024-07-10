@@ -174,7 +174,6 @@ export class AdminDashboardComponent {
     this.employeeService.getTotalEmployees().subscribe({
       next: (data: number) => {
         this.totalNumberOfEmployees = data;
-       
       },
       complete: () => {
         this.isLoading = false;
