@@ -233,7 +233,6 @@ export class AccordionProfileAddressDetailsComponent {
             if (!this.selectedCountry.trim()) {
                 return;
             }
-
             this.locationApiService.getProvinces(this.selectedCountry).subscribe({
                 next: (data) => {
                     if (!data || data.length === 0) {
