@@ -114,7 +114,7 @@
           </ng-template>
       </div>
   </div>
-  <div class="container-missing-info" id="doc-page" *ngIf="employeeWorkExp.length <= 0 && employeeCertificate.length <= 0 && filteredSkills.length <= 0">
+  <div class="container-missing-info" id="doc-page" *ngIf="employeeWorkExp.length <= 0 || employeeCertificate.length <= 0 || filteredSkills.length <= 0">
     <div
     class="d-flex justify-content-center align-items-center" id="main-content">
     <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
