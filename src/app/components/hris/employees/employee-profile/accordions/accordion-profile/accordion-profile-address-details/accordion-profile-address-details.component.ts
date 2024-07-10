@@ -240,7 +240,6 @@ export class AccordionProfileAddressDetailsComponent {
                     }
                     this.provinces = data;
                     this.selectedProvince = this.employeeProfile?.employeeDetails.physicalAddress?.province || '';
-
                     if (this.selectedProvince) {
                         this.locationApiService.getCities(this.selectedCountry, this.selectedProvince).subscribe({
                             next: (data) => {
@@ -277,7 +276,6 @@ export class AccordionProfileAddressDetailsComponent {
             if (!this.selectedPostalCountry.trim()) {
                 return;
             }
-
             this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
                 next: (data) => {
                     if (!data || data.length === 0) {
@@ -285,7 +283,6 @@ export class AccordionProfileAddressDetailsComponent {
                     }
                     this.postalProvinces = data;
                     this.selectedPostalProvince = this.employeeProfile?.employeeDetails.postalAddress?.province || '';
-
                     if (this.selectedPostalProvince) {
                         this.locationApiService.getCities(this.selectedPostalCountry, this.selectedPostalProvince).subscribe({
                             next: (data) => {
