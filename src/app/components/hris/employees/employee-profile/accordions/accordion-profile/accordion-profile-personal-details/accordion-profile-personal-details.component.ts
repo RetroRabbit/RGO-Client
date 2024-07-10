@@ -157,7 +157,6 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   setTypeOther(event: any) {
-    console.log(event)
     if(event.source.value == 'Other'){
       this.sharedAccordionFunctionality.typeOther = true;
     }
