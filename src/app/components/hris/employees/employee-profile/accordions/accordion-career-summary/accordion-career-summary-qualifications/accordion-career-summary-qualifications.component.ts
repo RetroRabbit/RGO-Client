@@ -48,8 +48,6 @@ export class CareerSummaryQualificationsComponent {
   proofOfQualificationFinal: string = '';
 
   ngOnInit() {
-    console.log(this.employeeProfile);
-
     this.fetchQualificationsById();
   }
 
