@@ -346,8 +346,8 @@ export class ViewEmployeeComponent {
       .filterEmployees(this.currentChampionFilter.id || 0, this.currentUserTypeFilter.id || 0, this.getActiveEmployees)
       .pipe(
         switchMap((employees: EmployeeFilterView[]) => this.combineEmployeesWithRolesAndClients(employees)),
-        catchError((error) => {
-          this.snackBarService.showSnackbar('Unable to Retrieve Employees', 'snack-error');
+        catchError((er) => {
+          this.snackBarService.showError(er);
           return of([]);
         }),
         first()

@@ -182,19 +182,15 @@ export class AccordionBankingComponent {
           next: () => {
             this.addOrUpdateBanking("Updated")
           },
-          error: (error) => {
-            this.snackBarService.showSnackbar("Unable to Save Banking Information", "snack-error");
-          }
+          error: (er) => this.snackBarService.showError(er)
         })
       }
       else {
         this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
           next: () => {
             this.addOrUpdateBanking("Saved")
-          }
-          , error: (error) => {
-            this.snackBarService.showSnackbar("Unable to Save Banking Information", "snack-error");
-          }
+          }, 
+          error: (er) => this.snackBarService.showError(er)
         })
       }
     }
