@@ -197,7 +197,7 @@ export class NewEmployeeComponent implements OnInit {
       complexName: new FormControl<string | null>('', Validators.minLength(1)),
       suburbDistrict: new FormControl<string | null>('', Validators.minLength(1)),
       city: new FormControl<string | null>('', Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(1), Validators.pattern(/(^\d+$)|(^$)/)]),
+      streetNumber: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(1)]),
       streetName: new FormControl<string | null>('', Validators.minLength(1)),
       country: new FormControl<string | null>('', Validators.minLength(1)),
       province: new FormControl<string | null>('', Validators.minLength(1)),
