@@ -556,7 +556,7 @@
             <button
               [disabled]="!isSavedEmployee || categories[0].state == true && categories[1].state == true && categories[2].state == true && categories[3].state == true"
               id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
-              (click)="saveAndAddAnother()">Save
+              (click)="saveAndAddAnother()" type="button">Save
               and add another</button>
             <button
               [disabled]="!isSavedEmployee || categories[0].state == true && categories[1].state == true && categories[2].state == true && categories[3].state == true"

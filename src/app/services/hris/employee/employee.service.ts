@@ -34,7 +34,6 @@ export class EmployeeService {
   getAll(): Observable<Employee[]> {
     return this.httpClient.get<Employee[]>(`${this.baseUrl}/all`);
   }
-
   /**
  * @summary  Gets all the Full Employee DTO and information
  *
@@ -79,6 +78,13 @@ export class EmployeeService {
  */
   getTotalEmployees(): Observable<number> {
     return this.httpClient.get<number>(`${this.baseUrl}/count`);
+  }
+ /**
+ * @summary  get growthrate calculation answer from backend
+ *
+ */
+  getGrowthrate(): Observable<number> {
+    return this.httpClient.get<number>(`${this.baseUrl}/growth-rate`);
   }
   /**
  * @summary Gets churnrate info

@@ -11,7 +11,7 @@
             <input mat-Input [(ngModel)]="searchQuery" [ngClass]="searchQuery === '' ? 'no-text ms-5' : 'ms-0' "
               class="bg-transparent" id="search-input" placeholder="Search" autocomplete="off" />
             <button mat-button id="search-button">
-              <mat-icon>Search</mat-icon>
+              <mat-icon>search</mat-icon>
             </button>
           </div>
         </div>
@@ -99,14 +99,14 @@
             </ng-container>
             <ng-container matColumnDef="Level">
               <mat-header-cell *matHeaderCellDef mat-sort-header
-                class="boldArrow d-none d-md-flex me-4">Level</mat-header-cell>
+                class="boldArrow d-none d-md-flex">Level</mat-header-cell>
               <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
                 {{ employee.Level == 0 ? "N/A" : employee.Level }}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Client">
               <mat-header-cell *matHeaderCellDef mat-sort-header
-                class="boldArrow d-none d-md-flex me-4">Client</mat-header-cell>
+                class="boldArrow d-none d-md-flex ">Client</mat-header-cell>
               <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
                 {{ employee.Client }}
               </mat-cell>

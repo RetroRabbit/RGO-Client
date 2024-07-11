@@ -20,6 +20,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/id-validator.service';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
+import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
 
 @Component({
@@ -67,6 +68,7 @@ export class NewEmployeeComponent implements OnInit {
   public filename = "";
   imageName: string = "";
   @ViewChild('stepper') private myStepper!: MatStepper;
+  @ViewChild('inputField') inputField!: NgxMatIntlTelInputComponent;
 
   employeeTypes: EmployeeType[] = [];
   employeeDocumentModels: EmployeeDocument[] = [];
@@ -326,7 +328,7 @@ export class NewEmployeeComponent implements OnInit {
                 this.categories[category].state = false;
                 this.categories[category].name = file.name;
               },
-              error: (error: any) => {
+              error: () => {
                 this.snackBarService.showSnackbar("Unable to Compile Documents", "snack-error");
               }
             });
@@ -343,8 +345,6 @@ export class NewEmployeeComponent implements OnInit {
       const control = formGroup.get(controlName);
       if (control instanceof FormControl) {
         control.clearValidators();
-        control.updateValueAndValidity();
-        control.reset();
       } else if (control instanceof FormGroup) {
         this.clearFormErrorsAndValues(control);
       }
@@ -360,8 +360,8 @@ export class NewEmployeeComponent implements OnInit {
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
     this.removeAllDocuments();
   }
-
   saveAndAddAnother() {
+    this.newEmployeeForm.reset();
     this.isSavedEmployee = false;
     this.clearFormErrorsAndValues(this.newEmployeeForm);
     this.clearFormErrorsAndValues(this.uploadDocumentForm);
@@ -371,8 +371,12 @@ export class NewEmployeeComponent implements OnInit {
     this.removeAllDocuments();
     this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
     this.newEmployeeForm.controls['disability'].setValue(false);
+    this.newEmployeeForm.controls['cellphoneNo'].reset();
     this.myStepper.reset();
+    this.newEmployeeForm.get('cellphoneNo')?.reset();
+    this.newEmployeeForm.markAsUntouched()
   }
+  
 
   onUploadDocument(nextPage: string): void {
     this.isLoadingAddEmployee = true;
@@ -566,6 +570,7 @@ export class NewEmployeeComponent implements OnInit {
         }
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
+        this.newEmployeeForm.reset();
       },
       error: (error: any, stepper?: MatStepper) => {
         let message = '';

@@ -41,7 +41,7 @@
                                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.email"
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Work email</mat-label>
+                                        <mat-label>Work Email</mat-label>
                                         <input matInput formControlName="email">
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['email'].hasError('required')">
@@ -81,7 +81,7 @@
                                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.houseNo"
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container">
-                                        <mat-label class="house-number-label">Home Number</mat-label>
+                                        <mat-label class="house-number-label">Alternative Number</mat-label>
                                         <ngx-mat-intl-tel-input 
                                             #houseField 
                                             matInput 
@@ -106,7 +106,7 @@
                                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.emergencyContactName"
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Emergency contact name</mat-label>
+                                        <mat-label>Emergency Contact Name</mat-label>
                                         <input matInput formControlName="emergencyContactName">
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactName'].hasError('required')">
@@ -119,7 +119,7 @@
                                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.emergencyContactNo"
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container">
-                                        <mat-label class="emergency-number-label">Emergency contact number</mat-label>
+                                        <mat-label class="emergency-number-label">Emergency Contact Number</mat-label>
                                         <ngx-mat-intl-tel-input 
                                             #emergencyField 
                                             matInput

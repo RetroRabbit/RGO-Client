@@ -224,73 +224,90 @@ export class AccordionProfileAddressDetailsComponent {
 
   loadPhysicalAddress() {
     this.locationApiService.getCountries().subscribe({
-      next: (data) => {
-        this.countries = data
-      },
-      error: (error: any) => {
-        this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error")
-      },
-      complete: () => {
-        this.selectedCountry = this.employeeProfile!.employeeDetails.physicalAddress?.country!
-        if(this.selectedCountry == " ")
-          {
-            return;
-          }
-        this.locationApiService.getProvinces(this.selectedCountry).subscribe({
-          next: (data) => this.provinces = data,
-          error: (error: any) => {
-            this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error")
-           },
-          complete: () => {
-            this.selectedProvince = this.employeeProfile!.employeeDetails.physicalAddress?.province!
+        next: (data) => {
+            if (!data || data.length === 0) {
+                return;
+            }
+            this.countries = data;
+            this.selectedCountry = this.employeeProfile?.employeeDetails.physicalAddress?.country || '';
+            if (!this.selectedCountry.trim()) {
+                return;
+            }
             this.locationApiService.getProvinces(this.selectedCountry).subscribe({
-              next: (data) => this.provinces = data,
-              complete: () => {
-                this.locationApiService.getCities(this.selectedCountry, this.selectedProvince).subscribe({
-                  next: (data) => this.cities = data,
-                });
-              }
+                next: (data) => {
+                    if (!data || data.length === 0) {
+                        return;
+                    }
+                    this.provinces = data;
+                    this.selectedProvince = this.employeeProfile?.employeeDetails.physicalAddress?.province || '';
+                    if (this.selectedProvince) {
+                        this.locationApiService.getCities(this.selectedCountry, this.selectedProvince).subscribe({
+                            next: (data) => {
+                                if (!data || data.length === 0) {
+                                    return;
+                                }
+                                this.cities = data;
+                            },
+                            error: (error: any) => {
+                                this.snackBarService.showSnackbar('Unable to Load Cities', "snack-error");
+                            }
+                        });
+                    }
+                },
+                error: (error: any) => {
+                    this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error");
+                }
             });
-          }
-        })
-      }
-    })
+        },
+        error: (error: any) => {
+            this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error");
+        }
+    });
   }
 
   loadPostalAddress() {
     this.locationApiService.getCountries().subscribe({
-      next: (data) => {
-        this.postalCountries = data
-      },
-      error: (error: any) => {
-        this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error")
-      },
-      complete: () => {
-        this.selectedPostalCountry = this.employeeProfile!.employeeDetails.postalAddress?.country!
-        if(this.selectedPostalCountry == " ")
-          {
-            return;
-          }
-        this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
-          next: (data) => this.postalProvinces = data,
-          error: (error: any) => {
-            this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error")
-           },
-          complete: () => {
-            this.selectedPostalProvince = this.employeeProfile!.employeeDetails.postalAddress?.province!
+        next: (data) => {
+            if (!data || data.length === 0) {
+                return;
+            }
+            this.postalCountries = data;
+            this.selectedPostalCountry = this.employeeProfile?.employeeDetails.postalAddress?.country || '';
+            if (!this.selectedPostalCountry.trim()) {
+                return;
+            }
             this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
-              next: (data) => this.postalProvinces = data,
-              complete: () => {
-                this.locationApiService.getCities(this.selectedPostalCountry, this.selectedPostalProvince).subscribe({
-                  next: (data) => this.postalCities = data,
-                });
-              }
+                next: (data) => {
+                    if (!data || data.length === 0) {
+                        return;
+                    }
+                    this.postalProvinces = data;
+                    this.selectedPostalProvince = this.employeeProfile?.employeeDetails.postalAddress?.province || '';
+                    if (this.selectedPostalProvince) {
+                        this.locationApiService.getCities(this.selectedPostalCountry, this.selectedPostalProvince).subscribe({
+                            next: (data) => {
+                                if (!data || data.length === 0) {
+                                    return;
+                                }
+                                this.postalCities = data;
+                            },
+                            error: (error: any) => {
+                                this.snackBarService.showSnackbar('Unable to Load Cities', "snack-error");
+                            }
+                        });
+                    }
+                },
+                error: (error: any) => {
+                    this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error");
+                }
             });
-          }
-        })
-      }
-    })
+        },
+        error: (error: any) => {
+            this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error");
+        }
+    });
   }
+
 
   getEmployeeData() {
     if (this.employeeId != undefined) {

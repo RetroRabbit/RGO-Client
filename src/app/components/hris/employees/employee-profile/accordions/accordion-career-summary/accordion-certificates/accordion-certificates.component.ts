@@ -295,4 +295,11 @@ export class AccordionCertificatesComponent {
     });
     reader.readAsDataURL(file);
   }
+
+  currentDate: Date = new Date();
+
+  disableFutureDates = (selectedDate: Date | null): boolean => {
+    const date = (selectedDate || new Date());
+    return date <= this.currentDate;
+  }
 }
