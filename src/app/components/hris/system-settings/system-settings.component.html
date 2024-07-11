@@ -1,7 +1,7 @@
 <main class="row mx-0 my-4">
   <div class="col-3 mt-4" id="side-menu" *ngIf="navService.showSystemNavbar && screenWidth > 767">
     <h1>System Settings</h1>
-    <h5>Manage system settings</h5>
+    <h5>Manage System Settings</h5>
     <div id="button-container">
       <div id="icon-text-container" (click)="displayCustomFieldsManagement()"
         [ngClass]="systemNavItemService.selectedMenuItem =='Custom Field management' ? 'active' : ''">

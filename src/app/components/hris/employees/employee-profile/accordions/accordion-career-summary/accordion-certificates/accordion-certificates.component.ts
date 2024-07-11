@@ -73,9 +73,7 @@ export class AccordionCertificatesComponent {
         this.sharedAccordionFunctionality.employeeCertificates = data;
         this.sharedAccordionFunctionality.employeeCertificatesFields = this.sharedAccordionFunctionality.employeeCertificatesFields * this.sharedAccordionFunctionality.employeeCertificates.length;
       },
-      error: (error) => {
-        this.snackBarService.showSnackbar("Unable to Fetch Certificates", "snack-error");
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -129,9 +127,9 @@ export class AccordionCertificatesComponent {
             this.getEmployeeCertificate();
           }
         },
-        error: (error) => {
+        error: (er) => {
           errorOccurred = true;
-          this.snackBarService.showSnackbar("Unable to Update All Fields", "snack-error");
+          this.snackBarService.showError(er);
           this.addingCertificate = false;
           this.editCertificate = false;
         }
@@ -152,9 +150,7 @@ export class AccordionCertificatesComponent {
         this.hasUpdatedCertificateData = true;
         this.getEmployeeCertificate();
       },
-      error: () => {
-        this.snackBarService.showSnackbar("Unable to Update All Fields", "snack-error");
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -235,9 +231,7 @@ export class AccordionCertificatesComponent {
         this.sharedAccordionFunctionality.employeeCertificatesFields = this.sharedAccordionFunctionality.employeeCertificatesFields - 4;
         this.editCertificate = false;
       },
-      error: (error) => {
-        this.snackBarService.showSnackbar("Unable to Delete Certificate", "snack-error");
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 

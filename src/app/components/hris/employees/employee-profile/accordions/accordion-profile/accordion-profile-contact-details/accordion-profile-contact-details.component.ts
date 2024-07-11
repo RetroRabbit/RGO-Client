@@ -157,7 +157,7 @@ export class AccordionProfileContactDetailsComponent {
           this.sharedAccordionFunctionality.employeeContactForm.disable();
           this.sharedAccordionFunctionality.editContact = false;
         },
-        error: (error) => { this.snackBarService.showSnackbar("Unable to Save Contact Information", "snack-error") },
+        error: (er) => this.snackBarService.showError(er),
       });
     }
     else {
