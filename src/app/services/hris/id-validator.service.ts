@@ -8,7 +8,7 @@ import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
 
 export class CustomvalidationService {
 
- static ValidateIdNumber(idNumber: any) {
+    static ValidateIdNumber(idNumber: any) {
         var tempTotal;
         var checkSum = 0;
         var multiplier = 1;
@@ -29,7 +29,11 @@ export class CustomvalidationService {
     }
 
     idNumberValidator(control: AbstractControl): ValidationErrors | null {
-        const isValid = CustomvalidationService.ValidateIdNumber(control.value);
+        const value = control.value;
+        if (value == null || value === '') {
+            return null;
+        }
+        const isValid = CustomvalidationService.ValidateIdNumber(value);
         return isValid ? null : { invalidIdNumber: true };
     }
 }
