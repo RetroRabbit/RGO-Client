@@ -432,84 +432,32 @@ export class SharedAccordionFunctionality {
   }
 
   calculateCareerAdditionalFormProgress() {
-    let filledCount = 0;
+    let numberOfPopulatedFields = 0;
+    let numberOfRequiredFields = 0;
+
     const formControls = this.additionalCareerInfoForm.controls;
-    let totalFields = Object.keys(this.additionalCareerInfoForm.controls).length;
+
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (control.value != null && control.value != "") {
-          filledCount++;
+        let isRequired = false;
+        if (control.validator) {
+          const validator = control.validator({} as AbstractControl);
+          isRequired = validator && validator['required'] ? true : false;
+        }
+        if (isRequired) {
+          numberOfRequiredFields++;
+          if (control.value != null && control.value !== '') {
+            numberOfPopulatedFields++;
+          }
         }
       }
     }
-    this.additionalCareerFormProgress = Math.round((filledCount / totalFields) * 100);
-    if (Number.isNaN(this.additionalCareerFormProgress)) {
-      this.additionalCareerFormProgress = 0;
+    if (numberOfRequiredFields === 0) {
+      this.additionalCareerFormProgress = 100;
+    } else {
+      this.additionalCareerFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
     }
-  }
-
-  calculateCareerWorkExperienceFormProgress() {
-    let targetWorkExp: any = [];
-    let newTargetWorkExp: any = [];
-    this.filteredFilledWorkExp.length = 0;
-    this.workExperienceFormFields = 7 * this.workExperience.length;
-
-    if (this.workExperience.length === 0) {
-      this.workExperienceFormFields = 0;
-      this.filteredFilledWorkExp.length = 0;
-    }
-    else {
-      for (const element of this.workExperience) {
-        targetWorkExp.push(element);
-      }
-      targetWorkExp.filter((element: any) => {
-        const { employeeId, id, ...samplearray } = element;
-        newTargetWorkExp.push(samplearray);
-      });
-
-      newTargetWorkExp.filter((obj: any) => Object.values(obj).some((value: any) => {
-        if (value.length !== 0) {
-          this.filteredFilledWorkExp.push(value)
-        }
-      }
-      ));
-    }
-
-    const FilledCount = this.filteredFilledWorkExp.length;
-    this.workExpFormProgress = this.workExperienceFormFields == 0 ? 100 : Math.round((FilledCount / this.workExperienceFormFields) * 100);
-  }
-
-  calculateCareerCertificatesFormProgress() {
-    let targetCertificates: any = [];
-    let newTargetCertificates: any = [];
-    this.filteredFilledCertificate.length = 0;
-    this.employeeCertificatesFields = 4 * this.employeeCertificates.length;
-
-    if (this.employeeCertificates.length === 0) {
-      this.employeeCertificatesFields = 0;
-      this.filteredFilledCertificate.length = 0;
-    }
-    else {
-      for (const element of this.employeeCertificates) {
-        targetCertificates.push(element);
-      }
-
-      targetCertificates.filter((element: any) => {
-        const { employeeId, id, certificateDocument, ...samplearray } = element;
-        newTargetCertificates.push(samplearray);
-      });
-
-      newTargetCertificates.filter((obj: any) => Object.values(obj).some((value: any) => {
-        if (value.length !== 0) {
-          this.filteredFilledCertificate.push(value)
-        }
-      }
-      ));
-    }
-
-    const FilledCount = this.filteredFilledCertificate.length;
-    this.certificateFormProgress = this.employeeCertificatesFields == 0 ? 100 : Math.round((FilledCount / this.employeeCertificatesFields) * 100);
   }
 
   calculateSalaryDetails() {
@@ -534,10 +482,10 @@ export class SharedAccordionFunctionality {
 
   totalCareerProgress() {
     if (this.additionalCareerFormProgress == Infinity) {
-      this.careerFormProgress = Math.floor((this.qualificationFormProgress + this.certificateFormProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 4);
+      this.careerFormProgress = Math.floor((this.qualificationFormProgress + this.salaryDetailsFormProgress) / 2);
     }
     else {
-      this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qualificationFormProgress + this.certificateFormProgress + this.workExpFormProgress + this.salaryDetailsFormProgress) / 5);
+      this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qualificationFormProgress + this.salaryDetailsFormProgress) / 3);
       this.updateCareer.emit(this.careerFormProgress);
     }
   }
