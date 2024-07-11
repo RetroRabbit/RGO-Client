@@ -75,7 +75,7 @@ export class AccordionBankingComponent {
           this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
           this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
         } else {
-          console.warn("No banking details available.");
+          this.snackBarService.showError("No banking details available.");
         }
       },
       error: (er) => this.snackBarService.showError(er),
