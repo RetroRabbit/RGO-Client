@@ -74,7 +74,8 @@
                                             <mat-label>Issue date</mat-label>
                                             <input matInput [matDatepicker]="picker" placeholder="Issue date"
                                                 [(ngModel)]="copyOfCertificates[i].issueDate"
-                                                [value]="copyOfCertificates[i].issueDate">
+                                                [value]="copyOfCertificates[i].issueDate"
+                                                [matDatepickerFilter]="disableFutureDates">
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-datepicker #picker></mat-datepicker>
                                         </mat-form-field>
@@ -171,7 +172,8 @@
                                     <mat-label>Issue date</mat-label>
                                     <input matInput [matDatepicker]="picker" placeholder="Issue date"
                                         [(ngModel)]="newCertificates[i].issueDate"
-                                        [value]="newCertificates[i].issueDate">
+                                        [value]="newCertificates[i].issueDate"
+                                        [matDatepickerFilter]="disableFutureDates">
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>

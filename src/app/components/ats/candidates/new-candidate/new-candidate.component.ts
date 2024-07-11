@@ -11,7 +11,6 @@ import { qualifications } from 'src/app/models/ats/constants/qualifications.cons
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
 import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
-import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { Employee } from 'src/app/models/hris/employee.interface';
 
 @Component({
