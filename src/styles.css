@@ -26,6 +26,11 @@ body {
   --mat-radio-checked-ripple-color: #0029C6;
   --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
   --mat-radio-checked-label-color: #0029C6;
+
+}
+
+.mdc-text-field--outlined.mat-accent{
+  --mdc-outlined-text-field-label-text-color: rgba(255, 0, 0, 0.6);
 }
 
 .title {
@@ -46,6 +51,7 @@ body {
   background-color: white;
   color: #0029C6;
   padding: 1rem;
+  box-shadow: none !important;
 }
 
 #graphs-btn>button {
@@ -166,4 +172,9 @@ body {
 .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused
   .mdc-notched-outline__trailing {
   border-color: #0029C6 !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label, 
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label--float-above {
+   color: #0029c6 !important
 }
