@@ -79,8 +79,6 @@ export class AccordionCareerWorkExperienceComponent {
     this.workExperienceService.getWorkExperience(this.employeeProfile.id as number).subscribe({
       next: (data) => {
         this.sharedAccordionFunctionality.workExperience = data;
-        this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
-        this.sharedAccordionFunctionality.totalCareerProgress();
       },
       error: (error) => {
         this.snackBarService.showSnackbar("Unable to Fetch Work Experiences", "snack-error");
@@ -185,8 +183,6 @@ export class AccordionCareerWorkExperienceComponent {
     this.editWorkExperience = false;
     this.addingWorkExperience = false;
     this.sharedAccordionFunctionality.newWorkExperiences = [];
-    this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
-    this.sharedAccordionFunctionality.totalCareerProgress();
   }
 
   showDialog(newOrUpdate: string, index: number) {
@@ -220,8 +216,6 @@ export class AccordionCareerWorkExperienceComponent {
         this.copyOfWorkExperience.splice(index, 1);
         this.sharedAccordionFunctionality.workExperience.splice(index, 1);
         this.sharedAccordionFunctionality.workExperienceFormFields = this.sharedAccordionFunctionality.workExperienceFormFields - 7;
-        this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
-        this.sharedAccordionFunctionality.totalCareerProgress();
         this.editWorkExperience = false;
       },
       error: (error) => {
@@ -246,8 +240,6 @@ export class AccordionCareerWorkExperienceComponent {
             this.addingWorkExperience = false;
             this.sharedAccordionFunctionality.newWorkExperiences = [];
             this.getWorkExperience();
-            this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
-            this.sharedAccordionFunctionality.totalCareerProgress();
           }
         },
         error: (error) => {
@@ -272,8 +264,6 @@ export class AccordionCareerWorkExperienceComponent {
         this.snackBarService.showSnackbar("Updated", "snack-success");
         this.hasUpdatedWorkExperience = true;
         this.getWorkExperience();
-        this.sharedAccordionFunctionality.calculateCareerWorkExperienceFormProgress();
-        this.sharedAccordionFunctionality.totalCareerProgress();
       },
       error: () => {
         this.snackBarService.showSnackbar("Unable to Update All Fields", "snack-error");
