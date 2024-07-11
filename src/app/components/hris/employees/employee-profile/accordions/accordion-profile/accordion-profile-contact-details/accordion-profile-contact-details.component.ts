@@ -119,7 +119,7 @@ export class AccordionProfileContactDetailsComponent {
       cellphoneNo: [this.employeeProfile.employeeDetails.cellphoneNo, [Validators.required]],
       houseNo: [this.employeeProfile.employeeDetails.houseNo, [Validators.minLength(4)]],
       emergencyContactName: [this.employeeProfile.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
-      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required]]
+      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required], Validators.pattern(/(^\d+$)|(^$)/)]
     });
     this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.sharedAccordionFunctionality.checkContactFormProgress();
