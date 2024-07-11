@@ -26,7 +26,6 @@ body {
   --mat-radio-checked-ripple-color: #0029C6;
   --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
   --mat-radio-checked-label-color: #0029C6;
-
 }
 
 .mdc-text-field--outlined.mat-accent{
