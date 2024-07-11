@@ -147,7 +147,7 @@
                 </mat-form-field>
                 <div class="mb-3">
                   <span class="roboto-font pb-3">Do you have any disabilities?</span>
-                  <mat-radio-group formControlName="disability" class="row">
+                  <mat-radio-group formControlName="disability" class="row" (change)="setHasDisability($event)">
                     <mat-radio-button class="col-12 p-1" *ngFor="let check of [false, true]" [value]="check">
                       {{ check ? "Yes" : "No"}}
                     </mat-radio-button>
@@ -156,7 +156,13 @@
                     Disability is required
                   </mat-error>
                 </div>
-                <mat-form-field appearance="outline" *ngIf="newEmployeeForm.controls['disability'].value">
+                <mat-form-field appearance="outline" class=" mb-3" *ngIf="hasDisability">
+                  <mat-label>Disability Types</mat-label>
+                  <mat-select formControlName="disabilityType" hideSingleSelectionIndicator="true" (selectionChange)="setTypeOther($event)">
+                    <mat-option *ngFor="let type of disabilityType" [value]="type.value">{{ type.value }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" *ngIf="typeOther">
                   <mat-label>Disability Notes</mat-label>
                   <textarea matInput type="text" formControlName="disabilityNotes"></textarea>
                   <mat-error *ngIf="newEmployeeForm.controls['disabilityNotes'].hasError('required')">
@@ -272,7 +278,7 @@
                     <mat-label>Street Number</mat-label>
                     <input matInput type="text" formControlName="streetNumber" />
                     <mat-error *ngIf="physicalAddress.controls['streetNumber'].hasError('pattern')">
-                      Street number must only contain numbers
+                      Please enter a valid street number
                     </mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class=" mt-2">
@@ -550,7 +556,7 @@
             <button
               [disabled]="!isSavedEmployee || categories[0].state == true && categories[1].state == true && categories[2].state == true && categories[3].state == true"
               id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
-              (click)="saveAndAddAnother()">Save
+              (click)="saveAndAddAnother()" type="button">Save
               and add another</button>
             <button
               [disabled]="!isSavedEmployee || categories[0].state == true && categories[1].state == true && categories[2].state == true && categories[3].state == true"

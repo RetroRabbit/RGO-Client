@@ -29,6 +29,7 @@ export class CvDocumentComponent {
   loggedInProfile!: EmployeeData;
   skills: string[] = [];
   filteredSkills: string[] = [];
+  experienceData: EmployeeData[] = [];
   name: string | undefined = '';
   surname: string | undefined = '';
   role: string | undefined = '';
@@ -51,6 +52,7 @@ export class CvDocumentComponent {
     private employeeCertificationService: EmployeeCertificatesService,
     private employeeWorkExperienceService: WorkExperienceService,
     public navService: NavService,
+    private employeeData: EmployeeDataService,
   ) { }
 
   ngOnInit() {
@@ -73,22 +75,19 @@ export class CvDocumentComponent {
         this.surname = data.surname;
         this.role = data.employeeType?.name;
         this.level = data.level;
-        this.getExprienceYears(data.engagementDate);
+        this.getAdditionalFields();
       }
     })
   }
 
-  getExprienceYears(date: any) {
-    const newDate1Obj = new Date(date);
-    const newDate2Obj = new Date();
-
-    let years = newDate2Obj.getFullYear() - newDate1Obj.getFullYear();
-    let months = newDate2Obj.getMonth() - newDate1Obj.getMonth();
-
-    months = (months + 12) % 12;
-    years -= Math.floor(months / 12);
-    const numYears = (years > 0 ? `${years} ${years === 1 ? 'year' : 'years'}` : 0 + ' years' + (months > 0 ? "" + ` ${months} ${months === 1 ? 'month' : 'months'}` : ''));
-    this.numberOfYears = numYears;
+  getAdditionalFields() {
+    this.employeeData.getEmployeeData(this.employeeId).subscribe({
+      next: data => {
+        console.log(data);
+        this.experienceData = data.filter(field => field.fieldCodeId == 5);
+        this.numberOfYears = this.experienceData[0].value;
+      }
+    })
   }
 
   getEmployeeWorkExp() {
@@ -111,7 +110,6 @@ export class CvDocumentComponent {
   getQualifications() {
     this.employeeQaulificationService.getEmployeeQualificationById(this.employeeId).subscribe({
       next: data => {
-        console.log(data)
         this.school = data.school;
         this.education = data.fieldOfStudy;
         this.nqf = data.highestQualification;
