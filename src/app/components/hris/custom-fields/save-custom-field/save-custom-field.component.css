@@ -137,6 +137,7 @@ button[disabled],
     padding: 10px 24px;
     justify-content: center;
     align-items: center;
+    flex-wrap: nowrap;
     gap: 8px;
     background: #0029c6;
     border-radius: 30px;
@@ -150,6 +151,7 @@ button[disabled],
     line-height: 20px;
     letter-spacing: 0.1px;
     width: 137px;
+    box-shadow: none;
 }
 
 #toggle-advanced {
