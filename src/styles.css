@@ -161,9 +161,10 @@ body {
 
 .mat-mdc-progress-bar {
   --mdc-linear-progress-track-height: 7px !important;
-  --mdc-linear-progress-active-indicator-height: 7px !important;
+  --mdc-linear-progress-active-indicator-height: 6.5px !important;
   --mdc-linear-progress-active-indicator-color: #0029c6;
   --mdc-linear-progress-track-color: #D7dfff;
   --mdc-linear-progress-track-shape: 1rem !important;
   border-radius: 1rem !important;
+  border-bottom-width: 10px !important;
 }
