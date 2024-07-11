@@ -28,10 +28,6 @@ body {
   --mat-radio-checked-label-color: #0029C6;
 }
 
-.mdc-text-field--outlined.mat-accent{
-  --mdc-outlined-text-field-label-text-color: rgba(255, 0, 0, 0.6);
-}
-
 .title {
   text-align: center;
 }
