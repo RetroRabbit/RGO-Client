@@ -62,9 +62,9 @@
         <button mat-button [matMenuTriggerFor]="menu" id="options-trigger" class="ms-sm-4 ms-lg-auto">
           <mat-icon id="menu-icon">more_vert</mat-icon>
         </button>
-        <mat-menu #menu="matMenu">
+        <mat-menu #menu="matMenu" class="rounded-4 p-2">
           <button mat-menu-item (click)="pdfPreview(i)">
-            <mat-icon id="chart-icon-menu" class="pe-3">keyboard_backspace</mat-icon> Export Graph
+            <mat-icon class="pe-3">download-doc</mat-icon> Export Graph
           </button>
           <button mat-menu-item (click)="generateReport(i)">
             <mat-icon class="pe-3">arrow_forward_ios</mat-icon> View Graph Details
