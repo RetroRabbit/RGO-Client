@@ -71,7 +71,6 @@ export class SharedAccordionFunctionality {
   fileMyDocumentCategories = MyDocumentTypes;
   employeeQualification!: EmployeeQualifications;
 
-
   employeeQualificationDto: EmployeeQualifications = {
     id: 0,
     employeeId: 0,
@@ -478,8 +477,7 @@ export class SharedAccordionFunctionality {
     }
 
     const FilledCount = this.filteredFilledWorkExp.length;
-    this.workExpFormProgress = FilledCount === 0 || this.workExperienceFormFields == 0 ? 0
-      : Math.round((FilledCount / this.workExperienceFormFields) * 100);
+    this.workExpFormProgress = this.workExperienceFormFields == 0 ? 100 : Math.round((FilledCount / this.workExperienceFormFields) * 100);
   }
 
   calculateCareerCertificatesFormProgress() {
@@ -511,8 +509,7 @@ export class SharedAccordionFunctionality {
     }
 
     const FilledCount = this.filteredFilledCertificate.length;
-    this.certificateFormProgress = FilledCount === 0 || this.employeeCertificatesFields == 0 ? 0
-      : Math.round((FilledCount / this.employeeCertificatesFields) * 100);
+    this.certificateFormProgress = this.employeeCertificatesFields == 0 ? 100 : Math.round((FilledCount / this.employeeCertificatesFields) * 100);
   }
 
   calculateSalaryDetails() {
