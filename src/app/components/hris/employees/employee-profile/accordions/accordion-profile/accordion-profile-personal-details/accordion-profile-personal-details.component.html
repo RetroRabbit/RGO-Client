@@ -69,18 +69,18 @@
                 <div class="col-12"
                   *ngIf="sharedAccordionFunctionality.hasDisability && sharedPropertyAccessService.employeeProfilePermissions.disability">
                   <div class="row">
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 mt-3">
                       <mat-form-field appearance="outline" style="width: 100%;">
                         <mat-label>Disability</mat-label>
-                        <mat-select formControlName="disabilityList" hideSingleSelectionIndicator="true">
-                          <mat-option *ngFor="let disability of sharedAccordionFunctionality.disabilities; index as i"
-                            [value]="i">
+                        <mat-select formControlName="disabilityType" hideSingleSelectionIndicator="true" (selectionChange)="setTypeOther($event)">
+                          <mat-option *ngFor="let disability of sharedAccordionFunctionality.disabilities;"
+                            [value]="disability.value">
                             {{disability.value}}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
                     </div>
-                    <div class="col-12 col-md-6">
+                    <div *ngIf="sharedAccordionFunctionality.typeOther == true" class="col-12 col-md-6 mt-3">
                       <mat-form-field id="mat-field" appearance="outline" style="width: 100%;"
                         class="disability-description">
                         <textarea matInput placeholder="Disability Notes" formControlName="disabilityNotes"></textarea>

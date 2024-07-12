@@ -132,6 +132,7 @@
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0.1px;
+    cursor: pointer;
 }
 
 #profile-header {
@@ -427,4 +428,8 @@ div.row {
 
 #overall-progress-bar {
     border-color: #0029C6;
+}
+
+#progress-container{
+    margin-top: 0.8rem !important;
 }

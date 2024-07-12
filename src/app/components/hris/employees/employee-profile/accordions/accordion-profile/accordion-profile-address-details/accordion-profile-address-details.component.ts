@@ -81,8 +81,8 @@ export class AccordionProfileAddressDetailsComponent {
       physicalComplexName: [this.employeeProfile!.employeeDetails.physicalAddress?.complexName?.trim()],
       physicalStreetNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       physicalStreetName: [this.employeeProfile!.employeeDetails.physicalAddress?.streetName?.trim(), Validators.required],
-      physicalSuburb: [this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict?.trim(), Validators.required],
       physicalCity: [this.employeeProfile!.employeeDetails.physicalAddress?.city?.trim(), Validators.required],
+      physicalSuburb: [this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict?.trim()],
       physicalCountry: [this.employeeProfile!.employeeDetails.physicalAddress?.country?.trim(), Validators.required],
       physicalProvince: [this.employeeProfile!.employeeDetails.physicalAddress?.province?.trim(), Validators.required],
       physicalPostalCode: [this.employeeProfile!.employeeDetails.physicalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]],
@@ -90,8 +90,8 @@ export class AccordionProfileAddressDetailsComponent {
       postalComplexName: [this.employeeProfile!.employeeDetails.postalAddress?.complexName?.trim()],
       postalStreetNumber: [this.employeeProfile!.employeeDetails.postalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       postalStreetName: [this.employeeProfile!.employeeDetails.postalAddress?.streetName?.trim(), Validators.required],
-      postalSuburb: [this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict?.trim(), Validators.required],
       postalCity: [this.employeeProfile!.employeeDetails.postalAddress?.city?.trim(), Validators.required],
+      postalSuburb: [this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict?.trim()],
       postalCountry: [this.employeeProfile!.employeeDetails.postalAddress?.country?.trim(), Validators.required],
       postalProvince: [this.employeeProfile!.employeeDetails.postalAddress?.province?.trim(), Validators.required],
       postalPostalCode: [this.employeeProfile!.employeeDetails.postalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]]
@@ -110,8 +110,8 @@ export class AccordionProfileAddressDetailsComponent {
         postalComplexName: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalComplexName')?.value,
         postalStreetNumber: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetNumber')?.value,
         postalStreetName: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetName')?.value,
-        postalSuburb: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalSuburb')?.value,
         postalCity: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCity')?.value,
+        postalSuburb: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalSuburb')?.value,
         postalCountry: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCountry')?.value,
         postalProvince: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalProvince')?.value,
         postalPostalCode: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalPostalCode')?.value
@@ -127,8 +127,8 @@ export class AccordionProfileAddressDetailsComponent {
         complexName: addressDetailFormValue['physicalComplexName'],
         streetName: addressDetailFormValue['physicalStreetName'],
         streetNumber: addressDetailFormValue['physicalStreetNumber'],
-        suburbOrDistrict: addressDetailFormValue['physicalSuburb'],
         city: addressDetailFormValue['physicalCity'],
+        suburbOrDistrict: addressDetailFormValue['physicalSuburb'],
         country: addressDetailFormValue['physicalCountry'],
         province: addressDetailFormValue['physicalProvince'],
         postalCode: addressDetailFormValue['physicalPostalCode'],
@@ -140,8 +140,8 @@ export class AccordionProfileAddressDetailsComponent {
         complexName: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalComplexName'] : addressDetailFormValue['postalComplexName'],
         streetNumber: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalStreetNumber'] : addressDetailFormValue['postalStreetNumber'],
         streetName: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalStreetName'] : addressDetailFormValue['postalStreetName'],
-        suburbOrDistrict: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalSuburb'] : addressDetailFormValue['postalSuburb'],
         city: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalCity'] : addressDetailFormValue['postalCity'],
+        suburbOrDistrict: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalSuburb'] : addressDetailFormValue['postalSuburb'],
         country: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalCountry'] : addressDetailFormValue['postalCountry'],
         province: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalProvince'] : addressDetailFormValue['postalProvince'],
         postalCode: this.sharedAccordionFunctionality.physicalEqualPostal ? addressDetailFormValue['physicalPostalCode'] : addressDetailFormValue['postalPostalCode'],
@@ -161,14 +161,10 @@ export class AccordionProfileAddressDetailsComponent {
               this.getEmployeeFields();
               this.sharedAccordionFunctionality.editAddress = false;
             },
-            error: (error: any) => {
-              this.snackBarService.showSnackbar("Unable to Update Address Information", "snack-error");
-            },
+            error: (er) => this.snackBarService.showError(er),
           });
         },
-        error: (error: any) => {
-          this.snackBarService.showSnackbar("Unable to Update Address Information", "snack-error");
-        },
+        error: (er: any) => this.snackBarService.showError(er),
       });
     } else {
       this.snackBarService.showSnackbar("Some Fields Are Still Missing Information", "snack-error");
@@ -224,73 +220,90 @@ export class AccordionProfileAddressDetailsComponent {
 
   loadPhysicalAddress() {
     this.locationApiService.getCountries().subscribe({
-      next: (data) => {
-        this.countries = data
-      },
-      error: (error: any) => {
-        this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error")
-      },
-      complete: () => {
-        this.selectedCountry = this.employeeProfile!.employeeDetails.physicalAddress?.country!
-        if(this.selectedCountry == " ")
-          {
-            return;
-          }
-        this.locationApiService.getProvinces(this.selectedCountry).subscribe({
-          next: (data) => this.provinces = data,
-          error: (error: any) => {
-            this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error")
-           },
-          complete: () => {
-            this.selectedProvince = this.employeeProfile!.employeeDetails.physicalAddress?.province!
+        next: (data) => {
+            if (!data || data.length === 0) {
+                return;
+            }
+            this.countries = data;
+            this.selectedCountry = this.employeeProfile?.employeeDetails.physicalAddress?.country || '';
+            if (!this.selectedCountry.trim()) {
+                return;
+            }
             this.locationApiService.getProvinces(this.selectedCountry).subscribe({
-              next: (data) => this.provinces = data,
-              complete: () => {
-                this.locationApiService.getCities(this.selectedCountry, this.selectedProvince).subscribe({
-                  next: (data) => this.cities = data,
-                });
-              }
+                next: (data) => {
+                    if (!data || data.length === 0) {
+                        return;
+                    }
+                    this.provinces = data;
+                    this.selectedProvince = this.employeeProfile?.employeeDetails.physicalAddress?.province || '';
+                    if (this.selectedProvince) {
+                        this.locationApiService.getCities(this.selectedCountry, this.selectedProvince).subscribe({
+                            next: (data) => {
+                                if (!data || data.length === 0) {
+                                    return;
+                                }
+                                this.cities = data;
+                            },
+                            error: (error: any) => {
+                                this.snackBarService.showSnackbar('Unable to Load Cities', "snack-error");
+                            }
+                        });
+                    }
+                },
+                error: (error: any) => {
+                    this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error");
+                }
             });
-          }
-        })
-      }
-    })
+        },
+        error: (error: any) => {
+            this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error");
+        }
+    });
   }
 
   loadPostalAddress() {
     this.locationApiService.getCountries().subscribe({
-      next: (data) => {
-        this.postalCountries = data
-      },
-      error: (error: any) => {
-        this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error")
-      },
-      complete: () => {
-        this.selectedPostalCountry = this.employeeProfile!.employeeDetails.postalAddress?.country!
-        if(this.selectedPostalCountry == " ")
-          {
-            return;
-          }
-        this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
-          next: (data) => this.postalProvinces = data,
-          error: (error: any) => {
-            this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error")
-           },
-          complete: () => {
-            this.selectedPostalProvince = this.employeeProfile!.employeeDetails.postalAddress?.province!
+        next: (data) => {
+            if (!data || data.length === 0) {
+                return;
+            }
+            this.postalCountries = data;
+            this.selectedPostalCountry = this.employeeProfile?.employeeDetails.postalAddress?.country || '';
+            if (!this.selectedPostalCountry.trim()) {
+                return;
+            }
             this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
-              next: (data) => this.postalProvinces = data,
-              complete: () => {
-                this.locationApiService.getCities(this.selectedPostalCountry, this.selectedPostalProvince).subscribe({
-                  next: (data) => this.postalCities = data,
-                });
-              }
+                next: (data) => {
+                    if (!data || data.length === 0) {
+                        return;
+                    }
+                    this.postalProvinces = data;
+                    this.selectedPostalProvince = this.employeeProfile?.employeeDetails.postalAddress?.province || '';
+                    if (this.selectedPostalProvince) {
+                        this.locationApiService.getCities(this.selectedPostalCountry, this.selectedPostalProvince).subscribe({
+                            next: (data) => {
+                                if (!data || data.length === 0) {
+                                    return;
+                                }
+                                this.postalCities = data;
+                            },
+                            error: (error: any) => {
+                                this.snackBarService.showSnackbar('Unable to Load Cities', "snack-error");
+                            }
+                        });
+                    }
+                },
+                error: (error: any) => {
+                    this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error");
+                }
             });
-          }
-        })
-      }
-    })
+        },
+        error: (error: any) => {
+            this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error");
+        }
+    });
   }
+
 
   getEmployeeData() {
     if (this.employeeId != undefined) {
@@ -361,9 +374,8 @@ export class AccordionProfileAddressDetailsComponent {
           }
           this.getEmployeeFieldCodes();
           this.initializeForm();
-        }, error: () => {
-          this.snackBarService.showSnackbar("Unable to Fetch User Profile", "snack-error");
-        }
+        }, 
+        error: (er) => this.snackBarService.showError(er),
       })
     }
   }

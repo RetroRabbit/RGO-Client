@@ -83,9 +83,8 @@ export class AccordionCareerAdditionalInformationComponent {
             this.getAllEmployees();
           }
           this.getEmployeeFieldCodes();
-        }, error: () => {
-          this.snackBarService.showSnackbar("Unable to Fetch User Profile", "snack-error");
-        }
+        },
+        error: (er) => this.snackBarService.showError(er),
       })
     }
   }
@@ -195,7 +194,7 @@ export class AccordionCareerAdditionalInformationComponent {
             this.getEmployeeData();
             this.updateEmployeeProfile.emit(1);
           },
-          error: (error) => { this.snackBarService.showSnackbar("Unable to Update Career Information", "snack-error") },
+          error: (er) => this.snackBarService.showError(er),
         });
       } else {
         const formatFound: any = fieldcode?.code
@@ -217,9 +216,7 @@ export class AccordionCareerAdditionalInformationComponent {
               this.getEmployeeData();
               this.updateEmployeeProfile.emit(1);
             },
-            error: (error) => {
-              this.snackBarService.showSnackbar("Unable to Save Career Information", "snack-error");
-            }
+            error: (er) => this.snackBarService.showError(er),
           });
         }
       }

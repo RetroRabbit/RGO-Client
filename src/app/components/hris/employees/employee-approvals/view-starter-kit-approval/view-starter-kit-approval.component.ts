@@ -69,7 +69,7 @@ export class ViewStarterKitApprovalComponent {
         });
         if(this.employeeDocuments.length > 0) this.lastUpdatedMessage = this.getNewDate();
       },
-      error: () => this.snackBarService.showSnackbar(`Unable to Fetch Documents`, "snack-error")
+      error: (er) => this.snackBarService.showError(er),
     })
   }
 
@@ -168,7 +168,7 @@ export class ViewStarterKitApprovalComponent {
         this.getEmployeeDocuments(this.employeedId);
         this.employeeBankingStarterkitService.getAllBankingAndStarterkits();
       },
-      error: () => this.snackBarService.showSnackbar(`Unable to Update Document`, "snack-error")
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 

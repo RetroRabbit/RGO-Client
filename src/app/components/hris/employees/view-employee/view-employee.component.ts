@@ -87,6 +87,12 @@ export class ViewEmployeeComponent {
       this.roles = data.filter((role) => !role.includes('SuperAdmin'));
     });
 
+    this.peopleChampions.subscribe({
+      next: data => {
+        this.selectedChampion = data.find(x => x.id == 0)
+      }
+    })
+    
     this.onResize();
 
     if (this.cookieService.get(this.PREVIOUS_PAGE) == '/dashboard') {
@@ -97,6 +103,13 @@ export class ViewEmployeeComponent {
       this.displayedColumns = ['Name', 'Position', 'Level', 'Client', 'Roles'];
     }
 
+    if(this.isJourney){
+      this.peopleChampions.subscribe({
+        next: data => {
+          this.selectedChampion = data.find(x => x.id == this.authAccessService.getUserId())
+        }
+      })
+    }
     this.peopleChampions.subscribe({
       next: data =>
         this.selectedChampion = this.isJourney
@@ -272,7 +285,7 @@ export class ViewEmployeeComponent {
           this.snackBarService.showSnackbar("Updated", "snack-success");
         }),
         catchError((er) => {
-          this.snackBarService.showSnackbar(er.error, 'snack-error');
+          this.snackBarService.showError(er);
           this.filterEmployeeTable();
           return of(null);
         })
@@ -333,8 +346,8 @@ export class ViewEmployeeComponent {
       .filterEmployees(this.currentChampionFilter.id || 0, this.currentUserTypeFilter.id || 0, this.getActiveEmployees)
       .pipe(
         switchMap((employees: EmployeeFilterView[]) => this.combineEmployeesWithRolesAndClients(employees)),
-        catchError((error) => {
-          this.snackBarService.showSnackbar('Unable to Retrieve Employees', 'snack-error');
+        catchError((er) => {
+          this.snackBarService.showError(er);
           return of([]);
         }),
         first()

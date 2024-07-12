@@ -134,9 +134,7 @@ export class AccordionAdministrativeDocumentsComponent {
           this.sharedAccordionFunctionality.calculateAdminDocumentProgress();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
         },
-        error: error => {
-          this.snackBarService.showSnackbar("Unable to Retrieve Administrative Documents", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       });
     } else {
       this.employeeId = this.navService.employeeProfile.id;
@@ -148,9 +146,7 @@ export class AccordionAdministrativeDocumentsComponent {
           this.sharedAccordionFunctionality.totalDocumentsProgress();
 
         },
-        error: error => {
-          this.snackBarService.showSnackbar("Unable to Retrieve Administrative Documents", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       });
     }
   }
@@ -178,9 +174,9 @@ export class AccordionAdministrativeDocumentsComponent {
           this.sharedAccordionFunctionality.totalDocumentsProgress();
 
         },
-        error: (error) => {
+        error: (er) => {
           this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar("Unable to Save Document", "snack-error");
+          this.snackBarService.showError(er);
         }
       });
     } else {
@@ -209,8 +205,8 @@ export class AccordionAdministrativeDocumentsComponent {
           this.sharedAccordionFunctionality.totalDocumentsProgress();
 
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Update Document", "snack-error");
+        error: (er) => {
+          this.snackBarService.showError(er);
           this.isLoadingUpload = false;
         }
       });

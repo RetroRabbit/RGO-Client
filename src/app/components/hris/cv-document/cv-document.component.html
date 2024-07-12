@@ -1,4 +1,4 @@
-<div class="container" id="doc-page" *ngIf="employeeWorkExp.length !== 0 && employeeCertificate.length !== 0 && filteredSkills.length !== 0">
+<div class="container" id="doc-page" *ngIf="employeeWorkExp.length !== 0 && filteredSkills.length !== 0">
     <button mat-button color="primary" id="button-pdf"
     (click) = "downloadPDF()">
    <svg id="svg-icon" width="19" height="19" viewBox="0 0 19 19" fill="white"
@@ -56,9 +56,16 @@
       </div>
       <mat-divider></mat-divider>
       <div class="container-content">
-          <div class="container-summary" *ngIf="name && surname && role && level && nqf && education &&school && numberOfYears; else emptyDescription">
-              <p>{{name}} {{surname}} is a {{role}} (Level {{level}}).Their highest qualification is a NQF Level {{nqf}} in {{education}} from the {{school}} and has {{numberOfYears}} experience in her field.</p>
-          </div>
+        <div class="container-summary" *ngIf="name && surname && role && level && nqf && education && school && numberOfYears; else emptyDescription">
+          <p *ngIf="numberOfYears === 'Grad'; else nonGradDescription">
+            {{name}} {{surname}} is a {{role}} (Level {{level}}). Their highest qualification is a NQF Level {{nqf}} in {{education}} from the {{school}} and is currently at graduate level in their field.
+          </p>
+          <ng-template #nonGradDescription>
+            <p>
+              {{name}} {{surname}} is a {{role}} (Level {{level}}). Their highest qualification is a NQF Level {{nqf}} in {{education}} from the {{school}} and has {{numberOfYears}} years of experience in their field.
+            </p>
+          </ng-template>
+        </div>
           <ng-template #emptyDescription>
           <div class="container-summary">
             <p></p>
@@ -114,7 +121,7 @@
           </ng-template>
       </div>
   </div>
-  <div class="container-missing-info" id="doc-page" *ngIf="employeeWorkExp.length <= 0 && employeeCertificate.length <= 0 && filteredSkills.length <= 0">
+  <div class="container-missing-info" id="doc-page" *ngIf="employeeWorkExp.length <= 0 || filteredSkills.length <= 0">
     <div
     class="d-flex justify-content-center align-items-center" id="main-content">
     <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">

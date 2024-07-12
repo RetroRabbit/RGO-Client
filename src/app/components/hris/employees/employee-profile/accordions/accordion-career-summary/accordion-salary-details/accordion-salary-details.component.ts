@@ -89,9 +89,7 @@ export class AccordionSalaryDetailsComponent {
           this.initializeSalaryDetailsForm(this.employeeSalary, data.taxNumber);
           this.getEmployeeSalaryDetails(data.taxNumber);
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Error fetching salary details", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       })
     }
   }
@@ -105,9 +103,7 @@ export class AccordionSalaryDetailsComponent {
           this.sharedAccordionFunctionality.calculateSalaryDetails();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Fetch Salary Details", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       })
     }
     else {
@@ -116,9 +112,7 @@ export class AccordionSalaryDetailsComponent {
           this.employeeSalary = data;
           this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Fetch Salary Details", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       })
     }
   }
@@ -192,9 +186,7 @@ export class AccordionSalaryDetailsComponent {
             this.sharedAccordionFunctionality.calculateSalaryDetails();
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
-          error: (error) => {
-            this.snackBarService.showSnackbar("Unable to Update Salary Information", "snack-error");
-          }
+          error: (er) => this.snackBarService.showError(er),
         }),
           this.employeeService.updateEmployee(this.employeeProfile).subscribe({
             next: (data) => {
@@ -212,9 +204,7 @@ export class AccordionSalaryDetailsComponent {
             this.sharedAccordionFunctionality.calculateSalaryDetails();
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
-          error: (error) => {
-            this.snackBarService.showSnackbar("Unable to Save Salary Information", "snack-error");
-          }
+          error: (er) => this.snackBarService.showError(er),
         })
       }
     }

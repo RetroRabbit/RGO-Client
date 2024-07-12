@@ -8,6 +8,8 @@ export class ChurnRateDataCard {
     this.businessSupportChurnRate = 0;
     this.month = "";
     this.year = 0;
+    this.churnRateDifference = 0;
+    this.isIncrease = false;
   }
 
   churnRate?: number;
@@ -17,4 +19,6 @@ export class ChurnRateDataCard {
   businessSupportChurnRate?: number;
   month?: string;
   year?: number;
+  churnRateDifference?: number;
+  isIncrease? : boolean;
 }

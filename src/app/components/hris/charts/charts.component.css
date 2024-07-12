@@ -74,12 +74,7 @@
   width: 2.5rem;
 }
 
-#chart-icon-menu {
-  transform: rotate(180deg);
-}
-
 .icon-width-mobile {
-  /* width: 3rem !important; */
   width: 65px !important;
   height: 1rem !important;
 }

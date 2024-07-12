@@ -7,7 +7,6 @@ import { Token } from '../../../models/hris/token.interface';
 import { Store } from '@ngrx/store';
 import { EmployeeState } from '../../../components/shared-components/store/reducers/employee.reducer';
 import { CookieService } from 'ngx-cookie-service';
-import { map } from 'rxjs';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 
 @Injectable({

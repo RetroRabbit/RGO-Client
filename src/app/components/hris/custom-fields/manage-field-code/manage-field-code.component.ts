@@ -102,8 +102,8 @@ export class ManageFieldCodeComponent {
           this.resetRunCounter();
         }
       },
-      error: () => {
-        this.snackBarService.showSnackbar("Unable to Fetch Field Codes", "snack-error");
+      error: (er) => {
+        this.snackBarService.showError(er);
         this.isLoading = false;
       }
     })
@@ -175,12 +175,12 @@ export class ManageFieldCodeComponent {
           this.snackBarService.showSnackbar("Saved", "snack-success");
           this.newFieldCodeForm.disable();
         },
-        error: (error) => {
-          if (error.error === "Field with that name found") {
+        error: (er) => {
+          if (er.error === "Field with that name found") {
             this.isUnique = false;
           }
           else {
-            this.snackBarService.showSnackbar("Unable to Save Field Code", "snack-error");
+            this.snackBarService.showError(er);
           }
         }
       });
@@ -348,9 +348,8 @@ export class ManageFieldCodeComponent {
       next: (data) => {
         this.snackBarService.showSnackbar("Updated", "snack-success");
         this.fetchData(this.activeTab);
-      }, error: (error) => {
-        this.snackBarService.showSnackbar("Unable to Update Field Code", "snack-error");
-      }
+      }, 
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -373,16 +372,14 @@ export class ManageFieldCodeComponent {
           this.fetchData(this.activeTab);
           this.selectedCustomFields = [];
         },
-        error: () => {
+        error: (er) => {
           unsuccessfulSubmits++;
+          this.snackBarService.showError(er);
         }
       })
     });
     if (unsuccessfulSubmits == 0) {
       this.snackBarService.showSnackbar("Updated", "snack-success");
-    }
-    else {
-      this.snackBarService.showSnackbar(`Unable to Move ${unsuccessfulSubmits}`, "snack-error");
     }
   }
 

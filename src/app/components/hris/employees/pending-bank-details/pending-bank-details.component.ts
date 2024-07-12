@@ -33,9 +33,9 @@ export class PendingBankDetailsComponent {
     this.employeeBankingService.getPending(1).subscribe({
       next: data => {
         this.pendingBankApplications = data;
-      }, error: error=>{
-        this.snackBarService.showSnackbar("Unable to Fetch Bank Information", "snack-error");
-      }, complete: () => {
+      }, 
+      error: (er) => this.snackBarService.showError(er),
+      complete: () => {
         this.isLoading = false;
       }
     })
