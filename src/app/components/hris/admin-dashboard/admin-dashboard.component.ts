@@ -228,9 +228,7 @@ export class AdminDashboardComponent {
         this.employeeProfiles = data;
         this.searchResults = [];
       },
-      error: () => {
-        this.snackBarService.showSnackbar('Unable to Fetch Employees', 'snack-error');
-      },
+      error: (er) => this.snackBarService.showError(er),
       complete: () => {
         this.loadCounter++;
       },
@@ -243,9 +241,7 @@ export class AdminDashboardComponent {
         next: (data) => {
           this.charts = data;
         },
-        error: () => {
-          this.snackBarService.showSnackbar('Unable to Fetch Charts', 'snack-error');
-        },
+        error: (er) => this.snackBarService.showError(er),
         complete: () => {
           this.loadCounter++;
         },
@@ -372,9 +368,7 @@ export class AdminDashboardComponent {
             this.chartService.isEditing = false
             this.dialog.closeAll();
           },
-          error: () => {
-            this.snackBarService.showSnackbar("Unable to Update Chart", "snack-error");
-          }
+          error: (er) => this.snackBarService.showError(er),
         });
       }
       return
@@ -417,8 +411,8 @@ export class AdminDashboardComponent {
           this.configureDashboardData();
           this.isLoadingChart = false;
         },
-        error: () => {
-          this.snackBarService.showSnackbar('Unable to Create Chart', 'snack-error');
+        error: (er) => {
+          this.snackBarService.showError(er);
           this.isLoadingChart = false;
         },
       });

@@ -179,10 +179,7 @@ export class EmployeeProfileComponent implements OnChanges {
       this.employeeId = this.authAccessService.getUserId();
     }
 
-    if (this.authAccessService.isAdmin() ||
-      this.authAccessService.isSuperAdmin() ||
-      this.authAccessService.isJourney() ||
-      this.authAccessService.isTalent()) {
+    if (this.authAccessService.isSupport()) {
       this.usingSimpleProfile = false;
     }
     else {
@@ -219,9 +216,7 @@ export class EmployeeProfileComponent implements OnChanges {
       next: (data: EmployeeTermination) => {
         this.terminationData = data;
       },
-      error: err => {
-        this.snackBarService.showSnackbar('Unable to Fetch Termination Details', err);
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -252,9 +247,7 @@ export class EmployeeProfileComponent implements OnChanges {
         }
         this.changeDetectorRef.detectChanges();
       },
-      error: (error: any) => {
-        this.snackBarService.showSnackbar("Unable to Retrieve Profile", 'snack-error');
-      }
+      error: (er: any) => this.snackBarService.showError(er),
     })
   }
 
@@ -275,9 +268,7 @@ export class EmployeeProfileComponent implements OnChanges {
         if (!this.usingSimpleProfile)
           this.getAllEmployees();
       },
-      error: () => {
-        this.snackBarService.showSnackbar("Unable to Retrieve Profile", 'snack-error');
-      }
+      error: (er: any) => this.snackBarService.showError(er),
     })
   }
 
@@ -421,9 +412,7 @@ export class EmployeeProfileComponent implements OnChanges {
         this.snackBarService.showSnackbar("Updated", "snack-success");
         this.navService.refreshEmployee();
       },
-      error: () => {
-        this.snackBarService.showSnackbar('Unable to Update Employee Profile Picture', 'snack-error');
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 

@@ -93,7 +93,7 @@ export class NewCandidateComponent {
   getAllEmployees() {
     this.employeeService.getAll().subscribe({
       next: data => this.allEmployees = data,
-      error: error => this.snackBarService.showSnackbar("Unable to Get All Employees", "snack-error")
+      error: (er) => this.snackBarService.showError(er),
     })
   }
 
@@ -270,7 +270,7 @@ export class NewCandidateComponent {
           this.isBlacklisted = false;
         }
       },
-      error: (err) => { }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
   clearUpload() {
@@ -447,8 +447,7 @@ export class NewCandidateComponent {
       this.candidateService.addCandidate(candidateDto).subscribe({
         next: (data) =>
           this.snackBarService.showSnackbar("Added", "snack-success"),
-        error: (error) =>
-          this.snackBarService.showSnackbar("Unable to Add Canididate", "snack-error"),
+        error: (er) => this.snackBarService.showError(er),
         complete: () => {
           this.router.navigateByUrl(nextPage);
         }

@@ -109,7 +109,7 @@ export class EmployeeTerminationComponent implements OnInit {
     };
     this.employeeTerminationService.saveEmployeeTermination(employeeTerminationDto).subscribe({
         next: () => this.snackBarService.showSnackbar("Employee Terminated", "snack-success"),
-        error: () => this.snackBarService.showSnackbar("Unable to Save Termination", 'snack-error'),
+        error: (er) => this.snackBarService.showError(er),
         complete: () => {
             this.router.navigateByUrl(nextPage);
         }

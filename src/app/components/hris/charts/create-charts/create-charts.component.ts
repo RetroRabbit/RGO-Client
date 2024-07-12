@@ -55,9 +55,7 @@ export class CreateChartsComponent {
           this.router.navigateByUrl('/charts')
           this.cookieService.set('currentPage', "Charts");
         },
-        error: () => {
-          this.snackBarService.showSnackbar("Unable to Create Chart", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       }
     );
   }
@@ -69,9 +67,7 @@ export class CreateChartsComponent {
           this.chartData = data.data;
           this.chartLabels = data.labels;
         },
-        error: () => {
-          this.snackBarService.showSnackbar("Unable to Get Chart Data", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       });
     } else {
       this.snackBarService.showSnackbar("Data Items Not Selected", "snack-error");
@@ -85,9 +81,7 @@ export class CreateChartsComponent {
           this.chartData = data.data;
           this.chartLabels = data.labels;
         },
-        error: () => {
-          this.snackBarService.showSnackbar("Unable to Get Chart Data", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       });
     } else {
       this.snackBarService.showSnackbar("Data Items Not Selected", "snack-error");

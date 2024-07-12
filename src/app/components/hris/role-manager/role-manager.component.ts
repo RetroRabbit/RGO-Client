@@ -294,9 +294,9 @@ export class RoleManagerComponent implements OnInit {
       next: (data) => {
         this.saved = true
       },
-      error: (error) => {
+      error: (er) => {
         this.failed = true
-        this.snackBarService.showSnackbar("Unable to Update Permissions", "snack-error");
+        this.snackBarService.showError(er);
       }
     })
   }
@@ -306,8 +306,8 @@ export class RoleManagerComponent implements OnInit {
       next: (data) => {
         this.deleted = true;
       },
-      error: (error) => {
-        this.snackBarService.showSnackbar("Unable to Delete Permissions", "snack-error");
+      error: (er) => {
+        this.snackBarService.showError(er);
         this.deleted = true
       },
     })

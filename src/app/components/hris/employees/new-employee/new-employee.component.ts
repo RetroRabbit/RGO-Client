@@ -187,7 +187,7 @@ export class NewEmployeeComponent implements OnInit {
   loadCities(province: string): void {
     this.locationApiService.getCities(this.countrySelected, province).subscribe({
       next: (data) => this.cities = data,
-      error: (error) => console.error('Error loading cities:', error)
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -386,8 +386,8 @@ export class NewEmployeeComponent implements OnInit {
           this.snackBarService.showSnackbar("Saved", "snack-success");
           this.isLoadingAddEmployee = false;
         },
-        error: (error: any) => {
-          this.snackBarService.showSnackbar("Unable to Upload Starter Kit Document", "snack-error");
+        error: (er: any) => {
+          this.snackBarService.showError(er);
           this.isLoadingAddEmployee = false;
         }, complete: () => {
           this.employeeDocumentModels = [];
@@ -543,8 +543,8 @@ export class NewEmployeeComponent implements OnInit {
           this.saveEmployee();
         }
       },
-      error: () => {
-        this.snackBarService.showSnackbar("Unable to Verify Duplicate ID Number", "snack-error");
+      error: (er) => {
+        this.snackBarService.showError(er);
         this.isLoadingAddEmployee = false;
       }
     });

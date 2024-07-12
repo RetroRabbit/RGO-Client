@@ -72,12 +72,8 @@ export class AccordionCertificatesComponent {
       next: (data) => {
         this.sharedAccordionFunctionality.employeeCertificates = data;
         this.sharedAccordionFunctionality.employeeCertificatesFields = this.sharedAccordionFunctionality.employeeCertificatesFields * this.sharedAccordionFunctionality.employeeCertificates.length;
-        this.sharedAccordionFunctionality.calculateCareerCertificatesFormProgress();
-        this.sharedAccordionFunctionality.totalCareerProgress();
       },
-      error: (error) => {
-        this.snackBarService.showSnackbar("Unable to Fetch Certificates", "snack-error");
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -93,8 +89,6 @@ export class AccordionCertificatesComponent {
       employeeId: this.employeeProfile.id as number
     }
     this.newCertificates.push(newCertificate);
-    this.sharedAccordionFunctionality.calculateCareerCertificatesFormProgress();
-    this.sharedAccordionFunctionality.totalCareerProgress();
   }
 
   findDifferenceInArrays(): EmployeeCertificates[] {
@@ -131,13 +125,11 @@ export class AccordionCertificatesComponent {
             this.addingCertificate = false;
             this.newCertificates = [];
             this.getEmployeeCertificate();
-            this.sharedAccordionFunctionality.calculateCareerCertificatesFormProgress();
-            this.sharedAccordionFunctionality.totalCareerProgress();
           }
         },
-        error: (error) => {
+        error: (er) => {
           errorOccurred = true;
-          this.snackBarService.showSnackbar("Unable to Update All Fields", "snack-error");
+          this.snackBarService.showError(er);
           this.addingCertificate = false;
           this.editCertificate = false;
         }
@@ -158,9 +150,7 @@ export class AccordionCertificatesComponent {
         this.hasUpdatedCertificateData = true;
         this.getEmployeeCertificate();
       },
-      error: () => {
-        this.snackBarService.showSnackbar("Unable to Update All Fields", "snack-error");
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -239,13 +229,9 @@ export class AccordionCertificatesComponent {
         this.copyOfCertificates.splice(index, 1);
         this.sharedAccordionFunctionality.employeeCertificates.splice(index, 1);
         this.sharedAccordionFunctionality.employeeCertificatesFields = this.sharedAccordionFunctionality.employeeCertificatesFields - 4;
-        this.sharedAccordionFunctionality.calculateCareerCertificatesFormProgress();
-        this.sharedAccordionFunctionality.totalCareerProgress();
         this.editCertificate = false;
       },
-      error: (error) => {
-        this.snackBarService.showSnackbar("Unable to Delete Certificate", "snack-error");
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
