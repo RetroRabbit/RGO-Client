@@ -46,6 +46,7 @@ body {
   background-color: white;
   color: #0029C6;
   padding: 1rem;
+  box-shadow: none !important;
 }
 
 #graphs-btn>button {
@@ -159,6 +160,19 @@ body {
   display: none !important;
 }
 
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused
+  .mdc-notched-outline__leading,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused
+  .mdc-notched-outline__notch,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused
+  .mdc-notched-outline__trailing {
+  border-color: #0029C6 !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label, 
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label--float-above {
+   color: #0029c6 !important
+}
 .mat-mdc-progress-bar {
   --mdc-linear-progress-track-height: 7px !important;
   --mdc-linear-progress-active-indicator-height: 6.5px !important;
