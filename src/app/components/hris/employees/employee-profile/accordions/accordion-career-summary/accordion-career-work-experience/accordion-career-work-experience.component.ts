@@ -11,6 +11,7 @@ import { ROLES } from 'src/app/models/hris/constants/employee-skills-software-on
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { forkJoin } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-accordion-career-work-experience',
@@ -48,6 +49,9 @@ export class AccordionCareerWorkExperienceComponent {
   skillSetList: string[] = [];
   softwareList: string[] = [];
 
+  formControl = new FormControl<string[]>([]);
+  softwareFormControl = new FormControl<string[]>([]);
+
   dialogTypeData: Dialog = {
     type: 'confirm',
     title: 'Delete Experience',
@@ -55,6 +59,9 @@ export class AccordionCareerWorkExperienceComponent {
     confirmButtonText: 'Delete',
     denyButtonText: "Cancel"
   };
+
+  isDisabled: boolean = true; 
+  maxDisplayChips = 3;
 
   constructor(
     private workExperienceService: WorkExperienceService,
@@ -123,6 +130,46 @@ export class AccordionCareerWorkExperienceComponent {
         this.skillSetList = ["No skill set available for this employee type"];
         this.softwareList = ["No software is available for this employee type"];
         break;
+    }
+  }
+
+  getDisplaySkills(): { skills: string[], extraCount: number } {
+    const skills = this.formControl.value || [];
+    if (skills.length > this.maxDisplayChips) {
+      return {
+        skills: skills.slice(0, this.maxDisplayChips),
+        extraCount: skills.length - this.maxDisplayChips
+      };
+    }
+    return { skills, extraCount: 0 };
+  }
+
+  getDisplaySoftware(): { software: string[], extraCount: number } {
+    const software = this.softwareFormControl.value || [];
+    if (software.length > this.maxDisplayChips) {
+      return {
+        software: software.slice(0, this.maxDisplayChips),
+        extraCount: software.length - this.maxDisplayChips
+      };
+    }
+    return { software, extraCount: 0 };
+  }
+
+  onSkillsRemoved(skill: string) {
+    const skills = this.formControl.value ?? [];
+    const index = skills.indexOf(skill);
+    if (index >= 0) {
+      skills.splice(index, 1);
+      this.formControl.setValue(skills);
+    }
+  }
+
+  onSoftwareRemoved(software: string) {
+    const softwareList = this.softwareFormControl.value ?? [];
+    const index = software.indexOf(software);
+    if (index >= 0) {
+      softwareList.splice(index, 1);
+      this.softwareFormControl.setValue(softwareList);
     }
   }
 

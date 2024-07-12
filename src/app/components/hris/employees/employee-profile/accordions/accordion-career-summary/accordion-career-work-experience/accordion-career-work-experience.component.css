@@ -75,3 +75,19 @@ mat-icon{
 #project-description-width{
     width:880px;
 }
+.fixed-width {
+    max-width: 500px; /* Adjust the width as needed */
+    width: 100%;
+  }
+  
+mat-select-trigger {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+  
+mat-chip-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
