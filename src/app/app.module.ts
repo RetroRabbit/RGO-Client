@@ -91,10 +91,10 @@ import { EmployeeApprovalsComponent } from './components/hris/employees/employee
 import { TopNavComponent } from './components/hris/nav-bar/types/top-nav/top-nav.component';
 import { SideNavComponent } from './components/hris/nav-bar/types/side-nav/side-nav.component';
 import { CareerSummaryQualificationsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-summary-qualifications/accordion-career-summary-qualifications.component';
-import { AccordionEmployeeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-employee-documents/accordion-employee-documents.component';
+import { AccordionEmployeeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-employee-documents/accordion-employee-documents.component';
 import { AccordionDocumentsCustomDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-additional-documents/accordion-additional-documents.component';
 import { AccordionCertificatesComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-certificates/accordion-certificates.component';
-import { AccordionAdministrativeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-administrative-documents/accordion-administrative-documents.component';
+import { AccordionAdministrativeDocumentsComponent } from './components/hris/employees/employee-profile/accordions/accordion-documents/accordion-administrative-documents/accordion-administrative-documents.component';
 import { AccordionCareerAdditionalInformationComponent } from './components/hris/employees/employee-profile/accordions/accordion-profile/accordion-career-additional-information/accordion-career-additional-information.component';
 import { AccordionCareerWorkExperienceComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-career-work-experience/accordion-career-work-experience.component';
 import { AccordionSalaryDetailsComponent } from './components/hris/employees/employee-profile/accordions/accordion-career-summary/accordion-salary-details/accordion-salary-details.component';

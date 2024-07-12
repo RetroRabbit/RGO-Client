@@ -8,6 +8,9 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
+import { LocationApiService } from 'src/app/services/hris/location-api.service';
+import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
+import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
 
 @Component({
   selector: 'app-accordion-profile-personal-details',
@@ -17,6 +20,8 @@ import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/propert
 export class AccordionProfilePersonalDetailsComponent {
 
   screenWidth = window.innerWidth;
+  countries: string[] = [];
+  isCustomType: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   usingProfile: boolean = true;
@@ -27,17 +32,49 @@ export class AccordionProfilePersonalDetailsComponent {
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
+    this.loadCountries();
+    this.checkDisabilityType();
+
+    this.sharedAccordionFunctionality.personalDetailsForm.get('disability')?.valueChanges.subscribe(value => {
+      const disabilityNotesControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');
+      if (value === true) {
+        disabilityNotesControl?.setValidators([Validators.required]);
+      } else {
+        disabilityNotesControl?.clearValidators();
+      }
+      disabilityNotesControl?.updateValueAndValidity();
+    });
+
+    this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType')?.valueChanges.subscribe(value => {
+      const disabilityNotesControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityNotes');
+      if (value == 'Other') {
+        disabilityNotesControl?.setValidators([Validators.required]);
+      } else {
+        disabilityNotesControl?.clearValidators();
+      }
+      disabilityNotesControl?.updateValueAndValidity();
+    });
   }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+
+  checkDisabilityType(){
+    if(disabilities.map(x => x.value).includes(this.employeeProfile.employeeDetails.disabilityNotes!)){
+      this.isCustomType = false;
+    }
+    else{
+      this.isCustomType = true
+    }
+  }
 
   initializeForm() {
     this.sharedAccordionFunctionality.personalDetailsForm = this.fb.group({
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
       disability: [this.employeeProfile!.employeeDetails.disability, Validators.required],
-      nationality: [this.employeeProfile!.employeeDetails.nationality],
-      countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth],
+      disabilityType: [!this.isCustomType ? this.employeeProfile.employeeDetails.disabilityNotes: "Other"],
+      nationality: [this.employeeProfile!.employeeDetails.nationality, Validators.required],
+      countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth, Validators.required],
       disabilityList: "",
       disabilityNotes: [this.employeeProfile!.employeeDetails.disabilityNotes]
 
@@ -55,8 +92,8 @@ export class AccordionProfilePersonalDetailsComponent {
     private snackBarService: SnackbarService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) {
-  }
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    public locationApiService: LocationApiService) { }
 
   checkEmployeeDetails() {
     if (this.usingProfile)
@@ -119,11 +156,25 @@ export class AccordionProfilePersonalDetailsComponent {
     this.sharedAccordionFunctionality.hasDisability = event.value;
   }
 
+  setTypeOther(event: any) {
+    if(event.source.value == 'Other'){
+      this.sharedAccordionFunctionality.typeOther = true;
+    }
+    else{
+      this.sharedAccordionFunctionality.typeOther = false;
+    }
+  }
+
   savePersonalEdit() {
     if (this.sharedAccordionFunctionality.personalDetailsForm.valid) {
       const personalDetailsFormValue = this.sharedAccordionFunctionality.personalDetailsForm.value;
       this.sharedAccordionFunctionality.employeeProfileDto!.disability = personalDetailsFormValue.disability;
-      this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = personalDetailsFormValue.disabilityNotes;
+      if(this.sharedAccordionFunctionality.typeOther == false){
+        this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = personalDetailsFormValue.disabilityType;
+      }
+      else{
+        this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = personalDetailsFormValue.disabilityNotes;
+      }
       this.sharedAccordionFunctionality.employeeProfileDto!.race = personalDetailsFormValue.race;
       this.sharedAccordionFunctionality.employeeProfileDto!.gender = personalDetailsFormValue.gender;
       this.sharedAccordionFunctionality.employeeProfileDto!.countryOfBirth = personalDetailsFormValue.countryOfBirth;
@@ -137,9 +188,7 @@ export class AccordionProfilePersonalDetailsComponent {
           this.sharedAccordionFunctionality.personalDetailsForm.disable();
           this.sharedAccordionFunctionality.editPersonal = false;
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Save Personal Information", "snack-error");
-        },
+        error: (er) => this.snackBarService.showError(er),
       });
     }
     else {
@@ -152,6 +201,12 @@ export class AccordionProfilePersonalDetailsComponent {
     this.sharedAccordionFunctionality.hasDisability = false;
     this.initializeForm();
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
+  }
+
+  loadCountries(): void {
+    this.locationApiService.getCountries().subscribe({
+      next: (data) => this.countries = data
+    });
   }
 
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {

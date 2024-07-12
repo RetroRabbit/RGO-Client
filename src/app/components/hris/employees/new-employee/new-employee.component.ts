@@ -20,6 +20,8 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/id-validator.service';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
+import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
+import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
 
 @Component({
   selector: 'app-new-employee',
@@ -66,6 +68,7 @@ export class NewEmployeeComponent implements OnInit {
   public filename = "";
   imageName: string = "";
   @ViewChild('stepper') private myStepper!: MatStepper;
+  @ViewChild('inputField') inputField!: NgxMatIntlTelInputComponent;
 
   employeeTypes: EmployeeType[] = [];
   employeeDocumentModels: EmployeeDocument[] = [];
@@ -100,6 +103,10 @@ export class NewEmployeeComponent implements OnInit {
   isValidStarterkitFile: boolean = false;
   empId: number = 0;
   isSouthAfrica = false;
+  disabilityType = disabilities;
+
+  typeOther: boolean = false;
+  hasDisability: boolean = false;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -121,8 +128,18 @@ export class NewEmployeeComponent implements OnInit {
     this.loadCountries();
 
     this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
-      const disabilityNotesControl = this.newEmployeeForm.get('disabilityNotes');
+      const disabilityNotesControl = this.newEmployeeForm.get('disabilityType');
       if (value === true) {
+        disabilityNotesControl?.setValidators([Validators.required]);
+      } else {
+        disabilityNotesControl?.clearValidators();
+      }
+      disabilityNotesControl?.updateValueAndValidity();
+    });
+
+    this.newEmployeeForm.get('disabilityTpe')?.valueChanges.subscribe(value => {
+      const disabilityNotesControl = this.newEmployeeForm.get('disabilityNotes');
+      if (value == 'Other') {
         disabilityNotesControl?.setValidators([Validators.required]);
       } else {
         disabilityNotesControl?.clearValidators();
@@ -170,7 +187,7 @@ export class NewEmployeeComponent implements OnInit {
   loadCities(province: string): void {
     this.locationApiService.getCities(this.countrySelected, province).subscribe({
       next: (data) => this.cities = data,
-      error: (error) => console.error('Error loading cities:', error)
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -180,7 +197,7 @@ export class NewEmployeeComponent implements OnInit {
       complexName: new FormControl<string | null>('', Validators.minLength(1)),
       suburbDistrict: new FormControl<string | null>('', Validators.minLength(1)),
       city: new FormControl<string | null>('', Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(1), Validators.pattern(/(^\d+$)|(^$)/)]),
+      streetNumber: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(1)]),
       streetName: new FormControl<string | null>('', Validators.minLength(1)),
       country: new FormControl<string | null>('', Validators.minLength(1)),
       province: new FormControl<string | null>('', Validators.minLength(1)),
@@ -193,16 +210,14 @@ export class NewEmployeeComponent implements OnInit {
   postalAddress: FormGroup = this.createAddressForm();
   newEmployeeForm = new FormGroup({
     id: new FormControl<number>(0, [Validators.pattern(/^[0-9]*$/), Validators.required]),
-    employeeNumber: new FormControl<string>(
-      '0',
-      Validators.pattern(/^(\w{3})(\d{3})$/)
-    ),
+    employeeNumber: new FormControl<string>('0', Validators.pattern(/^(\w{3})(\d{3})$/)),
     taxNumber: new FormControl<string>('0000000000', Validators.pattern(/^\d{10}$/)),
     engagementDate: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
     terminationDate: new FormControl<Date | string | null>(null),
     reportingLine: new FormControl<EmployeeProfile | null>(null),
     highestQualication: new FormControl<string>(''),
     disability: new FormControl<boolean | null>(false, [Validators.required]),
+    disabilityType: new FormControl<string>(''),
     disabilityNotes: new FormControl<string>(''),
     countryOfBirth: new FormControl<string>(''),
     nationality: new FormControl<string>(''),
@@ -214,20 +229,14 @@ export class NewEmployeeComponent implements OnInit {
     Validators.pattern(this.initialsPattern)]),
     surname: new FormControl<string>('', [Validators.required,
     Validators.pattern(this.namePattern)]),
-    dateOfBirth: new FormControl<Date | string>(
-      new Date(Date.now()),
-      Validators.required
-    ),
+    dateOfBirth: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
     idNumber: new FormControl<string>('', [Validators.required, this.customValidationService.idNumberValidator]),
     passportNumber: new FormControl<string>(''),
-    passportExpiryDate: new FormControl<Date | string | null>(
-      new Date(Date.now())
-    ),
+    passportExpiryDate: new FormControl<Date | string | null>(new Date(Date.now())),
     passportCountryIssue: new FormControl<string>(''),
     race: new FormControl<number | null>(null),
     gender: new FormControl<number | null>(null),
-    email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),
-    ]),
+    email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),]),
     personalEmail: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]),
     cellphoneNo: new FormControl<string>('', [Validators.required]),
     photo: new FormControl<string>(''),
@@ -319,7 +328,7 @@ export class NewEmployeeComponent implements OnInit {
                 this.categories[category].state = false;
                 this.categories[category].name = file.name;
               },
-              error: (error: any) => {
+              error: () => {
                 this.snackBarService.showSnackbar("Unable to Compile Documents", "snack-error");
               }
             });
@@ -336,8 +345,6 @@ export class NewEmployeeComponent implements OnInit {
       const control = formGroup.get(controlName);
       if (control instanceof FormControl) {
         control.clearValidators();
-        control.updateValueAndValidity();
-        control.reset();
       } else if (control instanceof FormGroup) {
         this.clearFormErrorsAndValues(control);
       }
@@ -353,8 +360,8 @@ export class NewEmployeeComponent implements OnInit {
     this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
     this.removeAllDocuments();
   }
-
   saveAndAddAnother() {
+    this.newEmployeeForm.reset();
     this.isSavedEmployee = false;
     this.clearFormErrorsAndValues(this.newEmployeeForm);
     this.clearFormErrorsAndValues(this.uploadDocumentForm);
@@ -364,8 +371,12 @@ export class NewEmployeeComponent implements OnInit {
     this.removeAllDocuments();
     this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
     this.newEmployeeForm.controls['disability'].setValue(false);
+    this.newEmployeeForm.controls['cellphoneNo'].reset();
     this.myStepper.reset();
+    this.newEmployeeForm.get('cellphoneNo')?.reset();
+    this.newEmployeeForm.markAsUntouched()
   }
+  
 
   onUploadDocument(nextPage: string): void {
     this.isLoadingAddEmployee = true;
@@ -375,8 +386,8 @@ export class NewEmployeeComponent implements OnInit {
           this.snackBarService.showSnackbar("Saved", "snack-success");
           this.isLoadingAddEmployee = false;
         },
-        error: (error: any) => {
-          this.snackBarService.showSnackbar("Unable to Upload Starter Kit Document", "snack-error");
+        error: (er: any) => {
+          this.snackBarService.showError(er);
           this.isLoadingAddEmployee = false;
         }, complete: () => {
           this.employeeDocumentModels = [];
@@ -532,8 +543,8 @@ export class NewEmployeeComponent implements OnInit {
           this.saveEmployee();
         }
       },
-      error: () => {
-        this.snackBarService.showSnackbar("Unable to Verify Duplicate ID Number", "snack-error");
+      error: (er) => {
+        this.snackBarService.showError(er);
         this.isLoadingAddEmployee = false;
       }
     });
@@ -542,15 +553,14 @@ export class NewEmployeeComponent implements OnInit {
   saveEmployee(): void {
     if (this.newEmployeeForm.invalid) {
       this.newEmployeeForm.markAllAsTouched();
-
-      if (this.newEmployeeForm.controls['disabilityNotes'].value == null) {
-        this.snackBarService.showSnackbar('Disability Notes Mandatory for \'Yes\'', "snack-error");
-      } else {
-        this.snackBarService.showSnackbar('Some Fields Are Still Missing Information', "snack-error");
-      }
-      return;
     }
     this.isLoadingAddEmployee = true;
+    if(this.typeOther == false){
+      this.newEmployeeForm.value.disabilityNotes = this.newEmployeeForm.value.disabilityType;
+    }
+    else{
+      this.newEmployeeForm.value.disabilityNotes = this.newEmployeeForm.value.disabilityNotes;
+    }
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
         this.isSavedEmployee = true;
@@ -560,6 +570,7 @@ export class NewEmployeeComponent implements OnInit {
         }
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
+        this.newEmployeeForm.reset();
       },
       error: (error: any, stepper?: MatStepper) => {
         let message = '';
@@ -730,4 +741,16 @@ export class NewEmployeeComponent implements OnInit {
     });
   }
 
+  setHasDisability(event: any) {
+    this.hasDisability = event.value;
+  }
+
+  setTypeOther(event: any) {
+    if(event.source.value == 'Other'){
+      this.typeOther = true;
+    }
+    else{
+      this.typeOther = false;
+    }
+  }
 }

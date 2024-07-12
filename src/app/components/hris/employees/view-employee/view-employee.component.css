@@ -17,8 +17,8 @@ main {
     width: 80%;
 }
 
-mat-header-row {
-    background-color: var(--background-light);
+mat-header-cell {
+  background-color: #D7DFFF !important;
 }
 
 #manage-permissions {

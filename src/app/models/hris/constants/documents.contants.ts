@@ -18,5 +18,3 @@ export const MyDocumentTypes = [
     "Records of Performance Reviews",
     "Other"
 ]
-
-

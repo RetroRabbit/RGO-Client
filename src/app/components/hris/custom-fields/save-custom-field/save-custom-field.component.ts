@@ -122,9 +122,9 @@ export class SaveCustomFieldComponent {
           this.systemService.selectedField = undefined;
           this.router.navigateByUrl('/system-settings');
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Save Field Code", "snack-error");
-        }
+        error: (er) => {
+          this.snackBarService.showError(er)
+        },
       });
     }
     else {

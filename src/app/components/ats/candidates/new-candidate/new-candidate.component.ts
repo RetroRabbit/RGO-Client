@@ -11,7 +11,6 @@ import { qualifications } from 'src/app/models/ats/constants/qualifications.cons
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
 import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
-import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { Employee } from 'src/app/models/hris/employee.interface';
 
 @Component({
@@ -94,7 +93,7 @@ export class NewCandidateComponent {
   getAllEmployees() {
     this.employeeService.getAll().subscribe({
       next: data => this.allEmployees = data,
-      error: error => this.snackBarService.showSnackbar("Unable to Get All Employees", "snack-error")
+      error: (er) => this.snackBarService.showError(er),
     })
   }
 
@@ -271,7 +270,7 @@ export class NewCandidateComponent {
           this.isBlacklisted = false;
         }
       },
-      error: (err) => { }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
   clearUpload() {
@@ -448,8 +447,7 @@ export class NewCandidateComponent {
       this.candidateService.addCandidate(candidateDto).subscribe({
         next: (data) =>
           this.snackBarService.showSnackbar("Added", "snack-success"),
-        error: (error) =>
-          this.snackBarService.showSnackbar("Unable to Add Canididate", "snack-error"),
+        error: (er) => this.snackBarService.showError(er),
         complete: () => {
           this.router.navigateByUrl(nextPage);
         }

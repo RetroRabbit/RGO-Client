@@ -55,8 +55,8 @@ export class EmployeeTerminationComponent implements OnInit {
     dayOfNotice: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
     lastDayOfEmployment: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
     reEmploymentStatus: new FormControl<boolean>(true, Validators.required),
-    equipmentStatus: new FormControl<boolean>(false, Validators.required),
-    accountsStatus: new FormControl<boolean>(false, Validators.required),
+    equipmentStatus: new FormControl<boolean>(false),
+    accountsStatus: new FormControl<boolean>(false),
     terminationDocument: new FormControl<string>('', Validators.required),
     terminationComments: new FormControl<string>(''),
   });
@@ -77,21 +77,15 @@ export class EmployeeTerminationComponent implements OnInit {
         dayOfNotice: new FormControl<Date | string>('', Validators.required),
         lastDayOfEmployment: new FormControl<Date | string>('', Validators.required),
         reEmploymentStatus: new FormControl<boolean>(true, Validators.required),
-        equipmentStatus: new FormControl<boolean>(false, Validators.required),
-        accountsStatus: new FormControl<boolean>(false, Validators.required),
+        equipmentStatus: new FormControl<boolean>(false),
+        accountsStatus: new FormControl<boolean>(false),
         terminationDocument: new FormControl<string>('', Validators.required),
         terminationComments: new FormControl<string>(''),
     }, { validator: endDateAfterStartDateValidator('dayOfNotice', 'lastDayOfEmployment')});
-
-    this.newterminationform.valueChanges.subscribe(() => {
-        this.checkCheckboxesValid();
-    });
-    this.checkCheckboxesValid();
   }
 
   SaveEmployeeTermination(nextPage: string) {
     this.formSubmitted = true;
-    this.checkCheckboxesValid();
 
     this.newterminationform.updateValueAndValidity();
 
@@ -115,11 +109,19 @@ export class EmployeeTerminationComponent implements OnInit {
     };
     this.employeeTerminationService.saveEmployeeTermination(employeeTerminationDto).subscribe({
         next: () => this.snackBarService.showSnackbar("Employee Terminated", "snack-success"),
-        error: () => this.snackBarService.showSnackbar("Unable to Save Termination", 'snack-error'),
+        error: (er) => this.snackBarService.showError(er),
         complete: () => {
             this.router.navigateByUrl(nextPage);
         }
     });
+  }
+
+  endDateFilter = (date: Date | null): boolean => {
+    const startDate = this.newterminationform.get('dayOfNotice')?.value;
+    if (!date || !startDate) {
+      return true;
+    }
+    return date.getTime() >= new Date(startDate).getTime();
   }
 
   removeDocument() {
@@ -175,12 +177,5 @@ export class EmployeeTerminationComponent implements OnInit {
   setTerminationOption(option: number) {
     this.newterminationform.controls['terminationOption'].setValue(option);
     this.terminationOptionValue = option;
-  }
-
-  checkCheckboxesValid() {
-    const equipmentStatusChecked = this.newterminationform.get('equipmentStatus')?.value;
-    const accountsStatusChecked = this.newterminationform.get('accountsStatus')?.value;
-
-    this.checkboxesValid = equipmentStatusChecked && accountsStatusChecked;
   }
 }

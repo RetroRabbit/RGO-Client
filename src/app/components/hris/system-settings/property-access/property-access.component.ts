@@ -119,8 +119,8 @@ export class PropertyAccessComponent {
                     this.snackBarService.showSnackbar("Updated", "snack-success");
                     this.getAccessProperties();
                 }),
-                catchError((error) => {
-                    this.snackBarService.showSnackbar('Unable to Change Property Access', 'snack-error');
+                catchError((er) => {
+                    this.snackBarService.showError(er);
                     return of(null);
                 })
             )
@@ -132,8 +132,7 @@ export class PropertyAccessComponent {
             next: (data: any) => {
                 this.getAccessProperties()
             },
-            error: (error: any) => {
-            }
+            error: (er: any) => this.snackBarService.showError(er),
         });
     }
 

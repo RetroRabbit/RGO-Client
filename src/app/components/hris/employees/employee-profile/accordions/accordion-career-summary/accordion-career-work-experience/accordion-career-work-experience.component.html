@@ -230,6 +230,14 @@
                                     <mat-datepicker #picker2></mat-datepicker>
                                 </mat-form-field>
                             </div>
+                            <div class="col-md-6 my-2">
+                                <mat-form-field class="" id="project-description-width" appearance="outline" >
+                                    <mat-label>Project description</mat-label>
+                                    <textarea [(ngModel)]="sharedAccordionFunctionality.newWorkExperiences[i].projectDescription"
+                                    [value]="sharedAccordionFunctionality.newWorkExperiences[i].projectDescription"
+                                     matInput placeholder="This project was based on...."></textarea>
+                                </mat-form-field>
+                                </div>
                             <hr>
                         </div>
 

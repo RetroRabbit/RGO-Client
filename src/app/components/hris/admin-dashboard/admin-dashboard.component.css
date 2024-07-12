@@ -305,6 +305,15 @@ div#results-container {
   z-index: 99999;
 }
 
+.growthRatePositive{
+  color: #006E2B ;
+  margin-top: 10px;
+}
+
+.growthRateNegative{
+  color: #B3261E ;
+  margin-top: 10px;
+}
 
 #dialog-save>button {
   background: #0029c6;
@@ -501,7 +510,7 @@ div#results-container {
 }
 
 .span-churn-rate {
-  font-size: 18px;
+  font-size: 14px;
   font: Roboto;
   font-weight: 500;
   line-height: 20px;

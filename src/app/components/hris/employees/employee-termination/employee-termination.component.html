@@ -15,7 +15,7 @@
                             (onSelectionChange)="setTerminationOption(i)">{{termination}}</mat-option>
                     </mat-select>
                     <mat-error *ngIf="newterminationform.controls['terminationOption'].hasError('required')">
-                        Please select terminationOption
+                        Please select a termination option
                     </mat-error>
                 </mat-form-field>
 
@@ -32,20 +32,19 @@
                 <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                     <mat-label>Last Day of Employment</mat-label>
                     <input matInput [matDatepicker]="picker2" placeholder="Last day of Employment"
-                        formControlName="lastDayOfEmployment">
+                        formControlName="lastDayOfEmployment" [matDatepickerFilter]="endDateFilter">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
                     <mat-error *ngIf="newterminationform.controls['lastDayOfEmployment'].hasError('required')">
-                        Please select Last day of employment
+                        Please select the last day of employment
                     </mat-error>
                 </mat-form-field>
-                
                 <div *ngIf="newterminationform.hasError('endDateAfterStartDate')" class="text-center custom-validate-error">
-                    *The last day of employment cannot be before the date of notice.
+                    *The last day of employment cannot be before the day of notice
                 </div>
 
                 <div class="col-md-12 col-lg-7 my-2">
-                    <h2 class="align-items-left">Is this person eligible for reemployment?</h2>
+                    <h2 class="align-items-left">Is This Person Eligible for Re-Employment?</h2>
                     <mat-radio-group formControlName="reEmploymentStatus">
                         <mat-radio-button [value]="true">Yes</mat-radio-button><br />
                         <mat-radio-button [value]="false">No</mat-radio-button><br />
@@ -54,19 +53,15 @@
                         </mat-error>
                     </mat-radio-group>
                 </div>
-                <h2 class="col-md-12 col-lg-7 my-2">Off-boarding tasks</h2>
+
+                <h2 class="col-md-12 col-lg-7 my-2">Off-Boarding Tasks</h2>
                 <div class="col-md-12 col-lg-7 my-2 ms-4">
                     <mat-checkbox formControlName="equipmentStatus">Handed Back Company Equipment</mat-checkbox>
                 </div>
                 <div class="col-md-12 col-lg-7 my-2 ms-4 align-items-left">
                     <mat-checkbox formControlName="accountsStatus">Transferred Company Accounts</mat-checkbox>
-                    <mat-error class="d-flex align-items-center mt-3" *ngIf="!checkboxesValid && formSubmitted">
-                        <div>You need to select both of the above</div>
-                        <div>
-                            <mat-icon class="ms-2" id="change-close-color">error</mat-icon>
-                        </div>
-                    </mat-error>
                 </div>
+
                 <div id="doc-upload" class="col-md-12 col-lg-7 my-2 p-3 mt-3"
                     [ngClass]="{'error-border': formSubmitted && !newterminationform.value.terminationDocument}"
                     style="border: 1px solid #ccc; border-radius: 10px;">
@@ -101,7 +96,7 @@
                     </div>
                 </div>
                 <mat-form-field Id="comments-field" appearance="outline" class="col-md-12 col-lg-7 my-2 mt-3">
-                    <mat-label>Additional comments</mat-label>
+                    <mat-label>Additional Comments</mat-label>
                     <input matInput type="text" formControlName="terminationComments"
                         placeholder="additional comments" />
                 </mat-form-field>

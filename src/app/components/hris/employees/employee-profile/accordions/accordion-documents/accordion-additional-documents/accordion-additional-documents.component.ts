@@ -31,6 +31,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   fileCategories = [];
   unarchivedCustomDocuments: CustomField[] = [];
+  customFields: CustomField[] = [];
   roles: string[] = [];
   isLoadingUpload: boolean = false;
   uploadButtonIndex: number = 0;
@@ -47,8 +48,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
   employeeId = this.route.snapshot.params['id'];
   dataSource = new MatTableDataSource<FileCategory>(this.fileCategories);
   infinity = Infinity;
-
   selectedFieldCode: string = '';
+
   constructor(
     private customFieldService: CustomFieldService,
     private route: ActivatedRoute,
@@ -77,9 +78,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.getDocumentFieldCodes();
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
-        error: error => {
-          this.snackBarService.showSnackbar("Unable to Retrieve Additional Documents", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       });
     } else {
       this.employeeId = this.navService.employeeProfile.id;
@@ -88,9 +87,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.sharedAccordionFunctionality.additionalDocuments = data;
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
-        error: error => {
-          this.snackBarService.showSnackbar("Unable to Retrieve Additional Documents", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       });
     }
   }
@@ -136,7 +133,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
       }
       else {
         this.unarchivedCustomDocuments.push(field);
-        this.unarchivedCustomDocuments = this.unarchivedCustomDocuments.filter((field: any) => field.category == this.sharedAccordionFunctionality.category[3].id)
+        this.customFields = this.unarchivedCustomDocuments.filter((field: any) => field.category == this.sharedAccordionFunctionality.category[3].id)
       }
       index++;
     })
@@ -205,9 +202,9 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.getAdditionalDocuments();
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
-        error: (error: any) => {
+        error: (er: any) => {
           this.isLoadingUpload = false;
-          this.snackBarService.showSnackbar("Unable to Save Document", "snack-error");
+          this.snackBarService.showError(er);
         }
       })
 
@@ -236,8 +233,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
 
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Update Document", "snack-error");
+        error: (er) => {
+          this.snackBarService.showError(er);
           this.isLoadingUpload = false;
         }
       });

@@ -62,14 +62,14 @@ export class AccordionSalaryDetailsComponent {
     if (salaryDetails != null) {
       this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
         remuneration: [salaryDetails.remuneration, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-        taxNumber: [this.employeeProfile!.taxNumber, [Validators.required]]
+        taxNumber: [this.employeeProfile!.taxNumber, [Validators.required, Validators.pattern(/^[01239]\d{9}$/)]]
       });
       this.getSalaryDate();
     }
     else {
       this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
         remuneration: ["", [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-        taxNumber: ["", [Validators.required]]
+        taxNumber: ["", [Validators.required, Validators.pattern(/^[01239]\d{9}$/)]]
       });
     }
     this.sharedAccordionFunctionality.salaryDetailsForm.disable();
@@ -89,9 +89,7 @@ export class AccordionSalaryDetailsComponent {
           this.initializeSalaryDetailsForm(this.employeeSalary, data.taxNumber);
           this.getEmployeeSalaryDetails(data.taxNumber);
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Error fetching salary details", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       })
     }
   }
@@ -105,9 +103,7 @@ export class AccordionSalaryDetailsComponent {
           this.sharedAccordionFunctionality.calculateSalaryDetails();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Fetch Salary Details", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       })
     }
     else {
@@ -116,9 +112,7 @@ export class AccordionSalaryDetailsComponent {
           this.employeeSalary = data;
           this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Fetch Salary Details", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       })
     }
   }
@@ -192,9 +186,7 @@ export class AccordionSalaryDetailsComponent {
             this.sharedAccordionFunctionality.calculateSalaryDetails();
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
-          error: (error) => {
-            this.snackBarService.showSnackbar("Unable to Update Salary Information", "snack-error");
-          }
+          error: (er) => this.snackBarService.showError(er),
         }),
           this.employeeService.updateEmployee(this.employeeProfile).subscribe({
             next: (data) => {
@@ -212,17 +204,18 @@ export class AccordionSalaryDetailsComponent {
             this.sharedAccordionFunctionality.calculateSalaryDetails();
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
-          error: (error) => {
-            this.snackBarService.showSnackbar("Unable to Save Salary Information", "snack-error");
-          }
+          error: (er) => this.snackBarService.showError(er),
         })
       }
     }
     else if (salaryDetailsFormValue.remuneration < 0) {
       this.snackBarService.showSnackbar("Remuneration Cannot Be Less Than Zero", "snack-error");
     }
+    else if (salaryDetailsFormValue.taxNumber < 0) {
+      this.snackBarService.showSnackbar("Tax Number Cannot Be Empty", "snack-error");
+    }
     else {
-      this.snackBarService.showSnackbar("Please Enter the Correct Remuneration", "snack-error");
+      this.snackBarService.showSnackbar("Please Enter the Correct Information", "snack-error");
     }
   }
 

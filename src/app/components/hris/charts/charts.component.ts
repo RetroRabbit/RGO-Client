@@ -9,7 +9,7 @@ import { ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
+import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { Chart } from 'chart.js';
@@ -117,9 +117,7 @@ export class ChartComponent implements OnInit {
           this.captureCharts.emit(0);
         }
       },
-      error: () => {
-        this.snackBarService.showSnackbar("Unable to Display Chart", "snack-error");
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 }
@@ -167,10 +165,7 @@ export class ChartComponent implements OnInit {
           this.resetPage();
           this.createAndDisplayChart();
         },
-        error: () => {
-          this.snackBarService.showSnackbar("Unable to Update Chart", "snack-error");
-
-        }
+        error: (er) => this.snackBarService.showError(er),
       });
     }
   }
@@ -198,24 +193,22 @@ export class ChartComponent implements OnInit {
           this.resetPage();
           this.createAndDisplayChart();
         },
-        error: () => {
-          this.snackBarService.showSnackbar("Unable to Delete Chart", "snack-error");
-        }
+        error: (er) => this.snackBarService.showError(er),
       });
     }
   }
 
   fetchPeopleChampionEmployees() {
     this.employeeService.filterEmployees(0, EmployeeType.PeopleChampion).subscribe({
-      next: (employees: EmployeeProfile[]) => {
+      next: (employees: EmployeeFilterView[]) => {
         employees.forEach((employee) => {
           if (employee.id) {
             this.employeeNames[employee.id] = `${employee.name} ${employee.surname}`;
           }
         });
-      }, error: () => {
-        this.snackBarService.showSnackbar("Unable to Retrieve People Champion", "snack-error");
-      }, complete: () => {
+      }, 
+      error: (er) => this.snackBarService.showError(er),
+      complete: () => {
         this.createAndDisplayChart();
       },
 

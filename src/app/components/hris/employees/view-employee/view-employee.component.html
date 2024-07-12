@@ -31,9 +31,9 @@
           <div (click)="$event.stopPropagation()" class="row col-12 px-0">
             <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3 me-5"
               [ngClass]="{ 'roles-input-mobile': screenWidth <= 1200 }">
-              <mat-label>People Champion Filter</mat-label>
-              <mat-select [disabled]="!getActiveEmployees" hideSingleSelectionIndicator="true">
-                <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id" [ngModel]="selectedPeopleChampion"
+              <mat-label>People Champion</mat-label>
+              <mat-select [disabled]="!getActiveEmployees" hideSingleSelectionIndicator="true" [(value)]="selectedChampion!.id">
+                <mat-option *ngFor="let champion of peopleChampions | async" [value]="champion.id"
                   class="menu-item-button" (click)="changePeopleChampionFilter(champion)">
                   {{ champion.name }}
                 </mat-option>
@@ -46,7 +46,7 @@
           <div (click)="$event.stopPropagation()" class="row col-12 px-0">
             <mat-form-field appearance="outline" class="col-md-12 col-lg-12 mt-3"
               [ngClass]="screenWidth <= 1200 ? 'roles-input-mobile' : ''">
-              <mat-label>User Type Filter</mat-label>
+              <mat-label>Role</mat-label>
               <mat-select hideSingleSelectionIndicator="true">
                 <mat-option *ngFor="let userType of usertypes | async" [value]="userType.id" class="menu-item-button"
                   (click)="changeUserTypeFilter(userType)">
@@ -99,14 +99,14 @@
             </ng-container>
             <ng-container matColumnDef="Level">
               <mat-header-cell *matHeaderCellDef mat-sort-header
-                class="boldArrow d-none d-md-flex me-4">Level</mat-header-cell>
+                class="boldArrow d-none d-md-flex">Level</mat-header-cell>
               <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
                 {{ employee.Level == 0 ? "N/A" : employee.Level }}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Client">
               <mat-header-cell *matHeaderCellDef mat-sort-header
-                class="boldArrow d-none d-md-flex me-4">Client</mat-header-cell>
+                class="boldArrow d-none d-md-flex ">Client</mat-header-cell>
               <mat-cell *matCellDef="let employee" class="d-none d-md-flex">
                 {{ employee.Client }}
               </mat-cell>
@@ -121,7 +121,7 @@
                       {{ splitAndCapitalizeCamelCase(employee.Roles.length > 0 ? employee.Roles[0] : "N/A") }}
                     </mat-label>
                     <mat-select hideSingleSelectionIndicator="true">
-                      <mat-option *ngFor="let role of roles | async" [value]="role"
+                      <mat-option *ngFor="let role of roles" [value]="role"
                         (click)="changeRole(employee.Email, role)">
                         {{ splitAndCapitalizeCamelCase(role) }}
                       </mat-option>

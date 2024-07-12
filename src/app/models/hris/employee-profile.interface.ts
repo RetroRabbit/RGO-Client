@@ -12,6 +12,7 @@ export class EmployeeProfile {
   terminationDate?: Date;
   peopleChampion?: number;
   disability?: boolean;
+  disabilityType?: number;
   disabilityNotes?: string;
   countryOfBirth?: string;
   nationality?: string;

@@ -75,12 +75,10 @@ export class AccordionBankingComponent {
           this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
           this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
         } else {
-          console.warn("No banking details available.");
+          this.snackBarService.showError("No banking details available.");
         }
       },
-      error: (err) => {
-        console.error("Error fetching banking details: ", err);
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -164,53 +162,54 @@ export class AccordionBankingComponent {
   }
 
   saveBankingDetails() {
+    if(this.bankingPDFName.length >= 1){
+      this.editBanking = false;
+      this.isUpdated = true;
+      const employeeBankingFormValue = this.employeeBankingsForm.value;
+      this.employeeBankingDto = {
+        id: this.bankingId,
+        employeeId: this.employeeProfile?.id,
+        bankName: employeeBankingFormValue.bankName,
+        branch: `${employeeBankingFormValue.branch}`,
+        accountNo: `${employeeBankingFormValue.accountNo}`,
+        accountType: employeeBankingFormValue.accountType,
+        status: 1,
+        declineReason: this.bankingReason,
+        file: employeeBankingFormValue.file
+      }
+      if (this.hasBankingData) {
+        this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
+          next: () => {
+            this.addOrUpdateBanking("Updated")
+          },
+          error: (er) => this.snackBarService.showError(er)
+        })
+      }
+      else {
+        this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
+          next: () => {
+            this.addOrUpdateBanking("Saved")
+          }, 
+          error: (er) => this.snackBarService.showError(er)
+        })
+      }
+    }
+    else{
+      this.snackBarService.showSnackbar("Add a Proof of account", "snack-error")
+    }
+  }
+
+  addOrUpdateBanking(message: string) {
+    this.snackBarService.showSnackbar(message, "snack-success");
+    this.getEmployeeBankingData();
+    this.checkBankingInformationProgress();
+    this.totalBankingProgress();
+    this.employeeBankingStarterkitService.getAllBankingAndStarterkits();
+    this.hasUpdatedBanking = true;
     this.editBanking = false;
-    this.isUpdated = true;
-    const employeeBankingFormValue = this.employeeBankingsForm.value;
-    this.employeeBankingDto = {
-      id: this.bankingId,
-      employeeId: this.employeeProfile?.id,
-      bankName: employeeBankingFormValue.bankName,
-      branch: `${employeeBankingFormValue.branch}`,
-      accountNo: `${employeeBankingFormValue.accountNo}`,
-      accountType: employeeBankingFormValue.accountType,
-      status: 1,
-      declineReason: this.bankingReason,
-      file: employeeBankingFormValue.file
-    }
-    if (this.hasBankingData) {
-      this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
-        next: () => {
-          this.snackBarService.showSnackbar("Updated", "snack-success");
-          this.getEmployeeBankingData();
-          this.checkBankingInformationProgress();
-          this.totalBankingProgress();
-          this.employeeBankingStarterkitService.getAllBankingAndStarterkits();
-          this.hasUpdatedBanking = true;
-          this.editBanking = false;
-          this.employeeBankingsForm.disable();
-        },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Save Banking Information", "snack-error");
-        }
-      })
-    }
-    else {
-      this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
-        next: () => {
-          this.snackBarService.showSnackbar("Saved", "snack-success");
-          this.getEmployeeBankingData();
-          this.checkBankingInformationProgress();
-          this.totalBankingProgress();
-          this.employeeBankingStarterkitService.incrementPendingCount();
-          this.hasUpdatedBanking = true;
-          this.editBanking = false;
-          this.employeeBankingsForm.disable();
-        }
-        , error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Save Banking Information", "snack-error");
-        }
-      })
+    this.employeeBankingsForm.disable();
+    if(message = "Saved"){ 
+      this.employeeBankingStarterkitService.incrementPendingCount();
     }
   }
 

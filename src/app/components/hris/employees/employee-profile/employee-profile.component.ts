@@ -26,8 +26,8 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { SharedAccordionFunctionality } from './shared-accordion-functionality';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { AccordionDocumentsAdditionalComponent } from './accordions/accordion-documents/accordion-my-documents/accordion-my-documents.component';
-import { AccordionAdministrativeDocumentsComponent } from './accordions/accordion-administrative-documents/accordion-administrative-documents.component';
-import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-employee-documents/accordion-employee-documents.component';
+import { AccordionAdministrativeDocumentsComponent } from './accordions/accordion-documents/accordion-administrative-documents/accordion-administrative-documents.component';
+import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-documents/accordion-employee-documents/accordion-employee-documents.component';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { AppModule } from 'src/app/app.module';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
@@ -180,10 +180,7 @@ export class EmployeeProfileComponent implements OnChanges {
       this.employeeId = this.authAccessService.getUserId();
     }
 
-    if (this.authAccessService.isAdmin() ||
-      this.authAccessService.isSuperAdmin() ||
-      this.authAccessService.isJourney() ||
-      this.authAccessService.isTalent()) {
+    if (this.authAccessService.isSupport()) {
       this.usingSimpleProfile = false;
     }
     else {
@@ -224,9 +221,7 @@ export class EmployeeProfileComponent implements OnChanges {
       next: (data: EmployeeTermination) => {
         this.terminationData = data;
       },
-      error: err => {
-        this.snackBarService.showSnackbar('Unable to Fetch Termination Details', err);
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -257,9 +252,7 @@ export class EmployeeProfileComponent implements OnChanges {
         }
         this.changeDetectorRef.detectChanges();
       },
-      error: (error: any) => {
-        this.snackBarService.showSnackbar("Unable to Retrieve Profile", 'snack-error');
-      }
+      error: (er: any) => this.snackBarService.showError(er),
     })
   }
 
@@ -280,9 +273,7 @@ export class EmployeeProfileComponent implements OnChanges {
         if (!this.usingSimpleProfile)
           this.getAllEmployees();
       },
-      error: () => {
-        this.snackBarService.showSnackbar("Unable to Retrieve Profile", 'snack-error');
-      }
+      error: (er: any) => this.snackBarService.showError(er),
     })
   }
 
@@ -302,7 +293,7 @@ export class EmployeeProfileComponent implements OnChanges {
   get basedInString(): string {
     let basedIn = '';
     if (this.employeeProfile.physicalAddress !== undefined && this.employeeProfile.physicalAddress.suburbOrDistrict && this.employeeProfile.physicalAddress.suburbOrDistrict.length > 2) {
-      basedIn = `Based in ${this.employeeProfile.physicalAddress.suburbOrDistrict}`;
+      basedIn = `Based in ${this.employeeProfile.physicalAddress.city}`;
     }
     return basedIn;
   }
@@ -426,9 +417,7 @@ export class EmployeeProfileComponent implements OnChanges {
         this.snackBarService.showSnackbar("Updated", "snack-success");
         this.navService.refreshEmployee();
       },
-      error: () => {
-        this.snackBarService.showSnackbar('Unable to Update Employee Profile Picture', 'snack-error');
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 

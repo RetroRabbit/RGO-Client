@@ -19,6 +19,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
+import { DashboardService } from 'src/app/services/hris/employee/dashboard.service';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -59,6 +60,7 @@ export class AdminDashboardComponent {
   selectedTypes: string[] = [];
   employeeProfiles: EmployeeProfile[] = [];
   totalNumberOfEmployees: number = 0;
+  growthRate: number = 0;
   roles: string[] = [];
   searchQuery: string = '';
   searchResults: EmployeeProfile[] = [];
@@ -92,6 +94,7 @@ export class AdminDashboardComponent {
   constructor(
     private employeeBankingandstarterkitService: EmployeeBankingandstarterkitService,
     private employeeService: EmployeeService,
+    private dashboardService: DashboardService,
     public chartService: ChartService,
     private cookieService: CookieService,
     private router: Router,
@@ -177,7 +180,7 @@ export class AdminDashboardComponent {
       }
     });
 
-    this.employeeService.getEmployeeCountData().subscribe({
+    this.dashboardService.getEmployeeCountData().subscribe({
       next: (data: EmployeeCountDataCard) => {
         this.employeeCount = data;
       },
@@ -186,7 +189,7 @@ export class AdminDashboardComponent {
       }
     });
 
-    this.employeeService.getChurnRate().subscribe({
+    this.dashboardService.getChurnRate().subscribe({
       next: (data: ChurnRateDataCard) => {
         this.churnRate = data;
       },
@@ -194,6 +197,15 @@ export class AdminDashboardComponent {
         this.isLoading = false;
       }
     });
+
+    this.dashboardService.getGrowthrate().subscribe({
+      next: (data: number ) => {
+        this.growthRate = data
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    })
   }
 
   getEmployeeTableColumns() {
@@ -216,9 +228,7 @@ export class AdminDashboardComponent {
         this.employeeProfiles = data;
         this.searchResults = [];
       },
-      error: () => {
-        this.snackBarService.showSnackbar('Unable to Fetch Employees', 'snack-error');
-      },
+      error: (er) => this.snackBarService.showError(er),
       complete: () => {
         this.loadCounter++;
       },
@@ -231,9 +241,7 @@ export class AdminDashboardComponent {
         next: (data) => {
           this.charts = data;
         },
-        error: () => {
-          this.snackBarService.showSnackbar('Unable to Fetch Charts', 'snack-error');
-        },
+        error: (er) => this.snackBarService.showError(er),
         complete: () => {
           this.loadCounter++;
         },
@@ -360,9 +368,7 @@ export class AdminDashboardComponent {
             this.chartService.isEditing = false
             this.dialog.closeAll();
           },
-          error: () => {
-            this.snackBarService.showSnackbar("Unable to Update Chart", "snack-error");
-          }
+          error: (er) => this.snackBarService.showError(er),
         });
       }
       return
@@ -405,8 +411,8 @@ export class AdminDashboardComponent {
           this.configureDashboardData();
           this.isLoadingChart = false;
         },
-        error: () => {
-          this.snackBarService.showSnackbar('Unable to Create Chart', 'snack-error');
+        error: (er) => {
+          this.snackBarService.showError(er);
           this.isLoadingChart = false;
         },
       });
