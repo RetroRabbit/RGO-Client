@@ -15,8 +15,8 @@
                     <div class="col-12 text-center roboto-font pb-3 mt-3">
                         <h2 *ngIf="isValidProfileImage" class="center-bold">Profile Picture</h2>
                         <p *ngIf="isValidProfileImage" class="profile-text">PNG, JPG, SVG</p>
-                        <p *ngIf="isValidProfileImage" class="profile-text">10 MB Max limit size</p>
-                        <p id="change-color-heading" *ngIf="!isValidProfileImage" class="profile-text">File size exceeded. Maximum limit Is 10 MB.</p>
+                        <p *ngIf="isValidProfileImage" class="profile-text">10 MB Max Limit Size</p>
+                        <p id="change-color-heading" *ngIf="!isValidProfileImage" class="profile-text">File Size Exceeded. Maximum Limit Is 10 MB.</p>
                         <div id="actionCellUpload" class="col-12 col-md-auto">
                             <button (click)="uploadFile.click()"
                                 [ngStyle]="{'color': '#F8F8F8', 'background-color': '#0029C6'}"
@@ -29,7 +29,7 @@
                             </button>
                         </div>
                         <input type="file" #uploadFile (change)="onImageChange($event)" hidden />
-                        <p class="col-md-12 col-lg-7 mt-5 info-text">*Required fields</p>
+                        <p class="col-md-12 col-lg-7 mt-5 info-text">*Required Fields</p>
                     </div>
                 </div>
                 <div class="row flex-column justify-content-center align-items-center col-md-12">
