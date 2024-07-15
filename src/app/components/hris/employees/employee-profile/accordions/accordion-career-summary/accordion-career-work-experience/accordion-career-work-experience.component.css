@@ -75,10 +75,10 @@ mat-icon{
 #project-description-width{
     width:880px;
 }
-.fixed-width {
-    max-width: 500px; /* Adjust the width as needed */
-    width: 100%;
-  }
+
+.matChip{
+    border-radius: 8px;
+}
   
 mat-select-trigger {
     display: flex;

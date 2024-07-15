@@ -72,19 +72,19 @@
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field appearance="outline" class="w-100" *ngIf="editWorkExperience; else NoEditSkillSet">
                                             <mat-label>Skillset</mat-label>
-                                            <mat-select  [formControl]="formControl" [(ngModel)]="copyOfWorkExperience[i].skillSet" multiple>
-                                                <mat-select-trigger>
+                                            <mat-select [formControl]="skillsFormControl"  [(ngModel)]="copyOfWorkExperience[i].skillSet" multiple>
+                                                <mat-select-trigger >
                                                     <mat-chip-grid >
-                                                      <ng-container *ngFor="let skill of getDisplaySkills().skills">
-                                                        <mat-chip-row class="matChip" [removable]="true" (removed)="onSkillsRemoved(skill)">
+                                                      <ng-container *ngFor="let skill of getChipItems(skillsFormControl.value ?? []).items">
+                                                        <mat-chip-row class="matChip" [removable]="true" (removed)="removeChipItems(skillsFormControl, skill)">
                                                           {{ skill }}
                                                           <button matChipRemove>
                                                             <mat-icon>cancel</mat-icon>
                                                           </button>
                                                         </mat-chip-row>
                                                       </ng-container>
-                                                      <mat-chip-row class="matChip" *ngIf="getDisplaySkills().extraCount > 0">
-                                                        +{{ getDisplaySkills().extraCount }}
+                                                      <mat-chip-row class="matChip" *ngIf="getChipItems(skillsFormControl.value ?? []).count > 0">
+                                                        +{{ getChipItems(skillsFormControl.value ?? []).count }}
                                                       </mat-chip-row>
                                                     </mat-chip-grid>
                                                   </mat-select-trigger>
@@ -92,26 +92,25 @@
                                             </mat-select>
                                         </mat-form-field>
                                         <ng-template #NoEditSkillSet>
-                                            <mat-form-field appearance="outline" class="w-100">
+                                            <mat-form-field appearance="outline" class="w-100" [formControl]="skillsFormControl">
                                                 <mat-label>Skillset</mat-label>
-                                                <mat-select [formControl]="formControl" [(ngModel)]="sharedAccordionFunctionality.workExperience[i].skillSet" multiple [disabled]="isDisabled">
-                                                    <mat-select-trigger>
+                                                <mat-select  [formControl]="skillsFormControl" [(ngModel)]="sharedAccordionFunctionality.workExperience[i].skillSet" multiple >
+                                                    <mat-select-trigger >
                                                       <mat-chip-grid [disabled]="isDisabled">
-                                                        <ng-container *ngFor="let skill of getDisplaySkills().skills">
-                                                          <mat-chip-row class="matChip" [removable]="true" (removed)="onSkillsRemoved(skill)">
+                                                        <ng-container *ngFor="let skill of getChipItems(skillsFormControl.value ?? []).items">
+                                                          <mat-chip-row class="matChip" [removable]="true" (removed)="removeChipItems(skillsFormControl, skill)">
                                                             {{ skill }}
                                                             <button matChipRemove>
                                                               <mat-icon>cancel</mat-icon>
                                                             </button>
                                                           </mat-chip-row>
                                                         </ng-container>
-                                                        <mat-chip-row class="matChip" *ngIf="getDisplaySkills().extraCount > 0">
-                                                          +{{ getDisplaySkills().extraCount }}
+                                                        <mat-chip-row class="matChip" *ngIf="getChipItems(skillsFormControl.value ?? []).count > 0">
+                                                          +{{ getChipItems(skillsFormControl.value ?? []).count }}
                                                         </mat-chip-row>
                                                       </mat-chip-grid>
                                                     </mat-select-trigger>
-                                                
-                                                    <mat-option *ngFor="let skill of skillSetList" [value]="skill">{{ skill }}</mat-option>
+                                                    <mat-option disabled *ngFor="let skill of skillSetList" [value]="skill">{{ skill }}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                         </ng-template>
@@ -122,16 +121,16 @@
                                             <mat-select [formControl]="softwareFormControl" [(ngModel)]="copyOfWorkExperience[i].software" multiple>
                                                 <mat-select-trigger>
                                                     <mat-chip-grid >
-                                                      <ng-container *ngFor="let software of getDisplaySoftware().software">
-                                                        <mat-chip-row class="matChip" [removable]="true" (removed)="onSoftwareRemoved(software)">
+                                                      <ng-container *ngFor="let software of getChipItems(softwareFormControl.value ?? []).items">
+                                                        <mat-chip-row class="matChip" [removable]="true" (removed)="removeChipItems(softwareFormControl, software)">
                                                           {{ software }}
                                                           <button matChipRemove>
                                                             <mat-icon>cancel</mat-icon>
                                                           </button>
                                                         </mat-chip-row>
                                                       </ng-container>
-                                                      <mat-chip-row class="matChip" *ngIf="getDisplaySoftware().extraCount > 0">
-                                                        +{{ getDisplaySoftware().extraCount }}
+                                                      <mat-chip-row class="matChip" *ngIf="getChipItems(softwareFormControl.value ?? []).count > 0">
+                                                        +{{ getChipItems(softwareFormControl.value ?? []).count }}
                                                       </mat-chip-row>
                                                     </mat-chip-grid>
                                                   </mat-select-trigger>
@@ -144,16 +143,16 @@
                                                 <mat-select [formControl]="softwareFormControl" [formControl]="softwareFormControl" [(ngModel)]="sharedAccordionFunctionality.workExperience[i].software" multiple [disabled]="isDisabled">
                                                     <mat-select-trigger>
                                                         <mat-chip-grid [disabled]="isDisabled">
-                                                          <ng-container *ngFor="let software of getDisplaySoftware().software">
-                                                            <mat-chip-row class="matChip" [removable]="true" (removed)="onSoftwareRemoved(software)">
+                                                          <ng-container *ngFor="let software of getChipItems(softwareFormControl.value ?? []).items">
+                                                            <mat-chip-row class="matChip" [removable]="true" (removed)="removeChipItems(softwareFormControl, software)">
                                                               {{ software }}
                                                               <button matChipRemove>
                                                                 <mat-icon>cancel</mat-icon>
                                                               </button>
                                                             </mat-chip-row>
                                                           </ng-container>
-                                                          <mat-chip-row class="matChip" *ngIf="getDisplaySoftware().extraCount > 0">
-                                                            +{{ getDisplaySoftware().extraCount }}
+                                                          <mat-chip-row class="matChip" *ngIf="getChipItems(softwareFormControl.value ?? []).count > 0">
+                                                            +{{getChipItems(softwareFormControl.value ?? []).count }}
                                                           </mat-chip-row>
                                                         </mat-chip-grid>
                                                       </mat-select-trigger>
@@ -258,7 +257,22 @@
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Skillset</mat-label>
-                                    <mat-select [(ngModel)]="sharedAccordionFunctionality.newWorkExperiences[i].skillSet" multiple>
+                                    <mat-select  [formControl]="newSkillsFormControl" [(ngModel)]="sharedAccordionFunctionality.newWorkExperiences[i].skillSet" multiple>
+                                        <mat-select-trigger>
+                                            <mat-chip-grid >
+                                              <ng-container *ngFor="let skill of getChipItems(newSkillsFormControl.value ?? []).items">
+                                                <mat-chip-row class="matChip" [removable]="true" (removed)="removeChipItems(newSkillsFormControl, skill)">
+                                                  {{ skill }}
+                                                  <button matChipRemove>
+                                                    <mat-icon>cancel</mat-icon>
+                                                  </button>
+                                                </mat-chip-row>
+                                              </ng-container>
+                                              <mat-chip-row class="matChip" *ngIf="getChipItems(newSkillsFormControl.value ?? []).count > 0">
+                                                +{{ getChipItems(newSkillsFormControl.value ?? []).count }}
+                                              </mat-chip-row>
+                                            </mat-chip-grid>
+                                          </mat-select-trigger>
                                         <mat-option *ngFor="let skill of skillSetList" [value]="skill">{{ skill }}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -266,7 +280,22 @@
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" class="w-100">
                                     <mat-label>Software</mat-label>
-                                    <mat-select [(ngModel)]="sharedAccordionFunctionality.newWorkExperiences[i].software" multiple>
+                                    <mat-select [formControl]="newSoftwareFormControl" [(ngModel)]="sharedAccordionFunctionality.newWorkExperiences[i].software" multiple>
+                                        <mat-select-trigger>
+                                            <mat-chip-grid >
+                                              <ng-container *ngFor="let software of getChipItems(newSoftwareFormControl.value ?? []).items">
+                                                <mat-chip-row class="matChip" [removable]="true" (removed)="removeChipItems(newSoftwareFormControl, software)">
+                                                  {{ software }}
+                                                  <button matChipRemove>
+                                                    <mat-icon>cancel</mat-icon>
+                                                  </button>
+                                                </mat-chip-row>
+                                              </ng-container>
+                                              <mat-chip-row class="matChip" *ngIf="getChipItems(newSoftwareFormControl.value ?? []).count > 0">
+                                                +{{ getChipItems(newSoftwareFormControl.value ?? []).count }}
+                                              </mat-chip-row>
+                                            </mat-chip-grid>
+                                          </mat-select-trigger>
                                         <mat-option *ngFor="let software of softwareList" [value]="software">{{ software }}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
