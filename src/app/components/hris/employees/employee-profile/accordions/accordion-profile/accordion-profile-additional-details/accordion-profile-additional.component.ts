@@ -79,16 +79,16 @@ export class AccordionProfileAdditionalComponent {
       this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
         next: data => {
           this.employeeProfile.employeeDetails = data;
-        }, complete: () => {
+        }, 
+        complete: () => {
           this.getEmployeeData();
           this.getEmployeeTypes();
           if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
             this.getAllEmployees();
           }
           this.getEmployeeFieldCodes();
-        }, error: () => {
-          this.snackBarService.showSnackbar("Unable to Fetch User Profile", "snack-error");
-        }
+        }, 
+        error: (er) => this.snackBarService.showError(er),
       })
     }
   }
@@ -214,7 +214,7 @@ export class AccordionProfileAdditionalComponent {
             this.getEmployeeData();
             this.updateEmployeeProfile.emit(1);
           },
-          error: (error) => { this.snackBarService.showSnackbar("Unable to Update Additional Information", "snack-error") },
+          error: (er) => this.snackBarService.showError(er),
         });
       } else {
         const formatFound: any = fieldcode?.code
@@ -236,9 +236,7 @@ export class AccordionProfileAdditionalComponent {
               this.getEmployeeData();
               this.updateEmployeeProfile.emit(1);
             },
-            error: (error) => {
-              this.snackBarService.showSnackbar("Unable to Save Additional Information", "snack-error");
-            }
+            error: (er) => this.snackBarService.showError(er),
           });
         }
       }

@@ -75,12 +75,10 @@ export class AccordionBankingComponent {
           this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
           this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
         } else {
-          console.warn("No banking details available.");
+          this.snackBarService.showError("No banking details available.");
         }
       },
-      error: (err) => {
-        console.error("Error fetching banking details: ", err);
-      }
+      error: (er) => this.snackBarService.showError(er),
     });
   }
 
@@ -184,19 +182,15 @@ export class AccordionBankingComponent {
           next: () => {
             this.addOrUpdateBanking("Updated")
           },
-          error: (error) => {
-            this.snackBarService.showSnackbar("Unable to Save Banking Information", "snack-error");
-          }
+          error: (er) => this.snackBarService.showError(er)
         })
       }
       else {
         this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
           next: () => {
             this.addOrUpdateBanking("Saved")
-          }
-          , error: (error) => {
-            this.snackBarService.showSnackbar("Unable to Save Banking Information", "snack-error");
-          }
+          }, 
+          error: (er) => this.snackBarService.showError(er)
         })
       }
     }

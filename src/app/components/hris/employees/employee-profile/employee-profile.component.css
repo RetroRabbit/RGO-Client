@@ -429,3 +429,7 @@ div.row {
 #overall-progress-bar {
     border-color: #0029C6;
 }
+
+#progress-container{
+    margin-top: 0.8rem !important;
+}

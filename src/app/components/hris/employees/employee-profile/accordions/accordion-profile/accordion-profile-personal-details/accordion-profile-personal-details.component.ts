@@ -188,9 +188,7 @@ export class AccordionProfilePersonalDetailsComponent {
           this.sharedAccordionFunctionality.personalDetailsForm.disable();
           this.sharedAccordionFunctionality.editPersonal = false;
         },
-        error: (error) => {
-          this.snackBarService.showSnackbar("Unable to Save Personal Information", "snack-error");
-        },
+        error: (er) => this.snackBarService.showError(er),
       });
     }
     else {

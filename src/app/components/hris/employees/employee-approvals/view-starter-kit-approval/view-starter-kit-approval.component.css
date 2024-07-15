@@ -100,7 +100,7 @@
 
 #button-approve,
 #button-decline {
-    display: inline-block;
+    display: flex;
     padding: 5px 24px 5px 5px;
     justify-content: center;
     align-items: center;
@@ -120,8 +120,7 @@
 }
 
 #button-icon {
-    width: 18px;
-    height: 18px;
+    display: flex;
 }
 
 #horizontal {

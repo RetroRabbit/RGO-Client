@@ -53,12 +53,12 @@
                     <div class="col-3">
                         <button id="button-approve" (click)="updateDocument(i, 0)"
                             [disabled]="getFile(i)?.status == 0"><mat-icon id="button-icon"
-                                class="mx-3">check_small</mat-icon>{{getFile(i)?.status == 0 ? 'Approved' : 'Accept'}}</button>
+                                class="mx-3">check_small</mat-icon>Approve</button>
                     </div>
                     <div class="col-3">
                         <button id="button-decline" (click)="openDialog(i)"
                             [disabled]="getFile(i)?.status == 2"><mat-icon id="button-icon"
-                                class="mx-3">close</mat-icon>{{getFile(i)?.status == 2 ? 'Declined' : 'Decline'}}</button>
+                                class="mx-3">close</mat-icon>Decline</button>
                     </div>
                 </div>
             </div>

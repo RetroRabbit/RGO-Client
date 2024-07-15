@@ -46,7 +46,7 @@ export class AtsDashboardComponent {
         this.dataSource.data = this.allCandidates;
         this.dataSource._updateChangeSubscription();
       },
-      error: error => this.snackBarService.showSnackbar("Unable to Get All Candidates", "snack-error")
+      error: (er) => this.snackBarService.showError(er),
     })
   }
 

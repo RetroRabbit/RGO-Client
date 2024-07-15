@@ -224,7 +224,7 @@ export class EmployeeDetailsComponent implements OnInit {
           this.saveEmployeeCustomData();
           this.snackBarService.showSnackbar("Updated", "snack-success");
         },
-        error: (error) => { this.snackBarService.showSnackbar("Unable to Update Information", "snack-error") },
+        error: (er) => this.snackBarService.showError(er),
       });
     }
   }
@@ -246,7 +246,7 @@ export class EmployeeDetailsComponent implements OnInit {
 
         this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
           next: (data) => { },
-          error: (error) => { },
+          error: (er) => this.snackBarService.showError(er),
         });
       }
       else if (found == null) {
@@ -263,9 +263,7 @@ export class EmployeeDetailsComponent implements OnInit {
             next: (data) => {
               this.cookieService.set('currentPage', 'Employees');
             },
-            error: (error) => {
-              this.snackBarService.showSnackbar("Unable to Save Information", "snack-error");
-            }
+            error: (er) => this.snackBarService.showError(er),
           });
         }
       }

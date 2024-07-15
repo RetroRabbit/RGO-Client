@@ -161,14 +161,10 @@ export class AccordionProfileAddressDetailsComponent {
               this.getEmployeeFields();
               this.sharedAccordionFunctionality.editAddress = false;
             },
-            error: (error: any) => {
-              this.snackBarService.showSnackbar("Unable to Update Address Information", "snack-error");
-            },
+            error: (er) => this.snackBarService.showError(er),
           });
         },
-        error: (error: any) => {
-          this.snackBarService.showSnackbar("Unable to Update Address Information", "snack-error");
-        },
+        error: (er: any) => this.snackBarService.showError(er),
       });
     } else {
       this.snackBarService.showSnackbar("Some Fields Are Still Missing Information", "snack-error");
@@ -378,9 +374,8 @@ export class AccordionProfileAddressDetailsComponent {
           }
           this.getEmployeeFieldCodes();
           this.initializeForm();
-        }, error: () => {
-          this.snackBarService.showSnackbar("Unable to Fetch User Profile", "snack-error");
-        }
+        }, 
+        error: (er) => this.snackBarService.showError(er),
       })
     }
   }
