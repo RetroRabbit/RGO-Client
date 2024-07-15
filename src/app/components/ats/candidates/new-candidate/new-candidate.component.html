@@ -63,7 +63,7 @@
                         <h3 *ngIf="candidateWarning" class="warning-message">This Candidate has a Warning</h3>
                         <p *ngIf="isBlacklisted">This Candidate has been Blacklisted From the Company.<br>Go to their Profile to See the Reason or Lift the Blacklisting</p>
                         <p *ngIf="candidateExists">The Candidate Already Exists in Our System</p>
-                        <p *ngIf="candidateWarning">This Candidate has Recieved a Warning in the System</p>
+                        <p *ngIf="candidateWarning">This Candidate has Received a Warning in the System</p>
                     </div>
                 </div>
                 <div *ngIf="isValidEmail && !isBlacklisted && !candidateExists && !candidateWarning"
