@@ -24,7 +24,7 @@
                   <mat-label>First Name</mat-label>
                   <input matInput type="text" formControlName="name" />
                   <mat-error *ngIf="newEmployeeForm.controls['name'].hasError('required')">
-                    First Name is Required
+                    First Name Is Required
                   </mat-error>
                   <mat-error
                     *ngIf="newEmployeeForm.controls['name'].hasError('pattern') && !newEmployeeForm.controls['name'].hasError('required') ">
@@ -35,18 +35,18 @@
                   <mat-label>Last Name</mat-label>
                   <input matInput type="text" formControlName="surname" />
                   <mat-error *ngIf="newEmployeeForm.controls['surname'].hasError('required')">
-                    Last Name is Required
+                    Last Name Is Required
                   </mat-error>
                   <mat-error
                     *ngIf="newEmployeeForm.controls['surname'].hasError('pattern') && !newEmployeeForm.controls['surname'].hasError('required') ">
-                    Last Name Must not Contain Numbers
+                    Last Name Must Not Contain Numbers
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class=" mb-3">
                   <mat-label>Initials</mat-label>
                   <input matInput type="text" formControlName="initials" />
                   <mat-error *ngIf="newEmployeeForm.controls['initials'].hasError('required')">
-                    Initials are Required
+                    Initials Are Required
                   </mat-error>
                   <mat-error class="mat-error"
                     *ngIf="newEmployeeForm.controls['initials'].hasError('pattern') && !newEmployeeForm.controls['initials'].hasError('required')">
@@ -57,18 +57,18 @@
                   <mat-label>Personal Email</mat-label>
                   <input matInput type="email" formControlName="personalEmail" />
                   <mat-error *ngIf="newEmployeeForm.controls['personalEmail'].hasError('required')">
-                    Personal Email is Required
+                    Personal Email Is Required
                   </mat-error>
                   <mat-error
                     *ngIf="newEmployeeForm.controls['personalEmail'].hasError('pattern') && !newEmployeeForm.controls['personalEmail'].hasError('required')">
-                    This is not a Valid Email
+                    This Is Not a Valid Email
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class=" mb-3">
                   <mat-label>Work Email</mat-label>
                   <input matInput type="email" formControlName="email" />
                   <mat-error *ngIf="newEmployeeForm.controls['email'].hasError('required')">
-                    Work Email is Required
+                    Work Email Is Required
                   </mat-error>
                   <mat-error
                     *ngIf="newEmployeeForm.controls['email'].hasError('pattern') && !newEmployeeForm.controls['email'].hasError('required')">
@@ -100,11 +100,11 @@
                     (input)="onCellphoneInputCheck(inputField.value ?? '')"
                   ></ngx-mat-intl-tel-input>
                   <mat-error *ngIf="newEmployeeForm.controls['cellphoneNo'].hasError('required') && newEmployeeForm.controls['cellphoneNo'].value=='' ">
-                    Phone Number is Required
+                    Phone Number Is Required
                   </mat-error>
                   <mat-error
                     *ngIf="newEmployeeForm.controls['cellphoneNo'].value != '' && newEmployeeForm.controls['cellphoneNo'].invalid">
-                    This is Not a Valid Phone Number
+                    This Is Not a Valid Phone Number
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class=" mb-3">
@@ -125,7 +125,7 @@
                   <mat-datepicker-toggle matSuffix [for]="engagementDatePicker"></mat-datepicker-toggle>
                   <mat-datepicker #engagementDatePicker></mat-datepicker>
                   <mat-error *ngIf="newEmployeeForm.controls['engagementDate'].hasError('required')">
-                    Start Date is Required
+                    Start Date Is Required
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class=" mb-3">
@@ -142,7 +142,7 @@
                   <mat-datepicker-toggle matSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle>
                   <mat-datepicker #dateOfBirthPicker></mat-datepicker>
                   <mat-error *ngIf="newEmployeeForm.controls['dateOfBirth'].hasError('required')">
-                    Date of Birth is Required
+                    Date of Birth Is Required
                   </mat-error>
                 </mat-form-field>
                 <div class="mb-3">
@@ -153,7 +153,7 @@
                     </mat-radio-button>
                   </mat-radio-group>
                   <mat-error *ngIf="newEmployeeForm.controls['disability'].hasError('required')">
-                    Disability is Required
+                    Disability Is Required
                   </mat-error>
                 </div>
                 <mat-form-field appearance="outline" class=" mb-3" *ngIf="hasDisability">
@@ -166,7 +166,7 @@
                   <mat-label>Disability Notes</mat-label>
                   <textarea matInput type="text" formControlName="disabilityNotes"></textarea>
                   <mat-error *ngIf="newEmployeeForm.controls['disabilityNotes'].hasError('required')">
-                    Disability Notes are Required
+                    Disability Notes Are Required
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -301,7 +301,7 @@
                         (change)="postalSameAsPhysicalAddress($event.checked)" class="col-1">
                       </mat-checkbox>
                       <label class="col ms-1" for="checkbox">
-                        Postal Address is the Same as Physical Address
+                        Postal Address Is the Same as Physical Address
                       </label>
                     </div>
                   </form>
@@ -457,7 +457,7 @@
                           </div>
                           <div class="roboto-font" *ngIf="categories[2].state == true" id="align">
                             <p id="title">Medical Aid</p>
-                            <p id="supported">PDF is Supported</p>
+                            <p id="supported">PDF Is Supported</p>
                           </div>
                           <div class="roboto-font" *ngIf="categories[2].state == false" id="align">
                             <p id="title">Medical Aid</p>
@@ -509,7 +509,7 @@
                           </div>
                           <div class="roboto-font" *ngIf="categories[1].state == true" id="align">
                             <p id="title">Retirement Annuity</p>
-                            <p id="supported">PDF is Supported</p>
+                            <p id="supported">PDF Is Supported</p>
                           </div>
                           <div class="roboto-font" *ngIf="categories[1].state == false" id="align">
                             <p id="title">Retirement Annuity</p>
