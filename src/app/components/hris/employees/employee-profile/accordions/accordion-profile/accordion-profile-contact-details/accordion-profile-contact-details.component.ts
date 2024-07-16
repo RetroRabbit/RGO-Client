@@ -64,35 +64,37 @@ export class AccordionProfileContactDetailsComponent {
     const cellphoneNumberContainer = document.querySelector('.cellphone-number-label');
     const cellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("cellphoneNo");
 
-    if (cellphoneNumberValue?.hasValidator(Validators.required)) {
+    
       if (value) {
         cellphoneNumberContainer?.classList.remove('shift-label');
       }
-      else if (value && cellphoneNumberValue.invalid) {
+      else if (value===null && cellphoneNumberValue?.invalid) {
         cellphoneNumberContainer?.classList.remove('shift-label');
-      } else if (value && !cellphoneNumberValue.invalid) {
+      } else if (value===null && !cellphoneNumberValue?.invalid) {
         cellphoneNumberContainer?.classList.remove('shift-label');
       }
       else {
         cellphoneNumberContainer?.classList.add('shift-label');
       }
-    }
+    
   }
 
   checkEmergencyNumberValue(value: string) {
     const emergencyNumberContainer = document.querySelector('.emergency-number-label');
     const emergencyNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("emergencyContactNo");
 
-    if (emergencyNumberValue?.hasValidator(Validators.required)) {
-      if (value && emergencyNumberValue.invalid) {
+      if (value) {
         emergencyNumberContainer?.classList.remove('shift-label');
-      } else if (value && !emergencyNumberValue.invalid) {
+      }
+      else if (value === null && emergencyNumberValue?.invalid) {
+        emergencyNumberContainer?.classList.remove('shift-label');
+      } else if (value === null && !emergencyNumberValue?.invalid) {
         emergencyNumberContainer?.classList.remove('shift-label');
       }
       else {
         emergencyNumberContainer?.classList.add('shift-label');
       }
-    }
+    
   }
 
   checkHouseNumberValue(value: string) {
