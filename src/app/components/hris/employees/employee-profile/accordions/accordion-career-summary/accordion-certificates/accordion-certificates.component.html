@@ -37,14 +37,14 @@
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field appearance="outline" class="w-100"
                                             *ngIf="editCertificate; else NoEditName">
-                                            <mat-label>Name of certificate</mat-label>
+                                            <mat-label>Name Of Certificate</mat-label>
                                             <input type="text" matInput placeholder="Name of certificate"
                                                 [(ngModel)]="copyOfCertificates[i].certificateName"
                                                 [value]="copyOfCertificates[i].certificateName">
                                         </mat-form-field>
                                         <ng-template #NoEditName>
                                             <mat-form-field appearance="outline" class="w-100">
-                                                <mat-label>Name of certificate</mat-label>
+                                                <mat-label>Name Of Certificate</mat-label>
                                                 <input type="text" disabled matInput placeholder="Name of certificate"
                                                     [(ngModel)]="sharedAccordionFunctionality.employeeCertificates[i].certificateName"
                                                     [value]="sharedAccordionFunctionality.employeeCertificates[i].certificateName">
@@ -54,14 +54,14 @@
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field appearance="outline" class="w-100"
                                             *ngIf="editCertificate; else NoEditOrganization">
-                                            <mat-label>Name of organization</mat-label>
+                                            <mat-label>Name Of Organization</mat-label>
                                             <input type="text" matInput placeholder="Name of organization"
                                                 [(ngModel)]="copyOfCertificates[i].issueOrganization"
                                                 [value]="copyOfCertificates[i].issueOrganization">
                                         </mat-form-field>
                                         <ng-template #NoEditOrganization>
                                             <mat-form-field appearance="outline" class="w-100">
-                                                <mat-label>Name of organization</mat-label>
+                                                <mat-label>Name Of organization</mat-label>
                                                 <input type="text" disabled matInput placeholder="Name of organization"
                                                     [(ngModel)]="sharedAccordionFunctionality.employeeCertificates[i].issueOrganization"
                                                     [value]="sharedAccordionFunctionality.employeeCertificates[i].issueOrganization">
@@ -71,7 +71,7 @@
                                     <div class="col-12 col-md-6 my-2">
                                         <mat-form-field class="w-100" appearance="outline"
                                             *ngIf="editCertificate; else NoEditIssueDate">
-                                            <mat-label>Issue date</mat-label>
+                                            <mat-label>Issue Date</mat-label>
                                             <input matInput [matDatepicker]="picker" placeholder="Issue date"
                                                 [(ngModel)]="copyOfCertificates[i].issueDate"
                                                 [value]="copyOfCertificates[i].issueDate"
@@ -81,7 +81,7 @@
                                         </mat-form-field>
                                         <ng-template #NoEditIssueDate>
                                             <mat-form-field class="w-100" appearance="outline">
-                                                <mat-label>Issue date</mat-label>
+                                                <mat-label>Issue Date</mat-label>
                                                 <input matInput disabled [matDatepicker]="picker"
                                                     placeholder="Issue date"
                                                     [(ngModel)]="sharedAccordionFunctionality.employeeCertificates[i].issueDate"
