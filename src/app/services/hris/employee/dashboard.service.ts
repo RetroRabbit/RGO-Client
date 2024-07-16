@@ -35,4 +35,8 @@ export class DashboardService {
   getEmployeeCountData(): Observable<EmployeeCountDataCard> {
     return this.httpClient.get<EmployeeCountDataCard>(`${this.baseUrl}/card-count`);
   }
+
+  getActiveEmployeeCount(): Observable<number> {
+    return this.httpClient.get<number>(`${this.baseUrl}/count-active`)
+  }
 }
