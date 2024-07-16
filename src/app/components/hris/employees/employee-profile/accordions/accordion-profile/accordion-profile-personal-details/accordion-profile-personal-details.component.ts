@@ -47,6 +47,7 @@ export class AccordionProfilePersonalDetailsComponent {
         disabilityTypeControl?.setValidators([Validators.required]);
       } else {
         disabilityTypeControl?.clearValidators();
+        disabilityTypeControl?.patchValue(null);
       }
       disabilityTypeControl?.updateValueAndValidity();
     });
