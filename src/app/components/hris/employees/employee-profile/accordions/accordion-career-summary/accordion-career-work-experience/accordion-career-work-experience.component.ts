@@ -28,7 +28,9 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   panelOpenState: boolean = false;
-  @Input() WorkExperience!: { workExperience: WorkExperience };
+  @Input() WorkExperience!: {
+    [x: string]: any; workExperience: WorkExperience 
+};
   @Input() employeeProfile!: EmployeeProfile | SimpleEmployee;
 
   editWorkExperience: boolean = false;
@@ -42,7 +44,7 @@ export class AccordionCareerWorkExperienceComponent {
   role: string = '';
 
   removeIndex: number = 0;
-
+  workExperiences: WorkExperience[] = [];
   copyOfWorkExperience: WorkExperience[] = [];
 
   skillSetList: string[] = [];
@@ -146,17 +148,58 @@ export class AccordionCareerWorkExperienceComponent {
     return { items, count: 0 };
   }
 
-  removeChipItems(
-    formControl: FormControl<string[] | null>,
-    item: string
-  ): void {
-    const items = formControl.value ?? [];
-    const index = items.indexOf(item);
+  // removeChipItems(
+  //   formControl: FormControl<string[] | null>,
+  //   item: string
+  // ): void {
+  //   const items = formControl.value ?? [];
+  //   const index = items.indexOf(item);
+  //   if (index >= 0) {
+  //     items.splice(index, 1);
+  //     formControl.setValue(items.length ? items : null);
+  //   }
+  // }
+  removeChipItems(skillSet: string[], item: string): void {
+    const index = skillSet.indexOf(item);
     if (index >= 0) {
-      items.splice(index, 1);
-      formControl.setValue(items.length ? items : null);
+        skillSet.splice(index, 1);
     }
+}
+
+// Method to handle removing an item from a specific skill set
+onSkillRemoved(index: number, skill: string) {
+  const skillSet = this.copyOfWorkExperience[index].skillSet;
+  const skillIndex = skillSet!.indexOf(skill);
+  if (skillIndex >= 0) {
+    skillSet!.splice(skillIndex, 1);
+    this.copyOfWorkExperience[index].skillSet = [...skillSet!];
   }
+}
+
+removeSoftwareItem(index: number, software: string) {
+  const softwareList = this.copyOfWorkExperience[index].software;
+  const softwareIndex = softwareList!.indexOf(software);
+  if (softwareIndex >= 0) {
+    softwareList!.splice(softwareIndex, 1);
+    this.copyOfWorkExperience[index].software = [...softwareList!];
+  }
+}
+
+// onSkillRemoved(workExperienceIndex: number, skill: string) {
+//   const skillSet = this.WorkExperience['at'](workExperienceIndex).get('skillSet').value;
+//   const skillIndex = skillSet.indexOf(skill);
+//   if (skillIndex >= 0) {
+//     skillSet.splice(skillIndex, 1);
+//     this.WorkExperience['at'](workExperienceIndex).get('skillSet').setValue([...skillSet]);
+//   }
+// }
+// onSkillRemoved(workExperienceIndex: number, skill: string) {
+//   const skillSet = this.WorkExperience[workExperienceIndex].skillSet;
+//   const skillIndex = skillSet.indexOf(skill);
+//   if (skillIndex >= 0) {
+//     skillSet.splice(skillIndex, 1);
+//   }
+// }
 
   disableFormControl() {
     if (!this.editWorkExperience) {
@@ -336,7 +379,7 @@ export class AccordionCareerWorkExperienceComponent {
         this.snackBarService.showSnackbar('Updated', 'snack-success');
         this.hasUpdatedWorkExperience = true;
         this.getWorkExperience();
-        this.disableFormControl();
+      
       },
       error: (er) => this.snackBarService.showError(er),
     });

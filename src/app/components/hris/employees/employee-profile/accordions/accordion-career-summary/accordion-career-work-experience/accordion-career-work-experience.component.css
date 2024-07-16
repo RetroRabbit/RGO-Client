@@ -78,6 +78,7 @@ mat-icon{
 
 .matChip{
     border-radius: 8px;
+    height: Fixed (32px);
 }
   
 mat-select-trigger {
