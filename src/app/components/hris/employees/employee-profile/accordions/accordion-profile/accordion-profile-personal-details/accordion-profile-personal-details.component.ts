@@ -9,7 +9,6 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
-import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
 
 @Component({
@@ -55,7 +54,6 @@ export class AccordionProfilePersonalDetailsComponent {
     this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType')?.valueChanges.subscribe(value => {
       const disabilityNotesControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityNotes');
       if (value == 'Other') {
-        disabilityNotesControl?.reset();
         disabilityNotesControl?.setValidators([Validators.required]);
       } else {
         disabilityNotesControl?.clearValidators();
@@ -80,7 +78,7 @@ export class AccordionProfilePersonalDetailsComponent {
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
       disability: [this.employeeProfile!.employeeDetails.disability, Validators.required],
-      disabilityType: [!this.isCustomType ? this.employeeProfile.employeeDetails.disabilityNotes: disabilities[6].value],
+      disabilityType: [!this.isCustomType ? this.employeeProfile.employeeDetails.disabilityNotes: disabilities[7].value],
       nationality: [this.employeeProfile!.employeeDetails.nationality, Validators.required],
       countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth, Validators.required],
       disabilityList: "",
@@ -164,6 +162,8 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   setTypeOther(event: any) {
+    const disabilityNotesControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityNotes');
+    disabilityNotesControl?.reset();
     if(event.source.value == 'Other'){
       this.sharedAccordionFunctionality.typeOther = true;
     }
