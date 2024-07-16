@@ -35,19 +35,26 @@ export class AccordionProfilePersonalDetailsComponent {
     this.loadCountries();
     this.checkDisabilityType();
 
+    if(this.isCustomType){
+      const disabilityTypeControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');
+      disabilityTypeControl?.patchValue("Other")
+      this.sharedAccordionFunctionality.typeOther = true;
+    }
+
     this.sharedAccordionFunctionality.personalDetailsForm.get('disability')?.valueChanges.subscribe(value => {
-      const disabilityNotesControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');
+      const disabilityTypeControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');
       if (value === true) {
-        disabilityNotesControl?.setValidators([Validators.required]);
+        disabilityTypeControl?.setValidators([Validators.required]);
       } else {
-        disabilityNotesControl?.clearValidators();
+        disabilityTypeControl?.clearValidators();
       }
-      disabilityNotesControl?.updateValueAndValidity();
+      disabilityTypeControl?.updateValueAndValidity();
     });
 
     this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType')?.valueChanges.subscribe(value => {
       const disabilityNotesControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityNotes');
       if (value == 'Other') {
+        disabilityNotesControl?.reset();
         disabilityNotesControl?.setValidators([Validators.required]);
       } else {
         disabilityNotesControl?.clearValidators();
@@ -72,12 +79,11 @@ export class AccordionProfilePersonalDetailsComponent {
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
       disability: [this.employeeProfile!.employeeDetails.disability, Validators.required],
-      disabilityType: [!this.isCustomType ? this.employeeProfile.employeeDetails.disabilityNotes: "Other"],
+      disabilityType: [!this.isCustomType ? this.employeeProfile.employeeDetails.disabilityNotes: disabilities[6].value],
       nationality: [this.employeeProfile!.employeeDetails.nationality, Validators.required],
       countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth, Validators.required],
       disabilityList: "",
       disabilityNotes: [this.employeeProfile!.employeeDetails.disabilityNotes]
-
     });
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
     this.sharedAccordionFunctionality.checkPersonalFormProgress();
