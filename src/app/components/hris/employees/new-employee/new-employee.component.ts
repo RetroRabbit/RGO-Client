@@ -503,8 +503,8 @@ export class NewEmployeeComponent implements OnInit {
       this.isLoadingAddEmployee = false;
       return;
     }
-    if (this.newEmployeeForm.value.cellphoneNo == null || this.newEmployeeForm.controls.cellphoneNo.invalid) {
-      this.snackBarService.showSnackbar("Calid Cellphone Number Required", "snack-error");
+    if (this.newEmployeeForm.value.cellphoneNo == null || !this.newEmployeeForm.controls['cellphoneNo'].valid) {
+      this.snackBarService.showSnackbar("Valid Cellphone Number Required", "snack-error");
       this.isLoadingAddEmployee = false;
       return;
     }
