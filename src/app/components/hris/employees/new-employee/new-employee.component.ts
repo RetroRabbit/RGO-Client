@@ -504,7 +504,7 @@ export class NewEmployeeComponent implements OnInit {
       return;
     }
     if (this.newEmployeeForm.value.cellphoneNo == null || !this.newEmployeeForm.controls['cellphoneNo'].valid) {
-      this.snackBarService.showSnackbar("Valid Cellphone Number Required", "snack-error");
+      this.snackBarService.showSnackbar("Valid cellphone number required", "snack-error");
       this.isLoadingAddEmployee = false;
       return;
     }
