@@ -68,7 +68,7 @@ export class ManageFieldCodeComponent {
     private ngZone: NgZone,
     private authAccessService: AuthAccessService
   ) {
-      this.dialogTypeData = new DialogTypeData().dialogTypeData;
+    this.dialogTypeData = new DialogTypeData().dialogTypeData;
   }
 
   ngOnInit(): void {
@@ -348,7 +348,7 @@ export class ManageFieldCodeComponent {
       next: (data) => {
         this.snackBarService.showSnackbar("Updated", "snack-success");
         this.fetchData(this.activeTab);
-      }, 
+      },
       error: (er) => this.snackBarService.showError(er),
     });
   }
@@ -389,11 +389,11 @@ export class ManageFieldCodeComponent {
     this.dialogTypeData.denyButtonText = 'Cancel';
 
     if (status === 0) {
-      this.dialogTypeData.title = 'Archive customs fields'
-      this.dialogTypeData.subtitle = 'Are you sure you want to archive these custom fields?';
+      this.dialogTypeData.title = 'Archive Custom Fields'
+      this.dialogTypeData.subtitle = 'Are You Sure You Want to Archive These Custom Fields?';
     } else {
-      this.dialogTypeData.title = 'Move to active'
-      this.dialogTypeData.subtitle = 'Are you sure you want to move these custom fields to active?';
+      this.dialogTypeData.title = 'Move to Active'
+      this.dialogTypeData.subtitle = 'Are You Sure You Want to Move These Custom Fields to Active?';
     }
     this.showConfirmDialog = true;
   }
