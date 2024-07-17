@@ -65,7 +65,7 @@ export class AccordionBankingComponent {
     this.banks = this.banks.slice().sort((a, b) => a.value.localeCompare(b.value));
   }
 
-  ngAfterOnit() {
+  ngAfterViewInit() {
     this.getEmployeeBankingData();
   }
 
@@ -73,8 +73,11 @@ export class AccordionBankingComponent {
     this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
       next: (data) => {
         this.employeeBanking = data;
-        this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
-        this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
+        if (this.employeeBanking && this.employeeBanking.length > 0) {
+          this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
+          this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
+        }
+
       },
       error: (er) => this.snackBarService.showError(er),
     });
