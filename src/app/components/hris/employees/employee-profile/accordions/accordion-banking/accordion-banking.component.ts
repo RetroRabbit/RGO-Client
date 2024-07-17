@@ -62,11 +62,8 @@ export class AccordionBankingComponent {
   }
 
   ngOnInit(): void {
-    this.banks = this.banks.slice().sort((a, b) => a.value.localeCompare(b.value));
-  }
-
-  ngAfterViewInit() {
     this.getEmployeeBankingData();
+    this.banks = this.banks.slice().sort((a, b) => a.value.localeCompare(b.value));
   }
 
   getEmployeeBankingData() {
@@ -77,7 +74,6 @@ export class AccordionBankingComponent {
           this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
           this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
         }
-
       },
       error: (er) => this.snackBarService.showError(er),
     });
