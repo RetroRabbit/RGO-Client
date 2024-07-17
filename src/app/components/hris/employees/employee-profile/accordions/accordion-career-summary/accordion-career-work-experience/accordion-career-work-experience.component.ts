@@ -54,7 +54,7 @@ export class AccordionCareerWorkExperienceComponent {
   dialogTypeData: Dialog = {
     type: 'confirm',
     title: 'Delete Experience',
-    subtitle: 'Are you sure you want to delete?',
+    subtitle: 'Are You Sure You Want to Delete?',
     confirmButtonText: 'Delete',
     denyButtonText: 'Cancel',
   };

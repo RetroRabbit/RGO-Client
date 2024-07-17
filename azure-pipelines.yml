@@ -1,48 +1,11 @@
 trigger:
 - main
+- develop
 
 pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-- stage: Development
-  jobs:
-  - job: BuildAndDeployDev
-    steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '18.x'
-      displayName: 'Install Node.js'
-    - task: DownloadSecureFile@1
-      inputs:
-        secureFile: 'develop_env'
-
-    - task: CopyFiles@2
-      inputs:
-        SourceFolder: $(Agent.TempDirectory)
-        Contents: '**\develop_env'
-        TargetFolder: $(Build.SourcesDirectory)
-
-    - script: |
-        mv $(Build.SourcesDirectory)/develop_env $(Build.SourcesDirectory)/.env
-      displayName: 'set up .env file'
-
-    - script: |
-        npm install
-        npm run build -- --configuration=development
-      displayName: 'npm install and build for development'
-
-    - task: CopyFiles@2
-      inputs:
-        contents: 'dist/**'
-        targetFolder: '$(Build.ArtifactStagingDirectory)/dev'
-      displayName: 'Copy files to staging directory'
-
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)/dev'
-        artifactName: 'dev-drop'
-      displayName: 'Publish Artifact for Development'
 
 - stage: Staging
   jobs:

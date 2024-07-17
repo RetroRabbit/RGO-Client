@@ -20,6 +20,7 @@ import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-c
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 import { DashboardService } from 'src/app/services/hris/employee/dashboard.service';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -61,6 +62,7 @@ export class AdminDashboardComponent {
   employeeProfiles: EmployeeProfile[] = [];
   totalNumberOfEmployees: number = 0;
   growthRate: number = 0;
+  employeeId: number | undefined = 0;
   roles: string[] = [];
   searchQuery: string = '';
   searchResults: EmployeeProfile[] = [];
@@ -98,6 +100,7 @@ export class AdminDashboardComponent {
     public chartService: ChartService,
     private cookieService: CookieService,
     private router: Router,
+    private employeeProfileService: EmployeeProfileService,
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
@@ -136,7 +139,7 @@ export class AdminDashboardComponent {
       this.authAccessService.isSuperAdmin() ||
       this.authAccessService.isTalent() ||
       this.authAccessService.isJourney()) {
-      this.configureDashboardData();
+      this.getEmployeeId();
     }
     this.setSvgWidth();
   }
@@ -150,6 +153,17 @@ export class AdminDashboardComponent {
     } else {
       return this.svgWidth = 500;
     }
+  }
+
+  getEmployeeId() {
+   this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
+    next: data => {
+      this.employeeId = data.id;
+    },
+    complete:() =>{
+      this.configureDashboardData();
+    }
+   });
   }
 
   configureDashboardData() {
@@ -236,8 +250,8 @@ export class AdminDashboardComponent {
   }
 
   getCharts() {
-    if (this.navService.employeeProfile?.id) {
-      this.chartService.getEmployeeCharts(this.navService.employeeProfile.id).subscribe({
+    if (this.employeeId) {
+      this.chartService.getEmployeeCharts(this.employeeId).subscribe({
         next: (data) => {
           this.charts = data;
         },
