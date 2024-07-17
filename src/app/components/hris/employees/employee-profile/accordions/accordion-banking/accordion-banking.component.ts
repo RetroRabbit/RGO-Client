@@ -62,21 +62,19 @@ export class AccordionBankingComponent {
   }
 
   ngOnInit(): void {
-    this.getEmployeeBankingData();
     this.banks = this.banks.slice().sort((a, b) => a.value.localeCompare(b.value));
   }
 
+  ngAfterOnit() {
+    this.getEmployeeBankingData();
+  }
 
   getEmployeeBankingData() {
     this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
       next: (data) => {
         this.employeeBanking = data;
-        if (this.employeeBanking && this.employeeBanking.length > 0) {
-          this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
-          this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
-        } else {
-          this.snackBarService.showError("No banking details available.");
-        }
+        this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
+        this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
       },
       error: (er) => this.snackBarService.showError(er),
     });
@@ -162,7 +160,7 @@ export class AccordionBankingComponent {
   }
 
   saveBankingDetails() {
-    if(this.bankingPDFName.length >= 1){
+    if (this.bankingPDFName.length >= 1) {
       this.editBanking = false;
       this.isUpdated = true;
       const employeeBankingFormValue = this.employeeBankingsForm.value;
@@ -189,12 +187,12 @@ export class AccordionBankingComponent {
         this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
           next: () => {
             this.addOrUpdateBanking("Saved")
-          }, 
+          },
           error: (er) => this.snackBarService.showError(er)
         })
       }
     }
-    else{
+    else {
       this.snackBarService.showSnackbar("Add a Proof of account", "snack-error")
     }
   }
@@ -208,7 +206,7 @@ export class AccordionBankingComponent {
     this.hasUpdatedBanking = true;
     this.editBanking = false;
     this.employeeBankingsForm.disable();
-    if(message = "Saved"){ 
+    if (message = "Saved") {
       this.employeeBankingStarterkitService.incrementPendingCount();
     }
   }
