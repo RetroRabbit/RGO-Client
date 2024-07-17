@@ -2,7 +2,7 @@
     <div class="container-fluid p-4" [ngClass]="{'fullscreen-modal': isMobileScreen}">
         <div class="row justify-content-center align-items-center">
             <div class="col-12">
-                <h1 class="text-center" id="create-candidate">Add a new Candidate</h1>
+                <h1 class="text-center" id="create-candidate">Add a New Candidate</h1>
             </div>
         </div>
         <form [formGroup]="newCandidateForm" id="newcandidateForm">
@@ -15,8 +15,8 @@
                     <div class="col-12 text-center roboto-font pb-3 mt-3">
                         <h2 *ngIf="isValidProfileImage" class="center-bold">Profile Picture</h2>
                         <p *ngIf="isValidProfileImage" class="profile-text">PNG, JPG, SVG</p>
-                        <p *ngIf="isValidProfileImage" class="profile-text">10 MB Max limit size</p>
-                        <p id="change-color-heading" *ngIf="!isValidProfileImage" class="profile-text">File size exceeded. Maximum limit is 10 MB.</p>
+                        <p *ngIf="isValidProfileImage" class="profile-text">10 MB Max Limit Size</p>
+                        <p id="change-color-heading" *ngIf="!isValidProfileImage" class="profile-text">File Size Exceeded. Maximum Limit Is 10 MB.</p>
                         <div id="actionCellUpload" class="col-12 col-md-auto">
                             <button (click)="uploadFile.click()"
                                 [ngStyle]="{'color': '#F8F8F8', 'background-color': '#0029C6'}"
@@ -29,7 +29,7 @@
                             </button>
                         </div>
                         <input type="file" #uploadFile (change)="onImageChange($event)" hidden />
-                        <p class="col-md-12 col-lg-7 mt-5 info-text">*Required fields</p>
+                        <p class="col-md-12 col-lg-7 mt-5 info-text">*Required Fields</p>
                     </div>
                 </div>
                 <div class="row flex-column justify-content-center align-items-center col-md-12">
@@ -37,43 +37,43 @@
                         <mat-label>First name</mat-label>
                         <input matInput type="text" formControlName="name" />
                         <mat-error *ngIf="newCandidateForm.controls['name'].hasError('required')">
-                            First name is required
+                            First Name Is Required
                         </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Last name</mat-label>
                         <input matInput type="text" formControlName="surname" />
                         <mat-error *ngIf="newCandidateForm.controls['surname'].hasError('required')">
-                            Last name is required
+                            Last Name Is Required
                         </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-1">
                         <mat-label>Email</mat-label>
                         <input matInput type="email" formControlName="email" (change)="onEmailChange($event)" />
                         <mat-error *ngIf="newCandidateForm.controls['email'].hasError('pattern')">
-                            Please enter a valid email address
+                            Please Enter a Valid Email Address
                         </mat-error>
                         <mat-error *ngIf="newCandidateForm.controls['email'].hasError('required')">
-                            Email address is required
+                            Email Address Is Required
                         </mat-error>
                     </mat-form-field>
                     <div class="col-md-12 col-lg-7 my-1">
-                        <h3 *ngIf="candidateExists" class="warning-message">Duplicate Canidate found</h3>
+                        <h3 *ngIf="candidateExists" class="warning-message">Duplicate Canidate Found</h3>
                         <h3 *ngIf="isBlacklisted" class="warning-message">Blacklisted Canidate</h3>
-                        <h3 *ngIf="candidateWarning" class="warning-message">This candidate has a warning</h3>
-                        <p *ngIf="isBlacklisted">This candidate has been blacklisted from the company.<br>Go to their profile to see the reason or lift the blacklisting</p>
-                        <p *ngIf="candidateExists">The candidate already exists in our system</p>
-                        <p *ngIf="candidateWarning">This candidate has recieved a warning in the system</p>
+                        <h3 *ngIf="candidateWarning" class="warning-message">This Candidate Has a Warning</h3>
+                        <p *ngIf="isBlacklisted">This Candidate Has Been Blacklisted From the Company.<br>Go To Their Profile To See the Reason or Lift the Blacklisting</p>
+                        <p *ngIf="candidateExists">The Candidate Already Exists in Our System</p>
+                        <p *ngIf="candidateWarning">This Candidate Has Received a Warning in the System</p>
                     </div>
                 </div>
                 <div *ngIf="isValidEmail && !isBlacklisted && !candidateExists && !candidateWarning"
                     class="row col-md-12 flex-column justify-content-center align-items-center">
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
-                        <mat-label>Contact number</mat-label>
+                        <mat-label>Contact Number</mat-label>
                         <input matInput type="text" formControlName="cellphoneNumber" pattern="^\+27\d{9}$"
                             placeholder="+27 XXXXXXXXX" />
                             <mat-error *ngIf="newCandidateForm.controls['cellphoneNumber'].hasError('pattern')">
-                                Please enter a valid Cellphone number
+                                Please Enter a Valid Cellphone Number
                             </mat-error>
                     </mat-form-field>
                     <mat-radio-group formControlName="jobPosition" class="col-md-12 col-lg-7 my-2 info-text" (change)="checkSelectedOption($event)">
@@ -83,16 +83,21 @@
                         <mat-radio-button [value]=2>Business Support</mat-radio-button> <br />
                         <mat-radio-button [value]=3>Scrum Master</mat-radio-button>
                     </mat-radio-group>
-
+                    <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
+                        <mat-label>Select Level</mat-label>
+                        <mat-select formControlName="potentialLevel" hideSingleSelectionIndicator="true">
+                            <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
                         <mat-label>Location</mat-label>
                         <input matInput type="text" formControlName="location" />
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
-                        <mat-label>Attach LinkedIn link</mat-label>
+                        <mat-label>Attach LinkedIn Link</mat-label>
                         <input matInput type="text" formControlName="linkedInProfile" />
                         <mat-error *ngIf="newCandidateForm.controls['linkedInProfile'].hasError('pattern')">
-                            Valid LinkedIn Profile link is required
+                            Valid LinkedIn Profile Link Is Required
                         </mat-error>
                         <mat-icon matSuffix>link</mat-icon>
                     </mat-form-field>
@@ -121,11 +126,11 @@
                     <div class="col-md-12 col-lg-7" *ngIf="optionValid == true">
                         <h4 class="col-md-12 info-text">Portfolio</h4>
                         <mat-form-field appearance="outline" class="col-md-12 my-2">
-                            <mat-label>Attach website link</mat-label>
+                            <mat-label>Attach Website Link</mat-label>
                             <input matInput type="text" formControlName="portfolioLink" />
                             <mat-icon matSuffix>link</mat-icon>
                             <mat-error *ngIf="newCandidateForm.controls['portfolioLink'].hasError('pattern')">
-                                Valid website link is required.
+                                Valid Website Link Is Required.
                             </mat-error>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 my-2">
@@ -142,19 +147,19 @@
                                 accept=".pdf" />
                         </mat-form-field>
                         <div  class="col-md-12 col-lg-7">
-                            <h3 *ngIf="!isValidPortfolioFileSize" class="warning-message"> File size exceeded:</h3>
-                            <p *ngIf="!isValidPortfolioFileSize" id="change-close-color">File size exceeds max limit of 10MB</p>
+                            <h3 *ngIf="!isValidPortfolioFileSize" class="warning-message"> File Size Exceeded:</h3>
+                            <p *ngIf="!isValidPortfolioFileSize" id="change-close-color">File Size Exceeds Max Limit of 10MB</p>
                         </div>
                         <div *ngIf="portfolioUrl!== ''">
                             <p>Selected CV: {{ portfolioFilename }}</p>
                         </div>
-                        <p *ngIf="isValidPortfolioFileSize" class="col-md-12 col-lg-7">Please upload a PDF</p>
-                        <p *ngIf="isValidPortfolioFileSize" class="col-md-12 col-lg-7">10 MB Max limit size</p>
-                        <h3 id="change-color-heading" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">Unsupported file format :</h3>
-                        <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">The selected file type is not supported.<br> Please upload a PDF</p>
+                        <p *ngIf="isValidPortfolioFileSize" class="col-md-12 col-lg-7">Please Upload a PDF</p>
+                        <p *ngIf="isValidPortfolioFileSize" class="col-md-12 col-lg-7">10 MB Max Limit Size</p>
+                        <h3 id="change-color-heading" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">Unsupported File Format :</h3>
+                        <p id="change-close-color" *ngIf="!isValidPortfolioFile" class="col-md-12 col-lg-7">The Selected File Type is not Supported.<br> Please Upload a PDF</p>
                     </div>
                     <mat-slide-toggle class="col-md-12 col-lg-7 mb-3" color="primary" id="additionalFieldsToggle" (click)="toggleAdditionalFields()">
-                        Additional fields
+                        Additional Fields
                     </mat-slide-toggle>
                     <div *ngIf="additionalFieldsVisible"
                         class="row col-md-12 flex-column justify-content-center align-items-center">
@@ -162,7 +167,7 @@
                             <p class="col-md-12 col-lg-7 info-text">Gender:</p>
                             <mat-radio-button [value]=0>Male</mat-radio-button> <br />
                             <mat-radio-button [value]=1>Female</mat-radio-button> <br />
-                            <mat-radio-button [value]=2>Prefer not to say</mat-radio-button> <br />
+                            <mat-radio-button [value]=2>Prefer Not to Say</mat-radio-button> <br />
                         </mat-radio-group>
                         <mat-form-field appearance="outline" class="col-lg-7 col-md-12">
                             <mat-label>Race</mat-label>
