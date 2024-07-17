@@ -100,11 +100,11 @@
                     (input)="onCellphoneInputCheck(inputField.value ?? '')"
                   ></ngx-mat-intl-tel-input>
                   <mat-error *ngIf="newEmployeeForm.controls['cellphoneNo'].hasError('required') && newEmployeeForm.controls['cellphoneNo'].value=='' ">
-                    Phone Number Is Required
+                    Cellphone Number Is Required
                   </mat-error>
                   <mat-error
                     *ngIf="newEmployeeForm.controls['cellphoneNo'].value != '' && newEmployeeForm.controls['cellphoneNo'].invalid">
-                    This Is Not a Valid Phone Number
+                    This is not a valid cellphone number.
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class=" mb-3">
