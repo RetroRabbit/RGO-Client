@@ -78,17 +78,16 @@ mat-icon{
 
 .matChip{
     border-radius: 8px;
-    height: Fixed (32px);
 }
   
 mat-select-trigger {
     display: flex;
     flex-wrap: nowrap;
     overflow: hidden;
-  }
+}
   
 mat-chip-grid {
     display: flex;
     flex-wrap: nowrap;
     overflow: hidden;
-  }
+}

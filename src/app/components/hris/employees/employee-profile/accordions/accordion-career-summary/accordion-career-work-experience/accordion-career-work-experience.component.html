@@ -76,7 +76,7 @@
                                                 <mat-select-trigger>
                                                     <mat-chip-grid>
                                                     <ng-container *ngFor="let skill of copyOfWorkExperience[i].skillSet; let idx = index">
-                                                        <mat-chip-row *ngIf="idx < 2" class="matChip" [removable]="true" (removed)="onSkillRemoved(i, skill)">
+                                                        <mat-chip-row *ngIf="idx < 2" class="matChip" [removable]="true" (removed)="removeSkills(i, skill)">
                                                         {{ skill }}
                                                         <button matChipRemove>
                                                             <mat-icon>cancel</mat-icon>
@@ -98,7 +98,7 @@
                                                     <mat-select-trigger >
                                                       <mat-chip-grid [disabled]="isDisabled">
                                                         <ng-container *ngFor="let skill of sharedAccordionFunctionality.workExperience[i].skillSet; let i=index">
-                                                          <mat-chip-row *ngIf="i < 2" class="matChip" [removable]="true" (removed)="onSkillRemoved(i, skill)">
+                                                          <mat-chip-row *ngIf="i < 2" class="matChip" [removable]="true" (removed)="removeSkills(i, skill)">
                                                             {{ skill }}
                                                             <button matChipRemove>
                                                               <mat-icon>cancel</mat-icon>
@@ -110,7 +110,7 @@
                                                         </mat-chip-row>
                                                       </mat-chip-grid>
                                                     </mat-select-trigger>
-                                                    <mat-option disabled *ngFor="let skill of skillSetList" [value]="skill">{{ skill }}</mat-option>
+                                                    <mat-option *ngFor="let skill of skillSetList" [value]="skill">{{ skill }}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                         </ng-template>
@@ -122,7 +122,7 @@
                                                 <mat-select-trigger>
                                                     <mat-chip-grid >
                                                       <ng-container *ngFor="let software of copyOfWorkExperience[i].software; let i = index">
-                                                        <mat-chip-row *ngIf="i < 2" class="matChip" [removable]="true" (removed)="removeSoftwareItem(i, software)">
+                                                        <mat-chip-row *ngIf="i < 2" class="matChip" [removable]="true" (removed)="removeSoftware(i, software)">
                                                           {{ software }}
                                                           <button matChipRemove>
                                                             <mat-icon>cancel</mat-icon>
@@ -144,7 +144,7 @@
                                                     <mat-select-trigger>
                                                         <mat-chip-grid [disabled]="isDisabled">
                                                           <ng-container *ngFor="let software of sharedAccordionFunctionality.workExperience[i].software; let i = index">
-                                                            <mat-chip-row *ngIf="i < 2" class="matChip" [removable]="true" (removed)="removeSoftwareItem(i, software)">
+                                                            <mat-chip-row *ngIf="i < 2" class="matChip" [removable]="true" (removed)="removeSoftware(i, software)">
                                                               {{ software }}
                                                               <button matChipRemove>
                                                                 <mat-icon>cancel</mat-icon>
@@ -261,7 +261,7 @@
                                         <mat-select-trigger>
                                             <mat-chip-grid >
                                               <ng-container *ngFor="let skill of sharedAccordionFunctionality.newWorkExperiences[i].skillSet; let i = index">
-                                                <mat-chip-row *ngIf="i < 2" class="matChip" [removable]="true">
+                                                <mat-chip-row *ngIf="i < 2" class="matChip" [removable]="true" (removed)="removeNewSkills(i, skill)">
                                                   {{ skill }}
                                                   <button matChipRemove>
                                                     <mat-icon>cancel</mat-icon>
@@ -284,7 +284,7 @@
                                         <mat-select-trigger>
                                             <mat-chip-grid >
                                               <ng-container *ngFor="let software of sharedAccordionFunctionality.newWorkExperiences[i].software; let i = index">
-                                                <mat-chip-row *ngIf="i < 2" class="matChip" [removable]="true" >
+                                                <mat-chip-row *ngIf="i < 2" class="matChip" [removable]="true" (removed)="removeNewSoftware(i, software)">
                                                   {{ software }}
                                                   <button matChipRemove>
                                                     <mat-icon>cancel</mat-icon>
