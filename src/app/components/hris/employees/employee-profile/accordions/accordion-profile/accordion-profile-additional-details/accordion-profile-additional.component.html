@@ -34,7 +34,12 @@
                           </mat-option>
                         </mat-select>
                       </div>
-                      <div *ngIf="fieldcode.type != sharedAccordionFunctionality.fieldTypes[4].id">
+                      <div *ngIf="fieldcode.type == sharedAccordionFunctionality.fieldTypes[0].id">
+                        <mat-datepicker #picker1></mat-datepicker>
+                        <input matInput [matDatepicker]="picker1" formControlName="{{fieldcode.code}}">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      </div>
+                      <div *ngIf="fieldcode.type != sharedAccordionFunctionality.fieldTypes[4].id && fieldcode.type != sharedAccordionFunctionality.fieldTypes[0].id">
                         <input matInput formControlName="{{fieldcode.code}}">
                       </div>
                     </mat-form-field>
