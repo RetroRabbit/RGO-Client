@@ -5,8 +5,6 @@ import { Employee } from '../../../models/hris/employee.interface';
 import { EmployeeProfile } from '../../../models/hris/employee-profile.interface';
 import { environment } from '../../../../environments/environment';
 import { AuthAccessService } from '../../shared-services/auth-access/auth-access.service';
-import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
-import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
 import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
 
 
@@ -42,32 +40,32 @@ export class EmployeeService {
   getEmployeeProfiles(): Observable<EmployeeProfile[]> {
     return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/all`);
   }
- /**
- * @summary  Adds employee and Full Employee DTO and information
- * @param newEmployee new employee dto to be added
- */
+  /**
+  * @summary  Adds employee and Full Employee DTO and information
+  * @param newEmployee new employee dto to be added
+  */
   addEmployee(newEmployee: any): Observable<any> {
     return this.httpClient.post<any>(`${this.baseUrl}`, newEmployee);
   }
-   /**
- * @summary  Gets all the Full Employee DTO and information by email
- *
- * @returns EmployeeProfile object.
- */
+  /**
+* @summary  Gets all the Full Employee DTO and information by email
+*
+* @returns EmployeeProfile object.
+*/
   get(email: string): Observable<EmployeeProfile> {
     return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}/by-email?email=${encodeURIComponent(email)}`);
   }
-   /**
- * @summary  Checks for duplicate id number
- * @param idNumber idnumber that needs to be checked
- */
+  /**
+* @summary  Checks for duplicate id number
+* @param idNumber idnumber that needs to be checked
+*/
   checkDuplicateIdNumber(idNumber: string, employeeId: number): Observable<boolean> {
     return this.httpClient.get<boolean>(`${this.baseUrl}/id-number?idNumber=${encodeURIComponent(idNumber)}&employeeId=${employeeId}`);
   }
-    /**
- * @summary  
- * @param employee updated employee object
- */
+  /**
+* @summary  
+* @param employee updated employee object
+*/
   updateEmployee(employee: any): Observable<any> {
     const queryParams = `?userEmail=${this.authAccessService.getEmployeeEmail()}`
     return this.httpClient.put<any>(`${this.baseUrl}${queryParams}`, employee)
@@ -79,27 +77,7 @@ export class EmployeeService {
   getTotalEmployees(): Observable<number> {
     return this.httpClient.get<number>(`${this.baseUrl}/count`);
   }
- /**
- * @summary  get growthrate calculation answer from backend
- *
- */
-  getGrowthrate(): Observable<number> {
-    return this.httpClient.get<number>(`${this.baseUrl}/growth-rate`);
-  }
-  /**
- * @summary Gets churnrate info
- *
- */
-  getChurnRate(): Observable<ChurnRateDataCard> {
-    return this.httpClient.get<ChurnRateDataCard>(`${this.baseUrl}/churn-rate`);
-  }
-  /**
- * @summary gets count of datacards
- *
- */
-  getEmployeeCountData(): Observable<EmployeeCountDataCard> {
-    return this.httpClient.get<EmployeeCountDataCard>(`${this.baseUrl}/card-count`);
-  }
+
   /**
   * @summary  Gets List of employees by filtering based on parameters.
   * to exclude a parameter from the filter pass through a 0 for said parameter
@@ -109,11 +87,10 @@ export class EmployeeService {
   *
   * @returns List of EmployeeDto objects.
   */
-filterEmployees(championID: number, employeeType: number, activeStatus: boolean = true): Observable<EmployeeFilterView[]> {
-  const queryParams = `?PeopleChampId=${encodeURIComponent(championID)}
+  filterEmployees(championID: number, employeeType: number, activeStatus: boolean = true): Observable<EmployeeFilterView[]> {
+    const queryParams = `?PeopleChampId=${encodeURIComponent(championID)}
                         &employeeType=${encodeURIComponent(employeeType)}
                         &activeStatus=${activeStatus}`;
-  return this.httpClient.get<EmployeeFilterView[]>(`${this.baseUrl}/filter-employees${queryParams}`);
-}
-
+    return this.httpClient.get<EmployeeFilterView[]>(`${this.baseUrl}/filter-employees${queryParams}`);
+  }
 }
