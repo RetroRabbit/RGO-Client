@@ -69,7 +69,7 @@ export class AccordionProfileContactDetailsComponent {
         cellphoneNumberContainer?.classList.remove('shift-label');
       }
       else if (value===null && cellphoneNumberValue?.invalid) {
-        cellphoneNumberContainer?.classList.remove('shift-label');
+        cellphoneNumberContainer?.classList.add('shift-label');
       } else if (value===null && !cellphoneNumberValue?.invalid) {
         cellphoneNumberContainer?.classList.remove('shift-label');
       }
@@ -87,7 +87,7 @@ export class AccordionProfileContactDetailsComponent {
         emergencyNumberContainer?.classList.remove('shift-label');
       }
       else if (value === null && emergencyNumberValue?.invalid) {
-        emergencyNumberContainer?.classList.remove('shift-label');
+        emergencyNumberContainer?.classList.add('shift-label');
       } else if (value === null && !emergencyNumberValue?.invalid) {
         emergencyNumberContainer?.classList.remove('shift-label');
       }
@@ -119,9 +119,9 @@ export class AccordionProfileContactDetailsComponent {
       email: [this.employeeProfile.employeeDetails.email, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.emailPattern)]],
       personalEmail: [this.employeeProfile.employeeDetails.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
       cellphoneNo: [this.employeeProfile.employeeDetails.cellphoneNo, [Validators.required]],
-      houseNo: [this.employeeProfile.employeeDetails.houseNo, [Validators.minLength(4)]],
+      houseNo: [this.employeeProfile.employeeDetails.houseNo, []],
       emergencyContactName: [this.employeeProfile.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
-      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required], Validators.pattern(/(^\d+$)|(^$)/)]
+      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required]]
     });
     this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.sharedAccordionFunctionality.checkContactFormProgress();
