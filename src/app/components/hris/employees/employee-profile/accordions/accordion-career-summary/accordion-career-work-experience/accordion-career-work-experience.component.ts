@@ -11,15 +11,15 @@ import { ROLES } from 'src/app/models/hris/constants/employee-skills-software-on
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { forkJoin } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-accordion-career-work-experience',
   templateUrl: './accordion-career-work-experience.component.html',
   styleUrls: ['./accordion-career-work-experience.component.css'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class AccordionCareerWorkExperienceComponent {
-
   screenWidth = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])
@@ -28,8 +28,11 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   panelOpenState: boolean = false;
-  @Input() WorkExperience!: { workExperience: WorkExperience }
-  @Input() employeeProfile !: EmployeeProfile | SimpleEmployee
+  @Input() WorkExperience!: {
+    [x: string]: any;
+    workExperience: WorkExperience;
+  };
+  @Input() employeeProfile!: EmployeeProfile | SimpleEmployee;
 
   editWorkExperience: boolean = false;
   hasWorkExperienceData: boolean = false;
@@ -42,7 +45,7 @@ export class AccordionCareerWorkExperienceComponent {
   role: string = '';
 
   removeIndex: number = 0;
-
+  workExperiences: WorkExperience[] = [];
   copyOfWorkExperience: WorkExperience[] = [];
 
   skillSetList: string[] = [];
@@ -53,8 +56,10 @@ export class AccordionCareerWorkExperienceComponent {
     title: 'Delete Experience',
     subtitle: 'Are You Sure You Want to Delete?',
     confirmButtonText: 'Delete',
-    denyButtonText: "Cancel"
+    denyButtonText: 'Cancel',
   };
+
+  isDisabled: boolean = true;
 
   constructor(
     private workExperienceService: WorkExperienceService,
@@ -62,13 +67,12 @@ export class AccordionCareerWorkExperienceComponent {
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-    private datePipe: DatePipe) {
-  }
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit(): void {
     this.getEmployeeType();
     this.getWorkExperience();
-
   }
 
   formatDate(date: string | Date): string {
@@ -76,12 +80,14 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   getWorkExperience() {
-    this.workExperienceService.getWorkExperience(this.employeeProfile.id as number).subscribe({
-      next: (data) => {
-        this.sharedAccordionFunctionality.workExperience = data;
-      },
-      error: (er) => this.snackBarService.showError(er),
-    });
+    this.workExperienceService
+      .getWorkExperience(this.employeeProfile.id as number)
+      .subscribe({
+        next: (data) => {
+          this.sharedAccordionFunctionality.workExperience = data;
+        },
+        error: (er) => this.snackBarService.showError(er),
+      });
   }
 
   getEmployeeType() {
@@ -120,9 +126,45 @@ export class AccordionCareerWorkExperienceComponent {
         this.softwareList = ROLES.Executive.softwareList;
         break;
       default:
-        this.skillSetList = ["No skill set available for this employee type"];
-        this.softwareList = ["No software is available for this employee type"];
+        this.skillSetList = ['No skill set available for this employee type'];
+        this.softwareList = ['No software is available for this employee type'];
         break;
+    }
+  }
+
+  removeSkills(index: number, skill: string) {
+    const skillSet = this.copyOfWorkExperience[index].skillSet;
+    const skillIndex = skillSet!.indexOf(skill);
+    if (skillIndex >= 0) {
+      skillSet!.splice(skillIndex, 1);
+      this.copyOfWorkExperience[index].skillSet = [...skillSet!];
+    }
+  }
+
+  removeNewSkills(index: number, skill: string) {
+    const newSkillSet = this.sharedAccordionFunctionality.newWorkExperiences[index].skillSet
+    const newskillIndex = newSkillSet!.indexOf(skill);
+    if (newskillIndex >= 0) {
+      newSkillSet!.splice(newskillIndex, 1);
+      this.sharedAccordionFunctionality.newWorkExperiences[index].skillSet = [...newSkillSet!];
+    }
+  }
+
+  removeSoftware(index: number, software: string) {
+    const softwareItems = this.copyOfWorkExperience[index].software;
+    const softwareIndex = softwareItems!.indexOf(software);
+    if (softwareIndex >= 0) {
+      softwareItems!.splice(softwareIndex, 1);
+      this.copyOfWorkExperience[index].software = [...softwareItems!];
+    }
+  }
+
+  removeNewSoftware(index: number, software: string) {
+    const newSoftwareItems = this.sharedAccordionFunctionality.newWorkExperiences[index].software
+    const newsoftwareIndex = newSoftwareItems!.indexOf(software);
+    if(newsoftwareIndex>= 0){
+      newSoftwareItems!.splice(newsoftwareIndex, 1);
+      this.sharedAccordionFunctionality.newWorkExperiences[index].software = [...newSoftwareItems!];
     }
   }
 
@@ -134,34 +176,61 @@ export class AccordionCareerWorkExperienceComponent {
       projectName: '',
       skillSet: [],
       software: [],
-      startDate: new Date,
-      endDate: new Date,
+      startDate: new Date(),
+      endDate: new Date(),
       projectDescription: '',
-      employeeId: this.employeeProfile.id as number
-    }
-    this.sharedAccordionFunctionality.newWorkExperiences.push(newWorkExperience);
+      employeeId: this.employeeProfile.id as number,
+    };
+    this.sharedAccordionFunctionality.newWorkExperiences.push(
+      newWorkExperience
+    );
   }
 
   findDifferenceInArrays(): WorkExperience[] {
     let differenceArray: WorkExperience[] = [];
 
-    for (let i = 0; i < this.sharedAccordionFunctionality.workExperience.length; i++) {
-      if (this.sharedAccordionFunctionality.workExperience[i].clientName != this.copyOfWorkExperience[i].clientName)
+    for (
+      let i = 0;
+      i < this.sharedAccordionFunctionality.workExperience.length;
+      i++
+    ) {
+      if (
+        this.sharedAccordionFunctionality.workExperience[i].clientName !=
+        this.copyOfWorkExperience[i].clientName
+      )
         differenceArray.push(this.copyOfWorkExperience[i]);
-      else if (this.sharedAccordionFunctionality.workExperience[i].projectName != this.copyOfWorkExperience[i].projectName)
+      else if (
+        this.sharedAccordionFunctionality.workExperience[i].projectName !=
+        this.copyOfWorkExperience[i].projectName
+      )
         differenceArray.push(this.copyOfWorkExperience[i]);
-      else if (this.sharedAccordionFunctionality.workExperience[i].skillSet != this.copyOfWorkExperience[i].skillSet)
+      else if (
+        this.sharedAccordionFunctionality.workExperience[i].skillSet !=
+        this.copyOfWorkExperience[i].skillSet
+      )
         differenceArray.push(this.copyOfWorkExperience[i]);
-      else if (this.sharedAccordionFunctionality.workExperience[i].software != this.copyOfWorkExperience[i].software)
+      else if (
+        this.sharedAccordionFunctionality.workExperience[i].software !=
+        this.copyOfWorkExperience[i].software
+      )
         differenceArray.push(this.copyOfWorkExperience[i]);
-      else if (this.sharedAccordionFunctionality.workExperience[i].startDate != this.copyOfWorkExperience[i].startDate)
+      else if (
+        this.sharedAccordionFunctionality.workExperience[i].startDate !=
+        this.copyOfWorkExperience[i].startDate
+      )
         differenceArray.push(this.copyOfWorkExperience[i]);
-      else if (this.sharedAccordionFunctionality.workExperience[i].endDate != this.copyOfWorkExperience[i].endDate)
+      else if (
+        this.sharedAccordionFunctionality.workExperience[i].endDate !=
+        this.copyOfWorkExperience[i].endDate
+      )
         differenceArray.push(this.copyOfWorkExperience[i]);
-      else if (this.sharedAccordionFunctionality.workExperience[i].projectDescription != this.copyOfWorkExperience[i].projectDescription)
+      else if (
+        this.sharedAccordionFunctionality.workExperience[i]
+          .projectDescription != this.copyOfWorkExperience[i].projectDescription
+      )
         differenceArray.push(this.copyOfWorkExperience[i]);
     }
-    return differenceArray
+    return differenceArray;
   }
 
   editWorkExperiences() {
@@ -171,10 +240,12 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   copyWorkExperiences() {
-    this.sharedAccordionFunctionality.workExperience.forEach(workExperience => {
-      const copiedExperience = JSON.parse(JSON.stringify(workExperience));
-      this.copyOfWorkExperience.push(copiedExperience);
-    });
+    this.sharedAccordionFunctionality.workExperience.forEach(
+      (workExperience) => {
+        const copiedExperience = JSON.parse(JSON.stringify(workExperience));
+        this.copyOfWorkExperience.push(copiedExperience);
+      }
+    );
   }
 
   cancelWorkExperience() {
@@ -194,8 +265,7 @@ export class AccordionCareerWorkExperienceComponent {
     if (confirmation) {
       if (this.removeNewOrUpdate == 'update') {
         this.removeExistingWorkExperience(this.removeIndex);
-      }
-      else {
+      } else {
         this.removenewWorkExperience(this.removeIndex);
       }
     }
@@ -206,14 +276,14 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   removeExistingWorkExperience(index: number) {
-
     const deleteId = this.copyOfWorkExperience[index].id;
     this.workExperienceService.deleteWorkExperience(deleteId).subscribe({
       next: () => {
-        this.snackBarService.showSnackbar("Updated", "snack-success");
+        this.snackBarService.showSnackbar('Updated', 'snack-success');
         this.copyOfWorkExperience.splice(index, 1);
         this.sharedAccordionFunctionality.workExperience.splice(index, 1);
-        this.sharedAccordionFunctionality.workExperienceFormFields = this.sharedAccordionFunctionality.workExperienceFormFields - 7;
+        this.sharedAccordionFunctionality.workExperienceFormFields =
+          this.sharedAccordionFunctionality.workExperienceFormFields - 7;
         this.editWorkExperience = false;
       },
       error: (er) => this.snackBarService.showError(er),
@@ -226,38 +296,42 @@ export class AccordionCareerWorkExperienceComponent {
     let saveCount = 0;
     let errorOccurred = false;
 
-    this.sharedAccordionFunctionality.newWorkExperiences.forEach(newWorkExperience => {
-      this.workExperienceService.saveWorkExperience(newWorkExperience).subscribe({
-        next: () => {
-          saveCount++;
-          if (saveCount === total && !errorOccurred) {
-            this.snackBarService.showSnackbar("Saved", "snack-success");
-            this.hasUpdatedWorkExperience = true;
-            this.addingWorkExperience = false;
-            this.sharedAccordionFunctionality.newWorkExperiences = [];
-            this.getWorkExperience();
-          }
-        },
-        error: (er) => {
-          errorOccurred = true;
-          this.snackBarService.showError(er);
-          this.addingWorkExperience = false;
-          this.editWorkExperience = false;
-        }
-      });
-    });
+    this.sharedAccordionFunctionality.newWorkExperiences.forEach(
+      (newWorkExperience) => {
+        this.workExperienceService
+          .saveWorkExperience(newWorkExperience)
+          .subscribe({
+            next: () => {
+              saveCount++;
+              if (saveCount === total && !errorOccurred) {
+                this.snackBarService.showSnackbar('Saved', 'snack-success');
+                this.hasUpdatedWorkExperience = true;
+                this.addingWorkExperience = false;
+                this.sharedAccordionFunctionality.newWorkExperiences = [];
+                this.getWorkExperience();
+              }
+            },
+            error: (er) => {
+              errorOccurred = true;
+              this.snackBarService.showError(er);
+              this.addingWorkExperience = false;
+              this.editWorkExperience = false;
+            },
+          });
+      }
+    );
   }
 
   updateWorkExperience() {
     this.isUpdated = true;
     this.editWorkExperience = false;
     const editedWorkExperienceArray = this.findDifferenceInArrays();
-    const updateObservables = editedWorkExperienceArray.map(workExperience =>
+    const updateObservables = editedWorkExperienceArray.map((workExperience) =>
       this.workExperienceService.updateWorkExperience(workExperience)
     );
     forkJoin(updateObservables).subscribe({
       next: () => {
-        this.snackBarService.showSnackbar("Updated", "snack-success");
+        this.snackBarService.showSnackbar('Updated', 'snack-success');
         this.hasUpdatedWorkExperience = true;
         this.getWorkExperience();
       },
