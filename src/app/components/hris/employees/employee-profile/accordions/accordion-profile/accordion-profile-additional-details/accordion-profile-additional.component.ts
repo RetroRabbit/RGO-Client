@@ -168,6 +168,10 @@ export class AccordionProfileAdditionalComponent {
         if (fieldName.required == true) {
           this.sharedAccordionFunctionality.additionalInfoForm.controls[fieldName.code].setValidators(Validators.required);
         }
+        if (fieldName.regex != null)
+        {
+          this.sharedAccordionFunctionality.additionalInfoForm.controls[fieldName.code].setValidators(Validators.pattern(fieldName.regex));
+        }
         this.sharedAccordionFunctionality.additionalInfoForm.disable();
       }
     });
