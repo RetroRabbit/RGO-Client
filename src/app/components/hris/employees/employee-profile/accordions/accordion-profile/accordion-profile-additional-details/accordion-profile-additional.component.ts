@@ -162,20 +162,25 @@ export class AccordionProfileAdditionalComponent {
     const formGroupConfig: any = {};
     this.customFields.forEach(fieldName => {
       if (fieldName.code != null || fieldName.code != undefined) {
-        const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
-        formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
-        this.sharedAccordionFunctionality.additionalInfoForm = this.fb.group(formGroupConfig);
-        if (fieldName.required == true) {
-          this.sharedAccordionFunctionality.additionalInfoForm.controls[fieldName.code].setValidators(Validators.required);
+        const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id);
+        const value = customData[0] ? customData[0].value : '';
+        const control = new FormControl({ value: value, disabled: true });
+        const validators = [];
+        if (fieldName.required) {
+          validators.push(Validators.required);
         }
-        if (fieldName.regex != null)
-        {
-          this.sharedAccordionFunctionality.additionalInfoForm.controls[fieldName.code].setValidators(Validators.pattern(fieldName.regex));
+        if (fieldName.regex) {
+          validators.push(Validators.pattern(fieldName.regex as string));
         }
-        this.sharedAccordionFunctionality.additionalInfoForm.disable();
+        control.setValidators(validators);
+        formGroupConfig[fieldName.code] = control;
       }
     });
-  }
+
+    this.sharedAccordionFunctionality.additionalInfoForm = this.fb.group(formGroupConfig);
+    this.sharedAccordionFunctionality.additionalInfoForm.disable();
+}
+
 
   editAdditionalDetails() {
     this.sharedAccordionFunctionality.additionalInfoForm.enable();

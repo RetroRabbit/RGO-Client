@@ -40,7 +40,7 @@
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                       </div>
                       <div *ngIf="fieldcode.type != sharedAccordionFunctionality.fieldTypes[4].id && fieldcode.type != sharedAccordionFunctionality.fieldTypes[0].id">
-                        <input matInput formControlName="{{fieldcode.code}}">
+                        <input type="number" matInput formControlName="{{fieldcode.code}}">
                       </div>
                     </mat-form-field>
                   </div>
