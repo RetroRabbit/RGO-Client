@@ -26,7 +26,6 @@ export class AccordionProfileContactDetailsComponent {
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
 
-
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
@@ -35,7 +34,6 @@ export class AccordionProfileContactDetailsComponent {
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
   }
-
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
@@ -63,13 +61,12 @@ export class AccordionProfileContactDetailsComponent {
   checkCellphoneNumberValue(value: string) {
     const cellphoneNumberContainer = document.querySelector('.cellphone-number-label');
     const cellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("cellphoneNo");
-
     
       if (value) {
         cellphoneNumberContainer?.classList.remove('shift-label');
       }
       else if (value===null && cellphoneNumberValue?.invalid) {
-        cellphoneNumberContainer?.classList.remove('shift-label');
+        cellphoneNumberContainer?.classList.add('shift-label');
       } else if (value===null && !cellphoneNumberValue?.invalid) {
         cellphoneNumberContainer?.classList.remove('shift-label');
       }
@@ -87,14 +84,13 @@ export class AccordionProfileContactDetailsComponent {
         emergencyNumberContainer?.classList.remove('shift-label');
       }
       else if (value === null && emergencyNumberValue?.invalid) {
-        emergencyNumberContainer?.classList.remove('shift-label');
+        emergencyNumberContainer?.classList.add('shift-label');
       } else if (value === null && !emergencyNumberValue?.invalid) {
         emergencyNumberContainer?.classList.remove('shift-label');
       }
       else {
         emergencyNumberContainer?.classList.add('shift-label');
       }
-    
   }
 
   checkHouseNumberValue(value: string) {
@@ -119,9 +115,9 @@ export class AccordionProfileContactDetailsComponent {
       email: [this.employeeProfile.employeeDetails.email, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.emailPattern)]],
       personalEmail: [this.employeeProfile.employeeDetails.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
       cellphoneNo: [this.employeeProfile.employeeDetails.cellphoneNo, [Validators.required]],
-      houseNo: [this.employeeProfile.employeeDetails.houseNo, [Validators.minLength(4)]],
+      houseNo: [this.employeeProfile.employeeDetails.houseNo],
       emergencyContactName: [this.employeeProfile.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
-      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required], Validators.pattern(/(^\d+$)|(^$)/)]
+      emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required]]
     });
     this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.sharedAccordionFunctionality.checkContactFormProgress();
@@ -132,7 +128,6 @@ export class AccordionProfileContactDetailsComponent {
     this.sharedAccordionFunctionality.employeeContactForm.enable();
     this.sharedAccordionFunctionality.editContact = true;
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", false);
-
   }
 
   cancelContactEdit() {
