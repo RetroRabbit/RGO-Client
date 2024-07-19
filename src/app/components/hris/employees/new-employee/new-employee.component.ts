@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -47,67 +47,52 @@ export class NewEmployeeComponent implements OnInit {
     private customValidationService: CustomvalidationService,
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
-    private _formBuilder: FormBuilder,
     public navService: NavService,
     public locationApiService: LocationApiService,
   ) {
     this.navService.hideNav();
   }
-
-  firstFormGroup = this._formBuilder.group({
-    firstCtrl: ['', Validators.required],
-  });
-  secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
-  });
-  isLinear = true;
-
-  employeeDocument: EmployeeDocument[] = [];
-  public newEmployeeEmail = "";
-  public base64String = "";
-  public filename = "";
-  imageName: string = "";
   @ViewChild('stepper') private myStepper!: MatStepper;
   @ViewChild('inputField') inputField!: NgxMatIntlTelInputComponent;
 
   employeeTypes: EmployeeType[] = [];
   employeeDocumentModels: EmployeeDocument[] = [];
-  emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
-  namePattern = /^[a-zA-Z\s ()'-]*$/;
-  initialsPattern = /^[A-Za-z]+$/;
-  toggleAdditional: boolean = false;
+  Employees: EmployeeProfile[] = [];
+  files: NgxFileDropEntry[] = [];
+  filteredPeopleChamps: any = [];
   levels: number[] = levels.map((level) => level.value);
   races: string[] = races.map((race) => race.value);
   genders: string[] = genders.map((gender) => gender.value);
   provinces: string[] = [];
   countries: string[] = [];
   cities: string[] = [];
+  newEmployeeEmail = "";
+  base64String = "";
+  filename = "";
+  imageName: string = "";
   imagePreview: string = '';
-  previewImage: string = '';
   imageUrl: string = '';
   countrySelected: string = '';
-  Employees: EmployeeProfile[] = [];
-  selectedEmployee!: EmployeeProfile;
-  validImage: boolean = false;
-  public files: NgxFileDropEntry[] = [];
+  peopleChampionId = null;
+  empId: number = 0;
+  employeeDetails: any;
   PREVIOUS_PAGE = 'previousPage';
   COMPANY_EMAIL = 'retrorabbit.co.za';
-
-  filteredPeopleChamps: any = [];
-  peopleChampionId = null;
-  isMobileScreen = false;
+  emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
+  namePattern = /^[a-zA-Z\s ()'-]*$/;
+  initialsPattern = /^[A-Za-z]+$/;
+  toggleAdditional: boolean = false;
+  validImage: boolean = false;
+  isMobileScreen: boolean = false;
   isLoadingAddEmployee: boolean = false;
   isSameAddress: boolean = true;
   existingIdNumber: boolean = false;
   isValidStarterkitFile: boolean = false;
-  empId: number = 0;
-  isSouthAfrica = false;
-  disabilityType = disabilities;
-
   typeOther: boolean = false;
   hasDisability: boolean = false;
-
-  employeeDetails: any;
+  isLinear: boolean = true;
+  isDirty: boolean = false;
+  disabilityType = disabilities;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -115,6 +100,29 @@ export class NewEmployeeComponent implements OnInit {
     2: { name: '', state: true },
     3: { name: '', state: true },
   };
+
+  physicalAddress: FormGroup = this.createAddressForm();
+  postalAddress: FormGroup = this.createAddressForm();
+  newEmployeeForm: FormGroup = this.createEmployeeForm();
+
+  settingsForm: FormGroup = new FormGroup({
+    toggleAdditionalFields: new FormControl<boolean>(
+      false,
+      Validators.required
+    ),
+  });
+
+  postalAddressForm: FormGroup = new FormGroup({
+    sameAsPhysicalAddress: new FormControl<boolean>(true, Validators.required),
+  });
+
+  uploadDocumentForm = new FormGroup({
+    id: new FormControl<number>(0),
+    employee: new FormControl<EmployeeProfile | null>(null),
+    fileName: new FormControl<string>(''),
+    file: new FormControl<string>(''),
+    uploadDate: new FormControl<Date | string>(new Date(Date.now())),
+  });
 
   onCellphoneInputCheck(value: string): void {
     const container = document.querySelector('.cellphone-container');
@@ -127,7 +135,20 @@ export class NewEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCountries();
+    this.initializeForm();
+  }
 
+  ngOnDestroy() {
+    this.navService.showNav();
+  }
+
+  loadCountries(): void {
+    this.locationApiService.getCountries().subscribe({
+      next: (data) => this.countries = data
+    });
+  }
+
+  initializeForm() {
     this.newEmployeeForm.get('disability')?.valueChanges.subscribe(value => {
       const disabilityNotesControl = this.newEmployeeForm.get('disabilityType');
       if (value === true) {
@@ -165,9 +186,87 @@ export class NewEmployeeComponent implements OnInit {
       });
   }
 
-  loadCountries(): void {
-    this.locationApiService.getCountries().subscribe({
-      next: (data) => this.countries = data
+  saveAndExit() {
+    this.isLoadingAddEmployee = true;
+    this.saveEmployee("SaveAndExit");
+    this.clearFormErrorsAndValues(this.newEmployeeForm);
+    this.clearFormErrorsAndValues(this.uploadDocumentForm);
+    this.clearFormErrorsAndValues(this.physicalAddress);
+    this.clearFormErrorsAndValues(this.postalAddressForm);
+    this.removeAllDocuments();
+  }
+
+  saveAndAddAnother() {
+    this.isLoadingAddEmployee = true;
+    this.saveEmployee("SaveAndAddAnother");
+    this.newEmployeeForm.reset();
+    this.clearFormErrorsAndValues(this.newEmployeeForm);
+    this.clearFormErrorsAndValues(this.uploadDocumentForm);
+    this.clearFormErrorsAndValues(this.physicalAddress);
+    this.clearFormErrorsAndValues(this.postalAddressForm);
+    this.removeAllDocuments();
+    this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
+    this.newEmployeeForm.controls['disability'].setValue(false);
+    this.newEmployeeForm.controls['cellphoneNo'].reset();
+    this.myStepper.reset();
+    this.newEmployeeForm.get('cellphoneNo')?.reset();
+    this.newEmployeeForm.markAsUntouched()
+  }
+
+  saveEmployee(saveType: string): void {
+    var documents = this.employeeDocumentModels;
+    this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
+      next: () => {
+        this.snackBarService.showSnackbar("Employee Saved", "snack-success");
+        this.isDirty = false;
+        this.newEmployeeForm.reset();
+        this.employeeService.get(this.newEmployeeEmail).subscribe({
+          next: employeeProfile => {
+            documents.forEach(element => {
+              element.employeeId = employeeProfile.id as number;
+            });
+            this.employeeDocumentModels = documents;
+          },
+          error: er => {
+            this.snackBarService.showError(er);
+          },
+          complete: () => {
+            if (saveType == "SaveAndExit") {
+              this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
+            }
+            else {
+              this.onUploadDocument('/create-employee');
+            }
+          }
+        })
+      },
+      error: () => {
+        this.snackBarService.showSnackbar(`Some Fields Are Still Missing Information`, "snack-error");
+        this.isDirty = false;
+      },
+    });
+  }
+
+  onUploadDocument(nextPage: string): void {
+    var documents = this.employeeDocumentModels
+    documents.forEach((documentModel) => {
+      this.employeeDocumentService.saveEmployeeDocument(documentModel, 0).subscribe({
+        next: () => {
+          this.snackBarService.showSnackbar("Employee Documents Saved", "snack-success");
+          this.isLoadingAddEmployee = false;
+        },
+        error: (er: any) => {
+          this.snackBarService.showError(er);
+          this.isLoadingAddEmployee = false;
+        }, complete: () => {
+          this.employeeDocumentModels = [];
+          this.newEmployeeEmail = "";
+          this.files = [];
+          this.myStepper.previous();
+          this.router.navigateByUrl(nextPage);
+          this.isLoadingAddEmployee = false;
+        }
+      });
     });
   }
 
@@ -190,88 +289,6 @@ export class NewEmployeeComponent implements OnInit {
       next: (data) => this.cities = data,
       error: (er) => this.snackBarService.showError(er),
     });
-  }
-
-  private createAddressForm(): FormGroup {
-    return new FormGroup({
-      unitNumber: new FormControl<string | null>('', Validators.minLength(1)),
-      complexName: new FormControl<string | null>('', Validators.minLength(1)),
-      suburbDistrict: new FormControl<string | null>('', Validators.minLength(1)),
-      city: new FormControl<string | null>('', Validators.minLength(1)),
-      streetNumber: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(1)]),
-      streetName: new FormControl<string | null>('', Validators.minLength(1)),
-      country: new FormControl<string | null>('', Validators.minLength(1)),
-      province: new FormControl<string | null>('', Validators.minLength(1)),
-      postalCode: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
-    });
-  }
-
-  physicalAddress: FormGroup = this.createAddressForm();
-
-  postalAddress: FormGroup = this.createAddressForm();
-  newEmployeeForm = new FormGroup({
-    id: new FormControl<number>(0, [Validators.pattern(/^[0-9]*$/), Validators.required]),
-    employeeNumber: new FormControl<string>('0', Validators.pattern(/^(\w{3})(\d{3})$/)),
-    taxNumber: new FormControl<string>('0000000000', Validators.pattern(/^\d{10}$/)),
-    engagementDate: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
-    terminationDate: new FormControl<Date | string | null>(null),
-    reportingLine: new FormControl<EmployeeProfile | null>(null),
-    highestQualication: new FormControl<string>(''),
-    disability: new FormControl<boolean | null>(false, [Validators.required]),
-    disabilityType: new FormControl<string>(''),
-    disabilityNotes: new FormControl<string>(''),
-    countryOfBirth: new FormControl<string>(''),
-    nationality: new FormControl<string>(''),
-    level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
-    employeeType: new FormControl<{ id: number; name: string } | null>(null, Validators.required),
-    name: new FormControl<string>('', [Validators.required,
-    Validators.pattern(this.namePattern)]),
-    initials: new FormControl<string>('', [Validators.required,
-    Validators.pattern(this.initialsPattern)]),
-    surname: new FormControl<string>('', [Validators.required,
-    Validators.pattern(this.namePattern)]),
-    dateOfBirth: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
-    idNumber: new FormControl<string>('', [Validators.required, this.customValidationService.idNumberValidator]),
-    passportNumber: new FormControl<string>(''),
-    passportExpiryDate: new FormControl<Date | string | null>(new Date(Date.now())),
-    passportCountryIssue: new FormControl<string>(''),
-    race: new FormControl<number | null>(null),
-    gender: new FormControl<number | null>(null),
-    email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),]),
-    personalEmail: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]),
-    cellphoneNo: new FormControl<string>('', [Validators.required]),
-    photo: new FormControl<string>(''),
-    notes: new FormControl<string>(''),
-    leaveInterval: new FormControl(0, Validators.pattern(/^[0-9]*$/)),
-    salaryDays: new FormControl(0, Validators.pattern(/^[0-9]*$/)),
-    payRate: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
-    salary: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
-    physicalAddress: new FormControl<EmployeeAddress | null>(null),
-    postalAddress: new FormControl<EmployeeAddress | null>(null),
-    peopleChampion: new FormControl<string>('')
-  });
-
-  settingsForm: FormGroup = new FormGroup({
-    toggleAdditionalFields: new FormControl<boolean>(
-      false,
-      Validators.required
-    ),
-  });
-
-  postalAddressForm: FormGroup = new FormGroup({
-    sameAsPhysicalAddress: new FormControl<boolean>(true, Validators.required),
-  });
-
-  uploadDocumentForm = new FormGroup({
-    id: new FormControl<number>(0),
-    employee: new FormControl<EmployeeProfile | null>(null),
-    fileName: new FormControl<string>(''),
-    file: new FormControl<string>(''),
-    uploadDate: new FormControl<Date | string>(new Date(Date.now())),
-  });
-
-  ngOnDestroy() {
-    this.navService.showNav();
   }
 
   filterChampions(event: any) {
@@ -322,9 +339,7 @@ export class NewEmployeeComponent implements OnInit {
               documentType: 1,
               lastUpdatedDate: new Date()
             };
-            console.log(0);
             this.employeeDocumentModels.push(employeeDocument);
-            console.log(this.employeeDocumentModels)
             this.categories[category].state = false;
             this.categories[category].name = file.name;
           };
@@ -345,63 +360,11 @@ export class NewEmployeeComponent implements OnInit {
     });
   }
 
-  saveAndExit() {
-    this.saveEmployee("SaveAndExit");
-    this.clearFormErrorsAndValues(this.newEmployeeForm);
-    this.clearFormErrorsAndValues(this.uploadDocumentForm);
-    this.clearFormErrorsAndValues(this.physicalAddress);
-    this.clearFormErrorsAndValues(this.postalAddressForm);
-    this.removeAllDocuments();
-  }
-  saveAndAddAnother() {
-    this.saveEmployee("SaveAndAddAnother");
-    this.newEmployeeForm.reset();
-    this.clearFormErrorsAndValues(this.newEmployeeForm);
-    this.clearFormErrorsAndValues(this.uploadDocumentForm);
-    this.clearFormErrorsAndValues(this.physicalAddress);
-    this.clearFormErrorsAndValues(this.postalAddressForm);
-    this.removeAllDocuments();
-    this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
-    this.newEmployeeForm.controls['disability'].setValue(false);
-    this.newEmployeeForm.controls['cellphoneNo'].reset();
-    this.myStepper.reset();
-    this.newEmployeeForm.get('cellphoneNo')?.reset();
-    this.newEmployeeForm.markAsUntouched()
-  }
-  
-
-  onUploadDocument(nextPage: string): void {
-    console.log(this.employeeDocumentModels)
-    var documents = this.employeeDocumentModels
-    console.log("onupload");
-    console.log(documents);
-    documents.forEach((documentModel) => {
-      this.employeeDocumentService.saveEmployeeDocument(documentModel, 0).subscribe({
-        next: () => {
-          console.log("onupload hit")
-          this.snackBarService.showSnackbar("Saved", "snack-success");
-          this.isLoadingAddEmployee = false;
-        },
-        error: (er: any) => {
-          this.snackBarService.showError(er);
-          this.isLoadingAddEmployee = false;
-        }, complete: () => {
-          this.employeeDocumentModels = [];
-          this.newEmployeeEmail = "";
-          this.files = [];
-          this.myStepper.previous();
-          this.router.navigateByUrl(nextPage);
-          this.isLoadingAddEmployee = false;
-        }
-      });
-    });
-  }
-
   public fileOver(event: Event) {
   }
   public fileLeave(event: Event) {
   }
-  
+
   public removeFileByIndex(index: number): void {
     if (index >= 0 && index < this.files.length) {
       this.files.splice(index, 1);
@@ -475,8 +438,6 @@ export class NewEmployeeComponent implements OnInit {
     ]).pipe(first()).subscribe()
   }
 
-  isDirty = false;
-
   onSubmit(reset: boolean = false): void {
     this.existingIdNumber = false;
     if (!this.newEmployeeForm.controls['idNumber'].valid) {
@@ -489,19 +450,16 @@ export class NewEmployeeComponent implements OnInit {
       this.newEmployeeEmail = this.newEmployeeForm.value.email;
     } else {
       this.snackBarService.showSnackbar("Retro Rabbit Email Address Required", "snack-error");
-      this.isLoadingAddEmployee = false;
       return;
     }
     if (this.newEmployeeForm.value.disability !== null && this.newEmployeeForm.value.disability !== undefined) {
       this.newEmployeeForm.value.disability;
     } else {
       this.snackBarService.showSnackbar("Specify Disability Status", "snack-error");
-      this.isLoadingAddEmployee = false;
       return;
     }
     if (this.newEmployeeForm.value.cellphoneNo == null || !this.newEmployeeForm.controls['cellphoneNo'].valid) {
       this.snackBarService.showSnackbar("Valid cellphone number required", "snack-error");
-      this.isLoadingAddEmployee = false;
       return;
     }
     this.newEmployeeForm.patchValue({ id: 0 });
@@ -534,92 +492,29 @@ export class NewEmployeeComponent implements OnInit {
         this.existingIdNumber = data;
         if (this.existingIdNumber) {
           this.snackBarService.showSnackbar("ID Number Already Exists", "snack-error");
-          this.isLoadingAddEmployee = false;
         } else {
           this.nextStep();
         }
       },
       error: (er) => {
         this.snackBarService.showError(er);
-        this.isLoadingAddEmployee = false;
       }
     });
   }
 
-  nextStep(){
+  nextStep() {
     if (this.newEmployeeForm.invalid) {
       this.newEmployeeForm.markAllAsTouched();
     }
-    if(this.typeOther == false){
+    if (this.typeOther == false) {
       this.newEmployeeForm.value.disabilityNotes = this.newEmployeeForm.value.disabilityType;
     }
-    else{
+    else {
       this.newEmployeeForm.value.disabilityNotes = this.newEmployeeForm.value.disabilityNotes;
     }
 
     this.employeeDetails = this.newEmployeeForm.value;
     this.myStepper.next();
-    
-  }
-
-  saveEmployee(saveType: string): void {
-    console.log("Onsave")
-    console.log(this.employeeDocumentModels)
-    var documents = this.employeeDocumentModels;
-    //works
-    this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
-      next: () => {
-        console.log("innext")
-        console.log(documents);
-        this.snackBarService.showSnackbar("Saved", "snack-success");
-        // if (!this.existingIdNumber) {
-        //   this.myStepper.next();
-        // }
-        this.isDirty = false;
-        this.isLoadingAddEmployee = false;
-        this.newEmployeeForm.reset();
-        this.employeeService.get(this.newEmployeeEmail).subscribe({
-          next: employeeProfile => {
-            documents.forEach(element => {
-              element.employeeId = employeeProfile.id as number;
-            });
-            this.employeeDocumentModels = documents;
-            console.log(documents)
-          },
-          error: er => {
-            this.snackBarService.showError(er);
-          },
-          complete: () => {
-            console.log(2)
-            if(saveType == "SaveAndExit"){
-              console.log("SaveAndExit")
-              console.log(this.employeeDocumentModels)
-              this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
-            }
-            else{
-              console.log("SaveAndAddAnother")
-              this.onUploadDocument('/create-employee');
-            }
-          }
-        })
-      },
-      error: (error: any, stepper?: MatStepper) => {
-        let message = '';
-        if (error.status === 400) {
-          message = 'Incorrect form values';
-          this.isLoadingAddEmployee = false;
-        } else if (error.status === 406) {
-          this.isLoadingAddEmployee = false;
-        }
-        else if (error.status === 200) {
-          stepper?.next();
-          this.isLoadingAddEmployee = false;
-        }
-        this.snackBarService.showSnackbar(`Some Fields Are Still Missing Information`, "snack-error");
-        this.isDirty = false;
-        this.isLoadingAddEmployee = false;
-      },
-    });
   }
 
   checkBlankRequiredFields() {
@@ -672,17 +567,17 @@ export class NewEmployeeComponent implements OnInit {
   validateFile(file: File): boolean {
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
     const maxSizeInBytes = 4194304;
-  
+
     if (!validTypes.includes(file.type)) {
       this.snackBarService.showSnackbar(`Only JPEG, JPG, and PNG Files Are Allowed!`, "snack-error");
       return false;
     }
-  
+
     if (file.size > maxSizeInBytes) {
       this.snackBarService.showSnackbar(`File Size Must Be Less Than 4mb!`, "snack-error");
       return false;
     }
-  
+
     return true;
   }
 
@@ -743,8 +638,8 @@ export class NewEmployeeComponent implements OnInit {
     let idNo = (event.target as HTMLInputElement).value;
     let dob = idNo.slice(0, 6);
     let gender = parseInt(idNo.slice(6, 10));
+    let dobMatch = dob.match(/\d{2}/g);
 
-    let dobMatch = dob.match(/\d{2}/g)
     if (dobMatch) {
       let [year, month, day] = dobMatch;
       const currentYear = new Date().getFullYear().toString().slice(0, 2);
@@ -777,11 +672,69 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   setTypeOther(event: any) {
-    if(event.source.value == 'Other'){
+    if (event.source.value == 'Other') {
       this.typeOther = true;
     }
-    else{
+    else {
       this.typeOther = false;
     }
+  }
+
+  private createAddressForm(): FormGroup {
+    return new FormGroup({
+      unitNumber: new FormControl<string | null>('', Validators.minLength(1)),
+      complexName: new FormControl<string | null>('', Validators.minLength(1)),
+      suburbDistrict: new FormControl<string | null>('', Validators.minLength(1)),
+      city: new FormControl<string | null>('', Validators.minLength(1)),
+      streetNumber: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(1)]),
+      streetName: new FormControl<string | null>('', Validators.minLength(1)),
+      country: new FormControl<string | null>('', Validators.minLength(1)),
+      province: new FormControl<string | null>('', Validators.minLength(1)),
+      postalCode: new FormControl<string | null>('', [Validators.maxLength(4), Validators.minLength(4), Validators.pattern(/(^\d+$)|(^$)/)]),
+    });
+  }
+
+  private createEmployeeForm(): FormGroup {
+    return new FormGroup({
+      id: new FormControl<number>(0, [Validators.pattern(/^[0-9]*$/), Validators.required]),
+      employeeNumber: new FormControl<string>('0', Validators.pattern(/^(\w{3})(\d{3})$/)),
+      taxNumber: new FormControl<string>('0000000000', Validators.pattern(/^\d{10}$/)),
+      engagementDate: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
+      terminationDate: new FormControl<Date | string | null>(null),
+      reportingLine: new FormControl<EmployeeProfile | null>(null),
+      highestQualication: new FormControl<string>(''),
+      disability: new FormControl<boolean | null>(false, [Validators.required]),
+      disabilityType: new FormControl<string>(''),
+      disabilityNotes: new FormControl<string>(''),
+      countryOfBirth: new FormControl<string>(''),
+      nationality: new FormControl<string>(''),
+      level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
+      employeeType: new FormControl<{ id: number; name: string } | null>(null, Validators.required),
+      name: new FormControl<string>('', [Validators.required,
+      Validators.pattern(this.namePattern)]),
+      initials: new FormControl<string>('', [Validators.required,
+      Validators.pattern(this.initialsPattern)]),
+      surname: new FormControl<string>('', [Validators.required,
+      Validators.pattern(this.namePattern)]),
+      dateOfBirth: new FormControl<Date | string>(new Date(Date.now()), Validators.required),
+      idNumber: new FormControl<string>('', [Validators.required, this.customValidationService.idNumberValidator]),
+      passportNumber: new FormControl<string>(''),
+      passportExpiryDate: new FormControl<Date | string | null>(new Date(Date.now())),
+      passportCountryIssue: new FormControl<string>(''),
+      race: new FormControl<number | null>(null),
+      gender: new FormControl<number | null>(null),
+      email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern(this.emailPattern),]),
+      personalEmail: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]),
+      cellphoneNo: new FormControl<string>('', [Validators.required]),
+      photo: new FormControl<string>(''),
+      notes: new FormControl<string>(''),
+      leaveInterval: new FormControl(0, Validators.pattern(/^[0-9]*$/)),
+      salaryDays: new FormControl(0, Validators.pattern(/^[0-9]*$/)),
+      payRate: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
+      salary: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
+      physicalAddress: new FormControl<EmployeeAddress | null>(null),
+      postalAddress: new FormControl<EmployeeAddress | null>(null),
+      peopleChampion: new FormControl<string>('')
+    });
   }
 }
