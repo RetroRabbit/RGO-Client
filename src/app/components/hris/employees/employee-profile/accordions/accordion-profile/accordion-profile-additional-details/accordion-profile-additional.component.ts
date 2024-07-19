@@ -79,7 +79,7 @@ export class AccordionProfileAdditionalComponent {
       this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
         next: data => {
           this.employeeProfile.employeeDetails = data;
-        }, 
+        },
         complete: () => {
           this.getEmployeeData();
           this.getEmployeeTypes();
@@ -87,7 +87,7 @@ export class AccordionProfileAdditionalComponent {
             this.getAllEmployees();
           }
           this.getEmployeeFieldCodes();
-        }, 
+        },
         error: (er) => this.snackBarService.showError(er),
       })
     }
@@ -179,7 +179,7 @@ export class AccordionProfileAdditionalComponent {
 
     this.sharedAccordionFunctionality.additionalInfoForm = this.fb.group(formGroupConfig);
     this.sharedAccordionFunctionality.additionalInfoForm.disable();
-}
+  }
 
 
   editAdditionalDetails() {
@@ -212,7 +212,9 @@ export class AccordionProfileAdditionalComponent {
           fieldcodeId: found.fieldCodeId,
           value: this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value
         }
-
+        if (!isNaN(employeeDataDto.value)) {
+          employeeDataDto.value = String(employeeDataDto.value);
+        }
         this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
           next: (data) => {
             this.snackBarService.showSnackbar("Updated", "snack-success");
@@ -235,8 +237,7 @@ export class AccordionProfileAdditionalComponent {
         }
 
         if (employeeDataDto.value) {
-          if (!isNaN(employeeDataDto.value))
-          {
+          if (!isNaN(employeeDataDto.value)) {
             employeeDataDto.value = String(employeeDataDto.value);
           }
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
