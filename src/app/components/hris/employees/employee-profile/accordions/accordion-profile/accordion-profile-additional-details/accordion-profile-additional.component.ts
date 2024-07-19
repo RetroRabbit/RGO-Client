@@ -202,21 +202,16 @@ export class AccordionProfileAdditionalComponent {
       const found = this.sharedAccordionFunctionality.employeeData.find((data) => {
         return fieldcode.id === data.fieldCodeId
       });
-
-
       if (found) {
         const formatFound: any = fieldcode.code
         const employeeDataDto = {
           id: found.id,
           employeeId: this.employeeId != undefined ? this.employeeId : this.loggedInProfile.id!,
           fieldcodeId: found.fieldCodeId,
-          value: this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value
-        }
-        if (!isNaN(employeeDataDto.value)) {
-          employeeDataDto.value = String(employeeDataDto.value);
+          value: String(this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value)
         }
         this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
-          next: (data) => {
+          next: () => {
             this.snackBarService.showSnackbar("Updated", "snack-success");
             this.sharedAccordionFunctionality.checkAdditionalFormProgress();
             this.sharedAccordionFunctionality.totalProfileProgress();
@@ -225,7 +220,7 @@ export class AccordionProfileAdditionalComponent {
             this.getEmployeeData();
             this.updateEmployeeProfile.emit(1);
           },
-          error: (er) => this.snackBarService.showError("Failed to update field"),
+          error: () => this.snackBarService.showError("Failed to update field"),
         });
       } else {
         const formatFound: any = fieldcode?.code
@@ -233,15 +228,12 @@ export class AccordionProfileAdditionalComponent {
           id: 0,
           employeeId: this.employeeId != undefined ? this.employeeId : this.loggedInProfile.id!,
           fieldcodeId: fieldcode.id,
-          value: this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value
+          value: String(this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value)
         }
 
         if (employeeDataDto.value) {
-          if (!isNaN(employeeDataDto.value)) {
-            employeeDataDto.value = String(employeeDataDto.value);
-          }
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
-            next: (data) => {
+            next: () => {
               this.snackBarService.showSnackbar("Saved", "snack-success");
               this.sharedAccordionFunctionality.checkAdditionalFormProgress();
               this.sharedAccordionFunctionality.totalProfileProgress();
@@ -250,7 +242,7 @@ export class AccordionProfileAdditionalComponent {
               this.getEmployeeData();
               this.updateEmployeeProfile.emit(1);
             },
-            error: (er) => this.snackBarService.showError("Failed to save field"),
+            error: () => this.snackBarService.showError("Failed to save field"),
           });
         }
       }
