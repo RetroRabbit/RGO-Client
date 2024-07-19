@@ -103,46 +103,50 @@ export class SignInComponent {
                 sameSite: 'None'
               });
   
-              if (filteredRoles.length === 0) {
-                return this.authService.checkUserExistenceInDatabase().pipe(
-                  switchMap(response => {
-                    if (response === 'User found.') {
-                      this.snackBarService.showSnackbar("Account Finalized. You May Now Log in.", "snack-success");
+              return this.authService.checkUserExistenceInDatabase().pipe(
+                switchMap(response => {
+                  if (response === 'User found.') {
+                    if (filteredRoles.length > 0) {
+                      return of({ user, token, role: filteredRoles });
                     } else {
-                      this.snackBarService.showSnackbar("Contact Admin Regarding Your Account.", "snack-error");
+                      this.snackBarService.showSnackbar("Account Finalized. You May Now Log in.", "snack-success");
+                      return EMPTY;
                     }
-                    return EMPTY;
-                  }),
-                  catchError(() => {
+                  } else {
                     this.snackBarService.showSnackbar("Contact Admin Regarding Your Account.", "snack-error");
                     return EMPTY;
-                  })
-                );
-              }
-              return of({ user, token, role: filteredRoles });
+                  }
+                }),
+                catchError(() => {
+                  this.snackBarService.showSnackbar("Contact Admin Regarding Your Account.", "snack-error");
+                  return EMPTY;
+                })
+              );
             })
           )
         )
       )
       .subscribe({
         next: ({ user, token, role }) => {
-          this.authAccessService.setRoles(role);
-          const userData: Token = {
-            email: user?.email,
-            token: token,
-            roles: role,
-          };
-          this.authAccessService.setEmployeeEmail(user?.email as string);
-          this.navService.refreshEmployee();
-          this.store.dispatch(GetLogin({ payload: userData }));
+          if (user && token && role) {
+            this.authAccessService.setRoles(role);
+            const userData: Token = {
+              email: user.email,
+              token: token,
+              roles: role,
+            };
+            this.authAccessService.setEmployeeEmail(user.email as string);
+            this.navService.refreshEmployee();
+            this.store.dispatch(GetLogin({ payload: userData }));
   
-          if (window.innerWidth > 776)
-            this.navService.showNavbar = true;
-          else
-            this.navService.showSideBar = true;
+            if (window.innerWidth > 776)
+              this.navService.showNavbar = true;
+            else
+              this.navService.showSideBar = true;
   
-          this.sharedPropprtyAccessService.setAccessProperties();
-          this.initialUserNavigation();
+            this.sharedPropprtyAccessService.setAccessProperties();
+            this.initialUserNavigation();
+          }
         },
         error: () => {
           this.snackBarService.showSnackbar("Contact admin regarding your account.","snack-error");
