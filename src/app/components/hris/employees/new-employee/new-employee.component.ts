@@ -98,7 +98,6 @@ export class NewEmployeeComponent implements OnInit {
   isMobileScreen = false;
   isLoadingAddEmployee: boolean = false;
   isSameAddress: boolean = true;
-  isSavedEmployee: boolean = false;
   existingIdNumber: boolean = false;
   isValidStarterkitFile: boolean = false;
   empId: number = 0;
@@ -107,6 +106,8 @@ export class NewEmployeeComponent implements OnInit {
 
   typeOther: boolean = false;
   hasDisability: boolean = false;
+
+  employeeDetails: any;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
     0: { name: '', state: true },
@@ -290,7 +291,6 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   public dropped(files: NgxFileDropEntry[], category: number) {
-
     this.files.push(...files);
     for (const droppedFile of files) {
       if (droppedFile.fileEntry.isFile) {
@@ -306,36 +306,30 @@ export class NewEmployeeComponent implements OnInit {
           const reader = new FileReader();
           reader.onload = (e) => {
             const base64String = e.target?.result as string;
-            this.employeeService.get(this.newEmployeeEmail).subscribe({
-              next: (employeeProfile: EmployeeProfile) => {
-                const employeeDocument: EmployeeDocument = {
-                  id: 0,
-                  employeeId: employeeProfile.id as number,
-                  reference: "",
-                  fileName: file.name,
-                  fileCategory: category,
-                  employeeFileCategory: 0,
-                  adminFileCategory: 0,
-                  blob: base64String,
-                  uploadDate: new Date(),
-                  reason: "",
-                  status: 3,
-                  counterSign: false,
-                  documentType: 1,
-                  lastUpdatedDate: new Date()
-                };
-                this.employeeDocumentModels.push(employeeDocument);
-                this.categories[category].state = false;
-                this.categories[category].name = file.name;
-              },
-              error: () => {
-                this.snackBarService.showSnackbar("Unable to Compile Documents", "snack-error");
-              }
-            });
+            const employeeDocument: EmployeeDocument = {
+              id: 0,
+              employeeId: -1,
+              reference: "",
+              fileName: file.name,
+              fileCategory: category,
+              employeeFileCategory: 0,
+              adminFileCategory: 0,
+              blob: base64String,
+              uploadDate: new Date(),
+              reason: "",
+              status: 3,
+              counterSign: false,
+              documentType: 1,
+              lastUpdatedDate: new Date()
+            };
+            console.log(0);
+            this.employeeDocumentModels.push(employeeDocument);
+            console.log(this.employeeDocumentModels)
+            this.categories[category].state = false;
+            this.categories[category].name = file.name;
           };
           reader.readAsDataURL(file);
         });
-
       }
     }
   }
@@ -352,22 +346,20 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndExit() {
-    this.isSavedEmployee = false;
+    this.saveEmployee("SaveAndExit");
     this.clearFormErrorsAndValues(this.newEmployeeForm);
     this.clearFormErrorsAndValues(this.uploadDocumentForm);
     this.clearFormErrorsAndValues(this.physicalAddress);
     this.clearFormErrorsAndValues(this.postalAddressForm);
-    this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
     this.removeAllDocuments();
   }
   saveAndAddAnother() {
+    this.saveEmployee("SaveAndAddAnother");
     this.newEmployeeForm.reset();
-    this.isSavedEmployee = false;
     this.clearFormErrorsAndValues(this.newEmployeeForm);
     this.clearFormErrorsAndValues(this.uploadDocumentForm);
     this.clearFormErrorsAndValues(this.physicalAddress);
     this.clearFormErrorsAndValues(this.postalAddressForm);
-    this.onUploadDocument('/create-employee');
     this.removeAllDocuments();
     this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
     this.newEmployeeForm.controls['disability'].setValue(false);
@@ -379,10 +371,14 @@ export class NewEmployeeComponent implements OnInit {
   
 
   onUploadDocument(nextPage: string): void {
-    this.isLoadingAddEmployee = true;
-    this.employeeDocumentModels.forEach((documentModel) => {
+    console.log(this.employeeDocumentModels)
+    var documents = this.employeeDocumentModels
+    console.log("onupload");
+    console.log(documents);
+    documents.forEach((documentModel) => {
       this.employeeDocumentService.saveEmployeeDocument(documentModel, 0).subscribe({
         next: () => {
+          console.log("onupload hit")
           this.snackBarService.showSnackbar("Saved", "snack-success");
           this.isLoadingAddEmployee = false;
         },
@@ -540,7 +536,7 @@ export class NewEmployeeComponent implements OnInit {
           this.snackBarService.showSnackbar("ID Number Already Exists", "snack-error");
           this.isLoadingAddEmployee = false;
         } else {
-          this.saveEmployee();
+          this.nextStep();
         }
       },
       error: (er) => {
@@ -550,27 +546,62 @@ export class NewEmployeeComponent implements OnInit {
     });
   }
 
-  saveEmployee(): void {
+  nextStep(){
     if (this.newEmployeeForm.invalid) {
       this.newEmployeeForm.markAllAsTouched();
     }
-    this.isLoadingAddEmployee = true;
     if(this.typeOther == false){
       this.newEmployeeForm.value.disabilityNotes = this.newEmployeeForm.value.disabilityType;
     }
     else{
       this.newEmployeeForm.value.disabilityNotes = this.newEmployeeForm.value.disabilityNotes;
     }
+
+    this.employeeDetails = this.newEmployeeForm.value;
+    this.myStepper.next();
+    
+  }
+
+  saveEmployee(saveType: string): void {
+    console.log("Onsave")
+    console.log(this.employeeDocumentModels)
+    var documents = this.employeeDocumentModels;
+    //works
     this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
-        this.isSavedEmployee = true;
+        console.log("innext")
+        console.log(documents);
         this.snackBarService.showSnackbar("Saved", "snack-success");
-        if (!this.existingIdNumber) {
-          this.myStepper.next();
-        }
+        // if (!this.existingIdNumber) {
+        //   this.myStepper.next();
+        // }
         this.isDirty = false;
         this.isLoadingAddEmployee = false;
         this.newEmployeeForm.reset();
+        this.employeeService.get(this.newEmployeeEmail).subscribe({
+          next: employeeProfile => {
+            documents.forEach(element => {
+              element.employeeId = employeeProfile.id as number;
+            });
+            this.employeeDocumentModels = documents;
+            console.log(documents)
+          },
+          error: er => {
+            this.snackBarService.showError(er);
+          },
+          complete: () => {
+            console.log(2)
+            if(saveType == "SaveAndExit"){
+              console.log("SaveAndExit")
+              console.log(this.employeeDocumentModels)
+              this.onUploadDocument(this.cookieService.get(this.PREVIOUS_PAGE));
+            }
+            else{
+              console.log("SaveAndAddAnother")
+              this.onUploadDocument('/create-employee');
+            }
+          }
+        })
       },
       error: (error: any, stepper?: MatStepper) => {
         let message = '';
