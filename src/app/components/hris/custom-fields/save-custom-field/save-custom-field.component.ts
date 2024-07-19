@@ -123,7 +123,7 @@ export class SaveCustomFieldComponent {
           this.router.navigateByUrl('/system-settings');
         },
         error: (er) => {
-          this.snackBarService.showError(er)
+          this.snackBarService.showError('failed save')
         },
       });
     }

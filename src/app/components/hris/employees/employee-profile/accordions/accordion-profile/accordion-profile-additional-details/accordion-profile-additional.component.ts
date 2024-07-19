@@ -223,7 +223,7 @@ export class AccordionProfileAdditionalComponent {
             this.getEmployeeData();
             this.updateEmployeeProfile.emit(1);
           },
-          error: (er) => this.snackBarService.showError(er),
+          error: (er) => this.snackBarService.showError("Failed to update field"),
         });
       } else {
         const formatFound: any = fieldcode?.code
@@ -235,6 +235,10 @@ export class AccordionProfileAdditionalComponent {
         }
 
         if (employeeDataDto.value) {
+          if (!isNaN(employeeDataDto.value))
+          {
+            employeeDataDto.value = String(employeeDataDto.value);
+          }
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
             next: (data) => {
               this.snackBarService.showSnackbar("Saved", "snack-success");
@@ -245,7 +249,7 @@ export class AccordionProfileAdditionalComponent {
               this.getEmployeeData();
               this.updateEmployeeProfile.emit(1);
             },
-            error: (er) => this.snackBarService.showError(er),
+            error: (er) => this.snackBarService.showError("Failed to save field"),
           });
         }
       }
