@@ -34,7 +34,7 @@
                           </mat-option>
                         </mat-select>
                       </div>
-                      <div *ngIf="fieldcode.type == sharedAccordionFunctionality.fieldTypes[0].id" class="d-flex align-items-center" style="max-height: 24px;">
+                      <div *ngIf="fieldcode.type == sharedAccordionFunctionality.fieldTypes[0].id" class="d-flex align-items-center" id="style-date">
                         <mat-datepicker #picker1></mat-datepicker>
                         <input matInput [matDatepicker]="picker1" formControlName="{{fieldcode.code}}">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
