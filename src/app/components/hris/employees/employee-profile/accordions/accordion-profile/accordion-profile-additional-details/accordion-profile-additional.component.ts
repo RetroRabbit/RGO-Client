@@ -181,7 +181,6 @@ export class AccordionProfileAdditionalComponent {
     this.sharedAccordionFunctionality.additionalInfoForm.disable();
   }
 
-
   editAdditionalDetails() {
     this.sharedAccordionFunctionality.additionalInfoForm.enable();
     this.sharedAccordionFunctionality.editAdditional = true;
