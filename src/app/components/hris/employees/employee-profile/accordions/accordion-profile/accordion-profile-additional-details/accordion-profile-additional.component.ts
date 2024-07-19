@@ -79,7 +79,7 @@ export class AccordionProfileAdditionalComponent {
       this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
         next: data => {
           this.employeeProfile.employeeDetails = data;
-        }, 
+        },
         complete: () => {
           this.getEmployeeData();
           this.getEmployeeTypes();
@@ -87,7 +87,7 @@ export class AccordionProfileAdditionalComponent {
             this.getAllEmployees();
           }
           this.getEmployeeFieldCodes();
-        }, 
+        },
         error: (er) => this.snackBarService.showError(er),
       })
     }
@@ -162,15 +162,23 @@ export class AccordionProfileAdditionalComponent {
     const formGroupConfig: any = {};
     this.customFields.forEach(fieldName => {
       if (fieldName.code != null || fieldName.code != undefined) {
-        const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id)
-        formGroupConfig[fieldName.code] = new FormControl({ value: customData[0] ? customData[0].value : '', disabled: true });
-        this.sharedAccordionFunctionality.additionalInfoForm = this.fb.group(formGroupConfig);
-        if (fieldName.required == true) {
-          this.sharedAccordionFunctionality.additionalInfoForm.controls[fieldName.code].setValidators(Validators.required);
+        const customData = this.sharedAccordionFunctionality.employeeData.filter((data: EmployeeData) => data.fieldCodeId === fieldName.id);
+        const value = customData[0] ? customData[0].value : '';
+        const control = new FormControl({ value: value, disabled: true });
+        const validators = [];
+        if (fieldName.required) {
+          validators.push(Validators.required);
         }
-        this.sharedAccordionFunctionality.additionalInfoForm.disable();
+        if (fieldName.regex) {
+          validators.push(Validators.pattern(fieldName.regex as string));
+        }
+        control.setValidators(validators);
+        formGroupConfig[fieldName.code] = control;
       }
     });
+
+    this.sharedAccordionFunctionality.additionalInfoForm = this.fb.group(formGroupConfig);
+    this.sharedAccordionFunctionality.additionalInfoForm.disable();
   }
 
   editAdditionalDetails() {
@@ -193,19 +201,16 @@ export class AccordionProfileAdditionalComponent {
       const found = this.sharedAccordionFunctionality.employeeData.find((data) => {
         return fieldcode.id === data.fieldCodeId
       });
-
-
       if (found) {
         const formatFound: any = fieldcode.code
         const employeeDataDto = {
           id: found.id,
           employeeId: this.employeeId != undefined ? this.employeeId : this.loggedInProfile.id!,
           fieldcodeId: found.fieldCodeId,
-          value: this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value
+          value: String(this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value)
         }
-
         this.employeeDataService.updateEmployeeData(employeeDataDto).subscribe({
-          next: (data) => {
+          next: () => {
             this.snackBarService.showSnackbar("Updated", "snack-success");
             this.sharedAccordionFunctionality.checkAdditionalFormProgress();
             this.sharedAccordionFunctionality.totalProfileProgress();
@@ -214,7 +219,7 @@ export class AccordionProfileAdditionalComponent {
             this.getEmployeeData();
             this.updateEmployeeProfile.emit(1);
           },
-          error: (er) => this.snackBarService.showError(er),
+          error: () => this.snackBarService.showError("Failed to update field"),
         });
       } else {
         const formatFound: any = fieldcode?.code
@@ -222,12 +227,12 @@ export class AccordionProfileAdditionalComponent {
           id: 0,
           employeeId: this.employeeId != undefined ? this.employeeId : this.loggedInProfile.id!,
           fieldcodeId: fieldcode.id,
-          value: this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value
+          value: String(this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value)
         }
 
         if (employeeDataDto.value) {
           this.employeeDataService.saveEmployeeData(employeeDataDto).subscribe({
-            next: (data) => {
+            next: () => {
               this.snackBarService.showSnackbar("Saved", "snack-success");
               this.sharedAccordionFunctionality.checkAdditionalFormProgress();
               this.sharedAccordionFunctionality.totalProfileProgress();
@@ -236,7 +241,7 @@ export class AccordionProfileAdditionalComponent {
               this.getEmployeeData();
               this.updateEmployeeProfile.emit(1);
             },
-            error: (er) => this.snackBarService.showError(er),
+            error: () => this.snackBarService.showError("Failed to save field"),
           });
         }
       }
