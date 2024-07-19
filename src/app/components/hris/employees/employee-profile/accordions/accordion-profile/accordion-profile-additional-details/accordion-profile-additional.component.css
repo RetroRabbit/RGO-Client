@@ -21,3 +21,7 @@
 .headingTitle {
   font-size: 22px;
 }
+
+#style-date{
+  max-height: 24px;
+}

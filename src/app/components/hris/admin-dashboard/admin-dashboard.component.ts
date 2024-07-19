@@ -60,7 +60,7 @@ export class AdminDashboardComponent {
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
   employeeProfiles: EmployeeProfile[] = [];
-  totalNumberOfEmployees: number = 0;
+  totalNumberOfActiveEmployees: number = 0;
   growthRate: number = 0;
   employeeId: number | undefined = 0;
   roles: string[] = [];
@@ -185,9 +185,9 @@ export class AdminDashboardComponent {
 
   getDataCardsData() {
     this.isLoading = true;
-    this.employeeService.getTotalEmployees().subscribe({
+    this.dashboardService.getActiveEmployeeCount().subscribe({
       next: (data: number) => {
-        this.totalNumberOfEmployees = data;
+        this.totalNumberOfActiveEmployees = data;
       },
       complete: () => {
         this.isLoading = false;
