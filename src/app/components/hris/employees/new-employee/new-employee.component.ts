@@ -207,7 +207,6 @@ export class NewEmployeeComponent implements OnInit {
     this.removeAllDocuments();
     this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
     this.newEmployeeForm.controls['disability'].setValue(false);
-    this.newEmployeeForm.controls['cellphoneNo'].reset();
     this.myStepper.reset();
     this.newEmployeeForm.get('cellphoneNo')?.reset();
     this.newEmployeeForm.markAsUntouched()
@@ -249,25 +248,35 @@ export class NewEmployeeComponent implements OnInit {
 
   onUploadDocument(nextPage: string): void {
     var documents = this.employeeDocumentModels
-    documents.forEach((documentModel) => {
-      this.employeeDocumentService.saveEmployeeDocument(documentModel, 0).subscribe({
-        next: () => {
-          this.snackBarService.showSnackbar("Employee Documents Saved", "snack-success");
-          this.isLoadingAddEmployee = false;
-        },
-        error: (er: any) => {
-          this.snackBarService.showError(er);
-          this.isLoadingAddEmployee = false;
-        }, complete: () => {
-          this.employeeDocumentModels = [];
-          this.newEmployeeEmail = "";
-          this.files = [];
-          this.myStepper.previous();
-          this.router.navigateByUrl(nextPage);
-          this.isLoadingAddEmployee = false;
-        }
+    
+    if(documents.length > 0){
+      documents.forEach((documentModel) => {
+        this.employeeDocumentService.saveEmployeeDocument(documentModel, 0).subscribe({
+          next: () => {
+            this.snackBarService.showSnackbar("Employee Documents Saved", "snack-success");
+            this.isLoadingAddEmployee = false;
+            this.inputField.reset();
+            document.querySelector('.cellphone-container')?.classList.remove('has-value');
+          },
+          error: (er: any) => {
+            this.snackBarService.showError(er);
+            this.isLoadingAddEmployee = false;
+          }, complete: () => {
+            this.employeeDocumentModels = [];
+            this.newEmployeeEmail = "";
+            this.files = [];
+            this.myStepper.previous();
+            this.router.navigateByUrl(nextPage);
+            this.isLoadingAddEmployee = false;
+          }
+        });
       });
-    });
+    }
+    else{
+      this.isLoadingAddEmployee = false;
+      this.inputField.reset();
+      document.querySelector('.cellphone-container')?.classList.remove('has-value');
+    }
   }
 
   onCountryChange(country: string): void {
