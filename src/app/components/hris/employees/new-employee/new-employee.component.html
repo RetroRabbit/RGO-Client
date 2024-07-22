@@ -89,17 +89,11 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="cellphone-container">
                   <mat-label class="cellphone-label">Cellphone Number</mat-label>
-                  <ngx-mat-intl-tel-input
-                    #inputField
-                    matInput
-                    [preferredCountries]="['za', 'gb']"
-                    [enablePlaceholder]="true"
-                    [enableSearch]="true"
-                    [required]="true"
-                    formControlName="cellphoneNo"
-                    (input)="onCellphoneInputCheck(inputField.value ?? '')"
-                  ></ngx-mat-intl-tel-input>
-                  <mat-error *ngIf="newEmployeeForm.controls['cellphoneNo'].hasError('required') && newEmployeeForm.controls['cellphoneNo'].value=='' ">
+                  <ngx-mat-intl-tel-input #inputField matInput [preferredCountries]="['za', 'gb']"
+                    [enablePlaceholder]="true" [enableSearch]="true" [required]="true" formControlName="cellphoneNo"
+                    (input)="onCellphoneInputCheck(inputField.value ?? '')"></ngx-mat-intl-tel-input>
+                  <mat-error
+                    *ngIf="newEmployeeForm.controls['cellphoneNo'].hasError('required') && newEmployeeForm.controls['cellphoneNo'].value=='' ">
                     Cellphone Number Is Required
                   </mat-error>
                   <mat-error
@@ -158,7 +152,8 @@
                 </div>
                 <mat-form-field appearance="outline" class=" mb-3" *ngIf="hasDisability">
                   <mat-label>Disability Types</mat-label>
-                  <mat-select formControlName="disabilityType" hideSingleSelectionIndicator="true" (selectionChange)="setTypeOther($event)">
+                  <mat-select formControlName="disabilityType" hideSingleSelectionIndicator="true"
+                    (selectionChange)="setTypeOther($event)">
                     <mat-option *ngFor="let type of disabilityType" [value]="type.value">{{ type.value }}</mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -186,10 +181,11 @@
                   <div class=" pb-3">
                     <mat-form-field appearance="outline" class="w-100">
                       <mat-label>Profile Photo</mat-label>
-                      <input matInput type="text" [value]="imageName"/>
+                      <input matInput type="text" [value]="imageName" />
                       <span mat-icon-button matSuffix (click)="uploadFile.click()" class="pe-3">
                         <mat-icon id="file-upload-cursor">file_upload</mat-icon>
-                        <input type="file" #uploadFile (change)="onFileChange($event)" hidden accept=".jpeg, .jpg, .png"/>
+                        <input type="file" #uploadFile (change)="onFileChange($event)" hidden
+                          accept=".jpeg, .jpg, .png" />
                       </span>
                     </mat-form-field>
                     <div id="image-preview" *ngIf="imageUrl !== ''">
@@ -553,14 +549,10 @@
           <div id="footer">
             <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="goToPreviousPage()">Cancel</button>
-            <button
-              [disabled]="!isSavedEmployee || categories[0].state == true && categories[1].state == true && categories[2].state == true && categories[3].state == true"
-              id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
+            <button id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="saveAndAddAnother()" type="button">Save
               and add another</button>
-            <button
-              [disabled]="!isSavedEmployee || categories[0].state == true && categories[1].state == true && categories[2].state == true && categories[3].state == true"
-              id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
+            <button id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
               (click)="saveAndExit()">Save</button>
           </div>
         </form>
