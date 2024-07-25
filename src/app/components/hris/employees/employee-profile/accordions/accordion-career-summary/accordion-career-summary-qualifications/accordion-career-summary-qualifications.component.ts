@@ -100,7 +100,7 @@ export class CareerSummaryQualificationsComponent {
 
   saveQualificationsEdit() {
     if (this.sharedAccordionFunctionality.employeeQualificationForm.valid) {
-      const updatedQualification: EmployeeQualifications = {
+      const saveQualification: EmployeeQualifications = {
         id: this.sharedAccordionFunctionality.employeeQualification ? this.sharedAccordionFunctionality.employeeQualification.id : 0,
         employeeId: this.employeeProfile.employeeDetails.id as number,
         highestQualification: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
@@ -112,12 +112,24 @@ export class CareerSummaryQualificationsComponent {
         documentName: this.fileName,
       };
 
+      const updatedQualification: EmployeeQualifications = {
+        id: this.sharedAccordionFunctionality.employeeQualification ? this.sharedAccordionFunctionality.employeeQualification.id : 0,
+        employeeId: this.employeeProfile.employeeDetails.id as number,
+        highestQualification: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
+        school: this.sharedAccordionFunctionality.employeeQualificationForm.get("school")?.value,
+        fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.get("fieldOfStudy")?.value,
+        year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value + "-01-01",
+        nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
+        proofOfQualification: this.sharedAccordionFunctionality.employeeQualificationForm.get("proofOfQualification")?.value,
+        documentName: this.fileName,
+      };
+
       const qualificationObservable = updatedQualification.id > 0
         ? this.employeeQualificationsService.updateEmployeeQualification(updatedQualification, updatedQualification.id)
-        : this.employeeQualificationsService.saveEmployeeQualification(updatedQualification);
+        : this.employeeQualificationsService.saveEmployeeQualification(saveQualification);
       qualificationObservable.subscribe({
         next: () => {
-          this.snackBarService.showSnackbar(updatedQualification.id > 0 ? "Updated" : "Saved", "snack-success");
+          this.snackBarService.showSnackbar(saveQualification.id > 0 ? "Updated" : "Saved", "snack-success");
           this.sharedAccordionFunctionality.calculateQualificationProgress();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
