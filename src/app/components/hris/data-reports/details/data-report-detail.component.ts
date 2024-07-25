@@ -13,6 +13,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { AccessList } from 'src/app/models/hris/data-report-access.interface';
 import { ReportAccessRequest } from 'src/app/models/hris/data-report-access-request.interface';
 import { MenuItemComponent } from '../report-menu/menu-item.component';
+import { employeeColumn } from 'src/app/models/hris/constants/employeeColumn.constants';
+import { DataFilterTable } from 'src/app/models/hris/constants/data-filter-table.constants';
+import { condition } from 'src/app/models/hris/constants/condition.constants';
+import { DataReportFilter } from 'src/app/models/hris/data-report-filter.interface';
 
 @Component({
   selector: 'app-data-report-detail',
@@ -43,6 +47,19 @@ export class DataReportDetailComponent {
   nonEditable: boolean = true;
   selectedViewOnly?: boolean;
   isReorderable: boolean = true;
+  filterList: DataReportColumns[] = [];
+  filterRequest!: DataReportFilter;
+  SelectedEmployeeColumn?: string;
+  SelectedTableName?: string;
+  reportFilterValue?: string;
+  SelectedCondition?: string;
+  valueText?: string;
+  
+
+  public employeeColumns = employeeColumn;
+  public conditions = condition;
+  public dataFilterTables = DataFilterTable;
+   
 
   constructor(private router: Router,
     private cookieService: CookieService,
@@ -61,6 +78,7 @@ export class DataReportDetailComponent {
 
   @HostListener('window:resize', ['$event'])
   @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
+  @ViewChild('filterTemplate', { static: true }) filterTemplate!: TemplateRef<any>;
   @ViewChild('dt') dt!: Table;
   @ViewChild(MenuItemComponent) menuItemComponent!: MenuItemComponent;
 
@@ -88,6 +106,7 @@ export class DataReportDetailComponent {
         this.accessEmployeeList = data.accessList?.filter(access => access.roleId == null || access.roleId == undefined)!;
         this.accessRoleList = data.accessList?.filter(access => access.roleId != null || access.roleId != undefined)!;
         this.isLoading = false;
+        this.filterList = data.columns?.filter(filter => filter.id != null || filter.id != undefined)!;
 
         if (data.viewOnly) {
           this.nonEditable = true;
@@ -176,6 +195,12 @@ export class DataReportDetailComponent {
     });
   }
 
+  showEditReportFilter() {
+    this.dialog.open(this.filterTemplate, {
+      width: '500px',
+    });
+  }
+
   editReportName(reportId: number) {
     var input = {
       reportId: reportId,
@@ -235,7 +260,18 @@ export class DataReportDetailComponent {
   modalBack() {
     this.modalAddingNew = false;
   }
+  getTable(table: any){
+    this.SelectedTableName = table;
+ }
 
+  getemployeeColumn(col: any){
+      this.SelectedEmployeeColumn = col.value;
+  }
+  getCondition(condition: any){
+    this.SelectedCondition = condition.value;
+ }
+
+ 
   updateAccess() {
     this.accessRequest = {
       reportId: this.dataObjects.reportId!, access: [{
@@ -260,6 +296,27 @@ export class DataReportDetailComponent {
     })
   }
 
+  AddFilter() {
+    this.filterRequest = {
+      reportId: this.dataObjects.reportId!,
+      employeeId: this.selectedEmployeeId!,
+      value: this.valueText!,
+      tableName: this.SelectedTableName!,
+      condition: this.SelectedCondition!,
+      ReportFilterId: 0,
+      columnName: this.SelectedEmployeeColumn!
+      }
+      
+    this.dataReportingService.addOrUpdateReportFilter(this.filterRequest).subscribe({
+      next: data => {
+        this.snackBarService.showSnackbar("Filter successfully Added", "snack-success")
+      },
+      error: error => {
+        this.snackBarService.showSnackbar("Failed to add filter" , "snack-error")
+      }
+    })
+  }
+
   archiveAccess(accessId: number) {
     this.dataReportingService.archiveReportAccess(accessId).subscribe({
       next: data => {
@@ -272,6 +329,17 @@ export class DataReportDetailComponent {
     })
   }
 
+  archiveFilter(id: number) {
+    this.dataReportingService.deleteDataReportFilter(id).subscribe({
+      next: data => {
+        this.populateReportData(this.reportCode!);
+        this.snackBarService.showSnackbar("Filter deleted", "snack-success")
+      },
+      error: error => {
+        this.snackBarService.showSnackbar("Failed to delete filter", "snack-error")
+      }
+    })
+  }
   archiveColumn(id: number) {
     this.dataReportingService.archiveColumnOnReport(id).subscribe({
       next: data => {
@@ -288,4 +356,6 @@ export class DataReportDetailComponent {
     this.modalAddingNew = false;
     this.dataReportForm.reset();
   }
+
+  
 }

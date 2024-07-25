@@ -67,4 +67,17 @@ export class DataReportingService {
     deleteDataReport(code: string): Observable<any> {
         return this.httpClient.delete<any>(`${this.baseUrl}/delete-report?code=${code}`)
     }
+
+    addOrUpdateReportFilter(input: any): Observable<any> {
+        return this.httpClient.put<any>(`${this.baseUrl}/update-data-report-filter`, input)
+    }
+
+    deleteDataReportFilter(id : number): Observable<any> {
+        return this.httpClient.put<any>(`${this.baseUrl}/archive-data-report-filter`, id)
+    }
+
+    fetchReportDataFilter(reportcode: string): Observable<any> {
+        return this.httpClient.get<any>(`${this.baseUrl}/get-data-report-filter?code=${reportcode}`);
+    }
+    
 }

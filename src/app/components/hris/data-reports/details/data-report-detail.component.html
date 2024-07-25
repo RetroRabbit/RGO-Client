@@ -29,6 +29,10 @@
                                     </div>
                                     <div class="col-7 row d-flex justify-content-end me-1">
                                         <button *ngIf="!nonEditable" mat-button id="edit-button" class="col-2"
+                                            (click)="showEditReportFilter()">
+                                            <mat-icon>filter_list_alt</mat-icon>Filter
+                                        </button>
+                                        <button *ngIf="!nonEditable" mat-button id="edit-button" class="col-2"
                                             (click)="showEditReportModal()">
                                             <mat-icon>lock_open</mat-icon>Access
                                         </button>
@@ -214,6 +218,77 @@
                         <div mat-dialog-actions class="row" *ngIf="modalAddingNew">
                             <div class="col-12 d-flex justify-content-center align-items-center mb-3" id="dialog-save">
                                 <button (click)="updateAccess()">Save</button>
+                            </div>
+                            <div class="col-12 d-flex justify-content-center align-items-center" id="dialog-close">
+                                <button (click)="goBack()">
+                                    Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #filterTemplate>
+            <div class="container-fluid p-4">
+                <div class="row">
+                    <div class="col-12" id="dialog-body">
+                        <div class="row">
+                            <div class="mt-3 px-4 offset-1 col-10">
+                                <form *ngIf="modalAddingNew" [formGroup]="dataReportForm" id="dataReportForm">
+                                    <mat-form-field appearance="outline" class="col-12">
+                                        <mat-label>Select Table</mat-label>
+                                        <mat-select formControlName="tableName" hideSingleSelectionIndicator="true">
+                                            <mat-option *ngFor="let table of dataFilterTables" [value]="table" (onSelectionChange)="getTable(table)"
+                                            >{{table}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="col-12">
+                                        <mat-label>Column Name</mat-label>
+                                        <mat-select formControlName="col" hideSingleSelectionIndicator="true">
+                                            <mat-option *ngFor="let col of employeeColumns" [value]="col.id" 
+                                            (onSelectionChange)="getemployeeColumn(col)">{{col.value}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="col-12">
+                                        <mat-label>Condition</mat-label>
+                                        <mat-select formControlName="col" >
+                                            <mat-option *ngFor="let condition of conditions" [value]="condition.id"
+                                            (onSelectionChange)="getCondition(condition)">{{condition.value}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div class="col-sm-12">
+                                        <label class="col-form-label">Value</label>
+                                        <input type="text" class="form-control" [(ngModel)]="valueText" formControlName="value" />
+                                    </div>
+                                </form>
+                                <div *ngIf="!modalAddingNew">
+                                    <h3 *ngIf="filterList.length > 0">Filters Applied</h3>
+                                    <div class="row" *ngFor="let filter of filterList">
+                                        <h5 class="col-6">{{ filter.name }}</h5>
+                                        <div class="col-6">
+                                            <mat-icon (click)="archiveFilter(filter.id)"
+                                                class="close-icon">close</mat-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div mat-dialog-actions class="row" *ngIf="!modalAddingNew">
+                            <div class="col-12 d-flex justify-content-center align-items-center mb-3" id="dialog-save">
+                                <button (click)="modalAddingNew = true">Add New Filter</button>
+                            </div>
+                            <div class="col-12 d-flex justify-content-center align-items-center" id="dialog-close">
+                                <button mat-dialog-close>
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                        <div mat-dialog-actions class="row" *ngIf="modalAddingNew">
+                            <div class="col-12 d-flex justify-content-center align-items-center mb-3" id="dialog-save">
+                                <button (click)="AddFilter()">Save</button>
                             </div>
                             <div class="col-12 d-flex justify-content-center align-items-center" id="dialog-close">
                                 <button (click)="goBack()">
