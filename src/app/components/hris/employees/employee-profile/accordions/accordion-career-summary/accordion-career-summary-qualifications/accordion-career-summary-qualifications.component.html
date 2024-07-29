@@ -111,7 +111,7 @@
                                             (click)="downloadFile()"
                                         [ngClass]="sharedAccordionFunctionality.editQualifications ? 'download-button':'download-disabled'"
                                         *ngIf="this.sharedAccordionFunctionality.employeeQualification && this.sharedAccordionFunctionality.employeeQualification.documentName">
-                                        <div class="row">
+                                        <div class="row" id="button-size">
                                             <div class="col-1 p-0 ms-3 mt-2"
                                                 *ngIf="sharedAccordionFunctionality.editQualifications == true">
                                                 <img id="pdf-icon" alt="pdf-icon"
