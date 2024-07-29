@@ -29,6 +29,7 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   ngOnInit() {
+    this.sharedAccordionFunctionality.typeOther = false;
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
     this.loadCountries();
@@ -39,6 +40,9 @@ export class AccordionProfilePersonalDetailsComponent {
       disabilityTypeControl?.patchValue("Other")
       this.sharedAccordionFunctionality.typeOther = true;
     }
+    else {
+      this.sharedAccordionFunctionality.typeOther = false;
+    }
 
     this.sharedAccordionFunctionality.personalDetailsForm.get('disability')?.valueChanges.subscribe(value => {
       const disabilityTypeControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');
@@ -47,6 +51,7 @@ export class AccordionProfilePersonalDetailsComponent {
       } else {
         disabilityTypeControl?.clearValidators();
         disabilityTypeControl?.patchValue(null);
+        this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityNotes')?.patchValue("");
       }
       disabilityTypeControl?.updateValueAndValidity();
     });
@@ -68,8 +73,11 @@ export class AccordionProfilePersonalDetailsComponent {
     if(disabilities.map(x => x.value).includes(this.employeeProfile.employeeDetails.disabilityNotes!)){
       this.isCustomType = false;
     }
+    else if (this.employeeProfile.employeeDetails.disabilityNotes == null || this.employeeProfile.employeeDetails.disabilityNotes == ''){
+      this.isCustomType = false;
+    }
     else{
-      this.isCustomType = true
+      this.isCustomType = true;
     }
   }
 
