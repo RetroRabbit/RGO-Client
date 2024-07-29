@@ -83,7 +83,6 @@ export class CvDocumentComponent {
   getAdditionalFields() {
     this.employeeData.getEmployeeData(this.employeeId).subscribe({
       next: data => {
-        console.log(data);
         this.experienceData = data.filter(field => field.fieldCodeId == 5);
         this.numberOfYears = this.experienceData[0].value;
       }

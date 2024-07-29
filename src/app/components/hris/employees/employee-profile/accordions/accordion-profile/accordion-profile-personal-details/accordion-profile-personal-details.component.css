@@ -9,3 +9,7 @@
     color: #0029C6;
     width: 170px;
 }
+
+.text-area {
+    resize: none !important;
+}
