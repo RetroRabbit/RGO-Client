@@ -1,18 +1,19 @@
 <app-confirm-dialog *ngIf="showConfirmDialog" [dialogType]="dialogTypeData"
   (confirmation)="dialogFeedBack($event)"></app-confirm-dialog>
 <div id="field-code-container" class="mt-4">
-  <div class="d-sm-flex flex-sm-column flex-lg-row flex-md-row justify-content-between ms-3" [ngClass]="navService.showSideBar ? 'interact-fields-mobile' : 'interact-fields-desktop'" >
+  <div class="d-sm-flex flex-sm-column flex-lg-row flex-md-row justify-content-between ms-3"[ngClass]="navService.showSideBar ? 'interact-fields-mobile' : 'interact-fields-desktop'">
     <div id="search-container" class="row mt-3">
       <div class="col-10 ps-2">
-        <input pInputText [(ngModel)]="filterText" (input)="filterData()" type="text" placeholder="Search"
-          class="w-100" id="search-field">
+        <input pInputText [(ngModel)]="filterText" (input)="filterData()" type="text" placeholder="Search" class="w-100"
+          id="search-field">
       </div>
       <div id="icon" class="col-1 pt-2 ps-4 me-3">
         <mat-icon>search</mat-icon>
       </div>
     </div>
-    <div id="button-container" class="col-10 mt-3 offset-0 d-flex justify-content-lg-end w-">
-      <button (click)="addNewField()" [ngClass]="navService.showSideBar ? 'add-button-mobile' : 'add-button-desktop'" >+ Add New Field</button>
+    <div id="button-container" class="mt-3 offset-0 d-flex justify-content-lg-end">
+      <button (click)="addNewField()" [ngClass]="navService.showSideBar ? 'add-button-mobile' : 'add-button-desktop'">+
+        Add New Field</button>
     </div>
   </div>
   <div id="tab-buttons" class="mb-0">
@@ -79,7 +80,8 @@
           </mat-table>
           <mat-paginator hidden></mat-paginator>
         </div>
-        <div *ngIf="!isLoading && dataSource.filteredData.length <= 0" class="d-flex flex-row justify-content-center align-items-center">
+        <div *ngIf="!isLoading && dataSource.filteredData.length <= 0"
+          class="d-flex flex-row justify-content-center align-items-center">
           <img class="col-6" style="max-width: 30%;" src="../../../../assets/img/12463945_4966448.svg" alt="">
           <span id="noSearchResults" class="col-6 d-flex flex-column justify-content-center align-items-center">
             <h1>No Matches Found</h1>
