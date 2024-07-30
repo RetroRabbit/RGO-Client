@@ -216,7 +216,6 @@ export class EmployeeProfileComponent implements OnChanges {
       next: (data: EmployeeTermination) => {
         this.terminationData = data;
       },
-      error: (er) => this.snackBarService.showError(er),
     });
   }
 
