@@ -54,7 +54,7 @@ export class AccordionCareerWorkExperienceComponent {
   dialogTypeData: Dialog = {
     type: 'confirm',
     title: 'Delete Experience',
-    subtitle: 'Are You Sure You Want to Delete?',
+    subtitle: 'Are you sure you want to delete?',
     confirmButtonText: 'Delete',
     denyButtonText: 'Cancel',
   };
@@ -68,7 +68,7 @@ export class AccordionCareerWorkExperienceComponent {
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private datePipe: DatePipe
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getEmployeeType();
@@ -162,7 +162,7 @@ export class AccordionCareerWorkExperienceComponent {
   removeNewSoftware(index: number, software: string) {
     const newSoftwareItems = this.sharedAccordionFunctionality.newWorkExperiences[index].software
     const newsoftwareIndex = newSoftwareItems!.indexOf(software);
-    if(newsoftwareIndex>= 0){
+    if (newsoftwareIndex >= 0) {
       newSoftwareItems!.splice(newsoftwareIndex, 1);
       this.sharedAccordionFunctionality.newWorkExperiences[index].software = [...newSoftwareItems!];
     }
