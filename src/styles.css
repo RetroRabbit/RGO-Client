@@ -198,6 +198,14 @@ body {
   background-color: #3a57ca !important;
 }
 
-mat-datepicker-toggle {
+/* Date picker Icon for the field */
+
+.mat-datepicker-toggle {
+  color: grey !important;
+}
+
+.mat-datepicker-toggle-active {
   color: #0029C6 !important;
 }
+
+/* Calendar for the datepicker */
