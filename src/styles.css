@@ -221,6 +221,7 @@ mat-stepper {
 mat-calendar {
   --mat-datepicker-calendar-date-selected-state-background-color: #0029C6;
   --mat-datepicker-calendar-date-hover-state-background-color: #98aaf1;
+  --mat-datepicker-calendar-date-focus-state-background-color: #98aaf1;
 }
 
 /* Select drop down arrow */
