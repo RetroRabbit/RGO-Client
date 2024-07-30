@@ -189,3 +189,11 @@ body {
   --mdc-chip-elevated-container-color: #D7DFFF;
   
 }
+
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__shadow {
+  background-color: #0029C6;
+}
+
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__track::after {
+  background-color: #3a57ca !important;
+}
