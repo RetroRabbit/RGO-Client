@@ -132,7 +132,7 @@
                   <mat-label>ID Number</mat-label>
                   <input matInput type="text" formControlName="idNumber" (blur)="getGenderBirthday($event)" />
                   <mat-error *ngIf="newEmployeeForm.controls['idNumber'].hasError('required')">
-                    ID Number Is Required
+                    ID number is required
                   </mat-error>
                   <mat-error
                     *ngIf="newEmployeeForm.controls['idNumber'].hasError('invalidIdNumber') && !newEmployeeForm.controls['idNumber'].hasError('required')">
