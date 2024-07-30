@@ -106,12 +106,18 @@
                   <mat-select formControlName="employeeType" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let type of employeeTypes" [value]="type">{{ type.name }}</mat-option>
                   </mat-select>
+                  <mat-error *ngIf="newEmployeeForm.controls['employeeType'].hasError('required')">
+                    Select Role
+                  </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class=" mb-3">
                   <mat-label>Select Level</mat-label>
                   <mat-select formControlName="level" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
                   </mat-select>
+                  <mat-error *ngIf="newEmployeeForm.controls['level'].hasError('required')">
+                    Select Level
+                  </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class=" mb-3">
                   <mat-label>Start Date</mat-label>
@@ -125,6 +131,9 @@
                 <mat-form-field appearance="outline" class=" mb-3">
                   <mat-label>ID Number</mat-label>
                   <input matInput type="text" formControlName="idNumber" (blur)="getGenderBirthday($event)" />
+                  <mat-error *ngIf="newEmployeeForm.controls['idNumber'].hasError('required')">
+                    ID Number Is Required
+                  </mat-error>
                   <mat-error
                     *ngIf="newEmployeeForm.controls['idNumber'].hasError('invalidIdNumber') && !newEmployeeForm.controls['idNumber'].hasError('required')">
                     Not a Valid South African ID Number
