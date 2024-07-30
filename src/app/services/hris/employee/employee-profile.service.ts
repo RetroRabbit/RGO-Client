@@ -1,45 +1,78 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { Employee } from '../../../models/hris/employee.interface';
 import { EmployeeProfile } from '../../../models/hris/employee-profile.interface';
+import { environment } from '../../../../environments/environment';
+import { AuthAccessService } from '../../shared-services/auth-access/auth-access.service';
+import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
+
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeProfileService {
-  
-  constructor(private client: HttpClient) { }
+  baseUrl: string;
 
-  GetEmployeeProfile(): Observable<EmployeeProfile> {
-    let result = this.client.get<EmployeeProfile>(`${environment.HttpsBaseURL}/employees`);
-    return result;
-  }
-
-  GetEmployeeProfileByEmail(email: string): Observable<EmployeeProfile> {
-    const queryParams = `?email=${email}`;
-    return this.client.get<EmployeeProfile>(`${environment.HttpsBaseURL}/employees/by-email${queryParams}`);
-  }
-
-  UpdateEmployeeProfile(profileUpdate: any): Observable<any> {
-    return this.client.put<any>(
-      `${environment.HttpsBaseURL}/employees?email=${profileUpdate.updatedProfile.email}`, profileUpdate.updatedProfile
-    );
-  }
-
-  searchEmployees(name: string): Observable<EmployeeProfile[]> {
-    const queryParams = `?name=${name}`;
-    return this.client.get<EmployeeProfile[]>(`${environment.HttpsBaseURL}/employees${queryParams}`);
+  constructor(private httpClient: HttpClient,
+    private authAccessService: AuthAccessService) {
+    this.baseUrl = `${environment.HttpsBaseURL}/employees`
   }
 
   getEmployeeById(id: number): Observable<EmployeeProfile> {
     const queryParams = `?id=${id}`;
-    return this.client.get<EmployeeProfile>(`${environment.HttpsBaseURL}/employees${queryParams}`);
+    return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}${queryParams}`);
   }
 
   getSimpleEmployee(employeeEmail : string): Observable<SimpleEmployee> {
     const queryParams = `?employeeEmail=${employeeEmail}`;
-    return this.client.get<SimpleEmployee>(`${environment.HttpsBaseURL}/employees/simple-profile/${queryParams}`);
+    return this.httpClient.get<SimpleEmployee>(`${this.baseUrl}/simple-profile${queryParams}`);
+  }
+
+  getAll(): Observable<Employee[]> {
+    return this.httpClient.get<Employee[]>(`${this.baseUrl}/all`);
+  }
+
+  getEmployeeProfiles(): Observable<EmployeeProfile[]> {
+    return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/all`);
+  }
+
+  addEmployee(newEmployee: any): Observable<any> {
+    return this.httpClient.post<any>(`${this.baseUrl}`, newEmployee);
+  }
+
+  getEmployeeProfileByEmail(email: string): Observable<EmployeeProfile> {
+    return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}/by-email?email=${encodeURIComponent(email)}`);
+
+  }
+
+  checkDuplicateIdNumber(idNumber: string, employeeId: number): Observable<boolean> {
+    return this.httpClient.get<boolean>(`${this.baseUrl}/id-number?idNumber=${encodeURIComponent(idNumber)}&employeeId=${employeeId}`);
+  }
+
+  updateEmployee(employee: any): Observable<any> {
+    const queryParams = `?userEmail=${this.authAccessService.getEmployeeEmail()}`
+    return this.httpClient.put<any>(`${this.baseUrl}${queryParams}`, employee)
+  }
+
+  getTotalEmployees(): Observable<number> {
+    return this.httpClient.get<number>(`${this.baseUrl}/count`);
+  }
+
+  /**
+  * @summary  Gets List of employees by filtering based on parameters.
+  * to exclude a parameter from the filter pass through a 0 for said parameter
+  * @param  championID filters those that have the same CHampion ID
+  * @param employeeType filters by the type of employee
+  * @param activeStatus filters by the active statys of emplyee
+  *
+  * @returns List of EmployeeDto objects.
+  */
+  filterEmployees(championID: number, employeeType: number, activeStatus: boolean = true): Observable<EmployeeFilterView[]> {
+    const queryParams = `?PeopleChampId=${encodeURIComponent(championID)}
+                        &employeeType=${encodeURIComponent(employeeType)}
+                        &activeStatus=${activeStatus}`;
+    return this.httpClient.get<EmployeeFilterView[]>(`${this.baseUrl}/filter-employees${queryParams}`);
   }
 }

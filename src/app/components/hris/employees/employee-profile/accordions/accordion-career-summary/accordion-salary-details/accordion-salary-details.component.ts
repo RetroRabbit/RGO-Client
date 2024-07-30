@@ -1,5 +1,5 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, HostListener, Input, Output } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeSalary } from 'src/app/models/hris/employee-salary.interface';
 import { EmployeeSalaryService } from 'src/app/services/hris/employee/employee-salary.service';
@@ -10,7 +10,6 @@ import { ActivatedRoute } from '@angular/router';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 
 @Component({
   selector: 'app-accordion-salary-details',
@@ -42,7 +41,6 @@ export class AccordionSalaryDetailsComponent {
     private fb: FormBuilder,
     private employeeSalaryService: EmployeeSalaryService,
     private employeeProfileService: EmployeeProfileService,
-    private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
     private authAccessService: AuthAccessService,
     public navservice: NavService,
@@ -188,7 +186,7 @@ export class AccordionSalaryDetailsComponent {
           },
           error: (er) => this.snackBarService.showError(er),
         }),
-          this.employeeService.updateEmployee(this.employeeProfile).subscribe({
+          this.employeeProfileService.updateEmployee(this.employeeProfile).subscribe({
             next: (data) => {
               this.snackBarService.showSnackbar("Employee tax updated", "snack-success");
             }

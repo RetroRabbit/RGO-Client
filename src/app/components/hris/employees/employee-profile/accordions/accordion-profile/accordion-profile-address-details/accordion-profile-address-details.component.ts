@@ -6,7 +6,6 @@ import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
@@ -51,7 +50,6 @@ export class AccordionProfileAddressDetailsComponent {
 
   constructor(
     private fb: FormBuilder,
-    private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
@@ -322,7 +320,7 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   getAllEmployees() {
-    this.employeeService.getEmployeeProfiles().subscribe({
+    this.employeeProfileService.getEmployeeProfiles().subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employees = data;
         this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
