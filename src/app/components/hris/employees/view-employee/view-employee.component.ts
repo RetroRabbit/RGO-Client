@@ -1,5 +1,5 @@
 import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -27,7 +27,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 export class ViewEmployeeComponent {
 
   constructor(
-    private employeeService: EmployeeService,
+    private employeeProfileService: EmployeeProfileService,
     private employeeRoleService: EmployeeRoleService,
     private cookieService: CookieService,
     private ngZone: NgZone,
@@ -227,7 +227,7 @@ export class ViewEmployeeComponent {
   }
 
   employeeClickEvent(employee: any): void {
-    this.employeeService.get(employee.Email).
+    this.employeeProfileService.getEmployeeProfileByEmail(employee.Email).
       subscribe((data) => {
         this.selectedEmployee.emit(data);
         this._searchQuery = '';
@@ -342,7 +342,7 @@ export class ViewEmployeeComponent {
   filterEmployeeTable() {
     this.isLoading = true;
 
-    this.employeeService
+    this.employeeProfileService
       .filterEmployees(this.currentChampionFilter.id || 0, this.currentUserTypeFilter.id || 0, this.getActiveEmployees)
       .pipe(
         switchMap((employees: EmployeeFilterView[]) => this.combineEmployeesWithRolesAndClients(employees)),
@@ -360,7 +360,7 @@ export class ViewEmployeeComponent {
   }
 
   getPeopleChampionsForFilter(): Observable<GenericDropDownObject[]> {
-    return this.employeeService.filterEmployees(0, EmployeeType.PeopleChampion).pipe(
+    return this.employeeProfileService.filterEmployees(0, EmployeeType.PeopleChampion).pipe(
       map(employees => {
         const champions: GenericDropDownObject[] = employees.map(employee => ({
           id: employee.id || 0,

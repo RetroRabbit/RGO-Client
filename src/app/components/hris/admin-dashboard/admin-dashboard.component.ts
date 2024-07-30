@@ -1,5 +1,4 @@
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 import { Subscription, catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
@@ -95,7 +94,6 @@ export class AdminDashboardComponent {
   categoriesSelected: string[] = [];
   constructor(
     private employeeBankingandstarterkitService: EmployeeBankingandstarterkitService,
-    private employeeService: EmployeeService,
     private dashboardService: DashboardService,
     public chartService: ChartService,
     private cookieService: CookieService,
@@ -237,7 +235,7 @@ export class AdminDashboardComponent {
   }
 
   getEmployeeProfiles() {
-    this.employeeService.getEmployeeProfiles().subscribe({
+    this.employeeProfileService.getEmployeeProfiles().subscribe({
       next: (data: EmployeeProfile[]) => {
         this.employeeProfiles = data;
         this.searchResults = [];

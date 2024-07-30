@@ -6,9 +6,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
-import { AuthService } from '@auth0/auth0-angular';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -52,8 +51,7 @@ export class SideNavComponent {
     public cookieService: CookieService,
     public navService: NavService,
     public authAccessService: AuthAccessService,
-    private auth: AuthService,
-    private employeeService: EmployeeService
+    private employeeProfileService: EmployeeProfileService
   ) {
     this.screenWidth = window.innerWidth;
     this.dialogTypeData = new DialogTypeData().dialogTypeData;
@@ -61,7 +59,7 @@ export class SideNavComponent {
 
   ngOnInit() {
     if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() ||this.authAccessService.isTalent()){
-      this.employeeService.getTotalEmployees().subscribe({
+      this.employeeProfileService.getTotalEmployees().subscribe({
       next: (numEmployees : number) => {
         this.totalNumberOfEmployees = numEmployees;
       },
