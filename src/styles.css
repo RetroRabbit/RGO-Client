@@ -222,3 +222,13 @@ mat-calendar {
   --mat-datepicker-calendar-date-selected-state-background-color: #0029C6;
   --mat-datepicker-calendar-date-hover-state-background-color: #98aaf1;
 }
+
+/* Select drop down arrow */
+
+mat-select {
+  --mat-select-focused-arrow-color: #0029C6;
+}
+
+mat-option {
+  --mat-option-selected-state-label-text-color: #0029C6;
+}
