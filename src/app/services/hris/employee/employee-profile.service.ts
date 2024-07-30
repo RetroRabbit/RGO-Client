@@ -6,6 +6,7 @@ import { EmployeeProfile } from '../../../models/hris/employee-profile.interface
 import { environment } from '../../../../environments/environment';
 import { AuthAccessService } from '../../shared-services/auth-access/auth-access.service';
 import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
+
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 
 @Injectable({
@@ -43,6 +44,7 @@ export class EmployeeProfileService {
 
   getEmployeeProfileByEmail(email: string): Observable<EmployeeProfile> {
     return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}/by-email?email=${encodeURIComponent(email)}`);
+
   }
 
   checkDuplicateIdNumber(idNumber: string, employeeId: number): Observable<boolean> {

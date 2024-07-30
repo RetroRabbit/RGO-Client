@@ -22,7 +22,6 @@ export class HrisPageGuard {
 
     if (this.navService.isHris == undefined) {
         this.navService.isHris = Boolean(this.cookieService.get('isHris'));
-        this.authAccessService.setRoles(this.cookieService.get('userType'));
         return true;
     }
     this.authService.logout()
