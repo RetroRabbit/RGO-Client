@@ -34,16 +34,6 @@ main {
     width: 100%;
 }
 
-/* ::ng-deep .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__shadow {
-    background-color: #0029C6;
-}
-  
-::ng-deep .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__track::after {
-    background-color: #0029C6 !important;
-} */
-
-
-
 #file-upload-cursor {
     cursor: pointer;
     color: #0029c6;
