@@ -194,6 +194,8 @@ body {
 
 mat-stepper {
   --mat-stepper-header-selected-state-icon-background-color: #0029C6;
+  --mat-stepper-header-edit-state-icon-background-color: #0029C6;
+  --mat-stepper-header-done-state-icon-background-color: #119604;
 }
 
 /* Slider to toggle things */
