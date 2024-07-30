@@ -37,7 +37,7 @@
                         <mat-label>First name</mat-label>
                         <input matInput type="text" formControlName="name" />
                         <mat-error *ngIf="newCandidateForm.controls['name'].hasError('required')">
-                            First Name Is Required
+                            First Name is required
                         </mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="col-md-12 col-lg-7 my-2">
@@ -51,10 +51,10 @@
                         <mat-label>Email</mat-label>
                         <input matInput type="email" formControlName="email" (change)="onEmailChange($event)" />
                         <mat-error *ngIf="newCandidateForm.controls['email'].hasError('pattern')">
-                            Please Enter a Valid Email Address
+                            Please enter a valid email address
                         </mat-error>
                         <mat-error *ngIf="newCandidateForm.controls['email'].hasError('required')">
-                            Email Address Is Required
+                            Email address is required
                         </mat-error>
                     </mat-form-field>
                     <div class="col-md-12 col-lg-7 my-1">
@@ -73,7 +73,7 @@
                         <input matInput type="text" formControlName="cellphoneNumber" pattern="^\+27\d{9}$"
                             placeholder="+27 XXXXXXXXX" />
                             <mat-error *ngIf="newCandidateForm.controls['cellphoneNumber'].hasError('pattern')">
-                                Please Enter a Valid Cellphone Number
+                                Please enter a valid cellphone number
                             </mat-error>
                     </mat-form-field>
                     <mat-radio-group formControlName="jobPosition" class="col-md-12 col-lg-7 my-2 info-text" (change)="checkSelectedOption($event)">
@@ -97,7 +97,7 @@
                         <mat-label>Attach LinkedIn Link</mat-label>
                         <input matInput type="text" formControlName="linkedInProfile" />
                         <mat-error *ngIf="newCandidateForm.controls['linkedInProfile'].hasError('pattern')">
-                            Valid LinkedIn Profile Link Is Required
+                            Valid linkedIn profile link is required
                         </mat-error>
                         <mat-icon matSuffix>link</mat-icon>
                     </mat-form-field>
@@ -130,7 +130,7 @@
                             <input matInput type="text" formControlName="portfolioLink" />
                             <mat-icon matSuffix>link</mat-icon>
                             <mat-error *ngIf="newCandidateForm.controls['portfolioLink'].hasError('pattern')">
-                                Valid Website Link Is Required.
+                                Valid website link is required.
                             </mat-error>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-12 my-2">
