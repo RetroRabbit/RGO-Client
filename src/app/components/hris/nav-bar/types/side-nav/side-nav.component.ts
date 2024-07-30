@@ -119,7 +119,7 @@ export class SideNavComponent {
   
   logout() {
     this.navService.expandSideNav = false;
-    this.authAccessService.clearUserData();
+    this.authAccessService.logout();
     this.router.navigateByUrl("/");
   }
   

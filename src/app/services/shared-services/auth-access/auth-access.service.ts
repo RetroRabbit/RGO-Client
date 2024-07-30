@@ -80,6 +80,7 @@ export class AuthAccessService {
   }
 
   logout(){
+    this.clearUserData();
     this.authService.logout();
   }
 }
