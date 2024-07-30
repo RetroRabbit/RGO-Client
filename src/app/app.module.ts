@@ -2,13 +2,13 @@ import { NgModule, isDevMode } from '@angular/core';
 import {MatBadgeModule} from '@angular/material/badge'
 import { SignInComponent } from './components/hris/sign-in/sign-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthConfigService, AuthModule } from '@auth0/auth0-angular';
+import { AuthModule } from '@auth0/auth0-angular';
 import { StoreModule } from '@ngrx/store';
-import { LoginReducer } from './components/shared-components/store/reducers/login.reducer';
+import { LoginReducer } from './components/shared-components/store/reducers/sign-in.reducer';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 import { environment } from 'src/environments/environment';
-import { LoginEffects } from './components/shared-components/store/effects/app.effects';
+import { LoginEffects } from './components/shared-components/store/effects/sign-in.effects';
 import { AuthService } from './services/shared-services/auth-access/auth.service';
 import { AuthInterceptor } from './components/shared-components/interceptor/auth0.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -161,7 +161,7 @@ import { CvDocumentComponent } from './components/hris/cv-document/cv-document.c
     MatSnackBarModule,
     ClipboardModule,
     StoreModule.forRoot({
-      app: LoginReducer,
+      token: LoginReducer,
       employee: EmployeeProfileReducer,
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),

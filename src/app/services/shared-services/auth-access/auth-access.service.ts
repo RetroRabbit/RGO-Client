@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AuthService } from '../../../services/shared-services/auth-access/auth.service';
+import { AppState } from 'src/app/components/shared-components/store/app.state';
+import { selectEmail, selectRole } from 'src/app/components/shared-components/store/selector/sign-in.selector';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
@@ -6,50 +10,48 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class AuthAccessService {
   public constructor(
-    private cookieService: CookieService,
+    private store: Store<AppState>,
+    private authService: AuthService,
+    private cookieService: CookieService
   )
   {}
 
-  private roles: string = '';
-
-  private employeeEmail: string = '';
-
   private userId: number = -1;
 
-  setEmployeeEmail(email: string) {
-    this.employeeEmail = email;
-  }
-
   getEmployeeEmail(): string {
-    return this.employeeEmail;
+    let email = "";
+    this.store.select(selectEmail).subscribe((storeEmail) => {
+      email = storeEmail;
+    });
+    return email;
   }
 
-  setRoles(roles: string) {
-    this.roles = roles;
-  }
-
-  getRoles() {
-    return this.roles;
+  getRole() : string {
+    let role = "";
+    this.store.select(selectRole).subscribe((storeRole) => {
+      role = storeRole;
+    });
+    return role;
   }
 
   isAdmin() {
-    return this.roles.includes('Admin');
+    return this.getRole().includes('Admin')
   }
 
   isSuperAdmin() {
-    return this.roles.includes('SuperAdmin');
+    return this.getRole().includes('SuperAdmin');
   }
 
   isTalent() {
-    return this.roles.includes('Talent');
+    return this.getRole().includes('Talent');
   }
 
   isJourney() {
-    return this.roles.includes('Journey');
+    return this.getRole().includes('Journey');
   }
 
   isEmployee() {
-    return this.roles.includes('Employee');
+    return this.getRole().includes('Employee');
   }
 
   isSupport() {
@@ -68,9 +70,16 @@ export class AuthAccessService {
   }
 
   clearUserData() {
-    this.roles = "";
     this.userId = -1;
-    this.employeeEmail = "";
     this.cookieService.deleteAll();
+  }
+
+  hasSignedIn(): boolean 
+  {
+    return this.getEmployeeEmail() != "";
+  }
+
+  logout(){
+    this.authService.logout();
   }
 }

@@ -133,12 +133,8 @@ export class AdminDashboardComponent {
   }
 
   ngOnInit() {
-    const types: string = this.cookieService.get('userType');
-    this.roles = Object.keys(JSON.parse(types));
-    if (this.authAccessService.isAdmin() ||
-      this.authAccessService.isSuperAdmin() ||
-      this.authAccessService.isTalent() ||
-      this.authAccessService.isJourney()) {
+    this.roles = [this.authAccessService.getRole()];
+    if (this.authAccessService.isSupport()) {
       this.getEmployeeId();
     }
     this.setSvgWidth();

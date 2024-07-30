@@ -61,15 +61,11 @@ export class TopNavComponent {
   }
 
   signIn() {
-    const types: string = this.cookieService.get('userType');
-    this.roles = Object.keys(JSON.parse(types));
+    this.roles = [this.authAccessService.getRole()];
     this.navService.refreshEmployee();
     this.isLoading = false;
     if (
-      this.authAccessService.isAdmin() ||
-      this.authAccessService.isJourney() ||
-      this.authAccessService.isSuperAdmin() ||
-      this.authAccessService.isTalent()
+      this.authAccessService.isSupport()
     ) {    
       if (this.navService.employeeProfile?.id) {
         this.chartService.getEmployeeCharts(this.navService.employeeProfile.id).subscribe({
