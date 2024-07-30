@@ -230,6 +230,8 @@ mat-select {
   --mat-select-focused-arrow-color: #0029C6;
 }
 
+/* Select drop down text select */
+
 mat-option {
   --mat-option-selected-state-label-text-color: #0029C6;
 }
