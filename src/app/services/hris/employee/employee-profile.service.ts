@@ -6,7 +6,6 @@ import { EmployeeProfile } from '../../../models/hris/employee-profile.interface
 import { environment } from '../../../../environments/environment';
 import { AuthAccessService } from '../../shared-services/auth-access/auth-access.service';
 import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
-
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 
 @Injectable({
