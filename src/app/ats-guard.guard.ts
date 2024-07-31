@@ -22,7 +22,6 @@ export class AtsPageGuard {
 
     if (this.navService.isHris == undefined) {
         this.navService.isHris = Boolean(JSON.parse(this.cookieService.get('isHris')));
-        this.authAccessService.setRoles(this.cookieService.get('userType'));
         return true;
     }
     this.authService.logout()
