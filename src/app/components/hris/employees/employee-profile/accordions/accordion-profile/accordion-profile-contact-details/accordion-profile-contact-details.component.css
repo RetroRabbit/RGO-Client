@@ -21,3 +21,10 @@
 .shift-label {
     margin-left: 95px; 
 }
+#required-icon{
+    color:#B3261E;
+}
+.align-text-icon{
+    display: flex;
+    flex-direction: row;
+}
