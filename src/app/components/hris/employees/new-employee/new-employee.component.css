@@ -34,6 +34,10 @@ main {
     width: 100%;
 }
 
+.search-icon {
+    color: rgb(88, 88, 88);
+}
+
 #file-upload-cursor {
     cursor: pointer;
     color: #0029c6;
