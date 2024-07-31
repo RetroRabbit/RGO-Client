@@ -1,3 +1,13 @@
+import { EmployeeProfileNew } from "src/app/models/hris/EmployeeProfile/employeeProfileNew.interface";
+
 export interface AppState {
-  readonly GoogleID: any;
+  employeeProfiles: EmployeeProfileNew[];
+  loading: boolean;
+  error: any;
 }
+
+export const initialEmployeeProfileState: AppState = {
+  employeeProfiles: [],
+  loading: false,
+  error: null,
+};
