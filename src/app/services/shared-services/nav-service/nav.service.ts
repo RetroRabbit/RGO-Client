@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { EmployeeProfileService }  from '../../hris/employee/employee-profile.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { AuthAccessService } from '../auth-access/auth-access.service';
-import { CookieService } from 'ngx-cookie-service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 
 @Injectable({
@@ -20,8 +19,9 @@ export class NavService {
   public showNavContainer: boolean = true;
   public showTopNavMenu: boolean = false;
 
-  constructor(private authAccessService: AuthAccessService, private employeeProfileService: EmployeeProfileService,
-    private cookieService: CookieService
+  constructor(
+    private authAccessService: AuthAccessService,
+    private employeeProfileService: EmployeeProfileService,
   )
   { }
 
@@ -30,11 +30,6 @@ export class NavService {
       next: (data) => {
         this.employeeProfile = data;
         this.authAccessService.setUserId(this.employeeProfile.id as number);
-        this.cookieService.set("userId", String(this.employeeProfile.id), {
-          path: '/',
-          secure: true,
-          sameSite: 'None'
-        });
       }
     });
   }

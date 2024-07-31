@@ -5,7 +5,6 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
@@ -46,15 +45,13 @@ export class AccordionEmployeeDocumentsComponent {
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
     public navService: NavService,
-    private cookieService: CookieService,
     private authAccessService: AuthAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
     this.dialogTypeData = new DialogTypeData().dialogTypeData;
   }
 
   ngOnInit() {
-    const types: string = this.cookieService.get('userType');
-    this.roles = Object.keys(JSON.parse(types));
+    this.roles = [this.authAccessService.getRole()];
     this.getEmployeeDocuments();
     this.sharedAccordionFunctionality.totalDocumentsProgress()
   }
