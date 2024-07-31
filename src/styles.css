@@ -190,6 +190,10 @@ body {
   
 }
 
+.mat-mdc-standard-chip {
+  --mdc-chip-label-text-weight: 500;
+}
+
 /* Stepper background color */
 
 mat-stepper {
