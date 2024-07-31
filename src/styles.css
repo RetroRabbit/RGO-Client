@@ -194,15 +194,11 @@ body {
   --mdc-chip-label-text-weight: 500;
 }
 
-/* Stepper background color */
-
 mat-stepper {
   --mat-stepper-header-selected-state-icon-background-color: #0029C6;
   --mat-stepper-header-edit-state-icon-background-color: #0029C6;
   --mat-stepper-header-done-state-icon-background-color: #119604;
 }
-
-/* Slider to toggle things */
 
 .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__shadow {
   background-color: #0029C6;
@@ -212,8 +208,6 @@ mat-stepper {
   background-color: #5b74d6 !important;
 }
 
-/* Date picker Icon for the field */
-
 .mat-datepicker-toggle {
   color: grey !important;
 }
@@ -222,8 +216,6 @@ mat-stepper {
   color: #0029C6 !important;
 }
 
-/* Calendar for the datepicker */
-
 mat-calendar {
   --mat-datepicker-calendar-date-selected-state-background-color: #0029C6;
   --mat-datepicker-calendar-date-hover-state-background-color: #98aaf1;
@@ -231,13 +223,9 @@ mat-calendar {
   --mat-datepicker-calendar-date-today-outline-color: #0029c6;
 }
 
-/* Select drop down arrow */
-
 mat-select {
   --mat-select-focused-arrow-color: #0029C6;
 }
-
-/* Select drop down text select */
 
 mat-option {
   --mat-option-selected-state-label-text-color: #0029C6;
