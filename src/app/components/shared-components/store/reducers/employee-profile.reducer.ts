@@ -1,57 +1,34 @@
+// reducers/employee-profile.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import { GetEmployeeProfile, GetEmployeeProfileSuccess, } from '../actions/employee-profile.actions';
-import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
+import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employeeProfileNew.interface';
+import * as EmployeeProfileActions from '../actions/employee-profile.actions';
 
-export interface EmployeeProfileState {
-  employeeProfile: EmployeeProfile
+export interface State {
+  employeeProfiles: EmployeeProfileNew[];
+  loading: boolean;
+  error: any;
 }
 
-export const initialState: EmployeeProfileState = {
-  employeeProfile: {
-    id: 0,
-    employeeNumber: '',
-    taxNumber: '',
-    engagementDate: new Date,
-    terminationDate: new Date,
-    peopleChampion: 0,
-    disability: true,
-    disabilityNotes: '',
-    countryOfBirth: '',
-    nationality: '',
-    level: 0,
-    employeeType: {
-      id: 0,
-      name: '',
-    },
-    name: '',
-    initials: '',
-    surname: '',
-    dateOfBirth: new Date,
-    idNumber: '',
-    passportNumber: '',
-    passportExpirationDate: new Date,
-    passportCountryIssue: '',
-    race: 1,
-    gender: 0,
-    email: '',
-    personalEmail: '',
-    cellphoneNo: '',
-    photo: '',
-    notes: '',
-    leaveInterval: 0,
-    salaryDays: 0,
-    payRate: 0,
-    salary: 0,
-    clientAllocated: -1,
-    teamLead: 0,
-    EmployeeProfile: function (): void {
-      throw new Error('Function not implemented.');
-    }
-  }
+export const initialState: State = {
+  employeeProfiles: [],
+  loading: false,
+  error: null,
 };
 
-export const EmployeeProfileReducer = createReducer(
+export const employeeProfileReducer = createReducer(
   initialState,
-  on(GetEmployeeProfile, (state) => ({ ...state, loading: true, })),
-  on(GetEmployeeProfileSuccess, (state, { employeeProfile }) => ({ ...state, employeeProfile, loading: true })),
+  on(EmployeeProfileActions.loadEmployeeProfiles, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(EmployeeProfileActions.loadEmployeeProfilesSuccess, (state, { employeeProfiles }) => ({
+    ...state,
+    loading: false,
+    employeeProfiles,
+  })),
+  on(EmployeeProfileActions.loadEmployeeProfilesFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }))
 );
