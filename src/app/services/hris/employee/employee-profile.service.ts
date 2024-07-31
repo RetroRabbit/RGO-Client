@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { EmployeeProfile } from '../../../models/hris/employee-profile.interface';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { Token } from '../../../models/hris/token.interface';
 import { Store } from '@ngrx/store';
 import { EmployeeState } from '../../../components/shared-components/store/reducers/employee.reducer';
@@ -48,6 +48,8 @@ export class EmployeeProfileService {
       this.email = state.email;
     })
   }
+
+  
 
   UpdateEmployeeProfile(profileUpdate: any): Observable<any> {
     return this.client.put<any>(
