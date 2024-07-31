@@ -5,10 +5,6 @@
         <mat-panel-title>
           Additional Documents
         </mat-panel-title>
-        <mat-panel-description class="pe-0 pe-md-5"
-          *ngIf="sharedAccordionFunctionality.additionalDocumentsProgress != 100 && sharedAccordionFunctionality.additionalDocumentsProgress != infinity">
-          <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing Information</span>
-        </mat-panel-description>
       </mat-expansion-panel-header>
       <div id="table" *ngIf="unarchivedCustomDocuments[0] != undefined; else NoFieldCodes">
         <div id="table-header" class="row pt-3 d-none d-md-flex d-lg-flex">

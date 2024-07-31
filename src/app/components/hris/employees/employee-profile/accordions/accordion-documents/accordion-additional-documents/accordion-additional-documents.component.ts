@@ -76,7 +76,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
           this.sharedAccordionFunctionality.additionalDocuments = data;
           this.getDocumentFieldCodes();
-          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: (er) => this.snackBarService.showError(er),
       });
@@ -85,7 +84,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 4).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.additionalDocuments = data;
-          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: (er) => this.snackBarService.showError(er),
       });
@@ -118,8 +116,9 @@ export class AccordionDocumentsCustomDocumentsComponent {
   getDocumentFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
+        const documentFieldCodes = data.filter(fieldCode => fieldCode.type === 5); 
         this.checkCustomDocumentsInformation();
-        this.checkArchived(data);
+        this.checkArchived(documentFieldCodes);
       }
     })
   }
@@ -200,7 +199,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Saved", "snack-success");
           this.getAdditionalDocuments();
-          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
         },
         error: (er: any) => {
           this.isLoadingUpload = false;
@@ -230,7 +228,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.isLoadingUpload = false;
           this.snackBarService.showSnackbar("Updated", "snack-success");
           this.getAdditionalDocuments();
-          this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
 
         },
         error: (er) => {
