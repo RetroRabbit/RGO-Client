@@ -717,7 +717,7 @@ export class NewEmployeeComponent implements OnInit {
       disabilityNotes: new FormControl<string>(''),
       countryOfBirth: new FormControl<string>(''),
       nationality: new FormControl<string>(''),
-      level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
+      level: new FormControl<number| null>(null, [Validators.pattern(/^[0-9]*$/), Validators.required]),
       employeeType: new FormControl<{ id: number; name: string } | null>(null, Validators.required),
       name: new FormControl<string>('', [Validators.required,
       Validators.pattern(this.namePattern)]),
