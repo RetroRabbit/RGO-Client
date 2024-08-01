@@ -39,18 +39,13 @@ export const initialState: State = {
 
 export const employeeProfileReducer = createReducer(
   initialState,
-  on(EmployeeProfileActions.loadEmployeeProfiles, (state) => ({
+  on(EmployeeProfileActions.loadEmployeeProfile, (state) => ({
     ...state,
     loading: true,
   })),
-  on(EmployeeProfileActions.loadEmployeeProfilesSuccess, (state, { employeeProfile }) => ({
+  on(EmployeeProfileActions.loadEmployeeProfileSuccess, (state, { employeeProfile }) => ({
     ...state,
     loading: false,
-    employeeProfile,
+    employeeProfile: employeeProfile,
   })),
-  on(EmployeeProfileActions.loadEmployeeProfilesFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error,
-  }))
 );

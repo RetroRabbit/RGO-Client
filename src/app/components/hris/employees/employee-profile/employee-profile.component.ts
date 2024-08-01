@@ -33,8 +33,10 @@ import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.int
 import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employeeProfileNew.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/components/shared-components/store/app.state';
-import { selectEmployeeProfileDetails } from 'src/app/components/shared-components/store/selector/employee-profile.selector';
 import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
+import { loadEmployeeProfile } from 'src/app/components/shared-components/store/actions/employee-profile.actions';
+import { Observable, Subscription } from 'rxjs';
+import * as EmployeeProfileSelectors from 'src/app/components/shared-components/store/selector/employee-profile.selector';
 
 @Component({
   selector: 'app-employee-profile',
@@ -47,6 +49,7 @@ export class EmployeeProfileComponent implements OnChanges {
   @Input() updateDocument!: { updateDocument: SharedAccordionFunctionality };
   @Input() updateCareer!: { updateCareer: SharedAccordionFunctionality };
 
+  employeeProfile$: Observable<EmployeeProfileNew>;
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
   simpleEmployee!: SimpleEmployee;
@@ -100,6 +103,7 @@ export class EmployeeProfileComponent implements OnChanges {
   bankStatus: number = 0;
   base64Image: string = '';
   screenWidth = window.innerWidth;
+  profileSubscription: Subscription | undefined;
 
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
   @ViewChild(AccordionProfileAddressDetailsComponent) adressAccordion!: AccordionProfileAddressDetailsComponent;
@@ -138,6 +142,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private store: Store<AppState>,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private clipboard: Clipboard) {
+      this.employeeProfile$ = this.store.select(EmployeeProfileSelectors.selectEmployeeProfile)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -150,18 +155,17 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ngOnInit() {
-    // this.employeeProfileService.getNEWEmployeeById(15).subscribe({
-    //   next: (data: EmployeeProfileNew) =>{
-    //     this.BIGemployeeProfile = data;
-    //     console.log(this.BIGemployeeProfile);
-    //   }
-    // })
+    this.store.dispatch(loadEmployeeProfile({employeeId : 15 }));
 
-    let employeeProfileDetails: EmployeeProfileDetails | undefined;
-    this.store.select(selectEmployeeProfileDetails).subscribe((employeeDetails) =>{
-      employeeProfileDetails = employeeDetails;
-      console.log(employeeProfileDetails);
-    })
+    this.profileSubscription = this.employeeProfile$
+      .subscribe({
+        next: (employeeProfile) => {
+          console.log('Employee Profile:', employeeProfile);
+        },
+        error: (err) => {
+          console.error('Error:', err);
+        }
+      });
 
 
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {

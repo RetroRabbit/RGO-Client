@@ -5,8 +5,9 @@ import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employee
 
 export const selectEmployeeProfileState = (state: AppState) => state.employeeProfile;
 
-export const selectEmployeeProfileDetails = createSelector(
+export const selectEmployeeProfile = createSelector(
   selectEmployeeProfileState,
-  (state) => state.employeeProfileDetails
+  (state) => state
 );
+
 

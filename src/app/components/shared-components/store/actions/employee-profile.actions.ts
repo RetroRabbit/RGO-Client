@@ -1,14 +1,16 @@
-import { createAction, props } from '@ngrx/store';
+import { createAction, createSelector, props } from '@ngrx/store';
 import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employeeProfileNew.interface';
+import { selectEmployeeProfileState } from '../selector/employee-profile.selector';
 
-export const loadEmployeeProfiles = createAction('[Employee Profile] Load Employee Profiles');
+//get 
+export const loadEmployeeProfile = createAction(
+  '[Employee Profile] Load Employee Profile Details',
+  props<{ employeeId: number }>()
+);
 
-export const loadEmployeeProfilesSuccess = createAction(
-'[Employee Profile] Load Employee Profiles Success',
+//put
+export const loadEmployeeProfileSuccess = createAction(
+  '[Employee Profile] Load Employee Profile Details Success',
   props<{ employeeProfile: EmployeeProfileNew }>()
 );
 
-export const loadEmployeeProfilesFailure = createAction(
-  '[Employee Profile] Load Employee Profiles Failure',
-  props<{ error: any }>()
-);
