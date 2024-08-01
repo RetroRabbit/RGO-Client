@@ -93,7 +93,6 @@ export class AdminDashboardComponent {
   categoriesSelected: string[] = [];
   constructor(
     private dashboardService: DashboardService,
-    private employeeService: EmployeeService,
     public chartService: ChartService,
     private cookieService: CookieService,
     private router: Router,
