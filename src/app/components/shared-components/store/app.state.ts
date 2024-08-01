@@ -1,5 +1,7 @@
-import { Token } from "src/app/models/hris/token.interface";
+import { ClientState } from "./reducers/client.reducer";
+import { TokenState } from "./reducers/sign-in.reducer";
 
 export interface AppState {
-  token: Token
+  token: TokenState
+  clients: ClientState
 }

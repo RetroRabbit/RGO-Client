@@ -11,7 +11,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
-import { ClientService } from 'src/app/services/hris/client.service';
 import { AccordionBankingComponent } from './accordions/accordion-banking/accordion-banking.component';
 import { AccordionProfileAdditionalComponent } from './accordions/accordion-profile/accordion-profile-additional-details/accordion-profile-additional.component';
 import { AccordionProfileAddressDetailsComponent } from './accordions/accordion-profile/accordion-profile-address-details/accordion-profile-address-details.component';
@@ -33,6 +32,9 @@ import { EmployeeTerminationService } from 'src/app/services/hris/employee/emplo
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/components/shared-components/store/app.state';
+import { LoadClients, SetClients } from 'src/app/components/shared-components/store/actions/client.actions';
 
 @Component({
   selector: 'app-employee-profile',
@@ -120,9 +122,9 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   constructor(
+    private store: Store<AppState>,
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
-    private clientService: ClientService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBarService: SnackbarService,
@@ -354,15 +356,20 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   getClients() {
-    this.clientService.getAllClients().subscribe({
-      next: data => {
-        this.clients = data;
-      }
-    })
+    // Note for developer:
+    this.store.dispatch(LoadClients());
+
+    // Both of these methods do the same thing, load just includes the req.
+    // this.clientService.getAllClients().subscribe({
+    //   next: data => {
+    //     this.clients = data;
+    //     this.store.dispatch(SetClients({ payload: data }));
+    //   }
+    // })
+
   }
 
   filterClients(clientId: number) {
-    this.employeeClient = this.clients.filter(client => +clientId == client.id)[0];
     this.employeeClient = this.clients.filter(client => +clientId == client.id)[0];
   }
 
@@ -452,7 +459,6 @@ export class EmployeeProfileComponent implements OnChanges {
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
     }
-    this.getClients();
   }
 
   ViewCVDocument() {
