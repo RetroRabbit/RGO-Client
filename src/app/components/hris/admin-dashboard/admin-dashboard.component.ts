@@ -1,5 +1,4 @@
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -230,7 +229,7 @@ export class AdminDashboardComponent {
   }
 
   getEmployeeProfiles() {
-    this.employeeService.getEmployeeProfiles().subscribe({
+    this.employeeProfileService.getEmployeeProfiles().subscribe({
       next: (data: EmployeeProfile[]) => {
         this.employeeProfiles = data;
         this.searchResults = [];

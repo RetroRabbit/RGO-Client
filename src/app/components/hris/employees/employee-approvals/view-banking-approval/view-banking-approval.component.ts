@@ -28,7 +28,7 @@ export class ViewBankingApprovalComponent {
     private router: Router, 
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
-    private employeeService: EmployeeProfileService,
+    private employeeProfileService: EmployeeProfileService,
     private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -48,7 +48,7 @@ export class ViewBankingApprovalComponent {
       this.employeeBankingService.getBankingDetails(id).subscribe({
         next: data => {
           this.employeeBanking = data;
-          this.employeeService.getEmployeeById(this.employeeBanking[this.employeeBanking.length - 1].employeeId).subscribe({
+          this.employeeProfileService.getEmployeeById(this.employeeBanking[this.employeeBanking.length - 1].employeeId).subscribe({
             next: employee => {
               this.employee = employee;
               this.isLoading = false;
@@ -60,7 +60,7 @@ export class ViewBankingApprovalComponent {
   }
 
   getEmployeeForBanking(id: number): void {
-    this.employeeService.getEmployeeById(id).subscribe({
+    this.employeeProfileService.getEmployeeById(id).subscribe({
       next: employee => {
         this.employee = employee;
       }

@@ -40,7 +40,7 @@ export class ViewStarterKitApprovalComponent {
     private snackBarService: SnackbarService,
     private documentService: EmployeeDocumentService,
     private changeDetector: ChangeDetectorRef,
-    private employeeService: EmployeeProfileService,
+    private employeeProfileService: EmployeeProfileService,
     ) { }
 
   ngOnInit(): void {
@@ -60,7 +60,7 @@ export class ViewStarterKitApprovalComponent {
     this.documentService.getAllEmployeeDocuments(employeedId, staterkitDocuments).subscribe({
       next: documents => {
         this.employeeDocuments = documents;
-        this.employeeService.getEmployeeById(employeedId).subscribe({
+        this.employeeProfileService.getEmployeeById(employeedId).subscribe({
           next: employee => {
             this.employee = employee;
             this.isLoading = false;
