@@ -25,6 +25,10 @@
     margin-top: 10px;
 }
 
+#button-pdf {
+    color: #0029c6;
+}
+
 #retro-logo {
     display: flex;
     align-items: center;
