@@ -6,7 +6,6 @@ import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
-import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 import { EmployeeDocumentsStatus } from 'src/app/models/hris/constants/enums/employeeDocumentsStatus';
 @Component({
   selector: 'app-pending-employee-starterkits',
@@ -42,7 +41,7 @@ export class ViewStarterKitApprovalComponent {
     private documentService: EmployeeDocumentService,
     private changeDetector: ChangeDetectorRef,
     private employeeService: EmployeeProfileService,
-    private employeeBankingStarterkitService: EmployeeBankingandstarterkitService) { }
+    ) { }
 
   ngOnInit(): void {
     this.getEmployeeDocuments(this.employeedId);
@@ -166,7 +165,6 @@ export class ViewStarterKitApprovalComponent {
         this.snackBarService.showSnackbar("Updated", "snack-success");
         this.lastUpdatedMessage = this.getNewDate();
         this.getEmployeeDocuments(this.employeedId);
-        this.employeeBankingStarterkitService.getAllBankingAndStarterkits();
       },
       error: (er) => this.snackBarService.showError(er),
     });

@@ -17,6 +17,7 @@ export class EmployeeBankingandstarterkitService {
   approvedCount$ = new BehaviorSubject<number>(0);
   pendingCount$ = new BehaviorSubject<number>(0);
   declinedCount$ = new BehaviorSubject<number>(0);
+  volatileId: string[] = [];
   baseUrl: string;
 
   constructor(private httpClient: HttpClient, 
@@ -72,6 +73,14 @@ export class EmployeeBankingandstarterkitService {
     this.approvedCount$.next(approvedCount);
     this.pendingCount$.next(pendingCount);
     this.declinedCount$.next(declinedCount);
+  }
+
+  incrementVolatileCount(employeeId: string, isBanking: boolean = false) {
+    const key = `${employeeId}-${isBanking}`;
+    if (!this.volatileId.includes(key)) {
+      this.pendingCount$.next(this.pendingCount$.value + 1);
+      this.volatileId.push(key);
+    }
   }
 
   incrementPendingCount(){
