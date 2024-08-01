@@ -19,12 +19,11 @@ export class AccordionProfileContactDetailsComponent {
   screenWidth = window.innerWidth;
   usingProfile: boolean = true;
   EmailRequired: boolean = false;
-  populated: boolean = false;
-  populatedEmail: boolean = false;
   isFocused: boolean = false;
-  email: string | undefined;
-  personalEmail: string | undefined;
-  emergencyContactName: string | undefined;
+  email: string = '';
+  personalEmail: string = '';
+  emergencyContactName: string = '';
+
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
@@ -55,7 +54,6 @@ export class AccordionProfileContactDetailsComponent {
     });
     this.email = this.sharedAccordionFunctionality.employeeContactForm.get('email')?.value;
     this.personalEmail = this.sharedAccordionFunctionality.employeeContactForm.get('personalEmail')?.value;
-    this.isInputEmpty2();
   }
 
   ngAfterViewInit(): void {
@@ -65,15 +63,12 @@ export class AccordionProfileContactDetailsComponent {
     this.checkEmergencyNumberValue(initialEmergencyNumberValue);
     const initialCellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
     this.checkCellphoneNumberValue(initialCellphoneNumberValue);
-    this.isInputEmpty2();
   }
 
-
-  isInputEmpty2(): boolean {
-    if (this.email === null) return this.populated = true;
-    if (this.personalEmail === null) return this.populatedEmail = true;
-    return false;
+  isInputEmpty(emailToCheck: string): boolean {
+    return emailToCheck === null || emailToCheck.trim() === '';
   }
+
   checkCellphoneNumberValue(value: string) {
     const cellphoneNumberContainer = document.querySelector('.cellphone-number-label');
     const cellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("cellphoneNo");

@@ -23,6 +23,13 @@
     z-index: 9999;
 }
 
+#required-icon{
+    color:#B3261E;
+  }
+  .align-text-icon{
+    display: flex;
+    flex-direction: row;
+  }
 @media only screen and (max-width: 767px) {
     #status-null {
         width: 90%;

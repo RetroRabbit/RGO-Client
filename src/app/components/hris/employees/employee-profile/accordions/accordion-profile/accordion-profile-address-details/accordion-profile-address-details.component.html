@@ -24,28 +24,37 @@
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.country" class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Country</mat-label>
-                    <mat-select formControlName="physicalCountry" (selectionChange)="onCountryChange($event.value)"
+                    <div class="align-text-icon">
+                    <mat-select [(value)]="country" formControlName="physicalCountry" (selectionChange)="onCountryChange($event.value)"
                       hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let country of countries" [value]="country"> {{ country }} </mat-option>
                     </mat-select>
+                    <mat-icon *ngIf="!country" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    </div>
                   </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.province" class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Province</mat-label>
-                    <mat-select formControlName="physicalProvince" (selectionChange)="loadCities($event.value)"
+                    <div class="align-text-icon">
+                    <mat-select [(value)]="province" formControlName="physicalProvince" (selectionChange)="loadCities($event.value)"
                       hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
                     </mat-select>
+                    <mat-icon *ngIf="!province" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    </div>
                   </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.city"
                   class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>City/Town</mat-label>
-                    <mat-select formControlName="physicalCity" hideSingleSelectionIndicator="true">
+                    <div class="align-text-icon">
+                    <mat-select [(value)]="city" formControlName="physicalCity" hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
                     </mat-select>
+                    <mat-icon *ngIf="!city" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    </div>
                   </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.suburbOrDistrict" class="col-12 col-md-6">
@@ -74,7 +83,10 @@
                   class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Street Number</mat-label>
-                    <input matInput formControlName="physicalStreetNumber">
+                    <div class="align-text-icon">
+                    <input matInput formControlName="physicalStreetNumber" [(ngModel)]="streetNumber">
+                    <mat-icon *ngIf="isInputEmptyVal(streetNumber)" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    </div>
                     <mat-error
                       *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalStreetNumber'].hasError('required')">
                       Street number is required
@@ -102,7 +114,10 @@
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.postalCode" class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Postal Code</mat-label>
-                    <input matInput formControlName="physicalPostalCode">
+                    <div class="align-text-icon">
+                    <input matInput formControlName="physicalPostalCode"  [(ngModel)]="streetcode">
+                    <mat-icon *ngIf="isInputEmptyVal(streetcode)" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    </div>
                     <mat-error
                       *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalPostalCode'].hasError('required')">
                       Postal code is required

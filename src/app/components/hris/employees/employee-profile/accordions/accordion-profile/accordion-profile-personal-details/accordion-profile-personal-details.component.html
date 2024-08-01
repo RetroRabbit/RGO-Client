@@ -31,30 +31,39 @@
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.race" class="col-12 col-md-6 my-2">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Race</mat-label>
-                    <mat-select formControlName="race" hideSingleSelectionIndicator="true">
+                    <div class="align-text-icon">
+                    <mat-select [(value)]="races" formControlName="race" hideSingleSelectionIndicator="true" [(ngModel)]="races">
                       <mat-option *ngFor="let race of sharedAccordionFunctionality.races; index as i" [value]="i">
                         {{race.value}}
                       </mat-option>
                     </mat-select>
+                    <mat-icon *ngIf="!races" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    </div>
                   </mat-form-field>
                 </div>
                 <div class="col-12 my-2 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Country of Birth</mat-label>
-                    <mat-select formControlName="countryOfBirth"
+                    <div class="align-text-icon">
+                    <mat-select [(value)]="countryOfBirth" formControlName="countryOfBirth"
                     hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country"> {{ country }} </mat-option>
                   </mat-select>
+                  <mat-icon *ngIf="!countryOfBirth" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                </div>
                 </mat-form-field>
                 </div>
                 <div class="col-12 my-2 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Nationality</mat-label>
-                    <mat-select formControlName="nationality"
+                    <div class="align-text-icon">
+                    <mat-select [(value)]="nationality" formControlName="nationality"
                     hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country"> {{ country }} </mat-option>
                   </mat-select>
-                  </mat-form-field>
+                  <mat-icon *ngIf="!nationality" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                   </div>
+                </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.disability" class="col-12 my-1">
                   <h3 [ngStyle]="{'color' : sharedAccordionFunctionality.editPersonal ? 'black' :'grey'}">

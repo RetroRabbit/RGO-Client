@@ -13,3 +13,11 @@
 .text-area {
     resize: none !important;
 }
+
+#required-icon{
+    color:#B3261E;
+}
+.align-text-icon{
+    display: flex;
+    flex-direction: row;
+}

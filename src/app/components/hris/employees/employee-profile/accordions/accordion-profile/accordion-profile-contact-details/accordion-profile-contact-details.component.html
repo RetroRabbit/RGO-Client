@@ -29,7 +29,7 @@
                                         <mat-label>Personal Email</mat-label>
                                         <div class="align-text-icon">
                                         <input matInput formControlName="personalEmail" [(ngModel)]="personalEmail">
-                                        <mat-icon *ngIf="populatedEmail" id="required-icon" class="mx-1">error</mat-icon>
+                                        <mat-icon *ngIf="isInputEmpty(personalEmail)" id="required-icon" class="mx-1">error</mat-icon>
                                         </div>
                                         <mat-error
                                         *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['personalEmail'].hasError('required')">
@@ -45,9 +45,9 @@
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Work Email</mat-label>
-                                        <div class="flex-row">
+                                        <div class="align-text-icon">
                                             <input matInput formControlName="email" [(ngModel)]="email">
-                                            <mat-icon *ngIf="populated" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                                            <mat-icon *ngIf="isInputEmpty(email)" id="required-icon" class="mx-1 flex-end">error</mat-icon>
                                         </div>
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['email'].hasError('pattern') && !sharedAccordionFunctionality.employeeContactForm.controls['email'].hasError('required')">
@@ -109,7 +109,10 @@
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Emergency Contact Name</mat-label>
-                                        <input matInput formControlName="emergencyContactName">
+                                        <div class="align-text-icon">
+                                        <input matInput formControlName="emergencyContactName" [(ngModel)]="emergencyContactName">
+                                        <mat-icon *ngIf="isInputEmpty(emergencyContactName)" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                                        </div>
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactName'].hasError('required')">
                                             Emergency contact name is required</mat-error>
@@ -120,7 +123,7 @@
                                 </div>
                                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.emergencyContactNo"
                                     class="col-12 col-md-6 my-2">
-                                    <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container" *ngIf="populated;else emergencyNumber">
+                                    <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container" >
                                         <mat-label class="emergency-number-label">Emergency Contact Number</mat-label>
                                         <ngx-mat-intl-tel-input
                                             #emergencyField

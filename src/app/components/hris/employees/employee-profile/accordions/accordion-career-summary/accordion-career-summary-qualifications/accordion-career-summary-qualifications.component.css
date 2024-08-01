@@ -10,3 +10,10 @@
     border-radius: 100px;
     background: var(--Primary-disabled-add_on, #E3E3E4);
 }
+#required-icon{
+    color:#B3261E;
+  }
+  .align-text-icon{
+    display: flex;
+    flex-direction: row;
+  }

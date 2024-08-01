@@ -47,8 +47,14 @@ export class CareerSummaryQualificationsComponent {
   fileUrl: string = '';
   proofOfQualificationFinal: string = '';
 
+  year: any;
+  fieldOfStudy: any;
+  school: any;
+  highestQualification: any;
+
   ngOnInit() {
     this.fetchQualificationsById();
+    this.highestQualification = this.sharedAccordionFunctionality.employeeQualificationForm.get('highestQualification')?.value !== null;
   }
 
   fetchQualificationsById() {
@@ -96,6 +102,10 @@ export class CareerSummaryQualificationsComponent {
     this.sharedAccordionFunctionality.totalCareerProgress();
     this.fileName = this.sharedAccordionFunctionality.employeeQualification ? this.sharedAccordionFunctionality.employeeQualification.documentName : '';
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualifications", true)
+  }
+
+  isInputEmpty(emailToCheck: string): boolean {
+    return emailToCheck === null || emailToCheck === '';
   }
 
   saveQualificationsEdit() {

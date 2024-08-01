@@ -40,7 +40,11 @@ export class AccordionProfileAddressDetailsComponent {
   selectedPostalCountry: string = '';
   selectedPostalProvince: string = '';
   employeeId = this.route.snapshot.params['id'];
-
+  country: any;
+  province: any;
+  city: any;
+  streetNumber: any;
+  streetcode: any;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -73,6 +77,14 @@ export class AccordionProfileAddressDetailsComponent {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();
+
+    this.country = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCountry')?.value !== null;
+    this.city = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCity')?.value !== null;
+    this.province = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalProvince')?.value !== null;
+    this.streetNumber = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetNumber')?.value !== null;
+    this.streetcode = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalPostalCode')?.value !== null;
+
+    console.log(this.country, this.city, this.province)
   }
 
   initializeForm() {
@@ -101,6 +113,9 @@ export class AccordionProfileAddressDetailsComponent {
     this.sharedAccordionFunctionality.totalProfileProgress();
 
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", true)
+  }
+  isInputEmptyVal(emailToCheck: string): boolean {
+    return emailToCheck === null || emailToCheck === '';
   }
 
   saveAddressEdit() {
@@ -181,14 +196,14 @@ export class AccordionProfileAddressDetailsComponent {
   onCountryChange(country: string): void {
     this.selectedCountry = country;
     this.loadProvinces(this.selectedCountry);
-    this.provinces= [];
+    this.provinces = [];
     this.cities = [];
   }
 
-  onPostalCountryChange(country: string): void{
+  onPostalCountryChange(country: string): void {
     this.selectedPostalCountry = country;
     this.loadPostalProvinces(this.selectedPostalProvince);
-    this.postalProvinces= [];
+    this.postalProvinces = [];
     this.postalCities = [];
   }
 
@@ -220,87 +235,87 @@ export class AccordionProfileAddressDetailsComponent {
 
   loadPhysicalAddress() {
     this.locationApiService.getCountries().subscribe({
-        next: (data) => {
+      next: (data) => {
+        if (!data || data.length === 0) {
+          return;
+        }
+        this.countries = data;
+        this.selectedCountry = this.employeeProfile?.employeeDetails.physicalAddress?.country || '';
+        if (!this.selectedCountry.trim()) {
+          return;
+        }
+        this.locationApiService.getProvinces(this.selectedCountry).subscribe({
+          next: (data) => {
             if (!data || data.length === 0) {
-                return;
+              return;
             }
-            this.countries = data;
-            this.selectedCountry = this.employeeProfile?.employeeDetails.physicalAddress?.country || '';
-            if (!this.selectedCountry.trim()) {
-                return;
-            }
-            this.locationApiService.getProvinces(this.selectedCountry).subscribe({
+            this.provinces = data;
+            this.selectedProvince = this.employeeProfile?.employeeDetails.physicalAddress?.province || '';
+            if (this.selectedProvince) {
+              this.locationApiService.getCities(this.selectedCountry, this.selectedProvince).subscribe({
                 next: (data) => {
-                    if (!data || data.length === 0) {
-                        return;
-                    }
-                    this.provinces = data;
-                    this.selectedProvince = this.employeeProfile?.employeeDetails.physicalAddress?.province || '';
-                    if (this.selectedProvince) {
-                        this.locationApiService.getCities(this.selectedCountry, this.selectedProvince).subscribe({
-                            next: (data) => {
-                                if (!data || data.length === 0) {
-                                    return;
-                                }
-                                this.cities = data;
-                            },
-                            error: (error: any) => {
-                                this.snackBarService.showSnackbar('Unable to Load Cities', "snack-error");
-                            }
-                        });
-                    }
+                  if (!data || data.length === 0) {
+                    return;
+                  }
+                  this.cities = data;
                 },
                 error: (error: any) => {
-                    this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error");
+                  this.snackBarService.showSnackbar('Unable to Load Cities', "snack-error");
                 }
-            });
-        },
-        error: (error: any) => {
-            this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error");
-        }
+              });
+            }
+          },
+          error: (error: any) => {
+            this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error");
+          }
+        });
+      },
+      error: (error: any) => {
+        this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error");
+      }
     });
   }
 
   loadPostalAddress() {
     this.locationApiService.getCountries().subscribe({
-        next: (data) => {
+      next: (data) => {
+        if (!data || data.length === 0) {
+          return;
+        }
+        this.postalCountries = data;
+        this.selectedPostalCountry = this.employeeProfile?.employeeDetails.postalAddress?.country || '';
+        if (!this.selectedPostalCountry.trim()) {
+          return;
+        }
+        this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
+          next: (data) => {
             if (!data || data.length === 0) {
-                return;
+              return;
             }
-            this.postalCountries = data;
-            this.selectedPostalCountry = this.employeeProfile?.employeeDetails.postalAddress?.country || '';
-            if (!this.selectedPostalCountry.trim()) {
-                return;
-            }
-            this.locationApiService.getProvinces(this.selectedPostalCountry).subscribe({
+            this.postalProvinces = data;
+            this.selectedPostalProvince = this.employeeProfile?.employeeDetails.postalAddress?.province || '';
+            if (this.selectedPostalProvince) {
+              this.locationApiService.getCities(this.selectedPostalCountry, this.selectedPostalProvince).subscribe({
                 next: (data) => {
-                    if (!data || data.length === 0) {
-                        return;
-                    }
-                    this.postalProvinces = data;
-                    this.selectedPostalProvince = this.employeeProfile?.employeeDetails.postalAddress?.province || '';
-                    if (this.selectedPostalProvince) {
-                        this.locationApiService.getCities(this.selectedPostalCountry, this.selectedPostalProvince).subscribe({
-                            next: (data) => {
-                                if (!data || data.length === 0) {
-                                    return;
-                                }
-                                this.postalCities = data;
-                            },
-                            error: (error: any) => {
-                                this.snackBarService.showSnackbar('Unable to Load Cities', "snack-error");
-                            }
-                        });
-                    }
+                  if (!data || data.length === 0) {
+                    return;
+                  }
+                  this.postalCities = data;
                 },
                 error: (error: any) => {
-                    this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error");
+                  this.snackBarService.showSnackbar('Unable to Load Cities', "snack-error");
                 }
-            });
-        },
-        error: (error: any) => {
-            this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error");
-        }
+              });
+            }
+          },
+          error: (error: any) => {
+            this.snackBarService.showSnackbar('Unable to Load Provinces', "snack-error");
+          }
+        });
+      },
+      error: (error: any) => {
+        this.snackBarService.showSnackbar('Unable to Load Countries', "snack-error");
+      }
     });
   }
 
@@ -325,11 +340,11 @@ export class AccordionProfileAddressDetailsComponent {
     this.employeeService.getEmployeeProfiles().subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employees = data;
-        this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
-        this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
+        this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
+        this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
         this.clientService.getAllClients().subscribe({
           next: data => {
-            this.sharedAccordionFunctionality.employeeClient = data.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
+            this.sharedAccordionFunctionality.employeeClient = data.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
           }
         });
       }
@@ -374,7 +389,7 @@ export class AccordionProfileAddressDetailsComponent {
           }
           this.getEmployeeFieldCodes();
           this.initializeForm();
-        }, 
+        },
         error: (er) => this.snackBarService.showError(er),
       })
     }
@@ -417,66 +432,66 @@ export class AccordionProfileAddressDetailsComponent {
     this.sharedAccordionFunctionality.employeeProfileDto!.id = currentEmployeeId;
     this.sharedAccordionFunctionality.employeeProfileDto!.employeeNumber = this.employeeProfile!.employeeDetails.employeeNumber;
     this.sharedAccordionFunctionality.employeeProfileDto!.taxNumber = this.employeeProfile!.employeeDetails.taxNumber,
-    this.sharedAccordionFunctionality.employeeProfileDto!.engagementDate = this.employeeProfile!.employeeDetails.engagementDate,
-    this.sharedAccordionFunctionality.employeeProfileDto!.terminationDate = this.employeeProfile!.employeeDetails.terminationDate,
-    this.sharedAccordionFunctionality.employeeProfileDto!.peopleChampion = this.usingProfile ? this.employeeProfile!.employeeDetails.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId,
-    this.sharedAccordionFunctionality.employeeProfileDto!.disability = this.employeeProfile!.employeeDetails.disability,
-    this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = this.employeeProfile!.employeeDetails.disabilityNotes,
-    this.sharedAccordionFunctionality.employeeProfileDto!.countryOfBirth = this.employeeProfile!.employeeDetails.countryOfBirth,
-    this.sharedAccordionFunctionality.employeeProfileDto!.nationality = this.employeeProfile!.employeeDetails.nationality,
-    this.sharedAccordionFunctionality.employeeProfileDto!.level = this.employeeProfile!.employeeDetails.level,
-    this.sharedAccordionFunctionality.employeeProfileDto!.employeeType = {
-      id: this.employeeProfile!.employeeDetails.employeeType!.id,
-      name: this.employeeProfile!.employeeDetails.employeeType!.name,
-    },
-    this.sharedAccordionFunctionality.employeeProfileDto!.name = this.employeeProfile!.employeeDetails.name,
-    this.sharedAccordionFunctionality.employeeProfileDto!.initials = this.employeeProfile!.employeeDetails.initials,
-    this.sharedAccordionFunctionality.employeeProfileDto!.surname = this.employeeProfile!.employeeDetails.surname,
-    this.sharedAccordionFunctionality.employeeProfileDto!.dateOfBirth = this.employeeProfile!.employeeDetails.dateOfBirth,
-    this.sharedAccordionFunctionality.employeeProfileDto!.idNumber = this.employeeProfile!.employeeDetails.idNumber,
-    this.sharedAccordionFunctionality.employeeProfileDto!.passportNumber = this.employeeProfile!.employeeDetails.passportNumber,
-    this.sharedAccordionFunctionality.employeeProfileDto!.passportExpirationDate = this.employeeProfile!.employeeDetails.passportExpirationDate,
-    this.sharedAccordionFunctionality.employeeProfileDto!.passportCountryIssue = this.employeeProfile!.employeeDetails.passportCountryIssue,
-    this.sharedAccordionFunctionality.employeeProfileDto!.race = this.employeeProfile!.employeeDetails.race,
-    this.sharedAccordionFunctionality.employeeProfileDto!.gender = this.employeeProfile!.employeeDetails.gender,
-    this.sharedAccordionFunctionality.employeeProfileDto!.email = this.employeeProfile!.employeeDetails.email,
-    this.sharedAccordionFunctionality.employeeProfileDto!.personalEmail = this.employeeProfile!.employeeDetails.personalEmail,
-    this.sharedAccordionFunctionality.employeeProfileDto!.cellphoneNo = this.employeeProfile!.employeeDetails.cellphoneNo,
-    this.sharedAccordionFunctionality.employeeProfileDto!.photo = this.employeeProfile!.employeeDetails.photo,
-    this.sharedAccordionFunctionality.employeeProfileDto!.notes = '',
-    this.sharedAccordionFunctionality.employeeProfileDto!.leaveInterval = this.employeeProfile!.employeeDetails.leaveInterval,
-    this.sharedAccordionFunctionality.employeeProfileDto!.salary = this.employeeProfile!.employeeDetails.salary,
-    this.sharedAccordionFunctionality.employeeProfileDto!.salaryDays = this.employeeProfile!.employeeDetails.salaryDays,
-    this.sharedAccordionFunctionality.employeeProfileDto!.payRate = this.employeeProfile!.employeeDetails.payRate,
-    this.sharedAccordionFunctionality.employeeProfileDto!.clientAllocated = this.usingProfile ? this.employeeProfile!.employeeDetails.clientAllocated : this.employeeProfile!.simpleEmployee.clientAllocatedId,
-    this.sharedAccordionFunctionality.employeeProfileDto!.teamLead = this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
-    this.sharedAccordionFunctionality.employeeProfileDto!.physicalAddress = {
-      id: this.employeeProfile!.employeeDetails.physicalAddress?.id!,
-      unitNumber: this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber!,
-      complexName: this.employeeProfile!.employeeDetails.physicalAddress?.complexName!,
-      streetName: this.employeeProfile!.employeeDetails.physicalAddress?.streetName!,
-      streetNumber: this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber!,
-      suburbOrDistrict: this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict!,
-      city: this.employeeProfile!.employeeDetails.physicalAddress?.city!,
-      country: this.employeeProfile!.employeeDetails.physicalAddress?.country!,
-      province: this.employeeProfile!.employeeDetails.physicalAddress?.province!,
-      postalCode: this.employeeProfile!.employeeDetails.physicalAddress?.postalCode!,
-    },
-    this.sharedAccordionFunctionality.employeeProfileDto!.postalAddress = {
-      id: this.employeeProfile!.employeeDetails.postalAddress?.id!,
-      unitNumber: this.employeeProfile!.employeeDetails.postalAddress?.unitNumber!,
-      complexName: this.employeeProfile!.employeeDetails.postalAddress?.complexName!,
-      streetName: this.employeeProfile!.employeeDetails.postalAddress?.streetName!,
-      streetNumber: this.employeeProfile!.employeeDetails.postalAddress?.streetNumber!,
-      suburbOrDistrict: this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict!,
-      city: this.employeeProfile!.employeeDetails.postalAddress?.city!,
-      country: this.employeeProfile!.employeeDetails.postalAddress?.country!,
-      province: this.employeeProfile!.employeeDetails.postalAddress?.province!,
-      postalCode: this.employeeProfile!.employeeDetails.postalAddress?.postalCode!,
-    },
-    this.sharedAccordionFunctionality.employeeProfileDto!.houseNo = this.employeeProfile?.employeeDetails.houseNo,
-    this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactName = this.employeeProfile?.employeeDetails.emergencyContactName,
-    this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactNo = this.employeeProfile?.employeeDetails.emergencyContactNo
+      this.sharedAccordionFunctionality.employeeProfileDto!.engagementDate = this.employeeProfile!.employeeDetails.engagementDate,
+      this.sharedAccordionFunctionality.employeeProfileDto!.terminationDate = this.employeeProfile!.employeeDetails.terminationDate,
+      this.sharedAccordionFunctionality.employeeProfileDto!.peopleChampion = this.usingProfile ? this.employeeProfile!.employeeDetails.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId,
+      this.sharedAccordionFunctionality.employeeProfileDto!.disability = this.employeeProfile!.employeeDetails.disability,
+      this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = this.employeeProfile!.employeeDetails.disabilityNotes,
+      this.sharedAccordionFunctionality.employeeProfileDto!.countryOfBirth = this.employeeProfile!.employeeDetails.countryOfBirth,
+      this.sharedAccordionFunctionality.employeeProfileDto!.nationality = this.employeeProfile!.employeeDetails.nationality,
+      this.sharedAccordionFunctionality.employeeProfileDto!.level = this.employeeProfile!.employeeDetails.level,
+      this.sharedAccordionFunctionality.employeeProfileDto!.employeeType = {
+        id: this.employeeProfile!.employeeDetails.employeeType!.id,
+        name: this.employeeProfile!.employeeDetails.employeeType!.name,
+      },
+      this.sharedAccordionFunctionality.employeeProfileDto!.name = this.employeeProfile!.employeeDetails.name,
+      this.sharedAccordionFunctionality.employeeProfileDto!.initials = this.employeeProfile!.employeeDetails.initials,
+      this.sharedAccordionFunctionality.employeeProfileDto!.surname = this.employeeProfile!.employeeDetails.surname,
+      this.sharedAccordionFunctionality.employeeProfileDto!.dateOfBirth = this.employeeProfile!.employeeDetails.dateOfBirth,
+      this.sharedAccordionFunctionality.employeeProfileDto!.idNumber = this.employeeProfile!.employeeDetails.idNumber,
+      this.sharedAccordionFunctionality.employeeProfileDto!.passportNumber = this.employeeProfile!.employeeDetails.passportNumber,
+      this.sharedAccordionFunctionality.employeeProfileDto!.passportExpirationDate = this.employeeProfile!.employeeDetails.passportExpirationDate,
+      this.sharedAccordionFunctionality.employeeProfileDto!.passportCountryIssue = this.employeeProfile!.employeeDetails.passportCountryIssue,
+      this.sharedAccordionFunctionality.employeeProfileDto!.race = this.employeeProfile!.employeeDetails.race,
+      this.sharedAccordionFunctionality.employeeProfileDto!.gender = this.employeeProfile!.employeeDetails.gender,
+      this.sharedAccordionFunctionality.employeeProfileDto!.email = this.employeeProfile!.employeeDetails.email,
+      this.sharedAccordionFunctionality.employeeProfileDto!.personalEmail = this.employeeProfile!.employeeDetails.personalEmail,
+      this.sharedAccordionFunctionality.employeeProfileDto!.cellphoneNo = this.employeeProfile!.employeeDetails.cellphoneNo,
+      this.sharedAccordionFunctionality.employeeProfileDto!.photo = this.employeeProfile!.employeeDetails.photo,
+      this.sharedAccordionFunctionality.employeeProfileDto!.notes = '',
+      this.sharedAccordionFunctionality.employeeProfileDto!.leaveInterval = this.employeeProfile!.employeeDetails.leaveInterval,
+      this.sharedAccordionFunctionality.employeeProfileDto!.salary = this.employeeProfile!.employeeDetails.salary,
+      this.sharedAccordionFunctionality.employeeProfileDto!.salaryDays = this.employeeProfile!.employeeDetails.salaryDays,
+      this.sharedAccordionFunctionality.employeeProfileDto!.payRate = this.employeeProfile!.employeeDetails.payRate,
+      this.sharedAccordionFunctionality.employeeProfileDto!.clientAllocated = this.usingProfile ? this.employeeProfile!.employeeDetails.clientAllocated : this.employeeProfile!.simpleEmployee.clientAllocatedId,
+      this.sharedAccordionFunctionality.employeeProfileDto!.teamLead = this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
+      this.sharedAccordionFunctionality.employeeProfileDto!.physicalAddress = {
+        id: this.employeeProfile!.employeeDetails.physicalAddress?.id!,
+        unitNumber: this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber!,
+        complexName: this.employeeProfile!.employeeDetails.physicalAddress?.complexName!,
+        streetName: this.employeeProfile!.employeeDetails.physicalAddress?.streetName!,
+        streetNumber: this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber!,
+        suburbOrDistrict: this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict!,
+        city: this.employeeProfile!.employeeDetails.physicalAddress?.city!,
+        country: this.employeeProfile!.employeeDetails.physicalAddress?.country!,
+        province: this.employeeProfile!.employeeDetails.physicalAddress?.province!,
+        postalCode: this.employeeProfile!.employeeDetails.physicalAddress?.postalCode!,
+      },
+      this.sharedAccordionFunctionality.employeeProfileDto!.postalAddress = {
+        id: this.employeeProfile!.employeeDetails.postalAddress?.id!,
+        unitNumber: this.employeeProfile!.employeeDetails.postalAddress?.unitNumber!,
+        complexName: this.employeeProfile!.employeeDetails.postalAddress?.complexName!,
+        streetName: this.employeeProfile!.employeeDetails.postalAddress?.streetName!,
+        streetNumber: this.employeeProfile!.employeeDetails.postalAddress?.streetNumber!,
+        suburbOrDistrict: this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict!,
+        city: this.employeeProfile!.employeeDetails.postalAddress?.city!,
+        country: this.employeeProfile!.employeeDetails.postalAddress?.country!,
+        province: this.employeeProfile!.employeeDetails.postalAddress?.province!,
+        postalCode: this.employeeProfile!.employeeDetails.postalAddress?.postalCode!,
+      },
+      this.sharedAccordionFunctionality.employeeProfileDto!.houseNo = this.employeeProfile?.employeeDetails.houseNo,
+      this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactName = this.employeeProfile?.employeeDetails.emergencyContactName,
+      this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactNo = this.employeeProfile?.employeeDetails.emergencyContactNo
   }
 
   checkEmployeeDetailsUsingEmployeeProfile() {

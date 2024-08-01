@@ -23,18 +23,25 @@
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.name" class="col-12 my-2 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Full Names</mat-label>
-                    <input matInput formControlName="name">
+                    <div class="align-text-icon">
+                    <input matInput formControlName="name" [(ngModel)]="firstName">
+                    <mat-icon *ngIf="isInputEmpty(firstName)" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    </div>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('required')">
                       Full name is required
                     </mat-error>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('pattern') && !sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('required') ">
                       Full name must not contain numbers</mat-error>
                   </mat-form-field>
+
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.surname" class="col-12 my-2 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Last Name</mat-label>
-                    <input matInput formControlName="surname">
+                    <div class="align-text-icon">
+                    <input matInput formControlName="surname" [(ngModel)]="lastName">
+                    <mat-icon *ngIf="isInputEmpty(lastName)" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    </div>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['surname'].hasError('required')">
                       Last name is required
                     </mat-error>
@@ -138,7 +145,11 @@
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.idNumber" class="col-12 my-2 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>ID Number</mat-label>
-                    <input matInput formControlName="idNumber" (blur)="getGenderBirthday($event)">
+                    <div class="align-text-icon">
+                    <input matInput formControlName="idNumber" (blur)="getGenderBirthday($event)"  [(ngModel)]="idNumber">
+                    <mat-icon *ngIf="isInputEmpty(idNumber)" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+
+                  </div>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['idNumber'].hasError('required')">
                       ID number is required
                     </mat-error>
@@ -151,7 +162,10 @@
                   class="col-12 my-2 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Date of Birth</mat-label>
-                    <input matInput [matDatepicker]="picker1" class="form-control" formControlName="dateOfBirth">
+                    <div class="align-text-icon">
+                    <input matInput [matDatepicker]="picker1" class="form-control" formControlName="dateOfBirth" [(ngModel)]="dateOfBirth">
+                    <mat-icon *ngIf="isInputEmpty(dateOfBirth)" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    </div>
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['dateOfBirth'].hasError('required')">
@@ -163,7 +177,10 @@
                   class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Start Date</mat-label>
-                    <input matInput [matDatepicker]="picker2" formControlName="engagementDate">
+                    <div class="align-text-icon">
+                    <input matInput [matDatepicker]="picker2" formControlName="engagementDate" [(ngModel)]="startDate">
+                    <mat-icon *ngIf="isInputEmpty(startDate)" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    </div>
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['engagementDate'].hasError('required')">

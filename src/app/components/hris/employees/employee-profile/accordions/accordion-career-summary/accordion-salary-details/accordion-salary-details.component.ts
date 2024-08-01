@@ -37,6 +37,8 @@ export class AccordionSalaryDetailsComponent {
   message: string = "";
   isAdminUser: boolean = false;
   employeeId: number | undefined;
+  remuneration: any;
+  taxNumber: any;
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +58,12 @@ export class AccordionSalaryDetailsComponent {
     if (this.authAccessService.isSuperAdmin()) {
       this.isAdminUser = true;
     }
+    this.remuneration = this.sharedAccordionFunctionality.employeeDetailsForm.get('remuneration')?.value;
+    this.taxNumber = this.sharedAccordionFunctionality.employeeDetailsForm.get('taxNumber')?.value;
+  }
+
+  isInputEmpty(emailToCheck: string): boolean {
+    return emailToCheck === null || emailToCheck === '';
   }
 
   initializeSalaryDetailsForm(salaryDetails: EmployeeSalary, taxNumber: string | undefined) {
