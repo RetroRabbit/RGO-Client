@@ -14,9 +14,9 @@ import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -55,7 +55,7 @@ export class EmployeeDetailsComponent implements OnInit {
     private employeeTypeService: EmployeeTypeService,
     private employeeDataService: EmployeeDataService,
     private fieldcodeService: CustomFieldService,
-    private employeeService: EmployeeService,
+    private employeeProfileService: EmployeeProfileService,
     private cookieService: CookieService,
     private clientService: ClientService,
     private employeeRoleService: EmployeeRoleService,
@@ -84,7 +84,7 @@ export class EmployeeDetailsComponent implements OnInit {
         this.fieldcodes = data
       }
     });
-    this.employeeService.getEmployeeProfiles().subscribe({
+    this.employeeProfileService.getEmployeeProfiles().subscribe({
       next: data => {
         this.employees = data;
       }
@@ -218,7 +218,7 @@ export class EmployeeDetailsComponent implements OnInit {
         clientAllocated: this.clientId == 0 ? null : this.clientId,
         teamLead: this.employeeId == 0 ? null : this.employeeId
       }
-      this.employeeService.updateEmployee(employeeProfileDto).subscribe({
+      this.employeeProfileService.updateEmployee(employeeProfileDto).subscribe({
         next: (data) => {
           this.cookieService.set('currentPage', 'Employees');
           this.saveEmployeeCustomData();

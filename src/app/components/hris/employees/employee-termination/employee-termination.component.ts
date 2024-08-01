@@ -4,10 +4,10 @@ import { terminationOptions } from 'src/app/models/hris/constants/terminationOpt
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
 import { endDateAfterStartDateValidator } from 'src/app/components/shared-components/form-validators/dateValidator';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 
 @Component({
   selector: 'app-employee-termination',
@@ -46,7 +46,7 @@ export class EmployeeTerminationComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private snackBarService: SnackbarService,
-    public employeeService: EmployeeService,
+    public employeeProfileService: EmployeeProfileService,
     private employeeTerminationService: EmployeeTerminationService,
     private route: ActivatedRoute,
   ) {
