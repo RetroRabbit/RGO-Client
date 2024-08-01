@@ -49,14 +49,14 @@ export class EmployeeProfileComponent implements OnChanges {
   @Input() updateDocument!: { updateDocument: SharedAccordionFunctionality };
   @Input() updateCareer!: { updateCareer: SharedAccordionFunctionality };
 
-  employeeProfile$: Observable<EmployeeProfileNew>;
+  employeeProfile$: Observable<EmployeeProfileNew | null>;
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
   simpleEmployee!: SimpleEmployee;
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
   terminationData !: EmployeeTermination
-  BIGemployeeProfile! : EmployeeProfileNew;
+  BIGemployeeProfile! : EmployeeProfileNew | null;
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
   customFields: CustomField[] = [];
@@ -141,7 +141,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private store: Store<AppState>,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private clipboard: Clipboard) {
-    this.employeeProfile$ = this.store.select(EmployeeProfileSelectors.selectEmployeeProfile)
+      this.employeeProfile$ = this.store.select(EmployeeProfileSelectors.selectEmployeeProfile);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -152,19 +152,18 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnDestroy() {
     this.displayEditButtons()
   }
+    
+  getNewProfile (){
+    this.employeeProfile$?.subscribe( profile =>{
+     this.BIGemployeeProfile = profile;
+      console.log(this.BIGemployeeProfile)
+     })
+   }
 
   ngOnInit() {
     this.store.dispatch(EmployeeProfileActions.loadEmployeeProfile({employeeId : 15 }));
 
-    this.profileSubscription = this.employeeProfile$.subscribe({
-      next: (employeeProfile) => {
-        console.log('Employee Profile:', employeeProfile);
-      },
-      error: (err) => {
-        console.error('Error:', err);
-      }
-    });
-
+    this.getNewProfile();
 
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
       this.isAdminUser = true;

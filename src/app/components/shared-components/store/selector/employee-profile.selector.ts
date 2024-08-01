@@ -1,14 +1,10 @@
 // selectors/employee-profile.selectors.ts
-import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { AppState } from '../app.state';
-import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employeeProfileNew.interface';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { State } from '../reducers/employee-profile.reducer';
 
-export const selectEmployeeProfileState = (state: AppState) => state;
+export const selectEmployeeProfileState = createFeatureSelector<State>('employeeProfile');
 
 export const selectEmployeeProfile = createSelector(
   selectEmployeeProfileState,
   (state) => state.employeeProfile
 );
-
-
-                                                                                                                                                                                                
