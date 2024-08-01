@@ -10,7 +10,7 @@ import { schools } from 'src/app/models/ats/constants/schools.constants';
 import { qualifications } from 'src/app/models/ats/constants/qualifications.constants';
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
 import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
-import { Employee } from 'src/app/models/hris/employee.interface';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 
 @Component({
@@ -73,7 +73,7 @@ export class NewCandidateComponent {
   currentChampionFilter: GenericDropDownObject = new GenericDropDownObject;
   employeesReferrals: Observable<GenericDropDownObject[]> = this.getEmployees();
   filteredEmployees!: Observable<GenericDropDownObject[]>;
-  allEmployees: Employee[] = [];
+  allEmployees: EmployeeProfile[] = [];
   optionValid: boolean = false;
 
   ngOnInit(): void {
@@ -91,7 +91,7 @@ export class NewCandidateComponent {
   }
 
   getAllEmployees() {
-    this.employeeProfileService.getAll().subscribe({
+    this.employeeProfileService.getEmployeeProfiles().subscribe({
       next: data => this.allEmployees = data,
       error: (er) => this.snackBarService.showError(er),
     })
@@ -208,7 +208,7 @@ export class NewCandidateComponent {
   }
 
   getEmployees(): Observable<GenericDropDownObject[]> {
-    return this.employeeProfileService.getAll().pipe(
+    return this.employeeProfileService.getEmployeeProfiles().pipe(
       map(employees => {
         const mappedEmployees: GenericDropDownObject[] = employees.map(employee => ({
           id: employee.id || 0,

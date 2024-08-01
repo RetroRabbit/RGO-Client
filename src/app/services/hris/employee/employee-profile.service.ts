@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Employee } from '../../../models/hris/employee.interface';
 import { EmployeeProfile } from '../../../models/hris/employee-profile.interface';
 import { environment } from '../../../../environments/environment';
 import { AuthAccessService } from '../../shared-services/auth-access/auth-access.service';
@@ -27,10 +26,6 @@ export class EmployeeProfileService {
   getSimpleEmployee(employeeEmail : string): Observable<SimpleEmployee> {
     const queryParams = `?employeeEmail=${employeeEmail}`;
     return this.httpClient.get<SimpleEmployee>(`${this.baseUrl}/simple-profile${queryParams}`);
-  }
-
-  getAll(): Observable<Employee[]> {
-    return this.httpClient.get<Employee[]>(`${this.baseUrl}/all`);
   }
 
   getEmployeeProfiles(): Observable<EmployeeProfile[]> {
