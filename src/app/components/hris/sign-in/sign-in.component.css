@@ -50,7 +50,7 @@ button:hover {
 }
 
 .signin-btn {
-  border: 1px solid #17a2b8;
+  border: 1px solid #0029C6;
   border-radius: 0.25rem;
   padding: 0.5rem 2rem;
   text-transform: uppercase;
@@ -110,11 +110,25 @@ button:hover {
 }
 
 .mobile-button-width {
-  border: 1px solid #17a2b8;
+  border: 1px solid #0029C6;
   border-radius: 0.25rem;
   padding: 0.5rem 2rem;
   text-transform: uppercase;
   font-weight: 500;
   background-color: white;
   width: 85%;
+}
+
+#button-inside {
+  display: flex;
+}
+
+#button-google {
+  text-align: center;
+}
+
+#button-google-font {
+  color: #0029C6;
+  text-align: center;
+  padding-top: 3px;
 }
