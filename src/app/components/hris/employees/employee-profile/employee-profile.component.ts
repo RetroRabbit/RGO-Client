@@ -3,7 +3,6 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { Client } from 'src/app/models/hris/client.interface';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
 import { Router } from '@angular/router';
@@ -133,7 +132,6 @@ export class EmployeeProfileComponent implements OnChanges {
     private clientService: ClientService,
     private route: ActivatedRoute,
     private router: Router,
-    private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
     private employeeTerminationService: EmployeeTerminationService,
     public navService: NavService,
@@ -294,7 +292,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   getAllEmployees() {
-    this.employeeService.getEmployeeProfiles().subscribe({
+    this.employeeProfileService.getEmployeeProfiles().subscribe({
       next: data => {
         this.employees = data;
         this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
@@ -427,7 +425,7 @@ export class EmployeeProfileComponent implements OnChanges {
 
   updateUser() {
     const updatedEmp = { ...this.employeeProfile, photo: this.base64Image };
-    this.employeeService.updateEmployee(updatedEmp).subscribe({
+    this.employeeProfileService.updateEmployee(updatedEmp).subscribe({
       next: () => {
         this.getEmployeeProfile();
         this.snackBarService.showSnackbar("Updated", "snack-success");

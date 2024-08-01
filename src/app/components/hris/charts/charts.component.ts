@@ -10,13 +10,13 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
 import { Chart } from 'chart.js';
 import { pieChartOptions, barChartOptions } from 'src/app/models/hris/constants/chartOptions.constants';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 
 @Component({
   selector: 'app-chart',
@@ -32,7 +32,7 @@ export class ChartComponent implements OnInit {
     private renderer: Renderer2,
     private navService: NavService,
     @Inject(DOCUMENT) private document: Document,
-    private employeeService: EmployeeService,
+    private employeeProfileService: EmployeeProfileService,
     private snackBarService: SnackbarService
   ) {
     this.dialogTypeData = new DialogTypeData().dialogTypeData;
@@ -123,7 +123,7 @@ export class ChartComponent implements OnInit {
 }
 
   getNumberOfEmployees(): void {
-    this.employeeService.getTotalEmployees().subscribe({
+    this.employeeProfileService.getTotalEmployees().subscribe({
       next: data => {
         this.numberOfEmployees = data;
       }
@@ -199,7 +199,7 @@ export class ChartComponent implements OnInit {
   }
 
   fetchPeopleChampionEmployees() {
-    this.employeeService.filterEmployees(0, EmployeeType.PeopleChampion).subscribe({
+    this.employeeProfileService.filterEmployees(0, EmployeeType.PeopleChampion).subscribe({
       next: (employees: EmployeeFilterView[]) => {
         employees.forEach((employee) => {
           if (employee.id) {
