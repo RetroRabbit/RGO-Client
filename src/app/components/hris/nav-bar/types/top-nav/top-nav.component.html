@@ -136,7 +136,7 @@
       </div>
       <div class="ms-2" id="image-container" [hidden]="screenWidth < 992 && !navService.showTopNavMenu">
         <img *ngIf="navService.employeeProfile"
-          [src]="navService.employeeProfile.photo || '../../../../../../assets/img/default-profile-image.png'"
+          [src]="navService.employeeProfile.photo || authAccessService.getAuthTokenProfilePicture() || '../../../../../../assets/img/default-profile-image.png'"
           alt="Profile">
       </div>
     </div>
