@@ -20,14 +20,13 @@ export class EmployeeProfileEffects {
     private navService : NavService
   ) {}
 
-  loadEmployeeProfile$ = createEffect(() =>
+  loadEmployeeProfile$ = createEffect(() => // effect
     this.actions$.pipe(
       ofType(EmployeeProfileActions.loadEmployeeProfile),
       mergeMap((action) =>
-        this.employeeService.getNEWEmployeeById(action.employeeId).pipe(
+        this.employeeService.getNEWEmployeeById(action.employeeId).pipe( //service 
           map((employeeProfile: EmployeeProfileNew) =>
             EmployeeProfileActions.loadEmployeeProfileSuccess({ employeeProfile })
-        
           ),
         )
       )

@@ -4,13 +4,13 @@ import { selectEmployeeProfileState } from '../selector/employee-profile.selecto
 
 //get 
 export const loadEmployeeProfile = createAction(
-  '[Employee Profile] Load Employee Profile Details',
+  '[Employee Profile] Load Employee Profile',
   props<{ employeeId: number }>()
 );
 
 //put
 export const loadEmployeeProfileSuccess = createAction(
-  '[Employee Profile] Load Employee Profile Details Success',
+  '[Employee Profile] Load Employee Profile Success',
   props<{ employeeProfile: EmployeeProfileNew }>()
 );
 

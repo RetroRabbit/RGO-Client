@@ -37,6 +37,7 @@ import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/empl
 import { loadEmployeeProfile } from 'src/app/components/shared-components/store/actions/employee-profile.actions';
 import { Observable, Subscription } from 'rxjs';
 import * as EmployeeProfileSelectors from 'src/app/components/shared-components/store/selector/employee-profile.selector';
+import * as EmployeeProfileActions from 'src/app/components/shared-components/store/actions/employee-profile.actions';
 
 @Component({
   selector: 'app-employee-profile',
@@ -142,7 +143,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private store: Store<AppState>,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private clipboard: Clipboard) {
-      this.employeeProfile$ = this.store.select(EmployeeProfileSelectors.selectEmployeeProfile)
+    this.employeeProfile$ = this.store.select(EmployeeProfileSelectors.selectEmployeeProfile)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -155,17 +156,16 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ngOnInit() {
-    this.store.dispatch(loadEmployeeProfile({employeeId : 15 }));
+    this.store.dispatch(EmployeeProfileActions.loadEmployeeProfile({employeeId : 15 }));
 
-    this.profileSubscription = this.employeeProfile$
-      .subscribe({
-        next: (employeeProfile) => {
-          console.log('Employee Profile:', employeeProfile);
-        },
-        error: (err) => {
-          console.error('Error:', err);
-        }
-      });
+    this.profileSubscription = this.employeeProfile$.subscribe({
+      next: (employeeProfile) => {
+        console.log('Employee Profile:', employeeProfile);
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      }
+    });
 
 
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
