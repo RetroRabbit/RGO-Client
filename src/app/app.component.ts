@@ -1,6 +1,4 @@
 import { Component, HostListener } from "@angular/core";
-import { AuthService } from "./services/shared-services/auth-access/auth.service";
-import { CookieService } from "ngx-cookie-service";
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeProfile } from "./models/hris/employee-profile.interface";
 import { Chart } from "chart.js";
@@ -34,25 +32,10 @@ export class AppComponent {
     name: ''
   };
 
-
   constructor(
-    private authService: AuthService,
     private authAccess: AuthAccessService,
-    public cookieService: CookieService,
     public navService: NavService){
       this.screenWidth = window.innerWidth;
-  }
-
-  isAdmin(): boolean {
-    return this.roles.includes('Admin') || this.roles.includes('SuperAdmin');
-  }
-
-  isJourney(): boolean {
-    return this.roles.includes('Journey');
-  }
-
-  isEmployee(): boolean {
-    return this.roles.includes('Employee');
   }
 
   handleSearchQuery(query: string) {
@@ -60,11 +43,11 @@ export class AppComponent {
   }
 
   logout() {
-    this.authService.logout();
+    this.authAccess.logout();
   }
 
   hasSignedIn(): boolean 
   {
-    return this.authAccess.getEmployeeEmail() != "";
+    return this.authAccess.hasSignedIn();
   }
 }
