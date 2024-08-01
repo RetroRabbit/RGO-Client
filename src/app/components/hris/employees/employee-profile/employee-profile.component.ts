@@ -34,6 +34,7 @@ import { EmployeeTerminationService } from 'src/app/services/hris/employee/emplo
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employeeProfileNew.interface';
 
 @Component({
   selector: 'app-employee-profile',
@@ -52,6 +53,7 @@ export class EmployeeProfileComponent implements OnChanges {
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
   terminationData !: EmployeeTermination
+  BIGemployeeProfile! : EmployeeProfileNew;
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
   customFields: CustomField[] = [];
@@ -147,6 +149,15 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ngOnInit() {
+    this.employeeProfileService.getNEWEmployeeById(15).subscribe({
+      next: (data: EmployeeProfileNew) =>{
+        this.BIGemployeeProfile = data;
+        console.log(this.BIGemployeeProfile);
+      }
+    })
+
+
+
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
       this.isAdminUser = true;
     }

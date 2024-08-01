@@ -9,6 +9,7 @@ import { EmployeeState } from '../../../components/shared-components/store/reduc
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from '../../../models/hris/employee-profile.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
+import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employeeProfileNew.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -46,5 +47,11 @@ export class EmployeeProfileService {
   getSimpleEmployee(employeeEmail : string): Observable<SimpleEmployee> {
     const queryParams = `?employeeEmail=${employeeEmail}`;
     return this.client.get<SimpleEmployee>(`${environment.HttpsBaseURL}/employees/simple-profile/${queryParams}`);
+  }
+
+  //test call
+  getNEWEmployeeById(id: number): Observable<EmployeeProfileNew> {
+    const queryParams = `?id=${id}`;
+    return this.client.get<EmployeeProfileNew>(`${environment.HttpsBaseURL}/employee-profile${queryParams}`);
   }
 }
