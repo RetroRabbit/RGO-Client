@@ -5,11 +5,10 @@ import { Observable } from 'rxjs';
 import { EmployeeDateInput } from 'src/app/models/hris/employe-date.interface';
 import { Employee } from 'src/app/models/hris/employee.interface';
 import { EmployeeDateService } from 'src/app/services/hris/employee/employee-date.service';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
-import { NotificationService } from 'src/app/services/hris/notification.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeDate } from 'src/app/models/hris/employee-date.interface';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 @Component({
   selector: 'app-add-employee-event',
   templateUrl: './add-employee-event.component.html',
@@ -38,14 +37,13 @@ export class AddEmployeeEventComponent {
     date: new FormControl<Date>(new Date(Date.now()), Validators.required),
   })
 
-  employees$: Observable<Employee[]> = this.employeeService.getAll()
+  employees$: Observable<Employee[]> = this.employeeProfileService.getAll()
   isLoading = false
   isEditing = false
 
   constructor(
-    private employeeService: EmployeeService,
+    private employeeProfileService: EmployeeProfileService,
     private employeeDateService: EmployeeDateService,
-    private notificationService: NotificationService,
     private cookieService: CookieService,
     private snackBarService: SnackbarService,
     private navService : NavService) {
