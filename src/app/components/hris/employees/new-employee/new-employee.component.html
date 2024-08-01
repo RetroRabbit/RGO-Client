@@ -235,7 +235,7 @@
                       hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
                     </mat-select>
-                    <mat-icon matSuffix (click)="countrySelect.open()">Search</mat-icon>
+                    <mat-icon matSuffix (click)="countrySelect.open()" class="search-icon">search</mat-icon>
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" class=""
