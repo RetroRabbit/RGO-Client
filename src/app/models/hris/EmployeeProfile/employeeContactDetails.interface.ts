@@ -1,4 +1,4 @@
-interface EmployeeProfileContact {
+export interface EmployeeProfileContact {
     id: number;
     email: string;
     personalEmail: string;

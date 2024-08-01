@@ -6,6 +6,7 @@ import { EmployeeProfileSalary } from "./employeeProfileSalaryDetails.interface"
 import { EmployeeAddress } from "../employee-address.interface";
 import { EmployeeQualifications } from "../employee-qualifications.interface";
 import { EmployeeBanking } from "../employee-banking.interface";
+import { EmployeeProfileContact } from "./employeeContactDetails.interface";
 
 
 export interface EmployeeProfileNew {
