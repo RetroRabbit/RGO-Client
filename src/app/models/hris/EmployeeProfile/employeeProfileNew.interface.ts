@@ -10,12 +10,12 @@ import { EmployeeProfileContact } from "./employeeContactDetails.interface";
 
 
 export interface EmployeeProfileNew {
-    employeeProfileDetails: EmployeeProfileDetails;
-    employeeProfilePersonal: EmployeeProfilePersonal;
-    employeeProfileContact: EmployeeProfileContact;
-    employeeProfileSalary: EmployeeProfileSalary;
+    employeeProfileDetails?: EmployeeProfileDetails;
+    employeeProfilePersonal?: EmployeeProfilePersonal;
+    employeeProfileContact?: EmployeeProfileContact;
+    employeeProfileSalary?: EmployeeProfileSalary;
     employeeData: any; // Assuming it's nullable or has its own interface
-    employeeQualification: EmployeeQualifications;
+    employeeQualification?: EmployeeQualifications;
     workExperience: WorkExperience[];
     employeeCertifications: Certificate[];
     employeeBanking: EmployeeBanking[];
@@ -29,5 +29,5 @@ export interface EmployeeProfileNew {
     photo: string;
     active: boolean;
     inactiveReason: string | null;
-    physicalAddress: EmployeeAddress;
+    physicalAddress?: EmployeeAddress;
 }

@@ -164,7 +164,6 @@ import { CvDocumentComponent } from './components/hris/cv-document/cv-document.c
       app: LoginReducer,
       employee: employeeProfileReducer,
       token: LoginReducer,
-      //employee: EmployeeProfileReducer,
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),
     AuthModule.forRoot({

@@ -6,7 +6,6 @@ import { Client } from 'src/app/models/hris/client.interface';
 import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
-import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
@@ -29,12 +28,13 @@ import { AccordionDocumentsAdditionalComponent } from './accordions/accordion-do
 import { AccordionAdministrativeDocumentsComponent } from './accordions/accordion-documents/accordion-administrative-documents/accordion-administrative-documents.component';
 import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-documents/accordion-employee-documents/accordion-employee-documents.component';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { AppModule } from 'src/app/app.module';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employeeProfileNew.interface';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/components/shared-components/store/app.state';
+import { selectEmployeeProfileDetails } from 'src/app/components/shared-components/store/selector/employee-profile.selector';
+import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
 
 @Component({
   selector: 'app-employee-profile',
@@ -135,6 +135,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private changeDetectorRef: ChangeDetectorRef,
     private employeeDataService: EmployeeDataService,
     public authAccessService: AuthAccessService,
+    private store: Store<AppState>,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private clipboard: Clipboard) {
   }
@@ -149,13 +150,18 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ngOnInit() {
-    this.employeeProfileService.getNEWEmployeeById(15).subscribe({
-      next: (data: EmployeeProfileNew) =>{
-        this.BIGemployeeProfile = data;
-        console.log(this.BIGemployeeProfile);
-      }
-    })
+    // this.employeeProfileService.getNEWEmployeeById(15).subscribe({
+    //   next: (data: EmployeeProfileNew) =>{
+    //     this.BIGemployeeProfile = data;
+    //     console.log(this.BIGemployeeProfile);
+    //   }
+    // })
 
+    let employeeProfileDetails: EmployeeProfileDetails | undefined;
+    this.store.select(selectEmployeeProfileDetails).subscribe((employeeDetails) =>{
+      employeeProfileDetails = employeeDetails;
+      console.log(employeeProfileDetails);
+    })
 
 
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {

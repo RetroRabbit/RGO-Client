@@ -4,8 +4,8 @@ import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employee
 export const loadEmployeeProfiles = createAction('[Employee Profile] Load Employee Profiles');
 
 export const loadEmployeeProfilesSuccess = createAction(
-  '[Employee Profile] Load Employee Profiles Success',
-  props<{ employeeProfiles: EmployeeProfileNew[] }>()
+'[Employee Profile] Load Employee Profiles Success',
+  props<{ employeeProfile: EmployeeProfileNew }>()
 );
 
 export const loadEmployeeProfilesFailure = createAction(

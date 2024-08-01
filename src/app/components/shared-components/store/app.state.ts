@@ -2,7 +2,7 @@ import { EmployeeProfileNew } from "src/app/models/hris/EmployeeProfile/employee
 import { Token } from "src/app/models/hris/token.interface";
 
 export interface AppState {
-  employeeProfiles: EmployeeProfileNew[];
+  employeeProfile: EmployeeProfileNew;
   loading: boolean;
   error: any;
   token: Token
