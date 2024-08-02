@@ -163,6 +163,13 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnInit() {
     this.store.dispatch(EmployeeProfileActions.loadEmployeeProfile({employeeId : 15 }));
 
+     this.employeeProfileService.getNEWEmployeeById(15).subscribe({
+      next: (data: EmployeeProfileNew) =>{
+        this.BIGemployeeProfile = data;
+        console.log(this.BIGemployeeProfile);
+      }
+    })
+    
     this.getNewProfile();
 
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
