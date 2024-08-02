@@ -1,4 +1,3 @@
-// reducers/employee-profile.reducer.ts
 import { createReducer, on } from '@ngrx/store';
 import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employeeProfileNew.interface';
 import * as EmployeeProfileActions from '../actions/employee-profile.actions';
@@ -17,13 +16,24 @@ export const initialState: State = {
 
 export const employeeProfileReducer = createReducer(
   initialState,
-  on(EmployeeProfileActions.loadEmployeeProfile, (state) => ({
-    ...state,
-    loading: true,
-  })),
-  on(EmployeeProfileActions.loadEmployeeProfileSuccess, (state, { employeeProfile }) => ({
-    ...state,
-    loading: false,
-    employeeProfile,
-  })),
+  on(EmployeeProfileActions.loadEmployeeProfile, (state) => {
+    return {
+      ...state,
+      loading: true,
+    };
+  }),
+  on(EmployeeProfileActions.loadEmployeeProfileSuccess, (state, { employeeProfile }) => {
+    return {
+      ...state,
+      loading: false,
+      employeeProfile,
+    };
+  }),
+  on(EmployeeProfileActions.loadEmployeeProfileFailure, (state, { error }) => {
+    return {
+      ...state,
+      loading: false,
+      error,
+    };
+  })
 );

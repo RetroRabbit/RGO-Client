@@ -162,7 +162,7 @@ import { CvDocumentComponent } from './components/hris/cv-document/cv-document.c
     ClipboardModule,
     StoreModule.forRoot({
       app: LoginReducer,
-      employee: employeeProfileReducer,
+      employeeProfile: employeeProfileReducer,
       token: LoginReducer,
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects]),

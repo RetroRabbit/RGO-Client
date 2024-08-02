@@ -1,38 +1,35 @@
 // effects/employee-profile.effects.ts
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employeeProfileNew.interface';
-import * as EmployeeProfileActions from '../actions/employee-profile.actions';
+import { of } from 'rxjs';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
-import { AuthService } from 'src/app/services/shared-services/auth-access/auth.service';
-import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
-
-
+import * as EmployeeProfileActions from '../actions/employee-profile.actions';
 
 @Injectable()
 export class EmployeeProfileEffects {
   constructor(
     private actions$: Actions,
-    private employeeService: EmployeeProfileService,
-    private authService : AuthService,
-    private navService : NavService
+    private employeeService: EmployeeProfileService
   ) {}
 
-  loadEmployeeProfile$ = createEffect(() => // effect
+  loadEmployeeProfile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EmployeeProfileActions.loadEmployeeProfile),
-      mergeMap((action) =>
-        this.employeeService.getNEWEmployeeById(action.employeeId).pipe( //service 
-          map((employeeProfile: EmployeeProfileNew) =>
-            EmployeeProfileActions.loadEmployeeProfileSuccess({ employeeProfile })
-          ),
-        )
-      )
+      mergeMap((action) => {
+        return this.employeeService.getNEWEmployeeById(action.employeeId).pipe(
+          map((employeeProfile) => {
+            return EmployeeProfileActions.loadEmployeeProfileSuccess({ employeeProfile });
+          }),
+          catchError(error => {
+            return of(EmployeeProfileActions.loadEmployeeProfileFailure({ error }));
+          })
+        );
+      })
     )
   );
 }
+
 
 // effect(the logic which calls a action such as fetching) 
 //-> action (like load employee calls the allocated reducer)

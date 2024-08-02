@@ -1,4 +1,3 @@
-// selectors/employee-profile.selectors.ts
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { State } from '../reducers/employee-profile.reducer';
 
