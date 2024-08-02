@@ -84,11 +84,7 @@ export class EmployeeDetailsComponent implements OnInit {
         this.fieldcodes = data
       }
     });
-    this.employeeProfileService.getEmployeeProfiles().subscribe({
-      next: data => {
-        this.employees = data;
-      }
-    });
+    this.employees = this.storeAccessService.getEmployeeProfiles();
     this.clients = this.storeAccessService.getClients();
     this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
       next: data => {

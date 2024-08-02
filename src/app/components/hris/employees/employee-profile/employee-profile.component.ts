@@ -35,6 +35,7 @@ import html2canvas from 'html2canvas';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/components/shared-components/store/app.state';
 import { LoadClients, SetClients } from 'src/app/components/shared-components/store/actions/client.actions';
+import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -125,6 +126,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private store: Store<AppState>,
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
+    private storeAccessService: StoreAccessService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBarService: SnackbarService,
@@ -273,16 +275,12 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   getAllEmployees() {
-    this.employeeProfileService.getEmployeeProfiles().subscribe({
-      next: data => {
-        this.employees = data;
-        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
-        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
-        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-        this.filterClients(this.employeeProfile?.clientAllocated as number);
-      }
-    });
+    // const data = this.storeAccessService.getEmployeeProfiles();
+    // this.employees = data;
+    // this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
+    // this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+    // this.filterClients(this.employeeProfile?.clientAllocated as number);
+
   }
 
   get basedInString(): string {

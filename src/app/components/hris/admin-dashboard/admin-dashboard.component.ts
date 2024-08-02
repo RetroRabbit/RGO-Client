@@ -19,6 +19,9 @@ import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-c
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
 import { DashboardService } from 'src/app/services/hris/employee/dashboard.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
+import { SetEmployeeProfiles } from '../../shared-components/store/actions/employee-profile.actions';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../shared-components/store/app.state';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -92,6 +95,7 @@ export class AdminDashboardComponent {
   rolesSelected: string[] = [];
   categoriesSelected: string[] = [];
   constructor(
+    private store: Store<AppState>,
     private dashboardService: DashboardService,
     public chartService: ChartService,
     private cookieService: CookieService,
@@ -232,6 +236,7 @@ export class AdminDashboardComponent {
       next: (data: EmployeeProfile[]) => {
         this.employeeProfiles = data;
         this.searchResults = [];
+        this.store.dispatch(SetEmployeeProfiles({ payload: data }));
       },
       error: (er) => this.snackBarService.showError(er),
       complete: () => {

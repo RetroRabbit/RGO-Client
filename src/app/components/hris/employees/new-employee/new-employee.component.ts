@@ -22,6 +22,7 @@ import { CustomvalidationService } from 'src/app/services/hris/id-validator.serv
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
+import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Component({
   selector: 'app-new-employee',
@@ -49,6 +50,7 @@ export class NewEmployeeComponent implements OnInit {
     private snackBarService: SnackbarService,
     public navService: NavService,
     public locationApiService: LocationApiService,
+    private storeAccessService: StoreAccessService
   ) {
     this.navService.hideNav();
   }
@@ -178,12 +180,8 @@ export class NewEmployeeComponent implements OnInit {
         });
       },
     });
-
-    this.employeeProfileService
-      .getEmployeeProfiles()
-      .subscribe((data: EmployeeProfile[]) => {
-        this.Employees = data;
-      });
+    
+    this.Employees = this.storeAccessService.getEmployeeProfiles();
   }
 
   saveAndExit() {

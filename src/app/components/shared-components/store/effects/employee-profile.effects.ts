@@ -6,7 +6,7 @@ import * as EmployeeProfileActions from '../actions/employee-profile.actions';
 import { of } from 'rxjs';
 
 @Injectable()
-export class EmployeeProfileEffects {
+export class EmployeeProfilesEffects {
   constructor(
     private actions$: Actions,
     private employeeProfileService: EmployeeProfileService
@@ -14,10 +14,10 @@ export class EmployeeProfileEffects {
 
   loadEmployeeProfile$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(EmployeeProfileActions.LoadClients),
+      ofType(EmployeeProfileActions.LoadEmployeeProfiles),
       exhaustMap(() =>
         this.employeeProfileService.getEmployeeProfiles().pipe(
-          map(clients => EmployeeProfileActions.LoadEmployeeProfilesSuccess({ payload: clients })),
+          map(employeeProfiles => EmployeeProfileActions.LoadEmployeeProfilesSuccess({ payload: employeeProfiles })),
           catchError(error => of(EmployeeProfileActions.LoadEmployeeProfilesFailure({ error })))
         )
       )

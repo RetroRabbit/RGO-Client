@@ -5,7 +5,6 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
-import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
@@ -46,7 +45,7 @@ export class AccordionCareerAdditionalInformationComponent {
     private snackBarService: SnackbarService,
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
-    private storeAcessService: StoreAccessService,
+    private storeAccessService: StoreAccessService,
     private employeeTypeService: EmployeeTypeService,
     private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
@@ -106,14 +105,11 @@ export class AccordionCareerAdditionalInformationComponent {
   }
 
   getAllEmployees() {
-    this.employeeProfileService.getEmployeeProfiles().subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
-        this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
-          this.sharedAccordionFunctionality.clients = this.storeAcessService.getClients();
-          this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
-      }
-    });
+    // const data = this.storeAccessService.getEmployeeProfiles();
+    // this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
+    // this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
+    // this.sharedAccordionFunctionality.clients = this.storeAccessService.getClients();
+    // this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
   }
 
   getEmployeeTypes() {

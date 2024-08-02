@@ -98,6 +98,8 @@ import { loginReducer } from './components/shared-components/store/reducers/sign
 import { LoginEffects } from './components/shared-components/store/effects/sign-in.effects';
 import { clientReducer } from './components/shared-components/store/reducers/client.reducer';
 import { ClientEffects } from './components/shared-components/store/effects/client.effects';
+import { employeeProfilesReducer } from './components/shared-components/store/reducers/employee-profile.reducer';
+import { EmployeeProfilesEffects } from './components/shared-components/store/effects/employee-profile.effects';
 
 @NgModule({
   declarations: [
@@ -162,9 +164,10 @@ import { ClientEffects } from './components/shared-components/store/effects/clie
     ClipboardModule,
     StoreModule.forRoot({
       token: loginReducer, 
-      clients: clientReducer
+      clients: clientReducer,
+      employeeProfiles: employeeProfilesReducer,
     }),
-    EffectsModule.forRoot([LoginEffects, ClientEffects]),
+    EffectsModule.forRoot([LoginEffects, ClientEffects, EmployeeProfilesEffects]),
     AuthModule.forRoot({
       domain: process.env['AUTH0_Domain_key'] || 'null',
       clientId: process.env['AUTH0_CLIENT_ID'] || 'null',
