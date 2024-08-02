@@ -34,7 +34,7 @@ export class AccordionProfileEmployeeDetailsComponent {
   idNumber: string = '';
   dateOfBirth: string = '';
   startDate: string = '';
-
+  editEmployee: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   usingProfile: boolean = true;
@@ -260,7 +260,7 @@ export class AccordionProfileEmployeeDetailsComponent {
                 this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.sharedAccordionFunctionality.employeeProfileDto?.clientAllocated)[0];
                 this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.teamLead)[0];
                 this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.peopleChampion)[0];
-                this.sharedAccordionFunctionality.editEmployee = false;
+                this.editEmployee = false;
                 this.sharedAccordionFunctionality.employeeDetailsForm.disable();
                 this.navService.refreshEmployee();
               },
@@ -361,12 +361,12 @@ export class AccordionProfileEmployeeDetailsComponent {
 
   editEmployeeDetails() {
     this.sharedAccordionFunctionality.employeeDetailsForm.enable();
-    this.sharedAccordionFunctionality.editEmployee = true;
+    this.editEmployee = true;
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", false)
   }
 
   cancelEmployeeEdit() {
-    this.sharedAccordionFunctionality.editEmployee = false;
+    this.editEmployee = false;
     this.initializeForm();
     this.sharedAccordionFunctionality.employeeDetailsForm.disable();
   }

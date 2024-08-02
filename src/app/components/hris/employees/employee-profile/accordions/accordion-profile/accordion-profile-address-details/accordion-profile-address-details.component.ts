@@ -43,8 +43,10 @@ export class AccordionProfileAddressDetailsComponent {
   country: any;
   province: any;
   city: any;
-  streetNumber: any;
-  streetcode: any;
+  streetNumber: string = '';
+  streetName: string = '';
+  streetcode: string = '';
+  editAddress: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -81,10 +83,6 @@ export class AccordionProfileAddressDetailsComponent {
     this.country = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCountry')?.value !== null;
     this.city = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCity')?.value !== null;
     this.province = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalProvince')?.value !== null;
-    this.streetNumber = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetNumber')?.value !== null;
-    this.streetcode = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalPostalCode')?.value !== null;
-
-    console.log(this.country, this.city, this.province)
   }
 
   initializeForm() {
@@ -114,7 +112,7 @@ export class AccordionProfileAddressDetailsComponent {
 
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", true)
   }
-  isInputEmptyVal(emailToCheck: string): boolean {
+  isInputEmpty(emailToCheck: string): boolean {
     return emailToCheck === null || emailToCheck === '';
   }
 
@@ -174,7 +172,7 @@ export class AccordionProfileAddressDetailsComponent {
               this.sharedAccordionFunctionality.checkAddressFormProgress();
               this.sharedAccordionFunctionality.totalProfileProgress();
               this.getEmployeeFields();
-              this.sharedAccordionFunctionality.editAddress = false;
+              this.editAddress = false;
             },
             error: (er) => this.snackBarService.showError(er),
           });
@@ -404,13 +402,14 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   editAddressDetails() {
-    this.sharedAccordionFunctionality.editAddress = true;
+    this.editAddress = true;
+
     this.sharedAccordionFunctionality.addressDetailsForm.enable();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", false)
   }
 
   cancelAddressEdit() {
-    this.sharedAccordionFunctionality.editAddress = false;
+    this.editAddress = false;
     this.sharedAccordionFunctionality.hasDisability = false;
     this.initializeForm();
     this.sharedAccordionFunctionality.addressDetailsForm.disable();

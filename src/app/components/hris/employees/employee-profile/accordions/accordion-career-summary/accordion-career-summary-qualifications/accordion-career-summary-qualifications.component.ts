@@ -41,15 +41,16 @@ export class CareerSummaryQualificationsComponent {
   fileUploaded: boolean = false;
   isDisabledUpload: boolean = true;
   isDisabledDownload: boolean = true;
+  editQualifications: boolean = false;
 
   fileName: string = '';
   base64File: string = "";
   fileUrl: string = '';
   proofOfQualificationFinal: string = '';
 
-  year: any;
-  fieldOfStudy: any;
-  school: any;
+  year: string = '';
+  fieldOfStudy: string = '';
+  school: string = '';
   highestQualification: any;
 
   ngOnInit() {
@@ -95,7 +96,7 @@ export class CareerSummaryQualificationsComponent {
       });
     }
 
-    this.sharedAccordionFunctionality.editQualifications = false;
+    this.editQualifications = false;
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
     this.isDisabledUpload = true;
     this.isDisabledDownload = true;
@@ -152,14 +153,14 @@ export class CareerSummaryQualificationsComponent {
   }
 
   editQualificationsDetails() {
-    this.sharedAccordionFunctionality.editQualifications = true;
+    this.editQualifications = true;
     this.sharedAccordionFunctionality.employeeQualificationForm.enable();
     this.isDisabledUpload = false;
     this.isDisabledDownload = false;
   }
 
   cancelQualificationsEdit() {
-    this.sharedAccordionFunctionality.editQualifications = false;
+    this.editQualifications = false;
     this.isDisabledUpload = true;
     this.isDisabledDownload = true;
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();

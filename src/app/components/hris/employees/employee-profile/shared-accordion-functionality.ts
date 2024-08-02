@@ -87,12 +87,7 @@ export class SharedAccordionFunctionality {
   physicalEqualPostal: boolean = true;
   hasDisability: boolean | undefined = false;
   typeOther: boolean | undefined = false;
-  editEmployee: boolean = false;
-  editPersonal: boolean = false;
-  editAddress: boolean = false;
   editAdditional: boolean = false;
-  editContact: boolean = false;
-  editQualifications: boolean = false;
   employeeType?: EmployeeType;
   employeeClient!: Client;
   employeeTeamLead!: EmployeeProfile;
@@ -458,6 +453,7 @@ export class SharedAccordionFunctionality {
     } else {
       this.additionalCareerFormProgress = Math.round((numberOfPopulatedFields / numberOfRequiredFields) * 100);
     }
+
   }
 
   calculateSalaryDetails() {
@@ -481,7 +477,7 @@ export class SharedAccordionFunctionality {
   }
 
   totalCareerProgress() {
-    if (this.additionalCareerFormProgress == Infinity) {
+    if (this.additionalCareerFormProgress == Infinity || this.additionalCareerFormProgress === 0) {
       this.careerFormProgress = Math.floor((this.qualificationFormProgress + this.salaryDetailsFormProgress) / 2);
     }
     else {
@@ -491,6 +487,7 @@ export class SharedAccordionFunctionality {
   }
 
   totalDocumentsProgress() {
+
     if (this.additionalDocumentsProgress == Infinity) {
       this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress) / 3);
       this.updateDocument.emit(this.documentFormProgress);

@@ -142,9 +142,9 @@ export class EmployeeProfileComponent implements OnChanges {
     changes['updateDocument'].currentValue
   }
 
-  ngOnDestroy() {
-    this.displayEditButtons()
-  }
+  // ngOnDestroy() {
+  //   this.displayEditButtons()
+  // }
 
   ngOnInit() {
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
@@ -431,13 +431,13 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
 
-  displayEditButtons() {
-    this.sharedAccordionFunctionality.editEmployee = false;
-    this.sharedAccordionFunctionality.editAdditional = false;
-    this.sharedAccordionFunctionality.editAddress = false;
-    this.sharedAccordionFunctionality.editContact = false;
-    this.sharedAccordionFunctionality.editPersonal = false;
-  }
+  // displayEditButtons() {
+  //   this.editEmployee = false;
+  //   this.sharedAccordionFunctionality.editAdditional = false;
+  //   this.sharedAccordionFunctionality.editAddress = false;
+  //   this.sharedAccordionFunctionality.editContact = false;
+  //   this.sharedAccordionFunctionality.editPersonal = false;
+  // }
 
   checkAddressMatch(data: EmployeeProfile) {
     var dataCopy: any = data;

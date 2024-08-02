@@ -6,24 +6,25 @@
     width: 170px;
 }
 
-.telephone-container:focus-within .cellphone-number-label {  
-    margin-left: 0 !important; 
-} 
+.telephone-container:focus-within .cellphone-number-label {
+    margin-left: 0 !important;
+}
 
-.telephone-container:focus-within .emergency-number-label {  
-    margin-left: 0 !important; 
-} 
+.telephone-container:focus-within .emergency-number-label {
+    margin-left: 0 !important;
+}
 
-.telephone-container:focus-within .house-number-label {  
-    margin-left: 0 !important; 
-} 
-  
+.telephone-container:focus-within .house-number-label {
+    margin-left: 0 !important;
+}
+
 .shift-label {
-    margin-left: 95px; 
+    margin-left: 95px;
 }
-#required-icon{
-    color:#B3261E;
+.move-icon{
+    margin-left:80px;
 }
+
 .align-text-icon{
     display: flex;
     flex-direction: row;

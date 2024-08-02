@@ -63,6 +63,8 @@ export class AccordionCareerAdditionalInformationComponent {
     this.employeeId = this.route.snapshot.params['id'];
     this.getEmployeeFields();
     this.getEmployeeData();
+    this.sharedAccordionFunctionality.calculateCareerAdditionalFormProgress();
+
   }
 
   getEmployeeFields() {

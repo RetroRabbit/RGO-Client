@@ -14,10 +14,17 @@
     height:0px !important;
     width:0px !important;
 }
-#required-icon{
-  color:#B3261E;
+
+#move-icon{
+ margin-top:12px;
 }
+
 .align-text-icon{
   display: flex;
   flex-direction: row;
+}
+
+.calendar-icon{
+  display: flex;
+  flex-direction: column;
 }

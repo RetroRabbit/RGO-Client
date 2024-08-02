@@ -27,7 +27,7 @@ export class AccordionProfilePersonalDetailsComponent {
   nationality: any;
   showIcon: boolean = false;
   showIconcountry: any;
-  required: boolean = false;
+  editPersonal: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   usingProfile: boolean = true;
@@ -75,7 +75,7 @@ export class AccordionProfilePersonalDetailsComponent {
 
     this.countryOfBirth = this.sharedAccordionFunctionality.personalDetailsForm.get('countryOfBirth')?.value !== null;
     this.nationality = this.sharedAccordionFunctionality.personalDetailsForm.get('nationality')?.value !== null;
-    this.races = this.sharedAccordionFunctionality.personalDetailsForm.get('race')?.value !== null;
+    this.races = this.sharedAccordionFunctionality.personalDetailsForm.get('race')?.value !== -1;
   }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
@@ -173,7 +173,7 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   editPersonalDetails() {
-    this.sharedAccordionFunctionality.editPersonal = true;
+    this.editPersonal = true;
     this.sharedAccordionFunctionality.personalDetailsForm.enable();
   }
 
@@ -213,7 +213,7 @@ export class AccordionProfilePersonalDetailsComponent {
           this.sharedAccordionFunctionality.checkPersonalFormProgress();
           this.sharedAccordionFunctionality.totalProfileProgress();
           this.sharedAccordionFunctionality.personalDetailsForm.disable();
-          this.sharedAccordionFunctionality.editPersonal = false;
+          this.editPersonal = false;
         },
         error: (er) => this.snackBarService.showError(er),
       });
@@ -224,7 +224,7 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   cancelPersonalEdit() {
-    this.sharedAccordionFunctionality.editPersonal = false;
+    this.editPersonal = false;
     this.sharedAccordionFunctionality.hasDisability = false;
     this.initializeForm();
     this.sharedAccordionFunctionality.personalDetailsForm.disable();

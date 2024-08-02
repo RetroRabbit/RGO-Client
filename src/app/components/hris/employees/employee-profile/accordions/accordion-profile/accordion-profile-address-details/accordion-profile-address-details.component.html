@@ -12,7 +12,7 @@
       </mat-expansion-panel-header>
       <form [formGroup]="sharedAccordionFunctionality.addressDetailsForm">
         <div class="col-12 mb-2 d-flex justify-content-end">
-          <button class="d-flex d-md-none col-12" *ngIf="!sharedAccordionFunctionality.editAddress" mat-button
+          <button class="d-flex d-md-none col-12" *ngIf="!editAddress" mat-button
             id="edit-button" (click)="editAddressDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
             <mat-icon>edit</mat-icon>Edit Details
           </button>
@@ -29,7 +29,7 @@
                       hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let country of countries" [value]="country"> {{ country }} </mat-option>
                     </mat-select>
-                    <mat-icon *ngIf="!country" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="!country" [ngStyle]="{color:editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
                     </div>
                   </mat-form-field>
                 </div>
@@ -41,7 +41,7 @@
                       hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
                     </mat-select>
-                    <mat-icon *ngIf="!province" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="!province" [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}"  class="mx-1 flex-end">error</mat-icon>
                     </div>
                   </mat-form-field>
                 </div>
@@ -53,7 +53,7 @@
                     <mat-select [(value)]="city" formControlName="physicalCity" hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
                     </mat-select>
-                    <mat-icon *ngIf="!city" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="!city"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
                     </div>
                   </mat-form-field>
                 </div>
@@ -85,7 +85,7 @@
                     <mat-label>Street Number</mat-label>
                     <div class="align-text-icon">
                     <input matInput formControlName="physicalStreetNumber" [(ngModel)]="streetNumber">
-                    <mat-icon *ngIf="isInputEmptyVal(streetNumber)" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="isInputEmpty(streetNumber)"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
                     </div>
                     <mat-error
                       *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalStreetNumber'].hasError('required')">
@@ -99,8 +99,11 @@
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.streetName" class="col-12 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Street Name</mat-label>
-                    <input matInput formControlName="physicalStreetName">
+                    <mat-label>Street Name</mat-label >
+                    <div class="align-text-icon">
+                    <input matInput formControlName="physicalStreetName" [(ngModel)]="streetName">
+                    <mat-icon *ngIf="isInputEmpty(streetName)" [ngStyle]="{color: editAddress ? '#B3261E' : 'grey'}"  class="mx-1 flex-end">error</mat-icon>
+                    </div>
                     <mat-error
                       *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalStreetName'].hasError('required')">
                       Street name is required
@@ -116,7 +119,7 @@
                     <mat-label>Postal Code</mat-label>
                     <div class="align-text-icon">
                     <input matInput formControlName="physicalPostalCode"  [(ngModel)]="streetcode">
-                    <mat-icon *ngIf="isInputEmptyVal(streetcode)" id="required-icon" class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="isInputEmpty(streetcode)"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
                     </div>
                     <mat-error
                       *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalPostalCode'].hasError('required')">
@@ -130,10 +133,10 @@
                 </div>
                 <div class="col-12">
                   <mat-checkbox [checked]="sharedAccordionFunctionality.physicalEqualPostal" inputId="checkbox" value="Postal address is same as physical address"
-                    (change)="toggleEqualFields()" [disabled]="!sharedAccordionFunctionality.editAddress">
+                    (change)="toggleEqualFields()" [disabled]="!editAddress">
                   </mat-checkbox>
                   <label class="ms-1" for="checkbox"
-                    [ngClass]="sharedAccordionFunctionality.editAddress === false ? 'disabled-text-address' : ''">Is
+                    [ngClass]="editAddress === false ? 'disabled-text-address' : ''">Is
                     the postal address the same as the physical address?
                   </label>
                 </div>
@@ -196,6 +199,7 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Street Name</mat-label>
                     <input matInput formControlName="postalStreetName">
+
                   </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.postalCode" class="col-12 col-md-6">
@@ -207,28 +211,28 @@
               </div>
             </div>
             <div class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
-              <button *ngIf="!sharedAccordionFunctionality.editAddress" mat-button id="edit-button-width"
+              <button *ngIf="!editAddress" mat-button id="edit-button-width"
                 (click)="editAddressDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
                 <mat-icon>edit</mat-icon>Edit Details
               </button>
             </div>
           </div>
           <div class="col-12 d-block d-md-none" id="edit-buttons">
-            <button *ngIf="sharedAccordionFunctionality.editAddress" mat-button id="save-button" type="submit"
+            <button *ngIf="editAddress" mat-button id="save-button" type="submit"
               (click)="saveAddressEdit()" class="col-12 mb-2">
               Save
             </button>
-            <button *ngIf="sharedAccordionFunctionality.editAddress" mat-button id="cancel-button"
+            <button *ngIf="editAddress" mat-button id="cancel-button"
               (click)="cancelAddressEdit()" class="col-12">
               Cancel
             </button>
           </div>
           <div class="col-12 d-none d-md-flex" id="edit-buttons">
-            <button *ngIf="sharedAccordionFunctionality.editAddress" mat-button id="cancel-button"
+            <button *ngIf="editAddress" mat-button id="cancel-button"
               (click)="cancelAddressEdit()">
               Cancel
             </button>
-            <button *ngIf="sharedAccordionFunctionality.editAddress" mat-button id="save-button" type="submit"
+            <button *ngIf="editAddress" mat-button id="save-button" type="submit"
               (click)="saveAddressEdit()">
               Save
             </button>
