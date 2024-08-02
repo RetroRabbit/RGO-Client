@@ -1,9 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { SystemNav } from 'src/app/services/hris/system-nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
-import { EmployeeApprovalsComponent } from '../employee-approvals/employee-approvals.component';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 @Component({
   selector: 'app-employee-options',
@@ -14,10 +12,9 @@ export class EmployeeOptionsComponent {
   @Output() emitFieldCode = new EventEmitter<CustomField>();
   clicked: string = "";
 
-  constructor(public cookieService: CookieService,
+  constructor(
      public systemNavItemService: SystemNav,
      private authAccessService: AuthAccessService,
-     public employeeApprovals : EmployeeApprovalsComponent,
      public employeeBankingandstarterkitService: EmployeeBankingandstarterkitService
     ) {
     if (!this.systemNavItemService.selectedEmployeeMenuItem) {
@@ -26,7 +23,6 @@ export class EmployeeOptionsComponent {
   }
 
   ngOnInit() : void {
-    this.employeeApprovals.fetchBankStarterKits();
   }
 
   hideSideMenuFromJourneyAndTalent(): boolean{

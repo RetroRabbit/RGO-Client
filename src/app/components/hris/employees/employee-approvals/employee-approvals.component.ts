@@ -1,7 +1,5 @@
 import { Component, HostListener, ViewChild, ElementRef, ChangeDetectorRef, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -36,7 +34,6 @@ export class EmployeeApprovalsComponent {
   userDocumentsMap: string[] = [];
   pageSizes: number[] = [1, 5, 10, 25, 100];
   isUnique?: boolean = true;
-  isLoading: boolean = true;
   showConfirmDialog: boolean = false;
   pendingCount: number = 0;
   approvedCount: number = 0;
@@ -58,9 +55,7 @@ export class EmployeeApprovalsComponent {
 
   constructor(
     public employeeBankingandstarterkitService: EmployeeBankingandstarterkitService,
-    private snackBarService: SnackbarService,
     public router: Router,
-    public cookieService: CookieService,
     public selectedTabService: SystemNav,
     private cdr: ChangeDetectorRef
   ) {
@@ -75,13 +70,8 @@ export class EmployeeApprovalsComponent {
     this.cdr.detectChanges();
   }
 
-  fetchBankStarterKits(): void {
-    this.isLoading = true;
-    this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
-    this.subscribeToData();
-  }
-
   subscribeToData(): void {
+    this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
     this.employeeBankingandstarterkitService.bankingAndStarterKitData$
     .pipe(takeUntil(this.destroy$))
     .subscribe((data: BankingAndStarterKitDto[]) => {
@@ -167,8 +157,8 @@ export class EmployeeApprovalsComponent {
       update: isBanking ? 'Banking Details' : 'Starter Kit',
       approval: status,
       date: isBanking
-        ? documentOrBanking.employeeBankingDto.pendingUpdateDate
-        : documentOrBanking.employeeDocumentDto.uploadDate,
+        ? documentOrBanking.employeeBankingDto.lastUpdateDate
+        : documentOrBanking.employeeDocumentDto.lastUpdatedDate,
     });
   }
 
