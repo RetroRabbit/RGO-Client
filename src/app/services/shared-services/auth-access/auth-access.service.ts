@@ -9,7 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root',
 })
 export class AuthAccessService {
-  photho : string | undefined;
+  photo : string | undefined;
 
   public constructor(
     private store: Store<AppState>,

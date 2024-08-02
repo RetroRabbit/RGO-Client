@@ -34,7 +34,7 @@ export class AuthService {
     try {
       const accessToken = await firstValueFrom(this.auth0.getAccessTokenSilently().pipe(take(1)));
       if (accessToken) {
-        this.photo = this.decodeJwt(accessToken).photho || undefined;
+        this.photo = this.decodeJwt(accessToken).photo || undefined;
         return accessToken;
       } else {
         throw new Error('Failed to retrieve access token (data is null or undefined).');
