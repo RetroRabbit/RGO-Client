@@ -7,6 +7,7 @@ import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeDocumentsStatus } from 'src/app/models/hris/constants/enums/employeeDocumentsStatus';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 @Component({
   selector: 'app-pending-employee-starterkits',
   templateUrl: './view-starter-kit-approval.component.html',
@@ -35,6 +36,7 @@ export class ViewStarterKitApprovalComponent {
   }
 
   constructor(
+    public authAccessService: AuthAccessService,
     private router: Router,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,

@@ -22,6 +22,7 @@ import { selectToken } from '../../shared-components/store/selector/sign-in.sele
 export class SignInComponent {
   user: Token | undefined;
   userEmail: string | null = null;
+  photoUrl: string | undefined;
 
   constructor(
     private store: Store<AppState>,
@@ -134,7 +135,6 @@ export class SignInComponent {
         }
       });
   }  
-
 
   initialUserNavigation(){
   // TODO: put back in when ats available
