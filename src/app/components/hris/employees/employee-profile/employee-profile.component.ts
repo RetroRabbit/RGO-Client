@@ -148,21 +148,8 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnDestroy() {
     this.displayEditButtons()
   }
-    
-  // getNewProfile (){
-  //   this.employeeProfile$?.subscribe( profile =>{
-  //    this.BIGemployeeProfile = profile;
-  //     console.log(this.BIGemployeeProfile)
-  //    })
-  //  }
-
+  
   ngOnInit() {
-    // this.store.dispatch(EmployeeProfileActions.loadEmployeeProfile({ employeeId: 15 }));
-
-    this.store.select(EmployeeProfileSelectors.selectEmployeeProfile).subscribe(profile => {
-      console.log('Profile from selector:', profile);
-    });
-
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
       this.isAdminUser = true;
     }
