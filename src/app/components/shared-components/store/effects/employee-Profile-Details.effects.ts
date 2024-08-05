@@ -1,4 +1,3 @@
-// effects/employee-profile.effects.ts
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';;
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
