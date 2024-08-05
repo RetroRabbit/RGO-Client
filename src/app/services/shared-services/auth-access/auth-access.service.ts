@@ -9,6 +9,8 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root',
 })
 export class AuthAccessService {
+  photo : string | undefined;
+
   public constructor(
     private store: Store<AppState>,
     private authService: AuthService,
@@ -24,6 +26,10 @@ export class AuthAccessService {
       email = store?.email || '';
     });
     return email;
+  }
+
+  getAuthTokenProfilePicture(): string | undefined {
+    return this.authService.photo;
   }
 
   getRole() : string {
