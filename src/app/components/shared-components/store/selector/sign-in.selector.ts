@@ -1,19 +1,20 @@
 import { createSelector } from "@ngrx/store";
 import { AppState } from "../app.state";
+import { TokenState } from "../reducers/sign-in.reducer";
 
-export const selectLoginState = (state: AppState) => state.token;
+export const selectTokenState = (state: AppState) => state.token;
 
 export const selectToken = createSelector (
-    selectLoginState,
-    (state)=> state?.token
+    selectTokenState,
+    (state: TokenState) => state.token
 )
 
-export const selectEmail = createSelector (
-    selectLoginState,
-    (state)=> state?.email
+export const selectLoading = createSelector (
+    selectTokenState,
+    (state: TokenState) => state.loading
 )
 
-export const selectRole = createSelector (
-    selectLoginState,
-    (state)=> state?.roles
+export const selectError = createSelector (
+    selectTokenState,
+    (state: TokenState) => state.error
 )
