@@ -8,7 +8,7 @@ export interface EmployeeProfileDetailsState {
   error: any;
 }
 
-export const initialState: State = {
+export const initialState: EmployeeProfileDetailsState = {
   employeeProfileDetails: null,
   loading: false,
   error: null,
