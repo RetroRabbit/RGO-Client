@@ -117,8 +117,9 @@ export class AccordionDocumentsCustomDocumentsComponent {
   getDocumentFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
+        const documentFieldCodes = data.filter(fieldCode => fieldCode.type === 5); 
         this.checkCustomDocumentsInformation();
-        this.checkArchived(data);
+        this.checkArchived(documentFieldCodes);
       }
     })
   }
