@@ -32,7 +32,7 @@ export class EmployeeProfileService {
 
   getEmployeeProfileDetailsById(id: number): Observable<EmployeeProfileDetails> {
     const queryParams = `?id=${id}`;
-    return this.httpClient.get<EmployeeProfileDetails>(`${environment.HttpsBaseURL}/profile-details${queryParams}`);
+    return this.httpClient.get<EmployeeProfileDetails>(`${this.baseUrl}/profile-details${queryParams}`);
   }
 
   getAll(): Observable<Employee[]> {
