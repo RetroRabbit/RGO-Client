@@ -1,4 +1,4 @@
-<!-- <div class="container">
+<div class="container">
   <div class="py-3">
     <button mat-button class="btn" id="back-button" (click)="goToEmployees()"
       *ngIf="previousPage == '/employees' && showBackButtons">
@@ -456,8 +456,5 @@
         (updateEmployeeProfile)="refreshEmployeeProfile()"></app-accordion-career-additional-information>
     </div>
   </div>
-</div> -->
-
-<div *ngIf="employeeProfile$ | async as employee">
-{{ employee.employeeProfileDetails?.name}}
 </div>
+

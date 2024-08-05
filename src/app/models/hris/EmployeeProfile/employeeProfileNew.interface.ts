@@ -1,7 +1,6 @@
 import { Certificate } from "tls"
 import { WorkExperience } from "../work-experience.interface"
 import { EmployeeProfileDetails } from "./employeeProfileDetails.interface";
-import { EmployeeProfilePersonal } from "./employeePersonalDetails.interface";
 import { EmployeeProfileSalary } from "./employeeProfileSalaryDetails.interface";
 import { EmployeeAddress } from "../employee-address.interface";
 import { EmployeeQualifications } from "../employee-qualifications.interface";
@@ -11,7 +10,7 @@ import { EmployeeProfileContact } from "./employeeContactDetails.interface";
 
 export interface EmployeeProfileNew {
     employeeProfileDetails?: EmployeeProfileDetails;
-    employeeProfilePersonal?: EmployeeProfilePersonal;
+    employeeProfilePersonal?: EmployeeProfileDetails;
     employeeProfileContact?: EmployeeProfileContact;
     employeeProfileSalary?: EmployeeProfileSalary;
     employeeData: any; // Assuming it's nullable or has its own interface
