@@ -163,7 +163,6 @@ import { employeeProfileDetailsReducer } from './components/shared-components/st
     MatSnackBarModule,
     ClipboardModule,
     StoreModule.forRoot({
-      app: loginReducer,
       token: loginReducer, 
       clients: clientReducer,
       employeeProfileDetails : employeeProfileDetailsReducer
