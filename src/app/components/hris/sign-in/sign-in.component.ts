@@ -1,7 +1,7 @@
 import { Component, HostListener, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { SetLogin } from '../../shared-components/store/actions/sign-in.actions';
+import { SetToken } from '../../shared-components/store/actions/sign-in.actions';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../../../models/hris/token.interface';
 import { EMPTY, catchError, of, switchMap, take } from 'rxjs';
@@ -44,7 +44,7 @@ export class SignInComponent {
 
     let token: string;
     this.store.select(selectToken).subscribe((storeToken) => {
-      token = storeToken;
+      token = storeToken?.token || '';
       if (token) {
         const tokenPayload = JSON.parse(atob(token.split('.')[1]));
         const expiryDate = new Date(tokenPayload.exp * 1000);
@@ -90,7 +90,7 @@ export class SignInComponent {
                 token: token,
                 roles: role,
               };
-              this.store.dispatch(SetLogin({ payload: userData }));
+              this.store.dispatch(SetToken({ payload: userData }));
   
               return this.authService.checkUserExistenceInDatabase().pipe(
                 switchMap(response => {
