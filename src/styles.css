@@ -187,5 +187,45 @@ body {
   --mdc-chip-label-text-color: #0029C6;
   --mdc-chip-with-trailing-icon-trailing-icon-color: #0029C6;
   --mdc-chip-elevated-container-color: #D7DFFF;
-  
+}
+
+.mat-mdc-standard-chip {
+  --mdc-chip-label-text-weight: 500;
+}
+
+mat-stepper {
+  --mat-stepper-header-selected-state-icon-background-color: #0029C6;
+  --mat-stepper-header-edit-state-icon-background-color: #0029C6;
+  --mat-stepper-header-done-state-icon-background-color: #119604;
+}
+
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__shadow {
+  background-color: #0029C6;
+}
+
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__track::after {
+  background-color: #5b74d6 !important;
+}
+
+.mat-datepicker-toggle {
+  color: grey !important;
+}
+
+.mat-datepicker-toggle-active {
+  color: #0029C6 !important;
+}
+
+mat-calendar {
+  --mat-datepicker-calendar-date-selected-state-background-color: #0029C6;
+  --mat-datepicker-calendar-date-hover-state-background-color: #98aaf1;
+  --mat-datepicker-calendar-date-focus-state-background-color: #98aaf1;
+  --mat-datepicker-calendar-date-today-outline-color: #0029c6;
+}
+
+mat-select {
+  --mat-select-focused-arrow-color: #0029C6;
+}
+
+mat-option {
+  --mat-option-selected-state-label-text-color: #0029C6;
 }
