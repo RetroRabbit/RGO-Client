@@ -52,7 +52,6 @@ export class TopNavComponent {
   ) {
     this.screenWidth = window.innerWidth;
     this.dialogTypeData = new DialogTypeData().dialogTypeData;
-    var test = authAccessService.getAuthTokenProfilePicture();
   }
 
   ngOnInit() {

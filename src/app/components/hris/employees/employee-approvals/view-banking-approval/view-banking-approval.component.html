@@ -18,7 +18,7 @@
         <div id="approval-header" class="row p-2">
             <div class="col-2 mt-3 mb-3">
                 <div id="profile-image">
-                    <img [src]="this.authAccessService.getAuthTokenProfilePicture() || '../../../../../../assets/img/default-profile-image.png'"
+                    <img [src]="navService.employeeProfile.photo || this.authAccessService.getAuthTokenProfilePicture() || '../../../../../../assets/img/default-profile-image.png'"
           alt="Profile img" class="rounded-circle profile-img">>
                 </div>
             </div>
