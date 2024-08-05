@@ -1,9 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { State } from '../reducers/employee-profile.reducer';
+import { State } from '../reducers/employee-Profile-Details.reducer';
 
-export const selectEmployeeProfileState = createFeatureSelector<State>('employeeProfile');
+export const selectEmployeeProfiledetailsState = createFeatureSelector<State>('employeeProfileDetails');
 
 export const selectEmployeeProfile = createSelector(
-  selectEmployeeProfileState,
-  (state) => state.employeeProfile
+  selectEmployeeProfiledetailsState,
+  (state) => state.employeeProfileDetails
 );

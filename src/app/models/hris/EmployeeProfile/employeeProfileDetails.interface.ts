@@ -8,7 +8,6 @@ export interface EmployeeProfileDetails {
    employeeDetails : EmployeeProfileDetails,
    personalDetails : EmployeePersonalDetails,
    contactDetails : EmployeeProfileContact,
-   employeeProfileSalary : EmployeeSalary,
    employeeData: EmployeeData,
    photo: string;
    active: boolean;
