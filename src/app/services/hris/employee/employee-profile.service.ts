@@ -31,16 +31,6 @@ export class EmployeeProfileService {
     return this.httpClient.get<SimpleEmployee>(`${this.baseUrl}/simple-profile${queryParams}`);
   }
 
-  getEmployeeProfileDetailsById(id: number): Observable<EmployeeProfileDetails> {
-    const queryParams = `?id=${id}`;
-    return this.httpClient.get<EmployeeProfileDetails>(`${this.baseUrl}/profile-details${queryParams}`);
-  }
-
-  getBankingInformationById(id: number): Observable<employeeProfileBanking> {
-    const queryParams = `?id=${id}`;
-    return this.httpClient.get<employeeProfileBanking>(`${this.baseUrl}/banking-information${queryParams}`);
-  }
-
   getAll(): Observable<Employee[]> {
     return this.httpClient.get<Employee[]>(`${this.baseUrl}/all`);
   }

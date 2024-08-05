@@ -34,6 +34,7 @@ import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/empl
 import { Observable, Subscription } from 'rxjs';
 
 import { LoadClients, SetClients } from 'src/app/components/shared-components/store/actions/client.actions';
+import { NewEmployeeProfileService } from 'src/app/services/hris/employee/newEmployeeprofile.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -125,6 +126,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private store: Store<AppState>,
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
+    private newEmployeeProfileService : NewEmployeeProfileService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBarService: SnackbarService,
