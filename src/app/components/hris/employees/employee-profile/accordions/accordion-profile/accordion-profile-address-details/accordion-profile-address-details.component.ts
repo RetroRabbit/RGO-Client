@@ -79,7 +79,13 @@ export class AccordionProfileAddressDetailsComponent {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();
-    this.setInputValueCheck();
+    //this.setInputValueCheck();
+    this.streetNumber = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetNumber')?.value;
+    this.streetcode = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalPostalCode')?.value;
+    this.streetName = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetName')?.value;
+    this.country = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCountry')?.value !== null;
+    this.city = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCity')?.value !== null;
+    this.province = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalProvince')?.value !== null;
   }
 
   initializeForm() {
@@ -103,6 +109,7 @@ export class AccordionProfileAddressDetailsComponent {
       postalProvince: [this.employeeProfile!.employeeDetails.postalAddress?.province?.trim(), Validators.required],
       postalPostalCode: [this.employeeProfile!.employeeDetails.postalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]]
     });
+    this.setInputValueCheck();
     this.sharedAccordionFunctionality.addressDetailsForm.disable();
     this.sharedAccordionFunctionality.checkAddressFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
