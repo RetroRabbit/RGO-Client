@@ -47,8 +47,8 @@
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Work Email</mat-label>
                                         <div class="align-text-icon">
-                                            <input matInput formControlName="email" [(ngModel)]="email">
-                                            <mat-icon *ngIf="isInputEmpty(email)" [ngStyle]="{color: editContact ? '#B3261E' : 'grey'}"  class="mx-1 flex-end">error</mat-icon>
+                                            <input matInput formControlName="email" [(ngModel)]="workEmail">
+                                            <mat-icon *ngIf="isInputEmpty(workEmail)" [ngStyle]="{color: editContact ? '#B3261E' : 'grey'}"  class="mx-1 flex-end">error</mat-icon>
                                         </div>
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['email'].hasError('pattern') && !sharedAccordionFunctionality.employeeContactForm.controls['email'].hasError('required')">

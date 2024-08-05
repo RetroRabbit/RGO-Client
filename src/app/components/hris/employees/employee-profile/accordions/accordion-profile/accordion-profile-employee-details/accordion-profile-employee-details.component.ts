@@ -70,11 +70,7 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.getEmployeeFields();
     this.getClients();
     this.checkEmployeeDetails();
-    this.firstName = this.sharedAccordionFunctionality.employeeDetailsForm.get('name')?.value;
-    this.lastName = this.sharedAccordionFunctionality.employeeDetailsForm.get('surname')?.value;
-    this.idNumber = this.sharedAccordionFunctionality.employeeDetailsForm.get('idNumber')?.value;
-    this.dateOfBirth = this.sharedAccordionFunctionality.employeeDetailsForm.get('dateOfBirth')?.value;
-    this.startDate = this.sharedAccordionFunctionality.employeeDetailsForm.get('engagementDate')?.value;
+    this.setInputValueCheck();
   }
 
   initializeForm() {
@@ -167,8 +163,16 @@ export class AccordionProfileEmployeeDetailsComponent {
       this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactNo = this.employeeProfile?.employeeDetails.emergencyContactNo
   }
 
-  isInputEmpty(emailToCheck: string): boolean {
-    return emailToCheck === null || emailToCheck.trim() === '';
+  setInputValueCheck() {
+    this.firstName = this.sharedAccordionFunctionality.employeeDetailsForm.get('name')?.value;
+    this.lastName = this.sharedAccordionFunctionality.employeeDetailsForm.get('surname')?.value;
+    this.idNumber = this.sharedAccordionFunctionality.employeeDetailsForm.get('idNumber')?.value;
+    this.dateOfBirth = this.sharedAccordionFunctionality.employeeDetailsForm.get('dateOfBirth')?.value;
+    this.startDate = this.sharedAccordionFunctionality.employeeDetailsForm.get('engagementDate')?.value;
+  }
+
+  isInputEmpty(valueToCheck: string): boolean {
+    return valueToCheck === null || valueToCheck === '';
   }
 
   checkEmployeeDetails() {

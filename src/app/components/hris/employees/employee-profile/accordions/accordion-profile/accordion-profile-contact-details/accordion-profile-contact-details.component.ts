@@ -19,7 +19,7 @@ export class AccordionProfileContactDetailsComponent {
   screenWidth = window.innerWidth;
   usingProfile: boolean = true;
   isFocused: boolean = false;
-  email: string = '';
+  workEmail: string = '';
   personalEmail: string = '';
   emergencyContactName: string = '';
   emergencyNumberVal: any;
@@ -48,17 +48,13 @@ export class AccordionProfileContactDetailsComponent {
     this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.valueChanges.subscribe(value => {
       this.checkHouseNumberValue(value);
     });
-
     const initialHouseNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value;
     this.checkHouseNumberValue(initialHouseNumberValue);
     const initialEmergencyNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value;
     this.checkEmergencyNumberValue(initialEmergencyNumberValue);
     const initialCellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
     this.checkCellphoneNumberValue(initialCellphoneNumberValue);
-
-    this.emergencyNumberVal = initialEmergencyNumberValue === null || '';
-    this.cellphoneNumber = initialCellphoneNumberValue === null || '';
-
+    this.setInputValueCheck();
   }
 
   ngAfterViewInit(): void {
@@ -70,8 +66,17 @@ export class AccordionProfileContactDetailsComponent {
     this.checkCellphoneNumberValue(initialCellphoneNumberValue);
   }
 
-  isInputEmpty(emailToCheck: string): boolean {
-    return emailToCheck === null || emailToCheck.trim() === '';
+
+  setInputValueCheck() {
+    this.workEmail = this.sharedAccordionFunctionality.employeeContactForm.get('email')?.value;
+    this.personalEmail = this.sharedAccordionFunctionality.employeeContactForm.get('personalEmail')?.value;
+    this.emergencyContactName = this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactName')?.value;
+    this.emergencyNumberVal = this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value === null;
+    this.cellphoneNumber = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value === null;
+  }
+
+  isInputEmpty(valueToCheck: string): boolean {
+    return valueToCheck === null || valueToCheck === '';
   }
 
   checkCellphoneNumberValue(value: string) {
@@ -147,9 +152,8 @@ export class AccordionProfileContactDetailsComponent {
       houseNo: [this.employeeProfile.employeeDetails.houseNo],
       emergencyContactName: [this.employeeProfile.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
       emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required]]
-
-
     });
+    console.log(this.sharedAccordionFunctionality.employeeContactForm);
     this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.sharedAccordionFunctionality.checkContactFormProgress();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", true)

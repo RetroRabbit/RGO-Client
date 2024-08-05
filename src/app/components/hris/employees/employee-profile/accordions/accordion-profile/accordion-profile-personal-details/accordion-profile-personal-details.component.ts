@@ -10,7 +10,6 @@ import { SharedAccordionFunctionality } from '../../../shared-accordion-function
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
-import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-accordion-profile-personal-details',
@@ -22,11 +21,9 @@ export class AccordionProfilePersonalDetailsComponent {
   screenWidth = window.innerWidth;
   countries: string[] = [];
   isCustomType: boolean = false;
-  races: any;
+  race: any;
   countryOfBirth: any;
   nationality: any;
-  showIcon: boolean = false;
-  showIconcountry: any;
   editPersonal: boolean = false;
 
   @HostListener('window:resize', ['$event'])
@@ -41,6 +38,7 @@ export class AccordionProfilePersonalDetailsComponent {
     this.initializeForm();
     this.loadCountries();
     this.checkDisabilityType();
+    this.setInputValueCheck();
 
     if (this.isCustomType) {
       const disabilityTypeControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');
@@ -72,10 +70,6 @@ export class AccordionProfilePersonalDetailsComponent {
       }
       disabilityNotesControl?.updateValueAndValidity();
     });
-
-    this.countryOfBirth = this.sharedAccordionFunctionality.personalDetailsForm.get('countryOfBirth')?.value !== null;
-    this.nationality = this.sharedAccordionFunctionality.personalDetailsForm.get('nationality')?.value !== null;
-    this.races = this.sharedAccordionFunctionality.personalDetailsForm.get('race')?.value !== -1;
   }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
@@ -100,7 +94,6 @@ export class AccordionProfilePersonalDetailsComponent {
       disabilityType: [!this.isCustomType ? this.employeeProfile.employeeDetails.disabilityNotes : disabilities[7].value],
       nationality: [this.employeeProfile!.employeeDetails.nationality, Validators.required],
       countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth, Validators.required],
-      disabilityList: "",
       disabilityNotes: [this.employeeProfile!.employeeDetails.disabilityNotes]
     });
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
@@ -119,13 +112,18 @@ export class AccordionProfilePersonalDetailsComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     public locationApiService: LocationApiService) { }
 
+  setInputValueCheck() {
+    this.countryOfBirth = this.sharedAccordionFunctionality.personalDetailsForm.get('countryOfBirth')?.value !== null;
+    this.nationality = this.sharedAccordionFunctionality.personalDetailsForm.get('nationality')?.value !== null;
+    this.race = this.sharedAccordionFunctionality.personalDetailsForm.get('race')?.value !== -1;
+  }
+
   checkEmployeeDetails() {
     if (this.usingProfile)
       this.checkEmployeeDetailsUsingEmployeeProfile()
     else
       this.checkEmployeeDetailsNotUsingEmployeeProfile()
   }
-
 
   checkEmployeeDetailsUsingEmployeeProfile() {
     this.sharedAccordionFunctionality.employees.find((data: any) => {

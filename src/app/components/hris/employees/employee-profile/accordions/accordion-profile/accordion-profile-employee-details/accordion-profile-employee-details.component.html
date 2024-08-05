@@ -25,7 +25,7 @@
                     <mat-label>Full Names</mat-label>
                     <div class="align-text-icon">
                     <input matInput formControlName="name" [(ngModel)]="firstName">
-                    <mat-icon *ngIf="isInputEmpty(firstName)"  [ngStyle]="{color: editEmployee ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="!isInputEmpty(firstName)"  [ngStyle]="{color: editEmployee ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
                     </div>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('required')">
                       Full name is required
@@ -40,7 +40,7 @@
                     <mat-label>Last Name</mat-label>
                     <div class="align-text-icon">
                     <input matInput formControlName="surname" [(ngModel)]="lastName">
-                    <mat-icon *ngIf="isInputEmpty(lastName)" [ngStyle]="{color: editEmployee ? '#B3261E' : 'grey'}"  class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="!isInputEmpty(lastName)" [ngStyle]="{color: editEmployee ? '#B3261E' : 'grey'}"  class="mx-1 flex-end">error</mat-icon>
                     </div>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['surname'].hasError('required')">
                       Last name is required

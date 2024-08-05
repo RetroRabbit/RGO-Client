@@ -96,7 +96,6 @@ export class AccordionCareerAdditionalInformationComponent {
       this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.employeeData = data;
-
         }
       });
     } else {

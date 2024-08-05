@@ -55,7 +55,7 @@ export class CareerSummaryQualificationsComponent {
 
   ngOnInit() {
     this.fetchQualificationsById();
-    this.highestQualification = this.sharedAccordionFunctionality.employeeQualificationForm.get('highestQualification')?.value !== null;
+    this.setInputValueCheck();
   }
 
   fetchQualificationsById() {
@@ -95,7 +95,6 @@ export class CareerSummaryQualificationsComponent {
         proofOfQualification: [this.sharedAccordionFunctionality.employeeQualification.proofOfQualification],
       });
     }
-
     this.editQualifications = false;
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
     this.isDisabledUpload = true;
@@ -105,8 +104,15 @@ export class CareerSummaryQualificationsComponent {
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualifications", true)
   }
 
-  isInputEmpty(emailToCheck: string): boolean {
-    return emailToCheck === null || emailToCheck === '';
+  setInputValueCheck() {
+    this.highestQualification = this.sharedAccordionFunctionality.employeeQualificationForm.get('highestQualification')?.value !== null;
+    this.year = this.sharedAccordionFunctionality.employeeQualificationForm.get('year')?.value;
+    this.fieldOfStudy = this.sharedAccordionFunctionality.employeeQualificationForm.get('fieldOfStudy')?.value;
+    this.school = this.sharedAccordionFunctionality.employeeQualificationForm.get('school')?.value;
+  }
+
+  isInputEmpty(valueToCheck: string): boolean {
+    return valueToCheck === null || valueToCheck === '';
   }
 
   saveQualificationsEdit() {

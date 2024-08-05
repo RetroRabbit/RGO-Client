@@ -79,10 +79,7 @@ export class AccordionProfileAddressDetailsComponent {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();
-
-    this.country = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCountry')?.value !== null;
-    this.city = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCity')?.value !== null;
-    this.province = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalProvince')?.value !== null;
+    this.setInputValueCheck();
   }
 
   initializeForm() {
@@ -112,8 +109,18 @@ export class AccordionProfileAddressDetailsComponent {
 
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", true)
   }
-  isInputEmpty(emailToCheck: string): boolean {
-    return emailToCheck === null || emailToCheck === '';
+
+  setInputValueCheck() {
+    this.streetNumber = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetNumber')?.value;
+    this.streetcode = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalPostalCode')?.value;
+    this.streetName = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetName')?.value;
+    this.country = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCountry')?.value !== null;
+    this.city = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCity')?.value !== null;
+    this.province = this.sharedAccordionFunctionality.addressDetailsForm.get('physicalProvince')?.value !== null;
+  }
+
+  isInputEmpty(valueToCheck: string): boolean {
+    return valueToCheck === null || valueToCheck === '';
   }
 
   saveAddressEdit() {

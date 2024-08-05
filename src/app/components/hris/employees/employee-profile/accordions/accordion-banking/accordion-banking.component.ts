@@ -46,7 +46,7 @@ export class AccordionBankingComponent {
   hasUpdatedBanking: boolean = false;
   bankingUpdate: string = "";
   accountNumber: string = '';
-  branch: string = '';
+  accountBranch: string = '';
   accountType: any;
   bank: any;
 
@@ -70,12 +70,17 @@ export class AccordionBankingComponent {
   ngOnInit(): void {
     this.getEmployeeBankingData();
     this.banks = this.banks.slice().sort((a, b) => a.value.localeCompare(b.value));
-    this.bank = this.employeeBankingsForm.get('bankName')?.value !== '';
-    this.accountType = this.employeeBankingsForm.get('accountType')?.value !== -1;
   }
 
-  isInputEmpty(emailToCheck: string): boolean {
-    return emailToCheck === null || emailToCheck === '';
+  setInputValueCheck() {
+    this.bank = this.employeeBankingsForm.get('bankName')?.value !== null;
+    this.accountType = this.employeeBankingsForm.get('accountType')?.value !== null;
+    this.accountNumber = this.employeeBankingsForm.get('accountNo')?.value;
+    this.accountBranch = this.employeeBankingsForm.get('branch')?.value;
+  }
+
+  isInputEmpty(valueToCheck: string): boolean {
+    return valueToCheck === null || valueToCheck === '';
   }
 
   getEmployeeBankingData() {
@@ -103,7 +108,7 @@ export class AccordionBankingComponent {
       branch: [{ value: bankingDetails.branch, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       file: [{ value: bankingDetails.file, disabled: true }, Validators.required],
     });
-    this.hasFile = !!(bankingDetails.file && bankingDetails.file.length > 0);
+    this.setInputValueCheck();
     this.hasBankingData = true;
     this.checkBankingInformationProgress();
     this.totalBankingProgress();
@@ -230,6 +235,7 @@ export class AccordionBankingComponent {
       console.error('Employee banking data is empty.');
     }
   }
+
   checkBankingInformationProgress() {
     let filledCount = 0;
     let totalFields = 0;
