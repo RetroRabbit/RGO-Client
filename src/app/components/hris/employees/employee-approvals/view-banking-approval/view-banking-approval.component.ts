@@ -5,6 +5,8 @@ import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface'
 import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-banking.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 
 @Component({
   selector: 'app-view-banking-approval',
@@ -24,6 +26,8 @@ export class ViewBankingApprovalComponent {
   employee: any;
 
   constructor(
+    public authAccessService: AuthAccessService,
+    public navService: NavService,
     private employeeBankingService: EmployeeBankingService,
     private router: Router, 
     private route: ActivatedRoute,
