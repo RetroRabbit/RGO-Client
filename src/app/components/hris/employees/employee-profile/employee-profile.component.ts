@@ -32,10 +32,9 @@ import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employee
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/components/shared-components/store/app.state';
 import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
-import { loadEmployeeProfile } from 'src/app/components/shared-components/store/actions/employee-profile.actions';
 import { Observable, Subscription } from 'rxjs';
 import * as EmployeeProfileSelectors from 'src/app/components/shared-components/store/selector/employee-profile.selector';
-import * as EmployeeProfileActions from 'src/app/components/shared-components/store/actions/employee-profile.actions';
+
 import { LoadClients, SetClients } from 'src/app/components/shared-components/store/actions/client.actions';
 
 @Component({
@@ -160,7 +159,7 @@ export class EmployeeProfileComponent implements OnChanges {
    }
 
   ngOnInit() {
-    this.store.dispatch(EmployeeProfileActions.loadEmployeeProfile({ employeeId: 15 }));
+    // this.store.dispatch(EmployeeProfileActions.loadEmployeeProfile({ employeeId: 15 }));
 
     this.store.select(EmployeeProfileSelectors.selectEmployeeProfile).subscribe(profile => {
       console.log('Profile from selector:', profile);
