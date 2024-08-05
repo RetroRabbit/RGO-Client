@@ -106,6 +106,7 @@ export class SharedAccordionFunctionality {
   careerFormProgress: number = 0;
 
   myDocumentsProgress: number = 0;
+  additionalDocumentsProgress: number = 0;
   adminDocumentsProgress: number = 0;
   employeeDocumentsProgress: number = 0;
   documentStarterKitFormProgress: number = 0;
@@ -398,6 +399,43 @@ export class SharedAccordionFunctionality {
     this.documentStarterKitFormProgress = fetchedDocuments / total * 100;
   }
 
+  calculateAdditionalDocumentProgress() {
+    let numberOfPopulatedFields = 0;
+    let numberOfRequiredFields = 0;
+
+    this.customFieldService.getAllFieldCodes().subscribe({
+      next: data => {
+        this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
+        const total = this.customFieldsDocuments.length;
+        const fetchedDocuments = this.additionalDocuments.length;
+
+        const formControls = this.additionalDocumentForm.controls;
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        let isRequired = false;
+        if (control.validator) {
+          const validator = control.validator({} as AbstractControl);
+          isRequired = validator && validator['required'] ? true : false;
+        }
+        if (isRequired) {
+          numberOfRequiredFields++;
+          if (control.value != null && control.value !== '') {
+            numberOfPopulatedFields++;
+          }
+        }
+      }
+    }
+        if (fetchedDocuments === 0) {
+          this.additionalDocumentsProgress = total === 0 ? 100 : 0;
+        } else {
+          this.additionalDocumentsProgress = total == 0 ? 0 : Math.round((fetchedDocuments / total) * 100);
+        }
+        this.totalDocumentsProgress();
+      }
+    });
+  }
+
   calculateQualificationProgress() {
     let filledCount = 0;
     const formControls = this.employeeQualificationForm.controls;
@@ -473,7 +511,13 @@ export class SharedAccordionFunctionality {
   }
 
   totalDocumentsProgress() {
+    if (this.additionalDocumentsProgress == Infinity) {
       this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress) / 3);
       this.updateDocument.emit(this.documentFormProgress);
+    }
+    else {
+      this.documentFormProgress = Math.floor((this.employeeDocumentsProgress + this.documentStarterKitFormProgress + this.adminDocumentsProgress + this.additionalDocumentsProgress) / 4);
+      this.updateDocument.emit(this.documentFormProgress);
+    }
   }
 }
