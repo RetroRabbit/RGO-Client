@@ -66,7 +66,6 @@ export class AccordionProfileContactDetailsComponent {
     this.checkCellphoneNumberValue(initialCellphoneNumberValue);
   }
 
-
   setInputValueCheck() {
     this.workEmail = this.sharedAccordionFunctionality.employeeContactForm.get('email')?.value;
     this.personalEmail = this.sharedAccordionFunctionality.employeeContactForm.get('personalEmail')?.value;
