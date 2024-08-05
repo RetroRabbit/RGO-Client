@@ -60,8 +60,8 @@ export class AccordionSalaryDetailsComponent {
     }
   }
 
-  isInputEmpty(emailToCheck: string): boolean {
-    return emailToCheck === null || emailToCheck === '';
+  isInputEmpty(valueToCheck: string): boolean {
+    return valueToCheck === null || valueToCheck === '';
   }
 
   initializeSalaryDetailsForm(salaryDetails: EmployeeSalary, taxNumber: string | undefined) {

@@ -89,6 +89,9 @@ export class AccordionProfileEmployeeDetailsComponent {
       engagementDate: [this.employeeProfile!.employeeDetails.engagementDate, Validators.required],
       peopleChampion: this.usingProfile ? this.employeeProfile!.employeeDetails.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId
     });
+    this.firstName = this.sharedAccordionFunctionality.employeeDetailsForm.get('name')?.value;
+    this.lastName = this.sharedAccordionFunctionality.employeeDetailsForm.get('surname')?.value;
+    this.idNumber = this.sharedAccordionFunctionality.employeeDetailsForm.get('idNumber')?.value;
     this.sharedAccordionFunctionality.employeeDetailsForm.disable();
     this.sharedAccordionFunctionality.checkEmployeeFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();

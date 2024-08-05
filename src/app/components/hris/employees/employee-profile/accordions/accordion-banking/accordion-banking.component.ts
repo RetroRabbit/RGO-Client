@@ -69,6 +69,7 @@ export class AccordionBankingComponent {
 
   ngOnInit(): void {
     this.getEmployeeBankingData();
+    this.setInputValueCheck();
     this.banks = this.banks.slice().sort((a, b) => a.value.localeCompare(b.value));
   }
 
