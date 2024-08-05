@@ -2,13 +2,13 @@ import { createReducer, on } from '@ngrx/store';
 import * as EmployeeProfileDetailsActions from '../actions/employee-Profile-Details.actions';
 import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
 
-export interface State {
+export interface EmployeeProfileDetailsState {
   employeeProfileDetails: EmployeeProfileDetails | null;
   loading: boolean;
   error: any;
 }
 
-export const initialState: State = {
+export const initialState: EmployeeProfileDetailsState = {
   employeeProfileDetails: null,
   loading: false,
   error: null,
