@@ -1,7 +1,7 @@
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
-import { Subscription, catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
@@ -17,7 +17,6 @@ import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
-import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 import { DashboardService } from 'src/app/services/hris/employee/dashboard.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 @Component({
@@ -93,7 +92,6 @@ export class AdminDashboardComponent {
   rolesSelected: string[] = [];
   categoriesSelected: string[] = [];
   constructor(
-    private employeeBankingandstarterkitService: EmployeeBankingandstarterkitService,
     private dashboardService: DashboardService,
     public chartService: ChartService,
     private cookieService: CookieService,
@@ -166,7 +164,6 @@ export class AdminDashboardComponent {
     this.getEmployeeTypes();
     this.getEmployeeTableColumns();
     this.getDataCardsData();
-    this.employeeBankingandstarterkitService.getAllBankingAndStarterkits()
 
     this.categoryControl.valueChanges.subscribe((value) => {
       this.selectedCategories = value;

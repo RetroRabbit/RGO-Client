@@ -1,11 +1,10 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, Input, Output } from '@angular/core';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { CookieService } from 'ngx-cookie-service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
@@ -44,7 +43,6 @@ export class AccordionDocumentsComponent {
     private employeeDocumentService: EmployeeDocumentService,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
-    private cookieService: CookieService,
     private authAccessService: AuthAccessService,
     public navService: NavService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -129,12 +127,10 @@ export class AccordionDocumentsComponent {
           this.dataSource.data = this.sharedAccordionFunctionality.fileStarterKitCategories;
           this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
-
         },
         error: (er) => this.snackBarService.showError(er),
       })
     }
-
   }
 
   uploadDocumentDto(document: any) {
@@ -156,7 +152,7 @@ export class AccordionDocumentsComponent {
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
-          this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
+          this.employeeBankingandstarterkitService.incrementVolatileCount(document.employee.id);
         },
         error: (er) => {
           this.isLoadingUpload = false;
@@ -187,7 +183,7 @@ export class AccordionDocumentsComponent {
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateStarterKitDocuments();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
-          this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
+          this.employeeBankingandstarterkitService.incrementVolatileCount(updatedDocument.employeeId);
         },
         error: (er) => {
           this.snackBarService.showError(er);
