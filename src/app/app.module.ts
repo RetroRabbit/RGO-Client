@@ -168,7 +168,7 @@ import { employeeProfileDetailsReducer } from './components/shared-components/st
       clients: clientReducer,
       employeeProfileDetails : employeeProfileDetailsReducer
     }),
-    EffectsModule.forRoot([LoginEffects,EmployeeProfileDetailsEffects]),
+    EffectsModule.forRoot([LoginEffects,EmployeeProfileDetailsEffects, ClientEffects]),
     AuthModule.forRoot({
       domain: process.env['AUTH0_Domain_key'] || 'null',
       clientId: process.env['AUTH0_CLIENT_ID'] || 'null',
