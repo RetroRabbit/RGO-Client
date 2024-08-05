@@ -48,7 +48,6 @@ export class EmployeeProfileComponent implements OnChanges {
   @Input() updateDocument!: { updateDocument: SharedAccordionFunctionality };
   @Input() updateCareer!: { updateCareer: SharedAccordionFunctionality };
 
-  employeeProfile$: Observable<EmployeeProfileNew | null>;
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
   simpleEmployee!: SimpleEmployee;
@@ -139,7 +138,6 @@ export class EmployeeProfileComponent implements OnChanges {
     public authAccessService: AuthAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private clipboard: Clipboard) {
-      this.employeeProfile$ = this.store.select(EmployeeProfileSelectors.selectEmployeeProfile);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -151,12 +149,12 @@ export class EmployeeProfileComponent implements OnChanges {
     this.displayEditButtons()
   }
     
-  getNewProfile (){
-    this.employeeProfile$?.subscribe( profile =>{
-     this.BIGemployeeProfile = profile;
-      console.log(this.BIGemployeeProfile)
-     })
-   }
+  // getNewProfile (){
+  //   this.employeeProfile$?.subscribe( profile =>{
+  //    this.BIGemployeeProfile = profile;
+  //     console.log(this.BIGemployeeProfile)
+  //    })
+  //  }
 
   ngOnInit() {
     // this.store.dispatch(EmployeeProfileActions.loadEmployeeProfile({ employeeId: 15 }));
