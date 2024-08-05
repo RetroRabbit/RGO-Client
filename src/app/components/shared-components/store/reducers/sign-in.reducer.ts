@@ -1,20 +1,45 @@
 import { createReducer, on } from '@ngrx/store';
 import { Token } from "../../../../models/hris/token.interface";
-import { SetLogin } from '../actions/sign-in.actions';
+import { SetToken, LoadToken, LoadTokenFailure, LoadTokenSuccess } from '../actions/sign-in.actions';
 
-export const initialState: Token = {
-  email: "",
-  token: "",
-  roles: "",
+export interface TokenState {
+  token: Token | null;
+  loading: boolean;
+  error: string | null;
+}
+
+export const initialState: TokenState = {
+  token: null,
+  loading: false,
+  error: null,
 };
 
-export const LoginReducer = createReducer(
+export const loginReducer = createReducer(
   initialState,
-  on(SetLogin, (state, { payload }) => ({
+  
+  on(SetToken, (state, { payload }) => ({
     ...state,
-    email: payload.email,
-    token: payload.token,
-    roles: payload.roles,
+    token: payload,
+    loading: true,
+    error: null
+  })),
+
+  on(LoadToken, (state) => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+  
+  on(LoadTokenSuccess, (state, { payload }) => ({
+    ...state,
+    clients: payload,
     loading: false
   })),
+  
+  on(LoadTokenFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error
+  }))
+
 );

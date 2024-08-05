@@ -3,12 +3,9 @@ import {MatBadgeModule} from '@angular/material/badge'
 import { SignInComponent } from './components/hris/sign-in/sign-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
-import { StoreModule } from '@ngrx/store';
-import { LoginReducer } from './components/shared-components/store/reducers/sign-in.reducer';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 import { environment } from 'src/environments/environment';
-import { LoginEffects } from './components/shared-components/store/effects/sign-in.effects';
 import { AuthService } from './services/shared-services/auth-access/auth.service';
 import { AuthInterceptor } from './components/shared-components/interceptor/auth0.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -98,6 +95,11 @@ import { AccordionSalaryDetailsComponent } from './components/hris/employees/emp
 import { EmployeeTerminationComponent } from './components/hris/employees/employee-termination/employee-termination.component';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 import { CvDocumentComponent } from './components/hris/cv-document/cv-document.component';
+import { StoreModule } from '@ngrx/store';
+import { loginReducer } from './components/shared-components/store/reducers/sign-in.reducer';
+import { LoginEffects } from './components/shared-components/store/effects/sign-in.effects';
+import { clientReducer } from './components/shared-components/store/reducers/client.reducer';
+import { ClientEffects } from './components/shared-components/store/effects/client.effects';
 import { EmployeeProfileDetailsEffects } from './components/shared-components/store/effects/employee-Profile-Details.effects';
 import { employeeProfileDetailsReducer } from './components/shared-components/store/reducers/employee-Profile-Details.reducer';
 
@@ -163,9 +165,10 @@ import { employeeProfileDetailsReducer } from './components/shared-components/st
     MatSnackBarModule,
     ClipboardModule,
     StoreModule.forRoot({
-      app: LoginReducer,
+      app: loginReducer,
       employeeProfile: employeeProfileReducer,
-      token: LoginReducer,
+      token: loginReducer, 
+      clients: clientReducer,
       employeeProfileDetails : employeeProfileDetailsReducer
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileEffects,EmployeeProfileDetailsEffects]),
