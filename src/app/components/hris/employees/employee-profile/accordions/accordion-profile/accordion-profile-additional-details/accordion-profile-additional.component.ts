@@ -5,7 +5,6 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
-import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
@@ -16,6 +15,7 @@ import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/propert
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute } from '@angular/router';
+import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Component({
   selector: 'app-accordion-profile-additional',
@@ -47,7 +47,7 @@ export class AccordionProfileAdditionalComponent {
     private snackBarService: SnackbarService,
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
-    private clientService: ClientService,
+    private storeAccessService: StoreAccessService,
     private employeeTypeService: EmployeeTypeService,
     private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
@@ -113,11 +113,7 @@ export class AccordionProfileAdditionalComponent {
         this.sharedAccordionFunctionality.employees = data;
         this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
         this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
-        this.clientService.getAllClients().subscribe({
-          next: data => {
-            this.sharedAccordionFunctionality.employeeClient = data.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
-          }
-        });
+            this.sharedAccordionFunctionality.employeeClient = this.storeAccessService.getClients().filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
       }
     });
   }
