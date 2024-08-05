@@ -1,6 +1,6 @@
 import { createSelector } from "@ngrx/store";
 import { AppState } from "../app.state";
-import { EmployeeProfileDetailsState  } from "../reducers/employee-profile-details.reducer";
+import { EmployeeProfileDetailsState  } from "../reducers/employee-Profile-Details.reducer";
 
 export const selectEmployeeProfileDetailsState = (state: AppState) => state.employeeProfileDetails;
 
