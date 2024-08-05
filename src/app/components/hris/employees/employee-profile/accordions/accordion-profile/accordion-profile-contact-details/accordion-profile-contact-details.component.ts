@@ -54,7 +54,6 @@ export class AccordionProfileContactDetailsComponent {
     this.checkEmergencyNumberValue(initialEmergencyNumberValue);
     const initialCellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
     this.checkCellphoneNumberValue(initialCellphoneNumberValue);
-    this.setInputValueCheck();
   }
 
   ngAfterViewInit(): void {
@@ -158,7 +157,7 @@ export class AccordionProfileContactDetailsComponent {
       emergencyContactName: [this.employeeProfile.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
       emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required]]
     });
-    console.log(this.sharedAccordionFunctionality.employeeContactForm);
+    this.setInputValueCheck();
     this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.sharedAccordionFunctionality.checkContactFormProgress();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", true)
