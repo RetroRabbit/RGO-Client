@@ -400,32 +400,11 @@ export class SharedAccordionFunctionality {
   }
 
   calculateAdditionalDocumentProgress() {
-    let numberOfPopulatedFields = 0;
-    let numberOfRequiredFields = 0;
-
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
         this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
         const total = this.customFieldsDocuments.length;
         const fetchedDocuments = this.additionalDocuments.length;
-
-        const formControls = this.additionalDocumentForm.controls;
-    for (const controlName in formControls) {
-      if (formControls.hasOwnProperty(controlName)) {
-        const control = formControls[controlName];
-        let isRequired = false;
-        if (control.validator) {
-          const validator = control.validator({} as AbstractControl);
-          isRequired = validator && validator['required'] ? true : false;
-        }
-        if (isRequired) {
-          numberOfRequiredFields++;
-          if (control.value != null && control.value !== '') {
-            numberOfPopulatedFields++;
-          }
-        }
-      }
-    }
         if (fetchedDocuments === 0) {
           this.additionalDocumentsProgress = total === 0 ? 100 : 0;
         } else {
