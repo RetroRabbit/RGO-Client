@@ -28,12 +28,10 @@ import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-docu
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
-import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employeeProfileNew.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/components/shared-components/store/app.state';
 import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
 import { Observable, Subscription } from 'rxjs';
-import * as EmployeeProfileSelectors from 'src/app/components/shared-components/store/selector/employee-profile.selector';
 
 import { LoadClients, SetClients } from 'src/app/components/shared-components/store/actions/client.actions';
 
@@ -54,7 +52,6 @@ export class EmployeeProfileComponent implements OnChanges {
   employeePhysicalAddress !: EmployeeAddress;
   employeePostalAddress !: EmployeeAddress;
   terminationData !: EmployeeTermination
-  BIGemployeeProfile! : EmployeeProfileNew | null;
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
   customFields: CustomField[] = [];

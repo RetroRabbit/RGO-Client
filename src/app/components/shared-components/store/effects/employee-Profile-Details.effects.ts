@@ -29,10 +29,3 @@ export class EmployeeProfileDetailsEffects {
   );
 
 }
-
-
-// effect(the logic which calls a action such as fetching) 
-//-> action (like load employee calls the allocated reducer)
-//-> reducer
-//-> reducer takes in old state, updates it and returns new state
-// application state is stored in app.state

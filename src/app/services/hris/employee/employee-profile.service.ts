@@ -7,7 +7,6 @@ import { environment } from '../../../../environments/environment';
 import { AuthAccessService } from '../../shared-services/auth-access/auth-access.service';
 import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { EmployeeProfileNew } from 'src/app/models/hris/EmployeeProfile/employeeProfileNew.interface';
 import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
 
 @Injectable({
@@ -31,22 +30,10 @@ export class EmployeeProfileService {
     return this.httpClient.get<SimpleEmployee>(`${this.baseUrl}/simple-profile${queryParams}`);
   }
 
-  //test call
-  getNEWEmployeeById(id: number): Observable<EmployeeProfileNew> {
-    const queryParams = `?id=${id}`;
-    return this.httpClient.get<EmployeeProfileNew>(`${environment.HttpsBaseURL}/employee-profile${queryParams}`);
-  }
-
   getEmployeeProfileDetailsById(id: number): Observable<EmployeeProfileDetails> {
     const queryParams = `?id=${id}`;
     return this.httpClient.get<EmployeeProfileDetails>(`${environment.HttpsBaseURL}/profile-details${queryParams}`);
   }
-
-  getEmployeeCareerSummaryById(id: number): Observable<EmployeeProfileDetails> {
-    const queryParams = `?id=${id}`;
-    return this.httpClient.get<EmployeeProfileDetails>(`${environment.HttpsBaseURL}/career-summary${queryParams}`);
-  }
-
 
   getAll(): Observable<Employee[]> {
     return this.httpClient.get<Employee[]>(`${this.baseUrl}/all`);
