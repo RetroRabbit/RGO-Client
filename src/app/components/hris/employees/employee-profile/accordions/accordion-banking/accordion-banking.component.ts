@@ -69,15 +69,21 @@ export class AccordionBankingComponent {
 
   ngOnInit(): void {
     this.getEmployeeBankingData();
-    this.setInputValueCheck();
     this.banks = this.banks.slice().sort((a, b) => a.value.localeCompare(b.value));
   }
 
   setInputValueCheck() {
-    this.bank = this.employeeBankingsForm.get('bankName')?.value !== null;
-    this.accountType = this.employeeBankingsForm.get('accountType')?.value !== null;
-    this.accountNumber = this.employeeBankingsForm.get('accountNo')?.value;
-    this.accountBranch = this.employeeBankingsForm.get('branch')?.value;
+    const {
+      accountType,
+      bankName,
+      accountNo,
+      branch
+    } = this.employeeBankingsForm.value;
+
+    this.accountBranch = branch;
+    this.accountNumber = accountNo;
+    this.accountType = accountType !== null;
+    this.bank = bankName !== null;
   }
 
   isInputEmpty(valueToCheck: string): boolean {
@@ -109,7 +115,7 @@ export class AccordionBankingComponent {
       branch: [{ value: bankingDetails.branch, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       file: [{ value: bankingDetails.file, disabled: true }, Validators.required],
     });
-    this.setInputValueCheck();
+
     this.hasBankingData = true;
     this.checkBankingInformationProgress();
     this.totalBankingProgress();
@@ -142,7 +148,6 @@ export class AccordionBankingComponent {
     link.download = fileName;
     link.click();
   }
-
 
   openFileInput() {
     const fileInput = document.getElementById('fileUpload') as HTMLInputElement;

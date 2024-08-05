@@ -67,11 +67,17 @@ export class AccordionProfileContactDetailsComponent {
   }
 
   setInputValueCheck() {
-    this.workEmail = this.sharedAccordionFunctionality.employeeContactForm.get('email')?.value;
-    this.personalEmail = this.sharedAccordionFunctionality.employeeContactForm.get('personalEmail')?.value;
-    this.emergencyContactName = this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactName')?.value;
-    this.emergencyNumberVal = this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value === null;
-    this.cellphoneNumber = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value === null;
+    const {
+      email,
+      emergencyContactName,
+      emergencyContactNo,
+      cellphoneNo
+    } = this.sharedAccordionFunctionality.employeeContactForm.value;
+
+    this.workEmail = email;
+    this.emergencyContactName = emergencyContactName;
+    this.emergencyNumberVal = emergencyContactNo !== null;
+    this.cellphoneNumber = cellphoneNo != null;
   }
 
   isInputEmpty(valueToCheck: string): boolean {

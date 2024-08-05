@@ -167,11 +167,19 @@ export class AccordionProfileEmployeeDetailsComponent {
   }
 
   setInputValueCheck() {
-    this.firstName = this.sharedAccordionFunctionality.employeeDetailsForm.get('name')?.value;
-    this.lastName = this.sharedAccordionFunctionality.employeeDetailsForm.get('surname')?.value;
-    this.idNumber = this.sharedAccordionFunctionality.employeeDetailsForm.get('idNumber')?.value;
-    this.dateOfBirth = this.sharedAccordionFunctionality.employeeDetailsForm.get('dateOfBirth')?.value;
-    this.startDate = this.sharedAccordionFunctionality.employeeDetailsForm.get('engagementDate')?.value;
+    const {
+      name,
+      surname,
+      idNumber,
+      dateOfBirth,
+      startDate
+    } = this.sharedAccordionFunctionality.employeeDetailsForm.value;
+
+    this.firstName = name;
+    this.lastName = surname;
+    this.idNumber = idNumber;
+    this.dateOfBirth = dateOfBirth;
+    this.startDate = startDate;
   }
 
   isInputEmpty(valueToCheck: string): boolean {

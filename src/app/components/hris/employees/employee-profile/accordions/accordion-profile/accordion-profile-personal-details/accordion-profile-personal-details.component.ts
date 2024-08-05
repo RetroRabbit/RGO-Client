@@ -38,7 +38,6 @@ export class AccordionProfilePersonalDetailsComponent {
     this.initializeForm();
     this.loadCountries();
     this.checkDisabilityType();
-    this.setInputValueCheck();
 
     if (this.isCustomType) {
       const disabilityTypeControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');
@@ -99,6 +98,7 @@ export class AccordionProfilePersonalDetailsComponent {
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
     this.sharedAccordionFunctionality.checkPersonalFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
+    this.setInputValueCheck();
     this.checkEmployeeDetails();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", true)
   }
@@ -113,9 +113,15 @@ export class AccordionProfilePersonalDetailsComponent {
     public locationApiService: LocationApiService) { }
 
   setInputValueCheck() {
-    this.countryOfBirth = this.sharedAccordionFunctionality.personalDetailsForm.get('countryOfBirth')?.value !== null;
-    this.nationality = this.sharedAccordionFunctionality.personalDetailsForm.get('nationality')?.value !== null;
-    this.race = this.sharedAccordionFunctionality.personalDetailsForm.get('race')?.value !== -1;
+    const {
+      countryOfBirth,
+      nationality,
+      race,
+    } = this.sharedAccordionFunctionality.personalDetailsForm.value;
+
+    this.race = race !== -1;
+    this.nationality = nationality !== null;
+    this.countryOfBirth = countryOfBirth !== null;
   }
 
   checkEmployeeDetails() {
