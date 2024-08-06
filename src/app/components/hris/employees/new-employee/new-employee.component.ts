@@ -4,7 +4,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
@@ -22,6 +21,9 @@ import { CustomvalidationService } from 'src/app/services/hris/id-validator.serv
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
+import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
+import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
+import { SharedAccordionFunctionality } from '../employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-new-employee',
@@ -39,8 +41,10 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeProfileService: EmployeeProfileService,
     private employeeTypeService: EmployeeTypeService,
+    private storeAccessService: StoreAccessService,
     private employeeAddressService: EmployeeAddressService,
     private cookieService: CookieService,
     private router: Router,
@@ -169,6 +173,7 @@ export class NewEmployeeComponent implements OnInit {
       disabilityNotesControl?.updateValueAndValidity();
     });
 
+    console.log(this.sharedAccordionFunctionality.employeeTypes)
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.employeeTypes = data.sort((a, b) => {
@@ -178,6 +183,12 @@ export class NewEmployeeComponent implements OnInit {
         });
       },
     });
+    // var data = this.storeAccessService.getEmployeeTypes();
+    // this.employeeTypes = data.sort((a, b) => {
+    //   const nameA = (a.name || '').toLowerCase();
+    //   const nameB = (b.name || '').toLowerCase();
+    //   return nameA.localeCompare(nameB);
+    // });
 
     this.employeeProfileService
       .getEmployeeProfiles()

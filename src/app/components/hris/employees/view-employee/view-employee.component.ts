@@ -16,6 +16,9 @@ import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-typ
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface'
 import { EmployeeStatus } from 'src/app/models/hris/constants/employee-status.constants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
+import { SetEmployeeTypes } from 'src/app/components/shared-components/store/actions/employee-types.actions';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/components/shared-components/store/app.state';
 
 @Component({
   selector: 'app-view-employee',
@@ -27,6 +30,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 export class ViewEmployeeComponent {
 
   constructor(
+    private store: Store<AppState>,
     private employeeProfileService: EmployeeProfileService,
     private employeeRoleService: EmployeeRoleService,
     private cookieService: CookieService,
@@ -388,6 +392,7 @@ export class ViewEmployeeComponent {
   getUserTypesForFilter(): Observable<GenericDropDownObject[]> {
     return this.employeeTypeService.getAllEmployeeTypes().pipe(
       map(types => {
+        this.store.dispatch(SetEmployeeTypes({ payload: types }));
         const userTypes: GenericDropDownObject[] = types.map(type => ({
           id: type.id || 0,
           name: type.name || 'Unknown'

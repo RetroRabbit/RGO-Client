@@ -4,7 +4,6 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
@@ -18,6 +17,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/components/shared-components/store/app.state';
 import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 import { SetCustomField } from 'src/app/components/shared-components/store/actions/custom-field.actions';
+import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 
 @Component({
   selector: 'app-accordion-profile-additional',
@@ -50,8 +50,8 @@ export class AccordionProfileAdditionalComponent {
     private snackBarService: SnackbarService,
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
-    private storeAccessService: StoreAccessService,
     private employeeTypeService: EmployeeTypeService,
+    private storeAccessService: StoreAccessService,
     private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
@@ -69,7 +69,7 @@ export class AccordionProfileAdditionalComponent {
   
   loadEmployeeData() {
     this.getEmployeeData();
-    this.getEmployeeTypes();
+    // this.getEmployeeTypes();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
     }
@@ -85,11 +85,15 @@ export class AccordionProfileAdditionalComponent {
     });
   }
 
-  getEmployeeTypes() {
-    this.employeeTypeService.getAllEmployeeTypes().subscribe({
-      next: data => this.sharedAccordionFunctionality.employeeTypes = data
-    });
-  }
+  // getEmployeeTypes() {
+  //   this.sharedAccordionFunctionality.employeeTypes = this.storeAccessService.getEmployeeTypes();
+  // }
+
+  // getEmployeeTypes() {
+  //   this.employeeTypeService.getAllEmployeeTypes().subscribe({
+  //     next: data => this.sharedAccordionFunctionality.employeeTypes = data
+  //   });
+  // }
 
   getAllEmployees() {
     this.employeeProfileService.getEmployeeProfiles().subscribe({
