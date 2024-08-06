@@ -10,7 +10,7 @@ export class CustomField {
   code?: string;
   name?: string;
   description?: string;
-  regex?: string;
+  regex!: string | RegExp;
   type?: number;
   status?: number;
   internal?: boolean;

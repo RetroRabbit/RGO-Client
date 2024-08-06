@@ -1,8 +1,7 @@
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { Component, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
-import { Subscription, catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
@@ -18,8 +17,8 @@ import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-card.interface';
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
-import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 import { DashboardService } from 'src/app/services/hris/employee/dashboard.service';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -59,8 +58,9 @@ export class AdminDashboardComponent {
   filteredTypes: any[] = this.types;
   selectedTypes: string[] = [];
   employeeProfiles: EmployeeProfile[] = [];
-  totalNumberOfEmployees: number = 0;
+  totalNumberOfActiveEmployees: number = 0;
   growthRate: number = 0;
+  employeeId: number | undefined = 0;
   roles: string[] = [];
   searchQuery: string = '';
   searchResults: EmployeeProfile[] = [];
@@ -92,12 +92,11 @@ export class AdminDashboardComponent {
   rolesSelected: string[] = [];
   categoriesSelected: string[] = [];
   constructor(
-    private employeeBankingandstarterkitService: EmployeeBankingandstarterkitService,
-    private employeeService: EmployeeService,
     private dashboardService: DashboardService,
     public chartService: ChartService,
     private cookieService: CookieService,
     private router: Router,
+    private employeeProfileService: EmployeeProfileService,
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
@@ -130,13 +129,9 @@ export class AdminDashboardComponent {
   }
 
   ngOnInit() {
-    const types: string = this.cookieService.get('userType');
-    this.roles = Object.keys(JSON.parse(types));
-    if (this.authAccessService.isAdmin() ||
-      this.authAccessService.isSuperAdmin() ||
-      this.authAccessService.isTalent() ||
-      this.authAccessService.isJourney()) {
-      this.configureDashboardData();
+    this.roles = [this.authAccessService.getRole()];
+    if (this.authAccessService.isSupport()) {
+      this.getEmployeeId();
     }
     this.setSvgWidth();
   }
@@ -152,13 +147,23 @@ export class AdminDashboardComponent {
     }
   }
 
+  getEmployeeId() {
+   this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail()).subscribe({
+    next: data => {
+      this.employeeId = data.id;
+    },
+    complete:() =>{
+      this.configureDashboardData();
+    }
+   });
+  }
+
   configureDashboardData() {
     this.getEmployeeProfiles();
     this.getCharts();
     this.getEmployeeTypes();
     this.getEmployeeTableColumns();
     this.getDataCardsData();
-    this.employeeBankingandstarterkitService.getAllBankingAndStarterkits()
 
     this.categoryControl.valueChanges.subscribe((value) => {
       this.selectedCategories = value;
@@ -171,9 +176,9 @@ export class AdminDashboardComponent {
 
   getDataCardsData() {
     this.isLoading = true;
-    this.employeeService.getTotalEmployees().subscribe({
+    this.dashboardService.getActiveEmployeeCount().subscribe({
       next: (data: number) => {
-        this.totalNumberOfEmployees = data;
+        this.totalNumberOfActiveEmployees = data;
       },
       complete: () => {
         this.isLoading = false;
@@ -223,7 +228,7 @@ export class AdminDashboardComponent {
   }
 
   getEmployeeProfiles() {
-    this.employeeService.getEmployeeProfiles().subscribe({
+    this.employeeProfileService.getEmployeeProfiles().subscribe({
       next: (data: EmployeeProfile[]) => {
         this.employeeProfiles = data;
         this.searchResults = [];
@@ -236,8 +241,8 @@ export class AdminDashboardComponent {
   }
 
   getCharts() {
-    if (this.navService.employeeProfile?.id) {
-      this.chartService.getEmployeeCharts(this.navService.employeeProfile.id).subscribe({
+    if (this.employeeId) {
+      this.chartService.getEmployeeCharts(this.employeeId).subscribe({
         next: (data) => {
           this.charts = data;
         },

@@ -6,10 +6,10 @@
         <div class="col-12 offset-0 col-md-8 offset-md-2 col-lg-6 offset-lg-3 ">
           <div class="row justify-content-center align-items-center">
             <div class="col-12">
-              <h2 class="text-center" id="create-employee">Create employee profile</h2>
+              <h2 class="text-center" id="create-employee">Create Employee Profile</h2>
               <span class="text-center roboto-font" id="heading-text">
-                <p>Please enter the employee’s information in</p>
-                <p>order to create a profile for them.</p>
+                <p>Please Enter the Employee’s Information in</p>
+                <p>Order to Create a Profile for them.</p>
               </span>
             </div>
           </div>
@@ -17,29 +17,29 @@
             <div class="row justify-content-center align-items-center">
               <div class="row justify-content-center align-items-center roboto-font col-md-12 pb-3">
                 <h1 class=" mb-0 mb-md-1" id="heading">Employee Details</h1>
-                <p class="">Note: *The asterisk indicates required fields</p>
+                <p class="">Note: *The Asterisk Indicates Required Fields</p>
               </div>
               <div class="row flex-column justify-content-center align-items-center col-md-12">
                 <mat-form-field appearance="outline" class=" mb-3">
                   <mat-label>First Name</mat-label>
                   <input matInput type="text" formControlName="name" />
                   <mat-error *ngIf="newEmployeeForm.controls['name'].hasError('required')">
-                    First Name is required
+                    First name is required
                   </mat-error>
                   <mat-error
                     *ngIf="newEmployeeForm.controls['name'].hasError('pattern') && !newEmployeeForm.controls['name'].hasError('required') ">
-                    First Name must not contain numbers
+                    First Name Must Not Contain Numbers
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class=" mb-3">
                   <mat-label>Last Name</mat-label>
                   <input matInput type="text" formControlName="surname" />
                   <mat-error *ngIf="newEmployeeForm.controls['surname'].hasError('required')">
-                    Last Name is required
+                    Last name is required
                   </mat-error>
                   <mat-error
                     *ngIf="newEmployeeForm.controls['surname'].hasError('pattern') && !newEmployeeForm.controls['surname'].hasError('required') ">
-                    Last Name must not contain numbers
+                    Last name must not contain numbers
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class=" mb-3">
@@ -89,22 +89,16 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="cellphone-container">
                   <mat-label class="cellphone-label">Cellphone Number</mat-label>
-                  <ngx-mat-intl-tel-input
-                    #inputField
-                    matInput
-                    [preferredCountries]="['za', 'gb']"
-                    [enablePlaceholder]="true"
-                    [enableSearch]="true"
-                    [required]="true"
-                    formControlName="cellphoneNo"
-                    (input)="onCellphoneInputCheck(inputField.value ?? '')"
-                  ></ngx-mat-intl-tel-input>
-                  <mat-error *ngIf="newEmployeeForm.controls['cellphoneNo'].hasError('required') && newEmployeeForm.controls['cellphoneNo'].value=='' ">
-                    Phone number is required
+                  <ngx-mat-intl-tel-input #inputField matInput [preferredCountries]="['za', 'gb']"
+                    [enablePlaceholder]="true" [enableSearch]="true" [required]="true" formControlName="cellphoneNo"
+                    (input)="onCellphoneInputCheck(inputField.value ?? '')"></ngx-mat-intl-tel-input>
+                  <mat-error
+                    *ngIf="newEmployeeForm.controls['cellphoneNo'].hasError('required') && newEmployeeForm.controls['cellphoneNo'].value=='' ">
+                    Cellphone number is required
                   </mat-error>
                   <mat-error
                     *ngIf="newEmployeeForm.controls['cellphoneNo'].value != '' && newEmployeeForm.controls['cellphoneNo'].invalid">
-                    This is not a valid phone number
+                    This is not a valid cellphone number.
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class=" mb-3">
@@ -112,12 +106,18 @@
                   <mat-select formControlName="employeeType" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let type of employeeTypes" [value]="type">{{ type.name }}</mat-option>
                   </mat-select>
+                  <mat-error *ngIf="newEmployeeForm.controls['employeeType'].hasError('required')">
+                    Select Role
+                  </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class=" mb-3">
                   <mat-label>Select Level</mat-label>
                   <mat-select formControlName="level" hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
                   </mat-select>
+                  <mat-error *ngIf="newEmployeeForm.controls['level'].hasError('required')">
+                    Select Level
+                  </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class=" mb-3">
                   <mat-label>Start Date</mat-label>
@@ -131,9 +131,12 @@
                 <mat-form-field appearance="outline" class=" mb-3">
                   <mat-label>ID Number</mat-label>
                   <input matInput type="text" formControlName="idNumber" (blur)="getGenderBirthday($event)" />
+                  <mat-error *ngIf="newEmployeeForm.controls['idNumber'].hasError('required')">
+                    ID number is required
+                  </mat-error>
                   <mat-error
                     *ngIf="newEmployeeForm.controls['idNumber'].hasError('invalidIdNumber') && !newEmployeeForm.controls['idNumber'].hasError('required')">
-                    Not a valid South African ID number
+                    Not a valid south african ID number
                   </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="">
@@ -146,7 +149,7 @@
                   </mat-error>
                 </mat-form-field>
                 <div class="mb-3">
-                  <span class="roboto-font pb-3">Do you have any disabilities?</span>
+                  <span class="roboto-font pb-3">Do You Have Any Disabilities?</span>
                   <mat-radio-group formControlName="disability" class="row" (change)="setHasDisability($event)">
                     <mat-radio-button class="col-12 p-1" *ngFor="let check of [false, true]" [value]="check">
                       {{ check ? "Yes" : "No"}}
@@ -158,7 +161,8 @@
                 </div>
                 <mat-form-field appearance="outline" class=" mb-3" *ngIf="hasDisability">
                   <mat-label>Disability Types</mat-label>
-                  <mat-select formControlName="disabilityType" hideSingleSelectionIndicator="true" (selectionChange)="setTypeOther($event)">
+                  <mat-select formControlName="disabilityType" hideSingleSelectionIndicator="true"
+                    (selectionChange)="setTypeOther($event)">
                     <mat-option *ngFor="let type of disabilityType" [value]="type.value">{{ type.value }}</mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -166,7 +170,7 @@
                   <mat-label>Disability Notes</mat-label>
                   <textarea matInput type="text" formControlName="disabilityNotes"></textarea>
                   <mat-error *ngIf="newEmployeeForm.controls['disabilityNotes'].hasError('required')">
-                    Disability Notes are required
+                    Disability notes are required
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -185,11 +189,12 @@
                   <h1 class=" pb-3" id="heading">Additional Information</h1>
                   <div class=" pb-3">
                     <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Profile photo</mat-label>
-                      <input matInput type="text" [value]="imageName"/>
+                      <mat-label>Profile Photo</mat-label>
+                      <input matInput type="text" [value]="imageName" />
                       <span mat-icon-button matSuffix (click)="uploadFile.click()" class="pe-3">
                         <mat-icon id="file-upload-cursor">file_upload</mat-icon>
-                        <input type="file" #uploadFile (change)="onFileChange($event)" hidden accept=".jpeg, .jpg, .png"/>
+                        <input type="file" #uploadFile (change)="onFileChange($event)" hidden
+                          accept=".jpeg, .jpg, .png" />
                       </span>
                     </mat-form-field>
                     <div id="image-preview" *ngIf="imageUrl !== ''">
@@ -230,7 +235,7 @@
                       hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
                     </mat-select>
-                    <mat-icon matSuffix (click)="countrySelect.open()">Search</mat-icon>
+                    <mat-icon matSuffix (click)="countrySelect.open()" class="search-icon">search</mat-icon>
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" class=""
@@ -278,21 +283,21 @@
                     <mat-label>Street Number</mat-label>
                     <input matInput type="text" formControlName="streetNumber" />
                     <mat-error *ngIf="physicalAddress.controls['streetNumber'].hasError('pattern')">
-                      Please enter a valid street number
+                      Please Enter a Valid Street Number
                     </mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class=" mt-2">
                     <mat-label>Street Name</mat-label>
                     <input matInput type="text" formControlName="streetName" />
                     <mat-error *ngIf="physicalAddress.controls['streetName'].hasError('pattern')">
-                      Street name must only contain letters
+                      Street Name Must Only Contain Letters
                     </mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class=" mt-2">
                     <mat-label>Postal Code</mat-label>
                     <input matInput type="text" formControlName="postalCode" />
                     <mat-error *ngIf="physicalAddress.controls['postalCode'].hasError('pattern')">
-                      Postal code must contain only numbers.
+                      Postal Code Must Contain Only Numbers.
                     </mat-error>
                   </mat-form-field>
                   <form class=" mt-2" [formGroup]="postalAddressForm">
@@ -386,7 +391,7 @@
             <div class="col-md-12 col-lg-12">
               <h2 class="text-center" id="create-employee">Starter kits</h2>
               <span class="text-center roboto-font" id="heading-text">
-                <p>Please upload employee’s starter kit documents below</p>
+                <p>Please Upload Employee’s Starter Kit Documents Below</p>
               </span>
             </div>
           </div>
@@ -405,16 +410,16 @@
                           </div>
                           <div class="roboto-font" *ngIf="categories[0].state == true" id="align">
                             <p id="title">Employment Contract</p>
-                            <p id="supported">PDF is supported</p>
+                            <p id="supported">PDF is Supported</p>
                           </div>
                           <div class="roboto-font" *ngIf="categories[0].state == false" id="align">
-                            <p id="title">Employment contract</p>
+                            <p id="title">Employment Contract</p>
                             <p id="document-text">{{categories[0].name}}</p>
                           </div>
                         </div>
                         <div class="col d-none d-lg-block file-mention" id="align-left"
                           *ngIf="categories[0].state == true">
-                          <p id="drop-file" alig>Drop your Files Here!</p>
+                          <p id="drop-file" alig>Drop Your Files Here</p>
                         </div>
                         <div class="col">
                           <div id="align-buttons">
@@ -457,7 +462,7 @@
                           </div>
                           <div class="roboto-font" *ngIf="categories[2].state == true" id="align">
                             <p id="title">Medical Aid</p>
-                            <p id="supported">PDF is supported</p>
+                            <p id="supported">PDF Is Supported</p>
                           </div>
                           <div class="roboto-font" *ngIf="categories[2].state == false" id="align">
                             <p id="title">Medical Aid</p>
@@ -466,7 +471,7 @@
                         </div>
                         <div class="col d-none d-lg-block file-mention" id="align-left"
                           *ngIf="categories[2].state == true">
-                          <p id="drop-file">Drop your files Here!</p>
+                          <p id="drop-file">Drop Your Files Here</p>
                         </div>
                         <div class="col">
                           <div id="align-buttons">
@@ -509,7 +514,7 @@
                           </div>
                           <div class="roboto-font" *ngIf="categories[1].state == true" id="align">
                             <p id="title">Retirement Annuity</p>
-                            <p id="supported">PDF is supported</p>
+                            <p id="supported">PDF Is Supported</p>
                           </div>
                           <div class="roboto-font" *ngIf="categories[1].state == false" id="align">
                             <p id="title">Retirement Annuity</p>
@@ -518,7 +523,7 @@
                         </div>
                         <div class="col d-none d-lg-block file-mention" id="align-left"
                           *ngIf="categories[1].state == true">
-                          <p id="drop-file">Drop your files Here!</p>
+                          <p id="drop-file">Drop Your Files Here!</p>
                         </div>
                         <div class="col">
                           <div id="align-buttons">
@@ -553,14 +558,10 @@
           <div id="footer">
             <button id="cancel-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="goToPreviousPage()">Cancel</button>
-            <button
-              [disabled]="!isSavedEmployee || categories[0].state == true && categories[1].state == true && categories[2].state == true && categories[3].state == true"
-              id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
+            <button id="save-add-button" [ngClass]="screenWidth < 768 ? 'button-mobile' : ''"
               (click)="saveAndAddAnother()" type="button">Save
               and add another</button>
-            <button
-              [disabled]="!isSavedEmployee || categories[0].state == true && categories[1].state == true && categories[2].state == true && categories[3].state == true"
-              id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
+            <button id="save-button" [ngClass]="screenWidth < 768 ? 'button-mobile  button-top' : ''"
               (click)="saveAndExit()">Save</button>
           </div>
         </form>

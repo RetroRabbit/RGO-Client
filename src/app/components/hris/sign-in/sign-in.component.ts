@@ -1,7 +1,7 @@
 import { Component, HostListener, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { GetLogin } from '../../shared-components/store/actions/login-in.actions';
+import { SetToken } from '../../shared-components/store/actions/sign-in.actions';
 import * as Auth0 from '@auth0/auth0-angular';
 import { Token } from '../../../models/hris/token.interface';
 import { EMPTY, catchError, of, switchMap, take } from 'rxjs';
@@ -12,6 +12,8 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AppComponent } from 'src/app/app.component';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
+import { AppState } from '../../shared-components/store/app.state';
+import { selectToken } from '../../shared-components/store/selector/sign-in.selector';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -19,11 +21,10 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 })
 export class SignInComponent {
   user: Token | undefined;
-  token: string | null = null;
   userEmail: string | null = null;
 
   constructor(
-    private store: Store<Auth0.AppState>,
+    private store: Store<AppState>,
     private auth: Auth0.AuthService,
     private authService: AuthService,
     private router: Router,
@@ -33,26 +34,25 @@ export class SignInComponent {
     private authAccessService: AuthAccessService,
     private NgZone: NgZone,
     private sharedPropprtyAccessService: SharedPropertyAccessService,
-    private appComponent: AppComponent,
   ) { }
 
   ngOnInit() {
-    if(this.appComponent.hasSignedIn()){
+    if(this.authAccessService.hasSignedIn()){
       this.initialUserNavigation();
       return
     }
-    this.token = this.cookieService.get('accessToken');
-    this.userEmail = this.cookieService.get('userEmail');
-    
-    if (this.token) {
-      const tokenPayload = JSON.parse(atob(this.token.split('.')[1]));
-      const expiryDate = new Date(tokenPayload.exp * 1000);
-  
-      if (expiryDate < new Date()) {
-        this.cookieService.deleteAll();
-        this.router.navigate(['/login']);
+
+    let token: string;
+    this.store.select(selectToken).subscribe((storeToken) => {
+      token = storeToken?.token || '';
+      if (token) {
+        const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+        const expiryDate = new Date(tokenPayload.exp * 1000);
+        if (expiryDate < new Date()) {
+          this.router.navigate(['/login']);
+        }
       }
-    }
+    });
   }
 
   screenWidth: number = window.innerWidth;
@@ -84,72 +84,56 @@ export class SignInComponent {
               const decodedToken = this.authService.decodeJwt(token);
               const role = decodedToken.role || [];
               const filteredRoles = role.filter((role: string) => validRoles.includes(role));
+
+              const userData: Token = {
+                email: decodedToken.email,
+                token: token,
+                roles: role,
+              };
+              this.store.dispatch(SetToken({ payload: userData }));
   
-              this.cookieService.set('userEmail', user?.email || '', {
-                path: '/',
-                secure: true,
-                sameSite: 'None'
-              });
-  
-              this.cookieService.set('accessToken', token, {
-                path: '/',
-                secure: true,
-                sameSite: 'None'
-              });
-  
-              this.cookieService.set('userType', JSON.stringify(filteredRoles), {
-                path: '/',
-                secure: true,
-                sameSite: 'None'
-              });
-  
-              if (filteredRoles.length === 0) {
-                return this.authService.checkUserExistenceInDatabase().pipe(
-                  switchMap(response => {
-                    if (response === 'User found.') {
-                      this.snackBarService.showSnackbar("Account Finalized. You May Now Log in.", "snack-success");
+              return this.authService.checkUserExistenceInDatabase().pipe(
+                switchMap(response => {
+                  if (response === 'User found.') {
+                    if (filteredRoles.length > 0) {
+                      return of({ user, token, role: filteredRoles });
                     } else {
-                      this.snackBarService.showSnackbar("Contact Admin Regarding Your Account.", "snack-error");
+                      this.snackBarService.showSnackbar("Account Finalized. You May Now Log in.", "snack-success");
+                      return EMPTY;
                     }
-                    return EMPTY;
-                  }),
-                  catchError(() => {
+                  } else {
                     this.snackBarService.showSnackbar("Contact Admin Regarding Your Account.", "snack-error");
                     return EMPTY;
-                  })
-                );
-              }
-              return of({ user, token, role: filteredRoles });
+                  }
+                }),
+                catchError(() => {
+                  this.snackBarService.showSnackbar("Contact Admin Regarding Your Account.", "snack-error");
+                  return EMPTY;
+                })
+              );
             })
           )
         )
       )
       .subscribe({
         next: ({ user, token, role }) => {
-          this.authAccessService.setRoles(role);
-          const userData: Token = {
-            email: user?.email,
-            token: token,
-            roles: role,
-          };
-          this.authAccessService.setEmployeeEmail(user?.email as string);
-          this.navService.refreshEmployee();
-          this.store.dispatch(GetLogin({ payload: userData }));
+          if (user && token && role) {
+            this.navService.refreshEmployee();
   
-          if (window.innerWidth > 776)
-            this.navService.showNavbar = true;
-          else
-            this.navService.showSideBar = true;
+            if (window.innerWidth > 776)
+              this.navService.showNavbar = true;
+            else
+              this.navService.showSideBar = true;
   
-          this.sharedPropprtyAccessService.setAccessProperties();
-          this.initialUserNavigation();
+            this.sharedPropprtyAccessService.setAccessProperties();
+            this.initialUserNavigation();
+          }
         },
         error: () => {
           this.snackBarService.showSnackbar("Contact admin regarding your account.","snack-error");
         }
       });
   }  
-
 
   initialUserNavigation(){
   // TODO: put back in when ats available
@@ -158,10 +142,7 @@ export class SignInComponent {
           //   this.router.navigateByUrl('/ats-dashboard');
           // }
           if (
-            this.authAccessService.isAdmin() ||
-            this.authAccessService.isJourney() ||
-            this.authAccessService.isSuperAdmin() ||
-            this.authAccessService.isTalent()
+            this.authAccessService.isSupport()
           ) {
             this.navService.isHris = true;
             this.cookieService.set('isHris', String(this.navService.isHris))

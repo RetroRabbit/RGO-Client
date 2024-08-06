@@ -50,7 +50,7 @@ export class AccordionCertificatesComponent {
 
   dialogTypeData: Dialog = {
     type: 'confirm',
-    title: 'Delete certificate',
+    title: 'Delete Certificate',
     subtitle: 'Are you sure you want to delete?',
     confirmButtonText: 'Delete',
     denyButtonText: "Cancel"

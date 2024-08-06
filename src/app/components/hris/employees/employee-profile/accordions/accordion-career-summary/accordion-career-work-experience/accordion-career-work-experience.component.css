@@ -73,5 +73,21 @@ mat-icon{
 }
 
 #project-description-width{
-    width:880px;
+    width:1020px;
+}
+
+.matChip{
+    border-radius: 8px;
+}
+  
+mat-select-trigger {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+  
+mat-chip-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
 }

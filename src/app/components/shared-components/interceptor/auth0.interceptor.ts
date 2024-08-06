@@ -1,27 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { Token } from '../../../models/hris/token.interface';
 import { tap } from 'rxjs/operators';
-import { CookieService } from 'ngx-cookie-service';
 import { NgToastService } from 'ng-angular-popup';
 import { AuthService } from 'src/app/services/shared-services/auth-access/auth.service';
 import { from } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
+import { AppState } from '../../shared-components/store/app.state';
+import { selectToken } from '../../shared-components/store/selector/sign-in.selector';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   token: string = '';
-
-  constructor(private appStore: Store<{ app: Token }>,
+    constructor(private store: Store<AppState>,
     private authService: AuthService,
-     private cookieService: CookieService,
-     private toast: NgToastService) {
-    this.getToken();
+    private toast: NgToastService) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    return from(this.authService.RenewIfAccessTokenExpired(this.cookieService.get('accessToken'))).pipe(
+    this.store.select(selectToken).subscribe((storeToken) => { this.token = storeToken?.token || ''; });
+    return from(this.authService.RenewIfAccessTokenExpired(this.token)).pipe(
       mergeMap((token: string) => {
         const authReq = req.clone({
           headers: new HttpHeaders({
@@ -40,11 +38,5 @@ export class AuthInterceptor implements HttpInterceptor {
         );
       })
     );
-  }
-
-  getToken() {
-    this.appStore.select('app').subscribe(state => {
-      this.token = state.token;
-    });
   }
 }

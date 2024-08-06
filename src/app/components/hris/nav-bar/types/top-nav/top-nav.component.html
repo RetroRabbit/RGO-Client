@@ -92,7 +92,7 @@
             <div id="nav-item">
               <div (click)="changeNav('/system-settings')"
                 [ngClass]="router.url == '/system-settings' ? 'active' : 'idle'">
-                System Settings
+                Settings
               </div>
               <div *ngIf="router.url == '/system-settings'" id="selected-line-box">
                 <div id="selected-line">
@@ -136,7 +136,7 @@
       </div>
       <div class="ms-2" id="image-container" [hidden]="screenWidth < 992 && !navService.showTopNavMenu">
         <img *ngIf="navService.employeeProfile"
-          [src]="navService.employeeProfile.photo || '../../../../../../assets/img/default-profile-image.png'"
+          [src]="navService.employeeProfile.photo || authAccessService.getAuthTokenProfilePicture() || '../../../../../../assets/img/default-profile-image.png'"
           alt="Profile">
       </div>
     </div>

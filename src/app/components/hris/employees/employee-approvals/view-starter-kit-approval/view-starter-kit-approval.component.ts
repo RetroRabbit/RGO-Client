@@ -6,8 +6,9 @@ import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
-import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 import { EmployeeDocumentsStatus } from 'src/app/models/hris/constants/enums/employeeDocumentsStatus';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 @Component({
   selector: 'app-pending-employee-starterkits',
   templateUrl: './view-starter-kit-approval.component.html',
@@ -36,13 +37,15 @@ export class ViewStarterKitApprovalComponent {
   }
 
   constructor(
+    public authAccessService: AuthAccessService,
     private router: Router,
     private route: ActivatedRoute,
+    public navService: NavService,
     private snackBarService: SnackbarService,
     private documentService: EmployeeDocumentService,
     private changeDetector: ChangeDetectorRef,
-    private employeeService: EmployeeProfileService,
-    private employeeBankingStarterkitService: EmployeeBankingandstarterkitService) { }
+    private employeeProfileService: EmployeeProfileService,
+    ) { }
 
   ngOnInit(): void {
     this.getEmployeeDocuments(this.employeedId);
@@ -61,7 +64,7 @@ export class ViewStarterKitApprovalComponent {
     this.documentService.getAllEmployeeDocuments(employeedId, staterkitDocuments).subscribe({
       next: documents => {
         this.employeeDocuments = documents;
-        this.employeeService.getEmployeeById(employeedId).subscribe({
+        this.employeeProfileService.getEmployeeById(employeedId).subscribe({
           next: employee => {
             this.employee = employee;
             this.isLoading = false;
@@ -166,7 +169,6 @@ export class ViewStarterKitApprovalComponent {
         this.snackBarService.showSnackbar("Updated", "snack-success");
         this.lastUpdatedMessage = this.getNewDate();
         this.getEmployeeDocuments(this.employeedId);
-        this.employeeBankingStarterkitService.getAllBankingAndStarterkits();
       },
       error: (er) => this.snackBarService.showError(er),
     });

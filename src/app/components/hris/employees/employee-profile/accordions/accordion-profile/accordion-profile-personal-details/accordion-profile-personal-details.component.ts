@@ -2,15 +2,14 @@ import { Component, HostListener, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
-import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 
 @Component({
   selector: 'app-accordion-profile-personal-details',
@@ -30,19 +29,31 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   ngOnInit() {
+    this.sharedAccordionFunctionality.typeOther = false;
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
     this.loadCountries();
     this.checkDisabilityType();
 
+    if(this.isCustomType){
+      const disabilityTypeControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');
+      disabilityTypeControl?.patchValue("Other")
+      this.sharedAccordionFunctionality.typeOther = true;
+    }
+    else {
+      this.sharedAccordionFunctionality.typeOther = false;
+    }
+
     this.sharedAccordionFunctionality.personalDetailsForm.get('disability')?.valueChanges.subscribe(value => {
-      const disabilityNotesControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');
+      const disabilityTypeControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');
       if (value === true) {
-        disabilityNotesControl?.setValidators([Validators.required]);
+        disabilityTypeControl?.setValidators([Validators.required]);
       } else {
-        disabilityNotesControl?.clearValidators();
+        disabilityTypeControl?.clearValidators();
+        disabilityTypeControl?.patchValue(null);
+        this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityNotes')?.patchValue("");
       }
-      disabilityNotesControl?.updateValueAndValidity();
+      disabilityTypeControl?.updateValueAndValidity();
     });
 
     this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType')?.valueChanges.subscribe(value => {
@@ -62,8 +73,11 @@ export class AccordionProfilePersonalDetailsComponent {
     if(disabilities.map(x => x.value).includes(this.employeeProfile.employeeDetails.disabilityNotes!)){
       this.isCustomType = false;
     }
+    else if (this.employeeProfile.employeeDetails.disabilityNotes == null || this.employeeProfile.employeeDetails.disabilityNotes == ''){
+      this.isCustomType = false;
+    }
     else{
-      this.isCustomType = true
+      this.isCustomType = true;
     }
   }
 
@@ -72,12 +86,11 @@ export class AccordionProfilePersonalDetailsComponent {
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
       disability: [this.employeeProfile!.employeeDetails.disability, Validators.required],
-      disabilityType: [!this.isCustomType ? this.employeeProfile.employeeDetails.disabilityNotes: "Other"],
+      disabilityType: [!this.isCustomType ? this.employeeProfile.employeeDetails.disabilityNotes: disabilities[7].value],
       nationality: [this.employeeProfile!.employeeDetails.nationality, Validators.required],
       countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth, Validators.required],
       disabilityList: "",
       disabilityNotes: [this.employeeProfile!.employeeDetails.disabilityNotes]
-
     });
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
     this.sharedAccordionFunctionality.checkPersonalFormProgress();
@@ -88,7 +101,7 @@ export class AccordionProfilePersonalDetailsComponent {
 
   constructor(
     private fb: FormBuilder,
-    private employeeService: EmployeeService,
+    private employeeProfileService: EmployeeProfileService,
     private snackBarService: SnackbarService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
@@ -157,6 +170,8 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   setTypeOther(event: any) {
+    const disabilityNotesControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityNotes');
+    disabilityNotesControl?.reset();
     if(event.source.value == 'Other'){
       this.sharedAccordionFunctionality.typeOther = true;
     }
@@ -180,7 +195,7 @@ export class AccordionProfilePersonalDetailsComponent {
       this.sharedAccordionFunctionality.employeeProfileDto!.countryOfBirth = personalDetailsFormValue.countryOfBirth;
       this.sharedAccordionFunctionality.employeeProfileDto!.nationality = personalDetailsFormValue.nationality;
 
-      this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
+      this.employeeProfileService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Updated", "snack-success");
           this.sharedAccordionFunctionality.checkPersonalFormProgress();

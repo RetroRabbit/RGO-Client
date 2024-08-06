@@ -8,10 +8,10 @@ import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { schools } from 'src/app/models/ats/constants/schools.constants';
 import { qualifications } from 'src/app/models/ats/constants/qualifications.constants';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface';
 import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { Employee } from 'src/app/models/hris/employee.interface';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 
 @Component({
   selector: 'app-new-candidate',
@@ -33,7 +33,7 @@ export class NewCandidateComponent {
     private router: Router,
     private snackBarService: SnackbarService,
     private navService: NavService,
-    public employeeService: EmployeeService,
+    public employeeProfileService: EmployeeProfileService,
     private fb: FormBuilder
   ) { }
 
@@ -91,7 +91,7 @@ export class NewCandidateComponent {
   }
 
   getAllEmployees() {
-    this.employeeService.getAll().subscribe({
+    this.employeeProfileService.getAll().subscribe({
       next: data => this.allEmployees = data,
       error: (er) => this.snackBarService.showError(er),
     })
@@ -208,7 +208,7 @@ export class NewCandidateComponent {
   }
 
   getEmployees(): Observable<GenericDropDownObject[]> {
-    return this.employeeService.getAll().pipe(
+    return this.employeeProfileService.getAll().pipe(
       map(employees => {
         const mappedEmployees: GenericDropDownObject[] = employees.map(employee => ({
           id: employee.id || 0,
