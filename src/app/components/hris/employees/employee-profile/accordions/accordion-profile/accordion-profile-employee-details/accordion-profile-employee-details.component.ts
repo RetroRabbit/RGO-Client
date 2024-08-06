@@ -14,7 +14,6 @@ import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute } from '@angular/router';
 import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 
 @Component({
   selector: 'app-accordion-profile-employee-details',
@@ -43,7 +42,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     private customValidationService: CustomvalidationService,
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
-    private employeeTypeService: EmployeeTypeService,
     private storeAccessService: StoreAccessService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,

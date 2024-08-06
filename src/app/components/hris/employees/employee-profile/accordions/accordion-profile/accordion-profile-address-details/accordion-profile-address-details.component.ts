@@ -4,7 +4,6 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -53,7 +52,6 @@ export class AccordionProfileAddressDetailsComponent {
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
     private storeAccessService: StoreAccessService,
-    private employeeTypeService: EmployeeTypeService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,

@@ -19,9 +19,6 @@ import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-c
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
 import { DashboardService } from 'src/app/services/hris/employee/dashboard.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
-import { SetEmployeeTypes } from '../../shared-components/store/actions/employee-types.actions';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../shared-components/store/app.state';
 import { SharedAccordionFunctionality } from '../employees/employee-profile/shared-accordion-functionality';
 @Component({
   selector: 'app-admin-dashboard',
@@ -97,7 +94,6 @@ export class AdminDashboardComponent {
   categoriesSelected: string[] = [];
   constructor(
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-    private store: Store<AppState>,
     private dashboardService: DashboardService,
     public chartService: ChartService,
     private cookieService: CookieService,
@@ -264,7 +260,6 @@ export class AdminDashboardComponent {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
         this.sharedAccordionFunctionality.employeeTypes = data;
-        this.store.dispatch(SetEmployeeTypes({ payload: data }));
         this.types = [];
         this.types.push('All');
         data.forEach((field) => this.types.push(field.name as string));

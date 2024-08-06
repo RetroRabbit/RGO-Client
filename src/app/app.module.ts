@@ -100,8 +100,6 @@ import { clientReducer } from './components/shared-components/store/reducers/cli
 import { ClientEffects } from './components/shared-components/store/effects/client.effects';
 import { customFieldReducer } from './components/shared-components/store/reducers/custom-field.reducer';
 import { CustomFieldEffects } from './components/shared-components/store/effects/custom-field-effects';
-import { employeeTypesReducer } from './components/shared-components/store/reducers/employee-types.reducer';
-import { EmployeeTypesEffects } from './components/shared-components/store/effects/employee-types.effects';
 
 @NgModule({
   declarations: [
@@ -168,9 +166,8 @@ import { EmployeeTypesEffects } from './components/shared-components/store/effec
       token: loginReducer, 
       clients: clientReducer,
       customField: customFieldReducer,
-      employeeTypes: employeeTypesReducer
     }),
-    EffectsModule.forRoot([LoginEffects, ClientEffects, CustomFieldEffects, EmployeeTypesEffects]),
+    EffectsModule.forRoot([LoginEffects, ClientEffects, CustomFieldEffects]),
     AuthModule.forRoot({
       domain: process.env['AUTH0_Domain_key'] || 'null',
       clientId: process.env['AUTH0_CLIENT_ID'] || 'null',

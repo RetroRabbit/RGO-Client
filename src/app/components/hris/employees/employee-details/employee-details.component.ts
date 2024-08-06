@@ -15,7 +15,7 @@ import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-rol
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
+import { SharedAccordionFunctionality } from '../employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-employee-details',
@@ -54,7 +54,7 @@ export class EmployeeDetailsComponent implements OnInit {
     private employeeDataService: EmployeeDataService,
     private employeeProfileService: EmployeeProfileService,
     private cookieService: CookieService,
-    private employeeTypeService: EmployeeTypeService,
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private storeAccessService: StoreAccessService,
     private employeeRoleService: EmployeeRoleService,
     private snackBarService: SnackbarService,
@@ -67,12 +67,7 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   private callService() {
-    this.employeeTypes = this.storeAccessService.getEmployeeTypes();
-    this.employeeDataService.getEmployeeData(this.selectedEmployee.id).subscribe({
-      next: data => {
-        this.employeeData = data;
-      }
-    });
+    this.employeeTypes = this.sharedAccordionFunctionality.employeeTypes
 
     this.fieldcodes = this.storeAccessService.getFieldCodes();
 

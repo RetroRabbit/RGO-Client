@@ -32,13 +32,5 @@ export class StoreAccessService {
     });
     return customField;
   }
-
-  getEmployeeTypes(): EmployeeType[] {
-    let employeeType: EmployeeType[] = [];
-    this.store.select(selectEmployeeTypes).subscribe((store) => {
-      employeeType = store || '';
-    });
-    return employeeType;
-  }
  
 }

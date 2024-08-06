@@ -16,9 +16,6 @@ import { EventEmitter } from '@angular/core';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute } from '@angular/router';
 import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
-import { SetEmployeeTypes } from 'src/app/components/shared-components/store/actions/employee-types.actions';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/components/shared-components/store/app.state';
 
 @Component({
   selector: 'app-accordion-career-additional-information',
@@ -43,7 +40,6 @@ export class AccordionCareerAdditionalInformationComponent {
   loggedInProfile!: EmployeeData;
 
   constructor(
-    private store: Store<AppState>,
     private fb: FormBuilder,
     private snackBarService: SnackbarService,
     private employeeProfileService: EmployeeProfileService,
@@ -79,7 +75,6 @@ export class AccordionCareerAdditionalInformationComponent {
           this.employeeProfile.employeeDetails = data;
         }, complete: () => {
           this.getEmployeeData();
-          this.getEmployeeTypes();
           if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
             this.getAllEmployees();
           }
@@ -121,7 +116,6 @@ export class AccordionCareerAdditionalInformationComponent {
   getEmployeeTypes() {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data) => {
-        this.store.dispatch(SetEmployeeTypes({ payload: data }));
         this.sharedAccordionFunctionality.employeeTypes = data;
       }
     });

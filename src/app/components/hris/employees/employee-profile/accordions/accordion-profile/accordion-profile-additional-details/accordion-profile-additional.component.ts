@@ -17,8 +17,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/components/shared-components/store/app.state';
 import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 import { SetCustomField } from 'src/app/components/shared-components/store/actions/custom-field.actions';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-
 @Component({
   selector: 'app-accordion-profile-additional',
   templateUrl: './accordion-profile-additional.component.html',
@@ -50,7 +48,6 @@ export class AccordionProfileAdditionalComponent {
     private snackBarService: SnackbarService,
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
-    private employeeTypeService: EmployeeTypeService,
     private storeAccessService: StoreAccessService,
     private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
@@ -69,7 +66,6 @@ export class AccordionProfileAdditionalComponent {
   
   loadEmployeeData() {
     this.getEmployeeData();
-    // this.getEmployeeTypes();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
     }
@@ -84,16 +80,6 @@ export class AccordionProfileAdditionalComponent {
       }
     });
   }
-
-  // getEmployeeTypes() {
-  //   this.sharedAccordionFunctionality.employeeTypes = this.storeAccessService.getEmployeeTypes();
-  // }
-
-  // getEmployeeTypes() {
-  //   this.employeeTypeService.getAllEmployeeTypes().subscribe({
-  //     next: data => this.sharedAccordionFunctionality.employeeTypes = data
-  //   });
-  // }
 
   getAllEmployees() {
     this.employeeProfileService.getEmployeeProfiles().subscribe({

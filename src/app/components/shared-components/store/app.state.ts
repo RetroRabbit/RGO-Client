@@ -7,5 +7,4 @@ export interface AppState {
   token: TokenState
   clients: ClientState
   customField: CustomFieldState
-  employeeType: EmployeeTypesState
 }
