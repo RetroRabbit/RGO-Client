@@ -16,8 +16,6 @@ import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-typ
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface'
 import { EmployeeStatus } from 'src/app/models/hris/constants/employee-status.constants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/components/shared-components/store/app.state';
 import { SharedAccordionFunctionality } from '../employee-profile/shared-accordion-functionality';
 
 @Component({
@@ -37,8 +35,7 @@ export class ViewEmployeeComponent {
     private ngZone: NgZone,
     private router: Router,
     private snackBarService: SnackbarService,
-    public authAccessService: AuthAccessService,
-    private employeeTypeService: EmployeeTypeService
+    public authAccessService: AuthAccessService
   ) { }
 
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();

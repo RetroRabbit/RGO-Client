@@ -5,7 +5,6 @@ import { selectClients } from 'src/app/components/shared-components/store/select
 import { selectCustomField } from 'src/app/components/shared-components/store/selector/custom-field.selector';
 import { Client } from 'src/app/models/hris/client.interface';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 
 @Injectable({
   providedIn: 'root',

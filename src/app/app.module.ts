@@ -165,7 +165,7 @@ import { CustomFieldEffects } from './components/shared-components/store/effects
     StoreModule.forRoot({
       token: loginReducer, 
       clients: clientReducer,
-      customField: customFieldReducer,
+      customField: customFieldReducer
     }),
     EffectsModule.forRoot([LoginEffects, ClientEffects, CustomFieldEffects]),
     AuthModule.forRoot({
