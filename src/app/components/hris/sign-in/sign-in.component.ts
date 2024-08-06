@@ -135,7 +135,6 @@ export class SignInComponent {
       });
   }  
 
-
   initialUserNavigation(){
   // TODO: put back in when ats available
           // if (this.authAccessService.isTalent()) {
