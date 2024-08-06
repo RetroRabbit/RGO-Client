@@ -37,7 +37,7 @@
                         {{race.value}}
                       </mat-option>
                     </mat-select>
-                    <mat-icon *ngIf="sharedAccordionFunctionality.personalDetailsForm.get('race')?.value === null || sharedAccordionFunctionality.personalDetailsForm.get('race')?.value === ''"  [ngStyle]="{color: editPersonal  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                    <mat-icon *ngIf="sharedAccordionFunctionality.personalDetailsForm.get('race')?.value === null || sharedAccordionFunctionality.personalDetailsForm.get('race')?.value === ''" [ngStyle]="{color: editPersonal? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                     </div>
                   </mat-form-field>
                 </div>
@@ -49,7 +49,7 @@
                     hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country"> {{ country }} </mat-option>
                   </mat-select>
-                  <mat-icon *ngIf="sharedAccordionFunctionality.personalDetailsForm.get('countryOfBirth')?.value === null || sharedAccordionFunctionality.personalDetailsForm.get('countryOfBirth')?.value === undefined"  [ngStyle]="{color: editPersonal  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                  <mat-icon *ngIf="sharedAccordionFunctionality.personalDetailsForm.get('countryOfBirth')?.value === null || sharedAccordionFunctionality.personalDetailsForm.get('countryOfBirth')?.value === undefined" [ngStyle]="{color: editPersonal? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                 </div>
                 </mat-form-field>
                 </div>
@@ -61,7 +61,7 @@
                     hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country"> {{ country }} </mat-option>
                   </mat-select>
-                  <mat-icon *ngIf="sharedAccordionFunctionality.personalDetailsForm.get('nationality')?.value === null || sharedAccordionFunctionality.personalDetailsForm.get('nationality')?.value === undefined"  [ngStyle]="{color: editPersonal  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                  <mat-icon *ngIf="sharedAccordionFunctionality.personalDetailsForm.get('nationality')?.value === null || sharedAccordionFunctionality.personalDetailsForm.get('nationality')?.value === undefined" [ngStyle]="{color: editPersonal? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                    </div>
                 </mat-form-field>
                 </div>

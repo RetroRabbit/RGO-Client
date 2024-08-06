@@ -15,18 +15,8 @@
     width:0px !important;
 }
 
-#move-icon{
- margin-top:1px;
- padding-right: 35px;
-}
-
-#move-icon2{
-  margin-top: -10px;
- }
-
 .align-text-icon{
   display: flex;
   flex-direction: row;
-  height:30px;
-  width:400px;
+
 }
