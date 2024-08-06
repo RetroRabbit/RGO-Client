@@ -151,6 +151,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <mat-error class="proof-of-account-error" *ngIf="employeeBankingsForm.get('file')?.hasError('required') && !hasFile">
+                                            Proof of Account is required
+                                          </mat-error>
                                     </div>
                                 </div>
                             </div>
