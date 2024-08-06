@@ -91,7 +91,7 @@ export class AccordionBankingComponent {
       branch: [{ value: bankingDetails.branch, disabled: true }, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       file: [{ value: bankingDetails.file, disabled: true }, Validators.required],
     });
-
+    this.hasFile = !!(bankingDetails.file && bankingDetails.file.length > 0);
     this.hasBankingData = true;
     this.checkBankingInformationProgress();
     this.totalBankingProgress();
