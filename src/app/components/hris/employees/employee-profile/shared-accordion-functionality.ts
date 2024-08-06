@@ -399,7 +399,7 @@ export class SharedAccordionFunctionality {
     this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
     const total = this.customFieldsDocuments.length;
     const fetchedDocuments = this.additionalDocuments.length;
-        
+
     if (fetchedDocuments === 0) {
       this.additionalDocumentsProgress = total === 0 ? 100 : 0;
     } else {
@@ -468,13 +468,21 @@ export class SharedAccordionFunctionality {
   }
 
   totalProfileProgress() {
-    this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
-    this.updateProfile.emit(this.profileFormProgress);
+    if (this.additionalFormProgress == Infinity || this.additionalFormProgress === 0) {
+      this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress) / 4);
+      this.updateProfile.emit(this.profileFormProgress);
+    } else {
+      this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
+      this.updateProfile.emit(this.profileFormProgress);
+    }
   }
 
+
   totalCareerProgress() {
+    console.log(this.additionalCareerFormProgress)
     if (this.additionalCareerFormProgress == Infinity || this.additionalCareerFormProgress === 0) {
       this.careerFormProgress = Math.floor((this.qualificationFormProgress + this.salaryDetailsFormProgress) / 2);
+      this.updateCareer.emit(this.careerFormProgress);
     }
     else {
       this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qualificationFormProgress + this.salaryDetailsFormProgress) / 3);

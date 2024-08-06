@@ -65,8 +65,9 @@ export class AccordionProfileAdditionalComponent {
     this.loggedInProfile = this.navService.getEmployeeProfile();
     this.employeeId = this.route.snapshot.params['id'];
     this.loadEmployeeData();
+    this.sharedAccordionFunctionality.checkAdditionalFormProgress();
   }
-  
+
   loadEmployeeData() {
     this.getEmployeeData();
     this.getEmployeeTypes();

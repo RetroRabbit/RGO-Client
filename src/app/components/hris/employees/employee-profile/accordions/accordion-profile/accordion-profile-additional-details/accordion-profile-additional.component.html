@@ -6,7 +6,7 @@
         <mat-panel-title>
           Additional Information
         </mat-panel-title>
-        <mat-panel-description *ngIf="sharedAccordionFunctionality.additionalFormProgress != 100 &&customFields.length > 0" class="pe-0 pe-md-5">
+        <mat-panel-description *ngIf="sharedAccordionFunctionality.additionalFormProgress !== 100" class="pe-0 pe-md-5">
           <mat-icon class="mx-1">error</mat-icon><span class="d-none d-md-block d-lg-block">Missing Information</span>
         </mat-panel-description>
       </mat-expansion-panel-header>
