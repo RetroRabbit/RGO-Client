@@ -142,10 +142,6 @@ export class EmployeeProfileComponent implements OnChanges {
     changes['updateDocument'].currentValue
   }
 
-  // ngOnDestroy() {
-  //   this.displayEditButtons()
-  // }
-
   ngOnInit() {
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
       this.isAdminUser = true;
@@ -434,15 +430,6 @@ export class EmployeeProfileComponent implements OnChanges {
     this.clipboard.copy(emailToCopy);
     this.snackBarService.showSnackbar("Copied to Clipboard", "snack-success");
   }
-
-
-  // displayEditButtons() {
-  //   this.editEmployee = false;
-  //   this.sharedAccordionFunctionality.editAdditional = false;
-  //   this.sharedAccordionFunctionality.editAddress = false;
-  //   this.sharedAccordionFunctionality.editContact = false;
-  //   this.sharedAccordionFunctionality.editPersonal = false;
-  // }
 
   checkAddressMatch(data: EmployeeProfile) {
     var dataCopy: any = data;
