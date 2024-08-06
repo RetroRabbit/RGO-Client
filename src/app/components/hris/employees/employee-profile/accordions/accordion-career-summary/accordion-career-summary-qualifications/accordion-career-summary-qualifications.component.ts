@@ -100,6 +100,7 @@ export class CareerSummaryQualificationsComponent {
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
     this.isDisabledUpload = true;
     this.isDisabledDownload = true;
+    this.sharedAccordionFunctionality.calculateQualificationProgress();
     this.sharedAccordionFunctionality.totalCareerProgress();
     this.fileName = this.sharedAccordionFunctionality.employeeQualification ? this.sharedAccordionFunctionality.employeeQualification.documentName : '';
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualifications", true)

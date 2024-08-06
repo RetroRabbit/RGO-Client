@@ -60,8 +60,18 @@ export class AccordionSalaryDetailsComponent {
     }
   }
 
-  isInputEmpty(valueToCheck: string): boolean {
+  isInputEmptyValue(valueToCheck: string): boolean {
     return valueToCheck === null || valueToCheck === '';
+  }
+
+  setInputValueCheck() {
+    const {
+      remuneration,
+      taxNumber,
+    } = this.sharedAccordionFunctionality.salaryDetailsForm.value;
+
+    this.remuneration = remuneration;
+    this.taxNumber = taxNumber;
   }
 
   initializeSalaryDetailsForm(salaryDetails: EmployeeSalary, taxNumber: string | undefined) {
@@ -78,6 +88,7 @@ export class AccordionSalaryDetailsComponent {
         taxNumber: ["", [Validators.required, Validators.pattern(/^[01239]\d{9}$/)]]
       });
     }
+    this.setInputValueCheck();
     this.sharedAccordionFunctionality.salaryDetailsForm.disable();
   }
 
