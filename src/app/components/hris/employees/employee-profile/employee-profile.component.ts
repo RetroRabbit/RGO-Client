@@ -208,7 +208,7 @@ export class EmployeeProfileComponent implements OnChanges {
   getEmployeeData() {
     this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.employeeData = data;
+        this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];;
       }
     });
   }
@@ -358,17 +358,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   getClients() {
-    // Note for developer:
     this.store.dispatch(LoadClients());
-
-    // Both of these methods do the same thing, load just includes the req.
-    // this.clientService.getAllClients().subscribe({
-    //   next: data => {
-    //     this.clients = data;
-    //     this.store.dispatch(SetClients({ payload: data }));
-    //   }
-    // })
-
   }
 
   filterClients(clientId: number) {
