@@ -18,7 +18,6 @@ export class AccordionProfileContactDetailsComponent {
 
   screenWidth = window.innerWidth;
   usingProfile: boolean = true;
-  isFocused: boolean = false;
   editContact: boolean = false;
 
   @HostListener('window:resize', ['$event'])
@@ -52,12 +51,15 @@ export class AccordionProfileContactDetailsComponent {
   }
 
   ngAfterViewInit(): void {
-    const initialHouseNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value;
-    this.checkHouseNumberValue(initialHouseNumberValue);
-    const initialEmergencyNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value;
-    this.checkEmergencyNumberValue(initialEmergencyNumberValue);
-    const initialCellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value;
-    this.checkCellphoneNumberValue(initialCellphoneNumberValue);
+    this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.valueChanges.subscribe(value => {
+      this.checkHouseNumberValue(value);
+    });
+    this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.valueChanges.subscribe(value => {
+      this.checkEmergencyNumberValue(value);
+    });
+    this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.valueChanges.subscribe(value => {
+      this.checkCellphoneNumberValue(value);
+    });
   }
 
   checkCellphoneNumberValue(value: string) {
@@ -76,7 +78,6 @@ export class AccordionProfileContactDetailsComponent {
     else {
       cellphoneNumberContainer?.classList.add('shift-label');
     }
-
   }
 
   checkEmergencyNumberValue(value: string) {
