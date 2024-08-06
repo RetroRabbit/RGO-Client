@@ -13,7 +13,6 @@ import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
@@ -54,7 +53,6 @@ export class EmployeeDetailsComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private employeeTypeService: EmployeeTypeService,
     private employeeDataService: EmployeeDataService,
-    private fieldcodeService: CustomFieldService,
     private employeeProfileService: EmployeeProfileService,
     private cookieService: CookieService,
     private storeAccessService: StoreAccessService,
@@ -79,11 +77,9 @@ export class EmployeeDetailsComponent implements OnInit {
         this.employeeData = data;
       }
     });
-    this.fieldcodeService.getAllFieldCodes().subscribe({
-      next: data => {
-        this.fieldcodes = data
-      }
-    });
+
+    this.fieldcodes = this.storeAccessService.getFieldCodes();
+
     this.employeeProfileService.getEmployeeProfiles().subscribe({
       next: data => {
         this.employees = data;
