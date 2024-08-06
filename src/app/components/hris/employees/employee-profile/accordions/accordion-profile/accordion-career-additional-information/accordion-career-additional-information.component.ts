@@ -63,7 +63,6 @@ export class AccordionCareerAdditionalInformationComponent {
     this.getEmployeeFields();
     this.getEmployeeData();
     this.sharedAccordionFunctionality.calculateCareerAdditionalFormProgress();
-
   }
 
   getEmployeeFields() {
@@ -111,8 +110,8 @@ export class AccordionCareerAdditionalInformationComponent {
       next: data => {
         this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
         this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
-          this.sharedAccordionFunctionality.clients = this.storeAcessService.getClients();
-          this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
+        this.sharedAccordionFunctionality.clients = this.storeAcessService.getClients();
+        this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
       }
     });
   }
