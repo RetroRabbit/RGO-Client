@@ -19,11 +19,6 @@ export class AccordionProfileContactDetailsComponent {
   screenWidth = window.innerWidth;
   usingProfile: boolean = true;
   isFocused: boolean = false;
-  workEmail: string = '';
-  personalEmail: string = '';
-  emergencyContactName: string = '';
-  emergencyNumberVal: any;
-  cellphoneNumber: any;
   editContact: boolean = false;
 
   @HostListener('window:resize', ['$event'])
@@ -65,44 +60,21 @@ export class AccordionProfileContactDetailsComponent {
     this.checkCellphoneNumberValue(initialCellphoneNumberValue);
   }
 
-  setInputValueCheck() {
-    const {
-      email,
-      emergencyContactName,
-      emergencyContactNo,
-      cellphoneNo
-    } = this.sharedAccordionFunctionality.employeeContactForm.value;
-
-    this.workEmail = email;
-    this.emergencyContactName = emergencyContactName;
-    this.emergencyNumberVal = emergencyContactNo !== null;
-    this.cellphoneNumber = cellphoneNo != null;
-  }
-
-  isInputEmpty(valueToCheck: string): boolean {
-    return valueToCheck === null || valueToCheck === '';
-  }
-
   checkCellphoneNumberValue(value: string) {
     const cellphoneNumberContainer = document.querySelector('.cellphone-number-label');
     const cellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("cellphoneNo");
 
     if (value) {
       cellphoneNumberContainer?.classList.remove('shift-label');
-      this.cellphoneNumber = false;
-
     }
     else if (value === null || cellphoneNumberValue?.invalid) {
       cellphoneNumberContainer?.classList.add('shift-label');
-      this.cellphoneNumber = true;
 
     } else if (value === null || !cellphoneNumberValue?.invalid) {
       cellphoneNumberContainer?.classList.remove('shift-label');
-      this.cellphoneNumber = true;
     }
     else {
       cellphoneNumberContainer?.classList.add('shift-label');
-      this.cellphoneNumber = true;
     }
 
   }
@@ -113,21 +85,14 @@ export class AccordionProfileContactDetailsComponent {
 
     if (value) {
       emergencyNumberContainer?.classList.remove('shift-label');
-      this.emergencyNumberVal = false;
     }
     else if (value === null || emergencyNumberValue?.invalid) {
       emergencyNumberContainer?.classList.add('shift-label');
-      this.emergencyNumberVal = true;
-
     } else if (value === null || !emergencyNumberValue?.invalid) {
       emergencyNumberContainer?.classList.remove('shift-label');
-      this.emergencyNumberVal = true;
-
     }
     else {
       emergencyNumberContainer?.classList.add('shift-label');
-      this.emergencyNumberVal = true;
-
     }
   }
 
@@ -157,7 +122,6 @@ export class AccordionProfileContactDetailsComponent {
       emergencyContactName: [this.employeeProfile.employeeDetails.emergencyContactName, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
       emergencyContactNo: [this.employeeProfile.employeeDetails.emergencyContactNo, [Validators.required]]
     });
-    this.setInputValueCheck();
     this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.sharedAccordionFunctionality.checkContactFormProgress();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", true)

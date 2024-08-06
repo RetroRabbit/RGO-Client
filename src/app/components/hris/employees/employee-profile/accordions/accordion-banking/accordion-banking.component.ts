@@ -72,24 +72,6 @@ export class AccordionBankingComponent {
     this.banks = this.banks.slice().sort((a, b) => a.value.localeCompare(b.value));
   }
 
-  setInputValueCheck() {
-    const {
-      accountType,
-      bankName,
-      accountNo,
-      branch
-    } = this.employeeBankingsForm.value;
-
-    this.accountBranch = branch;
-    this.accountNumber = accountNo;
-    this.accountType = accountType !== null;
-    this.bank = bankName !== null;
-  }
-
-  isInputEmpty(valueToCheck: string): boolean {
-    return valueToCheck === null || valueToCheck === '';
-  }
-
   getEmployeeBankingData() {
     this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
       next: (data) => {

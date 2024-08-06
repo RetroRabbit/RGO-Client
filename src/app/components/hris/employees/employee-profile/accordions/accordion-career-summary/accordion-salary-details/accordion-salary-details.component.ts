@@ -37,8 +37,6 @@ export class AccordionSalaryDetailsComponent {
   message: string = "";
   isAdminUser: boolean = false;
   employeeId: number | undefined;
-  remuneration: string = '';
-  taxNumber: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -60,20 +58,6 @@ export class AccordionSalaryDetailsComponent {
     }
   }
 
-  isInputEmptyValue(valueToCheck: string): boolean {
-    return valueToCheck === null || valueToCheck === '';
-  }
-
-  setInputValueCheck() {
-    const {
-      remuneration,
-      taxNumber,
-    } = this.sharedAccordionFunctionality.salaryDetailsForm.value;
-
-    this.remuneration = remuneration;
-    this.taxNumber = taxNumber;
-  }
-
   initializeSalaryDetailsForm(salaryDetails: EmployeeSalary, taxNumber: string | undefined) {
     if (salaryDetails != null) {
       this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
@@ -88,7 +72,6 @@ export class AccordionSalaryDetailsComponent {
         taxNumber: ["", [Validators.required, Validators.pattern(/^[01239]\d{9}$/)]]
       });
     }
-    this.setInputValueCheck();
     this.sharedAccordionFunctionality.salaryDetailsForm.disable();
   }
 

@@ -48,11 +48,6 @@ export class CareerSummaryQualificationsComponent {
   fileUrl: string = '';
   proofOfQualificationFinal: string = '';
 
-  year: string = '';
-  fieldOfStudy: string = '';
-  school: string = '';
-  highestQualification: any;
-
   ngOnInit() {
     this.fetchQualificationsById();
   }
@@ -93,9 +88,7 @@ export class CareerSummaryQualificationsComponent {
         year: [this.sharedAccordionFunctionality.employeeQualification.year, [Validators.required, Validators.pattern(/^(19|20)\d{2}$/)]],
         proofOfQualification: [this.sharedAccordionFunctionality.employeeQualification.proofOfQualification],
       });
-
     }
-    this.setInputValueCheck();
     this.editQualifications = false;
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
     this.isDisabledUpload = true;
@@ -104,24 +97,6 @@ export class CareerSummaryQualificationsComponent {
     this.sharedAccordionFunctionality.totalCareerProgress();
     this.fileName = this.sharedAccordionFunctionality.employeeQualification ? this.sharedAccordionFunctionality.employeeQualification.documentName : '';
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualifications", true)
-  }
-
-  setInputValueCheck() {
-    const {
-      highestQualification,
-      year,
-      fieldOfStudy,
-      school
-    } = this.sharedAccordionFunctionality.employeeQualificationForm.value;
-
-    this.year = year;
-    this.fieldOfStudy = fieldOfStudy;
-    this.school = school;
-    this.highestQualification = highestQualification != null;
-  }
-
-  isInputEmpty(valueToCheck: string): boolean {
-    return valueToCheck === null || valueToCheck === '';
   }
 
   saveQualificationsEdit() {

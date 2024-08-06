@@ -24,7 +24,7 @@
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Highest Qualification</mat-label>
                                                 <div class="align-text-icon">
-                                                <mat-select  [(value)]="highestQualification" formControlName="highestQualification"
+                                                <mat-select formControlName="highestQualification"
                                                     placeholder="Highest Qualification"
                                                     hideSingleSelectionIndicator="true">
                                                     <mat-option
@@ -47,7 +47,7 @@
                                                 <mat-label>School</mat-label>
                                                 <div class="align-text-icon">
                                                 <input matInput formControlName="school"
-                                                    placeholder="e.g University of Pretoria" [(ngModel)]="school">
+                                                    placeholder="e.g University of Pretoria">
                                                     <mat-icon *ngIf="sharedAccordionFunctionality.employeeQualificationForm.get('school')?.value === null || sharedAccordionFunctionality.employeeQualificationForm.get('school')?.value === ''"  [ngStyle]="{color: editQualifications  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                                                 </div>
                                                     <mat-error
@@ -62,7 +62,7 @@
                                                 <mat-label>Field Of Study</mat-label>
                                                 <div class="align-text-icon">
                                                 <input matInput formControlName="fieldOfStudy"
-                                                    placeholder="e.g Field of Study" [(ngModel)]="fieldOfStudy">
+                                                    placeholder="e.g Field of Study">
                                                     <mat-icon *ngIf="sharedAccordionFunctionality.employeeQualificationForm.get('fieldOfStudy')?.value === null || sharedAccordionFunctionality.employeeQualificationForm.get('fieldOfStudy')?.value === ''"  [ngStyle]="{color: editQualifications  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                                                 </div>
                                                     <mat-error
@@ -76,7 +76,7 @@
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Year Obtained</mat-label>
                                                 <div class="align-text-icon">
-                                                <input matInput formControlName="year" placeholder="yyyy" [(ngModel)]="year">
+                                                <input matInput formControlName="year" placeholder="yyyy">
                                                 <mat-icon *ngIf="sharedAccordionFunctionality.employeeQualificationForm.get('year')?.value === null || sharedAccordionFunctionality.employeeQualificationForm.get('year')?.value === ''"  [ngStyle]="{color: editQualifications  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                                             </div>
                                                 <mat-error

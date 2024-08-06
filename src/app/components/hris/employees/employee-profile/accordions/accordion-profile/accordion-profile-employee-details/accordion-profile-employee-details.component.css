@@ -16,15 +16,17 @@
 }
 
 #move-icon{
- margin-top:12px;
+ margin-top:1px;
+ padding-right: 35px;
 }
+
+#move-icon2{
+  margin-top: -10px;
+ }
 
 .align-text-icon{
   display: flex;
   flex-direction: row;
-}
-
-.calendar-icon{
-  display: flex;
-  flex-direction: column;
+  height:30px;
+  width:400px;
 }

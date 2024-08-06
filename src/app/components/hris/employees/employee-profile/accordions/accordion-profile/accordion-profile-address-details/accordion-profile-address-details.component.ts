@@ -105,30 +105,7 @@ export class AccordionProfileAddressDetailsComponent {
     this.sharedAccordionFunctionality.addressDetailsForm.disable();
     this.sharedAccordionFunctionality.checkAddressFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
-    this.setInputValueCheck();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", true)
-  }
-
-  setInputValueCheck() {
-    const {
-      physicalStreetName,
-      physicalPostalCode,
-      physicalStreetNumber,
-      physicalCountry,
-      physicalCity,
-      physicalProvince
-
-    } = this.sharedAccordionFunctionality.addressDetailsForm.value;
-    this.streetNumber = physicalStreetNumber;
-    this.streetcode = physicalPostalCode;
-    this.streetName = physicalStreetName;
-    this.country = physicalCountry === null || physicalCountry == undefined;
-    this.city = physicalCity !== null || physicalCity == undefined;
-    this.province = physicalProvince !== null || physicalProvince == undefined;
-  }
-
-  isInputEmpty(valueToCheck: string): boolean {
-    return valueToCheck === null || valueToCheck === '' || valueToCheck === undefined;
   }
 
   saveAddressEdit() {

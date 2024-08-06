@@ -28,12 +28,6 @@ export class AccordionProfileEmployeeDetailsComponent {
   screenWidth = window.innerWidth;
   existingIdNumber: boolean = false;
   employeeId = this.route.snapshot.params['id'];
-  firstName: string = '';
-  lastName: string = '';
-  initials: string = '';
-  idNumber: string = '';
-  dateOfBirth: string = '';
-  startDate: string = '';
   editEmployee: boolean = false;
 
   @HostListener('window:resize', ['$event'])
@@ -70,7 +64,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.getEmployeeFields();
     this.getClients();
     this.checkEmployeeDetails();
-    this.setInputValueCheck();
   }
 
   initializeForm() {
@@ -89,9 +82,6 @@ export class AccordionProfileEmployeeDetailsComponent {
       engagementDate: [this.employeeProfile!.employeeDetails.engagementDate, Validators.required],
       peopleChampion: this.usingProfile ? this.employeeProfile!.employeeDetails.peopleChampion : this.employeeProfile!.simpleEmployee.peopleChampionId
     });
-    this.firstName = this.sharedAccordionFunctionality.employeeDetailsForm.get('name')?.value;
-    this.lastName = this.sharedAccordionFunctionality.employeeDetailsForm.get('surname')?.value;
-    this.idNumber = this.sharedAccordionFunctionality.employeeDetailsForm.get('idNumber')?.value;
     this.sharedAccordionFunctionality.employeeDetailsForm.disable();
     this.sharedAccordionFunctionality.checkEmployeeFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
@@ -164,26 +154,6 @@ export class AccordionProfileEmployeeDetailsComponent {
       this.sharedAccordionFunctionality.employeeProfileDto!.houseNo = this.employeeProfile?.employeeDetails.houseNo,
       this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactName = this.employeeProfile?.employeeDetails.emergencyContactName,
       this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactNo = this.employeeProfile?.employeeDetails.emergencyContactNo
-  }
-
-  setInputValueCheck() {
-    const {
-      name,
-      surname,
-      idNumber,
-      dateOfBirth,
-      startDate
-    } = this.sharedAccordionFunctionality.employeeDetailsForm.value;
-
-    this.firstName = name;
-    this.lastName = surname;
-    this.idNumber = idNumber;
-    this.dateOfBirth = dateOfBirth;
-    this.startDate = startDate;
-  }
-
-  isInputEmpty(valueToCheck: string): boolean {
-    return valueToCheck === null || valueToCheck === '';
   }
 
   checkEmployeeDetails() {
