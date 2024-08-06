@@ -25,11 +25,11 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Country</mat-label>
                     <div class="align-text-icon">
-                    <mat-select [(value)]="country" formControlName="physicalCountry" (selectionChange)="onCountryChange($event.value)"
+                    <mat-select formControlName="physicalCountry" (selectionChange)="onCountryChange($event.value)"
                       hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let country of countries" [value]="country"> {{ country }} </mat-option>
                     </mat-select>
-                    <mat-icon *ngIf="!country" [ngStyle]="{color:editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalCountry')?.value === null" [ngStyle]="{color:editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
                     </div>
                   </mat-form-field>
                 </div>
@@ -37,11 +37,11 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Province</mat-label>
                     <div class="align-text-icon">
-                    <mat-select [(value)]="province" formControlName="physicalProvince" (selectionChange)="loadCities($event.value)"
+                    <mat-select formControlName="physicalProvince" (selectionChange)="loadCities($event.value)"
                       hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let province of provinces" [value]="province">{{ province }}</mat-option>
                     </mat-select>
-                    <mat-icon *ngIf="!province" [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}"  class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalProvince')?.value === null" [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}"  class="mx-1 flex-end" >error</mat-icon>
                     </div>
                   </mat-form-field>
                 </div>
@@ -53,7 +53,7 @@
                     <mat-select [(value)]="city" formControlName="physicalCity" hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
                     </mat-select>
-                    <mat-icon *ngIf="!city"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalCity')?.value === null"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                     </div>
                   </mat-form-field>
                 </div>
@@ -67,6 +67,7 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Unit Number</mat-label>
                     <input matInput formControlName="physicalUnitNumber">
+                    <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalUnitNumber')?.value === null"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                     <mat-error
                       *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalUnitNumber'].hasError('pattern')">
                       Unit number should only contain numbers
@@ -77,6 +78,7 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Complex Name</mat-label>
                     <input matInput formControlName="physicalComplexName">
+                    <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalComplexName')?.value === null"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                   </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.streetNumber"
@@ -85,7 +87,7 @@
                     <mat-label>Street Number</mat-label>
                     <div class="align-text-icon">
                     <input matInput formControlName="physicalStreetNumber" >
-                    <mat-icon *ngIf="isInputEmpty(streetNumber)"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetNumber')?.value === null || sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetNumber')?.value === ''"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                     </div>
                     <mat-error
                       *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalStreetNumber'].hasError('required')">
@@ -102,7 +104,7 @@
                     <mat-label>Street Name</mat-label >
                     <div class="align-text-icon">
                     <input matInput formControlName="physicalStreetName" >
-                    <mat-icon *ngIf="isInputEmpty(streetName)" [ngStyle]="{color: editAddress ? '#B3261E' : 'grey'}"  class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetName')?.value === null || sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetName')?.value === ''"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                     </div>
                     <mat-error
                       *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalStreetName'].hasError('required')">
@@ -119,7 +121,7 @@
                     <mat-label>Postal Code</mat-label>
                     <div class="align-text-icon">
                     <input matInput formControlName="physicalPostalCode">
-                    <mat-icon *ngIf="isInputEmpty(streetcode)"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
+                    <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalPostalCode')?.value === null || sharedAccordionFunctionality.addressDetailsForm.get('physicalPostalCode')?.value === ''"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                     </div>
                     <mat-error
                       *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalPostalCode'].hasError('required')">

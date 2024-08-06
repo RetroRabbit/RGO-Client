@@ -122,13 +122,13 @@ export class AccordionProfileAddressDetailsComponent {
     this.streetNumber = physicalStreetNumber;
     this.streetcode = physicalPostalCode;
     this.streetName = physicalStreetName;
-    this.country = physicalCountry !== null;
-    this.city = physicalCity !== null;
-    this.province = physicalProvince !== null;
+    this.country = physicalCountry === null || physicalCountry == undefined;
+    this.city = physicalCity !== null || physicalCity == undefined;
+    this.province = physicalProvince !== null || physicalProvince == undefined;
   }
 
   isInputEmpty(valueToCheck: string): boolean {
-    return valueToCheck === null || valueToCheck === '';
+    return valueToCheck === null || valueToCheck === '' || valueToCheck === undefined;
   }
 
   saveAddressEdit() {

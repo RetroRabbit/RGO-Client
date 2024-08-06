@@ -63,13 +63,13 @@
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Account Type</mat-label>
                                     <div class="align-text-icon">
-                                    <mat-select [(value)]="accountType" placeholder="Select Type" formControlName="accountType"
+                                    <mat-select  placeholder="Select Type" formControlName="accountType"
                                         hideSingleSelectionIndicator="true">
                                         <mat-option *ngFor="let accountType of accountTypes" [value]="accountType.id">
                                             {{accountType.value}}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-icon [ngStyle]="{color: editBanking ? '#B3261E' : 'grey'}" *ngIf="!accountType"  class="mx-1 flex-end">error</mat-icon>
+                                    <mat-icon *ngIf="employeeBankingsForm.get('accountType')?.value === null || employeeBankingsForm.get('accountType')?.value === ''"  [ngStyle]="{color: editBanking  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                                     </div>
                                 </mat-form-field>
                             </div>
@@ -77,13 +77,12 @@
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Bank Name</mat-label>
                                     <div class="align-text-icon">
-                                    <mat-select [(value)]="bank" placeholder="Select bank" formControlName="bankName"
-                                        hideSingleSelectionIndicator="true">
+                                    <mat-select ator="true">
                                         <mat-option *ngFor="let bank of banks" [value]="bank.value">
                                             {{bank.value}}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-icon *ngIf="!bank"  [ngStyle]="{color: editBanking ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
+                                    <mat-icon *ngIf="employeeBankingsForm.get('bankName')?.value === null || employeeBankingsForm.get('bankName')?.value === ''"  [ngStyle]="{color: editBanking  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                                 </div>
                                 </mat-form-field>
                             </div>
@@ -92,9 +91,9 @@
                                     <mat-label>Account Number</mat-label>
                                     <div class="align-text-icon">
                                     <input type="text" min="0" matInput placeholder="Enter account number"
-                                        formControlName="accountNo" [(ngModel)]="accountNumber">
-                                        <mat-icon *ngIf="isInputEmpty(accountNumber)"  [ngStyle]="{color: editBanking ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
-                                        </div>
+                                        formControlName="accountNo">
+                                        <mat-icon *ngIf="employeeBankingsForm.get('accountNo')?.value === null || employeeBankingsForm.get('accountNo')?.value === ''"  [ngStyle]="{color: editBanking  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                    </div>
                                         <mat-error
                                         *ngIf="employeeBankingsForm.controls['accountNo'].hasError('required')">Account
                                         number is required</mat-error>
@@ -108,8 +107,8 @@
                                     <mat-label>Branch Code</mat-label>
                                     <div class="align-text-icon">
                                     <input type="text" min="0" matInput placeholder="Enter branch code"
-                                        formControlName="branch" [(ngModel)]="accountBranch">
-                                        <mat-icon *ngIf="isInputEmpty(accountBranch)" [ngStyle]="{color: editBanking ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
+                                        formControlName="branch">
+                                        <mat-icon *ngIf="employeeBankingsForm.get('branch')?.value === null || employeeBankingsForm.get('branch')?.value === ''"  [ngStyle]="{color: editBanking  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                                     </div>
                                         <mat-error
                                         *ngIf="employeeBankingsForm.controls['branch'].hasError('required')">Branch code

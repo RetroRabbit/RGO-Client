@@ -38,6 +38,7 @@ export class AccordionProfilePersonalDetailsComponent {
     this.initializeForm();
     this.loadCountries();
     this.checkDisabilityType();
+    console.log("HERE", this.sharedAccordionFunctionality.personalDetailsForm.get('nationality')?.value)
 
     if (this.isCustomType) {
       const disabilityTypeControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');

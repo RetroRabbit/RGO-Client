@@ -40,8 +40,8 @@
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                       <mat-label>Remuneration</mat-label>
                                       <div class="align-text-icon">
-                                      <input type="text" min="0" matInput placeholder="Remuneration" formControlName="remuneration" [(ngModel)]="remuneration">
-                                      <mat-icon *ngIf="isInputEmptyValue(remuneration)" [ngStyle]="{color: editSalary ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
+                                      <input type="text" min="0" matInput placeholder="Remuneration" formControlName="remuneration">
+                                      <mat-icon *ngIf="sharedAccordionFunctionality.salaryDetailsForm.get('remuneration')?.value === null || sharedAccordionFunctionality.salaryDetailsForm.get('remuneration')?.value === ''"  [ngStyle]="{color: editSalary  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                                      </div>
                                       <mat-error
                                       *ngIf="sharedAccordionFunctionality.salaryDetailsForm.controls['remuneration'].hasError('required')">
@@ -52,9 +52,9 @@
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                       <mat-label>Tax Number</mat-label>
                                       <div class="align-text-icon">
-                                      <input type="text" min="0" matInput placeholder="Tax Number" formControlName="taxNumber" [(ngModel)]="taxNumber">
-                                      <mat-icon *ngIf="isInputEmptyValue(taxNumber)" [ngStyle]="{color: editSalary ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
-                                      </div>
+                                      <input type="text" min="0" matInput placeholder="Tax Number" formControlName="taxNumber">
+                                      <mat-icon *ngIf="sharedAccordionFunctionality.salaryDetailsForm.get('taxNumber')?.value === null || sharedAccordionFunctionality.salaryDetailsForm.get('taxNumber')?.value === ''"  [ngStyle]="{color: editSalary  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                    </div>
                                       <mat-error
                                       *ngIf="sharedAccordionFunctionality.salaryDetailsForm.controls['taxNumber'].hasError('required')">
                                       Tax Number is required</mat-error>
@@ -66,7 +66,7 @@
                             </div>
                         </div>
                         <div *ngIf="isAdminUser" class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
-                            <button *ngIf="!editSalary" mat-button id="edit-button-width" (click)="editSalaryDetails()" 
+                            <button *ngIf="!editSalary" mat-button id="edit-button-width" (click)="editSalaryDetails()"
                             [ngClass]="screenWidth <= 767 ?'col-12':''">
                             <mat-icon>edit</mat-icon>Edit Details
                             </button>

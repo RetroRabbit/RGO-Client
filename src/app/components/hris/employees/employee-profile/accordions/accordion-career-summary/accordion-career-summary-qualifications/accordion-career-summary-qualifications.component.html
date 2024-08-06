@@ -33,8 +33,8 @@
                                                         {{level.value}}
                                                     </mat-option>
                                                 </mat-select>
-                                                <mat-icon *ngIf="!highestQualification" [ngStyle]="{color: editQualifications ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
-                                                </div>
+                                                <mat-icon *ngIf="sharedAccordionFunctionality.employeeQualificationForm.get('highestQualification')?.value === null || sharedAccordionFunctionality.employeeQualificationForm.get('highestQualification')?.value === ''"  [ngStyle]="{color: editQualifications  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                            </div>
                                                 <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['highestQualification'].hasError('required')">
                                                     Highest Qualification is required
@@ -48,7 +48,7 @@
                                                 <div class="align-text-icon">
                                                 <input matInput formControlName="school"
                                                     placeholder="e.g University of Pretoria" [(ngModel)]="school">
-                                                    <mat-icon *ngIf="isInputEmpty(school)" [ngStyle]="{color: editQualifications ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
+                                                    <mat-icon *ngIf="sharedAccordionFunctionality.employeeQualificationForm.get('school')?.value === null || sharedAccordionFunctionality.employeeQualificationForm.get('school')?.value === ''"  [ngStyle]="{color: editQualifications  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                                                 </div>
                                                     <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['school'].hasError('required')">
@@ -63,8 +63,8 @@
                                                 <div class="align-text-icon">
                                                 <input matInput formControlName="fieldOfStudy"
                                                     placeholder="e.g Field of Study" [(ngModel)]="fieldOfStudy">
-                                                    <mat-icon *ngIf="isInputEmpty(fieldOfStudy)" [ngStyle]="{color: editQualifications ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
-                                               </div>
+                                                    <mat-icon *ngIf="sharedAccordionFunctionality.employeeQualificationForm.get('fieldOfStudy')?.value === null || sharedAccordionFunctionality.employeeQualificationForm.get('fieldOfStudy')?.value === ''"  [ngStyle]="{color: editQualifications  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                                </div>
                                                     <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['fieldOfStudy'].hasError('required')">
                                                     Field of study is required
@@ -77,8 +77,8 @@
                                                 <mat-label>Year Obtained</mat-label>
                                                 <div class="align-text-icon">
                                                 <input matInput formControlName="year" placeholder="yyyy" [(ngModel)]="year">
-                                                <mat-icon *ngIf="isInputEmpty(year)" [ngStyle]="{color: editQualifications ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
-                                                </div>
+                                                <mat-icon *ngIf="sharedAccordionFunctionality.employeeQualificationForm.get('year')?.value === null || sharedAccordionFunctionality.employeeQualificationForm.get('year')?.value === ''"  [ngStyle]="{color: editQualifications  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                            </div>
                                                 <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['year'].hasError('required')">
                                                     Year Obtained is required
