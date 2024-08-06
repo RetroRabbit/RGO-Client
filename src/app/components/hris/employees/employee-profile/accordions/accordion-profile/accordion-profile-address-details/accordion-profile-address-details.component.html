@@ -84,7 +84,7 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Street Number</mat-label>
                     <div class="align-text-icon">
-                    <input matInput formControlName="physicalStreetNumber" [(ngModel)]="streetNumber">
+                    <input matInput formControlName="physicalStreetNumber" >
                     <mat-icon *ngIf="isInputEmpty(streetNumber)"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
                     </div>
                     <mat-error
@@ -101,7 +101,7 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Street Name</mat-label >
                     <div class="align-text-icon">
-                    <input matInput formControlName="physicalStreetName" [(ngModel)]="streetName">
+                    <input matInput formControlName="physicalStreetName" >
                     <mat-icon *ngIf="isInputEmpty(streetName)" [ngStyle]="{color: editAddress ? '#B3261E' : 'grey'}"  class="mx-1 flex-end">error</mat-icon>
                     </div>
                     <mat-error
@@ -118,7 +118,7 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Postal Code</mat-label>
                     <div class="align-text-icon">
-                    <input matInput formControlName="physicalPostalCode"  [(ngModel)]="streetcode">
+                    <input matInput formControlName="physicalPostalCode">
                     <mat-icon *ngIf="isInputEmpty(streetcode)"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end">error</mat-icon>
                     </div>
                     <mat-error
