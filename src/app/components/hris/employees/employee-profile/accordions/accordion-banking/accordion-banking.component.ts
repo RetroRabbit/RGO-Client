@@ -8,7 +8,6 @@ import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
-import { SharedAccordionFunctionality } from '../../shared-accordion-functionality';
 
 @Component({
   selector: 'app-accordion-banking',
@@ -45,10 +44,6 @@ export class AccordionBankingComponent {
   bankingFormProgress: number = 0;
   hasUpdatedBanking: boolean = false;
   bankingUpdate: string = "";
-  accountNumber: string = '';
-  accountBranch: string = '';
-  accountType: any;
-  bank: any;
 
   employeeBankingsForm: FormGroup = this.fb.group({
     accountHolderName: [{ value: '', disabled: true }, Validators.required],
@@ -63,7 +58,6 @@ export class AccordionBankingComponent {
     private fb: FormBuilder,
     private employeeBankingService: EmployeeBankingService,
     private snackBarService: SnackbarService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeBankingStarterkitService: EmployeeBankingandstarterkitService) {
   }
 
