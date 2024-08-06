@@ -206,12 +206,11 @@ export class AccordionBankingComponent {
     this.getEmployeeBankingData();
     this.checkBankingInformationProgress();
     this.totalBankingProgress();
-    this.employeeBankingStarterkitService.getAllBankingAndStarterkits();
     this.hasUpdatedBanking = true;
     this.editBanking = false;
     this.employeeBankingsForm.disable();
     if (message = "Saved") {
-      this.employeeBankingStarterkitService.incrementPendingCount();
+      this.employeeBankingStarterkitService.incrementVolatileCount(this.employeeBankingDto.employeeId, true);
     }
   }
 

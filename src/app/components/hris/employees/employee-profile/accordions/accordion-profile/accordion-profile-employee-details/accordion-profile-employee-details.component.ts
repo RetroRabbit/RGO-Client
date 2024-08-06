@@ -1,7 +1,6 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { CustomvalidationService } from 'src/app/services/hris/id-validator.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
@@ -17,6 +16,7 @@ import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/propert
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute } from '@angular/router';
+import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Component({
   selector: 'app-accordion-profile-employee-details',
@@ -42,12 +42,11 @@ export class AccordionProfileEmployeeDetailsComponent {
 
   constructor(
     private fb: FormBuilder,
-    private employeeService: EmployeeService,
     private snackBarService: SnackbarService,
     private customValidationService: CustomvalidationService,
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
-    private clientService: ClientService,
+    private storeAccessService: StoreAccessService,
     private employeeTypeService: EmployeeTypeService,
     private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
@@ -233,11 +232,11 @@ export class AccordionProfileEmployeeDetailsComponent {
       );
       this.sharedAccordionFunctionality.employeeProfileDto!.gender = personalDetailsForm.gender;
       let foundDuplicateId = false;
-      this.employeeService.checkDuplicateIdNumber(this.sharedAccordionFunctionality.employeeProfileDto!.idNumber!, this.sharedAccordionFunctionality.employeeProfileDto!.id).subscribe({
+      this.employeeProfileService.checkDuplicateIdNumber(this.sharedAccordionFunctionality.employeeProfileDto!.idNumber!, this.sharedAccordionFunctionality.employeeProfileDto!.id).subscribe({
         next: (data: boolean) => {
           foundDuplicateId = data;
           if (!foundDuplicateId) {
-            this.employeeService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
+            this.employeeProfileService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
               next: () => {
                 this.snackBarService.showSnackbar("Updated", "snack-success");
                 this.sharedAccordionFunctionality.checkEmployeeFormProgress();
@@ -408,24 +407,18 @@ export class AccordionProfileEmployeeDetailsComponent {
   }
 
   getAllEmployees() {
-    this.employeeService.getEmployeeProfiles().subscribe({
+    this.employeeProfileService.getEmployeeProfiles().subscribe({
       next: data => {
         this.sharedAccordionFunctionality.employees = data;
         this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
         this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
-        this.clientService.getAllClients().subscribe({
-          next: data => {
-            this.sharedAccordionFunctionality.employeeClient = data.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
-          }
-        });
+        this.sharedAccordionFunctionality.employeeClient = this.storeAccessService.getClients().filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
       }
     });
   }
 
   getClients() {
-    this.clientService.getAllClients().subscribe({
-      next: data => this.sharedAccordionFunctionality.clients = data
-    })
+    this.sharedAccordionFunctionality.clients = this.storeAccessService.getClients();
   }
 
   getEmployeeClient(clientId: string) {

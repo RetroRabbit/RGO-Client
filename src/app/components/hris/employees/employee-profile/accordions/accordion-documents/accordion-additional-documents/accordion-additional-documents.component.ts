@@ -10,9 +10,9 @@ import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
-import { CookieService } from 'ngx-cookie-service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 
 @Component({
   selector: 'app-accordion-additional-documents',
@@ -56,13 +56,12 @@ export class AccordionDocumentsCustomDocumentsComponent {
     private employeeDocumentService: EmployeeDocumentService,
     private fb: FormBuilder,
     public navService: NavService,
-    private cookieService: CookieService,
+    private authAccessService: AuthAccessService,
     private snackBarService: SnackbarService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
 
   ngOnInit() {
-    const types: string = this.cookieService.get('userType');
-    this.roles = Object.keys(JSON.parse(types));
+    this.roles = [this.authAccessService.getRole()];
     this.getDocumentFieldCodes();
     this.getAdditionalDocuments();
   }
@@ -118,8 +117,9 @@ export class AccordionDocumentsCustomDocumentsComponent {
   getDocumentFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
+        const documentFieldCodes = data.filter(fieldCode => fieldCode.type === 5); 
         this.checkCustomDocumentsInformation();
-        this.checkArchived(data);
+        this.checkArchived(documentFieldCodes);
       }
     })
   }

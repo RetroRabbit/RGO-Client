@@ -5,7 +5,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
 import { genders } from 'src/app/models/hris/constants/genders.constants';
@@ -39,7 +39,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   constructor(
-    private employeeService: EmployeeService,
+    private employeeProfileService: EmployeeProfileService,
     private employeeTypeService: EmployeeTypeService,
     private employeeAddressService: EmployeeAddressService,
     private cookieService: CookieService,
@@ -179,7 +179,7 @@ export class NewEmployeeComponent implements OnInit {
       },
     });
 
-    this.employeeService
+    this.employeeProfileService
       .getEmployeeProfiles()
       .subscribe((data: EmployeeProfile[]) => {
         this.Employees = data;
@@ -214,12 +214,12 @@ export class NewEmployeeComponent implements OnInit {
 
   saveEmployee(saveType: string): void {
     var documents = this.employeeDocumentModels;
-    this.employeeService.addEmployee(this.newEmployeeForm.value).subscribe({
+    this.employeeProfileService.addEmployee(this.newEmployeeForm.value).subscribe({
       next: () => {
         this.snackBarService.showSnackbar("Employee Saved", "snack-success");
         this.isDirty = false;
         this.newEmployeeForm.reset();
-        this.employeeService.get(this.newEmployeeEmail).subscribe({
+        this.employeeProfileService.getEmployeeProfileByEmail(this.newEmployeeEmail).subscribe({
           next: employeeProfile => {
             documents.forEach(element => {
               element.employeeId = employeeProfile.id as number;
@@ -496,7 +496,7 @@ export class NewEmployeeComponent implements OnInit {
 
     const employeeEmail: string = this.newEmployeeForm.value.email!;
     this.checkBlankRequiredFields();
-    this.employeeService.checkDuplicateIdNumber(this.newEmployeeForm.value.idNumber as string, 0).subscribe({
+    this.employeeProfileService.checkDuplicateIdNumber(this.newEmployeeForm.value.idNumber as string, 0).subscribe({
       next: (data: boolean) => {
         this.existingIdNumber = data;
         if (this.existingIdNumber) {
@@ -717,7 +717,7 @@ export class NewEmployeeComponent implements OnInit {
       disabilityNotes: new FormControl<string>(''),
       countryOfBirth: new FormControl<string>(''),
       nationality: new FormControl<string>(''),
-      level: new FormControl<number>(-1, [Validators.pattern(/^[0-9]*$/), Validators.required]),
+      level: new FormControl<number| null>(null, [Validators.pattern(/^[0-9]*$/), Validators.required]),
       employeeType: new FormControl<{ id: number; name: string } | null>(null, Validators.required),
       name: new FormControl<string>('', [Validators.required,
       Validators.pattern(this.namePattern)]),

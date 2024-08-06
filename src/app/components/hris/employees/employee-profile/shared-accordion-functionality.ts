@@ -400,7 +400,7 @@ export class SharedAccordionFunctionality {
         this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
         const total = this.customFieldsDocuments.length;
         const fetchedDocuments = this.additionalDocuments.length;
-
+        
         if (fetchedDocuments === 0) {
           this.additionalDocumentsProgress = total === 0 ? 100 : 0;
         } else {

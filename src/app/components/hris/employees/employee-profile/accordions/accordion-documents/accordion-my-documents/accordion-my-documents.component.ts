@@ -6,10 +6,10 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { ActivatedRoute } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { CookieService } from 'ngx-cookie-service';
 import { FormControl, Validators } from '@angular/forms';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 
 @Component({
   selector: 'app-accordion-my-documents',
@@ -54,13 +54,12 @@ export class AccordionDocumentsAdditionalComponent {
     private employeeDocumentService: EmployeeDocumentService,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
-    private cookieService: CookieService,
+    private authAccessService: AuthAccessService,
     public navService: NavService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
 
   ngOnInit() {
-    const types: string = this.cookieService.get('userType');
-    this.roles = Object.keys(JSON.parse(types));
+    this.roles = [this.authAccessService.getRole()];
     this.getAdditionalDocuments();
   }
 

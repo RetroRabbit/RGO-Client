@@ -1,3 +1,7 @@
+import { ClientState } from "./reducers/client.reducer";
+import { TokenState } from "./reducers/sign-in.reducer";
+
 export interface AppState {
-  readonly GoogleID: any;
+  token: TokenState
+  clients: ClientState
 }

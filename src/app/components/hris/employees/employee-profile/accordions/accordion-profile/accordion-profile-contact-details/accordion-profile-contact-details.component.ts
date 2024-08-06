@@ -1,13 +1,13 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { EmployeeService } from 'src/app/services/hris/employee/employee.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
+import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 
 @Component({
   selector: 'app-accordion-profile-contact-details',
@@ -30,7 +30,7 @@ export class AccordionProfileContactDetailsComponent {
 
   constructor(
     private fb: FormBuilder,
-    private employeeService: EmployeeService,
+    private employeeProfileService: EmployeeProfileService,
     private snackBarService: SnackbarService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
@@ -149,7 +149,7 @@ export class AccordionProfileContactDetailsComponent {
       this.employeeProfile.employeeDetails.emergencyContactNo = employeeContactFormValues.emergencyContactNo;
       this.employeeProfile.employeeDetails.houseNo = employeeContactFormValues.houseNo;
 
-      this.employeeService.updateEmployee(this.employeeProfile.employeeDetails).subscribe({
+      this.employeeProfileService.updateEmployee(this.employeeProfile.employeeDetails).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Updated", "snack-success");
           this.sharedAccordionFunctionality.checkContactFormProgress();
