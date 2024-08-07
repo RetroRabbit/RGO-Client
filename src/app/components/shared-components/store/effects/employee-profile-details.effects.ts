@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';;
-import * as EmployeeProfileDetailsActions from '../actions/employee-Profile-Details.actions';
+import * as EmployeeProfileDetailsActions from '../actions/employee-profile-details.actions';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { NewEmployeeProfileService } from 'src/app/services/hris/employee/newEmployeeprofile.service';
 

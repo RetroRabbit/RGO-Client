@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import * as EmployeeProfileDetailsActions from '../actions/employee-Profile-Details.actions';
+import * as EmployeeProfileDetailsActions from '../actions/employee-profile-details.actions';
 import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
 
 export interface EmployeeProfileDetailsState {
