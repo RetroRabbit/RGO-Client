@@ -22,6 +22,7 @@ import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
 import { SharedAccordionFunctionality } from '../employee-profile/shared-accordion-functionality';
+import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Component({
   selector: 'app-new-employee',
@@ -39,6 +40,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   constructor(
+    private storeAccessService: StoreAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeProfileService: EmployeeProfileService,
     private employeeAddressService: EmployeeAddressService,

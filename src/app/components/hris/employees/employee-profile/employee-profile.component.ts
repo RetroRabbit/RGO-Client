@@ -34,6 +34,7 @@ import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/empl
 import { Observable, Subscription } from 'rxjs';
 import { LoadClients, SetClients } from 'src/app/components/shared-components/store/actions/client.actions';
 import { NewEmployeeProfileService } from 'src/app/services/hris/employee/newEmployeeprofile.service';
+import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Component({
   selector: 'app-employee-profile',

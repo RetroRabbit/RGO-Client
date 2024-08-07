@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { AuthAccessService } from '../../shared-services/auth-access/auth-access.service';
 import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
 import { employeeProfileBanking } from 'src/app/models/hris/EmployeeProfile/employeeProfileBankingInformation.interface';
 import { EmployeeCareerSummary } from 'src/app/models/hris/EmployeeProfile/employeeCareerSummary.interface';
@@ -13,9 +12,17 @@ import { EmployeeCareerSummary } from 'src/app/models/hris/EmployeeProfile/emplo
 export class NewEmployeeProfileService {
     baseUrl: string;
 
-    constructor(private httpClient: HttpClient,
-        private authAccessService: AuthAccessService) {
+    constructor(private httpClient: HttpClient) 
+    {
         this.baseUrl = `${environment.HttpsBaseURL}/employee-profile`
+    }
+
+    // getEmployeeProfiles(): Observable<EmployeeProfile[]> {
+    //     return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/all`);
+    //   }
+
+    getAllEmployeeProfileDetails(): Observable<EmployeeProfileDetails[]> {
+        return this.httpClient.get<EmployeeProfileDetails[]>(`${this.baseUrl}/all`);
     }
 
     getEmployeeProfileDetailsById(id: number): Observable<EmployeeProfileDetails> {

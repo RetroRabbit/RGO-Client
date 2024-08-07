@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
+import * as EmployeeProfilesActions from '../actions//employee-profile.actions';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { SetEmployeeProfiles, LoadEmployeeProfiles, LoadEmployeeProfilesSuccess, LoadEmployeeProfilesFailure } from '../actions/employee-profile.actions';
 
 export interface EmployeeProfilesState {
   employeeProfiles: EmployeeProfile[];
@@ -17,26 +17,26 @@ export const initialState: EmployeeProfilesState = {
 export const employeeProfilesReducer = createReducer(
   initialState,
 
-  on(SetEmployeeProfiles, (state, { payload }) => ({
+  on(EmployeeProfilesActions.SetEmployeeProfiles, (state, { payload }) => ({
     ...state,
-    employeeProfiles: payload,
+    customField: payload,
     loading: false,
     error: null
   })),
 
-  on(LoadEmployeeProfiles, (state) => ({
+  on(EmployeeProfilesActions.LoadEmployeeProfiles, (state) => ({
     ...state,
     loading: true,
     error: null
   })),
 
-  on(LoadEmployeeProfilesSuccess, (state, { payload }) => ({
+  on(EmployeeProfilesActions.LoadEmployeeProfilesSuccess, (state, { payload }) => ({
     ...state,
-    clients: payload,
+    customField: payload,
     loading: false
   })),
 
-  on(LoadEmployeeProfilesFailure, (state, { error }) => ({
+  on(EmployeeProfilesActions.LoadEmployeeProfilesFailure, (state, { error }) => ({
     ...state,
     loading: false,
     error

@@ -3,37 +3,42 @@ import * as EmployeeProfileDetailsActions from '../actions/employee-profile-deta
 import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
 
 export interface EmployeeProfileDetailsState {
-  employeeProfileDetails: EmployeeProfileDetails | null;
+  employeeProfileDetails: EmployeeProfileDetails[];
   loading: boolean;
-  error: any;
+  error: string | null;
 }
 
 export const initialState: EmployeeProfileDetailsState = {
-  employeeProfileDetails: null,
+  employeeProfileDetails: [],
   loading: false,
   error: null,
 };
 
 export const employeeProfileDetailsReducer = createReducer(
   initialState,
-  on(EmployeeProfileDetailsActions.loadEmployeeProfileDetails, (state) => {
-    return {
-      ...state,
-      loading: true,
-    };
-  }),
-  on(EmployeeProfileDetailsActions.loadEmployeeProfileDetailsSuccess, (state, { employeeProfileDetails }) => {
-    return {
-      ...state,
-      loading: false,
-      employeeProfileDetails,
-    };
-  }),
-  on(EmployeeProfileDetailsActions.loadEmployeeProfileDetailsFailure, (state, { error }) => {
-    return {
-      ...state,
-      loading: false,
-      error,
-    };
-  })
+
+  on(EmployeeProfileDetailsActions.SetEmployeeProfileDetails, (state, { payload }) => ({
+    ...state,
+    customField: payload,
+    loading: false,
+    error: null
+  })),
+
+  on(EmployeeProfileDetailsActions.LoadEmployeeProfileDetails, (state) => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+
+  on(EmployeeProfileDetailsActions.LoadEmployeeProfileDetailsSuccess, (state, { payload }) => ({
+    ...state,
+    customField: payload,
+    loading: false
+  })),
+
+  on(EmployeeProfileDetailsActions.LoadEmployeeProfileDetailsFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error
+  }))
 );

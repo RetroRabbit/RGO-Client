@@ -5,8 +5,10 @@ import { selectClients } from 'src/app/components/shared-components/store/select
 import { Client } from 'src/app/models/hris/client.interface';
 import { selectCustomField } from 'src/app/components/shared-components/store/selector/custom-field.selector';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { selectEmployeeProfileDetails } from 'src/app/components/shared-components/store/selector/employee-Profile-Details.selector';
-import { EmployeeProfileDetails } from 'src/app/models/hris/employee-profile.interface';
+import { selectEmployeeProfileDetails } from 'src/app/components/shared-components/store/selector/employee-profile-details.selector';
+import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
+import { selectEmployeeProfiles } from 'src/app/components/shared-components/store/selector/employee-profile.selector';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +16,7 @@ import { EmployeeProfileDetails } from 'src/app/models/hris/employee-profile.int
 export class StoreAccessService {
   public constructor(
     private store: Store<AppState>,
-  )
-  {}
+  ) { }
 
   getClients(): Client[] {
     let clients: Client[] = [];
@@ -32,12 +33,23 @@ export class StoreAccessService {
     });
     return customField;
   }
-  
-    getEmployeeProfileDetails(): EmployeeProfileDetails[] {
-    let employeeProfilesDetails EmployeeProfileDetails[] = [];
+
+  getEmployeeProfileDetails(): EmployeeProfileDetails[] {
+    let employeeProfileDetails: EmployeeProfileDetails[] = [];
     this.store.select(selectEmployeeProfileDetails).subscribe((store) => {
-      employeeProfilesDetails = store || '';
+      employeeProfileDetails = store || '';
     });
-    return employeeProfilesDetails;
- 
+    return employeeProfileDetails;
+  }
+
+  // Temporary usage until backend merged, need to use getEmployeeProfileDetails()
+  // and remove all boiler plate code for ngrx
+  getEmployeeProfiles(): EmployeeProfile[] {
+    let employeeProfiles: EmployeeProfile[] = [];
+    this.store.select(selectEmployeeProfiles).subscribe((store) => {
+      employeeProfiles = store || '';
+    });
+    return employeeProfiles;
+  }
+
 }

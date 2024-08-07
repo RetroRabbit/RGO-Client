@@ -46,7 +46,6 @@ export class AccordionCareerAdditionalInformationComponent {
     private employeeDataService: EmployeeDataService,
     private storeAccessService: StoreAccessService,
     private employeeTypeService: EmployeeTypeService,
-    private storeAccessService: StoreAccessService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
