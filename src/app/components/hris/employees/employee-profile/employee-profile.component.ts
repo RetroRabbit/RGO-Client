@@ -28,10 +28,8 @@ import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-docu
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/components/shared-components/store/app.state';
 import { Subscription } from 'rxjs';
-import { LoadClients } from 'src/app/components/shared-components/store/actions/client.actions';
+import { ClientService } from 'src/app/services/hris/client.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -120,7 +118,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   constructor(
-    private store: Store<AppState>,
+    private clientService: ClientService,
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
     private route: ActivatedRoute,
@@ -348,7 +346,12 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   getClients() {
-    this.store.dispatch(LoadClients());
+    this.clientService.getAllClients().subscribe({
+      next: data => {
+        this.sharedAccordionFunctionality.clients = data;
+        this.clients = data;
+      }
+    })
   }
 
   filterClients(clientId: number) {

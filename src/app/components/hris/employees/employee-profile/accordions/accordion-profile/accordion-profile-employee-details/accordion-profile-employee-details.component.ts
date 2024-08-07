@@ -55,7 +55,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.initializeForm();
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();
-    this.getClients();
     this.checkEmployeeDetails();
   }
 
@@ -402,14 +401,10 @@ export class AccordionProfileEmployeeDetailsComponent {
 
   getAllEmployees() {
     const data = this.sharedAccordionFunctionality.employees;
-    const clientData = this.storeAccessService.getClients();
+    const clientData = this.sharedAccordionFunctionality.clients;
     this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
     this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
     this.sharedAccordionFunctionality.employeeClient = clientData.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
-  }
-
-  getClients() {
-      this.sharedAccordionFunctionality.clients = this.storeAccessService.getClients();
   }
 
   getEmployeeClient(clientId: string) {

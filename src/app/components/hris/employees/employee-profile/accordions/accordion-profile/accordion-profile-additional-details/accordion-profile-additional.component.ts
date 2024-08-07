@@ -81,7 +81,7 @@ export class AccordionProfileAdditionalComponent {
   }
 
   getAllEmployees() {
-    const clientData = this.storeAccessService.getClients();
+    const clientData = this.sharedAccordionFunctionality.clients;
     const data = this.sharedAccordionFunctionality.employees;
     this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
     this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];

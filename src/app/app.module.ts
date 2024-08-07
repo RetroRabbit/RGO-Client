@@ -34,7 +34,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -96,8 +96,6 @@ import { CvDocumentComponent } from './components/hris/cv-document/cv-document.c
 import { StoreModule } from '@ngrx/store';
 import { loginReducer } from './components/shared-components/store/reducers/sign-in.reducer';
 import { LoginEffects } from './components/shared-components/store/effects/sign-in.effects';
-import { clientReducer } from './components/shared-components/store/reducers/client.reducer';
-import { ClientEffects } from './components/shared-components/store/effects/client.effects';
 import { customFieldReducer } from './components/shared-components/store/reducers/custom-field.reducer';
 import { CustomFieldEffects } from './components/shared-components/store/effects/custom-field-effects';
 import { employeeProfileDetailsReducer } from './components/shared-components/store/reducers/employee-profile-details.reducer';
@@ -165,12 +163,11 @@ import { EmployeeProfileDetailsEffects } from './components/shared-components/st
     MatSnackBarModule,
     ClipboardModule,
     StoreModule.forRoot({
-      token: loginReducer, 
-      clients: clientReducer,
+      token: loginReducer,
       customField : customFieldReducer,
       employeeProfileDetails : employeeProfileDetailsReducer,
     }),
-    EffectsModule.forRoot([LoginEffects, ClientEffects, CustomFieldEffects, EmployeeProfileDetailsEffects,]),
+    EffectsModule.forRoot([LoginEffects, CustomFieldEffects, EmployeeProfileDetailsEffects,]),
     AuthModule.forRoot({
       domain: process.env['AUTH0_Domain_key'] || 'null',
       clientId: process.env['AUTH0_CLIENT_ID'] || 'null',
