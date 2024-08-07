@@ -62,20 +62,10 @@ export class AccordionProfileAdditionalComponent {
   }
   
   loadEmployeeData() {
-    this.getEmployeeData();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
     }
     this.getEmployeeFieldCodes();
-  }
-
-  getEmployeeData() {
-    const id = this.employeeId ?? this.loggedInProfile.id;
-    this.employeeDataService.getEmployeeData(id).subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
-      }
-    });
   }
 
   getAllEmployees() {
@@ -160,7 +150,6 @@ export class AccordionProfileAdditionalComponent {
             this.sharedAccordionFunctionality.totalProfileProgress();
             this.sharedAccordionFunctionality.additionalInfoForm.disable();
             this.sharedAccordionFunctionality.editAdditional = false;
-            this.getEmployeeData();
             this.updateEmployeeProfile.emit(1);
           },
           error: () => this.snackBarService.showError(`Failed to ${found ? "update" : "save"} field`)

@@ -78,12 +78,9 @@ export class CvDocumentComponent {
   }
 
   getAdditionalFields() {
-    this.employeeData.getEmployeeData(this.employeeId).subscribe({
-      next: data => {
-        this.experienceData = data.filter(field => field.fieldCodeId == 5);
-        this.numberOfYears = this.experienceData[0].value;
-      }
-    })
+    var data = this.sharedAccordionFunctionality.employeeData;
+    this.experienceData = data.filter(field => field.fieldCodeId == 5);
+    this.numberOfYears = this.experienceData[0].value;
   }
 
   getEmployeeWorkExp() {

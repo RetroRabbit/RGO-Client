@@ -351,7 +351,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile.employeeDetails.disability;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
-    this.getEmployeeData();
     this.initializeEmployeeProfileDto();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
@@ -367,29 +366,12 @@ export class AccordionProfileEmployeeDetailsComponent {
       this.sharedAccordionFunctionality.hasDisability = data.disability;
       this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
 
-      this.getEmployeeData();
       this.initializeEmployeeProfileDto();
       if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
         this.getAllEmployees();
       }
       this.getEmployeeFieldCodes();
       this.initializeForm();
-    }
-  }
-
-  getEmployeeData() {
-    if (this.employeeId != undefined) {
-      this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
-        next: data => {
-          this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
-        }
-      });
-    } else {
-      this.employeeDataService.getEmployeeData(this.navService.employeeProfile.id).subscribe({
-        next: data => {
-          this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
-        }
-      });
     }
   }
 
