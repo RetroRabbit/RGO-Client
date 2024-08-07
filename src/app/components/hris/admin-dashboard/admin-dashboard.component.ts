@@ -20,7 +20,6 @@ import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.inte
 import { DashboardService } from 'src/app/services/hris/employee/dashboard.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { SharedAccordionFunctionality } from '../employees/employee-profile/shared-accordion-functionality';
-import { SetEmployeeProfiles } from '../../shared-components/store/actions/employee-profile.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../shared-components/store/app.state';
 

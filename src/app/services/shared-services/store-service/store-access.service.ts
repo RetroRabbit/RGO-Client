@@ -7,8 +7,6 @@ import { selectCustomField } from 'src/app/components/shared-components/store/se
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { selectEmployeeProfileDetails } from 'src/app/components/shared-components/store/selector/employee-profile-details.selector';
 import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
-import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { selectEmployeeProfiles } from 'src/app/components/shared-components/store/selector/employee-profile.selector';
 
 @Injectable({
   providedIn: 'root',
@@ -40,16 +38,6 @@ export class StoreAccessService {
       employeeProfileDetails = store || '';
     });
     return employeeProfileDetails;
-  }
-
-  // Temporary usage until backend merged, need to use getEmployeeProfileDetails()
-  // and remove all boiler plate code for ngrx
-  getEmployeeProfiles(): EmployeeProfile[] {
-    let employeeProfiles: EmployeeProfile[] = [];
-    this.store.select(selectEmployeeProfiles).subscribe((store) => {
-      employeeProfiles = store || '';
-    });
-    return employeeProfiles;
   }
 
 }
