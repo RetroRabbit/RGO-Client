@@ -239,7 +239,7 @@ export class AdminDashboardComponent {
       next: (data: EmployeeProfile[]) => {
         this.employeeProfiles = data;
         this.searchResults = [];
-        this.store.dispatch(SetEmployeeProfiles({ payload: data }));
+        this.sharedAccordionFunctionality.employees = data;
       },
       error: (er) => this.snackBarService.showError(er),
       complete: () => {

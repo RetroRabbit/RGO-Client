@@ -12,6 +12,7 @@ import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-obj
 import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
+import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-new-candidate',
@@ -29,6 +30,7 @@ export class NewCandidateComponent {
   }
 
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private candidateService: CandidateService,
     private router: Router,
     private snackBarService: SnackbarService,
@@ -91,10 +93,7 @@ export class NewCandidateComponent {
   }
 
   getAllEmployees() {
-    this.employeeProfileService.getEmployeeProfiles().subscribe({
-      next: data => this.allEmployees = data,
-      error: (er) => this.snackBarService.showError(er),
-    })
+    this.allEmployees = this.sharedAccordionFunctionality.employees;
   }
 
   initializeForm() {

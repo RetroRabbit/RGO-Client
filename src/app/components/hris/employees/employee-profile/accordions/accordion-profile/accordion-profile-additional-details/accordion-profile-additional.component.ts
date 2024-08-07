@@ -46,7 +46,6 @@ export class AccordionProfileAdditionalComponent {
     private store: Store<AppState>,
     private fb: FormBuilder,
     private snackBarService: SnackbarService,
-    private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
     private storeAccessService: StoreAccessService,
     private customFieldService: CustomFieldService,
@@ -82,9 +81,8 @@ export class AccordionProfileAdditionalComponent {
   }
 
   getAllEmployees() {
-    const data = this.storeAccessService.getEmployeeProfiles();
     const clientData = this.storeAccessService.getClients();
-    this.sharedAccordionFunctionality.employees = data;
+    const data = this.sharedAccordionFunctionality.employees;
     this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
     this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
     this.sharedAccordionFunctionality.employeeClient = clientData.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];

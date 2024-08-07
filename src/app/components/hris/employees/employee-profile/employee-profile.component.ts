@@ -30,11 +30,8 @@ import { EmployeeTerminationService } from 'src/app/services/hris/employee/emplo
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/components/shared-components/store/app.state';
-import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
-import { Observable, Subscription } from 'rxjs';
-import { LoadClients, SetClients } from 'src/app/components/shared-components/store/actions/client.actions';
-import { NewEmployeeProfileService } from 'src/app/services/hris/employee/newEmployeeprofile.service';
-import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
+import { Subscription } from 'rxjs';
+import { LoadClients } from 'src/app/components/shared-components/store/actions/client.actions';
 
 @Component({
   selector: 'app-employee-profile',
@@ -126,8 +123,6 @@ export class EmployeeProfileComponent implements OnChanges {
     private store: Store<AppState>,
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
-    private storeAccessService: StoreAccessService,
-    private newEmployeeProfileService : NewEmployeeProfileService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBarService: SnackbarService,
@@ -276,11 +271,10 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   getAllEmployees() {
-    // const data = this.storeAccessService.getEmployeeProfiles();
-    // this.employees = data;
-    // this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
-    // this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-    // this.filterClients(this.employeeProfile?.clientAllocated as number);
+    this.employees = this.sharedAccordionFunctionality.employees;
+    this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
+    this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+    this.filterClients(this.employeeProfile?.clientAllocated as number);
   }
 
   get basedInString(): string {

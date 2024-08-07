@@ -70,9 +70,8 @@ export class EmployeeDetailsComponent implements OnInit {
 
     this.employeeTypes = this.sharedAccordionFunctionality.employeeTypes
     this.fieldcodes = this.storeAccessService.getFieldCodes();
-    this.employees = this.storeAccessService.getEmployeeProfiles();
     this.clients = this.storeAccessService.getClients();
-    
+    this.employees = this.sharedAccordionFunctionality.employees;
     this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
       next: data => {
         this.employeeRoles = data;

@@ -17,10 +17,6 @@ export class NewEmployeeProfileService {
         this.baseUrl = `${environment.HttpsBaseURL}/employee-profile`
     }
 
-    // getEmployeeProfiles(): Observable<EmployeeProfile[]> {
-    //     return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/all`);
-    //   }
-
     getAllEmployeeProfileDetails(): Observable<EmployeeProfileDetails[]> {
         return this.httpClient.get<EmployeeProfileDetails[]>(`${this.baseUrl}/all`);
     }
