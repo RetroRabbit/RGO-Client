@@ -4,7 +4,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
@@ -21,6 +20,7 @@ import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/id-validator.service';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
+import { SharedAccordionFunctionality } from '../employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-new-employee',
@@ -38,8 +38,8 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeProfileService: EmployeeProfileService,
-    private employeeTypeService: EmployeeTypeService,
     private employeeAddressService: EmployeeAddressService,
     private cookieService: CookieService,
     private router: Router,
@@ -159,14 +159,11 @@ export class NewEmployeeComponent implements OnInit {
       disabilityNotesControl?.updateValueAndValidity();
     });
 
-    this.employeeTypeService.getAllEmployeeTypes().subscribe({
-      next: (data: EmployeeType[]) => {
-        this.employeeTypes = data.sort((a, b) => {
-          const nameA = (a.name || '').toLowerCase();
-          const nameB = (b.name || '').toLowerCase();
-          return nameA.localeCompare(nameB);
-        });
-      },
+    var data = this.sharedAccordionFunctionality.employeeTypes;
+    this.employeeTypes = data.sort((a, b) => {
+      const nameA = (a.name || '').toLowerCase();
+      const nameB = (b.name || '').toLowerCase();
+      return nameA.localeCompare(nameB);
     });
 
     this.employeeProfileService

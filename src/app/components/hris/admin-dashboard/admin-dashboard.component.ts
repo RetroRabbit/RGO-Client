@@ -19,6 +19,7 @@ import { EmployeeCountDataCard } from 'src/app/models/hris/employee-count-data-c
 import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.interface';
 import { DashboardService } from 'src/app/services/hris/employee/dashboard.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
+import { SharedAccordionFunctionality } from '../employees/employee-profile/shared-accordion-functionality';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -92,6 +93,7 @@ export class AdminDashboardComponent {
   rolesSelected: string[] = [];
   categoriesSelected: string[] = [];
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private dashboardService: DashboardService,
     public chartService: ChartService,
     private cookieService: CookieService,
@@ -257,6 +259,7 @@ export class AdminDashboardComponent {
   getEmployeeTypes() {
     this.employeeTypeService.getAllEmployeeTypes().subscribe({
       next: (data: EmployeeType[]) => {
+        this.sharedAccordionFunctionality.employeeTypes = data;
         this.types = [];
         this.types.push('All');
         data.forEach((field) => this.types.push(field.name as string));
