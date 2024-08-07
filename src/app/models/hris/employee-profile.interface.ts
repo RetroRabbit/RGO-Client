@@ -4,7 +4,6 @@ import { EmployeeQualifications } from "./employee-qualifications.interface";
 export class EmployeeProfile { 
 
   EmployeeProfile() {}
-
   id!: number;
   employeeNumber?: string;
   taxNumber?: string;
@@ -21,6 +20,7 @@ export class EmployeeProfile {
     id?: number,
     name?: string,
   };
+  
   name?: string;
   initials?: string;
   surname?: string;
