@@ -1,0 +1,20 @@
+export interface EmployeeDetails{
+    id: number,
+    engagementDate: Date,
+    peopleChampionName?: string,
+    peopleChampionId?: number,
+    level: number,
+    employeeType: {
+      id: number,
+      name: string,
+    },
+    name: string,
+    initials: string,
+    surname: string,
+    dateOfBirth: Date,
+    idNumber: string,
+    clientAllocatedName?: string,
+    clientAllocatedId?: number,
+    teamLeadName?: string,
+    teamLeadId?: number,
+}

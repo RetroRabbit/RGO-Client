@@ -1,5 +1,3 @@
-import { EmployeeProfile } from "./employee-profile.interface";
-
 export interface WorkExperience {
     id: number,
     clientName: string,

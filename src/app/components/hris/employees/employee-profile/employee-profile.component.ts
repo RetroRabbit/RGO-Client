@@ -30,7 +30,11 @@ import { EmployeeTerminationService } from 'src/app/services/hris/employee/emplo
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/components/shared-components/store/app.state';
+import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
+import { Observable, Subscription } from 'rxjs';
+
 import { LoadClients, SetClients } from 'src/app/components/shared-components/store/actions/client.actions';
+import { NewEmployeeProfileService } from 'src/app/services/hris/employee/newEmployeeprofile.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -95,6 +99,7 @@ export class EmployeeProfileComponent implements OnChanges {
   bankStatus: number = 0;
   base64Image: string = '';
   screenWidth = window.innerWidth;
+  profileSubscription: Subscription | undefined;
 
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
   @ViewChild(AccordionProfileAddressDetailsComponent) adressAccordion!: AccordionProfileAddressDetailsComponent;
@@ -121,6 +126,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private store: Store<AppState>,
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
+    private newEmployeeProfileService : NewEmployeeProfileService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBarService: SnackbarService,
@@ -136,6 +142,10 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     changes['updateProfile'].currentValue
     changes['updateDocument'].currentValue
+  }
+  
+  ngOnDestroy() {
+    this.displayEditButtons()
   }
 
   ngOnInit() {
