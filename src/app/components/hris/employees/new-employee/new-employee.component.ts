@@ -19,7 +19,6 @@ import { MatStepper } from '@angular/material/stepper';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/id-validator.service';
-import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
 
@@ -48,7 +47,6 @@ export class NewEmployeeComponent implements OnInit {
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     public navService: NavService,
-    public locationApiService: LocationApiService,
   ) {
     this.navService.hideNav();
   }
@@ -64,7 +62,6 @@ export class NewEmployeeComponent implements OnInit {
   races: string[] = races.map((race) => race.value);
   genders: string[] = genders.map((gender) => gender.value);
   provinces: string[] = [];
-  countries: string[] = [];
   cities: string[] = [];
   newEmployeeEmail = "";
   base64String = "";
@@ -134,18 +131,11 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadCountries();
     this.initializeForm();
   }
 
   ngOnDestroy() {
     this.navService.showNav();
-  }
-
-  loadCountries(): void {
-    this.locationApiService.getCountries().subscribe({
-      next: (data) => this.countries = data
-    });
   }
 
   initializeForm() {
@@ -194,6 +184,7 @@ export class NewEmployeeComponent implements OnInit {
     this.clearFormErrorsAndValues(this.physicalAddress);
     this.clearFormErrorsAndValues(this.postalAddressForm);
     this.removeAllDocuments();
+    this.goToPreviousPage();
   }
 
   saveAndAddAnother() {
@@ -277,27 +268,6 @@ export class NewEmployeeComponent implements OnInit {
       this.inputField.reset();
       document.querySelector('.cellphone-container')?.classList.remove('has-value');
     }
-  }
-
-  onCountryChange(country: string): void {
-    this.countrySelected = country;
-    this.provinces = [];
-    this.cities = [];
-    this.loadProvinces(this.countrySelected);
-  }
-
-  loadProvinces(country: string): void {
-    this.locationApiService.getProvinces(country).subscribe({
-      next: (data) => this.provinces = data
-    });
-    this.cities = [];
-  }
-
-  loadCities(province: string): void {
-    this.locationApiService.getCities(this.countrySelected, province).subscribe({
-      next: (data) => this.cities = data,
-      error: (er) => this.snackBarService.showError(er),
-    });
   }
 
   filterChampions(event: any) {

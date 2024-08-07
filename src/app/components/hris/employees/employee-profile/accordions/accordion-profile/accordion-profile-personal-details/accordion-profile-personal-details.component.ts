@@ -220,7 +220,9 @@ export class AccordionProfilePersonalDetailsComponent {
 
   loadCountries(): void {
     this.locationApiService.getCountries().subscribe({
-      next: (data) => this.countries = data
+      next: (data) => {
+        this.countries = data
+      }
     });
   }
 
