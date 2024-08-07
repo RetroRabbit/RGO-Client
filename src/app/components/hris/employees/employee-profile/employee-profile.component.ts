@@ -126,7 +126,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private store: Store<AppState>,
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
-    private newEmployeeProfileService : NewEmployeeProfileService,
+    private newEmployeeProfileService: NewEmployeeProfileService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBarService: SnackbarService,
@@ -142,10 +142,6 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     changes['updateProfile'].currentValue
     changes['updateDocument'].currentValue
-  }
-  
-  ngOnDestroy() {
-    this.displayEditButtons()
   }
 
   ngOnInit() {
