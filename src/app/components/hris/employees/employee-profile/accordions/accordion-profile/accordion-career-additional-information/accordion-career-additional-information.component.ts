@@ -116,7 +116,7 @@ export class AccordionCareerAdditionalInformationComponent {
   }
 
   getEmployeeFieldCodes() {
-    var data = this.storeAccessService.getFieldCodes()
+    var data = this.sharedAccordionFunctionality.fieldCodes;
     this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[2].id);
     this.checkAdditionalInformation();
     this.sharedAccordionFunctionality.calculateCareerAdditionalFormProgress();

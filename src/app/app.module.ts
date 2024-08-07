@@ -96,8 +96,6 @@ import { CvDocumentComponent } from './components/hris/cv-document/cv-document.c
 import { StoreModule } from '@ngrx/store';
 import { loginReducer } from './components/shared-components/store/reducers/sign-in.reducer';
 import { LoginEffects } from './components/shared-components/store/effects/sign-in.effects';
-import { customFieldReducer } from './components/shared-components/store/reducers/custom-field.reducer';
-import { CustomFieldEffects } from './components/shared-components/store/effects/custom-field-effects';
 import { employeeProfileDetailsReducer } from './components/shared-components/store/reducers/employee-profile-details.reducer';
 import { EmployeeProfileDetailsEffects } from './components/shared-components/store/effects/employee-profile-details.effects';
 
@@ -164,10 +162,9 @@ import { EmployeeProfileDetailsEffects } from './components/shared-components/st
     ClipboardModule,
     StoreModule.forRoot({
       token: loginReducer,
-      customField : customFieldReducer,
       employeeProfileDetails : employeeProfileDetailsReducer,
     }),
-    EffectsModule.forRoot([LoginEffects, CustomFieldEffects, EmployeeProfileDetailsEffects,]),
+    EffectsModule.forRoot([LoginEffects, EmployeeProfileDetailsEffects,]),
     AuthModule.forRoot({
       domain: process.env['AUTH0_Domain_key'] || 'null',
       clientId: process.env['AUTH0_CLIENT_ID'] || 'null',

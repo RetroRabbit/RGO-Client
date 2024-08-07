@@ -68,7 +68,7 @@ export class EmployeeDetailsComponent implements OnInit {
 
   private callService() {
     this.employeeTypes = this.sharedAccordionFunctionality.employeeTypes
-    this.fieldcodes = this.storeAccessService.getFieldCodes();
+    this.fieldcodes = this.sharedAccordionFunctionality.fieldCodes;
     this.clients = this.sharedAccordionFunctionality.clients;
     this.employees = this.sharedAccordionFunctionality.employees;
     this.employeeRoleService.getEmployeeOnRoles(4).subscribe({

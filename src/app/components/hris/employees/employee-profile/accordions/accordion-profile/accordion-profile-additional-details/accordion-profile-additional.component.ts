@@ -15,8 +15,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/components/shared-components/store/app.state';
-import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
-import { SetCustomField } from 'src/app/components/shared-components/store/actions/custom-field.actions';
+
 @Component({
   selector: 'app-accordion-profile-additional',
   templateUrl: './accordion-profile-additional.component.html',
@@ -47,7 +46,6 @@ export class AccordionProfileAdditionalComponent {
     private fb: FormBuilder,
     private snackBarService: SnackbarService,
     private employeeDataService: EmployeeDataService,
-    private storeAccessService: StoreAccessService,
     private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
@@ -91,7 +89,7 @@ export class AccordionProfileAdditionalComponent {
   getEmployeeFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
-        this.store.dispatch(SetCustomField({ payload: data }));
+        this.sharedAccordionFunctionality.fieldCodes = data;
         this.checkArchived(data);
         this.checkAdditionalInformation();
         this.sharedAccordionFunctionality.checkAdditionalFormProgress();

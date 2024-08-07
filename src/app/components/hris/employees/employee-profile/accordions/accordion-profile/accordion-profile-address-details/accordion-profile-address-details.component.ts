@@ -358,7 +358,7 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   getEmployeeFieldCodes() {
-    var data = this.storeAccessService.getFieldCodes()
+    var data = this.sharedAccordionFunctionality.fieldCodes;
     this.sharedAccordionFunctionality.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[0].id);
   }
 
