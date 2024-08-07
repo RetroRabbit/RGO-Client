@@ -75,7 +75,6 @@ export class AccordionCareerAdditionalInformationComponent {
           this.employeeProfile.employeeDetails = data;
         }, complete: () => {
           this.getEmployeeData();
-          this.getEmployeeTypes();
           if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
             this.getAllEmployees();
           }
