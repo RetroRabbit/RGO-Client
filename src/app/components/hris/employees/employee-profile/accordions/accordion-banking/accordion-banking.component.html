@@ -69,7 +69,7 @@
                                             {{accountType.value}}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-icon *ngIf="employeeBankingsForm.get('accountType')?.value === null || employeeBankingsForm.get('accountType')?.value === ''" [ngStyle]="{color: editBanking? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                    <mat-icon *ngIf="employeeBankingsForm.get('accountType')?.value === null || employeeBankingsForm.get('accountType')?.value === -1" [ngStyle]="{color: editBanking? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                                     </div>
                                 </mat-form-field>
                             </div>

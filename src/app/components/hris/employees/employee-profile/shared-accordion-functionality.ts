@@ -479,7 +479,6 @@ export class SharedAccordionFunctionality {
 
 
   totalCareerProgress() {
-    console.log(this.additionalCareerFormProgress)
     if (this.additionalCareerFormProgress == Infinity || this.additionalCareerFormProgress === 0) {
       this.careerFormProgress = Math.floor((this.qualificationFormProgress + this.salaryDetailsFormProgress) / 2);
       this.updateCareer.emit(this.careerFormProgress);
