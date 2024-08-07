@@ -6,7 +6,6 @@ import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
@@ -47,7 +46,7 @@ export class AccordionCareerAdditionalInformationComponent {
     private employeeDataService: EmployeeDataService,
     private storeAccessService: StoreAccessService,
     private employeeTypeService: EmployeeTypeService,
-    private customFieldService: CustomFieldService,
+    private storeAccessService: StoreAccessService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -76,7 +75,6 @@ export class AccordionCareerAdditionalInformationComponent {
           this.employeeProfile.employeeDetails = data;
         }, complete: () => {
           this.getEmployeeData();
-          this.getEmployeeTypes();
           if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
             this.getAllEmployees();
           }
@@ -91,14 +89,14 @@ export class AccordionCareerAdditionalInformationComponent {
     if (this.employeeId != undefined) {
       this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.employeeData = data;
+          this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
 
         }
       });
     } else {
       this.employeeDataService.getEmployeeData(this.loggedInProfile.id).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.employeeData = data;
+          this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
         }
       });
     }
@@ -121,14 +119,11 @@ export class AccordionCareerAdditionalInformationComponent {
   }
 
   getEmployeeFieldCodes() {
-    this.customFieldService.getAllFieldCodes().subscribe({
-      next: data => {
-        this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[2].id);
-        this.checkAdditionalInformation();
-        this.sharedAccordionFunctionality.calculateCareerAdditionalFormProgress();
-        this.sharedAccordionFunctionality.totalCareerProgress();
-      }
-    })
+    var data = this.storeAccessService.getFieldCodes()
+    this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[2].id);
+    this.checkAdditionalInformation();
+    this.sharedAccordionFunctionality.calculateCareerAdditionalFormProgress();
+    this.sharedAccordionFunctionality.totalCareerProgress();
   }
 
   checkAdditionalInformation() {

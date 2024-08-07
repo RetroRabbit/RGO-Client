@@ -16,6 +16,7 @@ import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-typ
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface'
 import { EmployeeStatus } from 'src/app/models/hris/constants/employee-status.constants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
+import { SharedAccordionFunctionality } from '../employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-view-employee',
@@ -27,14 +28,14 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 export class ViewEmployeeComponent {
 
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeProfileService: EmployeeProfileService,
     private employeeRoleService: EmployeeRoleService,
     private cookieService: CookieService,
     private ngZone: NgZone,
     private router: Router,
     private snackBarService: SnackbarService,
-    public authAccessService: AuthAccessService,
-    private employeeTypeService: EmployeeTypeService
+    public authAccessService: AuthAccessService
   ) { }
 
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
@@ -386,16 +387,15 @@ export class ViewEmployeeComponent {
   }
 
   getUserTypesForFilter(): Observable<GenericDropDownObject[]> {
-    return this.employeeTypeService.getAllEmployeeTypes().pipe(
-      map(types => {
-        const userTypes: GenericDropDownObject[] = types.map(type => ({
-          id: type.id || 0,
-          name: type.name || 'Unknown'
-        }));
-        userTypes.unshift({ id: 0, name: 'All' });
-        return userTypes;
-      })
-    );
+    var data = this.sharedAccordionFunctionality.employeeTypes;
+    
+    const userTypes: GenericDropDownObject[] = data.map(type => ({
+      id: type.id || 0,
+      name: type.name || 'Unknown'
+    }));
+    
+    userTypes.unshift({ id: 0, name: 'All' });
+    return of(userTypes);
   }
 
   splitAndCapitalizeCamelCase(input: string): string {

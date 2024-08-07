@@ -1,20 +1,20 @@
 import { createSelector } from "@ngrx/store";
 import { AppState } from "../app.state";
-import { EmployeeProfilesState } from "../reducers/employee-profile.reducer";
+import { EmployeeProfileDetailsState  } from "../reducers/employee-Profile-Details.reducer";
 
-export const selectEmployeeProfilesState = (state: AppState) => state.employeeProfiles;
+export const selectEmployeeProfileDetailsState = (state: AppState) => state.employeeProfileDetails;
 
-export const selectEmployeeProfiles = createSelector(
-    selectEmployeeProfilesState,
-    (state: EmployeeProfilesState) => state.employeeProfiles
+export const selectEmployeeProfileDetails = createSelector(
+    selectEmployeeProfileDetailsState,
+    (state: EmployeeProfileDetailsState) => state.employeeProfileDetails
 );
 
 export const selectLoading = createSelector(
-    selectEmployeeProfilesState,
-    (state: EmployeeProfilesState) => state.loading
+    selectEmployeeProfileDetailsState,
+    (state: EmployeeProfileDetailsState) => state.loading
 );
 
 export const selectError = createSelector(
-    selectEmployeeProfilesState,
-    (state: EmployeeProfilesState) => state.error
+    selectEmployeeProfileDetailsState,
+    (state: EmployeeProfileDetailsState) => state.error
 );

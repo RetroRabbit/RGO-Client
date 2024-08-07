@@ -5,9 +5,6 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { CustomvalidationService } from 'src/app/services/hris/id-validator.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
-import { ClientService } from 'src/app/services/hris/client.service';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
@@ -46,8 +43,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
     private storeAccessService: StoreAccessService,
-    private employeeTypeService: EmployeeTypeService,
-    private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -360,7 +355,7 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile.employeeDetails.disability;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
     this.getEmployeeData();
-    this.getEmployeeTypes();
+    this.initializeEmployeeProfileDto();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
     }
@@ -377,7 +372,7 @@ export class AccordionProfileEmployeeDetailsComponent {
         }, 
         complete: () => {
           this.getEmployeeData();
-          this.getEmployeeTypes();
+          this.initializeEmployeeProfileDto();
           if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
             this.getAllEmployees();
           }
@@ -393,13 +388,13 @@ export class AccordionProfileEmployeeDetailsComponent {
     if (this.employeeId != undefined) {
       this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.employeeData = data;
+          this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
         }
       });
     } else {
       this.employeeDataService.getEmployeeData(this.navService.employeeProfile.id).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.employeeData = data;
+          this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
         }
       });
     }
@@ -422,21 +417,9 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
   }
 
-  getEmployeeTypes() {
-    this.employeeTypeService.getAllEmployeeTypes().subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.employeeTypes = data;
-        this.initializeEmployeeProfileDto();
-      }
-    });
-  }
-
   getEmployeeFieldCodes() {
-    this.customFieldService.getAllFieldCodes().subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[ 0 ].id);
-      }
-    })
+    var data = this.storeAccessService.getFieldCodes()
+    this.sharedAccordionFunctionality.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[ 0 ].id);
   }
 
   setHasDisability(event: any) {

@@ -5,7 +5,6 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { Client } from 'src/app/models/hris/client.interface';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
-import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
@@ -27,15 +26,14 @@ import { AccordionDocumentsAdditionalComponent } from './accordions/accordion-do
 import { AccordionAdministrativeDocumentsComponent } from './accordions/accordion-documents/accordion-administrative-documents/accordion-administrative-documents.component';
 import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-documents/accordion-employee-documents/accordion-employee-documents.component';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { AppModule } from 'src/app/app.module';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/components/shared-components/store/app.state';
+import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
+import { Observable, Subscription } from 'rxjs';
 import { LoadClients, SetClients } from 'src/app/components/shared-components/store/actions/client.actions';
-import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
+import { NewEmployeeProfileService } from 'src/app/services/hris/employee/newEmployeeprofile.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -100,6 +98,7 @@ export class EmployeeProfileComponent implements OnChanges {
   bankStatus: number = 0;
   base64Image: string = '';
   screenWidth = window.innerWidth;
+  profileSubscription: Subscription | undefined;
 
   @ViewChild(AccordionBankingComponent) bankingAccordion !: AccordionBankingComponent;
   @ViewChild(AccordionProfileAddressDetailsComponent) adressAccordion!: AccordionProfileAddressDetailsComponent;
@@ -127,6 +126,7 @@ export class EmployeeProfileComponent implements OnChanges {
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
     private storeAccessService: StoreAccessService,
+    private newEmployeeProfileService : NewEmployeeProfileService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBarService: SnackbarService,
@@ -147,7 +147,7 @@ export class EmployeeProfileComponent implements OnChanges {
   ngOnDestroy() {
     this.displayEditButtons()
   }
-
+  
   ngOnInit() {
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
       this.isAdminUser = true;
@@ -208,7 +208,7 @@ export class EmployeeProfileComponent implements OnChanges {
   getEmployeeData() {
     this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.employeeData = data;
+        this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];;
       }
     });
   }
@@ -280,7 +280,6 @@ export class EmployeeProfileComponent implements OnChanges {
     // this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
     // this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
     // this.filterClients(this.employeeProfile?.clientAllocated as number);
-
   }
 
   get basedInString(): string {
@@ -354,17 +353,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   getClients() {
-    // Note for developer:
     this.store.dispatch(LoadClients());
-
-    // Both of these methods do the same thing, load just includes the req.
-    // this.clientService.getAllClients().subscribe({
-    //   next: data => {
-    //     this.clients = data;
-    //     this.store.dispatch(SetClients({ payload: data }));
-    //   }
-    // })
-
   }
 
   filterClients(clientId: number) {

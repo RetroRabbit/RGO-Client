@@ -14,6 +14,9 @@ import { SystemNav } from 'src/app/services/hris/system-nav.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/components/shared-components/store/app.state';
+import { SetCustomField } from 'src/app/components/shared-components/store/actions/custom-field.actions';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -66,6 +69,7 @@ export class ManageFieldCodeComponent {
     private systemService: SystemNav,
     public navService: NavService,
     private ngZone: NgZone,
+    private store: Store<AppState>,
     private authAccessService: AuthAccessService
   ) {
     this.dialogTypeData = new DialogTypeData().dialogTypeData;
@@ -92,8 +96,9 @@ export class ManageFieldCodeComponent {
   fetchData(active: number = 0) {
     this.isLoading = true;
     this.customFieldService.getAllFieldCodes().subscribe({
-      next: fieldCodes => {
-        this.customFields = fieldCodes;
+      next: data => {
+        this.store.dispatch(SetCustomField({ payload: data }));
+        this.customFields = data;
         this.filteredCustomFields = this.customFields.filter(field => field.status == active);
         this.getDataSource();
         this.runCounter++;

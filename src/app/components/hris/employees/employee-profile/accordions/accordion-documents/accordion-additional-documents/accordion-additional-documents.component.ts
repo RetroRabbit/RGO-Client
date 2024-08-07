@@ -13,6 +13,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { MatTableDataSource } from '@angular/material/table';
 import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Component({
   selector: 'app-accordion-additional-documents',
@@ -51,7 +52,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   selectedFieldCode: string = '';
 
   constructor(
-    private customFieldService: CustomFieldService,
+    private storeAccessService: StoreAccessService,
     private route: ActivatedRoute,
     private employeeDocumentService: EmployeeDocumentService,
     private fb: FormBuilder,
@@ -115,13 +116,10 @@ export class AccordionDocumentsCustomDocumentsComponent {
   }
 
   getDocumentFieldCodes() {
-    this.customFieldService.getAllFieldCodes().subscribe({
-      next: data => {
-        const documentFieldCodes = data.filter(fieldCode => fieldCode.type === 5); 
-        this.checkCustomDocumentsInformation();
-        this.checkArchived(documentFieldCodes);
-      }
-    })
+    var data = this.storeAccessService.getFieldCodes();
+    const documentFieldCodes = data.filter(fieldCode => fieldCode.type === 5); 
+    this.checkCustomDocumentsInformation();
+    this.checkArchived(documentFieldCodes);
   }
 
   checkArchived(fields: CustomField[]) {

@@ -2,11 +2,8 @@ import { Component, HostListener, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -55,8 +52,6 @@ export class AccordionProfileAddressDetailsComponent {
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
     private storeAccessService: StoreAccessService,
-    private employeeTypeService: EmployeeTypeService,
-    private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -308,13 +303,13 @@ export class AccordionProfileAddressDetailsComponent {
     if (this.employeeId != undefined) {
       this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.employeeData = data;
+          this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
         }
       });
     } else {
       this.employeeDataService.getEmployeeData(this.navService.employeeProfile.id).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.employeeData = data;
+          this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
         }
       });
     }
@@ -328,22 +323,13 @@ export class AccordionProfileAddressDetailsComponent {
     // this.sharedAccordionFunctionality.employeeClient = this.storeAccessService.getClients().filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
   }
 
-  getEmployeeTypes() {
-    this.employeeTypeService.getAllEmployeeTypes().subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.employeeTypes = data;
-        this.initializeEmployeeProfileDto();
-      }
-    });
-  }
-
   getEmployeeFields() {
     this.sharedAccordionFunctionality.employeePhysicalAddress = this.employeeProfile.employeeDetails.physicalAddress!;
     this.sharedAccordionFunctionality.employeePostalAddress = this.employeeProfile.employeeDetails.postalAddress!;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile.employeeDetails.disability;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
     this.getEmployeeData();
-    this.getEmployeeTypes();
+    this.initializeEmployeeProfileDto();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
     }
@@ -360,7 +346,7 @@ export class AccordionProfileAddressDetailsComponent {
           this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
         }, complete: () => {
           this.getEmployeeData();
-          this.getEmployeeTypes();
+          this.initializeEmployeeProfileDto();
           if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
             this.getAllEmployees();
           }
@@ -373,11 +359,8 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   getEmployeeFieldCodes() {
-    this.customFieldService.getAllFieldCodes().subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[0].id);
-      }
-    })
+    var data = this.storeAccessService.getFieldCodes()
+    this.sharedAccordionFunctionality.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[0].id);
   }
 
   editAddressDetails() {

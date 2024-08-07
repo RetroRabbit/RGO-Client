@@ -12,11 +12,10 @@ import { EmployeeType } from 'src/app/models/hris/employee-type.model';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeRoleService } from 'src/app/services/hris/employee/employee-role.service';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
+import { SharedAccordionFunctionality } from '../employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-employee-details',
@@ -52,11 +51,10 @@ export class EmployeeDetailsComponent implements OnInit {
   public levels = levels;
 
   constructor(private fb: FormBuilder,
-    private employeeTypeService: EmployeeTypeService,
     private employeeDataService: EmployeeDataService,
-    private fieldcodeService: CustomFieldService,
     private employeeProfileService: EmployeeProfileService,
     private cookieService: CookieService,
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private storeAccessService: StoreAccessService,
     private employeeRoleService: EmployeeRoleService,
     private snackBarService: SnackbarService,
@@ -69,23 +67,12 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   private callService() {
-    this.employeeTypeService.getAllEmployeeTypes().subscribe({
-      next: data => {
-        this.employeeTypes = data;
-      }
-    });
-    this.employeeDataService.getEmployeeData(this.selectedEmployee.id).subscribe({
-      next: data => {
-        this.employeeData = data;
-      }
-    });
-    this.fieldcodeService.getAllFieldCodes().subscribe({
-      next: data => {
-        this.fieldcodes = data
-      }
-    });
+
+    this.employeeTypes = this.sharedAccordionFunctionality.employeeTypes
+    this.fieldcodes = this.storeAccessService.getFieldCodes();
     this.employees = this.storeAccessService.getEmployeeProfiles();
     this.clients = this.storeAccessService.getClients();
+    
     this.employeeRoleService.getEmployeeOnRoles(4).subscribe({
       next: data => {
         this.employeeRoles = data;
