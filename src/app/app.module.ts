@@ -98,6 +98,8 @@ import { loginReducer } from './components/shared-components/store/reducers/sign
 import { LoginEffects } from './components/shared-components/store/effects/sign-in.effects';
 import { clientReducer } from './components/shared-components/store/reducers/client.reducer';
 import { ClientEffects } from './components/shared-components/store/effects/client.effects';
+import { EmployeeProfileDetailsEffects } from './components/shared-components/store/effects/employee-Profile-Details.effects';
+import { employeeProfileDetailsReducer } from './components/shared-components/store/reducers/employee-Profile-Details.reducer';
 import { customFieldReducer } from './components/shared-components/store/reducers/custom-field.reducer';
 import { CustomFieldEffects } from './components/shared-components/store/effects/custom-field-effects';
 
@@ -165,14 +167,15 @@ import { CustomFieldEffects } from './components/shared-components/store/effects
     StoreModule.forRoot({
       token: loginReducer, 
       clients: clientReducer,
-      customField: customFieldReducer
+      employeeProfileDetails : employeeProfileDetailsReducer,
+      customField : customFieldReducer
     }),
-    EffectsModule.forRoot([LoginEffects, ClientEffects, CustomFieldEffects]),
+    EffectsModule.forRoot([LoginEffects,EmployeeProfileDetailsEffects, ClientEffects,CustomFieldEffects]),
     AuthModule.forRoot({
       domain: process.env['AUTH0_Domain_key'] || 'null',
       clientId: process.env['AUTH0_CLIENT_ID'] || 'null',
       authorizationParams: {
-        redirect_uri: environment.redirect_uri,
+      redirect_uri: environment.redirect_uri,
       },
       useRefreshTokens: true,
       cacheLocation: 'localstorage',
