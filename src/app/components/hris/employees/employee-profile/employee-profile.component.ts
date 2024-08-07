@@ -182,7 +182,6 @@ export class EmployeeProfileComponent implements OnChanges {
       this.usingSimpleProfile = true;
     }
 
-    this.getEmployeeProfile();
     this.refreshEmployeeProfile();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
@@ -226,13 +225,18 @@ export class EmployeeProfileComponent implements OnChanges {
         if (this.usingSimpleProfile) {
           this.simpleEmployee = data;
           this.employeeProfile = data;
-          this.employeeId = data.id;
+          this.employeeId = data.id;          
           this.populateEmployeeAccordion(this.simpleEmployee);
-        } else {
+        } 
+        else 
+        {
           this.selectedEmployee = data;
           this.employeeProfile = data;
+          this.employeePhysicalAddress = data.physicalAddress!;
+          this.employeePostalAddress = data.postalAddress!;
+          this.checkAddressMatch(data);  
         }
-        this.getEmployeeFields();
+        this.sharedAccordionFunctionality.selectedEmployee = data;
         this.getEmployeeData();
         this.filterClients(this.employeeProfile.clientAllocated as number);
         this.isLoading = false;
@@ -241,32 +245,16 @@ export class EmployeeProfileComponent implements OnChanges {
         if (!this.employeeProfile.active) {
           this.getTerminationInfo();
         }
+        if (!this.usingSimpleProfile)
+        {
+          this.getAllEmployees();
+        }
         this.changeDetectorRef.detectChanges();
       },
       error: (er: any) => this.snackBarService.showError(er),
     })
   }
 
-  getEmployeeFields() {
-    const fetchProfile = this.usingSimpleProfile
-      ? this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail())
-      : this.employeeProfileService.getEmployeeById(this.employeeId);
-
-    (fetchProfile as any).subscribe({
-      next: (data: any) => {
-        this.employeeProfile = data;
-        this.selectedEmployee = data;
-        this.employeePhysicalAddress = data.physicalAddress!;
-        this.employeePostalAddress = data.postalAddress!;
-        this.checkAddressMatch(data);
-      },
-      complete: () => {
-        if (!this.usingSimpleProfile)
-          this.getAllEmployees();
-      },
-      error: (er: any) => this.snackBarService.showError(er),
-    })
-  }
 
   getAllEmployees() {
     this.employees = this.sharedAccordionFunctionality.employees;
@@ -440,7 +428,6 @@ export class EmployeeProfileComponent implements OnChanges {
 
   refreshEmployeeProfile() {
     this.getEmployeeProfile();
-    this.getEmployeeFields();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
     }

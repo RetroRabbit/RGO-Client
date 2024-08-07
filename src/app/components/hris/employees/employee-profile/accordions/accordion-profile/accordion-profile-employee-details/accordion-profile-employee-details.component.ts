@@ -13,7 +13,6 @@ import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/propert
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute } from '@angular/router';
-import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Component({
   selector: 'app-accordion-profile-employee-details',
@@ -42,7 +41,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     private customValidationService: CustomvalidationService,
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
-    private storeAccessService: StoreAccessService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -361,25 +359,21 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.getEmployeeFieldCodes();
     this.initializeForm();
     if (!this.authAccessService.isEmployee()) {
-      this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id as number).subscribe({
-        next: data => {
-          this.employeeProfile.employeeDetails = data;
-          this.sharedAccordionFunctionality.employeePhysicalAddress = data.physicalAddress!;
-          this.sharedAccordionFunctionality.employeePostalAddress = data.postalAddress!;
-          this.sharedAccordionFunctionality.hasDisability = data.disability;
-          this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
-        }, 
-        complete: () => {
-          this.getEmployeeData();
-          this.initializeEmployeeProfileDto();
-          if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
-            this.getAllEmployees();
-          }
-          this.getEmployeeFieldCodes();
-          this.initializeForm();
-        }, 
-        error: (er) => this.snackBarService.showError(er),
-      })
+      
+      var data = this.sharedAccordionFunctionality.selectedEmployee;
+      this.employeeProfile.employeeDetails = data;
+      this.sharedAccordionFunctionality.employeePhysicalAddress = data.physicalAddress!;
+      this.sharedAccordionFunctionality.employeePostalAddress = data.postalAddress!;
+      this.sharedAccordionFunctionality.hasDisability = data.disability;
+      this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
+
+      this.getEmployeeData();
+      this.initializeEmployeeProfileDto();
+      if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
+        this.getAllEmployees();
+      }
+      this.getEmployeeFieldCodes();
+      this.initializeForm();
     }
   }
 

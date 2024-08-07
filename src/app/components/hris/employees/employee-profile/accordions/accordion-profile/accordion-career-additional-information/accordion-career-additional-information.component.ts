@@ -2,7 +2,6 @@ import { Component, HostListener, Input, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
@@ -15,7 +14,6 @@ import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/
 import { EventEmitter } from '@angular/core';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute } from '@angular/router';
-import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Component({
   selector: 'app-accordion-career-additional-information',
@@ -42,9 +40,7 @@ export class AccordionCareerAdditionalInformationComponent {
   constructor(
     private fb: FormBuilder,
     private snackBarService: SnackbarService,
-    private employeeProfileService: EmployeeProfileService,
-    private employeeDataService: EmployeeDataService,
-    private storeAccessService: StoreAccessService,
+   private employeeDataService: EmployeeDataService,
     private employeeTypeService: EmployeeTypeService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
@@ -69,18 +65,12 @@ export class AccordionCareerAdditionalInformationComponent {
     }
     this.getEmployeeFieldCodes();
     if (!this.authAccessService.isEmployee()) {
-      this.employeeProfileService.getEmployeeById(this.employeeProfile.employeeDetails.id).subscribe({
-        next: data => {
-          this.employeeProfile.employeeDetails = data;
-        }, complete: () => {
-          this.getEmployeeData();
-          if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
-            this.getAllEmployees();
-          }
-          this.getEmployeeFieldCodes();
-        },
-        error: (er) => this.snackBarService.showError(er),
-      })
+      this.employeeProfile.employeeDetails = this.sharedAccordionFunctionality.selectedEmployee;
+      this.getEmployeeData();
+      if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
+        this.getAllEmployees();
+      }
+      this.getEmployeeFieldCodes();
     }
   }
 

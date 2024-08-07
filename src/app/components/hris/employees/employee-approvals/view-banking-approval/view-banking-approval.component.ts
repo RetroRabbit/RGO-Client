@@ -4,9 +4,9 @@ import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-banking.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { SharedAccordionFunctionality } from '../../employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-view-banking-approval',
@@ -26,13 +26,13 @@ export class ViewBankingApprovalComponent {
   employee: any;
 
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     public authAccessService: AuthAccessService,
     public navService: NavService,
     private employeeBankingService: EmployeeBankingService,
     private router: Router, 
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
-    private employeeProfileService: EmployeeProfileService,
     private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -52,23 +52,15 @@ export class ViewBankingApprovalComponent {
       this.employeeBankingService.getBankingDetails(id).subscribe({
         next: data => {
           this.employeeBanking = data;
-          this.employeeProfileService.getEmployeeById(this.employeeBanking[this.employeeBanking.length - 1].employeeId).subscribe({
-            next: employee => {
-              this.employee = employee;
-              this.isLoading = false;
-            }
-          });
+          this.employee = this.sharedAccordionFunctionality.selectedEmployee;
+          this.isLoading = false;
         }
       });
     }
   }
 
   getEmployeeForBanking(id: number): void {
-    this.employeeProfileService.getEmployeeById(id).subscribe({
-      next: employee => {
-        this.employee = employee;
-      }
-    });
+    this.employee = this.sharedAccordionFunctionality.selectedEmployee;
   }
 
   convertFileToBase64(index: number) {
