@@ -70,6 +70,7 @@ export class SharedAccordionFunctionality {
   fileStarterKitCategories = StarterKitDocumentTypes;
   fileMyDocumentCategories = MyDocumentTypes;
   employeeQualification!: EmployeeQualifications;
+  profileImage: string = '';
 
   employeeQualificationDto: EmployeeQualifications = {
     id: 0,
