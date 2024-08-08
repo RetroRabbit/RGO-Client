@@ -7,11 +7,11 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { WorkExperience } from 'src/app/models/hris/work-experience.interface';
 import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeQualificationsService } from 'src/app/services/hris/employee/employee-qualifications.service';
 import { WorkExperienceService } from 'src/app/services/hris/employee/employee-work-experience.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { SharedAccordionFunctionality } from '../employees/employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-cv-document',
@@ -45,7 +45,7 @@ export class CvDocumentComponent {
   isLoading: boolean = true;
 
   constructor(
-    private employeeProfileService: EmployeeProfileService,
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private route: ActivatedRoute,
     public authAccessService: AuthAccessService,
     private employeeQaulificationService: EmployeeQualificationsService,
@@ -69,24 +69,18 @@ export class CvDocumentComponent {
   }
 
   getEmployeeInformation() {
-    this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
-      next: data => {
-        this.name = data.name;
-        this.surname = data.surname;
-        this.role = data.employeeType?.name;
-        this.level = data.level;
-        this.getAdditionalFields();
-      }
-    })
+    var data = this.sharedAccordionFunctionality.selectedEmployee;
+    this.name = data.name;
+    this.surname = data.surname;
+    this.role = data.employeeType?.name;
+    this.level = data.level;
+    this.getAdditionalFields();
   }
 
   getAdditionalFields() {
-    this.employeeData.getEmployeeData(this.employeeId).subscribe({
-      next: data => {
-        this.experienceData = data.filter(field => field.fieldCodeId == 5);
-        this.numberOfYears = this.experienceData[0].value;
-      }
-    })
+    var data = this.sharedAccordionFunctionality.employeeData;
+    this.experienceData = data.filter(field => field.fieldCodeId == 5);
+    this.numberOfYears = this.experienceData[0].value;
   }
 
   getEmployeeWorkExp() {

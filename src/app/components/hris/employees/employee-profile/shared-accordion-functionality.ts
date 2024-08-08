@@ -36,6 +36,7 @@ export class SharedAccordionFunctionality {
 
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
+  fieldCodes: CustomField[] = [];
   employeeTypes: EmployeeType[] = [];
   filteredClients: Client[] = [];
   filteredEmployees: any = [];
@@ -396,7 +397,7 @@ export class SharedAccordionFunctionality {
   }
 
   calculateAdditionalDocumentProgress() {
-    var data = this.storeAccessService.getFieldCodes();
+    var data = this.fieldCodes;
     this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
     const total = this.customFieldsDocuments.length;
     const fetchedDocuments = this.additionalDocuments.length;

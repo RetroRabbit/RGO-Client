@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { EmployeeDateInput } from 'src/app/models/hris/employe-date.interface';
-import { Employee } from 'src/app/models/hris/employee.interface';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeDateService } from 'src/app/services/hris/employee/employee-date.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeDate } from 'src/app/models/hris/employee-date.interface';
@@ -37,7 +37,7 @@ export class AddEmployeeEventComponent {
     date: new FormControl<Date>(new Date(Date.now()), Validators.required),
   })
 
-  employees$: Observable<Employee[]> = this.employeeProfileService.getAll()
+  employees$: Observable<EmployeeProfile[]> = this.employeeProfileService.getEmployeeProfiles()
   isLoading = false
   isEditing = false
 

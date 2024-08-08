@@ -15,8 +15,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/components/shared-components/store/app.state';
-import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
-import { SetCustomField } from 'src/app/components/shared-components/store/actions/custom-field.actions';
+
 @Component({
   selector: 'app-accordion-profile-additional',
   templateUrl: './accordion-profile-additional.component.html',
@@ -46,9 +45,7 @@ export class AccordionProfileAdditionalComponent {
     private store: Store<AppState>,
     private fb: FormBuilder,
     private snackBarService: SnackbarService,
-    private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
-    private storeAccessService: StoreAccessService,
     private customFieldService: CustomFieldService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
@@ -66,37 +63,24 @@ export class AccordionProfileAdditionalComponent {
   }
 
   loadEmployeeData() {
-    this.getEmployeeData();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
     }
     this.getEmployeeFieldCodes();
   }
 
-  getEmployeeData() {
-    const id = this.employeeId ?? this.loggedInProfile.id;
-    this.employeeDataService.getEmployeeData(id).subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
-      }
-    });
-  }
-
   getAllEmployees() {
-    this.employeeProfileService.getEmployeeProfiles().subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.employees = data;
-        this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
-        this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
-        this.sharedAccordionFunctionality.employeeClient = this.storeAccessService.getClients().filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
-      }
-    });
+    const clientData = this.sharedAccordionFunctionality.clients;
+    const data = this.sharedAccordionFunctionality.employees;
+    this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
+    this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
+    this.sharedAccordionFunctionality.employeeClient = clientData.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
   }
 
   getEmployeeFieldCodes() {
     this.customFieldService.getAllFieldCodes().subscribe({
       next: data => {
-        this.store.dispatch(SetCustomField({ payload: data }));
+        this.sharedAccordionFunctionality.fieldCodes = data;
         this.checkArchived(data);
         this.checkAdditionalInformation();
         this.sharedAccordionFunctionality.checkAdditionalFormProgress();
@@ -167,7 +151,6 @@ export class AccordionProfileAdditionalComponent {
             this.sharedAccordionFunctionality.totalProfileProgress();
             this.sharedAccordionFunctionality.additionalInfoForm.disable();
             this.sharedAccordionFunctionality.editAdditional = false;
-            this.getEmployeeData();
             this.updateEmployeeProfile.emit(1);
           },
           error: () => this.snackBarService.showError(`Failed to ${found ? "update" : "save"} field`)

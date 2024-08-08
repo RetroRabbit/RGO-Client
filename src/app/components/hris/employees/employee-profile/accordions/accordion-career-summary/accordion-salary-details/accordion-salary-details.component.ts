@@ -75,20 +75,13 @@ export class AccordionSalaryDetailsComponent {
 
   getEmployeeDetails() {
     if (this.employeeId == undefined) {
-      this.employeeProfileService.getEmployeeById(this.navservice.employeeProfile.id as number).subscribe({
-        next: data => {
-          this.getEmployeeSalaryDetails(data.taxNumber);
-        }
-      })
+      var data = this.sharedAccordionFunctionality.selectedEmployee;
+      this.getEmployeeSalaryDetails(data.taxNumber);      
     }
     else {
-      this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
-        next: data => {
-          this.initializeSalaryDetailsForm(this.employeeSalary, data.taxNumber);
-          this.getEmployeeSalaryDetails(data.taxNumber);
-        },
-        error: (er) => this.snackBarService.showError(er),
-      })
+      var data = this.sharedAccordionFunctionality.selectedEmployee;
+      this.initializeSalaryDetailsForm(this.employeeSalary, data.taxNumber);
+      this.getEmployeeSalaryDetails(data.taxNumber);
     }
   }
 
