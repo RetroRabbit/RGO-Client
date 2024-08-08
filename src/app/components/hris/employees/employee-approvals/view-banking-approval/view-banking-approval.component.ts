@@ -7,6 +7,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { SharedAccordionFunctionality } from '../../employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-view-banking-approval',
@@ -26,6 +27,7 @@ export class ViewBankingApprovalComponent {
   employee: any;
 
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     public authAccessService: AuthAccessService,
     public navService: NavService,
     private employeeBankingService: EmployeeBankingService,
