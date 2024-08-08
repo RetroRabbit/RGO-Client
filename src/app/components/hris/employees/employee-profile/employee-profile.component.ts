@@ -215,6 +215,18 @@ export class EmployeeProfileComponent implements OnChanges {
     });
   }
 
+  getProfileImage(): string {
+    if (this.employeeProfile.id == this.sharedAccordionFunctionality.selectedEmployee.id)
+    {
+      this.sharedAccordionFunctionality.profileImage = this.employeeProfile.photo || this.authAccessService.getAuthTokenProfilePicture() || '../../../../../../assets/img/default-profile-image.png';
+    }
+    else
+    {
+      this.sharedAccordionFunctionality.profileImage = this.employeeProfile.photo || '../../../../../../assets/img/default-profile-image.png';
+    }
+    return this.sharedAccordionFunctionality.profileImage;
+  }
+
   getEmployeeProfile() {
     const fetchProfile = this.usingSimpleProfile
       ? this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail())
