@@ -9,6 +9,7 @@ import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents
 import { EmployeeDocumentsStatus } from 'src/app/models/hris/constants/enums/employeeDocumentsStatus';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { SharedAccordionFunctionality } from '../../employee-profile/shared-accordion-functionality';
 @Component({
   selector: 'app-pending-employee-starterkits',
   templateUrl: './view-starter-kit-approval.component.html',
@@ -37,6 +38,7 @@ export class ViewStarterKitApprovalComponent {
   }
 
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     public authAccessService: AuthAccessService,
     private router: Router,
     private route: ActivatedRoute,

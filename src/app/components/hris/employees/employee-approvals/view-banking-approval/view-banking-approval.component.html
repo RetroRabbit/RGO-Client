@@ -18,8 +18,7 @@
         <div id="approval-header" class="row p-2">
             <div class="col-2 mt-3 mb-3">
                 <div id="profile-image">
-                    <img [src]="navService.employeeProfile.photo || this.authAccessService.getAuthTokenProfilePicture() || '../../../../../../assets/img/default-profile-image.png'"
-          alt="Profile img" class="rounded-circle profile-img">>
+                    <img  [src]="sharedAccordionFunctionality.profileImage" alt="">
                 </div>
             </div>
             <div class="col-md-4 offset-md-1 offset-lg-0 col-lg-6 mt-3 mb-3 pt-1">
