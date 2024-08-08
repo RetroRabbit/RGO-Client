@@ -165,12 +165,8 @@ export class NewEmployeeComponent implements OnInit {
       const nameB = (b.name || '').toLowerCase();
       return nameA.localeCompare(nameB);
     });
-
-    this.employeeProfileService
-      .getEmployeeProfiles()
-      .subscribe((data: EmployeeProfile[]) => {
-        this.Employees = data;
-      });
+    
+    this.Employees = this.sharedAccordionFunctionality.employees;
   }
 
   saveAndExit() {

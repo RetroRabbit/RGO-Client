@@ -28,13 +28,8 @@ import { AccordionEmployeeDocumentsComponent } from './accordions/accordion-docu
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/components/shared-components/store/app.state';
-import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
-import { Observable, Subscription } from 'rxjs';
-
-import { LoadClients, SetClients } from 'src/app/components/shared-components/store/actions/client.actions';
-import { NewEmployeeProfileService } from 'src/app/services/hris/employee/newEmployeeprofile.service';
+import { Subscription } from 'rxjs';
+import { ClientService } from 'src/app/services/hris/client.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -123,10 +118,9 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   constructor(
-    private store: Store<AppState>,
+    private clientService: ClientService,
     private cookieService: CookieService,
     private employeeProfileService: EmployeeProfileService,
-    private newEmployeeProfileService : NewEmployeeProfileService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBarService: SnackbarService,
@@ -188,7 +182,6 @@ export class EmployeeProfileComponent implements OnChanges {
       this.usingSimpleProfile = true;
     }
 
-    this.getEmployeeProfile();
     this.refreshEmployeeProfile();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
@@ -244,13 +237,18 @@ export class EmployeeProfileComponent implements OnChanges {
         if (this.usingSimpleProfile) {
           this.simpleEmployee = data;
           this.employeeProfile = data;
-          this.employeeId = data.id;
+          this.employeeId = data.id;          
           this.populateEmployeeAccordion(this.simpleEmployee);
-        } else {
+        } 
+        else 
+        {
           this.selectedEmployee = data;
           this.employeeProfile = data;
+          this.employeePhysicalAddress = data.physicalAddress!;
+          this.employeePostalAddress = data.postalAddress!;
+          this.checkAddressMatch(data);  
         }
-        this.getEmployeeFields();
+        this.sharedAccordionFunctionality.selectedEmployee = data;
         this.getEmployeeData();
         this.filterClients(this.employeeProfile.clientAllocated as number);
         this.isLoading = false;
@@ -259,44 +257,22 @@ export class EmployeeProfileComponent implements OnChanges {
         if (!this.employeeProfile.active) {
           this.getTerminationInfo();
         }
+        if (!this.usingSimpleProfile)
+        {
+          this.getAllEmployees();
+        }
         this.changeDetectorRef.detectChanges();
       },
       error: (er: any) => this.snackBarService.showError(er),
     })
   }
 
-  getEmployeeFields() {
-    const fetchProfile = this.usingSimpleProfile
-      ? this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail())
-      : this.employeeProfileService.getEmployeeById(this.employeeId);
-
-    (fetchProfile as any).subscribe({
-      next: (data: any) => {
-        this.employeeProfile = data;
-        this.selectedEmployee = data;
-        this.employeePhysicalAddress = data.physicalAddress!;
-        this.employeePostalAddress = data.postalAddress!;
-        this.checkAddressMatch(data);
-      },
-      complete: () => {
-        if (!this.usingSimpleProfile)
-          this.getAllEmployees();
-      },
-      error: (er: any) => this.snackBarService.showError(er),
-    })
-  }
 
   getAllEmployees() {
-    this.employeeProfileService.getEmployeeProfiles().subscribe({
-      next: data => {
-        this.employees = data;
-        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
-        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-        this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
-        this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-        this.filterClients(this.employeeProfile?.clientAllocated as number);
-      }
-    });
+    this.employees = this.sharedAccordionFunctionality.employees;
+    this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
+    this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
+    this.filterClients(this.employeeProfile?.clientAllocated as number);
   }
 
   get basedInString(): string {
@@ -370,7 +346,12 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   getClients() {
-    this.store.dispatch(LoadClients());
+    this.clientService.getAllClients().subscribe({
+      next: data => {
+        this.sharedAccordionFunctionality.clients = data;
+        this.clients = data;
+      }
+    })
   }
 
   filterClients(clientId: number) {
@@ -459,7 +440,6 @@ export class EmployeeProfileComponent implements OnChanges {
 
   refreshEmployeeProfile() {
     this.getEmployeeProfile();
-    this.getEmployeeFields();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
     }

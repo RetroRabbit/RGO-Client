@@ -116,7 +116,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
   }
 
   getDocumentFieldCodes() {
-    var data = this.storeAccessService.getFieldCodes();
+    var data = this.sharedAccordionFunctionality.fieldCodes;
     const documentFieldCodes = data.filter(fieldCode => fieldCode.type === 5); 
     this.checkCustomDocumentsInformation();
     this.checkArchived(documentFieldCodes);

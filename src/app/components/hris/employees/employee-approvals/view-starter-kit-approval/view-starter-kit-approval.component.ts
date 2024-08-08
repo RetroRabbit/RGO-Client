@@ -4,7 +4,6 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeDocumentsStatus } from 'src/app/models/hris/constants/enums/employeeDocumentsStatus';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
@@ -46,8 +45,7 @@ export class ViewStarterKitApprovalComponent {
     private snackBarService: SnackbarService,
     private documentService: EmployeeDocumentService,
     private changeDetector: ChangeDetectorRef,
-    private employeeProfileService: EmployeeProfileService,
-    ) { }
+     ) { }
 
   ngOnInit(): void {
     this.getEmployeeDocuments(this.employeedId);
@@ -66,12 +64,8 @@ export class ViewStarterKitApprovalComponent {
     this.documentService.getAllEmployeeDocuments(employeedId, staterkitDocuments).subscribe({
       next: documents => {
         this.employeeDocuments = documents;
-        this.employeeProfileService.getEmployeeById(employeedId).subscribe({
-          next: employee => {
-            this.employee = employee;
-            this.isLoading = false;
-          }
-        });
+        this.employee = this.sharedAccordionFunctionality.selectedEmployee;
+        this.isLoading = false;
         if(this.employeeDocuments.length > 0) this.lastUpdatedMessage = this.getNewDate();
       },
       error: (er) => this.snackBarService.showError(er),

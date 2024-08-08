@@ -3,7 +3,6 @@ import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -15,7 +14,6 @@ import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute } from '@angular/router';
-import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Component({
   selector: 'app-accordion-profile-address-details',
@@ -49,9 +47,7 @@ export class AccordionProfileAddressDetailsComponent {
   constructor(
     private fb: FormBuilder,
     private snackBarService: SnackbarService,
-    private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
-    private storeAccessService: StoreAccessService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -295,32 +291,11 @@ export class AccordionProfileAddressDetailsComponent {
     });
   }
 
-
-  getEmployeeData() {
-    if (this.employeeId != undefined) {
-      this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
-        next: data => {
-          this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
-        }
-      });
-    } else {
-      this.employeeDataService.getEmployeeData(this.navService.employeeProfile.id).subscribe({
-        next: data => {
-          this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
-        }
-      });
-    }
-  }
-
   getAllEmployees() {
-    this.employeeProfileService.getEmployeeProfiles().subscribe({
-      next: data => {
-        this.sharedAccordionFunctionality.employees = data;
-        this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
-        this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
-          this.sharedAccordionFunctionality.employeeClient = this.storeAccessService.getClients().filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
-      }
-    });
+    const data = this.sharedAccordionFunctionality.employees;
+    this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
+    this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
+    this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
   }
 
   getEmployeeFields() {
@@ -328,7 +303,6 @@ export class AccordionProfileAddressDetailsComponent {
     this.sharedAccordionFunctionality.employeePostalAddress = this.employeeProfile.employeeDetails.postalAddress!;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile.employeeDetails.disability;
     this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
-    this.getEmployeeData();
     this.initializeEmployeeProfileDto();
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
@@ -336,30 +310,24 @@ export class AccordionProfileAddressDetailsComponent {
     this.getEmployeeFieldCodes();
     this.initializeForm();
     if (!this.authAccessService.isEmployee()) {
-      const currentEmployeeId = this.employeeId != undefined ? this.employeeId : this.navService.employeeProfile.id
-      this.employeeProfileService.getEmployeeById(currentEmployeeId).subscribe({
-        next: data => {
-          this.employeeProfile.employeeDetails = data;
-          this.sharedAccordionFunctionality.employeePhysicalAddress = data.physicalAddress!;
-          this.sharedAccordionFunctionality.employeePostalAddress = data.postalAddress!;
-          this.sharedAccordionFunctionality.hasDisability = data.disability;
-          this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
-        }, complete: () => {
-          this.getEmployeeData();
-          this.initializeEmployeeProfileDto();
-          if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
-            this.getAllEmployees();
-          }
-          this.getEmployeeFieldCodes();
-          this.initializeForm();
-        }, 
-        error: (er) => this.snackBarService.showError(er),
-      })
+      var data = this.sharedAccordionFunctionality.selectedEmployee;
+      this.employeeProfile.employeeDetails = data;
+      this.sharedAccordionFunctionality.employeePhysicalAddress = data.physicalAddress!;
+      this.sharedAccordionFunctionality.employeePostalAddress = data.postalAddress!;
+      this.sharedAccordionFunctionality.hasDisability = data.disability;
+      this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
+
+      this.initializeEmployeeProfileDto();
+      if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
+        this.getAllEmployees();
+      }
+      this.getEmployeeFieldCodes();
+      this.initializeForm();
     }
   }
 
   getEmployeeFieldCodes() {
-    var data = this.storeAccessService.getFieldCodes()
+    var data = this.sharedAccordionFunctionality.fieldCodes;
     this.sharedAccordionFunctionality.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[0].id);
   }
 
