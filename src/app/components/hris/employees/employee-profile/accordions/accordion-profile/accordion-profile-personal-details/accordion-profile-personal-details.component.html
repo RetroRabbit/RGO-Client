@@ -11,7 +11,7 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <form [formGroup]="sharedAccordionFunctionality.personalDetailsForm">
-        <button class="d-flex d-md-none col-12" *ngIf="!sharedAccordionFunctionality.editPersonal" mat-button id="edit-button"
+        <button class="d-flex d-md-none col-12" *ngIf="!editPersonal" mat-button id="edit-button"
           (click)="editPersonalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
           <mat-icon>edit</mat-icon>Edit Details
         </button>
@@ -20,7 +20,7 @@
             <div class="col-12 col-md-9 col-lg-10">
               <div class="row">
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.gender" class="col-11 my-2">
-                  <h4 [ngStyle]="{'color' : sharedAccordionFunctionality.editPersonal ? 'black' :'grey'}">Gender</h4>
+                  <h4 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">Gender</h4>
                   <mat-radio-group aria-label="Select your gender" formControlName="gender"
                     class="row col-12 col-md-7 col-lg-5 d-flex" [value]="employeeProfile.employeeDetails.gender">
                     <mat-radio-button [value]=1>Male</mat-radio-button>
@@ -31,33 +31,42 @@
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.race" class="col-12 col-md-6 my-2">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Race</mat-label>
+                    <div class="align-text-icon">
                     <mat-select formControlName="race" hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let race of sharedAccordionFunctionality.races; index as i" [value]="i">
                         {{race.value}}
                       </mat-option>
                     </mat-select>
+                    <mat-icon *ngIf="sharedAccordionFunctionality.personalDetailsForm.get('race')?.value === null || sharedAccordionFunctionality.personalDetailsForm.get('race')?.value === -1" [ngStyle]="{color: editPersonal? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                    </div>
                   </mat-form-field>
                 </div>
                 <div class="col-12 my-2 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Country of Birth</mat-label>
+                    <div class="align-text-icon">
                     <mat-select formControlName="countryOfBirth"
                     hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country"> {{ country }} </mat-option>
                   </mat-select>
+                  <mat-icon *ngIf="sharedAccordionFunctionality.personalDetailsForm.get('countryOfBirth')?.value === null || sharedAccordionFunctionality.personalDetailsForm.get('countryOfBirth')?.value === undefined" [ngStyle]="{color: editPersonal? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                </div>
                 </mat-form-field>
                 </div>
                 <div class="col-12 my-2 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Nationality</mat-label>
+                    <div class="align-text-icon">
                     <mat-select formControlName="nationality"
                     hideSingleSelectionIndicator="true">
                     <mat-option *ngFor="let country of countries" [value]="country"> {{ country }} </mat-option>
                   </mat-select>
-                  </mat-form-field>
+                  <mat-icon *ngIf="sharedAccordionFunctionality.personalDetailsForm.get('nationality')?.value === null || sharedAccordionFunctionality.personalDetailsForm.get('nationality')?.value === undefined" [ngStyle]="{color: editPersonal? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                   </div>
+                </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.disability" class="col-12 my-1">
-                  <h3 [ngStyle]="{'color' : sharedAccordionFunctionality.editPersonal ? 'black' :'grey'}">
+                  <h3 [ngStyle]="{'color' : editPersonal ? 'black' :'grey'}">
                     Do you have any disabilities?
                   </h3>
                   <mat-radio-group aria-label="Select status" (change)="setHasDisability($event)"
@@ -91,28 +100,28 @@
               </div>
             </div>
             <div class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
-              <button *ngIf="!sharedAccordionFunctionality.editPersonal" mat-button id="edit-button-width"
+              <button *ngIf="!editPersonal" mat-button id="edit-button-width"
               (click)="editPersonalDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
               <mat-icon>edit</mat-icon>Edit Details
               </button>
             </div>
           </div>
           <div class="col-12 d-block d-md-none" id="edit-buttons">
-            <button class="col-12 mb-2" *ngIf="sharedAccordionFunctionality.editPersonal" mat-button id="save-button"
+            <button class="col-12 mb-2" *ngIf="editPersonal" mat-button id="save-button"
               (click)="savePersonalEdit()">
               Save
             </button>
-            <button class="col-12" *ngIf="sharedAccordionFunctionality.editPersonal" mat-button id="cancel-button"
+            <button class="col-12" *ngIf="editPersonal" mat-button id="cancel-button"
               (click)="cancelPersonalEdit()">
               Cancel
             </button>
           </div>
           <div class="col-12 d-none d-md-flex" id="edit-buttons">
-            <button *ngIf="sharedAccordionFunctionality.editPersonal" mat-button id="cancel-button"
+            <button *ngIf="editPersonal" mat-button id="cancel-button"
               (click)="cancelPersonalEdit()">
               Cancel
             </button>
-            <button *ngIf="sharedAccordionFunctionality.editPersonal" mat-button id="save-button"
+            <button *ngIf="editPersonal" mat-button id="save-button"
               (click)="savePersonalEdit()">
               Save
             </button>

@@ -125,7 +125,6 @@ export class AccordionBankingComponent {
     link.click();
   }
 
-
   openFileInput() {
     const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
     fileInput.click();
@@ -217,6 +216,7 @@ export class AccordionBankingComponent {
       console.error('Employee banking data is empty.');
     }
   }
+
   checkBankingInformationProgress() {
     let filledCount = 0;
     let totalFields = 0;

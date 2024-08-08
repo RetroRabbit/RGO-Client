@@ -63,6 +63,7 @@ export class AccordionCareerAdditionalInformationComponent {
     }
     this.getEmployeeFieldCodes();
     if (!this.authAccessService.isEmployee()) {
+
       this.employeeProfile.employeeDetails = this.sharedAccordionFunctionality.selectedEmployee;
       if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
         this.getAllEmployees();

@@ -11,10 +11,11 @@
                     <mat-icon class="mx-1">error</mat-icon>
                     <span class="d-none d-md-block d-lg-block">Missing Information</span>
                 </mat-panel-description>
+
             </mat-expansion-panel-header>
             <form [formGroup]="sharedAccordionFunctionality.employeeContactForm">
                 <div class="col-12 mb-2 d-flex justify-content-end">
-                    <button class="d-flex d-md-none col-12" *ngIf="!sharedAccordionFunctionality.editContact" mat-button
+                    <button class="d-flex d-md-none col-12" *ngIf="!editContact" mat-button
                         id="edit-button" (click)="editContactDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
                         <mat-icon>edit</mat-icon>Edit Details
                     </button>
@@ -27,10 +28,13 @@
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Personal Email</mat-label>
-                                        <input matInput formControlName="personalEmail">
+                                        <div class="align-text-icon">
+                                        <input matInput formControlName="personalEmail" >
+                                        <mat-icon *ngIf="sharedAccordionFunctionality.employeeContactForm.get('personalEmail')?.value === null || sharedAccordionFunctionality.employeeContactForm.get('personalEmail')?.value === ''" [ngStyle]="{color: editContact  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                    </div>
                                         <mat-error
-                                            *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['personalEmail'].hasError('required')">
-                                            Personal email is required
+                                        *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['personalEmail'].hasError('required')">
+                                        Personal email is required
                                         </mat-error>
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['personalEmail'].hasError('pattern') && !sharedAccordionFunctionality.employeeContactForm.controls['personalEmail'].hasError('required')">
@@ -42,12 +46,10 @@
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Work Email</mat-label>
-                                        <input matInput formControlName="email">
-                                        <mat-error
-                                            *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['email'].hasError('required')">
-                                            Work email is required
-
-                                        </mat-error>
+                                        <div class="align-text-icon">
+                                            <input matInput formControlName="email">
+                                            <mat-icon *ngIf="sharedAccordionFunctionality.employeeContactForm.get('email')?.value === null || sharedAccordionFunctionality.employeeContactForm.get('email')?.value === ''" [ngStyle]="{color: editContact  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                        </div>
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['email'].hasError('pattern') && !sharedAccordionFunctionality.employeeContactForm.controls['email'].hasError('required')">
                                             Work email must end with @retrorabbit.co.za
@@ -58,20 +60,23 @@
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container">
                                         <mat-label class="cellphone-number-label">Cellphone Number</mat-label>
-                                        <ngx-mat-intl-tel-input 
-                                            #cellphoneField 
+                                        <div class="align-text-icon">
+                                        <ngx-mat-intl-tel-input
+                                            #cellphoneField
                                             matInput
-                                            [preferredCountries]="['za', 'gb']" 
+                                            [preferredCountries]="['za', 'gb']"
                                             [enablePlaceholder]="true"
-                                            [enableSearch]="true" 
-                                            [required]="true" 
+                                            [enableSearch]="true"
+                                            [required]="true"
                                             formControlName="cellphoneNo"
                                             (input)="checkCellphoneNumberValue(cellphoneField.value??'')">
                                         </ngx-mat-intl-tel-input>
+                                        <mat-icon *ngIf="sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value === null || sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.value === undefined" [ngStyle]="{color: editContact? '#B3261E' : 'grey'}" class="move-icon" matSuffix>error</mat-icon>
+                                    </div>
                                         <mat-error
-                                            *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].hasError('required') && sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value == '' ">
-                                            Cellphone number is required
-                                        </mat-error>
+                                        *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].hasError('required') && sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value == '' ">
+                                        Cellphone number is required
+                                       </mat-error>
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].value != '' && sharedAccordionFunctionality.employeeContactForm.controls['cellphoneNo'].invalid">
                                             Please enter a valid Cellphone number
@@ -82,12 +87,12 @@
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container">
                                         <mat-label class="house-number-label">Alternative Number</mat-label>
-                                        <ngx-mat-intl-tel-input 
-                                            #houseField 
-                                            matInput 
+                                        <ngx-mat-intl-tel-input
+                                            #houseField
+                                            matInput
                                             [preferredCountries]="['za', 'gb']"
-                                            [enablePlaceholder]="true" 
-                                            [enableSearch]="true" 
+                                            [enablePlaceholder]="true"
+                                            [enableSearch]="true"
                                             formControlName="houseNo"
                                             (input)="checkHouseNumberValue(houseField.value?? '')">
                                         </ngx-mat-intl-tel-input>
@@ -99,7 +104,7 @@
                                 </div>
                                 <div class="col-12">
                                     <h3
-                                        [ngStyle]="{'color' : sharedAccordionFunctionality.editPersonal ? 'black' :'grey'}">
+                                        [ngStyle]="{'color' : editContact ? 'black' :'grey'}">
                                         Emergency Contact
                                     </h3>
                                 </div>
@@ -107,7 +112,10 @@
                                     class="col-12 col-md-6 my-2">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Emergency Contact Name</mat-label>
+                                        <div class="align-text-icon">
                                         <input matInput formControlName="emergencyContactName">
+                                        <mat-icon *ngIf="sharedAccordionFunctionality.employeeContactForm.get('emergencyContactName')?.value === null || sharedAccordionFunctionality.employeeContactForm.get('emergencyContactName')?.value === ''" [ngStyle]="{color: editContact? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                        </div>
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactName'].hasError('required')">
                                             Emergency contact name is required</mat-error>
@@ -118,53 +126,74 @@
                                 </div>
                                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.emergencyContactNo"
                                     class="col-12 col-md-6 my-2">
-                                    <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container">
+                                    <mat-form-field appearance="outline" style="width: 100%;" class="telephone-container" >
                                         <mat-label class="emergency-number-label">Emergency Contact Number</mat-label>
-                                        <ngx-mat-intl-tel-input 
-                                            #emergencyField 
+                                        <div class="align-text-icon">
+                                        <ngx-mat-intl-tel-input
+                                            #emergencyField
                                             matInput
-                                            [preferredCountries]="['za', 'gb']" 
+                                            [preferredCountries]="['za', 'gb']"
                                             [enablePlaceholder]="true"
-                                            [enableSearch]="true" 
-                                            [required]="true" 
+                                            [enableSearch]="true"
+                                            [required]="true"
                                             formControlName="emergencyContactNo"
                                             (input)="checkEmergencyNumberValue(emergencyField.value??'')">
                                         </ngx-mat-intl-tel-input>
-                                        <mat-error
-                                            *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].hasError('required') && sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].value == ''">
-                                            Emergency contact number is required
-                                        </mat-error>
+                                        <mat-icon *ngIf="sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value === null || sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value === undefined" [ngStyle]="{color: editContact? '#B3261E' : 'grey'}" class="move-icon" matSuffix>error</mat-icon>
+                                        </div>
                                         <mat-error
                                             *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].value != '' && sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].invalid">
                                             Emergency contact number must be a valid Cellphone Number
                                         </mat-error>
                                     </mat-form-field>
+                                    <ng-template #emergencyNumber>
+                                    <mat-form-field>
+                                    <ngx-mat-intl-tel-input
+                                    #emergencyField
+                                    matInput
+                                    [preferredCountries]="['za', 'gb']"
+                                    [enablePlaceholder]="true"
+                                    [enableSearch]="true"
+                                    [required]="true"
+                                    formControlName="emergencyContactNo"
+                                    (input)="checkEmergencyNumberValue(emergencyField.value??'')">
+                                </ngx-mat-intl-tel-input>
+                                <mat-error
+                                    *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].hasError('required') && sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].value == ''">
+                                    Emergency contact number is required
+                                </mat-error>
+                                <mat-error
+                                    *ngIf="sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].value != '' && sharedAccordionFunctionality.employeeContactForm.controls['emergencyContactNo'].invalid">
+                                    Emergency contact number must be a valid Cellphone Number
+                                </mat-error>
+                            </mat-form-field>
+                        </ng-template>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
-                            <button *ngIf="!sharedAccordionFunctionality.editContact" mat-button id="edit-button-width"
+                            <button *ngIf="!editContact" mat-button id="edit-button-width"
                                 (click)="editContactDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
                                 <mat-icon>edit</mat-icon>Edit Details
                             </button>
                         </div>
                     </div>
                     <div class="col-12 d-none d-md-flex" id="edit-buttons">
-                        <button *ngIf="sharedAccordionFunctionality.editContact" mat-button id="cancel-button"
+                        <button *ngIf="editContact" mat-button id="cancel-button"
                             (click)="cancelContactEdit()">
                             Cancel
                         </button>
-                        <button *ngIf="sharedAccordionFunctionality.editContact" mat-button id="save-button"
+                        <button *ngIf="editContact" mat-button id="save-button"
                             type="submit" (click)="saveContactDetails()">
                             Save
                         </button>
                     </div>
                     <div class="col-12 d-block d-md-none" id="edit-buttons">
-                        <button *ngIf="sharedAccordionFunctionality.editContact" mat-button id="save-button"
+                        <button *ngIf="editContact" mat-button id="save-button"
                             type="submit" class="col-12 mb-2" (click)="saveContactDetails()">
                             Save
                         </button>
-                        <button *ngIf="sharedAccordionFunctionality.editContact" mat-button id="cancel-button"
+                        <button *ngIf="editContact" mat-button id="cancel-button"
                             class="col-12" (click)="cancelContactEdit()">
                             Cancel
                         </button>

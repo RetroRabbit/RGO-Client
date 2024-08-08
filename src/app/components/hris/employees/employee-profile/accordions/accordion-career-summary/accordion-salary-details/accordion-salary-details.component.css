@@ -14,3 +14,8 @@
 #space {
     padding-bottom: 20px;
 }
+
+.align-text-icon{
+    display: flex;
+    flex-direction: row;
+}

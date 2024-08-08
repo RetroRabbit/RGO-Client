@@ -18,6 +18,7 @@ export class AccordionProfileContactDetailsComponent {
 
   screenWidth = window.innerWidth;
   usingProfile: boolean = true;
+  editContact: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -41,15 +42,6 @@ export class AccordionProfileContactDetailsComponent {
     this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.valueChanges.subscribe(value => {
       this.checkHouseNumberValue(value);
     });
-    this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.valueChanges.subscribe(value => {
-      this.checkEmergencyNumberValue(value);
-    });
-    this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.valueChanges.subscribe(value => {
-      this.checkCellphoneNumberValue(value);
-    });
-  }
-
-  ngAfterViewInit(): void {
     const initialHouseNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.value;
     this.checkHouseNumberValue(initialHouseNumberValue);
     const initialEmergencyNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.value;
@@ -58,39 +50,51 @@ export class AccordionProfileContactDetailsComponent {
     this.checkCellphoneNumberValue(initialCellphoneNumberValue);
   }
 
+  ngAfterViewInit(): void {
+    this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.valueChanges.subscribe(value => {
+      this.checkHouseNumberValue(value);
+    });
+    this.sharedAccordionFunctionality.employeeContactForm.get('emergencyContactNo')?.valueChanges.subscribe(value => {
+      this.checkEmergencyNumberValue(value);
+    });
+    this.sharedAccordionFunctionality.employeeContactForm.get('cellphoneNo')?.valueChanges.subscribe(value => {
+      this.checkCellphoneNumberValue(value);
+    });
+  }
+
   checkCellphoneNumberValue(value: string) {
     const cellphoneNumberContainer = document.querySelector('.cellphone-number-label');
     const cellphoneNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("cellphoneNo");
-    
-      if (value) {
-        cellphoneNumberContainer?.classList.remove('shift-label');
-      }
-      else if (value===null && cellphoneNumberValue?.invalid) {
-        cellphoneNumberContainer?.classList.add('shift-label');
-      } else if (value===null && !cellphoneNumberValue?.invalid) {
-        cellphoneNumberContainer?.classList.remove('shift-label');
-      }
-      else {
-        cellphoneNumberContainer?.classList.add('shift-label');
-      }
-    
+
+    if (value) {
+      cellphoneNumberContainer?.classList.remove('shift-label');
+    }
+    else if (value === null || cellphoneNumberValue?.invalid) {
+      cellphoneNumberContainer?.classList.add('shift-label');
+
+    } else if (value === null || !cellphoneNumberValue?.invalid) {
+      cellphoneNumberContainer?.classList.remove('shift-label');
+    }
+    else {
+      cellphoneNumberContainer?.classList.add('shift-label');
+    }
   }
 
   checkEmergencyNumberValue(value: string) {
     const emergencyNumberContainer = document.querySelector('.emergency-number-label');
     const emergencyNumberValue = this.sharedAccordionFunctionality.employeeContactForm.get("emergencyContactNo");
 
-      if (value) {
-        emergencyNumberContainer?.classList.remove('shift-label');
-      }
-      else if (value === null && emergencyNumberValue?.invalid) {
-        emergencyNumberContainer?.classList.add('shift-label');
-      } else if (value === null && !emergencyNumberValue?.invalid) {
-        emergencyNumberContainer?.classList.remove('shift-label');
-      }
-      else {
-        emergencyNumberContainer?.classList.add('shift-label');
-      }
+    if (value) {
+      emergencyNumberContainer?.classList.remove('shift-label');
+    }
+    else if (value === null || emergencyNumberValue?.invalid) {
+      emergencyNumberContainer?.classList.add('shift-label');
+    } else if (value === null || !emergencyNumberValue?.invalid) {
+      emergencyNumberContainer?.classList.remove('shift-label');
+    }
+    else {
+      emergencyNumberContainer?.classList.add('shift-label');
+    }
   }
 
   checkHouseNumberValue(value: string) {
@@ -126,12 +130,12 @@ export class AccordionProfileContactDetailsComponent {
 
   editContactDetails() {
     this.sharedAccordionFunctionality.employeeContactForm.enable();
-    this.sharedAccordionFunctionality.editContact = true;
+    this.editContact = true;
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", false);
   }
 
   cancelContactEdit() {
-    this.sharedAccordionFunctionality.editContact = false;
+    this.editContact = false;
     this.initializeForm();
     this.sharedAccordionFunctionality.employeeContactForm.disable();
   }
@@ -152,7 +156,7 @@ export class AccordionProfileContactDetailsComponent {
           this.sharedAccordionFunctionality.checkContactFormProgress();
           this.sharedAccordionFunctionality.totalProfileProgress();
           this.sharedAccordionFunctionality.employeeContactForm.disable();
-          this.sharedAccordionFunctionality.editContact = false;
+          this.editContact = false;
         },
         error: (er) => this.snackBarService.showError(er),
       });

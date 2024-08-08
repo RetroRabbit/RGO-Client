@@ -13,7 +13,7 @@
       <form [formGroup]="sharedAccordionFunctionality.employeeDetailsForm" (submit)="saveEmployeeEdit()">
         <div class="col-12 mb-2 d-flex justify-content-end">
         </div>
-        <button class="d-flex d-md-none col-12" *ngIf="!sharedAccordionFunctionality.editEmployee" mat-button id="edit-button"
+        <button class="d-flex d-md-none col-12" *ngIf="!editEmployee" mat-button id="edit-button"
             (click)="editEmployeeDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
             <mat-icon>edit</mat-icon>Edit Details</button>
         <div class="row">
@@ -23,18 +23,25 @@
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.name" class="col-12 my-2 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Full Names</mat-label>
+                    <div class="align-text-icon">
                     <input matInput formControlName="name">
+                    <mat-icon *ngIf="sharedAccordionFunctionality.employeeDetailsForm.get('name')?.value === null || sharedAccordionFunctionality.employeeDetailsForm.get('name')?.value === ''" class="mx-1 flex-end" [ngStyle]="{color: editEmployee? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                    </div>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('required')">
                       Full name is required
                     </mat-error>
-                    <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('pattern') && !sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('required') ">
+                    <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('pattern') && !sharedAccordionFunctionality.employeeDetailsForm.controls['name'].hasError('required')">
                       Full name must not contain numbers</mat-error>
                   </mat-form-field>
+
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.surname" class="col-12 my-2 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Last Name</mat-label>
+                    <div class="align-text-icon">
                     <input matInput formControlName="surname">
+                    <mat-icon *ngIf="sharedAccordionFunctionality.employeeDetailsForm.get('surname')?.value === null || sharedAccordionFunctionality.employeeDetailsForm.get('surname')?.value === ''" class="mx-1 flex-end" [ngStyle]="{color: editEmployee? '#B3261E' : 'grey'}" matSuffix>error</mat-icon>
+                    </div>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['surname'].hasError('required')">
                       Last name is required
                     </mat-error>
@@ -138,7 +145,10 @@
                 <div *ngIf="sharedPropertyAccessService.employeeProfilePermissions.idNumber" class="col-12 my-2 col-md-6">
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>ID Number</mat-label>
-                    <input matInput formControlName="idNumber" (blur)="getGenderBirthday($event)">
+                    <div class="align-text-icon">
+                    <input matInput formControlName="idNumber" (blur)="getGenderBirthday($event)" >
+                    <mat-icon *ngIf="sharedAccordionFunctionality.employeeDetailsForm.get('idNumber')?.value === null || sharedAccordionFunctionality.employeeDetailsForm.get('idNumber')?.value === ''"  [ngStyle]="{color: editEmployee  ? '#B3261E' : 'grey'}"  id="move-icon" matSuffix>error</mat-icon>
+                  </div>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['idNumber'].hasError('required')">
                       ID number is required
                     </mat-error>
@@ -152,7 +162,7 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Date of Birth</mat-label>
                     <input matInput [matDatepicker]="picker1" class="form-control" formControlName="dateOfBirth">
-                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker-toggle matSuffix [for]="picker1" [ngStyle]="{color: sharedAccordionFunctionality.employeeDetailsForm.get('dateOfBirth')?.value === null || sharedAccordionFunctionality.employeeDetailsForm.get('dateOfBirth')?.value === ''  ? '#B3261E' : 'grey'}" id="move-icon2"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['dateOfBirth'].hasError('required')">
                       Date of Birth is required
@@ -164,8 +174,8 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Start Date</mat-label>
                     <input matInput [matDatepicker]="picker2" formControlName="engagementDate">
-                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                    <mat-datepicker #picker2></mat-datepicker>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"  [ngStyle]="{color: sharedAccordionFunctionality.employeeDetailsForm.get('engagementDate')?.value === null || sharedAccordionFunctionality.employeeDetailsForm.get('engagementDate')?.value === ''? '#B3261E' : 'grey'}" id="move-icon2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2 ></mat-datepicker>
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['engagementDate'].hasError('required')">
                       Start Date is required
                     </mat-error>
@@ -174,26 +184,26 @@
               </div>
             </div>
             <div class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
-              <button class="" *ngIf="!sharedAccordionFunctionality.editEmployee" mat-button id="edit-button-width"
+              <button class="" *ngIf="!editEmployee" mat-button id="edit-button-width"
             (click)="editEmployeeDetails()">
             <mat-icon>edit</mat-icon>Edit Details</button>
             </div>
           </div>
           <div class="col-12 d-none d-md-flex d-lg-flex justify-content-end" id="edit-buttons">
-            <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="cancel-button"
+            <button *ngIf="editEmployee" mat-button id="cancel-button"
               (click)="cancelEmployeeEdit()">
               Cancel
             </button>
-            <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="save-button" type="submit">
+            <button *ngIf="editEmployee" mat-button id="save-button" type="submit">
               Save
             </button>
           </div>
           <div class="col-12 d-block d-md-none d-lg-none" id="edit-buttons">
-            <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="save-button" type="submit"
+            <button *ngIf="editEmployee" mat-button id="save-button" type="submit"
               class="col-12 mb-2">
               Save
             </button>
-            <button *ngIf="sharedAccordionFunctionality.editEmployee" mat-button id="cancel-button"
+            <button *ngIf="editEmployee" mat-button id="cancel-button"
               (click)="cancelEmployeeEdit()" class="col-12">
               Cancel
             </button>

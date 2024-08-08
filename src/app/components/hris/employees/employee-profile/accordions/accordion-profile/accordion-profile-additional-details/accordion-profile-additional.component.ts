@@ -59,8 +59,9 @@ export class AccordionProfileAdditionalComponent {
     this.loggedInProfile = this.navService.getEmployeeProfile();
     this.employeeId = this.route.snapshot.params['id'];
     this.loadEmployeeData();
+    this.sharedAccordionFunctionality.checkAdditionalFormProgress();
   }
-  
+
   loadEmployeeData() {
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
       this.getAllEmployees();
