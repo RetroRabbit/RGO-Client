@@ -166,12 +166,6 @@ export class AccordionProfileAddressDetailsComponent {
     this.cancelAddressEdit();
   }
 
-  loadCountries(): void {
-    this.locationApiService.getCountries().subscribe({
-      next: (data) => this.countries = data
-    });
-  }
-
   onCountryChange(country: string): void {
     this.selectedCountry = country;
     this.loadProvinces(this.selectedCountry);
@@ -256,6 +250,9 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   loadPostalAddress() {
+    if (this.sharedAccordionFunctionality.physicalEqualPostal) {
+      return;
+    }
     this.locationApiService.getCountries().subscribe({
         next: (data) => {
             if (!data || data.length === 0) {
