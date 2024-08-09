@@ -165,7 +165,7 @@ export class NewEmployeeComponent implements OnInit {
       const nameB = (b.name || '').toLowerCase();
       return nameA.localeCompare(nameB);
     });
-    
+
     this.Employees = this.sharedAccordionFunctionality.employees;
   }
 
@@ -232,8 +232,8 @@ export class NewEmployeeComponent implements OnInit {
 
   onUploadDocument(nextPage: string): void {
     var documents = this.employeeDocumentModels
-    
-    if(documents.length > 0){
+
+    if (documents.length > 0) {
       documents.forEach((documentModel) => {
         this.employeeDocumentService.saveEmployeeDocument(documentModel, 0).subscribe({
           next: () => {
@@ -256,7 +256,7 @@ export class NewEmployeeComponent implements OnInit {
         });
       });
     }
-    else{
+    else {
       this.isLoadingAddEmployee = false;
       this.inputField.reset();
       document.querySelector('.cellphone-container')?.classList.remove('has-value');
@@ -376,6 +376,7 @@ export class NewEmployeeComponent implements OnInit {
   get physicalAddressObj(): EmployeeAddress {
     return {
       id: 0,
+      employeeId: -1,
       unitNumber: this.physicalAddress.value.unitNumber!,
       complexName: this.physicalAddress.value.complexName!,
       suburbOrDistrict: this.physicalAddress.value.suburbDistrict!,
@@ -388,25 +389,10 @@ export class NewEmployeeComponent implements OnInit {
     };
   }
 
-  get postalAddressObj(): EmployeeAddress {
-    return {
-      id: 0,
-      unitNumber: this.postalAddress.value.unitNumber!,
-      complexName: this.postalAddress.value.complexName!,
-      suburbOrDistrict: this.postalAddress.value.suburbDistrict!,
-      city: this.postalAddress.value.city!,
-      streetNumber: this.postalAddress.value.streetNumber!,
-      streetName: this.postalAddress.value.streetName!,
-      country: this.postalAddress.value.country!,
-      province: this.postalAddress.value.province!,
-      postalCode: this.postalAddress.value.postalCode!,
-    };
-  }
 
   saveAddress(): void {
     combineLatest([
       this.employeeAddressService.save(this.physicalAddressObj),
-      this.employeeAddressService.save(this.postalAddressObj)
     ]).pipe(first()).subscribe()
   }
 
@@ -453,7 +439,6 @@ export class NewEmployeeComponent implements OnInit {
       ,
       dateOfBirth: this.newEmployeeForm.value.dateOfBirth,
       physicalAddress: this.physicalAddressObj,
-      postalAddress: this.postalAddressObj,
       peopleChampion: this.newEmployeeForm.controls["peopleChampion"].value == "" ? null : this.peopleChampionId
     });
 
@@ -680,7 +665,7 @@ export class NewEmployeeComponent implements OnInit {
       disabilityNotes: new FormControl<string>(''),
       countryOfBirth: new FormControl<string>(''),
       nationality: new FormControl<string>(''),
-      level: new FormControl<number| null>(null, [Validators.pattern(/^[0-9]*$/), Validators.required]),
+      level: new FormControl<number | null>(null, [Validators.pattern(/^[0-9]*$/), Validators.required]),
       employeeType: new FormControl<{ id: number; name: string } | null>(null, Validators.required),
       name: new FormControl<string>('', [Validators.required,
       Validators.pattern(this.namePattern)]),
