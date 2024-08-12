@@ -118,19 +118,6 @@ export class AccordionProfileEmployeeDetailsComponent {
       this.sharedAccordionFunctionality.employeeProfileDto!.payRate = this.employeeProfile!.employeeDetails.payRate,
       this.sharedAccordionFunctionality.employeeProfileDto!.clientAllocated = this.usingProfile ? this.employeeProfile!.employeeDetails.clientAllocated : this.employeeProfile!.simpleEmployee.clientAllocatedId,
       this.sharedAccordionFunctionality.employeeProfileDto!.teamLead = this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
-      this.sharedAccordionFunctionality.employeeProfileDto!.physicalAddress = {
-        id: this.employeeProfile!.employeeDetails.physicalAddress?.id!,
-        employeeId: this.employeeProfile!.employeeDetails.id!,
-        unitNumber: this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber!,
-        complexName: this.employeeProfile!.employeeDetails.physicalAddress?.complexName!,
-        streetName: this.employeeProfile!.employeeDetails.physicalAddress?.streetName!,
-        streetNumber: this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber!,
-        suburbOrDistrict: this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict!,
-        city: this.employeeProfile!.employeeDetails.physicalAddress?.city!,
-        country: this.employeeProfile!.employeeDetails.physicalAddress?.country!,
-        province: this.employeeProfile!.employeeDetails.physicalAddress?.province!,
-        postalCode: this.employeeProfile!.employeeDetails.physicalAddress?.postalCode!,
-      },
       this.sharedAccordionFunctionality.employeeProfileDto!.houseNo = this.employeeProfile?.employeeDetails.houseNo,
       this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactName = this.employeeProfile?.employeeDetails.emergencyContactName,
       this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactNo = this.employeeProfile?.employeeDetails.emergencyContactNo
@@ -351,8 +338,6 @@ export class AccordionProfileEmployeeDetailsComponent {
 
       var data = this.sharedAccordionFunctionality.selectedEmployee;
       this.employeeProfile.employeeDetails = data;
-      this.sharedAccordionFunctionality.employeePhysicalAddress = data.physicalAddress!;
-      this.sharedAccordionFunctionality.employeePostalAddress = data.postalAddress!;
       this.sharedAccordionFunctionality.hasDisability = data.disability;
       this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
 

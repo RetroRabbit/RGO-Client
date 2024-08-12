@@ -212,12 +212,10 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   getProfileImage(): string {
-    if (this.employeeProfile.id == this.sharedAccordionFunctionality.selectedEmployee.id)
-    {
+    if (this.employeeProfile.id == this.sharedAccordionFunctionality.selectedEmployee.id) {
       this.sharedAccordionFunctionality.profileImage = this.employeeProfile.photo || this.authAccessService.getAuthTokenProfilePicture() || '../../../../../../assets/img/default-profile-image.png';
     }
-    else
-    {
+    else {
       this.sharedAccordionFunctionality.profileImage = this.employeeProfile.photo || '../../../../../../assets/img/default-profile-image.png';
     }
     return this.sharedAccordionFunctionality.profileImage;
@@ -233,16 +231,15 @@ export class EmployeeProfileComponent implements OnChanges {
         if (this.usingSimpleProfile) {
           this.simpleEmployee = data;
           this.employeeProfile = data;
-          this.employeeId = data.id;          
+          this.employeeId = data.id;
           this.populateEmployeeAccordion(this.simpleEmployee);
-        } 
-        else 
-        {
+        }
+        else {
           this.selectedEmployee = data;
           this.employeeProfile = data;
           this.employeePhysicalAddress = data.physicalAddress!;
           this.employeePostalAddress = data.postalAddress!;
-          this.checkAddressMatch(data);  
+          this.checkAddressMatch(data);
         }
         this.sharedAccordionFunctionality.selectedEmployee = data;
         this.getEmployeeData();
@@ -253,8 +250,7 @@ export class EmployeeProfileComponent implements OnChanges {
         if (!this.employeeProfile.active) {
           this.getTerminationInfo();
         }
-        if (!this.usingSimpleProfile)
-        {
+        if (!this.usingSimpleProfile) {
           this.getAllEmployees();
         }
         this.changeDetectorRef.detectChanges();
@@ -273,8 +269,8 @@ export class EmployeeProfileComponent implements OnChanges {
 
   get basedInString(): string {
     let basedIn = '';
-    if (this.employeeProfile.physicalAddress !== undefined && this.employeeProfile.physicalAddress.suburbOrDistrict && this.employeeProfile.physicalAddress.suburbOrDistrict.length > 2) {
-      basedIn = `Based in ${this.employeeProfile.physicalAddress.city}`;
+    if (this.sharedAccordionFunctionality.employeePhysicalAddress !== undefined && this.sharedAccordionFunctionality.employeePhysicalAddress.suburbOrDistrict && this.sharedAccordionFunctionality.employeePhysicalAddress.suburbOrDistrict.length > 2) {
+      basedIn = `Based in ${this.sharedAccordionFunctionality.employeePhysicalAddress.city}`;
     }
     return basedIn;
   }

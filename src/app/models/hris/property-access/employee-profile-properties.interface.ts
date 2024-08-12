@@ -33,8 +33,6 @@ export interface EmployeeProfilePermissions {
   salary: boolean,
   clientAllocated: boolean,
   teamLead: boolean,
-  physicalAddress: boolean,
-  postalAddress: boolean,
   houseNo: boolean,
   emergencyContactName: boolean,
   emergencyContactNo: boolean,

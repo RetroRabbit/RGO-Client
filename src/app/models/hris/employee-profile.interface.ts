@@ -1,9 +1,9 @@
 import { EmployeeAddress } from "./employee-address.interface";
 import { EmployeeQualifications } from "./employee-qualifications.interface";
 
-export class EmployeeProfile { 
+export class EmployeeProfile {
 
-  EmployeeProfile() {}
+  EmployeeProfile() { }
   id!: number;
   employeeNumber?: string;
   taxNumber?: string;
@@ -20,7 +20,7 @@ export class EmployeeProfile {
     id?: number,
     name?: string,
   };
-  
+
   name?: string;
   initials?: string;
   surname?: string;
@@ -42,8 +42,6 @@ export class EmployeeProfile {
   salary?: Number;
   clientAllocated?: number;
   teamLead?: number;
-  physicalAddress?: EmployeeAddress;
-  postalAddress?: EmployeeAddress;
   houseNo?: string;
   emergencyContactName?: string;
   emergencyContactNo?: string;

@@ -34,7 +34,6 @@ export class AccordionProfileAddressDetailsComponent {
   selectedProvince: string = '';
   selectedPostalCountry: string = '';
   selectedPostalProvince: string = '';
-  employeeId = this.route.snapshot.params['id'];
   country: any;
   province: any;
   city: any;
@@ -42,6 +41,10 @@ export class AccordionProfileAddressDetailsComponent {
   streetName: string = '';
   streetcode: string = '';
   editAddress: boolean = false;
+  employeeAddress!: EmployeeAddress;
+  currentEmployeeId: number | undefined;
+
+
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -64,32 +67,43 @@ export class AccordionProfileAddressDetailsComponent {
   ) { }
 
   ngOnInit() {
+
+    this.currentEmployeeId = this.route.snapshot.params["id"];
     this.loadPhysicalAddress();
+    this.initializeForm();
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.getEmployeeFields();
   }
 
   initializeForm() {
-    this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
-      physicalUnitNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber?.trim(), [Validators.pattern(/^[0-9]*$/)]],
-      physicalComplexName: [this.employeeProfile!.employeeDetails.physicalAddress?.complexName?.trim()],
-      physicalStreetNumber: [this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      physicalStreetName: [this.employeeProfile!.employeeDetails.physicalAddress?.streetName?.trim(), Validators.required],
-      physicalCity: [this.employeeProfile!.employeeDetails.physicalAddress?.city?.trim(), Validators.required],
-      physicalSuburb: [this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict?.trim()],
-      physicalCountry: [this.employeeProfile!.employeeDetails.physicalAddress?.country?.trim(), Validators.required],
-      physicalProvince: [this.employeeProfile!.employeeDetails.physicalAddress?.province?.trim(), Validators.required],
-      physicalPostalCode: [this.employeeProfile!.employeeDetails.physicalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]],
-      postalUnitNumber: [this.employeeProfile!.employeeDetails.postalAddress?.unitNumber?.trim(), [Validators.pattern(/^[0-9]*$/)]],
-      postalComplexName: [this.employeeProfile!.employeeDetails.postalAddress?.complexName?.trim()],
-      postalStreetNumber: [this.employeeProfile!.employeeDetails.postalAddress?.streetNumber?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-      postalStreetName: [this.employeeProfile!.employeeDetails.postalAddress?.streetName?.trim(), Validators.required],
-      postalCity: [this.employeeProfile!.employeeDetails.postalAddress?.city?.trim(), Validators.required],
-      postalSuburb: [this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict?.trim()],
-      postalCountry: [this.employeeProfile!.employeeDetails.postalAddress?.country?.trim(), Validators.required],
-      postalProvince: [this.employeeProfile!.employeeDetails.postalAddress?.province?.trim(), Validators.required],
-      postalPostalCode: [this.employeeProfile!.employeeDetails.postalAddress?.postalCode?.trim(), [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]]
-    });
+
+    if (this.sharedAccordionFunctionality.employeePhysicalAddress) {
+      this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
+        physicalUnitNumber: [this.sharedAccordionFunctionality.employeePhysicalAddress?.unitNumber, [Validators.pattern(/^[0-9]*$/)]],
+        physicalComplexName: [this.sharedAccordionFunctionality.employeePhysicalAddress?.complexName],
+        physicalStreetNumber: [this.sharedAccordionFunctionality.employeePhysicalAddress?.streetNumber, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+        physicalStreetName: [this.sharedAccordionFunctionality.employeePhysicalAddress?.streetName, Validators.required],
+        physicalCity: [this.sharedAccordionFunctionality.employeePhysicalAddress?.city, Validators.required],
+        physicalSuburb: [this.sharedAccordionFunctionality.employeePhysicalAddress?.suburbOrDistrict],
+        physicalCountry: [this.sharedAccordionFunctionality.employeePhysicalAddress?.country, Validators.required],
+        physicalProvince: [this.sharedAccordionFunctionality.employeePhysicalAddress?.province, Validators.required],
+        physicalPostalCode: [this.sharedAccordionFunctionality.employeePhysicalAddress?.postalCode, [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]],
+      });
+    }
+    else {
+      this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
+        physicalUnitNumber: [null, [Validators.pattern(/^[0-9]*$/)]],
+        physicalComplexName: [null],
+        physicalStreetNumber: [null, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+        physicalStreetName: [null, Validators.required],
+        physicalCity: [null, Validators.required],
+        physicalSuburb: [null],
+        physicalCountry: [null, Validators.required],
+        physicalProvince: [null, Validators.required],
+        physicalPostalCode: [null, [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]],
+      });
+    }
+
     this.sharedAccordionFunctionality.addressDetailsForm.disable();
     this.sharedAccordionFunctionality.checkAddressFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
@@ -97,26 +111,12 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   saveAddressEdit() {
-    if (this.sharedAccordionFunctionality.physicalEqualPostal) {
-      this.sharedAccordionFunctionality.addressDetailsForm.patchValue({
-        postalUnitNumber: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalUnitNumber')?.value,
-        postalComplexName: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalComplexName')?.value,
-        postalStreetNumber: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetNumber')?.value,
-        postalStreetName: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalStreetName')?.value,
-        postalCity: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCity')?.value,
-        postalSuburb: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalSuburb')?.value,
-        postalCountry: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalCountry')?.value,
-        postalProvince: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalProvince')?.value,
-        postalPostalCode: this.sharedAccordionFunctionality.addressDetailsForm.get('physicalPostalCode')?.value
-      });
-    }
-
     if (this.sharedAccordionFunctionality.addressDetailsForm.valid) {
       const addressDetailFormValue = this.sharedAccordionFunctionality.addressDetailsForm.value;
 
       const physicalAddressDto: EmployeeAddress = {
-        id: this.employeeProfile!.employeeDetails.physicalAddress?.id!,
-        employeeId: this.employeeProfile!.employeeDetails?.id!,
+        id: this.sharedAccordionFunctionality.employeePhysicalAddress ? this.sharedAccordionFunctionality.employeePhysicalAddress.id : 0,
+        employeeId: this.currentEmployeeId != undefined ? this.currentEmployeeId : this.navService.employeeProfile.id!,
         unitNumber: addressDetailFormValue['physicalUnitNumber'],
         complexName: addressDetailFormValue['physicalComplexName'],
         streetName: addressDetailFormValue['physicalStreetName'],
@@ -127,6 +127,26 @@ export class AccordionProfileAddressDetailsComponent {
         province: addressDetailFormValue['physicalProvince'],
         postalCode: addressDetailFormValue['physicalPostalCode'],
       };
+
+      if (this.sharedAccordionFunctionality.employeePhysicalAddress) {
+        this.employeeAddressService.update(physicalAddressDto).subscribe({
+          next: () => {
+            this.snackBarService.showSnackbar("Updated", "snack-success");
+            this.editAddress = false;
+            this.getEmployeeFields();
+          },
+          error: (er) => this.snackBarService.showError(er)
+        })
+      } else {
+        this.employeeAddressService.save(physicalAddressDto).subscribe({
+          next: () => {
+            this.snackBarService.showSnackbar("Saved", "snack-success");
+            this.editAddress = false;
+            this.getEmployeeFields();
+          },
+          error: (er) => this.snackBarService.showError(er)
+        })
+      }
     } else {
       this.snackBarService.showSnackbar("Some Fields Are Still Missing Information", "snack-error");
     }
@@ -160,7 +180,7 @@ export class AccordionProfileAddressDetailsComponent {
           return;
         }
         this.countries = data;
-        this.selectedCountry = this.employeeProfile?.employeeDetails.physicalAddress?.country || '';
+        this.selectedCountry = this.sharedAccordionFunctionality.employeePhysicalAddress?.country || '';
         if (!this.selectedCountry.trim()) {
           return;
         }
@@ -170,7 +190,7 @@ export class AccordionProfileAddressDetailsComponent {
               return;
             }
             this.provinces = data;
-            this.selectedProvince = this.employeeProfile?.employeeDetails.physicalAddress?.province || '';
+            this.selectedProvince = this.sharedAccordionFunctionality.employeePhysicalAddress?.province || '';
             if (this.selectedProvince) {
               this.locationApiService.getCities(this.selectedCountry, this.selectedProvince).subscribe({
                 next: (data) => {
@@ -198,8 +218,14 @@ export class AccordionProfileAddressDetailsComponent {
 
 
   getEmployeeFields() {
-    this.sharedAccordionFunctionality.employeePhysicalAddress = this.employeeProfile.employeeDetails.physicalAddress!;
-    this.initializeForm();
+    const currentEmployeeId = this.currentEmployeeId != undefined ? this.currentEmployeeId : this.navService.employeeProfile.id
+    this.employeeAddressService.GetEmployeeAddressById(currentEmployeeId).subscribe({
+      next: (data) => {
+        this.sharedAccordionFunctionality.employeePhysicalAddress = data;
+        this.initializeForm();
+      },
+      error: (er) => this.snackBarService.showError(er),
+    });
   }
 
   editAddressDetails() {
