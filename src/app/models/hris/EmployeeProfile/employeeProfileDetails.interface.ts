@@ -1,19 +1,15 @@
-import { EmployeeType } from "./employeeType.interface";
+import { EmployeeAddress } from "../employee-address.interface";
+import { EmployeeData } from "../employee-data.interface";
+import { EmployeeProfileContact } from "./employeeContactDetails.interface";
+import { EmployeeDetails } from "./employeeDetails.interface";
+import { EmployeePersonalDetails } from "./employeePersonalDetails.interface";
 
 export interface EmployeeProfileDetails {
-    id: number;
-    engagementDate: string;
-    peopleChampionId: number;
-    peopleChampionName: string;
-    level: number;
-    employeeType: EmployeeType;
-    name: string;
-    initials: string;
-    surname: string;
-    dateOfBirth: string;
-    idNumber: string;
-    clientAllocatedId: number | null;
-    clientAllocatedName: string | null;
-    teamLeadId: number | null;
-    teamLeadName: string;
+   employeeDetails : EmployeeDetails,
+   personalDetails : EmployeePersonalDetails,
+   contactDetails : EmployeeProfileContact,
+   employeeData: EmployeeData,
+   photo: string;
+   active: boolean;
+   physicalAddress? : EmployeeAddress,
 }

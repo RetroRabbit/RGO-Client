@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from '../../../services/shared-services/auth-access/auth.service';
 import { AppState } from 'src/app/components/shared-components/store/app.state';
-import { selectEmail, selectRole } from 'src/app/components/shared-components/store/selector/sign-in.selector';
+import { selectToken } from 'src/app/components/shared-components/store/selector/sign-in.selector';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthAccessService {
+  photo : string | undefined;
+
   public constructor(
     private store: Store<AppState>,
     private authService: AuthService,
@@ -20,16 +22,20 @@ export class AuthAccessService {
 
   getEmployeeEmail(): string {
     let email = "";
-    this.store.select(selectEmail).subscribe((storeEmail) => {
-      email = storeEmail;
+    this.store.select(selectToken).subscribe((store) => {
+      email = store?.email || '';
     });
     return email;
   }
 
+  getAuthTokenProfilePicture(): string | undefined {
+    return this.authService.photo;
+  }
+
   getRole() : string {
     let role = "";
-    this.store.select(selectRole).subscribe((storeRole) => {
-      role = storeRole;
+    this.store.select(selectToken).subscribe((store) => {
+      role = store?.roles || '';
     });
     return role;
   }

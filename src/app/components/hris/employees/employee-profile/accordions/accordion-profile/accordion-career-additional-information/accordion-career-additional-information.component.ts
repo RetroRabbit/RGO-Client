@@ -5,9 +5,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
-import { ClientService } from 'src/app/services/hris/client.service';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
-import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
@@ -17,6 +15,7 @@ import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/
 import { EventEmitter } from '@angular/core';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute } from '@angular/router';
+import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Component({
   selector: 'app-accordion-career-additional-information',
@@ -45,9 +44,9 @@ export class AccordionCareerAdditionalInformationComponent {
     private snackBarService: SnackbarService,
     private employeeProfileService: EmployeeProfileService,
     private employeeDataService: EmployeeDataService,
-    private clientService: ClientService,
+    private storeAcessService: StoreAccessService,
     private employeeTypeService: EmployeeTypeService,
-    private customFieldService: CustomFieldService,
+    private storeAccessService: StoreAccessService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -91,14 +90,14 @@ export class AccordionCareerAdditionalInformationComponent {
     if (this.employeeId != undefined) {
       this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.employeeData = data;
+          this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
 
         }
       });
     } else {
       this.employeeDataService.getEmployeeData(this.loggedInProfile.id).subscribe({
         next: data => {
-          this.sharedAccordionFunctionality.employeeData = data;
+          this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
         }
       });
     }
@@ -109,12 +108,8 @@ export class AccordionCareerAdditionalInformationComponent {
       next: data => {
         this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
         this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
-        this.clientService.getAllClients().subscribe({
-          next: data => {
-            this.sharedAccordionFunctionality.clients = data;
-            this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
-          }
-        });
+          this.sharedAccordionFunctionality.clients = this.storeAcessService.getClients();
+          this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
       }
     });
   }
@@ -128,14 +123,11 @@ export class AccordionCareerAdditionalInformationComponent {
   }
 
   getEmployeeFieldCodes() {
-    this.customFieldService.getAllFieldCodes().subscribe({
-      next: data => {
-        this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[2].id);
-        this.checkAdditionalInformation();
-        this.sharedAccordionFunctionality.calculateCareerAdditionalFormProgress();
-        this.sharedAccordionFunctionality.totalCareerProgress();
-      }
-    })
+    var data = this.storeAccessService.getFieldCodes()
+    this.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[2].id);
+    this.checkAdditionalInformation();
+    this.sharedAccordionFunctionality.calculateCareerAdditionalFormProgress();
+    this.sharedAccordionFunctionality.totalCareerProgress();
   }
 
   checkAdditionalInformation() {

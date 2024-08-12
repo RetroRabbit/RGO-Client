@@ -1,4 +1,4 @@
-export interface EmployeeProfilePersonal {
+export interface EmployeePersonalDetails {
     id: number;
     disability: boolean;
     disabilityNotes: string;

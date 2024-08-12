@@ -13,12 +13,12 @@ export class LoginEffects {
 
   GetLogin$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(LoginActions.SetLogin),
+      ofType(LoginActions.SetToken),
       exhaustMap(({ payload }) => 
         this.authService.getAccessToken().then((accessToken: string) => {
-          return LoginActions.SetLoginSuccess({ payload: accessToken });
+          return LoginActions.LoadTokenSuccess({ payload: accessToken });
         }).catch((error) => {
-          return LoginActions.SetLoginFailure({ error });
+          return LoginActions.LoadTokenFailure({ error });
         })
       )
     )

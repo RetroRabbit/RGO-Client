@@ -18,7 +18,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    this.store.select(selectToken).subscribe((storeToken) => { this.token = storeToken; });
+    this.store.select(selectToken).subscribe((storeToken) => { this.token = storeToken?.token || ''; });
     return from(this.authService.RenewIfAccessTokenExpired(this.token)).pipe(
       mergeMap((token: string) => {
         const authReq = req.clone({
