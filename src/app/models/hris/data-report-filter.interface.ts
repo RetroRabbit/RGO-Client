@@ -1,9 +1,9 @@
 export interface DataReportFilter {
-    ReportFilterId: number,
-    employeeId: number,
-    tableName: string,
-    columnName: string,
+    id: number,
+    table: string,
+    column: string,
     condition: string,
     value: string,
     reportId: number,
+    reportFilterName: string
 }

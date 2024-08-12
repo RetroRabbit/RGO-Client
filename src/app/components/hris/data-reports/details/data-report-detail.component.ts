@@ -17,6 +17,9 @@ import { employeeColumn } from 'src/app/models/hris/constants/employeeColumn.con
 import { DataFilterTable } from 'src/app/models/hris/constants/data-filter-table.constants';
 import { condition } from 'src/app/models/hris/constants/condition.constants';
 import { DataReportFilter } from 'src/app/models/hris/data-report-filter.interface';
+import { ReportFilterRequest } from "src/app/models/hris/report-filter-request.interface";
+
+
 
 @Component({
   selector: 'app-data-report-detail',
@@ -34,6 +37,7 @@ export class DataReportDetailComponent {
   selectedEmployeeId?: number;
   selectedRoleId?: number;
   dataReportForm!: FormGroup;
+  dataReportFilterForm!: FormGroup;
   accessRequest!: ReportAccessRequest;
   dataObjects: DataReport = {};
   accessEmployeeList: AccessList[] = [];
@@ -47,13 +51,15 @@ export class DataReportDetailComponent {
   nonEditable: boolean = true;
   selectedViewOnly?: boolean;
   isReorderable: boolean = true;
-  filterList: DataReportColumns[] = [];
-  filterRequest!: DataReportFilter;
+  filterList: DataReportFilter[] = [];
+  filterRequest!: ReportFilterRequest;
   SelectedEmployeeColumn?: string;
   SelectedTableName?: string;
   reportFilterValue?: string;
+  reportFilterName?: string;
   SelectedCondition?: string;
   valueText?: string;
+  typeIsNull: boolean = false;
   
 
   public employeeColumns = employeeColumn;
@@ -101,12 +107,13 @@ export class DataReportDetailComponent {
         this.dataObjects.columns = data.columns;
         this.dataObjects.data = data.data;
         this.dataObjects.viewOnly = data.viewOnly;
+        this.dataObjects.filters = data.filters;
         this.reportName = data.reportName;
         this.reportCode = data.reportCode
         this.accessEmployeeList = data.accessList?.filter(access => access.roleId == null || access.roleId == undefined)!;
         this.accessRoleList = data.accessList?.filter(access => access.roleId != null || access.roleId != undefined)!;
         this.isLoading = false;
-        this.filterList = data.columns?.filter(filter => filter.id != null || filter.id != undefined)!;
+        this.filterList = data.filters?.filter(filter => filter.id != null || filter.id != undefined)!;
 
         if (data.viewOnly) {
           this.nonEditable = true;
@@ -235,6 +242,14 @@ export class DataReportDetailComponent {
       roleAccess: new FormControl<string>('', [Validators.required]),
       viewOnly: new FormControl<boolean>(false, [Validators.required])
     })
+
+    this.dataReportFilterForm = this.fb.group({
+      tableName: new FormControl<string>(''),
+      condition:new FormControl<string>(''),
+      col:new FormControl<string>(''),
+      value:new FormControl<string>(''),
+      filterName:new FormControl<string>('')
+    });
   }
 
   filterEmployees(event: any) {
@@ -269,7 +284,13 @@ export class DataReportDetailComponent {
   }
   getCondition(condition: any){
     this.SelectedCondition = condition.value;
+    this.setTypeIsNull(condition.value);
+    console.log("typeIsNull: " + this.typeIsNull);
  }
+
+ getReportFilterName(name: any){
+  this.reportFilterName = name.value;
+}
 
  
   updateAccess() {
@@ -299,16 +320,21 @@ export class DataReportDetailComponent {
   AddFilter() {
     this.filterRequest = {
       reportId: this.dataObjects.reportId!,
-      employeeId: this.selectedEmployeeId!,
+      // employeeId: this.selectedEmployeeId!,
       value: this.valueText!,
       tableName: this.SelectedTableName!,
       condition: this.SelectedCondition!,
-      ReportFilterId: 0,
-      columnName: this.SelectedEmployeeColumn!
+      columnName: this.SelectedEmployeeColumn!,
+      reportFilterName: this.reportFilterName!
       }
       
     this.dataReportingService.addOrUpdateReportFilter(this.filterRequest).subscribe({
       next: data => {
+        this.SelectedTableName = undefined;
+        this.valueText = undefined;
+        this.SelectedCondition = undefined;
+        this.SelectedEmployeeColumn = undefined;
+        this.reportFilterName = undefined;
         this.snackBarService.showSnackbar("Filter successfully Added", "snack-success")
       },
       error: error => {
@@ -355,6 +381,15 @@ export class DataReportDetailComponent {
   goBack() {
     this.modalAddingNew = false;
     this.dataReportForm.reset();
+  }
+
+  setTypeIsNull(event: any) {
+    if(event == 'IS NULL'){
+      this.typeIsNull = true;
+    }
+    else{
+      this.typeIsNull = false;
+    }
   }
 
   

@@ -8,7 +8,7 @@ import { ReportColumnRequest } from "src/app/models/hris/report-column-request.i
 import { AccessAvailability } from "src/app/models/hris/data-report-access-availability.interface";
 import { ReportAccessRequest } from "src/app/models/hris/data-report-access-request.interface";
 import { DataReportList } from "src/app/models/hris/data-report-list";
-
+import { ReportFilterRequest } from "src/app/models/hris/report-filter-request.interface";
 
 @Injectable({
     providedIn: 'root'
@@ -76,8 +76,8 @@ export class DataReportingService {
         return this.httpClient.put<any>(`${this.baseUrl}/archive-data-report-filter`, id)
     }
 
-    fetchReportDataFilter(reportcode: string): Observable<any> {
-        return this.httpClient.get<any>(`${this.baseUrl}/get-data-report-filter?code=${reportcode}`);
+    fetchReportDataFilter(reportFilterName: string): Observable<any> {
+        return this.httpClient.get<any>(`${this.baseUrl}/get-data-report-filter?code=${reportFilterName}`);
     }
     
 }
