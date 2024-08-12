@@ -103,12 +103,12 @@ export class DataReportDetailComponent {
     this.dataReportingService.fetchReportData(dataReportCode).subscribe({
       next: data => {
         this.dataObjects.reportId = data.reportId;
-        this.dataObjects.reportName = data.reportName;
+        // this.dataObjects.reportName = data.reportName;
         this.dataObjects.columns = data.columns;
         this.dataObjects.data = data.data;
         this.dataObjects.viewOnly = data.viewOnly;
         this.dataObjects.filters = data.filters;
-        this.reportName = data.reportName;
+        // this.reportName = data.reportName;
         this.reportCode = data.reportCode
         this.accessEmployeeList = data.accessList?.filter(access => access.roleId == null || access.roleId == undefined)!;
         this.accessRoleList = data.accessList?.filter(access => access.roleId != null || access.roleId != undefined)!;
