@@ -165,7 +165,6 @@ export class NewEmployeeComponent implements OnInit {
       const nameB = (b.name || '').toLowerCase();
       return nameA.localeCompare(nameB);
     });
-
     this.Employees = this.sharedAccordionFunctionality.employees;
   }
 
