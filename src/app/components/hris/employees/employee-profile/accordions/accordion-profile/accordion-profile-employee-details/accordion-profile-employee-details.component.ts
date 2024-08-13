@@ -77,7 +77,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.sharedAccordionFunctionality.checkEmployeeFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", true)
-
   }
 
   initializeEmployeeProfileDto() {
