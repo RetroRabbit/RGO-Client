@@ -96,7 +96,6 @@ export class SharedAccordionFunctionality {
   employeePeopleChampion!: EmployeeProfile;
   selectedEmployee!: EmployeeProfile;
   employeePhysicalAddress !: EmployeeAddress;
-  employeePostalAddress !: EmployeeAddress;
 
   profileFormProgress: number = 0;
   documentFormProgress: number = 0;

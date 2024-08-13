@@ -21,6 +21,7 @@ import { ActivatedRoute } from '@angular/router';
 export class AccordionProfileAddressDetailsComponent {
 
   screenWidth = window.innerWidth;
+  usingProfile: boolean = true;
   provinces: string[] = [];
   countries: string[] = [];
   cities: string[] = [];
@@ -52,6 +53,7 @@ export class AccordionProfileAddressDetailsComponent {
   ) { }
 
   ngOnInit() {
+    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.currentEmployeeId = this.route.snapshot.params["id"];
     this.loadPhysicalAddress();
     this.initializeForm();
@@ -59,17 +61,17 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   initializeForm() {
-    if (this.sharedAccordionFunctionality.employeePhysicalAddress) {
+    if (this.employeeAddress) {
       this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
-        physicalUnitNumber: [this.sharedAccordionFunctionality.employeePhysicalAddress?.unitNumber, [Validators.pattern(/^[0-9]*$/)]],
-        physicalComplexName: [this.sharedAccordionFunctionality.employeePhysicalAddress?.complexName],
-        physicalStreetNumber: [this.sharedAccordionFunctionality.employeePhysicalAddress?.streetNumber, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-        physicalStreetName: [this.sharedAccordionFunctionality.employeePhysicalAddress?.streetName, Validators.required],
-        physicalCity: [this.sharedAccordionFunctionality.employeePhysicalAddress?.city, Validators.required],
-        physicalSuburb: [this.sharedAccordionFunctionality.employeePhysicalAddress?.suburbOrDistrict],
-        physicalCountry: [this.sharedAccordionFunctionality.employeePhysicalAddress?.country, Validators.required],
-        physicalProvince: [this.sharedAccordionFunctionality.employeePhysicalAddress?.province, Validators.required],
-        physicalPostalCode: [this.sharedAccordionFunctionality.employeePhysicalAddress?.postalCode, [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]],
+        physicalUnitNumber: [this.employeeAddress?.unitNumber, [Validators.pattern(/^[0-9]*$/)]],
+        physicalComplexName: [this.employeeAddress?.complexName],
+        physicalStreetNumber: [this.employeeAddress?.streetNumber, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+        physicalStreetName: [this.employeeAddress?.streetName, Validators.required],
+        physicalCity: [this.employeeAddress?.city, Validators.required],
+        physicalSuburb: [this.employeeAddress?.suburbOrDistrict],
+        physicalCountry: [this.employeeAddress?.country, Validators.required],
+        physicalProvince: [this.employeeAddress?.province, Validators.required],
+        physicalPostalCode: [this.employeeAddress?.postalCode, [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]],
       });
     }
     else {
@@ -85,7 +87,7 @@ export class AccordionProfileAddressDetailsComponent {
         physicalPostalCode: [null, [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.maxLength(4), Validators.minLength(4)]],
       });
     }
-
+    this.sharedAccordionFunctionality.employeePhysicalAddress = this.employeeAddress;
     this.sharedAccordionFunctionality.addressDetailsForm.disable();
     this.sharedAccordionFunctionality.checkAddressFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
@@ -96,7 +98,7 @@ export class AccordionProfileAddressDetailsComponent {
     if (this.sharedAccordionFunctionality.addressDetailsForm.valid) {
       const addressDetailFormValue = this.sharedAccordionFunctionality.addressDetailsForm.value;
       const physicalAddressDto: EmployeeAddress = {
-        id: this.sharedAccordionFunctionality.employeePhysicalAddress ? this.sharedAccordionFunctionality.employeePhysicalAddress.id : 0,
+        id: this.employeeAddress ? this.employeeAddress.id : 0,
         employeeId: this.currentEmployeeId != undefined ? this.currentEmployeeId : this.navService.employeeProfile.id!,
         unitNumber: addressDetailFormValue['physicalUnitNumber'],
         complexName: addressDetailFormValue['physicalComplexName'],
@@ -109,7 +111,7 @@ export class AccordionProfileAddressDetailsComponent {
         postalCode: addressDetailFormValue['physicalPostalCode'],
       };
 
-      if (this.sharedAccordionFunctionality.employeePhysicalAddress) {
+      if (this.employeeAddress) {
         this.employeeAddressService.update(physicalAddressDto).subscribe({
           next: () => {
             this.snackBarService.showSnackbar("Updated", "snack-success");
@@ -161,7 +163,7 @@ export class AccordionProfileAddressDetailsComponent {
           return;
         }
         this.countries = data;
-        this.selectedCountry = this.sharedAccordionFunctionality.employeePhysicalAddress?.country || '';
+        this.selectedCountry = this.employeeAddress?.country || '';
         if (!this.selectedCountry.trim()) {
           return;
         }
@@ -171,7 +173,7 @@ export class AccordionProfileAddressDetailsComponent {
               return;
             }
             this.provinces = data;
-            this.selectedProvince = this.sharedAccordionFunctionality.employeePhysicalAddress?.province || '';
+            this.selectedProvince = this.employeeAddress?.province || '';
             if (this.selectedProvince) {
               this.locationApiService.getCities(this.selectedCountry, this.selectedProvince).subscribe({
                 next: (data) => {
@@ -197,16 +199,24 @@ export class AccordionProfileAddressDetailsComponent {
     });
   }
 
-
   getEmployeeFields() {
-    const currentEmployeeId = this.currentEmployeeId != undefined ? this.currentEmployeeId : this.navService.employeeProfile.id
-    this.employeeAddressService.GetEmployeeAddressById(currentEmployeeId).subscribe({
-      next: (data) => {
-        this.sharedAccordionFunctionality.employeePhysicalAddress = data;
-        this.initializeForm();
-      },
-      error: (er) => this.snackBarService.showError(er),
-    });
+    if (this.currentEmployeeId == undefined) {
+      this.employeeAddressService.GetEmployeeAddressById(this.navService.employeeProfile.id as number).subscribe({
+        next: (data) => {
+          this.employeeAddress = data;
+          this.initializeForm();
+        },
+        error: (er) => this.snackBarService.showError(er),
+      });
+    } else {
+      this.employeeAddressService.GetEmployeeAddressById(this.currentEmployeeId).subscribe({
+        next: (data) => {
+          this.employeeAddress = data;
+          this.initializeForm();
+        },
+        error: (er) => this.snackBarService.showError(er),
+      });
+    }
   }
 
   editAddressDetails() {
