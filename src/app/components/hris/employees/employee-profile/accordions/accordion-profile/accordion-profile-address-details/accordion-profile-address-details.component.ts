@@ -2,7 +2,6 @@ import { Component, HostListener, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -10,7 +9,6 @@ import { SharedAccordionFunctionality } from '../../../shared-accordion-function
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
 import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface';
 import { EmployeeAddressService } from 'src/app/services/hris/employee/employee-address.service';
-import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { ActivatedRoute } from '@angular/router';
@@ -23,28 +21,16 @@ import { ActivatedRoute } from '@angular/router';
 export class AccordionProfileAddressDetailsComponent {
 
   screenWidth = window.innerWidth;
-  usingProfile: boolean = true;
   provinces: string[] = [];
   countries: string[] = [];
   cities: string[] = [];
-  postalProvinces: string[] = [];
-  postalCountries: string[] = [];
-  postalCities: string[] = [];
   selectedCountry: string = '';
   selectedProvince: string = '';
   selectedPostalCountry: string = '';
   selectedPostalProvince: string = '';
-  country: any;
-  province: any;
-  city: any;
-  streetNumber: string = '';
-  streetName: string = '';
-  streetcode: string = '';
   editAddress: boolean = false;
   employeeAddress!: EmployeeAddress;
   currentEmployeeId: number | undefined;
-
-
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -56,7 +42,6 @@ export class AccordionProfileAddressDetailsComponent {
   constructor(
     private fb: FormBuilder,
     private snackBarService: SnackbarService,
-    private employeeDataService: EmployeeDataService,
     public authAccessService: AuthAccessService,
     public sharedPropertyAccessService: SharedPropertyAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -67,16 +52,13 @@ export class AccordionProfileAddressDetailsComponent {
   ) { }
 
   ngOnInit() {
-
     this.currentEmployeeId = this.route.snapshot.params["id"];
     this.loadPhysicalAddress();
     this.initializeForm();
-    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.getEmployeeFields();
   }
 
   initializeForm() {
-
     if (this.sharedAccordionFunctionality.employeePhysicalAddress) {
       this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
         physicalUnitNumber: [this.sharedAccordionFunctionality.employeePhysicalAddress?.unitNumber, [Validators.pattern(/^[0-9]*$/)]],
@@ -113,7 +95,6 @@ export class AccordionProfileAddressDetailsComponent {
   saveAddressEdit() {
     if (this.sharedAccordionFunctionality.addressDetailsForm.valid) {
       const addressDetailFormValue = this.sharedAccordionFunctionality.addressDetailsForm.value;
-
       const physicalAddressDto: EmployeeAddress = {
         id: this.sharedAccordionFunctionality.employeePhysicalAddress ? this.sharedAccordionFunctionality.employeePhysicalAddress.id : 0,
         employeeId: this.currentEmployeeId != undefined ? this.currentEmployeeId : this.navService.employeeProfile.id!,

@@ -50,7 +50,7 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>City/Town</mat-label>
                     <div class="align-text-icon">
-                    <mat-select [(value)]="city" formControlName="physicalCity" hideSingleSelectionIndicator="true">
+                    <mat-select formControlName="physicalCity" hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
                     </mat-select>
                     <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalCity')?.value === null"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
@@ -67,7 +67,6 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Unit Number</mat-label>
                     <input matInput formControlName="physicalUnitNumber">
-                    <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalUnitNumber')?.value === null"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                     <mat-error
                       *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalUnitNumber'].hasError('pattern')">
                       Unit number should only contain numbers
@@ -78,7 +77,6 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Complex Name</mat-label>
                     <input matInput formControlName="physicalComplexName">
-                    <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalComplexName')?.value === null"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                   </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.streetNumber"
@@ -133,13 +131,6 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-
-              </div>
-              <div class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
-                <button *ngIf="!editAddress" mat-button id="edit-button-width"
-                  (click)="editAddressDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
-                  <mat-icon>edit</mat-icon>Edit Details
-                </button>
               </div>
             </div>
             <div class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
