@@ -20,7 +20,6 @@ export class EmployeeProfile {
     id?: number,
     name?: string,
   };
-
   name?: string;
   initials?: string;
   surname?: string;
