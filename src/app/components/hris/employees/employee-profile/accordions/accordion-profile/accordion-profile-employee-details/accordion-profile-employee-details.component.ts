@@ -333,8 +333,8 @@ export class AccordionProfileEmployeeDetailsComponent {
     }
     this.getEmployeeFieldCodes();
     this.initializeForm();
+    
     if (!this.authAccessService.isEmployee()) {
-
       var data = this.sharedAccordionFunctionality.selectedEmployee;
       this.employeeProfile.employeeDetails = data;
       this.sharedAccordionFunctionality.hasDisability = data.disability;
