@@ -221,7 +221,6 @@ export class AccordionProfileAddressDetailsComponent {
 
   editAddressDetails() {
     this.editAddress = true;
-
     this.sharedAccordionFunctionality.addressDetailsForm.enable();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", false)
   }
