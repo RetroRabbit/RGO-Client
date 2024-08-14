@@ -77,7 +77,6 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.sharedAccordionFunctionality.checkEmployeeFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", true)
-
   }
 
   initializeEmployeeProfileDto() {
@@ -118,30 +117,6 @@ export class AccordionProfileEmployeeDetailsComponent {
       this.sharedAccordionFunctionality.employeeProfileDto!.payRate = this.employeeProfile!.employeeDetails.payRate,
       this.sharedAccordionFunctionality.employeeProfileDto!.clientAllocated = this.usingProfile ? this.employeeProfile!.employeeDetails.clientAllocated : this.employeeProfile!.simpleEmployee.clientAllocatedId,
       this.sharedAccordionFunctionality.employeeProfileDto!.teamLead = this.usingProfile ? this.employeeProfile!.employeeDetails.teamLead : this.employeeProfile!.simpleEmployee.teamLeadId,
-      this.sharedAccordionFunctionality.employeeProfileDto!.physicalAddress = {
-        id: this.employeeProfile!.employeeDetails.physicalAddress?.id!,
-        unitNumber: this.employeeProfile!.employeeDetails.physicalAddress?.unitNumber!,
-        complexName: this.employeeProfile!.employeeDetails.physicalAddress?.complexName!,
-        streetName: this.employeeProfile!.employeeDetails.physicalAddress?.streetName!,
-        streetNumber: this.employeeProfile!.employeeDetails.physicalAddress?.streetNumber!,
-        suburbOrDistrict: this.employeeProfile!.employeeDetails.physicalAddress?.suburbOrDistrict!,
-        city: this.employeeProfile!.employeeDetails.physicalAddress?.city!,
-        country: this.employeeProfile!.employeeDetails.physicalAddress?.country!,
-        province: this.employeeProfile!.employeeDetails.physicalAddress?.province!,
-        postalCode: this.employeeProfile!.employeeDetails.physicalAddress?.postalCode!,
-      },
-      this.sharedAccordionFunctionality.employeeProfileDto!.postalAddress = {
-        id: this.employeeProfile!.employeeDetails.postalAddress?.id!,
-        unitNumber: this.employeeProfile!.employeeDetails.postalAddress?.unitNumber!,
-        complexName: this.employeeProfile!.employeeDetails.postalAddress?.complexName!,
-        streetName: this.employeeProfile!.employeeDetails.postalAddress?.streetName!,
-        streetNumber: this.employeeProfile!.employeeDetails.postalAddress?.streetNumber!,
-        suburbOrDistrict: this.employeeProfile!.employeeDetails.postalAddress?.suburbOrDistrict!,
-        city: this.employeeProfile!.employeeDetails.postalAddress?.city!,
-        country: this.employeeProfile!.employeeDetails.postalAddress?.country!,
-        province: this.employeeProfile!.employeeDetails.postalAddress?.province!,
-        postalCode: this.employeeProfile!.employeeDetails.postalAddress?.postalCode!,
-      },
       this.sharedAccordionFunctionality.employeeProfileDto!.houseNo = this.employeeProfile?.employeeDetails.houseNo,
       this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactName = this.employeeProfile?.employeeDetails.emergencyContactName,
       this.sharedAccordionFunctionality.employeeProfileDto!.emergencyContactNo = this.employeeProfile?.employeeDetails.emergencyContactNo
@@ -358,12 +333,10 @@ export class AccordionProfileEmployeeDetailsComponent {
     }
     this.getEmployeeFieldCodes();
     this.initializeForm();
+    
     if (!this.authAccessService.isEmployee()) {
-      
       var data = this.sharedAccordionFunctionality.selectedEmployee;
       this.employeeProfile.employeeDetails = data;
-      this.sharedAccordionFunctionality.employeePhysicalAddress = data.physicalAddress!;
-      this.sharedAccordionFunctionality.employeePostalAddress = data.postalAddress!;
       this.sharedAccordionFunctionality.hasDisability = data.disability;
       this.sharedAccordionFunctionality.hasDisability = this.employeeProfile!.employeeDetails.disability;
 
@@ -379,9 +352,9 @@ export class AccordionProfileEmployeeDetailsComponent {
   getAllEmployees() {
     const data = this.sharedAccordionFunctionality.employees;
     const clientData = this.sharedAccordionFunctionality.clients;
-    this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
-    this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
-    this.sharedAccordionFunctionality.employeeClient = clientData.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
+    this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
+    this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
+    this.sharedAccordionFunctionality.employeeClient = clientData.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
   }
 
   getEmployeeClient(clientId: string) {
@@ -390,7 +363,7 @@ export class AccordionProfileEmployeeDetailsComponent {
 
   getEmployeeFieldCodes() {
     var data = this.sharedAccordionFunctionality.fieldCodes;
-    this.sharedAccordionFunctionality.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[ 0 ].id);
+    this.sharedAccordionFunctionality.customFields = data.filter((data: CustomField) => data.category === this.sharedAccordionFunctionality.category[0].id);
   }
 
   setHasDisability(event: any) {
