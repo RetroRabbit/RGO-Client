@@ -48,7 +48,6 @@ export class EmployeeProfileComponent implements OnChanges {
   employeeProfile!: EmployeeProfile;
   simpleEmployee!: SimpleEmployee;
   employeePhysicalAddress !: EmployeeAddress;
-  employeePostalAddress !: EmployeeAddress;
   terminationData !: EmployeeTermination
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
@@ -173,10 +172,10 @@ export class EmployeeProfileComponent implements OnChanges {
       city: '',
       country: '',
       province: '',
-      postalCode: ''
+      postalCode: '',
+      employeeId: this.employeeId
     };
     this.employeePhysicalAddress = { ...defaultEmployeeAddress };
-    this.employeePostalAddress = { ...defaultEmployeeAddress };
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -347,9 +346,7 @@ export class EmployeeProfileComponent implements OnChanges {
     {
       this.setProfiles(data);
       this.filterClients(data.clientAllocated as number);
-      this.employeeProfile.physicalAddress = data?.physicalAddress || this.employeePhysicalAddress;
-      this.employeeProfile.postalAddress = data?.postalAddress || this.employeePostalAddress;
-      this.checkAddressMatch(data);
+      this.sharedAccordionFunctionality.employeePhysicalAddress = data?.physicalAddress || this.employeePhysicalAddress;
     }
   }
 
@@ -393,12 +390,8 @@ export class EmployeeProfileComponent implements OnChanges {
 
   get basedInString(): string {
     let basedIn = '';
-    if (this.employeeProfile?.physicalAddress &&
-        this.employeeProfile.physicalAddress.suburbOrDistrict &&
-        this.employeeProfile.physicalAddress.suburbOrDistrict.length > 2 &&
-        this.employeeProfile.physicalAddress.city
-    ) {
-        basedIn = `Based in ${this.employeeProfile.physicalAddress.city}`;
+    if (this.sharedAccordionFunctionality.employeePhysicalAddress !== undefined && this.sharedAccordionFunctionality.employeePhysicalAddress.suburbOrDistrict && this.sharedAccordionFunctionality.employeePhysicalAddress.suburbOrDistrict.length > 2) {
+      basedIn = `Based in ${this.sharedAccordionFunctionality.employeePhysicalAddress.city}`;
     }
     return basedIn;
   }
@@ -431,8 +424,7 @@ export class EmployeeProfileComponent implements OnChanges {
       teamLeadName: employee.teamLeadName,
       peopleChampion: employee.peopleChampionName,
       peopleChampionId: employee.peopleChampionId,
-      physicalAddress: this.employeeProfile.physicalAddress,
-      postalAddress: this.employeeProfile.postalAddress,
+      physicalAddress: this.sharedAccordionFunctionality.employeePhysicalAddress,
       cellphoneNo: employee.cellphoneNo,
       countryOfBirth: employee.countryOfBirth,
       dateOfBirth: employee.dateOfBirth,
@@ -541,18 +533,6 @@ export class EmployeeProfileComponent implements OnChanges {
     }
     this.clipboard.copy(emailToCopy);
     this.snackBarService.showSnackbar("Copied to Clipboard", "snack-success");
-  }
-
-  checkAddressMatch(data: EmployeeProfile) {
-    if (data.physicalAddress === data.postalAddress === null){
-      return
-    }
-    var dataCopy: any = data;
-    const stringifiedphysicalAddress = JSON.stringify(dataCopy.physicalAddress);
-    const stringifiedpostalAddress = JSON.stringify(dataCopy.postalAddress);
-    if (stringifiedphysicalAddress === stringifiedpostalAddress) {
-      this.sharedAccordionFunctionality.physicalEqualPostal = true;
-    }
   }
 
   refreshEmployeeProfile() {
