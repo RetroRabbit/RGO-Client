@@ -34,7 +34,7 @@
     </a>
 
     <a class="sidenav-list-item" (click)="changeNav('/employees')"  [ngClass]="router.url.includes('/employees') ||  router.url.includes('/view-') ? 'active-list-item' : 'idle'"
-        *ngIf="authAccessService.isTalent() || authAccessService.isEmployee()">
+        *ngIf="authAccessService.isTalent() || authAccessService.isEmployee() || authAccessService.isAdmin() || authAccessService.isSuperAdmin()">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             class="list-icon">
             <mask id="mask0_7793_43989" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
