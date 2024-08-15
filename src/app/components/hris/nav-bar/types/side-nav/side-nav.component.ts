@@ -78,8 +78,7 @@ export class SideNavComponent {
 
       this.showConfirmDialog = true;
     } else {  
-      this.navService.isHris = false;
-      this.cookieService.set("isHris", String(this.navService.isHris));
+      this.authAccessService.setAccessToAts(true);
       this.router.navigate([route]);
     }
   }
@@ -91,8 +90,7 @@ export class SideNavComponent {
 
       this.showConfirmDialog = true;
     } else {
-      this.navService.isHris = true;
-      this.cookieService.set("isHris", String(this.navService.isHris));
+      this.authAccessService.setAccessToAts(false);
       this.router.navigate([route]);
     }
   }

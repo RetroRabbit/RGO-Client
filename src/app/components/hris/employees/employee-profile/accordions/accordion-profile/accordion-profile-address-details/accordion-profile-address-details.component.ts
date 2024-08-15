@@ -34,7 +34,7 @@ export class AccordionProfileAddressDetailsComponent {
   selectedProvince: string = '';
   selectedPostalCountry: string = '';
   selectedPostalProvince: string = '';
-  employeeId = this.route.snapshot.params['id'];
+  employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
   country: any;
   province: any;
   city: any;
@@ -149,7 +149,6 @@ export class AccordionProfileAddressDetailsComponent {
             next: () => {
               this.employeeProfile!.employeeDetails.physicalAddress = physicalAddressDto;
               this.snackBarService.showSnackbar("Updated", "snack-success");
-              this.navService.refreshEmployee();
               this.sharedAccordionFunctionality.addressDetailsForm.disable();
               this.sharedAccordionFunctionality.checkAddressFormProgress();
               this.sharedAccordionFunctionality.totalProfileProgress();
@@ -362,7 +361,7 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   initializeEmployeeProfileDto() {
-    const currentEmployeeId = this.employeeId != undefined ? this.employeeId : this.navService.employeeProfile.id
+    const currentEmployeeId = this.employeeId != undefined ? this.employeeId : this.authAccessService.getUserId()
     this.sharedAccordionFunctionality.employeeProfileDto!.id = currentEmployeeId;
     this.sharedAccordionFunctionality.employeeProfileDto!.employeeNumber = this.employeeProfile!.employeeDetails.employeeNumber;
     this.sharedAccordionFunctionality.employeeProfileDto!.taxNumber = this.employeeProfile!.employeeDetails.taxNumber,

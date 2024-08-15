@@ -2,7 +2,6 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
@@ -39,7 +38,6 @@ export class AccordionProfileAdditionalComponent {
   additionalFormProgress: number = 0;
   fieldCodeStatus: number = -1;
   employeeId: number | undefined;
-  loggedInProfile!: EmployeeProfile | SimpleEmployee;
 
   constructor(
     private store: Store<AppState>,
@@ -56,8 +54,7 @@ export class AccordionProfileAdditionalComponent {
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile && this.employeeProfile.simpleEmployee == undefined;
-    this.loggedInProfile = this.navService.getEmployeeProfile();
-    this.employeeId = this.route.snapshot.params['id'];
+    this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
     this.loadEmployeeData();
     this.sharedAccordionFunctionality.checkAdditionalFormProgress();
   }
@@ -139,7 +136,7 @@ export class AccordionProfileAdditionalComponent {
       const found = this.sharedAccordionFunctionality.employeeData.find(data => field.id === data.fieldCodeId);
       const employeeDataDto = {
         id: found ? found.id : 0,
-        employeeId: this.employeeId ?? this.loggedInProfile.id!,
+        employeeId: this.employeeId,
         fieldcodeId: field.id,
         value: String(this.sharedAccordionFunctionality.additionalInfoForm.get(formatFound)?.value || '')
       };

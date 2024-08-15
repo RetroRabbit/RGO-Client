@@ -33,7 +33,7 @@ export class AccessPropertiesService {
     return this.httpClient.get<any>(`${this.baseUrl}/seed-properties`);
   }
 
-  FetchUserId(employeeEmail: string): Observable<number> {
+  FetchUserIdByEmail(employeeEmail: string): Observable<number> {
     return this.httpClient.get<number>(`${this.baseUrl}/user-id?email=${encodeURIComponent(employeeEmail ?? "")}`)
   }
 }

@@ -9,7 +9,8 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root',
 })
 export class AuthAccessService {
-  photo : string | undefined;
+  photo : string = '';
+  ats: boolean = false;
 
   public constructor(
     private store: Store<AppState>,
@@ -28,8 +29,16 @@ export class AuthAccessService {
     return email;
   }
 
-  getAuthTokenProfilePicture(): string | undefined {
+  getAuthTokenProfilePicture(): string {
     return this.authService.photo;
+  }
+
+  getNameFromToken(): string | undefined{ 
+    return this.authService.name;
+  }
+
+  getSurnameFromToken() : string | undefined{
+    return this.authService.surname;
   }
 
   getRole() : string {
@@ -83,6 +92,14 @@ export class AuthAccessService {
   hasSignedIn(): boolean 
   {
     return this.getEmployeeEmail() != "";
+  }
+
+  setAccessToAts(hasAccessToAts: boolean){
+    this.ats = hasAccessToAts;
+  }
+
+  hasAccessToAts(){
+    return this.ats;
   }
 
   logout(){

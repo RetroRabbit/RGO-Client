@@ -7,7 +7,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 
@@ -29,7 +29,7 @@ export class AccordionAdministrativeDocumentsComponent {
   documentsFileName: string = "";
   base64String: string = "";
   uploadButtonIndex: number = 0;
-  employeeId = this.route.snapshot.params['id'];
+  employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
   dataSource = new MatTableDataSource<string>();
   selectedFile !: File;
   roles: string[] = [];
@@ -51,6 +51,7 @@ export class AccordionAdministrativeDocumentsComponent {
 
   ngOnInit() {
     this.roles = [this.authAccessService.getRole()];
+    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     this.getEmployeeDocuments();
     this.sharedAccordionFunctionality.totalDocumentsProgress();
   }
@@ -134,7 +135,7 @@ export class AccordionAdministrativeDocumentsComponent {
         error: (er) => this.snackBarService.showError(er),
       });
     } else {
-      this.employeeId = this.navService.employeeProfile.id;
+      this.employeeId = this.authAccessService.getUserId()
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 2).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.administrativeDocuments = data;

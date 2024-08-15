@@ -43,7 +43,7 @@ export class SharedAccordionFunctionality {
   filteredPeopleChamps: any = [];
   filteredFilledWorkExp: any = [];
   filteredFilledCertificate: any = [];
-
+  approvedBankingDetails: boolean = false;
   employeeData: EmployeeData[] = [];
   customFields: CustomField[] = [];
   customFieldsDocuments: CustomField[] = [];
@@ -71,7 +71,7 @@ export class SharedAccordionFunctionality {
   fileStarterKitCategories = StarterKitDocumentTypes;
   fileMyDocumentCategories = MyDocumentTypes;
   employeeQualification!: EmployeeQualifications;
-  profileImage: string = '';
+  profileImage: string = 'assets/img/default-profile-image.png';
 
   employeeQualificationDto: EmployeeQualifications = {
     id: 0,

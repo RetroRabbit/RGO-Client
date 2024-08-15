@@ -65,6 +65,7 @@ export class AccordionCertificatesComponent {
 
   ngOnInit(): void {
     this.getEmployeeCertificate();
+    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
   }
 
   getEmployeeCertificate() {

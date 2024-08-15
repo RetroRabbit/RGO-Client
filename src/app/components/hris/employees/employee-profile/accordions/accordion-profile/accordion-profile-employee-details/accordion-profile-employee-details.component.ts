@@ -23,7 +23,7 @@ export class AccordionProfileEmployeeDetailsComponent {
 
   screenWidth = window.innerWidth;
   existingIdNumber: boolean = false;
-  employeeId = this.route.snapshot.params['id'];
+  employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
   editEmployee: boolean = false;
 
   @HostListener('window:resize', ['$event'])
@@ -81,7 +81,7 @@ export class AccordionProfileEmployeeDetailsComponent {
   }
 
   initializeEmployeeProfileDto() {
-    const currentEmployeeId = this.employeeId != undefined ? this.employeeId : this.navService.employeeProfile.id
+    const currentEmployeeId = this.employeeId
     this.sharedAccordionFunctionality.employeeProfileDto!.id = currentEmployeeId;
     this.sharedAccordionFunctionality.employeeProfileDto!.employeeNumber = this.employeeProfile!.employeeDetails.employeeNumber;
     this.sharedAccordionFunctionality.employeeProfileDto!.taxNumber = this.employeeProfile!.employeeDetails.taxNumber,
@@ -238,7 +238,6 @@ export class AccordionProfileEmployeeDetailsComponent {
                 this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.sharedAccordionFunctionality.employeeProfileDto?.peopleChampion)[0];
                 this.editEmployee = false;
                 this.sharedAccordionFunctionality.employeeDetailsForm.disable();
-                this.navService.refreshEmployee();
               },
               error: (er) => this.snackBarService.showError(er),
             });

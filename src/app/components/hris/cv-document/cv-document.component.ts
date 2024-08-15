@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import jsPDF from 'jspdf';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
@@ -21,12 +21,11 @@ import { SharedAccordionFunctionality } from '../employees/employee-profile/shar
 
 export class CvDocumentComponent {
 
-  employeeId = this.route.snapshot.params['id'];
+  employeeId: any;
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
   employeeWorkExp: WorkExperience[] = [];
   employeeCertificate: EmployeeCertificates[] = [];
-  loggedInProfile!: EmployeeData;
   skills: string[] = [];
   filteredSkills: string[] = [];
   experienceData: EmployeeData[] = [];
@@ -56,8 +55,7 @@ export class CvDocumentComponent {
   ) { }
 
   ngOnInit() {
-    this.employeeId = this.route.snapshot.params['id'];
-    this.loggedInProfile = this.navService.getEmployeeProfile();
+    this.employeeId = this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
 
     if (this.employeeId == undefined) {
       this.employeeId = this.authAccessService.getUserId();

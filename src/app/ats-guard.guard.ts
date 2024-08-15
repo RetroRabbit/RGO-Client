@@ -1,29 +1,16 @@
-import { NavService } from './services/shared-services/nav-service/nav.service';
-import { Injectable } from '@angular/core';
-import { AuthService } from './services/shared-services/auth-access/auth.service';
-import { CookieService } from 'ngx-cookie-service';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { CanActivateFn } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root'
-})
+export const AtsPageGuard: CanActivateFn = (route, state) => {
+  const authAccessService = inject(AuthAccessService);
+  const router = inject(Router);
 
-export class AtsPageGuard {
-  constructor(private navService: NavService,
-    private authService: AuthService,
-    private cookieService: CookieService,
-    private authAccessService: AuthAccessService
-  ) { }
-
-  canActivate(): any {
-    if (this.navService.isHris === false) {
-      return true;
-    }
-
-    if (this.navService.isHris == undefined) {
-        this.navService.isHris = Boolean(JSON.parse(this.cookieService.get('isHris')));
-        return true;
-    }
-    this.authService.logout()
+  if (authAccessService.hasAccessToAts()) {
+    return true;
+  } else {
+    router.navigate(['/no-access']);
+    return false;
   }
-}
+};
