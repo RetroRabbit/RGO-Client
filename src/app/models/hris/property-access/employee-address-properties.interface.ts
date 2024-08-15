@@ -1,5 +1,6 @@
 export interface EmployeeAddressPermissions {
     id: boolean;
+    employeeId: boolean;
     unitNumber: boolean;
     complexName: boolean;
     streetName: boolean;

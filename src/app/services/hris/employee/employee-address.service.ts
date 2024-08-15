@@ -9,11 +9,11 @@ import { EmployeeAddress } from 'src/app/models/hris/employee-address.interface'
 })
 export class EmployeeAddressService {
 
- baseUrl: string;
-    
-    constructor(private httpClient: HttpClient) { 
-        this.baseUrl =`${environment.HttpsBaseURL}/employee-address`
-    }
+  baseUrl: string;
+
+  constructor(private httpClient: HttpClient) {
+    this.baseUrl = `${environment.HttpsBaseURL}/employee-address`
+  }
 
   getall(): Observable<EmployeeAddress[]> {
     return this.httpClient.get<EmployeeAddress[]>(`${this.baseUrl}`);
@@ -29,5 +29,9 @@ export class EmployeeAddressService {
 
   delete(addressId: EmployeeAddress): Observable<EmployeeAddress> {
     return this.httpClient.delete<EmployeeAddress>(`${this.baseUrl}/${addressId}`);
+  }
+
+  GetEmployeeAddressById(employeeId: number | undefined): Observable<EmployeeAddress> {
+    return this.httpClient.get<EmployeeAddress>(`${this.baseUrl}/Employee-Address-By-Id?employeeId=${employeeId}`);
   }
 }

@@ -50,7 +50,7 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>City/Town</mat-label>
                     <div class="align-text-icon">
-                    <mat-select [(value)]="city" formControlName="physicalCity" hideSingleSelectionIndicator="true">
+                    <mat-select formControlName="physicalCity" hideSingleSelectionIndicator="true">
                       <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
                     </mat-select>
                     <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalCity')?.value === null"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
@@ -67,7 +67,6 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Unit Number</mat-label>
                     <input matInput formControlName="physicalUnitNumber">
-                    <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalUnitNumber')?.value === null"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                     <mat-error
                       *ngIf="sharedAccordionFunctionality.addressDetailsForm.controls['physicalUnitNumber'].hasError('pattern')">
                       Unit number should only contain numbers
@@ -78,7 +77,6 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Complex Name</mat-label>
                     <input matInput formControlName="physicalComplexName">
-                    <mat-icon *ngIf="sharedAccordionFunctionality.addressDetailsForm.get('physicalComplexName')?.value === null"  [ngStyle]="{color: editAddress  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
                   </mat-form-field>
                 </div>
                 <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.streetNumber"
@@ -133,89 +131,6 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-12">
-                  <mat-checkbox [checked]="sharedAccordionFunctionality.physicalEqualPostal" inputId="checkbox" value="Postal address is same as physical address"
-                    (change)="toggleEqualFields()" [disabled]="!editAddress">
-                  </mat-checkbox>
-                  <label class="ms-1" for="checkbox"
-                    [ngClass]="editAddress === false ? 'disabled-text-address' : ''">Is
-                    the postal address the same as the physical address?
-                  </label>
-                </div>
-              </div>
-              <div *ngIf="!sharedAccordionFunctionality.physicalEqualPostal" class="row mt-4">
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.country" class="col-12 col-md-6">
-                  <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Country</mat-label>
-                    <mat-select formControlName="postalCountry" (selectionChange)="onPostalCountryChange($event.value)"
-                      hideSingleSelectionIndicator="true">
-                      <mat-option *ngFor="let country of postalCountries" [value]="country">{{ country }}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.province" class="col-12 col-md-6">
-                  <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Province</mat-label>
-                    <mat-select formControlName="postalProvince" (selectionChange)="loadPostalCities($event.value)"
-                      hideSingleSelectionIndicator="true">
-                      <mat-option *ngFor="let province of postalProvinces" [value]="province">{{ province
-                        }}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.city"
-                  class="col-12 col-md-6">
-                  <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>City/Town</mat-label>
-                    <mat-select formControlName="postalCity" hideSingleSelectionIndicator="true">
-                      <mat-option *ngFor="let city of postalCities" [value]="city">{{ city }}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.suburbOrDistrict" class="col-12 col-md-6">
-                  <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Suburb/District</mat-label>
-                    <input matInput formControlName="postalSuburb">
-                  </mat-form-field>
-                </div>
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.unitNumber" class="col-12 col-md-6">
-                  <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Unit Number</mat-label>
-                    <input matInput formControlName="postalUnitNumber">
-                  </mat-form-field>
-                </div>
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.complexName" class="col-12 col-md-6">
-                  <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Complex Name</mat-label>
-                    <input matInput formControlName="postalComplexName">
-                  </mat-form-field>
-                </div>
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.streetNumber"
-                  class="col-12 col-md-6">
-                  <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Street Number</mat-label>
-                    <input matInput formControlName="postalStreetNumber">
-                  </mat-form-field>
-                </div>
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.streetName" class="col-12 col-md-6">
-                  <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Street Name</mat-label>
-                    <input matInput formControlName="postalStreetName">
-
-                  </mat-form-field>
-                </div>
-                <div *ngIf="sharedPropertyAccessService.employeeAddressPermissions.postalCode" class="col-12 col-md-6">
-                  <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Postal Code</mat-label>
-                    <input matInput formControlName="postalPostalCode">
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
-                <button *ngIf="!editAddress" mat-button id="edit-button-width"
-                  (click)="editAddressDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
-                  <mat-icon>edit</mat-icon>Edit Details
-                </button>
               </div>
             </div>
             <div class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
