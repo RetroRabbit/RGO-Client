@@ -7,6 +7,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from '../../employee-profile/shared-accordion-functionality';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 
 @Component({
   selector: 'app-view-banking-approval',
@@ -20,7 +21,7 @@ export class ViewBankingApprovalComponent {
   selectedReason: string = "";
   isLoading: boolean = true;
   employeeBanking: any;
-  bankingId = this.route.snapshot.params['id'];
+  bankingId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
   showConfirmDialog: boolean = false;
   dialogTypeData!: Dialog;
   employee: any;
@@ -50,17 +51,47 @@ export class ViewBankingApprovalComponent {
   getBankingDetails(id: number): void {
     if (id && !isNaN(+id)) {
       this.employeeBankingService.getBankingDetails(id).subscribe({
-        next: data => {
+        next: (data: any) => {
           this.employeeBanking = data;
-          this.employee = this.sharedAccordionFunctionality.selectedEmployee;
+          this.employee = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === data[0].employeeId);
           this.isLoading = false;
         }
       });
     }
   }
 
-  getEmployeeForBanking(id: number): void {
-    this.employee = this.sharedAccordionFunctionality.selectedEmployee;
+  getName(){
+    return this.employee[0].name;
+  }
+
+  getSurname(){
+    return this.employee[0].surname;
+  }
+  getProfileImage(){
+    return this.employee[0].photo ?? 'assets/img/default-profile-image.png' ;
+  }
+
+  getAccountNumber(){
+    return this.employeeBanking[this.employeeBanking.length - 1]?.accountNo ?? 'N/A';
+  }
+  
+  getBankName(){
+    return this.employeeBanking[this.employeeBanking.length - 1]?.bankName ?? 'N/A';
+  }
+
+  getAccountType(){
+    const accountType = this.employeeBanking[this.employeeBanking.length - 1]?.accountType;
+    return accountType === 1 ? 'Savings' : accountType === 2 ? 'Cheque' : 'Unknown'; 
+  }
+
+  getPOA(){
+    const name = this.getName() || 'Unknown';
+    const surname = this.getSurname() || 'Unknown';
+    return `${name}_${surname}_POA.pdf`;
+  }
+  
+  getBranchCode(){    
+    return this.employeeBanking[this.employeeBanking.length - 1]?.branch ?? 'N/A';
   }
 
   convertFileToBase64(index: number) {
@@ -95,9 +126,15 @@ export class ViewBankingApprovalComponent {
     let copyOfBanking = { ...this.employeeBanking[this.employeeBanking.length - 1] };
     copyOfBanking.status = status;
     if (status == 2)
+    {
+      this.sharedAccordionFunctionality.approvedBankingDetails = false;
       copyOfBanking.declineReason = `${this.selectedReason} ${this.declineReason}`;
+    }
     else
+    {      
+      this.sharedAccordionFunctionality.approvedBankingDetails = true;
       copyOfBanking.declineReason = ``;
+    }
 
     this.employeeBankingService.updatePending(copyOfBanking).subscribe({
       next: () => {

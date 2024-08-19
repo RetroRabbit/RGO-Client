@@ -11,7 +11,6 @@ import { ROLES } from 'src/app/models/hris/constants/employee-skills-software-on
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { forkJoin } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-accordion-career-work-experience',
@@ -72,6 +71,7 @@ export class AccordionCareerWorkExperienceComponent {
 
   ngOnInit(): void {
     this.getEmployeeType();
+    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     this.getWorkExperience();
   }
 

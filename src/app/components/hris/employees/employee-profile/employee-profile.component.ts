@@ -30,6 +30,8 @@ import { EmployeeTerminationService } from 'src/app/services/hris/employee/emplo
 import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.interface';
 import { Subscription } from 'rxjs';
 import { ClientService } from 'src/app/services/hris/client.service';
+import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { AccessPropertiesService } from 'src/app/services/hris/access-properties.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -46,15 +48,14 @@ export class EmployeeProfileComponent implements OnChanges {
   employeeProfile!: EmployeeProfile;
   simpleEmployee!: SimpleEmployee;
   employeePhysicalAddress !: EmployeeAddress;
-  employeePostalAddress !: EmployeeAddress;
   terminationData !: EmployeeTermination
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
   customFields: CustomField[] = [];
-
+  isMainProfile: boolean = false;
   employeeBanking !: EmployeeBanking;
 
-  employeeId = this.route.snapshot.params['id'];
+  employeeId: any;
 
   selectedAccordion: string = 'Profile Details';
   selectedItem: string = 'Profile Details';
@@ -130,7 +131,51 @@ export class EmployeeProfileComponent implements OnChanges {
     private employeeDataService: EmployeeDataService,
     public authAccessService: AuthAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-    private clipboard: Clipboard) {
+    private sharedPropertyAccessService: SharedPropertyAccessService,
+    private clipboard: Clipboard) { }
+
+  async getUserId() {
+    this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
+    if (this.employeeId === -1) {
+      this.showBackButtons = false;
+      const email = this.authAccessService.getEmployeeEmail();
+      await this.sharedPropertyAccessService.setAccessProperties(email);
+      this.employeeId = this.authAccessService.getUserId();
+    }
+  }
+
+  setDefaultTerminationStatus() {
+    const defaultTerminationData: EmployeeTermination = {
+      id: 0,
+      employeeId: this.employeeId,
+      terminationOption: 0,
+      dayOfNotice: '',
+      lastDayOfEmployment: '',
+      reemploymentStatus: false,
+      equipmentStatus: false,
+      accountsStatus: false,
+      terminationDocument: '',
+      documentName: '',
+      terminationComments: ''
+    };
+    this.terminationData = { ...defaultTerminationData };
+  }
+
+  setDefaultAddress() {
+    const defaultEmployeeAddress: EmployeeAddress = {
+      id: 0,
+      unitNumber: '',
+      complexName: '',
+      streetName: '',
+      streetNumber: '',
+      suburbOrDistrict: '',
+      city: '',
+      country: '',
+      province: '',
+      postalCode: '',
+      employeeId: this.employeeId
+    };
+    this.employeePhysicalAddress = { ...defaultEmployeeAddress };
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -138,10 +183,16 @@ export class EmployeeProfileComponent implements OnChanges {
     changes['updateDocument'].currentValue
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.getUserId();
+    this.checkIfMainProfile();
+    this.setDefaultTerminationStatus();
+    this.setDefaultAddress();
+    
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
       this.isAdminUser = true;
     }
+
     this.sharedAccordionFunctionality.updateProfile.subscribe({
       next: (data: number) => {
         this.profileFormProgress = data;
@@ -163,13 +214,7 @@ export class EmployeeProfileComponent implements OnChanges {
       }
     });
 
-    this.employeeId = this.route.snapshot.params['id'];
     this.getClients();
-
-    if (this.employeeId == undefined) {
-      this.showBackButtons = false;
-      this.employeeId = this.authAccessService.getUserId();
-    }
 
     if (this.authAccessService.isSupport()) {
       this.usingSimpleProfile = false;
@@ -180,6 +225,55 @@ export class EmployeeProfileComponent implements OnChanges {
 
     this.refreshEmployeeProfile();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+  }
+
+  getTeamLead() {
+    if (this.simpleEmployee?.teamLeadName) {
+      return this.simpleEmployee.teamLeadName;
+    }
+    if (this.sharedAccordionFunctionality.employeeTeamLead?.name || this.sharedAccordionFunctionality.employeeTeamLead?.surname) {
+      return `${this.sharedAccordionFunctionality.employeeTeamLead?.name ?? ''} ${this.sharedAccordionFunctionality.employeeTeamLead?.surname ?? ''}`.trim();
+    }
+    return 'Not assigned';
+  }
+  
+  getPeopleChampion() {
+    if (this.simpleEmployee?.peopleChampionName) {
+      return this.simpleEmployee.peopleChampionName;
+    }
+    if (this.sharedAccordionFunctionality.employeePeopleChampion?.name || this.sharedAccordionFunctionality.employeePeopleChampion?.surname) {
+      return `${this.sharedAccordionFunctionality.employeePeopleChampion?.name ?? ''} ${this.sharedAccordionFunctionality.employeePeopleChampion?.surname ?? ''}`.trim();
+    }
+    return 'Not assigned';
+  }
+  
+  getClientAllocated() {
+    if (this.simpleEmployee?.clientAllocatedName) {
+      return this.simpleEmployee.clientAllocatedName;
+    }
+    if (this.sharedAccordionFunctionality.employeeClient?.name) {
+      return this.sharedAccordionFunctionality.employeeClient.name;
+    }
+    return 'None';
+  }
+
+  getStartDate(): string {
+    if (this.selectedEmployee?.engagementDate) {
+      return new Date(this.selectedEmployee.engagementDate).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+    }
+    return 'N/A';
+  }
+
+  checkIfMainProfile() {
+    const url = this.router.url;
+    const userId = this.authAccessService.getUserId();
+    const mainProfileUrl = '/profile';
+    const profileUrlWithId = `/profile/${userId}`;
+    this.isMainProfile = url === mainProfileUrl || url === profileUrlWithId;
   }
 
   openTerminationForm() {
@@ -197,7 +291,7 @@ export class EmployeeProfileComponent implements OnChanges {
   getEmployeeData() {
     this.employeeDataService.getEmployeeData(this.employeeId).subscribe({
       next: data => {
-        this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];;
+        this.sharedAccordionFunctionality.employeeData = Array.isArray(data) ? data : [data];
       }
     });
   }
@@ -205,60 +299,87 @@ export class EmployeeProfileComponent implements OnChanges {
   getTerminationInfo(): void {
     this.employeeTerminationService.getTerminationDetails(this.selectedEmployee.id).subscribe({
       next: (data: EmployeeTermination) => {
-        this.terminationData = data;
+        if (data)
+          this.terminationData = data
       },
-      error: (er) => this.snackBarService.showError(er),
+      error: (er) => {},
     });
   }
 
   getProfileImage(): string {
-    if (this.employeeProfile.id == this.sharedAccordionFunctionality.selectedEmployee.id) {
-      this.sharedAccordionFunctionality.profileImage = this.employeeProfile.photo || this.authAccessService.getAuthTokenProfilePicture() || '../../../../../../assets/img/default-profile-image.png';
+    if (this.isMainProfile) {
+      const employeePhoto = this.employeeProfile.photo;
+      this.sharedAccordionFunctionality.profileImage = employeePhoto 
+        ?? this.authAccessService.getAuthTokenProfilePicture() 
+        ?? 'assets/img/default-profile-image.png';
+        return this.sharedAccordionFunctionality.profileImage;
+    } else {
+      return this.employeeProfile.photo ?? 'assets/img/default-profile-image.png';
     }
-    else {
-      this.sharedAccordionFunctionality.profileImage = this.employeeProfile.photo || '../../../../../../assets/img/default-profile-image.png';
-    }
-    return this.sharedAccordionFunctionality.profileImage;
   }
 
   getEmployeeProfile() {
+    var email = this.authAccessService.getEmployeeEmail()
     const fetchProfile = this.usingSimpleProfile
-      ? this.employeeProfileService.getSimpleEmployee(this.authAccessService.getEmployeeEmail())
+      ? this.employeeProfileService.getSimpleEmployee(email)
       : this.employeeProfileService.getEmployeeById(this.employeeId);
 
     (fetchProfile as any).subscribe({
       next: (data: any) => {
-        if (this.usingSimpleProfile) {
-          this.simpleEmployee = data;
-          this.employeeProfile = data;
-          this.employeeId = data.id;
-          this.populateEmployeeAccordion(this.simpleEmployee);
-        }
-        else {
-          this.selectedEmployee = data;
-          this.employeeProfile = data;
-          this.employeePhysicalAddress = data.physicalAddress!;
-          this.employeePostalAddress = data.postalAddress!;
-          this.checkAddressMatch(data);
-        }
-        this.sharedAccordionFunctionality.selectedEmployee = data;
-        this.getEmployeeData();
-        this.filterClients(this.employeeProfile.clientAllocated as number);
-        this.isLoading = false;
+        this.handleProfileData(data);
       },
       complete: () => {
-        if (!this.employeeProfile.active) {
-          this.getTerminationInfo();
-        }
-        if (!this.usingSimpleProfile) {
-          this.getAllEmployees();
-        }
-        this.changeDetectorRef.detectChanges();
+        this.handleProfileComplete();
       },
-      error: (er: any) => this.snackBarService.showError(er),
-    })
+      error: (er: any) => {}
+    });
   }
 
+  private handleProfileData(data: any) {
+    if (this.usingSimpleProfile) {
+      this.simpleEmployee = { ...data };
+      this.setProfiles(data);
+      this.filterClients(data.clientAllocatedId as number);
+      this.populateEmployeeAccordion(this.simpleEmployee);
+    } 
+    else 
+    {
+      this.setProfiles(data);
+      this.filterClients(data.clientAllocated as number);
+      this.sharedAccordionFunctionality.employeePhysicalAddress = data?.physicalAddress || this.employeePhysicalAddress;
+    }
+  }
+
+  setProfiles(data: any){
+    this.employeeProfile = { ...data };
+    this.selectedEmployee = { ...data };
+    this.sharedAccordionFunctionality.selectedEmployee = { ...data };
+    this.getEmployeeData();
+    this.isLoading = false;
+  }
+
+  private isValidDate(date: any): boolean {
+    if (date === null || date === undefined || date === '') {
+      return false;
+    }
+    const parsedDate = new Date(date);
+    const today = new Date();
+    return parsedDate < today;
+  }
+  
+  private handleProfileComplete() {
+    this.employeeProfile.active = true;
+
+    if (this.isValidDate(this.employeeProfile.terminationDate)) {
+      this.getTerminationInfo();
+      this.employeeProfile.active = false;
+    }
+    
+    if (!this.usingSimpleProfile) {
+      this.getAllEmployees();
+    }
+    this.changeDetectorRef.detectChanges();
+  }
 
   getAllEmployees() {
     this.employees = this.sharedAccordionFunctionality.employees;
@@ -297,11 +418,13 @@ export class EmployeeProfileComponent implements OnChanges {
 
   populateEmployeeAccordion(employee: SimpleEmployee) {
     Object.assign(this.employeeProfile, {
-      clientAllocated: employee.clientAllocatedId,
+      clientAllocated: employee.clientAllocatedName,
+      clientAllocatedId: employee.clientAllocatedId,
       teamLead: employee.teamLeadId,
-      peopleChampion: employee.peopleChampionId,
-      physicalAddress: employee.physicalAddress,
-      postalAddress: employee.postalAddress,
+      teamLeadName: employee.teamLeadName,
+      peopleChampion: employee.peopleChampionName,
+      peopleChampionId: employee.peopleChampionId,
+      physicalAddress: this.sharedAccordionFunctionality.employeePhysicalAddress,
       cellphoneNo: employee.cellphoneNo,
       countryOfBirth: employee.countryOfBirth,
       dateOfBirth: employee.dateOfBirth,
@@ -333,7 +456,8 @@ export class EmployeeProfileComponent implements OnChanges {
       salary: employee.salary,
       salaryDays: employee.salaryDays,
       surname: employee.surname,
-      taxNumber: employee.taxNumber
+      taxNumber: employee.taxNumber,
+      terminationDate: employee.terminationDate,
     });
   }
 
@@ -392,7 +516,6 @@ export class EmployeeProfileComponent implements OnChanges {
       next: () => {
         this.getEmployeeProfile();
         this.snackBarService.showSnackbar("Updated", "snack-success");
-        this.navService.refreshEmployee();
       },
       error: (er) => this.snackBarService.showError(er),
     });
@@ -410,15 +533,6 @@ export class EmployeeProfileComponent implements OnChanges {
     }
     this.clipboard.copy(emailToCopy);
     this.snackBarService.showSnackbar("Copied to Clipboard", "snack-success");
-  }
-
-  checkAddressMatch(data: EmployeeProfile) {
-    var dataCopy: any = data;
-    const stringifiedphysicalAddress = JSON.stringify(dataCopy.physicalAddress);
-    const stringifiedpostalAddress = JSON.stringify(dataCopy.postalAddress);
-    if (stringifiedphysicalAddress === stringifiedpostalAddress) {
-      this.sharedAccordionFunctionality.physicalEqualPostal = true;
-    }
   }
 
   refreshEmployeeProfile() {

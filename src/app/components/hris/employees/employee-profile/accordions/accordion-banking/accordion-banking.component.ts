@@ -8,6 +8,7 @@ import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
+import { SharedAccordionFunctionality } from '../../shared-accordion-functionality';
 
 @Component({
   selector: 'app-accordion-banking',
@@ -55,6 +56,7 @@ export class AccordionBankingComponent {
   });
 
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private fb: FormBuilder,
     private employeeBankingService: EmployeeBankingService,
     private snackBarService: SnackbarService,
@@ -62,6 +64,7 @@ export class AccordionBankingComponent {
   }
 
   ngOnInit(): void {
+    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     this.getEmployeeBankingData();
     this.banks = this.banks.slice().sort((a, b) => a.value.localeCompare(b.value));
   }
@@ -164,7 +167,7 @@ export class AccordionBankingComponent {
       const employeeBankingFormValue = this.employeeBankingsForm.value;
       this.employeeBankingDto = {
         id: this.bankingId,
-        employeeId: this.employeeProfile?.id,
+        employeeId: this.sharedAccordionFunctionality.selectedEmployee.id,
         bankName: employeeBankingFormValue.bankName,
         branch: `${employeeBankingFormValue.branch}`,
         accountNo: `${employeeBankingFormValue.accountNo}`,
@@ -212,8 +215,6 @@ export class AccordionBankingComponent {
     if (this.employeeBanking.length > 0) {
       this.bankInformationProgress = Math.floor(this.bankingFormProgress);
       this.updateBanking.emit({ progress: this.bankInformationProgress, status: this.employeeBanking[this.employeeBanking.length - 1].status });
-    } else {
-      console.error('Employee banking data is empty.');
     }
   }
 

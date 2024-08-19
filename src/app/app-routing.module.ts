@@ -7,7 +7,6 @@ import { NewEmployeeComponent } from './components/hris/employees/new-employee/n
 import { SaveCustomFieldComponent } from './components/hris/custom-fields/save-custom-field/save-custom-field.component';
 import { RouterModule, Routes } from '@angular/router';
 import { EmployeeDetailsComponent } from './components/hris/employees/employee-details/employee-details.component';
-import { ViewEmployeeComponent } from './components/hris/employees/view-employee/view-employee.component';
 import { EmployeeProfileComponent } from './components/hris/employees/employee-profile/employee-profile.component';
 import { SystemSettingsComponent } from './components/hris/system-settings/system-settings.component';
 import { AdminDashboardComponent } from './components/hris/admin-dashboard/admin-dashboard.component';
@@ -23,7 +22,7 @@ import { EmployeeTerminationComponent } from './components/hris/employees/employ
 import { CvDocumentComponent } from './components/hris/cv-document/cv-document.component';
 
 const routes: Routes = [
-  { path: '', component: SignInComponent },
+  { path: 'login', component: SignInComponent },
   { path: 'dashboard', component: AdminDashboardComponent, canActivate: [HrisPageGuard] },
   { path: 'employees', component: EmployeeOptionsComponent, canActivate: [HrisPageGuard] },
   { path: 'profile', component: EmployeeProfileComponent, canActivate: [HrisPageGuard] },
@@ -37,11 +36,12 @@ const routes: Routes = [
   { path: 'employee-details', component: EmployeeDetailsComponent, canActivate: [HrisPageGuard] },
   { path: 'ats-dashboard', component: AtsDashboardComponent, canActivate: [AtsPageGuard] },
   { path: 'create-candidate', component: NewCandidateComponent, canActivate: [AtsPageGuard] },
-  { path: 'view-banking-approval/:id', component: ViewBankingApprovalComponent },
-  { path: 'career-summary', component: CareerSummaryQualificationsComponent },
-  { path: 'view-starter-kit-approval/:id', component: ViewStarterKitApprovalComponent },
-  { path: 'end-employment/:id', component: EmployeeTerminationComponent },
-  { path: 'view-cv-document/:id', component: CvDocumentComponent }
+  { path: 'view-banking-approval/:id', component: ViewBankingApprovalComponent, canActivate: [HrisPageGuard]},
+  { path: 'career-summary', component: CareerSummaryQualificationsComponent, canActivate: [HrisPageGuard] },
+  { path: 'view-starter-kit-approval/:id', component: ViewStarterKitApprovalComponent, canActivate: [HrisPageGuard] },
+  { path: 'end-employment/:id', component: EmployeeTerminationComponent, canActivate: [HrisPageGuard] },
+  { path: 'view-cv-document/:id', component: CvDocumentComponent, canActivate: [HrisPageGuard] },
+  { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
 @NgModule({

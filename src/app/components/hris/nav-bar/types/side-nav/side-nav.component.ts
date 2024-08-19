@@ -58,7 +58,7 @@ export class SideNavComponent {
   }
 
   ngOnInit() {
-    if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() ||this.authAccessService.isTalent()){
+    if(this.authAccessService.isSupport()){
       this.employeeProfileService.getTotalEmployees().subscribe({
       next: (numEmployees : number) => {
         this.totalNumberOfEmployees = numEmployees;
@@ -78,8 +78,7 @@ export class SideNavComponent {
 
       this.showConfirmDialog = true;
     } else {  
-      this.navService.isHris = false;
-      this.cookieService.set("isHris", String(this.navService.isHris));
+      this.authAccessService.setAccessToAts(true);
       this.router.navigate([route]);
     }
   }
@@ -91,8 +90,7 @@ export class SideNavComponent {
 
       this.showConfirmDialog = true;
     } else {
-      this.navService.isHris = true;
-      this.cookieService.set("isHris", String(this.navService.isHris));
+      this.authAccessService.setAccessToAts(false);
       this.router.navigate([route]);
     }
   }

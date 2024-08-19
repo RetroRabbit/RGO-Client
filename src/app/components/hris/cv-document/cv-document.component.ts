@@ -23,12 +23,11 @@ import { SystemNav } from 'src/app/services/hris/system-nav.service';
 
 export class CvDocumentComponent {
 
-  employeeId = this.route.snapshot.params['id'];
+  employeeId: any;
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
   employeeWorkExp: WorkExperience[] = [];
   employeeCertificate: EmployeeCertificates[] = [];
-  loggedInProfile!: EmployeeData;
   skills: string[] = [];
   filteredSkills: string[] = [];
   experienceData: EmployeeData[] = [];
@@ -64,9 +63,8 @@ export class CvDocumentComponent {
   ) { }
 
   ngOnInit() {
-    this.employeeId = this.route.snapshot.params['id'];
-    this.loggedInProfile = this.navService.getEmployeeProfile();
-    this.systemNavItemService.selectedMenuItem = '';
+    this.employeeId = this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
+
     if (this.employeeId == undefined) {
       this.employeeId = this.authAccessService.getUserId();
     }
