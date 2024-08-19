@@ -75,10 +75,12 @@ export class CvDocumentComponent {
     this.getCertifications();
     this.getEmployeeWorkExp();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+    this.goToProfile();
+
   }
 
   goToProfile() {
-    this.router.navigateByUrl('/profile')
+    this.router.navigateByUrl('/profile/' + this.employeeId)
   }
 
   getEmployeeInformation() {
