@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
@@ -12,6 +12,8 @@ import { WorkExperienceService } from 'src/app/services/hris/employee/employee-w
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from '../employees/employee-profile/shared-accordion-functionality';
+import { CookieService } from 'ngx-cookie-service';
+import { SystemNav } from 'src/app/services/hris/system-nav.service';
 
 @Component({
   selector: 'app-cv-document',
@@ -30,6 +32,7 @@ export class CvDocumentComponent {
   skills: string[] = [];
   filteredSkills: string[] = [];
   experienceData: EmployeeData[] = [];
+  previousPage: string = '';
   name: string | undefined = '';
   surname: string | undefined = '';
   role: string | undefined = '';
@@ -43,22 +46,27 @@ export class CvDocumentComponent {
   numberOfYears: string | undefined = '';
   pronoun: string | undefined = '';
   isLoading: boolean = true;
+  PREVIOUS_PAGE = "previousPage";
+
 
   constructor(
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    private cookieService: CookieService,
     private route: ActivatedRoute,
+    private router: Router,
     public authAccessService: AuthAccessService,
     private employeeQaulificationService: EmployeeQualificationsService,
     private employeeCertificationService: EmployeeCertificatesService,
     private employeeWorkExperienceService: WorkExperienceService,
     public navService: NavService,
+    public systemNavItemService: SystemNav,
     private employeeData: EmployeeDataService,
   ) { }
 
   ngOnInit() {
     this.employeeId = this.route.snapshot.params['id'];
     this.loggedInProfile = this.navService.getEmployeeProfile();
-
+    this.systemNavItemService.selectedMenuItem = '';
     if (this.employeeId == undefined) {
       this.employeeId = this.authAccessService.getUserId();
     }
@@ -66,6 +74,11 @@ export class CvDocumentComponent {
     this.getQualifications();
     this.getCertifications();
     this.getEmployeeWorkExp();
+    this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+  }
+
+  goToProfile() {
+    this.router.navigateByUrl('/profile')
   }
 
   getEmployeeInformation() {
