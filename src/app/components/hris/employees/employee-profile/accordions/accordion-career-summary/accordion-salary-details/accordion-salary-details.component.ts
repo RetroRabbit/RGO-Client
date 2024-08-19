@@ -51,6 +51,9 @@ export class AccordionSalaryDetailsComponent {
   ngOnInit(): void {
     this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
     this.getEmployeeDetails();
+    if (this.message == null || this.message == "") {
+      this.message = "No Information Yet";
+    }
     if (this.authAccessService.isSuperAdmin()) {
       this.isAdminUser = true;
     }
