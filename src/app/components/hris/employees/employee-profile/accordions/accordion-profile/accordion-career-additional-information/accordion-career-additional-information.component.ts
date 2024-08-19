@@ -35,7 +35,6 @@ export class AccordionCareerAdditionalInformationComponent {
 
   customFields: CustomField[] = [];
   employeeId: number | undefined;
-  loggedInProfile!: EmployeeData;
 
   constructor(
     private fb: FormBuilder,
@@ -51,8 +50,7 @@ export class AccordionCareerAdditionalInformationComponent {
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
-    this.loggedInProfile = this.navService.getEmployeeProfile();
-    this.employeeId = this.route.snapshot.params['id'];
+    this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
     this.getEmployeeFields();
   }
 
@@ -134,7 +132,7 @@ export class AccordionCareerAdditionalInformationComponent {
         const formatFound: any = fieldcode.code
         const employeeDataDto = {
           id: found.id,
-          employeeId: this.employeeId != undefined ? this.employeeId : this.loggedInProfile.id!,
+          employeeId: this.employeeId,
           fieldcodeId: found.fieldCodeId,
           value: this.sharedAccordionFunctionality.additionalCareerInfoForm.get(formatFound)?.value
         }
@@ -153,7 +151,7 @@ export class AccordionCareerAdditionalInformationComponent {
         const formatFound: any = fieldcode?.code
         const employeeDataDto = {
           id: 0,
-          employeeId: this.employeeId != undefined ? this.employeeId : this.loggedInProfile.id!,
+          employeeId: this.employeeId,
           fieldcodeId: fieldcode.id,
           value: this.sharedAccordionFunctionality.additionalCareerInfoForm.get(formatFound)?.value
         }

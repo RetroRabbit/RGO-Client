@@ -31,8 +31,8 @@ export class AccordionProfileAddressDetailsComponent {
   selectedPostalProvince: string = '';
   editAddress: boolean = false;
   employeeAddress!: EmployeeAddress;
-  currentEmployeeId: number | undefined;
-
+  currentEmployeeId: number = -1;
+  
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
@@ -54,7 +54,7 @@ export class AccordionProfileAddressDetailsComponent {
 
   ngOnInit() {
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
-    this.currentEmployeeId = this.route.snapshot.params["id"];
+    this.currentEmployeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
     this.loadPhysicalAddress();
     this.initializeForm();
     this.getEmployeeFields();
@@ -99,7 +99,7 @@ export class AccordionProfileAddressDetailsComponent {
       const addressDetailFormValue = this.sharedAccordionFunctionality.addressDetailsForm.value;
       const physicalAddressDto: EmployeeAddress = {
         id: this.employeeAddress ? this.employeeAddress.id : 0,
-        employeeId: this.currentEmployeeId != undefined ? this.currentEmployeeId : this.navService.employeeProfile.id!,
+        employeeId: this.currentEmployeeId,
         unitNumber: addressDetailFormValue['physicalUnitNumber'],
         complexName: addressDetailFormValue['physicalComplexName'],
         streetName: addressDetailFormValue['physicalStreetName'],
@@ -201,7 +201,7 @@ export class AccordionProfileAddressDetailsComponent {
 
   getEmployeeFields() {
     if (this.currentEmployeeId == undefined) {
-      this.employeeAddressService.GetEmployeeAddressById(this.navService.employeeProfile.id as number).subscribe({
+      this.employeeAddressService.GetEmployeeAddressById(this.currentEmployeeId as number).subscribe({
         next: (data) => {
           this.employeeAddress = data;
           this.initializeForm();

@@ -67,7 +67,6 @@ export class CareerSummaryQualificationsComponent {
         this.sharedAccordionFunctionality.calculateQualificationProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
-      error: (er) => this.snackBarService.showError(er),
     })
   }
 

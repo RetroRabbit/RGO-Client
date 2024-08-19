@@ -49,15 +49,16 @@ export class ConfirmDialogComponent {
     }
   }
 
-  captureResponse(event: any) {
-    if(this.dialogType.type == 'decline')
+  captureResponse(event: boolean) {
+    if(this.dialogType.type === 'decline') {
       this.declineResponse.emit({
         confirmation: event,
         declineReason: this.declineReason,
         selectedReason: this.selectedReason
       });
-    else
+    } else {
       this.confirmation.emit(event);
+    }
   }
 
   get hasDeclineReason():boolean {
