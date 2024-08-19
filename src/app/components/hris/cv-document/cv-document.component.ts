@@ -52,14 +52,13 @@ export class CvDocumentComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private cookieService: CookieService,
     private route: ActivatedRoute,
-    private router: Router,
+    public router: Router,
     public authAccessService: AuthAccessService,
     private employeeQaulificationService: EmployeeQualificationsService,
     private employeeCertificationService: EmployeeCertificatesService,
     private employeeWorkExperienceService: WorkExperienceService,
     public navService: NavService,
     public systemNavItemService: SystemNav,
-    private employeeData: EmployeeDataService,
   ) { }
 
   ngOnInit() {
@@ -78,7 +77,7 @@ export class CvDocumentComponent {
   }
 
   goToProfile() {
-    this.router.navigateByUrl('/profile/' + this.employeeId)
+    this.router.navigateByUrl('/profile/' + this.employeeId);
   }
 
   getEmployeeInformation() {
