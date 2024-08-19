@@ -105,6 +105,8 @@ export class AccordionSalaryDetailsComponent {
         next: data => {
           this.employeeSalary = data;
           this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
+          this.sharedAccordionFunctionality.calculateSalaryDetails();
+          this.sharedAccordionFunctionality.totalCareerProgress();
         },
         error: (er) => this.snackBarService.showError(er),
       })
