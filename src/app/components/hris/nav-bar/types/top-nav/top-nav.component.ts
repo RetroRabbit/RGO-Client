@@ -1,7 +1,6 @@
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '@auth0/auth0-angular';
 import { Chart } from 'chart.js';
 import { CookieService } from 'ngx-cookie-service';
 import { ChartService } from 'src/app/services/hris/charts.service';
@@ -9,6 +8,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
+import { SharedAccordionFunctionality } from '../../../employees/employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-top-nav',
@@ -43,6 +43,7 @@ export class TopNavComponent {
   }
 
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private chartService: ChartService,
     public router: Router,
     public cookieService: CookieService,
@@ -62,19 +63,26 @@ export class TopNavComponent {
 
   signIn() {
     this.roles = [this.authAccessService.getRole()];
-    this.navService.refreshEmployee();
     this.isLoading = false;
-    if (
-      this.authAccessService.isSupport()
-    ) {    
-      if (this.navService.employeeProfile?.id) {
-        this.chartService.getEmployeeCharts(this.navService.employeeProfile.id).subscribe({
+    if (this.authAccessService.isSupport()) 
+    {
+      var userId = this.authAccessService.getUserId();
+      if (userId) {
+        this.chartService.getEmployeeCharts(userId).subscribe({
           next: (data: any) => (this.charts = data),
         });
       }
     }
   }
 
+  getProfileImage(): string {
+    var tokenPhoto = this.authAccessService.getAuthTokenProfilePicture()
+    if (tokenPhoto && this.sharedAccordionFunctionality.profileImage === 'assets/img/default-profile-image.png'){
+      return tokenPhoto
+    } 
+    return this.sharedAccordionFunctionality.profileImage;
+  }
+  
   searchQuery: string = '';
   handleSearchQuery(query: string) {
     this.searchQuery = query;
@@ -87,7 +95,7 @@ export class TopNavComponent {
   }
 
   goToProfile() {
-    this.router.navigateByUrl('/profile/' + this.navService.employeeProfile.id);
+    this.router.navigateByUrl('/profile/' + this.authAccessService.getUserId());
   }
 
   changeNav(route: string) {
@@ -108,8 +116,7 @@ export class TopNavComponent {
 
       this.showConfirmDialog = true;
     } else {
-      this.navService.isHris = false;
-      this.cookieService.set("isHris", String(this.navService.isHris));
+      this.authAccessService.setAccessToAts(true);
       this.router.navigate([route]);
     }
   }
@@ -120,8 +127,7 @@ export class TopNavComponent {
 
       this.showConfirmDialog = true;
     } else {
-      this.navService.isHris = true;
-      this.cookieService.set("isHris", String(this.navService.isHris));
+      this.authAccessService.setAccessToAts(false);
       this.router.navigate([route]);
     }
   }

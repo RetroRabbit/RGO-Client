@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeSalary } from 'src/app/models/hris/employee-salary.interface';
@@ -49,7 +49,7 @@ export class AccordionSalaryDetailsComponent {
   ) { }
 
   ngOnInit(): void {
-    this.employeeId = this.route.snapshot.params["id"];
+    this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
     this.getEmployeeDetails();
     if (this.message == null || this.message == "") {
       this.message = "No Information Yet";
@@ -90,7 +90,7 @@ export class AccordionSalaryDetailsComponent {
 
   getEmployeeSalaryDetails(taxNumber: string | undefined) {
     if (this.employeeId == undefined) {
-      this.employeeSalaryService.getEmployeeSalary(this.navservice.employeeProfile.id as number).subscribe({
+      this.employeeSalaryService.getEmployeeSalary(this.authAccessService.getUserId() as number).subscribe({
         next: data => {
           this.employeeSalary = data;
           this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
@@ -115,7 +115,7 @@ export class AccordionSalaryDetailsComponent {
 
     if (this.employeeSalary) {
       this.employeeSalaryDetailsDto = {
-        employeeId: this.employeeId != undefined ? this.employeeId : this.navservice.employeeProfile.id,
+        employeeId: this.employeeId,
         id: this.employeeSalary.id,
         salary: this.employeeSalary.salary,
         minSalary: this.employeeSalary.minSalary,
@@ -130,7 +130,7 @@ export class AccordionSalaryDetailsComponent {
       }
     } else {
       this.employeeSalaryDetailsDto = {
-        employeeId: this.employeeId != undefined ? this.employeeId : this.navservice.employeeProfile.id,
+        employeeId: this.employeeId,
         id: 0,
         salary: 0,
         minSalary: 0,

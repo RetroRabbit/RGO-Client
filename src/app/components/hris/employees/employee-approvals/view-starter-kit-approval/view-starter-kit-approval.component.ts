@@ -7,8 +7,8 @@ import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface
 import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeDocumentsStatus } from 'src/app/models/hris/constants/enums/employeeDocumentsStatus';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
-import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from '../../employee-profile/shared-accordion-functionality';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 @Component({
   selector: 'app-pending-employee-starterkits',
   templateUrl: './view-starter-kit-approval.component.html',
@@ -25,7 +25,7 @@ export class ViewStarterKitApprovalComponent {
   activeButtonIndex: number | null = null;
   activeButtonType: 'approve' | 'decline' | null = null;
   dialogTypeData!: Dialog;
-  employeedId = this.route.snapshot.params['id'];
+  employeedId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
   employee: any;
   employeeDocuments: EmployeeDocument[] = [];
   fileCategories = StarterKitDocumentTypes;
@@ -41,7 +41,6 @@ export class ViewStarterKitApprovalComponent {
     public authAccessService: AuthAccessService,
     private router: Router,
     private route: ActivatedRoute,
-    public navService: NavService,
     private snackBarService: SnackbarService,
     private documentService: EmployeeDocumentService,
     private changeDetector: ChangeDetectorRef,
@@ -64,12 +63,23 @@ export class ViewStarterKitApprovalComponent {
     this.documentService.getAllEmployeeDocuments(employeedId, staterkitDocuments).subscribe({
       next: documents => {
         this.employeeDocuments = documents;
-        this.employee = this.sharedAccordionFunctionality.selectedEmployee;
+        this.employee = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === documents[0].employeeId);
         this.isLoading = false;
         if(this.employeeDocuments.length > 0) this.lastUpdatedMessage = this.getNewDate();
       },
       error: (er) => this.snackBarService.showError(er),
     })
+  }
+
+  getName(){
+    return this.employee[0].name;
+  }
+
+  getSurname(){
+    return this.employee[0].surname;
+  }
+  getProfileImage(){
+    return this.employee[0]?.photo ?? 'assets/img/default-profile-image.png';
   }
 
   getNewDate() {

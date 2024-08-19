@@ -10,7 +10,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
-import { AppComponent } from 'src/app/app.component';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { AppState } from '../../shared-components/store/app.state';
 import { selectToken } from '../../shared-components/store/selector/sign-in.selector';
@@ -33,7 +32,7 @@ export class SignInComponent {
     private snackBarService: SnackbarService,
     private authAccessService: AuthAccessService,
     private NgZone: NgZone,
-    private sharedPropprtyAccessService: SharedPropertyAccessService,
+    public sharedPropertyAccessService: SharedPropertyAccessService,
   ) { }
 
   ngOnInit() {
@@ -98,7 +97,8 @@ export class SignInComponent {
                     if (filteredRoles.length > 0) {
                       return of({ user, token, role: filteredRoles });
                     } else {
-                      this.snackBarService.showSnackbar("Account Finalized. You May Now Log in.", "snack-success");
+                      this.snackBarService.showSnackbar("Account Finalizing. Now entering...", "snack-success");
+                      setTimeout(() => this.Login(), 1000);
                       return EMPTY;
                     }
                   } else {
@@ -118,14 +118,11 @@ export class SignInComponent {
       .subscribe({
         next: ({ user, token, role }) => {
           if (user && token && role) {
-            this.navService.refreshEmployee();
-  
             if (window.innerWidth > 776)
               this.navService.showNavbar = true;
             else
               this.navService.showSideBar = true;
   
-            this.sharedPropprtyAccessService.setAccessProperties();
             this.initialUserNavigation();
           }
         },
@@ -135,20 +132,18 @@ export class SignInComponent {
       });
   }  
 
-  initialUserNavigation(){
-  // TODO: put back in when ats available
-          // if (this.authAccessService.isTalent()) {
-          //   this.navService.isHris = false;
-          //   this.router.navigateByUrl('/ats-dashboard');
-          // }
-          if (
-            this.authAccessService.isSupport()
-          ) {
-            this.navService.isHris = true;
-            this.cookieService.set('isHris', String(this.navService.isHris))
-            this.router.navigateByUrl('/dashboard');
-          }
-          else if (this.authAccessService.isEmployee()) { this.router.navigateByUrl('/profile'); }
-          else this.router.navigateByUrl('/login');
+  initialUserNavigation() {
+    if (this.authAccessService.isSupport()) {
+      this.router.navigateByUrl('/dashboard');
+    }
+    else if (this.authAccessService.isEmployee()) {
+      this.router.navigateByUrl('/profile');
+    }
+    else if (this.authAccessService.isTalent()) {
+      this.authAccessService.setAccessToAts(true);
+      this.router.navigateByUrl('/ats-dashboard');
+    }
+    else
+      this.router.navigateByUrl('/login');
   }
 }

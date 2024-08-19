@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, EventEmitter, Output, TemplateRef, Input, NgZone } from '@angular/core';
+import { Component, HostListener, ViewChild, EventEmitter, Output, TemplateRef, Input, NgZone, ChangeDetectorRef } from '@angular/core';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -43,7 +43,7 @@ export class PropertyAccessComponent {
 
     constructor(
         private snackBarService: SnackbarService,
-        private NavService: NavService,
+        private cdr: ChangeDetectorRef,
         private ngZone: NgZone,
         private accessPropertiesService: AccessPropertiesService
     ) {
@@ -58,6 +58,7 @@ export class PropertyAccessComponent {
     ngAfterViewInit() {
         this.pageSize = 10;
         this.sort.sort({ id: 'id', start: 'asc', disableClear: false });
+        this.cdr.detectChanges();
     }
 
     getEnumKeys(enumObject: any): Observable<GenericDropDownObject[]> {
@@ -84,6 +85,7 @@ export class PropertyAccessComponent {
             .GetAllAccessProperties().subscribe((data) => {
                 this.setupDataSource(data);
                 this.applySearchFilter();
+                this.cdr.detectChanges();
             });
         this.isLoading = false;
     }
