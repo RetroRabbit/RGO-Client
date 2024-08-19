@@ -4,20 +4,18 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { AtsPageGuard } from './ats-guard.guard';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-// Create mock services
 class MockAuthAccessService {
   hasAccessToAts(): boolean {
-    return true; // Modify based on test case
+    return true;
   }
 }
 
 class MockRouter {
   navigate(commands: any[]): void {
-    // Define mock behavior here if needed
+
   }
 }
 
-// Dummy values for ActivatedRouteSnapshot and RouterStateSnapshot
 const mockRouteSnapshot: ActivatedRouteSnapshot = {} as ActivatedRouteSnapshot;
 const mockRouterStateSnapshot: RouterStateSnapshot = {} as RouterStateSnapshot;
 
@@ -33,17 +31,16 @@ describe('AtsPageGuard', () => {
       ]
     });
 
-    // Get instances of the services
     authAccessService = TestBed.inject(AuthAccessService);
     router = TestBed.inject(Router);
   });
 
   it('should allow access if user has access to ATS', () => {
-    // Given
+
     spyOn(authAccessService, 'hasAccessToAts').and.returnValue(true);
 
-    // When
     const result = AtsPageGuard(mockRouteSnapshot, mockRouterStateSnapshot);
 
-    // Then
-    expect(result).toBeTrue
+    expect(result).toBeTrue();
+  });
+});
