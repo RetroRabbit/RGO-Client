@@ -58,7 +58,7 @@ export class SideNavComponent {
   }
 
   ngOnInit() {
-    if(this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() ||this.authAccessService.isTalent()){
+    if(this.authAccessService.isSupport()){
       this.employeeProfileService.getTotalEmployees().subscribe({
       next: (numEmployees : number) => {
         this.totalNumberOfEmployees = numEmployees;
