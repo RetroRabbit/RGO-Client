@@ -32,6 +32,7 @@ import { Subscription } from 'rxjs';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AccessPropertiesService } from 'src/app/services/hris/access-properties.service';
+import * as pako from 'pako'; 
 
 @Component({
   selector: 'app-employee-profile',
@@ -494,32 +495,71 @@ export class EmployeeProfileComponent implements OnChanges {
     this.getEmployeeProfile();
   }
 
-  onFileChange(e: any) {
-    if (e.target.files) {
-      const selectedFile = e.target.files[0];
-      const file = new FileReader();
-      file.readAsDataURL(e.target.files[0]);
-      file.onload = (event: any) => {
-        this.employeeProfile.photo = event.target.result;
-        this.base64Image = event.target.result;
-        this.updateUser();
-      };
-      file.onerror = (error) => {
-        this.snackBarService.showSnackbar('Unable to Upload File', 'snack-error')
-      }
-    }
+ // Method to compress the base64 image using pako
+ compressImage(base64Image: string): Uint8Array {
+  // Extract the base64 data part
+  const base64Data = base64Image.split(',')[1];
+  const binaryString = atob(base64Data);
+  const len = binaryString.length;
+  const uint8Array = new Uint8Array(len);
+
+  for (let i = 0; i < len; i++) {
+    uint8Array[i] = binaryString.charCodeAt(i);
   }
 
-  updateUser() {
-    const updatedEmp = { ...this.employeeProfile, photo: this.base64Image };
-    this.employeeProfileService.updateEmployee(updatedEmp).subscribe({
-      next: () => {
-        this.getEmployeeProfile();
-        this.snackBarService.showSnackbar("Updated", "snack-success");
-      },
-      error: (er) => this.snackBarService.showError(er),
-    });
+  // Compress the image data using pako
+  const compressed = pako.gzip(uint8Array);
+  return compressed;
+}
+
+// Method to decompress and convert back to a base64 image
+decompressImage(compressedData: Uint8Array): string {
+  const decompressed = pako.ungzip(compressedData);
+  const binaryString = String.fromCharCode.apply(null, Array.from(decompressed));
+  const base64Image = btoa(binaryString);
+
+  // Return the base64 image with the appropriate data URI prefix
+  return `data:image/png;base64,${base64Image}`;
+}
+
+// Example usage: compress and save the image
+onFileChange(event: any) {
+  if (event.target.files) {
+    const selectedFile = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(selectedFile);
+    fileReader.onload = (e: any) => {
+      const base64Image = e.target.result;
+      this.base64Image = base64Image;
+
+      // Compress the image
+      const compressedImage = this.compressImage(this.base64Image);
+      console.log("compressedImage.length",compressedImage.length)
+
+      const decompressedImage = this.decompressImage(compressedImage);
+      console.log("decompressedImage.length",decompressedImage.length)
+
+      // Save or upload the compressed image as needed
+      this.uploadCompressedImage(compressedImage);
+    };
   }
+}
+
+uploadCompressedImage(compressedImage: Uint8Array) {
+  //Note we need to use the compressed image after the backend changes to Uint8Array
+  const decompressedImage = this.decompressImage(compressedImage);
+
+  // Save the decompressed image (or directly use compressed data for further processing)
+  const updatedEmployee = { ...this.employeeProfile, photo: decompressedImage };
+  this.employeeProfileService.updateEmployee(updatedEmployee).subscribe({
+    next: () => {
+      console.log('Profile photo updated successfully.');
+    },
+    error: (error) => {
+      console.error('Error updating profile photo:', error);
+    }
+  });
+}
 
   copyToClipboard() {
     let emailToCopy: string;

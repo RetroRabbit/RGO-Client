@@ -9,6 +9,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { EmployeeQualificationsService } from 'src/app/services/hris/employee/employee-qualifications.service';
 import { EmployeeQualifications } from 'src/app/models/hris/employee-qualifications.interface';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-career-summary-qualifications',
@@ -31,7 +32,8 @@ export class CareerSummaryQualificationsComponent {
     private snackBarService: SnackbarService,
     private fb: FormBuilder,
     private employeeQualificationsService: EmployeeQualificationsService,
-    public navservice: NavService
+    public navservice: NavService,
+    private fileProcessingService: FileProcessingService
   ) { }
 
   @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
@@ -159,6 +161,24 @@ export class CareerSummaryQualificationsComponent {
     if (event.target.files && event.target.files.length) {
       this.fileUploaded = true;
       const file = event.target.files[0];
+
+      this.fileProcessingService.fileToArrayBuffer(file, (arrayBuffer) => {
+        // Log the size of the original ArrayBuffer
+        console.log("Original ArrayBuffer size (in bytes):", arrayBuffer.byteLength);
+
+        // Compress and serialize the ArrayBuffer
+        const compressedData = this.fileProcessingService.compressAndSerializeFile(arrayBuffer);
+
+        // Log the size of the compressed data
+        console.log("Compressed data size (in bytes):", compressedData.byteLength);
+
+        // Decompress and deserialize the data back to an ArrayBuffer
+        const deserializedArrayBuffer = this.fileProcessingService.deserializeAndDecompressFile(compressedData);
+
+        // Reconstruct the file and trigger the download
+        // this.fileProcessingService.downloadArrayBufferAsFile(deserializedArrayBuffer, file.name, file.type);
+      });
+
       this.fileName = file.name;
       if (this.validateFile(file)) {
         this.fileConverter(file);
