@@ -192,7 +192,7 @@ export class EmployeeProfileComponent implements OnChanges {
     this.checkIfMainProfile();
     this.setDefaultTerminationStatus();
     this.setDefaultAddress();
-    
+
     if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isTalent()) {
       this.isAdminUser = true;
     }
@@ -240,7 +240,7 @@ export class EmployeeProfileComponent implements OnChanges {
     }
     return 'Not assigned';
   }
-  
+
   getPeopleChampion() {
     if (this.simpleEmployee?.peopleChampionName) {
       return this.simpleEmployee.peopleChampionName;
@@ -250,7 +250,7 @@ export class EmployeeProfileComponent implements OnChanges {
     }
     return 'Not assigned';
   }
-  
+
   getClientAllocated() {
     if (this.simpleEmployee?.clientAllocatedName) {
       return this.simpleEmployee.clientAllocatedName;
@@ -306,17 +306,17 @@ export class EmployeeProfileComponent implements OnChanges {
         if (data)
           this.terminationData = data
       },
-      error: (er) => {},
+      error: (er) => { },
     });
   }
 
   getProfileImage(): string {
     if (this.isMainProfile) {
       const employeePhoto = this.employeeProfile.photo;
-      this.sharedAccordionFunctionality.profileImage = employeePhoto 
-        ?? this.authAccessService.getAuthTokenProfilePicture() 
+      this.sharedAccordionFunctionality.profileImage = employeePhoto
+        ?? this.authAccessService.getAuthTokenProfilePicture()
         ?? 'assets/img/default-profile-image.png';
-        return this.sharedAccordionFunctionality.profileImage;
+      return this.sharedAccordionFunctionality.profileImage;
     } else {
       return this.employeeProfile.photo ?? 'assets/img/default-profile-image.png';
     }
@@ -335,7 +335,7 @@ export class EmployeeProfileComponent implements OnChanges {
       complete: () => {
         this.handleProfileComplete();
       },
-      error: (er: any) => {}
+      error: (er: any) => { }
     });
   }
 
@@ -345,16 +345,15 @@ export class EmployeeProfileComponent implements OnChanges {
       this.setProfiles(data);
       this.filterClients(data.clientAllocatedId as number);
       this.populateEmployeeAccordion(this.simpleEmployee);
-    } 
-    else 
-    {
+    }
+    else {
       this.setProfiles(data);
       this.filterClients(data.clientAllocated as number);
       this.sharedAccordionFunctionality.employeePhysicalAddress = data?.physicalAddress || this.employeePhysicalAddress;
     }
   }
 
-  setProfiles(data: any){
+  setProfiles(data: any) {
     this.employeeProfile = { ...data };
     this.selectedEmployee = { ...data };
     this.sharedAccordionFunctionality.selectedEmployee = { ...data };
@@ -370,7 +369,7 @@ export class EmployeeProfileComponent implements OnChanges {
     const today = new Date();
     return parsedDate < today;
   }
-  
+
   private handleProfileComplete() {
     this.employeeProfile.active = true;
 
@@ -378,7 +377,7 @@ export class EmployeeProfileComponent implements OnChanges {
       this.getTerminationInfo();
       this.employeeProfile.active = false;
     }
-    
+
     if (!this.usingSimpleProfile) {
       this.getAllEmployees();
     }
@@ -559,6 +558,6 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   ViewCVDocument() {
-    this.router.navigateByUrl('/view-cv-document/' + this.selectedEmployee.id);
+    this.router.navigateByUrl('/view-cv-document/' + this.employeeId);
   }
 }
