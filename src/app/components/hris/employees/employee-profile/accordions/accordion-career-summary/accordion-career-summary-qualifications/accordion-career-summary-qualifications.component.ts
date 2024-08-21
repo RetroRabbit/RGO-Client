@@ -49,6 +49,7 @@ export class CareerSummaryQualificationsComponent {
   base64File: string = "";
   fileUrl: string = '';
   proofOfQualificationFinal: string = '';
+  fileArrayBuffer!: ArrayBuffer;
 
   ngOnInit() {
     this.fetchQualificationsById();
@@ -110,7 +111,7 @@ export class CareerSummaryQualificationsComponent {
         fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.get("fieldOfStudy")?.value,
         year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value + "-01-01",
         nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
-        proofOfQualification: this.base64File,
+        proofOfQualification: this.fileArrayBuffer,
         documentName: this.fileName,
       };
 
@@ -168,6 +169,7 @@ export class CareerSummaryQualificationsComponent {
 
         // Compress and serialize the ArrayBuffer
         const compressedData = this.fileProcessingService.compressAndSerializeFile(arrayBuffer);
+        this.fileArrayBuffer = this.fileProcessingService.compressAndSerializeFile(arrayBuffer);
 
         // Log the size of the compressed data
         console.log("Compressed data size (in bytes):", compressedData.byteLength);
