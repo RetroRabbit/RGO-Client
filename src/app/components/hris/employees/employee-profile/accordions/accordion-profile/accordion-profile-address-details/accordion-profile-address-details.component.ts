@@ -157,9 +157,9 @@ export class AccordionProfileAddressDetailsComponent {
   }
 
   loadPhysicalAddress() {
-    this.locationApiService.getCountries().subscribe({
-      next: (data) => {
-        if (!data || data.length === 0) {
+  this.locationApiService.countries$?.subscribe({
+      next: (data: any) => {
+        if (!data ||  data.length === 0) {
           return;
         }
         this.countries = data;
@@ -169,7 +169,7 @@ export class AccordionProfileAddressDetailsComponent {
         }
         this.locationApiService.getProvinces(this.selectedCountry).subscribe({
           next: (data) => {
-            if (!data || data.length === 0) {
+            if (!data ||  data.length === 0) {
               return;
             }
             this.provinces = data;
