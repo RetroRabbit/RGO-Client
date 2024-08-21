@@ -158,8 +158,8 @@ export class AccordionProfileAddressDetailsComponent {
 
   loadPhysicalAddress() {
   this.locationApiService.countries$?.subscribe({
-      next: (data: any) => {
-        if (!data ||  data.length === 0) {
+      next: (data) => {
+        if (!data || data.length === 0) {
           return;
         }
         this.countries = data;
