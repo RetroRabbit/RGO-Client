@@ -524,7 +524,7 @@ export class EmployeeProfileComponent implements OnChanges {
   uploadCompressedImage(compressedImage: Uint8Array) {
     //Note we need to use the compressed image after the backend changes to Uint8Array
     const decompressedImage = this.imageProcessingService.decompressImage(compressedImage);
-
+    
     // Save the decompressed image (or directly use compressed data for further processing)
     const updatedEmployee = { ...this.employeeProfile, photo: decompressedImage };
     this.employeeProfileService.updateEmployee(updatedEmployee).subscribe({
