@@ -73,7 +73,6 @@ export class CvDocumentComponent {
     this.getEmployeeWorkExp();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
     this.goToProfile();
-
   }
 
   goToProfile() {
