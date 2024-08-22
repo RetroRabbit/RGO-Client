@@ -311,7 +311,7 @@ export class EmployeeProfileComponent implements OnChanges {
       const employeePhoto = this.employeeProfile.photo;
       this.sharedAccordionFunctionality.profileImage = employeePhoto
         ?? this.authAccessService.getAuthTokenProfilePicture()
-        ?? 's../../../../../../assets/img/default-profile-image.png';
+        ?? '../../../../../../assets/img/default-profile-image.png';
       return this.sharedAccordionFunctionality.profileImage;
     } else {
       return this.employeeProfile.photo ?? '../../../../../../assets/img/default-profile-image.png';
