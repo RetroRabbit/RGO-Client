@@ -5,9 +5,6 @@ import { EmployeeProfile } from '../../../models/hris/employee-profile.interface
 import { environment } from '../../../../environments/environment';
 import { AuthAccessService } from '../../shared-services/auth-access/auth-access.service';
 import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
-import { employeeProfileBanking } from 'src/app/models/hris/EmployeeProfile/employeeProfileBankingInformation.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +17,13 @@ export class EmployeeProfileService {
     this.baseUrl = `${environment.HttpsBaseURL}/employees`
   }
 
-  getEmployeeById(id: number): Observable<EmployeeProfile> {
-    const queryParams = `?id=${id}`;
-    return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}${queryParams}`);
+  getSimpleEmployeeProfiles(): Observable<EmployeeProfile[]> {
+    return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/simple-profile/all`);
   }
 
-  getSimpleEmployee(employeeEmail : string): Observable<SimpleEmployee> {
+  getSimpleEmployeeProfileByEmail(employeeEmail : string): Observable<EmployeeProfile> {
     const queryParams = `?employeeEmail=${employeeEmail}`;
-    return this.httpClient.get<SimpleEmployee>(`${this.baseUrl}/simple-profile${queryParams}`);
+    return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}/simple-profile${queryParams}`);
   }
 
   getEmployeeProfiles(): Observable<EmployeeProfile[]> {
@@ -40,7 +36,6 @@ export class EmployeeProfileService {
 
   getEmployeeProfileByEmail(email: string): Observable<EmployeeProfile> {
     return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}/by-email?email=${encodeURIComponent(email)}`);
-
   }
 
   checkDuplicateIdNumber(idNumber: string, employeeId: number): Observable<boolean> {

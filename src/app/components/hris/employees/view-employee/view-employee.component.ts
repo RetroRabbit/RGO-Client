@@ -230,7 +230,7 @@ export class ViewEmployeeComponent {
   }
 
   employeeClickEvent(employee: any): void {
-    this.employeeProfileService.getEmployeeProfileByEmail(employee.Email).
+    this.employeeProfileService.getSimpleEmployeeProfileByEmail(employee.Email).
       subscribe((data) => {
         this.selectedEmployee.emit(data);
         this._searchQuery = '';

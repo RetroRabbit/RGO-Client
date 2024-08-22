@@ -1,7 +1,6 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -21,7 +20,6 @@ import { ActivatedRoute } from '@angular/router';
 export class AccordionProfileAddressDetailsComponent {
 
   screenWidth = window.innerWidth;
-  usingProfile: boolean = true;
   provinces: string[] = [];
   countries: string[] = [];
   cities: string[] = [];
@@ -38,7 +36,7 @@ export class AccordionProfileAddressDetailsComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   constructor(
     private fb: FormBuilder,
@@ -53,7 +51,6 @@ export class AccordionProfileAddressDetailsComponent {
   ) { }
 
   ngOnInit() {
-    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.currentEmployeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
     this.loadPhysicalAddress();
     this.initializeForm();

@@ -4,7 +4,6 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeSalary } from 'src/app/models/hris/employee-salary.interface';
 import { EmployeeSalaryService } from 'src/app/services/hris/employee/employee-salary.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
@@ -25,7 +24,7 @@ export class AccordionSalaryDetailsComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  @Input() employeeProfile!: EmployeeProfile | SimpleEmployee;
+  @Input() employeeProfile!: EmployeeProfile
 
   panelOpenState: boolean = false;
   employeeSalaryDetailsDto!: any;

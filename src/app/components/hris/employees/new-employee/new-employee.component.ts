@@ -202,7 +202,7 @@ export class NewEmployeeComponent implements OnInit {
         this.snackBarService.showSnackbar("Employee Saved", "snack-success");
         this.isDirty = false;
         this.newEmployeeForm.reset();
-        this.employeeProfileService.getEmployeeProfileByEmail(this.newEmployeeEmail).subscribe({
+        this.employeeProfileService.getSimpleEmployeeProfileByEmail(this.newEmployeeEmail).subscribe({
           next: employeeProfile => {
             documents.forEach(element => {
               element.employeeId = employeeProfile.id as number;

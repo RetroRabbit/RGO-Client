@@ -207,7 +207,7 @@ export class NewCandidateComponent {
   }
 
   getEmployees(): Observable<GenericDropDownObject[]> {
-    return this.employeeProfileService.getEmployeeProfiles().pipe(
+    return this.employeeProfileService.getSimpleEmployeeProfiles().pipe(
       map(employees => {
         const mappedEmployees: GenericDropDownObject[] = employees.map(employee => ({
           id: employee.id || 0,

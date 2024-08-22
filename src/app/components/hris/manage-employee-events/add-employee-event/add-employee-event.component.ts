@@ -37,7 +37,7 @@ export class AddEmployeeEventComponent {
     date: new FormControl<Date>(new Date(Date.now()), Validators.required),
   })
 
-  employees$: Observable<EmployeeProfile[]> = this.employeeProfileService.getEmployeeProfiles()
+  employees$: Observable<EmployeeProfile[]> = this.employeeProfileService.getSimpleEmployeeProfiles()
   isLoading = false
   isEditing = false
 

@@ -61,7 +61,7 @@
             <div class="col-auto mt-2" id="header-email-clip">
               <mat-icon>attachment</mat-icon>
             </div>
-            {{usingSimpleProfile ? simpleEmployee.email : employeeProfile.email}}
+            {{ employeeProfile.email}}
           </div>
           <div class="col d-flex align-items-center ms-3"
             *ngIf="!employeeProfile.active && this.isAdminUser && this.terminationData?.reemploymentStatus == true">
@@ -203,7 +203,7 @@
           </div>
         </div>
         <div class="col-9">
-          <h4 style="margin:0"> {{usingSimpleProfile ? simpleEmployee.name :employeeProfile.name}}'s Profile Progress </h4>
+          <h4 style="margin:0"> {{ employeeProfile.name}}'s Profile Progress </h4>
         </div>
       </div>
     </div>
@@ -369,15 +369,15 @@
     <div id="accordions-body`" class="row m-2" *ngIf="employeeProfile">
 
       <app-accordion-profile-employee-details *ngIf="selectedAccordion === 'Profile Details'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-employee-details>
+        [employeeProfile]="{employeeDetails: employeeProfile}"></app-accordion-profile-employee-details>
       <app-accordion-profile-personal-details *ngIf="selectedAccordion === 'Profile Details'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-personal-details>
+        [employeeProfile]="{employeeDetails: employeeProfile}"></app-accordion-profile-personal-details>
       <app-accordion-profile-contact-details *ngIf="selectedAccordion === 'Profile Details'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-contact-details>
+        [employeeProfile]="{employeeDetails: employeeProfile}"></app-accordion-profile-contact-details>
       <app-accordion-profile-address-details *ngIf="selectedAccordion === 'Profile Details'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"></app-accordion-profile-address-details>
+        [employeeProfile]="{employeeDetails: employeeProfile}"></app-accordion-profile-address-details>
       <app-accordion-profile-additional *ngIf="selectedAccordion === 'Profile Details'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+        [employeeProfile]="{employeeDetails: employeeProfile}"
         (updateEmployeeProfile)="refreshEmployeeProfile()"></app-accordion-profile-additional>
 
       <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile"
@@ -385,7 +385,7 @@
       </app-accordion-banking>
 
       <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}">
+        [employeeProfile]="{employeeDetails: employeeProfile}">
       </app-career-summary-qualifications>
       <app-accordion-career-work-experience [hidden]="selectedAccordion != 'Career Summary'"
         [employeeProfile]="employeeProfile">
@@ -406,12 +406,12 @@
         [employeeProfile]="employeeProfile">
       </app-accordion-additional-documents>
 
-      <app-accordion-salary-details *ngIf="authAccessService.isSuperAdmin()"
-        [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
+      <app-accordion-salary-details [hidden]="selectedAccordion != 'Career Summary'" 
+        [employeeProfile]="employeeProfile">
       </app-accordion-salary-details>
 
       <app-accordion-career-additional-information [hidden]="selectedAccordion != 'Career Summary'"
-        [employeeProfile]="{employeeDetails: employeeProfile, simpleEmployee: simpleEmployee}"
+        [employeeProfile]="{employeeDetails: employeeProfile}"
         (updateEmployeeProfile)="refreshEmployeeProfile()"></app-accordion-career-additional-information>
     </div>
   </div>

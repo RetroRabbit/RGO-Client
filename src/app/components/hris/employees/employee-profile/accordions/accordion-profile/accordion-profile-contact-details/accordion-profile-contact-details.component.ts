@@ -2,7 +2,6 @@ import { Component, HostListener, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
@@ -17,7 +16,6 @@ import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-
 export class AccordionProfileContactDetailsComponent {
 
   screenWidth = window.innerWidth;
-  usingProfile: boolean = true;
   editContact: boolean = false;
 
   @HostListener('window:resize', ['$event'])
@@ -25,7 +23,7 @@ export class AccordionProfileContactDetailsComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   constructor(
     private fb: FormBuilder,
@@ -37,7 +35,6 @@ export class AccordionProfileContactDetailsComponent {
   }
 
   ngOnInit() {
-    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
     this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.valueChanges.subscribe(value => {
       this.checkHouseNumberValue(value);

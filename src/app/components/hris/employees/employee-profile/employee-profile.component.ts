@@ -18,7 +18,6 @@ import { AccordionProfileEmployeeDetailsComponent } from './accordions/accordion
 import { AccordionProfilePersonalDetailsComponent } from './accordions/accordion-profile/accordion-profile-personal-details/accordion-profile-personal-details.component';
 import { AccordionDocumentsComponent } from './accordions/accordion-documents/accordion-documents-starterkit/accordion-documents.component';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { SharedAccordionFunctionality } from './shared-accordion-functionality';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
@@ -46,7 +45,6 @@ export class EmployeeProfileComponent implements OnChanges {
 
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
-  simpleEmployee!: SimpleEmployee;
   employeePhysicalAddress !: EmployeeAddress;
   terminationData !: EmployeeTermination
   clients: Client[] = [];
@@ -89,7 +87,6 @@ export class EmployeeProfileComponent implements OnChanges {
   base64String: string = "";
 
   isLoading: boolean = true;
-  usingSimpleProfile: boolean = false;
   teamLead: number | null = null;
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
@@ -216,43 +213,27 @@ export class EmployeeProfileComponent implements OnChanges {
 
     this.getClients();
 
-    if (this.authAccessService.isSupport()) {
-      this.usingSimpleProfile = false;
-    }
-    else {
-      this.usingSimpleProfile = true;
-    }
-
     this.refreshEmployeeProfile();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
 
   getTeamLead() {
-    if (this.simpleEmployee?.teamLeadName) {
-      return this.simpleEmployee.teamLeadName;
-    }
-    if (this.sharedAccordionFunctionality.employeeTeamLead?.name || this.sharedAccordionFunctionality.employeeTeamLead?.surname) {
-      return `${this.sharedAccordionFunctionality.employeeTeamLead?.name ?? ''} ${this.sharedAccordionFunctionality.employeeTeamLead?.surname ?? ''}`.trim();
+    if (this.employeeProfile.teamLeadName) {
+      return `${this.employeeProfile.teamLeadName}`;
     }
     return 'Not assigned';
   }
 
   getPeopleChampion() {
-    if (this.simpleEmployee?.peopleChampionName) {
-      return this.simpleEmployee.peopleChampionName;
-    }
-    if (this.sharedAccordionFunctionality.employeePeopleChampion?.name || this.sharedAccordionFunctionality.employeePeopleChampion?.surname) {
-      return `${this.sharedAccordionFunctionality.employeePeopleChampion?.name ?? ''} ${this.sharedAccordionFunctionality.employeePeopleChampion?.surname ?? ''}`.trim();
+    if (this.employeeProfile.peopleChampionName) {
+      return `${this.employeeProfile.peopleChampionName}`;
     }
     return 'Not assigned';
   }
 
   getClientAllocated() {
-    if (this.simpleEmployee?.clientAllocatedName) {
-      return this.simpleEmployee.clientAllocatedName;
-    }
-    if (this.sharedAccordionFunctionality.employeeClient?.name) {
-      return this.sharedAccordionFunctionality.employeeClient.name;
+    if (this.employeeProfile.clientAllocatedName) {
+      return this.employeeProfile.clientAllocatedName;
     }
     return 'None';
   }
@@ -320,9 +301,7 @@ export class EmployeeProfileComponent implements OnChanges {
 
   getEmployeeProfile() {
     var email = this.authAccessService.getEmployeeEmail()
-    const fetchProfile = this.usingSimpleProfile
-      ? this.employeeProfileService.getSimpleEmployee(email)
-      : this.employeeProfileService.getEmployeeById(this.employeeId);
+    const fetchProfile = this.employeeProfileService.getSimpleEmployeeProfileByEmail(email);
 
     (fetchProfile as any).subscribe({
       next: (data: any) => {
@@ -336,17 +315,9 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   private handleProfileData(data: any) {
-    if (this.usingSimpleProfile) {
-      this.simpleEmployee = { ...data };
-      this.setProfiles(data);
-      this.filterClients(data.clientAllocatedId as number);
-      this.populateEmployeeAccordion(this.simpleEmployee);
-    }
-    else {
       this.setProfiles(data);
       this.filterClients(data.clientAllocated as number);
       this.sharedAccordionFunctionality.employeePhysicalAddress = data?.physicalAddress || this.employeePhysicalAddress;
-    }
   }
 
   setProfiles(data: any) {
@@ -373,18 +344,15 @@ export class EmployeeProfileComponent implements OnChanges {
       this.getTerminationInfo();
       this.employeeProfile.active = false;
     }
-
-    if (!this.usingSimpleProfile) {
-      this.getAllEmployees();
-    }
+    this.getAllEmployees();
     this.changeDetectorRef.detectChanges();
   }
 
   getAllEmployees() {
     this.employees = this.sharedAccordionFunctionality.employees;
-    this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLead)[0];
-    this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampion)[0];
-    this.filterClients(this.employeeProfile?.clientAllocated as number);
+    this.employeeTeamLead = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.teamLeadId)[0];
+    this.employeePeopleChampion = this.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.peopleChampionId)[0];
+    this.filterClients(this.employeeProfile?.clientAllocatedId as number);
   }
 
   get basedInString(): string {
@@ -413,51 +381,6 @@ export class EmployeeProfileComponent implements OnChanges {
     link.href = window.URL.createObjectURL(blob);
     link.download = fileName;
     link.click();
-  }
-
-  populateEmployeeAccordion(employee: SimpleEmployee) {
-    Object.assign(this.employeeProfile, {
-      clientAllocated: employee.clientAllocatedName,
-      clientAllocatedId: employee.clientAllocatedId,
-      teamLead: employee.teamLeadId,
-      teamLeadName: employee.teamLeadName,
-      peopleChampion: employee.peopleChampionName,
-      peopleChampionId: employee.peopleChampionId,
-      physicalAddress: this.sharedAccordionFunctionality.employeePhysicalAddress,
-      cellphoneNo: employee.cellphoneNo,
-      countryOfBirth: employee.countryOfBirth,
-      dateOfBirth: employee.dateOfBirth,
-      disability: employee.disability,
-      disabilityNotes: employee.disabilityNotes,
-      email: employee.email,
-      emergencyContactName: employee.emergencyContactName,
-      emergencyContactNo: employee.emergencyContactNo,
-      employeeNumber: employee.employeeNumber,
-      employeeType: employee.employeeType,
-      engagementDate: employee.engagementDate,
-      gender: employee.gender,
-      houseNo: employee.houseNo,
-      id: employee.id,
-      idNumber: employee.idNumber,
-      initials: employee.initials,
-      leaveInterval: employee.leaveInterval,
-      level: employee.level,
-      name: employee.name,
-      nationality: employee.nationality,
-      notes: employee.notes,
-      passportCountryIssue: employee.passportCountryIssue,
-      passportExpirationDate: employee.passportExpirationDate,
-      passportNumber: employee.passportNumber,
-      payRate: employee.payRate,
-      personalEmail: employee.personalEmail,
-      photo: employee.photo,
-      race: employee.race,
-      salary: employee.salary,
-      salaryDays: employee.salaryDays,
-      surname: employee.surname,
-      taxNumber: employee.taxNumber,
-      terminationDate: employee.terminationDate,
-    });
   }
 
   getClients() {
@@ -522,9 +445,7 @@ export class EmployeeProfileComponent implements OnChanges {
 
   copyToClipboard() {
     let emailToCopy: string;
-    if (this.simpleEmployee && this.simpleEmployee.email) {
-      emailToCopy = this.simpleEmployee.email;
-    } else if (this.employeeProfile && this.employeeProfile.email) {
+    if (this.employeeProfile && this.employeeProfile.email) {
       emailToCopy = this.employeeProfile.email;
     } else {
       this.snackBarService.showSnackbar("No Email Address Available to Copy", "snack-error");

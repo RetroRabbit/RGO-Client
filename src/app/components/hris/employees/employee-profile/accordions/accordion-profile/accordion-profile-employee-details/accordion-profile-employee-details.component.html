@@ -1,6 +1,6 @@
 <div class="col-12" id="accordion-container">
   <mat-accordion id="accordion" class="row">
-    <mat-expansion-panel class="mt-3 rounded-3" (opened)="checkEmployeeDetails()"
+    <mat-expansion-panel class="mt-3 rounded-3" (opened)="sharedAccordionFunctionality.panelOpenState = true"
       (closed)="sharedAccordionFunctionality.panelOpenState = false">
       <mat-expansion-panel-header>
         <mat-panel-title class="col-6">
@@ -101,12 +101,12 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>Team Lead</mat-label>
                     <input
-                      *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput"
+                      *ngIf="authAccessService.isSupport();else NonAdminTeamLeadInput"
                       type="text" placeholder="" matInput formControlName="teamLead" [matAutocomplete]="autoLead"
                       (input)="filterEmployees($event)">
                     <mat-autocomplete #autoLead="matAutocomplete">
                       <input
-                        *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminTeamLeadInput"
+                        *ngIf="authAccessService.isSupport();else NonAdminTeamLeadInput"
                         type="text" placeholder="" matInput formControlName="teamLead" [matAutocomplete]="autoLead"
                         (input)="filterEmployees($event)">
                       <mat-option *ngFor="let employee of sharedAccordionFunctionality.filteredEmployees"
@@ -116,7 +116,7 @@
                       </mat-option>
                     </mat-autocomplete>
                     <ng-template #NonAdminTeamLeadInput>
-                      <input matInput type="text" [value]="employeeProfile.simpleEmployee.teamLeadName" [disabled]="true">
+                      <input matInput type="text" [value]="employeeProfile.employeeDetails.teamLeadName" [disabled]="true">
                     </ng-template>
                   </mat-form-field>
                 </div>
@@ -125,7 +125,7 @@
                   <mat-form-field appearance="outline" style="width: 100%;">
                     <mat-label>People's Champion</mat-label>
                     <input
-                      *ngIf="authAccessService.isAdmin() || authAccessService.isSuperAdmin() || authAccessService.isTalent() || authAccessService.isJourney();else NonAdminPeopleChampionInput"
+                      *ngIf="authAccessService.isSupport();else NonAdminPeopleChampionInput"
                       type="text" placeholder="" matInput formControlName="peopleChampion"
                       [matAutocomplete]="autoChampion" (input)="filterChampions($event)">
                     <mat-autocomplete #autoChampion="matAutocomplete">
@@ -138,7 +138,7 @@
                     </mat-autocomplete>
                     <ng-template #NonAdminPeopleChampionInput>
                       <input matInput type="text"
-                        [value]="employeeProfile.simpleEmployee.peopleChampionName ?? 'Unassigned'" [disabled]="true">
+                        [value]="employeeProfile.employeeDetails.peopleChampionName ?? 'Unassigned'" [disabled]="true">
                     </ng-template>
                   </mat-form-field>
                 </div>

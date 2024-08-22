@@ -220,7 +220,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   getEmployeeProfiles() {
-    this.employeeProfileService.getEmployeeProfiles().subscribe({
+    this.employeeProfileService.getSimpleEmployeeProfiles().subscribe({
       next: (data: EmployeeProfile[]) => {
         this.employeeProfiles = data;
         this.searchResults = [];
