@@ -158,7 +158,9 @@ export class ViewBankingApprovalComponent {
       copyOfBanking.declineReason = ``;
     }
 
-    this.employeeBankingService.updatePending(copyOfBanking).subscribe({
+    copyOfBanking.id = 0;
+
+    this.employeeBankingService.addBankingDetails(copyOfBanking).subscribe({
       next: () => {
         this.snackBarService.showSnackbar("Updated", "snack-success");
         this.backToApprovals();
