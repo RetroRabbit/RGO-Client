@@ -58,7 +58,8 @@ export class TopNavComponent {
   ngOnInit() {
     this.signIn();
     this.isLoading = true
-    this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
+    if (this.authAccessService.isSupport())
+      this.employeeBankingandstarterkitService.getAllBankingAndStarterkits();
   }
 
   signIn() {
