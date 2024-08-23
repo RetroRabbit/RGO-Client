@@ -55,6 +55,7 @@ export class ViewBankingApprovalComponent {
           this.employeeBanking = data;
           this.employee = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === data[0].employeeId);
           this.isLoading = false;
+          console.log(data)
         }
       });
     }
@@ -72,15 +73,15 @@ export class ViewBankingApprovalComponent {
   }
 
   getAccountNumber(){
-    return this.employeeBanking[this.employeeBanking.length - 1]?.accountNo ?? 'N/A';
+    return this.employeeBanking[this.employeeBanking.length - 2]?.accountNo ?? 'N/A';
   }
   
   getBankName(){
-    return this.employeeBanking[this.employeeBanking.length - 1]?.bankName ?? 'N/A';
+    return this.employeeBanking[this.employeeBanking.length - 2]?.bankName ?? 'N/A';
   }
 
   getAccountType(){
-    const accountType = this.employeeBanking[this.employeeBanking.length - 1]?.accountType;
+    const accountType = this.employeeBanking[this.employeeBanking.length - 2]?.accountType;
     return accountType === 1 ? 'Savings' : accountType === 2 ? 'Cheque' : 'Unknown'; 
   }
 
@@ -91,6 +92,29 @@ export class ViewBankingApprovalComponent {
   }
   
   getBranchCode(){    
+    return this.employeeBanking[this.employeeBanking.length - 2]?.branch ?? 'N/A';
+  }
+
+  getNewAccountNumber(){
+    return this.employeeBanking[this.employeeBanking.length - 1]?.accountNo ?? 'N/A';
+  }
+  
+  getNewBankName(){
+    return this.employeeBanking[this.employeeBanking.length - 1]?.bankName ?? 'N/A';
+  }
+
+  getNewAccountType(){
+    const accountType = this.employeeBanking[this.employeeBanking.length - 1]?.accountType;
+    return accountType === 1 ? 'Savings' : accountType === 2 ? 'Cheque' : 'Unknown'; 
+  }
+
+  getNewPOA(){
+    const name = this.getName() || 'Unknown';
+    const surname = this.getSurname() || 'Unknown';
+    return `${name}_${surname}_POA.pdf`;
+  }
+  
+  getNewBranchCode(){    
     return this.employeeBanking[this.employeeBanking.length - 1]?.branch ?? 'N/A';
   }
 
@@ -127,12 +151,10 @@ export class ViewBankingApprovalComponent {
     copyOfBanking.status = status;
     if (status == 2)
     {
-      this.sharedAccordionFunctionality.approvedBankingDetails = false;
       copyOfBanking.declineReason = `${this.selectedReason} ${this.declineReason}`;
     }
     else
     {      
-      this.sharedAccordionFunctionality.approvedBankingDetails = true;
       copyOfBanking.declineReason = ``;
     }
 
