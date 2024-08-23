@@ -171,8 +171,6 @@ export class AccordionBankingComponent {
   }
 
   saveBankingDetails() {
-    const currentDate = new Date();
-
     if (this.bankingPDFName.length >= 1) {
       this.editBanking = false;
       this.isUpdated = true;
