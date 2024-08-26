@@ -8,6 +8,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from '../../employee-profile/shared-accordion-functionality';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
+import { accountTypes } from 'src/app/models/hris/constants/accountTypes.constants';
 
 @Component({
   selector: 'app-view-banking-approval',
@@ -20,11 +21,17 @@ export class ViewBankingApprovalComponent {
   declineReason: string = "";
   selectedReason: string = "";
   isLoading: boolean = true;
-  employeeBanking: any;
+  employeeBanking: EmployeeBanking[] = [];
   bankingId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
   showConfirmDialog: boolean = false;
   dialogTypeData!: Dialog;
   employee: any;
+  currentBanking: EmployeeBanking | null = null;
+  currentBankingExists: boolean = false;
+  updateBanking: EmployeeBanking | null = null;
+  updateBankingExists: boolean = false;
+  accountTypes: any;
+  
 
   constructor(
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -38,6 +45,7 @@ export class ViewBankingApprovalComponent {
 
   ngOnInit(): void {
     this.getBankingDetails(this.bankingId);
+    this.accountTypes = accountTypes;
   }
 
   ngAfterContentChecked() {
@@ -56,8 +64,24 @@ export class ViewBankingApprovalComponent {
           this.employee = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === data[0].employeeId);
           this.isLoading = false;
           console.log(data)
+          this.getCurrentDetails()
+          this.getUpdateDetails()
         }
       });
+    }
+  }
+
+  getCurrentDetails(){
+    this.currentBanking = this.employeeBanking.find(x => x.status === 0)!
+    if(this.currentBanking){
+      this.currentBankingExists = true;
+    }
+  }
+
+  getUpdateDetails(){
+    this.updateBanking = this.employeeBanking.find(x => x.status == 1)!
+    if(this.updateBanking){
+      this.updateBankingExists = true;
     }
   }
 
@@ -68,54 +92,24 @@ export class ViewBankingApprovalComponent {
   getSurname(){
     return this.employee[0].surname;
   }
+
   getProfileImage(){
     return this.employee[0].photo ?? 'assets/img/default-profile-image.png' ;
   }
 
-  getAccountNumber(){
-    return this.employeeBanking[this.employeeBanking.length - 2]?.accountNo ?? 'N/A';
-  }
-  
-  getBankName(){
-    return this.employeeBanking[this.employeeBanking.length - 2]?.bankName ?? 'N/A';
-  }
-
-  getAccountType(){
-    const accountType = this.employeeBanking[this.employeeBanking.length - 2]?.accountType;
-    return accountType === 1 ? 'Savings' : accountType === 2 ? 'Cheque' : 'Unknown'; 
+  getAccountType(id : number){
+    if(id == 0){
+      return 'Savings'
+    }
+    else{
+      return 'Cheque'
+    }
   }
 
   getPOA(){
     const name = this.getName() || 'Unknown';
     const surname = this.getSurname() || 'Unknown';
     return `${name}_${surname}_POA.pdf`;
-  }
-  
-  getBranchCode(){    
-    return this.employeeBanking[this.employeeBanking.length - 2]?.branch ?? 'N/A';
-  }
-
-  getNewAccountNumber(){
-    return this.employeeBanking[this.employeeBanking.length - 1]?.accountNo ?? 'N/A';
-  }
-  
-  getNewBankName(){
-    return this.employeeBanking[this.employeeBanking.length - 1]?.bankName ?? 'N/A';
-  }
-
-  getNewAccountType(){
-    const accountType = this.employeeBanking[this.employeeBanking.length - 1]?.accountType;
-    return accountType === 1 ? 'Savings' : accountType === 2 ? 'Cheque' : 'Unknown'; 
-  }
-
-  getNewPOA(){
-    const name = this.getName() || 'Unknown';
-    const surname = this.getSurname() || 'Unknown';
-    return `${name}_${surname}_POA.pdf`;
-  }
-  
-  getNewBranchCode(){    
-    return this.employeeBanking[this.employeeBanking.length - 1]?.branch ?? 'N/A';
   }
 
   convertFileToBase64(index: number) {
@@ -146,7 +140,7 @@ export class ViewBankingApprovalComponent {
     link.click();
   }
 
-  updateBanking(status: number): void {
+  updateBankingDetails(status: number): void {
     let copyOfBanking = { ...this.employeeBanking[this.employeeBanking.length - 1] };
     copyOfBanking.status = status;
     if (status == 2)
@@ -158,20 +152,32 @@ export class ViewBankingApprovalComponent {
       copyOfBanking.declineReason = ``;
     }
 
-    var previousId = this.employeeBanking[this.employeeBanking.length -2].id || undefined
+    var previousId = this.employeeBanking.find(x => x.status == 0)?.id;
 
-    this.employeeBankingService.updatePending(copyOfBanking).subscribe({
-      next: () => {
-        this.snackBarService.showSnackbar("Updated", "snack-success");
-        this.backToApprovals();
-         this.changeDetector.detectChanges();
-         if(this.employeeBanking.length > 1){
-            this.employeeBankingService.deleteBankingDetails(previousId)
-            .subscribe()
-         }
-      },
-      error: (er) => this.snackBarService.showError(er),
-    })
+    if(this.currentBankingExists){
+      this.employeeBankingService.deleteBankingDetails(previousId!)
+      .subscribe({
+        next: ( ) => {
+          this.employeeBankingService.updatePending(copyOfBanking).subscribe({
+            next: () => {
+              this.snackBarService.showSnackbar("Updated", "snack-success");
+              this.backToApprovals();
+               this.changeDetector.detectChanges();
+            },
+            error: (er) => this.snackBarService.showError(er),
+          })
+        }
+      })
+    }else{
+      this.employeeBankingService.updatePending(copyOfBanking).subscribe({
+        next: () => {
+          this.snackBarService.showSnackbar("Updated", "snack-success");
+          this.backToApprovals();
+           this.changeDetector.detectChanges();
+        },
+        error: (er) => this.snackBarService.showError(er),
+      })
+    }
   }
 
   openDialog(): void {
@@ -191,7 +197,7 @@ export class ViewBankingApprovalComponent {
     this.showConfirmDialog=false;
     if(response.confirmation)
       {
-    this.updateBanking(2);
+    this.updateBankingDetails(2);
       }
      
   }

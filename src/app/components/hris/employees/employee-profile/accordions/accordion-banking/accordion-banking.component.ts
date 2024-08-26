@@ -188,14 +188,22 @@ export class AccordionBankingComponent {
         lastUpdateDate: new Date().toISOString().slice(0, 10),
       }
 
-      this.employeeBankingDto.id = 0;
-      this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
-        next: (data) => {
-          console.log(data)
-          this.addOrUpdateBanking("Saved")
-        },
-        error: (er) => this.snackBarService.showError(er)
-      })
+      if (this.employeeBanking.find(x => x.status == 1)?.status == 1) {
+        this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
+          next: (data) => {
+            this.addOrUpdateBanking("Updated")
+          }
+        })
+      }
+      else {
+        this.employeeBankingDto.id = 0;
+        this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
+          next: (data) => {
+            this.addOrUpdateBanking("Saved")
+          },
+          error: (er) => this.snackBarService.showError(er)
+        })
+      }
     }
     else {
       this.snackBarService.showSnackbar("Add a Proof of account", "snack-error")
