@@ -83,6 +83,7 @@ export class AccordionBankingComponent {
   }
 
   initializeBankingForm(bankingDetails: EmployeeBanking) {
+
     if (bankingDetails == null) {
       this.hasBankingData = false;
       return;
@@ -96,11 +97,20 @@ export class AccordionBankingComponent {
     });
     this.hasFile = !!(bankingDetails.file && bankingDetails.file.length > 0);
     this.hasBankingData = true;
+    this.getBankingDate(bankingDetails);
     this.checkBankingInformationProgress();
     this.totalBankingProgress();
-    this.bankingUpdate = `${new Date().getDate()} ${this.returnMonth(new Date().getMonth() + 1)} ${new Date().getFullYear()}`;
   }
 
+  getBankingDate(bankingDetails: EmployeeBanking) {
+    if (this.hasBankingData) {
+      const lastUpdateddate = new Date(bankingDetails.lastUpdateDate!);
+      const day = lastUpdateddate.getDate();
+      const month = lastUpdateddate.toLocaleString('en-US', { month: 'long' });
+      const year = lastUpdateddate.getFullYear();
+      this.bankingUpdate = `${day} ${month} ${year}`;
+    }
+  }
   convertFileToBase64() {
     if (this.employeeBanking[this.employeeBanking.length - 1].file)
       this.downloadFile(this.employeeBanking[this.employeeBanking.length - 1].file, `${this.employeeProfile?.name} ${this.employeeProfile?.surname}_Proof_of_Account.pdf`);
@@ -174,7 +184,8 @@ export class AccordionBankingComponent {
         accountType: employeeBankingFormValue.accountType,
         status: 1,
         declineReason: this.bankingReason,
-        file: employeeBankingFormValue.file
+        file: employeeBankingFormValue.file,
+        lastUpdateDate: new Date().toISOString().slice(0, 10),
       }
 
       this.employeeBankingDto.id = 0;
@@ -225,23 +236,5 @@ export class AccordionBankingComponent {
       }
     }
     this.bankingFormProgress = Math.round((filledCount / totalFields) * 100);
-  }
-
-  returnMonth(month: number): string {
-    switch (month) {
-      case 1: return 'January'
-      case 2: return 'February'
-      case 3: return 'March'
-      case 4: return 'April'
-      case 5: return 'May'
-      case 6: return 'June'
-      case 7: return 'July'
-      case 8: return 'August'
-      case 9: return 'September'
-      case 10: return 'October'
-      case 11: return 'November'
-      case 12: return 'December'
-    }
-    return 'month';
   }
 }
