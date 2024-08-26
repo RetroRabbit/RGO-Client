@@ -81,7 +81,7 @@ export class SharedAccordionFunctionality {
     fieldOfStudy: "",
     year: "",
     nqfLevel: nqfLevels,
-    proofOfQualification: new ArrayBuffer(0),
+    proofOfQualification: "",
     documentName: "",
   };
 
