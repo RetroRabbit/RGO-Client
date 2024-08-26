@@ -6,6 +6,6 @@ export interface EmployeeQualifications {
     fieldOfStudy: string,
     year: string,
     nqfLevel: { id: number; value: string; }[],
-    proofOfQualification: ArrayBuffer,
+    proofOfQualification: string,
     documentName: string
 }
