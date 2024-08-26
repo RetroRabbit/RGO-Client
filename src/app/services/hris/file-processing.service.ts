@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as pako from 'pako';
+import { decode } from 'punycode';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,16 @@ export class FileProcessingService {
     const decompressedData = pako.ungzip(compressedData); // Gzip decompress
     return decompressedData.buffer;
   }
+
+  // deserializeAndDecompressFile(file: any) {
+  //   if (!file || !file.buffer) {
+  //     console.error("File or buffer is undefined.");
+  //     return;
+  //   }
+  //   // Rest of your method logic
+  //   const decompressedData = pako.ungzip(file); // Gzip decompress
+  //   return decompressedData.buffer;
+  // }
   
   // Convert a File object to ArrayBuffer (synchronously using FileReader)
   fileToArrayBuffer(file: File, callback: (arrayBuffer: ArrayBuffer) => void): void {
@@ -39,4 +50,29 @@ export class FileProcessingService {
     link.download = fileName;
     link.click();
   }
+
+  // converting compressed array buffer to base64 string for sending to backend
+
+  arrayBufferToBase64(buffer: ArrayBuffer): string {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  }
+
+  stringToByteArray(docString: string): Uint8Array {
+    const encoder = new TextEncoder();
+    const byteArray =  encoder.encode(docString);
+    return byteArray;
+  }
+
+  byteArrayToString(byteArray: ArrayBuffer): string {
+    const decoder = new TextDecoder();
+    const newString =  decoder.decode(byteArray)
+    return newString;
+  }
+
 }
