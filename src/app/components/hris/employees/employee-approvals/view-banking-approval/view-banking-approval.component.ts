@@ -158,13 +158,17 @@ export class ViewBankingApprovalComponent {
       copyOfBanking.declineReason = ``;
     }
 
-    copyOfBanking.id = 0;
+    var previousId = this.employeeBanking[this.employeeBanking.length -2].id || undefined
 
-    this.employeeBankingService.addBankingDetails(copyOfBanking).subscribe({
+    this.employeeBankingService.updatePending(copyOfBanking).subscribe({
       next: () => {
         this.snackBarService.showSnackbar("Updated", "snack-success");
         this.backToApprovals();
          this.changeDetector.detectChanges();
+         if(this.employeeBanking.length > 1){
+            this.employeeBankingService.deleteBankingDetails(previousId)
+            .subscribe()
+         }
       },
       error: (er) => this.snackBarService.showError(er),
     })

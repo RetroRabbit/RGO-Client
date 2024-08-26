@@ -176,22 +176,15 @@ export class AccordionBankingComponent {
         declineReason: this.bankingReason,
         file: employeeBankingFormValue.file
       }
-      if (this.hasBankingData) {
-        this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
-          next: () => {
-            this.addOrUpdateBanking("Updated")
-          },
-          error: (er) => this.snackBarService.showError(er)
-        })
-      }
-      else {
-        this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
-          next: () => {
-            this.addOrUpdateBanking("Saved")
-          },
-          error: (er) => this.snackBarService.showError(er)
-        })
-      }
+
+      this.employeeBankingDto.id = 0;
+      this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
+        next: (data) => {
+          console.log(data)
+          this.addOrUpdateBanking("Saved")
+        },
+        error: (er) => this.snackBarService.showError(er)
+      })
     }
     else {
       this.snackBarService.showSnackbar("Add a Proof of account", "snack-error")
