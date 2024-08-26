@@ -31,14 +31,14 @@ export class ViewBankingApprovalComponent {
   updateBanking: EmployeeBanking | null = null;
   updateBankingExists: boolean = false;
   accountTypes: any;
-  
+
 
   constructor(
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     public authAccessService: AuthAccessService,
     public navService: NavService,
     private employeeBankingService: EmployeeBankingService,
-    private router: Router, 
+    private router: Router,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
     private changeDetector: ChangeDetectorRef) { }
@@ -71,42 +71,42 @@ export class ViewBankingApprovalComponent {
     }
   }
 
-  getCurrentDetails(){
+  getCurrentDetails() {
     this.currentBanking = this.employeeBanking.find(x => x.status === 0)!
-    if(this.currentBanking){
+    if (this.currentBanking) {
       this.currentBankingExists = true;
     }
   }
 
-  getUpdateDetails(){
+  getUpdateDetails() {
     this.updateBanking = this.employeeBanking.find(x => x.status == 1)!
-    if(this.updateBanking){
+    if (this.updateBanking) {
       this.updateBankingExists = true;
     }
   }
 
-  getName(){
+  getName() {
     return this.employee[0].name;
   }
 
-  getSurname(){
+  getSurname() {
     return this.employee[0].surname;
   }
 
-  getProfileImage(){
-    return this.employee[0].photo ?? 'assets/img/default-profile-image.png' ;
+  getProfileImage() {
+    return this.employee[0].photo ?? 'assets/img/default-profile-image.png';
   }
 
-  getAccountType(id : number){
-    if(id == 0){
+  getAccountType(id: number) {
+    if (id == 0) {
       return 'Savings'
     }
-    else{
+    else {
       return 'Cheque'
     }
   }
 
-  getPOA(){
+  getPOA() {
     const name = this.getName() || 'Unknown';
     const surname = this.getSurname() || 'Unknown';
     return `${name}_${surname}_POA.pdf`;
@@ -143,37 +143,35 @@ export class ViewBankingApprovalComponent {
   updateBankingDetails(status: number): void {
     let copyOfBanking = { ...this.employeeBanking[this.employeeBanking.length - 1] };
     copyOfBanking.status = status;
-    if (status == 2)
-    {
+    if (status == 2) {
       copyOfBanking.declineReason = `${this.selectedReason} ${this.declineReason}`;
     }
-    else
-    {      
+    else {
       copyOfBanking.declineReason = ``;
     }
 
     var previousId = this.employeeBanking.find(x => x.status == 0)?.id;
 
-    if(this.currentBankingExists){
+    if (this.currentBankingExists) {
       this.employeeBankingService.deleteBankingDetails(previousId!)
-      .subscribe({
-        next: ( ) => {
-          this.employeeBankingService.updatePending(copyOfBanking).subscribe({
-            next: () => {
-              this.snackBarService.showSnackbar("Updated", "snack-success");
-              this.backToApprovals();
-               this.changeDetector.detectChanges();
-            },
-            error: (er) => this.snackBarService.showError(er),
-          })
-        }
-      })
-    }else{
+        .subscribe({
+          next: () => {
+            this.employeeBankingService.updatePending(copyOfBanking).subscribe({
+              next: () => {
+                this.snackBarService.showSnackbar("Updated", "snack-success");
+                this.backToApprovals();
+                this.changeDetector.detectChanges();
+              },
+              error: (er) => this.snackBarService.showError(er),
+            })
+          }
+        })
+    } else {
       this.employeeBankingService.updatePending(copyOfBanking).subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Updated", "snack-success");
           this.backToApprovals();
-           this.changeDetector.detectChanges();
+          this.changeDetector.detectChanges();
         },
         error: (er) => this.snackBarService.showError(er),
       })
@@ -194,11 +192,10 @@ export class ViewBankingApprovalComponent {
   dialogFeedBack(response: any): void {
     this.declineReason = response.declineReason;
     this.selectedReason = response.selectedReason;
-    this.showConfirmDialog=false;
-    if(response.confirmation)
-      {
-    this.updateBankingDetails(2);
-      }
-     
+    this.showConfirmDialog = false;
+    if (response.confirmation) {
+      this.updateBankingDetails(2);
+    }
+
   }
 }
