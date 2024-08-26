@@ -156,12 +156,14 @@ export class AccordionSalaryDetailsComponent {
     } else {
       updateDate = this.employeeSalaryDetailsDto.salaryUpdateDate;
     }
-    let day = new Date(updateDate as Date).getDate();
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"];
-    let month = monthNames[new Date(updateDate as Date).getMonth()];
-    let year = new Date(updateDate as Date).getFullYear();
-    this.message = day + " " + month + " " + " " + year;
+    if (updateDate != undefined) {
+      let day = new Date(updateDate as Date).getDate();
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+      let month = monthNames[new Date(updateDate as Date).getMonth()];
+      let year = new Date(updateDate as Date).getFullYear();
+      this.message = day + " " + month + " " + " " + year;
+    }
   }
 
   saveEmployeeSalaryDetails() {
