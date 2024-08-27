@@ -151,20 +151,8 @@ export class AccordionProfileEmployeeDetailsComponent {
   }
 
   getId(data: any, name: string) {
-    switch (name) {
-      case 'teamLead':
-        this.employeeProfile.employeeDetails.teamLeadId = data.id;
-        break;
-      case 'employee':
-        this.employeeProfile.employeeDetails.id = data.id;
-        break;
-      case 'client':
-        this.employeeProfile.employeeDetails.id = data.id;
-        break;
-      case 'champion':
-        this.employeeProfile.employeeDetails.id = data.id;
-        break;
-    }
+    this.employeeProfile.employeeDetails.teamLeadId = data.id;
+    this.employeeProfile.employeeDetails.id = data.id;
   }
 
   filterEmployees(event: any) {
