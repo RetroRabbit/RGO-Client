@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { GlobalSpinnerComponent } from './global-spinner.component';
 
 describe('GlobalSpinnerComponent', () => {
