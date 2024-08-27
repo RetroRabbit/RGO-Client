@@ -152,7 +152,6 @@ export class AdminDashboardComponent implements OnInit {
 
   configureDashboardData() {
     this.getAllEmployeeProfiles();
-    this.getEmployeeProfile();
     this.getCharts();
     this.getEmployeeTypes();
     this.getEmployeeTableColumns();
@@ -232,10 +231,6 @@ export class AdminDashboardComponent implements OnInit {
         this.loadCounter++;
       },
     });
-  }
-
-  getEmployeeProfile() {
-
   }
 
   getCharts() {
