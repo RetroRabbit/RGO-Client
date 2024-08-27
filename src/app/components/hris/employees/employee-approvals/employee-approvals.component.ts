@@ -22,6 +22,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./employee-approvals.component.css'],
 })
 export class EmployeeApprovalsComponent {
+  
   PREVIOUS_PAGE = 'previousPage';
 
   searchTerm: string = '';
@@ -30,7 +31,7 @@ export class EmployeeApprovalsComponent {
   bankingAndStarterKitData: BankingAndStarterKitDto[] = [];
   filteredEmployeeDtos: any[] = [];
   filteredEmployeeIds: number[] = [];
-  displayedColumns: string[] = ['name', 'type', 'date', 'status', 'action'];
+  displayedColumns: string[] = ['name', 'type', 'date', 'status'];
   userDocumentsMap: string[] = [];
   pageSizes: number[] = [1, 5, 10, 25, 100];
   isUnique?: boolean = true;

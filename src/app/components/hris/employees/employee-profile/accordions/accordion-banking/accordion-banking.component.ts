@@ -45,6 +45,7 @@ export class AccordionBankingComponent {
   bankingFormProgress: number = 0;
   hasUpdatedBanking: boolean = false;
   bankingUpdate: string = "";
+  currentBankingData: EmployeeBanking | null = null;
 
   employeeBankingsForm: FormGroup = this.fb.group({
     accountHolderName: [{ value: '', disabled: true }, Validators.required],
@@ -76,10 +77,21 @@ export class AccordionBankingComponent {
         if (this.employeeBanking && this.employeeBanking.length > 0) {
           this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
           this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
+          this.getCurrentBankingPdfName();
         }
       },
       error: (er) => this.snackBarService.showError(er),
     });
+  }
+
+  getCurrentBankingPdfName() {
+    this.bankingPDFName = this.getPOA();
+  }
+
+  getPOA() {
+    const name = this.employeeProfile.name || 'Unknown';
+    const surname = this.employeeProfile.surname || 'Unknown';
+    return `${name}_${surname}_POA.pdf`;
   }
 
   initializeBankingForm(bankingDetails: EmployeeBanking) {
@@ -187,17 +199,18 @@ export class AccordionBankingComponent {
         file: employeeBankingFormValue.file,
         lastUpdateDate: new Date().toISOString().slice(0, 10),
       }
-      if (this.hasBankingData) {
+
+      if (this.employeeBanking.find(x => x.status == 1)?.status == 1) {
         this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
-          next: () => {
+          next: (data) => {
             this.addOrUpdateBanking("Updated")
-          },
-          error: (er) => this.snackBarService.showError(er)
+          }
         })
       }
       else {
+        this.employeeBankingDto.id = 0;
         this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
-          next: () => {
+          next: (data) => {
             this.addOrUpdateBanking("Saved")
           },
           error: (er) => this.snackBarService.showError(er)
