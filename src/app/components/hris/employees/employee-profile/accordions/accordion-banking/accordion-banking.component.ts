@@ -45,6 +45,7 @@ export class AccordionBankingComponent {
   bankingFormProgress: number = 0;
   hasUpdatedBanking: boolean = false;
   bankingUpdate: string = "";
+  currentBankingData: EmployeeBanking | null = null;
 
   employeeBankingsForm: FormGroup = this.fb.group({
     accountHolderName: [{ value: '', disabled: true }, Validators.required],
@@ -76,10 +77,21 @@ export class AccordionBankingComponent {
         if (this.employeeBanking && this.employeeBanking.length > 0) {
           this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
           this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
+          this.getCurrentBankingPdfName();
         }
       },
       error: (er) => this.snackBarService.showError(er),
     });
+  }
+
+  getCurrentBankingPdfName() {
+    this.bankingPDFName = this.getPOA();
+  }
+
+  getPOA() {
+    const name = this.employeeProfile.name || 'Unknown';
+    const surname = this.employeeProfile.surname || 'Unknown';
+    return `${name}_${surname}_POA.pdf`;
   }
 
   initializeBankingForm(bankingDetails: EmployeeBanking) {

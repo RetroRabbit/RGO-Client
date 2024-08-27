@@ -63,7 +63,6 @@ export class ViewBankingApprovalComponent {
           this.employeeBanking = data;
           this.employee = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === data[0].employeeId);
           this.isLoading = false;
-          console.log(data)
           this.getCurrentDetails()
           this.getUpdateDetails()
         }
