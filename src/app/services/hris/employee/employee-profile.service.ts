@@ -14,13 +14,13 @@ export class EmployeeProfileService {
     this.baseUrl = `${environment.HttpsBaseURL}/employees`
   }
 
-  getSimpleEmployeeProfiles(): Observable<any[]> {
-    return this.httpClient.get<any[]>(`${this.baseUrl}/simple-profile/all`);
+  getAllEmployeeProfiles(): Observable<any[]> {
+    return this.httpClient.get<any[]>(`${this.baseUrl}/all`);
   }
 
-  getSimpleEmployeeProfileByEmail(employeeEmail : string): Observable<any> {
-    const queryParams = `?employeeEmail=${employeeEmail}`;
-    return this.httpClient.get<any>(`${this.baseUrl}/simple-profile${queryParams}`);
+  getEmployeeProfile(identifier : string): Observable<any> {
+    const queryParams = `?identifier=${identifier}`;
+    return this.httpClient.get<any>(`${this.baseUrl}${queryParams}`);
   }
 
   addEmployee(newEmployee: any): Observable<any> {
@@ -31,7 +31,7 @@ export class EmployeeProfileService {
     return this.httpClient.get<boolean>(`${this.baseUrl}/id-number?idNumber=${encodeURIComponent(idNumber)}&employeeId=${employeeId}`);
   }
 
-  updateEmployee(employee: any): Observable<any> {
+  updateEmployeeProfile(employee: any): Observable<any> {
     const queryParams = `?userEmail=${employee.email}`
     return this.httpClient.put<any>(`${this.baseUrl}${queryParams}`, employee)
   }

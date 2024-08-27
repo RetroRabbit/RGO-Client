@@ -480,7 +480,6 @@ export class SharedAccordionFunctionality {
     }
   }
 
-
   totalCareerProgress() {
     if (this.additionalCareerFormProgress == Infinity || this.additionalCareerFormProgress === 0) {
       this.careerFormProgress = Math.floor((this.qualificationFormProgress + this.salaryDetailsFormProgress) / 2);

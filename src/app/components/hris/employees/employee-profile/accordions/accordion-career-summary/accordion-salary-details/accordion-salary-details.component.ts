@@ -167,7 +167,6 @@ export class AccordionSalaryDetailsComponent {
 
   saveEmployeeSalaryDetails() {
     const salaryDetailsFormValue = this.sharedAccordionFunctionality.salaryDetailsForm.value;
-    const employeeDetailsForm = this.sharedAccordionFunctionality.employeeDetailsForm.value;
     if (this.sharedAccordionFunctionality.salaryDetailsForm.valid) {
       this.populateDto(salaryDetailsFormValue.remuneration, salaryDetailsFormValue.taxNumber)
       this.employeeProfile.taxNumber = salaryDetailsFormValue.taxNumber;
@@ -185,7 +184,7 @@ export class AccordionSalaryDetailsComponent {
           },
           error: (er) => this.snackBarService.showError(er),
         }),
-          this.employeeProfileService.updateEmployee(this.employeeProfile).subscribe({
+          this.employeeProfileService.updateEmployeeProfile(this.employeeProfile).subscribe({
             next: (data) => {
               this.snackBarService.showSnackbar("Employee tax updated", "snack-success");
             }

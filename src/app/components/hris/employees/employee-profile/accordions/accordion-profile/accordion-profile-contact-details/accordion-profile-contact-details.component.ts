@@ -147,7 +147,7 @@ export class AccordionProfileContactDetailsComponent {
       this.employeeProfile.employeeDetails.emergencyContactNo = employeeContactFormValues.emergencyContactNo;
       this.employeeProfile.employeeDetails.houseNo = employeeContactFormValues.houseNo;
 
-      this.employeeProfileService.updateEmployee(this.employeeProfile.employeeDetails).subscribe({
+      this.employeeProfileService.updateEmployeeProfile(this.employeeProfile.employeeDetails).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Updated", "snack-success");
           this.sharedAccordionFunctionality.checkContactFormProgress();

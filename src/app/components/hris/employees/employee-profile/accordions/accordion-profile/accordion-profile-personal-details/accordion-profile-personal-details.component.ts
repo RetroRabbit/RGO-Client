@@ -109,7 +109,7 @@ export class AccordionProfilePersonalDetailsComponent {
     public locationApiService: LocationApiService) { }
 
     checkEmployeeDetails() {
-      if (this.employeeProfile.employeeDetails.teamLeadId !== null) {
+       if (this.employeeProfile.employeeDetails.teamLeadId !== null) {
         this.sharedAccordionFunctionality.foundTeamLead = this.employeeProfile.employeeDetails.teamLeadId;
         this.sharedAccordionFunctionality.employeeDetailsForm.get('teamLead')?.setValue(this.employeeProfile.employeeDetails.teamLeadName);
       }
@@ -158,7 +158,7 @@ export class AccordionProfilePersonalDetailsComponent {
       this.sharedAccordionFunctionality.employeeProfileDto!.countryOfBirth = personalDetailsFormValue.countryOfBirth;
       this.sharedAccordionFunctionality.employeeProfileDto!.nationality = personalDetailsFormValue.nationality;
 
-      this.employeeProfileService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
+      this.employeeProfileService.updateEmployeeProfile(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Updated", "snack-success");
           this.sharedAccordionFunctionality.checkPersonalFormProgress();

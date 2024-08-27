@@ -202,7 +202,7 @@ export class NewEmployeeComponent implements OnInit {
         this.snackBarService.showSnackbar("Employee Saved", "snack-success");
         this.isDirty = false;
         this.newEmployeeForm.reset();
-        this.employeeProfileService.getSimpleEmployeeProfileByEmail(this.newEmployeeEmail).subscribe({
+        this.employeeProfileService.getEmployeeProfile(this.newEmployeeEmail).subscribe({
           next: employeeProfile => {
             documents.forEach(element => {
               element.employeeId = employeeProfile.id as number;
@@ -223,7 +223,7 @@ export class NewEmployeeComponent implements OnInit {
         })
       },
       error: () => {
-        this.snackBarService.showSnackbar(`Some Fields Are Still Missing Information`, "snack-error");
+        this.snackBarService.showSnackbar(`There was an issue with creating.`, "snack-error");
         this.isDirty = false;
       },
     });

@@ -7,7 +7,6 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeDateService } from 'src/app/services/hris/employee/employee-date.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeDate } from 'src/app/models/hris/employee-date.interface';
-import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 @Component({
   selector: 'app-add-employee-event',
@@ -37,7 +36,7 @@ export class AddEmployeeEventComponent {
     date: new FormControl<Date>(new Date(Date.now()), Validators.required),
   })
 
-  employees$: Observable<EmployeeProfile[]> = this.employeeProfileService.getSimpleEmployeeProfiles()
+  employees$: Observable<EmployeeProfile[]> = this.employeeProfileService.getAllEmployeeProfiles()
   isLoading = false
   isEditing = false
 
@@ -45,8 +44,7 @@ export class AddEmployeeEventComponent {
     private employeeProfileService: EmployeeProfileService,
     private employeeDateService: EmployeeDateService,
     private cookieService: CookieService,
-    private snackBarService: SnackbarService,
-    private navService : NavService) {
+    private snackBarService: SnackbarService) {
      }
 
   ngOnInit(): void {

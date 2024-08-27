@@ -104,8 +104,8 @@ export class AccordionProfileEmployeeDetailsComponent {
         next: (data: boolean) => {
           foundDuplicateId = data;
           if (!foundDuplicateId) {
-            this.employeeProfileService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
-              next: () => {
+            this.employeeProfileService.updateEmployeeProfile(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
+              next: (data) => {
                 this.snackBarService.showSnackbar("Updated", "snack-success");
                 this.sharedAccordionFunctionality.checkEmployeeFormProgress();
                 this.sharedAccordionFunctionality.totalProfileProgress();

@@ -151,7 +151,8 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   configureDashboardData() {
-    this.getEmployeeProfiles();
+    this.getAllEmployeeProfiles();
+    this.getEmployeeProfile();
     this.getCharts();
     this.getEmployeeTypes();
     this.getEmployeeTableColumns();
@@ -219,8 +220,8 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
-  getEmployeeProfiles() {
-    this.employeeProfileService.getSimpleEmployeeProfiles().subscribe({
+  getAllEmployeeProfiles() {
+    this.employeeProfileService.getAllEmployeeProfiles().subscribe({
       next: (data: EmployeeProfile[]) => {
         this.employeeProfiles = data;
         this.searchResults = [];
@@ -231,6 +232,10 @@ export class AdminDashboardComponent implements OnInit {
         this.loadCounter++;
       },
     });
+  }
+
+  getEmployeeProfile() {
+
   }
 
   getCharts() {

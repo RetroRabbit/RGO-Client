@@ -30,7 +30,6 @@ import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.int
 import { Subscription } from 'rxjs';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
-import { AccessPropertiesService } from 'src/app/services/hris/access-properties.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -310,7 +309,7 @@ export class EmployeeProfileComponent implements OnChanges {
     if(this.isMainProfile())
         identifier = this.employeeId;
 
-    const fetchProfile = this.employeeProfileService.getSimpleEmployeeProfileByEmail(identifier);
+    const fetchProfile = this.employeeProfileService.getEmployeeProfile(identifier);
 
     (fetchProfile as any).subscribe({
       next: (data: any) => {
@@ -438,8 +437,8 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   updateUser() {
-    const updatedEmp = { ...this.employeeProfile, photo: this.base64Image };
-    this.employeeProfileService.updateEmployee(updatedEmp).subscribe({
+    const updatedEmployee = { ...this.employeeProfile, photo: this.base64Image };
+    this.employeeProfileService.updateEmployeeProfile(updatedEmployee).subscribe({
       next: () => {
         this.getEmployeeProfile();
         this.snackBarService.showSnackbar("Updated", "snack-success");
