@@ -1,7 +1,7 @@
 <div class="container">
   <div class="py-3">
     <button mat-button class="btn" id="back-button" (click)="goToEmployees()"
-      *ngIf="previousPage == '/employees' && showBackButtons && !isMainProfile">
+      *ngIf="previousPage == '/employees' && showBackButtons && !isMainProfile()">
       <mat-icon>arrow_back</mat-icon>
       <span>Back to Employees</span>
     </button>
@@ -376,9 +376,6 @@
         [employeeProfile]="{employeeDetails: employeeProfile}"></app-accordion-profile-contact-details>
       <app-accordion-profile-address-details *ngIf="selectedAccordion === 'Profile Details'"
         [employeeProfile]="{employeeDetails: employeeProfile}"></app-accordion-profile-address-details>
-      <app-accordion-profile-additional *ngIf="selectedAccordion === 'Profile Details'"
-        [employeeProfile]="{employeeDetails: employeeProfile}"
-        (updateEmployeeProfile)="refreshEmployeeProfile()"></app-accordion-profile-additional>
 
       <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile"
         (updateBanking)="updateBankingProgress($event)">
@@ -410,9 +407,6 @@
         [employeeProfile]="employeeProfile">
       </app-accordion-salary-details>
 
-      <app-accordion-career-additional-information [hidden]="selectedAccordion != 'Career Summary'"
-        [employeeProfile]="{employeeDetails: employeeProfile}"
-        (updateEmployeeProfile)="refreshEmployeeProfile()"></app-accordion-career-additional-information>
     </div>
   </div>
 </div>

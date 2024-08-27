@@ -50,7 +50,6 @@ export class EmployeeProfileComponent implements OnChanges {
   clients: Client[] = [];
   employees: EmployeeProfile[] = [];
   customFields: CustomField[] = [];
-  isMainProfile: boolean = false;
   employeeBanking !: EmployeeBanking;
 
   employeeId: any;
@@ -182,7 +181,6 @@ export class EmployeeProfileComponent implements OnChanges {
 
   async ngOnInit() {
     await this.getUserId();
-    this.checkIfMainProfile();
     this.setDefaultTerminationStatus();
     this.setDefaultAddress();
 
@@ -213,7 +211,7 @@ export class EmployeeProfileComponent implements OnChanges {
 
     this.getClients();
 
-    this.refreshEmployeeProfile();
+    this.getEmployeeProfile();
     this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
   }
 
@@ -249,14 +247,6 @@ export class EmployeeProfileComponent implements OnChanges {
     return 'N/A';
   }
 
-  checkIfMainProfile() {
-    const url = this.router.url;
-    const userId = this.authAccessService.getUserId();
-    const mainProfileUrl = '/profile';
-    const profileUrlWithId = `/profile/${userId}`;
-    this.isMainProfile = url === mainProfileUrl || url === profileUrlWithId;
-  }
-
   openTerminationForm() {
     this.router.navigateByUrl('/end-employment/' + this.employeeId)
   }
@@ -287,8 +277,16 @@ export class EmployeeProfileComponent implements OnChanges {
     });
   }
 
+  isMainProfile() {
+    const selectedUrl = this.router.url;
+    const mainUserId = this.authAccessService.getUserId();
+    const mainProfileUrl = '/profile';
+    const profileUrlWithId = `/profile/${mainUserId}`;
+    return selectedUrl === mainProfileUrl || selectedUrl === profileUrlWithId;
+  }
+
   getProfileImage(): string {
-    if (this.isMainProfile) {
+    if (this.isMainProfile()) {
       const employeePhoto = this.employeeProfile.photo;
       this.sharedAccordionFunctionality.profileImage = employeePhoto
         ?? this.authAccessService.getAuthTokenProfilePicture()
@@ -300,8 +298,11 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   getEmployeeProfile() {
-    var email = this.authAccessService.getEmployeeEmail()
-    const fetchProfile = this.employeeProfileService.getSimpleEmployeeProfileByEmail(email);
+    var identifier: any = this.router.url.substring(9)
+    if(this.isMainProfile())
+        identifier = this.employeeId;
+
+    const fetchProfile = this.employeeProfileService.getSimpleEmployeeProfileByEmail(identifier);
 
     (fetchProfile as any).subscribe({
       next: (data: any) => {
@@ -412,10 +413,6 @@ export class EmployeeProfileComponent implements OnChanges {
     this.overallProgress();
   }
 
-  updateProfileProgress() {
-    this.getEmployeeProfile();
-  }
-
   onFileChange(e: any) {
     if (e.target.files) {
       const selectedFile = e.target.files[0];
@@ -453,13 +450,6 @@ export class EmployeeProfileComponent implements OnChanges {
     }
     this.clipboard.copy(emailToCopy);
     this.snackBarService.showSnackbar("Copied to Clipboard", "snack-success");
-  }
-
-  refreshEmployeeProfile() {
-    this.getEmployeeProfile();
-    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
-      this.getAllEmployees();
-    }
   }
 
   ViewCVDocument() {

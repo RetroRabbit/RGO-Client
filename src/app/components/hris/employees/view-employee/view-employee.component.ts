@@ -146,6 +146,7 @@ export class ViewEmployeeComponent {
     const employeeDataList: EmployeeData[] = employees.map(
       (employee) => {
         return {
+          Id: employee.id,
           Name: `${employee.name} ${employee.surname}`,
           Position: employee.position,
           Level: employee.level,
@@ -230,13 +231,10 @@ export class ViewEmployeeComponent {
   }
 
   employeeClickEvent(employee: any): void {
-    this.employeeProfileService.getSimpleEmployeeProfileByEmail(employee.Email).
-      subscribe((data) => {
-        this.selectedEmployee.emit(data);
-        this._searchQuery = '';
-        this.router.navigateByUrl('/profile/' + data.id)
-        this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
-      })
+    this.selectedEmployee.emit(employee);
+    this._searchQuery = '';
+    this.router.navigateByUrl('/profile/' + employee.Id)
+    this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
   }
 
   screenWidth: number = 992;
