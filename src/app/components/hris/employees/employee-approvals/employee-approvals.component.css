@@ -282,3 +282,7 @@ a:hover {
 h1 {
   text-align: center;
 }
+
+.approval-row :hover {
+  background-color: #D7DFFF;
+}

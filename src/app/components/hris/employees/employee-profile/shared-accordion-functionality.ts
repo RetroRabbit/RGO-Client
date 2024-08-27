@@ -44,7 +44,6 @@ export class SharedAccordionFunctionality {
   filteredPeopleChamps: any = [];
   filteredFilledWorkExp: any = [];
   filteredFilledCertificate: any = [];
-  approvedBankingDetails: boolean = false;
   employeeData: EmployeeData[] = [];
   customFields: CustomField[] = [];
   customFieldsDocuments: CustomField[] = [];

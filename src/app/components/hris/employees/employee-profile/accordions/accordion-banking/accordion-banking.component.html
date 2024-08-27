@@ -126,20 +126,15 @@
                                 </mat-label>
                                 <div class="my-2">
                                     <div [ngClass]="screenWidth <= 767 ?'':'row'">
-                                        <div *ngIf="hasFile">
-                                            <button mat-button color="primary"
-                                                [hidden]="employeeBanking[this.employeeBanking.length-1].file.length == 0"
-                                                (click)="convertFileToBase64()">Download</button>
-                                        </div>
-                                        <div class="col-12 row d-flex justify-content-center align-content-center"
-                                            [hidden]="!editBanking" (click)="openFileInput()">
-                                            <div class="col-12 row ms-1" *ngIf="bankingPDFName.length > 1">
-                                                <div class="col-1 p-0">
-                                                    <img id="pdf-icon" alt="pdf-icon"
-                                                        src="../../../../../../assets/img/pdf-icon.svg">
-                                                </div>
-                                                <p class="col-11" id="recently-uploaded">{{bankingPDFName}}</p>
+                                        <div class="col-6 row ms-1 d-flex align-items-center poa-name" >
+                                            <div class="col-1 p-0">
+                                                <img id="pdf-icon" alt="pdf-icon"
+                                                    src="../../../../../../assets/img/pdf-icon.svg">
                                             </div>
+                                            <p class="col-11 mt-3" id="recently-uploaded" (click)="convertFileToBase64()">{{bankingPDFName}}</p>
+                                        </div>
+                                        <div class="col-6 row d-flex justify-content-center align-content-center"
+                                            [hidden]="!editBanking" (click)="openFileInput()">
                                             <div *ngIf="!editBanking"
                                                 class="col-12 rounded-5 bg-light d-flex justify-content-center align-content-center align-items-center ms-4">
                                                 <div class="col-1" id="uploadfile">

@@ -87,12 +87,6 @@ export class ViewEmployeeComponent {
     this.employeeRoleService.getAllRoles().subscribe((data: string[]) => {
       this.roles = data.filter((role) => !role.includes('SuperAdmin'));
     });
-
-    this.peopleChampions.subscribe({
-      next: data => {
-        this.selectedChampion = data.find(x => x.id == 0)
-      }
-    })
     
     this.onResize();
 
@@ -105,13 +99,7 @@ export class ViewEmployeeComponent {
     }
 
     var userId = this.authAccessService.getUserId();
-    if(this.isJourney){
-      this.peopleChampions.subscribe({
-        next: data => {
-          this.selectedChampion = data.find(x => x.id == userId)
-        }
-      })
-    }
+    
     this.peopleChampions.subscribe({
       next: data =>
         this.selectedChampion = this.isJourney

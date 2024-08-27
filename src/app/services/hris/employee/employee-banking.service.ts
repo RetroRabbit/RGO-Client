@@ -30,4 +30,8 @@ export class EmployeeBankingService{
     addBankingDetails(newEntry : EmployeeBanking): Observable<EmployeeBanking> {
     return this.httpClient.post<EmployeeBanking>(`${this.baseUrl}`, newEntry);
     }
+
+    deleteBankingDetails(id : number): Observable<EmployeeBanking> {
+      return this.httpClient.delete<EmployeeBanking>(`${this.baseUrl}?id=${id}`);
+      }
 }
