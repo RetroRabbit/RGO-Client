@@ -72,7 +72,8 @@ export class SharedAccordionFunctionality {
   fileStarterKitCategories = StarterKitDocumentTypes;
   fileMyDocumentCategories = MyDocumentTypes;
   employeeQualification!: EmployeeQualifications;
-  profileImage: string = 'assets/img/default-profile-image.png';
+  defaultProfileImage: string = "../../../../../assets/img/default-profile-image.png";
+  mainProfileImage: string = "";
 
   employeeQualificationDto: EmployeeQualifications = {
     id: 0,

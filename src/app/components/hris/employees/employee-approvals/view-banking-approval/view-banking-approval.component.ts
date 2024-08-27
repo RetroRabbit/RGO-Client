@@ -68,7 +68,7 @@ export class ViewBankingApprovalComponent {
     return this.employee[0].surname;
   }
   getProfileImage(){
-    return this.employee[0].photo ?? 'assets/img/default-profile-image.png' ;
+    return this.employee[0].photo ?? '../../../../../assets/img/default-profile-image.png' ;
   }
 
   getAccountNumber(){

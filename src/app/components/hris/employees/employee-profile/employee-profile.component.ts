@@ -282,19 +282,27 @@ export class EmployeeProfileComponent implements OnChanges {
     const mainUserId = this.authAccessService.getUserId();
     const mainProfileUrl = '/profile';
     const profileUrlWithId = `/profile/${mainUserId}`;
-    return selectedUrl === mainProfileUrl || selectedUrl === profileUrlWithId;
+    var isMainProfile = selectedUrl === mainProfileUrl || selectedUrl === profileUrlWithId
+    return isMainProfile;
   }
 
   getProfileImage(): string {
-    if (this.isMainProfile()) {
-      const employeePhoto = this.employeeProfile.photo;
-      this.sharedAccordionFunctionality.profileImage = employeePhoto
-        ?? this.authAccessService.getAuthTokenProfilePicture()
-        ?? 'assets/img/default-profile-image.png';
-      return this.sharedAccordionFunctionality.profileImage;
-    } else {
-      return this.employeeProfile.photo ?? 'assets/img/default-profile-image.png';
+    const employeePhoto = this.employeeProfile.photo;
+  
+    if (employeePhoto && employeePhoto.trim() !== '') {
+      if (this.isMainProfile())
+        this.sharedAccordionFunctionality.mainProfileImage = employeePhoto;
+      
+      return employeePhoto;
     }
+  
+    if (this.isMainProfile()) {
+      const tokenPhoto = this.authAccessService.getAuthTokenProfilePicture();
+      if (tokenPhoto && tokenPhoto.trim() !== '') {
+        return tokenPhoto;
+      }
+    }
+    return this.sharedAccordionFunctionality.defaultProfileImage;
   }
 
   getEmployeeProfile() {
