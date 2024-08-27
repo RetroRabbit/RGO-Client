@@ -1,3 +1,4 @@
+<app-global-spinner></app-global-spinner>
 <div id="field-code-container" class="mt-4">
   <div id="interact-fields" class="justify-content-between ms-3">
     <div id="search-container" [ngClass]="{'bg-white': filterText !== ''}" class="row">
@@ -44,7 +45,7 @@
             </ng-container>
             <ng-container matColumnDef="status">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-              <mat-cell *matCellDef="let element" [ngClass]="{ 
+              <mat-cell *matCellDef="let element" [ngClass]="{
                   'approved': element.approval === 0,
                   'pending': element.approval === 1,
                   'declined': element.approval === 2
