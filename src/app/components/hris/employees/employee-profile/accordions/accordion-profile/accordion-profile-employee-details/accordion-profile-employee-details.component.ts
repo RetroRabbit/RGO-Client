@@ -373,6 +373,13 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.sharedAccordionFunctionality.physicalEqualPostal = !this.sharedAccordionFunctionality.physicalEqualPostal;
   }
 
+  hasPermission(fieldName: string, table: string, initialLoad: boolean): boolean {
+    if (initialLoad || this.sharedPropertyAccessService.checkPermission(table, fieldName) !== PropertyAccessLevel.none) {
+      return true;
+    }
+    return false;
+  }
+
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     if (!this.sharedPropertyAccessService.accessProperties) {
       return;
@@ -386,6 +393,7 @@ export class AccordionProfileEmployeeDetailsComponent {
           case PropertyAccessLevel.none:
             if (!initialLoad)
               control.disable();
+            this.sharedAccordionFunctionality.employeeContactForm.removeControl(fieldName);
             this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
             break;
           case PropertyAccessLevel.read:
