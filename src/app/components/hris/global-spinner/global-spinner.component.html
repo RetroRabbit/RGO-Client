@@ -1,0 +1,8 @@
+<div *ngIf="(loader.isLoading$ | async)" class="spinner-overlay">
+    <div class="background-spinner">
+        <div class="uploader-status">
+            <mat-spinner  diameter="30"></mat-spinner>
+        </div>
+        <span class="sub-title-spinner">Please wait while the page loads...</span>
+    </div>
+ </div>
