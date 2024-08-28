@@ -6,7 +6,6 @@ import { EmployeeDataService } from 'src/app/services/hris/employee/employee-dat
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
@@ -24,14 +23,13 @@ export class AccordionCareerAdditionalInformationComponent {
   screenWidth = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])
-  usingProfile: boolean = true;
 
   onResize() {
     this.screenWidth = window.innerWidth;
   }
 
   @Output() updateEmployeeProfile = new EventEmitter<any>();
-  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   customFields: CustomField[] = [];
   employeeId: number | undefined;
@@ -49,31 +47,26 @@ export class AccordionCareerAdditionalInformationComponent {
   }
 
   ngOnInit() {
-    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
     this.getEmployeeFields();
+    this.getAdditionalEmployeeData();
+  }
+
+  getAdditionalEmployeeData() {
+    const clientData = this.sharedAccordionFunctionality.clients;
+    const data = this.sharedAccordionFunctionality.employees;
+    this.sharedAccordionFunctionality.employeeTeamLeadId = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLeadId)[ 0 ];
+    this.sharedAccordionFunctionality.employeePeopleChampionId = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampionId)[ 0 ];
+    this.sharedAccordionFunctionality.employeeClient = clientData.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocatedId)[ 0 ];
   }
 
   getEmployeeFields() {
     this.getEmployeeTypes();
-    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
-      this.getAllEmployees();
-    }
     this.getEmployeeFieldCodes();
     if (!this.authAccessService.isEmployee()) {
-
       this.employeeProfile.employeeDetails = this.sharedAccordionFunctionality.selectedEmployee;
-      if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin() || this.authAccessService.isJourney() || this.authAccessService.isTalent()) {
-        this.getAllEmployees();
-      }
       this.getEmployeeFieldCodes();
     }
-  }
-
-  getAllEmployees() {
-    this.sharedAccordionFunctionality.employeeTeamLead = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[0];
-    this.sharedAccordionFunctionality.employeePeopleChampion = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[0];
-    this.sharedAccordionFunctionality.employeeClient = this.sharedAccordionFunctionality.clients.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[0];
   }
 
   getEmployeeTypes() {
