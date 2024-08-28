@@ -1,3 +1,4 @@
+<app-global-spinner></app-global-spinner>
 <div id="field-code-container" class="mt-4">
   <div id="interact-fields" class="justify-content-between ms-3">
     <div id="search-container" [ngClass]="{'bg-white': filterText !== ''}" class="row">
@@ -29,7 +30,7 @@
     <div id="table-body" class="row">
       <div class="card px-0">
         <div class="table-responsive p-0 m-0">
-          <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+          <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 approval-row">
             <ng-container matColumnDef="name">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
               <mat-cell *matCellDef="let element">{{ element.name }} {{ element.surname }}</mat-cell>
@@ -44,7 +45,7 @@
             </ng-container>
             <ng-container matColumnDef="status">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-              <mat-cell *matCellDef="let element" [ngClass]="{ 
+              <mat-cell *matCellDef="let element" [ngClass]="{
                   'approved': element.approval === 0,
                   'pending': element.approval === 1,
                   'declined': element.approval === 2
@@ -56,14 +57,8 @@
                 </ng-template>
               </mat-cell>
             </ng-container>
-            <ng-container matColumnDef="action">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-              <mat-cell *matCellDef="let element">
-                <a *ngIf="!element.isBanking" (click)="routeToApprovalPages(element)">View</a>
-              </mat-cell>
-            </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="routeToApprovalPages(row)"></mat-row>
           </mat-table>
           <mat-paginator hidden></mat-paginator>
         </div>

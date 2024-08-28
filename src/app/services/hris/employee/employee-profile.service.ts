@@ -1,13 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EmployeeProfile } from '../../../models/hris/employee-profile.interface';
 import { environment } from '../../../../environments/environment';
-import { AuthAccessService } from '../../shared-services/auth-access/auth-access.service';
 import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
-import { EmployeeProfileDetails } from 'src/app/models/hris/EmployeeProfile/employeeProfileDetails.interface';
-import { employeeProfileBanking } from 'src/app/models/hris/EmployeeProfile/employeeProfileBankingInformation.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -15,40 +10,29 @@ import { employeeProfileBanking } from 'src/app/models/hris/EmployeeProfile/empl
 export class EmployeeProfileService {
   baseUrl: string;
 
-  constructor(private httpClient: HttpClient,
-    private authAccessService: AuthAccessService) {
+  constructor(private httpClient: HttpClient) {
     this.baseUrl = `${environment.HttpsBaseURL}/employees`
   }
 
-  getEmployeeById(id: number): Observable<EmployeeProfile> {
-    const queryParams = `?id=${id}`;
-    return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}${queryParams}`);
+  getAllEmployeeProfiles(): Observable<any[]> {
+    return this.httpClient.get<any[]>(`${this.baseUrl}/all`);
   }
 
-  getSimpleEmployee(employeeEmail : string): Observable<SimpleEmployee> {
-    const queryParams = `?employeeEmail=${employeeEmail}`;
-    return this.httpClient.get<SimpleEmployee>(`${this.baseUrl}/simple-profile${queryParams}`);
-  }
-
-  getEmployeeProfiles(): Observable<EmployeeProfile[]> {
-    return this.httpClient.get<EmployeeProfile[]>(`${this.baseUrl}/all`);
+  getEmployeeProfile(identifier : string): Observable<any> {
+    const queryParams = `?identifier=${identifier}`;
+    return this.httpClient.get<any>(`${this.baseUrl}${queryParams}`);
   }
 
   addEmployee(newEmployee: any): Observable<any> {
     return this.httpClient.post<any>(`${this.baseUrl}`, newEmployee);
   }
 
-  getEmployeeProfileByEmail(email: string): Observable<EmployeeProfile> {
-    return this.httpClient.get<EmployeeProfile>(`${this.baseUrl}/by-email?email=${encodeURIComponent(email)}`);
-
-  }
-
   checkDuplicateIdNumber(idNumber: string, employeeId: number): Observable<boolean> {
     return this.httpClient.get<boolean>(`${this.baseUrl}/id-number?idNumber=${encodeURIComponent(idNumber)}&employeeId=${employeeId}`);
   }
 
-  updateEmployee(employee: any): Observable<any> {
-    const queryParams = `?userEmail=${this.authAccessService.getEmployeeEmail()}`
+  updateEmployeeProfile(employee: any): Observable<any> {
+    const queryParams = `?userEmail=${employee.email}`
     return this.httpClient.put<any>(`${this.baseUrl}${queryParams}`, employee)
   }
 

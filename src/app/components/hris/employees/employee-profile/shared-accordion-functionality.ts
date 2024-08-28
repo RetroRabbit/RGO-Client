@@ -36,6 +36,7 @@ export class SharedAccordionFunctionality {
 
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
+  
   fieldCodes: CustomField[] = [];
   employeeTypes: EmployeeType[] = [];
   filteredClients: Client[] = [];
@@ -43,7 +44,6 @@ export class SharedAccordionFunctionality {
   filteredPeopleChamps: any = [];
   filteredFilledWorkExp: any = [];
   filteredFilledCertificate: any = [];
-  approvedBankingDetails: boolean = false;
   employeeData: EmployeeData[] = [];
   customFields: CustomField[] = [];
   customFieldsDocuments: CustomField[] = [];
@@ -71,7 +71,8 @@ export class SharedAccordionFunctionality {
   fileStarterKitCategories = StarterKitDocumentTypes;
   fileMyDocumentCategories = MyDocumentTypes;
   employeeQualification!: EmployeeQualifications;
-  profileImage: string = 'assets/img/default-profile-image.png';
+  defaultProfileImage: string = "../../../../../assets/img/default-profile-image.png";
+  mainProfileImage: string = "";
 
   employeeQualificationDto: EmployeeQualifications = {
     id: 0,
@@ -91,9 +92,11 @@ export class SharedAccordionFunctionality {
   typeOther: boolean | undefined = false;
   editAdditional: boolean = false;
   employeeType?: EmployeeType;
+
   employeeClient!: Client;
-  employeeTeamLead!: EmployeeProfile;
-  employeePeopleChampion!: EmployeeProfile;
+  employeeTeamLeadId!: any;
+  employeePeopleChampionId!: any;
+
   selectedEmployee!: EmployeeProfile;
   employeePhysicalAddress !: EmployeeAddress;
 
@@ -129,7 +132,6 @@ export class SharedAccordionFunctionality {
   disabilities = disabilities;
   category = category;
   fieldTypes = dataTypes;
-  usingProfile: boolean = true;
 
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   initialsPattern = /^[A-Z]+$/;
@@ -477,7 +479,6 @@ export class SharedAccordionFunctionality {
       this.updateProfile.emit(this.profileFormProgress);
     }
   }
-
 
   totalCareerProgress() {
     if (this.additionalCareerFormProgress == Infinity || this.additionalCareerFormProgress === 0) {

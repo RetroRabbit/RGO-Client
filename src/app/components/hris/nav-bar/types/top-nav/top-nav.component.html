@@ -45,7 +45,7 @@
       </div>
       <div id="navigation" *ngIf="!authAccessService.hasAccessToAts()">
         <div
-          *ngIf="authAccessService.isSuperAdmin() || authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+          *ngIf="authAccessService.isSupport()">
           <div id="nav-item-container" class="col-auto">
             <div id="nav-item">
               <div (click)="changeNav('/dashboard')" [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
@@ -72,7 +72,7 @@
           </div>
         </div>
         <div
-          *ngIf="authAccessService.isSuperAdmin() || authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+          *ngIf="authAccessService.isSupport()">
           <div id="nav-item-container">
             <div id="nav-item">
               <div (click)="changeNav('/employees')"
@@ -105,7 +105,7 @@
       <div id="navigation" *ngIf="authAccessService.hasAccessToAts()">
         <div class="row">
           <div class="col-2"
-            *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+            *ngIf="authAccessService.isSupport()">
             <div id="nav-item-container" class="col-auto">
               <div id="nav-item">
                 <div (click)="changeNav('/ats-dashboard')" [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">

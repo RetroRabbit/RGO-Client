@@ -4,12 +4,14 @@ import { EmployeeQualifications } from "./employee-qualifications.interface";
 export class EmployeeProfile {
 
   EmployeeProfile() { }
+  authUserId!: string;
   id!: number;
   employeeNumber?: string;
   taxNumber?: string;
   engagementDate?: Date;
   terminationDate?: Date;
-  peopleChampion?: number;
+  peopleChampionName?: string;
+  peopleChampionId?: number;
   disability?: boolean;
   disabilityType?: number;
   disabilityNotes?: string;
@@ -39,11 +41,14 @@ export class EmployeeProfile {
   salaryDays?: number;
   payRate?: number;
   salary?: Number;
-  clientAllocated?: number;
-  teamLead?: number;
+  clientAllocatedName?: string;
+  clientAllocatedId?: number;
+  teamLeadName?: string;
+  teamLeadId?: number;
   houseNo?: string;
   emergencyContactName?: string;
   emergencyContactNo?: string;
+  physicalAddress?: EmployeeAddress;
   qualifications?: EmployeeQualifications;
   active?: boolean;
   inactiveReason?: string;

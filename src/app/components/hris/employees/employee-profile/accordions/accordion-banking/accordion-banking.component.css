@@ -46,3 +46,8 @@
         left: 5%;
     }
 }
+
+.poa-name :hover{
+  color: #0029c6;
+  cursor: pointer;
+}

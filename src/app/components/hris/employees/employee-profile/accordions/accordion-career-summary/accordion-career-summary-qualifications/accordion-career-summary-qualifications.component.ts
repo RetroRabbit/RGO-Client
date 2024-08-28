@@ -1,6 +1,5 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
@@ -36,7 +35,7 @@ export class CareerSummaryQualificationsComponent {
     private fileProcessingService: FileProcessingService
   ) { }
 
-  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   isValidFile: boolean = false;
   isValidFileSize: boolean = false;

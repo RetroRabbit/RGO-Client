@@ -6,7 +6,6 @@ import { banks } from 'src/app/models/hris/constants/banks.constants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-banking.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 import { SharedAccordionFunctionality } from '../../shared-accordion-functionality';
 
@@ -24,7 +23,7 @@ export class AccordionBankingComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  @Input() employeeProfile !: EmployeeProfile | SimpleEmployee;
+  @Input() employeeProfile !: EmployeeProfile
   @Output() updateBanking = new EventEmitter<{ progress: number, status: number }>();
 
   shouldUseSentInProfile: boolean = true;
@@ -45,6 +44,7 @@ export class AccordionBankingComponent {
   bankingFormProgress: number = 0;
   hasUpdatedBanking: boolean = false;
   bankingUpdate: string = "";
+  currentBankingData: EmployeeBanking | null = null;
 
   employeeBankingsForm: FormGroup = this.fb.group({
     accountHolderName: [{ value: '', disabled: true }, Validators.required],
@@ -76,10 +76,21 @@ export class AccordionBankingComponent {
         if (this.employeeBanking && this.employeeBanking.length > 0) {
           this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
           this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
+          this.getCurrentBankingPdfName();
         }
       },
       error: (er) => this.snackBarService.showError(er),
     });
+  }
+
+  getCurrentBankingPdfName() {
+    this.bankingPDFName = this.getPOA();
+  }
+
+  getPOA() {
+    const name = this.employeeProfile.name || 'Unknown';
+    const surname = this.employeeProfile.surname || 'Unknown';
+    return `${name}_${surname}_POA.pdf`;
   }
 
   initializeBankingForm(bankingDetails: EmployeeBanking) {
@@ -187,17 +198,18 @@ export class AccordionBankingComponent {
         file: employeeBankingFormValue.file,
         lastUpdateDate: new Date().toISOString().slice(0, 10),
       }
-      if (this.hasBankingData) {
+
+      if (this.employeeBanking.find(x => x.status == 1)?.status == 1) {
         this.employeeBankingService.updatePending(this.employeeBankingDto).subscribe({
-          next: () => {
+          next: (data) => {
             this.addOrUpdateBanking("Updated")
-          },
-          error: (er) => this.snackBarService.showError(er)
+          }
         })
       }
       else {
+        this.employeeBankingDto.id = 0;
         this.employeeBankingService.addBankingDetails(this.employeeBankingDto).subscribe({
-          next: () => {
+          next: (data) => {
             this.addOrUpdateBanking("Saved")
           },
           error: (er) => this.snackBarService.showError(er)
