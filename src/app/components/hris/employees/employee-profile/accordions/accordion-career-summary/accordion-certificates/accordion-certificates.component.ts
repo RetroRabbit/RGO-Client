@@ -1,7 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
 import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
 import { forkJoin } from 'rxjs';
@@ -21,7 +20,7 @@ export class AccordionCertificatesComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  @Input() employeeProfile !: EmployeeProfile | SimpleEmployee;
+  @Input() employeeProfile !: EmployeeProfile
   shouldUseSentInProfile: boolean = true;
   panelOpenState: boolean = false;
   hasFile: boolean = false;

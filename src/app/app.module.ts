@@ -1,5 +1,5 @@
 import { NgModule, isDevMode } from '@angular/core';
-import {MatBadgeModule} from '@angular/material/badge'
+import { MatBadgeModule } from '@angular/material/badge'
 import { SignInComponent } from './components/hris/sign-in/sign-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
@@ -98,6 +98,8 @@ import { loginReducer } from './components/shared-components/store/reducers/sign
 import { LoginEffects } from './components/shared-components/store/effects/sign-in.effects';
 import { employeeProfileDetailsReducer } from './components/shared-components/store/reducers/employee-profile-details.reducer';
 import { EmployeeProfileDetailsEffects } from './components/shared-components/store/effects/employee-profile-details.effects';
+import { GlobalSpinnerComponent } from './components/hris/global-spinner/global-spinner.component';
+import { LoaderInterceptor } from './components/shared-components/interceptor/loader.interceptor';
 
 @NgModule({
   declarations: [
@@ -149,7 +151,7 @@ import { EmployeeProfileDetailsEffects } from './components/shared-components/st
     AccordionSalaryDetailsComponent,
     EmployeeTerminationComponent,
     CvDocumentComponent,
-
+    GlobalSpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -162,14 +164,14 @@ import { EmployeeProfileDetailsEffects } from './components/shared-components/st
     ClipboardModule,
     StoreModule.forRoot({
       token: loginReducer,
-      employeeProfileDetails : employeeProfileDetailsReducer,
+      employeeProfileDetails: employeeProfileDetailsReducer,
     }),
     EffectsModule.forRoot([LoginEffects, EmployeeProfileDetailsEffects,]),
     AuthModule.forRoot({
       domain: process.env['AUTH0_Domain_key'] || 'null',
       clientId: process.env['AUTH0_CLIENT_ID'] || 'null',
       authorizationParams: {
-      redirect_uri: environment.redirect_uri,
+        redirect_uri: environment.redirect_uri,
       },
       useRefreshTokens: true,
       cacheLocation: 'localstorage',
@@ -221,6 +223,7 @@ import { EmployeeProfileDetailsEffects } from './components/shared-components/st
   providers: [
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
   ],
   bootstrap: [AppComponent],

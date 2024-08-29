@@ -6,7 +6,6 @@ import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/
 import { WorkExperience } from 'src/app/models/hris/work-experience.interface';
 import { WorkExperienceService } from 'src/app/services/hris/employee/employee-work-experience.service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { ROLES } from 'src/app/models/hris/constants/employee-skills-software-onType.constants';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { forkJoin } from 'rxjs';
@@ -31,7 +30,7 @@ export class AccordionCareerWorkExperienceComponent {
     [x: string]: any;
     workExperience: WorkExperience;
   };
-  @Input() employeeProfile!: EmployeeProfile | SimpleEmployee;
+  @Input() employeeProfile!: EmployeeProfile
 
   editWorkExperience: boolean = false;
   hasWorkExperienceData: boolean = false;
