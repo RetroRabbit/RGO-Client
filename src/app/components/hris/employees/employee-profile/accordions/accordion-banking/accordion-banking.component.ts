@@ -8,6 +8,7 @@ import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 import { SharedAccordionFunctionality } from '../../shared-accordion-functionality';
+import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 
 @Component({
   selector: 'app-accordion-banking',
@@ -60,22 +61,23 @@ export class AccordionBankingComponent {
     private fb: FormBuilder,
     private employeeBankingService: EmployeeBankingService,
     private snackBarService: SnackbarService,
-    private employeeBankingStarterkitService: EmployeeBankingandstarterkitService) {
+    private employeeBankingStarterkitService: EmployeeBankingandstarterkitService,
+    public sharedPropertyAccessService: SharedPropertyAccessService) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
-    this.getEmployeeBankingData();
+    await this.getEmployeeBankingData();
     this.banks = this.banks.slice().sort((a, b) => a.value.localeCompare(b.value));
   }
 
-  getEmployeeBankingData() {
+  async getEmployeeBankingData() {
     this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
-      next: (data) => {
+      next: async (data) => {
         this.employeeBanking = data;
         if (this.employeeBanking && this.employeeBanking.length > 0) {
           this.bankingId = this.employeeBanking[this.employeeBanking.length - 1].id;
-          this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
+          await this.initializeBankingForm(this.employeeBanking[this.employeeBanking.length - 1]);
           this.getCurrentBankingPdfName();
         }
       },
@@ -93,7 +95,7 @@ export class AccordionBankingComponent {
     return `${name}_${surname}_POA.pdf`;
   }
 
-  initializeBankingForm(bankingDetails: EmployeeBanking) {
+  async initializeBankingForm(bankingDetails: EmployeeBanking) {
 
     if (bankingDetails == null) {
       this.hasBankingData = false;
@@ -111,6 +113,8 @@ export class AccordionBankingComponent {
     this.getBankingDate(bankingDetails);
     this.checkBankingInformationProgress();
     this.totalBankingProgress();
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.employeeBankingsForm.controls), "EmployeeBanking", true , this.employeeBankingsForm , this.employeeProfile.email!)
+
   }
 
   getBankingDate(bankingDetails: EmployeeBanking) {
@@ -171,9 +175,11 @@ export class AccordionBankingComponent {
     }
   }
 
-  editBankingDetails() {
+  async editBankingDetails() {
     this.editBanking = true;
     this.employeeBankingsForm.enable();
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.employeeBankingsForm.controls), "EmployeeBanking", false , this.employeeBankingsForm , this.employeeProfile.email!)
+
   }
 
   cancelBankingDetails() {

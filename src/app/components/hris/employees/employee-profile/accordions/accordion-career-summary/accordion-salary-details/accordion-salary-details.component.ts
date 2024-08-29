@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
+import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 
 @Component({
   selector: 'app-accordion-salary-details',
@@ -45,11 +46,12 @@ export class AccordionSalaryDetailsComponent {
     public navservice: NavService,
     private route: ActivatedRoute,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    public sharedPropertyAccessService: SharedPropertyAccessService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
-    this.getEmployeeDetails();
+    await this.getEmployeeDetails();
     if (this.message == null || this.message == "") {
       this.message = "No Information Yet";
     }
@@ -58,7 +60,7 @@ export class AccordionSalaryDetailsComponent {
     }
   }
 
-  initializeSalaryDetailsForm(salaryDetails: EmployeeSalary, taxNumber: string | undefined) {
+  async initializeSalaryDetailsForm(salaryDetails: EmployeeSalary, taxNumber: string | undefined) {
     if (salaryDetails != null) {
       this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
         remuneration: [salaryDetails.remuneration, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
@@ -73,26 +75,28 @@ export class AccordionSalaryDetailsComponent {
       });
     }
     this.sharedAccordionFunctionality.salaryDetailsForm.disable();
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.salaryDetailsForm.controls), "EmployeeSalaryDetails", true , this.sharedAccordionFunctionality.salaryDetailsForm , this.employeeProfile.email!)
+
   }
 
-  getEmployeeDetails() {
+  async getEmployeeDetails() {
     if (this.employeeId == undefined) {
       var data = this.sharedAccordionFunctionality.selectedEmployee;
-      this.getEmployeeSalaryDetails(data.taxNumber);      
+      await this.getEmployeeSalaryDetails(data.taxNumber);      
     }
     else {
       var data = this.sharedAccordionFunctionality.selectedEmployee;
       this.initializeSalaryDetailsForm(this.employeeSalary, data.taxNumber);
-      this.getEmployeeSalaryDetails(data.taxNumber);
+      await this.getEmployeeSalaryDetails(data.taxNumber);
     }
   }
 
-  getEmployeeSalaryDetails(taxNumber: string | undefined) {
+  async getEmployeeSalaryDetails(taxNumber: string | undefined) {
     if (this.employeeId == undefined) {
       this.employeeSalaryService.getEmployeeSalary(this.authAccessService.getUserId() as number).subscribe({
-        next: data => {
+        next: async data => {
           this.employeeSalary = data;
-          this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
+          await this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
           this.sharedAccordionFunctionality.calculateSalaryDetails();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
@@ -101,9 +105,9 @@ export class AccordionSalaryDetailsComponent {
     }
     else {
       this.employeeSalaryService.getEmployeeSalary(this.employeeId).subscribe({
-        next: data => {
+        next: async data => {
           this.employeeSalary = data;
-          this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
+          await this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
           this.sharedAccordionFunctionality.calculateSalaryDetails();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
@@ -215,9 +219,10 @@ export class AccordionSalaryDetailsComponent {
     }
   }
 
-  editSalaryDetails() {
+  async editSalaryDetails() {
     this.editSalary = true;
     this.sharedAccordionFunctionality.salaryDetailsForm.enable();
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.salaryDetailsForm.controls), "EmployeeSalaryDetails", false , this.sharedAccordionFunctionality.salaryDetailsForm , this.employeeProfile.email!)
   }
 
   cancelSalaryDetails() {
