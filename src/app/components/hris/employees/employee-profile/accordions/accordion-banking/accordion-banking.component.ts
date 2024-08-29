@@ -6,7 +6,6 @@ import { banks } from 'src/app/models/hris/constants/banks.constants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-banking.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 import { SharedAccordionFunctionality } from '../../shared-accordion-functionality';
 
@@ -24,7 +23,7 @@ export class AccordionBankingComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  @Input() employeeProfile !: EmployeeProfile | SimpleEmployee;
+  @Input() employeeProfile !: EmployeeProfile
   @Output() updateBanking = new EventEmitter<{ progress: number, status: number }>();
 
   shouldUseSentInProfile: boolean = true;

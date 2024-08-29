@@ -4,7 +4,6 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeSalary } from 'src/app/models/hris/employee-salary.interface';
 import { EmployeeSalaryService } from 'src/app/services/hris/employee/employee-salary.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
@@ -25,7 +24,7 @@ export class AccordionSalaryDetailsComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  @Input() employeeProfile!: EmployeeProfile | SimpleEmployee;
+  @Input() employeeProfile!: EmployeeProfile
 
   panelOpenState: boolean = false;
   employeeSalaryDetailsDto!: any;
@@ -168,7 +167,6 @@ export class AccordionSalaryDetailsComponent {
 
   saveEmployeeSalaryDetails() {
     const salaryDetailsFormValue = this.sharedAccordionFunctionality.salaryDetailsForm.value;
-    const employeeDetailsForm = this.sharedAccordionFunctionality.employeeDetailsForm.value;
     if (this.sharedAccordionFunctionality.salaryDetailsForm.valid) {
       this.populateDto(salaryDetailsFormValue.remuneration, salaryDetailsFormValue.taxNumber)
       this.employeeProfile.taxNumber = salaryDetailsFormValue.taxNumber;
@@ -186,7 +184,7 @@ export class AccordionSalaryDetailsComponent {
           },
           error: (er) => this.snackBarService.showError(er),
         }),
-          this.employeeProfileService.updateEmployee(this.employeeProfile).subscribe({
+          this.employeeProfileService.updateEmployeeProfile(this.employeeProfile).subscribe({
             next: (data) => {
               this.snackBarService.showSnackbar("Employee tax updated", "snack-success");
             }

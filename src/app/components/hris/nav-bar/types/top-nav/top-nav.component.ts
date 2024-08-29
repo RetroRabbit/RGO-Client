@@ -78,10 +78,13 @@ export class TopNavComponent {
 
   getProfileImage(): string {
     var tokenPhoto = this.authAccessService.getAuthTokenProfilePicture()
-    if (tokenPhoto && this.sharedAccordionFunctionality.profileImage === 'assets/img/default-profile-image.png'){
+    if (tokenPhoto && this.sharedAccordionFunctionality.mainProfileImage == ""){
       return tokenPhoto
     } 
-    return this.sharedAccordionFunctionality.profileImage;
+    else if (this.sharedAccordionFunctionality.mainProfileImage){
+      return this.sharedAccordionFunctionality.mainProfileImage;
+    }
+    return this.sharedAccordionFunctionality.defaultProfileImage;
   }
   
   searchQuery: string = '';

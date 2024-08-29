@@ -195,7 +195,7 @@ export class EmployeeDetailsComponent implements OnInit {
         clientAllocated: this.clientId == 0 ? null : this.clientId,
         teamLead: this.employeeId == 0 ? null : this.employeeId
       }
-      this.employeeProfileService.updateEmployee(employeeProfileDto).subscribe({
+      this.employeeProfileService.updateEmployeeProfile(employeeProfileDto).subscribe({
         next: (data) => {
           this.cookieService.set('currentPage', 'Employees');
           this.saveEmployeeCustomData();

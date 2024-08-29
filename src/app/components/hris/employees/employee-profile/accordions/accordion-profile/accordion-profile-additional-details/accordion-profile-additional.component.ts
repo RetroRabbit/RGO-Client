@@ -5,7 +5,6 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
 import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
@@ -24,14 +23,13 @@ export class AccordionProfileAdditionalComponent {
   screenWidth = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])
-  usingProfile: boolean = true;
 
   onResize() {
     this.screenWidth = window.innerWidth;
   }
   @Output() updateEmployeeProfile = new EventEmitter<any>();
 
-  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   customFields: CustomField[] = [];
   unarchivedCustomDocuments: CustomField[] = [];
@@ -52,26 +50,21 @@ export class AccordionProfileAdditionalComponent {
     private route: ActivatedRoute
   ) { }
 
-  ngOnInit() {
-    this.usingProfile = this.employeeProfile && this.employeeProfile.simpleEmployee == undefined;
+  async ngOnInit() {
     this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
-    this.loadEmployeeData();
+    this.getEmployeeFieldCodes();
+    await this.getAdditionalEmployeeData();
     this.sharedAccordionFunctionality.checkAdditionalFormProgress();
   }
 
-  loadEmployeeData() {
-    if (this.authAccessService.isAdmin() || this.authAccessService.isSuperAdmin()) {
-      this.getAllEmployees();
-    }
-    this.getEmployeeFieldCodes();
-  }
-
-  getAllEmployees() {
+  async getAdditionalEmployeeData() {
     const clientData = this.sharedAccordionFunctionality.clients;
     const data = this.sharedAccordionFunctionality.employees;
-    this.sharedAccordionFunctionality.employeeTeamLead = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLead)[ 0 ];
-    this.sharedAccordionFunctionality.employeePeopleChampion = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampion)[ 0 ];
-    this.sharedAccordionFunctionality.employeeClient = clientData.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocated)[ 0 ];
+    this.sharedAccordionFunctionality.employeeTeamLeadId = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.teamLeadId)[ 0 ];
+    this.sharedAccordionFunctionality.employeePeopleChampionId = data.filter((employee: EmployeeProfile) => employee.id === this.employeeProfile?.employeeDetails.peopleChampionId)[ 0 ];
+    this.sharedAccordionFunctionality.employeeClient = clientData.filter((client: any) => client.id === this.employeeProfile?.employeeDetails.clientAllocatedId)[ 0 ];
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.additionalInfoForm.controls), "Employee", true , this.sharedAccordionFunctionality.additionalInfoForm , this.employeeProfile.employeeDetails.email!)
+    this.sharedAccordionFunctionality.additionalInfoForm.disable();
   }
 
   getEmployeeFieldCodes() {
@@ -112,10 +105,10 @@ export class AccordionProfileAdditionalComponent {
     return validators;
   }
 
-  editAdditionalDetails() {
+  async editAdditionalDetails() {
     this.sharedAccordionFunctionality.additionalInfoForm.enable();
     this.sharedAccordionFunctionality.editAdditional = true;
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.additionalInfoForm.controls), "Employee", false);
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.additionalInfoForm.controls), "Employee", false , this.sharedAccordionFunctionality.additionalInfoForm , this.employeeProfile.employeeDetails.email!)
   }
 
   cancelAdditionalEdit() {
@@ -152,24 +145,6 @@ export class AccordionProfileAdditionalComponent {
           },
           error: () => this.snackBarService.showError(`Failed to ${found ? "update" : "save"} field`)
         });
-      }
-    });
-  }
-
-  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
-    if (!this.sharedPropertyAccessService.accessProperties) return;
-    fieldNames.forEach(fieldName => {
-      const control: AbstractControl | null = this.sharedAccordionFunctionality.additionalInfoForm.get(fieldName);
-      if (control) {
-        const hasWritePermission = this.sharedPropertyAccessService.checkPermission(table, fieldName) === PropertyAccessLevel.write;
-        const hasReadPermission = this.sharedPropertyAccessService.checkPermission(table, fieldName) === PropertyAccessLevel.read;
-        if (hasWritePermission) {
-          control.enable();
-        } else if (hasReadPermission) {
-          control.disable();
-        } else {
-          control.disable();
-        }
       }
     });
   }

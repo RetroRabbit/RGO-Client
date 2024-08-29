@@ -1,7 +1,6 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -27,16 +26,14 @@ export class AccordionProfilePersonalDetailsComponent {
   editPersonal: boolean = false;
 
   @HostListener('window:resize', ['$event'])
-  usingProfile: boolean = true;
   onResize() {
     this.screenWidth = window.innerWidth;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     console.log("working")
     this.sharedAccordionFunctionality.typeOther = false;
-    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
-    this.initializeForm();
+    await this.initializeForm();
     this.loadCountries();
     this.checkDisabilityType();
 
@@ -72,7 +69,7 @@ export class AccordionProfilePersonalDetailsComponent {
     });
   }
 
-  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   checkDisabilityType() {
     if (disabilities.map(x => x.value).includes(this.employeeProfile.employeeDetails.disabilityNotes!)) {
@@ -86,7 +83,7 @@ export class AccordionProfilePersonalDetailsComponent {
     }
   }
 
-  initializeForm() {
+  async initializeForm() {
     console.log("init")
     this.sharedAccordionFunctionality.personalDetailsForm = this.fb.group({
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
@@ -97,12 +94,11 @@ export class AccordionProfilePersonalDetailsComponent {
       countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth, Validators.required],
       disabilityNotes: [this.employeeProfile!.employeeDetails.disabilityNotes]
     });
-    this.sharedAccordionFunctionality.personalDetailsForm.disable();
     this.sharedAccordionFunctionality.checkPersonalFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
     this.checkEmployeeDetails();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", true)
-    console.log(this.sharedAccordionFunctionality.personalDetailsForm.controls)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", true , this.sharedAccordionFunctionality.personalDetailsForm , this.employeeProfile.employeeDetails.email!)
+    this.sharedAccordionFunctionality.personalDetailsForm.disable();
   }
 
   constructor(
@@ -114,62 +110,25 @@ export class AccordionProfilePersonalDetailsComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     public locationApiService: LocationApiService) { }
 
-  checkEmployeeDetails() {
-    if (this.usingProfile)
-      this.checkEmployeeDetailsUsingEmployeeProfile()
-    else
-      this.checkEmployeeDetailsNotUsingEmployeeProfile()
-  }
-
-  checkEmployeeDetailsUsingEmployeeProfile() {
-    this.sharedAccordionFunctionality.employees.find((data: any) => {
-      return data.id == this.employeeProfile!.employeeDetails.teamLead
-    });
-    this.sharedAccordionFunctionality.foundClient = this.sharedAccordionFunctionality.clients.find((data: any) => {
-      return data.id == this.employeeProfile!.employeeDetails.clientAllocated
-    });
-    this.sharedAccordionFunctionality.foundChampion = this.sharedAccordionFunctionality.employees.find((data: any) => {
-      if (this.employeeProfile?.employeeDetails.peopleChampion != null) {
-        return data.id == this.employeeProfile!.employeeDetails.peopleChampion
+    checkEmployeeDetails() {
+       if (this.employeeProfile.employeeDetails.teamLeadId !== null) {
+        this.sharedAccordionFunctionality.foundTeamLead = this.employeeProfile.employeeDetails.teamLeadId;
+        this.sharedAccordionFunctionality.employeeDetailsForm.get('teamLead')?.setValue(this.employeeProfile.employeeDetails.teamLeadName);
       }
-      else return null;
-    });
-
-    if (this.sharedAccordionFunctionality.foundTeamLead != null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('teamLead')?.setValue(this.sharedAccordionFunctionality.foundTeamLead.name + ' ' + this.sharedAccordionFunctionality.foundTeamLead.surname);
-      this.employeeProfile.employeeDetails.id = this.sharedAccordionFunctionality.foundTeamLead.id
-    }
-
-    if (this.sharedAccordionFunctionality.foundClient != null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('clientAllocated')?.setValue(this.sharedAccordionFunctionality.foundClient.name);
-      this.sharedAccordionFunctionality.clientId = this.sharedAccordionFunctionality.foundClient.id
-    }
-
-    if (this.sharedAccordionFunctionality.foundChampion != null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('peopleChampion')?.setValue(this.sharedAccordionFunctionality.foundChampion.name + ' ' + this.sharedAccordionFunctionality.foundChampion.surname);
-      this.sharedAccordionFunctionality.peopleChampionId = this.sharedAccordionFunctionality.foundChampion.id
-    }
-  }
-
-  checkEmployeeDetailsNotUsingEmployeeProfile() {
-    if (this.employeeProfile.simpleEmployee.teamLeadId !== null) {
-      this.sharedAccordionFunctionality.foundTeamLead = this.employeeProfile.simpleEmployee.teamLeadId;
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('teamLead')?.setValue(this.employeeProfile.simpleEmployee.teamLeadName);
-    }
-    if (this.employeeProfile.simpleEmployee.peopleChampionId !== null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('peopleChampion')?.setValue(this.employeeProfile.simpleEmployee.peopleChampionName);
-      this.sharedAccordionFunctionality.peopleChampionId = this.employeeProfile.simpleEmployee.peopleChampionId as number;
-    }
-    if (this.employeeProfile.simpleEmployee.clientAllocatedId !== null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('clientAllocated')?.setValue(this.employeeProfile.simpleEmployee.clientAllocatedName);
-      this.sharedAccordionFunctionality.clientId = this.employeeProfile.simpleEmployee.clientAllocatedId as number;
-    }
+      if (this.employeeProfile.employeeDetails.peopleChampionId !== null) {
+        this.sharedAccordionFunctionality.employeeDetailsForm.get('peopleChampion')?.setValue(this.employeeProfile.employeeDetails.peopleChampionName);
+        this.sharedAccordionFunctionality.peopleChampionId = this.employeeProfile.employeeDetails.peopleChampionId as number;
+      }
+      if (this.employeeProfile.employeeDetails.clientAllocatedId !== null) {
+        this.sharedAccordionFunctionality.employeeDetailsForm.get('clientAllocated')?.setValue(this.employeeProfile.employeeDetails.clientAllocatedName);
+        this.sharedAccordionFunctionality.clientId = this.employeeProfile.employeeDetails.clientAllocatedId as number;
+      }
   }
 
   editPersonalDetails() {
     this.editPersonal = true;
     this.sharedAccordionFunctionality.personalDetailsForm.enable();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", false)
+    this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", false , this.sharedAccordionFunctionality.personalDetailsForm , this.employeeProfile.employeeDetails.email!)
   }
 
   setHasDisability(event: any) {
@@ -202,7 +161,7 @@ export class AccordionProfilePersonalDetailsComponent {
       this.sharedAccordionFunctionality.employeeProfileDto!.countryOfBirth = personalDetailsFormValue.countryOfBirth;
       this.sharedAccordionFunctionality.employeeProfileDto!.nationality = personalDetailsFormValue.nationality;
 
-      this.employeeProfileService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
+      this.employeeProfileService.updateEmployeeProfile(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Updated", "snack-success");
           this.sharedAccordionFunctionality.checkPersonalFormProgress();
@@ -229,41 +188,6 @@ export class AccordionProfilePersonalDetailsComponent {
     this.locationApiService.getCountries().subscribe({
       next: (data) => {
         this.countries = data
-      }
-    });
-  }
-
-  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
-    this.sharedPropertyAccessService.setAccessProperties(this.employeeProfile.employeeDetails.email!);
-    console.log("perms", fieldNames, table , initialLoad )
-    if (!this.sharedPropertyAccessService.accessProperties) {
-      return;
-    }
-    fieldNames.forEach(fieldName => {
-      let control: AbstractControl<any, any> | null = null;
-      control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
-
-      if (control) {
-        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
-          case PropertyAccessLevel.none:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
-            break;
-          case PropertyAccessLevel.read:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          case PropertyAccessLevel.write:
-            if (!initialLoad)
-              control.enable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          default:
-            if (!initialLoad)
-              control.enable();
-        }
       }
     });
   }

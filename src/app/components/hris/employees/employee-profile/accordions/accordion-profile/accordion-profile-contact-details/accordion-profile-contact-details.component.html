@@ -46,7 +46,7 @@
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Work Email</mat-label>
                                         <div class="align-text-icon">
-                                            <input matInput formControlName="email" readonly class="greyed-out">
+                                            <input matInput formControlName="email">
                                             <mat-icon
                                                 *ngIf="sharedAccordionFunctionality.employeeContactForm.get('email')?.value === null || sharedAccordionFunctionality.employeeContactForm.get('email')?.value === ''"
                                                 [ngStyle]="{color: editContact  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
