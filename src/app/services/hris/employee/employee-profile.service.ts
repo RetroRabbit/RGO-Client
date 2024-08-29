@@ -3,14 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { EmployeeFilterView } from 'src/app/models/hris/employee-filter-view.interface';
-import { shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeProfileService {
   baseUrl: string;
-  private cache = new Map<string, Observable<EmployeeFilterView[]>>();
 
   constructor(private httpClient: HttpClient) {
     this.baseUrl = `${environment.HttpsBaseURL}/employees`
@@ -52,15 +50,9 @@ export class EmployeeProfileService {
   * @returns List of EmployeeDto objects.
   */
   filterEmployees(championID: number, employeeType: number, activeStatus: boolean = true): Observable<EmployeeFilterView[]> {
-    const queryParams = `?PeopleChampId=${encodeURIComponent(championID)}&employeeType=${encodeURIComponent(employeeType)}&activeStatus=${activeStatus}`;
-    const cacheKey = `${championID}-${employeeType}-${activeStatus}`;
-    if (this.cache.has(cacheKey)) {
-      return this.cache.get(cacheKey)!;
-    }
-    const request$ = this.httpClient.get<EmployeeFilterView[]>(`${this.baseUrl}/filter-employees${queryParams}`).pipe(
-      shareReplay(1)
-    );
-    this.cache.set(cacheKey, request$);
-    return request$;
+    const queryParams = `?PeopleChampId=${encodeURIComponent(championID)}
+                        &employeeType=${encodeURIComponent(employeeType)}
+                        &activeStatus=${activeStatus}`;
+    return this.httpClient.get<EmployeeFilterView[]>(`${this.baseUrl}/filter-employees${queryParams}`);
   }
 }
