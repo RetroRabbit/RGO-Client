@@ -12,7 +12,6 @@ import { Component, Output, EventEmitter, ViewChild, HostListener, NgZone, Input
 import { Observable, catchError, first, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeType } from 'src/app/models/hris/constants/employeeTypes.constants';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface'
 import { EmployeeStatus } from 'src/app/models/hris/constants/employee-status.constants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
@@ -46,7 +45,6 @@ export class ViewEmployeeComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   _searchQuery: string = '';
-  filteredEmployees: EmployeeFilterView[] = [];
   employeeStatus: string[] = EmployeeStatus;
   getActiveEmployees: boolean = true;
   isLoading: boolean = true;
@@ -98,15 +96,21 @@ export class ViewEmployeeComponent {
       this.displayedColumns = ['Name', 'Position', 'Level', 'Client', 'Roles'];
     }
 
-    var userId = this.authAccessService.getUserId();
-    
-    this.peopleChampions.subscribe({
-      next: data =>
-        this.selectedChampion = this.isJourney
-          ? data.find(x => x.id == userId ?? 0)
-          : data.find(x => x.id == 0)
-    })
-    
+    const userId = this.authAccessService.getUserId();
+    const isPeopleChampion = this.sharedAccordionFunctionality.employees
+      .some(emp => emp.id === userId && emp.employeeType?.name === "People Champion");
+
+    if (isPeopleChampion) {
+      this.currentChampionFilter.id = this.authAccessService.getUserId();
+      this.peopleChampions.subscribe({
+        next: data => {
+          this.selectedChampion = data.find(x => x.id == this.currentChampionFilter.id)
+        }
+      })
+    }
+    else {
+      this.currentChampionFilter.id = 0;
+    }
   }
 
   ngAfterViewInit() {
@@ -120,13 +124,11 @@ export class ViewEmployeeComponent {
     this.router.navigateByUrl('/create-employee');
   }
 
-  private combineEmployeesWithRolesAndClients(
-    employees: EmployeeFilterView[]
-  ): Observable<EmployeeData[]> {
-    return forkJoin([of(employees)]).pipe(
-      map(([employees]) => this.constructEmployeeData(employees))
+  private combineEmployeesWithRolesAndClients(employees: EmployeeFilterView[]): Observable<EmployeeData[]> {
+    return of(employees).pipe(
+      map((employeeViews) => this.constructEmployeeData(employeeViews))
     );
-  }
+  }  
 
   private constructEmployeeData(
     employees: EmployeeFilterView[]
@@ -330,13 +332,16 @@ export class ViewEmployeeComponent {
 
   filterEmployeeTable() {
     this.isLoading = true;
-
-    this.employeeProfileService
-      .filterEmployees(this.currentChampionFilter.id || 0, this.currentUserTypeFilter.id || 0, this.getActiveEmployees)
-      .pipe(
-        switchMap((employees: EmployeeFilterView[]) => this.combineEmployeesWithRolesAndClients(employees)),
-        catchError((er) => {
-          this.snackBarService.showError(er);
+      this.employeeProfileService.filterEmployees(
+        this.currentChampionFilter.id || 0,
+        this.currentUserTypeFilter.id || 0,
+        this.getActiveEmployees
+      ).pipe(
+        switchMap((employees: EmployeeFilterView[]) => {
+          return this.combineEmployeesWithRolesAndClients(employees);
+        }),
+        catchError((error) => {
+          this.snackBarService.showError(error);
           return of([]);
         }),
         first()
@@ -349,16 +354,16 @@ export class ViewEmployeeComponent {
   }
 
   getPeopleChampionsForFilter(): Observable<GenericDropDownObject[]> {
-    return this.employeeProfileService.filterEmployees(0, EmployeeType.PeopleChampion).pipe(
-      map(employees => {
-        const champions: GenericDropDownObject[] = employees.map(employee => ({
-          id: employee.id || 0,
-          name: employee.name || 'Unknown'
-        }));
-        champions.unshift({ id: 0, name: 'All' });
-        return champions;
-      })
-    );
+      return this.employeeProfileService.filterEmployees(0, EmployeeType.PeopleChampion).pipe(
+        map(employees => {
+          const champions: GenericDropDownObject[] = employees.map(employee => ({
+            id: employee.id || 0,
+            name: employee.name || 'Unknown',
+          }));
+          champions.unshift({ id: 0, name: 'All' });
+          return champions;
+        })
+      );
   }
 
   toggleEmployees(event: any) {
