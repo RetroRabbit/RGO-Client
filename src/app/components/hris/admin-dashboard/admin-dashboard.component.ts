@@ -19,6 +19,7 @@ import { ChurnRateDataCard } from 'src/app/models/hris/churn-rate-data-card.inte
 import { DashboardService } from 'src/app/services/hris/employee/dashboard.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { SharedAccordionFunctionality } from '../employees/employee-profile/shared-accordion-functionality';
+import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -43,6 +44,7 @@ export class AdminDashboardComponent implements OnInit {
   @Output() expandSearch = new EventEmitter<string>();
 
   screenWidth = window.innerWidth;
+  employeeId: number = -1;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
@@ -104,7 +106,8 @@ export class AdminDashboardComponent implements OnInit {
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
-    public authAccessService: AuthAccessService) 
+    public authAccessService: AuthAccessService,
+    private sharedPropertyAccessService: SharedPropertyAccessService) 
     {
       this.editChartSubscription = this.chartService.getClickEvent().subscribe(() => {
         const activeChart = this.chartService.activeChart;
@@ -132,8 +135,9 @@ export class AdminDashboardComponent implements OnInit {
       }); 
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.roles = [this.authAccessService.getRole()];
+    await this.getUserId();
     this.configureDashboardData();
     this.setSvgWidth();
   }
@@ -147,6 +151,15 @@ export class AdminDashboardComponent implements OnInit {
       return this.svgWidth = 265;
     } else {
       return this.svgWidth = 500;
+    }
+  }
+
+  async getUserId() {
+    this.employeeId = this.authAccessService.getUserId()
+    if ( this.employeeId === -1) {
+      const email = this.authAccessService.getEmployeeEmail();
+      await this.sharedPropertyAccessService.setAccessProperties(email);
+      this.employeeId = this.authAccessService.getUserId();
     }
   }
 
@@ -234,7 +247,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   getCharts() {
-    var currentUserId = this.authAccessService.getUserId()
+    var currentUserId = this.employeeId;
     if (currentUserId) {
       this.chartService.getEmployeeCharts(currentUserId).subscribe({
         next: (data) => {
@@ -400,7 +413,7 @@ export class AdminDashboardComponent implements OnInit {
         this.selectedTypes,
         this.chartName,
         this.chartType,
-        this.authAccessService.getUserId()
+        this.employeeId
       )
       .subscribe({
         next: () => {

@@ -3,7 +3,6 @@ import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
 import { CookieService } from 'ngx-cookie-service';
-import { ChartService } from 'src/app/services/hris/charts.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
@@ -44,7 +43,6 @@ export class TopNavComponent {
 
   constructor(
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-    private chartService: ChartService,
     public router: Router,
     public cookieService: CookieService,
     public navService: NavService,
@@ -65,15 +63,6 @@ export class TopNavComponent {
   signIn() {
     this.roles = [this.authAccessService.getRole()];
     this.isLoading = false;
-    if (this.authAccessService.isSupport()) 
-    {
-      var userId = this.authAccessService.getUserId();
-      if (userId) {
-        this.chartService.getEmployeeCharts(userId).subscribe({
-          next: (data: any) => (this.charts = data),
-        });
-      }
-    }
   }
 
   getProfileImage(): string {
