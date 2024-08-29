@@ -7,6 +7,7 @@ import { EmployeeAddressPermissions } from "../../models/hris/property-access/em
 import { AuthAccessService } from "../shared-services/auth-access/auth-access.service";
 import { PropertyAccess } from "src/app/models/hris/properties.interface";
 import { lastValueFrom } from 'rxjs'; 
+import { FormGroup } from "@angular/forms";
 
 @Injectable({
     providedIn: 'root'
@@ -96,4 +97,39 @@ export class SharedPropertyAccessService {
         } catch (error) {
         }
     }
+
+    // checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean, formGroup : FormGroup): void {
+    //     this.setAccessProperties(email goes here);
+    //     console.log("perms", fieldNames, table , initialLoad )
+    //     if (!this.accessProperties) {
+    //       return;
+    //     }
+    //     fieldNames.forEach(fieldName => {
+    //       let control: AbstractControl<any, any> | null = null;
+    //       control = formGroup.get(fieldName);
+    
+    //       if (control) {
+    //         switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
+    //           case PropertyAccessLevel.none:
+    //             if (!initialLoad)
+    //               control.disable();
+    //             this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
+    //             break;
+    //           case PropertyAccessLevel.read:
+    //             if (!initialLoad)
+    //               control.disable();
+    //             this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+    //             break;
+    //           case PropertyAccessLevel.write:
+    //             if (!initialLoad)
+    //               control.enable();
+    //             this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+    //             break;
+    //           default:
+    //             if (!initialLoad)
+    //               control.enable();
+    //         }
+    //       }
+    //     });
+    //   }
 }

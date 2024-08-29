@@ -33,6 +33,7 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   ngOnInit() {
+    console.log("working")
     this.sharedAccordionFunctionality.typeOther = false;
     this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
@@ -86,6 +87,7 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   initializeForm() {
+    console.log("init")
     this.sharedAccordionFunctionality.personalDetailsForm = this.fb.group({
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
@@ -100,6 +102,7 @@ export class AccordionProfilePersonalDetailsComponent {
     this.sharedAccordionFunctionality.totalProfileProgress();
     this.checkEmployeeDetails();
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", true)
+    console.log(this.sharedAccordionFunctionality.personalDetailsForm.controls)
   }
 
   constructor(
@@ -166,6 +169,7 @@ export class AccordionProfilePersonalDetailsComponent {
   editPersonalDetails() {
     this.editPersonal = true;
     this.sharedAccordionFunctionality.personalDetailsForm.enable();
+    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", false)
   }
 
   setHasDisability(event: any) {
@@ -230,6 +234,8 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
+    this.sharedPropertyAccessService.setAccessProperties(this.employeeProfile.employeeDetails.email!);
+    console.log("perms", fieldNames, table , initialLoad )
     if (!this.sharedPropertyAccessService.accessProperties) {
       return;
     }

@@ -373,27 +373,19 @@ export class AccordionProfileEmployeeDetailsComponent {
     this.sharedAccordionFunctionality.physicalEqualPostal = !this.sharedAccordionFunctionality.physicalEqualPostal;
   }
 
-  hasPermission(fieldName: string, table: string, initialLoad: boolean): boolean {
-    if (initialLoad || this.sharedPropertyAccessService.checkPermission(table, fieldName) !== PropertyAccessLevel.none) {
-      return true;
-    }
-    return false;
-  }
-
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     if (!this.sharedPropertyAccessService.accessProperties) {
       return;
     }
     fieldNames.forEach(fieldName => {
       let control: AbstractControl<any, any> | null = null;
-      control = this.sharedAccordionFunctionality.employeeContactForm.get(fieldName);
+      control = this.sharedAccordionFunctionality.employeeDetailsForm.get(fieldName);
 
       if (control) {
         switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
           case PropertyAccessLevel.none:
             if (!initialLoad)
               control.disable();
-            this.sharedAccordionFunctionality.employeeContactForm.removeControl(fieldName);
             this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
             break;
           case PropertyAccessLevel.read:
