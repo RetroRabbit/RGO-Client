@@ -31,7 +31,6 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   async ngOnInit() {
-    console.log("working")
     this.sharedAccordionFunctionality.typeOther = false;
     await this.initializeForm();
     this.loadCountries();
@@ -84,7 +83,6 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   async initializeForm() {
-    console.log("init")
     this.sharedAccordionFunctionality.personalDetailsForm = this.fb.group({
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
