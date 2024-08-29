@@ -39,7 +39,7 @@ export class ChartService {
 
   getEmployeeCharts(employeeId: number): Observable<ChartData[]> {
     const queryParams = `?employeeId=${employeeId}`;
-    return this.httpClient.get<ChartData[]>(`${this.baseUrl}/employee/${queryParams}`);
+    return this.httpClient.get<ChartData[]>(`${this.baseUrl}/employee${queryParams}`);
   }
 
   createChart(dataType: string[], roles: string[], chartName: string, chartType: string, employeeId: number): Observable<any> {
