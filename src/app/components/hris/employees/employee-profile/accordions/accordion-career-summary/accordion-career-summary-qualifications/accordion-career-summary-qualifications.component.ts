@@ -1,6 +1,5 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { PropertyAccessLevel } from 'src/app/models/hris/constants/enums/property-access-levels.enum';
@@ -34,13 +33,14 @@ export class CareerSummaryQualificationsComponent {
     public navservice: NavService
   ) { }
 
-  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   isValidFile: boolean = false;
   isValidFileSize: boolean = false;
   fileUploaded: boolean = false;
   isDisabledUpload: boolean = true;
   isDisabledDownload: boolean = true;
+  editQualifications: boolean = false;
 
   fileName: string = '';
   base64File: string = "";
@@ -66,7 +66,6 @@ export class CareerSummaryQualificationsComponent {
         this.sharedAccordionFunctionality.calculateQualificationProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
-      error: (er) => this.snackBarService.showError(er),
     })
   }
 
@@ -88,11 +87,11 @@ export class CareerSummaryQualificationsComponent {
         proofOfQualification: [this.sharedAccordionFunctionality.employeeQualification.proofOfQualification],
       });
     }
-
-    this.sharedAccordionFunctionality.editQualifications = false;
+    this.editQualifications = false;
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
     this.isDisabledUpload = true;
     this.isDisabledDownload = true;
+    this.sharedAccordionFunctionality.calculateQualificationProgress();
     this.sharedAccordionFunctionality.totalCareerProgress();
     this.fileName = this.sharedAccordionFunctionality.employeeQualification ? this.sharedAccordionFunctionality.employeeQualification.documentName : '';
     this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualifications", true)
@@ -142,14 +141,14 @@ export class CareerSummaryQualificationsComponent {
   }
 
   editQualificationsDetails() {
-    this.sharedAccordionFunctionality.editQualifications = true;
+    this.editQualifications = true;
     this.sharedAccordionFunctionality.employeeQualificationForm.enable();
     this.isDisabledUpload = false;
     this.isDisabledDownload = false;
   }
 
   cancelQualificationsEdit() {
-    this.sharedAccordionFunctionality.editQualifications = false;
+    this.editQualifications = false;
     this.isDisabledUpload = true;
     this.isDisabledDownload = true;
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();

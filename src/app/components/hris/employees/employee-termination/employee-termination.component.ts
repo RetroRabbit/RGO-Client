@@ -8,6 +8,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { EmployeeTerminationService } from 'src/app/services/hris/employee/employee-termination.service';
 import { endDateAfterStartDateValidator } from 'src/app/components/shared-components/form-validators/dateValidator';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 
 @Component({
   selector: 'app-employee-termination',
@@ -39,9 +40,10 @@ export class EmployeeTerminationComponent implements OnInit {
   terminationOptionValue: number = 0;
   interviewDocFilename: string = "";
   base64String: string = "";
-  employeeId = this.route.snapshot.params['id'];
+  employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
 
   constructor(
+    public authAccessService: AuthAccessService,
     private navService: NavService,
     private fb: FormBuilder,
     private router: Router,

@@ -4,7 +4,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeType } from 'src/app/models/hris/employee-type.model';
-import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-type.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { levels } from 'src/app/models/hris/constants/levels.constants';
 import { races } from 'src/app/models/hris/constants/races.constants';
@@ -19,7 +18,6 @@ import { MatStepper } from '@angular/material/stepper';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { Router } from '@angular/router';
 import { CustomvalidationService } from 'src/app/services/hris/id-validator.service';
-import { LocationApiService } from 'src/app/services/hris/location-api.service';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
 import { Employee } from 'src/app/models/hris/employee.interface';
@@ -41,8 +39,8 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeProfileService: EmployeeProfileService,
-    private employeeTypeService: EmployeeTypeService,
     private employeeAddressService: EmployeeAddressService,
     private cookieService: CookieService,
     private router: Router,
@@ -52,7 +50,6 @@ export class NewEmployeeComponent implements OnInit {
     public navService: NavService,
     public locationApiService: LocationApiService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-
   ) {
     this.navService.hideNav();
   }
@@ -68,7 +65,6 @@ export class NewEmployeeComponent implements OnInit {
   races: string[] = races.map((race) => race.value);
   genders: string[] = genders.map((gender) => gender.value);
   provinces: string[] = [];
-  countries: string[] = [];
   cities: string[] = [];
   employeeEmails: (string | undefined)[] = [];
   newEmployeeEmail = "";
@@ -135,7 +131,6 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadCountries();
     this.initializeForm();
     this.employeeEmails = this.sharedAccordionFunctionality.employees.map(employee => employee.email);
   }
@@ -179,21 +174,13 @@ export class NewEmployeeComponent implements OnInit {
       disabilityNotesControl?.updateValueAndValidity();
     });
 
-    this.employeeTypeService.getAllEmployeeTypes().subscribe({
-      next: (data: EmployeeType[]) => {
-        this.employeeTypes = data.sort((a, b) => {
-          const nameA = (a.name || '').toLowerCase();
-          const nameB = (b.name || '').toLowerCase();
-          return nameA.localeCompare(nameB);
-        });
-      },
+    var data = this.sharedAccordionFunctionality.employeeTypes;
+    this.employeeTypes = data.sort((a, b) => {
+      const nameA = (a.name || '').toLowerCase();
+      const nameB = (b.name || '').toLowerCase();
+      return nameA.localeCompare(nameB);
     });
-
-    this.employeeProfileService
-      .getEmployeeProfiles()
-      .subscribe((data: EmployeeProfile[]) => {
-        this.Employees = data;
-      });
+    this.Employees = this.sharedAccordionFunctionality.employees;
   }
 
   saveAndExit() {
@@ -204,6 +191,7 @@ export class NewEmployeeComponent implements OnInit {
     this.clearFormErrorsAndValues(this.uploadDocumentForm);
     this.clearFormErrorsAndValues(this.physicalAddress);
     this.removeAllDocuments();
+    this.goToPreviousPage();
   }
 
   saveAndAddAnother() {
@@ -228,7 +216,7 @@ export class NewEmployeeComponent implements OnInit {
         this.snackBarService.showSnackbar("Employee Saved", "snack-success");
         this.isDirty = false;
         this.newEmployeeForm.reset();
-        this.employeeProfileService.getEmployeeProfileByEmail(this.newEmployeeEmail).subscribe({
+        this.employeeProfileService.getEmployeeProfile(this.newEmployeeEmail).subscribe({
           next: employeeProfile => {
             documents.forEach(element => {
               element.employeeId = employeeProfile.id as number;
@@ -249,7 +237,7 @@ export class NewEmployeeComponent implements OnInit {
         })
       },
       error: () => {
-        this.snackBarService.showSnackbar(`Some Fields Are Still Missing Information`, "snack-error");
+        this.snackBarService.showSnackbar(`There was an issue with creating.`, "snack-error");
         this.isDirty = false;
       },
     });
@@ -257,7 +245,7 @@ export class NewEmployeeComponent implements OnInit {
 
   onUploadDocument(nextPage: string): void {
     var documents = this.employeeDocumentModels
-
+    
     if (documents.length > 0) {
       documents.forEach((documentModel) => {
         this.employeeDocumentService.saveEmployeeDocument(documentModel, 0).subscribe({
@@ -286,27 +274,6 @@ export class NewEmployeeComponent implements OnInit {
       this.inputField.reset();
       document.querySelector('.cellphone-container')?.classList.remove('has-value');
     }
-  }
-
-  onCountryChange(country: string): void {
-    this.countrySelected = country;
-    this.provinces = [];
-    this.cities = [];
-    this.loadProvinces(this.countrySelected);
-  }
-
-  loadProvinces(country: string): void {
-    this.locationApiService.getProvinces(country).subscribe({
-      next: (data) => this.provinces = data
-    });
-    this.cities = [];
-  }
-
-  loadCities(province: string): void {
-    this.locationApiService.getCities(this.countrySelected, province).subscribe({
-      next: (data) => this.cities = data,
-      error: (er) => this.snackBarService.showError(er),
-    });
   }
 
   filterChampions(event: any) {
@@ -404,6 +371,7 @@ export class NewEmployeeComponent implements OnInit {
   get physicalAddressObj(): EmployeeAddress {
     return {
       id: 0,
+      employeeId: -1,
       unitNumber: this.physicalAddress.value.unitNumber!,
       complexName: this.physicalAddress.value.complexName!,
       suburbOrDistrict: this.physicalAddress.value.suburbDistrict!,

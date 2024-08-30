@@ -10,7 +10,9 @@ import { tap } from 'rxjs/operators';
 })
 export class AuthService {
   baseUrl: string;
-  photo: string | undefined;
+  photo: string = '';
+  name: string | undefined;
+  surname: string | undefined;
 
   constructor(
     private auth0: Auth0.AuthService,
@@ -34,7 +36,10 @@ export class AuthService {
     try {
       const accessToken = await firstValueFrom(this.auth0.getAccessTokenSilently().pipe(take(1)));
       if (accessToken) {
-        this.photo = this.decodeJwt(accessToken).photo || undefined;
+        var token = this.decodeJwt(accessToken);
+        this.name = token.name;
+        this.surname = token.surname;
+        this.photo = token.photo;
         return accessToken;
       } else {
         throw new Error('Failed to retrieve access token (data is null or undefined).');

@@ -14,6 +14,7 @@ import { SystemNav } from 'src/app/services/hris/system-nav.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
+import { SharedAccordionFunctionality } from '../../employees/employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-manage-field-code',
@@ -66,25 +67,14 @@ export class ManageFieldCodeComponent {
     private systemService: SystemNav,
     public navService: NavService,
     private ngZone: NgZone,
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private authAccessService: AuthAccessService
   ) {
     this.dialogTypeData = new DialogTypeData().dialogTypeData;
   }
 
   ngOnInit(): void {
-    if (this.authAccessService.isAdmin() ||
-      this.authAccessService.isSuperAdmin() ||
-      this.authAccessService.isTalent() ||
-      this.authAccessService.isJourney()) {
-      this.fetchData();
-    }
-  }
-
-  ngAfterViewInit(): void {
-    if (this.authAccessService.isAdmin() ||
-      this.authAccessService.isSuperAdmin() ||
-      this.authAccessService.isTalent() ||
-      this.authAccessService.isJourney()) {
+    if (this.authAccessService.isSupport()) {
       this.fetchData();
     }
   }
@@ -92,8 +82,9 @@ export class ManageFieldCodeComponent {
   fetchData(active: number = 0) {
     this.isLoading = true;
     this.customFieldService.getAllFieldCodes().subscribe({
-      next: fieldCodes => {
-        this.customFields = fieldCodes;
+      next: data => {
+        this.sharedAccordionFunctionality.fieldCodes = data;
+        this.customFields = data;
         this.filteredCustomFields = this.customFields.filter(field => field.status == active);
         this.getDataSource();
         this.runCounter++;

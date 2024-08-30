@@ -26,14 +26,14 @@
                                     <div class="row">
                                         <div class="col-12 ps-4 mt-1"
                                             *ngIf="hasBankingData && employeeBanking[this.employeeBanking.length-1].status > 0">
-                                            Last updated: {{employeeBanking[this.employeeBanking.length-1].lastUpdateDate | date}}
+                                            Last updated: {{bankingUpdate}}
                                         </div>
                                         <div class="col-11 px-4" *ngIf="hasBankingData && employeeBanking[this.employeeBanking.length-1].status > 0">
                                             <hr>
                                         </div>
                                         <div class="col-7 ps-4 pt-2" id="last-updated"
                                             *ngIf="hasBankingData && employeeBanking[this.employeeBanking.length-1].pendingUpdateDate">
-                                            Update submitted on {{employeeBanking[this.employeeBanking.length-1].pendingUpdateDate | date}}
+                                            Update submitted on {{bankingUpdate}}
                                         </div>
                                         <div *ngIf="hasBankingData;else NoBankingInfo" class="col-4" id="statuses">
                                             <div *ngIf="employeeBanking[this.employeeBanking.length-1].status === 0" id="status-0">
@@ -62,31 +62,40 @@
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Account Type</mat-label>
+                                    <div class="align-text-icon">
                                     <mat-select placeholder="Select Type" formControlName="accountType"
                                         hideSingleSelectionIndicator="true">
                                         <mat-option *ngFor="let accountType of accountTypes" [value]="accountType.id">
                                             {{accountType.value}}
                                         </mat-option>
                                     </mat-select>
+                                    <mat-icon *ngIf="employeeBankingsForm.get('accountType')?.value === null || employeeBankingsForm.get('accountType')?.value === -1" [ngStyle]="{color: editBanking? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                    </div>
                                 </mat-form-field>
                             </div>
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Bank Name</mat-label>
+                                    <div class="align-text-icon">
                                     <mat-select placeholder="Select bank" formControlName="bankName"
                                         hideSingleSelectionIndicator="true">
                                         <mat-option *ngFor="let bank of banks" [value]="bank.value">
                                             {{bank.value}}
                                         </mat-option>
                                     </mat-select>
+                                    <mat-icon *ngIf="employeeBankingsForm.get('bankName')?.value === null || employeeBankingsForm.get('bankName')?.value === ''" [ngStyle]="{color: editBanking? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                </div>
                                 </mat-form-field>
                             </div>
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Account Number</mat-label>
+                                    <div class="align-text-icon">
                                     <input type="text" min="0" matInput placeholder="Enter account number"
                                         formControlName="accountNo">
-                                    <mat-error
+                                        <mat-icon *ngIf="employeeBankingsForm.get('accountNo')?.value === null || employeeBankingsForm.get('accountNo')?.value === ''" [ngStyle]="{color: editBanking? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                    </div>
+                                        <mat-error
                                         *ngIf="employeeBankingsForm.controls['accountNo'].hasError('required')">Account
                                         number is required</mat-error>
                                     <mat-error
@@ -97,9 +106,12 @@
                             <div class="col-12 col-md-6 my-2">
                                 <mat-form-field appearance="outline" id="banking-field">
                                     <mat-label>Branch Code</mat-label>
+                                    <div class="align-text-icon">
                                     <input type="text" min="0" matInput placeholder="Enter branch code"
                                         formControlName="branch">
-                                    <mat-error
+                                        <mat-icon *ngIf="employeeBankingsForm.get('branch')?.value === null || employeeBankingsForm.get('branch')?.value === ''" [ngStyle]="{color: editBanking? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                    </div>
+                                        <mat-error
                                         *ngIf="employeeBankingsForm.controls['branch'].hasError('required')">Branch code
                                         is required</mat-error>
                                     <mat-error
@@ -114,20 +126,15 @@
                                 </mat-label>
                                 <div class="my-2">
                                     <div [ngClass]="screenWidth <= 767 ?'':'row'">
-                                        <div *ngIf="hasFile">
-                                            <button mat-button color="primary"
-                                                [hidden]="employeeBanking[this.employeeBanking.length-1].file.length == 0"
-                                                (click)="convertFileToBase64()">Download</button>
-                                        </div>
-                                        <div class="col-12 row d-flex justify-content-center align-content-center"
-                                            [hidden]="!editBanking" (click)="openFileInput()">
-                                            <div class="col-12 row ms-1" *ngIf="bankingPDFName.length > 1">
-                                                <div class="col-1 p-0">
-                                                    <img id="pdf-icon" alt="pdf-icon"
-                                                        src="../../../../../../assets/img/pdf-icon.svg">
-                                                </div>
-                                                <p class="col-11" id="recently-uploaded">{{bankingPDFName}}</p>
+                                        <div class="col-6 row ms-1 d-flex align-items-center poa-name" >
+                                            <div class="col-1 p-0">
+                                                <img id="pdf-icon" alt="pdf-icon"
+                                                    src="../../../../../../assets/img/pdf-icon.svg">
                                             </div>
+                                            <p class="col-11 mt-3" id="recently-uploaded" (click)="convertFileToBase64()">{{bankingPDFName}}</p>
+                                        </div>
+                                        <div class="col-6 row d-flex justify-content-center align-content-center"
+                                            [hidden]="!editBanking" (click)="openFileInput()">
                                             <div *ngIf="!editBanking"
                                                 class="col-12 rounded-5 bg-light d-flex justify-content-center align-content-center align-items-center ms-4">
                                                 <div class="col-1" id="uploadfile">
@@ -151,6 +158,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <mat-error class="proof-of-account-error" *ngIf="employeeBankingsForm.get('file')?.hasError('required') && !hasFile">
+                                            Proof of Account is required
+                                          </mat-error>
                                     </div>
                                 </div>
                             </div>

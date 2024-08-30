@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
@@ -7,11 +7,13 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 import { WorkExperience } from 'src/app/models/hris/work-experience.interface';
 import { EmployeeCertificatesService } from 'src/app/services/hris/employee/employee-certificate.service';
 import { EmployeeDataService } from 'src/app/services/hris/employee/employee-data.service';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { EmployeeQualificationsService } from 'src/app/services/hris/employee/employee-qualifications.service';
 import { WorkExperienceService } from 'src/app/services/hris/employee/employee-work-experience.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { SharedAccordionFunctionality } from '../employees/employee-profile/shared-accordion-functionality';
+import { CookieService } from 'ngx-cookie-service';
+import { SystemNav } from 'src/app/services/hris/system-nav.service';
 
 @Component({
   selector: 'app-cv-document',
@@ -21,15 +23,15 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 
 export class CvDocumentComponent {
 
-  employeeId = this.route.snapshot.params['id'];
+  employeeId: any;
   selectedEmployee!: EmployeeProfile;
   employeeProfile!: EmployeeProfile;
   employeeWorkExp: WorkExperience[] = [];
   employeeCertificate: EmployeeCertificates[] = [];
-  loggedInProfile!: EmployeeData;
   skills: string[] = [];
   filteredSkills: string[] = [];
   experienceData: EmployeeData[] = [];
+  previousPage: string = '';
   name: string | undefined = '';
   surname: string | undefined = '';
   role: string | undefined = '';
@@ -43,21 +45,24 @@ export class CvDocumentComponent {
   numberOfYears: string | undefined = '';
   pronoun: string | undefined = '';
   isLoading: boolean = true;
+  PREVIOUS_PAGE = "previousPage";
+
 
   constructor(
-    private employeeProfileService: EmployeeProfileService,
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    private cookieService: CookieService,
     private route: ActivatedRoute,
+    public router: Router,
     public authAccessService: AuthAccessService,
     private employeeQaulificationService: EmployeeQualificationsService,
     private employeeCertificationService: EmployeeCertificatesService,
     private employeeWorkExperienceService: WorkExperienceService,
     public navService: NavService,
-    private employeeData: EmployeeDataService,
+    public systemNavItemService: SystemNav,
   ) { }
 
   ngOnInit() {
-    this.employeeId = this.route.snapshot.params['id'];
-    this.loggedInProfile = this.navService.getEmployeeProfile();
+    this.employeeId = this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
 
     if (this.employeeId == undefined) {
       this.employeeId = this.authAccessService.getUserId();
@@ -66,27 +71,27 @@ export class CvDocumentComponent {
     this.getQualifications();
     this.getCertifications();
     this.getEmployeeWorkExp();
+    this.previousPage = this.cookieService.get(this.PREVIOUS_PAGE);
+    this.goToProfile();
+  }
+
+  goToProfile() {
+    this.router.navigateByUrl('/profile/' + this.employeeId);
   }
 
   getEmployeeInformation() {
-    this.employeeProfileService.getEmployeeById(this.employeeId).subscribe({
-      next: data => {
-        this.name = data.name;
-        this.surname = data.surname;
-        this.role = data.employeeType?.name;
-        this.level = data.level;
-        this.getAdditionalFields();
-      }
-    })
+    var data = this.sharedAccordionFunctionality.selectedEmployee;
+    this.name = data.name;
+    this.surname = data.surname;
+    this.role = data.employeeType?.name;
+    this.level = data.level;
+    this.getAdditionalFields();
   }
 
   getAdditionalFields() {
-    this.employeeData.getEmployeeData(this.employeeId).subscribe({
-      next: data => {
-        this.experienceData = data.filter(field => field.fieldCodeId == 5);
-        this.numberOfYears = this.experienceData[0].value;
-      }
-    })
+    var data = this.sharedAccordionFunctionality.employeeData;
+    this.experienceData = data.filter(field => field.fieldCodeId == 5);
+    this.numberOfYears = this.experienceData[0].value;
   }
 
   getEmployeeWorkExp() {

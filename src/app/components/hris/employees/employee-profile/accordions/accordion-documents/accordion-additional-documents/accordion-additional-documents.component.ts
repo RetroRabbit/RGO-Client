@@ -1,8 +1,7 @@
-import { Component, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
-import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -13,6 +12,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { MatTableDataSource } from '@angular/material/table';
 import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Component({
   selector: 'app-accordion-additional-documents',
@@ -45,13 +45,13 @@ export class AccordionDocumentsCustomDocumentsComponent {
   PREVIOUS_PAGE = "previousPage";
   allowedTypes = ['application/pdf'];
   base64String: string = "";
-  employeeId = this.route.snapshot.params['id'];
+  employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
   dataSource = new MatTableDataSource<FileCategory>(this.fileCategories);
   infinity = Infinity;
   selectedFieldCode: string = '';
 
   constructor(
-    private customFieldService: CustomFieldService,
+    private storeAccessService: StoreAccessService,
     private route: ActivatedRoute,
     private employeeDocumentService: EmployeeDocumentService,
     private fb: FormBuilder,
@@ -62,6 +62,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   ngOnInit() {
     this.roles = [this.authAccessService.getRole()];
+    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     this.getDocumentFieldCodes();
     this.getAdditionalDocuments();
   }
@@ -80,7 +81,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
         error: (er) => this.snackBarService.showError(er),
       });
     } else {
-      this.employeeId = this.navService.employeeProfile.id;
+      this.employeeId = this.authAccessService.getUserId()
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 4).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.additionalDocuments = data;
@@ -115,13 +116,10 @@ export class AccordionDocumentsCustomDocumentsComponent {
   }
 
   getDocumentFieldCodes() {
-    this.customFieldService.getAllFieldCodes().subscribe({
-      next: data => {
-        const documentFieldCodes = data.filter(fieldCode => fieldCode.type === 5); 
-        this.checkCustomDocumentsInformation();
-        this.checkArchived(documentFieldCodes);
-      }
-    })
+    var data = this.sharedAccordionFunctionality.fieldCodes;
+    const documentFieldCodes = data.filter(fieldCode => fieldCode.type === 5); 
+    this.checkCustomDocumentsInformation();
+    this.checkArchived(documentFieldCodes);
   }
 
   checkArchived(fields: CustomField[]) {

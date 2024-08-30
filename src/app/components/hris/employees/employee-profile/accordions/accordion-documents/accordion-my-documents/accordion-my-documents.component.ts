@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { EmployeeDocumentService } from 'src/app/services/hris/employee/employee-document.service';
 import { MyDocumentTypes, FileCategory } from 'src/app/models/hris/constants/documents.contants';
@@ -35,7 +35,7 @@ export class AccordionDocumentsAdditionalComponent {
   isLoadingDocument: boolean = false;
   fileCategories: FileCategory[] = [];
   base64String: string = "";
-  employeeId = this.route.snapshot.params['id'];
+  employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
   previousPage: string = '';
   PREVIOUS_PAGE = "previousPage";
   showBackButtons: boolean = true;
@@ -60,6 +60,7 @@ export class AccordionDocumentsAdditionalComponent {
 
   ngOnInit() {
     this.roles = [this.authAccessService.getRole()];
+    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     this.getAdditionalDocuments();
   }
 
@@ -181,7 +182,7 @@ export class AccordionDocumentsAdditionalComponent {
         error: (er) => this.snackBarService.showError(er),
       })
     } else {
-      this.employeeId = this.navService.employeeProfile.id;
+      this.employeeId = this.authAccessService.getUserId()
       this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId, 1).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.myDocuments = data;

@@ -6,13 +6,13 @@ import { EmployeeProfilePermissions } from "../../models/hris/property-access/em
 import { EmployeeAddressPermissions } from "../../models/hris/property-access/employee-address-properties.interface";
 import { AuthAccessService } from "../shared-services/auth-access/auth-access.service";
 import { PropertyAccess } from "src/app/models/hris/properties.interface";
+import { lastValueFrom } from 'rxjs'; 
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class SharedPropertyAccessService {
-    userId = this.authAccessService.getUserId();
     accessProperties!: PropertyAccess[];
 
     public employeeProfilePermissions: EmployeeProfilePermissions = {
@@ -49,25 +49,24 @@ export class SharedPropertyAccessService {
         salary: true,
         clientAllocated: true,
         teamLead: true,
-        physicalAddress: true,
-        postalAddress: true,
         houseNo: true,
         emergencyContactName: true,
         emergencyContactNo: true,
-        highestQualification : true,
-        school : true,
-        degree : true,
-        fieldOfStudy : true,
-        year : true ,
-        nqfLevel : true ,
+        highestQualification: true,
+        school: true,
+        degree: true,
+        fieldOfStudy: true,
+        year: true,
+        nqfLevel: true,
         proofOfQualification: true,
-        downloadDocument : true ,
-        addAnotherQualification : true,
-        editQualification : true ,
+        downloadDocument: true,
+        addAnotherQualification: true,
+        editQualification: true,
     };
 
     public employeeAddressPermissions: EmployeeAddressPermissions = {
         id: true,
+        employeeId: true,
         unitNumber: true,
         complexName: true,
         streetNumber: true,
@@ -89,16 +88,12 @@ export class SharedPropertyAccessService {
         return matchingAccess ? matchingAccess.accessLevel : PropertyAccessLevel.write;
     }
 
-    public setAccessProperties() {
-        this.accessPropertiesService.FetchUserId(this.authAccessService.getEmployeeEmail()).subscribe({
-            next: (userId) => {
-                this.userId = userId;
-                this.accessPropertiesService.GetAccessProperties(userId).subscribe({
-                    next: (accessProperties) => {
-                        this.accessProperties = accessProperties;
-                    }
-                });
-            }
-        });
+    public async setAccessProperties(email: string): Promise<void> {
+        try {
+            const userId = await lastValueFrom(this.accessPropertiesService.FetchUserIdByEmail(email));
+            this.authAccessService.setUserId(userId);
+            this.accessProperties = await lastValueFrom(this.accessPropertiesService.GetAccessProperties(userId));
+        } catch (error) {
+        }
     }
 }
