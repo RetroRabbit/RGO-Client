@@ -135,7 +135,6 @@ export class NewEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.employeeEmails = this.sharedAccordionFunctionality.employees.map(employee => employee.email);
-
   }
 
   ngOnDestroy() {
