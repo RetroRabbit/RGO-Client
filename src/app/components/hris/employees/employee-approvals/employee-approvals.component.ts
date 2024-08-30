@@ -159,7 +159,7 @@ export class EmployeeApprovalsComponent {
       approval: status,
       date: isBanking
         ? documentOrBanking.employeeBankingDto.lastUpdateDate
-        : documentOrBanking.employeeDocumentDto.lastUpdatedDate,
+        : documentOrBanking.employeeDocumentDto.uploadDate,
     });
   }
 
