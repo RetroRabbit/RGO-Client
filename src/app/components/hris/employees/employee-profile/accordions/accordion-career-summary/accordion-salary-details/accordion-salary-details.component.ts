@@ -97,7 +97,6 @@ export class AccordionSalaryDetailsComponent {
         next: async data => {
           this.employeeSalary = data;
           await this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
-          this.sharedAccordionFunctionality.calculateSalaryDetails();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
         error: (er) => this.snackBarService.showError(er),
@@ -108,7 +107,6 @@ export class AccordionSalaryDetailsComponent {
         next: async data => {
           this.employeeSalary = data;
           await this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
-          this.sharedAccordionFunctionality.calculateSalaryDetails();
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
         error: (er) => this.snackBarService.showError(er),
@@ -183,7 +181,6 @@ export class AccordionSalaryDetailsComponent {
             this.editSalary = false;
             this.sharedAccordionFunctionality.salaryDetailsForm.disable();
             this.getEmployeeDetails();
-            this.sharedAccordionFunctionality.calculateSalaryDetails();
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
           error: (er) => this.snackBarService.showError(er),
@@ -201,7 +198,6 @@ export class AccordionSalaryDetailsComponent {
             this.editSalary = false;
             this.sharedAccordionFunctionality.salaryDetailsForm.disable();
             this.getEmployeeDetails();
-            this.sharedAccordionFunctionality.calculateSalaryDetails();
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
           error: (er) => this.snackBarService.showError(er),

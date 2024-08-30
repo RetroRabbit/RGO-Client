@@ -207,7 +207,7 @@ main {
       height:0px !important;
       width:0px !important;
   }
-  
+
 #upload-button {
     margin-top: 7px;
     padding: 10px 24px;
@@ -568,14 +568,21 @@ button[disabled],
 }
 
 .cellphone-label {
-    margin-left: 95px; 
+    margin-left: 95px;
   }
-  
+
 .cellphone-container:focus-within .cellphone-label,
-.cellphone-container.has-value .cellphone-label {  
-    margin-left: 0; 
+.cellphone-container.has-value .cellphone-label {
+    margin-left: 0;
 }
 
 .cellphone-container {
     margin-bottom: 1rem;
+}
+
+.error-message{
+    color:#F44336;
+    margin-top:-30px;
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
 }
