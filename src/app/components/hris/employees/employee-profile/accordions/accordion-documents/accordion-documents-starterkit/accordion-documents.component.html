@@ -93,14 +93,11 @@
                                 <div *ngIf="document.status === 1" id="status-2">
                                     <span>{{ 'Pending Approval' }}</span>
                                 </div>
-                                <div *ngIf="document.status === 3" id="status-3">
-                                    <span>{{ 'Action Required' }}</span>
-                                </div>
                             </div>
                             <ng-template #noDoc>
                                 <div id="status-null">
                                     <span>{{ 'Awaiting Documents' }}</span>
-                                </div>
+                                </div>  
                             </ng-template>
                         </div>
                         <div *ngIf="getFileName(i) as document" id="reject-reason">

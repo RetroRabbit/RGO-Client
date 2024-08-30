@@ -1,5 +1,5 @@
 import { NgModule, isDevMode } from '@angular/core';
-import {MatBadgeModule} from '@angular/material/badge'
+import { MatBadgeModule } from '@angular/material/badge'
 import { SignInComponent } from './components/hris/sign-in/sign-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from '@auth0/auth0-angular';
@@ -34,7 +34,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -96,8 +96,10 @@ import { CvDocumentComponent } from './components/hris/cv-document/cv-document.c
 import { StoreModule } from '@ngrx/store';
 import { loginReducer } from './components/shared-components/store/reducers/sign-in.reducer';
 import { LoginEffects } from './components/shared-components/store/effects/sign-in.effects';
-import { clientReducer } from './components/shared-components/store/reducers/client.reducer';
-import { ClientEffects } from './components/shared-components/store/effects/client.effects';
+import { employeeProfileDetailsReducer } from './components/shared-components/store/reducers/employee-profile-details.reducer';
+import { EmployeeProfileDetailsEffects } from './components/shared-components/store/effects/employee-profile-details.effects';
+import { GlobalSpinnerComponent } from './components/hris/global-spinner/global-spinner.component';
+import { LoaderInterceptor } from './components/shared-components/interceptor/loader.interceptor';
 
 @NgModule({
   declarations: [
@@ -149,7 +151,7 @@ import { ClientEffects } from './components/shared-components/store/effects/clie
     AccordionSalaryDetailsComponent,
     EmployeeTerminationComponent,
     CvDocumentComponent,
-
+    GlobalSpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -161,10 +163,10 @@ import { ClientEffects } from './components/shared-components/store/effects/clie
     MatSnackBarModule,
     ClipboardModule,
     StoreModule.forRoot({
-      token: loginReducer, 
-      clients: clientReducer
+      token: loginReducer,
+      employeeProfileDetails: employeeProfileDetailsReducer,
     }),
-    EffectsModule.forRoot([LoginEffects, ClientEffects]),
+    EffectsModule.forRoot([LoginEffects, EmployeeProfileDetailsEffects,]),
     AuthModule.forRoot({
       domain: process.env['AUTH0_Domain_key'] || 'null',
       clientId: process.env['AUTH0_CLIENT_ID'] || 'null',
@@ -221,6 +223,7 @@ import { ClientEffects } from './components/shared-components/store/effects/clie
   providers: [
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
   ],
   bootstrap: [AppComponent],

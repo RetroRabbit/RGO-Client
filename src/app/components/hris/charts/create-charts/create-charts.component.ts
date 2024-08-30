@@ -3,7 +3,7 @@ import { ChartService } from 'src/app/services/hris/charts.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 @Component({
   selector: 'app-create-charts',
   templateUrl: './create-charts.component.html',
@@ -37,7 +37,7 @@ export class CreateChartsComponent {
     private router: Router,
     private cookieService: CookieService,
     private snackBarService: SnackbarService, 
-    private navService : NavService) {
+    public authAccessService: AuthAccessService) {
   }
 
   ngOnInit(): void {
@@ -48,7 +48,7 @@ export class CreateChartsComponent {
   }
 
   createChart() {
-    this.ChartService.createChart(this.selectedDataItems, this.selectedDataItems, this.chartName, this.chartType, this.navService.employeeProfile.id!)
+    this.ChartService.createChart(this.selectedDataItems, this.selectedDataItems, this.chartName, this.chartType, this.authAccessService.getUserId())
       .subscribe({
         next: () => {
           this.snackBarService.showSnackbar("Created", "snack-success");

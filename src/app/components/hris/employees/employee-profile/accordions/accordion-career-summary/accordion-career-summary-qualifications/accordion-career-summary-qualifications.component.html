@@ -23,6 +23,7 @@
                                             class="col-12 col-md-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Highest Qualification</mat-label>
+                                                <div class="align-text-icon">
                                                 <mat-select formControlName="highestQualification"
                                                     placeholder="Highest Qualification"
                                                     hideSingleSelectionIndicator="true">
@@ -32,6 +33,8 @@
                                                         {{level.value}}
                                                     </mat-option>
                                                 </mat-select>
+                                                <mat-icon *ngIf="sharedAccordionFunctionality.employeeQualificationForm.get('highestQualification')?.value === null || sharedAccordionFunctionality.employeeQualificationForm.get('highestQualification')?.value === ''" [ngStyle]="{color: editQualifications? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                            </div>
                                                 <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['highestQualification'].hasError('required')">
                                                     Highest Qualification is required
@@ -42,9 +45,12 @@
                                             class="col-12 col-md-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>School</mat-label>
+                                                <div class="align-text-icon">
                                                 <input matInput formControlName="school"
                                                     placeholder="e.g University of Pretoria">
-                                                <mat-error
+                                                    <mat-icon *ngIf="sharedAccordionFunctionality.employeeQualificationForm.get('school')?.value === null || sharedAccordionFunctionality.employeeQualificationForm.get('school')?.value === ''" [ngStyle]="{color: editQualifications? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                                </div>
+                                                    <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['school'].hasError('required')">
                                                     School is required
                                                 </mat-error>
@@ -54,9 +60,12 @@
                                             class="col-12 col-md-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Field Of Study</mat-label>
+                                                <div class="align-text-icon">
                                                 <input matInput formControlName="fieldOfStudy"
                                                     placeholder="e.g Field of Study">
-                                                <mat-error
+                                                    <mat-icon *ngIf="sharedAccordionFunctionality.employeeQualificationForm.get('fieldOfStudy')?.value === null || sharedAccordionFunctionality.employeeQualificationForm.get('fieldOfStudy')?.value === ''" [ngStyle]="{color: editQualifications? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                                </div>
+                                                    <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['fieldOfStudy'].hasError('required')">
                                                     Field of study is required
                                                 </mat-error>
@@ -66,7 +75,10 @@
                                             class="col-12 col-md-6 my-2">
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Year Obtained</mat-label>
+                                                <div class="align-text-icon">
                                                 <input matInput formControlName="year" placeholder="yyyy">
+                                                <mat-icon *ngIf="sharedAccordionFunctionality.employeeQualificationForm.get('year')?.value === null || sharedAccordionFunctionality.employeeQualificationForm.get('year')?.value === ''" [ngStyle]="{color: editQualifications? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                            </div>
                                                 <mat-error
                                                     *ngIf="sharedAccordionFunctionality.employeeQualificationForm.controls['year'].hasError('required')">
                                                     Year Obtained is required
@@ -80,7 +92,7 @@
                                     </div>
                                 </div>
                                 <div class="col-3 col-lg-2">
-                                    <div *ngIf="!sharedAccordionFunctionality.editQualifications"
+                                    <div *ngIf="!editQualifications"
                                         class="col-12 mb-2 d-flex justify-content-end">
                                         <button class="d-flex" mat-button id="edit-button"
                                             (click)="editQualificationsDetails()"
@@ -93,7 +105,7 @@
                         </div>
                         <div class="col-12 ms-2">
                             <h3
-                                [ngStyle]="{'color' : sharedAccordionFunctionality.editQualifications? 'black' :'grey'}">
+                                [ngStyle]="{'color' : editQualifications? 'black' :'grey'}">
                                 Copy of Qualification
                             </h3>
                         </div>
@@ -103,46 +115,46 @@
                                     <div
                                         [ngClass]="fileName != '' ? 'd-block me-4 mt-2 ms-2 ': 'd-none'">
                                         <div
-                                            [ngStyle]="{'color' : sharedAccordionFunctionality.editQualifications ? 'black' :'grey'}">
+                                            [ngStyle]="{'color' : editQualifications ? 'black' :'grey'}">
                                             {{ fileName }}
                                         </div>
                                     </div>
                                     <button [disabled]="isDisabledDownload" mat-button class="me-2" id="file-buttons"
                                             (click)="downloadFile()"
-                                        [ngClass]="sharedAccordionFunctionality.editQualifications ? 'download-button':'download-disabled'"
+                                        [ngClass]="editQualifications ? 'download-button':'download-disabled'"
                                         *ngIf="this.sharedAccordionFunctionality.employeeQualification && this.sharedAccordionFunctionality.employeeQualification.documentName">
                                         <div class="row" id="button-size">
                                             <div class="col-1 p-0 ms-3 mt-2"
-                                                *ngIf="sharedAccordionFunctionality.editQualifications == true">
+                                                *ngIf="editQualifications == true">
                                                 <img id="pdf-icon" alt="pdf-icon"
                                                     src="../../../../../../../../assets/img/file_download_alt.svg">
                                             </div>
                                             <div class="col-1 p-0 ms-3 mt-2"
-                                                *ngIf="sharedAccordionFunctionality.editQualifications == false">
+                                                *ngIf="editQualifications == false">
                                                 <img id="pdf-icon" alt="pdf-icon"
                                                     src="../../../../../../../../assets/img/file_download_grey.svg">
                                             </div>
                                             <div class="col-auto"
-                                                [ngStyle]="{'color' : sharedAccordionFunctionality.editQualifications ? '#0029C6' :'grey'}">
+                                                [ngStyle]="{'color' : editQualifications ? '#0029C6' :'grey'}">
                                                 <h4 class="m-2">Download</h4>
                                             </div>
                                         </div>
                                     </button>
                                     <button [disabled]="isDisabledUpload" mat-button class="" (click)="uploadFile.click()" id="file-buttons"
-                                        [ngClass]="sharedAccordionFunctionality.editQualifications? 'upload-button':'upload-disabled'">
+                                        [ngClass]="editQualifications? 'upload-button':'upload-disabled'">
                                         <div class="row">
                                             <div class="col-1 p-0 ms-3 mt-2"
-                                                *ngIf="sharedAccordionFunctionality.editQualifications == true">
+                                                *ngIf="editQualifications == true">
                                                 <img id="pdf-icon" alt="pdf-icon"
                                                     src="../../../../../../../../assets/img/file_upload_19px_white.svg">
                                             </div>
                                             <div class="col-1 p-0 ms-3 mt-2"
-                                                *ngIf="sharedAccordionFunctionality.editQualifications == false">
+                                                *ngIf="editQualifications == false">
                                                 <img id="pdf-icon" alt="pdf-icon"
                                                     src="../../../../../../../../assets/img/file_upload_19px_grey.svg">
                                             </div>
                                             <div class="col-auto"
-                                                [ngStyle]="{'color' : sharedAccordionFunctionality.editQualifications ? '#FFF' :'grey'}">
+                                                [ngStyle]="{'color' : editQualifications ? '#FFF' :'grey'}">
                                                 <h4 class="m-2">Upload</h4>
                                             </div>
                                         </div>
@@ -152,11 +164,11 @@
                                 </div>
                             </div>
                             <div class="col d-none d-md-flex" id="edit-buttons">
-                                <button *ngIf="sharedAccordionFunctionality.editQualifications" mat-button
+                                <button *ngIf="editQualifications" mat-button
                                     id="cancel-button" (click)="cancelQualificationsEdit()">
                                     Cancel
                                 </button>
-                                <button *ngIf="sharedAccordionFunctionality.editQualifications" mat-button
+                                <button *ngIf="editQualifications" mat-button
                                     id="save-button" type="submit" (click)="saveQualificationsEdit()">
                                     Save
                                 </button>

@@ -15,8 +15,9 @@ import { Chart } from 'chart.js';
 import { pieChartOptions, barChartOptions } from 'src/app/models/hris/constants/chartOptions.constants';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
-import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
+import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 
 @Component({
   selector: 'app-chart',
@@ -30,10 +31,11 @@ export class ChartComponent implements OnInit {
     private chartService: ChartService,
     public dialog: MatDialog,
     private renderer: Renderer2,
-    private navService: NavService,
+    private authAccessService: AuthAccessService,
     @Inject(DOCUMENT) private document: Document,
     private employeeProfileService: EmployeeProfileService,
-    private snackBarService: SnackbarService
+    private snackBarService: SnackbarService,
+    private sharedPropertyAccessService: SharedPropertyAccessService
   ) {
     this.dialogTypeData = new DialogTypeData().dialogTypeData;
   }
@@ -66,7 +68,7 @@ export class ChartComponent implements OnInit {
   pieChartOptions = pieChartOptions;
   dialogTypeData!: Dialog;
   showConfirmDialog: boolean = false;
-
+  employeeId: number = -1;
   updateFormData: any = {
     Name: '',
     Type: '',
@@ -96,14 +98,24 @@ export class ChartComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.getUserId();
     this.fetchPeopleChampionEmployees();
     this.getNumberOfEmployees();
   }
 
+  async getUserId() {
+    this.employeeId = this.authAccessService.getUserId()
+    if ( this.employeeId === -1) {
+      const email = this.authAccessService.getEmployeeEmail();
+      await this.sharedPropertyAccessService.setAccessProperties(email);
+      this.employeeId = this.authAccessService.getUserId();
+    }
+  }
+
   createAndDisplayChart(): void {
-    if (this.navService.employeeProfile?.id) {
-      this.chartService.getEmployeeCharts(this.navService.employeeProfile.id).subscribe({
+    if ( this.employeeId != -1) {
+      this.chartService.getEmployeeCharts(this.employeeId).subscribe({
       next: data => {
         data = this.configureChartColors(data);
         if (data.length > 0) {

@@ -1,29 +1,16 @@
-import { Injectable } from '@angular/core';
-import { NavService } from './services/shared-services/nav-service/nav.service';
-import { AuthService } from './services/shared-services/auth-access/auth.service';
-import { CookieService } from 'ngx-cookie-service';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { CanActivateFn } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root'
-})
+export const HrisPageGuard: CanActivateFn = (route, state) => {
+  const authAccessService = inject(AuthAccessService);
+  const router = inject(Router);
 
-export class HrisPageGuard {
-  constructor(private navService: NavService,
-    private authService: AuthService,
-    private cookieService: CookieService,
-    private authAccessService: AuthAccessService
-  ) { }
-
-  canActivate(): any {
-    if (this.navService.isHris === true) {
-      return true;
-    }
-
-    if (this.navService.isHris == undefined) {
-        this.navService.isHris = Boolean(this.cookieService.get('isHris'));
-        return true;
-    }
-    this.authService.logout()
+  if (authAccessService.hasSignedIn()) {
+    return true;
+  } else {
+    router.navigate(['/login']);
+    return false;
   }
-}
+};

@@ -1,7 +1,6 @@
 import { Component, HostListener, Input } from '@angular/core';
-import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
-import { SimpleEmployee } from 'src/app/models/hris/simple-employee-profile.interface';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
@@ -21,21 +20,23 @@ export class AccordionProfilePersonalDetailsComponent {
   screenWidth = window.innerWidth;
   countries: string[] = [];
   isCustomType: boolean = false;
+  race: any;
+  countryOfBirth: any;
+  nationality: any;
+  editPersonal: boolean = false;
 
   @HostListener('window:resize', ['$event'])
-  usingProfile: boolean = true;
   onResize() {
     this.screenWidth = window.innerWidth;
   }
 
   ngOnInit() {
     this.sharedAccordionFunctionality.typeOther = false;
-    this.usingProfile = this.employeeProfile!.simpleEmployee == undefined;
     this.initializeForm();
     this.loadCountries();
     this.checkDisabilityType();
 
-    if(this.isCustomType){
+    if (this.isCustomType) {
       const disabilityTypeControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityType');
       disabilityTypeControl?.patchValue("Other")
       this.sharedAccordionFunctionality.typeOther = true;
@@ -67,16 +68,16 @@ export class AccordionProfilePersonalDetailsComponent {
     });
   }
 
-  @Input() employeeProfile!: { employeeDetails: EmployeeProfile, simpleEmployee: SimpleEmployee }
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
-  checkDisabilityType(){
-    if(disabilities.map(x => x.value).includes(this.employeeProfile.employeeDetails.disabilityNotes!)){
+  checkDisabilityType() {
+    if (disabilities.map(x => x.value).includes(this.employeeProfile.employeeDetails.disabilityNotes!)) {
       this.isCustomType = false;
     }
-    else if (this.employeeProfile.employeeDetails.disabilityNotes == null || this.employeeProfile.employeeDetails.disabilityNotes == ''){
+    else if (this.employeeProfile.employeeDetails.disabilityNotes == null || this.employeeProfile.employeeDetails.disabilityNotes == '') {
       this.isCustomType = false;
     }
-    else{
+    else {
       this.isCustomType = true;
     }
   }
@@ -86,10 +87,9 @@ export class AccordionProfilePersonalDetailsComponent {
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
       disability: [this.employeeProfile!.employeeDetails.disability, Validators.required],
-      disabilityType: [!this.isCustomType ? this.employeeProfile.employeeDetails.disabilityNotes: disabilities[7].value],
+      disabilityType: [!this.isCustomType ? this.employeeProfile.employeeDetails.disabilityNotes : disabilities[7].value],
       nationality: [this.employeeProfile!.employeeDetails.nationality, Validators.required],
       countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth, Validators.required],
-      disabilityList: "",
       disabilityNotes: [this.employeeProfile!.employeeDetails.disabilityNotes]
     });
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
@@ -108,60 +108,23 @@ export class AccordionProfilePersonalDetailsComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     public locationApiService: LocationApiService) { }
 
-  checkEmployeeDetails() {
-    if (this.usingProfile)
-      this.checkEmployeeDetailsUsingEmployeeProfile()
-    else
-      this.checkEmployeeDetailsNotUsingEmployeeProfile()
-  }
-
-  checkEmployeeDetailsUsingEmployeeProfile() {
-    this.sharedAccordionFunctionality.employees.find((data: any) => {
-      return data.id == this.employeeProfile!.employeeDetails.teamLead
-    });
-    this.sharedAccordionFunctionality.foundClient = this.sharedAccordionFunctionality.clients.find((data: any) => {
-      return data.id == this.employeeProfile!.employeeDetails.clientAllocated
-    });
-    this.sharedAccordionFunctionality.foundChampion = this.sharedAccordionFunctionality.employees.find((data: any) => {
-      if (this.employeeProfile?.employeeDetails.peopleChampion != null) {
-        return data.id == this.employeeProfile!.employeeDetails.peopleChampion
+    checkEmployeeDetails() {
+       if (this.employeeProfile.employeeDetails.teamLeadId !== null) {
+        this.sharedAccordionFunctionality.foundTeamLead = this.employeeProfile.employeeDetails.teamLeadId;
+        this.sharedAccordionFunctionality.employeeDetailsForm.get('teamLead')?.setValue(this.employeeProfile.employeeDetails.teamLeadName);
       }
-      else return null;
-    });
-
-    if (this.sharedAccordionFunctionality.foundTeamLead != null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('teamLead')?.setValue(this.sharedAccordionFunctionality.foundTeamLead.name + ' ' + this.sharedAccordionFunctionality.foundTeamLead.surname);
-      this.employeeProfile.employeeDetails.id = this.sharedAccordionFunctionality.foundTeamLead.id
-    }
-
-    if (this.sharedAccordionFunctionality.foundClient != null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('clientAllocated')?.setValue(this.sharedAccordionFunctionality.foundClient.name);
-      this.sharedAccordionFunctionality.clientId = this.sharedAccordionFunctionality.foundClient.id
-    }
-
-    if (this.sharedAccordionFunctionality.foundChampion != null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('peopleChampion')?.setValue(this.sharedAccordionFunctionality.foundChampion.name + ' ' + this.sharedAccordionFunctionality.foundChampion.surname);
-      this.sharedAccordionFunctionality.peopleChampionId = this.sharedAccordionFunctionality.foundChampion.id
-    }
-  }
-
-  checkEmployeeDetailsNotUsingEmployeeProfile() {
-    if (this.employeeProfile.simpleEmployee.teamLeadId !== null) {
-      this.sharedAccordionFunctionality.foundTeamLead = this.employeeProfile.simpleEmployee.teamLeadId;
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('teamLead')?.setValue(this.employeeProfile.simpleEmployee.teamLeadName);
-    }
-    if (this.employeeProfile.simpleEmployee.peopleChampionId !== null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('peopleChampion')?.setValue(this.employeeProfile.simpleEmployee.peopleChampionName);
-      this.sharedAccordionFunctionality.peopleChampionId = this.employeeProfile.simpleEmployee.peopleChampionId as number;
-    }
-    if (this.employeeProfile.simpleEmployee.clientAllocatedId !== null) {
-      this.sharedAccordionFunctionality.employeeDetailsForm.get('clientAllocated')?.setValue(this.employeeProfile.simpleEmployee.clientAllocatedName);
-      this.sharedAccordionFunctionality.clientId = this.employeeProfile.simpleEmployee.clientAllocatedId as number;
-    }
+      if (this.employeeProfile.employeeDetails.peopleChampionId !== null) {
+        this.sharedAccordionFunctionality.employeeDetailsForm.get('peopleChampion')?.setValue(this.employeeProfile.employeeDetails.peopleChampionName);
+        this.sharedAccordionFunctionality.peopleChampionId = this.employeeProfile.employeeDetails.peopleChampionId as number;
+      }
+      if (this.employeeProfile.employeeDetails.clientAllocatedId !== null) {
+        this.sharedAccordionFunctionality.employeeDetailsForm.get('clientAllocated')?.setValue(this.employeeProfile.employeeDetails.clientAllocatedName);
+        this.sharedAccordionFunctionality.clientId = this.employeeProfile.employeeDetails.clientAllocatedId as number;
+      }
   }
 
   editPersonalDetails() {
-    this.sharedAccordionFunctionality.editPersonal = true;
+    this.editPersonal = true;
     this.sharedAccordionFunctionality.personalDetailsForm.enable();
   }
 
@@ -172,10 +135,10 @@ export class AccordionProfilePersonalDetailsComponent {
   setTypeOther(event: any) {
     const disabilityNotesControl = this.sharedAccordionFunctionality.personalDetailsForm.get('disabilityNotes');
     disabilityNotesControl?.reset();
-    if(event.source.value == 'Other'){
+    if (event.source.value == 'Other') {
       this.sharedAccordionFunctionality.typeOther = true;
     }
-    else{
+    else {
       this.sharedAccordionFunctionality.typeOther = false;
     }
   }
@@ -184,10 +147,10 @@ export class AccordionProfilePersonalDetailsComponent {
     if (this.sharedAccordionFunctionality.personalDetailsForm.valid) {
       const personalDetailsFormValue = this.sharedAccordionFunctionality.personalDetailsForm.value;
       this.sharedAccordionFunctionality.employeeProfileDto!.disability = personalDetailsFormValue.disability;
-      if(this.sharedAccordionFunctionality.typeOther == false){
+      if (this.sharedAccordionFunctionality.typeOther == false) {
         this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = personalDetailsFormValue.disabilityType;
       }
-      else{
+      else {
         this.sharedAccordionFunctionality.employeeProfileDto!.disabilityNotes = personalDetailsFormValue.disabilityNotes;
       }
       this.sharedAccordionFunctionality.employeeProfileDto!.race = personalDetailsFormValue.race;
@@ -195,13 +158,13 @@ export class AccordionProfilePersonalDetailsComponent {
       this.sharedAccordionFunctionality.employeeProfileDto!.countryOfBirth = personalDetailsFormValue.countryOfBirth;
       this.sharedAccordionFunctionality.employeeProfileDto!.nationality = personalDetailsFormValue.nationality;
 
-      this.employeeProfileService.updateEmployee(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
+      this.employeeProfileService.updateEmployeeProfile(this.sharedAccordionFunctionality.employeeProfileDto).subscribe({
         next: (data) => {
           this.snackBarService.showSnackbar("Updated", "snack-success");
           this.sharedAccordionFunctionality.checkPersonalFormProgress();
           this.sharedAccordionFunctionality.totalProfileProgress();
           this.sharedAccordionFunctionality.personalDetailsForm.disable();
-          this.sharedAccordionFunctionality.editPersonal = false;
+          this.editPersonal = false;
         },
         error: (er) => this.snackBarService.showError(er),
       });
@@ -212,7 +175,7 @@ export class AccordionProfilePersonalDetailsComponent {
   }
 
   cancelPersonalEdit() {
-    this.sharedAccordionFunctionality.editPersonal = false;
+    this.editPersonal = false;
     this.sharedAccordionFunctionality.hasDisability = false;
     this.initializeForm();
     this.sharedAccordionFunctionality.personalDetailsForm.disable();
@@ -220,7 +183,9 @@ export class AccordionProfilePersonalDetailsComponent {
 
   loadCountries(): void {
     this.locationApiService.getCountries().subscribe({
-      next: (data) => this.countries = data
+      next: (data) => {
+        this.countries = data
+      }
     });
   }
 

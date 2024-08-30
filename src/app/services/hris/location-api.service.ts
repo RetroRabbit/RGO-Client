@@ -1,22 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocationApiService {
+
+  public countries$: Observable<string[]> | null = null;
+
   constructor(private http: HttpClient) {}
 
   getCountries(): Observable<string[]> {
-    return this.http.get<any>('https://countriesnow.space/api/v0.1/countries').pipe(
-      map(response => {
-        const countries = response.data.map((country: { country: string }) => country.country);
-        countries.unshift('South Africa'); 
-        return countries;
-      })
-    );
+    if (!this.countries$) {
+      this.countries$ = this.http.get<any>('https://countriesnow.space/api/v0.1/countries').pipe(
+        map(response => {
+          const countries = response.data.map((country: { country: string }) => country.country);
+          countries.unshift('South Africa'); 
+          return countries;
+        }),
+        shareReplay(1)
+      );
+    }
+
+    return this.countries$;
   }
 
   getProvinces(country: string): Observable<string[]> {

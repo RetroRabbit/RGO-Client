@@ -4,9 +4,11 @@ import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { EmployeeBanking } from 'src/app/models/hris/employee-banking.interface';
 import { EmployeeBankingService } from 'src/app/services/hris/employee/employee-banking.service';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
-import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
+import { SharedAccordionFunctionality } from '../../employee-profile/shared-accordion-functionality';
+import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
+import { accountTypes } from 'src/app/models/hris/constants/accountTypes.constants';
 
 @Component({
   selector: 'app-view-banking-approval',
@@ -19,24 +21,31 @@ export class ViewBankingApprovalComponent {
   declineReason: string = "";
   selectedReason: string = "";
   isLoading: boolean = true;
-  employeeBanking: any;
-  bankingId = this.route.snapshot.params['id'];
+  employeeBanking: EmployeeBanking[] = [];
+  bankingId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
   showConfirmDialog: boolean = false;
   dialogTypeData!: Dialog;
   employee: any;
+  currentBanking: EmployeeBanking | null = null;
+  currentBankingExists: boolean = false;
+  updateBanking: EmployeeBanking | null = null;
+  updateBankingExists: boolean = false;
+  accountTypes: any;
+
 
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     public authAccessService: AuthAccessService,
     public navService: NavService,
     private employeeBankingService: EmployeeBankingService,
-    private router: Router, 
+    private router: Router,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
-    private employeeProfileService: EmployeeProfileService,
     private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.getBankingDetails(this.bankingId);
+    this.accountTypes = accountTypes;
   }
 
   ngAfterContentChecked() {
@@ -50,25 +59,56 @@ export class ViewBankingApprovalComponent {
   getBankingDetails(id: number): void {
     if (id && !isNaN(+id)) {
       this.employeeBankingService.getBankingDetails(id).subscribe({
-        next: data => {
+        next: (data: any) => {
           this.employeeBanking = data;
-          this.employeeProfileService.getEmployeeById(this.employeeBanking[this.employeeBanking.length - 1].employeeId).subscribe({
-            next: employee => {
-              this.employee = employee;
-              this.isLoading = false;
-            }
-          });
+          this.employee = this.sharedAccordionFunctionality.employees.filter((employee: EmployeeProfile) => employee.id === data[0].employeeId);
+          this.isLoading = false;
+          this.getCurrentDetails()
+          this.getUpdateDetails()
         }
       });
     }
   }
 
-  getEmployeeForBanking(id: number): void {
-    this.employeeProfileService.getEmployeeById(id).subscribe({
-      next: employee => {
-        this.employee = employee;
-      }
-    });
+  getCurrentDetails() {
+    this.currentBanking = this.employeeBanking.find(x => x.status === 0)!
+    if (this.currentBanking) {
+      this.currentBankingExists = true;
+    }
+  }
+
+  getUpdateDetails() {
+    this.updateBanking = this.employeeBanking.find(x => x.status == 1)!
+    if (this.updateBanking) {
+      this.updateBankingExists = true;
+    }
+  }
+
+  getName() {
+    return this.employee[0].name;
+  }
+
+  getSurname() {
+    return this.employee[0].surname;
+  }
+
+  getProfileImage() {
+    return this.employee[0].photo ?? '../../../../../assets/img/default-profile-image.png';
+  }
+
+  getAccountType(id: number) {
+    if (id == 0) {
+      return 'Savings'
+    }
+    else {
+      return 'Cheque'
+    }
+  }
+
+  getPOA() {
+    const name = this.getName() || 'Unknown';
+    const surname = this.getSurname() || 'Unknown';
+    return `${name}_${surname}_POA.pdf`;
   }
 
   convertFileToBase64(index: number) {
@@ -99,22 +139,42 @@ export class ViewBankingApprovalComponent {
     link.click();
   }
 
-  updateBanking(status: number): void {
+  updateBankingDetails(status: number): void {
     let copyOfBanking = { ...this.employeeBanking[this.employeeBanking.length - 1] };
     copyOfBanking.status = status;
-    if (status == 2)
+    if (status == 2) {
       copyOfBanking.declineReason = `${this.selectedReason} ${this.declineReason}`;
-    else
+    }
+    else {
       copyOfBanking.declineReason = ``;
+    }
 
-    this.employeeBankingService.updatePending(copyOfBanking).subscribe({
-      next: () => {
-        this.snackBarService.showSnackbar("Updated", "snack-success");
-        this.backToApprovals();
-         this.changeDetector.detectChanges();
-      },
-      error: (er) => this.snackBarService.showError(er),
-    })
+    var previousId = this.employeeBanking.find(x => x.status == 0)?.id;
+
+    if (this.currentBankingExists) {
+      this.employeeBankingService.deleteBankingDetails(previousId!)
+        .subscribe({
+          next: () => {
+            this.employeeBankingService.updatePending(copyOfBanking).subscribe({
+              next: () => {
+                this.snackBarService.showSnackbar("Updated", "snack-success");
+                this.backToApprovals();
+                this.changeDetector.detectChanges();
+              },
+              error: (er) => this.snackBarService.showError(er),
+            })
+          }
+        })
+    } else {
+      this.employeeBankingService.updatePending(copyOfBanking).subscribe({
+        next: () => {
+          this.snackBarService.showSnackbar("Updated", "snack-success");
+          this.backToApprovals();
+          this.changeDetector.detectChanges();
+        },
+        error: (er) => this.snackBarService.showError(er),
+      })
+    }
   }
 
   openDialog(): void {
@@ -131,11 +191,10 @@ export class ViewBankingApprovalComponent {
   dialogFeedBack(response: any): void {
     this.declineReason = response.declineReason;
     this.selectedReason = response.selectedReason;
-    this.showConfirmDialog=false;
-    if(response.confirmation)
-      {
-    this.updateBanking(2);
-      }
-     
+    this.showConfirmDialog = false;
+    if (response.confirmation) {
+      this.updateBankingDetails(2);
+    }
+
   }
 }

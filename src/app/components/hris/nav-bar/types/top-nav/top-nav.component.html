@@ -43,9 +43,9 @@
             fill="black" />
         </svg>
       </div>
-      <div id="navigation" *ngIf="navService.isHris">
+      <div id="navigation" *ngIf="!authAccessService.hasAccessToAts()">
         <div
-          *ngIf="authAccessService.isSuperAdmin() || authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+          *ngIf="authAccessService.isSupport()">
           <div id="nav-item-container" class="col-auto">
             <div id="nav-item">
               <div (click)="changeNav('/dashboard')" [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
@@ -64,7 +64,7 @@
               <div (click)="changeNav('/profile')" [ngClass]="router.url.includes('/profile') ? 'active' : 'idle'">
                 Profile
               </div>
-              <div *ngIf="router.url.includes('/profile')" id="selected-line-box">
+              <div *ngIf="router.url.includes('/profile') || router.url.includes('/view-cv-document')" id="selected-line-box">
                 <div id="selected-line">
                 </div>
               </div>
@@ -72,15 +72,15 @@
           </div>
         </div>
         <div
-          *ngIf="authAccessService.isSuperAdmin() || authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+          *ngIf="authAccessService.isSupport()">
           <div id="nav-item-container">
             <div id="nav-item">
-              <div (click)="changeNav('/employees')" 
-                [ngClass]="router.url.includes('/employees') ||  router.url.includes('/view-') ? 'active' : 'idle'"  
+              <div (click)="changeNav('/employees')"
+                [ngClass]="router.url.includes('/employees') ? 'active' : 'idle'"
                 [matBadge]="employeeBankingandstarterkitService.pendingCount$ | async" [matBadgeHidden] = "!hasAccessToApprovals() || employeeBankingandstarterkitService.pendingCount$.getValue() <= 0" matBadgeSize="small">
                 Employees
               </div>
-              <div *ngIf="router.url.includes('/employees') ||  router.url.includes('/view-')" id="selected-line-box">
+              <div *ngIf="router.url.includes('/employees')" id="selected-line-box">
                 <div id="selected-line">
                 </div>
               </div>
@@ -102,10 +102,10 @@
           </div>
         </div>
       </div>
-      <div id="navigation" *ngIf="!navService.isHris">
+      <div id="navigation" *ngIf="authAccessService.hasAccessToAts()">
         <div class="row">
           <div class="col-2"
-            *ngIf="authAccessService.isAdmin() || authAccessService.isTalent() || authAccessService.isJourney()">
+            *ngIf="authAccessService.isSupport()">
             <div id="nav-item-container" class="col-auto">
               <div id="nav-item">
                 <div (click)="changeNav('/ats-dashboard')" [ngClass]="router.url == '/dashboard' ? 'active' : 'idle'">
@@ -131,13 +131,11 @@
         </button>
       </div>
       <div [hidden]="screenWidth < 992 && !navService.showTopNavMenu" id="employee-info">
-        <h4 id="topNavName" (click)="goToProfile()"> {{ navService.employeeProfile?.name }} {{ navService.employeeProfile?.surname }} </h4>
-        <h5> {{ navService.employeeProfile?.employeeType?.name }} </h5>
+        <h4 id="topNavName" (click)="goToProfile()"> {{ authAccessService.getNameFromToken() }} {{ authAccessService.getSurnameFromToken() }} </h4>
+        <h5> {{ authAccessService.getRole() }} </h5>
       </div>
       <div class="ms-2" id="image-container" [hidden]="screenWidth < 992 && !navService.showTopNavMenu">
-        <img *ngIf="navService.employeeProfile"
-          [src]="navService.employeeProfile.photo || authAccessService.getAuthTokenProfilePicture() || '../../../../../../assets/img/default-profile-image.png'"
-          alt="Profile">
+        <img [src]="getProfileImage()" alt="Profile">
       </div>
     </div>
     <div [hidden]="!navService.showTopNavMenu" class="px-5" id="logout">

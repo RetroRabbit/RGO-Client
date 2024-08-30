@@ -16,6 +16,7 @@ import { EmployeeTypeService } from 'src/app/services/hris/employee/employee-typ
 import { GenericDropDownObject } from 'src/app/models/hris/generic-drop-down-object.interface'
 import { EmployeeStatus } from 'src/app/models/hris/constants/employee-status.constants';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
+import { SharedAccordionFunctionality } from '../employee-profile/shared-accordion-functionality';
 
 @Component({
   selector: 'app-view-employee',
@@ -27,14 +28,14 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
 export class ViewEmployeeComponent {
 
   constructor(
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private employeeProfileService: EmployeeProfileService,
     private employeeRoleService: EmployeeRoleService,
     private cookieService: CookieService,
     private ngZone: NgZone,
     private router: Router,
     private snackBarService: SnackbarService,
-    public authAccessService: AuthAccessService,
-    private employeeTypeService: EmployeeTypeService
+    public authAccessService: AuthAccessService
   ) { }
 
   @Output() selectedEmployee = new EventEmitter<EmployeeProfile>();
@@ -86,12 +87,6 @@ export class ViewEmployeeComponent {
     this.employeeRoleService.getAllRoles().subscribe((data: string[]) => {
       this.roles = data.filter((role) => !role.includes('SuperAdmin'));
     });
-
-    this.peopleChampions.subscribe({
-      next: data => {
-        this.selectedChampion = data.find(x => x.id == 0)
-      }
-    })
     
     this.onResize();
 
@@ -103,19 +98,15 @@ export class ViewEmployeeComponent {
       this.displayedColumns = ['Name', 'Position', 'Level', 'Client', 'Roles'];
     }
 
-    if(this.isJourney){
-      this.peopleChampions.subscribe({
-        next: data => {
-          this.selectedChampion = data.find(x => x.id == this.authAccessService.getUserId())
-        }
-      })
-    }
+    var userId = this.authAccessService.getUserId();
+    
     this.peopleChampions.subscribe({
       next: data =>
         this.selectedChampion = this.isJourney
-          ? data.find(x => x.id == this.authAccessService.getUserId() ?? 0)
+          ? data.find(x => x.id == userId ?? 0)
           : data.find(x => x.id == 0)
     })
+    
   }
 
   ngAfterViewInit() {
@@ -143,6 +134,7 @@ export class ViewEmployeeComponent {
     const employeeDataList: EmployeeData[] = employees.map(
       (employee) => {
         return {
+          Id: employee.id,
           Name: `${employee.name} ${employee.surname}`,
           Position: employee.position,
           Level: employee.level,
@@ -227,13 +219,10 @@ export class ViewEmployeeComponent {
   }
 
   employeeClickEvent(employee: any): void {
-    this.employeeProfileService.getEmployeeProfileByEmail(employee.Email).
-      subscribe((data) => {
-        this.selectedEmployee.emit(data);
-        this._searchQuery = '';
-        this.router.navigateByUrl('/profile/' + data.id)
-        this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
-      })
+    this.selectedEmployee.emit(employee);
+    this._searchQuery = '';
+    this.router.navigateByUrl('/profile/' + employee.Id)
+    this.cookieService.set(this.PREVIOUS_PAGE, '/employees');
   }
 
   screenWidth: number = 992;
@@ -386,16 +375,15 @@ export class ViewEmployeeComponent {
   }
 
   getUserTypesForFilter(): Observable<GenericDropDownObject[]> {
-    return this.employeeTypeService.getAllEmployeeTypes().pipe(
-      map(types => {
-        const userTypes: GenericDropDownObject[] = types.map(type => ({
-          id: type.id || 0,
-          name: type.name || 'Unknown'
-        }));
-        userTypes.unshift({ id: 0, name: 'All' });
-        return userTypes;
-      })
-    );
+    var data = this.sharedAccordionFunctionality.employeeTypes;
+    
+    const userTypes: GenericDropDownObject[] = data.map(type => ({
+      id: type.id || 0,
+      name: type.name || 'Unknown'
+    }));
+    
+    userTypes.unshift({ id: 0, name: 'All' });
+    return of(userTypes);
   }
 
   splitAndCapitalizeCamelCase(input: string): string {

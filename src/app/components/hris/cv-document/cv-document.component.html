@@ -1,5 +1,10 @@
+<app-global-spinner></app-global-spinner>
+<button mat-button class="btn" id="back-button" (click)="goToProfile()">
+<mat-icon>arrow_back</mat-icon>
+<span>Back</span>
+</button>
 <div class="container" id="doc-page" *ngIf="employeeWorkExp.length !== 0 && filteredSkills.length !== 0">
-    <button mat-button color="primary" id="button-pdf"
+  <button mat-button color="primary" id="button-pdf"
     (click) = "downloadPDF()">
    <svg id="svg-icon" width="19" height="19" viewBox="0 0 19 19" fill="white"
        xmlns="http://www.w3.org/2000/svg">

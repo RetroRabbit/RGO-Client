@@ -18,11 +18,11 @@ import { EmployeeDocumentsTypes } from 'src/app/models/hris/constants/employee-d
 import { StarterKitDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
 import { EmployeeDocument } from 'src/app/models/hris/employeeDocument.interface';
 import { MyDocumentTypes } from 'src/app/models/hris/constants/documents.contants';
-import { CustomFieldService } from 'src/app/services/hris/field-code.service';
 import { nqfLevels } from 'src/app/models/hris/constants/nqfLevels.constant.';
 import { EmployeeQualifications } from 'src/app/models/hris/employee-qualifications.interface';
 import { WorkExperience } from 'src/app/models/hris/work-experience.interface';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
+import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
 
 @Injectable({
   providedIn: 'root'
@@ -36,13 +36,14 @@ export class SharedAccordionFunctionality {
 
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
+  
+  fieldCodes: CustomField[] = [];
   employeeTypes: EmployeeType[] = [];
   filteredClients: Client[] = [];
   filteredEmployees: any = [];
   filteredPeopleChamps: any = [];
   filteredFilledWorkExp: any = [];
   filteredFilledCertificate: any = [];
-
   employeeData: EmployeeData[] = [];
   customFields: CustomField[] = [];
   customFieldsDocuments: CustomField[] = [];
@@ -70,6 +71,8 @@ export class SharedAccordionFunctionality {
   fileStarterKitCategories = StarterKitDocumentTypes;
   fileMyDocumentCategories = MyDocumentTypes;
   employeeQualification!: EmployeeQualifications;
+  defaultProfileImage: string = "../../../../../assets/img/default-profile-image.png";
+  mainProfileImage: string = "";
 
   employeeQualificationDto: EmployeeQualifications = {
     id: 0,
@@ -87,19 +90,15 @@ export class SharedAccordionFunctionality {
   physicalEqualPostal: boolean = true;
   hasDisability: boolean | undefined = false;
   typeOther: boolean | undefined = false;
-  editEmployee: boolean = false;
-  editPersonal: boolean = false;
-  editAddress: boolean = false;
   editAdditional: boolean = false;
-  editContact: boolean = false;
-  editQualifications: boolean = false;
   employeeType?: EmployeeType;
+
   employeeClient!: Client;
-  employeeTeamLead!: EmployeeProfile;
-  employeePeopleChampion!: EmployeeProfile;
+  employeeTeamLeadId!: any;
+  employeePeopleChampionId!: any;
+
   selectedEmployee!: EmployeeProfile;
   employeePhysicalAddress !: EmployeeAddress;
-  employeePostalAddress !: EmployeeAddress;
 
   profileFormProgress: number = 0;
   documentFormProgress: number = 0;
@@ -133,7 +132,6 @@ export class SharedAccordionFunctionality {
   disabilities = disabilities;
   category = category;
   fieldTypes = dataTypes;
-  usingProfile: boolean = true;
 
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   initialsPattern = /^[A-Z]+$/;
@@ -142,7 +140,7 @@ export class SharedAccordionFunctionality {
   constructor(
     private fb: FormBuilder,
     public sharedPropertyAccessService: SharedPropertyAccessService,
-    private customFieldService: CustomFieldService,
+    private storeAccessService: StoreAccessService
   ) { }
 
   personalDetailsForm: FormGroup = this.fb.group({
@@ -400,30 +398,27 @@ export class SharedAccordionFunctionality {
   }
 
   calculateAdditionalDocumentProgress() {
-    this.customFieldService.getAllFieldCodes().subscribe({
-      next: data => {
-        this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
-        const total = this.customFieldsDocuments.length;
-        const fetchedDocuments = this.additionalDocuments.length;
-        
-        if (fetchedDocuments === 0) {
-          this.additionalDocumentsProgress = total === 0 ? 100 : 0;
-        } else {
-          this.additionalDocumentsProgress = total == 0 ? 0 : Math.round((fetchedDocuments / total) * 100);
-        }
-        this.totalDocumentsProgress();
-      }
-    });
+    var data = this.fieldCodes;
+    this.customFieldsDocuments = data.filter((data: CustomField) => data.category === this.category[3].id);
+    const total = this.customFieldsDocuments.length;
+    const fetchedDocuments = this.additionalDocuments.length;
+
+    if (fetchedDocuments === 0) {
+      this.additionalDocumentsProgress = total === 0 ? 100 : 0;
+    } else {
+      this.additionalDocumentsProgress = total == 0 ? 0 : Math.round((fetchedDocuments / total) * 100);
+    }
+    this.totalDocumentsProgress();
   }
 
   calculateQualificationProgress() {
     let filledCount = 0;
     const formControls = this.employeeQualificationForm.controls;
-    const totalFields = Object.keys(this.employeeQualificationForm.controls).length;
+    const totalFields = Object.keys(formControls).length;
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
         const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
+        if (control && control.value != null && control.value !== '') {
           filledCount++;
         }
       }
@@ -476,13 +471,19 @@ export class SharedAccordionFunctionality {
   }
 
   totalProfileProgress() {
-    this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
-    this.updateProfile.emit(this.profileFormProgress);
+    if (this.additionalFormProgress == Infinity || this.additionalFormProgress === 0) {
+      this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress) / 4);
+      this.updateProfile.emit(this.profileFormProgress);
+    } else {
+      this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress + this.additionalFormProgress) / 5);
+      this.updateProfile.emit(this.profileFormProgress);
+    }
   }
 
   totalCareerProgress() {
-    if (this.additionalCareerFormProgress == Infinity) {
+    if (this.additionalCareerFormProgress == Infinity || this.additionalCareerFormProgress === 0) {
       this.careerFormProgress = Math.floor((this.qualificationFormProgress + this.salaryDetailsFormProgress) / 2);
+      this.updateCareer.emit(this.careerFormProgress);
     }
     else {
       this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qualificationFormProgress + this.salaryDetailsFormProgress) / 3);

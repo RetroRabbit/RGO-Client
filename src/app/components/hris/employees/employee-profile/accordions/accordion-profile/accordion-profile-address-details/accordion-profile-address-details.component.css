@@ -9,3 +9,8 @@
     color: #0029C6;
     width: 170px;
 }
+
+.align-text-icon{
+  display: flex;
+  flex-direction: row;
+}
