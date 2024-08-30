@@ -99,7 +99,6 @@ export class NewEmployeeComponent implements OnInit {
   };
 
   physicalAddress: FormGroup = this.createAddressForm();
-  postalAddress: FormGroup = this.createAddressForm();
   newEmployeeForm: FormGroup = this.createEmployeeForm();
 
   settingsForm: FormGroup = new FormGroup({
@@ -107,10 +106,6 @@ export class NewEmployeeComponent implements OnInit {
       false,
       Validators.required
     ),
-  });
-
-  postalAddressForm: FormGroup = new FormGroup({
-    sameAsPhysicalAddress: new FormControl<boolean>(true, Validators.required),
   });
 
   uploadDocumentForm = new FormGroup({
@@ -174,7 +169,6 @@ export class NewEmployeeComponent implements OnInit {
     this.clearFormErrorsAndValues(this.newEmployeeForm);
     this.clearFormErrorsAndValues(this.uploadDocumentForm);
     this.clearFormErrorsAndValues(this.physicalAddress);
-    this.clearFormErrorsAndValues(this.postalAddressForm);
     this.removeAllDocuments();
     this.goToPreviousPage();
   }
@@ -186,7 +180,6 @@ export class NewEmployeeComponent implements OnInit {
     this.clearFormErrorsAndValues(this.newEmployeeForm);
     this.clearFormErrorsAndValues(this.uploadDocumentForm);
     this.clearFormErrorsAndValues(this.physicalAddress);
-    this.clearFormErrorsAndValues(this.postalAddressForm);
     this.removeAllDocuments();
     this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
     this.newEmployeeForm.controls['disability'].setValue(false);
@@ -231,7 +224,7 @@ export class NewEmployeeComponent implements OnInit {
 
   onUploadDocument(nextPage: string): void {
     var documents = this.employeeDocumentModels
-    
+
     if (documents.length > 0) {
       documents.forEach((documentModel) => {
         this.employeeDocumentService.saveEmployeeDocument(documentModel, 0).subscribe({
@@ -354,24 +347,6 @@ export class NewEmployeeComponent implements OnInit {
     }
   }
 
-  postalSameAsPhysicalAddress(event: boolean) {
-    this.isSameAddress = event;
-
-    if (this.postalAddressForm.value.sameAsPhysicalAddress && event) {
-      this.postalAddress.patchValue({
-        unitNumber: this.physicalAddress.value.unitNumber,
-        complexName: this.physicalAddress.value.complexName,
-        suburbDistrict: this.physicalAddress.value.suburbDistrict,
-        city: this.physicalAddress.value.city,
-        streetNumber: this.physicalAddress.value.streetNumber,
-        streetName: this.physicalAddress.value.streetName,
-        country: this.physicalAddress.value.country,
-        province: this.physicalAddress.value.province,
-        postalCode: this.physicalAddress.value.postalCode,
-      });
-    }
-  }
-
   get physicalAddressObj(): EmployeeAddress {
     return {
       id: 0,
@@ -387,7 +362,6 @@ export class NewEmployeeComponent implements OnInit {
       postalCode: this.physicalAddress.value.postalCode!,
     };
   }
-
 
   saveAddress(): void {
     combineLatest([
@@ -689,7 +663,6 @@ export class NewEmployeeComponent implements OnInit {
       payRate: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
       salary: new FormControl(1, Validators.pattern(/^[0-9]*$/)),
       physicalAddress: new FormControl<EmployeeAddress | null>(null),
-      postalAddress: new FormControl<EmployeeAddress | null>(null),
       peopleChampion: new FormControl<string>('')
     });
   }
