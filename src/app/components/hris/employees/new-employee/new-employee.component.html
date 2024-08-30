@@ -75,6 +75,7 @@
                     Work email must end with @retrorabbit.co.za
                   </mat-error>
                 </mat-form-field>
+                <p *ngIf="isEmailValid()" class="error-message">Work email already exists.</p>
                 <mat-form-field appearance="outline" class=" mb-3">
                   <mat-label>People's Champion</mat-label>
                   <input type="text" placeholder="" matInput formControlName="peopleChampion"
