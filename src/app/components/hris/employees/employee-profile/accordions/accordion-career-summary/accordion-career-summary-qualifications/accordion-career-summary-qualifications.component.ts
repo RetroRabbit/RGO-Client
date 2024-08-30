@@ -45,29 +45,34 @@ export class CareerSummaryQualificationsComponent {
   editQualifications: boolean = false;
 
   fileName: string = '';
+  fileDownloadName: string = '';
+  fileDownloadType: string = '';
   base64File: string = "";
   fileUrl: string = '';
   proofOfQualificationFinal: string = "";
-  fileArrayBuffer!: ArrayBuffer;
+  proofOfQualificationDecompressed!: ArrayBuffer;
+  dbQualification: string = '';
+  deserializedArrayBufferStore!: ArrayBuffer;
+  compressedByteArray!: Uint8Array;
+
+  testString: string = '';
 
   ngOnInit() {
     this.fetchQualificationsById();
   }
 
-  //change everything to uint8array
-  //gpt array buffer vs uint8array
-  //services * change everything to uint8array if possible
-  //string to buffer and visa versa methods should be uint8array
-
-
   fetchQualificationsById() {
     this.employeeQualificationsService.getEmployeeQualificationById(this.employeeProfile.employeeDetails.id as number).subscribe({
       next: (data) => {
         this.sharedAccordionFunctionality.employeeQualification = data;
-        // const newByteArray = this.fileProcessingService.stringToByteArray(this.sharedAccordionFunctionality.employeeQualification.proofOfQualification);
-        // const decerializedArray = this.fileProcessingService.deserializeAndDecompressFile(newByteArray);
-        // this.sharedAccordionFunctionality.employeeQualification.proofOfQualification = this.fileProcessingService.byteArrayToString(decerializedArray);
-        
+        //fetching qualification in db
+        this.dbQualification = data.proofOfQualification;
+        console.log("The database qualification: ", this.dbQualification);
+        //==== decerialised logic before
+        // this.compressedByteArray = this.fileProcessingService.stringToByteArray(this.dbQualification);
+        // this.deserializedArrayBufferStore = this.fileProcessingService.deserializeAndDecompressFile(this.compressedByteArray);
+        // console.log("This is the deserialized array buffer from the DB: ", this.deserializedArrayBufferStore);
+
         if (this.sharedAccordionFunctionality.employeeQualification) {
           if (data.year && data.year.endsWith("-01-01")) {
             this.sharedAccordionFunctionality.employeeQualification.year = data.year.substring(0, 4);
@@ -124,9 +129,6 @@ export class CareerSummaryQualificationsComponent {
         documentName: this.fileName,
       };
 
-      console.log("============================");
-      console.log("The base 64 file size", this.base64File.length);
-
       const updatedQualification: EmployeeQualifications = {
         id: this.sharedAccordionFunctionality.employeeQualification ? this.sharedAccordionFunctionality.employeeQualification.id : 0,
         employeeId: this.employeeProfile.employeeDetails.id as number,
@@ -168,7 +170,7 @@ export class CareerSummaryQualificationsComponent {
     this.isDisabledUpload = true;
     this.isDisabledDownload = true;
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
-  }
+  }  
 
   onFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
@@ -177,27 +179,25 @@ export class CareerSummaryQualificationsComponent {
 
       this.fileProcessingService.fileToArrayBuffer(file, (arrayBuffer) => {
         // Log the size of the original ArrayBuffer
-        console.log("Original ArrayBuffer size (in bytes):", arrayBuffer.byteLength);
+        console.log("Original ArrayBuffer: ", arrayBuffer);
+        console.log("Original ArrayBuffer size: ", arrayBuffer.byteLength);
 
         // Compress and serialize the ArrayBuffer
         const compressedData = this.fileProcessingService.compressAndSerializeFile(arrayBuffer);
-        this.fileArrayBuffer = this.fileProcessingService.compressAndSerializeFile(arrayBuffer);
-        this.proofOfQualificationFinal = this.fileProcessingService.arrayBufferToBase64(this.fileArrayBuffer);
-
-        // Log the size of the compressed data
-        console.log("Compressed data size (in bytes):", compressedData.byteLength);
-        console.log("Compressed data: ", compressedData);
-
-        console.log("compressedB64 size: ", this.proofOfQualificationFinal.length);
-        console.log("This is the base64 from the compressed data: ", this.proofOfQualificationFinal);
+        console.log("This is the compressed Uint8: ", compressedData);
         
+        this.proofOfQualificationFinal = this.fileProcessingService.byteArrayToString(compressedData);
+        this.fileDownloadName = file.name;
+        this.fileDownloadType = file.type;
+
+        // Log the size of the compressed data     
 
         // Decompress and deserialize the data back to an ArrayBuffer
         const deserializedArrayBuffer = this.fileProcessingService.deserializeAndDecompressFile(compressedData);
-        console.log("Decompressed data size (in bytes)", deserializedArrayBuffer.byteLength);
+        console.log("This is the deserialized array buffer from uploaded file: ", deserializedArrayBuffer);
 
         // Reconstruct the file and trigger the download
-        // this.fileProcessingService.downloadArrayBufferAsFile(deserializedArrayBuffer, file.name, file.type);
+        this.fileProcessingService.downloadArrayBufferAsFile(deserializedArrayBuffer, file.name, file.type);
       });
 
       this.fileName = file.name;
@@ -230,24 +230,47 @@ export class CareerSummaryQualificationsComponent {
   }
 
   downloadFile() {
-    const commaIndex = this.base64File.indexOf(',');
-    if (commaIndex !== -1) {
-      this.base64File = this.base64File.slice(commaIndex + 1);
-    }
-    const byteString = atob(this.base64File);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const intArray = new Uint8Array(arrayBuffer);
+    console.log("Download works");
 
-    for (let i = 0; i < byteString.length; i++) {
-      intArray[i] = byteString.charCodeAt(i);
-    }
+    if (this.sharedAccordionFunctionality.employeeQualification?.proofOfQualification) {
+      // Convert the stored string to a byte array
+      // const byteArray = this.fileProcessingService.stringToByteArray(this.sharedAccordionFunctionality.employeeQualification.proofOfQualification);
+      // console.log("This is the byte array on download: ", byteArray);
+      // Decompress and deserialize the byte array
+      // this.fileProcessingService.stringToByteArray(this.sharedAccordionFunctionality.employeeQualification?.proofOfQualification);
 
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = this.fileName;
-    link.click();
-  }
+      console.log("from the db before decompressing: ", this.dbQualification);
+      // const stringToByte = this.fileProcessingService.stringToByteArray(this.sharedAccordionFunctionality.employeeQualification.proofOfQualification);
+      const decompressedArrayBuffer = this.fileProcessingService.deserializeAndDecompressFile(this.fileProcessingService.stringToByteArray(this.dbQualification));
+      
+      console.log("Decompressed proof of Qualification: ", decompressedArrayBuffer);
+  
+      // Download the file
+      this.fileProcessingService.downloadArrayBufferAsFile(decompressedArrayBuffer, this.fileDownloadName, this.fileDownloadType);
+    } else {
+      console.error("No proof of qualification data available to download.");
+    }
+  }  
+
+  // downloadFile() {
+  //   const commaIndex = this.base64File.indexOf(',');
+  //   if (commaIndex !== -1) {
+  //     this.base64File = this.base64File.slice(commaIndex + 1);
+  //   }
+  //   const byteString = atob(this.base64File);
+  //   const arrayBuffer = new ArrayBuffer(byteString.length);
+  //   const intArray = new Uint8Array(arrayBuffer);
+
+  //   for (let i = 0; i < byteString.length; i++) {
+  //     intArray[i] = byteString.charCodeAt(i);
+  //   }
+
+  //   const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+  //   const link = document.createElement('a');
+  //   link.href = window.URL.createObjectURL(blob);
+  //   link.download = this.fileName;
+  //   link.click();
+  // }
 
   checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
     fieldNames.forEach(fieldName => {
