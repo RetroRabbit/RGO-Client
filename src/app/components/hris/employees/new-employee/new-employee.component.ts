@@ -151,12 +151,11 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   isEmailValid(): boolean {
-    const emailformControl = this.newEmployeeForm.get('email');
-    const emailValue = emailformControl?.value;
-    if (this.employeeEmails.includes(emailValue)) {
+    const emailformControl = this.newEmployeeForm.get('email')?.value;
+    if (this.employeeEmails.includes(emailformControl)) {
       this.emailExists = true;
     }
-    return this.employeeEmails.includes(emailValue);
+    return this.employeeEmails.includes(emailformControl);
   }
 
   initializeForm() {
