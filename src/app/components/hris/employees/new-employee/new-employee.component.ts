@@ -108,6 +108,7 @@ export class NewEmployeeComponent implements OnInit {
   };
 
   physicalAddress: FormGroup = this.createAddressForm();
+  postalAddress: FormGroup = this.createAddressForm();
   newEmployeeForm: FormGroup = this.createEmployeeForm();
 
   settingsForm: FormGroup = new FormGroup({
@@ -115,6 +116,10 @@ export class NewEmployeeComponent implements OnInit {
       false,
       Validators.required
     ),
+  });
+
+  postalAddressForm: FormGroup = new FormGroup({
+    sameAsPhysicalAddress: new FormControl<boolean>(true, Validators.required),
   });
 
   uploadDocumentForm = new FormGroup({
@@ -198,11 +203,13 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   saveAndExit() {
+
     this.isLoadingAddEmployee = true;
     this.saveEmployee("SaveAndExit");
     this.clearFormErrorsAndValues(this.newEmployeeForm);
     this.clearFormErrorsAndValues(this.uploadDocumentForm);
     this.clearFormErrorsAndValues(this.physicalAddress);
+    this.clearFormErrorsAndValues(this.postalAddressForm);
     this.removeAllDocuments();
   }
 
@@ -213,6 +220,7 @@ export class NewEmployeeComponent implements OnInit {
     this.clearFormErrorsAndValues(this.newEmployeeForm);
     this.clearFormErrorsAndValues(this.uploadDocumentForm);
     this.clearFormErrorsAndValues(this.physicalAddress);
+    this.clearFormErrorsAndValues(this.postalAddressForm);
     this.removeAllDocuments();
     this.newEmployeeForm.controls['engagementDate'].setValue(new Date(Date.now()));
     this.newEmployeeForm.controls['disability'].setValue(false);
@@ -286,6 +294,39 @@ export class NewEmployeeComponent implements OnInit {
       this.inputField.reset();
       document.querySelector('.cellphone-container')?.classList.remove('has-value');
     }
+  }
+
+  postalSameAsPhysicalAddress(event: boolean) {
+    this.isSameAddress = event;
+
+    if (this.postalAddressForm.value.sameAsPhysicalAddress && event) {
+      this.postalAddress.patchValue({
+        unitNumber: this.physicalAddress.value.unitNumber,
+        complexName: this.physicalAddress.value.complexName,
+        suburbDistrict: this.physicalAddress.value.suburbDistrict,
+        city: this.physicalAddress.value.city,
+        streetNumber: this.physicalAddress.value.streetNumber,
+        streetName: this.physicalAddress.value.streetName,
+        country: this.physicalAddress.value.country,
+        province: this.physicalAddress.value.province,
+        postalCode: this.physicalAddress.value.postalCode,
+      });
+    }
+  }
+
+  get postalAddressObj(): EmployeeAddress {
+    return {
+      id: 0,
+      unitNumber: this.postalAddress.value.unitNumber!,
+      complexName: this.postalAddress.value.complexName!,
+      suburbOrDistrict: this.postalAddress.value.suburbDistrict!,
+      city: this.postalAddress.value.city!,
+      streetNumber: this.postalAddress.value.streetNumber!,
+      streetName: this.postalAddress.value.streetName!,
+      country: this.postalAddress.value.country!,
+      province: this.postalAddress.value.province!,
+      postalCode: this.postalAddress.value.postalCode!,
+    };
   }
 
   onCountryChange(country: string): void {
@@ -419,11 +460,16 @@ export class NewEmployeeComponent implements OnInit {
   saveAddress(): void {
     combineLatest([
       this.employeeAddressService.save(this.physicalAddressObj),
+      this.employeeAddressService.save(this.postalAddressObj)
     ]).pipe(first()).subscribe()
   }
 
   onSubmit(reset: boolean = false): void {
     this.existingIdNumber = false;
+    if (this.emailExists) {
+      this.newEmployeeForm.get('email')?.setValue('');
+      return;
+    }
     if (!this.newEmployeeForm.controls['idNumber'].valid) {
       this.snackBarService.showSnackbar("Valid ID Number Required", "snack-error");
       return;

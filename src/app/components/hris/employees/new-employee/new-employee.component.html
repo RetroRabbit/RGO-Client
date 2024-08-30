@@ -301,7 +301,7 @@
                       Postal Code Must Contain Only Numbers.
                     </mat-error>
                   </mat-form-field>
-                  <!-- <form class=" mt-2" [formGroup]="postalAddressForm">
+                  <form class=" mt-2" [formGroup]="postalAddressForm">
                     <div class="row">
                       <mat-checkbox [checked]="isSameAddress" value="isSameAddress" inputId="checkbox"
                         (change)="postalSameAsPhysicalAddress($event.checked)" class="col-1">
@@ -310,7 +310,7 @@
                         Postal address is the same as physical address
                       </label>
                     </div>
-                  </form> -->
+                  </form>
                 </form>
                 <form *ngIf="!isSameAddress"
                   class="row flex-column justify-content-center align-items-center roboto-font col-md-12">
