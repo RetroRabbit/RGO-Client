@@ -63,7 +63,7 @@ export class NewEmployeeComponent implements OnInit {
   genders: string[] = genders.map((gender) => gender.value);
   provinces: string[] = [];
   cities: string[] = [];
-  employeeEmails: string[] = [];
+  employeeEmails: any[] = [];
   newEmployeeEmail = "";
   base64String = "";
   filename = "";
@@ -134,6 +134,8 @@ export class NewEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
+    this.employeeEmails = this.sharedAccordionFunctionality.employees.map(employee => employee.email);
+
   }
 
   ngOnDestroy() {
