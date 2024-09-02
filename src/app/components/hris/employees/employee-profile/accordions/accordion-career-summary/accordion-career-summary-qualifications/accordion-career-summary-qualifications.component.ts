@@ -323,33 +323,4 @@ export class CareerSummaryQualificationsComponent {
   //   link.download = this.fileName;
   //   link.click();
   // }
-
-  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
-    fieldNames.forEach(fieldName => {
-      let control: AbstractControl<any, any> | null = null;
-      control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
-      if (control) {
-        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
-          case PropertyAccessLevel.none:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
-            break;
-          case PropertyAccessLevel.read:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          case PropertyAccessLevel.write:
-            if (!initialLoad)
-              control.enable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          default:
-            if (!initialLoad)
-              control.enable();
-        }
-      }
-    });
-  }
 }
