@@ -34,8 +34,8 @@ export class AccordionProfileContactDetailsComponent {
     public sharedAccordionFunctionality: SharedAccordionFunctionality) {
   }
 
-  ngOnInit() {
-    this.initializeForm();
+  async ngOnInit() {
+   await  this.initializeForm();
     this.sharedAccordionFunctionality.employeeContactForm.get('houseNo')?.valueChanges.subscribe(value => {
       this.checkHouseNumberValue(value);
     });
@@ -111,7 +111,7 @@ export class AccordionProfileContactDetailsComponent {
     }
   }
 
-  initializeForm() {
+  async initializeForm() {
     this.sharedAccordionFunctionality.employeeContactForm = this.fb.group({
       email: [this.employeeProfile.employeeDetails.email, [Validators.required, Validators.pattern(this.sharedAccordionFunctionality.emailPattern)]],
       personalEmail: [this.employeeProfile.employeeDetails.personalEmail, [Validators.required, Validators.email, Validators.pattern("[^_\\W\\s@][\\w.!]*[\\w]*[@][\\w]*[.][\\w.]*")]],
@@ -122,13 +122,14 @@ export class AccordionProfileContactDetailsComponent {
     });
     this.sharedAccordionFunctionality.employeeContactForm.disable();
     this.sharedAccordionFunctionality.checkContactFormProgress();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", true)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", true , this.sharedAccordionFunctionality.employeeContactForm , this.employeeProfile.employeeDetails.email!)
+
   }
 
-  editContactDetails() {
+  async editContactDetails() {
     this.sharedAccordionFunctionality.employeeContactForm.enable();
     this.editContact = true;
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", false);
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeContactForm.controls), "Employee", false , this.sharedAccordionFunctionality.employeeContactForm , this.employeeProfile.employeeDetails.email!)
   }
 
   cancelContactEdit() {
@@ -161,38 +162,5 @@ export class AccordionProfileContactDetailsComponent {
     else {
       this.snackBarService.showSnackbar("Some Fields Are Still Missing Information", "snack-error");
     }
-  }
-
-  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
-    if (!this.sharedPropertyAccessService.accessProperties) {
-      return;
-    }
-    fieldNames.forEach(fieldName => {
-      let control: AbstractControl<any, any> | null = null;
-      control = this.sharedAccordionFunctionality.employeeContactForm.get(fieldName);
-
-      if (control) {
-        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
-          case PropertyAccessLevel.none:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
-            break;
-          case PropertyAccessLevel.read:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          case PropertyAccessLevel.write:
-            if (!initialLoad)
-              control.enable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          default:
-            if (!initialLoad)
-              control.enable();
-        }
-      }
-    });
   }
 }

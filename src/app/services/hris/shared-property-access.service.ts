@@ -7,6 +7,7 @@ import { EmployeeAddressPermissions } from "../../models/hris/property-access/em
 import { AuthAccessService } from "../shared-services/auth-access/auth-access.service";
 import { PropertyAccess } from "src/app/models/hris/properties.interface";
 import { lastValueFrom } from 'rxjs'; 
+import { AbstractControl, FormGroup } from "@angular/forms";
 
 @Injectable({
     providedIn: 'root'
@@ -96,4 +97,38 @@ export class SharedPropertyAccessService {
         } catch (error) {
         }
     }
+
+    public async checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean, formGroup : FormGroup , email: string): Promise<void> {
+        this.setAccessProperties(email);
+        if (!this.accessProperties) {
+          return;
+        }
+        fieldNames.forEach(fieldName => {
+          let control: AbstractControl<any, any> | null = null;
+          control = formGroup.get(fieldName);
+    
+          if (control) {
+            switch (this.checkPermission(table, fieldName)) {
+              case PropertyAccessLevel.none:
+                if (!initialLoad)
+                  control.disable();
+                this.employeeProfilePermissions[fieldName] = false;
+                break;
+              case PropertyAccessLevel.read:
+                if (!initialLoad)
+                  control.disable();
+                this.employeeProfilePermissions[fieldName] = true;
+                break;
+              case PropertyAccessLevel.write:
+                if (!initialLoad)
+                  control.enable();
+                this.employeeProfilePermissions[fieldName] = true;
+                break;
+              default:
+                if (!initialLoad)
+                  control.enable();
+            }
+          }
+        });
+      }
 }
