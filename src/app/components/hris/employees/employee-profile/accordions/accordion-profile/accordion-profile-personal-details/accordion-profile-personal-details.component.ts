@@ -30,9 +30,9 @@ export class AccordionProfilePersonalDetailsComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.sharedAccordionFunctionality.typeOther = false;
-    this.initializeForm();
+    await this.initializeForm();
     this.loadCountries();
     this.checkDisabilityType();
 
@@ -82,7 +82,7 @@ export class AccordionProfilePersonalDetailsComponent {
     }
   }
 
-  initializeForm() {
+  async initializeForm() {
     this.sharedAccordionFunctionality.personalDetailsForm = this.fb.group({
       gender: [this.employeeProfile!.employeeDetails.gender, Validators.required],
       race: [this.employeeProfile!.employeeDetails.race, Validators.required],
@@ -92,11 +92,11 @@ export class AccordionProfilePersonalDetailsComponent {
       countryOfBirth: [this.employeeProfile!.employeeDetails.countryOfBirth, Validators.required],
       disabilityNotes: [this.employeeProfile!.employeeDetails.disabilityNotes]
     });
-    this.sharedAccordionFunctionality.personalDetailsForm.disable();
     this.sharedAccordionFunctionality.checkPersonalFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
     this.checkEmployeeDetails();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", true)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", true , this.sharedAccordionFunctionality.personalDetailsForm , this.employeeProfile.employeeDetails.email!)
+    this.sharedAccordionFunctionality.personalDetailsForm.disable();
   }
 
   constructor(
@@ -126,6 +126,7 @@ export class AccordionProfilePersonalDetailsComponent {
   editPersonalDetails() {
     this.editPersonal = true;
     this.sharedAccordionFunctionality.personalDetailsForm.enable();
+    this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.personalDetailsForm.controls), "Employee", false , this.sharedAccordionFunctionality.personalDetailsForm , this.employeeProfile.employeeDetails.email!)
   }
 
   setHasDisability(event: any) {
@@ -185,39 +186,6 @@ export class AccordionProfilePersonalDetailsComponent {
     this.locationApiService.getCountries().subscribe({
       next: (data) => {
         this.countries = data
-      }
-    });
-  }
-
-  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
-    if (!this.sharedPropertyAccessService.accessProperties) {
-      return;
-    }
-    fieldNames.forEach(fieldName => {
-      let control: AbstractControl<any, any> | null = null;
-      control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
-
-      if (control) {
-        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
-          case PropertyAccessLevel.none:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
-            break;
-          case PropertyAccessLevel.read:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          case PropertyAccessLevel.write:
-            if (!initialLoad)
-              control.enable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          default:
-            if (!initialLoad)
-              control.enable();
-        }
       }
     });
   }
