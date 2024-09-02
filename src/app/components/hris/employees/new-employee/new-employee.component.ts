@@ -63,6 +63,7 @@ export class NewEmployeeComponent implements OnInit {
   genders: string[] = genders.map((gender) => gender.value);
   provinces: string[] = [];
   cities: string[] = [];
+  employeeEmails: any[] = [];
   newEmployeeEmail = "";
   base64String = "";
   filename = "";
@@ -89,6 +90,7 @@ export class NewEmployeeComponent implements OnInit {
   hasDisability: boolean = false;
   isLinear: boolean = true;
   isDirty: boolean = false;
+  emailExists: boolean = false;
   disabilityType = disabilities;
 
   categories: { [key: number]: { name: string, state: boolean } } = {
@@ -132,6 +134,7 @@ export class NewEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
+    this.employeeEmails = this.sharedAccordionFunctionality.employees.map(employee => employee.email);
   }
 
   ngOnDestroy() {
@@ -166,6 +169,14 @@ export class NewEmployeeComponent implements OnInit {
       return nameA.localeCompare(nameB);
     });
     this.Employees = this.sharedAccordionFunctionality.employees;
+  }
+
+  isEmailValid(): boolean {
+    const emailformControl = this.newEmployeeForm.get('email')?.value;
+    if (this.employeeEmails.includes(emailformControl)) {
+      this.emailExists = true;
+    }
+    return this.employeeEmails.includes(emailformControl);
   }
 
   saveAndExit() {
@@ -231,7 +242,7 @@ export class NewEmployeeComponent implements OnInit {
 
   onUploadDocument(nextPage: string): void {
     var documents = this.employeeDocumentModels
-    
+
     if (documents.length > 0) {
       documents.forEach((documentModel) => {
         this.employeeDocumentService.saveEmployeeDocument(documentModel, 0).subscribe({
@@ -397,6 +408,10 @@ export class NewEmployeeComponent implements OnInit {
 
   onSubmit(reset: boolean = false): void {
     this.existingIdNumber = false;
+    if (this.emailExists) {
+      this.newEmployeeForm.get('email')?.setValue('');
+      return;
+    }
     if (!this.newEmployeeForm.controls['idNumber'].valid) {
       this.snackBarService.showSnackbar("Valid ID Number Required", "snack-error");
       return;

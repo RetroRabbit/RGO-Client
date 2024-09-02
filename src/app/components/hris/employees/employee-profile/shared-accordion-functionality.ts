@@ -455,21 +455,6 @@ export class SharedAccordionFunctionality {
     }
   }
 
-  calculateSalaryDetails() {
-    let filledCount = 0;
-    const formControls = this.salaryDetailsForm.controls;
-    const totalFields = Object.keys(this.salaryDetailsForm.controls).length;
-    for (const controlName in formControls) {
-      if (formControls.hasOwnProperty(controlName)) {
-        const control = formControls[controlName];
-        if (control.value != null && control.value != '') {
-          filledCount++;
-        }
-      }
-    }
-    this.salaryDetailsFormProgress = Math.round((filledCount / totalFields) * 100);
-  }
-
   totalProfileProgress() {
     if (this.additionalFormProgress == Infinity || this.additionalFormProgress === 0) {
       this.profileFormProgress = Math.floor((this.employeeFormProgress + this.personalFormProgress + this.addressFormProgress + this.contactFormProgress) / 4);
@@ -482,11 +467,11 @@ export class SharedAccordionFunctionality {
 
   totalCareerProgress() {
     if (this.additionalCareerFormProgress == Infinity || this.additionalCareerFormProgress === 0) {
-      this.careerFormProgress = Math.floor((this.qualificationFormProgress + this.salaryDetailsFormProgress) / 2);
+      this.careerFormProgress = Math.floor((this.qualificationFormProgress));
       this.updateCareer.emit(this.careerFormProgress);
     }
     else {
-      this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qualificationFormProgress + this.salaryDetailsFormProgress) / 3);
+      this.careerFormProgress = Math.floor((this.additionalCareerFormProgress + this.qualificationFormProgress) / 2);
       this.updateCareer.emit(this.careerFormProgress);
     }
   }

@@ -57,13 +57,13 @@ export class CareerSummaryQualificationsComponent {
 
   testString: string = '';
 
-  ngOnInit() {
-    this.fetchQualificationsById();
+  async ngOnInit() {
+    await this.fetchQualificationsById();
   }
 
-  fetchQualificationsById() {
+  async fetchQualificationsById() {
     this.employeeQualificationsService.getEmployeeQualificationById(this.employeeProfile.employeeDetails.id as number).subscribe({
-      next: (data) => {
+      next: async (data) => {
         this.sharedAccordionFunctionality.employeeQualification = data;
         //fetching qualification in db
         this.dbQualification = data.proofOfQualification;
@@ -80,14 +80,14 @@ export class CareerSummaryQualificationsComponent {
             this.sharedAccordionFunctionality.employeeQualification.year = data.year;
           }
         }
-        this.initializeForm();
+        await this.initializeForm();
         this.sharedAccordionFunctionality.calculateQualificationProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
       },
     })
   }
 
-  initializeForm() {
+  async initializeForm() {
     if (!this.sharedAccordionFunctionality.employeeQualification) {
       this.sharedAccordionFunctionality.employeeQualificationForm = this.fb.group({
         highestQualification: ["", Validators.required],
@@ -112,7 +112,7 @@ export class CareerSummaryQualificationsComponent {
     this.sharedAccordionFunctionality.calculateQualificationProgress();
     this.sharedAccordionFunctionality.totalCareerProgress();
     this.fileName = this.sharedAccordionFunctionality.employeeQualification ? this.sharedAccordionFunctionality.employeeQualification.documentName : '';
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualifications", true)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualification", true , this.sharedAccordionFunctionality.employeeQualificationForm , this.employeeProfile.employeeDetails.email!)
   }
 
   saveQualificationsEdit() {
@@ -158,11 +158,12 @@ export class CareerSummaryQualificationsComponent {
     }
   }
 
-  editQualificationsDetails() {
+  async editQualificationsDetails() {
     this.editQualifications = true;
     this.sharedAccordionFunctionality.employeeQualificationForm.enable();
     this.isDisabledUpload = false;
     this.isDisabledDownload = false;
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualification", false , this.sharedAccordionFunctionality.employeeQualificationForm , this.employeeProfile.employeeDetails.email!)
   }
 
   cancelQualificationsEdit() {
@@ -271,33 +272,4 @@ export class CareerSummaryQualificationsComponent {
   //   link.download = this.fileName;
   //   link.click();
   // }
-
-  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
-    fieldNames.forEach(fieldName => {
-      let control: AbstractControl<any, any> | null = null;
-      control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
-      if (control) {
-        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
-          case PropertyAccessLevel.none:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
-            break;
-          case PropertyAccessLevel.read:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          case PropertyAccessLevel.write:
-            if (!initialLoad)
-              control.enable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          default:
-            if (!initialLoad)
-              control.enable();
-        }
-      }
-    });
-  }
 }
