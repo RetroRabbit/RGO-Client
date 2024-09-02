@@ -43,13 +43,13 @@ export class AccordionProfileEmployeeDetailsComponent {
     private route: ActivatedRoute
   ) { }
 
-  ngOnInit() {
-    this.initializeForm();
+  async ngOnInit() {
+   await this.initializeForm();
     this.initializeEmployeeProfileDto();
     this.getEmployeeFields();
   }
 
-  initializeForm() {
+  async initializeForm() {
     this.sharedAccordionFunctionality.employeeDetailsForm = this.fb.group({
       name: [this.employeeProfile!.employeeDetails.name, [Validators.required,
       Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
@@ -65,10 +65,10 @@ export class AccordionProfileEmployeeDetailsComponent {
       engagementDate: [this.employeeProfile!.employeeDetails.engagementDate, Validators.required],
       peopleChampion: this.employeeProfile!.employeeDetails.peopleChampionName
     });
-    this.sharedAccordionFunctionality.employeeDetailsForm.disable();
     this.sharedAccordionFunctionality.checkEmployeeFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", true)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", true , this.sharedAccordionFunctionality.employeeDetailsForm , this.employeeProfile.employeeDetails.email!);
+    this.sharedAccordionFunctionality.employeeDetailsForm.disable();
   }
 
   initializeEmployeeProfileDto() {
@@ -195,10 +195,10 @@ export class AccordionProfileEmployeeDetailsComponent {
     }
   }
 
-  editEmployeeDetails() {
+  async editEmployeeDetails() {
     this.sharedAccordionFunctionality.employeeDetailsForm.enable();
     this.editEmployee = true;
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", false)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeDetailsForm.controls), "Employee", false , this.sharedAccordionFunctionality.employeeDetailsForm , this.employeeProfile.employeeDetails.email!)
   }
 
   cancelEmployeeEdit() {
@@ -242,38 +242,5 @@ export class AccordionProfileEmployeeDetailsComponent {
 
   toggleEqualFields() {
     this.sharedAccordionFunctionality.physicalEqualPostal = !this.sharedAccordionFunctionality.physicalEqualPostal;
-  }
-
-  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
-    if (!this.sharedPropertyAccessService.accessProperties) {
-      return;
-    }
-    fieldNames.forEach(fieldName => {
-      let control: AbstractControl<any, any> | null = null;
-      control = this.sharedAccordionFunctionality.employeeContactForm.get(fieldName);
-
-      if (control) {
-        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
-          case PropertyAccessLevel.none:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
-            break;
-          case PropertyAccessLevel.read:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          case PropertyAccessLevel.write:
-            if (!initialLoad)
-              control.enable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          default:
-            if (!initialLoad)
-              control.enable();
-        }
-      }
-    });
   }
 }
