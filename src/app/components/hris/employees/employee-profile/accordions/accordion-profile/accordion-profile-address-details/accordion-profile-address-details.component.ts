@@ -50,14 +50,14 @@ export class AccordionProfileAddressDetailsComponent {
     private route: ActivatedRoute
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.currentEmployeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
     this.loadPhysicalAddress();
-    this.initializeForm();
+    await this.initializeForm();
     this.getEmployeeFields();
   }
 
-  initializeForm() {
+  async initializeForm() {
     if (this.employeeAddress) {
       this.sharedAccordionFunctionality.addressDetailsForm = this.fb.group({
         physicalUnitNumber: [this.employeeAddress?.unitNumber, [Validators.pattern(/^[0-9]*$/)]],
@@ -88,7 +88,7 @@ export class AccordionProfileAddressDetailsComponent {
     this.sharedAccordionFunctionality.addressDetailsForm.disable();
     this.sharedAccordionFunctionality.checkAddressFormProgress();
     this.sharedAccordionFunctionality.totalProfileProgress();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", true)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "Employee", true , this.sharedAccordionFunctionality.addressDetailsForm , this.employeeProfile.employeeDetails.email!)
   }
 
   saveAddressEdit() {
@@ -216,10 +216,11 @@ export class AccordionProfileAddressDetailsComponent {
     }
   }
 
-  editAddressDetails() {
+  async editAddressDetails() {
     this.editAddress = true;
     this.sharedAccordionFunctionality.addressDetailsForm.enable();
-    this.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "EmployeeAddress", false)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.addressDetailsForm.controls), "Employee", false , this.sharedAccordionFunctionality.addressDetailsForm , this.employeeProfile.employeeDetails.email!)
+
   }
 
   cancelAddressEdit() {
@@ -231,37 +232,5 @@ export class AccordionProfileAddressDetailsComponent {
 
   toggleEqualFields() {
     this.sharedAccordionFunctionality.physicalEqualPostal = !this.sharedAccordionFunctionality.physicalEqualPostal;
-  }
-  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
-    if (!this.sharedPropertyAccessService.accessProperties) {
-      return;
-    }
-    fieldNames.forEach(fieldName => {
-      let control: AbstractControl<any, any> | null = null;
-      control = this.sharedAccordionFunctionality.addressDetailsForm.get(fieldName);
-
-      if (control) {
-        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
-          case PropertyAccessLevel.none:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
-            break;
-          case PropertyAccessLevel.read:
-            if (!initialLoad)
-              control.disable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          case PropertyAccessLevel.write:
-            if (!initialLoad)
-              control.enable();
-            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
-            break;
-          default:
-            if (!initialLoad)
-              control.enable();
-        }
-      }
-    });
   }
 }
