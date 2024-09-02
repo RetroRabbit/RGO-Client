@@ -42,6 +42,16 @@ export class FileProcessingService {
   }
 
   // converting compressed array buffer to base64 string for sending to backend
+  
+  // byteArrayToBase64(buffer: Uint8Array): string {
+  //   let binary = '';
+  //   const bytes = new Uint8Array(buffer);
+  //   const len = bytes.byteLength;
+  //   for (let i = 0; i < len; i++) {
+  //       binary += String.fromCharCode(bytes[i]);
+  //   }
+  //   return window.btoa(binary);
+  // }
 
   stringToByteArray(docString: string): Uint8Array {
     const encoder = new TextEncoder();

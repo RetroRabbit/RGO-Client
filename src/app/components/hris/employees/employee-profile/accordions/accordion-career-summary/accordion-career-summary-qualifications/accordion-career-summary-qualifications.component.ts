@@ -125,7 +125,7 @@ export class CareerSummaryQualificationsComponent {
         fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.get("fieldOfStudy")?.value,
         year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value + "-01-01",
         nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
-        proofOfQualification: this.proofOfQualificationFinal,
+        proofOfQualification: this.sharedAccordionFunctionality.employeeQualification.proofOfQualification,
         documentName: this.fileName,
       };
 
@@ -185,17 +185,30 @@ export class CareerSummaryQualificationsComponent {
 
         // Compress and serialize the ArrayBuffer
         const compressedData = this.fileProcessingService.compressAndSerializeFile(arrayBuffer);
+        // this.fileArrayBuffer = this.fileProcessingService.compressAndSerializeFile(arrayBuffer); //=====
         console.log("This is the compressed Uint8: ", compressedData);
         
-        this.proofOfQualificationFinal = this.fileProcessingService.byteArrayToString(compressedData);
+        // this.proofOfQualificationFinal = this.fileProcessingService.byteArrayToString(compressedData);
+        this.sharedAccordionFunctionality.employeeQualification.proofOfQualification = this.fileProcessingService.byteArrayToString(compressedData);
         this.fileDownloadName = file.name;
         this.fileDownloadType = file.type;
 
-        // Log the size of the compressed data     
+        console.log("This is the shared accordion after compressing", this.sharedAccordionFunctionality.employeeQualification.proofOfQualification);
+
+        this.testString = this.sharedAccordionFunctionality.employeeQualification.proofOfQualification;
+        // Log the size of the compressed data
+        // console.log("Compressed data size (in bytes):", compressedData.byteLength);
+        // console.log("Compressed data: ", compressedData);
+
+        // console.log("compressedB64 size: ", this.proofOfQualificationFinal.length);
+        // console.log("This is the base64 from the compressed data: ", this.proofOfQualificationFinal);
+        
 
         // Decompress and deserialize the data back to an ArrayBuffer
         const deserializedArrayBuffer = this.fileProcessingService.deserializeAndDecompressFile(compressedData);
-        console.log("This is the deserialized array buffer from uploaded file: ", deserializedArrayBuffer);
+        // console.log("Decompressed data size (in bytes)", deserializedArrayBuffer.byteLength);
+
+        // console.log("shared acoordion proof: ", this.sharedAccordionFunctionality.employeeQualification.proofOfQualification);
 
         // Reconstruct the file and trigger the download
         this.fileProcessingService.downloadArrayBufferAsFile(deserializedArrayBuffer, file.name, file.type);
@@ -233,6 +246,10 @@ export class CareerSummaryQualificationsComponent {
   downloadFile() {
     console.log("Download works");
 
+    if(this.testString == this.sharedAccordionFunctionality.employeeQualification?.proofOfQualification)
+    {
+      console.log("true");
+    } console.log("false");
     if (this.sharedAccordionFunctionality.employeeQualification?.proofOfQualification) {
       // Convert the stored string to a byte array
       // const byteArray = this.fileProcessingService.stringToByteArray(this.sharedAccordionFunctionality.employeeQualification.proofOfQualification);
@@ -240,9 +257,9 @@ export class CareerSummaryQualificationsComponent {
       // Decompress and deserialize the byte array
       // this.fileProcessingService.stringToByteArray(this.sharedAccordionFunctionality.employeeQualification?.proofOfQualification);
 
-      console.log("from the db before decompressing: ", this.dbQualification);
+      console.log("from the db before decompressing: ", this.sharedAccordionFunctionality.employeeQualification.proofOfQualification);
       // const stringToByte = this.fileProcessingService.stringToByteArray(this.sharedAccordionFunctionality.employeeQualification.proofOfQualification);
-      const decompressedArrayBuffer = this.fileProcessingService.deserializeAndDecompressFile(this.fileProcessingService.stringToByteArray(this.dbQualification));
+      const decompressedArrayBuffer = this.fileProcessingService.deserializeAndDecompressFile(this.fileProcessingService.stringToByteArray(this.sharedAccordionFunctionality.employeeQualification.proofOfQualification));
       
       console.log("Decompressed proof of Qualification: ", decompressedArrayBuffer);
   
@@ -251,7 +268,41 @@ export class CareerSummaryQualificationsComponent {
     } else {
       console.error("No proof of qualification data available to download.");
     }
-  }  
+  }
+
+  // downloadFile() {
+  //   // if (this.fileArrayBuffer) {
+  //     // Deserialize and decompress the ArrayBuffer
+
+
+  //     //The file fetched from the db is a compressed b64 string
+  //     //convert to unitarray and then decesrialize
+  //     //download the file
+  //     const stringToByte = this.fileProcessingService.stringToByteArray(this.sharedAccordionFunctionality.employeeQualification.proofOfQualification);
+  //     this.proofOfQualificationDecompressed = this.fileProcessingService.deserializeAndDecompressFile(stringToByte);
+
+  //     console.log("decompressed proof of Qualification: ", this.proofOfQualificationDecompressed);
+
+  //     //this.fileProcessingService.downloadArrayBufferAsFile(this.proofOfQualificationDecompressed, this.fileDownloadName, this.fileDownloadType);
+      
+      
+  //     //array buffer to base 64 string
+  //     //array buffer to string 
+  //     //string to uintarray
+
+
+  //     //takes in uint array
+  //     // const deserializedArrayBuffer = this.fileProcessingService.deserializeAndDecompressFile();
+  
+  //     // console.log("Decompressed data size (in bytes):", deserializedArrayBuffer.byteLength);
+  
+  //     // Trigger the download
+  //     // this.fileProcessingService.downloadArrayBufferAsFile(deserializedArrayBuffer, this.fileName, 'application/pdf');
+  //   // } else {
+  //   //   this.snackBarService.showSnackbar("No file to download", "snack-error");
+  //   // }
+  // }
+  
 
   // downloadFile() {
   //   const commaIndex = this.base64File.indexOf(',');
@@ -272,4 +323,33 @@ export class CareerSummaryQualificationsComponent {
   //   link.download = this.fileName;
   //   link.click();
   // }
+
+  checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean): void {
+    fieldNames.forEach(fieldName => {
+      let control: AbstractControl<any, any> | null = null;
+      control = this.sharedAccordionFunctionality.personalDetailsForm.get(fieldName);
+      if (control) {
+        switch (this.sharedPropertyAccessService.checkPermission(table, fieldName)) {
+          case PropertyAccessLevel.none:
+            if (!initialLoad)
+              control.disable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = false;
+            break;
+          case PropertyAccessLevel.read:
+            if (!initialLoad)
+              control.disable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+            break;
+          case PropertyAccessLevel.write:
+            if (!initialLoad)
+              control.enable();
+            this.sharedPropertyAccessService.employeeProfilePermissions[fieldName] = true;
+            break;
+          default:
+            if (!initialLoad)
+              control.enable();
+        }
+      }
+    });
+  }
 }
