@@ -6,16 +6,16 @@
                     Salary Details
                 </mat-panel-title>
                 <mat-panel-description *ngIf="this.sharedAccordionFunctionality.salaryDetailsFormProgress != 100"
-                class="pe-0 pe-md-5">
-                <mat-icon class="mx-1">error</mat-icon>
-                 <span class="d-none d-md-block d-lg-block">Missing Information</span>
-            </mat-panel-description>
+                    class="pe-0 pe-md-5">
+                    <mat-icon class="mx-1">error</mat-icon>
+                    <span class="d-none d-md-block d-lg-block">Missing Information</span>
+                </mat-panel-description>
             </mat-expansion-panel-header>
             <form [formGroup]="sharedAccordionFunctionality.salaryDetailsForm">
                 <div class="col-12 mb-2 d-flex justify-content-end" id="space">
                 </div>
-                <button class="d-flex d-md-none col-12" *ngIf="!editSalary" mat-button id="edit-button" (click)="editSalaryDetails()"
-                [ngClass]="screenWidth <= 767 ?'col-12':''">
+                <button class="d-flex d-md-none col-12" *ngIf="!editSalary" mat-button id="edit-button"
+                    (click)="editSalaryDetails()" [ngClass]="screenWidth <= 767 ?'col-12':''">
                     <mat-icon>edit</mat-icon>Edit Details
                 </button>
                 <div class="row">
@@ -24,11 +24,11 @@
                             <div class="row">
                                 <div class="col-12 col-md-4">
                                     <h3>
-                                    Last Updated: {{ message }}
+                                        Last Updated: {{ message }}
                                     </h3>
                                     <hr class="col-10 solid">
                                     <h3>
-                                    {{ employeeProfile?.employeeType?.name}} | Level {{ employeeProfile?.level}}
+                                        {{ employeeProfile?.employeeType?.name}} | Level {{ employeeProfile?.level}}
                                     </h3>
                                 </div>
                                 <div id="company-cost" class="col-12">
@@ -38,37 +38,46 @@
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <mat-form-field appearance="outline" style="width: 100%;">
-                                      <mat-label>Remuneration</mat-label>
-                                      <div class="align-text-icon">
-                                      <input type="text" min="0" matInput placeholder="Remuneration" formControlName="remuneration">
-                                      <mat-icon *ngIf="sharedAccordionFunctionality.salaryDetailsForm.get('remuneration')?.value === null || sharedAccordionFunctionality.salaryDetailsForm.get('remuneration')?.value === ''"  [ngStyle]="{color: editSalary  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
-                                     </div>
-                                      <mat-error
-                                      *ngIf="sharedAccordionFunctionality.salaryDetailsForm.controls['remuneration'].hasError('required')">
-                                      Remuneration is required</mat-error>
+                                        <mat-label>Remuneration</mat-label>
+                                        <div class="align-text-icon">
+                                            <input type="text" min="0" matInput placeholder="Remuneration"
+                                                formControlName="remuneration">
+                                            <mat-icon
+                                                *ngIf="sharedAccordionFunctionality.salaryDetailsForm.get('remuneration')?.value === null || sharedAccordionFunctionality.salaryDetailsForm.get('remuneration')?.value === ''"
+                                                [ngStyle]="{color: editSalary  ? '#B3261E' : 'grey'}"
+                                                class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                        </div>
+                                        <mat-error
+                                            *ngIf="sharedAccordionFunctionality.salaryDetailsForm.controls['remuneration'].hasError('required')">
+                                            Remuneration is required</mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <mat-form-field appearance="outline" style="width: 100%;">
-                                      <mat-label>Tax Number</mat-label>
-                                      <div class="align-text-icon">
-                                      <input type="text" min="0" matInput placeholder="Tax Number" formControlName="taxNumber">
-                                      <mat-icon *ngIf="sharedAccordionFunctionality.salaryDetailsForm.get('taxNumber')?.value === null || sharedAccordionFunctionality.salaryDetailsForm.get('taxNumber')?.value === ''"  [ngStyle]="{color: editSalary  ? '#B3261E' : 'grey'}" class="mx-1 flex-end" matSuffix>error</mat-icon>
-                                    </div>
-                                      <mat-error
-                                      *ngIf="sharedAccordionFunctionality.salaryDetailsForm.controls['taxNumber'].hasError('required')">
-                                      Tax Number is required</mat-error>
-                                      <mat-error *ngIf="sharedAccordionFunctionality.salaryDetailsForm.controls['taxNumber'].hasError('pattern')">
-                                        Tax Number is incorrect
-                                    </mat-error>
+                                        <mat-label>Tax Number</mat-label>
+                                        <div class="align-text-icon">
+                                            <input type="text" min="0" matInput placeholder="Tax Number"
+                                                formControlName="taxNumber">
+                                            <mat-icon
+                                                *ngIf="sharedAccordionFunctionality.salaryDetailsForm.get('taxNumber')?.value === null || sharedAccordionFunctionality.salaryDetailsForm.get('taxNumber')?.value === ''"
+                                                [ngStyle]="{color: editSalary  ? '#B3261E' : 'grey'}"
+                                                class="mx-1 flex-end" matSuffix>error</mat-icon>
+                                        </div>
+                                        <mat-error
+                                            *ngIf="sharedAccordionFunctionality.salaryDetailsForm.controls['taxNumber'].hasError('required')">
+                                            Tax Number is required</mat-error>
+                                        <mat-error
+                                            *ngIf="sharedAccordionFunctionality.salaryDetailsForm.controls['taxNumber'].hasError('pattern')">
+                                            Tax Number is incorrect
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
                         </div>
                         <div *ngIf="isAdminUser" class="col-lg-2 col-md-3 d-none d-md-flex mt-md-2 justify-content-end">
                             <button *ngIf="!editSalary" mat-button id="edit-button-width" (click)="editSalaryDetails()"
-                            [ngClass]="screenWidth <= 767 ?'col-12':''">
-                            <mat-icon>edit</mat-icon>Edit Details
+                                [ngClass]="screenWidth <= 767 ?'col-12':''">
+                                <mat-icon>edit</mat-icon>Edit Details
                             </button>
                         </div>
                     </div>
@@ -81,10 +90,12 @@
                         </button>
                     </div>
                     <div class="col-12 d-block d-md-none" id="edit-buttons">
-                        <button *ngIf="editSalary" mat-button id="save-button" class="col-12 mb-2" (click)="saveEmployeeSalaryDetails()">
+                        <button *ngIf="editSalary" mat-button id="save-button" class="col-12 mb-2"
+                            (click)="saveEmployeeSalaryDetails()">
                             Save
                         </button>
-                        <button *ngIf="editSalary" mat-button id="cancel-button" class="col-12" (click)="cancelSalaryDetails()">
+                        <button *ngIf="editSalary" mat-button id="cancel-button" class="col-12"
+                            (click)="cancelSalaryDetails()">
                             Cancel
                         </button>
                     </div>
