@@ -158,20 +158,6 @@ export class CareerSummaryQualificationsComponent {
     this.sharedAccordionFunctionality.employeeQualificationForm.disable();
   }
 
-  // onFileChange(event: any): void {
-  //   if (event.target.files && event.target.files.length) {
-  //     this.fileUploaded = true;
-  //     const file = event.target.files[0];
-  //     this.fileName = file.name;
-  //     if (this.fileProcessingService.validateFile(file)) {
-  //       this.fileProcessingService.convertFileToBase64(file).then((base64File) => {
-  //         console.log('onFileChange- File selected, base64:', base64File);
-  //         this.base64File = base64File;
-  //       });
-  //     }
-  //   }
-  // }
-
   onFileChange(event: any): void {
     if (event.target.files && event.target.files.length) {
         this.fileUploaded = true;
