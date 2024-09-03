@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import * as pako from 'pako';
-import { decode } from 'punycode';
 
 @Injectable({
   providedIn: 'root'
@@ -9,79 +8,138 @@ export class FileProcessingService {
 
   constructor() { }
 
-  // Compress and serialize the file using pako (Gzip)
-  compressAndSerializeFile(arrayBuffer: ArrayBuffer): Uint8Array {
-    const uint8Array = new Uint8Array(arrayBuffer);
-    const compressedData = pako.gzip(uint8Array); // Gzip compress
-    return compressedData;
-  }
-  
-  // Decompress and deserialize the data back to an ArrayBuffer
-  deserializeAndDecompressFile(compressedData: Uint8Array): ArrayBuffer {
-    const decompressedData = pako.ungzip(compressedData); // Gzip decompress
-    return decompressedData.buffer;
-  }
-  
-  // Convert a File object to ArrayBuffer (synchronously using FileReader)
-  fileToArrayBuffer(file: File, callback: (arrayBuffer: ArrayBuffer) => void): void {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const arrayBuffer = reader.result as ArrayBuffer;
-      callback(arrayBuffer);
-    };
-    reader.readAsArrayBuffer(file); // Reading file as ArrayBuffer
-  }
-  
-  // Convert an ArrayBuffer back to a Blob and trigger the download
-  downloadArrayBufferAsFile(arrayBuffer: ArrayBuffer, fileName: string, fileType: string): void {
-    const blob = new Blob([arrayBuffer], { type: fileType });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+  validateFile(file: File): boolean {
+    console.log('Validating file:', file);
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+    if (!allowedTypes.includes(file.type)) {
+      console.error('Invalid file type:', file.type);
+      return false;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      console.error('File size exceeds limit:', file.size);
+      return false;
+    }
+    return true;
   }
 
-  // converting compressed array buffer to base64 string for sending to backend
-  
-  // byteArrayToBase64(buffer: Uint8Array): string {
-  //   let binary = '';
-  //   const bytes = new Uint8Array(buffer);
-  //   const len = bytes.byteLength;
-  //   for (let i = 0; i < len; i++) {
-  //       binary += String.fromCharCode(bytes[i]);
-  //   }
-  //   return window.btoa(binary);
-  // }
-
-  stringToByteArray(docString: string): Uint8Array {
-    const encoder = new TextEncoder();
-    const byteArray =  encoder.encode(docString);
-    return byteArray;
+  convertFileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64File = reader.result as string;
+        if (base64File) {
+          console.log('convertFileToBase64- Converted file to base64:', base64File);
+          resolve(base64File);
+        } else {
+          reject('convertFileToBase64- File conversion to base64 failed.');
+        }
+      };
+      reader.onerror = () => {
+        console.error('Error converting file to base64:', reader.error);
+        reject(reader.error);
+      };
+      reader.readAsDataURL(file);
+    });
   }
 
-  byteArrayToString(byteArray: Uint8Array): string {
-    const decoder = new TextDecoder();
-    const newString =  decoder.decode(byteArray)
-    return newString;
+  downloadFile(base64File: string, fileName: string) {
+    try {
+      if (!this.isValidBase64(base64File)) {
+        console.error('downloadFile- Invalid base64 file data');
+        return;
+      }
+      const commaIndex = base64File.indexOf(',');
+      if (commaIndex === -1) {
+        console.error('downloadFile- Invalid base64 file data');
+        return;
+      }
+      const base64Data = base64File.slice(commaIndex + 1);
+      console.log('downloadFile- Base64 data before decoding:', base64Data);
+
+      const byteString = atob(base64Data);
+      const arrayBuffer = new ArrayBuffer(byteString.length);
+      const intArray = new Uint8Array(arrayBuffer);
+
+      for (let i = 0; i < byteString.length; i++) {
+        intArray[i] = byteString.charCodeAt(i);
+      }
+
+      const blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = fileName;
+      console.log('downloadFile- Triggering file download for:', fileName);
+      link.click();
+    } catch (error) {
+      console.error('downloadFile- Error decoding base64 data or triggering download:', error);
+    }
   }
 
-  convertUint8ArrayToBase64(uint8Array: Uint8Array): string {
-    let binaryString = "";
-   for (let i = 0; i < uint8Array.length; i++) {
-     binaryString += String.fromCharCode(uint8Array[i]);
-   }
-   return btoa(binaryString);
- }
- 
- convertBase64ToUint8Array(base64String: string): Uint8Array {
-   let binaryString = atob(base64String);
-   let length = binaryString.length;
-   let uint8Array = new Uint8Array(length);
- 
-   for (let i = 0; i < length; i++) {
-     uint8Array[i] = binaryString.charCodeAt(i);
-   }
-   return uint8Array;
- }
+  compressFile(base64File: string): string {
+    try {
+      console.log('compressFile- Base64 data before compression:', base64File);
+      if (!this.isValidBase64(base64File)) {
+        throw new Error('compressFile- Invalid base64 file data');
+      }
+      const base64Data = base64File.split(',')[1];
+      const byteString = atob(base64Data);
+      const uint8Array = new Uint8Array(byteString.length);
 
+      for (let i = 0; i < byteString.length; i++) {
+        uint8Array[i] = byteString.charCodeAt(i);
+      }
+
+      const compressedData = pako.deflate(uint8Array);
+      console.log('compressFile- Compressed data:', compressedData);
+
+      const compressedBase64 = btoa(String.fromCharCode(...new Uint8Array(compressedData)));
+      console.log('compressFile- Compressed base64 data:', compressedBase64);
+      return compressedBase64;
+    } catch (error) {
+      console.error('compressFile- Error compressing file:', error);
+      throw error;
+    }
+  }
+
+  decompressFile(compressedBase64File: string): string {
+    try {
+      console.log('decompressFile- Compressed base64 data before decompression:', compressedBase64File);
+      if (!this.isValidBase64(compressedBase64File)) {
+        throw new Error('decompressFile- Invalid base64 file data');
+      }
+      const compressedBase64Data = compressedBase64File.split(',')[1] || compressedBase64File;
+      const compressedByteString = atob(compressedBase64Data);
+      const compressedUint8Array = new Uint8Array(compressedByteString.length);
+
+      for (let i = 0; i < compressedByteString.length; i++) {
+        compressedUint8Array[i] = compressedByteString.charCodeAt(i);
+      }
+
+      const decompressedUint8Array = pako.inflate(compressedUint8Array);
+      console.log('decompressFile- Decompressed data:', decompressedUint8Array);
+
+      const decompressedBase64 = btoa(String.fromCharCode(...new Uint8Array(decompressedUint8Array)));
+      console.log('decompressFile- Decompressed base64 data:', decompressedBase64);
+      return `data:image/png;base64,${decompressedBase64}`;
+    } catch (error) {
+      console.error('decompressFile- Error decompressing file:', error);
+      throw error;
+    }
+  }
+
+  isValidBase64(base64String: string): boolean {
+    const base64Regex = /^[a-zA-Z0-9+/=]+$/;
+    const base64Data = base64String.split(',')[1] || base64String;
+    return base64Regex.test(base64Data);
+  }
+
+  findInvalidCharacters(data: string): string[] {
+    const invalidChars = [];
+    for (let i = 0; i < data.length; i++) {
+      if (data.charCodeAt(i) > 127) {
+        invalidChars.push(data.charAt(i));
+      }
+    }
+    return invalidChars;
+  }
 }
