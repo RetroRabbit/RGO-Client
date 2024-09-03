@@ -433,3 +433,31 @@ div.row {
 #progress-container{
     margin-top: 0.8rem !important;
 }
+
+.profile-image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.remove-photo-btn {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: grey;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 5px;
+    display: none;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.profile-image-container:hover .remove-photo-btn {
+    display: block;
+}
+
+.remove-photo-btn:hover {
+    background-color: darkgray;
+}

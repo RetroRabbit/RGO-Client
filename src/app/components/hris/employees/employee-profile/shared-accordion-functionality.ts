@@ -119,7 +119,6 @@ export class SharedAccordionFunctionality {
   qualificationFormProgress: number = 0;
   workExpFormProgress: number = 0;
   certificateFormProgress: number = 0;
-  salaryDetailsFormProgress: number = 0;
   additionalCareerFormProgress: number = 0;
 
   workExperienceFormFields: number = 0;

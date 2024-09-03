@@ -90,7 +90,6 @@ export class EmployeeProfileComponent implements OnChanges {
   teamLead: number | null = null;
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
-  base64Image: string = '';
   screenWidth = window.innerWidth;
   profileSubscription: Subscription | undefined;
 
@@ -289,6 +288,15 @@ export class EmployeeProfileComponent implements OnChanges {
     return isMainProfile;
   }
 
+  removeEmployeePhoto() {
+    if (this.employeeProfile.photo != '') {
+      this.employeeProfile.photo = '';
+      this.sharedAccordionFunctionality.mainProfileImage = '';
+      this.changeDetectorRef.detectChanges();
+      this.updateUser();
+    }
+  }
+
   getProfileImage(): string {
     const employeePhoto = this.employeeProfile.photo;
   
@@ -336,7 +344,7 @@ export class EmployeeProfileComponent implements OnChanges {
     this.employeeProfile = { ...data };
     this.selectedEmployee = { ...data };
     this.sharedAccordionFunctionality.selectedEmployee = { ...data };
-    this.getEmployeeData();
+   // this.getEmployeeData(); //TODO: find out what the point of this is
     this.isLoading = false;
   }
 
@@ -424,36 +432,24 @@ export class EmployeeProfileComponent implements OnChanges {
     this.overallProgress();
   }
 
-  // Example usage: compress and save the image
-  onFileChange(event: any) {
-    if (event.target.files) {
-      const selectedFile = event.target.files[0];
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(selectedFile);
-      fileReader.onload = (e: any) => {
-        const base64Image = e.target.result;
-        this.base64Image = base64Image;
-
-        // Compress the image
-        const compressedImage = this.imageProcessingService.compressImage(this.base64Image);
-        console.log("compressedImage.length",compressedImage.length)
-
-        const decompressedImage = this.imageProcessingService.decompressImage(compressedImage);
-        console.log("decompressedImage.length",decompressedImage.length)
-
-        // Save or upload the compressed image as needed
-        this.uploadCompressedImage(compressedImage);
+  onFileChange(e: any) {
+    if (e.target.files) {
+      const selectedFile = e.target.files[0];
+      const file = new FileReader();
+      file.readAsDataURL(selectedFile);
+      file.onload = (event: any) => {
+        this.employeeProfile.photo = event.target.result;
+        this.updateUser();
       };
+      file.onerror = (error) => {
+        this.snackBarService.showSnackbar('Unable to Upload File', 'snack-error')
+      }
     }
   }
 
-  uploadCompressedImage(compressedImage: Uint8Array) {
-    //Note we need to use the compressed image after the backend changes to Uint8Array
-    const decompressedImage = this.imageProcessingService.decompressImage(compressedImage);
-    
-    // Save the decompressed image (or directly use compressed data for further processing)
-    const updatedEmployeeloyee = { ...this.employeeProfile, photo: decompressedImage };
-    this.employeeProfileService.updateEmployeeProfile(updatedEmployeeloyee).subscribe({
+  updateUser() {
+    const updatedEmployee = { ...this.employeeProfile };
+    this.employeeProfileService.updateEmployeeProfile(updatedEmployee).subscribe({
       next: () => {
         console.log('Profile photo updated successfully.');
       },
