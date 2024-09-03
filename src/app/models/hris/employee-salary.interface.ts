@@ -8,4 +8,5 @@ export interface EmployeeSalary {
     band?: number,
     contribution?: string,
     salaryUpdateDate?: Date;
+    taxNumber?: number;
 }

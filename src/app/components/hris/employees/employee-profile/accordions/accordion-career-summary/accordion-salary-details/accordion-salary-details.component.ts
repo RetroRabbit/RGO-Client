@@ -40,7 +40,6 @@ export class AccordionSalaryDetailsComponent {
   constructor(
     private fb: FormBuilder,
     private employeeSalaryService: EmployeeSalaryService,
-    private employeeProfileService: EmployeeProfileService,
     private snackBarService: SnackbarService,
     private authAccessService: AuthAccessService,
     public navservice: NavService,
@@ -51,7 +50,7 @@ export class AccordionSalaryDetailsComponent {
 
   async ngOnInit(): Promise<void> {
     this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
-    await this.getEmployeeDetails();
+    await this.getEmployeeSalaryDetails(); 
     if (this.message == null || this.message == "") {
       this.message = "No Information Yet";
     }
@@ -60,11 +59,11 @@ export class AccordionSalaryDetailsComponent {
     }
   }
 
-  async initializeSalaryDetailsForm(salaryDetails: EmployeeSalary, taxNumber: string | undefined) {
+  async initializeSalaryDetailsForm(salaryDetails: EmployeeSalary) {
     if (salaryDetails != null) {
       this.sharedAccordionFunctionality.salaryDetailsForm = this.fb.group({
         remuneration: [salaryDetails.remuneration, [Validators.required, Validators.pattern(/^[0-9]*$/)]],
-        taxNumber: [this.employeeProfile!.taxNumber, [Validators.required, Validators.pattern(/^[01239]\d{9}$/)]]
+        taxNumber: [salaryDetails.taxNumber, [Validators.required, Validators.pattern(/^[01239]\d{9}$/)]]
       });
       this.getSalaryDate();
     }
@@ -79,24 +78,12 @@ export class AccordionSalaryDetailsComponent {
 
   }
 
-  async getEmployeeDetails() {
-    if (this.employeeId == undefined) {
-      var data = this.sharedAccordionFunctionality.selectedEmployee;
-      await this.getEmployeeSalaryDetails(data.taxNumber);      
-    }
-    else {
-      var data = this.sharedAccordionFunctionality.selectedEmployee;
-      this.initializeSalaryDetailsForm(this.employeeSalary, data.taxNumber);
-      await this.getEmployeeSalaryDetails(data.taxNumber);
-    }
-  }
-
-  async getEmployeeSalaryDetails(taxNumber: string | undefined) {
+  async getEmployeeSalaryDetails() {
     if (this.employeeId == undefined) {
       this.employeeSalaryService.getEmployeeSalary(this.authAccessService.getUserId() as number).subscribe({
         next: async data => {
           this.employeeSalary = data;
-          await this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
+          await this.initializeSalaryDetailsForm(this.employeeSalary);
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
         error: (er) => this.snackBarService.showError(er),
@@ -106,7 +93,7 @@ export class AccordionSalaryDetailsComponent {
       this.employeeSalaryService.getEmployeeSalary(this.employeeId).subscribe({
         next: async data => {
           this.employeeSalary = data;
-          await this.initializeSalaryDetailsForm(this.employeeSalary, taxNumber);
+          await this.initializeSalaryDetailsForm(this.employeeSalary);
           this.sharedAccordionFunctionality.totalCareerProgress();
         },
         error: (er) => this.snackBarService.showError(er),
@@ -114,8 +101,7 @@ export class AccordionSalaryDetailsComponent {
     }
   }
 
-  populateDto(salaryCopy: number, taxNumber: number) {
-
+  populateDto(salaryCopy: number, taxNumber: any) {
     if (this.employeeSalary) {
       this.employeeSalaryDetailsDto = {
         employeeId: this.employeeId,
@@ -127,8 +113,6 @@ export class AccordionSalaryDetailsComponent {
         band: this.employeeSalary.band,
         contribution: this.employeeSalary.contribution,
         salaryUpdateDate: new Date(),
-      }
-      this.employeeTaxDetailsDto = {
         taxNumber: taxNumber
       }
     } else {
@@ -142,8 +126,6 @@ export class AccordionSalaryDetailsComponent {
         band: 0,
         contribution: "",
         salaryUpdateDate: new Date(),
-      }
-      this.employeeTaxDetailsDto = {
         taxNumber: taxNumber
       }
     }
@@ -171,7 +153,6 @@ export class AccordionSalaryDetailsComponent {
     const salaryDetailsFormValue = this.sharedAccordionFunctionality.salaryDetailsForm.value;
     if (this.sharedAccordionFunctionality.salaryDetailsForm.valid) {
       this.populateDto(salaryDetailsFormValue.remuneration, salaryDetailsFormValue.taxNumber)
-      this.employeeProfile.taxNumber = salaryDetailsFormValue.taxNumber;
       this.editSalary = false;
       if (this.employeeSalary) {
         this.employeeSalaryService.updateEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
@@ -180,16 +161,10 @@ export class AccordionSalaryDetailsComponent {
             this.getSalaryDate();
             this.editSalary = false;
             this.sharedAccordionFunctionality.salaryDetailsForm.disable();
-            this.getEmployeeDetails();
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
           error: (er) => this.snackBarService.showError(er),
-        }),
-          this.employeeProfileService.updateEmployeeProfile(this.employeeProfile).subscribe({
-            next: (data) => {
-              this.snackBarService.showSnackbar("Employee tax updated", "snack-success");
-            }
-          })
+        })
       } else {
         this.employeeSalaryService.saveEmployeeSalary(this.employeeSalaryDetailsDto).subscribe({
           next: () => {
@@ -197,7 +172,6 @@ export class AccordionSalaryDetailsComponent {
             this.getSalaryDate();
             this.editSalary = false;
             this.sharedAccordionFunctionality.salaryDetailsForm.disable();
-            this.getEmployeeDetails();
             this.sharedAccordionFunctionality.totalCareerProgress();
           },
           error: (er) => this.snackBarService.showError(er),
