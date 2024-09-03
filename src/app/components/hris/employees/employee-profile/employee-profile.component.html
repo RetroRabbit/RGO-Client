@@ -26,7 +26,7 @@
         <img (click)="uploadFile.click()" [src]="getProfileImage() || '../../../../../../assets/img/default-profile-image.png'" alt="Profile img"
           class="rounded-circle profile-img">
         <input type="file" #uploadFile (change)="onFileChange($event)" hidden accept=".png, .svg,.jpg,.jpeg">
-        <button class="remove-photo-btn" (click)="removeEmployeePhoto()" aria-label="Remove Photo">
+        <button *ngIf="employeeProfile.photo" class="remove-photo-btn" (click)="removeEmployeePhoto()" aria-label="Remove Photo">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
