@@ -10,7 +10,7 @@ export class FileProcessingService {
 
   validateFile(file: File): boolean {
     console.log('Validating file:', file);
-    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/svg+xml'];
     if (!allowedTypes.includes(file.type)) {
       console.error('Invalid file type:', file.type);
       return false;
