@@ -70,15 +70,15 @@ export class CareerSummaryQualificationsComponent {
   }
 
   async initializeForm() {
-    if (!this.sharedAccordionFunctionality.employeeQualification) {
-      this.sharedAccordionFunctionality.employeeQualificationForm = this.fb.group({
-        highestQualification: ["", Validators.required],
-        school: ["", Validators.required],
-        fieldOfStudy: ["", Validators.required],
-        year: ["", [Validators.required, Validators.pattern(/^(19|20)\d{2}$/)]],
-        proofOfQualification: [""],
-      });
-    } else {
+
+    this.sharedAccordionFunctionality.employeeQualificationForm = this.fb.group({
+      highestQualification: ["", Validators.required],
+      school: ["", Validators.required],
+      fieldOfStudy: ["", Validators.required],
+      year: ["", [Validators.required, Validators.pattern(/^(19|20)\d{2}$/)]],
+      proofOfQualification: [""],
+    });
+    if (this.sharedAccordionFunctionality.employeeQualification) {
       this.sharedAccordionFunctionality.employeeQualificationForm = this.fb.group({
         highestQualification: [this.sharedAccordionFunctionality.employeeQualification.highestQualification, Validators.required],
         school: [this.sharedAccordionFunctionality.employeeQualification.school, Validators.required],
@@ -94,7 +94,7 @@ export class CareerSummaryQualificationsComponent {
     this.sharedAccordionFunctionality.calculateQualificationProgress();
     this.sharedAccordionFunctionality.totalCareerProgress();
     this.fileName = this.sharedAccordionFunctionality.employeeQualification ? this.sharedAccordionFunctionality.employeeQualification.documentName : '';
-    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualification", true , this.sharedAccordionFunctionality.employeeQualificationForm , this.employeeProfile.employeeDetails.email!)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.employeeQualificationForm.controls), "EmployeeQualification", true, this.sharedAccordionFunctionality.employeeQualificationForm, this.employeeProfile.employeeDetails.email!)
   }
 
   saveQualificationsEdit() {
