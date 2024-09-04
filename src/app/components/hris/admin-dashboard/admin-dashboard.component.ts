@@ -92,9 +92,6 @@ export class AdminDashboardComponent implements OnInit {
     Email: string | undefined;
   }> = new MatTableDataSource();
 
-  rolesSelected: string[] = [];
-  categoriesSelected: string[] = [];
-
   constructor(
     public accessPropertiesService: AccessPropertiesService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
@@ -107,32 +104,32 @@ export class AdminDashboardComponent implements OnInit {
     private snackBarService: SnackbarService,
     private employeeTypeService: EmployeeTypeService,
     public authAccessService: AuthAccessService,
-    private sharedPropertyAccessService: SharedPropertyAccessService) 
-    {
-      this.editChartSubscription = this.chartService.getClickEvent().subscribe(() => {
-        const activeChart = this.chartService.activeChart;
-        if (activeChart) {
-          this.chartType = activeChart.type;
-          this.chartName = activeChart.name;
-          this.categoriesSelected = activeChart.dataTypes[0].replace("'", " ").split(",");
-          const roles: string[] = activeChart.name.split("-")[1].split(",").map((role: string) => role.trim());
-          this.rolesSelected = roles;
-          this.categoryControl.disable();
-          this.typeControl.disable();
-          let dialogRef = this.dialog.open(this.dialogTemplate, {
-            width: '500px',
-          });
-          dialogRef.afterClosed().subscribe(() => {
-            this.categoryControl.enable();
-            this.typeControl.enable();
-            this.chartService.isEditing = false;
-            this.chartName = "";
-            this.chartType = "";
-            this.categoriesSelected = [];
-            this.rolesSelected = [];
-          });
-        }
-      }); 
+    private sharedPropertyAccessService: SharedPropertyAccessService) {
+    this.editChartSubscription = this.chartService.getClickEvent().subscribe(() => {
+
+      const activeChart = this.chartService.activeChart;
+      if (activeChart) {
+        this.chartType = activeChart.type;
+        this.chartName = activeChart.name;
+        this.selectedCategories = activeChart.dataTypes[0].replace("'", " ").split(",");
+        this.selectedTypes = activeChart.roles[0].replace("'", " ").split(",");;
+        this.categoryControl.disable();
+        this.typeControl.disable();
+        let dialogRef = this.dialog.open(this.dialogTemplate, {
+          width: '500px',
+        });
+
+        dialogRef.afterClosed().subscribe(() => {
+          this.categoryControl.enable();
+          this.typeControl.enable();
+          this.chartService.isEditing = false;
+          this.chartName = "";
+          this.chartType = "";
+          this.selectedCategories = [];
+          this.selectedTypes = [];
+        });
+      }
+    });
   }
 
   async ngOnInit() {
@@ -156,7 +153,7 @@ export class AdminDashboardComponent implements OnInit {
 
   async getUserId() {
     this.employeeId = this.authAccessService.getUserId()
-    if ( this.employeeId === -1) {
+    if (this.employeeId === -1) {
       const email = this.authAccessService.getEmployeeEmail();
       await this.sharedPropertyAccessService.setAccessProperties(email);
       this.employeeId = this.authAccessService.getUserId();
@@ -209,7 +206,7 @@ export class AdminDashboardComponent implements OnInit {
     });
 
     this.dashboardService.getGrowthrate().subscribe({
-      next: (data: number ) => {
+      next: (data: number) => {
         this.growthRate = data
       },
       complete: () => {
@@ -367,7 +364,7 @@ export class AdminDashboardComponent implements OnInit {
         this.categoryControl.setValue(categories);
       }
     }
-  }  
+  }
 
   createChart() {
     if (this.chartService.isEditing) {
@@ -444,7 +441,7 @@ export class AdminDashboardComponent implements OnInit {
       searchBar.classList.add('active');
       searchBar.classList.remove('no-results');
     }
-  }  
+  }
 
   deactivateSearchBar() {
     const searchBar = document.querySelector('.searchbar');
@@ -504,7 +501,6 @@ export class AdminDashboardComponent implements OnInit {
 
   changeEmployeeRolesOnNewChart(event: any) {
     const selectedValues: string[] = event.value;
-    
     if (selectedValues.includes('All')) {
       if (selectedValues.length === this.types.length - 1 && !this.allFlag) {
         this.allFlag = true;
