@@ -126,9 +126,7 @@ export class EmployeeProfileComponent implements OnChanges {
     public authAccessService: AuthAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private sharedPropertyAccessService: SharedPropertyAccessService,
-    private clipboard: Clipboard,
-    private imageProcessingService: ImageProcessingService 
-  ) { }
+    private clipboard: Clipboard  ) { }
 
   async getUserId() {
     this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
@@ -342,7 +340,6 @@ export class EmployeeProfileComponent implements OnChanges {
     this.employeeProfile = { ...data };
     this.selectedEmployee = { ...data };
     this.sharedAccordionFunctionality.selectedEmployee = { ...data };
-   // this.getEmployeeData(); //TODO: find out what the point of this is
     this.isLoading = false;
   }
 
