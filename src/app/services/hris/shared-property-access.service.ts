@@ -99,7 +99,6 @@ export class SharedPropertyAccessService {
     }
 
     public async checkPropertyPermissions(fieldNames: string[], table: string, initialLoad: boolean, formGroup : FormGroup , email: string): Promise<void> {
-        this.setAccessProperties(email);
         if (!this.accessProperties) {
           return;
         }

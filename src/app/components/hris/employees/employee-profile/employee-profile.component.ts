@@ -88,7 +88,6 @@ export class EmployeeProfileComponent implements OnChanges {
   teamLead: number | null = null;
   PREVIOUS_PAGE = "previousPage";
   bankStatus: number = 0;
-  base64Image: string = '';
   screenWidth = window.innerWidth;
   profileSubscription: Subscription | undefined;
 
@@ -285,6 +284,15 @@ export class EmployeeProfileComponent implements OnChanges {
     return isMainProfile;
   }
 
+  removeEmployeePhoto() {
+    if (this.employeeProfile.photo != '') {
+      this.employeeProfile.photo = '';
+      this.sharedAccordionFunctionality.mainProfileImage = '';
+      this.changeDetectorRef.detectChanges();
+      this.updateUser();
+    }
+  }
+
   getProfileImage(): string {
     const employeePhoto = this.employeeProfile.photo;
   
@@ -332,7 +340,7 @@ export class EmployeeProfileComponent implements OnChanges {
     this.employeeProfile = { ...data };
     this.selectedEmployee = { ...data };
     this.sharedAccordionFunctionality.selectedEmployee = { ...data };
-    this.getEmployeeData();
+   // this.getEmployeeData(); //TODO: find out what the point of this is
     this.isLoading = false;
   }
 
@@ -424,10 +432,9 @@ export class EmployeeProfileComponent implements OnChanges {
     if (e.target.files) {
       const selectedFile = e.target.files[0];
       const file = new FileReader();
-      file.readAsDataURL(e.target.files[0]);
+      file.readAsDataURL(selectedFile);
       file.onload = (event: any) => {
         this.employeeProfile.photo = event.target.result;
-        this.base64Image = event.target.result;
         this.updateUser();
       };
       file.onerror = (error) => {
@@ -437,7 +444,7 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   updateUser() {
-    const updatedEmployee = { ...this.employeeProfile, photo: this.base64Image };
+    const updatedEmployee = { ...this.employeeProfile };
     this.employeeProfileService.updateEmployeeProfile(updatedEmployee).subscribe({
       next: () => {
         this.getEmployeeProfile();
