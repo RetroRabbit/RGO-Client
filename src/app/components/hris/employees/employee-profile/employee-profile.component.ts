@@ -107,7 +107,6 @@ export class EmployeeProfileComponent implements OnChanges {
   snackBar: any;
 
   @HostListener('window:resize', ['$event'])
-  @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
   }
