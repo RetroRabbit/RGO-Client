@@ -9,14 +9,11 @@ export class FileProcessingService {
   constructor() { }
 
   validateFile(file: File): boolean {
-    console.log('Validating file:', file);
     const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/svg+xml'];
     if (!allowedTypes.includes(file.type)) {
-      console.error('Invalid file type:', file.type);
       return false;
     }
     if (file.size > 10 * 1024 * 1024) {
-      console.error('File size exceeds limit:', file.size);
       return false;
     }
     return true;
@@ -28,14 +25,12 @@ export class FileProcessingService {
       reader.onloadend = () => {
         const base64File = reader.result as string;
         if (base64File) {
-          console.log('convertFileToBase64- Converted file to base64:', base64File);
           resolve(base64File);
         } else {
           reject('convertFileToBase64- File conversion to base64 failed.');
         }
       };
       reader.onerror = () => {
-        console.error('Error converting file to base64:', reader.error);
         reject(reader.error);
       };
       reader.readAsDataURL(file);
@@ -45,17 +40,13 @@ export class FileProcessingService {
   downloadFile(base64File: string, fileName: string) {
     try {
       if (!this.isValidBase64(base64File)) {
-        console.error('downloadFile- Invalid base64 file data');
         return;
       }
       const commaIndex = base64File.indexOf(',');
       if (commaIndex === -1) {
-        console.error('downloadFile- Invalid base64 file data');
         return;
       }
       const base64Data = base64File.slice(commaIndex + 1);
-      console.log('downloadFile- Base64 data before decoding:', base64Data);
-
       const byteString = atob(base64Data);
       const arrayBuffer = new ArrayBuffer(byteString.length);
       const intArray = new Uint8Array(arrayBuffer);
@@ -76,7 +67,6 @@ export class FileProcessingService {
 
   compressFile(base64File: string): string {
     try {
-      console.log('compressFile- Base64 data before compression:', base64File);
       if (!this.isValidBase64(base64File)) {
         throw new Error('compressFile- Invalid base64 file data');
       }
@@ -89,20 +79,15 @@ export class FileProcessingService {
       }
 
       const compressedData = pako.deflate(uint8Array);
-      console.log('compressFile- Compressed data:', compressedData);
-
       const compressedBase64 = btoa(String.fromCharCode(...new Uint8Array(compressedData)));
-      console.log('compressFile- Compressed base64 data:', compressedBase64);
       return compressedBase64;
     } catch (error) {
-      console.error('compressFile- Error compressing file:', error);
       throw error;
     }
   }
 
   decompressFile(compressedBase64File: string): string {
     try {
-      console.log('decompressFile- Compressed base64 data before decompression:', compressedBase64File);
       if (!this.isValidBase64(compressedBase64File)) {
         throw new Error('decompressFile- Invalid base64 file data');
       }
@@ -115,13 +100,9 @@ export class FileProcessingService {
       }
 
       const decompressedUint8Array = pako.inflate(compressedUint8Array);
-      console.log('decompressFile- Decompressed data:', decompressedUint8Array);
-
       const decompressedBase64 = btoa(String.fromCharCode(...new Uint8Array(decompressedUint8Array)));
-      console.log('decompressFile- Decompressed base64 data:', decompressedBase64);
       return `data:image/png;base64,${decompressedBase64}`;
     } catch (error) {
-      console.error('decompressFile- Error decompressing file:', error);
       throw error;
     }
   }
