@@ -446,10 +446,10 @@ export class EmployeeProfileComponent implements OnChanges {
     const updatedEmployee = { ...this.employeeProfile };
     this.employeeProfileService.updateEmployeeProfile(updatedEmployee).subscribe({
       next: () => {
-        console.log('Profile photo updated successfully.');
+        this.snackBarService.showSnackbar("Profile photo updated successfully", "snack-success");
       },
       error: (error) => {
-        console.error('Error updating profile photo:', error);
+        this.snackBarService.showSnackbar("Error updating profile photo", "snack-error");
       }
     });
   }
