@@ -17,7 +17,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
   styleUrls: ['./accordion-my-documents.component.css']
 })
 export class AccordionDocumentsAdditionalComponent {
-  @Input() employeeProfile!: EmployeeProfile;
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   documentNameControl = new FormControl('', [
     Validators.required, Validators.minLength(5)
@@ -60,7 +60,6 @@ export class AccordionDocumentsAdditionalComponent {
 
   ngOnInit() {
     this.roles = [this.authAccessService.getRole()];
-    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     this.getAdditionalDocuments();
   }
 
@@ -105,7 +104,7 @@ export class AccordionDocumentsAdditionalComponent {
         this.base64String = reader.result as string;
         var newDto: {} = {
           id: 0,
-          employeeId: this.employeeProfile.id,
+          employeeId: this.employeeProfile.employeeDetails.id,
           reference: this.newDocumentName,
           fileName: this.selectedFile.name,
           fileCategory: 0,
@@ -173,7 +172,7 @@ export class AccordionDocumentsAdditionalComponent {
 
   getAdditionalDocuments() {
     if (this.employeeId != undefined) {
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 1).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.employeeDetails.id as number, 1).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.myDocuments = data;
           this.dataSource.data = this.fileCategories;

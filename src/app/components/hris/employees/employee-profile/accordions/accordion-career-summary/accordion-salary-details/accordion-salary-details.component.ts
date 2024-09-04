@@ -25,7 +25,7 @@ export class AccordionSalaryDetailsComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  @Input() employeeProfile!: EmployeeProfile
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   panelOpenState: boolean = false;
   employeeSalaryDetailsDto!: any;
@@ -74,7 +74,7 @@ export class AccordionSalaryDetailsComponent {
       });
     }
     this.sharedAccordionFunctionality.salaryDetailsForm.disable();
-    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.salaryDetailsForm.controls), "EmployeeSalaryDetails", true , this.sharedAccordionFunctionality.salaryDetailsForm , this.employeeProfile.email!)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.salaryDetailsForm.controls), "EmployeeSalaryDetails", true , this.sharedAccordionFunctionality.salaryDetailsForm , this.employeeProfile.employeeDetails.email!)
 
   }
 
@@ -192,7 +192,7 @@ export class AccordionSalaryDetailsComponent {
   async editSalaryDetails() {
     this.editSalary = true;
     this.sharedAccordionFunctionality.salaryDetailsForm.enable();
-    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.salaryDetailsForm.controls), "EmployeeSalaryDetails", false , this.sharedAccordionFunctionality.salaryDetailsForm , this.employeeProfile.email!)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.sharedAccordionFunctionality.salaryDetailsForm.controls), "EmployeeSalaryDetails", false , this.sharedAccordionFunctionality.salaryDetailsForm , this.employeeProfile.employeeDetails.email!)
   }
 
   cancelSalaryDetails() {

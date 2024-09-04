@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
@@ -15,6 +15,7 @@ import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface'
   styleUrls: ['./view-starter-kit-approval.component.css']
 })
 export class ViewStarterKitApprovalComponent {
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   declineReason: string = "";
   selectedReason: string = "";
@@ -47,7 +48,7 @@ export class ViewStarterKitApprovalComponent {
      ) { }
 
   ngOnInit(): void {
-    this.getEmployeeDocuments(this.employeedId);
+    this.getEmployeeDocuments(this.employeeProfile.employeeDetails.id);
   }
 
   ngAfterContentChecked() {

@@ -20,7 +20,7 @@ export class AccordionCertificatesComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  @Input() employeeProfile !: EmployeeProfile
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
   shouldUseSentInProfile: boolean = true;
   panelOpenState: boolean = false;
   hasFile: boolean = false;
@@ -64,11 +64,10 @@ export class AccordionCertificatesComponent {
 
   ngOnInit(): void {
     this.getEmployeeCertificate();
-    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
   }
 
   getEmployeeCertificate() {
-    this.employeeCertificateService.getCertificationDetails(this.employeeProfile.id).subscribe({
+    this.employeeCertificateService.getCertificationDetails(this.employeeProfile.employeeDetails.id).subscribe({
       next: (data) => {
         this.sharedAccordionFunctionality.employeeCertificates = data;
         this.sharedAccordionFunctionality.employeeCertificatesFields = this.sharedAccordionFunctionality.employeeCertificatesFields * this.sharedAccordionFunctionality.employeeCertificates.length;
@@ -86,7 +85,7 @@ export class AccordionCertificatesComponent {
       certificateName: '',
       certificateDocument: this.base64String,
       documentName: '',
-      employeeId: this.employeeProfile.id as number
+      employeeId: this.employeeProfile.employeeDetails.id as number
     }
     this.newCertificates.push(newCertificate);
   }
