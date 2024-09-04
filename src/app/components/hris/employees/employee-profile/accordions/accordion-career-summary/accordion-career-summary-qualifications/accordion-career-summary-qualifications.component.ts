@@ -56,9 +56,7 @@ export class CareerSummaryQualificationsComponent {
       next: async (data) => {
         this.sharedAccordionFunctionality.employeeQualification = data;
         this.base64File = data.proofOfQualification;
-        console.log('Fetched qualifications:', data);
-        console.log('name of the fetched document', data.documentName);
-        console.log('This is the db proofOfQualification: ', this.base64File);
+
         if (this.sharedAccordionFunctionality.employeeQualification) {
           if (data.year && data.year.endsWith("-01-01")) {
             this.sharedAccordionFunctionality.employeeQualification.year = data.year.substring(0, 4);
@@ -66,6 +64,7 @@ export class CareerSummaryQualificationsComponent {
             this.sharedAccordionFunctionality.employeeQualification.year = data.year;
           }
         }
+        
         await this.initializeForm();
         this.sharedAccordionFunctionality.calculateQualificationProgress();
         this.sharedAccordionFunctionality.totalCareerProgress();
@@ -175,9 +174,7 @@ export class CareerSummaryQualificationsComponent {
   }
 
   downloadFile() {
-    console.log('downloadFile- Base64 file before decompression:', this.base64File);
     const decompressedFile = this.fileProcessingService.decompressFile(this.base64File);
-    console.log('downloadFile- Decompressed file:', decompressedFile);
     this.fileProcessingService.downloadFile(decompressedFile, this.fileName);
   }
 }
