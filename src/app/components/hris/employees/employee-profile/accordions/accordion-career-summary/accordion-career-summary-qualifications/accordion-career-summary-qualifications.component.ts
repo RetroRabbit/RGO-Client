@@ -49,6 +49,7 @@ export class CareerSummaryQualificationsComponent {
 
   async ngOnInit() {
     await this.fetchQualificationsById();
+    this.initializeForm();
   }
 
   async fetchQualificationsById() {
