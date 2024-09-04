@@ -126,7 +126,7 @@ export class EmployeeProfileComponent implements OnChanges {
     public authAccessService: AuthAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private sharedPropertyAccessService: SharedPropertyAccessService,
-    private clipboard: Clipboard) { }
+    private clipboard: Clipboard  ) { }
 
   async getUserId() {
     this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
@@ -340,7 +340,6 @@ export class EmployeeProfileComponent implements OnChanges {
     this.employeeProfile = { ...data };
     this.selectedEmployee = { ...data };
     this.sharedAccordionFunctionality.selectedEmployee = { ...data };
-   // this.getEmployeeData(); //TODO: find out what the point of this is
     this.isLoading = false;
   }
 
@@ -447,10 +446,11 @@ export class EmployeeProfileComponent implements OnChanges {
     const updatedEmployee = { ...this.employeeProfile };
     this.employeeProfileService.updateEmployeeProfile(updatedEmployee).subscribe({
       next: () => {
-        this.getEmployeeProfile();
-        this.snackBarService.showSnackbar("Updated", "snack-success");
+        this.snackBarService.showSnackbar("Profile photo updated successfully", "snack-success");
       },
-      error: (er) => this.snackBarService.showError(er),
+      error: (error) => {
+        this.snackBarService.showSnackbar("Error updating profile photo", "snack-error");
+      }
     });
   }
 

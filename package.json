@@ -50,6 +50,7 @@
     "@angular/cli": "~16.0.1",
     "@angular/compiler-cli": "^16.0.0",
     "@types/jasmine": "~4.3.0",
+    "@types/pako": "^2.0.3",
     "dotenv-webpack": "^8.0.1",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
