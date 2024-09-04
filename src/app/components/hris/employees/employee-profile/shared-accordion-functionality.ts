@@ -32,7 +32,7 @@ export class SharedAccordionFunctionality {
   @Output() updateProfile = new EventEmitter<any>();
   @Output() updateDocument = new EventEmitter<number>();
   @Output() updateCareer = new EventEmitter<number>();
-  @Input() employeeProfile!: EmployeeProfile;
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];

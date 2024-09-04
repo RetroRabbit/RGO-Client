@@ -20,7 +20,7 @@ import { StoreAccessService } from 'src/app/services/shared-services/store-servi
   styleUrls: ['./accordion-additional-documents.component.css']
 })
 export class AccordionDocumentsCustomDocumentsComponent {
-  @Input() employeeProfile!: EmployeeProfile;
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   screenWidth = window.innerWidth;
 
@@ -62,14 +62,13 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   ngOnInit() {
     this.roles = [this.authAccessService.getRole()];
-    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     this.getDocumentFieldCodes();
     this.getAdditionalDocuments();
   }
 
   getAdditionalDocuments() {
     if (this.employeeId != undefined) {
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 4).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId as number, 4).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
@@ -175,7 +174,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
         this.base64String = reader.result as string;
         let newDto: {} = {
           id: existingValue != undefined ? existingValue?.id as number : 0,
-          employeeId: this.employeeProfile.id,
+          employeeId: this.employeeId,
           fileName: this.documentsFileName,
           fileCategory: 0,
           employeeFileCategory: 0,
@@ -209,7 +208,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
     } else {
       const updatedDocument = {
         id: document.id,
-        employeeId: document.employeeId,
+        employeeId: this.employeeId,
         reference: document.reference,
         fileName: document.fileName,
         fileCategory: document.fileCategory,

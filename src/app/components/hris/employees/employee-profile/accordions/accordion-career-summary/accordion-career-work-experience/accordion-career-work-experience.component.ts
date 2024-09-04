@@ -30,7 +30,7 @@ export class AccordionCareerWorkExperienceComponent {
     [x: string]: any;
     workExperience: WorkExperience;
   };
-  @Input() employeeProfile!: EmployeeProfile
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   editWorkExperience: boolean = false;
   hasWorkExperienceData: boolean = false;
@@ -70,7 +70,6 @@ export class AccordionCareerWorkExperienceComponent {
 
   ngOnInit(): void {
     this.getEmployeeType();
-    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     this.getWorkExperience();
   }
 
@@ -80,7 +79,7 @@ export class AccordionCareerWorkExperienceComponent {
 
   getWorkExperience() {
     this.workExperienceService
-      .getWorkExperience(this.employeeProfile.id as number)
+      .getWorkExperience(this.employeeProfile.employeeDetails.id as number)
       .subscribe({
         next: (data) => {
           this.sharedAccordionFunctionality.workExperience = data;
@@ -90,7 +89,7 @@ export class AccordionCareerWorkExperienceComponent {
   }
 
   getEmployeeType() {
-    this.role = this.employeeProfile?.employeeType?.name as string;
+    this.role = this.employeeProfile?.employeeDetails.employeeType?.name as string;
     this.updateListsBasedOnRole();
   }
 
@@ -178,7 +177,7 @@ export class AccordionCareerWorkExperienceComponent {
       startDate: new Date(),
       endDate: new Date(),
       projectDescription: '',
-      employeeId: this.employeeProfile.id as number,
+      employeeId: this.employeeProfile.employeeDetails.id as number,
     };
     this.sharedAccordionFunctionality.newWorkExperiences.push(
       newWorkExperience

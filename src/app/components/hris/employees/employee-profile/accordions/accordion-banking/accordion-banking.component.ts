@@ -24,7 +24,7 @@ export class AccordionBankingComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  @Input() employeeProfile !: EmployeeProfile
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
   @Output() updateBanking = new EventEmitter<{ progress: number, status: number }>();
 
   shouldUseSentInProfile: boolean = true;
@@ -66,13 +66,12 @@ export class AccordionBankingComponent {
   }
 
   async ngOnInit(): Promise<void> {
-    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     await this.getEmployeeBankingData();
     this.banks = this.banks.slice().sort((a, b) => a.value.localeCompare(b.value));
   }
 
   async getEmployeeBankingData() {
-    this.employeeBankingService.getBankingDetails(this.employeeProfile.id).subscribe({
+    this.employeeBankingService.getBankingDetails(this.employeeProfile.employeeDetails.id as number).subscribe({
       next: async (data) => {
         this.employeeBanking = data;
         if (this.employeeBanking && this.employeeBanking.length > 0) {
@@ -90,8 +89,8 @@ export class AccordionBankingComponent {
   }
 
   getPOA() {
-    const name = this.employeeProfile.name || 'Unknown';
-    const surname = this.employeeProfile.surname || 'Unknown';
+    const name = this.employeeProfile.employeeDetails.name || 'Unknown';
+    const surname = this.employeeProfile.employeeDetails.surname || 'Unknown';
     return `${name}_${surname}_POA.pdf`;
   }
 
@@ -113,7 +112,7 @@ export class AccordionBankingComponent {
     this.getBankingDate(bankingDetails);
     this.checkBankingInformationProgress();
     this.totalBankingProgress();
-    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.employeeBankingsForm.controls), "EmployeeBanking", true , this.employeeBankingsForm , this.employeeProfile.email!)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.employeeBankingsForm.controls), "EmployeeBanking", true , this.employeeBankingsForm , this.employeeProfile.employeeDetails.email!)
 
   }
 
@@ -128,7 +127,7 @@ export class AccordionBankingComponent {
   }
   convertFileToBase64() {
     if (this.employeeBanking[this.employeeBanking.length - 1].file)
-      this.downloadFile(this.employeeBanking[this.employeeBanking.length - 1].file, `${this.employeeProfile?.name} ${this.employeeProfile?.surname}_Proof_of_Account.pdf`);
+      this.downloadFile(this.employeeBanking[this.employeeBanking.length - 1].file, `${this.employeeProfile?.employeeDetails.name} ${this.employeeProfile?.employeeDetails.surname}_Proof_of_Account.pdf`);
   }
 
   downloadFile(base64String: string, fileName: string) {
@@ -178,7 +177,7 @@ export class AccordionBankingComponent {
   async editBankingDetails() {
     this.editBanking = true;
     this.employeeBankingsForm.enable();
-    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.employeeBankingsForm.controls), "EmployeeBanking", false , this.employeeBankingsForm , this.employeeProfile.email!)
+    await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.employeeBankingsForm.controls), "EmployeeBanking", false , this.employeeBankingsForm , this.employeeProfile.employeeDetails.email!)
 
   }
 
@@ -194,7 +193,7 @@ export class AccordionBankingComponent {
       const employeeBankingFormValue = this.employeeBankingsForm.value;
       this.employeeBankingDto = {
         id: this.bankingId,
-        employeeId: this.sharedAccordionFunctionality.selectedEmployee.id,
+        employeeId: this.employeeProfile.employeeDetails.id,
         bankName: employeeBankingFormValue.bankName,
         branch: `${employeeBankingFormValue.branch}`,
         accountNo: `${employeeBankingFormValue.accountNo}`,

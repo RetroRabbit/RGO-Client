@@ -17,7 +17,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 })
 export class EmployeeTerminationComponent implements OnInit {
 
-  @Input() employeeProfile!: EmployeeProfile;
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;

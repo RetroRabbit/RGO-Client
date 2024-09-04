@@ -18,7 +18,7 @@ import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/
 })
 
 export class AccordionEmployeeDocumentsComponent {
-  @Input() employeeProfile!: EmployeeProfile;
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   screenWidth = window.innerWidth;
 
@@ -52,7 +52,6 @@ export class AccordionEmployeeDocumentsComponent {
 
   ngOnInit() {
     this.roles = [this.authAccessService.getRole()];
-    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     this.getEmployeeDocuments();
     this.sharedAccordionFunctionality.totalDocumentsProgress()
   }
@@ -117,7 +116,7 @@ export class AccordionEmployeeDocumentsComponent {
 
   getEmployeeDocuments() {
     if (this.employeeId != undefined) {
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 3).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId as number, 3).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.employeeDocuments = data;
           this.dataSource.data = this.sharedAccordionFunctionality.fileEmployeeCategories;
@@ -144,7 +143,7 @@ export class AccordionEmployeeDocumentsComponent {
   uploadDocumentDto(document: any) {
     const saveObj = {
       id: document.id,
-      employeeId: document.employee.id,
+      employeeId: this.employeeId,
       fileName: document.fileName,
       blob: this.base64String,
       fileCategory: 0,
@@ -172,7 +171,7 @@ export class AccordionEmployeeDocumentsComponent {
     } else {
       const updatedDocument = {
         id: document.id,
-        employeeId: document.employee.id,
+        employeeId: this.employeeId,
         reference: document.reference,
         fileName: document.fileName,
         fileCategory: document.fileCategory,
