@@ -30,8 +30,6 @@ import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.int
 import { Subscription } from 'rxjs';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
-import * as pako from 'pako'; 
-import { ImageProcessingService } from 'src/app/services/hris/image-processing.service';
 
 @Component({
   selector: 'app-employee-profile',
