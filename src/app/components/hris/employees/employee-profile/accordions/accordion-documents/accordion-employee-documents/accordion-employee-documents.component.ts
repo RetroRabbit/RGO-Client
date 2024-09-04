@@ -116,7 +116,7 @@ export class AccordionEmployeeDocumentsComponent {
 
   getEmployeeDocuments() {
     if (this.employeeId != undefined) {
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.employeeDetails.id as number, 3).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId as number, 3).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.employeeDocuments = data;
           this.dataSource.data = this.sharedAccordionFunctionality.fileEmployeeCategories;
@@ -143,7 +143,7 @@ export class AccordionEmployeeDocumentsComponent {
   uploadDocumentDto(document: any) {
     const saveObj = {
       id: document.id,
-      employeeId: this.employeeProfile.employeeDetails.id,
+      employeeId: this.employeeId,
       fileName: document.fileName,
       blob: this.base64String,
       fileCategory: 0,
@@ -171,7 +171,7 @@ export class AccordionEmployeeDocumentsComponent {
     } else {
       const updatedDocument = {
         id: document.id,
-        employeeId: this.employeeProfile.employeeDetails.id,
+        employeeId: this.employeeId,
         reference: document.reference,
         fileName: document.fileName,
         fileCategory: document.fileCategory,

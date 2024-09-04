@@ -68,7 +68,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
 
   getAdditionalDocuments() {
     if (this.employeeId != undefined) {
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.employeeDetails.id as number, 4).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId as number, 4).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
@@ -174,7 +174,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
         this.base64String = reader.result as string;
         let newDto: {} = {
           id: existingValue != undefined ? existingValue?.id as number : 0,
-          employeeId: this.employeeProfile.employeeDetails.id,
+          employeeId: this.employeeId,
           fileName: this.documentsFileName,
           fileCategory: 0,
           employeeFileCategory: 0,
@@ -208,7 +208,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
     } else {
       const updatedDocument = {
         id: document.id,
-        employeeId: this.employeeProfile.employeeDetails.id,
+        employeeId: this.employeeId,
         reference: document.reference,
         fileName: document.fileName,
         fileCategory: document.fileCategory,
