@@ -48,7 +48,7 @@ export class ViewStarterKitApprovalComponent {
      ) { }
 
   ngOnInit(): void {
-    this.getEmployeeDocuments(this.employeeProfile.employeeDetails.id);
+    this.getEmployeeDocuments(this.employeedId);
   }
 
   ngAfterContentChecked() {
