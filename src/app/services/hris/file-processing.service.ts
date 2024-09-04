@@ -68,10 +68,9 @@ export class FileProcessingService {
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
       link.download = fileName;
-      console.log('downloadFile- Triggering file download for:', fileName);
       link.click();
     } catch (error) {
-      console.error('downloadFile- Error decoding base64 data or triggering download:', error);
+      throw error;
     }
   }
 
