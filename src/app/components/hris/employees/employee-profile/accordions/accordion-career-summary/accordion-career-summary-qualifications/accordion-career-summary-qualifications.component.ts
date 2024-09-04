@@ -111,7 +111,7 @@ export class CareerSummaryQualificationsComponent {
             fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.get("fieldOfStudy")?.value,
             year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value + "-01-01",
             nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
-            proofOfQualification: this.fileProcessingService.compressFile(this.base64File),  // Ensure this is the latest base64 file
+            proofOfQualification: this.fileProcessingService.compressFile(this.base64File),
             documentName: this.fileName,
         };
 
@@ -134,7 +134,7 @@ export class CareerSummaryQualificationsComponent {
         qualificationObservable.subscribe({
             next: () => {
                 this.snackBarService.showSnackbar(saveQualification.id > 0 ? "Updated" : "Saved", "snack-success");
-                this.fetchQualificationsById();  // Ensure data is refreshed after save
+                this.fetchQualificationsById();
             },
             error: (er) => this.snackBarService.showError(er)
         });
