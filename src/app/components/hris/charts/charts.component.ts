@@ -106,7 +106,7 @@ export class ChartComponent implements OnInit {
 
   async getUserId() {
     this.employeeId = this.authAccessService.getUserId()
-    if ( this.employeeId === -1) {
+    if (this.employeeId === -1) {
       const email = this.authAccessService.getEmployeeEmail();
       await this.sharedPropertyAccessService.setAccessProperties(email);
       this.employeeId = this.authAccessService.getUserId();
@@ -114,25 +114,25 @@ export class ChartComponent implements OnInit {
   }
 
   createAndDisplayChart(): void {
-    if ( this.employeeId != -1) {
+    if (this.employeeId != -1) {
       this.chartService.getEmployeeCharts(this.employeeId).subscribe({
-      next: data => {
-        data = this.configureChartColors(data);
-        if (data.length > 0) {
-          this.chartData = data;
-          this.populateCanvasCharts();
-          this.displayChart = true;
-          this.selectedChartType = this.chartData[0].type;
-        } else {
-          this.chartData = [];
-          this.displayChart = false;
-          this.captureCharts.emit(0);
-        }
-      },
-      error: (er) => this.snackBarService.showError(er),
-    });
+        next: data => {
+          data = this.configureChartColors(data);
+          if (data.length > 0) {
+            this.chartData = data;
+            this.populateCanvasCharts();
+            this.displayChart = true;
+            this.selectedChartType = this.chartData[0].type;
+          } else {
+            this.chartData = [];
+            this.displayChart = false;
+            this.captureCharts.emit(0);
+          }
+        },
+        error: (er) => this.snackBarService.showError(er),
+      });
+    }
   }
-}
 
   getNumberOfEmployees(): void {
     this.employeeProfileService.getTotalEmployees().subscribe({
@@ -218,7 +218,7 @@ export class ChartComponent implements OnInit {
             this.employeeNames[employee.id] = `${employee.name} ${employee.surname}`;
           }
         });
-      }, 
+      },
       error: (er) => this.snackBarService.showError(er),
       complete: () => {
         this.createAndDisplayChart();
@@ -245,7 +245,7 @@ export class ChartComponent implements OnInit {
         const labelsArray: string[] = this.chartData[i].labels.map((label: string) => this.getEmployeeName(label));
         this.chartData[i].labels = labelsArray;
         dataset.push({
-          data: this.chartData[i].dataSet[0],
+          data: this.chartData[i].datasets[0],
           labels: labelsArray,
           backgroundColor: this.coloursArray
 
