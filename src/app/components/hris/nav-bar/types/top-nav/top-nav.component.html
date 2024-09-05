@@ -76,11 +76,11 @@
           <div id="nav-item-container">
             <div id="nav-item">
               <div (click)="changeNav('/employees')"
-                [ngClass]="router.url.includes('/employees') ? 'active' : 'idle'"
+                [ngClass]="router.url.includes('/employees') || router.url.includes('/view-starter-kit-approval') ? 'active' : 'idle'"
                 [matBadge]="employeeBankingandstarterkitService.pendingCount$ | async" [matBadgeHidden] = "!hasAccessToApprovals() || employeeBankingandstarterkitService.pendingCount$.getValue() <= 0" matBadgeSize="small">
                 Employees
               </div>
-              <div *ngIf="router.url.includes('/employees')" id="selected-line-box">
+              <div *ngIf="router.url.includes('/employees') || router.url.includes('/view-starter-kit-approval')" id="selected-line-box">
                 <div id="selected-line">
                 </div>
               </div>

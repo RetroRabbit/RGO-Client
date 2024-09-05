@@ -116,6 +116,7 @@ export class AuthService {
         catchError(err => {
           if (err.status === 404 || err.status === 0) {
             window.alert("Contact Admin about your account.");
+            location.reload();
           }
           return EMPTY;
         })
