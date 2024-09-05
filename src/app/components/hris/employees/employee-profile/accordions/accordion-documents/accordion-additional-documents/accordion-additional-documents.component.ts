@@ -13,6 +13,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-accordion-additional-documents',
@@ -20,7 +21,7 @@ import { StoreAccessService } from 'src/app/services/shared-services/store-servi
   styleUrls: ['./accordion-additional-documents.component.css']
 })
 export class AccordionDocumentsCustomDocumentsComponent {
-  @Input() employeeProfile!: EmployeeProfile;
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   screenWidth = window.innerWidth;
 
@@ -58,18 +59,18 @@ export class AccordionDocumentsCustomDocumentsComponent {
     public navService: NavService,
     private authAccessService: AuthAccessService,
     private snackBarService: SnackbarService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    private fileProcessingService: FileProcessingService) { }
 
   ngOnInit() {
     this.roles = [this.authAccessService.getRole()];
-    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     this.getDocumentFieldCodes();
     this.getAdditionalDocuments();
   }
 
   getAdditionalDocuments() {
     if (this.employeeId != undefined) {
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 4).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId as number, 4).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.additionalDocuments = data;
           this.dataSource.data = this.fileCategories;
@@ -175,12 +176,12 @@ export class AccordionDocumentsCustomDocumentsComponent {
         this.base64String = reader.result as string;
         let newDto: {} = {
           id: existingValue != undefined ? existingValue?.id as number : 0,
-          employeeId: this.employeeProfile.id,
+          employeeId: this.employeeId,
           fileName: this.documentsFileName,
           fileCategory: 0,
           employeeFileCategory: 0,
           adminFileCategory: 0,
-          blob: this.base64String,
+          blob: this.fileProcessingService.compressFile(this.base64String),
           uploadDate: new Date(),
           reference: this.selectedFieldCode,
           lastUpdatedDate: new Date()
@@ -209,7 +210,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
     } else {
       const updatedDocument = {
         id: document.id,
-        employeeId: document.employeeId,
+        employeeId: this.employeeId,
         reference: document.reference,
         fileName: document.fileName,
         fileCategory: document.fileCategory,
@@ -229,7 +230,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.snackBarService.showSnackbar("Updated", "snack-success");
           this.getAdditionalDocuments();
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
-
         },
         error: (er) => {
           this.snackBarService.showError(er);
@@ -247,7 +247,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
       }
     })
     return documentFound;
-
   }
 
   disableDownloadButton(index: number) {
@@ -259,24 +258,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
   }
 
   downloadDocument(base64String: string, fileName: string) {
-    const commaIndex = base64String.indexOf(',');
-    if (commaIndex !== -1) {
-      base64String = base64String.slice(commaIndex + 1);
-    }
-
-    const byteString = atob(base64String);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const intArray = new Uint8Array(arrayBuffer);
-
-    for (let i = 0; i < byteString.length; i++) {
-      intArray[i] = byteString.charCodeAt(i);
-    }
-
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+    const decompressedFile = this.fileProcessingService.decompressFile(base64String);
+    this.fileProcessingService.downloadFile(decompressedFile, fileName);
   }
 
   filterDocumentsByReference(): EmployeeDocument | null {

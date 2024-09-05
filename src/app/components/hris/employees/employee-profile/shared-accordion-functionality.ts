@@ -11,7 +11,7 @@ import { EmployeeData } from 'src/app/models/hris/employee-data.interface';
 import { CustomField } from 'src/app/models/hris/custom-field.interface';
 import { category } from 'src/app/models/hris/constants/fieldcodeCategory.constants';
 import { dataTypes } from 'src/app/models/hris/constants/types.constants';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
 import { AdminDocuments } from 'src/app/models/hris/constants/admin-documents.component';
 import { EmployeeDocumentsTypes } from 'src/app/models/hris/constants/employee-documents.constants';
@@ -32,7 +32,7 @@ export class SharedAccordionFunctionality {
   @Output() updateProfile = new EventEmitter<any>();
   @Output() updateDocument = new EventEmitter<number>();
   @Output() updateCareer = new EventEmitter<number>();
-  @Input() employeeProfile!: EmployeeProfile;
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   employees: EmployeeProfile[] = [];
   clients: Client[] = [];
@@ -133,8 +133,16 @@ export class SharedAccordionFunctionality {
   fieldTypes = dataTypes;
 
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
-  initialsPattern = /^[A-Z]+$/;
   namePattern = /^[a-zA-Z\s'-]*$/
+
+  initialsNoNumbersValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    const pattern = /^[^0-9]+$/;
+    if (value && !pattern.test(value)) {
+      return { initialsNoNumbers: true };
+    }
+    return null;
+  };
 
   constructor(
     private fb: FormBuilder,

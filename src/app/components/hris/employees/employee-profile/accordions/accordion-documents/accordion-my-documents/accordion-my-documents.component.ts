@@ -10,6 +10,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-accordion-my-documents',
@@ -17,7 +18,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
   styleUrls: ['./accordion-my-documents.component.css']
 })
 export class AccordionDocumentsAdditionalComponent {
-  @Input() employeeProfile!: EmployeeProfile;
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   documentNameControl = new FormControl('', [
     Validators.required, Validators.minLength(5)
@@ -56,11 +57,11 @@ export class AccordionDocumentsAdditionalComponent {
     private snackBarService: SnackbarService,
     private authAccessService: AuthAccessService,
     public navService: NavService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    private fileProcessingService: FileProcessingService) { }
 
   ngOnInit() {
     this.roles = [this.authAccessService.getRole()];
-    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     this.getAdditionalDocuments();
   }
 
@@ -105,11 +106,11 @@ export class AccordionDocumentsAdditionalComponent {
         this.base64String = reader.result as string;
         var newDto: {} = {
           id: 0,
-          employeeId: this.employeeProfile.id,
+          employeeId: this.employeeId,
           reference: this.newDocumentName,
           fileName: this.selectedFile.name,
           fileCategory: 0,
-          blob: this.base64String,
+          blob: this.fileProcessingService.compressFile(this.base64String),
           status: 1,
           uploadDate: new Date(),
           documentType: 1
@@ -141,24 +142,8 @@ export class AccordionDocumentsAdditionalComponent {
   }
 
   downloadFile(base64String: string, fileName: string) {
-    const commaIndex = base64String.indexOf(',');
-    if (commaIndex !== -1) {
-      base64String = base64String.slice(commaIndex + 1);
-    }
-
-    const byteString = atob(base64String);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const intArray = new Uint8Array(arrayBuffer);
-
-    for (let i = 0; i < byteString.length; i++) {
-      intArray[i] = byteString.charCodeAt(i);
-    }
-
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+    const decompressedFile = this.fileProcessingService.decompressFile(base64String);
+    this.fileProcessingService.downloadFile(decompressedFile, fileName);
   }
 
   deleteAdditionalDocument(documentId: number) {
@@ -173,7 +158,7 @@ export class AccordionDocumentsAdditionalComponent {
 
   getAdditionalDocuments() {
     if (this.employeeId != undefined) {
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 1).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId as number, 1).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.myDocuments = data;
           this.dataSource.data = this.fileCategories;

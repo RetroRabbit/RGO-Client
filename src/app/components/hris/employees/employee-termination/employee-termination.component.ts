@@ -9,6 +9,7 @@ import { EmployeeTerminationService } from 'src/app/services/hris/employee/emplo
 import { endDateAfterStartDateValidator } from 'src/app/components/shared-components/form-validators/dateValidator';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-employee-termination',
@@ -17,7 +18,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 })
 export class EmployeeTerminationComponent implements OnInit {
 
-  @Input() employeeProfile!: EmployeeProfile;
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.isMobileScreen = window.innerWidth < 768;
@@ -33,7 +34,6 @@ export class EmployeeTerminationComponent implements OnInit {
   fileUploaded: boolean = false;
   interviewFileUploaded: boolean = false;
   isvalidFile: boolean = false;
-  isvalidFileSize: boolean = false;
   checkboxesValid: boolean = true;
   formSubmitted: boolean = false;
 
@@ -51,6 +51,7 @@ export class EmployeeTerminationComponent implements OnInit {
     public employeeProfileService: EmployeeProfileService,
     private employeeTerminationService: EmployeeTerminationService,
     private route: ActivatedRoute,
+    private fileProcessingService: FileProcessingService
   ) {
     this.newterminationform = this.fb.group({
     terminationOption: new FormControl('', Validators.required),
@@ -105,7 +106,7 @@ export class EmployeeTerminationComponent implements OnInit {
         reemploymentStatus: newterminationform.reEmploymentStatus,
         equipmentStatus: newterminationform.equipmentStatus,
         accountsStatus: newterminationform.accountsStatus,
-        terminationDocument: this.base64String,
+        terminationDocument: this.fileProcessingService.compressFile(this.base64String),
         documentName: newterminationform.terminationDocument,
         terminationComments: newterminationform.terminationComments
     };
@@ -140,35 +141,15 @@ export class EmployeeTerminationComponent implements OnInit {
       this.interviewFileUploaded = true;
       const file = event.target.files[0];
       this.interviewDocFilename = file.name;
-      if (this.validateFile(file)) {
-        this.fileConverter(file, 'exitInterviewDoc');
+      if (this.fileProcessingService.validateFile(file)) {
+        this.fileProcessingService.convertFileToBase64(file).then((base64File) => {
+          this.base64String = base64File;
+          this.newterminationform.patchValue({ ["exitInterviewDoc"]: this.base64String });
+        }).catch(() => {
+          this.snackBarService.showSnackbar("Upload fail incorrect format", "snack-error");
+        });
       }
     }
-  }
-
-  fileConverter(file: File, controlName: string) {
-    const reader = new FileReader();
-    reader.addEventListener('loadend', () => {
-      const base64Data = reader.result as string;
-      this.newterminationform.patchValue({ [controlName]: base64Data });
-      this.snackBarService.showSnackbar('Success', 'snack-success');
-      this.base64String = base64Data;
-    });
-    reader.readAsDataURL(file);
-  }
-
-  validateFile(file: File): boolean {
-    const allowedTypes = ['application/pdf'];
-    if (!allowedTypes.includes(file.type)) {
-      this.isvalidFile = false;
-      return false;
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      this.isvalidFileSize = false;
-      return false;
-    }
-    this.isvalidFileSize = true;
-    return true;
   }
 
   goToPreviousPage() {

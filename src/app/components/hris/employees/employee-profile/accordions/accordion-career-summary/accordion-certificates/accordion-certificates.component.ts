@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, Input, Output } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
@@ -6,6 +6,7 @@ import { EmployeeCertificatesService } from 'src/app/services/hris/employee/empl
 import { forkJoin } from 'rxjs';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-accordion-certificates',
@@ -20,7 +21,7 @@ export class AccordionCertificatesComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  @Input() employeeProfile !: EmployeeProfile
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
   shouldUseSentInProfile: boolean = true;
   panelOpenState: boolean = false;
   hasFile: boolean = false;
@@ -59,16 +60,15 @@ export class AccordionCertificatesComponent {
     private snackBarService: SnackbarService,
     private employeeCertificateService: EmployeeCertificatesService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-
+    private fileProcessingService: FileProcessingService
   ) { }
 
   ngOnInit(): void {
     this.getEmployeeCertificate();
-    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
   }
 
   getEmployeeCertificate() {
-    this.employeeCertificateService.getCertificationDetails(this.employeeProfile.id).subscribe({
+    this.employeeCertificateService.getCertificationDetails(this.employeeProfile.employeeDetails.id).subscribe({
       next: (data) => {
         this.sharedAccordionFunctionality.employeeCertificates = data;
         this.sharedAccordionFunctionality.employeeCertificatesFields = this.sharedAccordionFunctionality.employeeCertificatesFields * this.sharedAccordionFunctionality.employeeCertificates.length;
@@ -86,14 +86,13 @@ export class AccordionCertificatesComponent {
       certificateName: '',
       certificateDocument: this.base64String,
       documentName: '',
-      employeeId: this.employeeProfile.id as number
+      employeeId: this.employeeProfile.employeeDetails.id as number
     }
     this.newCertificates.push(newCertificate);
   }
 
   findDifferenceInArrays(): EmployeeCertificates[] {
     let differenceArray: EmployeeCertificates[] = [];
-
     for (let i = 0; i < this.sharedAccordionFunctionality.employeeCertificates.length; i++) {
       if (this.sharedAccordionFunctionality.employeeCertificates[i].certificateName != this.copyOfCertificates[i].certificateName)
         differenceArray.push(this.copyOfCertificates[i]);
@@ -114,7 +113,6 @@ export class AccordionCertificatesComponent {
     const total = this.newCertificates.length;
     let saveCount = 0;
     let errorOccurred = false;
-
     this.newCertificates.forEach(newCertificate => {
       this.employeeCertificateService.saveCertification(newCertificate).subscribe({
         next: () => {
@@ -152,27 +150,6 @@ export class AccordionCertificatesComponent {
       },
       error: (er) => this.snackBarService.showError(er),
     });
-  }
-
-  uploadFile() {
-    if (this.selectedFile) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.base64String = reader.result as string;
-      };
-      reader.readAsDataURL(this.selectedFile);
-    }
-  }
-
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
-    this.certificatePDFName = this.selectedFile.name;
-    this.uploadFile();
-  }
-
-  openFileInput() {
-    const fileInput = document.getElementById('fileupload') as HTMLInputElement;
-    fileInput.click();
   }
 
   editCertificateDetails() {
@@ -236,23 +213,8 @@ export class AccordionCertificatesComponent {
   }
 
   downloadFile(base64String: string, fileName: string) {
-    const commaIndex = base64String.indexOf(',');
-    if (commaIndex !== -1) {
-      base64String = base64String.slice(commaIndex + 1);
-    }
-    const byteString = atob(base64String);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const intArray = new Uint8Array(arrayBuffer);
-
-    for (let i = 0; i < byteString.length; i++) {
-      intArray[i] = byteString.charCodeAt(i);
-    }
-
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+    const decompressedFile = this.fileProcessingService.decompressFile(base64String);
+    this.fileProcessingService.downloadFile(decompressedFile, fileName);
   }
 
   onFileChange(event: any, index: number, newOrUpdate: string): void {
@@ -269,12 +231,12 @@ export class AccordionCertificatesComponent {
     reader.addEventListener('loadend', () => {
       this.base64String = reader.result as string;
       if (newOrUpdate == 'update') {
-        this.copyOfCertificates[index].certificateDocument = this.base64String;
+        this.copyOfCertificates[index].certificateDocument = this.fileProcessingService.compressFile(this.base64String),
         this.copyOfCertificates[index].documentName = file.name;
         this.snackBarService.showSnackbar("Updated", "snack-success");
       }
       else if (newOrUpdate == 'new') {
-        this.newCertificates[index].certificateDocument = this.base64String;
+        this.newCertificates[index].certificateDocument = this.fileProcessingService.compressFile(this.base64String),
         this.newCertificates[index].documentName = file.name;
         this.snackBarService.showSnackbar("Saved", "snack-success");
       }

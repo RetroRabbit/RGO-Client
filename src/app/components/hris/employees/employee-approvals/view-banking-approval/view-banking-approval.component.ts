@@ -9,6 +9,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { SharedAccordionFunctionality } from '../../employee-profile/shared-accordion-functionality';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { accountTypes } from 'src/app/models/hris/constants/accountTypes.constants';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-view-banking-approval',
@@ -41,7 +42,8 @@ export class ViewBankingApprovalComponent {
     private router: Router,
     private route: ActivatedRoute,
     private snackBarService: SnackbarService,
-    private changeDetector: ChangeDetectorRef) { }
+    private changeDetector: ChangeDetectorRef,
+    private fileProcessingService: FileProcessingService) { }
 
   ngOnInit(): void {
     this.getBankingDetails(this.bankingId);
@@ -119,24 +121,8 @@ export class ViewBankingApprovalComponent {
   }
 
   downloadFile(base64String: string, fileName: string) {
-    const commaIndex = base64String.indexOf(',');
-    if (commaIndex !== -1) {
-      base64String = base64String.slice(commaIndex + 1);
-    }
-
-    const byteString = atob(base64String);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const intArray = new Uint8Array(arrayBuffer);
-
-    for (let i = 0; i < byteString.length; i++) {
-      intArray[i] = byteString.charCodeAt(i);
-    }
-
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+    const decompressedFile = this.fileProcessingService.decompressFile(base64String);
+    this.fileProcessingService.downloadFile(decompressedFile, fileName);
   }
 
   updateBankingDetails(status: number): void {

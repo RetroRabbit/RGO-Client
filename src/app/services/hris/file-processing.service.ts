@@ -9,7 +9,7 @@ export class FileProcessingService {
   constructor() { }
 
   validateFile(file: File): boolean {
-    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/svg+xml'];
+    const allowedTypes = ['application/pdf', 'image/jpeg','image/jpg', 'image/png', 'image/svg+xml'];
     if (!allowedTypes.includes(file.type)) {
       return false;
     }
@@ -23,9 +23,9 @@ export class FileProcessingService {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const base64File = reader.result as string;
-        if (base64File) {
-          resolve(base64File);
+        const base64String = reader.result as string;
+        if (base64String) {
+          resolve(base64String);
         } else {
           reject('convertFileToBase64- File conversion to base64 failed.');
         }
@@ -37,16 +37,16 @@ export class FileProcessingService {
     });
   }
 
-  downloadFile(base64File: string, fileName: string) {
+  downloadFile(base64String: string, fileName: string) {
     try {
-      if (!this.isValidBase64(base64File)) {
+      if (!this.isValidBase64(base64String)) {
         return;
       }
-      const commaIndex = base64File.indexOf(',');
+      const commaIndex = base64String.indexOf(',');
       if (commaIndex === -1) {
         return;
       }
-      const base64Data = base64File.slice(commaIndex + 1);
+      const base64Data = base64String.slice(commaIndex + 1);
       const byteString = atob(base64Data);
       const arrayBuffer = new ArrayBuffer(byteString.length);
       const intArray = new Uint8Array(arrayBuffer);
@@ -65,12 +65,12 @@ export class FileProcessingService {
     }
   }
 
-  compressFile(base64File: string): string {
+  compressFile(base64String: string): string {
     try {
-      if (!this.isValidBase64(base64File)) {
+      if (!this.isValidBase64(base64String)) {
         throw new Error('compressFile- Invalid base64 file data');
       }
-      const base64Data = base64File.split(',')[1];
+      const base64Data = base64String.split(',')[1];
       const byteString = atob(base64Data);
       const uint8Array = new Uint8Array(byteString.length);
 
@@ -86,12 +86,12 @@ export class FileProcessingService {
     }
   }
 
-  decompressFile(compressedBase64File: string): string {
+  decompressFile(compressedBase64String: string): string {
     try {
-      if (!this.isValidBase64(compressedBase64File)) {
+      if (!this.isValidBase64(compressedBase64String)) {
         throw new Error('decompressFile- Invalid base64 file data');
       }
-      const compressedBase64Data = compressedBase64File.split(',')[1] || compressedBase64File;
+      const compressedBase64Data = compressedBase64String.split(',')[1] || compressedBase64String;
       const compressedByteString = atob(compressedBase64Data);
       const compressedUint8Array = new Uint8Array(compressedByteString.length);
 

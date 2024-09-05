@@ -41,7 +41,7 @@
         <div id="EndEmploymentButton" class="col-12 col-md-6 mt-md-1  d-flex justify-content-end d-md-flex ">
           <ng-container *ngIf="!employeeProfile.active">
             <div class="resigned-status">
-              Status: Resigned
+              Status: {{employeeProfile.inactiveReason}}
             </div>
           </ng-container>
           <button *ngIf="this.isAdminUser && employeeProfile.active" mat-button color="primary"
@@ -382,36 +382,40 @@
       <app-accordion-profile-address-details *ngIf="selectedAccordion === 'Profile Details'"
         [employeeProfile]="{employeeDetails: employeeProfile}"></app-accordion-profile-address-details>
 
-        <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" [employeeProfile]="employeeProfile"
-          (updateBanking)="updateBankingProgress($event)">
-        </app-accordion-banking>
+      <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" 
+        [employeeProfile]="{employeeDetails: employeeProfile }" (updateBanking)="updateBankingProgress($event)">
+      </app-accordion-banking>
 
       <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'"
         [employeeProfile]="{employeeDetails: employeeProfile}">
       </app-career-summary-qualifications>
       <app-accordion-career-work-experience [hidden]="selectedAccordion != 'Career Summary'"
-        [employeeProfile]="employeeProfile">
+      [employeeProfile]="{employeeDetails: employeeProfile}">
       </app-accordion-career-work-experience>
-      <app-accordion-certificates [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
+      <app-accordion-certificates [hidden]="selectedAccordion != 'Career Summary'"
+      [employeeProfile]="{employeeDetails: employeeProfile}">
       </app-accordion-certificates>
-
-        <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'"
-          [employeeProfile]="employeeProfile"></app-accordion-documents-starterkit>
+      <app-accordion-documents-starterkit [hidden]="selectedAccordion != 'Documents'"
+        [employeeProfile]="{employeeDetails: employeeProfile}">
+      </app-accordion-documents-starterkit>
         <app-accordion-administrative-documents
           *ngIf="authAccessService.isSuperAdmin() || authAccessService.isJourney()"
-          [hidden]="selectedAccordion != 'Documents'" [employeeProfile]="employeeProfile">
+          [hidden]="selectedAccordion != 'Documents'" 
+          [employeeProfile]="{employeeDetails: employeeProfile}">
         </app-accordion-administrative-documents>
         <app-accordion-employee-documents [hidden]="selectedAccordion != 'Documents'"
-          [employeeProfile]="employeeProfile">
+        [employeeProfile]="{employeeDetails: employeeProfile}">
         </app-accordion-employee-documents>
         <app-accordion-my-documents [hidden]="selectedAccordion != 'Documents'"
-          [employeeProfile]="employeeProfile"></app-accordion-my-documents>
+        [employeeProfile]="{employeeDetails: employeeProfile}">
+        </app-accordion-my-documents>
         <app-accordion-additional-documents [hidden]="selectedAccordion != 'Documents'"
-          [employeeProfile]="employeeProfile">
+        [employeeProfile]="{employeeDetails: employeeProfile}">
         </app-accordion-additional-documents>
 
         <app-accordion-salary-details *ngIf="authAccessService.isSuperAdmin() || authAccessService.isAdmin()"
-          [hidden]="selectedAccordion != 'Career Summary'" [employeeProfile]="employeeProfile">
+          [hidden]="selectedAccordion != 'Career Summary'"
+          [employeeProfile]="{employeeDetails: employeeProfile}">
         </app-accordion-salary-details>
 
     </div>

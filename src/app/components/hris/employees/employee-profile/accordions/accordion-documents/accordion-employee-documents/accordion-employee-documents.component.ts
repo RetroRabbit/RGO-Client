@@ -10,6 +10,7 @@ import { NavService } from 'src/app/services/shared-services/nav-service/nav.ser
 import { DialogTypeData } from 'src/app/models/hris/dialog-type-data.model';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-accordion-employee-documents',
@@ -18,7 +19,7 @@ import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/
 })
 
 export class AccordionEmployeeDocumentsComponent {
-  @Input() employeeProfile!: EmployeeProfile;
+  @Input() employeeProfile!: { employeeDetails: EmployeeProfile }
 
   screenWidth = window.innerWidth;
 
@@ -46,36 +47,20 @@ export class AccordionEmployeeDocumentsComponent {
     private snackBarService: SnackbarService,
     public navService: NavService,
     private authAccessService: AuthAccessService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) {
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    private fileProcessingService: FileProcessingService) {
     this.dialogTypeData = new DialogTypeData().dialogTypeData;
   }
 
   ngOnInit() {
     this.roles = [this.authAccessService.getRole()];
-    this.employeeProfile = this.sharedAccordionFunctionality.selectedEmployee;
     this.getEmployeeDocuments();
     this.sharedAccordionFunctionality.totalDocumentsProgress()
   }
 
   downloadFile(base64String: string, fileName: string) {
-    const commaIndex = base64String.indexOf(',');
-    if (commaIndex !== -1) {
-      base64String = base64String.slice(commaIndex + 1);
-    }
-
-    const byteString = atob(base64String);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const intArray = new Uint8Array(arrayBuffer);
-
-    for (let i = 0; i < byteString.length; i++) {
-      intArray[i] = byteString.charCodeAt(i);
-    }
-
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+    const decompressedFile = this.fileProcessingService.decompressFile(base64String);
+    this.fileProcessingService.downloadFile(decompressedFile, fileName);
   }
 
   captureUploadIndex(event: any) {
@@ -117,7 +102,7 @@ export class AccordionEmployeeDocumentsComponent {
 
   getEmployeeDocuments() {
     if (this.employeeId != undefined) {
-      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeProfile.id as number, 3).subscribe({
+      this.employeeDocumentService.getAllEmployeeDocuments(this.employeeId as number, 3).subscribe({
         next: data => {
           this.sharedAccordionFunctionality.employeeDocuments = data;
           this.dataSource.data = this.sharedAccordionFunctionality.fileEmployeeCategories;
@@ -144,9 +129,9 @@ export class AccordionEmployeeDocumentsComponent {
   uploadDocumentDto(document: any) {
     const saveObj = {
       id: document.id,
-      employeeId: document.employee.id,
+      employeeId: this.employeeId,
       fileName: document.fileName,
-      blob: this.base64String,
+      blob: this.fileProcessingService.compressFile(this.base64String),
       fileCategory: 0,
       employeeFileCategory: +this.uploadButtonIndex,
       adminFileCategory: 0,
@@ -162,7 +147,6 @@ export class AccordionEmployeeDocumentsComponent {
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateEmployeeDocumentProgress();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
-
         },
         error: (er) => {
           this.isLoadingUpload = false;
@@ -172,7 +156,7 @@ export class AccordionEmployeeDocumentsComponent {
     } else {
       const updatedDocument = {
         id: document.id,
-        employeeId: document.employee.id,
+        employeeId: this.employeeId,
         reference: document.reference,
         fileName: document.fileName,
         fileCategory: document.fileCategory,
@@ -193,7 +177,6 @@ export class AccordionEmployeeDocumentsComponent {
           this.getEmployeeDocuments();
           this.sharedAccordionFunctionality.calculateEmployeeDocumentProgress();
           this.sharedAccordionFunctionality.totalDocumentsProgress();
-
         },
         error: (er) => {
           this.snackBarService.showError(er);
@@ -217,7 +200,7 @@ export class AccordionEmployeeDocumentsComponent {
           fileCategory: 0,
           employeeFileCategory: +this.uploadButtonIndex,
           adminFileCategory: 0,
-          blob: this.base64String,
+          blob: this.fileProcessingService.compressFile(this.base64String),
           status: 1,
           documentType: 3,
           uploadDate: new Date(),
@@ -265,7 +248,6 @@ export class AccordionEmployeeDocumentsComponent {
     }
     return true;
   }
-
 
   disableDownload(index: number) {
     const documentObject = this.sharedAccordionFunctionality.employeeDocuments.find(document => document.employeeFileCategory == index);
