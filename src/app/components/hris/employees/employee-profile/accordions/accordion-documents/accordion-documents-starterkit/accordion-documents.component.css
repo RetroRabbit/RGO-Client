@@ -95,25 +95,25 @@
 }
 
 #status-0 {
-    background-color: #008000;
+    background-color: #0FAF4B;
     position: relative;
     right: 5px;
     margin-right: 15px;
     float: right;
     justify-content: flex-end;
     align-items: flex-end;
+    min-width: 85px;
 }
 
 #status-1 {
-    background: #ff0000;
+    background: #B3261E;
     position: relative;
     right: 5px;
     margin-right: 15px;
     float: right;
     justify-content: flex-end;
     align-items: flex-end;
-    padding-right: 40px;
-    width: 20%;
+    min-width: 85px;
 }
 
 #status-2 {
@@ -124,6 +124,7 @@
     float: right;
     justify-content: flex-end;
     align-items: flex-end;
+    min-width: 85px;
 }
 
 #accordion {
