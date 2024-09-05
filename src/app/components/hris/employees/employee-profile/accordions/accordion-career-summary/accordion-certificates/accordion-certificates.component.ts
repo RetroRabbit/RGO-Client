@@ -153,27 +153,6 @@ export class AccordionCertificatesComponent {
     });
   }
 
-  uploadFile() {
-    if (this.selectedFile) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.base64String = reader.result as string;
-      };
-      reader.readAsDataURL(this.selectedFile);
-    }
-  }
-
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
-    this.certificatePDFName = this.selectedFile.name;
-    this.uploadFile();
-  }
-
-  openFileInput() {
-    const fileInput = document.getElementById('fileupload') as HTMLInputElement;
-    fileInput.click();
-  }
-
   editCertificateDetails() {
     this.editCertificate = true;
     this.copyOfCertificates = [];
