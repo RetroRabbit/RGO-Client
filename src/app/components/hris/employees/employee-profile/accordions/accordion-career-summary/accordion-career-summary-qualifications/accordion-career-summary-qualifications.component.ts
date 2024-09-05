@@ -44,7 +44,7 @@ export class CareerSummaryQualificationsComponent {
   editQualifications: boolean = false;
 
   fileName: string = '';
-  base64File: string = "";
+  base64String: string = "";
   fileUrl: string = '';
 
   async ngOnInit() {
@@ -56,7 +56,7 @@ export class CareerSummaryQualificationsComponent {
     this.employeeQualificationsService.getEmployeeQualificationById(this.employeeProfile.employeeDetails.id as number).subscribe({
       next: async (data) => {
         this.sharedAccordionFunctionality.employeeQualification = data;
-        this.base64File = data.proofOfQualification;
+        this.base64String = data.proofOfQualification;
 
         if (this.sharedAccordionFunctionality.employeeQualification) {
           if (data.year && data.year.endsWith("-01-01")) {
@@ -111,20 +111,8 @@ export class CareerSummaryQualificationsComponent {
             fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.get("fieldOfStudy")?.value,
             year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value + "-01-01",
             nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
-            proofOfQualification: this.fileProcessingService.compressFile(this.base64File),
+            proofOfQualification: this.fileProcessingService.compressFile(this.base64String),
             documentName: this.fileName,
-        };
-
-        const updatedQualification: EmployeeQualifications = {
-          id: this.sharedAccordionFunctionality.employeeQualification ? this.sharedAccordionFunctionality.employeeQualification.id : 0,
-          employeeId: this.employeeProfile.employeeDetails.id as number,
-          highestQualification: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
-          school: this.sharedAccordionFunctionality.employeeQualificationForm.get("school")?.value,
-          fieldOfStudy: this.sharedAccordionFunctionality.employeeQualificationForm.get("fieldOfStudy")?.value,
-          year: this.sharedAccordionFunctionality.employeeQualificationForm.get("year")?.value + "-01-01",
-          nqfLevel: this.sharedAccordionFunctionality.employeeQualificationForm.get("highestQualification")?.value,
-          proofOfQualification: this.sharedAccordionFunctionality.employeeQualificationForm.get("proofOfQualification")?.value,
-          documentName: this.fileName,
         };
 
         const qualificationObservable = saveQualification.id > 0
@@ -164,8 +152,8 @@ export class CareerSummaryQualificationsComponent {
         const file = event.target.files[0];
         this.fileName = file.name;
         if (this.fileProcessingService.validateFile(file)) {
-            this.fileProcessingService.convertFileToBase64(file).then((base64File) => {
-                this.base64File = base64File;
+            this.fileProcessingService.convertFileToBase64(file).then((base64String) => {
+                this.base64String = base64String;
                 this.isDisabledDownload = false; 
             }).catch(() => {
                 this.snackBarService.showSnackbar("Upload PDF Only", "snack-error");
@@ -175,7 +163,7 @@ export class CareerSummaryQualificationsComponent {
   }
 
   downloadFile() {
-    const decompressedFile = this.fileProcessingService.decompressFile(this.base64File);
+    const decompressedFile = this.fileProcessingService.decompressFile(this.base64String);
     this.fileProcessingService.downloadFile(decompressedFile, this.fileName);
   }
 }
