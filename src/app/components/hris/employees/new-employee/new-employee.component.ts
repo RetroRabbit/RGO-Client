@@ -21,6 +21,7 @@ import { CustomvalidationService } from 'src/app/services/hris/id-validator.serv
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input-v16';
 import { disabilities } from 'src/app/models/hris/constants/disabilities.constant';
 import { SharedAccordionFunctionality } from '../employee-profile/shared-accordion-functionality';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-new-employee',
@@ -47,6 +48,8 @@ export class NewEmployeeComponent implements OnInit {
     private employeeDocumentService: EmployeeDocumentService,
     private snackBarService: SnackbarService,
     public navService: NavService,
+    private fileProcessingService: FileProcessingService
+    
   ) {
     this.navService.hideNav();
   }
@@ -80,7 +83,7 @@ export class NewEmployeeComponent implements OnInit {
   namePattern = /^[a-zA-Z\s ()'-]*$/;
   initialsPattern = /^[A-Za-z]+$/;
   toggleAdditional: boolean = false;
-  validImage: boolean = false;
+
   isMobileScreen: boolean = false;
   isLoadingAddEmployee: boolean = false;
   isSameAddress: boolean = true;
@@ -304,7 +307,7 @@ export class NewEmployeeComponent implements OnInit {
               fileCategory: category,
               employeeFileCategory: 0,
               adminFileCategory: 0,
-              blob: base64String,
+              blob: this.fileProcessingService.compressFile(base64String),
               uploadDate: new Date(),
               reason: "",
               status: 3,
@@ -342,19 +345,7 @@ export class NewEmployeeComponent implements OnInit {
     if (index >= 0 && index < this.files.length) {
       this.files.splice(index, 1);
     }
-  }
-
-  onFileChange(event: any): void {
-    if (event.target.files && event.target.files.length) {
-      const file = event.target.files[0];
-      this.imageName = file.name;
-      if (this.validateFile(file)) {
-        this.imageConverter(file);
-      } else {
-        this.clearUpload();
-      }
-    }
-  }
+  }    
 
   get physicalAddressObj(): EmployeeAddress {
     return {
@@ -491,37 +482,30 @@ export class NewEmployeeComponent implements OnInit {
         : this.newEmployeeForm.value.photo?.trim();
   }
 
-  imageHandler(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const file = inputElement.files?.[0];
-    if (file) {
-      if (this.validateFile(file)) {
-        this.imageConverter(file);
-        this.validImage = true;
-      } else {
-        this.clearUpload();
-        this.validImage = false;
+  onFileChange(event: any) {
+    if (event.target.files) {
+      const selectedFile = event.target.files[0];
+      this.imageName = selectedFile.name;
+      if (this.fileProcessingService.validateFile(selectedFile)) {
+        const file = new FileReader();
+        file.readAsDataURL(selectedFile);
+        file.onload = (event: any) => {
+          this.imagePreview = event.target.result as string;
+          const base64String = this.trimTobase64(this.imagePreview)
+          this.getImageUrlFromBase64(base64String);
+          this.newEmployeeForm.patchValue({ 'photo': this.fileProcessingService.compressFile(this.imagePreview) });
+        };
       }
-    } else {
-      this.validImage = false;
+      else{
+        this.clearUpload();
+      }
     }
   }
 
-  validateFile(file: File): boolean {
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    const maxSizeInBytes = 4194304;
-
-    if (!validTypes.includes(file.type)) {
-      this.snackBarService.showSnackbar(`Only JPEG, JPG, and PNG Files Are Allowed!`, "snack-error");
-      return false;
-    }
-
-    if (file.size > maxSizeInBytes) {
-      this.snackBarService.showSnackbar(`File Size Must Be Less Than 4mb!`, "snack-error");
-      return false;
-    }
-
-    return true;
+  trimTobase64(dataURI: string): string {
+    const base64index = dataURI.indexOf(';base64,') + ';base64,'.length;
+    const base64 = dataURI.substring(base64index);
+    return base64;
   }
 
   clearUpload(): void {
@@ -532,32 +516,12 @@ export class NewEmployeeComponent implements OnInit {
     this.newEmployeeForm.patchValue({ 'photo': null });
   }
 
-  imageConverter(file: File) {
-    const reader = new FileReader();
-    reader.addEventListener('loadend', () => {
-      this.imagePreview = reader.result as string;
-      const base64Image = this.convertTobase64(this.imagePreview);
-      this.newEmployeeForm.patchValue({ 'photo': 'data:image/jpeg;base64,' + base64Image });
-      this.getImageFromBase64(base64Image);
-    });
-
-    reader.readAsDataURL(file);
-  }
-
-  convertTobase64(dataURI: string): string {
-    const base64index = dataURI.indexOf(';base64,') + ';base64,'.length;
-    const base64 = dataURI.substring(base64index);
-    return base64;
-  }
-
-  getImageFromBase64(base64Image: string) {
+  getImageUrlFromBase64(base64Image: string) {
     const byteArray = atob(base64Image);
     const byteNumbers = new Array(byteArray.length);
-
     for (let i = 0; i < byteArray.length; i++) {
       byteNumbers[i] = byteArray.charCodeAt(i);
     }
-
     const byteArrayBuffer = new Uint8Array(byteNumbers);
     const blob = new Blob([byteArrayBuffer], { type: 'image/jpeg' });
     this.imageUrl = URL.createObjectURL(blob);
