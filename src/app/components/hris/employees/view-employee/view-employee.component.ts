@@ -341,7 +341,6 @@ export class ViewEmployeeComponent {
           return this.combineEmployeesWithRolesAndClients(employees);
         }),
         catchError((error) => {
-          this.snackBarService.showError(error);
           return of([]);
         }),
         first()
