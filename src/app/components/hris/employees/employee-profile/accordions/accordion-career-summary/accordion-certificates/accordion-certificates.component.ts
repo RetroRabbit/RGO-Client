@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, HostListener, Input, Output } from '@angular/core';
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { SnackbarService } from 'src/app/services/shared-services/snackbar-service/snackbar.service';
 import { EmployeeCertificates } from 'src/app/models/hris/employee-certificates.interface';
@@ -6,6 +6,7 @@ import { EmployeeCertificatesService } from 'src/app/services/hris/employee/empl
 import { forkJoin } from 'rxjs';
 import { Dialog } from 'src/app/models/hris/confirm-modal.interface';
 import { SharedAccordionFunctionality } from '../../../shared-accordion-functionality';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-accordion-certificates',
@@ -59,7 +60,7 @@ export class AccordionCertificatesComponent {
     private snackBarService: SnackbarService,
     private employeeCertificateService: EmployeeCertificatesService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-
+    private fileProcessingService: FileProcessingService
   ) { }
 
   ngOnInit(): void {
@@ -92,7 +93,6 @@ export class AccordionCertificatesComponent {
 
   findDifferenceInArrays(): EmployeeCertificates[] {
     let differenceArray: EmployeeCertificates[] = [];
-
     for (let i = 0; i < this.sharedAccordionFunctionality.employeeCertificates.length; i++) {
       if (this.sharedAccordionFunctionality.employeeCertificates[i].certificateName != this.copyOfCertificates[i].certificateName)
         differenceArray.push(this.copyOfCertificates[i]);
@@ -113,7 +113,6 @@ export class AccordionCertificatesComponent {
     const total = this.newCertificates.length;
     let saveCount = 0;
     let errorOccurred = false;
-
     this.newCertificates.forEach(newCertificate => {
       this.employeeCertificateService.saveCertification(newCertificate).subscribe({
         next: () => {
