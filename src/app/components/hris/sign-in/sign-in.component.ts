@@ -103,11 +103,13 @@ export class SignInComponent {
                     }
                   } else {
                     this.snackBarService.showSnackbar("Contact Admin Regarding Your Account.", "snack-error");
+                    location.reload();
                     return EMPTY;
                   }
                 }),
                 catchError(() => {
                   this.snackBarService.showSnackbar("Contact Admin Regarding Your Account.", "snack-error");
+                  location.reload();
                   return EMPTY;
                 })
               );
