@@ -13,6 +13,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FileCategory } from 'src/app/models/hris/constants/documents.contants';
 import { AuthAccessService } from 'src/app/services/shared-services/auth-access/auth-access.service';
 import { StoreAccessService } from 'src/app/services/shared-services/store-service/store-access.service';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-accordion-additional-documents',
@@ -58,7 +59,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
     public navService: NavService,
     private authAccessService: AuthAccessService,
     private snackBarService: SnackbarService,
-    public sharedAccordionFunctionality: SharedAccordionFunctionality) { }
+    public sharedAccordionFunctionality: SharedAccordionFunctionality,
+    private fileProcessingService: FileProcessingService) { }
 
   ngOnInit() {
     this.roles = [this.authAccessService.getRole()];
@@ -179,7 +181,7 @@ export class AccordionDocumentsCustomDocumentsComponent {
           fileCategory: 0,
           employeeFileCategory: 0,
           adminFileCategory: 0,
-          blob: this.base64String,
+          blob: this.fileProcessingService.compressFile(this.base64String),
           uploadDate: new Date(),
           reference: this.selectedFieldCode,
           lastUpdatedDate: new Date()
@@ -228,7 +230,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
           this.snackBarService.showSnackbar("Updated", "snack-success");
           this.getAdditionalDocuments();
           this.sharedAccordionFunctionality.calculateAdditionalDocumentProgress();
-
         },
         error: (er) => {
           this.snackBarService.showError(er);
@@ -246,7 +247,6 @@ export class AccordionDocumentsCustomDocumentsComponent {
       }
     })
     return documentFound;
-
   }
 
   disableDownloadButton(index: number) {
@@ -258,24 +258,8 @@ export class AccordionDocumentsCustomDocumentsComponent {
   }
 
   downloadDocument(base64String: string, fileName: string) {
-    const commaIndex = base64String.indexOf(',');
-    if (commaIndex !== -1) {
-      base64String = base64String.slice(commaIndex + 1);
-    }
-
-    const byteString = atob(base64String);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const intArray = new Uint8Array(arrayBuffer);
-
-    for (let i = 0; i < byteString.length; i++) {
-      intArray[i] = byteString.charCodeAt(i);
-    }
-
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+    const decompressedFile = this.fileProcessingService.decompressFile(base64String);
+    this.fileProcessingService.downloadFile(decompressedFile, fileName);
   }
 
   filterDocumentsByReference(): EmployeeDocument | null {

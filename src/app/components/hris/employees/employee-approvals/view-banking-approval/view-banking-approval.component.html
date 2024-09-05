@@ -67,16 +67,18 @@
                                 <div class="col-1"><img src="../../../assets/img/pdf.png" alt="PDF Image" width="14px" height="18px"></div>
                                 <div class="col-lg-4" id="header-value">
                                     <span *ngIf="!currentBankingExists; else poa">{{ 'N/A' }}</span>
-                                    <ng-template #poa>{{ getPOA() }}</ng-template>
+                                    <ng-template #poa>{{ 'Current_' + getPOA() }}</ng-template>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 my-2">
                             <div class="row mt-4">
-                                <div class="col-1" style="color: blue" id="uploadfile">
-                                    <img src="../../../../assets/img/file_upload.svg" alt="">
-                                </div>
-                                <div class="col-lg-6" id="download-text">Download/View PDF</div>
+                              <div class="col-1" style="color: blue" id="uploadfile">
+                                <img src="../../../../assets/img/file_upload.svg" alt="">
+                              </div>
+                              <div class="col-lg-6" id="download-text" (click)="convertFileToBase64(0)">
+                                Download/View PDF
+                              </div>
                             </div>
                         </div>
                     </div>
@@ -120,8 +122,18 @@
                                 <div class="col-1"><img src="../../../assets/img/pdf.png" alt="PDF Image" width="14px" height="18px"></div>
                                 <div class="col-lg-4" id="header-value">
                                     <span *ngIf="!updateBankingExists; else updatePoa">{{ 'N/A' }}</span>
-                                    <ng-template #updatePoa>{{ getPOA() }}</ng-template>
+                                    <ng-template #updatePoa>{{ 'Updated_' + getPOA() }}</ng-template>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <div class="row mt-4">
+                              <div class="col-1" style="color: blue" id="uploadfile">
+                                <img src="../../../../assets/img/file_upload.svg" alt="">
+                              </div>
+                              <div class="col-lg-6" id="download-text" (click)="convertFileToBase64(1)">
+                                Download/View PDF
+                              </div>
                             </div>
                         </div>
                     </div>

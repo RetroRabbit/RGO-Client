@@ -41,7 +41,7 @@
         <div id="EndEmploymentButton" class="col-12 col-md-6 mt-md-1  d-flex justify-content-end d-md-flex ">
           <ng-container *ngIf="!employeeProfile.active">
             <div class="resigned-status">
-              Status: Resigned
+              Status: {{employeeProfile.inactiveReason}}
             </div>
           </ng-container>
           <button *ngIf="this.isAdminUser && employeeProfile.active" mat-button color="primary"
@@ -383,7 +383,7 @@
         [employeeProfile]="{employeeDetails: employeeProfile}"></app-accordion-profile-address-details>
 
       <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" 
-        [employeeProfile]="{employeeDetails: employeeProfile}"> (updateBanking)="updateBankingProgress($event)">
+        [employeeProfile]="{employeeDetails: employeeProfile }" (updateBanking)="updateBankingProgress($event)">
       </app-accordion-banking>
 
       <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'"

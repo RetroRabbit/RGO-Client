@@ -34,7 +34,7 @@
                                 <p>Download & Upload Document Here</p>
                             </ng-template>
                         </div>
-                        <div class="col-12 col-md-4 col-lg-4 py-2">
+                        <div class="col-12 col-md-4 col-lg-4 py-2  align-content-center">
                             <div class="row">
                                 <div id="actionCellDownload" class="col-12 col-md-auto mb-2">
                                     <button *ngIf="disableDownload(i);else DisabledDownload" mat-button color="primary"
@@ -79,10 +79,9 @@
                                     </button>
                                 </div>
                                 <input hidden type="file" (change)="uploadDocument($event)" accept=".pdf" [id]="i + '-document'">
-
                             </div>
                         </div>
-                        <div class="col-12 col-md-2 col-lg-2 py-2">
+                        <div class="col-12 col-md-2 col-lg-2 py-2 align-content-center">
                             <div *ngIf="getFileName(i) as document; else noDoc" id="statuses">
                                 <div *ngIf="document.status === 0" id="status-0">
                                     <span>{{ 'Approved' }}</span>
