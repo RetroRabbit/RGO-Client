@@ -383,7 +383,7 @@
         [employeeProfile]="{employeeDetails: employeeProfile}"></app-accordion-profile-address-details>
 
       <app-accordion-banking [hidden]="selectedAccordion != 'Bank Information'" 
-        [employeeProfile]="{employeeDetails: employeeProfile}"> (updateBanking)="updateBankingProgress($event)">
+        [employeeProfile]="{employeeDetails: employeeProfile }" (updateBanking)="updateBankingProgress($event)">
       </app-accordion-banking>
 
       <app-career-summary-qualifications [hidden]="selectedAccordion != 'Career Summary'"
