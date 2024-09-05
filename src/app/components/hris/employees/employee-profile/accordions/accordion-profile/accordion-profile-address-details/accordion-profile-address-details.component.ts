@@ -211,7 +211,9 @@ export class AccordionProfileAddressDetailsComponent {
           this.employeeAddress = data;
           this.initializeForm();
         },
-        error: (er) => this.snackBarService.showError(er),
+        error: (er) => {
+          throw er;
+        },
       });
     }
   }
