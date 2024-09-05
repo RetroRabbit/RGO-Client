@@ -135,17 +135,6 @@ export class SharedAccordionFunctionality {
   emailPattern = /^[A-Za-z0-9._%+-]+@retrorabbit\.co\.za$/;
   namePattern = /^[a-zA-Z\s'-]*$/
 
-  initialsUppercaseValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
-    const pattern = /^[A-Z]+$/;
-  
-    if (value && !pattern.test(value)) {
-      return { initialsUppercase: true };
-    }
-  
-    return null;
-  };
-  
   initialsNoNumbersValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
     const pattern = /^[^0-9]+$/;

@@ -57,7 +57,6 @@ export class AccordionProfileEmployeeDetailsComponent {
       Validators.pattern(this.sharedAccordionFunctionality.namePattern)]],
       initials: [this.employeeProfile!.employeeDetails.initials, [
         this.sharedAccordionFunctionality.initialsNoNumbersValidator,
-        this.sharedAccordionFunctionality.initialsUppercaseValidator,
       ]],
       clientAllocated: this.employeeProfile!.employeeDetails.clientAllocatedId,
       employeeType: this.employeeProfile!.employeeDetails.employeeType!.name,

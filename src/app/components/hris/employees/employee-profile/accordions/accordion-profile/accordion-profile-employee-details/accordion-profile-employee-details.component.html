@@ -68,9 +68,6 @@
                     <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['initials'].hasError('initialsNoNumbers')">
                       Initials must not contain numbers.
                     </mat-error>
-                    <mat-error *ngIf="sharedAccordionFunctionality.employeeDetailsForm.controls['initials'].hasError('initialsUppercase') && !sharedAccordionFunctionality.employeeDetailsForm.controls['initials'].hasError('initialsNoNumbers')">
-                      Initials must be in uppercase.
-                    </mat-error>
                   </mat-form-field>
                 </div>
               </div>
