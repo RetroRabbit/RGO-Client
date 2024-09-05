@@ -112,7 +112,7 @@ export class AdminDashboardComponent implements OnInit {
         this.chartType = activeChart.type;
         this.chartName = activeChart.name;
         this.selectedCategories = activeChart.dataTypes[0].replace("'", " ").split(",");
-        this.selectedTypes = activeChart.roles[0].replace("'", " ").split(",");;
+        this.selectedTypes = (activeChart.roles && activeChart.roles[0]) ? activeChart.roles[0].replace("'", " ").split(",") : [];
         this.categoryControl.disable();
         this.typeControl.disable();
         let dialogRef = this.dialog.open(this.dialogTemplate, {
@@ -401,7 +401,7 @@ export class AdminDashboardComponent implements OnInit {
       this.snackBarService.showSnackbar('Select at Least One Employee Role', 'snack-error');
       return;
     }
-
+    console.log(this.selectedTypes)
     this.isLoadingChart = true;
     this.loadCounter = 0;
     this.chartService
