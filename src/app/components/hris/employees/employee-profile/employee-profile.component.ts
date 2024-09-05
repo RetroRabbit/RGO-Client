@@ -30,6 +30,7 @@ import { EmployeeTermination } from 'src/app/models/hris/employeeTermination.int
 import { Subscription } from 'rxjs';
 import { ClientService } from 'src/app/services/hris/client.service';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -82,7 +83,6 @@ export class EmployeeProfileComponent implements OnChanges {
   client: string = '';
   previousPage: string = '';
   currentPage: string = '';
-  base64String: string = "";
 
   isLoading: boolean = true;
   teamLead: number | null = null;
@@ -126,7 +126,8 @@ export class EmployeeProfileComponent implements OnChanges {
     public authAccessService: AuthAccessService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
     private sharedPropertyAccessService: SharedPropertyAccessService,
-    private clipboard: Clipboard  ) { }
+    private clipboard: Clipboard,
+    private fileProcessingService: FileProcessingService ) { }
 
   async getUserId() {
     this.employeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
@@ -379,23 +380,8 @@ export class EmployeeProfileComponent implements OnChanges {
   }
 
   downloadFile(base64String: string, fileName: string) {
-    const commaIndex = base64String.indexOf(',');
-    if (commaIndex !== -1) {
-      base64String = base64String.slice(commaIndex + 1);
-    }
-    const byteString = atob(base64String);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const intArray = new Uint8Array(arrayBuffer);
-
-    for (let i = 0; i < byteString.length; i++) {
-      intArray[i] = byteString.charCodeAt(i);
-    }
-
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+    const decompressedFile = this.fileProcessingService.decompressFile(base64String);
+    this.fileProcessingService.downloadFile(decompressedFile, fileName);
   }
 
   getClients() {
