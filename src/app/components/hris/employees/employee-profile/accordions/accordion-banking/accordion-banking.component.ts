@@ -9,6 +9,7 @@ import { SnackbarService } from 'src/app/services/shared-services/snackbar-servi
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
 import { SharedAccordionFunctionality } from '../../shared-accordion-functionality';
 import { SharedPropertyAccessService } from 'src/app/services/hris/shared-property-access.service';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-accordion-banking',
@@ -62,7 +63,8 @@ export class AccordionBankingComponent {
     private employeeBankingService: EmployeeBankingService,
     private snackBarService: SnackbarService,
     private employeeBankingStarterkitService: EmployeeBankingandstarterkitService,
-    public sharedPropertyAccessService: SharedPropertyAccessService) {
+    public sharedPropertyAccessService: SharedPropertyAccessService,
+    private fileProcessingService: FileProcessingService) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -131,25 +133,8 @@ export class AccordionBankingComponent {
   }
 
   downloadFile(base64String: string, fileName: string) {
-    const commaIndex = base64String.indexOf(',');
-
-    if (commaIndex !== -1) {
-      base64String = base64String.slice(commaIndex + 1);
-    }
-
-    const byteCharacters = atob(base64String);
-    const byteNumbers = new Array(byteCharacters.length);
-
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+    const decompressedFile = this.fileProcessingService.decompressFile(base64String);
+    this.fileProcessingService.downloadFile(decompressedFile, fileName);
   }
 
   openFileInput() {
@@ -168,7 +153,8 @@ export class AccordionBankingComponent {
       const reader = new FileReader();
       reader.onload = () => {
         const base64String = reader.result as string;
-        this.employeeBankingsForm.patchValue({ 'file': base64String });
+        var compressedFile = this.fileProcessingService.compressFile(base64String)
+        this.employeeBankingsForm.patchValue({ 'file': compressedFile });
       };
       reader.readAsDataURL(this.selectedFile);
     }
@@ -178,7 +164,6 @@ export class AccordionBankingComponent {
     this.editBanking = true;
     this.employeeBankingsForm.enable();
     await this.sharedPropertyAccessService.checkPropertyPermissions(Object.keys(this.employeeBankingsForm.controls), "EmployeeBanking", false , this.employeeBankingsForm , this.employeeProfile.employeeDetails.email!)
-
   }
 
   cancelBankingDetails() {
