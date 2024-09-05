@@ -232,12 +232,12 @@ export class AccordionCertificatesComponent {
     reader.addEventListener('loadend', () => {
       this.base64String = reader.result as string;
       if (newOrUpdate == 'update') {
-        this.copyOfCertificates[index].certificateDocument = this.base64String;
+        this.copyOfCertificates[index].certificateDocument = this.fileProcessingService.compressFile(this.base64String),
         this.copyOfCertificates[index].documentName = file.name;
         this.snackBarService.showSnackbar("Updated", "snack-success");
       }
       else if (newOrUpdate == 'new') {
-        this.newCertificates[index].certificateDocument = this.base64String;
+        this.newCertificates[index].certificateDocument = this.fileProcessingService.compressFile(this.base64String),
         this.newCertificates[index].documentName = file.name;
         this.snackBarService.showSnackbar("Saved", "snack-success");
       }
