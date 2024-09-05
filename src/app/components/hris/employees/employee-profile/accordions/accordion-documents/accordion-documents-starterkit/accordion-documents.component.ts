@@ -9,6 +9,7 @@ import { AuthAccessService } from 'src/app/services/shared-services/auth-access/
 import { NavService } from 'src/app/services/shared-services/nav-service/nav.service';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
 import { EmployeeBankingandstarterkitService } from 'src/app/services/hris/employee/employee-bankingandstarterkit.service';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-accordion-documents-starterkit',
@@ -46,7 +47,8 @@ export class AccordionDocumentsComponent {
     private authAccessService: AuthAccessService,
     public navService: NavService,
     public sharedAccordionFunctionality: SharedAccordionFunctionality,
-    public employeeBankingandstarterkitService: EmployeeBankingandstarterkitService
+    public employeeBankingandstarterkitService: EmployeeBankingandstarterkitService,
+    private fileProcessingService: FileProcessingService
   ) { }
 
   ngOnInit() {
@@ -60,24 +62,8 @@ export class AccordionDocumentsComponent {
   }
 
   downloadFile(base64String: string, fileName: string) {
-    const commaIndex = base64String.indexOf(',');
-    if (commaIndex !== -1) {
-      base64String = base64String.slice(commaIndex + 1);
-    }
-
-    const byteString = atob(base64String);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const intArray = new Uint8Array(arrayBuffer);
-
-    for (let i = 0; i < byteString.length; i++) {
-      intArray[i] = byteString.charCodeAt(i);
-    }
-
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+    const decompressedFile = this.fileProcessingService.decompressFile(base64String);
+    this.fileProcessingService.downloadFile(decompressedFile, fileName);
   }
 
   captureUploadIndex(event: any) {
@@ -138,7 +124,7 @@ export class AccordionDocumentsComponent {
       id: document.id,
       employeeId: this.employeeId,
       fileName: document.fileName,
-      blob: this.base64String,
+      blob: this.fileProcessingService.compressFile(this.base64String),
       fileCategory: document.fileCategory,
       uploadDate: document.uploadDate,
       status: 1,
@@ -205,7 +191,7 @@ export class AccordionDocumentsComponent {
           reference: "",
           fileName: this.documentsFileName,
           fileCategory: +this.uploadButtonIndex,
-          blob: this.base64String,
+          blob: this.fileProcessingService.compressFile(this.base64String),
           status: 1,
           uploadDate: new Date(),
           reason: '',
@@ -216,7 +202,6 @@ export class AccordionDocumentsComponent {
         this.uploadDocumentDto(newDto);
         this.sharedAccordionFunctionality.calculateStarterKitDocuments();
         this.sharedAccordionFunctionality.totalDocumentsProgress();
-
       };
       reader.readAsDataURL(this.selectedFile);
     }
@@ -266,11 +251,8 @@ export class AccordionDocumentsComponent {
     return true;
   }
 
-
-
   disableDownload(index: number) {
     const documentObject = this.sharedAccordionFunctionality.starterKitDocuments.find(document => document.fileCategory == index);
-
     if (documentObject == undefined)
       return false;
     else
