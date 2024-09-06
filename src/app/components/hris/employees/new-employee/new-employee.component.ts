@@ -49,7 +49,6 @@ export class NewEmployeeComponent implements OnInit {
     private snackBarService: SnackbarService,
     public navService: NavService,
     private fileProcessingService: FileProcessingService
-    
   ) {
     this.navService.hideNav();
   }
