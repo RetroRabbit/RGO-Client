@@ -83,7 +83,6 @@ export class NewEmployeeComponent implements OnInit {
   namePattern = /^[a-zA-Z\s ()'-]*$/;
   initialsPattern = /^[A-Za-z]+$/;
   toggleAdditional: boolean = false;
-
   isMobileScreen: boolean = false;
   isLoadingAddEmployee: boolean = false;
   isSameAddress: boolean = true;
