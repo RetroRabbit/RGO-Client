@@ -48,7 +48,7 @@ export class AccordionProfileAddressDetailsComponent {
     public locationApiService: LocationApiService,
     public navService: NavService,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.currentEmployeeId = this.route.snapshot.params['id'] ?? this.authAccessService.getUserId();
@@ -211,7 +211,9 @@ export class AccordionProfileAddressDetailsComponent {
           this.employeeAddress = data;
           this.initializeForm();
         },
-        error: (er) => this.snackBarService.showError(er),
+        error: (er) => {
+          throw er;
+        },
       });
     }
   }
