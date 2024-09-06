@@ -401,7 +401,6 @@ export class AdminDashboardComponent implements OnInit {
       this.snackBarService.showSnackbar('Select at Least One Employee Role', 'snack-error');
       return;
     }
-    console.log(this.selectedTypes)
     this.isLoadingChart = true;
     this.loadCounter = 0;
     this.chartService
