@@ -298,9 +298,9 @@ export class EmployeeProfileComponent implements OnChanges {
   
     if (employeePhoto && employeePhoto.trim() !== '') {
       if (this.isMainProfile())
-        this.sharedAccordionFunctionality.mainProfileImage = employeePhoto;
+        this.sharedAccordionFunctionality.mainProfileImage = this.fileProcessingService.decompressFile(employeePhoto);
       
-      return employeePhoto;
+      return this.fileProcessingService.decompressFile(employeePhoto);
     }
   
     if (this.isMainProfile()) {
@@ -418,7 +418,7 @@ export class EmployeeProfileComponent implements OnChanges {
       const file = new FileReader();
       file.readAsDataURL(selectedFile);
       file.onload = (event: any) => {
-        this.employeeProfile.photo = event.target.result;
+        this.employeeProfile.photo = this.fileProcessingService.compressFile(event.target.result);
         this.updateUser();
       };
       file.onerror = (error) => {

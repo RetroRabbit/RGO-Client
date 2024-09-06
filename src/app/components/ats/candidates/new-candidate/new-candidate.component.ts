@@ -13,6 +13,7 @@ import { Observable, debounceTime, distinctUntilChanged, map, startWith, switchM
 import { EmployeeProfile } from 'src/app/models/hris/employee-profile.interface';
 import { EmployeeProfileService } from 'src/app/services/hris/employee/employee-profile.service';
 import { SharedAccordionFunctionality } from 'src/app/components/hris/employees/employee-profile/shared-accordion-functionality';
+import { FileProcessingService } from 'src/app/services/hris/file-processing.service';
 
 @Component({
   selector: 'app-new-candidate',
@@ -36,7 +37,8 @@ export class NewCandidateComponent {
     private snackBarService: SnackbarService,
     private navService: NavService,
     public employeeProfileService: EmployeeProfileService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private fileProcessingService: FileProcessingService
   ) { }
 
   levels: number[] = levels.map((level) => level.value);
@@ -148,60 +150,6 @@ export class NewCandidateComponent {
     this.checkEmail(emailChange);
   }
 
-  onImageChange(event: any): void {
-    if (event.target.files && event.target.files.length) {
-      const file = event.target.files[0];
-      this.imageName = file.name;
-      if (this.validateFile(file)) {
-        this.imageConverter(file);
-      } else {
-        this.clearUpload();
-      }
-    }
-  }
-
-  validateFile(file: File): boolean {
-    const allowedExtensions = ['png', 'jpg', 'jpeg', 'svg'];
-    const fileExtension = file.name.split('.').pop()?.toLowerCase();
-    if (file.size > 4194304 || !allowedExtensions.includes(fileExtension || '')) {
-      this.isValidProfileImage = false;
-      return false;
-    }
-    this.isValidProfileImage = true;
-    return true;
-  }
-
-  imageConverter(file: File) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result as string;
-      const base64Image = this.convertTobase64(this.imagePreview);
-      this.newCandidateForm.patchValue({ 'photo': 'data:image/jpeg;base64,' + base64Image });
-      this.getImageFromBase64(base64Image);
-      this.base64Image = base64Image;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  convertTobase64(dataURI: string): string {
-    const base64index = dataURI.indexOf(';base64,') + ';base64,'.length;
-    const base64 = dataURI.substring(base64index);
-    return base64;
-  }
-
-  getImageFromBase64(base64Image: string) {
-    const byteArray = atob(base64Image);
-    const byteNumbers = new Array(byteArray.length);
-
-    for (let i = 0; i < byteArray.length; i++) {
-      byteNumbers[i] = byteArray.charCodeAt(i);
-    }
-
-    const byteArrayBuffer = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArrayBuffer], { type: 'image/jpeg' });
-    this.imageUrl = URL.createObjectURL(blob);
-  }
-
   toggleAdditionalFields(): void {
     this.additionalFieldsVisible = !this.additionalFieldsVisible;
   }
@@ -276,7 +224,122 @@ export class NewCandidateComponent {
     var input = document.getElementById('imageUpload') as HTMLInputElement;
     input.value = '';
   }
+  
+  employeeProfile = {
+    photo: 'assets/img/ProfileAts.png'
+  };
 
+  saveCandidateAndExit() {
+    this.onSubmitCandidate('/ats-dashboard');
+  }
+
+  saveAndAddAnotherCandidate() {
+    if (this.newCandidateForm.valid) {
+      this.onSubmitCandidate('/create-candidate');
+      this.newCandidateForm.reset();
+      this.clearSpecificFields();
+      this.clearValidators();
+    } else {
+      this.newCandidateForm.markAllAsTouched();
+    }
+  }
+
+  clearSpecificFields() {
+    this.searchControl.setValue('');
+    this.cvFilename = '';
+    this.cvFileUploaded = false;
+    this.isValidCVFile = true;
+    this.isValidCVFileSize = true;
+    this.portfolioFilename = '';
+    this.portfolioFileUploaded = false;
+    this.isValidPortfolioFile = true;
+    this.isValidPortfolioFileSize = true;
+    this.isValidProfileImage = false;
+    this.imageUrl = '';
+  }
+
+  clearValidators() {
+    for (const controlName in this.newCandidateForm.controls) {
+      if (Object.prototype.hasOwnProperty.call(this.newCandidateForm.controls, controlName)) {
+        const control = this.newCandidateForm.get(controlName);
+        if (control) {
+          control.clearValidators();
+          control.updateValueAndValidity();
+        }
+      }
+    }
+  }
+
+  showSelectedReferral(event: any) {
+    this.allEmployees.forEach(employee => {
+      let fullName = `${employee.name} ${employee.surname}`;
+      if (fullName == event.source.value) {
+        this.newCandidateForm.get('referral')?.patchValue(employee.id)
+      }
+    })
+  }
+
+  checkSelectedOption(option: any) {
+    if (option == 0 || option.value == 0)
+      this.optionValid = true;
+    else
+      this.optionValid = false;
+  }
+
+  //TODO: add compression/serialize the following below
+  //use fileProcessingService, do not repeat code
+
+  onImageChange(event: any): void {
+    if (event.target.files && event.target.files.length) {
+      const file = event.target.files[0];
+      this.imageName = file.name;
+      if (this.validateFile(file)) {
+        this.imageConverter(file);
+      } else {
+        this.clearUpload();
+      }
+    }
+  }
+
+  validateFile(file: File): boolean {
+    const allowedExtensions = ['png', 'jpg', 'jpeg', 'svg'];
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    if (file.size > 4194304 || !allowedExtensions.includes(fileExtension || '')) {
+      this.isValidProfileImage = false;
+      return false;
+    }
+    this.isValidProfileImage = true;
+    return true;
+  }
+
+  imageConverter(file: File) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+      const base64Image = this.convertTobase64(this.imagePreview);
+      this.newCandidateForm.patchValue({ 'photo': 'data:image/jpeg;base64,' + base64Image });
+      this.getImageUrlFromBase64(base64Image);
+      this.base64Image = base64Image;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  convertTobase64(dataURI: string): string {
+    const base64index = dataURI.indexOf(';base64,') + ';base64,'.length;
+    const base64 = dataURI.substring(base64index);
+    return base64;
+  }
+
+  getImageUrlFromBase64(base64Image: string) {
+    const byteArray = atob(base64Image);
+    const byteNumbers = new Array(byteArray.length);
+    for (let i = 0; i < byteArray.length; i++) {
+      byteNumbers[i] = byteArray.charCodeAt(i);
+    }
+    const byteArrayBuffer = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArrayBuffer], { type: 'image/jpeg' });
+    this.imageUrl = URL.createObjectURL(blob);
+  }
   fileConverter(file: File, controlName: string) {
     const reader = new FileReader();
     reader.addEventListener('loadend', () => {
@@ -285,22 +348,6 @@ export class NewCandidateComponent {
     });
     reader.readAsDataURL(file);
   }
-
-  convertFileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64String = reader.result as string;
-        resolve(base64String.split(',')[1]);
-      };
-      reader.onerror = error => reject(error);
-      reader.readAsDataURL(file);
-    });
-  }
-
-  employeeProfile = {
-    photo: 'assets/img/ProfileAts.png'
-  };
 
   validateCVFile(file: File): boolean {
     const allowedTypes = ['application/pdf'];
@@ -374,47 +421,6 @@ export class NewCandidateComponent {
     }
   }
 
-  saveCandidateAndExit() {
-    this.onSubmitCandidate('/ats-dashboard');
-  }
-
-  saveAndAddAnotherCandidate() {
-    if (this.newCandidateForm.valid) {
-      this.onSubmitCandidate('/create-candidate');
-      this.newCandidateForm.reset();
-      this.clearSpecificFields();
-      this.clearValidators();
-    } else {
-      this.newCandidateForm.markAllAsTouched();
-    }
-  }
-
-  clearSpecificFields() {
-    this.searchControl.setValue('');
-    this.cvFilename = '';
-    this.cvFileUploaded = false;
-    this.isValidCVFile = true;
-    this.isValidCVFileSize = true;
-    this.portfolioFilename = '';
-    this.portfolioFileUploaded = false;
-    this.isValidPortfolioFile = true;
-    this.isValidPortfolioFileSize = true;
-    this.isValidProfileImage = false;
-    this.imageUrl = '';
-  }
-
-  clearValidators() {
-    for (const controlName in this.newCandidateForm.controls) {
-      if (Object.prototype.hasOwnProperty.call(this.newCandidateForm.controls, controlName)) {
-        const control = this.newCandidateForm.get(controlName);
-        if (control) {
-          control.clearValidators();
-          control.updateValueAndValidity();
-        }
-      }
-    }
-  }
-
   onSubmitCandidate(nextPage: string): void {
     if (this.newCandidateForm.valid) {
       const newCandidateForm = this.newCandidateForm.value;
@@ -454,19 +460,4 @@ export class NewCandidateComponent {
     }
   }
 
-  showSelectedReferral(event: any) {
-    this.allEmployees.forEach(employee => {
-      let fullName = `${employee.name} ${employee.surname}`;
-      if (fullName == event.source.value) {
-        this.newCandidateForm.get('referral')?.patchValue(employee.id)
-      }
-    })
-  }
-
-  checkSelectedOption(option: any) {
-    if (option == 0 || option.value == 0)
-      this.optionValid = true;
-    else
-      this.optionValid = false;
-  }
 }
